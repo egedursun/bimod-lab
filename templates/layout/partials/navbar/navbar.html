@@ -1,0 +1,289 @@
+{% load i18n %}
+{% load static %}
+
+{% if navbar_detached  %}
+<nav class="layout-navbar {{container_class}} navbar navbar-expand-xl {{navbar_detached_class}} align-items-center bg-navbar-theme" id="layout-navbar">
+  {% endif %}
+
+  {# Horizontal layout (navbar not detached) #}
+
+  {% if not navbar_detached %}
+  <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
+    <div class="{{container_class}}">
+      {% endif %}
+      <!--  Brand demo (display only for navbar-full and hide on below xl) -->
+      {% if navbar_full %}
+      <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
+        <a href="{% url 'dashboard:main-dashboard' %}" class="app-brand-link">
+          <span class="app-brand-logo demo">
+            {% include 'partials/logo.html' %}
+          </span>
+          <span class="app-brand-text demo menu-text fw-bold">{% get_theme_variables 'template_name' %}</span>
+        </a>
+
+        {% if menu_horizontal %}
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
+          <i class="ti ti-x ti-md align-middle"></i>
+        </a>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <!-- ! Not required for layout-without-menu -->
+      {% if not navbar_hide_toggle %}
+      <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 {{ menu_horizontal|yesno:'d-xl-none,' }} {{ content_navbar|yesno:'d-xl-none,' }}">
+        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+          <i class="ti ti-menu-2 ti-md"></i>
+        </a>
+      </div>
+      {% endif %}
+
+      <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        {% if not menu_horizontal %}
+        <!-- Search -->
+        <!--
+        <div class="navbar-nav align-items-center">
+          <div class="nav-item navbar-search-wrapper mb-0">
+            <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
+              <i class="ti ti-search ti-md me-2 me-lg-4 ti-lg"></i>
+              <span class="d-none d-md-inline-block text-muted fw-normal">Search (Ctrl+/)</span>
+            </a>
+          </div>
+        </div>
+        -->
+        <!-- /Search -->
+        {% endif %}
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+          <!--/ Language -->
+          {% if menu_horizontal %}
+          <!-- Search -->
+          <li class="nav-item navbar-search-wrapper">
+            <a class="nav-link btn btn-text-secondary btn-icon rounded-pill search-toggler" href="javascript:void(0);">
+              <i class="ti ti-search ti-md"></i>
+            </a>
+          </li>
+          <!-- /Search -->
+          {% endif %}
+          <!-- Language -->
+          <li class="nav-item dropdown-language dropdown">
+            <a class="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+              <i class='ti ti-language rounded-circle ti-md'></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item {% if LANGUAGE_CODE == 'en' %}active{% endif %}" href="{% current_url request %}" data-language="en" data-text-direction="ltr">
+                  <span class="align-middle">{% trans "English"%}</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!--/ Language -->
+
+          {% if has_customizer %}
+          <!-- Style Switcher -->
+          <li class="nav-item dropdown-style-switcher dropdown">
+            <a class="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+              <i class='ti ti-md'></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
+              <li>
+                <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
+                  <span class="align-middle"><i class='ti ti-sun ti-md me-3'></i>Light</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
+                  <span class="align-middle"><i class="ti ti-moon-stars ti-md me-3"></i>Dark</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
+                  <span class="align-middle"><i class="ti ti-device-desktop-analytics ti-md me-3"></i>System</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!--/ Style Switcher -->
+          {% endif %}
+
+          <!-- Quick links  -->
+          <!--
+           <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
+            <a class="nav-link btn btn-text-secondary btn-icon rounded-pill btn-icon dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+              <i class='ti ti-layout-grid-add ti-md'></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end p-0">
+              <div class="dropdown-menu-header border-bottom">
+                <div class="dropdown-header d-flex align-items-center py-3">
+                  <h6 class="mb-0 me-auto">Shortcuts</h6>
+                  <a href="javascript:void(0)" class="btn btn-text-secondary rounded-pill btn-icon dropdown-shortcuts-add" data-bs-toggle="tooltip" data-bs-placement="top" title="Add shortcuts"><i class="ti ti-plus text-heading"></i></a>
+                </div>
+              </div>
+              <div class="dropdown-shortcuts-list scrollable-container">
+                <div class="row row-bordered overflow-visible g-0">
+                  <div class="dropdown-shortcuts-item col">
+                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                      <i class="ti ti-calendar ti-26px text-heading"></i>
+                    </span>
+                    <a href="#" class="stretched-link">Calendar</a>
+                    <small>Appointments</small>
+                  </div>
+                  <div class="dropdown-shortcuts-item col">
+                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                      <i class="ti ti-file-dollar ti-26px text-heading"></i>
+                    </span>
+                    <a href="#" class="stretched-link">Invoice App</a>
+                    <small>Manage Accounts</small>
+                  </div>
+                </div>
+                <div class="row row-bordered overflow-visible g-0">
+                  <div class="dropdown-shortcuts-item col">
+                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                      <i class="ti ti-user ti-26px text-heading"></i>
+                    </span>
+                    <a href="#" class="stretched-link">User App</a>
+                    <small>Manage Users</small>
+                  </div>
+                  <div class="dropdown-shortcuts-item col">
+                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                      <i class="ti ti-users ti-26px text-heading"></i>
+                    </span>
+                    <a href="#" class="stretched-link">Role Management</a>
+                    <small>Permission</small>
+                  </div>
+                </div>
+                <div class="row row-bordered overflow-visible g-0">
+                  <div class="dropdown-shortcuts-item col">
+                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                      <i class="ti ti-device-desktop-analytics ti-26px text-heading"></i>
+                    </span>
+                    <a href="{% url 'dashboard:main-dashboard' %}" class="stretched-link">Dashboard</a>
+                    <small>User Dashboard</small>
+                  </div>
+                  <div class="dropdown-shortcuts-item col">
+                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                      <i class="ti ti-settings ti-26px text-heading"></i>
+                    </span>
+                    <a href="#" class="stretched-link">Setting</a>
+                    <small>Account Settings</small>
+                  </div>
+                </div>
+                <div class="row row-bordered overflow-visible g-0">
+                  <div class="dropdown-shortcuts-item col">
+                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                      <i class="ti ti-help ti-26px text-heading"></i>
+                    </span>
+                    <a href="#" class="stretched-link">FAQs</a>
+                    <small>FAQs & Articles</small>
+                  </div>
+                  <div class="dropdown-shortcuts-item col">
+                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                      <i class="ti ti-square ti-26px text-heading"></i>
+                    </span>
+                    <a href="#" class="stretched-link">Modals</a>
+                    <small>Useful Popups</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          -->
+          <!-- Quick links -->
+
+          <!-- Notification -->
+          <!--/ Notification -->
+
+          <!-- User -->
+         <li class="nav-item navbar-dropdown dropdown-user dropdown">
+            <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
+              <div class="avatar avatar-online">
+                {% if request.user|has_group:"admin" %}
+                <img src="{% static 'img/avatars/0.png' %}" alt class="h-auto rounded-circle">
+                {% else %}
+                <img src="{% static 'img/avatars/0.png' %}" alt class="h-auto rounded-circle">
+                {% endif %}
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item mt-0" href="#">
+                  <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-2">
+                      <div class="avatar avatar-online">
+                      {% if request.user|has_group:"admin" %}
+                      <img src="{% static 'img/avatars/0.png' %}" alt class="w-px-40 h-auto rounded-circle">
+                      {% else %}
+                      <img src="{% static 'img/avatars/0.png' %}" alt class="w-px-40 h-auto rounded-circle">
+                      {% endif %}
+                      </div>
+                    </div>
+                    <div class="flex-grow-1">
+                      <h6 class="mb-0">{{ request.user.username }}</h6>
+                      {% for group in request.user.groups.all %}
+                      <small class="text-muted">{{ group.name }}</small>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <div class="dropdown-divider my-1 mx-n2"></div>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  <i class="ti ti-user me-3 ti-md"></i><span class="align-middle">My Profile</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  <i class="ti ti-settings me-3 ti-md"></i><span class="align-middle">Settings</span>
+                </a>
+              </li>
+              <li>
+                <div class="dropdown-divider my-1 mx-n2"></div>
+              </li>
+            <li>
+                <a class="dropdown-item" href="#">
+                  <i class="ti ti-file-description me-3 ti-md"></i><span class="align-middle">Documentation</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  <i class="ti ti-info-circle me-3 ti-md"></i><span class="align-middle">Support</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  <i class="ti ti-question-mark me-3 ti-md"></i><span class="align-middle">FAQ</span>
+                </a>
+              </li>
+              <li>
+                <div class="dropdown-divider"></div>
+              </li>
+              <li class="mt-1">
+                <form action="{% url 'logout' %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-danger d-flex w-100">
+                    <span class="align-middle">Log Out</span>
+                    <i class="ti ti-logout ms-2 ti-14px"></i>
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </li>
+          <!--/ User -->
+        </ul>
+      </div>
+
+      <!-- Search Small Screens -->
+      <div class="navbar-search-wrapper search-input-wrapper {% if menu_horizontal %}{{container_class}}{% endif %} d-none">
+        <input type="text" class="form-control search-input {% if not menu_horizontal %}{{container_class}}{% endif %} border-0" placeholder="Search..." aria-label="Search...">
+        <i class="ti ti-x search-toggler cursor-pointer"></i>
+      </div>
+      {% if not navbar_detached %}
+    </div>
+  </nav>
+  {% endif %}
+  {% if navbar_detached %}
+</nav>
+{% endif %}

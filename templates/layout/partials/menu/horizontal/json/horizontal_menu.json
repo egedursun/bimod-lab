@@ -1,0 +1,181 @@
+{
+  "menu": [
+    {
+      "menu_header": "Admin"
+    },
+    {
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "main-dashboard",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Organizations",
+      "icon": "menu-icon tf-icons ti ti-world",
+      "slug": "organizations",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Subscriptions",
+      "icon": "menu-icon tf-icons ti ti-credit-card",
+      "slug": "subscriptions",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Users",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Roles & Permissions",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "permissions",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Core LLMs",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "organizations",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Assistants",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "assistants",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Logs",
+      "icon": "menu-icon tf-icons ti ti-logs",
+      "slug": "logs",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "menu_header": "Interaction"
+    },
+    {
+      "name": "Chats",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "chats",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "url": "dashboard:main-dashboard",
+      "name": "Orchestrations",
+      "icon": "menu-icon tf-icons ti ti-bolt",
+      "slug": "/orchestrations"
+    },
+    {
+      "name": "Long Term Memory",
+      "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "file-systems",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "menu_header": "Data Sources"
+    },
+    {
+      "name": "File Systems",
+      "icon": "menu-icon tf-icons ti ti-server",
+      "slug": "file-systems",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Web Browsers",
+      "icon": "menu-icon tf-icons ti ti-browser",
+      "slug": "web-browsers",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "SQL Databases",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Knowledge Bases",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "vector-stores",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Documents",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "documents",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Image Storages",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "image-storages",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Video Storages",
+      "icon": "menu-icon tf-icons ti ti-video",
+      "slug": "video-storages",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Audio Storages",
+      "icon": "menu-icon tf-icons ti ti-music",
+      "slug": "audio-storages",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "menu_header": "Tools"
+    },
+    {
+      "name": "Functions",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "APIs",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Scheduled Jobs",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "scheduled-jobs",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Triggers",
+      "icon": "menu-icon tf-icons ti ti-anchor",
+      "slug": "triggers",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Image Gen & Analysis",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "triggers",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Audio Gen & Analysis",
+      "icon": "menu-icon tf-icons ti ti-music",
+      "slug": "triggers",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "menu_header": "Modules"
+    },
+    {
+      "name": "Integrations",
+      "icon": "menu-icon tf-icons ti ti-dashboard",
+      "slug": "triggers",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Meta Integrations",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "triggers",
+      "url": "dashboard:main-dashboard"
+    }
+  ]
+}
