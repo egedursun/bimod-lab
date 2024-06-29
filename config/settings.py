@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
@@ -247,3 +248,7 @@ CSRF_TRUSTED_ORIGINS = [
 # ------------------------------------------------------------------------------
 
 DESIGN_DOCS_ROUTE = 'dev/design/'
+
+# Media Settings
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

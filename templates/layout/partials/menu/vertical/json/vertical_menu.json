@@ -13,12 +13,35 @@
       "name": "Organizations",
       "icon": "menu-icon tf-icons ti ti-world",
       "slug": "organizations",
+      "submenu": [
+        {
+          "name": "Add Organization",
+          "slug": "organization",
+          "url": "organization:create"
+        },
+        {
+          "name": "My Organizations",
+          "slug": "organization",
+          "url": "organization:list"
+        }
+      ]
+    },
+    {
+      "name": "LLM Cores",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "llm-cores",
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Subscriptions",
+      "name": "Usage",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Billing & Payments",
       "icon": "menu-icon tf-icons ti ti-credit-card",
-      "slug": "subscriptions",
+      "slug": "billing-and-payments",
       "url": "dashboard:main-dashboard"
     },
     {
@@ -31,12 +54,6 @@
       "name": "Roles & Permissions",
       "icon": "menu-icon tf-icons ti ti-key",
       "slug": "permissions",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Core LLMs",
-      "icon": "menu-icon tf-icons ti ti-cloud",
-      "slug": "organizations",
       "url": "dashboard:main-dashboard"
     },
     {
@@ -69,6 +86,12 @@
     {
       "name": "Long Term Memory",
       "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "file-systems",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Providers",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "file-systems",
       "url": "dashboard:main-dashboard"
     },

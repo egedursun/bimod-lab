@@ -1,0 +1,102 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Organization List - Pages{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/app-organization-list.js' %}"></script>
+{% endblock page_js %}
+
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-3">
+    <h3 class="mb-0">My Organizations</h3>
+  </div>
+  <!-- Add more statistics cards if necessary -->
+</div>
+<!-- Organizations List Table -->
+<div class="card">
+  <div class="card-header border-bottom">
+    <div class="d-flex justify-content-between align-items-center row pt-4 gap-4 gap-md-0">
+      <div class="col-md-4 organization_industry"></div>
+      <div class="col-md-4 organization_status"></div>
+      <div class="col-md-4 organization_country"></div>
+    </div>
+  </div>
+  <div class="card-datatable table-responsive">
+    <table class="datatables-organizations table">
+      <thead class="border-top">
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>Country</th>
+          <th>Postal Code</th>
+          <th>Industry</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for organization in organizations %}
+        <tr>
+          <td></td>
+          <td></td>
+          <td>
+            {% if organization.organization_image %}
+            <img class="rounded" src="{{ organization.organization_image.url }}" alt="Organization Image" width="50">
+            {% else %}
+            <img class="rounded" src="{% static 'img/avatars/organization-0.png' %}" alt="Organization Image" width="50">
+            {% endif %}
+          </td>
+          <td>{{ organization.name }}</td>
+          <td>{{ organization.email }}</td>
+          <td>{{ organization.phone }}</td>
+          <td>{{ organization.address }}</td>
+          <td>{{ organization.city }}</td>
+          <td>{{ organization.country }}</td>
+          <td>{{ organization.postal_code }}</td>
+          <td>{{ organization.industry }}</td>
+          <td>
+            <a href="{% url 'organization:update' organization.id %}" class="btn btn-sm btn-primary">Edit</a>
+          </td>
+          <td>
+            <a href="{% url 'organization:delete' organization.id %}" class="btn btn-sm btn-danger">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
