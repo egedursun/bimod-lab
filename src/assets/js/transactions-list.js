@@ -13,7 +13,7 @@ $(function () {
     headingColor = config.colors.headingColor;
   }
   // Variables for DataTable
-  var dt_transaction_table = $('.datatables-transaction');
+  var dt_transaction_table = $('.datatables-llm_transaction');
   var toastElements = document.querySelectorAll('.toast');
 
   if (toastElements) {
@@ -192,7 +192,7 @@ $(function () {
           className:
             'add-new btn btn-primary ms-2 ms-sm-0 waves-effect waves-light' + (addTransactionBtn ? '' : ' disabled'),
           action: function (e, dt, button, config) {
-            window.location.href = '/transactions/add/';
+            window.location.href = '/llm_transaction/add/';
           }
         }
       ],

@@ -2,11 +2,11 @@
 
 document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
-    const deleteButtons = document.querySelectorAll('.delete-transaction');
+    const deleteButtons = document.querySelectorAll('.delete-llm_transaction');
     deleteButtons.forEach(deleteButton => {
       deleteButton.addEventListener('click', function (e) {
         e.preventDefault();
-        const userName = this.getAttribute('data-transaction-username');
+        const userName = this.getAttribute('data-llm_transaction-username');
         Swal.fire({
           title: 'Delete Transaction?',
           html: `<p class="text-danger">Are you sure you want to delete transaction of ?<br> <span class="fw-medium text-body">${userName}</span></p>`,

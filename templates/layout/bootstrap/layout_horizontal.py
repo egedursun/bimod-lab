@@ -9,7 +9,7 @@ menu_file_path =  settings.BASE_DIR / "templates" / "layout" / "partials" / "men
 
 """
 This is an entry and Bootstrap class for the theme level.
-The init() function will be called in web_project/__init__.py
+The init() function will be called in web_project/__init__.py.py
 """
 
 

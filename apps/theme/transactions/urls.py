@@ -7,24 +7,24 @@ from apps.theme.transactions.transaction_delete.views import TransactionDeleteVi
 
 urlpatterns = [
     path(
-        "transactions/list/",
+        "llm_transaction/list/",
         login_required(TransactionListView.as_view(template_name="transactions_list.html")),
-        name="transactions",
+        name="llm_transaction",
     ),
     path(
-        "transactions/add/",
+        "llm_transaction/add/",
         login_required(TransactionAddView.as_view(template_name="transactions_add.html")),
-        name="transactions-add",
+        name="llm_transaction-add",
     ),
     path (
-        "transactions/update/<int:pk>",
+        "llm_transaction/update/<int:pk>",
         login_required(TransactionUpdateView.as_view(template_name="transactions_update.html")),
-        name="transactions-update",
+        name="llm_transaction-update",
     ),
     path (
-        "transactions/delete/<int:pk>/",
+        "llm_transaction/delete/<int:pk>/",
         login_required(TransactionDeleteView.as_view()),
-        name="transactions-delete",
+        name="llm_transaction-delete",
     ),
 
 ]

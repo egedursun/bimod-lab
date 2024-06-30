@@ -12,27 +12,27 @@ from web_project import TemplateLayout
 
 class CreateOrganizationView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['form'] = OrganizationForm()
         return context
 
     def post(self, request, *args, **kwargs):
         form = OrganizationForm(request.POST, request.FILES)
+        user = request.user
+        form.instance.user = user
         if form.is_valid():
-            user = request.user
-            form.instance.user = user
             form.save()
             return redirect('organization:list')
         else:
+            error_messsages = form.errors
             context = self.get_context_data(**kwargs)
             context['form'] = form
+            context['error_messages'] = error_messsages
             return self.render_to_response(context)
 
 
 class OrganizationListView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
         organizations = Organization.objects.filter(user=user)
@@ -42,7 +42,6 @@ class OrganizationListView(TemplateView, LoginRequiredMixin):
 
 class OrganizationUpdateView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         # retrieve the organization from the ID
         user = self.request.user
@@ -62,12 +61,13 @@ class OrganizationUpdateView(TemplateView, LoginRequiredMixin):
         else:
             context = self.get_context_data(**kwargs)
             context['form'] = form
+            error_messsages = form.errors
+            context['error_messages'] = error_messsages
             return self.render_to_response(context)
 
 
 class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
-        # A function to init the global layout. It is defined in web_project/__init__.py file
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context
 

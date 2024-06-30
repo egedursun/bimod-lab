@@ -1,0 +1,337 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Pricing - Pages{% endblock %}
+
+{% block page_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/css/pages/page-pricing.css' %}" />
+{% endblock page_css %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/pages-pricing.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="card">
+  <!-- Pricing Plans -->
+  <div class="pb-4 rounded-top">
+    <div class="container py-12 px-xl-10 px-4 md-10">
+      <div class="card-body pt-12 px-5 border rounded shadow">
+        <h3 class="text-center mb-10 mt-0 mt-md-4">Which Subscription Plan is Right for You?</h3>
+        <div class="d-flex align-items-center justify-content-center flex-wrap gap-2 pt-9 pb-3 mb-50">
+        <label class="switch switch-sm ms-sm-12 ps-sm-12 me-0">
+          <span class="switch-label fs-6 text-body">Monthly</span>
+          <input type="checkbox" class="switch-input price-duration-toggler" checked />
+          <span class="switch-toggle-slider">
+            <span class="switch-on"></span>
+            <span class="switch-off"></span>
+          </span>
+          <span class="switch-label fs-6 text-body">Annually</span>
+        </label>
+        <div class="mt-n5 ms-n10 ml-2 mb-10 d-none d-sm-flex align-items-center gap-1">
+          <i class="ti ti-corner-left-down ti-lg text-muted scaleX-n1-rtl"></i>
+          <span class="badge badge-sm bg-label-primary rounded-1 mb-3 ">Save 10% more!</span>
+        </div>
+      </div>
+        <div class="row mx-0 px-lg-8">
+        <div class="col-xl mb-xl-0 mb-6">
+          <div class="card border rounded shadow-none">
+            <div class="card-body pt-12 px-5">
+              <div class="mt-3 mb-5 text-center">
+                <img src="{% static 'img/illustrations/page-pricing-basic.png' %}" alt="Basic Image" height="120">
+              </div>
+              <h4 class="card-title text-center text-capitalize mb-1">Free</h4>
+              <p class="text-center mb-5">A simple start for everyone within reach.</p>
+              <div class="text-center h-px-50">
+                <div class="d-flex justify-content-center">
+                  <sup class="h6 text-body pricing-currency mt-2 mb-0 me-1">$</sup>
+                  <h1 class="mb-0 text-primary">0</h1>
+                  <sub class="h6 text-body pricing-duration mt-auto mb-1 ms-1">/month</sub>
+                </div>
+              </div>
+              <ul class="list-group ps-6 my-5 pt-9">
+                <span class="badge badge-sm bg-label-primary rounded-1 mb-3 ">No Credit Gifts</span>
+                <span class="badge badge-sm bg-label-primary rounded-1 mb-10 ">0% Discount on Extra Credits</span>
+                <li class="mb-2">1 LLM Cores</li>
+                <li class="mb-2">3 Users</li>
+                <li class="mb-2">1 Assistant</li>
+                <li class="mb-2">10 Chats</li>
+                <li class="mb-2">No Orchestrations</li>
+                <li class="mb-2">No Long Term Memory</li>
+                <li class="mb-2">No AI Providers</li>
+                <li class="mb-2">No File Systems</li>
+                <li class="mb-2">1 Web Browser</li>
+                <li class="mb-2">1 SQL Database</li>
+                <li class="mb-2">1 Knowledge Base</li>
+                <li class="mb-2">5 Documents</li>
+                <li class="mb-2">No Image Storage</li>
+                <li class="mb-2">No Video Storage</li>
+                <li class="mb-2">No Audio Storage</li>
+                <li class="mb-2">3 Custom Functions</li>
+                <li class="mb-2">3 API Integrations</li>
+                <li class="mb-2">1 Scheduled Task</li>
+                <li class="mb-2">No Trigger Integrations</li>
+                <li class="mb-2">No Image Gen & Analysis</li>
+                <li class="mb-2">No Audio Gen & Analysis</li>
+                <li class="mb-2">No Framework Integrations</li>
+                <li class="mb-2">No Meta Framework Integrations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl mb-xl-0 mb-6">
+          <div class="card border border shadow-none">
+            <div class="card-body position-relative pt-4">
+              <div class="my-5 pt-6 text-center">
+                <img src="{% static 'img/illustrations/page-pricing-standard.png' %}" alt="Standard Image" height="120">
+              </div>
+              <h4 class="card-title text-center text-capitalize mb-1">Starter</h4>
+              <p class="text-center mb-5">For small scale to medium scale businesses.</p>
+              <div class="text-center h-px-50">
+                <div class="d-flex justify-content-center">
+                  <sup class="h6 text-body pricing-currency mt-2 mb-0 me-1">$</sup>
+                  <h1 class="price-toggle price-yearly text-primary mb-0">900</h1>
+                  <h1 class="price-toggle price-monthly text-primary mb-0 d-none">1,000</h1>
+                  <sub class="h6 text-body pricing-duration mt-auto mb-1 ms-1">/month</sub>
+                </div>
+                <small class="price-yearly price-yearly-toggle text-muted">USD 10,800 / year</small>
+              </div>
+              <ul class="list-group ps-6 my-5 pt-9">
+                <span class="badge badge-sm bg-label-primary rounded-1 mb-3 ">+10% Extra Credits = $1,100</span>
+                <span class="badge badge-sm bg-label-primary rounded-1 mb-10 ">10% Discount on Extra Credits</span>
+                <li class="mb-2">5 LLM Cores</li>
+                <li class="mb-2">20 Users</li>
+                <li class="mb-2">10 Assistants</li>
+                <li class="mb-2">Unlimited Chats</li>
+                <li class="mb-2">1 Orchestration</li>
+                <li class="mb-2">Long Term Memory</li>
+                <li class="mb-2">10 AI Providers</li>
+                <li class="mb-2">1 File System</li>
+                <li class="mb-2">3 Web Browsers</li>
+                <li class="mb-2">3 SQL Databases</li>
+                <li class="mb-2">3 Knowledge Bases</li>
+                <li class="mb-2">1000 Documents</li>
+                <li class="mb-2">Image Storage</li>
+                <li class="mb-2">Video Storage</li>
+                <li class="mb-2">Audio Storage</li>
+                <li class="mb-2">30 Custom Functions</li>
+                <li class="mb-2">15 API Integrations</li>
+                <li class="mb-2">10 Scheduled Task</li>
+                <li class="mb-2">10 Trigger Integrations</li>
+                <li class="mb-2">Image Generation & Analysis</li>
+                <li class="mb-2">Audio Generation & Analysis</li>
+                <li class="mb-2">3 Framework Integrations</li>
+                <li class="mb-2">No Meta Framework Integrations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl">
+          <div class="card border rounded shadow-none">
+            <div class="card-body pt-12">
+              <div class="position-absolute end-0 me-5 top-0 mt-4">
+                <span class="badge bg-label-primary rounded-1">Popular</span>
+              </div>
+              <div class="mt-3 mb-5 text-center">
+                <img src="{% static 'img/illustrations/page-pricing-enterprise.png' %}" alt="Enterprise Image" height="120">
+              </div>
+              <h4 class="card-title text-center text-capitalize mb-1">Grower</h4>
+              <p class="text-center mb-5">For medium to large scale businesses.</p>
+
+              <div class="text-center h-px-50">
+                <div class="d-flex justify-content-center">
+                  <sup class="h6 text-body pricing-currency mt-2 mb-0 me-1">$</sup>
+                  <h1 class="price-toggle price-yearly text-primary mb-0">4,500</h1>
+                  <h1 class="price-toggle price-monthly text-primary mb-0 d-none">5,000</h1>
+                  <sub class="h6 text-body pricing-duration mt-auto mb-1 ms-1">/month</sub>
+                </div>
+                <small class="price-yearly price-yearly-toggle text-muted">USD 54,000 / year</small>
+              </div>
+
+              <ul class="list-group ps-6 my-5 pt-9">
+                <span class="badge badge-sm bg-label-primary rounded-1 mb-3 ">+15% Extra Credits = $5,750</span>
+                <span class="badge badge-sm bg-label-primary rounded-1 mb-10 ">15% Discount on Extra Credits</span>
+                <li class="mb-2">30 LLM Cores</li>
+                <li class="mb-2">100 Users</li>
+                <li class="mb-2">30 Assistants</li>
+                <li class="mb-2">Unlimited Chats</li>
+                <li class="mb-2">10 Orchestrations</li>
+                <li class="mb-2">Long Term Memory</li>
+                <li class="mb-2">30 AI Providers</li>
+                <li class="mb-2">10 File Systems</li>
+                <li class="mb-2">10 Web Browser</li>
+                <li class="mb-2">10 SQL Database</li>
+                <li class="mb-2">10 Knowledge Bases</li>
+                <li class="mb-2">10,000 Documents</li>
+                <li class="mb-2">Image Storage</li>
+                <li class="mb-2">Video Storage</li>
+                <li class="mb-2">Audio Storage</li>
+                <li class="mb-2">250 Custom Functions</li>
+                <li class="mb-2">100 API Integrations</li>
+                <li class="mb-2">50 Scheduled Task</li>
+                <li class="mb-2">50 Trigger Integrations</li>
+                <li class="mb-2">Image Generation & Analysis</li>
+                <li class="mb-2">Audio Generation & Analysis</li>
+                <li class="mb-2">10 Framework Integrations</li>
+                <li class="mb-2">3 Meta Framework Integrations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl">
+          <div class="card border rounded shadow-none">
+            <div class="card-body pt-12">
+
+              <div class="mt-3 mb-5 text-center">
+                <img src="{% static 'img/illustrations/bulb-light.png' %}" alt="Enterprise Image" height="120">
+              </div>
+              <h4 class="card-title text-center text-capitalize mb-1">Enterprise</h4>
+              <p class="text-center mb-5">Comprehensive solution for very large scale businesses.</p>
+
+              <div class="text-center h-px-50">
+                <div class="d-flex justify-content-center">
+                  <sup class="h6 text-body pricing-currency mt-2 mb-0 me-1">$</sup>
+                  <h1 class="price-toggle price-yearly text-primary mb-0">9,000</h1>
+                  <h1 class="price-toggle price-monthly text-primary mb-0 d-none">10,000</h1>
+                  <sub class="h6 text-body pricing-duration mt-auto mb-1 ms-1">/month</sub>
+                </div>
+                <small class="price-yearly price-yearly-toggle text-muted">USD 108,000 / year</small>
+              </div>
+              <ul class="list-group ps-6 my-5 pt-9">
+                <span class="badge badge-sm bg-label-primary rounded-1 mb-3 ">+20% Extra Credits = $12,000</span>
+                <span class="badge badge-sm bg-label-primary rounded-1 mb-10 ">20% Discount on Extra Credits</span>
+                <li class="mb-2">30 LLM Cores</li>
+                <li class="mb-2">100 Users</li>
+                <li class="mb-2">30 Assistants</li>
+                <li class="mb-2">Unlimited Chats</li>
+                <li class="mb-2">10 Orchestrations</li>
+                <li class="mb-2">Long Term Memory</li>
+                <li class="mb-2">30 AI Providers</li>
+                <li class="mb-2">10 File Systems</li>
+                <li class="mb-2">10 Web Browser</li>
+                <li class="mb-2">10 SQL Database</li>
+                <li class="mb-2">10 Knowledge Bases</li>
+                <li class="mb-2">10,000 Documents</li>
+                <li class="mb-2">Image Storage</li>
+                <li class="mb-2">Video Storage</li>
+                <li class="mb-2">Audio Storage</li>
+                <li class="mb-2">250 Custom Functions</li>
+                <li class="mb-2">100 API Integrations</li>
+                <li class="mb-2">50 Scheduled Task</li>
+                <li class="mb-2">50 Trigger Integrations</li>
+                <li class="mb-2">Image Generation & Analysis</li>
+                <li class="mb-2">Audio Generation & Analysis</li>
+                <li class="mb-2">10 Framework Integrations</li>
+                <li class="mb-2">3 Meta Framework Integrations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <br><br>
+      <div class="card-body pt-12 px-5 border rounded shadow">
+        <h3 class="text-center mb-2 mt-0 mt-md-4">Choose Subscription's Organization</h3>
+        <br><br>
+        <select id="organizations" name="organizations" class="form-select" style="min-height: 60px;">
+          {% for org in organizations %}
+            <option value="{{ org.id }}">{{ org.name }}</option>
+          {% endfor %}
+        </select>
+      <br><br><br>
+      </div>
+      <br><br>
+      <div class="card-body pt-12 px-5 border rounded shadow">
+        <h3 class="text-center mb-2 mt-0 mt-md-4">Choose Your Plan</h3>
+        <br><br>
+         <div class="col-xl">
+          <div class="card border rounded shadow-none">
+            <div class="card-body pt-12 mb-12">
+              <div class="text-center h-px-50">
+                <div class="d-flex justify-content-center mb-2">
+                  <sup class="h6 text-body pricing-currency mt-2 mb-0 me-1">$</sup>
+                  <h1 class="price-toggle price text-primary mb-0">4,500</h1>
+                  <sub class="h6 text-body pricing-duration mt-auto mb-1 ms-1">/month</sub>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <small><strong>A total of &nbsp;&nbsp;</strong></small>
+                  <sup class="h6 text-body pricing-currency mt-2 mb-0 me-1">$</sup>
+                  <h5 class="price-toggle price text-primary mb-0">54,000</h5>
+                  <small><strong>&nbsp;&nbsp; will be charged to your card.</strong></small>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+        <br><br>
+        <label class="form-label">Plan Name</label>
+        <select id="subscription_plan" name="subscription_plan" class="form-select mb-10" style="min-height: 60px;">
+          <option value="free">Free (No Discount)</option>
+          <option value="starter">Starter (+20% Discounts & Gifts) </option>
+          <option value="grower" selected>Grower (+30% Discounts & Gifts) </option>
+          <option value="enterprise">Enterprise (+40% Discounts & Gifts) </option>
+        </select>
+        <label class="form-label">Payment Period</label>
+        <select id="subscription_period" name="subscription_period" class="form-select" style="min-height: 60px;">
+          <option value="monthly">Monthly (No Discount)</option>
+          <option value="annual" selected>Annual (10% Discount)</option>
+        </select>
+      <br><br><br>
+      </div>
+    </div>
+  </div>
+  <!--/ Pricing Plans -->
+</div>
+
+<div class="card mt-4">
+  <!-- Create Subscription Form -->
+  <div class="card-body">
+    <h3 class="text-center mb-2 mt-0 mt-md-4">Credit Card Information</h3>
+    <form method="post" action="{% url 'subscription:create' %}">
+      {% csrf_token %}
+      <div class="row">
+        <div class="mb-12 col-sm-12">
+          <label for="organization" class="form-label">Organization</label>
+          <select id="organization" name="organization" class="form-select">
+            {% for org in organizations %}
+              <option value="{{ org.id }}">{{ org.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-4 col-sm-6">
+          <label for="name_on_card" class="form-label">Name on Card</label>
+          <input type="text" id="name_on_card" name="name_on_card" class="form-control" placeholder="Name on Card" />
+        </div>
+        <div class="mb-4 col-sm-6">
+          <label for="card_number" class="form-label">Card Number</label>
+          <input type="text" id="card_number" name="card_number" class="form-control" placeholder="Card Number" />
+        </div>
+        <div class="mb-4 col-sm-3">
+          <label for="card_expiration_month" class="form-label">Expiration Month</label>
+          <input type="text" id="card_expiration_month" name="card_expiration_month" class="form-control" placeholder="MM" />
+        </div>
+        <div class="mb-4 col-sm-3">
+          <label for="card_expiration_year" class="form-label">Expiration Year</label>
+          <input type="text" id="card_expiration_year" name="card_expiration_year" class="form-control" placeholder="YY" />
+        </div>
+        <div class="mb-4 col-sm-3">
+          <label for="card_cvc" class="form-label">CVC</label>
+          <input type="text" id="card_cvc" name="card_cvc" class="form-control" placeholder="CVC" />
+        </div>
+      </div>
+      <div class="mt-2">
+        <button type="submit" class="btn btn-primary me-3">Create Subscription</button>
+      </div>
+    </form>
+  </div>
+  <!-- /Create Subscription Form -->
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}LLM Core List - Pages{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/app-llm-core-list.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-4">
+    <h3 class="mb-0">LLM Cores of Organizations</h3>
+  </div>
+</div>
+
+{% for organization, llm_cores in org_llm_cores.items %}
+<!-- Organization's LLM Cores List Table -->
+<div class="card mb-6">
+  <div class="card-header border-bottom">
+    <h4>{{ organization.name }}</h4>
+  </div>
+  <div class="card-datatable table-responsive">
+    <table class="datatables-llm-cores table">
+      <thead class="border-top">
+        <tr>
+          <th>Nickname</th>
+          <th>Description</th>
+          <th>Provider</th>
+          <th>Model Name</th>
+          <th>Temperature</th>
+          <th>Max Tokens</th>
+          <th>Top P</th>
+          <th>Frequency Penalty</th>
+          <th>Presence Penalty</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for llm_core in llm_cores %}
+        <tr>
+          <td>{{ llm_core.nickname }}</td>
+          <td>{{ llm_core.description }}</td>
+          <td>{{ llm_core.get_provider_name }}</td>
+          <td>{{ llm_core.model_name }}</td>
+          <td>{{ llm_core.temperature }}</td>
+          <td>{{ llm_core.maximum_tokens }}</td>
+          <td>{{ llm_core.top_p }}</td>
+          <td>{{ llm_core.frequency_penalty }}</td>
+          <td>{{ llm_core.presence_penalty }}</td>
+          <td>
+            <a href="{% url 'llm_core:update' llm_core.id %}" class="btn btn-sm btn-primary">Edit</a>
+          </td>
+          <td>
+            <a href="{% url 'llm_core:delete' llm_core.id %}" class="btn btn-sm btn-danger">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     let fv; // Declare fv in a scope accessible to both initialization and event listeners
 
     // Variables for DataTable
-    var TransactionDate = $('#transaction-date');
+    var TransactionDate = $('#llm_transaction-date');
     var DueDate = $('#due-date');
     var select2 = $('.select2');
 
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
       });
     }
 
-    // Update transaction form validation
+    // Update llm_transaction form validation
     const UpdateTransactionForm = document.getElementById('UpdateTransactionForm');
     if (UpdateTransactionForm) {
       fv = FormValidation.formValidation(UpdateTransactionForm, {

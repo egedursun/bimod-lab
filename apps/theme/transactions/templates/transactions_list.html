@@ -155,11 +155,11 @@
             <div class="d-flex align-items-center gap-1">
               <!-- permission required: edit_transaction -->
               {% if perms.transactions.edit_transaction %}
-              <a href="{% url 'transactions-update' transaction.id %}" class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill"><i class='ti ti-edit ti-md'></i></a>
+              <a href="{% url 'llm_transaction-update' transaction.id %}" class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill"><i class='ti ti-edit ti-md'></i></a>
               {% endif %}
               <!-- permission required: delete_transaction -->
               {% if perms.transactions.delete_transaction %}
-              <a href="{% url 'transactions-delete' transaction.id %}" class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill delete-transaction" data-transaction-username="{{ transaction.customer|capfirst }}"><i class="ti ti-trash ti-md"></i></a>
+              <a href="{% url 'llm_transaction-delete' transaction.id %}" class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill delete-transaction" data-transaction-username="{{ transaction.customer|capfirst }}"><i class="ti ti-trash ti-md"></i></a>
               {% endif %}
             </div>
           </td>

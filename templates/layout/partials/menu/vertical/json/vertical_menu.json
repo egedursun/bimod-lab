@@ -15,12 +15,12 @@
       "slug": "organizations",
       "submenu": [
         {
-          "name": "Add Organization",
+          "name": "Add New Organization",
           "slug": "organization",
           "url": "organization:create"
         },
         {
-          "name": "My Organizations",
+          "name": "Organizations",
           "slug": "organization",
           "url": "organization:list"
         }
@@ -30,19 +30,41 @@
       "name": "LLM Cores",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-cores",
-      "url": "dashboard:main-dashboard"
+      "submenu" : [
+        {
+          "name": "Add New LLM Core",
+          "slug": "llm-core",
+          "url": "llm_core:create"
+        },
+        {
+          "name": "LLM Cores",
+          "slug": "llm-core",
+          "url": "llm_core:list"
+        }
+      ]
     },
     {
-      "name": "Usage",
+      "name": "Transactions / Costs",
       "icon": "menu-icon tf-icons ti ti-receipt",
       "slug": "usage",
-      "url": "dashboard:main-dashboard"
+      "url": "llm_transaction:list"
     },
     {
       "name": "Billing & Payments",
       "icon": "menu-icon tf-icons ti ti-credit-card",
       "slug": "billing-and-payments",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add Payment Method",
+          "slug": "subscription",
+          "url": "subscription:create"
+        },
+        {
+          "name": "Manage Subscriptions",
+          "slug": "subscription",
+          "url": "subscription:list"
+        }
+      ]
     },
     {
       "name": "Users",

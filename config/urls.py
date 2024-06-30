@@ -27,6 +27,9 @@ urlpatterns = [
     path("", include("auth.urls")),
     path("organization/", include("apps.organization.urls", namespace="organization")),
     path("dashboard/", include("apps.dashboard.urls", namespace="dashboard")),
+    path("llm_core/", include("apps.llm_core.urls", namespace="llm_core")),
+    path("llm_transaction/", include("apps.llm_transaction.urls", namespace="llm_transaction")),
+    path("subscription/", include("apps.subscription.urls", namespace="subscription")),
 ]
 
 
@@ -98,4 +101,4 @@ handler500 = SystemView.as_view(template_name="pages_misc_error.html", status=50
 # Auth urls
 # path("", include("auth.urls")),
 # Transaction urls
-# path("", include("apps.theme.transactions.urls")),
+# path("", include("apps.theme.llm_transaction.urls")),

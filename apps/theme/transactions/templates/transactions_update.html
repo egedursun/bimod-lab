@@ -35,7 +35,7 @@
 <!-- Update Transactions Form -->
 <div class="card">
   <div class="card-body">
-    <form class="update-transaction pt-0" id="UpdateTransactionForm" action="{% url 'transactions-update' transaction_id.id %}" method="post">
+    <form class="update-transaction pt-0" id="UpdateTransactionForm" action="{% url 'llm_transaction-update' transaction_id.id %}" method="post">
       {% csrf_token %}
       <input type="hidden" name="id" id="user_id">
       <div class="mb-4">
@@ -63,8 +63,8 @@
         </select>
       </div>
       <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Save</button>
-      <a href="{% url 'transactions-delete' transaction_id.id %}" class="btn btn-danger me-sm-3 me-1 delete-transaction" data-transaction-username="{{ transaction_id.customer }}">Delete</a>
-      <a href="{% url 'transactions' %}" class="btn btn-secondary me-sm-3 me-1">Back</a>
+      <a href="{% url 'llm_transaction-delete' transaction_id.id %}" class="btn btn-danger me-sm-3 me-1 delete-transaction" data-transaction-username="{{ transaction_id.customer }}">Delete</a>
+      <a href="{% url 'llm_transaction' %}" class="btn btn-secondary me-sm-3 me-1">Back</a>
     </form>
   </div>
 </div>

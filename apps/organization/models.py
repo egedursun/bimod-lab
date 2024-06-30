@@ -21,6 +21,13 @@ class Organization(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
+                                        related_name="organization_created_by_users",
+                                        default=1, blank=True, null=False)
+    last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
+                                             related_name="organization_last_updated_by_users",
+                                             default=1, blank=True, null=False)
+
     # additional fields
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     # profile image

@@ -1,0 +1,122 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Update LLM Core{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Update LLM Core Information</h5> <small class="text-muted float-end"></small>
+      </div>
+      <div class="card-body">
+        {% if error_messages %}
+          {% for key, message in error_messages.items %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              <strong>{{ key | field_name_to_label }}:</strong> {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label class="form-label" for="organization">Organization</label>
+            <select class="form-control" id="organization" name="organization">
+              {% for organization in organizations %}
+              <option value="{{ organization.id }}" {% if llm_core.organization == organization %}selected{% endif %}>{{ organization.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="nickname">Nickname</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter nickname" value="{{ llm_core.nickname }}"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" placeholder="Enter description">{{ llm_core.description }}</textarea>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="provider">Provider</label>
+            <select class="form-control" id="provider" name="provider">
+              {% for key, value in provider_choices %}
+              <option value="{{ key }}" {% if llm_core.provider == key %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="api_key">API Key</label>
+            <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API Key" value="{{ llm_core.api_key }}"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="model_name">Model Name</label>
+            <select class="form-control" id="model_name" name="model_name">
+              {% for key, value in model_name_choices %}
+              <option value="{{ key }}" {% if llm_core.model_name == key %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="temperature">Temperature</label>
+            <input type="number" class="form-control" id="temperature" name="temperature" placeholder="Enter temperature" value="{{ llm_core.temperature }}"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="maximum_tokens">Maximum Tokens</label>
+            <input type="number" class="form-control" id="maximum_tokens" name="maximum_tokens" placeholder="Enter maximum tokens" value="{{ llm_core.maximum_tokens }}"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="stop_sequences">Stop Sequences</label>
+            <textarea class="form-control" id="stop_sequences" name="stop_sequences" placeholder="Enter stop sequences">{{ llm_core.stop_sequences }}</textarea>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="top_p">Top P</label>
+            <input type="number" class="form-control" id="top_p" name="top_p" placeholder="Enter top P" value="{{ llm_core.top_p }}"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="frequency_penalty">Frequency Penalty</label>
+            <input type="number" class="form-control" id="frequency_penalty" name="frequency_penalty" placeholder="Enter frequency penalty" value="{{ llm_core.frequency_penalty }}"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="presence_penalty">Presence Penalty</label>
+            <input type="number" class="form-control" id="presence_penalty" name="presence_penalty" placeholder="Enter presence penalty" value="{{ llm_core.presence_penalty }}"/>
+            <div class="form-text"></div>
+          </div>
+          <button type="submit" class="btn btn-primary d-grid w-100">Update Information</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

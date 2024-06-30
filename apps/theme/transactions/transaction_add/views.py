@@ -7,7 +7,7 @@ from apps.theme.transactions.models import Transaction
 from apps.theme.transactions.forms import TransactionForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
 class TransactionAddView(PermissionRequiredMixin, TemplateView):
-    permission_required = ("transactions.add_transaction")
+    permission_required = ("llm_transaction.add_transaction")
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -24,7 +24,7 @@ class TransactionAddView(PermissionRequiredMixin, TemplateView):
                 messages.error(request, 'Transaction already exists')
         else:
             messages.error(request, 'Transaction Failed')
-        return redirect('transactions')
+        return redirect('llm_transaction')
 
     def transaction_exists(self, cleaned_data):
         return Transaction.objects.filter(

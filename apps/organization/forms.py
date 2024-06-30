@@ -8,7 +8,6 @@ class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
         fields = [
-            'user',
             'name',
             'email',
             'phone',

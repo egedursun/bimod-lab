@@ -14,7 +14,7 @@ class TransactionListView(TemplateView):
         # Update the context
         context.update(
             {
-                "transactions": transactions,
+                "llm_transaction": transactions,
                 "transactions_count": Transaction.objects.count(),
                 "due_count": self.get_total_due(),
                 "paid_count": self.get_total_paid(),
@@ -25,14 +25,14 @@ class TransactionListView(TemplateView):
         return context
 
     def get_annotated_transactions(self):
-        # Get all transactions and order them by ID
+        # Get all llm_transaction and order them by ID
         return Transaction.objects.all().order_by('id')
     def get_total_due(self):
             total_due_amount = Transaction.objects.filter(status='Due').aggregate(total_due=Sum('total'))
             return float(total_due_amount['total_due']) if total_due_amount['total_due']  is not None else 0.0
 
     def get_total_paid(self):
-        # Calculate the total sum of 'total' field for 'Paid' transactions
+        # Calculate the total sum of 'total' field for 'Paid' llm_transaction
         total_paid_amount = Transaction.objects.filter(status='Paid').aggregate(total_paid=Sum('total'))
         return float(total_paid_amount['total_paid']) if total_paid_amount['total_paid']  is not None else 0.0
 

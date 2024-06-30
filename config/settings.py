@@ -79,13 +79,18 @@ INSTALLED_APPS = [
     "apps.theme.tables",
     "apps.theme.charts",
     "apps.theme.maps",
-    "apps.theme.transactions",
     "auth.apps.AuthConfig",
-    "apps.organization",
+    "apps.theme.transactions",
+    #############################
     "apps.dashboard",
+    "apps.organization",
+    "apps.llm_core",
+    "apps.llm_transaction",
+    "apps.subscription",
 ]
 
 MIDDLEWARE = [
+
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
