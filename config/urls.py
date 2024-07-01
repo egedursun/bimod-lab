@@ -30,6 +30,7 @@ urlpatterns = [
     path("llm_core/", include("apps.llm_core.urls", namespace="llm_core")),
     path("llm_transaction/", include("apps.llm_transaction.urls", namespace="llm_transaction")),
     path("subscription/", include("apps.subscription.urls", namespace="subscription")),
+    path("user_management/", include("apps.user_management.urls", namespace="user_management")),
 ]
 
 

@@ -149,11 +149,11 @@ class Subscription(models.Model):
                                      related_name='subscriptions')
 
     # Credit card information for the subscription.
-    name_on_card = models.CharField(max_length=255, blank=True)
-    card_number = models.CharField(max_length=16, blank=True)
-    card_expiration_month = models.CharField(max_length=2, blank=True)
-    card_expiration_year = models.CharField(max_length=2, blank=True)
-    card_cvc = models.CharField(max_length=4, blank=True)
+    name_on_card = models.CharField(max_length=255, null=False)
+    card_number = models.CharField(max_length=19, null=False)
+    card_expiration_month = models.CharField(max_length=2, null=False)
+    card_expiration_year = models.CharField(max_length=2, null=False)
+    card_cvc = models.CharField(max_length=4, null=False)
 
     # Subscription plan selection.
     subscription_plan = models.CharField(max_length=100, choices=SUBSCRIPTION_PLANS, default="free")

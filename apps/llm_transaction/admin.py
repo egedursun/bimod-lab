@@ -1,3 +1,5 @@
+import decimal
+
 from django.contrib import admin
 from django.contrib.admin import widgets
 
@@ -45,4 +47,8 @@ class TransactionAdmin(admin.ModelAdmin):
             obj.tax_cost = calculate_tax_cost(obj.internal_service_cost)
             obj.total_billable_cost = calculate_billable_cost(obj.internal_service_cost, obj.tax_cost)
             obj.total_cost = calculate_total_cost(obj.llm_cost, obj.total_billable_cost)
+
+        # reduce the transaction billable amount from the organization's balance
+        obj.organization.balance -= decimal.Decimal.from_float(obj.total_billable_cost)
+        obj.organization.save()
         super().save_model(request, obj, form, change)

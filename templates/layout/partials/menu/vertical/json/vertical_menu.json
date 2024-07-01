@@ -27,7 +27,7 @@
       ]
     },
     {
-      "name": "LLM Cores",
+      "name": "LLM Models",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-cores",
       "submenu" : [
@@ -44,27 +44,16 @@
       ]
     },
     {
-      "name": "Transactions / Costs",
+      "name": "Transactions",
       "icon": "menu-icon tf-icons ti ti-receipt",
       "slug": "usage",
       "url": "llm_transaction:list"
     },
     {
-      "name": "Billing & Payments",
+      "name": "Billing & Payment",
       "icon": "menu-icon tf-icons ti ti-credit-card",
       "slug": "billing-and-payments",
-      "submenu": [
-        {
-          "name": "Add Payment Method",
-          "slug": "subscription",
-          "url": "subscription:create"
-        },
-        {
-          "name": "Manage Subscriptions",
-          "slug": "subscription",
-          "url": "subscription:list"
-        }
-      ]
+      "url": "dashboard:main-dashboard"
     },
     {
       "name": "Users",
@@ -73,7 +62,7 @@
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Roles & Permissions",
+      "name": "Permissions",
       "icon": "menu-icon tf-icons ti ti-key",
       "slug": "permissions",
       "url": "dashboard:main-dashboard"
@@ -85,12 +74,6 @@
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Logs",
-      "icon": "menu-icon tf-icons ti ti-logs",
-      "slug": "logs",
-      "url": "dashboard:main-dashboard"
-    },
-    {
       "menu_header": "Interaction"
     },
     {
@@ -99,23 +82,23 @@
       "slug": "chats",
       "url": "dashboard:main-dashboard"
     },
-    {
-      "url": "dashboard:main-dashboard",
-      "name": "Orchestrations",
-      "icon": "menu-icon tf-icons ti ti-bolt",
-      "slug": "/orchestrations"
-    },
-    {
-      "name": "Long Term Memory",
+        {
+      "name": "Memory",
       "icon": "menu-icon tf-icons ti ti-archive",
       "slug": "file-systems",
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Providers",
+      "name": "Export Assistants",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "file-systems",
       "url": "dashboard:main-dashboard"
+    },
+    {
+      "url": "dashboard:main-dashboard",
+      "name": "Orchestrations",
+      "icon": "menu-icon tf-icons ti ti-bolt",
+      "slug": "/orchestrations"
     },
     {
       "menu_header": "Data Sources"
@@ -136,6 +119,12 @@
       "name": "SQL Databases",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "sql-databases",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "NoSQL Databases",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "nosql-databases",
       "url": "dashboard:main-dashboard"
     },
     {

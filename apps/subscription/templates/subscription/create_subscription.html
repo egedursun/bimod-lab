@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load i18n %}
+{% load field_to_label %}
 
 {% block title %}Pricing - Pages{% endblock %}
 
@@ -238,7 +239,7 @@
       </div>
       <br><br>
       <div class="card-body pt-12 px-5 border rounded shadow">
-        <h3 class="text-center mb-2 mt-0 mt-md-4">Choose Subscription's Organization</h3>
+        <h3 class="text-center mb-2 mt-0 mt-md-4">Which Organization are you Subscribing for?</h3>
         <br><br>
         <select id="organizations" name="organizations" class="form-select" style="min-height: 60px;">
           {% for org in organizations %}
@@ -257,14 +258,15 @@
               <div class="text-center h-px-50">
                 <div class="d-flex justify-content-center mb-2">
                   <sup class="h6 text-body pricing-currency mt-2 mb-0 me-1">$</sup>
-                  <h1 class="price-toggle price text-primary mb-0">4,500</h1>
+                  <h1 class="price-toggle price text-primary mb-0" id="subscription_price">0</h1>
                   <sub class="h6 text-body pricing-duration mt-auto mb-1 ms-1">/month</sub>
                 </div>
                 <div class="d-flex justify-content-center">
                   <small><strong>A total of &nbsp;&nbsp;</strong></small>
                   <sup class="h6 text-body pricing-currency mt-2 mb-0 me-1">$</sup>
-                  <h5 class="price-toggle price text-primary mb-0">54,000</h5>
+                  <h5 class="price-toggle price text-primary mb-0" id="total_price">0</h5>
                   <small><strong>&nbsp;&nbsp; will be charged to your card.</strong></small>
+                </div>
                 </div>
               </div>
               <br>
@@ -273,46 +275,42 @@
         </div>
         <br><br>
         <label class="form-label">Plan Name</label>
-        <select id="subscription_plan" name="subscription_plan" class="form-select mb-10" style="min-height: 60px;">
-          <option value="free">Free (No Discount)</option>
-          <option value="starter">Starter (+20% Discounts & Gifts) </option>
-          <option value="grower" selected>Grower (+30% Discounts & Gifts) </option>
-          <option value="enterprise">Enterprise (+40% Discounts & Gifts) </option>
-        </select>
-        <label class="form-label">Payment Period</label>
-        <select id="subscription_period" name="subscription_period" class="form-select" style="min-height: 60px;">
-          <option value="monthly">Monthly (No Discount)</option>
-          <option value="annual" selected>Annual (10% Discount)</option>
+          <select id="subscription_plan" name="subscription_plan" class="form-select mb-10" style="min-height: 60px;">
+            <option value="starter" data-monthly="1000" data-annual="900">Starter (+10% Discounts & Gifts)</option>
+            <option value="grower" data-monthly="5000" data-annual="4500" selected>Grower (+10% Discounts & Gifts)</option>
+            <option value="enterprise" data-monthly="10000" data-annual="9000">Enterprise (+10% Discounts & Gifts)</option>
+          </select>
+          <select id="subscription_period" name="subscription_period" class="form-select" style="min-height: 60px;">
+            <option value="monthly">Monthly (No Discount)</option>
+            <option value="annual" selected>Annual (10% Discount)</option>
         </select>
       <br><br><br>
       </div>
     </div>
   </div>
   <!--/ Pricing Plans -->
-</div>
 
 <div class="card mt-4">
   <!-- Create Subscription Form -->
   <div class="card-body">
-    <h3 class="text-center mb-2 mt-0 mt-md-4">Credit Card Information</h3>
+    <h3 class="text-center mb-2 mt-0 mt-md-4 mb-10">Credit Card Information</h3>
     <form method="post" action="{% url 'subscription:create' %}">
+      {% if error_messages %}
+        {% for key, message in error_messages.items %}
+          <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+            <strong>{{ key | field_name_to_label }}:</strong> {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
       {% csrf_token %}
       <div class="row">
-        <div class="mb-12 col-sm-12">
-          <label for="organization" class="form-label">Organization</label>
-          <select id="organization" name="organization" class="form-select">
-            {% for org in organizations %}
-              <option value="{{ org.id }}">{{ org.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
         <div class="mb-4 col-sm-6">
           <label for="name_on_card" class="form-label">Name on Card</label>
           <input type="text" id="name_on_card" name="name_on_card" class="form-control" placeholder="Name on Card" />
         </div>
         <div class="mb-4 col-sm-6">
           <label for="card_number" class="form-label">Card Number</label>
-          <input type="text" id="card_number" name="card_number" class="form-control" placeholder="Card Number" />
+          <input type="text" id="card_number" name="card_number" class="form-control" placeholder="Card Number" maxlength="19" />
         </div>
         <div class="mb-4 col-sm-3">
           <label for="card_expiration_month" class="form-label">Expiration Month</label>
@@ -327,6 +325,9 @@
           <input type="text" id="card_cvc" name="card_cvc" class="form-control" placeholder="CVC" />
         </div>
       </div>
+      <input type="hidden" id="form_subscription_plan" name="subscription_plan">
+      <input type="hidden" id="form_subscription_period" name="subscription_period">
+      <input type="hidden" id="form_organization" name="organization" value="{{ organization.id }}">
       <div class="mt-2">
         <button type="submit" class="btn btn-primary me-3">Create Subscription</button>
       </div>
@@ -334,4 +335,68 @@
   </div>
   <!-- /Create Subscription Form -->
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const planSelect = document.getElementById('subscription_plan');
+  const periodSelect = document.getElementById('subscription_period');
+  const formPlanInput = document.getElementById('form_subscription_plan');
+  const formPeriodInput = document.getElementById('form_subscription_period');
+  const formOrganizationInput = document.getElementById('form_organization');
+  const subscriptionPrice = document.getElementById('subscription_price');
+  const totalPrice = document.getElementById('total_price');
+  const organizationSelect = document.getElementById('organizations');
+
+  function formatPrice(value) {
+    return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function updatePrices() {
+    const selectedPlan = planSelect.options[planSelect.selectedIndex];
+    const period = periodSelect.value;
+    const monthlyPrice = parseFloat(selectedPlan.getAttribute('data-monthly'));
+    const annualPrice = parseFloat(selectedPlan.getAttribute('data-annual'));
+
+    if (period === 'annual') {
+      const annualCost = (annualPrice * 12 * 0.9); // Applying the 10% discount
+      subscriptionPrice.textContent = formatPrice(annualPrice);
+      totalPrice.textContent = formatPrice(annualCost);
+    } else {
+      subscriptionPrice.textContent = formatPrice(monthlyPrice);
+      totalPrice.textContent = formatPrice(monthlyPrice);
+    }
+
+    // Update hidden input fields
+    formPlanInput.value = planSelect.value;
+    formPeriodInput.value = period;
+    formOrganizationInput.value = organizationSelect.value;
+  }
+
+  planSelect.addEventListener('change', updatePrices);
+  periodSelect.addEventListener('change', updatePrices);
+
+  updatePrices();  // Initial update
+});
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const cardNumberInput = document.getElementById('card_number');
+
+      cardNumberInput.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\s+/g, '');
+          if (value.length > 0) {
+              value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+          }
+          e.target.value = value;
+      });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const nameOnCardInput = document.getElementById('name_on_card');
+
+      nameOnCardInput.addEventListener('input', function() {
+          this.value = this.value.toUpperCase();
+      });
+  });
+</script>
 {% endblock %}

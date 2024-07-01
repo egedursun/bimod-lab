@@ -93,6 +93,12 @@
         </div>
       </div>
     </div>
+    <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
+        <span class="alert-icon rounded">
+          <i class="ti ti-bell"></i>
+        </span>
+        LLM cost is "an approximation" of the cost of the external LLM core you are using.
+      </div>
   </div>
   <div class="col-sm-6 col-xl-6">
       <div class="card">
@@ -111,6 +117,12 @@
           </div>
         </div>
       </div>
+      <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
+        <span class="alert-icon rounded">
+          <i class="ti ti-bell"></i>
+        </span>
+        Total billable cost is the cost you are responsible for the services provided by Astrolith.
+      </div>
     </div>
 </div>
 
@@ -123,6 +135,46 @@
         <small class="text-muted">{{ organization_data.organization.email }}</small>
       </div>
       <div class="card-body">
+
+        <!-- New Balance and Top-up Form in Separate Equal Height and Width Cards -->
+        <div class="row g-4 mb-4">
+          <!-- Balance Card -->
+          <div class="col-6">
+            <div class="card h-100">
+              <div class="card-body d-flex align-items-center">
+                <div class="content-left">
+                  <div class="d-flex align-items-end">
+                    <h3 class="mb-0 me-2">$<span id="balance-{{ organization_data.organization.id }}">{{ organization_data.organization.balance }}</span></h3>
+                    <small class="text-primary"></small>
+                  </div>
+                  <small>Balance</small>
+                </div>
+                <span class="badge bg-label-primary rounded p-2 ms-auto">
+                  <i class="ti ti-wallet ti-sm"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top-up Form Card -->
+          <div class="col-6">
+            <div class="card h-100">
+              <div class="card-body d-flex align-items-center">
+                <form method="post" action="{% url 'organization:add_credits' organization_data.organization.id %}" class="w-100">
+                  {% csrf_token %}
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text pt-2 pb-2"><strong>$ (USD)</strong></span>
+                    </div>
+                    <input type="number" class="form-control" name="topup_amount" placeholder="Enter amount" required>
+                    <button class="btn btn-primary" type="submit">Add Credits</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="row g-4 mb-4">
           <div class="col-sm-6 col-xl-6">
             <div class="card">
@@ -174,6 +226,7 @@
                 <thead>
                   <tr>
                     <th>Id</th>
+                    <th>User</th>
                     <th>Encoding Engine</th>
                     <th>Number of Tokens</th>
                     <th>LLM Cost</th>
@@ -188,6 +241,7 @@
                   {% for transaction in llm_data.transactions %}
                   <tr>
                     <td>{{ transaction.id }}</td>
+                    <td>{{ transaction.responsible_user.username }}</td>
                     <td>{{ transaction.encoding_engine }}</td>
                     <td>{{ transaction.number_of_tokens }}</td>
                     <td>$ {{ transaction.llm_cost }}</td>
@@ -218,5 +272,39 @@
   </div>
 </div>
 {% endfor %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function animateBalance(id, balance, duration) {
+            const balanceElement = document.getElementById(id);
+            if (!balanceElement) return;
 
+            const start = 0;
+            const end = balance;
+            const range = end - start;
+            const startTime = performance.now();
+
+            function updateBalance(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / duration, 1);
+                balanceElement.textContent = (start + range * progress).toFixed(2);
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateBalance);
+                } else {
+                    balanceElement.textContent = balance.toFixed(2);  // Ensure final value is exact
+                }
+            }
+
+            requestAnimationFrame(updateBalance);
+        }
+
+        // Get all balance elements and animate them
+        document.querySelectorAll('[id^="balance-"]').forEach(function(element) {
+            const balance = parseFloat(element.textContent);
+            const id = element.id;
+            element.textContent = "0.00";  // Initialize with 0
+            animateBalance(id, balance, 1000);  // Duration is 500ms (0.5 seconds)
+        });
+    });
+</script>
 {% endblock %}

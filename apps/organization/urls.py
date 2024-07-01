@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (CreateOrganizationView, OrganizationListView, OrganizationUpdateView,
-                    OrganizationDeleteView)
+                    OrganizationDeleteView, OrganizationAddCreditsView)
 
 app_name = "organization"
 
@@ -14,4 +14,6 @@ urlpatterns = [
          name="update"),
     path('delete/<int:pk>/', OrganizationDeleteView.as_view(),
          name="delete"),
+    path('add_credits/<int:pk>/', OrganizationAddCreditsView.as_view(),
+         name="add_credits"),
 ]

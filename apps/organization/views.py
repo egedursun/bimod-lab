@@ -1,3 +1,6 @@
+import decimal
+
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
@@ -80,4 +83,21 @@ class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
     def get_queryset(self):
         user = self.request.user
         return Organization.objects.filter(user=user)
+
+
+class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
+    def post(self, request, *args, **kwargs):
+        organization_id = kwargs.get('pk')
+        organization = get_object_or_404(Organization, id=organization_id, user=request.user)
+        topup_amount = request.POST.get('topup_amount')
+
+        try:
+            topup_amount = float(topup_amount)
+            organization.balance += decimal.Decimal.from_float(topup_amount)
+            organization.save()
+            messages.success(request, f'Credits successfully added. New balance: ${organization.balance}')
+        except ValueError:
+            messages.error(request, 'Invalid amount entered. Please enter a valid number.')
+
+        return redirect('llm_transaction:list')
 

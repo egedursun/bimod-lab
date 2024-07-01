@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     "apps.llm_core",
     "apps.llm_transaction",
     "apps.subscription",
+    "apps.user_management",
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "config.middleware.SessionTimeoutMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -241,8 +243,9 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_SAVE_EVERY_REQUEST = True
 
-SESSION_COOKIE_AGE = 3600
+SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5050",
@@ -257,3 +260,7 @@ DESIGN_DOCS_ROUTE = 'dev/design/'
 # Media Settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+
+
