@@ -1,0 +1,101 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Users List{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/app-user-list.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-4">
+    <h3 class="mb-0">User Management</h3>
+  </div>
+</div>
+
+{% for organization, user_datas in org_users.items %}
+  <div class="card mb-6">
+    <div class="card-header border-bottom">
+      <h4>{{ organization.name }}</h4>
+    </div>
+    <div class="card-datatable table-responsive">
+      <table class="datatables-users-management table">
+        <thead class="border-top">
+          <tr>
+            <th>Username</th>
+            <th>Added by</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Postal Code</th>
+            <th>Is Active</th>
+            <th>Verified</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user, profile in user_datas %}
+            <tr>
+              <td>{{ user.username }}</td>
+              <td>{{ profile.created_by_user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ profile.first_name }}</td>
+              <td>{{ profile.last_name }}</td>
+              <td>{{ profile.phone_number }}</td>
+              <td>{{ profile.address }}</td>
+              <td>{{ profile.city }}</td>
+              <td>{{ profile.country }}</td>
+              <td>{{ profile.postal_code }}</td>
+              <td>
+                <form method="post" action="{% url 'user_management:list' %}" class="status-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <input type="checkbox" name="is_active" class="form-check-input status-checkbox" {% if profile.is_active %}checked{% endif %} onchange="this.form.submit();">
+                </form>
+            </td>
+              <td>{{ profile.is_verified|yesno:"Yes,No" }}</td>
+              <td>
+                {% if user.id != context_user.id %}
+                  <a href="{% url "user_management:remove" user.id %}" class="btn btn-sm btn-danger">
+                    Delete
+                  </a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endfor %}
+
+{% endblock %}

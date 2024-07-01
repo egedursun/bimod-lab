@@ -30,6 +30,9 @@ class Profile(models.Model):
                                         null=True)
     is_active = models.BooleanField(default=True)
 
+    created_by_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile_created_by_users",
+                                        default=1, blank=True, null=False)
+
     def __str__(self):
         return self.user.username
 

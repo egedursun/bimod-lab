@@ -54,8 +54,9 @@ class UpdateLLMCoreView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         llm_core = LLMCore.objects.get(id=kwargs['pk'])
+        context_user = self.request.user
         context['llm_core'] = llm_core
-        context['organizations'] = llm_core.organization.user.organizations.all()
+        context['organizations'] = context_user.organizations.all()
         context['provider_choices'] = LLM_CORE_PROVIDERS
         context['model_name_choices'] = OPENAI_GPT_MODEL_NAMES
         return context

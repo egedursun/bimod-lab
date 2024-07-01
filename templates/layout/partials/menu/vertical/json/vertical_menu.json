@@ -59,7 +59,18 @@
       "name": "Users",
       "icon": "menu-icon tf-icons ti ti-user",
       "slug": "users",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add New User",
+          "slug": "user",
+          "url": "user_management:add"
+        },
+        {
+          "name": "Users",
+          "slug": "user",
+          "url": "user_management:list"
+        }
+      ]
     },
     {
       "name": "Permissions",

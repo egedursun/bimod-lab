@@ -63,23 +63,23 @@
       </thead>
       <tbody>
         {% for llm_core in llm_cores %}
-        <tr>
-          <td>{{ llm_core.nickname }}</td>
-          <td>{{ llm_core.description }}</td>
-          <td>{{ llm_core.get_provider_name }}</td>
-          <td>{{ llm_core.model_name }}</td>
-          <td>{{ llm_core.temperature }}</td>
-          <td>{{ llm_core.maximum_tokens }}</td>
-          <td>{{ llm_core.top_p }}</td>
-          <td>{{ llm_core.frequency_penalty }}</td>
-          <td>{{ llm_core.presence_penalty }}</td>
-          <td>
-            <a href="{% url 'llm_core:update' llm_core.id %}" class="btn btn-sm btn-primary">Edit</a>
-          </td>
-          <td>
-            <a href="{% url 'llm_core:delete' llm_core.id %}" class="btn btn-sm btn-danger">Delete</a>
-          </td>
-        </tr>
+          <tr>
+            <td>{{ llm_core.nickname }}</td>
+            <td>{{ llm_core.description }}</td>
+            <td>{{ llm_core.get_provider_name }}</td>
+            <td>{{ llm_core.model_name }}</td>
+            <td>{{ llm_core.temperature }}</td>
+            <td>{{ llm_core.maximum_tokens }}</td>
+            <td>{{ llm_core.top_p }}</td>
+            <td>{{ llm_core.frequency_penalty }}</td>
+            <td>{{ llm_core.presence_penalty }}</td>
+            <td>
+              <a href="{% url 'llm_core:update' llm_core.id %}" class="btn btn-sm btn-primary">Edit</a>
+            </td>
+            <td>
+              <a href="{% url 'llm_core:delete' llm_core.id %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+          </tr>
         {% endfor %}
       </tbody>
     </table>

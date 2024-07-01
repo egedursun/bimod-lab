@@ -18,3 +18,4 @@ class OrganizationForm(forms.ModelForm):
             'industry',
             'organization_image',
         ]
+        exclude = ['created_by_user', 'last_updated_by_user', 'users']

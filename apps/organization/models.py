@@ -7,8 +7,6 @@ from apps.organization.utils import generate_random_string
 
 
 class Organization(models.Model):
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='organizations', default=1,
-                             blank=True, null=False)
     name = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
@@ -34,6 +32,8 @@ class Organization(models.Model):
     organization_image_save_path = 'organization_images/%Y/%m/%d/' + generate_random_string()
     organization_image = models.ImageField(upload_to=organization_image_save_path, blank=True, max_length=1000,
                                            null=True)
+
+    users = models.ManyToManyField("auth.User", related_name="organizations")
 
     def __str__(self):
         return self.name

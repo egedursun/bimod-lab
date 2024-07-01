@@ -254,12 +254,14 @@
                   {% endfor %}
                   <tr class="bg-light">
                     <td colspan="3"><strong>Total</strong></td>
+                    <td colspan="1"></td>
+
                     <td><strong>$ {{ llm_data.cost_sums.llm_cost }}</strong></td>
                     <td><strong>$ {{ llm_data.cost_sums.internal_service_cost }}</strong></td>
                     <td><strong>$ {{ llm_data.cost_sums.tax_cost }}</strong></td>
                     <td><strong>$ {{ llm_data.cost_sums.total_cost }}</strong></td>
                     <td><strong>$ {{ llm_data.cost_sums.total_billable_cost }}</strong></td>
-                    <td colspan="2"></td>
+                    <td colspan="1"></td>
                   </tr>
                 </tbody>
               </table>

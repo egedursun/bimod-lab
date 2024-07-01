@@ -1,10 +1,9 @@
 import decimal
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import TemplateView, UpdateView, DeleteView
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import TemplateView, DeleteView
 
 from apps.organization.forms import OrganizationForm
 from apps.organization.models import Organization
@@ -21,24 +20,26 @@ class CreateOrganizationView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         form = OrganizationForm(request.POST, request.FILES)
-        user = request.user
-        form.instance.user = user
         if form.is_valid():
-            form.save()
+            organization = form.save(commit=False)
+            organization.created_by_user = request.user
+            organization.save()
+            organization.users.clear()
+            organization.users.add(request.user)
             return redirect('organization:list')
         else:
-            error_messsages = form.errors
+            error_messages = form.errors
             context = self.get_context_data(**kwargs)
             context['form'] = form
-            context['error_messages'] = error_messsages
+            context['error_messages'] = error_messages
             return self.render_to_response(context)
 
 
 class OrganizationListView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        user = self.request.user
-        organizations = Organization.objects.filter(user=user)
+        context_user = self.request.user
+        organizations = Organization.objects.filter(users__in=[context_user])
         context['organizations'] = organizations
         return context
 
@@ -47,16 +48,16 @@ class OrganizationUpdateView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         # retrieve the organization from the ID
-        user = self.request.user
-        organization = Organization.objects.filter(user=user, id=kwargs['pk']).first()
+        context_user = self.request.user
+        organization = Organization.objects.filter(users__in=[context_user], id=kwargs['pk']).first()
         context['organization'] = organization
-        context['user'] = user
+        context['user'] = context_user
         context['form'] = OrganizationForm(instance=organization)
         return context
 
     def post(self, request, *args, **kwargs):
-        user = self.request.user
-        organization = get_object_or_404(Organization, user=user, id=kwargs['pk'])
+        context_user = self.request.user
+        organization = get_object_or_404(Organization, users__in=[context_user], id=kwargs['pk'])
         form = OrganizationForm(request.POST, request.FILES, instance=organization)
         if form.is_valid():
             form.save()
@@ -75,20 +76,21 @@ class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
         return context
 
     def post(self, request, *args, **kwargs):
-        user = self.request.user
-        organization = get_object_or_404(Organization, user=user, id=kwargs['pk'])
+        context_user = self.request.user
+        organization = get_object_or_404(Organization, users__in=[context_user], id=kwargs['pk'])
         organization.delete()
         return redirect('organization:list')
 
     def get_queryset(self):
-        user = self.request.user
-        return Organization.objects.filter(user=user)
+        context_user = self.request.user
+        return Organization.objects.filter(users__in=[context_user])
 
 
 class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
+        context_user = self.request.user
         organization_id = kwargs.get('pk')
-        organization = get_object_or_404(Organization, id=organization_id, user=request.user)
+        organization = get_object_or_404(Organization, id=organization_id, users__in=[context_user])
         topup_amount = request.POST.get('topup_amount')
 
         try:
