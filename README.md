@@ -9,6 +9,7 @@
 - [ ] Rate limiting the usage for safety.
 - [ ] Registration for new tenants.
 - [ ] Additional cost column for custom tools. (start + continuation)
+- [ ] Real PostgreSQL DBMS integration.
 - [ ] Real e-mail SMTP integration.
 - [ ] Better validation and logging system.
 - [ ] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
