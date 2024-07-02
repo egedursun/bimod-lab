@@ -11,6 +11,7 @@ from django.views.generic import TemplateView
 
 from apps.organization.models import Organization
 from apps.user_management.forms import UserStatusForm
+from apps.user_permissions.models import PermissionNames
 from auth.helpers import send_verification_email
 from auth.models import Profile
 from config import settings
@@ -29,6 +30,18 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - USER/CREATE
+        ##############################
+        user_permissions = context_user.permissions.all()
+        if PermissionNames.ADD_USERS not in user_permissions:
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {"Permission Error": "You do not have permission to add new users."}
+            return self.render_to_response(context)
+        ##############################
+
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -45,7 +58,6 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
         created_by_user = request.user
 
         try:
-
             # validate the password
             if password != confirm_password:
                 messages.error(request, 'Passwords do not match')
@@ -95,6 +107,13 @@ class ListUsersView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - USER/LIST
+        ##############################
+        # For now, we will allow all users to view the list of users
+        ##############################
+
         organizations = Organization.objects.filter(users__in=[context_user])
         org_users = { organization: {"user": organization.users.all(), "profile": []} for organization in organizations }
         # retrieve the profile of each user and add to the org_user's related dictionary
@@ -131,6 +150,17 @@ class RemoveUserView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - USER/DELETE
+        ##############################
+        user_permissions = context_user.permissions.all()
+        if PermissionNames.DELETE_USERS not in user_permissions:
+            messages.error(request, "You do not have permission to delete users.")
+            return redirect('user_management:list')
+        ##############################
+
         user = get_object_or_404(User, id=kwargs['pk'])
         user.delete()
         messages.success(request, 'User deleted successfully.')
@@ -140,8 +170,21 @@ class RemoveUserView(LoginRequiredMixin, TemplateView):
 @method_decorator(require_POST, name='dispatch')
 class UpdateUserStatusView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
+        context_user = self.request.user
+
         user_id = request.POST.get('user_id')
         is_active = request.POST.get('is_active') == 'true'
+
+        ##############################
+        # PERMISSION CHECK FOR - USER/UPDATE
+        ##############################
+        user_permissions = context_user.permissions.all()
+        if PermissionNames.UPDATE_USERS not in user_permissions:
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {
+                "Permission Error": "You do not have permission to update user status."}
+            return self.render_to_response(context)
+        ##############################
 
         try:
             user = User.objects.get(id=user_id)

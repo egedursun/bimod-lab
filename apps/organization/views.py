@@ -7,6 +7,7 @@ from django.views.generic import TemplateView, DeleteView
 
 from apps.organization.forms import OrganizationForm
 from apps.organization.models import Organization
+from apps.user_permissions.models import PermissionNames
 from web_project import TemplateLayout
 
 
@@ -20,6 +21,18 @@ class CreateOrganizationView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         form = OrganizationForm(request.POST, request.FILES)
+        user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - ORGANIZATION/CREATE
+        ##############################
+        user_permissions = user.permissions.all()
+        if PermissionNames.ADD_ORGANIZATIONS not in user_permissions:
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {"Permission Error": "You do not have permission to create organizations."}
+            return self.render_to_response(context)
+        ##############################
+
         if form.is_valid():
             organization = form.save(commit=False)
             organization.created_by_user = request.user
@@ -39,6 +52,13 @@ class OrganizationListView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - ORGANIZATION/LIST
+        ##############################
+        # For now, we will allow all users to view the list of organizations
+        ##############################
+
         organizations = Organization.objects.filter(users__in=[context_user])
         context['organizations'] = organizations
         return context
@@ -49,6 +69,7 @@ class OrganizationUpdateView(TemplateView, LoginRequiredMixin):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         # retrieve the organization from the ID
         context_user = self.request.user
+
         organization = Organization.objects.filter(users__in=[context_user], id=kwargs['pk']).first()
         context['organization'] = organization
         context['user'] = context_user
@@ -57,6 +78,18 @@ class OrganizationUpdateView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - ORGANIZATION/UPDATE
+        ##############################
+        user_permissions = context_user.permissions.all()
+        if PermissionNames.UPDATE_ORGANIZATIONS not in user_permissions:
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {
+                "Permission Error": "You do not have permission to update or modify organizations."}
+            return self.render_to_response(context)
+        ##############################
+
         organization = get_object_or_404(Organization, users__in=[context_user], id=kwargs['pk'])
         form = OrganizationForm(request.POST, request.FILES, instance=organization)
         if form.is_valid():
@@ -78,6 +111,16 @@ class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
         organization = get_object_or_404(Organization, users__in=[context_user], id=kwargs['pk'])
+
+        ##############################
+        # PERMISSION CHECK FOR - ORGANIZATION/DELETE
+        ##############################
+        user_permissions = context_user.permissions.all()
+        if PermissionNames.DELETE_ORGANIZATIONS not in user_permissions:
+            messages.error(request, "You do not have permission to delete organizations.")
+            return redirect('organization:list')
+        ##############################
+
         organization.delete()
         return redirect('organization:list')
 
@@ -92,6 +135,17 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
         organization_id = kwargs.get('pk')
         organization = get_object_or_404(Organization, id=organization_id, users__in=[context_user])
         topup_amount = request.POST.get('topup_amount')
+
+        ##############################
+        # PERMISSION CHECK FOR - ORGANIZATION/UPDATE
+        ##############################
+        user_permissions = context_user.permissions.all()
+        if PermissionNames.UPDATE_ORGANIZATIONS not in user_permissions:
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {
+                "Permission Error": "You do not have permission to update or modify organizations."}
+            return self.render_to_response(context)
+        ##############################
 
         try:
             topup_amount = float(topup_amount)

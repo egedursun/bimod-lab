@@ -38,6 +38,13 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
         organizations = Organization.objects.filter(users__in=[context_user])
+
+        ##############################
+        # PERMISSION CHECK FOR - TRANSACTIONS/LIST
+        ##############################
+        # For now, every user is able to see the transactions.
+        ##############################
+
         # get from context
         filter_value = self.request.POST.get('filter')
         delta_specifier = self.request.POST.get('delta_specifier')
