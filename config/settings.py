@@ -88,6 +88,8 @@ INSTALLED_APPS = [
     "apps.llm_transaction",
     "apps.subscription",
     "apps.user_management",
+    "apps.user_permissions",
+    #############################
 ]
 
 MIDDLEWARE = [

@@ -44,16 +44,10 @@
       ]
     },
     {
-      "name": "Transactions",
+      "name": "Usage & Payment",
       "icon": "menu-icon tf-icons ti ti-receipt",
       "slug": "usage",
       "url": "llm_transaction:list"
-    },
-    {
-      "name": "Billing & Payment",
-      "icon": "menu-icon tf-icons ti ti-credit-card",
-      "slug": "billing-and-payments",
-      "url": "dashboard:main-dashboard"
     },
     {
       "name": "Users",
@@ -142,12 +136,6 @@
       "name": "Knowledge Bases",
       "icon": "menu-icon tf-icons ti ti-vector",
       "slug": "vector-stores",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Documents",
-      "icon": "menu-icon tf-icons ti ti-folder",
-      "slug": "documents",
       "url": "dashboard:main-dashboard"
     },
     {
