@@ -13,43 +13,97 @@
       "name": "Organizations",
       "icon": "menu-icon tf-icons ti ti-world",
       "slug": "organizations",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add New Organization",
+          "slug": "organization",
+          "url": "organization:create"
+        },
+        {
+          "name": "Organizations",
+          "slug": "organization",
+          "url": "organization:list"
+        }
+      ]
     },
     {
-      "name": "Subscriptions",
-      "icon": "menu-icon tf-icons ti ti-credit-card",
-      "slug": "subscriptions",
-      "url": "dashboard:main-dashboard"
+      "name": "LLM Models",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "llm-cores",
+      "submenu" : [
+        {
+          "name": "Add New LLM Core",
+          "slug": "llm-core",
+          "url": "llm_core:create"
+        },
+        {
+          "name": "LLM Cores",
+          "slug": "llm-core",
+          "url": "llm_core:list"
+        }
+      ]
+    },
+    {
+      "name": "Usage & Payment",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "llm_transaction:list"
     },
     {
       "name": "Users",
       "icon": "menu-icon tf-icons ti ti-user",
       "slug": "users",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add New User",
+          "slug": "user",
+          "url": "user_management:add"
+        },
+        {
+          "name": "Add User to Organization",
+          "slug": "user",
+          "url": "user_management:add_user_to_organization"
+        },
+        {
+          "name": "Users",
+          "slug": "user",
+          "url": "user_management:list"
+        }
+      ]
     },
     {
-      "name": "Roles & Permissions",
+      "name": "Permissions",
       "icon": "menu-icon tf-icons ti ti-key",
       "slug": "permissions",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Core LLMs",
-      "icon": "menu-icon tf-icons ti ti-cloud",
-      "slug": "organizations",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add Permissions",
+          "slug": "permission",
+          "url": "user_permissions:add_permissions"
+        },
+        {
+          "name": "Manage Permissions",
+          "slug": "permission",
+          "url": "user_permissions:list_permissions"
+        }
+      ]
     },
     {
       "name": "Assistants",
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "assistants",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Logs",
-      "icon": "menu-icon tf-icons ti ti-logs",
-      "slug": "logs",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add New Assistant",
+          "slug": "assistant",
+          "url": "assistants:create"
+        },
+        {
+          "name": "Assistants",
+          "slug": "assistant",
+          "url": "assistants:list"
+        }
+      ]
     },
     {
       "menu_header": "Interaction"
@@ -60,17 +114,23 @@
       "slug": "chats",
       "url": "dashboard:main-dashboard"
     },
+        {
+      "name": "Memory",
+      "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "file-systems",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Export Assistants",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "file-systems",
+      "url": "dashboard:main-dashboard"
+    },
     {
       "url": "dashboard:main-dashboard",
       "name": "Orchestrations",
       "icon": "menu-icon tf-icons ti ti-bolt",
       "slug": "/orchestrations"
-    },
-    {
-      "name": "Long Term Memory",
-      "icon": "menu-icon tf-icons ti ti-archive",
-      "slug": "file-systems",
-      "url": "dashboard:main-dashboard"
     },
     {
       "menu_header": "Data Sources"
@@ -94,15 +154,15 @@
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Knowledge Bases",
-      "icon": "menu-icon tf-icons ti ti-vector",
-      "slug": "vector-stores",
+      "name": "NoSQL Databases",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "nosql-databases",
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Documents",
-      "icon": "menu-icon tf-icons ti ti-folder",
-      "slug": "documents",
+      "name": "Knowledge Bases",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "vector-stores",
       "url": "dashboard:main-dashboard"
     },
     {
