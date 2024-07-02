@@ -60,6 +60,11 @@
           "url": "user_management:add"
         },
         {
+          "name": "Add User to Organization",
+          "slug": "user",
+          "url": "user_management:add"
+        },
+        {
           "name": "Users",
           "slug": "user",
           "url": "user_management:list"
