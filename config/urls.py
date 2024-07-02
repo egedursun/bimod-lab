@@ -31,6 +31,8 @@ urlpatterns = [
     path("llm_transaction/", include("apps.llm_transaction.urls", namespace="llm_transaction")),
     path("subscription/", include("apps.subscription.urls", namespace="subscription")),
     path("user_management/", include("apps.user_management.urls", namespace="user_management")),
+    path("user_permissions/", include("apps.user_permissions.urls", namespace="user_permissions")),
+    path("assistants/", include("apps.assistants.urls", namespace="assistants")),
 ]
 
 

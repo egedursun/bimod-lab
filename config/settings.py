@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     "apps.subscription",
     "apps.user_management",
     "apps.user_permissions",
+    "apps.assistants",
     #############################
 ]
 

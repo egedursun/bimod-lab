@@ -131,6 +131,7 @@ class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
 
 
 class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
+
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
         organization_id = kwargs.get('pk')
@@ -142,10 +143,8 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
         ##############################
         user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
         if PermissionNames.UPDATE_ORGANIZATIONS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to update or modify organizations."}
-            return self.render_to_response(context)
+            messages.error(request, "You do not have permission to update or modify organizations.")
+            return redirect('llm_transaction:list')
         ##############################
 
         try:
