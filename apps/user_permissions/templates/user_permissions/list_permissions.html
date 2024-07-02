@@ -51,6 +51,14 @@
               <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ user.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ user.id }}">
                 <strong>{{ user.username }}</strong>
               </a>
+              <br>
+              <a class="collapsed" data-bs-toggle="collapse">
+                <strong>{{ user.profile.first_name }} {{ user.profile.last_name }}</strong>
+              </a>
+              <br>
+              <a class="collapsed" data-bs-toggle="collapse">
+                <strong>{{ user.email }}</strong>
+              </a>
             </h6>
             <i class="fa fa-edit toggle-icon" data-target="#collapse-{{ user.id }}"></i>
           </div>
@@ -61,8 +69,8 @@
                   <thead class="border-top">
                     <tr>
                       <th>Permission</th>
-                      <th>Active</th>
-                      <th>Actions</th>
+                      <th>Activate / Deactive Permission</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -82,7 +90,7 @@
                             {% csrf_token %}
                             <input type="hidden" name="permission_id" value="{{ permission.id }}">
                             <input type="hidden" name="action" value="delete">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-sm btn-danger">Delete Permission</button>
                           </form>
                         </td>
                       </tr>

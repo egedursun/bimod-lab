@@ -18,6 +18,27 @@
 
 ---
 
+### HELPER PAGES
+
+- [ ] Profile page for the user.
+- [ ] Settings page for miscellaneous settings related to the account. (Adding/Modifying/Deleting credit card, deleting account, etc.)
+- [ ] F.A.Q. page for the users and explanations regardign the application.
+- [ ] Documentation page for explaining how the application works, and tutorials for the users.
+- [ ] Support page for the users to contact the support team.
+- [ ] Landing page for the application:
+  - [ ] Main section + Navigation.
+  - [ ] Main illustration.
+  - [ ] About section.
+  - [ ] Services section.
+  - [ ] Features section.
+  - [ ] Team section.
+  - [ ] Testimonials / Clients section.
+  - [ ] Pricing section.
+  - [ ] Contact Us section.
+  - [ ] Footer section.
+
+---
+
 ### QUICK FIXES
 
 - [X] Add the page to include users to other organizations / remove them.
