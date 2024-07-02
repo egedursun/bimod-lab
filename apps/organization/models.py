@@ -34,6 +34,7 @@ class Organization(models.Model):
                                            null=True)
 
     users = models.ManyToManyField("auth.User", related_name="organizations")
+    organization_assistants = models.ManyToManyField("assistants.Assistant", related_name="organizations")
 
     def __str__(self):
         return self.name

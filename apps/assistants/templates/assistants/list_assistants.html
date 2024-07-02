@@ -1,3 +1,90 @@
+{% extends layout_path %}
 
+{% load static %}
+{% load i18n %}
 
-list assistants page
+{% block title %}Assistants List{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/app-assistants-list.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-4">
+    <h3 class="mb-0">Assistants of Organizations</h3>
+  </div>
+</div>
+
+{% for organization, assistants in org_assistants.items %}
+<!-- Organization's Assistants List Table -->
+<div class="card mb-6">
+  <div class="card-header border-bottom">
+    <h4>{{ organization.name }}</h4>
+  </div>
+  <div class="card-datatable table-responsive">
+    <table class="datatables-assistants table">
+      <thead class="border-top">
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Instructions</th>
+          <th>Audience</th>
+          <th>Tone</th>
+          <th>LLM Model</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for assistant in assistants %}
+          <tr>
+            <td>
+            {% if assistant.assistant_image %}
+              <img class="rounded" src="{{ assistant.assistant_image.url }}" alt="Assistant Image" width="50">
+              {% else %}
+              <img class="rounded" src="{% static 'img/avatars/org-0.png' %}" alt="Assistant Image" width="50">
+              {% endif %}
+            </td>
+            <td>{{ assistant.name }}</td>
+            <td>{{ assistant.description }}</td>
+            <td>{{ assistant.instructions }}</td>
+            <td>{{ assistant.audience }}</td>
+            <td>{{ assistant.tone }}</td>
+            <td>{{ assistant.llm_model.nickname }}</td>
+            <td>
+              <a href="{% url 'assistants:update' assistant.id %}" class="btn btn-sm btn-primary">Edit</a>
+            </td>
+            <td>
+              <a href="{% url 'assistants:delete' assistant.id %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

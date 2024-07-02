@@ -1,3 +1,119 @@
+{% extends layout_path %}
 
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
 
-update assistants page
+{% block title %}Update Assistant{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          {% if assistant.assistant_image %}
+            <img src="{{ assistant.assistant_image.url }}" class="rounded" width="170" height="170" alt="Assistant Image">
+          {% else %}
+            <img src="{% static 'img/avatars/org-0.png' %}" class="rounded" width="170" height="170" alt="Assistant Image">
+          {% endif %}
+          <h3 class="mb-0">
+            <strong>
+              {{ assistant.name }}
+            </strong>
+            <br><br>
+            <small class="text">
+              <i class="fas fa-building"></i>
+              Audience:
+              <strong>{{ assistant.audience }}</strong>
+            </small>
+            <br>
+            <small class="text">
+              <i class="fas fa-user-astronaut"></i>
+              Tone:
+              <strong>{{ assistant.tone }}</strong>
+            </small>
+          </h3>
+          <br><br>
+        </div>
+      </div>
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Update Assistant Information</h5> <small class="text-muted float-end"></small>
+      </div>
+      <div class="card-body">
+        {% if error_messages %}
+          {% for key, message in error_messages.items %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              <strong>{{ key | field_name_to_label }}:</strong> {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label class="form-label" for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter assistant name" value="{{ assistant.name }}"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="description">Description</label>
+            <input type="text" class="form-control" id="description" name="description" placeholder="Enter assistant description" value="{{ assistant.description }}"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="instructions">Instructions</label>
+            <textarea class="form-control" id="instructions" name="instructions" placeholder="Enter assistant instructions">{{ assistant.instructions }}</textarea>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="audience">Audience</label>
+            <input type="text" class="form-control" id="audience" name="audience" placeholder="Enter assistant audience" value="{{ assistant.audience }}"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="tone">Tone</label>
+            <input type="text" class="form-control" id="tone" name="tone" placeholder="Enter assistant tone" value="{{ assistant.tone }}"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="llm_model">LLM Model</label>
+            <select class="form-select" id="llm_model" name="llm_model">
+              {% for model in llm_models %}
+                <option value="{{ model.id }}" {% if assistant.llm_model.id == model.id %}selected{% endif %}>{{ model.nickname }}</option>
+              {% endfor %}
+            </select>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="assistant_image">Assistant Image</label>
+            <input type="file" class="form-control" id="assistant_image" name="assistant_image"/>
+            <div class="form-text"></div>
+          </div>
+          <button type="submit" class="btn btn-primary d-grid w-100">Update Information</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

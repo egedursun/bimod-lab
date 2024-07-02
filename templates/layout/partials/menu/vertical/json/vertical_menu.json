@@ -166,6 +166,12 @@
       "url": "dashboard:main-dashboard"
     },
     {
+      "name": "ML Models",
+      "icon": "menu-icon fas fa-microchip",
+      "slug": "machine-learning-models",
+      "url": "dashboard:main-dashboard"
+    },
+    {
       "name": "Image Storages",
       "icon": "menu-icon tf-icons ti ti-camera",
       "slug": "image-storages",

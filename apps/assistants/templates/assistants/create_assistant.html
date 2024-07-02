@@ -1,3 +1,95 @@
+{% extends layout_path %}
 
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
 
-create assistant page
+{% block title %}Create Assistant{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Create a New Assistant</h5> <small class="text-muted float-end"></small>
+      </div>
+      <div class="card-body">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label class="form-label" for="organization">Organization</label>
+            <select class="form-select" id="organization" name="organization">
+              <option value="" disabled selected>Select Organization</option>
+              {% for organization in organizations %}
+                <option value="{{ organization.id }}">{{ organization.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="llm_model">LLM Model</label>
+            <select class="form-select" id="llm_model" name="llm_model">
+              <option value="" disabled selected>Select LLM Model</option>
+              {% for llm_model in llm_models %}
+                <option value="{{ llm_model.id }}">{{ llm_model.nickname }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter assistant name" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" placeholder="Enter assistant description"></textarea>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="instructions">Instructions</label>
+            <textarea class="form-control" id="instructions" name="instructions" placeholder="Enter instructions"></textarea>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="audience">Audience</label>
+            <input type="text" class="form-control" id="audience" name="audience" placeholder="Enter audience" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="tone">Tone</label>
+            <input type="text" class="form-control" id="tone" name="tone" placeholder="Enter tone" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="assistant_image">Assistant Image</label>
+            <input type="file" class="form-control" id="assistant_image" name="assistant_image" />
+          </div>
+          <button type="submit" class="btn btn-primary d-grid w-100">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
