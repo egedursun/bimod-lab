@@ -30,7 +30,7 @@ class CreateLLMCoreView(TemplateView, LoginRequiredMixin):
         ##############################
         # PERMISSION CHECK FOR - LLM/CREATE
         ##############################
-        user_permissions = user.permissions.all()
+        user_permissions = user.permissions.all().values_list('permission_type', flat=True)
         if PermissionNames.ADD_LLM_CORES not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to add LLM Cores."}
@@ -90,7 +90,7 @@ class UpdateLLMCoreView(TemplateView, LoginRequiredMixin):
         ##############################
         # PERMISSION CHECK FOR - LLM/UPDATE
         ##############################
-        user_permissions = context_user.permissions.all()
+        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
         if PermissionNames.UPDATE_LLM_CORES not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {
@@ -122,7 +122,7 @@ class DeleteLLMCoreView(DeleteView, LoginRequiredMixin):
         ##############################
         # PERMISSION CHECK FOR - LLM/DELETE
         ##############################
-        user_permissions = user.permissions.all()
+        user_permissions = user.permissions.all().values_list('permission_type', flat=True)
         if PermissionNames.DELETE_LLM_CORES not in user_permissions:
             messages.error(request, "You do not have permission to delete LLM Cores.")
             return redirect('llm_core:list')

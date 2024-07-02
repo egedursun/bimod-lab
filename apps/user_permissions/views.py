@@ -20,7 +20,7 @@ class UpdatePermissionsView(TemplateView):
         ##############################
         # PERMISSION CHECK FOR - PERMISSIONS/UPDATE
         ##############################
-        user_permissions = context_user.permissions.all()
+        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
         if PermissionNames.MODIFY_USER_PERMISSIONS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {

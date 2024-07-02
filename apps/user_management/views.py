@@ -35,7 +35,7 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
         ##############################
         # PERMISSION CHECK FOR - USER/CREATE
         ##############################
-        user_permissions = context_user.permissions.all()
+        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
         if PermissionNames.ADD_USERS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to add new users."}
@@ -99,7 +99,7 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
         except Exception as e:
             messages.error(request, f'Error creating user: {str(e)}')
 
-        return redirect('user_management:add')
+        return redirect('user_management:list')
 
 
 class ListUsersView(LoginRequiredMixin, TemplateView):
@@ -155,7 +155,7 @@ class RemoveUserView(LoginRequiredMixin, TemplateView):
         ##############################
         # PERMISSION CHECK FOR - USER/DELETE
         ##############################
-        user_permissions = context_user.permissions.all()
+        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
         if PermissionNames.DELETE_USERS not in user_permissions:
             messages.error(request, "You do not have permission to delete users.")
             return redirect('user_management:list')
@@ -178,7 +178,7 @@ class UpdateUserStatusView(LoginRequiredMixin, TemplateView):
         ##############################
         # PERMISSION CHECK FOR - USER/UPDATE
         ##############################
-        user_permissions = context_user.permissions.all()
+        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
         if PermissionNames.UPDATE_USERS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {
