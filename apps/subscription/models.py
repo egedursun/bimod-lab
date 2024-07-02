@@ -210,16 +210,3 @@ class Subscription(models.Model):
 
     def get_subscription_balance_discount_rate(self):
         return SUBSCRIPTION_BALANCE_DISCOUNT_RATES[self.subscription_plan]
-
-
-# TODO: there needs to be a Cron Job / Payment Gateway Task to handle the subscription works
-#   1. Every month, retrieve the "subscription amount" from the credit card.
-#  2. If the amount is not paid, then the subscription status should be switched to "missed_payment", and the tier
-#       must be switched to "free".
-#  3. If the amount is paid, then the "next payment date" should be updated to the next month. The status
-#       must stay "active".
-#  4. If the subscription is cancelled, then the status must be switched to "cancelled" and the tier
-#       must be switched to "free".
-#  5. If the subscription is on trial, then the status must be switched to "on_trial" and the tier
-#       must be switched to "free". The end date of the trial must be set to 30 days from the start date.
-#       The subscription type must be "starter".
