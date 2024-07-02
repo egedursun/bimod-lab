@@ -55,7 +55,6 @@
 - [ ] Integrate the API multi-modality.
 - [ ] Integrate the Scheduled jobs multi-modality.
 - [ ] Integrate the Webhooks / triggers multi-modality.
-- [ ] Integrate the Websockets / real-time multi-modality.
 - [ ] Integrate Image generation multi-modality.
 - [ ] Integrate Audio generation multi-modality.
 
