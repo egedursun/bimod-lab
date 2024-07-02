@@ -262,10 +262,19 @@ PERMISSION_TYPES = [
 
 # Create your models here.
 
+class ActiveUserPermissionManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_active=True)
+
+
 class UserPermission(models.Model):
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="permissions", default=1)
     permission_type = models.CharField(max_length=255, choices=PERMISSION_TYPES)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = models.Manager()  # The default manager.
+    active_permissions = ActiveUserPermissionManager()  # Custom manager for active permissions.
 
     class Meta:
         verbose_name = "User Permission"

@@ -62,7 +62,7 @@
         {
           "name": "Add User to Organization",
           "slug": "user",
-          "url": "user_management:add"
+          "url": "user_management:add_user_to_organization"
         },
         {
           "name": "Users",

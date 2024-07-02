@@ -11,7 +11,7 @@ from django.views.generic import TemplateView
 
 from apps.organization.models import Organization
 from apps.user_management.forms import UserStatusForm
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.models import PermissionNames, UserPermission
 from auth.helpers import send_verification_email
 from auth.models import Profile
 from config import settings
@@ -35,7 +35,12 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
         ##############################
         # PERMISSION CHECK FOR - USER/CREATE
         ##############################
-        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
         if PermissionNames.ADD_USERS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to add new users."}
@@ -102,6 +107,57 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
         return redirect('user_management:list')
 
 
+class AddUserToOrganizationView(LoginRequiredMixin, TemplateView):
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        context_user_organizations = Organization.objects.filter(users__in=[self.request.user])
+        context_users_users = context_user_organizations.values_list('users', flat=True)
+        context['users'] = User.objects.exclude(id__in=context_users_users)
+        context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - USER/ADD TO ORGANIZATION
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if (PermissionNames.UPDATE_USERS not in user_permissions and
+            PermissionNames.UPDATE_ORGANIZATIONS not in user_permissions):
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {
+                "Permission Error": "You do not have permission to add users to organizations."}
+            return self.render_to_response(context)
+        ##############################
+
+        user = request.POST.get('user')
+        organization_id = request.POST.get('organization')
+
+        try:
+            user = User.objects.get(id=user)
+            organization = Organization.objects.get(id=organization_id)
+            if user in organization.users.all():
+                messages.error(request, 'User is already a member of this organization.')
+            else:
+                organization.users.add(user)
+                messages.success(request, 'User added to organization successfully!')
+        except User.DoesNotExist:
+            messages.error(request, 'User does not exist.')
+        except Organization.DoesNotExist:
+            messages.error(request, 'Organization does not exist.')
+        except Exception as e:
+            messages.error(request, f'Error adding user to organization: {str(e)}')
+
+        return redirect('user_management:add_user_to_organization')
+
+
 class ListUsersView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
@@ -115,14 +171,14 @@ class ListUsersView(LoginRequiredMixin, TemplateView):
         ##############################
 
         organizations = Organization.objects.filter(users__in=[context_user])
-        org_users = { organization: {"user": organization.users.all(), "profile": []} for organization in organizations }
+        org_users = {organization: {"user": organization.users.all(), "profile": []} for organization in organizations}
         # retrieve the profile of each user and add to the org_user's related dictionary
         for org, users in org_users.items():
             for user in users['user']:
                 profile = Profile.objects.filter(user=user).first()
                 users['profile'].append(profile)
         # zip the profile and user together
-        org_users = { org: tuple(zip(users['user'], users['profile'])) for org, users in org_users.items() }
+        org_users = {org: tuple(zip(users['user'], users['profile'])) for org, users in org_users.items()}
         context['org_users'] = org_users
         context['context_user'] = context_user
         return context
@@ -137,6 +193,40 @@ class ListUsersView(LoginRequiredMixin, TemplateView):
             messages.success(request, 'User status updated successfully!')
         else:
             messages.error(request, 'Failed to update user status.')
+        return redirect('user_management:list')
+
+
+class RemoveUserFromOrganizationView(TemplateView, LoginRequiredMixin):
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        user = get_object_or_404(User, id=kwargs['pk'])
+        print(user)
+        organization = get_object_or_404(Organization, id=kwargs['org_id'])
+        context['user_to_remove'] = user
+        context['organization'] = organization
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - USER/REMOVE FROM ORGANIZATION
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.DELETE_USERS not in user_permissions:
+            messages.error(request, "You do not have permission to remove users from organizations.")
+            return redirect('user_management:list')
+        ##############################
+
+        user = get_object_or_404(User, id=kwargs['pk'])
+        organization = get_object_or_404(Organization, id=kwargs['org_id'])
+        organization.users.remove(user)
+        messages.success(request, f'User removed from {organization.name} successfully.')
         return redirect('user_management:list')
 
 
@@ -155,7 +245,12 @@ class RemoveUserView(LoginRequiredMixin, TemplateView):
         ##############################
         # PERMISSION CHECK FOR - USER/DELETE
         ##############################
-        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
         if PermissionNames.DELETE_USERS not in user_permissions:
             messages.error(request, "You do not have permission to delete users.")
             return redirect('user_management:list')
@@ -178,7 +273,12 @@ class UpdateUserStatusView(LoginRequiredMixin, TemplateView):
         ##############################
         # PERMISSION CHECK FOR - USER/UPDATE
         ##############################
-        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
         if PermissionNames.UPDATE_USERS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {

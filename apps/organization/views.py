@@ -7,7 +7,7 @@ from django.views.generic import TemplateView, DeleteView
 
 from apps.organization.forms import OrganizationForm
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.models import PermissionNames, UserPermission
 from web_project import TemplateLayout
 
 
@@ -26,7 +26,12 @@ class CreateOrganizationView(TemplateView, LoginRequiredMixin):
         ##############################
         # PERMISSION CHECK FOR - ORGANIZATION/CREATE
         ##############################
-        user_permissions = user.permissions.all().values_list('permission_type', flat=True)
+        user_permissions = UserPermission.active_permissions.filter(
+            user=user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
         print(user_permissions)
         if PermissionNames.ADD_ORGANIZATIONS not in user_permissions:
             context = self.get_context_data(**kwargs)
@@ -83,7 +88,12 @@ class OrganizationUpdateView(TemplateView, LoginRequiredMixin):
         ##############################
         # PERMISSION CHECK FOR - ORGANIZATION/UPDATE
         ##############################
-        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
         if PermissionNames.UPDATE_ORGANIZATIONS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {
@@ -116,7 +126,12 @@ class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
         ##############################
         # PERMISSION CHECK FOR - ORGANIZATION/DELETE
         ##############################
-        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
         if PermissionNames.DELETE_ORGANIZATIONS not in user_permissions:
             messages.error(request, "You do not have permission to delete organizations.")
             return redirect('organization:list')
@@ -141,7 +156,12 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
         ##############################
         # PERMISSION CHECK FOR - ORGANIZATION/UPDATE
         ##############################
-        user_permissions = context_user.permissions.all().values_list('permission_type', flat=True)
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
         if PermissionNames.UPDATE_ORGANIZATIONS not in user_permissions:
             messages.error(request, "You do not have permission to update or modify organizations.")
             return redirect('llm_transaction:list')

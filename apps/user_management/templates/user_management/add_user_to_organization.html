@@ -1,0 +1,65 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Add User to Organization{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Add User to Organization</h5>
+        <small class="text-muted float-end"></small>
+      </div>
+      <div class="card-body">
+        {% if error_messages %}
+          {% for key, message in error_messages.items %}
+            <div class="alert alert-danger" role="alert">
+              <strong>{{ key }}:</strong> {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label class="form-label" for="user">Username</label>
+            <select class="form-select" id="user" name="user">
+              {% for user in users %}
+              <option value="{{ user.id }}">{{ user.username }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="organization">Organization</label>
+            <select class="form-select" id="organization" name="organization">
+              {% for organization in organizations %}
+              <option value="{{ organization.id }}">{{ organization.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary d-grid w-100">Add User to Organization</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

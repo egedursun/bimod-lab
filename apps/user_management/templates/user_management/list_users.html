@@ -60,6 +60,7 @@
             <th>Is Active</th>
             <th>Verified</th>
             <th>Actions</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -85,8 +86,15 @@
               <td>{{ profile.is_verified|yesno:"Yes,No" }}</td>
               <td>
                 {% if user.id != context_user.id %}
+                  <a href="{% url "user_management:remove_user_from_organization" user.id organization.id %}" class="btn btn-sm btn-warning">
+                    Disconnect from Organization
+                  </a>
+                {% endif %}
+              </td>
+              <td>
+                {% if user.id != context_user.id %}
                   <a href="{% url "user_management:remove" user.id %}" class="btn btn-sm btn-danger">
-                    Delete
+                    Delete from All Organizations
                   </a>
                 {% endif %}
               </td>

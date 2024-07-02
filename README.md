@@ -11,6 +11,7 @@
 - [ ] Additional cost column for custom tools. (start + continuation)
 - [ ] Real e-mail SMTP integration.
 - [ ] Better validation and logging system.
+- [ ] For adding negative balances (-123), there needs to be a validation to prevent.
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 
 ---
