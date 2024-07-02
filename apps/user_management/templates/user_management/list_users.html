@@ -77,11 +77,13 @@
               <td>{{ profile.country }}</td>
               <td>{{ profile.postal_code }}</td>
               <td>
-                <form method="post" action="{% url 'user_management:list' %}" class="status-form">
-                    {% csrf_token %}
-                    <input type="hidden" name="user_id" value="{{ user.id }}">
-                    <input type="checkbox" name="is_active" class="form-check-input status-checkbox" {% if profile.is_active %}checked{% endif %} onchange="this.form.submit();">
-                </form>
+                {% if user.id != context_user.id %}
+                  <form method="post" action="{% url 'user_management:list' %}" class="status-form">
+                      {% csrf_token %}
+                      <input type="hidden" name="user_id" value="{{ user.id }}">
+                      <input type="checkbox" name="is_active" class="form-check-input status-checkbox" {% if profile.is_active %}checked{% endif %} onchange="this.form.submit();">
+                  </form>
+                {% endif %}
             </td>
               <td>{{ profile.is_verified|yesno:"Yes,No" }}</td>
               <td>

@@ -11,6 +11,7 @@
 - [ ] Additional cost column for custom tools. (start + continuation)
 - [ ] Real e-mail SMTP integration.
 - [ ] Better validation and logging system.
+- [ ] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
 - [ ] For adding negative balances (-123), there needs to be a validation to prevent.
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 
@@ -18,19 +19,27 @@
 
 ### QUICK FIXES
 
-- [ ] Add the page to include users to other organizations / remove them.
-- [ ] Add an active field to permissions. When the user is deactivated, the permissions are also deactivated. When the user is reactivated, the permissions are also reactivated.
+- [X] Add the page to include users to other organizations / remove them.
+- [X] Add an active field to permissions. When the user is deactivated, the permissions are also deactivated. When the user is reactivated, the permissions are also reactivated.
 
 ---
 
 ### NEXT INTEGRATIONS
 
-- [ ] Complete the pages for the user permission management.
+- [X] Integrate login.
+- [X] Integrate organization management.
+- [X] Integrate LLM model management.
+- [X] Integrate transaction management.
+- [X] Integrate subscription management.
+- [X] Integrate user management.
+- [X] Integrate permission management.
+- [X] Complete the pages for the user permission management.
 - [ ] Integrate the assistants pages.
 - [ ] Integrate the chats pages.
 - [ ] Integrate the export assistant pages.
 - [ ] Integrate the memories pages.
 - [ ] Integrate the orchestration pages.
+- [ ] Integrate the registration page.
 
 - [ ] Integrate SQL database features.
 - [ ] Integrate NOSQL database features.

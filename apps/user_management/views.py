@@ -190,6 +190,14 @@ class ListUsersView(LoginRequiredMixin, TemplateView):
             profile = get_object_or_404(Profile, user__id=user_id)
             profile.is_active = form.cleaned_data['is_active']
             profile.save()
+
+            # Update all permissions associated with the user, and set them to whatever is_active is
+            user = profile.user
+            user_permissions = user.permissions.all()
+            for user_permission in user_permissions:
+                user_permission.is_active = profile.is_active
+                user_permission.save()
+
             messages.success(request, 'User status updated successfully!')
         else:
             messages.error(request, 'Failed to update user status.')

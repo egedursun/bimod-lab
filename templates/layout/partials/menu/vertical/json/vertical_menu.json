@@ -77,14 +77,14 @@
       "slug": "permissions",
       "submenu": [
         {
-          "name": "Modify Permissions",
+          "name": "Add Permissions",
           "slug": "permission",
-          "url": "user_permissions:update"
+          "url": "user_permissions:add_permissions"
         },
         {
-          "name": "Permissions",
+          "name": "Manage Permissions",
           "slug": "permission",
-          "url": "user_permissions:list"
+          "url": "user_permissions:list_permissions"
         }
       ]
     },
