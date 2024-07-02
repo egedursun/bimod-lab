@@ -1,5 +1,5 @@
 
-### TODO List
+### TODO LIST
 
 ---
 
@@ -7,6 +7,8 @@
 - [ ] Handling the negative balance and stopping transactions when required.
 - [ ] Protecting the actions with the permissions, for every page of the application.
 - [ ] Rate limiting the usage for safety.
+- [ ] Registration for new tenants.
+- [ ] Additional cost column for custom tools. (start + continuation)
 - [ ] Real e-mail SMTP integration.
 - [ ] Better validation and logging system.
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
