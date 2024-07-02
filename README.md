@@ -3,7 +3,7 @@
 
 ---
 
-- [ ] Integrating the Payment Gateway to get the payment done.
+- [ ] Integrating the Payment Gateway to get the payment done (for balance)
 - [ ] Handling the negative balance and stopping transactions when required.
 - [ ] Protecting the actions with the permissions, for every page of the application.
 - [ ] Rate limiting the usage for safety.
