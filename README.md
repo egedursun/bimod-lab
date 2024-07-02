@@ -4,16 +4,14 @@
 ---
 
 - [ ] Integrating the Payment Gateway to get the payment done (for balance)
-- [ ] Handling the negative balance and stopping transactions when required.
-- [ ] Protecting the actions with the permissions, for every page of the application.
+- [ ] Handling the negative balance and stopping transactions when required. Also, for adding negative balances (-123), there needs to be a validation to prevent.
 - [ ] Rate limiting the usage for safety.
-- [ ] Registration for new tenants.
 - [ ] Additional cost column for custom tools. (start + continuation)
 - [ ] Real PostgreSQL DBMS integration.
 - [ ] Real e-mail SMTP integration.
+- [ ] Real media management with AWS S3 Storages (e.g. profile pictures, organization images, etc.)
 - [ ] Better validation and logging system.
 - [ ] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
-- [ ] For adding negative balances (-123), there needs to be a validation to prevent.
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 
 ---
@@ -56,7 +54,7 @@
 - [X] Integrate user management.
 - [X] Integrate permission management.
 - [X] Complete the pages for the user permission management.
-- [ ] Integrate the assistants pages.
+- [X] Integrate the assistants pages.
 - [ ] Integrate the chats pages.
 - [ ] Integrate the export assistant pages.
 - [ ] Integrate the memories pages.
@@ -67,6 +65,7 @@
 - [ ] Integrate NOSQL database features.
 - [ ] Integrate the knowledge base & document features.
 - [ ] Integrate the web browser & web scraping features.
+- [ ] Integrate ML models usage features.
 - [ ] Integrate the image storage features.
 - [ ] Integrate the video storage features.
 - [ ] Integrate the audio storage features.
