@@ -114,16 +114,22 @@
       "slug": "chats",
       "url": "dashboard:main-dashboard"
     },
-        {
+    {
       "name": "Memory",
       "icon": "menu-icon tf-icons ti ti-archive",
-      "slug": "file-systems",
+      "slug": "memory",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Fine Tuning",
+      "icon": "menu-icon fa fa-flask",
+      "slug": "fine-tuning",
       "url": "dashboard:main-dashboard"
     },
     {
       "name": "Export Assistants",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
-      "slug": "file-systems",
+      "slug": "export-assistants",
       "url": "dashboard:main-dashboard"
     },
     {
@@ -202,6 +208,12 @@
       "name": "APIs",
       "icon": "menu-icon tf-icons ti ti-network",
       "slug": "apis",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Conditionals",
+      "icon": "menu-icon tf-icons ti ti-code",
+      "slug": "conditionals",
       "url": "dashboard:main-dashboard"
     },
     {

@@ -43,6 +43,7 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         name = request.POST.get('name')
         description = request.POST.get('description')
         instructions = request.POST.get('instructions')
+        response_template = request.POST.get('response_template')
         audience = request.POST.get('audience')
         tone = request.POST.get('tone')
         assistant_image = request.FILES.get('assistant_image')
@@ -64,7 +65,8 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             tone=tone,
             assistant_image=assistant_image,
             created_by_user=context_user,
-            last_updated_by_user=context_user
+            last_updated_by_user=context_user,
+            response_templates=response_template
         )
 
         # retrieve the assistants of the organization and add the new assistant
@@ -102,7 +104,6 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
         context['assistant'] = assistant
-        print(context['llm_models'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -130,6 +131,7 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         assistant.audience = request.POST.get('audience')
         assistant.tone = request.POST.get('tone')
         assistant.llm_model_id = request.POST.get('llm_model')
+        assistant.response_template = request.POST.get('response_template')
         assistant.last_updated_by_user = request.user
         if 'assistant_image' in request.FILES:
             assistant.assistant_image = request.FILES['assistant_image']

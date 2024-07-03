@@ -22,6 +22,19 @@ class RegisterView(AuthView):
         email = request.POST.get("email")
         password = request.POST.get("password")
 
+        ########################################
+        # ADDITIONAL INFORMATION
+        ########################################
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        phone_number = request.POST.get("phone_number")
+        address = request.POST.get("address")
+        city = request.POST.get("city")
+        country = request.POST.get("country")
+        postal_code = request.POST.get("postal_code")
+        profile_picture = request.FILES.get("profile_picture")
+        ########################################
+
         # Check if a user with the same username or email already exists
         if User.objects.filter(username=username, email=email).exists():
             messages.error(request, "User already exists, Try logging in.")
@@ -49,6 +62,20 @@ class RegisterView(AuthView):
         user_profile, created = Profile.objects.get_or_create(user=created_user)
         user_profile.email_token = token
         user_profile.email = email
+        user_profile.username = username
+        user_profile.first_name = first_name
+        user_profile.last_name = last_name
+        user_profile.phone_number = phone_number
+        user_profile.address = address
+        user_profile.city = city
+        user_profile.country = country
+        user_profile.postal_code = postal_code
+        user_profile.profile_picture = profile_picture
+
+        # Get the primary admin (1)
+        primary_admin = User.objects.filter(username="admin").first()
+        user_profile.created_by_user = primary_admin
+
         user_profile.save()
 
         send_verification_email(email, token)

@@ -85,8 +85,22 @@
           {% if request.GET.next %}
           <input type="hidden" name="next" value="{{request.GET.next}}">
           {% endif %}
-          <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+          <button class="btn btn-primary d-grid w-100" type="submit"><strong>Sign in</strong></button>
         </form>
+      
+          <div class="card card-border-shadow bg-lighter">
+            <div class="card-header">
+              <div class="card-title">
+                <p class="mb-0"><strong>Don't have an account yet?</strong></p>
+              </div>
+            </div>
+            <p class="text-center mt-0 ms-5 me-5">
+            <button class="btn btn-primary d-grid w-100" type="submit" onclick="window.location.href='{% url 'register' %}'">
+              <strong>Join us to have your superpowers! 🚀</strong>
+            </button>
+          </p>
+          </div>
+        </div>
       </div>
     </div>
     <!-- /Login -->

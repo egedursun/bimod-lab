@@ -103,6 +103,18 @@
             These instructions will be used to train the assistant. For example, "This assistant is designed to help students with their homework."
           </div>
           <div class="mb-6">
+            <label class="form-label" for="response_template">Response Template</label>
+            <textarea class="form-control" id="response_template" name="response_template" placeholder="Enter response template"></textarea>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+            This response template will be used to generate responses for the assistant. If you don't have a solid
+            response template for the assistant, you can leave this field empty. You can also put a sample response
+            in this field to make it more clear for the assistant to understand how it should respond to the user.
+          </div>
+          <div class="mb-6">
             <label class="form-label" for="audience">Audience</label>
             <input type="text" class="form-control" id="audience" name="audience" placeholder="Enter audience" />
           </div>

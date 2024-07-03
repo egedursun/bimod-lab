@@ -12,6 +12,7 @@ class Assistant(models.Model):
     description = models.TextField(default="", blank=True)
     # this description is for the users to see, not included in the API call for the LLM (e.g. OpenAI)
     instructions = models.TextField(default="", blank=True)
+    response_template = models.TextField(default="", blank=True)
     audience = models.CharField(max_length=1000)
     tone = models.CharField(max_length=1000)
 

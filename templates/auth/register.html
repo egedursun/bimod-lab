@@ -30,7 +30,7 @@
 {% block content %}
 <div class="authentication-wrapper authentication-cover">
   <!-- Logo -->
-  <a href="{% url 'index' %}" class="app-brand auth-cover-brand">
+  <a href="{% url 'dashboard:main-dashboard' %}" class="app-brand auth-cover-brand">
     <span class="app-brand-logo demo">{% include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" %}</span>
     <span class="app-brand-text demo text-heading fw-bold">{% get_theme_variables 'template_name' %}</span>
   </a>
@@ -40,8 +40,7 @@
     <!-- /Left Text -->
     <div class="d-none d-lg-flex col-lg-8 p-0">
       <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
-        <img src="{% static 'img/illustrations/auth-register-illustration-' %}{{ COOKIES.style|default:style }}.png" alt="auth-register-cover" class="my-5 auth-illustration" data-app-light-img="illustrations/auth-register-illustration-light.png" data-app-dark-img="illustrations/auth-register-illustration-dark.png">
-
+        <img src="{% static 'img/custom-illustrations/boy-red-hq-1.png' %}" class="my-50" width="60%">
         <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png" alt="auth-register-cover" class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.png">
       </div>
     </div>
@@ -50,7 +49,7 @@
     <!-- Register -->
     <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
       <div class="w-px-400 mx-auto mt-12 pt-5">
-        <h4 class="mb-1">Adventure starts here 🚀</h4>
+        <h4 class="mb-1">Your greatest adventure begins 🚀</h4>
         <p class="mb-6">Make your app management easy and fun!</p>
         {% if messages %}
         {% for message in messages %}
@@ -88,7 +87,7 @@
             </div>
           </div>
           <button id="btnSubmit" class="btn btn-primary w-100" type="submit">
-            <span id="btnText" class="me-1">Sign up</span>
+            <span id="btnText" class="me-1"><strong>Sign up</strong></span>
             <span id="btnLoader" class="spinner-border spinner-border-sm visually-hidden" role="status" aria-hidden="true"></span>
           </button>
         </form>
@@ -96,7 +95,7 @@
         <p class="text-center">
           <span>Already have an account?</span>
           <a href="{% url 'login' %}">
-            <span>Sign in instead</span>
+            <span><strong>Sign in instead</strong></span>
           </a>
         </p>
       </div>

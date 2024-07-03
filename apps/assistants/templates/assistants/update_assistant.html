@@ -103,6 +103,11 @@
             <div class="form-text"></div>
           </div>
           <div class="mb-6">
+            <label class="form-label" for="response_template">Response Template</label>
+            <textarea class="form-control" id="response_template" name="response_template" placeholder="Enter assistant response template">{{ assistant.response_template }}</textarea>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
             <label class="form-label" for="audience">Audience</label>
             <input type="text" class="form-control" id="audience" name="audience" placeholder="Enter assistant audience" value="{{ assistant.audience }}"/>
             <div class="form-text"></div>
