@@ -38,23 +38,24 @@
   </div>
 </div>
 
-<div class="alert alert-secondary alert-dismissible d-flex col-lg-8" role="alert">
-          <span class="alert-icon rounded">
-            <i class="ti ti-bookmark"></i>
-          </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
+<div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+  <img src="{% static 'img/custom-illustrations/boy-user-list.png' %}" width="25%" class="justify-content-end">
+  <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+  <div class="d-flex flex-column ps-1">
+    <h5 class="alert-heading mb-2">Tip</h5>
+    <p class="mb-0">
         In this page, you can view all the users of the organizations you have created. You can also edit or
         delete any user that belongs to you as an administrator. To create a new user, click on the
         "Add New User" button, which is located in the tab on the left side of your screen. Keep in mind that
         dissociating a user from an organization will only remove the user from that organization, not from the system.
         However, if you delete a user from his/her only organization, the user will be deleted from the system entirely.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-      </button>
-    </div>
+    </p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
   </div>
+</div>
 
 {% for organization, user_datas in org_users.items %}
   <div class="card mb-6">

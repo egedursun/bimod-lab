@@ -36,23 +36,24 @@
   <!-- Add more statistics cards if necessary -->
 </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-8" role="alert">
-          <span class="alert-icon rounded">
-            <i class="ti ti-bookmark"></i>
-          </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        In this page, you can view all the transactions you have made. You can also top-up the balance for your
-        organizations, and view the total cost of the services you have used. To filter the transactions, use the
-        filter options at the top of the page. "All Transactions" button will show all the transactions you have made,
-        regardless of the time period. "Update" button will show the transactions you have made in the specified
-        time period you have entered.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-      </button>
-    </div>
+<div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+  <img src="{% static 'img/custom-illustrations/boy-transaction-list.png' %}" width="25%" class="justify-content-end">
+  <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+  <div class="d-flex flex-column ps-1">
+    <h5 class="alert-heading mb-2">Tip</h5>
+    <p class="mb-0">
+      In this page, you can view all the transactions you have made. You can also top-up the balance for your
+      organizations, and view the total cost of the services you have used. To filter the transactions, use the
+      filter options at the top of the page. "All Transactions" button will show all the transactions you have made,
+      regardless of the time period. "Update" button will show the transactions you have made in the specified
+      time period you have entered.
+    </p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
   </div>
+</div>
 
 <!-- Tabs for Filtering -->
 <div class="row g-4 mb-4">

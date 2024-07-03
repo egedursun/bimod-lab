@@ -40,8 +40,10 @@
     <!-- /Left Text -->
     <div class="d-none d-lg-flex col-lg-8 p-0">
       <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
+        <!--
         <img src="{% static 'img/illustrations/auth-login-illustration-' %}{{ COOKIES.style|default:style }}.png" alt="auth-login-cover" class="my-5 auth-illustration" data-app-light-img="illustrations/auth-login-illustration-light.png" data-app-dark-img="illustrations/auth-login-illustration-dark.png">
-
+        -->
+        <img src="{% static 'img/custom-illustrations/boy-power.png' %}" class="my-50">
         <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png" alt="auth-login-cover" class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.png">
       </div>
     </div>
@@ -51,7 +53,7 @@
     <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
       <div class="w-px-400 mx-auto mt-12 pt-5">
         <h4 class="mb-1">Welcome to Astrolith! 👋</h4>
-        <p class="mb-6">Meet the most powerful Artificial Intelligence as a Service (AIaaS) for your organization.</p>
+        <p class="mb-10">Meet the most powerful Artificial Intelligence as a Service provider for your organization.</p>
         {% if messages %}
         {% for message in messages %}
         <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-warning{% endif %}" role="alert">
@@ -76,7 +78,7 @@
           <div class="my-8">
             <div class="d-flex justify-content-between">
               <a href="{% url 'forgot-password' %}">
-                <p class="mb-0">Forgot Password?</p>
+                <p class="mb-0"><strong>Forgot Your Password?</strong></p>
               </a>
             </div>
           </div>
