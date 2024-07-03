@@ -164,7 +164,7 @@
             <small class="text-muted">{{ organization_data.organization.email }}</small>
           </a>
         </p>
-        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization_data.organization.id }}"></i>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon mt-5" data-target="#collapse-{{ organization_data.organization.id }}"></i>
         <span data-bs-toggle="collapse" href="#collapse-{{ organization_data.organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization_data.organization.id }}">
           <strong>&nbsp; See Complete List of Transactions</strong>
         </span>
@@ -253,6 +253,16 @@
           <div class="card-header">
             <h4 class="mb-0">{{ llm_data.model.nickname }}</h4>
             <small class="text-muted">{{ llm_data.model.description }}</small>
+            <br>
+            <i class="fa fa-money-bill-transfer mt-5"></i>
+            <span>
+              <strong class="bg-label-success rounded p-1">&nbsp; LLM Model Billable Cost (Total): ${{ llm_data.cost_sums.total_billable_cost }}</strong>
+            </span>
+            <br>
+            <i class="fa fa-money-bill-wave mt-5"></i>
+            <span>
+              <strong>&nbsp; LLM Model Expense (Total): ${{ llm_data.cost_sums.total_cost }}</strong>
+            </span>
           </div>
           <div id="collapse-{{ organization_data.organization.id }}" class="card-body collapse">
             <div class="table-responsive">

@@ -32,7 +32,7 @@ class LoginView(AuthView):
 
             user_email = User.objects.filter(username=username).first()
             if user_email is None:
-                messages.error(request, "Please enter a valid username.")
+                messages.error(request, "No user with this username exists in the system.")
                 return redirect("login")
 
             authenticated_user = authenticate(request, username=username, password=password)
@@ -46,5 +46,5 @@ class LoginView(AuthView):
                 else: # Redirect to the home page or another appropriate page
                     return redirect("dashboard:main-dashboard")
             else:
-                messages.error(request, "Please enter a valid username.")
+                messages.error(request, "Either the username or password is incorrect. Please try again.")
                 return redirect("login")

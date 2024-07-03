@@ -255,6 +255,16 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5050",
 ]
 
+EXCLUDED_PAGES = [
+    "/login/",
+    "/logout/",
+    "/register/",
+    "/verify_email_page/",
+    "/verify_email/",
+    "/send_verification/",
+    "/forgot_password/",
+    "/reset_password/",
+]
 
 # Your stuff...
 # ------------------------------------------------------------------------------
