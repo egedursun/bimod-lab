@@ -16,7 +16,9 @@
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 - [ ] Privacy Policy and Terms of Service development & integration for the application.
 
+
 ---
+
 
 ### HELPER PAGES
 
@@ -37,14 +39,20 @@
   - [ ] Contact Us section.
   - [ ] Footer section.
 
+
 ---
+
 
 ### QUICK FIXES
 
 - [X] Add the page to include users to other organizations / remove them.
 - [X] Add an active field to permissions. When the user is deactivated, the permissions are also deactivated. When the user is reactivated, the permissions are also reactivated.
 - [X] The LLM models are all over the place, they are not unique to the organization anymore. Either we need to change how balance calculation works in the transactions page, or we need to make the LLM models unique to the organization.
+- [ ] Handle the additional information in the registration page.
+
+
 ---
+
 
 ### NEXT INTEGRATIONS
 
@@ -62,7 +70,7 @@
 - [ ] Integrate the memories pages.
 - [ ] Integrate the fine-tuning pages.
 - [ ] Integrate the orchestration pages.
-- [X] Integrate the registration page.
+- [ ] Integrate the registration page.
 
 - [ ] Integrate SQL database features.
 - [ ] Integrate NOSQL database features.
@@ -85,4 +93,6 @@
 - [ ] Develop functions for different "industries".
 - [ ] Integrate "Integrations multi-modality".
 - [ ] Integrate "Meta-Integrations multi-modality".
+
+
 ---
