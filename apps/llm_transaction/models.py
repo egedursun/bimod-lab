@@ -1,8 +1,10 @@
 import datetime
+import decimal
 
 from django.db import models
 
-from apps.llm_transaction.utils import calculate_number_of_tokens
+from apps.llm_transaction.utils import calculate_number_of_tokens, calculate_llm_cost, calculate_internal_service_cost, \
+    calculate_tax_cost, calculate_total_cost, calculate_billable_cost
 
 ENCODING_ENGINES = [
     ("cl100k_base", "cl100k_base"),
@@ -36,3 +38,19 @@ class LLMTransaction(models.Model):
         verbose_name = "Transaction"
         verbose_name_plural = "Transactions"
         ordering = ["-created_at"]
+
+    def save(self, *args, **kwargs):
+        if self.transaction_context_content:
+            self.number_of_tokens = calculate_number_of_tokens(self.encoding_engine, self.transaction_context_content)
+            # Calculate the costs
+            self.llm_cost = calculate_llm_cost(self.model.model_name, self.number_of_tokens)
+            self.internal_service_cost = calculate_internal_service_cost(self.llm_cost)
+            self.tax_cost = calculate_tax_cost(self.internal_service_cost)
+            self.total_billable_cost = calculate_billable_cost(self.internal_service_cost, self.tax_cost)
+            self.total_cost = calculate_total_cost(self.llm_cost, self.total_billable_cost)
+
+        # Reduce the transaction billable amount from the organization's balance
+        self.organization.balance -= decimal.Decimal().from_float(self.total_billable_cost)
+        # Update the transaction's organization
+        self.organization.save()
+        super().save(*args, **kwargs)
