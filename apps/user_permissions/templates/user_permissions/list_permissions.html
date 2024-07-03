@@ -89,6 +89,20 @@
               <a class="collapsed" data-bs-toggle="collapse">
                 <strong>{{ user.email }}</strong>
               </a>
+              <a class="collapsed" data-bs-toggle="collapse">
+                <div>
+                  <p>
+                    <br>
+                    <i class="fa fa-key toggle-icon"></i>
+                    <strong>Number of Permissions: {{ permissions|length }}</strong>
+                    <br>
+                    <span data-bs-toggle="collapse" href="#collapse-{{ user.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ user.id }}">
+                      <strong>See &amp; Manage Permissions</strong>
+                    </span>
+                    <i class="fa fa-arrow-alt-circle-down toggle-icon mt-5" data-target="#collapse-{{ user.id }}"></i>
+                  </p>
+                </div>
+              </a>
             </h6>
             <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ user.id }}"></i>
           </div>

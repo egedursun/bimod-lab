@@ -28,13 +28,15 @@ class Organization(models.Model):
 
     # additional fields
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
     # profile image
     organization_image_save_path = 'organization_images/%Y/%m/%d/' + generate_random_string()
     organization_image = models.ImageField(upload_to=organization_image_save_path, blank=True, max_length=1000,
                                            null=True)
 
     users = models.ManyToManyField("auth.User", related_name="organizations")
-    organization_assistants = models.ManyToManyField("assistants.Assistant", related_name="organizations")
+    organization_assistants = models.ManyToManyField("assistants.Assistant", related_name="organizations",
+                                                     blank=True)
     llm_cores = models.ManyToManyField("llm_core.LLMCore", related_name="organizations")
 
     def __str__(self):

@@ -153,6 +153,11 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
         organization = get_object_or_404(Organization, id=organization_id, users__in=[context_user])
         topup_amount = request.POST.get('topup_amount')
 
+        # top up amount can't be zero or negative
+        if float(topup_amount) <= 0:
+            messages.error(request, 'Top up amount must be greater than zero.')
+            return redirect('llm_transaction:list')
+
         ##############################
         # PERMISSION CHECK FOR - ORGANIZATION/UPDATE
         ##############################

@@ -234,6 +234,8 @@ class RemoveUserFromOrganizationView(TemplateView, LoginRequiredMixin):
         user = get_object_or_404(User, id=kwargs['pk'])
         organization = get_object_or_404(Organization, id=kwargs['org_id'])
         organization.users.remove(user)
+        organization.save()
+
         messages.success(request, f'User removed from {organization.name} successfully.')
         return redirect('user_management:list')
 
@@ -265,7 +267,15 @@ class RemoveUserView(LoginRequiredMixin, TemplateView):
         ##############################
 
         user = get_object_or_404(User, id=kwargs['pk'])
+
+        # remove the user from all organizations
+        organizations = Organization.objects.filter(users__in=[user])
+        for organization in organizations:
+            organization.users.remove(user)
+            organization.save()
+
         user.delete()
+        # remove the user from all organizations
         messages.success(request, 'User deleted successfully.')
         return redirect('user_management:list')
 

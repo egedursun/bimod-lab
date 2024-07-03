@@ -7,6 +7,7 @@ from django.views.generic import TemplateView, DeleteView
 
 from apps.llm_core.forms import LLMCoreForm
 from apps.llm_core.models import LLM_CORE_PROVIDERS, OPENAI_GPT_MODEL_NAMES, LLMCore
+from apps.organization.models import Organization
 from apps.user_permissions.models import PermissionNames, UserPermission
 from web_project import TemplateLayout
 
@@ -46,6 +47,11 @@ class CreateLLMCoreView(TemplateView, LoginRequiredMixin):
         form.instance.last_updated_by_user = user
         if form.is_valid():
             form.save()
+            # add llm model to the organization
+            organization = Organization.objects.get(id=request.POST['organization'])
+            llm_core = LLMCore.objects.filter(created_by_user=user).latest('created_at')
+            organization.llm_cores.add(llm_core)
+            organization.save()
             return redirect('llm_core:list')
         else:
             error_messages = form.errors
@@ -67,11 +73,12 @@ class ListLLMCoreView(LoginRequiredMixin, TemplateView):
         # For now, every user is able to see the LLM cores.
         ##############################
 
-        org_llm_cores = {}
+        # retrieve the llm cores for every organization and store in the dictionary
+        llm_cores = {}
         for organization in organizations:
-            llm_cores = LLMCore.objects.filter(organization=organization)
-            org_llm_cores[organization] = llm_cores
-        context['org_llm_cores'] = org_llm_cores
+            llm_cores[organization] = organization.llm_cores.all()
+        context['organizations'] = organizations
+        context['org_llm_cores'] = llm_cores
         return context
 
 
@@ -89,8 +96,12 @@ class UpdateLLMCoreView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         llm_core = LLMCore.objects.get(id=kwargs['pk'])
+        prev_organization = llm_core.organization
+        print("LLM Core of Operation: ", llm_core)
         form = LLMCoreForm(request.POST, request.FILES, instance=llm_core)
+        print("Form.OrganizationData: ", request.POST['organization'])
         context_user = request.user
+        print("User of Operation: ", context_user)
 
         ##############################
         # PERMISSION CHECK FOR - LLM/UPDATE
@@ -109,7 +120,12 @@ class UpdateLLMCoreView(TemplateView, LoginRequiredMixin):
         ##############################
 
         if form.is_valid():
+            prev_organization.llm_cores.remove(llm_core)
+            prev_organization.save()
             form.save()
+            organization = Organization.objects.get(id=request.POST['organization'])
+            organization.llm_cores.add(llm_core)
+            organization.save()
             return redirect('llm_core:list')
         else:
             context = self.get_context_data(**kwargs)
@@ -149,4 +165,4 @@ class DeleteLLMCoreView(DeleteView, LoginRequiredMixin):
 
     def get_queryset(self):
         user = self.request.user
-        return LLMCore.objects.filter(organization__in=user.organizations.all())
+        return LLMCore.objects.filter(organizations__in=user.organizations.all())

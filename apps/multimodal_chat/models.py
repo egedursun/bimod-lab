@@ -1,6 +1,8 @@
 from django.db import models
 
 from apps.llm_transaction.models import LLMTransaction
+from apps.multimodal_chat.utils import calculate_billable_cost, calculate_internal_service_cost, calculate_tax_cost, \
+    calculate_llm_cost, calculate_number_of_tokens
 
 
 # Create your models here.
@@ -58,6 +60,23 @@ class MultimodalChatMessage(models.Model):
 
     # create the transaction on save
     def save(self, *args, **kwargs):
+        ############################################################
+        # BALANCE MANAGEMENT (TODO: handling errors when the balance is not enough)
+        ############################################################
+        # calculate the cost, if the balance is not enough, return False
+        number_of_tokens = calculate_number_of_tokens("cl100k_base", self.message_text_content)
+        llm_cost = calculate_llm_cost(self.multimodal_chat.assistant.llm_model.model_name, number_of_tokens)
+        internal_service_cost = calculate_internal_service_cost(llm_cost)
+        tax_cost = calculate_tax_cost(internal_service_cost)
+        total_billable_cost = calculate_billable_cost(internal_service_cost, tax_cost)
+        if self.sender_type == "USER" and (self.multimodal_chat.organization.balance < total_billable_cost):
+            return False, {
+                "message": "Insufficient balance.",
+                "balance": self.multimodal_chat.organization.balance,
+                "total_billable_cost": total_billable_cost
+            }
+        ############################################################
+
         if not self.transaction:
             self.transaction = LLMTransaction.objects.create(
                 organization=self.multimodal_chat.organization,

@@ -19,7 +19,6 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
-        print(context['llm_models'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -55,7 +54,7 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         organization = Organization.objects.get(id=organization_id)
         llm_model = LLMCore.objects.get(id=llm_model_id)
 
-        Assistant.objects.create(
+        assistant = Assistant.objects.create(
             organization=organization,
             llm_model=llm_model,
             name=name,
@@ -67,6 +66,10 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             created_by_user=context_user,
             last_updated_by_user=context_user
         )
+
+        # retrieve the assistants of the organization and add the new assistant
+        organization.organization_assistants.add(assistant)
+        organization.save()
 
         messages.success(request, "Assistant created successfully!")
         return redirect('assistants:list')
@@ -129,9 +132,9 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         assistant.llm_model_id = request.POST.get('llm_model')
         assistant.last_updated_by_user = request.user
         if 'assistant_image' in request.FILES:
-            assistant.organization_image = request.FILES['assistant_image']
-
+            assistant.assistant_image = request.FILES['assistant_image']
         assistant.save()
+
         return redirect('assistants:update', pk=assistant.id)
 
 

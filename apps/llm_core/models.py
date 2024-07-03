@@ -37,7 +37,8 @@ class LLMCore(models.Model):
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                              related_name="llm_core_last_updated_by_users")
 
-    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE)
+    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE,
+                                        related_name="llm_cores_organization", default=6)
 
     def __str__(self):
         return self.nickname

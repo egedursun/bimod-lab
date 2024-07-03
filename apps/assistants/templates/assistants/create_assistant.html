@@ -65,7 +65,7 @@
             <select class="form-select" id="organization" name="organization">
               <option value="" disabled selected>Select Organization</option>
               {% for organization in organizations %}
-                <option value="{{ organization.id }}">{{ organization.name }}</option>
+                <option value="{{ organization.id }}" data-llm-models="{{ organization.llm_models|join:',' }}">{{ organization.name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -74,7 +74,7 @@
             <select class="form-select" id="llm_model" name="llm_model">
               <option value="" disabled selected>Select LLM Model</option>
               {% for llm_model in llm_models %}
-                <option value="{{ llm_model.id }}">{{ llm_model.nickname }}</option>
+                <option value="{{ llm_model.id }}" class="llm-model-option" data-org-id="{{ llm_model.organization.id }}">{{ llm_model.nickname }}</option>
               {% endfor %}
             </select>
           </div>
@@ -132,4 +132,31 @@
     </div>
   </div>
 </div>
+
+<script src="{% static 'js/form-layouts.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const organizationSelect = document.getElementById('organization');
+    const llmModelSelect = document.getElementById('llm_model');
+    const llmModelOptions = Array.from(llmModelSelect.options);
+
+    organizationSelect.addEventListener('change', function () {
+      const selectedOrgId = this.value;
+
+      // Clear current options
+      llmModelSelect.innerHTML = '<option value="" disabled selected>Select LLM Model</option>';
+
+      // Filter and add options based on selected organization
+      llmModelOptions.forEach(option => {
+        if (option.dataset.orgId === selectedOrgId) {
+          llmModelSelect.appendChild(option);
+        }
+      });
+
+      // Enable the LLM model select box
+      llmModelSelect.disabled = false;
+    });
+  });
+</script>
+
 {% endblock %}

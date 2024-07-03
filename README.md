@@ -4,7 +4,7 @@
 ---
 
 - [ ] Integrating the Payment Gateway to get the payment done (for balance)
-- [ ] Handling the negative balance and stopping transactions when required. Also, for adding negative balances (-123), there needs to be a validation to prevent.
+- [X] Handling the negative balance and stopping transactions when required. Also, for adding negative balances (-123), there needs to be a validation to prevent.
 - [ ] Rate limiting the usage for safety.
 - [ ] Additional cost column for custom tools. (start + continuation)
 - [ ] Real PostgreSQL DBMS integration.
@@ -41,7 +41,7 @@
 
 - [X] Add the page to include users to other organizations / remove them.
 - [X] Add an active field to permissions. When the user is deactivated, the permissions are also deactivated. When the user is reactivated, the permissions are also reactivated.
-
+- [ ] **URGENT:** The LLM models are currently all over the place, they are not unique to the organization anymore. Either we need to change how balance calculation works in the transactions page, or we need to make the LLM models unique to the organization.
 ---
 
 ### NEXT INTEGRATIONS
