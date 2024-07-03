@@ -24,6 +24,22 @@
         <small class="text-muted float-end"></small>
       </div>
       <div class="card-body">
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-8" role="alert">
+                <span class="alert-icon rounded">
+                  <i class="ti ti-bookmark"></i>
+                </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              In this page, you can associate a user with an organization. In Astrolith system, users can be associated
+              with multiple organizations, however, keep in mind that the permissions are global throughout multiple
+              organizations. This means that if a user has a permission in one organization, they will have the same
+              permission in all organizations they are associated with.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
         {% if error_messages %}
           {% for key, message in error_messages.items %}
             <div class="alert alert-danger" role="alert">

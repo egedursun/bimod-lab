@@ -38,12 +38,43 @@
   </div>
 </div>
 
+<div class="alert alert-secondary alert-dismissible d-flex col-lg-8" role="alert">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view all the users of the organizations you have created. You can also edit or
+        delete any user that belongs to you as an administrator. To create a new user, click on the
+        "Add New User" button, which is located in the tab on the left side of your screen. Keep in mind that
+        dissociating a user from an organization will only remove the user from that organization, not from the system.
+        However, if you delete a user from his/her only organization, the user will be deleted from the system entirely.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
 {% for organization, user_datas in org_users.items %}
   <div class="card mb-6">
     <div class="card-header border-bottom">
-      <h4>{{ organization.name }}</h4>
+      <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+        <h4>
+          {{ organization.name }}
+
+        </h4>
+      </a>
+      <p>
+        <i class="fa fa-user-astronaut"></i>
+        <strong>&nbsp; Number of Users: </strong> {{ user_datas|length }}
+      </p>
+      <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
+      <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+        <strong>&nbsp; See Users of this Organization</strong>
+      </span>
     </div>
-    <div class="card-datatable table-responsive">
+    <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse">
       <table class="datatables-users-management table">
         <thead class="border-top">
           <tr>
@@ -107,5 +138,41 @@
     </div>
   </div>
   {% endfor %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+      icon.addEventListener('click', function() {
+        var target = document.querySelector(this.getAttribute('data-target'));
+        var bootstrapCollapse = new bootstrap.Collapse(target, {
+          toggle: false
+        });
+        if (target.classList.contains('show')) {
+          bootstrapCollapse.hide();
+        } else {
+          bootstrapCollapse.show();
+        }
+      });
+    });
+
+    document.querySelectorAll('.collapse').forEach(function(collapse) {
+      collapse.addEventListener('show.bs.collapse', function() {
+        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+        if (icon) {
+          icon.classList.remove('fa-arrow-alt-circle-down');
+          icon.classList.add('fa-arrow-alt-circle-up');
+        }
+      });
+
+      collapse.addEventListener('hide.bs.collapse', function() {
+        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+        if (icon) {
+          icon.classList.remove('fa-arrow-alt-circle-up');
+          icon.classList.add('fa-arrow-alt-circle-down');
+        }
+      });
+    });
+  });
+</script>
 
 {% endblock %}

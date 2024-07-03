@@ -11,7 +11,7 @@
 - [ ] Real e-mail SMTP integration.
 - [ ] Real media management with AWS S3 Storages (e.g. profile pictures, organization images, etc.)
 - [ ] Better validation and logging system.
-- [ ] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
+- [X] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 
 ---

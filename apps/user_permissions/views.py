@@ -215,8 +215,7 @@ class ListPermissionsView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        permission_id = request.POST.get('permission_id')
-        action = request.POST.get('action')
+        user_id = request.POST.get('user_id')
         context_user = self.request.user
 
         ##############################
@@ -235,16 +234,25 @@ class ListPermissionsView(LoginRequiredMixin, TemplateView):
             return self.render_to_response(context)
         ##############################
 
-        if action == 'toggle_active':
-            permission = get_object_or_404(UserPermission, id=permission_id)
-            print("Toggling active: from ", permission.is_active, " to ", not permission.is_active)
-            permission.is_active = not permission.is_active
-            permission.save()
-            messages.success(request, 'Permission status updated successfully!')
-        elif action == 'delete':
+        user = get_object_or_404(User, id=user_id)
+        permissions_data = request.POST.getlist('permissions')
+        delete_requests = request.POST.getlist('delete_requests')
+
+        # Process active/deactivate toggles
+        for permission in user.permissions.all():
+            if str(permission.id) in permissions_data and not permission.is_active:
+                permission.is_active = True
+                permission.save()
+            elif str(permission.id) not in permissions_data and permission.is_active:
+                permission.is_active = False
+                permission.save()
+
+        # Process delete requests
+        for permission_id in delete_requests:
             permission = get_object_or_404(UserPermission, id=permission_id)
             permission.delete()
-            messages.success(request, 'Permission deleted successfully!')
 
-        # update only the relevant part of the page
-        return render(request, "user_permissions/list_permissions.html", self.get_context_data(**kwargs))
+        messages.success(request, 'Permissions updated successfully!')
+
+        # Update only the relevant part of the page.
+        return render(request, self.template_name, self.get_context_data(**kwargs))

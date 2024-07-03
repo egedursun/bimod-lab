@@ -1,5 +1,4 @@
 {% extends layout_path %}
-
 {% load static %}
 {% load i18n %}
 
@@ -34,16 +33,46 @@
 {% block content %}
 <div class="row g-6 mb-6">
   <div class="col-sm-6 col-xl-4">
-    <h3 class="mb-0">Permissions Management</h3>
+    <h3 class="mb-0">Permission Management</h3>
   </div>
 </div>
+
+<div class="alert alert-secondary alert-dismissible d-flex col-lg-8" role="alert">
+        <span class="alert-icon rounded">
+          <i class="ti ti-bookmark"></i>
+        </span>
+        <div class="d-flex flex-column ps-1">
+          <h5 class="alert-heading mb-2">Tip</h5>
+          <p class="mb-0">
+            In this page, you can view all the permissions of the organizations you have created. You can also edit or
+            delete any permission that belongs to you as an administrator. To create a new permission, click on the
+            "Create Permission" button, which is located in the tab on the left side of your screen. Inactivating
+            user permissions will not remove the permission from the system, but it will prevent the user from using
+            the permission. Keep in mind that if you delete a permission, it will be removed from the system entirely.
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+      </div>
 
 {% for organization, data in org_users_permissions.items %}
   <div class="card mb-6">
     <div class="card-header border-bottom mb-10">
-      <h4>{{ organization.name }}</h4>
+      <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+        <h4>
+          {{ organization.name }}
+        </h4>
+      </a>
+      <p>
+        <i class="fa fa-user-astronaut"></i>
+        <strong>&nbsp; Number of Users: </strong> {{ data.users|length }}
+      </p>
+      <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
+      <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+        <strong>&nbsp; See Users of Organization &amp; Permissions</strong>
+      </span>
     </div>
-    <div class="card-body">
+    <div id="collapse-{{ organization.id }}" class="card-body collapse">
       {% for user, permissions in data.users.items %}
         <div class="card mb-4">
           <div class="card-header d-flex justify-content-between align-items-center">
@@ -60,43 +89,44 @@
                 <strong>{{ user.email }}</strong>
               </a>
             </h6>
-            <i class="fa fa-edit toggle-icon" data-target="#collapse-{{ user.id }}"></i>
+            <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ user.id }}"></i>
           </div>
           <div id="collapse-{{ user.id }}" class="collapse">
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table">
-                  <thead class="border-top">
-                    <tr>
-                      <th>Permission</th>
-                      <th>Activate / Deactive Permission</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for permission in permissions %}
+                <form method="post" action="{% url 'user_permissions:list_permissions' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="user_id" value="{{ user.id }}">
+                  <table class="table">
+                    <thead class="border-top">
                       <tr>
-                        <td>{{ permission.get_permission_type_name }}</td>
-                        <td>
-                          <form method="post" action="{% url 'user_permissions:list_permissions' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="permission_id" value="{{ permission.id }}">
-                            <input type="hidden" name="action" value="toggle_active">
-                            <input type="checkbox" name="is_active" {% if permission.is_active %}checked{% endif %} onchange="this.form.submit();">
-                          </form>
-                        </td>
-                        <td>
-                          <form method="post" action="{% url 'user_permissions:list_permissions' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="permission_id" value="{{ permission.id }}">
-                            <input type="hidden" name="action" value="delete">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete Permission</button>
-                          </form>
-                        </td>
+                        <th>Permission</th>
+                        <th>Activate / Deactivate Permission</th>
+                        <th>Delete Permission</th>
                       </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {% for permission in permissions %}
+                        <tr>
+                          <td>{{ permission.get_permission_type_name }}</td>
+                          <td>
+                            <input type="checkbox" name="permissions" value="{{ permission.id }}" {% if permission.is_active %}checked{% endif %}>
+                          </td>
+                          <td>
+                            <input type="checkbox" name="delete_requests" value="{{ permission.id }}">
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
+                    <span class="alert-icon rounded">
+                      <i class="ti ti-alert-circle"></i>
+                    </span>
+                    <strong>IMPORTANT WARNING: </strong> &nbsp; If you don't click the update button, your changes will not be saved when you leave or refresh this page.
+                  </div>
+                  <button type="submit" class="btn btn-primary col-lg-4">Update User Permissions</button>
+                </form>
               </div>
             </div>
           </div>
@@ -126,16 +156,16 @@ document.addEventListener("DOMContentLoaded", function() {
     collapse.addEventListener('show.bs.collapse', function() {
       var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
       if (icon) {
-        icon.classList.remove('fa-edit');
-        icon.classList.add('bi-chevron-up');
+        icon.classList.remove('fa-arrow-alt-circle-down');
+        icon.classList.add('fa-arrow-alt-circle-up');
       }
     });
 
     collapse.addEventListener('hide.bs.collapse', function() {
       var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
       if (icon) {
-        icon.classList.remove('bi-chevron-up');
-        icon.classList.add('fa-edit');
+        icon.classList.remove('fa-arrow-alt-circle-up');
+        icon.classList.add('fa-arrow-alt-circle-down');
       }
     });
   });

@@ -41,14 +41,16 @@ class TransactionAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if obj.transaction_context_content:
             obj.number_of_tokens = calculate_number_of_tokens(obj.encoding_engine, obj.transaction_context_content)
-            # calculate the costs
+
+            # Calculate the costs
             obj.llm_cost = calculate_llm_cost(obj.model.model_name, obj.number_of_tokens)
             obj.internal_service_cost = calculate_internal_service_cost(obj.llm_cost)
             obj.tax_cost = calculate_tax_cost(obj.internal_service_cost)
             obj.total_billable_cost = calculate_billable_cost(obj.internal_service_cost, obj.tax_cost)
             obj.total_cost = calculate_total_cost(obj.llm_cost, obj.total_billable_cost)
 
-        # reduce the transaction billable amount from the organization's balance
+        # Reduce the transaction billable amount from the organization's balance
         obj.organization.balance -= decimal.Decimal.from_float(obj.total_billable_cost)
+        # Update the transaction's organization
         obj.organization.save()
         super().save_model(request, obj, form, change)

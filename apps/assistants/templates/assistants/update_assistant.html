@@ -62,6 +62,21 @@
         <h5 class="mb-0">Update Assistant Information</h5> <small class="text-muted float-end"></small>
       </div>
       <div class="card-body">
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-8" role="alert">
+        <span class="alert-icon rounded">
+          <i class="ti ti-bookmark"></i>
+        </span>
+        <div class="d-flex flex-column ps-1">
+          <h5 class="alert-heading mb-2">Tip</h5>
+          <p class="mb-0">
+            In this page, you can update the information of an assistant. You can change the name, description, instructions,
+            audience, tone, and the image of the assistant. Once you have updated the information, click on the "Update Information"
+            button to save the changes.
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+      </div>
         {% if error_messages %}
           {% for key, message in error_messages.items %}
             <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
@@ -110,7 +125,7 @@
             <input type="file" class="form-control" id="assistant_image" name="assistant_image"/>
             <div class="form-text"></div>
           </div>
-          <button type="submit" class="btn btn-primary d-grid w-100">Update Information</button>
+          <button type="submit" class="btn btn-primary d-grid w-100">Update Assistant</button>
         </form>
       </div>
     </div>

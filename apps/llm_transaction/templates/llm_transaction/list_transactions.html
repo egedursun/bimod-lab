@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
 <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
 <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -27,6 +28,31 @@
 {% endblock page_js %}
 
 {% block content %}
+
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-3">
+    <h3 class="mb-0">Usage &amp; Payment</h3>
+  </div>
+  <!-- Add more statistics cards if necessary -->
+</div>
+
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-8" role="alert">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view all the transactions you have made. You can also top-up the balance for your
+        organizations, and view the total cost of the services you have used. To filter the transactions, use the
+        filter options at the top of the page. "All Transactions" button will show all the transactions you have made,
+        regardless of the time period. "Update" button will show the transactions you have made in the specified
+        time period you have entered.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
 
 <!-- Tabs for Filtering -->
 <div class="row g-4 mb-4">
@@ -102,7 +128,7 @@
   </div>
   <div class="col-sm-6 col-xl-6">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body bg-label-success rounded">
           <div class="d-flex align-items-start justify-content-between">
             <div class="content-left">
               <div class="d-flex align-items-end">
@@ -131,11 +157,18 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <h3 class="mb-0">{{ organization_data.organization.name }}</h3>
-        <small class="text-muted">{{ organization_data.organization.email }}</small>
+        <p>
+          <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization_data.organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization_data.organization.id }}">
+            <h4 class="mb-0">{{ organization_data.organization.name }}</h4>
+            <small class="text-muted">{{ organization_data.organization.email }}</small>
+          </a>
+        </p>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization_data.organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-{{ organization_data.organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization_data.organization.id }}">
+          <strong>&nbsp; See Complete List of Transactions</strong>
+        </span>
       </div>
       <div class="card-body">
-
         <!-- New Balance and Top-up Form in Separate Equal Height and Width Cards -->
         <div class="row g-4 mb-4">
           <!-- Balance Card -->
@@ -196,7 +229,7 @@
           </div>
           <div class="col-sm-6 col-xl-6">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body bg-label-success rounded">
                 <div class="d-flex align-items-start justify-content-between">
                   <div class="content-left">
                     <div class="d-flex align-items-end">
@@ -220,7 +253,7 @@
             <h4 class="mb-0">{{ llm_data.model.nickname }}</h4>
             <small class="text-muted">{{ llm_data.model.description }}</small>
           </div>
-          <div class="card-body">
+          <div id="collapse-{{ organization_data.organization.id }}" class="card-body collapse">
             <div class="table-responsive">
               <table class="table datatables-transaction">
                 <thead>
@@ -308,5 +341,41 @@
             animateBalance(id, balance, 1000);  // Duration is 500ms (0.5 seconds)
         });
     });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+      icon.addEventListener('click', function() {
+        var target = document.querySelector(this.getAttribute('data-target'));
+        var bootstrapCollapse = new bootstrap.Collapse(target, {
+          toggle: false
+        });
+        if (target.classList.contains('show')) {
+          bootstrapCollapse.hide();
+        } else {
+          bootstrapCollapse.show();
+        }
+      });
+    });
+
+    document.querySelectorAll('.collapse').forEach(function(collapse) {
+      collapse.addEventListener('show.bs.collapse', function() {
+        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+        if (icon) {
+          icon.classList.remove('fa-arrow-alt-circle-down');
+          icon.classList.add('fa-arrow-alt-circle-up');
+        }
+      });
+
+      collapse.addEventListener('hide.bs.collapse', function() {
+        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+        if (icon) {
+          icon.classList.remove('fa-arrow-alt-circle-up');
+          icon.classList.add('fa-arrow-alt-circle-down');
+        }
+      });
+    });
+  });
 </script>
 {% endblock %}

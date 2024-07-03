@@ -1,4 +1,5 @@
 from datetime import timedelta
+from pprint import pprint
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
@@ -45,7 +46,7 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
         # For now, every user is able to see the transactions.
         ##############################
 
-        # get from context
+        # Get from context
         filter_value = self.request.POST.get('filter')
         delta_specifier = self.request.POST.get('delta_specifier')
         if not delta_specifier:
@@ -57,14 +58,16 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
 
         data = []
         for organization in organizations:
-            llm_models = organization.llmcore_set.all()
+            llm_models = organization.llm_cores.all()
             org_data = {
                 'organization': organization,
                 'llm_models': [],
-                'cost_sums': sum_costs(LLMTransaction.objects.filter(organization=organization, created_at__gte=filter_date))
+                'cost_sums': sum_costs(LLMTransaction.objects.filter(organization=organization,
+                                                                     created_at__gte=filter_date))
             }
             for llm_model in llm_models:
-                transactions = LLMTransaction.objects.filter(organization=organization, model=llm_model, created_at__gte=filter_date)
+                transactions = LLMTransaction.objects.filter(organization=organization, model=llm_model,
+                                                             created_at__gte=filter_date)
                 llm_data = {
                     'model': llm_model,
                     'transactions': transactions,
@@ -75,7 +78,8 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
 
         context['data'] = data
         context['user'] = context_user
-        context["cost_sums"] = sum_costs(LLMTransaction.objects.filter(organization__in=organizations, created_at__gte=filter_date))
+        context["cost_sums"] = sum_costs(LLMTransaction.objects.filter(organization__in=organizations,
+                                                                       created_at__gte=filter_date))
         context['filter_types'] = FILTER_TYPES
         context['filter'] = filter_value
         context['delta_specifier'] = delta_specifier

@@ -30,6 +30,23 @@
         <h5 class="mb-0">Add New User</h5> <small class="text-muted float-end"></small>
       </div>
       <div class="card-body">
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-8" role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-bookmark"></i>
+              </span>
+        <div class="d-flex flex-column ps-1">
+          <h5 class="alert-heading mb-2">Tip</h5>
+          <p class="mb-0">
+            In this page, you can add a new user to the system. You can assign the user to an organization, set their
+            username, email, and password, and provide additional information such as first name, last name, phone number,
+            address, city, country, and postal code. You can also set the user as active or inactive. If you would like
+            to associate a user with additional organizations, don't worry. You can do that after adding the user
+            to the system for the first time.
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+      </div>
         {% if error_messages %}
           {% for key, message in error_messages.items %}
             <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">

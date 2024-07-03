@@ -35,6 +35,7 @@ class Organization(models.Model):
 
     users = models.ManyToManyField("auth.User", related_name="organizations")
     organization_assistants = models.ManyToManyField("assistants.Assistant", related_name="organizations")
+    llm_cores = models.ManyToManyField("llm_core.LLMCore", related_name="organizations")
 
     def __str__(self):
         return self.name

@@ -35,6 +35,22 @@
         <h5 class="mb-0">Create a New Organization</h5> <small class="text-muted float-end"></small>
       </div>
       <div class="card-body">
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-8" role="alert">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              In this page, you can create a new organization. Fill in the form with the organization's information
+              and click on the "Create" button to save the organization. While you are creating an assistant, make
+              sure that you have filled in all the required fields. Once you create an organization, you will
+              automatically be granted the permissions required to manage the organization.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
         {% if error_messages %}
           {% for key, message in error_messages.items %}
             <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
