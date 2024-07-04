@@ -49,11 +49,12 @@
 - [X] Add an active field to permissions. When the user is deactivated, the permissions are also deactivated. When the user is reactivated, the permissions are also reactivated.
 - [X] The LLM models are all over the place, they are not unique to the organization anymore. Either we need to change how balance calculation works in the transactions page, or we need to make the LLM models unique to the organization.
 - [X] Handle the additional information in the registration page.
-- [ ] Integrate the chat deletion page and functionality.
-- [ ] Connect user message creation form.
+- [X] Integrate the chat deletion page and functionality.
+- [X] Connect user message creation form.
 - [ ] Connect assistant response framework.
 - [ ] Test the flow of chat.
-
+- [ ] **URGENT:** When the chat is created the first time, there is a bug preventing the user message to be sent.
+- 
 
 ---
 

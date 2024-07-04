@@ -49,136 +49,154 @@
       "url": "/multimodal_chat/chat"
     },
     {
+      "name": "Starred Responses",
+      "icon": "menu-icon tf-icons ti ti-star",
+      "slug": "starred-responses",
+      "url": "/starred_responses/list"
+    },
+    {
       "name": "Memory",
       "icon": "menu-icon tf-icons ti ti-archive",
-      "slug": "file-systems",
-      "url": "dashboard:main-dashboard"
+      "slug": "memory",
+      "url": "/memory/list"
+    },
+    {
+      "name": "Message Templates",
+      "icon": "menu-icon tf-icons ti ti-template",
+      "slug": "message-templates",
+      "url": "/message_templates/list"
     },
     {
       "name": "Fine Tuning",
-      "icon": "menu-icon fa fa-flask",
+      "icon": "menu-icon tf-icons ti ti-ruler",
       "slug": "fine-tuning",
-      "url": "dashboard:main-dashboard"
+      "url": "/fine_tuning/list"
     },
     {
       "name": "Export Assistants",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "file-systems",
-      "url": "dashboard:main-dashboard"
+      "url": "/file_systems/list"
     },
     {
       "url": "dashboard:main-dashboard",
       "name": "Orchestrations",
       "icon": "menu-icon tf-icons ti ti-bolt",
-      "slug": "dashboard:main-dashboard"
+      "slug": "/orchestrations/list"
     },
     {
       "name": "File Systems",
       "icon": "menu-icon tf-icons ti ti-server",
       "slug": "file-systems",
-      "url": "dashboard:main-dashboard"
+      "url": "/file_systems/list"
     },
     {
       "name": "Web Browsers",
       "icon": "menu-icon tf-icons ti ti-browser",
       "slug": "web-browsers",
-      "url": "dashboard:main-dashboard"
+      "url": "/web_browsers/list"
     },
     {
       "name": "SQL Databases",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "sql-databases",
-      "url": "dashboard:main-dashboard"
+      "url": "/sql_databases/list"
     },
     {
       "name": "NoSQL Databases",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "nosql-databases",
-      "url": "dashboard:main-dashboard"
+      "url": "/nosql_databases/list"
     },
     {
       "name": "Knowledge Bases",
       "icon": "menu-icon tf-icons ti ti-vector",
-      "slug": "vector-stores",
-      "url": "dashboard:main-dashboard"
+      "slug": "knowledge-bases",
+      "url": "/knowledge_bases/list"
     },
     {
       "name": "ML Models",
-      "icon": "menu-icon fas fa-microchip",
+      "icon": "menu-icon tf-icons ti ti-wand",
       "slug": "machine-learning-models",
-      "url": "dashboard:main-dashboard"
+      "url": "/ml_models/list"
     },
     {
       "name": "Image Storages",
       "icon": "menu-icon tf-icons ti ti-camera",
       "slug": "image-storages",
-      "url": "dashboard:main-dashboard"
+      "url": "/image_storages/list"
     },
     {
       "name": "Video Storages",
       "icon": "menu-icon tf-icons ti ti-video",
       "slug": "video-storages",
-      "url": "dashboard:main-dashboard"
+      "url": "/video_storages/list"
     },
     {
       "name": "Audio Storages",
       "icon": "menu-icon tf-icons ti ti-music",
       "slug": "audio-storages",
-      "url": "dashboard:main-dashboard"
+      "url": "/audio_storages/list"
     },
     {
       "name": "Functions",
       "icon": "menu-icon tf-icons ti ti-plug",
       "slug": "app-invoice",
-      "url": "dashboard:main-dashboard"
+      "url": "/functions/list"
     },
     {
       "name": "APIs",
       "icon": "menu-icon tf-icons ti ti-network",
       "slug": "apis",
-      "url": "dashboard:main-dashboard"
+      "url": "/apis/list"
     },
     {
       "name": "Conditionals",
       "icon": "menu-icon tf-icons ti ti-code",
       "slug": "conditionals",
-      "url": "dashboard:main-dashboard"
+      "url": "/conditionals/list"
     },
     {
       "name": "Scheduled Jobs",
       "icon": "menu-icon tf-icons ti ti-clock",
       "slug": "scheduled-jobs",
-      "url": "dashboard:main-dashboard"
+      "url": "/scheduled_jobs/list"
     },
     {
       "name": "Triggers",
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
-      "url": "dashboard:main-dashboard"
+      "url": "/triggers/list"
+    },
+    {
+      "name": "Blockchain",
+      "icon": "menu-icon tf-icons ti ti-cube",
+      "slug": "blockchain",
+      "url": "/blockchain/list"
     },
     {
       "name": "Image Gen & Analysis",
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "triggers",
-      "url": "dashboard:main-dashboard"
+      "url": "/image_gen_analysis/list"
     },
     {
       "name": "Audio Gen & Analysis",
       "icon": "menu-icon tf-icons ti ti-music",
       "slug": "triggers",
-      "url": "dashboard:main-dashboard"
+      "url": "/audio_gen_analysis/list"
     },
     {
       "name": "Integrations",
       "icon": "menu-icon tf-icons ti ti-dashboard",
       "slug": "triggers",
-      "url": "dashboard:main-dashboard"
+      "url": "/integrations/list"
     },
     {
       "name": "Meta Integrations",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "triggers",
-      "url": "dashboard:main-dashboard"
+      "url": "/meta_integrations/list"
     }
   ]
 }

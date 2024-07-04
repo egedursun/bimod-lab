@@ -115,14 +115,26 @@
       "url": "multimodal_chat:chat"
     },
     {
+      "name": "Starred Responses",
+      "icon": "menu-icon tf-icons ti ti-star",
+      "slug": "chats",
+      "url": "multimodal_chat:chat"
+    },
+    {
       "name": "Memory",
       "icon": "menu-icon tf-icons ti ti-archive",
       "slug": "memory",
       "url": "dashboard:main-dashboard"
     },
     {
+      "name": "Message Templates",
+      "icon": "menu-icon tf-icons ti ti-template",
+      "slug": "message-templates",
+      "url": "dashboard:main-dashboard"
+    },
+    {
       "name": "Fine Tuning",
-      "icon": "menu-icon fa fa-flask",
+      "icon": "menu-icon tf-icons ti ti-ruler",
       "slug": "fine-tuning",
       "url": "dashboard:main-dashboard"
     },
@@ -168,12 +180,12 @@
     {
       "name": "Knowledge Bases",
       "icon": "menu-icon tf-icons ti ti-vector",
-      "slug": "vector-stores",
+      "slug": "knowledge-bases",
       "url": "dashboard:main-dashboard"
     },
     {
       "name": "ML Models",
-      "icon": "menu-icon fas fa-microchip",
+      "icon": "menu-icon tf-icons ti ti-wand",
       "slug": "machine-learning-models",
       "url": "dashboard:main-dashboard"
     },
@@ -226,6 +238,12 @@
       "name": "Triggers",
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Blockchain",
+      "icon": "menu-icon tf-icons ti ti-cube",
+      "slug": "blockchain",
       "url": "dashboard:main-dashboard"
     },
     {

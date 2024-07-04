@@ -112,18 +112,36 @@
       "name": "Chats",
       "icon": "menu-icon tf-icons ti ti-messages",
       "slug": "chats",
-      "url": "dashboard:main-dashboard"
+      "url": "multimodal_chat:chat"
     },
-        {
+    {
+      "name": "Starred Responses",
+      "icon": "menu-icon tf-icons ti ti-star",
+      "slug": "chats",
+      "url": "multimodal_chat:chat"
+    },
+    {
       "name": "Memory",
       "icon": "menu-icon tf-icons ti ti-archive",
-      "slug": "file-systems",
+      "slug": "memory",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Message Templates",
+      "icon": "menu-icon tf-icons ti ti-template",
+      "slug": "message-templates",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Fine Tuning",
+      "icon": "menu-icon tf-icons ti ti-ruler",
+      "slug": "fine-tuning",
       "url": "dashboard:main-dashboard"
     },
     {
       "name": "Export Assistants",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
-      "slug": "file-systems",
+      "slug": "export-assistants",
       "url": "dashboard:main-dashboard"
     },
     {
@@ -162,12 +180,12 @@
     {
       "name": "Knowledge Bases",
       "icon": "menu-icon tf-icons ti ti-vector",
-      "slug": "vector-stores",
+      "slug": "knowledge-bases",
       "url": "dashboard:main-dashboard"
     },
     {
       "name": "ML Models",
-      "icon": "menu-icon fas fa-microchip",
+      "icon": "menu-icon tf-icons ti ti-wand",
       "slug": "machine-learning-models",
       "url": "dashboard:main-dashboard"
     },
@@ -205,6 +223,12 @@
       "url": "dashboard:main-dashboard"
     },
     {
+      "name": "Conditionals",
+      "icon": "menu-icon tf-icons ti ti-code",
+      "slug": "conditionals",
+      "url": "dashboard:main-dashboard"
+    },
+    {
       "name": "Scheduled Jobs",
       "icon": "menu-icon tf-icons ti ti-clock",
       "slug": "scheduled-jobs",
@@ -214,6 +238,12 @@
       "name": "Triggers",
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Blockchain",
+      "icon": "menu-icon tf-icons ti ti-cube",
+      "slug": "blockchain",
       "url": "dashboard:main-dashboard"
     },
     {

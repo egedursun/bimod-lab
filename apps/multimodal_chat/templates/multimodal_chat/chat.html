@@ -140,7 +140,7 @@
               <form method="post" action=".">
               {% csrf_token %}
               <div class="d-flex align-items-center">
-                  <div class="flex-shrink-0 avatar avatar-online rounded-circle" {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 4px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
+                  <div class="flex-shrink-0 avatar {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded rounded-circle" {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
                     <img src="{{ chat.assistant.assistant_image.url }}" class="rounded-circle">
                   </div>
                   <div class="row">
