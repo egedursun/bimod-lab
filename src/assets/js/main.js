@@ -461,7 +461,7 @@ if (typeof $ !== 'undefined') {
             // ? Add/Update blocks as per need
             // Core Services
             {
-              name: 'core-services',
+              name: 'pages',
               display: 'name',
               limit: 5,
               source: filterConfig(searchData.pages),

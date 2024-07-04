@@ -1,4 +1,6 @@
+
 import tiktoken
+import wonderwords
 
 from apps.llm_transaction.costs import LLMCostsPerMillionTokens, SERVICE_PROFIT_MARGIN, VAT_TAX_RATE
 
@@ -55,3 +57,23 @@ def sum_costs(transactions):
         "total_cost": total_cost,
         "total_billable_cost": billable_cost,
     }
+
+
+def generate_chat_name():
+    # use a library to generate a random chat name
+    chat_name_1 = wonderwords.RandomWord().word(
+        word_max_length=8,
+        include_categories = ["noun"]
+    )
+    chat_name_2 = wonderwords.RandomWord().word(
+        word_max_length=8,
+        include_categories = ["noun"]
+    )
+    chat_name_3 = wonderwords.RandomWord().word(
+        word_max_length=8,
+        include_categories = ["verb"]
+    )
+    chat_name_1 = chat_name_1.capitalize()
+    chat_name_2 = chat_name_2.capitalize()
+    chat_name_3 = chat_name_3.capitalize()
+    return " ".join([chat_name_1, chat_name_2, chat_name_3])

@@ -13,7 +13,6 @@ class MultimodalChatAdmin(admin.ModelAdmin):
     search_fields = ['organization', 'assistant', 'user', 'chat_name', 'created_by_user', 'created_at', 'updated_at']
     readonly_fields = ['created_at', 'updated_at']
 
-
     list_per_page = 20
     list_max_show_all = 100
     list_editable = []

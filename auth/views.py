@@ -13,12 +13,10 @@ Refer to auth/urls.py file for more pages.
 class AuthView(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
         # Update the context
         context.update(
             {
                 "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
             }
         )
-
         return context

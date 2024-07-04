@@ -112,7 +112,7 @@
       "name": "Chats",
       "icon": "menu-icon tf-icons ti ti-messages",
       "slug": "chats",
-      "url": "dashboard:main-dashboard"
+      "url": "multimodal_chat:chat"
     },
     {
       "name": "Memory",

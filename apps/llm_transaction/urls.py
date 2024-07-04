@@ -7,5 +7,8 @@ app_name = "llm_transaction"
 
 
 urlpatterns = [
-    path('list/', ListTransactionsView.as_view(template_name="llm_transaction/list_transactions.html"), name='list'),
+    path('list/', ListTransactionsView.as_view(
+        template_name="llm_transaction/list_transactions.html"),
+         name='list'
+         ),
 ]

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import QuerySet
 
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.utils import calculate_billable_cost, calculate_internal_service_cost, calculate_tax_cost, \
@@ -10,7 +11,7 @@ from apps.multimodal_chat.utils import calculate_billable_cost, calculate_intern
 class MultimodalChat(models.Model):
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE,
-                                    related_name='multimodal_chats', default=1)
+                                  related_name='multimodal_chats', default=1)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='multimodal_chats', default=1)
     chat_name = models.CharField(max_length=255)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE,
@@ -18,10 +19,10 @@ class MultimodalChat(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # Chat Messages
-    messages = models.ManyToManyField('multimodal_chat.MultimodalChatMessage', related_name='multimodal_chats',
-                                        blank=True)
+    chat_messages = models.ManyToManyField('multimodal_chat.MultimodalChatMessage', related_name='multimodal_chats',
+                                      blank=True)
     transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_chats',
-                                            blank=True)
+                                          blank=True)
 
     def __str__(self):
         return self.chat_name + " - " + self.assistant.name + " - " + self.user.username
@@ -30,6 +31,12 @@ class MultimodalChat(models.Model):
         verbose_name = "Multimodal Chat"
         verbose_name_plural = "Multimodal Chats"
         ordering = ["-created_at"]
+
+
+class MessageSenderTypeNames:
+    USER = "USER"
+    ASSISTANT = "ASSISTANT"
+    SYSTEM = "SYSTEM"
 
 
 MESSAGE_SENDER_TYPES = [
@@ -69,7 +76,7 @@ class MultimodalChatMessage(models.Model):
         internal_service_cost = calculate_internal_service_cost(llm_cost)
         tax_cost = calculate_tax_cost(internal_service_cost)
         total_billable_cost = calculate_billable_cost(internal_service_cost, tax_cost)
-        if self.sender_type == "USER" and (self.multimodal_chat.organization.balance < total_billable_cost):
+        if self.sender_type == MessageSenderTypeNames.USER and (self.multimodal_chat.organization.balance < total_billable_cost):
             return False, {
                 "message": "Insufficient balance.",
                 "balance": self.multimodal_chat.organization.balance,
@@ -90,8 +97,9 @@ class MultimodalChatMessage(models.Model):
                 total_cost=0,
                 total_billable_cost=0,
             )
+
         # append the transaction to the list of transactions in the chat object
         MultimodalChat.objects.get(id=self.multimodal_chat.id).transactions.add(self.transaction)
         super().save(*args, **kwargs)
+        MultimodalChat.objects.get(id=self.multimodal_chat.id).chat_messages.add(self.id)
 
-    # TODO: we need to VERIFY THE AMOUNT OF BALANCE BEFORE SAVING THE MESSAGE.

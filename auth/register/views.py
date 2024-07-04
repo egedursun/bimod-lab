@@ -21,6 +21,12 @@ class RegisterView(AuthView):
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+
+        # Check if the passwords match
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect("register")
 
         ########################################
         # ADDITIONAL INFORMATION
@@ -49,6 +55,11 @@ class RegisterView(AuthView):
         # Create the user and set their password
         created_user = User.objects.create_user(username=username, email=email, password=password)
         created_user.set_password(password)
+
+        # grant admin privileges
+        created_user.is_staff = True
+        created_user.is_superuser = True
+
         created_user.save()
 
         # Add the user to the 'client' group (or any other group you want to use as default for new users)

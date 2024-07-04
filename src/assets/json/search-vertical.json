@@ -1,57 +1,63 @@
 {
-  "core-services": [
+  "pages": [
     {
       "name": "Dashboard",
       "icon": "menu-icon tf-icons ti ti-smart-home",
       "slug": "main-dashboard",
-      "url": "dashboard:main-dashboard"
+      "url": "/dashboard"
     },
     {
       "name": "Organizations",
       "icon": "menu-icon tf-icons ti ti-world",
       "slug": "organizations",
-      "url": "organizations:list"
+      "url": "/organization/list"
     },
     {
       "name": "LLM Models",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-cores",
-      "url": "llm_core:list"
+      "url": "/llm_core/list"
     },
     {
       "name": "Usage & Payment",
       "icon": "menu-icon tf-icons ti ti-receipt",
       "slug": "usage",
-      "url": "llm_transaction:list"
+      "url": "/llm_transaction/list"
     },
     {
       "name": "Users",
       "icon": "menu-icon tf-icons ti ti-user",
       "slug": "users",
-      "url": "users:list"
+      "url": "/user_management/list"
     },
     {
       "name": "Permissions",
       "icon": "menu-icon tf-icons ti ti-key",
       "slug": "permissions",
-      "url": "permissions:list"
+      "url": "/user_permissions/list"
     },
     {
       "name": "Assistants",
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "assistants",
-      "url": "assistants:list"
+      "url": "/assistants/list"
     },
     {
       "name": "Chats",
       "icon": "menu-icon tf-icons ti ti-messages",
       "slug": "chats",
-      "url": "dashboard:main-dashboard"
+      "url": "/multimodal_chat/chat"
     },
     {
       "name": "Memory",
       "icon": "menu-icon tf-icons ti ti-archive",
       "slug": "file-systems",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Fine Tuning",
+      "icon": "menu-icon fa fa-flask",
+      "slug": "fine-tuning",
       "url": "dashboard:main-dashboard"
     },
     {
@@ -130,6 +136,12 @@
       "name": "APIs",
       "icon": "menu-icon tf-icons ti ti-network",
       "slug": "apis",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Conditionals",
+      "icon": "menu-icon tf-icons ti ti-code",
+      "slug": "conditionals",
       "url": "dashboard:main-dashboard"
     },
     {
