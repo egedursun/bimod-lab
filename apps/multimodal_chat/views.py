@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from web_project import TemplateLayout, TemplateHelper
@@ -16,6 +16,11 @@ class ChatView(LoginRequiredMixin, TemplateView):
         if 'chat_id' in self.request.GET:
             active_chat = get_object_or_404(MultimodalChat, id=self.request.GET['chat_id'], user=self.request.user)
         chats = MultimodalChat.objects.filter(user=self.request.user)
+
+        # if there is an active chat, put the active chat at the beginning of the list
+        if active_chat:
+            chats = [active_chat] + [chat for chat in chats if chat.id != active_chat.id]
+
         assistants = Assistant.objects.filter(organization__users=self.request.user)
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -31,6 +36,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         if 'assistant_id' in request.POST:
             assistant_id = request.POST.get('assistant_id')
             assistant = get_object_or_404(Assistant, id=assistant_id, organization__users=request.user)
@@ -59,10 +66,13 @@ class ChatView(LoginRequiredMixin, TemplateView):
             )
             active_chat = chat
 
+            # redirect with '?chat_id=' to keep the chat open
+            redirect_string = self.request.path_info + '?chat_id=' + str(active_chat.id)
+            return redirect(redirect_string, *args, **kwargs)
+
         chats = MultimodalChat.objects.filter(user=request.user)
         assistants = Assistant.objects.filter(organization__users=request.user)
 
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context.update(
             {
                 "layout_path": TemplateHelper.set_layout("layout_vertical.html", context),
@@ -72,4 +82,26 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 'active_chat': active_chat
             }
         )
+
         return render(request, self.template_name, context)
+
+
+class ChatDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = 'multimodal_chat/confirm_delete_chat.html'
+    success_url = '/chat/'
+
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        chat = self.get_object()
+        context['chat'] = chat
+        return context
+
+
+    def get_queryset(self):
+        return MultimodalChat.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        chat = get_object_or_404(MultimodalChat, id=self.kwargs['pk'], user=self.request.user)
+        chat.delete()
+        return redirect('multimodal_chat:chat')
+

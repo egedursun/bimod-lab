@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
       formSendMessage = document.querySelector('.form-send-message'),
       messageInput = document.querySelector('.message-input'),
       searchInput = document.querySelector('.chat-search-input'),
+      bodyOfPage = document.querySelector('body'),
       speechToText = $('.speech-to-text'), // ! jQuery dependency for speech to text
       userStatusObj = {
         active: 'avatar-online',
@@ -25,6 +26,34 @@ document.addEventListener('DOMContentLoaded', function () {
         away: 'avatar-away',
         busy: 'avatar-busy'
       };
+
+    const savedScrollPosition = sessionStorage.getItem('scrollPosition');
+    if (savedScrollPosition !== null) {
+        window.scrollTo(0, parseInt(savedScrollPosition, 10));
+        sessionStorage.removeItem('scrollPosition');
+    }
+
+    /*
+    const savedChatScrollPosition = sessionStorage.getItem('chatScrollPosition');
+    if (chatContactsBody && savedChatScrollPosition !== null) {
+        chatContactsBody.scrollTo(0, parseInt(savedChatScrollPosition, 10));
+        sessionStorage.removeItem('chatScrollPosition');
+    }
+
+    const savedAssistantScrollPosition = sessionStorage.getItem('assistantScrollPosition');
+    const assistantList = document.querySelector('.app-chat-sidebar-left .sidebar-body');
+    if (assistantList && savedAssistantScrollPosition !== null) {
+        assistantList.scrollTo(0, parseInt(savedAssistantScrollPosition, 10));
+        sessionStorage.removeItem('assistantScrollPosition');
+    }
+     */
+
+    // scroll to current location
+    if (bodyOfPage) {
+      window.scrollTo({"left": 0,  "top": document.body.scrollHeight,  "behavior": "instant"});
+    }
+    // chatContactListItems.scrollTo({"left": 0,  "top": chatContactListItems.scrollHeight,  "behavior": "instant"});
+    // chatSidebarLeftBody.scrollTo({"left": 0,  "top": chatSidebarLeftBody.scrollHeight,  "behavior": "instant"});
 
     // Initialize PerfectScrollbar
     // ------------------------------
@@ -62,10 +91,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Scroll to bottom function
-    function scrollToBottom() {
-      chatHistoryBody.scrollTo(0, chatHistoryBody.scrollHeight);
+    if (chatHistoryBody) {
+      function scrollToBottom() {
+        chatHistoryBody.scrollTo(0, chatHistoryBody.scrollHeight);
+      }
+      scrollToBottom();
     }
-    scrollToBottom();
 
     // User About Maxlength Init
     if (chatSidebarLeftUserAbout.length) {
@@ -157,22 +188,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Send Message
     formSendMessage.addEventListener('submit', e => {
-      e.preventDefault();
+      // e.preventDefault();
+      // Preventing default would prevent the form from being submitted, therefore the message would not be sent.
+      // I commented out this line to allow the form to be submitted and the message to be sent.
+      /*
       if (messageInput.value) {
         // Create a div and add a class
         let renderMsg = document.createElement('div');
         renderMsg.className = 'chat-message-text mt-2';
         renderMsg.innerHTML = '<p class="mb-0 text-break">' + messageInput.value + '</p>';
-        document.querySelector('li:last-child .chat-message-wrapper').appendChild(renderMsg);
+        // TODO: this is adding the message just sent to the user interface / UI when the send button is clicked
+        // document.querySelector('li:last-
+        child .chat-message-wrapper').appendChild(renderMsg);
         messageInput.value = '';
         scrollToBottom();
       }
+       */
     });
 
     // on click of chatHistoryHeaderMenu, Remove data-overlay attribute from chatSidebarLeftClose to resolve overlay overlapping issue for two sidebar
     let chatHistoryHeaderMenu = document.querySelector(".chat-history-header [data-target='#app-chat-contacts']"),
       chatSidebarLeftClose = document.querySelector('.app-chat-sidebar-left .close-sidebar');
-    chatHistoryHeaderMenu.addEventListener('click', e => {
+      chatHistoryHeaderMenu.addEventListener('click', e => {
       chatSidebarLeftClose.removeAttribute('data-overlay');
     });
     // }

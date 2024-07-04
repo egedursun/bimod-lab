@@ -52,7 +52,7 @@
   </div>
 </div>
 
-<div class="app-chat card overflow-hidden">
+<div class="app-chat card">
   <div class="row g-0">
     <!-- Sidebar Left -->
     <div class="col app-chat-sidebar-left app-sidebar overflow-hidden" id="app-chat-sidebar-left">
@@ -66,10 +66,56 @@
     <!-- /Sidebar Left-->
 
     <!-- Chat & Assistants -->
-    <div class="col app-chat-contacts app-sidebar flex-grow-0 overflow-hidden border-end" id="app-chat-contacts">
+    <div class="col app-chat-contacts app-sidebar border-end overflow-scroll" id="app-chat-contacts" style="max-width: 25%;">
       <div class="sidebar-body" style="height: 100%;">
+        <!-- Assistants -->
+        <ul class="list-unstyled chat-contact-list mb-0 py-2" id="assistant-list" >
+          <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
+            <h5 class="text-primary mb-0">Assistants</h5>
+          </li>
+          <div class="alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-brain"></i>
+            </span>
+            <div class="d-flex flex-column ps-1">
+              <small class="mb-0">
+                Click on any of the assistants to start a new chat with them.
+              </small>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+          {% for assistant in assistants %}
+          <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+            <form method="post" action=".">
+              {% csrf_token %}
+              <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
+              <button type="submit" class="d-flex align-items-center btn btn-link p-0">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img src="{{ assistant.assistant_image.url }}" alt="Avatar" class="rounded-circle">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4">
+                    <h6 class="chat-contact-name text-truncate m-0 fw-normal"><strong>{{ assistant.name }}</strong></h6>
+                    <br>
+                    <small class="text-truncate bg-label-info ps-2 pt-1 pe-2 pb-1 rounded"><strong>{{ assistant.organization.name }}</strong></small>
+                    <br>
+                    <small class="text-truncate bg-label-info ps-2 pt-1 pe-2 pb-1 rounded">{{ assistant.llm_model.nickname }}</small>
+                    <br>
+                    <small class="text-truncate bg-label-info ps-2 pt-1 pe-2 pb-1 rounded">{{ assistant.llm_model.model_name }}</small>
+                  </div>
+                </div>
+              </button>
+            </form>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col app-chat-contacts app-sidebar border-end overflow-scroll" id="app-chat-chats" style="max-width: 25%;">
+      <div class="sidebar-body">
         <!-- Chats -->
-        <ul class="list-unstyled chat-contact-list py-2 mb-0 overflow-auto" style="height: 50%" id="chat-list">
+        <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
           <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
             <h5 class="text-primary mb-0">Your Chats</h5>
           </li>
@@ -89,77 +135,29 @@
             </div>
           </div>
           {% for chat in chats %}
-          <li class="card card-border-shadow-dark chat-contact-list-item mb-1 {% if chat.id == active_chat.id %}alert-solid-primary{% endif %}">
-            <form method="post" action=".">
+          <li class="card card-border-shadow-dark chat-contact-list-item mb-2 {% if chat.id == active_chat.id %} border border-1 rounded border-primary alert-secondary{% endif %}">
+            <a href="?chat_id={{ chat.id }}" class="d-flex flex-grow-1 text-decoration-none">
+              <form method="post" action=".">
               {% csrf_token %}
               <div class="d-flex align-items-center">
                   <div class="flex-shrink-0 avatar avatar-online rounded-circle" {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 4px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
-                    <a href="?chat_id={{ chat.id }}" class="d-flex flex-grow-1 text-decoration-none">
-                      <img src="{{ chat.assistant.assistant_image.url }}" class="rounded-circle">
-                    </a>
+                    <img src="{{ chat.assistant.assistant_image.url }}" class="rounded-circle">
                   </div>
                   <div class="row">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <input type="text" class="form-control ms-3 me-3 bg-lightest text-bg-light" name="new_chat_name" value="{{ chat.chat_name }}" />
-                      <input type="hidden" name="chat_id" value="{{ chat.id }}">
-                      <button type="submit" class="btn btn-link p-0">
-                        <i class="fa fa-save text-bg-light"></i>
-                      </button>
-                    </div>
                     <div class="chat-contact-info flex-grow-1 ms-4">
-                      <a href="?chat_id={{ chat.id }}">
-                        <small class="text-muted">{{ chat.updated_at|date:"H:i A" }}</small>
-                        <br>
-                        <small class="text-truncate bg-label-primary ps-2 pt-1 pe-2 pb-1 rounded"><strong>Assistant: </strong>{{ chat.assistant.name }}</small>
-                        <br>
-                        <small class="text-truncate bg-label-primary ps-2 pt-1 pe-2 pb-1 rounded"><strong>Organization: </strong>{{ chat.organization.name }}</small>
-                        <br>
-                        <small class="chat-contact-status text-truncate">{{ chat.messages.last.message_text_content }}</small>
-                      </a>
+                      <h6 class="chat-contact-name text-truncate m-0 fw-normal"><strong>{{ chat.chat_name }}</strong></h6>
+                      <small class="text-muted"><i class="fa fa-clock-rotate-left me-1"></i>{{ chat.updated_at|date:"H:i A" }}</small>
+                      <br><br>
+                      <small class="text-truncate bg-label-primary ps-2 pt-1 pe-2 pb-1 rounded"><strong>{{ chat.assistant.name }}</strong></small>
+                      <br>
+                      <small class="text-truncate bg-label-primary ps-2 pt-1 pe-2 pb-1 rounded">{{ chat.organization.name }}</small>
+                      <br>
+                      <small class="chat-contact-status text-truncate">{{ chat.messages.last.message_text_content }}</small>
                     </div>
                   </div>
                 </div>
               </form>
-            </li>
-          {% endfor %}
-        </ul>
-        <!-- Assistants -->
-        <ul class="list-unstyled chat-contact-list mb-0 py-2 overflow-scroll" id="assistant-list" style="height: 50%">
-          <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
-            <h5 class="text-primary mb-0">Available Assistants</h5>
-          </li>
-          <div class="alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-brain"></i>
-            </span>
-            <div class="d-flex flex-column ps-1">
-              <small class="mb-0">
-                Click on any of the assistants to start a new chat with them.
-              </small>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-              </button>
-            </div>
-          </div>
-          {% for assistant in assistants %}
-          <li class="card card-border-shadow-dark chat-contact-list-item">
-            <form method="post" action=".">
-              {% csrf_token %}
-              <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
-              <button type="submit" class="d-flex align-items-center btn btn-link p-0">
-                <div class="flex-shrink-0 avatar">
-                  <img src="{{ assistant.assistant_image.url }}" alt="Avatar" class="rounded-circle">
-                </div>
-                <div class="chat-contact-info flex-grow-1 ms-4">
-                  <h6 class="chat-contact-name text-truncate m-0 fw-normal"><strong>{{ assistant.name }}</strong></h6>
-                  <br>
-                  <small class="text-truncate bg-label-info ps-2 pt-1 pe-2 pb-1 rounded"><strong>Organization: &nbsp;</strong>{{ assistant.organization.name }}</small>
-                  <br>
-                  <small class="text-truncate bg-label-info ps-2 pt-1 pe-2 pb-1 rounded"><strong>{{ assistant.llm_model.nickname }}</strong></small>
-                  <br>
-                  <small class="text-truncate bg-label-info ps-2 pt-1 pe-2 pb-1 rounded"><strong>Core: &nbsp;</strong>{{ assistant.llm_model.model_name }}</small>
-                </div>
-              </button>
-            </form>
+            </a>
           </li>
           {% endfor %}
         </ul>
@@ -207,20 +205,35 @@
         <div class="chat-history-header">
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex overflow-hidden align-items-center">
-              <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-contacts"></i>
+              <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-chats"></i>
               <div class="flex-shrink-0 avatar avatar-online">
                 <img src="{{ active_chat.assistant.assistant_image.url }}" class="rounded-circle" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
               </div>
               <div class="chat-contact-info flex-grow-1 ms-4">
-                <h5 class="m-0 fw-normal"><strong>{{ active_chat.chat_name }}</strong></h5>
-                <h6 class="m-0 fw-normal">{{ active_chat.assistant.name }}</h6>
+                <form method="post" action=".">
+                  {% csrf_token %}
+                  <div class="d-flex justify-content-between align-items-center mt-2">
+                    <input type="text" class="form-control bg-lightest text-bg-light" name="new_chat_name" value="{{ active_chat.chat_name }}" style="font-weight: bold;" />
+                    <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
+                    <button type="submit" class="btn btn-link p-0 ms-2">
+                      <i class="fa fa-save text-bg-light"></i>
+                    </button>
+                  </div>
+                </form>
+                <h6 class="m-0 fw-normal mt-1 ms-1">
+                  <small class="text-muted">
+                    <strong>
+                      {{ active_chat.assistant.organization }} / {{ active_chat.assistant.name }} / {{ active_chat.assistant.llm_model.nickname }} / {{ active_chat.assistant.llm_model.model_name }}
+                    </strong>
+                  </small>
+                </h6>
               </div>
             </div>
             <div class="d-flex align-items-center">
               <div class="dropdown">
                 <button class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions"><i class="ti ti-dots-vertical ti-md"></i></button>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
-                  <a class="dropdown-item bg-label-danger" href="?delete_chat={{ active_chat.id }}"><strong>Delete Chat</strong></a>
+                  <a class="dropdown-item bg-label-danger" href="{% url 'multimodal_chat:delete' active_chat.id %}"><strong>Delete Chat</strong></a>
                 </div>
               </div>
             </div>
@@ -260,8 +273,9 @@
         </div>
         <!-- Chat message form -->
         <div class="chat-history-footer shadow-xs">
-          <form class="form-send-message d-flex justify-content-between align-items-center" method="post" action=".">
+          <form class="form-send-message d-flex justify-content-between align-items-center" method="post" action="." enctype="multipart/form-data">
             {% csrf_token %}
+            <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
             <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
             <input class="form-control message-input border-0 me-4 shadow-none" name="message_content" placeholder="Type your message here...">
             <div class="message-actions d-flex align-items-center">
@@ -270,7 +284,7 @@
                 <i class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                 <input type="file" id="attach-doc" hidden>
               </label>
-              <button class="btn btn-primary d-flex send-msg-btn">
+              <button class="btn btn-primary d-flex send-msg-btn" type="submit">
                 <span class="align-middle d-md-inline-block d-none">Send</span>
                 <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
               </button>
@@ -312,31 +326,6 @@
             <li class="d-flex align-items-center">
               <i class='ti ti-clock ti-md'></i>
               <span class="align-middle ms-2">Available 24/7</span>
-            </li>
-          </ul>
-        </div>
-        <div class="my-6">
-          <p class="text-uppercase text-muted mb-1">Options</p>
-          <ul class="list-unstyled d-grid gap-4 ms-2 py-2 text-heading">
-            <li class="cursor-pointer d-flex align-items-center">
-              <i class='ti ti-badge ti-md'></i>
-              <span class="align-middle ms-2">Add Tag</span>
-            </li>
-            <li class="cursor-pointer d-flex align-items-center">
-              <i class='ti ti-star ti-md'></i>
-              <span class="align-middle ms-2">Important Contact</span>
-            </li>
-            <li class="cursor-pointer d-flex align-items-center">
-              <i class='ti ti-photo ti-md'></i>
-              <span class="align-middle ms-2">Shared Media</span>
-            </li>
-            <li class="cursor-pointer d-flex align-items-center">
-              <i class='ti ti-trash ti-md'></i>
-              <span class="align-middle ms-2">Delete Contact</span>
-            </li>
-            <li class="cursor-pointer d-flex align-items-center">
-              <i class='ti ti-ban ti-md'></i>
-              <span class="align-middle ms-2">Block Contact</span>
             </li>
           </ul>
         </div>
