@@ -19,6 +19,15 @@
 
 ---
 
+### TECHNICAL CONSIDERATIONS
+
+- [ ] Docker compose YAML file design.
+- [ ] GitHub work-flows for CI/CD and integration testing with the application on the cloud.
+- [ ] Development of the unit and integration tests for the application.
+
+
+---
+
 
 ### HELPER PAGES
 
@@ -75,7 +84,6 @@
 - [ ] Integrate the fine-tuning pages.
 - [ ] Integrate the orchestration pages.
 - [ ] Integrate the registration page.
-
 - [ ] Integrate SQL database features.
 - [ ] Integrate NOSQL database features.
 - [ ] Integrate the knowledge base & document features.
@@ -85,7 +93,6 @@
 - [ ] Integrate the video storage features.
 - [ ] Integrate the audio storage features.
 - [ ] Integrate the file system manipulation features.
-
 - [ ] Integrate the functions multi-modality.
 - [ ] Integrate the API multi-modality.
 - [ ] Integrate the Conditionals multi-modality.
@@ -93,7 +100,6 @@
 - [ ] Integrate the Webhooks / triggers multi-modality.
 - [ ] Integrate Image generation multi-modality.
 - [ ] Integrate Audio generation multi-modality.
-
 - [ ] Develop functions for different "industries".
 - [ ] Integrate "Integrations multi-modality".
 - [ ] Integrate "Meta-Integrations multi-modality".
