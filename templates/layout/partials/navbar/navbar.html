@@ -205,7 +205,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <a class="dropdown-item mt-0" href="#">
+                <a class="dropdown-item mt-0">
                   <div class="d-flex align-items-center">
                     <div class="flex-shrink-0 me-2">
                       <div class="avatar avatar-online">
@@ -217,9 +217,11 @@
                       </div>
                     </div>
                     <div class="flex-grow-1">
-                      <h6 class="mb-0">{{ request.user.username }}</h6>
+                      <h6 class="mb-0">{{ request.user.profile.first_name }} {{ request.user.profile.last_name }}</h6>
+                      <small class="text"><strong>Username: &nbsp;&nbsp;</strong>{{ request.user.username }}</small>
+                      <br>
                       {% for group in request.user.groups.all %}
-                      <small class="text-muted">{{ group.name }}</small>
+                      <small class="text"><strong>Role: &nbsp;&nbsp;</strong>{{ group.name }}</small>
                       {% endfor %}
                     </div>
                   </div>
@@ -229,7 +231,7 @@
                 <div class="dropdown-divider my-1 mx-n2"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{% url "user_profile_management:list" %}">
                   <i class="ti ti-user me-3 ti-md"></i><span class="align-middle">My Profile</span>
                 </a>
               </li>

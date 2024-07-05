@@ -23,17 +23,21 @@ from web_project.views import SystemView
 
 
 urlpatterns = [
+    path("", include("apps.landing.urls", namespace="landing")),
     path("admin/", admin.site.urls),
-    path("", include("auth.urls")),
-    path("organization/", include("apps.organization.urls", namespace="organization")),
-    path("dashboard/", include("apps.dashboard.urls", namespace="dashboard")),
-    path("llm_core/", include("apps.llm_core.urls", namespace="llm_core")),
-    path("llm_transaction/", include("apps.llm_transaction.urls", namespace="llm_transaction")),
-    path("subscription/", include("apps.subscription.urls", namespace="subscription")),
-    path("user_management/", include("apps.user_management.urls", namespace="user_management")),
-    path("user_permissions/", include("apps.user_permissions.urls", namespace="user_permissions")),
-    path("assistants/", include("apps.assistants.urls", namespace="assistants")),
-    path("multimodal_chat/", include("apps.multimodal_chat.urls", namespace="multimodal_chat")),
+    path("app/", include("auth.urls")),
+    path("app/user_profile_management/", include("apps.user_profile_management.urls",
+                                                 namespace="user_profile_management")),
+    path("app/user_settings/", include("apps.user_settings.urls", namespace="user_settings")),
+    path("app/dashboard/", include("apps.dashboard.urls", namespace="dashboard")),
+    path("app/organization/", include("apps.organization.urls", namespace="organization")),
+    path("app/llm_core/", include("apps.llm_core.urls", namespace="llm_core")),
+    path("app/llm_transaction/", include("apps.llm_transaction.urls", namespace="llm_transaction")),
+    path("app/subscription/", include("apps.subscription.urls", namespace="subscription")),
+    path("app/user_management/", include("apps.user_management.urls", namespace="user_management")),
+    path("app/user_permissions/", include("apps.user_permissions.urls", namespace="user_permissions")),
+    path("app/assistants/", include("apps.assistants.urls", namespace="assistants")),
+    path("app/multimodal_chat/", include("apps.multimodal_chat.urls", namespace="multimodal_chat")),
 ]
 
 

@@ -5,13 +5,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
 from apps.organization.models import Organization
-from apps.subscription.forms import SubscriptionForm
-from apps.subscription.models import SUBSCRIPTION_PLANS, SUBSCRIPTION_COSTS, SUBSCRIPTION_LIMITS, Subscription
 from web_project import TemplateLayout
 
 
 # Create your views here.
 
+"""
 class CreateSubscriptionView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -104,3 +103,4 @@ class DeleteSubscriptionView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         user = self.request.user
         return Subscription.objects.filter(user=user)
+"""

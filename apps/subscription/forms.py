@@ -1,8 +1,7 @@
 from django import forms
 
-from .models import Subscription, SUBSCRIPTION_PLANS
 
-
+"""
 class SubscriptionForm(forms.ModelForm):
     subscription_plan = forms.ChoiceField(choices=SUBSCRIPTION_PLANS)
     subscription_period = forms.ChoiceField(choices=[('monthly', 'Monthly'), ('annual', 'Annual')])
@@ -10,11 +9,13 @@ class SubscriptionForm(forms.ModelForm):
     class Meta:
         model = Subscription
         fields = [
-            'organization',
-            'name_on_card',
-            'card_number',
-            'card_expiration_month',
-            'card_expiration_year',
-            'card_cvc',
+            'user',
+            # 'credit_card',
             'subscription_plan',
+            'subscription_start_date',
+            'subscription_end_date',
+            'auto_renew',
+            'auto_renew_mode',
         ]
+
+"""

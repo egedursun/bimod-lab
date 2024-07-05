@@ -71,7 +71,7 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
             created_user = User.objects.create_user(username=username, email=email, password=password)
             created_user.set_password(password)
             created_user.save()
-            user_group, created = Group.objects.get_or_create(name="client")
+            user_group, created = Group.objects.get_or_create(name="user")
             created_user.groups.add(user_group)
             token = str(uuid.uuid4())
             user_profile, created = Profile.objects.get_or_create(user=created_user)

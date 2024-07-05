@@ -1,12 +1,37 @@
-
+from django import forms
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import UniqueConstraint
-from django.db.models.signals import post_save, m2m_changed
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from apps.user_permissions.models import UserPermission, PERMISSION_TYPES
 from auth.utils import generate_random_string
+
+
+class UserCreditCard(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='credit_cards')
+    name_on_card = models.CharField(max_length=255, null=False, blank=False)
+    card_number = models.CharField(max_length=16, null=False, blank=False)
+    card_expiration_month = models.CharField(max_length=2, null=False, blank=False)
+    card_expiration_year = models.CharField(max_length=2, null=False, blank=False)
+    card_cvc = models.CharField(max_length=4, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.name_on_card}"
+
+    class Meta:
+        verbose_name = "Credit Card"
+        verbose_name_plural = "Credit Cards"
+        ordering = ["-created_at"]
+
+    # convert every name_on_card letters to uppercase on save
+    def save(self, *args, **kwargs):
+        self.name_on_card = self.name_on_card.upper()
+        super(UserCreditCard, self).save(*args, **kwargs)
+
+        # add the card to the relevant user's credit cards
+        self.user.profile.credit_cards.add(self)
 
 
 class Profile(models.Model):
@@ -29,8 +54,8 @@ class Profile(models.Model):
     postal_code = models.CharField(max_length=100, blank=True, null=True)
 
     profile_picture_save_path = 'profile_pictures/%Y/%m/%d/' + generate_random_string()
-    profile_picture = models.ImageField(upload_to=profile_picture_save_path, blank=True, max_length=1000,
-                                        null=True)
+    profile_picture = models.ImageField(upload_to=profile_picture_save_path, max_length=1000, blank=True,
+                                        default='/profile_pictures/default.png')
     is_active = models.BooleanField(default=True)
 
     created_by_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile_created_by_users",
@@ -38,6 +63,9 @@ class Profile(models.Model):
 
     # Add permissions for users
     permissions = models.ManyToManyField(UserPermission, related_name='user_permissions', blank=True)
+
+    # Credit card information for the subscription.
+    credit_cards = models.ManyToManyField(UserCreditCard, related_name='user_credit_cards', blank=True)
 
     def __str__(self):
         return self.user.username
@@ -51,6 +79,11 @@ class Profile(models.Model):
                 UserPermission.objects.get_or_create(user=instance, permission_type=permission[0])
             permissions_of_user = UserPermission.objects.filter(user=instance)
             instance.profile.permissions.add(*permissions_of_user)
+
+        # if no profile image assign the default in the media folder
+        if not instance.profile.profile_picture:
+            instance.profile.profile_picture = 'profile_pictures/default.png'
+            instance.profile.save()
 
     class Meta:
         verbose_name = "User Profile"

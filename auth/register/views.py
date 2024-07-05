@@ -63,7 +63,7 @@ class RegisterView(AuthView):
         created_user.save()
 
         # Add the user to the 'client' group (or any other group you want to use as default for new users)
-        user_group, created = Group.objects.get_or_create(name="client")
+        user_group, created = Group.objects.get_or_create(name="tenant")
         created_user.groups.add(user_group)
 
         # Generate a token and send a verification email here

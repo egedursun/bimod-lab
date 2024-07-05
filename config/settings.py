@@ -82,6 +82,9 @@ INSTALLED_APPS = [
     "auth.apps.AuthConfig",
     "apps.theme.transactions",
     #############################
+    "apps.landing",
+    "apps.user_profile_management",
+    "apps.user_settings",
     "apps.dashboard",
     "apps.organization",
     "apps.llm_core",
@@ -236,8 +239,8 @@ EMAIL_HOST_PASSWORD = "Cosmos12345!"
 
 # Login your mail
 # ------------------------------------------------------------------------------
-LOGIN_URL = "/login/"
-LOGOUT_REDIRECT_URL = "/login/"
+LOGIN_URL = "/app/login/"
+LOGOUT_REDIRECT_URL = "/app/login/"
 
 
 # Session
@@ -256,14 +259,14 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 EXCLUDED_PAGES = [
-    "/login",
-    "/logout",
-    "/register",
-    "/verify_email_page",
-    "/verify_email",
-    "/send_verification",
-    "/forgot_password",
-    "/reset_password",
+    "/app/login",
+    "/app/logout",
+    "/app/register",
+    "/app/verify_email_page",
+    "/app/verify_email",
+    "/app/send_verification",
+    "/app/forgot_password",
+    "/app/reset_password",
 ]
 
 # Your stuff...

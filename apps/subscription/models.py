@@ -1,141 +1,46 @@
+"""
+
 import datetime
 
 import django
 from django.db import models
 from django.utils import timezone
 
+
 SUBSCRIPTION_PLANS = [
     ("free", "free"),
     ("starter", "starter"),
-    ("grower", "grower"),
-    ("enterprise", "enterprise"),
+    ("professional", "professional"),
+    ("unlimited", "unlimited"),
+    ############
 ]
 
-SUBSCRIPTION_COSTS = {
+SUBSCRIPTION_COSTS_MONTHLY = {
     "free": 0,
-    "starter": 1000,
-    "grower": 5000,
-    "enterprise": 10000,
+    "starter": 990.99,
+    "professional": 1990.99,
+    "unlimited": 4990.99,
 }
 
-SUBSCRIPTION_BALANCE_DISCOUNT_RATES = {
-    "free": 0.0,
-    "starter": 0.10,
-    "grower": 0.15,
-    "enterprise": 0.20,
+SUBSCRIPTION_COSTS_ANNUALLY = {
+    "free": 0,
+    "starter": 990.99 * 12 * 0.9,
+    "professional": 1990.99 * 12 * 0.8,
+    "unlimited": 4990.99 * 12 * 0.6,
 }
 
-SUBSCRIPTION_LIMITS = {
-    "free" : {
-        "max_number_of_llm_cores": 1,
-        "max_number_of_users": 3,
-        "max_number_of_assistants": 1,
-        "max_number_of_chats": 10,
-        "orchestrations": 0,
-        "long_term_memory": False,
-        "providers": 0,
-        "file_systems": 0,
-        "web_browsers": 1,
-        "sql_databases": 1,
-        "knowledge_bases": 1,
-        "documents": 5,
-        "image_storage": False,
-        "video_storage": False,
-        "audio_storage": False,
-        "functions": 3,
-        "api": 3,
-        "scheduled_jobs": 1,
-        "triggers": 0,
-        "image_gen_and_analysis": False,
-        "audio_gen_and_analysis": False,
-        "integrations": 0,
-        "meta_integrations": 0,
-    },
-    "starter" : {
-        "max_number_of_llm_cores": 5,
-        "max_number_of_users": 20,
-        "max_number_of_assistants": 10,
-        "max_number_of_chats": 100_000_000,
-        "orchestrations": 1,
-        "long_term_memory": True,
-        "providers": 10,
-        "file_systems": 1,
-        "web_browsers": 3,
-        "sql_databases": 3,
-        "knowledge_bases": 3,
-        "documents": 1000,
-        "image_storage": True,
-        "video_storage": True,
-        "audio_storage": True,
-        "functions": 30,
-        "api": 15,
-        "scheduled_jobs": 10,
-        "triggers": 10,
-        "image_gen_and_analysis": True,
-        "audio_gen_and_analysis": True,
-        "integrations": 3,
-        "meta_integrations": 0,
-    },
-    "grower" : {
-        "max_number_of_llm_cores": 30,
-        "max_number_of_users": 100,
-        "max_number_of_assistants": 30,
-        "max_number_of_chats": 100_000_000,
-        "orchestrations": 10,
-        "long_term_memory": True,
-        "providers": 30,
-        "file_systems": 10,
-        "web_browsers": 10,
-        "sql_databases": 10,
-        "knowledge_bases": 10,
-        "documents": 10_000,
-        "image_storage": True,
-        "video_storage": True,
-        "audio_storage": True,
-        "functions": 250,
-        "api": 100,
-        "scheduled_jobs": 50,
-        "triggers": 50,
-        "image_gen_and_analysis": True,
-        "audio_gen_and_analysis": True,
-        "integrations": 10,
-        "meta_integrations": 3,
-    },
-    "enterprise" : {
-        "max_number_of_llm_cores": 100_000_000,
-        "max_number_of_users": 100_000_000,
-        "max_number_of_assistants": 100_000_000,
-        "max_number_of_chats": 100_000_000,
-        "orchestrations": 100_000_000,
-        "long_term_memory": True,
-        "providers": 100_000_000,
-        "file_systems": 100_000_000,
-        "web_browsers": 100_000_000,
-        "sql_databases": 100_000_000,
-        "knowledge_bases": 100_000_000,
-        "documents": 100_000_000,
-        "image_storage": True,
-        "video_storage": True,
-        "audio_storage": True,
-        "functions": 100_000_000,
-        "api": 100_000_000,
-        "scheduled_jobs": 100_000_000,
-        "triggers": 100_000_000,
-        "image_gen_and_analysis": True,
-        "audio_gen_and_analysis": True,
-        "integrations": 100_000_000,
-        "meta_integrations": 100_000_000,
-    },
-}
-
-
-SUBSCRIPTION_STATUSES = [
-    ("free_starter", "free_starter"),
-    ("active", "active"),
-    ("missed_payment", "missed_payment"),
-    ("cancelled", "cancelled"),
-    ("on_trial", "on_trial"),
+RENEWAL_MODES = [
+    ("monthly", "monthly"),
+    ("annual", "annual"),
 ]
+
+
+SUBSCRIPTION_MESSAGE_LIMITS = {
+    "free": 100,
+    "starter": int(1000),
+    "professional": int(10_000),
+    "unlimited": int(100_000_000_000),
+}
 
 
 # Create your models here.
@@ -144,69 +49,33 @@ class Subscription(models.Model):
     user = models.ForeignKey('auth.User',
                              on_delete=models.CASCADE,
                              related_name='subscriptions')
-    organization = models.ForeignKey('organization.Organization',
-                                     on_delete=models.CASCADE,
-                                     related_name='subscriptions')
-
-    # Credit card information for the subscription.
-    name_on_card = models.CharField(max_length=255, null=False)
-    card_number = models.CharField(max_length=19, null=False)
-    card_expiration_month = models.CharField(max_length=2, null=False)
-    card_expiration_year = models.CharField(max_length=2, null=False)
-    card_cvc = models.CharField(max_length=4, null=False)
+    credit_card = models.ForeignKey('auth.UserCreditCard', on_delete=models.CASCADE, related_name='subscriptions',
+                                    blank=True, null=True)
 
     # Subscription plan selection.
     subscription_plan = models.CharField(max_length=100, choices=SUBSCRIPTION_PLANS, default="free")
-    subscription_cost = models.FloatField(choices=SUBSCRIPTION_COSTS, default=0.0)
-    subscription_balance_discount_rate = models.FloatField(choices=SUBSCRIPTION_BALANCE_DISCOUNT_RATES, default=0.0)
-
-    # Granted permission limits (automatically set based on the subscription plan).
-    max_number_of_llm_cores = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["max_number_of_llm_cores"])
-    max_number_of_users = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["max_number_of_users"])
-    max_number_of_assistants = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["max_number_of_assistants"])
-    max_number_of_chats = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["max_number_of_chats"])
-    max_orchestrations = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["orchestrations"])
-    max_providers = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["providers"])
-    max_file_systems = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["file_systems"])
-    max_web_browsers = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["web_browsers"])
-    max_sql_databases = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["sql_databases"])
-    max_knowledge_bases = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["knowledge_bases"])
-    max_documents = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["documents"])
-    max_functions = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["functions"])
-    max_api = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["api"])
-    max_scheduled_jobs = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["scheduled_jobs"])
-    max_triggers = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["triggers"])
-    max_integrations = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["integrations"])
-    max_meta_integrations = models.IntegerField(default=SUBSCRIPTION_LIMITS["free"]["meta_integrations"])
-    allow_long_term_memory = models.BooleanField(default=SUBSCRIPTION_LIMITS["free"]["long_term_memory"])
-    allow_image_storage = models.BooleanField(default=SUBSCRIPTION_LIMITS["free"]["image_storage"])
-    allow_video_storage = models.BooleanField(default=SUBSCRIPTION_LIMITS["free"]["video_storage"])
-    allow_audio_storage = models.BooleanField(default=SUBSCRIPTION_LIMITS["free"]["audio_storage"])
-    allow_image_gen_and_analysis = models.BooleanField(default=SUBSCRIPTION_LIMITS["free"]["image_gen_and_analysis"])
-    allow_audio_gen_and_analysis = models.BooleanField(default=SUBSCRIPTION_LIMITS["free"]["audio_gen_and_analysis"])
 
     # Get current day of the month as the renewal date. (automatically set based on the creation date of the instances)
-    renewal_day_of_month = models.IntegerField(default=timezone.now().day)
-    subscription_status = models.CharField(max_length=100, choices=SUBSCRIPTION_STATUSES, default="free_starter")
-    next_renewal_date = models.DateTimeField(default=django.utils.timezone.now() + datetime.timedelta(days=30))
+    subscription_start_date = models.DateField(default=django.utils.timezone.now)
+    subscription_end_date = models.DateField(default=django.utils.timezone.now)
+    auto_renew = models.BooleanField(default=True)
+    auto_renew_mode = models.CharField(max_length=100, choices=RENEWAL_MODES, default="monthly")
+
+    ################################################################
+    # Subscription limits
+    ################################################################
+    subscription_message_limit = models.IntegerField(default=SUBSCRIPTION_MESSAGE_LIMITS["free"])
+    ################################################################
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                        related_name="created_subscriptions", default=1)
-    last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                             related_name="updated_subscriptions", default=1)
 
     def __str__(self):
-        return f"{self.organization.name} - {self.subscription_plan} - {self.created_at}"
+        return f"{self.user.username} - {self.subscription_plan} - {self.created_at}"
 
     class Meta:
         verbose_name = "Subscription"
         verbose_name_plural = "Subscriptions"
         ordering = ["-created_at"]
 
-    def get_subscription_cost(self):
-        return SUBSCRIPTION_COSTS[self.subscription_plan]
-
-    def get_subscription_balance_discount_rate(self):
-        return SUBSCRIPTION_BALANCE_DISCOUNT_RATES[self.subscription_plan]
+"""
