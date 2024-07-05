@@ -37,10 +37,10 @@ TEMPLATE_CONFIG = {
 # Theme Variables
 # ? Personalize template by changing theme variables (For ex: Name, URL Version etc...)
 THEME_VARIABLES = {
-    "creator_name": "ASTROLITH.",
-    "creator_url": "https://astrolith.com/web",
-    "template_name": "ASTROLITH.",
-    "template_suffix": "Django Admin Template",
+    "creator_name": "Bimod.io",
+    "creator_url": "https://bimod.io/web",
+    "template_name": "Bimod.io",
+    "template_suffix": "Bimod.io - Intelligent Assistant as a Service",
     "template_version": "2.0.0",
     "template_free": False,
     "template_description": "Vuexy is a modern, clean and fully responsive admin template built with Bootstrap 5, Django, HTML, CSS, jQuery, and JavaScript. It has a huge collection of reusable UI components and integrated with the latest jQuery plugins. It can be used for all types of web applications like custom admin panel, project management system, admin dashboard, Backend application or CRM.",

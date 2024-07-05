@@ -58,7 +58,7 @@
     <div class="col app-chat-sidebar-left app-sidebar overflow-hidden" id="app-chat-sidebar-left">
       <div class="chat-sidebar-left-user sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
         <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
-          <img src="{% static 'img/avatars/1.png' %}" alt="Avatar" class="rounded-circle">
+          <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}" alt="Avatar" class="rounded-circle">
         </div>
         <i class="ti ti-x ti-lg cursor-pointer close-sidebar" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-left"></i>
       </div>
@@ -262,7 +262,7 @@
                 {% if message.sender_type == 'USER' %}
                 <div class="user-avatar flex-shrink-0 ms-4">
                   <div class="avatar avatar-sm">
-                    <img src="{% static 'img/avatars/0.png' %}" alt="Avatar" class="rounded-circle">
+                    <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}" alt="Avatar" class="rounded-circle">
                   </div>
                 </div>
                 {% endif %}

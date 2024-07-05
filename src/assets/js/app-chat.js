@@ -161,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Search chat and contacts function
+    /*
     function searchChatContacts(searchListItems, searchListItemsCount, searchValue, listItem0) {
       searchListItems.forEach(searchListItem => {
         let searchListItemText = searchListItem.textContent.toLowerCase();
@@ -185,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
         listItem0.classList.add('d-none');
       }
     }
+     */
 
     // Send Message
     formSendMessage.addEventListener('submit', e => {
