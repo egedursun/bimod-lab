@@ -1,4 +1,6 @@
 from django.views.generic import TemplateView
+
+from auth.countries import COUNTRIES
 from web_project import TemplateLayout
 from web_project.template_helpers.theme import TemplateHelper
 
@@ -17,6 +19,7 @@ class AuthView(TemplateView):
         context.update(
             {
                 "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+                "countries": COUNTRIES,
             }
         )
         return context

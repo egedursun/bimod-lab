@@ -31,7 +31,8 @@
         let y = (window.innerHeight - e.pageY * 2) / 100;
         layer.style.transform = `perspective(1200px) rotateX(${y}deg) rotateY(${x}deg) scale3d(1, 1, 1)`;
       });
-    });
+    })
+    /*
     nav.addEventListener('mousemove', function parallax(e) {
       animationElements.forEach(layer => {
         layer.style.transform = 'translateZ(1rem)';
@@ -42,6 +43,7 @@
         layer.style.transform = `perspective(1200px) rotateX(${y}deg) rotateY(${x}deg) scale3d(1, 1, 1)`;
       });
     });
+     */
 
     heroAnimation.addEventListener('mouseout', function () {
       animationElements.forEach(layer => {
@@ -85,12 +87,14 @@
   // Reviews slider next and previous
   // -----------------------------------
   // Add click event listener to next button
+  /*
   ReviewsNextBtn.addEventListener('click', function () {
     ReviewsSliderNext.click();
   });
   ReviewsPreviousBtn.addEventListener('click', function () {
     ReviewsSliderPrev.click();
   });
+   */
 
   // Review client logo
   // -----------------------------------

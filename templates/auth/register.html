@@ -49,7 +49,7 @@
     <!-- Register -->
     <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
       <div class="w-px-400 mx-auto mt-12 pt-5">
-        <h4 class="mb-1">Your greatest adventure begins 🚀</h4>
+        <h4 class="mb-1"><strong>Your greatest adventure begins 🚀</strong></h4>
         <p class="mb-6">Make your app management easy and fun!</p>
         <p class="mb-6">Don't worry, it will only take up a few seconds of your time.</p>
         {% if messages %}
@@ -107,7 +107,12 @@
           </div>
           <div class="mb-6">
             <label for="country" class="form-label">Country</label>
-            <input type="text" class="form-control" id="country" name="country" placeholder="Enter your country">
+            <select id="country" name="country" class="select2 form-select">
+              <option value="">Select</option>
+              {% for country in countries %}
+              <option value="{{ country }}" {% if request.user.profile.country == country %}selected{% endif %}>{{ country }}</option>
+              {% endfor %}
+            </select>
           </div>
           <div class="mb-6">
             <label for="postal_code" class="form-label">Postal Code</label>

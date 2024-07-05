@@ -259,6 +259,10 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 EXCLUDED_PAGES = [
+    "/",
+    "/contact-form-submit",
+    "/docs",
+    "/faq",
     "/app/login",
     "/app/logout",
     "/app/register",
@@ -278,6 +282,8 @@ DESIGN_DOCS_ROUTE = 'dev/design/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
+DEFAULT_FROM_EMAIL = ""
 
 
 

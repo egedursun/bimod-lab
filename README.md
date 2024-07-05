@@ -31,22 +31,22 @@
 
 ### HELPER PAGES
 
-- [ ] Profile page for the user.
-- [ ] Settings page for miscellaneous settings related to the account. (Adding/Modifying/Deleting credit card, deleting account, etc.)
-- [ ] F.A.Q. page for the users and explanations regardign the application.
-- [ ] Documentation page for explaining how the application works, and tutorials for the users.
-- [ ] Support page for the users to contact the support team.
-- [ ] Landing page for the application:
-  - [ ] Main section + Navigation.
-  - [ ] Main illustration.
-  - [ ] About section.
-  - [ ] Services section.
-  - [ ] Features section.
-  - [ ] Team section.
-  - [ ] Testimonials / Clients section.
-  - [ ] Pricing section.
-  - [ ] Contact Us section.
-  - [ ] Footer section.
+- [X] Profile page for the user.
+- [X] Settings page for miscellaneous settings related to the account. (Adding/Modifying/Deleting credit card, deleting account, etc.)
+- [X] F.A.Q. page for the users and explanations regardign the application.
+- [X] Documentation page for explaining how the application works, and tutorials for the users.
+- [X] Support page for the users to contact the support team.
+- [X] Landing page for the application:
+  - [X] Main section + Navigation.
+  - [X] Main illustration.
+  - [X] About section.
+  - [X] Services section.
+  - [X] Features section.
+  - [X] Team section.
+  - [X] Testimonials / Clients section.
+  - [X] Pricing section.
+  - [X] Contact Us section.
+  - [X] Footer section.
 
 
 ---
@@ -63,7 +63,8 @@
 - [ ] Connect assistant response framework.
 - [ ] Test the flow of chat.
 - [X] **URGENT:** When the chat is created the first time, there is a bug preventing the user message to be sent.
-
+- [ ] **URGENT:** Fix the documentation page and include content.
+- [ ] **URGENT:** Fix the FAQ page and include content.
 ---
 
 

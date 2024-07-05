@@ -2,6 +2,8 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.conf import settings
+
+from auth.countries import COUNTRIES
 from auth.views import AuthView
 from auth.helpers import send_verification_email
 from auth.models import Profile
@@ -12,10 +14,12 @@ class RegisterView(AuthView):
     def get(self, request):
         if request.user.is_authenticated:
             # If the user is already logged in, redirect them to the home page or another appropriate page.
-            return redirect("index")  # Replace 'index' with the actual URL name for the home page
+            return redirect("dashboard:main-dashboard")
 
         # Render the login page for users who are not logged in.
-        return super().get(request)
+        # get the context
+        context = self.get_context_data()
+        return super().get(request, context)
 
     def post(self, request):
         username = request.POST.get("username")
