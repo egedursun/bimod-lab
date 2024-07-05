@@ -54,7 +54,6 @@
 - [ ] Connect assistant response framework.
 - [ ] Test the flow of chat.
 - [ ] **URGENT:** When the chat is created the first time, there is a bug preventing the user message to be sent.
-- 
 
 ---
 
