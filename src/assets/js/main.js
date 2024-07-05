@@ -361,7 +361,6 @@ if (document.getElementById('layout-menu')) {
 // ! Removed following code if you do't wish to use jQuery. Remember that navbar search functionality will stop working on removal.
 if (typeof $ !== 'undefined') {
   $(function () {
-    // ! TODO: Required to load after DOM is ready, did this now with jQuery ready.
     window.Helpers.initSidebarToggle();
     // Toggle Universal Sidebar
 

@@ -199,7 +199,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let renderMsg = document.createElement('div');
         renderMsg.className = 'chat-message-text mt-2';
         renderMsg.innerHTML = '<p class="mb-0 text-break">' + messageInput.value + '</p>';
-        // TODO: this is adding the message just sent to the user interface / UI when the send button is clicked
         // document.querySelector('li:last-
         child .chat-message-wrapper').appendChild(renderMsg);
         messageInput.value = '';

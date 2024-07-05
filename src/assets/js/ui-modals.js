@@ -44,7 +44,6 @@
   // Onboarding modal carousel height animation
   document.querySelectorAll('.carousel').forEach(carousel => {
     carousel.addEventListener('slide.bs.carousel', event => {
-      // ! Todo: Convert to JS (animation) (jquery)
       var nextH = $(event.relatedTarget).height();
       $(carousel).find('.active.carousel-item').parent().animate(
         {

@@ -56,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Init event Offcanvas
     const bsAddEventSidebar = new bootstrap.Offcanvas(addEventSidebar);
 
-    //! TODO: Update Event label and guest code to JS once select removes jQuery dependency
     // Event Label (select2)
     if (eventLabel.length) {
       function renderBadges(option) {

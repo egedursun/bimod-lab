@@ -36,7 +36,6 @@
     });
   }
 
-  //! TODO: Update Event label and guest code to JS once select removes jQuery dependency
   // select2
   if (select2.length) {
     function renderLabels(option) {
