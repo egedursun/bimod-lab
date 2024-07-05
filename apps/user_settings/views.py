@@ -12,9 +12,3 @@ class UserSettingsView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context
-
-
-class UserSettingsUpdateView(TemplateView, LoginRequiredMixin):
-    def get_context_data(self, **kwargs):
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        return context

@@ -1,16 +1,100 @@
+{% extends layout_path %}
 
-<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
 
-<html lang="en">
-  <head>
-    <title>Settings - User settings</title>
-  </head>
-  <body>
-    <p>
-      Test page - click below to update
-    </p>
-    <button>
-      <a href="{% url "user_settings:update" %}">Go to Settings Update</a>
-    </button>
-  </body>
-</html>
+{% block title %}Account settings - Pages{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <!-- Settings -->
+      <div class="card-body">
+        <h5 class="mb-10"><strong>Application Settings</strong></h5>
+        <div class="alert alert-warning alert-dismissible d-flex col-lg-10 align-items-center mb-8" role="alert">
+              <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+                <span class="alert-icon rounded">
+                  <i class="ti ti-alert-square-rounded-filled"></i>
+                </span>
+                <div class="d-flex flex-column ps-1">
+                  <h5 class="alert-heading mb-2"><strong>Important Notice</strong></h5>
+                  <p class="mb-0 text-warning">
+                    In this page, you can view and manage the settings of your application. You can enable or disable
+                    features such as Named Entity Recognition (NER), Encryption of Personally Identifiable Information
+                    (PII), Automated Data Backup, Automated Software Updates and Bug Fixes, and Automated Model Updates
+                    and Monitoring. This feature is currently under development, and will be available in the next
+                    releases.
+                  </p>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  </button>
+                </div>
+              </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="text-nowrap">Feature</th>
+                <th class="text-nowrap text-center">Enabled</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-nowrap text-heading">Named Entity Recognition (NER)</td>
+                <td>
+                  <div class="form-check d-flex justify-content-center">
+                    <input class="form-check-input" type="checkbox" id="nerCheckbox" checked disabled />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-nowrap text-heading">Encryption of Personally Identifiable Information (PII)</td>
+                <td>
+                  <div class="form-check d-flex justify-content-center">
+                    <input class="form-check-input" type="checkbox" id="piiCheckbox" checked disabled />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-nowrap text-heading">Automated Data Backup</td>
+                <td>
+                  <div class="form-check d-flex justify-content-center">
+                    <input class="form-check-input" type="checkbox" id="feature1Checkbox" checked disabled />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-nowrap text-heading">Automated Software Updates and Bug Fixes</td>
+                <td>
+                  <div class="form-check d-flex justify-content-center">
+                    <input class="form-check-input" type="checkbox" id="feature2Checkbox" checked disabled />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-nowrap text-heading">Automated Model Updates and Monitoring</td>
+                <td>
+                  <div class="form-check d-flex justify-content-center">
+                    <input class="form-check-input" type="checkbox" id="feature3Checkbox" checked disabled />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- /Settings -->
+    </div>
+  </div>
+</div>
+{% endblock %}
