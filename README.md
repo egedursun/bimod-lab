@@ -63,7 +63,7 @@
 - [ ] Connect assistant response framework.
 - [ ] Test the flow of chat.
 - [X] When the chat is created the first time, there is a bug preventing the user message to be sent.
-- [ ] **URGENT:** Fix the documentation page and include content.
+- [X] Fix the documentation page and include content.
 - [X] Fix the FAQ page and include content.
 - [ ] **URGENT:** Transactions must also include the responsible user, to associate the costs with the users.
 - [ ] **URGENT:** Refine ideas regarding the dashboard page.
