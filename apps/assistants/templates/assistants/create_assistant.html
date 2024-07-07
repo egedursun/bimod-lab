@@ -124,6 +124,20 @@
             </span>
             Describe the audience for this assistant. For example, "This assistant is designed for students in the 9th grade."
           </div>
+          <div class="mb-6 col-lg-6">
+            <label class="form-label" for="max_retry_count">Maximum Response Retry Count</label>
+            <!-- slider bar here -->
+            <input type="range" class="form-range" id="max_retry_count" name="max_retry_count" min="0" max="10" step="1" value="3" oninput="this.nextElementSibling.value = this.value">
+            <output>3</output>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+            The maximum number of times the assistant will retry generating a response if it fails to generate a
+            response the first time. Please be aware that setting this value too high may cause the assistant to
+            spend too much time and credits to generate a response.
+          </div>
           <div class="mb-6">
             <label class="form-label" for="tone">Tone</label>
             <input type="text" class="form-control" id="tone" name="tone" placeholder="Enter tone" />
@@ -133,6 +147,22 @@
               <i class="ti ti-info-circle"></i>
             </span>
             Describe the tone for this assistant. For example, "This assistant intends to be friendly and helpful, in a casual tone."
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="response_language">Response Language</label>
+            <select class="form-select" id="response_language" name="response_language">
+              <option value="">Select Response Language</option>
+              {% for language in response_languages %}
+                <option value="{{ language.0 }}" {% if language.0 == "auto" %}selected{% endif %}>{{ language.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-info-circle"></i>
+              </span>
+              Select the language in which the assistant will respond to the user. If you select "auto", the
+              assistant will automatically detect the language of the user's input and respond in the same language.
           </div>
           <div class="mb-6">
             <label class="form-label" for="assistant_image">Assistant Image</label>

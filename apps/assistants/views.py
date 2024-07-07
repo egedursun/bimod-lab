@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
-from apps.assistants.models import Assistant
+from apps.assistants.models import Assistant, ASSISTANT_RESPONSE_LANGUAGES
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
@@ -19,6 +19,7 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
+        context['response_languages'] = ASSISTANT_RESPONSE_LANGUAGES
         return context
 
     def post(self, request, *args, **kwargs):
@@ -45,7 +46,9 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         instructions = request.POST.get('instructions')
         response_template = request.POST.get('response_template')
         audience = request.POST.get('audience')
+        max_retry_count = request.POST.get('max_retry_count')
         tone = request.POST.get('tone')
+        response_language = request.POST.get('response_language')
         assistant_image = request.FILES.get('assistant_image')
 
         if not (organization_id and llm_model_id and name and description and instructions and audience and tone):
@@ -62,11 +65,13 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             description=description,
             instructions=instructions,
             audience=audience,
+            max_retry_count=max_retry_count,
             tone=tone,
             assistant_image=assistant_image,
             created_by_user=context_user,
             last_updated_by_user=context_user,
-            response_templates=response_template
+            response_template=response_template,
+            response_language=response_language
         )
 
         # retrieve the assistants of the organization and add the new assistant
@@ -104,6 +109,7 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
         context['assistant'] = assistant
+        context['response_languages'] = ASSISTANT_RESPONSE_LANGUAGES
         return context
 
     def post(self, request, *args, **kwargs):
@@ -129,9 +135,11 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         assistant.description = request.POST.get('description')
         assistant.instructions = request.POST.get('instructions')
         assistant.audience = request.POST.get('audience')
+        assistant.max_retry_count = request.POST.get('max_retry_count')
         assistant.tone = request.POST.get('tone')
         assistant.llm_model_id = request.POST.get('llm_model')
         assistant.response_template = request.POST.get('response_template')
+        assistant.response_language = request.POST.get('response_language')
         assistant.last_updated_by_user = request.user
         if 'assistant_image' in request.FILES:
             assistant.assistant_image = request.FILES['assistant_image']

@@ -15,7 +15,7 @@
 - [X] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 - [X] Privacy Policy and Terms of Service development & integration for the application.
-
+- [ ] Stop Sequence Integration
 
 ---
 

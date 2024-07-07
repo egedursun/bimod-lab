@@ -8,14 +8,14 @@ from apps.assistants.models import Assistant
 @admin.register(Assistant)
 class AssistantAdmin(admin.ModelAdmin):
     list_display = (
-        "organization", "llm_model", "name", "description", "instructions", "audience", "tone", "created_by_user",
-        "last_updated_by_user", "created_at", "updated_at")
+        "organization", "response_language", "llm_model", "name", "description", "instructions", "audience", "tone",
+        "max_retry_count", "created_by_user", "last_updated_by_user", "created_at", "updated_at")
     list_filter = (
-        "organization", "llm_model", "name", "description", "instructions", "audience", "tone", "created_by_user",
-        "last_updated_by_user", "created_at", "updated_at")
+        "organization", "response_language", "llm_model", "name", "description", "instructions", "audience", "tone",
+        "max_retry_count", "created_by_user", "last_updated_by_user", "created_at", "updated_at")
     search_fields = (
-        "organization", "llm_model", "name", "description", "instructions", "audience", "tone", "created_by_user",
-        "last_updated_by_user", "created_at", "updated_at")
+        "organization", "response_language", "llm_model", "name", "description", "instructions", "audience", "tone",
+        "max_retry_count", "created_by_user", "last_updated_by_user", "created_at", "updated_at")
     date_hierarchy = "created_at"
     ordering = ["-created_at"]
 
