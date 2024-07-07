@@ -14,7 +14,7 @@
 - [ ] Better validation and logging system.
 - [X] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
-- [ ] Privacy Policy and Terms of Service development & integration for the application.
+- [X] Privacy Policy and Terms of Service development & integration for the application.
 
 
 ---
@@ -65,8 +65,8 @@
 - [X] When the chat is created the first time, there is a bug preventing the user message to be sent.
 - [X] Fix the documentation page and include content.
 - [X] Fix the FAQ page and include content.
-- [ ] **URGENT:** Transactions must also include the responsible user, to associate the costs with the users.
-- [ ] **URGENT:** Refine ideas regarding the dashboard page.
+- [X] Transactions must also include the responsible user, to associate the costs with the users.
+- [ ] Refine ideas regarding the dashboard page.
 ---
 
 
@@ -107,5 +107,18 @@
 - [ ] Integrate "Integrations multi-modality".
 - [ ] Integrate "Meta-Integrations multi-modality".
 
+
+---
+
+### PRODUCTION LEVEL IMPROVEMENTS
+
+- [ ] Develop the data privacy policy and terms of service to the application. (LEGAL)
+- [ ] Integrate social media accounts on: Facebook, Twitter, LinkedIn, Instagram. (Hüseyin)
+- [ ] Marketing via Webrazzi, Product Hunt, Hacker News, Reddit, etc. (Hüseyin)
+- [ ] Company formation + Crunchbase Profile. (Ege)
+- [ ] Incubation center + investor meetings. (Ege & Hüseyin)
+- [ ] SEO optimization for the application. (Emre?)
+- [ ] Blog application on the website for better SEO management. (Selin)
+- [ ] Customer meetings. (Ege & Hüseyin)
 
 ---
