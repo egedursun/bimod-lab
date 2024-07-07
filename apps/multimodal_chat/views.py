@@ -17,11 +17,15 @@ class ChatView(LoginRequiredMixin, TemplateView):
         active_chat = None
         if 'chat_id' in self.request.GET:
             active_chat = get_object_or_404(MultimodalChat, id=self.request.GET['chat_id'], user=self.request.user)
+
         chats = MultimodalChat.objects.filter(user=self.request.user)
 
         # if there is an active chat, put the active chat at the beginning of the list
         if active_chat:
             chats = [active_chat] + [chat for chat in chats if chat.id != active_chat.id]
+        else:
+            if len(chats) > 0:
+                active_chat = chats[0]
 
         assistants = Assistant.objects.filter(organization__users=self.request.user)
 

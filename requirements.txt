@@ -11,3 +11,4 @@ tiktoken==0.7.0
 wonderwords~=2.2.0
 country_list~=1.1.0
 openai~=1.35.10
+markdown~=3.6

@@ -1,4 +1,5 @@
 {% extends layout_path %}
+{% load markdown_extras %}
 
 {% load static %}
 {% load i18n %}
@@ -253,37 +254,37 @@
           </div>
         </div>
         <div class="chat-history-body">
-          <ul class="list-unstyled chat-history" style="height: 95%">
-            {% for message in chat_messages.all %}
-            <li class="chat-message {% if message.sender_type == 'USER' %}chat-message-right{% endif %}">
-              <div class="d-flex overflow-hidden">
-                {% if message.sender_type == 'ASSISTANT' %}
-                <div class="user-avatar flex-shrink-0 me-4">
-                  <div class="avatar avatar-sm">
-                    <img src="{{ active_chat.assistant.assistant_image.url }}" alt="Avatar" class="rounded-circle">
-                  </div>
-                </div>
-                {% endif %}
-                <div class="chat-message-wrapper flex-grow-1">
-                  <div class="chat-message-text">
-                    <p class="mb-0">{{ message.message_text_content }}</p>
-                  </div>
-                  <div class="text-muted mt-1">
-                    <small>{{ message.sent_at|date:"H:i A" }}</small>
-                  </div>
-                </div>
-                {% if message.sender_type == 'USER' %}
-                <div class="user-avatar flex-shrink-0 ms-4">
-                  <div class="avatar avatar-sm">
-                    <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}" alt="Avatar" class="rounded-circle">
-                  </div>
-                </div>
-                {% endif %}
-              </div>
-            </li>
-            {% endfor %}
-          </ul>
+  <ul class="list-unstyled chat-history" style="height: 95%">
+    {% for message in chat_messages.all %}
+    <li class="chat-message {% if message.sender_type == 'USER' %}chat-message-right{% endif %}">
+      <div class="d-flex overflow-hidden">
+        {% if message.sender_type == 'ASSISTANT' %}
+        <div class="user-avatar flex-shrink-0 me-4">
+          <div class="avatar avatar-sm">
+            <img src="{{ active_chat.assistant.assistant_image.url }}" alt="Avatar" class="rounded-circle">
+          </div>
         </div>
+        {% endif %}
+        <div class="chat-message-wrapper flex-grow-1">
+          <div class="chat-message-text">
+            <p class="mb-0 markdown-content">{{ message.message_text_content|linebreaksbr|safe }}</p>
+          </div>
+          <div class="text-muted mt-1">
+            <small>{{ message.sent_at|date:"H:i A" }}</small>
+          </div>
+        </div>
+        {% if message.sender_type == 'USER' %}
+        <div class="user-avatar flex-shrink-0 ms-4">
+          <div class="avatar avatar-sm">
+            <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}" alt="Avatar" class="rounded-circle">
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
         <!-- Chat message form -->
         <div class="chat-history-footer shadow-xs">
           <form class="form-send-message d-flex justify-content-between align-items-center" method="post" action="." enctype="multipart/form-data">
@@ -364,6 +365,17 @@
     }
   }
 </style>
+
+<!-- Include a markdown library, for example, Showdown.js -->
+<script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const converter = new showdown.Converter();
+  document.querySelectorAll('.markdown-content').forEach(function(element) {
+    element.innerHTML = converter.makeHtml(element.innerHTML);
+  });
+});
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
