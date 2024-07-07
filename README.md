@@ -67,7 +67,7 @@
 - [X] Fix the FAQ page and include content.
 - [X] Transactions must also include the responsible user, to associate the costs with the users.
 - [X] Show a loading bar while the message response is being calculated.
-- [ ] Show the messages in markdown format.
+- [X] Show the messages in markdown format.
 - [ ] Refine ideas regarding the dashboard page.
 ---
 
@@ -83,12 +83,12 @@
 - [X] Integrate permission management.
 - [X] Complete the pages for the user permission management.
 - [X] Integrate the assistants pages.
-- [ ] Integrate the chats pages.
+- [X] Integrate the chats pages.
 - [ ] Integrate the export assistant pages.
 - [ ] Integrate the memories pages.
 - [ ] Integrate the fine-tuning pages.
 - [ ] Integrate the orchestration pages.
-- [ ] Integrate the registration page.
+- [X] Integrate the registration page.
 - [ ] Integrate SQL database features.
 - [ ] Integrate NOSQL database features.
 - [ ] Integrate the knowledge base & document features.
