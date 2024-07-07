@@ -65,6 +65,8 @@
 - [X] **URGENT:** When the chat is created the first time, there is a bug preventing the user message to be sent.
 - [ ] **URGENT:** Fix the documentation page and include content.
 - [ ] **URGENT:** Fix the FAQ page and include content.
+- [ ] **URGENT:** Transactions must also include the responsible user, to associate the costs with the users.
+- [ ] **URGENT:** Refine ideas regarding the dashboard page.
 ---
 
 

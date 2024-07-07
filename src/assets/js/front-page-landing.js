@@ -8,7 +8,7 @@
     heroAnimation = document.getElementById('hero-animation'),
     animationImg = document.querySelectorAll('.hero-dashboard-img'),
     animationElements = document.querySelectorAll('.hero-elements-img'),
-    swiperLogos = document.getElementById('swiper-clients-logos'),
+    swiperLogos = document.getElementById('swiper-services-logos'),
     swiperReviews = document.getElementById('swiper-reviews'),
     ReviewsPreviousBtn = document.getElementById('reviews-previous-btn'),
     ReviewsNextBtn = document.getElementById('reviews-next-btn'),
@@ -58,6 +58,7 @@
   // swiper carousel
   // Customers reviews
   // -----------------------------------
+  /*
   if (swiperReviews) {
     new Swiper(swiperReviews, {
       slidesPerView: 1,
@@ -83,6 +84,7 @@
       }
     });
   }
+   */
 
   // Reviews slider next and previous
   // -----------------------------------
@@ -96,11 +98,12 @@
   });
    */
 
+  /*
   // Review client logo
   // -----------------------------------
   if (swiperLogos) {
     new Swiper(swiperLogos, {
-      slidesPerView: 2,
+      slidesPerView: 5,
       autoplay: {
         delay: 3000,
         disableOnInteraction: false
@@ -115,9 +118,11 @@
       }
     });
   }
+   */
 
   // Pricing Plans
   // -----------------------------------
+  /*
   document.addEventListener('DOMContentLoaded', function (event) {
     function togglePrice() {
       if (priceDurationToggler.checked) {
@@ -145,4 +150,6 @@
       togglePrice();
     };
   });
+
+   */
 })();
