@@ -60,12 +60,14 @@
 - [X] Handle the additional information in the registration page.
 - [X] Integrate the chat deletion page and functionality.
 - [X] Connect user message creation form.
-- [ ] Connect assistant response framework.
-- [ ] Test the flow of chat.
+- [X] Connect assistant response framework.
+- [X] Test the flow of chat.
 - [X] When the chat is created the first time, there is a bug preventing the user message to be sent.
 - [X] Fix the documentation page and include content.
 - [X] Fix the FAQ page and include content.
 - [X] Transactions must also include the responsible user, to associate the costs with the users.
+- [X] Show a loading bar while the message response is being calculated.
+- [ ] Show the messages in markdown format.
 - [ ] Refine ideas regarding the dashboard page.
 ---
 

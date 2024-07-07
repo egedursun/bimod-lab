@@ -238,6 +238,19 @@
               </div>
             </div>
           </div>
+          <!-- loading bar warning -->
+          <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-brain"></i>
+            </span>
+            <div class="d-flex flex-column ps-1 pt-4">
+              <p class="alert-heading"><strong>I am thinking, please hold on for a few seconds...</strong></p>
+            </div>
+          </div>
+          <!-- Loading bar -->
+          <div id="loadingBar" class="progress d-none mt-3 mb-1">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%; height:10px;"></div>
+          </div>
         </div>
         <div class="chat-history-body">
           <ul class="list-unstyled chat-history" style="height: 95%">
@@ -351,5 +364,19 @@
     }
   }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const chatForm = document.querySelector('.form-send-message');
+  const loadingBar = document.getElementById('loadingBar');
+  const loadingBarWarning = document.getElementById('loadingBarWarning');
+
+  chatForm.addEventListener('submit', function (event) {
+    // Show the loading bar
+    loadingBar.classList.remove('d-none');
+    loadingBarWarning.classList.remove('d-none');
+  });
+});
+</script>
 
 {% endblock %}
