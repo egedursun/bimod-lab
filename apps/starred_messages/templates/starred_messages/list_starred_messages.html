@@ -1,6 +1,103 @@
+{% extends layout_path %}
 
-TODO: implement the templates
+{% load static %}
+{% load i18n %}
 
-sample test for:
+{% block title %}Starred Messages{% endblock %}
 
-list_starred_messages.html
+{% block page_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/css/pages/page-profile.css' %}" />
+{% endblock page_css %}
+
+{% block content %}
+
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-3 label card card-border-primary rounded mt-8 ms-3 py-4 ps-4 pe-4">
+    <h3 class="mb-0">Starred Messages <i class="ti ti-star-filled text-primary ms-4 pb-1" style="font-size: 24px;"></i></h3>
+  </div>
+</div>
+
+<!-- Starred Messages Cards -->
+<div class="row g-6">
+  {% for org_name, assistants in org_assistants_messages.items %}
+  <div class="col-12 mb-4">
+    <h4>{{ org_name }}</h4>
+    {% for assistant_name, messages in assistants.items %}
+    <div class="mb-3">
+      <h6>{{ assistant_name }}</h6>
+      <div class="row">
+        {% for message in messages %}
+        <div class="col-xl-6 col-lg-6 col-md-6 mb-6 d-flex">
+          <div class="card w-100">
+            <div class="card-header pb-4">
+              <div class="d-flex align-items-start">
+                <div class="d-flex align-items-center">
+                  <div class="avatar me-4">
+                    <img src="{{ message.assistant.assistant_image.url }}" alt="Avatar" class="rounded" />
+                  </div>
+                  <div class="me-2">
+                    <h5 class="mb-0"><strong>{{ assistant_name }}</strong></h5>
+                    <div class="label bg-label-primary rounded mt-2 pt-1 pb-1 ps-2 pe-2">
+                      <div class="client-info text-body"><strong><span class="fw-medium"></span><span>{{ message.chat.chat_name }}</span></strong></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ms-auto">
+                  <div class="dropdown z-2">
+                    <button type="button" class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-dots-vertical ti-md text-muted"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item text-danger" href="{% url 'starred_messages:delete' message.id %}">Delete</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="card card-border-primary p-4 mt-4">
+                <p class="card-text truncated-text" id="truncated-{{ message.id }}">{{ message.message_text|linebreaksbr|safe|slice:":400" }}{% if message.message_text|length > 200 %}...{% endif %}</p>
+                <div id="full-text-{{ message.id }}" class="collapse">
+                  <p class="card-text markdown-content">{{ message.message_text|linebreaksbr|safe }}</p>
+                </div>
+                <a href="javascript:void(0);" class="expand-btn" data-bs-toggle="collapse" data-bs-target="#full-text-{{ message.id }}" aria-expanded="false" aria-controls="full-text-{{ message.id }}">View More</a>
+              </div>
+              <p class="mt-8"><strong>Starred At:</strong> {{ message.starred_at|date:"d M Y, H:i" }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+<!--/ Starred Messages Cards -->
+
+<!-- Include a markdown library, for example, Showdown.js -->
+<script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const converter = new showdown.Converter();
+  document.querySelectorAll('.markdown-content').forEach(function(element) {
+    element.innerHTML = converter.makeHtml(element.innerHTML);
+  });
+
+  document.querySelectorAll('.expand-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const target = document.querySelector(this.getAttribute('data-bs-target'));
+      const truncatedText = document.getElementById(`truncated-${this.getAttribute('data-bs-target').split('-')[2]}`);
+
+      if (target.classList.contains('show')) {
+        this.textContent = 'View More';
+        truncatedText.style.display = 'block';
+      } else {
+        this.textContent = 'View Less';
+        truncatedText.style.display = '';
+      }
+    });
+  });
+});
+</script>
+
+{% endblock %}

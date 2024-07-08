@@ -118,7 +118,7 @@
       "name": "Starred Responses",
       "icon": "menu-icon tf-icons ti ti-star",
       "slug": "chats",
-      "url": "multimodal_chat:chat"
+      "url": "starred_messages:list"
     },
     {
       "name": "Memory",

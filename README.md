@@ -17,6 +17,8 @@
 - [X] Privacy Policy and Terms of Service development & integration for the application.
 - [ ] Stop Sequence Integration
 - [ ] A better payment method management (for credit card storage and usage).
+- [ ] Proper documentation & tutorial.
+- [ ] Sample instructions to help the people through the application.
 
 ---
 

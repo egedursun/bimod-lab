@@ -119,9 +119,9 @@ class PermissionNames:
     ######################################################
     # ...
     ######################################################
-    ADD_MEMORIES = 'add_memories'
-    DELETE_MEMORIES = 'delete_memories'
-    LIST_MEMORIES = 'list_memories'
+    ADD_STARRED_MESSAGES = 'add_starred_messages'
+    LIST_STARRED_MESSAGES = 'list_starred_messages'
+    REMOVE_STARRED_MESSAGES = 'remove_starred_messages'
 
 
 PERMISSION_TYPES = [
@@ -267,6 +267,11 @@ PERMISSION_TYPES = [
     ('delete_meta_integrations', 'Delete Meta Integrations'),
     ######################################################
     # ...
+    ######################################################
+    # STARRED MESSAGES
+    ('add_starred_messages', 'Add Starred Messages'),
+    ('list_starred_messages', 'List Starred Messages'),
+    ('remove_starred_messages', 'Remove Starred Messages'),
     ######################################################
 ]
 
