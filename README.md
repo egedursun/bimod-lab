@@ -70,7 +70,7 @@
 - [X] Show a loading bar while the message response is being calculated.
 - [X] Show the messages in mark-down format.
 - [ ] Refine ideas regarding the dashboard page.
-- [ ] **URGENT**: Add memory objects to the permission management.
+- [X] Add memory objects to the permission management.
 ---
 
 
@@ -87,7 +87,7 @@
 - [X] Integrate the assistants pages.
 - [X] Integrate the chats pages.
 - [ ] Integrate the export assistant pages.
-- [ ] Integrate the memories pages.
+- [X] Integrate the memories pages.
 - [ ] Integrate the fine-tuning pages.
 - [ ] Integrate the orchestration pages.
 - [X] Integrate the registration page.
