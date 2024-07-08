@@ -76,9 +76,17 @@ class InternalOpenAIClient:
             # Get the error message
             if final_response == DEFAULT_ERROR_MESSAGE:
                 final_response += f"""
-                    Details about the Error:
 
-                    {str(e)}
+                    **Technical Details about the Error:**
+
+                    If the issue persists, please contact the system administrator and deliver the error message
+                    below to provide a solution to the problem as soon as possible.
+
+                    ```
+
+                    **{str(e).strip()}**
+
+                    ```
                 """
                 # Reset the retry mechanism
                 global ACTIVE_RETRY_COUNT
