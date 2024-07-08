@@ -88,7 +88,6 @@ class AddPermissionsView(TemplateView):
             ],
             "Memory Permissions": [
                 ('add_assistant_memories', 'Add Assistant Memories'),
-                ('update_assistant_memories', 'Update Assistant Memories'),
                 ('list_assistant_memories', 'List Assistant Memories'),
                 ('delete_assistant_memories', 'Delete Assistant Memories')
             ],

@@ -117,6 +117,11 @@ class PermissionNames:
     LIST_META_INTEGRATIONS = 'list_meta_integrations'
     DELETE_META_INTEGRATIONS = 'delete_meta_integrations'
     ######################################################
+    # ...
+    ######################################################
+    ADD_MEMORIES = 'add_memories'
+    DELETE_MEMORIES = 'delete_memories'
+    LIST_MEMORIES = 'list_memories'
 
 
 PERMISSION_TYPES = [
@@ -260,6 +265,8 @@ PERMISSION_TYPES = [
     ('update_meta_integrations', 'Update Meta Integrations'),
     ('list_meta_integrations', 'List Meta Integrations'),
     ('delete_meta_integrations', 'Delete Meta Integrations'),
+    ######################################################
+    # ...
     ######################################################
 ]
 

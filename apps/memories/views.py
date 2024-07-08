@@ -6,6 +6,7 @@ from django.views.generic import TemplateView, DeleteView
 from apps.assistants.models import Assistant
 from apps.memories.models import AssistantMemory
 from apps.organization.models import Organization
+from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 
 
@@ -64,6 +65,23 @@ class CreateAssistantMemoryView(TemplateView, LoginRequiredMixin):
         assistant_id = request.POST.get('assistant')
         memory_type = request.POST.get('memory_type')
         memory_text_content = request.POST.get('memory_text_content')
+        context_user = request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - MEMORIES CREATION
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.ADD_ASSISTANT_MEMORIES not in user_permissions:
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {
+                "Permission Error": "You do not have permission to create memories."
+            }
+            return self.render_to_response(context)
 
         AssistantMemory.objects.create(
             user=request.user,
@@ -92,7 +110,22 @@ class DeleteAssistantMemoryView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        memory = get_object_or_404(AssistantMemory, id=self.kwargs['pk'], user=request.user)
+        context_user = request.user
+        memory = get_object_or_404(AssistantMemory, id=self.kwargs['pk'], user=context_user)
+
+        ##############################
+        # PERMISSION CHECK FOR - MEMORIES DELETION
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.DELETE_ASSISTANT_MEMORIES not in user_permissions:
+            messages.error(request, "You do not have permission to delete memories.")
+            return redirect('memories:list')
+
         memory.delete()
         success_message = "Memory deleted successfully!"
         messages.success(request, success_message)
