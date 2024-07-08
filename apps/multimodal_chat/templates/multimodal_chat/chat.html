@@ -244,6 +244,7 @@
               </div>
             </div>
             <!-- loading bar warning -->
+            <div class="alert-container"></div>
             <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
               <span class="alert-icon rounded">
                 <i class="ti ti-brain"></i>
@@ -271,8 +272,8 @@
                   </div>
                   {% endif %}
                   <div class="chat-message-wrapper flex-grow-1">
-                    <div class="chat-message-text">
-                      <p class="mb-0 markdown-content">{{ message.message_text_content|linebreaksbr|safe }}</p>
+                    <div id="copied-message-{{ message.id }}" class="chat-message-text">
+                      <p class="mb-0 markdown-content">{{ message.message_text_content|safe }}</p>
                     </div>
                     <div class="text-muted mt-2">
                       <small>
@@ -281,11 +282,20 @@
                           <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
                           <input type="hidden" name="message_id" value="{{ message.id }}">
                           <input type="hidden" name="starred_message" value="{{ message.starred }}">
-                           <button type="submit" class="btn btn-link p-0">
-                             <strong class="text-primary me-2">{% if message.starred %}Starred{% endif %}</strong>
-                             <i class="{% if message.starred %}ti ti-star-filled text-primary {% else %} ti ti-star text-light {% endif %}"></i>
-                             <strong class="ps-2 {% if message.starred %}text-primary{% else %}text-light{% endif %}">{{ message.sent_at|date:"H:i A" }}</strong>
-                           </button>
+                          <button type="submit" class="btn btn-link p-0">
+                            <strong class="text-primary me-2">{% if message.starred %}Starred{% endif %}</strong>
+                            <i class="{% if message.starred %}ti ti-star-filled text-primary {% else %} ti ti-star text-light {% endif %}"></i>
+                            <strong class="ps-2 {% if message.starred %}text-primary{% else %}text-light{% endif %}">{{ message.sent_at|date:"H:i A" }}</strong>
+                          </button>
+                          <a href="javascript:void(0);" class="copy-btn ms-12 text-light" data-message-id="{{ message.id }}">
+                            <i class="fa fa-copy"></i><i class="fa fa-file-text ms-1"></i><span class="ms-2"><strong>Plain</strong></span>
+                          </a>
+                          <a href="javascript:void(0);" class="copy-btn-html ms-12 text-light" data-message-id="{{ message.id }}">
+                            <i class="fa fa-copy"><i class="fa fa-code ms-1"></i></i><span class="ms-2"><strong>HTML</strong></span>
+                          </a>
+                          <a href="javascript:void(0);" class="copy-btn-markdown ms-12 text-light" data-message-id="{{ message.id }}">
+                            <i class="fa fa-copy"><i class="fa fa-marker ms-1"></i></i><span class="ms-2"><strong>Markdown</strong></span>
+                          </a>
                         </form>
                       </small>
                     </div>
@@ -407,6 +417,97 @@ document.addEventListener('DOMContentLoaded', function () {
     loadingBarWarning.classList.remove('d-none');
   });
 });
+
+document.querySelectorAll('.copy-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    const messageId = this.getAttribute('data-message-id');
+    const templateTextElement = document.getElementById(`copied-message-${messageId}`);
+    const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
+      const successAlert = document.createElement('div');
+      successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+      successAlert.role = 'alert';
+      successAlert.innerHTML = `
+        <span class="alert-icon rounded">
+          <i class="ti ti-check"></i>
+        </span>
+        Plain Text copied to clipboard!
+      `;
+      alertContainer.appendChild(successAlert);
+
+      setTimeout(() => {
+        successAlert.remove();
+      }, 1000);
+    }).catch(err => {
+      alert('Failed to copy text: ' + err);
+    });
+  });
+});
+
+document.querySelectorAll('.copy-btn-html').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    const messageId = this.getAttribute('data-message-id');
+    const templateTextElement = document.getElementById(`copied-message-${messageId}`);
+    const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+    const converter = new showdown.Converter();
+    const textToCopyHtml = converter.makeHtml(textToCopy);
+    console.log(textToCopyHtml);
+
+    navigator.clipboard.writeText(textToCopyHtml).then(() => {
+      const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
+      const successAlert = document.createElement('div');
+      successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+      successAlert.role = 'alert';
+      successAlert.innerHTML = `
+        <span class="alert-icon rounded">
+          <i class="ti ti-check"></i>
+        </span>
+        Formatted Text copied to clipboard!
+      `;
+      alertContainer.appendChild(successAlert);
+
+      setTimeout(() => {
+        successAlert.remove();
+      }, 1000);
+    }).catch(err => {
+      alert('Failed to copy text: ' + err);
+    });
+  });
+});
+
+document.querySelectorAll('.copy-btn-markdown').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    const messageId = this.getAttribute('data-message-id');
+    const templateTextElement = document.getElementById(`copied-message-${messageId}`);
+    const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+    const converter = new showdown.Converter();
+    const textToCopyHtml = converter.makeHtml(textToCopy);
+    const textToCopyMarkdown = converter.makeMarkdown(textToCopyHtml);
+
+    navigator.clipboard.writeText(textToCopyMarkdown).then(() => {
+      const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
+      const successAlert = document.createElement('div');
+      successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+      successAlert.role = 'alert';
+      successAlert.innerHTML = `
+        <span class="alert-icon rounded">
+          <i class="ti ti-check"></i>
+        </span>
+        Markdown Text copied to clipboard!
+      `;
+      alertContainer.appendChild(successAlert);
+
+      setTimeout(() => {
+        successAlert.remove();
+      }, 1000);
+    }).catch(err => {
+      alert('Failed to copy text: ' + err);
+    });
+  });
+});
+
 </script>
 
 {% endblock %}
