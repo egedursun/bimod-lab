@@ -1,0 +1,24 @@
+### POST request to get API response from an agent
+
+POST localhost:8000/api/v1/exported/6/MySmartFarm/19/WellnessandHealthAssistant/gpt4o/2024/7/7/0148554366978864
+Content-Type: application/json
+Authorization: bimod/6/MySmartFarm/19/WellnessandHealthAssistant/gpt4o/fabaab01b6f287ea7b56093b4924fdad9acb564d025aae0a051881d0a7626ec3
+
+    {
+      "chat_history": [
+        {
+          "role": "user",
+          "content": "I am feeling very tired and weak today. Can you suggest me some remedies?"
+        },
+        {
+          "role": "assistant",
+          "content": "Hey Ege! Feeling like a deflated balloon today, huh? No worries, I've got some tips to pump you back up:\n\n1. **Hydrate Like a Boss**: Water is your best friend. Sometimes fatigue is just dehydration in disguise. Drink up!\n\n2. **Snack Attack**: Grab a healthy snack like nuts, fruits, or yogurt. Avoid the sugary stuff; it’ll just make you crash later.\n\n3. **Power Nap**: A quick 20-minute nap can work wonders. Think of it as a mini-reboot for your brain.\n\n4. **Move It**: A short walk or some light stretching can get your blood flowing and boost your energy levels.\n\n5. **Breathe Deep**: Try some deep breathing exercises. Inhale through your nose, hold for a few seconds, and exhale slowly. Instant relaxation!\n\n6. **Vitamin Boost**: Make sure you’re getting enough vitamins, especially B12 and D. A multivitamin might help if you’re lacking.\n\n7. **Caffeine, But Not Too Much**: A cup of coffee or tea can give you a quick boost, but don’t overdo it or you’ll end up jittery.\n\n8. **Sleep Hygiene**: Ensure you’re getting quality sleep at night. A consistent sleep schedule can make a big difference.\n\nRemember, if this tiredness sticks around, it might be worth chatting with a healthcare professional. Take care, and may the energy be with you! 🌟"
+        },
+        {
+          "role": "user",
+          "content": "Thank you for the tips. Which one would you recommend the most?"
+        }
+      ]
+    }
+
+### end of request

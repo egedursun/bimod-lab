@@ -164,7 +164,18 @@
       "name": "Export Assistants",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "export-assistants",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Export New Assistant",
+          "slug": "export-assistant",
+          "url": "export_assistants:create"
+        },
+        {
+          "name": "Exported Assistants",
+          "slug": "export-assistant",
+          "url": "export_assistants:list"
+        }
+      ]
     },
     {
       "url": "dashboard:main-dashboard",

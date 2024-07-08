@@ -97,6 +97,7 @@ INSTALLED_APPS = [
     "apps.memories",
     "apps.starred_messages",
     "apps.message_templates",
+    "apps.export_assistants",
     #############################
 ]
 
@@ -216,8 +217,14 @@ STATICFILES_DIRS = [
 
 # Default URL on which Django application runs for specific environment
 BASE_URL = os.environ.get("BASE_URL", default="http://127.0.0.1:8000")
+
+# Service profit margins and tax rates
 __SERVICE_PROFIT_MARGIN = float(os.environ.get("SERVICE_PROFIT_MARGIN", default="2.00"))
 __SERVICE_TAX_RATE = float(os.environ.get("SERVICE_TAX_RATE", default="0.18"))
+
+
+# Salt for encryption
+ENCRYPTION_SALT = os.environ.get("ENCRYPTION_SALT", default="")
 
 
 # Default primary key field type
@@ -265,6 +272,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 EXCLUDED_PAGES = [
     "/",
+    "/app/exported_assistants/exported/",
     "/contact-form-submit",
     "/docs",
     "/faq",
@@ -287,8 +295,10 @@ DESIGN_DOCS_ROUTE = 'dev/design/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
 DEFAULT_FROM_EMAIL = ""
+
+# API version for exporting agents
+EXPORT_API_VERSION = "v1"
 
 
 

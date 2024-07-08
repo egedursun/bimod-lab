@@ -3,7 +3,7 @@ from django.views.generic import TemplateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from web_project import TemplateLayout, TemplateHelper
-from .models import MultimodalChat, MultimodalChatMessage
+from .models import MultimodalChat, MultimodalChatMessage, CHAT_SOURCES, ChatSourcesNames
 from .utils import generate_chat_name
 from .._services.llms.llm_decoder import InternalLLMClient
 from ..assistants.models import Assistant
@@ -18,7 +18,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
         if 'chat_id' in self.request.GET:
             active_chat = get_object_or_404(MultimodalChat, id=self.request.GET['chat_id'], user=self.request.user)
 
-        chats = MultimodalChat.objects.filter(user=self.request.user)
+        chats = MultimodalChat.objects.filter(user=self.request.user, chat_source=ChatSourcesNames.APP)
 
         # if there is an active chat, put the active chat at the beginning of the list
         if active_chat:
@@ -68,7 +68,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 assistant=assistant,
                 user=request.user,
                 chat_name=request.POST.get('chat_name', generate_chat_name()),
-                created_by_user=request.user
+                created_by_user=request.user,
+                chat_source=ChatSourcesNames.APP
             )
             active_chat = chat
         elif 'new_chat_name' in request.POST:
@@ -106,7 +107,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
 
             active_chat = chat
 
-        chats = MultimodalChat.objects.filter(user=request.user)
+        chats = MultimodalChat.objects.filter(user=request.user, chat_source=ChatSourcesNames.APP)
         assistants = Assistant.objects.filter(organization__users=request.user)
 
         context.update(
@@ -133,9 +134,8 @@ class ChatDeleteView(LoginRequiredMixin, DeleteView):
         context['chat'] = chat
         return context
 
-
     def get_queryset(self):
-        return MultimodalChat.objects.filter(user=self.request.user)
+        return MultimodalChat.objects.filter(user=self.request.user, chat_source=ChatSourcesNames.APP)
 
     def post(self, request, *args, **kwargs):
         chat = get_object_or_404(MultimodalChat, id=self.kwargs['pk'], user=self.request.user)

@@ -41,6 +41,7 @@ urlpatterns = [
     path("app/memories/", include("apps.memories.urls", namespace="memories")),
     path("app/starred_messages/", include("apps.starred_messages.urls", namespace="starred_messages")),
     path("app/message_templates/", include("apps.message_templates.urls", namespace="message_templates")),
+    path("app/export_assistants/", include("apps.export_assistants.urls", namespace="export_assistants")),
 ]
 
 

@@ -73,6 +73,9 @@
 - [X] Show the messages in mark-down format.
 - [ ] Refine ideas regarding the dashboard page.
 - [X] Add memory objects to the permission management.
+- [ ] **URGENT:** Add the API endpoint not only when the server is started, but also when an endpoint is created.
+- [ ] **URGENT:** Limit the number of exportations users can create for API.
+- [ ] **URGENT:** Implement the rest of the pages for the export assistants application.
 ---
 
 

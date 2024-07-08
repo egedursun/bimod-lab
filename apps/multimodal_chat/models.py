@@ -7,6 +7,17 @@ from apps.multimodal_chat.utils import calculate_billable_cost, calculate_intern
 from apps.starred_messages.models import StarredMessage
 
 
+CHAT_SOURCES = [
+    ("app", "Application"),
+    ("api", "API"),
+]
+
+
+class ChatSourcesNames:
+    APP = "app"
+    API = "api"
+
+
 # Create your models here.
 
 class MultimodalChat(models.Model):
@@ -24,6 +35,9 @@ class MultimodalChat(models.Model):
                                       blank=True)
     transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_chats',
                                           blank=True)
+
+    # Management for APIs
+    chat_source = models.CharField(max_length=100, choices=CHAT_SOURCES, default="app")
 
     def __str__(self):
         return self.chat_name + " - " + self.assistant.name + " - " + self.user.username

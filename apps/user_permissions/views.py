@@ -92,7 +92,10 @@ class AddPermissionsView(TemplateView):
                 ('delete_assistant_memories', 'Delete Assistant Memories')
             ],
             "Assistant Exportation Permissions": [
-                ('export_assistant', 'Export Assistant')
+                ('add_export_assistant', 'Add Export Assistants'),
+                ('update_export_assistant', 'Update Export Assistants'),
+                ('list_export_assistant', 'List Export Assistants'),
+                ('delete_export_assistant', 'Delete Export Assistants')
             ],
             "Orchestration Permissions": [
                 ('add_orchestrations', 'Add Orchestrations'),
@@ -106,85 +109,85 @@ class AddPermissionsView(TemplateView):
                 ('list_file_systems', 'List File Systems'),
                 ('delete_file_systems', 'Delete File Systems')
             ],
-            "Web Browsers": [
+            "Web Browser Permissions": [
                 ('add_web_browsers', 'Add Web Browsers'),
                 ('update_web_browsers', 'Update Web Browsers'),
                 ('list_web_browsers', 'List Web Browsers'),
                 ('delete_web_browsers', 'Delete Web Browsers')
             ],
-            "SQL Databases": [
+            "SQL Database Permissions": [
                 ('add_sql_databases', 'Add SQL Databases'),
                 ('update_sql_databases', 'Update SQL Databases'),
                 ('list_sql_databases', 'List SQL Databases'),
                 ('delete_sql_databases', 'Delete SQL Databases')
             ],
-            "NoSQL Databases": [
+            "NoSQL Database Permissions": [
                 ('add_nosql_databases', 'Add NoSQL Databases'),
                 ('update_nosql_databases', 'Update NoSQL Databases'),
                 ('list_nosql_databases', 'List NoSQL Databases'),
                 ('delete_nosql_databases', 'Delete NoSQL Databases')
             ],
-            "Knowledge Bases": [
+            "Knowledge Base Permissions": [
                 ('add_knowledge_bases', 'Add Knowledge Bases'),
                 ('update_knowledge_bases', 'Update Knowledge Bases'),
                 ('list_knowledge_bases', 'List Knowledge Bases'),
                 ('delete_knowledge_bases', 'Delete Knowledge Bases')
             ],
-            "Image Storages": [
+            "Image Storage Permissions": [
                 ('add_image_storages', 'Add Image Storages'),
                 ('update_image_storages', 'Update Image Storages'),
                 ('list_image_storages', 'List Image Storages'),
                 ('delete_image_storages', 'Delete Image Storages')
             ],
-            "Video Storages": [
+            "Video Storage Permissions": [
                 ('add_video_storages', 'Add Video Storages'),
                 ('update_video_storages', 'Update Video Storages'),
                 ('list_video_storages', 'List Video Storages'),
                 ('delete_video_storages', 'Delete Video Storages')
             ],
-            "Audio Storages": [
+            "Audio Storage Permissions": [
                 ('add_audio_storages', 'Add Audio Storages'),
                 ('update_audio_storages', 'Update Audio Storages'),
                 ('list_audio_storages', 'List Audio Storages'),
                 ('delete_audio_storages', 'Delete Audio Storages')
             ],
-            "Functions": [
+            "Function Permissions": [
                 ('add_functions', 'Add Functions'),
                 ('update_functions', 'Update Functions'),
                 ('list_functions', 'List Functions'),
                 ('delete_functions', 'Delete Functions')
             ],
-            "APIs": [
+            "API Permissions": [
                 ('add_apis', 'Add APIs'),
                 ('update_apis', 'Update APIs'),
                 ('list_apis', 'List APIs'),
                 ('delete_apis', 'Delete APIs')
             ],
-            "Scheduled Jobs": [
+            "Scheduled Job Permissions": [
                 ('add_scheduled_jobs', 'Add Scheduled Jobs'),
                 ('update_scheduled_jobs', 'Update Scheduled Jobs'),
                 ('list_scheduled_jobs', 'List Scheduled Jobs'),
                 ('delete_scheduled_jobs', 'Delete Scheduled Jobs')
             ],
-            "Triggers": [
+            "Trigger Permissions": [
                 ('add_triggers', 'Add Triggers'),
                 ('update_triggers', 'Update Triggers'),
                 ('list_triggers', 'List Triggers'),
                 ('delete_triggers', 'Delete Triggers')
             ],
-            "Image Generation": [
+            "Image Generation Permissions": [
                 ('can_generate_images', 'Can Generate Images')
             ],
-            "Audio Generation": [
+            "Audio Generation Permissions": [
                 ('can_generate_audio', 'Can Generate Audio')
             ],
-            "Integrations": [
+            "Integration Permissions": [
                 ('add_integrations', 'Add Integrations'),
                 ('update_integrations', 'Update Integrations'),
                 ('list_integrations', 'List Integrations'),
                 ('delete_integrations', 'Delete Integrations')
             ],
-            "Meta Integrations": [
+            "Meta Integration Permissions": [
                 ('add_meta_integrations', 'Add Meta Integrations'),
                 ('update_meta_integrations', 'Update Meta Integrations'),
                 ('list_meta_integrations', 'List Meta Integrations'),

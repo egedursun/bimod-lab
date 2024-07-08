@@ -13,6 +13,8 @@ class SessionTimeoutMiddleware(MiddlewareMixin):
             if excluded_page == "/":
                 if request.path.startswith("/") and request.path.endswith("/"):
                     return None
+            elif excluded_page == "/app/exported_assistants/exported/":
+                return None
             else:
                 if request.path.startswith(excluded_page):
                     return None

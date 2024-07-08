@@ -36,7 +36,10 @@ class PermissionNames:
     LIST_ASSISTANT_MEMORIES = 'list_assistant_memories'
     DELETE_ASSISTANT_MEMORIES = 'delete_assistant_memories'
     ######################################################
-    EXPORT_ASSISTANT = 'export_assistant'
+    ADD_EXPORT_ASSISTANT = 'export_assistant'
+    UPDATE_EXPORT_ASSIST = 'update_export_assistant'
+    LIST_EXPORT_ASSISTANT = 'list_export_assistant'
+    DELETE_EXPORT_ASSISTANT = 'delete_export_assistant'
     ######################################################
     ADD_ORCHESTRATIONS = 'add_orchestrations'
     UPDATE_ORCHESTRATIONS = 'update_orchestrations'
@@ -173,13 +176,16 @@ PERMISSION_TYPES = [
     ('delete_assistant_memories', 'Delete Assistant Memories'),
     ######################################################
     # ASSISTANT EXPORTATION PERMISSIONS
-    ('export_assistant', 'Export Assistant'),
+    ('add_export_assistant', 'Add Export Assistant'),
+    ('update_export_assistant', 'Update Export Assistant'),
+    ('list_export_assistant', 'List Export Assistant'),
+    ('delete_export_assistant', 'Delete Export Assistant'),
     ######################################################
     # ORCHESTRATION PERMISSIONS
     ('add_orchestrations', 'Add Orchestrations'),
     ('update_orchestrations', 'Update Orchestrations'),
     ('list_orchestrations', 'List Orchestrations'),
-    ('delete_orchestration', 'Delete Orchestrations'),
+    ('delete_orchestrations', 'Delete Orchestrations'),
     ######################################################
     # FILE SYSTEM PERMISSIONS
     ('add_file_systems', 'Add File Systems'),
