@@ -111,7 +111,7 @@ class DeleteAssistantMemoryView(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         context_user = request.user
-        memory = get_object_or_404(AssistantMemory, id=self.kwargs['pk'], user=context_user)
+        memory = get_object_or_404(AssistantMemory, id=self.kwargs['pk'])
 
         ##############################
         # PERMISSION CHECK FOR - MEMORIES DELETION
