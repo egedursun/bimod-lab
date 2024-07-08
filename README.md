@@ -88,6 +88,8 @@
 - [X] Integrate the chats pages.
 - [ ] Integrate the export assistant pages.
 - [X] Integrate the memories pages.
+- [ ] Integrate the message templates pages.
+- [ ] Integrate the starred messages pages.
 - [ ] Integrate the fine-tuning pages.
 - [ ] Integrate the orchestration pages.
 - [X] Integrate the registration page.
