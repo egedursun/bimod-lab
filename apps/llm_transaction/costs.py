@@ -1,3 +1,6 @@
+import os
+
+from config import settings
 
 
 class LLMCostsPerMillionTokens:
@@ -25,6 +28,6 @@ class LLMCostsPerMillionTokens:
     }
 
 
-SERVICE_PROFIT_MARGIN = 1.00
-
-VAT_TAX_RATE = 0.18
+# Get the profit margin and the tax rate from the environment variables
+SERVICE_PROFIT_MARGIN = settings.__SERVICE_PROFIT_MARGIN
+VAT_TAX_RATE = settings.__SERVICE_TAX_RATE

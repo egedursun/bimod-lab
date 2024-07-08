@@ -216,6 +216,8 @@ STATICFILES_DIRS = [
 
 # Default URL on which Django application runs for specific environment
 BASE_URL = os.environ.get("BASE_URL", default="http://127.0.0.1:8000")
+__SERVICE_PROFIT_MARGIN = float(os.environ.get("SERVICE_PROFIT_MARGIN", default="2.00"))
+__SERVICE_TAX_RATE = float(os.environ.get("SERVICE_TAX_RATE", default="0.18"))
 
 
 # Default primary key field type

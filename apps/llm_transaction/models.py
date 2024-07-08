@@ -17,6 +17,9 @@ ENCODING_ENGINES = [
 
 class LLMTransaction(models.Model):
     responsible_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='transactions', default=1)
+    responsible_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE,
+                                              related_name='transactions',
+                                              null=True, blank=True)
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, related_name='transactions')
     model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE, related_name='transactions')
     encoding_engine = models.CharField(max_length=100, choices=ENCODING_ENGINES, default="cl100k_base")

@@ -89,6 +89,7 @@ class MultimodalChatMessage(models.Model):
                 organization=self.multimodal_chat.organization,
                 model=self.multimodal_chat.assistant.llm_model,
                 responsible_user=self.multimodal_chat.user,
+                responsible_assistant=self.multimodal_chat.assistant,
                 encoding_engine="cl100k_base",
                 transaction_context_content=self.message_text_content,
                 llm_cost=0,

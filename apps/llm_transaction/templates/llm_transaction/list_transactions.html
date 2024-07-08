@@ -273,6 +273,7 @@
                   <tr>
                     <th>Id</th>
                     <th>User</th>
+                    <th>Assistant</th>
                     <th>Encoding Engine</th>
                     <th>Number of Tokens</th>
                     <th>LLM Cost</th>
@@ -288,6 +289,7 @@
                   <tr>
                     <td>{{ transaction.id }}</td>
                     <td>{{ transaction.responsible_user.username }}</td>
+                    <td>{{ transaction.assistant }}</td>
                     <td>{{ transaction.encoding_engine }}</td>
                     <td>{{ transaction.number_of_tokens }}</td>
                     <td>$ {{ transaction.llm_cost }}</td>
@@ -300,8 +302,7 @@
                   {% endfor %}
                   <tr class="bg-light">
                     <td colspan="3"><strong>Total</strong></td>
-                    <td colspan="1"></td>
-
+                    <td colspan="2"></td>
                     <td><strong>$ {{ llm_data.cost_sums.llm_cost }}</strong></td>
                     <td><strong>$ {{ llm_data.cost_sums.internal_service_cost }}</strong></td>
                     <td><strong>$ {{ llm_data.cost_sums.tax_cost }}</strong></td>

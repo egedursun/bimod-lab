@@ -10,8 +10,8 @@ from .utils import calculate_number_of_tokens, calculate_llm_cost, calculate_int
 
 @admin.register(LLMTransaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ["responsible_user", "organization", "model", "number_of_tokens", "llm_cost", "internal_service_cost", "tax_cost", "total_cost", "created_at"]
-    list_filter = ["responsible_user", "organization", "model", "created_at"]
+    list_display = ["responsible_user", "responsible_assistant", "organization", "model", "number_of_tokens", "llm_cost", "internal_service_cost", "tax_cost", "total_cost", "created_at"]
+    list_filter = ["responsible_user", "responsible_assistant", "organization", "model", "created_at"]
     search_fields = ["organization__name", "model__nickname"]
     date_hierarchy = "created_at"
     readonly_fields = ["created_at"]
@@ -19,6 +19,7 @@ class TransactionAdmin(admin.ModelAdmin):
         (None, {
             "fields": (
                 "responsible_user",
+                "responsible_assistant",
                 "organization",
                 "model",
                 "encoding_engine",
