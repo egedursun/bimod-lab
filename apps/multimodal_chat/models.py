@@ -4,6 +4,7 @@ from django.db.models import QuerySet
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.utils import calculate_billable_cost, calculate_internal_service_cost, calculate_tax_cost, \
     calculate_llm_cost, calculate_number_of_tokens
+from apps.starred_messages.models import StarredMessage
 
 
 # Create your models here.
@@ -54,6 +55,7 @@ class MultimodalChatMessage(models.Model):
     sender_type = models.CharField(max_length=10, choices=MESSAGE_SENDER_TYPES)
     message_text_content = models.TextField()
     message_json_content = models.JSONField(default=dict, blank=True, null=True)
+    starred = models.BooleanField(default=False)
 
     sent_at = models.DateTimeField(auto_now_add=True)
 
@@ -103,4 +105,21 @@ class MultimodalChatMessage(models.Model):
         MultimodalChat.objects.get(id=self.multimodal_chat.id).transactions.add(self.transaction)
         super().save(*args, **kwargs)
         MultimodalChat.objects.get(id=self.multimodal_chat.id).chat_messages.add(self.id)
+
+        # if the message is starred, create the starred item
+        if self.starred:
+            StarredMessage.objects.create(
+                user=self.multimodal_chat.user,
+                organization=self.multimodal_chat.organization,
+                assistant=self.multimodal_chat.assistant,
+                chat=self.multimodal_chat,
+                chat_message=self,
+                message_text=self.message_text_content,
+                sender_type=self.sender_type
+            )
+        else:
+            # remove the starred item if it exists
+            starred_message = StarredMessage.objects.filter(chat_message=self.id)
+            if starred_message:
+                starred_message.delete()
 

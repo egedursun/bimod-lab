@@ -77,6 +77,14 @@ class ChatView(LoginRequiredMixin, TemplateView):
             chat.chat_name = request.POST.get('new_chat_name')
             chat.save()
             active_chat = chat
+        elif 'starred_message' in request.POST:
+            chat_id = request.POST.get('chat_id')
+            chat = get_object_or_404(MultimodalChat, id=chat_id, user=request.user)
+            message_id = request.POST.get('message_id')
+            message = get_object_or_404(MultimodalChatMessage, id=message_id, multimodal_chat=chat)
+            message.starred = not message.starred
+            message.save()
+            active_chat = chat
         else:
             chat_id = request.POST.get('chat_id')
             chat = get_object_or_404(MultimodalChat, id=chat_id, user=request.user)
@@ -98,10 +106,6 @@ class ChatView(LoginRequiredMixin, TemplateView):
 
             active_chat = chat
 
-            # redirect with '?chat_id=' to keep the chat open
-            redirect_string = self.request.path_info + '?chat_id=' + str(active_chat.id)
-            return redirect(redirect_string, *args, **kwargs)
-
         chats = MultimodalChat.objects.filter(user=request.user)
         assistants = Assistant.objects.filter(organization__users=request.user)
 
@@ -115,7 +119,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
             }
         )
 
-        return render(request, self.template_name, context)
+        redirect_string = self.request.path_info + '?chat_id=' + str(active_chat.id)
+        return redirect(redirect_string, *args, **kwargs)
 
 
 class ChatDeleteView(LoginRequiredMixin, DeleteView):

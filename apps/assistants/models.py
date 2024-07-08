@@ -36,6 +36,9 @@ class Assistant(models.Model):
     response_language = models.CharField(max_length=10, choices=ASSISTANT_RESPONSE_LANGUAGES, default="auto")
     max_retry_count = models.IntegerField(default=3)
 
+    time_awareness = models.BooleanField(default=True)
+    place_awareness = models.BooleanField(default=True)
+
     # assistant image
     assistant_image_save_path = 'assistant_images/%Y/%m/%d/' + generate_random_string()
     assistant_image = models.ImageField(upload_to=assistant_image_save_path, blank=True, max_length=1000,

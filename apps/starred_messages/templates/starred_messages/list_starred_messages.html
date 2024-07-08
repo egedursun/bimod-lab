@@ -13,8 +13,8 @@
 {% block content %}
 
 <div class="row g-6 mb-6">
-  <div class="col-sm-6 col-xl-3 label card card-border-primary rounded mt-8 ms-3 py-4 ps-4 pe-4">
-    <h3 class="mb-0">Starred Messages <i class="ti ti-star-filled text-primary ms-4 pb-1" style="font-size: 24px;"></i></h3>
+  <div class="col-sm-6 col-xl-4 label card card-border-primary rounded mt-8 ms-3 py-4 ps-4 pe-4">
+    <h3 class="mb-0">Starred Responses <i class="ti ti-star-filled text-primary ms-4 pb-1" style="font-size: 24px;"></i></h3>
   </div>
 </div>
 
@@ -41,6 +41,9 @@
                     <div class="label bg-label-primary rounded mt-2 pt-1 pb-1 ps-2 pe-2">
                       <div class="client-info text-body"><strong><span class="fw-medium"></span><span>{{ message.chat.chat_name }}</span></strong></div>
                     </div>
+                    <div class="label {% if message.sender_type == "USER" %}bg-label-info{% else %}bg-label-danger{% endif %} rounded mt-2 pt-1 pb-1 ps-2 pe-2">
+                      <div class="client-info text-body"><strong><span class="fw-medium"></span><span>Sender: &nbsp;&nbsp; {{ message.sender_type|lower|capfirst }}</span></strong></div>
+                    </div>
                   </div>
                 </div>
                 <div class="ms-auto">
@@ -54,14 +57,19 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="card card-border-primary p-4 mt-4">
+              <div class="card card-border-primary p-4 mt-4 mb-4">
                 <p class="card-text truncated-text" id="truncated-{{ message.id }}">{{ message.message_text|linebreaksbr|safe|slice:":400" }}{% if message.message_text|length > 200 %}...{% endif %}</p>
                 <div id="full-text-{{ message.id }}" class="collapse">
+                  <p class="text-primary mb-2"><strong>Full Text</strong></p>
                   <p class="card-text markdown-content">{{ message.message_text|linebreaksbr|safe }}</p>
                 </div>
-                <a href="javascript:void(0);" class="expand-btn" data-bs-toggle="collapse" data-bs-target="#full-text-{{ message.id }}" aria-expanded="false" aria-controls="full-text-{{ message.id }}">View More</a>
+                <strong><small>
+                  <a href="javascript:void(0);" class="expand-btn" data-bs-toggle="collapse" data-bs-target="#full-text-{{ message.id }}" aria-expanded="false" aria-controls="full-text-{{ message.id }}">
+                    <i class="fa fa-expand"></i><span class="ms-2">Expand / Collapse</span>
+                  </a>
+                </small></strong>
               </div>
-              <p class="mt-8"><strong>Starred At:</strong> {{ message.starred_at|date:"d M Y, H:i" }}</p>
+              <small class="mt-8"><strong>Starred At: &nbsp;</strong> {{ message.starred_at|date:"d M Y, H:i" }}</small>
             </div>
           </div>
         </div>
@@ -89,10 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
       const truncatedText = document.getElementById(`truncated-${this.getAttribute('data-bs-target').split('-')[2]}`);
 
       if (target.classList.contains('show')) {
-        this.textContent = 'View More';
         truncatedText.style.display = 'block';
       } else {
-        this.textContent = 'View Less';
         truncatedText.style.display = '';
       }
     });

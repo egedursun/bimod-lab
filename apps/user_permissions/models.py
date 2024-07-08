@@ -122,6 +122,11 @@ class PermissionNames:
     ADD_STARRED_MESSAGES = 'add_starred_messages'
     LIST_STARRED_MESSAGES = 'list_starred_messages'
     REMOVE_STARRED_MESSAGES = 'remove_starred_messages'
+    ######################################################
+    ADD_TEMPLATE_MESSAGES = 'add_template_messages'
+    LIST_TEMPLATE_MESSAGES = 'list_template_messages'
+    UPDATE_TEMPLATE_MESSAGES = 'update_template_messages'
+    REMOVE_TEMPLATE_MESSAGES = 'remove_template_messages'
 
 
 PERMISSION_TYPES = [
@@ -273,6 +278,11 @@ PERMISSION_TYPES = [
     ('list_starred_messages', 'List Starred Messages'),
     ('remove_starred_messages', 'Remove Starred Messages'),
     ######################################################
+    # TEMPLATE MESSAGES
+    ('add_template_messages', 'Add Template Messages'),
+    ('list_template_messages', 'List Template Messages'),
+    ('update_template_messages', 'Update Template Messages'),
+    ('remove_template_messages', 'Remove Template Messages'),
 ]
 
 

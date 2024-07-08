@@ -190,10 +190,17 @@ class AddPermissionsView(TemplateView):
                 ('list_meta_integrations', 'List Meta Integrations'),
                 ('delete_meta_integrations', 'Delete Meta Integrations')
             ],
+            ######################################################
             "Starred Messages": [
                 ('add_starred_messages', 'Add Starred Messages'),
                 ('list_starred_messages', 'List Starred Messages'),
                 ('remove_starred_messages', 'Remove Starred Messages'),
+            ],
+            "Message Templates": [
+                ('add_template_messages', 'Add Message Templates'),
+                ('update_template_messages', 'Update Message Templates'),
+                ('list_template_messages', 'List Message Templates'),
+                ('remove_template_messages', 'Remove Message Templates'),
             ],
         }
         return permissions_grouped

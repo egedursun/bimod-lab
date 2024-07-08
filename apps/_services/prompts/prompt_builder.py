@@ -1,9 +1,29 @@
+import datetime
+from time import timezone
+
 from django.contrib.auth.models import User
 
 from apps.assistants.models import Assistant, ASSISTANT_RESPONSE_LANGUAGES
 
 
 class PromptBuilder:
+
+    @staticmethod
+    def _primary_guidelines():
+        return f"""
+            **PRIMARY GUIDELINES:**
+
+            - Until instructed by further instructions, you are an assistant of Bimod.io, and you are responsible
+            for providing the best user experience to the user you are currently chatting with. Bimod.io is a
+            platform that provides a wide range of Artificial Intelligence services for its users, letting them
+            create AI assistants, chatbots, and other AI services such as data source integration, function and API
+            integration, retrieval augmented generation, multiple assistant collaborative orchestration with Mixture
+            of Experts techniques, timed or triggered AI assistant tasks, etc.
+
+            - These definitions can be "OVERRIDEN" by the instructions section or other prompts given by the user
+            below. If the user provides any instructions, you MUST consider them, instead of these instructions.
+        """
+
 
     @staticmethod
     def _get_structured_name_prompt(name: str):
@@ -140,6 +160,41 @@ class PromptBuilder:
         return response_prompt
 
     @staticmethod
+    def _build_structured_place_and_time_prompt(assistant: Assistant, user: User):
+        response_prompt = ""
+
+        # Build the prompt
+        response_prompt = """
+            **PLACE AND TIME AWARENESS:**
+
+            '''
+            """
+        # Get the location of the user
+        user_location = f"""
+            Registered Address of the User: {user.profile.address}
+            Registered City of the User: {user.profile.city}
+            Registered Country of User: {user.profile.country}
+            Postal Code of User's Address: {user.profile.postal_code}
+            Coordinates: [Infer from the User's Address, City, and Country, giving an approximate.]
+        """
+
+        # Get the current time
+        current_time = f"""
+            ---
+            [UTC] Current Time: {datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")}
+            [Local Time] Current Time: [Infer from the User's Country & City. Do not forget considering the season.]
+            '''
+
+            **NOTE**: Make sure to keep the user's location and the current time in mind while responding to the
+            user's messages. For the local time, you can infer it from the user's country and city but make sure
+            to consider the season (which might affect the Daylight Saving Time). If this part is EMPTY, you can
+            respond to the user's messages without any specific considerations.
+        """
+
+        response_prompt += user_location + current_time
+        return response_prompt
+
+    @staticmethod
     def build(assistant: Assistant, user: User, role: str):
         name = assistant.name
         instructions = assistant.instructions
@@ -149,6 +204,7 @@ class PromptBuilder:
         response_language = assistant.response_language
 
         # Build the prompts
+        primary_guidelines_prompt = PromptBuilder._primary_guidelines()
         structured_name_prompt = PromptBuilder._get_structured_name_prompt(name)
         structured_instructions_prompt = PromptBuilder._get_structured_instructions_prompt(instructions)
         structured_response_template_prompt = PromptBuilder._get_structured_response_template_prompt(response_template)
@@ -157,11 +213,15 @@ class PromptBuilder:
         structured_response_language_prompt = PromptBuilder._get_structured_response_language_prompt(response_language)
         structured_user_information_prompt = PromptBuilder._build_structured_user_information_prompt(user)
         structured_memory_prompt = PromptBuilder._build_structured_memory_prompt(assistant, user)
+        structured_place_and_time_prompt = ""
+        if assistant.time_awareness and assistant.place_awareness:
+            structured_place_and_time_prompt = PromptBuilder._build_structured_place_and_time_prompt(assistant, user)
 
         # Combine the prompts
-        merged_prompt = (structured_name_prompt + structured_instructions_prompt + structured_response_template_prompt
-                         + structured_audience_prompt + structured_tone_prompt + structured_response_language_prompt
-                         + structured_user_information_prompt + structured_memory_prompt)
+        merged_prompt = (primary_guidelines_prompt + structured_name_prompt + structured_instructions_prompt +
+                         structured_response_template_prompt + structured_audience_prompt + structured_tone_prompt
+                         + structured_response_language_prompt + structured_user_information_prompt +
+                         structured_memory_prompt + structured_place_and_time_prompt)
 
         # Build the dictionary with the role
         prompt = {

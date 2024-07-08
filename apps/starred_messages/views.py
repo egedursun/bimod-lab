@@ -51,7 +51,7 @@ class DeleteStarredMessageView(LoginRequiredMixin, DeleteView):
         starred_message = get_object_or_404(StarredMessage, id=self.kwargs['pk'])
 
         ##############################
-        # PERMISSION CHECK FOR - MEMORIES DELETION
+        # PERMISSION CHECK FOR - STARRED_MESSAGES/REMOVE
         ##############################
         user_permissions = UserPermission.active_permissions.filter(
             user=context_user
@@ -65,6 +65,11 @@ class DeleteStarredMessageView(LoginRequiredMixin, DeleteView):
 
         starred_message.delete()
         success_message = "Starred message deleted successfully."
+
+        # assign the relevant message's starred field to False
+        starred_message.chat_message.starred = False
+        starred_message.chat_message.save()
+
         messages.success(request, success_message)
         return redirect(self.success_url)
 

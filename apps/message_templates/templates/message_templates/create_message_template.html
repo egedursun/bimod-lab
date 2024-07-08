@@ -1,6 +1,77 @@
+{% extends layout_path %}
 
-TODO: implement the templates
+{% load static %}
+{% load i18n %}
 
-sample test for:
+{% block title %}Create Message Template{% endblock %}
 
-create_message_template.html
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Create a New Message Template</h5> <small class="text-muted float-end"></small>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+          <img src="{% static 'img/custom-illustrations/boy-core-list.png' %}" width="25%" class="justify-content-end">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              In this page, you can create a new message template. Message templates are used to create messages that
+              can be reused for assistant chats more easily. Fill in the form with the message template's information
+              and click on the "Create" button to save the message template.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
+        {% if error_messages %}
+          {% for key, message in error_messages.items %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              <strong>{{ key }}:</strong> {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label class="form-label" for="organization">Organization</label>
+            <select class="form-select" id="organization" name="organization">
+              {% for organization in organizations %}
+              <option value="{{ organization.id }}">{{ organization.name }}</option>
+              {% endfor %}
+            </select>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="template_text">Template Text</label>
+            <textarea class="form-control" id="template_text" name="template_text" placeholder="Enter template text"></textarea>
+            <div class="form-text"></div>
+          </div>
+          <button type="submit" class="btn btn-primary d-grid w-100">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -49,6 +49,8 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         max_retry_count = request.POST.get('max_retry_count')
         tone = request.POST.get('tone')
         response_language = request.POST.get('response_language')
+        time_awareness = request.POST.get('time_awareness') == 'on'
+        place_awareness = request.POST.get('place_awareness') == 'on'
         assistant_image = request.FILES.get('assistant_image')
 
         if not (organization_id and llm_model_id and name and description and instructions and audience and tone):
@@ -71,7 +73,9 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             created_by_user=context_user,
             last_updated_by_user=context_user,
             response_template=response_template,
-            response_language=response_language
+            response_language=response_language,
+            time_awareness=time_awareness,
+            place_awareness=place_awareness
         )
 
         # retrieve the assistants of the organization and add the new assistant
@@ -140,6 +144,8 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         assistant.llm_model_id = request.POST.get('llm_model')
         assistant.response_template = request.POST.get('response_template')
         assistant.response_language = request.POST.get('response_language')
+        assistant.time_awareness = request.POST.get('time_awareness') == 'on'
+        assistant.place_awareness = request.POST.get('place_awareness') == 'on'
         assistant.last_updated_by_user = request.user
         if 'assistant_image' in request.FILES:
             assistant.assistant_image = request.FILES['assistant_image']

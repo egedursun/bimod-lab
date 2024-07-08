@@ -1,6 +1,128 @@
+{% extends layout_path %}
 
-TODO: implement the templates
+{% load static %}
+{% load i18n %}
 
-sample test for:
+{% block title %}Message Templates{% endblock %}
 
-list_message_templates.html
+{% block page_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/css/pages/page-profile.css' %}" />
+{% endblock page_css %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-4 label card card-border-primary rounded mt-8 ms-3 py-4 ps-4">
+    <h3 class="mb-0">Message Templates <i class="ti ti-template text-primary ms-4 pb-1" style="font-size: 24px;"></i></h3>
+  </div>
+</div>
+
+<!-- Message Templates Cards -->
+<div class="row g-6">
+  {% for message_template in message_templates %}
+  <div class="col-xl-6 col-lg-6 col-md-6 mb-6 d-flex">
+    <div class="card w-100">
+      <div class="card-header pb-4">
+        <div class="d-flex align-items-start">
+          <div class="d-flex align-items-center">
+            <div class="avatar me-4">
+              <img src="{{ message_template.user.profile.profile_picture.url }}" alt="Avatar" class="rounded" />
+            </div>
+            <div class="me-2">
+              <h5 class="mb-0"><strong>{{ message_template.user.username }}</strong></h5>
+              <div class="label bg-label-primary rounded mt-2 pt-1 pb-1 ps-2 pe-2">
+                <div class="client-info text-body"><strong><span class="fw-medium"></span><span>{{ message_template.organization.name }}</span></strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="ms-auto">
+            <div class="dropdown z-2">
+              <button type="button" class="btn btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-dots-vertical ti-md text-muted"></i></button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item text-primary" href="{% url 'message_templates:update' message_template.id %}"><strong>Update Template</strong></a></li>
+                <li><a class="dropdown-item text-danger" href="{% url 'message_templates:delete' message_template.id %}"><strong>Delete</strong></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card card-border-primary p-4 mt-4 mb-4">
+          <p class="card-text truncated-text" id="truncated-{{ message_template.id }}">{{ message_template.template_text|linebreaksbr|safe|slice:":400" }}{% if message_template.template_text|length > 200 %}...{% endif %}</p>
+          <div id="full-text-{{ message_template.id }}" class="collapse">
+            <p class="text-primary mb-2"><strong>Full Text</strong></p>
+            <p class="card-text markdown-content">{{ message_template.template_text|linebreaksbr|safe }}</p>
+          </div>
+          <strong><small>
+            <a href="javascript:void(0);" class="expand-btn me-12" data-bs-toggle="collapse" data-bs-target="#full-text-{{ message_template.id }}" aria-expanded="false" aria-controls="full-text-{{ message_template.id }}">
+              <i class="fa fa-expand"></i><span class="ms-2">Expand / Collapse</span>
+            </a>
+            <a href="javascript:void(0);" class="copy-btn ms-12" data-template-id="{{ message_template.id }}">
+              <i class="fa fa-copy"></i><span class="ms-2">Copy to Clipboard</span>
+            </a>
+          </small></strong>
+        </div>
+        <small class="mt-8"><strong>Created At: &nbsp;</strong> {{ message_template.created_at|date:"d M Y, H:i" }}</small>
+        <div class="alert-container"></div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<!--/ Message Templates Cards -->
+
+<!-- Include a markdown library, for example, Showdown.js -->
+<script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const converter = new showdown.Converter();
+  document.querySelectorAll('.markdown-content').forEach(function(element) {
+    element.innerHTML = converter.makeHtml(element.innerHTML);
+  });
+
+  document.querySelectorAll('.expand-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const target = document.querySelector(this.getAttribute('data-bs-target'));
+      const truncatedText = document.getElementById(`truncated-${this.getAttribute('data-bs-target').split('-')[2]}`);
+
+      target.addEventListener('shown.bs.collapse', function () {
+        truncatedText.style.display = '';
+      });
+
+      target.addEventListener('hidden.bs.collapse', function () {
+        truncatedText.style.display = 'block';
+      });
+    });
+  });
+
+  document.querySelectorAll('.copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const templateId = this.getAttribute('data-template-id');
+      const templateTextElement = document.getElementById(`full-text-${templateId}`);
+      const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const alertContainer = this.closest('.card-body').querySelector('.alert-container');
+        const successAlert = document.createElement('div');
+        successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+        successAlert.role = 'alert';
+        successAlert.innerHTML = `
+          <span class="alert-icon rounded">
+            <i class="ti ti-check"></i>
+          </span>
+          Text copied to clipboard!
+        `;
+        alertContainer.appendChild(successAlert);
+
+        setTimeout(() => {
+          successAlert.remove();
+        }, 1000);
+      }).catch(err => {
+        alert('Failed to copy text: ' + err);
+      });
+    });
+  });
+});
+</script>
+
+{% endblock %}

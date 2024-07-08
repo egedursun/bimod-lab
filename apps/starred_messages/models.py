@@ -1,6 +1,12 @@
 from django.db import models
 
 
+STARRED_MESSAGE_SENDER_TYPES = [
+    ("USER", "User"),
+    ("ASSISTANT", "Assistant"),
+]
+
+
 class StarredMessage(models.Model):
     # Foreign keys
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
@@ -8,6 +14,7 @@ class StarredMessage(models.Model):
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     chat = models.ForeignKey("multimodal_chat.MultimodalChat", on_delete=models.CASCADE)
     chat_message = models.ForeignKey("multimodal_chat.MultimodalChatMessage", on_delete=models.CASCADE)
+    sender_type = models.CharField(max_length=10, choices=STARRED_MESSAGE_SENDER_TYPES, default="USER")
 
     # Original field derived from chat_message
     message_text = models.TextField(blank=True, null=True)

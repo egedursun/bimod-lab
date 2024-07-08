@@ -165,6 +165,20 @@
               assistant will automatically detect the language of the user's input and respond in the same language.
           </div>
           <div class="mb-6">
+            <label class="form-label" for="time_awareness">Time &amp; Location Awareness (Recommended)</label>
+            <br>
+            <label class="switch switch-square switch-lg mt-2">
+              <input type="checkbox" class="switch-input" id="awarenessCheckbox" checked>
+              <span class="switch-toggle-slider">
+                <!-- Hidden fields for time_awareness and place_awareness -->
+                <input type="hidden" name="time_awareness" id="timeAwareness" value="on">
+                <input type="hidden" name="place_awareness" id="placeAwareness" value="on">
+                <span class="switch-on"><i class="ti ti-check"></i></span>
+                <span class="switch-off"><i class="ti ti-x"></i></span>
+              </span>
+            </label>
+          </div>
+          <div class="mb-6">
             <label class="form-label" for="assistant_image">Assistant Image</label>
             <input type="file" class="form-control" id="assistant_image" name="assistant_image" />
           </div>
@@ -197,6 +211,25 @@
 
       // Enable the LLM model select box
       llmModelSelect.disabled = false;
+    });
+  });
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('awarenessCheckbox');
+    const timeAwarenessField = document.getElementById('timeAwareness');
+    const placeAwarenessField = document.getElementById('placeAwareness');
+
+    checkbox.addEventListener('change', function() {
+      if (checkbox.checked) {
+        timeAwarenessField.value = 'on';
+        placeAwarenessField.value = 'on';
+      } else {
+        timeAwarenessField.value = 'off';
+        placeAwarenessField.value = 'off';
+      }
     });
   });
 </script>

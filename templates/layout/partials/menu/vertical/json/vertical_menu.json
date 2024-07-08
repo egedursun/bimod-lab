@@ -141,7 +141,18 @@
       "name": "Message Templates",
       "icon": "menu-icon tf-icons ti ti-template",
       "slug": "message-templates",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add New Template",
+          "slug": "message-template",
+          "url": "message_templates:create"
+        },
+        {
+          "name": "Templates",
+          "slug": "message-template",
+          "url": "message_templates:list"
+        }
+      ]
     },
     {
       "name": "Fine Tuning",

@@ -263,6 +263,7 @@
               <li class="chat-message {% if message.sender_type == 'USER' %}chat-message-right{% endif %}">
                 <div class="d-flex overflow-hidden">
                   {% if message.sender_type == 'ASSISTANT' %}
+                  </form>
                   <div class="user-avatar flex-shrink-0 me-4">
                     <div class="avatar avatar-sm">
                       <img src="{{ active_chat.assistant.assistant_image.url }}" alt="Avatar" class="rounded-circle">
@@ -273,8 +274,20 @@
                     <div class="chat-message-text">
                       <p class="mb-0 markdown-content">{{ message.message_text_content|linebreaksbr|safe }}</p>
                     </div>
-                    <div class="text-muted mt-1">
-                      <small>{{ message.sent_at|date:"H:i A" }}</small>
+                    <div class="text-muted mt-2">
+                      <small>
+                        <form method="post" action=".">
+                          {% csrf_token %}
+                          <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
+                          <input type="hidden" name="message_id" value="{{ message.id }}">
+                          <input type="hidden" name="starred_message" value="{{ message.starred }}">
+                           <button type="submit" class="btn btn-link p-0">
+                             <strong class="text-primary me-2">{% if message.starred %}Starred{% endif %}</strong>
+                             <i class="{% if message.starred %}ti ti-star-filled text-primary {% else %} ti ti-star text-light {% endif %}"></i>
+                             <strong class="ps-2 {% if message.starred %}text-primary{% else %}text-light{% endif %}">{{ message.sent_at|date:"H:i A" }}</strong>
+                           </button>
+                        </form>
+                      </small>
                     </div>
                   </div>
                   {% if message.sender_type == 'USER' %}
