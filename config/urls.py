@@ -39,6 +39,8 @@ urlpatterns = [
     path("app/assistants/", include("apps.assistants.urls", namespace="assistants")),
     path("app/multimodal_chat/", include("apps.multimodal_chat.urls", namespace="multimodal_chat")),
     path("app/memories/", include("apps.memories.urls", namespace="memories")),
+    path("app/starred_messages/", include("apps.starred_messages.urls", namespace="starred_messages")),
+    path("app/message_templates/", include("apps.message_templates.urls", namespace="message_templates")),
 ]
 
 

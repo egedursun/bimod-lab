@@ -1,0 +1,26 @@
+from django.db import models
+
+
+class StarredMessage(models.Model):
+    # Foreign keys
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE)
+    assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
+    chat = models.ForeignKey("multimodal_chat.MultimodalChat", on_delete=models.CASCADE)
+    chat_message = models.ForeignKey("multimodal_chat.MultimodalChatMessage", on_delete=models.CASCADE)
+
+    # Original field derived from chat_message
+    message_text = models.TextField(blank=True, null=True)
+
+    starred_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Starred Message"
+        verbose_name_plural = "Starred Messages"
+
+    def __str__(self):
+        return f"{self.user} starred {self.chat_message}"
+
+    def save(self, *args, **kwargs):
+        self.message_text = self.chat_message.message_text_content
+        super().save(*args, **kwargs)

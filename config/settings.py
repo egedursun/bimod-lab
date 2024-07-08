@@ -95,6 +95,8 @@ INSTALLED_APPS = [
     "apps.assistants",
     "apps.multimodal_chat",
     "apps.memories",
+    "apps.starred_messages",
+    "apps.message_templates",
     #############################
 ]
 
