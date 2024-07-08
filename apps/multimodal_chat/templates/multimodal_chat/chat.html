@@ -1,6 +1,5 @@
 {% extends layout_path %}
 {% load markdown_extras %}
-
 {% load static %}
 {% load i18n %}
 
@@ -27,7 +26,6 @@
 {% endblock page_js %}
 
 {% block content %}
-
 <div class="row g-6 mb-6">
   <div class="col-sm-6 col-xl-3">
     <h3 class="mb-0">Assistant Chats</h3>
@@ -65,12 +63,14 @@
       </div>
     </div>
     <!-- /Sidebar Left-->
+  </div>
 
-    <!-- Chat & Assistants -->
-    <div class="col app-chat-contacts app-sidebar border-end overflow-scroll" id="app-chat-contacts" style="max-width: 25%;">
-      <div class="sidebar-body" style="height: 100%;">
+  <!-- Chat & Assistants -->
+  <div class="row g-0">
+    <div class="col app-chat-contacts app-sidebar border-end overflow-auto" id="app-chat-contacts">
+      <div class="sidebar-body">
         <!-- Assistants -->
-        <ul class="list-unstyled chat-contact-list mb-0 py-2" id="assistant-list" >
+        <ul class="list-unstyled chat-contact-list mb-0 py-2" id="assistant-list">
           <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
             <h5 class="text-primary mb-0"><strong>Assistants</strong></h5>
           </li>
@@ -113,7 +113,7 @@
         </ul>
       </div>
     </div>
-    <div class="col app-chat-contacts app-sidebar border-end overflow-scroll" id="app-chat-chats" style="max-width: 25%;">
+    <div class="col app-chat-contacts app-sidebar border-end overflow-auto" id="app-chat-chats">
       <div class="sidebar-body">
         <!-- Chats -->
         <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
@@ -164,11 +164,14 @@
         </ul>
       </div>
     </div>
-    <!-- /Chat & Assistants -->
+  </div>
+  <!-- /Chat & Assistants -->
 
-    <!-- Chat History -->
-    {% if not active_chat %}
-      <div class="col app-chat-history">
+  <!-- Chat History -->
+  <div class="row g-0">
+    <div class="col app-chat-history">
+      <h5 class="text-primary mt-12"><strong></strong></h5>
+      {% if not active_chat %}
         <!-- inform the user that no active chat is selected at the moment -->
         <div class="chat-history-wrapper">
           <div class="chat-history-header border-bottom">
@@ -182,136 +185,138 @@
               </div>
             </div>
           </div>
-      </div>
-      <div class="alert alert-solid-primary alert-dismissible d-flex col-lg-10 align-items-center mt-10 ms-10" role="alert">
-        <img src="{% static 'img/custom-illustrations/boy-power.png' %}" width="25%" class="justify-content-end">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="alert-icon rounded">
-          <i class="ti ti-alert-circle-filled"></i>
-        </span>
-        <div class="d-flex flex-column ps-1">
-          <h5 class="alert-heading mb-2">Tip</h5>
-          <p class="mb-0">
-            Oops. It looks like you either haven't selected a chat or you don't have any chat at all. Come on,
-            start a new chat to discover how powerful you can become with {% get_theme_variables 'template_name' %} AI assistants!
-          </p>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-          </button>
         </div>
-      </div>
-    </div>
-    {% else %}
-      <div class="col app-chat-history">
-      <div class="chat-history-wrapper">
-        <div class="chat-history-header">
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex overflow-hidden align-items-center">
-              <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-chats"></i>
-              <div class="flex-shrink-0 avatar avatar-online">
-                <img src="{{ active_chat.assistant.assistant_image.url }}" class="rounded-circle" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
-              </div>
-              <div class="chat-contact-info flex-grow-1 ms-4">
-                <form method="post" action=".">
-                  {% csrf_token %}
-                  <div class="d-flex justify-content-between align-items-center mt-2">
-                    <input type="text" class="form-control bg-lightest text-bg-light" name="new_chat_name" value="{{ active_chat.chat_name }}" style="font-weight: bold;" />
-                    <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
-                    <button type="submit" class="btn btn-link p-0 ms-2">
-                      <i class="fa fa-save text-bg-light"></i>
-                    </button>
-                  </div>
-                </form>
-                <h6 class="m-0 fw-normal mt-1 ms-1">
-                  <small class="text-muted">
-                    <strong>
-                      {{ active_chat.assistant.organization }} / {{ active_chat.assistant.name }} / {{ active_chat.assistant.llm_model.nickname }} / {{ active_chat.assistant.llm_model.model_name }}
-                    </strong>
-                  </small>
-                </h6>
-              </div>
+        <div class="alert alert-solid-primary alert-dismissible d-flex col-lg-10 align-items-center mt-10 ms-10" role="alert">
+          <img src="{% static 'img/custom-illustrations/boy-power.png' %}" width="25%" class="justify-content-end">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="alert-icon rounded">
+            <i class="ti ti-alert-circle-filled"></i>
+          </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              Oops. It looks like you either haven't selected a chat or you don't have any chat at all. Come on,
+              start a new chat to discover how powerful you can become with {% get_theme_variables 'template_name' %} AI assistants!
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
+      {% else %}
+        <div class="chat-history-wrapper">
+          <div class="chat-history-header">
+            <div class="card card-border-shadow-primary rounded">
+              <h5 class="text-primary ms-4 me-4 mt-4 mb-4"><strong>Active Chat</strong></h5>
             </div>
-            <div class="d-flex align-items-center">
-              <div class="dropdown">
-                <button class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions"><i class="ti ti-dots-vertical ti-md"></i></button>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
-                  <a class="dropdown-item bg-label-danger" href="{% url 'multimodal_chat:delete' active_chat.id %}"><strong>Delete Chat</strong></a>
+            <div class="d-flex justify-content-between align-items-center mt-8">
+              <div class="d-flex overflow-hidden align-items-center">
+                <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-chats"></i>
+                <div class="flex-shrink-0 avatar avatar-online">
+                  <img src="{{ active_chat.assistant.assistant_image.url }}" class="rounded-circle" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
+                </div>
+                <div class="chat-contact-info flex-grow-1 ms-4">
+                  <form method="post" action=".">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                      <input type="text" class="form-control bg-lightest text-bg-light" name="new_chat_name" value="{{ active_chat.chat_name }}" style="font-weight: bold;" />
+                      <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
+                      <button type="submit" class="btn btn-link p-0 ms-2">
+                        <i class="fa fa-save text-bg-light"></i>
+                      </button>
+                    </div>
+                  </form>
+                  <h6 class="m-0 fw-normal mt-1 ms-1">
+                    <small class="text-muted">
+                      <strong>
+                        {{ active_chat.assistant.organization }} / {{ active_chat.assistant.name }} / {{ active_chat.assistant.llm_model.nickname }} / {{ active_chat.assistant.llm_model.model_name }}
+                      </strong>
+                    </small>
+                  </h6>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions"><i class="ti ti-dots-vertical ti-md"></i></button>
+                  <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
+                    <a class="dropdown-item bg-label-danger" href="{% url 'multimodal_chat:delete' active_chat.id %}"><strong>Delete Chat</strong></a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- loading bar warning -->
-          <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-brain"></i>
-            </span>
-            <div class="d-flex flex-column ps-1 pt-4">
-              <p class="alert-heading"><strong>I am thinking, please hold on for a few seconds...</strong></p>
+            <!-- loading bar warning -->
+            <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-brain"></i>
+              </span>
+              <div class="d-flex flex-column ps-1 pt-4">
+                <p class="alert-heading"><strong>I am thinking, please hold on for a few seconds...</strong></p>
+              </div>
+            </div>
+            <!-- Loading bar -->
+            <div id="loadingBar" class="progress d-none mt-3 mb-1">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%; height:10px;"></div>
             </div>
           </div>
-          <!-- Loading bar -->
-          <div id="loadingBar" class="progress d-none mt-3 mb-1">
-            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%; height:10px;"></div>
+          <div class="chat-history-body">
+            <ul class="list-unstyled chat-history" style="height: 95%">
+              {% for message in chat_messages.all %}
+              <li class="chat-message {% if message.sender_type == 'USER' %}chat-message-right{% endif %}">
+                <div class="d-flex overflow-hidden">
+                  {% if message.sender_type == 'ASSISTANT' %}
+                  <div class="user-avatar flex-shrink-0 me-4">
+                    <div class="avatar avatar-sm">
+                      <img src="{{ active_chat.assistant.assistant_image.url }}" alt="Avatar" class="rounded-circle">
+                    </div>
+                  </div>
+                  {% endif %}
+                  <div class="chat-message-wrapper flex-grow-1">
+                    <div class="chat-message-text">
+                      <p class="mb-0 markdown-content">{{ message.message_text_content|linebreaksbr|safe }}</p>
+                    </div>
+                    <div class="text-muted mt-1">
+                      <small>{{ message.sent_at|date:"H:i A" }}</small>
+                    </div>
+                  </div>
+                  {% if message.sender_type == 'USER' %}
+                  <div class="user-avatar flex-shrink-0 ms-4">
+                    <div class="avatar avatar-sm">
+                      <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}" alt="Avatar" class="rounded-circle">
+                    </div>
+                  </div>
+                  {% endif %}
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <!-- Chat message form -->
+          <div class="chat-history-footer shadow-xs">
+            <form class="form-send-message d-flex justify-content-between align-items-center" method="post" action="." enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
+              <input class="form-control message-input border-0 me-4 shadow-none" name="message_content" placeholder="Type your message here...">
+              <div class="message-actions d-flex align-items-center">
+                <i class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
+                <label for="attach-doc" class="form-label mb-0">
+                  <i class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
+                  <input type="file" id="attach-doc" hidden>
+                </label>
+                <button class="btn btn-primary d-flex send-msg-btn" type="submit">
+                  <span class="align-middle d-md-inline-block d-none">Send</span>
+                  <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-        <div class="chat-history-body">
-  <ul class="list-unstyled chat-history" style="height: 95%">
-    {% for message in chat_messages.all %}
-    <li class="chat-message {% if message.sender_type == 'USER' %}chat-message-right{% endif %}">
-      <div class="d-flex overflow-hidden">
-        {% if message.sender_type == 'ASSISTANT' %}
-        <div class="user-avatar flex-shrink-0 me-4">
-          <div class="avatar avatar-sm">
-            <img src="{{ active_chat.assistant.assistant_image.url }}" alt="Avatar" class="rounded-circle">
-          </div>
-        </div>
-        {% endif %}
-        <div class="chat-message-wrapper flex-grow-1">
-          <div class="chat-message-text">
-            <p class="mb-0 markdown-content">{{ message.message_text_content|linebreaksbr|safe }}</p>
-          </div>
-          <div class="text-muted mt-1">
-            <small>{{ message.sent_at|date:"H:i A" }}</small>
-          </div>
-        </div>
-        {% if message.sender_type == 'USER' %}
-        <div class="user-avatar flex-shrink-0 ms-4">
-          <div class="avatar avatar-sm">
-            <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}" alt="Avatar" class="rounded-circle">
-          </div>
-        </div>
-        {% endif %}
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-        <!-- Chat message form -->
-        <div class="chat-history-footer shadow-xs">
-          <form class="form-send-message d-flex justify-content-between align-items-center" method="post" action="." enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
-            <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
-            <input class="form-control message-input border-0 me-4 shadow-none" name="message_content" placeholder="Type your message here...">
-            <div class="message-actions d-flex align-items-center">
-              <i class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
-              <label for="attach-doc" class="form-label mb-0">
-                <i class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
-                <input type="file" id="attach-doc" hidden>
-              </label>
-              <button class="btn btn-primary d-flex send-msg-btn" type="submit">
-                <span class="align-middle d-md-inline-block d-none">Send</span>
-                <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+      {% endif %}
     </div>
-    {% endif %}
-    <!-- /Chat History -->
+  </div>
+  <!-- /Chat History -->
 
-    <!-- Sidebar Right -->
-    {% if active_chat %}
+  <!-- Sidebar Right -->
+  {% if active_chat %}
+  <div class="row g-0">
     <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-right">
       <div class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
         <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
@@ -348,11 +353,11 @@
         </div>
       </div>
     </div>
-    {% endif %}
-    <!-- /Sidebar Right -->
-
-    <div class="app-overlay"></div>
   </div>
+  {% endif %}
+  <!-- /Sidebar Right -->
+
+  <div class="app-overlay"></div>
 </div>
 
 <style>

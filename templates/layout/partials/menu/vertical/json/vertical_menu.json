@@ -124,7 +124,18 @@
       "name": "Memory",
       "icon": "menu-icon tf-icons ti ti-archive",
       "slug": "memory",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add New Memory",
+          "slug": "memory",
+          "url": "memories:create"
+        },
+        {
+          "name": "Memories",
+          "slug": "memory",
+          "url": "memories:list"
+        }
+      ]
     },
     {
       "name": "Message Templates",

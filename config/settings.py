@@ -94,6 +94,7 @@ INSTALLED_APPS = [
     "apps.user_permissions",
     "apps.assistants",
     "apps.multimodal_chat",
+    "apps.memories",
     #############################
 ]
 

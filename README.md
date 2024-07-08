@@ -16,6 +16,7 @@
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 - [X] Privacy Policy and Terms of Service development & integration for the application.
 - [ ] Stop Sequence Integration
+- [ ] A better payment method management (for credit card storage and usage).
 
 ---
 
@@ -67,8 +68,9 @@
 - [X] Fix the FAQ page and include content.
 - [X] Transactions must also include the responsible user, to associate the costs with the users.
 - [X] Show a loading bar while the message response is being calculated.
-- [X] Show the messages in markdown format.
+- [X] Show the messages in mark-down format.
 - [ ] Refine ideas regarding the dashboard page.
+- [ ] **URGENT**: Add memory objects to the permission management.
 ---
 
 

@@ -38,6 +38,7 @@ urlpatterns = [
     path("app/user_permissions/", include("apps.user_permissions.urls", namespace="user_permissions")),
     path("app/assistants/", include("apps.assistants.urls", namespace="assistants")),
     path("app/multimodal_chat/", include("apps.multimodal_chat.urls", namespace="multimodal_chat")),
+    path("app/memories/", include("apps.memories.urls", namespace="memories")),
 ]
 
 

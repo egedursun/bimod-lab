@@ -41,6 +41,9 @@ class Assistant(models.Model):
     assistant_image = models.ImageField(upload_to=assistant_image_save_path, blank=True, max_length=1000,
                                            null=True)
 
+    memories = models.ManyToManyField("memories.AssistantMemory", related_name='assistants',
+                                      blank=True)
+
     ##############################
     # add the chat FK fields here
     ##############################
