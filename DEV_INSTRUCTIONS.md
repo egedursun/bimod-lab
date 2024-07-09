@@ -1,9 +1,11 @@
 
-# Locally Setting up the Bimod.io Software
+# Getting Started
 
 ---
 
-## Instructions
+---
+
+## Installation Instructions
 
 ---
 
