@@ -114,7 +114,6 @@
 - [X] Integrate the memories pages.
 - [X] Integrate the message templates pages.
 - [X] Integrate the starred messages pages.
-- [ ] Integrate the fine-tuning pages.
 - [ ] Integrate the orchestration pages.
 - [X] Integrate the registration page.
 - [ ] Integrate SQL database features.

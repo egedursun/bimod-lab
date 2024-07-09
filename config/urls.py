@@ -42,6 +42,7 @@ urlpatterns = [
     path("app/starred_messages/", include("apps.starred_messages.urls", namespace="starred_messages")),
     path("app/message_templates/", include("apps.message_templates.urls", namespace="message_templates")),
     path("app/export_assistants/", include("apps.export_assistants.urls", namespace="export_assistants")),
+    path("app/datasource_sql/", include("apps.datasource_sql.urls", namespace="datasource_sql")),
 ]
 
 
