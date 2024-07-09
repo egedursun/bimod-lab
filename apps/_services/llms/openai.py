@@ -80,6 +80,8 @@ class InternalOpenAIClient:
                     tax_cost=0,
                     total_cost=0,
                     total_billable_cost=0,
+                    transaction_type=ChatRoles.ASSISTANT,
+                    transaction_source=self.chat.chat_source
                 )
                 self.chat.transactions.add(idle_response_transaction)
                 self.chat.save()
@@ -99,10 +101,29 @@ class InternalOpenAIClient:
                 # TODO: to be implement later
                 #  stop=self.assistant.llm_model.stop_sequences
             )
+
             choices = response.choices
             first_choice = choices[0]
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
+            # Add the transaction of the assistant
+            LLMTransaction.objects.create(
+                organization=self.chat.organization,
+                model=self.chat.assistant.llm_model,
+                responsible_user=self.chat.user,
+                responsible_assistant=self.chat.assistant,
+                encoding_engine="cl100k_base",
+                transaction_context_content=user_query_message,
+                llm_cost=0,
+                internal_service_cost=0,
+                tax_cost=0,
+                total_cost=0,
+                total_billable_cost=0,
+                transaction_type=ChatRoles.ASSISTANT,
+                transaction_source=self.chat.chat_source
+            )
+
             final_response = choice_message_content
 
         # Retry mechanism for the OpenAI API, for N times

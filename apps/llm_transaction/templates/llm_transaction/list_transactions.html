@@ -103,32 +103,7 @@
 
 <!-- Display overall user total costs -->
 <div class="row g-4 mb-4">
-  <div class="col-sm-6 col-xl-6">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex align-items-start justify-content-between">
-          <div class="content-left">
-            <div class="d-flex align-items-end">
-              <h3 class="mb-0 me-2">${{ cost_sums.total_cost }}</h3>
-              <small class="text-primary"></small>
-            </div>
-            <small>Total Cost (User)</small>
-          </div>
-          <span class="badge bg-label-primary rounded p-2">
-            <i class="ti ti-arrows-transfer-down ti-sm"></i>
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
-      <span class="alert-icon rounded">
-        <i class="ti ti-bell"></i>
-      </span>
-      LLM cost is "an approximation" of the cost of the external LLM core you are using. Please note that
-      this might not be the exact number you will be invoiced by your provider.
-    </div>
-  </div>
-  <div class="col-sm-6 col-xl-6">
+  <div class="col-sm-12 col-xl-12">
       <div class="card">
         <div class="card-body bg-label-success rounded">
           <div class="d-flex align-items-start justify-content-between">
@@ -137,7 +112,7 @@
                 <h3 class="mb-0 me-2">${{ cost_sums.total_billable_cost }}</h3>
                 <small class="text-primary"></small>
               </div>
-              <small>Billable Cost (User)</small>
+              <small><strong>Total Cost (User)</strong></small>
             </div>
             <span class="badge bg-label-primary rounded p-2">
               <i class="ti ti-arrows-transfer-down ti-sm"></i>
@@ -212,34 +187,17 @@
         </div>
 
         <div class="row g-4 mb-4">
-          <div class="col-sm-6 col-xl-6">
+          <div class="col-sm-12 col-xl-12">
             <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-start justify-content-between">
-                  <div class="content-left">
-                    <div class="d-flex align-items-end">
-                      <h3 class="mb-0 me-2">${{ organization_data.cost_sums.total_cost }}</h3>
-                      <small class="text-primary"></small>
-                    </div>
-                    <small>Total Cost (Organization)</small>
-                  </div>
-                  <span class="badge bg-label-primary rounded p-2">
-                    <i class="ti ti-arrows-transfer-down ti-sm"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-xl-6">
-            <div class="card">
-              <div class="card-body bg-label-success rounded">
+              <div class="card-body bg-label-info rounded">
                 <div class="d-flex align-items-start justify-content-between">
                   <div class="content-left">
                     <div class="d-flex align-items-end">
                       <h3 class="mb-0 me-2">${{ organization_data.cost_sums.total_billable_cost }}</h3>
                       <small class="text-primary"></small>
                     </div>
-                    <small>Total Billable Cost (Organization)</small>
+
+                    <small><strong>Total Cost (Organization)</strong></small>
                   </div>
                   <span class="badge bg-label-primary rounded p-2">
                     <i class="ti ti-arrows-transfer-down ti-sm"></i>
@@ -258,12 +216,7 @@
             <br>
             <i class="fa fa-money-bill-transfer mt-5"></i>
             <span>
-              <strong class="bg-label-success rounded p-1">&nbsp; LLM Model Billable Cost (Total): ${{ llm_data.cost_sums.total_billable_cost }}</strong>
-            </span>
-            <br>
-            <i class="fa fa-money-bill-wave mt-5"></i>
-            <span>
-              <strong>&nbsp; LLM Model Expense (Total): ${{ llm_data.cost_sums.total_cost }}</strong>
+              <strong class="bg-label-info rounded p-1 pe-3">&nbsp; Total Cost (Total): ${{ llm_data.cost_sums.total_billable_cost }}</strong>
             </span>
           </div>
           <div id="collapse-{{ organization_data.organization.id }}" class="card-body collapse">
@@ -274,12 +227,10 @@
                     <th>Id</th>
                     <th>User</th>
                     <th>Assistant</th>
+                    <th>Transaction Role Type</th>
+                    <th>Transaction Source</th>
                     <th>Encoding Engine</th>
                     <th>Number of Tokens</th>
-                    <th>LLM Cost</th>
-                    <th>Internal Service Cost</th>
-                    <th>Tax Cost</th>
-                    <th>Total Cost</th>
                     <th>Total Billable Cost</th>
                     <th>Created At</th>
                   </tr>
@@ -290,28 +241,47 @@
                     <td>{{ transaction.id }}</td>
                     <td>{{ transaction.responsible_user.username }}</td>
                     <td>{{ transaction.responsible_assistant.name }}</td>
+                    <td>{{ transaction.transaction_type }}</td>
+                    <td>{{ transaction.transaction_source }}</td>
                     <td>{{ transaction.encoding_engine }}</td>
                     <td>{{ transaction.number_of_tokens }}</td>
-                    <td>$ {{ transaction.llm_cost }}</td>
-                    <td>$ {{ transaction.internal_service_cost }}</td>
-                    <td>$ {{ transaction.tax_cost }}</td>
-                    <td>$ {{ transaction.total_cost }}</td>
                     <td>$ {{ transaction.total_billable_cost }}</td>
                     <td>{{ transaction.created_at }}</td>
                   </tr>
                   {% endfor %}
                   <tr class="bg-light">
                     <td colspan="3"><strong>Total</strong></td>
-                    <td colspan="2"></td>
-                    <td><strong>$ {{ llm_data.cost_sums.llm_cost }}</strong></td>
-                    <td><strong>$ {{ llm_data.cost_sums.internal_service_cost }}</strong></td>
-                    <td><strong>$ {{ llm_data.cost_sums.tax_cost }}</strong></td>
-                    <td><strong>$ {{ llm_data.cost_sums.total_cost }}</strong></td>
+                    <td colspan="4"></td>
                     <td><strong>$ {{ llm_data.cost_sums.total_billable_cost }}</strong></td>
                     <td colspan="1"></td>
                   </tr>
                 </tbody>
               </table>
+              <nav aria-label="Page navigation">
+                <ul class="pagination pagination-rounded pt-8">
+                  {% if llm_data.transactions.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ llm_data.transactions.previous_page_number }}"><i class="ti ti-chevron-left ti-sm"></i></a>
+                  </li>
+                  {% endif %}
+                  {% for page_num in llm_data.transactions.paginator.page_range %}
+                  <li class="page-item {% if llm_data.transactions.number == page_num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                  </li>
+                  {% endfor %}
+                  {% if llm_data.transactions.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ llm_data.transactions.next_page_number }}"><i class="ti ti-chevron-right ti-sm"></i></a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ llm_data.transactions.paginator.num_pages }}"><i class="ti ti-chevrons-right ti-sm"></i></a>
+                  </li>
+                  {% endif %}
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -321,44 +291,43 @@
   </div>
 </div>
 {% endfor %}
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        function animateBalance(id, balance, duration) {
-            const balanceElement = document.getElementById(id);
-            if (!balanceElement) return;
-
-            const start = 0;
-            const end = balance;
-            const range = end - start;
-            const startTime = performance.now();
-
-            function updateBalance(currentTime) {
-                const elapsedTime = currentTime - startTime;
-                const progress = Math.min(elapsedTime / duration, 1);
-                balanceElement.textContent = (start + range * progress).toFixed(6);
-
-                if (progress < 1) {
-                    requestAnimationFrame(updateBalance);
-                } else {
-                    balanceElement.textContent = balance.toFixed(6);  // Ensure final value is exact
-                }
-            }
-
-            requestAnimationFrame(updateBalance);
-        }
-
-        // Get all balance elements and animate them
-        document.querySelectorAll('[id^="balance-"]').forEach(function(element) {
-            const balance = parseFloat(element.textContent);
-            const id = element.id;
-            element.textContent = "0.000000";  // Initialize with 0
-            animateBalance(id, balance, 1000);  // Duration is 500ms (0.5 seconds)
-        });
-    });
-</script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    // Function to store the opened tab state
+    function storeOpenedTabState() {
+      const openedTabs = [];
+      document.querySelectorAll('.collapse.show').forEach(collapse => {
+        openedTabs.push(collapse.id);
+      });
+      localStorage.setItem('openedTabs', JSON.stringify(openedTabs));
+    }
+
+    // Function to restore the opened tab state
+    function restoreOpenedTabState() {
+      const openedTabs = JSON.parse(localStorage.getItem('openedTabs'));
+      if (openedTabs && Array.isArray(openedTabs)) {
+        openedTabs.forEach(tabId => {
+          const collapseElement = document.getElementById(tabId);
+          if (collapseElement) {
+            new bootstrap.Collapse(collapseElement, {
+              toggle: true
+            });
+          }
+        });
+      }
+    }
+
+    // Store the opened tab state on collapse and expand events
+    document.querySelectorAll('.collapse').forEach(collapse => {
+      collapse.addEventListener('show.bs.collapse', storeOpenedTabState);
+      collapse.addEventListener('hide.bs.collapse', storeOpenedTabState);
+    });
+
+    // Restore the opened tab state on page load
+    restoreOpenedTabState();
+
+    // Toggle icon logic
     document.querySelectorAll('.toggle-icon').forEach(function(icon) {
       icon.addEventListener('click', function() {
         var target = document.querySelector(this.getAttribute('data-target'));
@@ -373,6 +342,7 @@
       });
     });
 
+    // Update toggle icons based on collapse state
     document.querySelectorAll('.collapse').forEach(function(collapse) {
       collapse.addEventListener('show.bs.collapse', function() {
         var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
@@ -392,4 +362,5 @@
     });
   });
 </script>
+
 {% endblock %}

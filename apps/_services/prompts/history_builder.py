@@ -36,6 +36,8 @@ class HistoryBuilder:
                 tax_cost=0,
                 total_cost=0,
                 total_billable_cost=0,
+                transaction_type=sender_type.lower(),
+                transaction_source=chat.chat_source
             )
             chat.transactions.add(transaction)
             chat.save()

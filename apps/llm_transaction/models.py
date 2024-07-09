@@ -12,6 +12,29 @@ ENCODING_ENGINES = [
     ("r50k_base", "r50k_base"),
 ]
 
+TRANSACTION_TYPE_ROLES = [
+    ("user", "User"),
+    ("assistant", "Assistant"),
+    ("system", "System"),
+]
+
+
+TRANSACTION_SOURCES = [
+    ("app", "Application"),
+    ("api", "API"),
+]
+
+
+class TransactionTypeRolesNames:
+    USER = "user"
+    ASSISTANT = "assistant"
+    SYSTEM = "system"
+
+
+class TransactionSourcesNames:
+    APP = "app"
+    API = "api"
+
 
 # Create your models here.
 
@@ -34,6 +57,9 @@ class LLMTransaction(models.Model):
     tax_cost = models.DecimalField(max_digits=10, decimal_places=6, null=True, blank=True)
     total_cost = models.DecimalField(max_digits=10, decimal_places=6, null=True, blank=True)
     total_billable_cost = models.DecimalField(max_digits=10, decimal_places=6, null=True, blank=True)
+
+    transaction_type = models.CharField(max_length=100, choices=TRANSACTION_TYPE_ROLES, default="system")
+    transaction_source = models.CharField(max_length=100, choices=TRANSACTION_SOURCES, default="application")
 
     created_at = models.DateTimeField(auto_now_add=True)
 

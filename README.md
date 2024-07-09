@@ -80,12 +80,12 @@
 - [X] Check if the transactions are deleted when an ORGANIZATION is deleted, it must not be the case.
 - [X] There is a bug when updating the time & place awareness of the assistant. Fix it.
 - [X] Integrate the permissions for the export assistants.
-- [ ] **URGENT:** Transaction calculations are not correct, system messages are not added to the calculation,
+- [X] Transaction calculations are not correct, system messages are not added to the calculation,
                   creating discrepancies in the balance. Additionally, the logic somehow does not work for
                   the API exports. Fix these issues.
 - [ ] **URGENT:** Whenever an organization is deleted, the balance must be transferred to another organization. The
                   last organization cannot be deleted to avoid this problem.
-- [ ] **URGENT:** Implement pagination for the transactions page.
+- [X] Implement pagination for the transactions page.
 - [ ] Implement the fine-tuning pages & management.
 - [ ] Implement the SQL data source integration & management.
 - [ ] Implement the NOSQL data source integration & management.

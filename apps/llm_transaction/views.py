@@ -2,6 +2,7 @@ from datetime import timedelta
 from pprint import pprint
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.utils import timezone
 from django.views.generic import TemplateView
 
@@ -40,13 +41,6 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
         context_user = self.request.user
         organizations = Organization.objects.filter(users__in=[context_user])
 
-        ##############################
-        # PERMISSION CHECK FOR - TRANSACTIONS/LIST
-        ##############################
-        # For now, every user is able to see the transactions.
-        ##############################
-
-        # Get from context
         filter_value = self.request.POST.get('filter')
         delta_specifier = self.request.POST.get('delta_specifier')
         if not delta_specifier:
@@ -68,9 +62,15 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
             for llm_model in llm_models:
                 transactions = LLMTransaction.objects.filter(organization=organization, model=llm_model,
                                                              created_at__gte=filter_date)
+
+                # Paginate transactions (20 items per page)
+                paginator = Paginator(transactions, 20)
+                page_number = self.request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+
                 llm_data = {
                     'model': llm_model,
-                    'transactions': transactions,
+                    'transactions': page_obj,  # Use paginated transactions
                     'cost_sums': sum_costs(transactions)
                 }
                 org_data['llm_models'].append(llm_data)

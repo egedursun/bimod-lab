@@ -244,6 +244,8 @@ class PromptBuilder:
             tax_cost=0,
             total_cost=0,
             total_billable_cost=0,
+            transaction_type="system",
+            transaction_source=chat.chat_source
         )
         # Add the transaction to the chat
         chat.transactions.add(transaction)
