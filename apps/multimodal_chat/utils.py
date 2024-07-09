@@ -34,6 +34,14 @@ def calculate_billable_cost(internal_service_cost, tax_cost):
     return internal_service_cost + tax_cost
 
 
+def calculate_billable_cost_from_raw(encoding_engine, model, text):
+    number_of_tokens = calculate_number_of_tokens(encoding_engine, text)
+    llm_cost = calculate_llm_cost(model, number_of_tokens)
+    internal_service_cost = calculate_internal_service_cost(llm_cost)
+    tax_cost = calculate_tax_cost(internal_service_cost)
+    return calculate_billable_cost(internal_service_cost, tax_cost)
+
+
 def calculate_total_cost(llm_cost, billable_cost):
     return llm_cost + billable_cost
 

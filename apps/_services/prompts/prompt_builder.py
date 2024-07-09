@@ -4,6 +4,8 @@ from time import timezone
 from django.contrib.auth.models import User
 
 from apps.assistants.models import Assistant, ASSISTANT_RESPONSE_LANGUAGES
+from apps.llm_transaction.models import LLMTransaction
+from apps.multimodal_chat.models import MultimodalChat
 
 
 class PromptBuilder:
@@ -195,7 +197,7 @@ class PromptBuilder:
         return response_prompt
 
     @staticmethod
-    def build(assistant: Assistant, user: User, role: str):
+    def build(chat: MultimodalChat, assistant: Assistant, user: User, role: str):
         name = assistant.name
         instructions = assistant.instructions
         response_template = assistant.response_template
@@ -228,6 +230,24 @@ class PromptBuilder:
             "role": role,
             "content": merged_prompt
         }
+
+        # Create the transaction for the system prompt
+        transaction = LLMTransaction.objects.create(
+            organization=assistant.organization,
+            model=assistant.llm_model,
+            responsible_user=user,
+            responsible_assistant=assistant,
+            encoding_engine="cl100k_base",
+            transaction_context_content=merged_prompt,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+        )
+        # Add the transaction to the chat
+        chat.transactions.add(transaction)
+        chat.save()
 
         return prompt
 

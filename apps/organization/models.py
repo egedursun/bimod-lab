@@ -27,7 +27,7 @@ class Organization(models.Model):
                                              default=1, blank=True, null=False)
 
     # additional fields
-    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    balance = models.DecimalField(max_digits=10, decimal_places=6, default=0.000000)
 
     # profile image
     organization_image_save_path = 'organization_images/%Y/%m/%d/' + generate_random_string()

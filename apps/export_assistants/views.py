@@ -14,8 +14,8 @@ from apps._services.llms.llm_decoder import InternalLLMClient
 from apps.assistants.models import Assistant
 from apps.export_assistants.management.commands.start_exported_assistants import start_endpoint_for_assistant
 from apps.export_assistants.models import ExportAssistantAPI, RequestLog
-from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames
-from apps.multimodal_chat.utils import generate_chat_name
+from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
+from apps.multimodal_chat.utils import generate_chat_name, calculate_billable_cost_from_raw
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
 from config import settings
@@ -114,6 +114,7 @@ class ExportAssistantAPIView(View):
                 chat_source=ChatSourcesNames.API)
 
         # Add the user messages to the chat
+        user_message = None
         try:
             for message in chat_history:
                 role = message["role"]
@@ -123,8 +124,8 @@ class ExportAssistantAPIView(View):
                     sender_type=role.upper(),
                     message_text_content=content
                 )
-                # save the chat
-                api_chat.save()
+                user_message = api_chat.chat_messages.filter(sender_type=role.upper()).last()
+
         except Exception as e:
             return JsonResponse({
                 "message": "Internal server error: " + str(e),
@@ -132,10 +133,14 @@ class ExportAssistantAPIView(View):
                 "status": StatusCodes.INTERNAL_SERVER_ERROR
             }, status=StatusCodes.INTERNAL_SERVER_ERROR)
 
-        llm_response_text = ""
         try:
             llm_client = InternalLLMClient.get(assistant=export_assistant.assistant, multimodal_chat=api_chat)
-            llm_response_text = llm_client.respond()
+            llm_response_text = llm_client.respond(user_query_message=user_message)
+            MultimodalChatMessage.objects.create(
+                multimodal_chat=api_chat,
+                sender_type='ASSISTANT',
+                message_text_content=llm_response_text
+            )
         except Exception as e:
             return JsonResponse({
                 "message": "Internal server error: " + str(e),
@@ -174,14 +179,14 @@ class ListExportAssistantsView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user_context = self.request.user
-        max_export_assistants = 5  # Maximum number of export assistants per organization
+        max_export_assistants = settings.MAX_ASSISTANT_EXPORTS_ORGANIZATION
 
         organization_data = []
         organizations = Organization.objects.filter(users=user_context)
 
         for organization in organizations:
             export_assistants_count = organization.exported_assistants.count()
-            assistants_percentage = (export_assistants_count / max_export_assistants) * 100
+            assistants_percentage = round((export_assistants_count / max_export_assistants) * 100, 2)
             export_assistants = organization.exported_assistants.all()
 
             for assistant in export_assistants:
@@ -192,6 +197,7 @@ class ListExportAssistantsView(TemplateView, LoginRequiredMixin):
                 'export_assistants_count': export_assistants_count,
                 'assistants_percentage': assistants_percentage,
                 'export_assistants': export_assistants,
+                'limit': max_export_assistants
             })
 
         export_assistants = ExportAssistantAPI.objects.filter(created_by_user=user_context)
@@ -233,7 +239,7 @@ class CreateExportAssistantsView(TemplateView, LoginRequiredMixin):
         ##############################
 
         # check if the number of assistants of the organization is higher than the allowed limit
-        if ExportAssistantAPI.objects.filter(created_by_user=request.user).count() >= MAX_ASSISTANT_EXPORTS_ORGANIZATION:
+        if ExportAssistantAPI.objects.filter(created_by_user=request.user).count() > MAX_ASSISTANT_EXPORTS_ORGANIZATION:
             messages.error(request, f"Maximum number of Export Assistant APIs reached for the organization.")
             return self.render_to_response(self.get_context_data())
 

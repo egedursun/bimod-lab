@@ -14,7 +14,7 @@
 - [ ] Better validation and logging system.
 - [X] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
-- [X] Privacy Policy and Terms of Service development & integration for the application.
+- [ ] Privacy Policy and Terms of Service development & integration for the application.
 - [ ] Stop Sequence Integration
 - [ ] A better payment method management (for credit card storage and usage).
 - [ ] Proper documentation & tutorial.
@@ -80,6 +80,9 @@
 - [X] Check if the transactions are deleted when an ORGANIZATION is deleted, it must not be the case.
 - [X] There is a bug when updating the time & place awareness of the assistant. Fix it.
 - [X] Integrate the permissions for the export assistants.
+- [ ] **URGENT:** Transaction calculations are not correct, system messages are not added to the calculation,
+                  creating discrepancies in the balance. Additionally, the logic somehow does not work for
+                  the API exports. Fix these issues.
 - [ ] **URGENT:** Whenever an organization is deleted, the balance must be transferred to another organization. The
                   last organization cannot be deleted to avoid this problem.
 - [ ] **URGENT:** Implement pagination for the transactions page.
@@ -87,6 +90,11 @@
 - [ ] Implement the SQL data source integration & management.
 - [ ] Implement the NOSQL data source integration & management.
 - [ ] Refine ideas regarding the dashboard page & management.
+- [ ] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
+      specifiers such as "use tool" or "respond", etc.
+- [ ] There must be limits for "how many times the same tool can be reached one after another", and "how many different
+      tools can be piped one after another".
+- [ ] Discuss the "github repo integration" and assitant interpretation module.
 ---
 
 

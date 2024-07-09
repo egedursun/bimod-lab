@@ -335,12 +335,12 @@
             function updateBalance(currentTime) {
                 const elapsedTime = currentTime - startTime;
                 const progress = Math.min(elapsedTime / duration, 1);
-                balanceElement.textContent = (start + range * progress).toFixed(2);
+                balanceElement.textContent = (start + range * progress).toFixed(6);
 
                 if (progress < 1) {
                     requestAnimationFrame(updateBalance);
                 } else {
-                    balanceElement.textContent = balance.toFixed(2);  // Ensure final value is exact
+                    balanceElement.textContent = balance.toFixed(6);  // Ensure final value is exact
                 }
             }
 
@@ -351,7 +351,7 @@
         document.querySelectorAll('[id^="balance-"]').forEach(function(element) {
             const balance = parseFloat(element.textContent);
             const id = element.id;
-            element.textContent = "0.00";  // Initialize with 0
+            element.textContent = "0.000000";  // Initialize with 0
             animateBalance(id, balance, 1000);  // Duration is 500ms (0.5 seconds)
         });
     });

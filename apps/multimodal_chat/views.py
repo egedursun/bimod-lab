@@ -3,9 +3,9 @@ from django.views.generic import TemplateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from web_project import TemplateLayout, TemplateHelper
-from .models import MultimodalChat, MultimodalChatMessage, CHAT_SOURCES, ChatSourcesNames
+from .models import MultimodalChat, MultimodalChatMessage, ChatSourcesNames
 from .utils import generate_chat_name
-from .._services.llms.llm_decoder import InternalLLMClient
+from apps._services.llms.llm_decoder import InternalLLMClient
 from ..assistants.models import Assistant
 from ..user_permissions.models import UserPermission, PermissionNames
 
@@ -95,10 +95,9 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 sender_type='USER',
                 message_text_content=message_content
             )
-
-            # Ask question to the GPT
+            user_message = MultimodalChatMessage.objects.filter(multimodal_chat=chat).last()
             internal_llm_client = InternalLLMClient.get(assistant=chat.assistant, multimodal_chat=chat)
-            response = internal_llm_client.respond()
+            response = internal_llm_client.respond(user_query_message=user_message)
             MultimodalChatMessage.objects.create(
                 multimodal_chat=chat,
                 sender_type='ASSISTANT',

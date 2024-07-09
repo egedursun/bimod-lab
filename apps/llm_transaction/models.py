@@ -56,7 +56,10 @@ class LLMTransaction(models.Model):
             self.total_cost = calculate_total_cost(self.llm_cost, self.total_billable_cost)
 
         # Reduce the transaction billable amount from the organization's balance
+        print(f"Organization balance before: {self.organization.balance}")
+        print(f"Total billable cost: {self.total_billable_cost}")
         self.organization.balance -= decimal.Decimal().from_float(self.total_billable_cost)
+        print(f"Organization balance after: {self.organization.balance}")
         # Update the transaction's organization
         self.organization.save()
         super().save(*args, **kwargs)

@@ -23,9 +23,9 @@ class MultimodalChatAdmin(admin.ModelAdmin):
 
 @admin.register(MultimodalChatMessage)
 class MultimodalChatMessageAdmin(admin.ModelAdmin):
-    list_display = ['multimodal_chat', 'transaction', 'sender_type', 'sent_at']
-    list_filter = ['multimodal_chat', 'transaction', 'sender_type', 'sent_at']
-    search_fields = ['multimodal_chat', 'transaction', 'sender_type', 'sent_at']
+    list_display = ['multimodal_chat', 'sender_type', 'sent_at']
+    list_filter = ['multimodal_chat', 'sender_type', 'sent_at']
+    search_fields = ['multimodal_chat', 'sender_type', 'sent_at']
     readonly_fields = ['sent_at']
 
     list_per_page = 20
