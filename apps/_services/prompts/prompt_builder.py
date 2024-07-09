@@ -163,8 +163,6 @@ class PromptBuilder:
 
     @staticmethod
     def _build_structured_place_and_time_prompt(assistant: Assistant, user: User):
-        response_prompt = ""
-
         # Build the prompt
         response_prompt = """
             **PLACE AND TIME AWARENESS:**
