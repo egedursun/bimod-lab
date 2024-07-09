@@ -86,8 +86,16 @@
 - [X] Whenever an organization is deleted, the balance must be transferred to another organization. The
                   last organization cannot be deleted to avoid this problem.
 - [X] Implement pagination for the transactions page.
-- [ ] Implement the fine-tuning pages & management.
 - [ ] Implement the SQL data source integration & management.
+  - [X] Implement the creation for data source.
+  - [ ] Implement the listing for the data source.
+  - [ ] Implement the update for the data source.
+  - [ ] Implement the deletion for the data source.
+  - [ ] Implement the creation for the custom queries
+  - [ ] Implement the listing for the custom queries
+  - [ ] Implement the update for the custom queries
+  - [ ] Implement the deletion for the custom queries
+  - [ ] Implement the integration of the data source to the main chat feature of the AI assistants.
 - [ ] Implement the NOSQL data source integration & management.
 - [ ] Refine ideas regarding the dashboard page & management.
 - [ ] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
