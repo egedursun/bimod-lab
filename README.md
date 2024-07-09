@@ -19,6 +19,7 @@
 - [ ] A better payment method management (for credit card storage and usage).
 - [ ] Proper documentation & tutorial.
 - [ ] Sample instructions to help the people through the application.
+- [ ] Dev instructions markdown to help people setup the project in their own computers / repositories.
 
 ---
 
