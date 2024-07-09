@@ -86,7 +86,11 @@
 - [X] Whenever an organization is deleted, the balance must be transferred to another organization. The
                   last organization cannot be deleted to avoid this problem.
 - [X] Implement pagination for the transactions page.
-- [ ] Implement the SQL data source integration & management.
+- [ ] **URGENT:** Currently, when a user is disassociated from organizations, but not deleted from the system, there
+                  is no way to add that user back to the organization since the user is permanently disassociated 
+                  from the organization. We need to think of a possible way to add that user back to the organization
+                  without having to delete the account then re-register the user.
+- [ ] **URGENT:** Implement the SQL data source integration & management.
   - [X] Implement the creation for data source.
   - [ ] Implement the listing for the data source.
   - [ ] Implement the update for the data source.
