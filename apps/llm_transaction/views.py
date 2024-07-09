@@ -23,6 +23,9 @@ FILTER_TYPES = [
 ]
 
 
+DEFAULT_PAGINATION_SIZE_LIST_TRANSACTIONS = 5
+
+
 class ListTransactionsView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
@@ -64,7 +67,7 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
                                                              created_at__gte=filter_date)
 
                 # Paginate transactions (20 items per page)
-                paginator = Paginator(transactions, 20)
+                paginator = Paginator(transactions, DEFAULT_PAGINATION_SIZE_LIST_TRANSACTIONS)
                 page_number = self.request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
 
