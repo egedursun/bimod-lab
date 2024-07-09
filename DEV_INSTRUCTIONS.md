@@ -167,6 +167,20 @@ http://localhost:8000
 
 ---
 
+### - *Important Instruction [1]*
+
 #### 21. If you need to run the application in production mode, reach the admin to provide you with the necessary environment variables, and guide you through the process if required.
+
+---
+
+### - *Important Instruction [2]*
+
+#### 22. Never add your '.env' and '.env.prod' files to the version control system as they contain sensitive information.
+
+---
+
+### - *Important Instruction [3]*
+
+#### 23. Do not add your '.idea' directory to the version control system as it contains your local development settings.
 
 ---
