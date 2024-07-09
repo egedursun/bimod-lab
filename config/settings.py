@@ -98,6 +98,7 @@ INSTALLED_APPS = [
     "apps.starred_messages",
     "apps.message_templates",
     "apps.export_assistants",
+    "apps.datasource_sql",
     #############################
 ]
 

@@ -151,3 +151,14 @@
 - [ ] Customer meetings. (Ege & Hüseyin)
 
 ---
+
+### CUSTOM REMINDERS
+
+**Tools we Use for Testing:**
+- Login Credentials: 
+  - **@Via Google Account** -> edogandursun@gmail.com
+- SQL DB Data Source Tests - Aiven Console.
+  - Has a PostgreSQL instance.
+  - Has a MySQL instance.
+
+---

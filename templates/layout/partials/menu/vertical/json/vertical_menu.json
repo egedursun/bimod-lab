@@ -196,7 +196,23 @@
       "name": "SQL Databases",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "sql-databases",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add New SQL Database",
+          "slug": "sql-database",
+          "url": "datasource_sql:create"
+        },
+        {
+          "name": "SQL Databases",
+          "slug": "sql-database",
+          "url": "datasource_sql:list"
+        },
+        {
+          "name": "Add Custom SQL Query",
+          "slug": "sql-query",
+          "url": "datasource_sql:create"
+        }
+      ]
     },
     {
       "name": "NoSQL Databases",

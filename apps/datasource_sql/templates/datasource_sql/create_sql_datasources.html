@@ -1,0 +1,157 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Create SQL Data Source{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Create a New SQL Data Source</h5>
+        <small class="text-muted float-end"></small>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+          <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              Create a new SQL data source by providing the necessary information. You can use this data source to
+              connect to a SQL database and make your assistants be able to reach the data within your organization
+              to provide better insights and recommendations. This is a very powerful feature that you can utilize
+              in many different ways. However, make sure that you take regular backups of your data sources and
+              keep your data sources secure since there is no 100% guarantee that the assistants won't make a
+              mistake and delete or modify your data.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label class="form-label" for="dbms_type">DBMS Type</label>
+            <select class="form-select" id="dbms_type" name="dbms_type">
+              <option value="" disabled selected>Select DBMS Type</option>
+              {% for key, value in dbms_choices %}
+                <option value="{{ key }}">{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="assistant">Assistant</label>
+            <select class="form-select" id="assistant" name="assistant">
+              {% for assistant in assistants %}
+                <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+              {% endfor %}
+            </select>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" placeholder="Enter data source description"></textarea>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="host">Host</label>
+            <input type="text" class="form-control" id="host" name="host" placeholder="Enter host" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="port">Port</label>
+            <input type="number" class="form-control" id="port" name="port" placeholder="Enter port" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="database_name">Database Name</label>
+            <input type="text" class="form-control" id="database_name" name="database_name" placeholder="Enter database name" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="username">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="time_awareness">Read-Only</label>
+            <br>
+            <label class="switch switch-square switch-lg mt-2">
+              <input type="checkbox" class="switch-input" id="isReadOnlyCheckbox" checked>
+              <span class="switch-toggle-slider">
+                <!-- Hidden fields for the read only db -->
+                <input type="hidden" name="is_read_only" id="is-read-only" value="on">
+                <span class="switch-on"><i class="ti ti-check"></i></span>
+                <span class="switch-off"><i class="ti ti-x"></i></span>
+              </span>
+            </label>
+          </div>
+          <div class="alert alert-solid-danger d-flex align-items-center mt-6" role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-alert-triangle-filled"></i>
+              </span>
+              We recommend that you create a read-only instance for the data source to prevent any accidental data loss
+              or leaks. Do not forget that the users who have access to the chat can ask for deletion or modification
+              of your data which can have unintended consequences.
+          </div>
+          <input type="hidden" name="created_by_user" value="{{ user.id }}">
+          <button type="submit" class="btn btn-primary d-grid w-100">Create SQL Data Source</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('isReadOnlyCheckbox');
+    const isReadOnlyField = document.getElementById('is-read-only');
+
+    checkbox.addEventListener('change', function() {
+      if (checkbox.checked) {
+        isReadOnlyField.value = 'on';
+      } else {
+        isReadOnlyField.value = 'off';
+      }
+    });
+  });
+</script>
+
+{% endblock %}
