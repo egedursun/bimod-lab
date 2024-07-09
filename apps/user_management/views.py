@@ -113,7 +113,8 @@ class AddUserToOrganizationView(LoginRequiredMixin, TemplateView):
 
         context_user_organizations = Organization.objects.filter(users__in=[self.request.user])
         context_users_users = context_user_organizations.values_list('users', flat=True)
-        context['users'] = User.objects.exclude(id__in=context_users_users)
+        raw_users = User.objects.exclude(id__in=context_users_users)
+        context['users'] = raw_users.filter(organizations__in=context_user_organizations).all()
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         return context
 
