@@ -34,10 +34,13 @@ class Organization(models.Model):
     organization_image = models.ImageField(upload_to=organization_image_save_path, blank=True, max_length=1000,
                                            null=True)
 
+    # many to many fields
     users = models.ManyToManyField("auth.User", related_name="organizations")
     organization_assistants = models.ManyToManyField("assistants.Assistant", related_name="organizations",
                                                      blank=True)
     llm_cores = models.ManyToManyField("llm_core.LLMCore", related_name="organizations")
+    exported_assistants = models.ManyToManyField("export_assistants.ExportAssistantAPI",
+                                                 related_name="organizations", blank=True)
 
     def __str__(self):
         return self.name

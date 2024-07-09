@@ -16,12 +16,15 @@ ENCODING_ENGINES = [
 # Create your models here.
 
 class LLMTransaction(models.Model):
-    responsible_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='transactions', default=1)
-    responsible_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE,
+    responsible_user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, related_name='transactions', default=1,
+                                         null=True)
+    responsible_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.SET_NULL,
                                               related_name='transactions',
                                               null=True, blank=True)
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, related_name='transactions')
-    model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE, related_name='transactions')
+    organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL, related_name='transactions',
+                                     null=True)
+    model = models.ForeignKey('llm_core.LLMCore', on_delete=models.SET_NULL, related_name='transactions',
+                              null=True)
     encoding_engine = models.CharField(max_length=100, choices=ENCODING_ENGINES, default="cl100k_base")
     transaction_context_content = models.TextField(default="", blank=True)
 
@@ -35,7 +38,7 @@ class LLMTransaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.organization.name} - {self.model.nickname} - {self.created_at}"
+        return f"{self.responsible_user.username} - {self.created_at}"
 
     class Meta:
         verbose_name = "Transaction"

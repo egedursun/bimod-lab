@@ -45,7 +45,7 @@ def generate_assistant_custom_api_key(assistant: Assistant):
                      f"{llm_model_temperature}{llm_model_max_tokens}{llm_temperature}{salt}{randomness_constraint}")
 
     # encrypt the merged string with SHA-256
-    encrypted_string = ("bimod/" +
+    encrypted_string = ("Bearer bimod/" +
                         f"{str(organization_id)}/" +
                         f"{''.join(ch for ch in organization_name if ch.isalnum())}/" +
                         f"{str(assistant_id)}/" +

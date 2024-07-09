@@ -91,21 +91,4 @@
   </div>
 </div>
 
-<script src="{% static 'js/form-layouts.js' %}"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const isPublicCheckbox = document.getElementById('is_public');
-    const requestLimitInput = document.getElementById('request_limit_per_hour');
-
-    isPublicCheckbox.addEventListener('change', function () {
-      if (this.checked) {
-        requestLimitInput.value = '';
-        requestLimitInput.disabled = true;
-      } else {
-        requestLimitInput.disabled = false;
-      }
-    });
-  });
-</script>
-
 {% endblock %}

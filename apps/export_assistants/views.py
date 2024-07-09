@@ -1,19 +1,25 @@
+import importlib
 import json
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView, DeleteView
+from django.views.generic import TemplateView, DeleteView, UpdateView
 
 from apps._services.llms.llm_decoder import InternalLLMClient
 from apps.assistants.models import Assistant
+from apps.export_assistants.management.commands.start_exported_assistants import start_endpoint_for_assistant
 from apps.export_assistants.models import ExportAssistantAPI, RequestLog
 from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames
 from apps.multimodal_chat.utils import generate_chat_name
+from apps.organization.models import Organization
+from apps.user_permissions.models import UserPermission, PermissionNames
+from config import settings
+from config.settings import MAX_ASSISTANT_EXPORTS_ORGANIZATION, BASE_URL, EXPORT_API_BASE_URL
 from web_project import TemplateLayout
 
 
@@ -24,6 +30,7 @@ class StatusCodes:
     NOT_FOUND = 404
     UNAUTHORIZED = 401
     TOO_MANY_REQUESTS = 429
+    SERVICE_OFFLINE = 503
     INTERNAL_SERVER_ERROR = 500
 
 
@@ -31,9 +38,9 @@ class StatusCodes:
 class ExportAssistantAPIView(View):
 
     def post(self, request, *args, **kwargs):
-        endpoint = request.path.split('exported/')[1]
-        print("endpoint: ", endpoint)
+        endpoint = BASE_URL + request.path
         api_key = request.headers.get('Authorization')
+
         try:
             export_assistant = ExportAssistantAPI.objects.get(endpoint=endpoint)
 
@@ -44,6 +51,14 @@ class ExportAssistantAPIView(View):
                 "data": {},
                 "status": StatusCodes.NOT_FOUND
             }, status=StatusCodes.NOT_FOUND)
+
+        # Check if the endpoint is active
+        if not export_assistant.is_online:
+            return JsonResponse({
+                "message": "The endpoint is currently offline. Please try again later.",
+                "data": {},
+                "status": StatusCodes.SERVICE_OFFLINE
+            }, status=StatusCodes.SERVICE_OFFLINE)
 
         # API key correctness control
         if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
@@ -159,7 +174,31 @@ class ListExportAssistantsView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user_context = self.request.user
+        max_export_assistants = 5  # Maximum number of export assistants per organization
+
+        organization_data = []
+        organizations = Organization.objects.filter(users=user_context)
+
+        for organization in organizations:
+            export_assistants_count = organization.exported_assistants.count()
+            assistants_percentage = (export_assistants_count / max_export_assistants) * 100
+            export_assistants = organization.exported_assistants.all()
+
+            for assistant in export_assistants:
+                assistant.usage_percentage = 100  # Set this to actual percentage if needed
+
+            organization_data.append({
+                'organization': organization,
+                'export_assistants_count': export_assistants_count,
+                'assistants_percentage': assistants_percentage,
+                'export_assistants': export_assistants,
+            })
+
+        export_assistants = ExportAssistantAPI.objects.filter(created_by_user=user_context)
+
         context["user"] = user_context
+        context["organization_data"] = organization_data
+        context["export_assistants"] = export_assistants
         return context
 
 
@@ -174,20 +213,35 @@ class CreateExportAssistantsView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         assistant_id = request.POST.get('assistant')
+        assistant = get_object_or_404(Assistant, pk=assistant_id)
         is_public = request.POST.get('is_public') == 'on'
         request_limit_per_hour = request.POST.get('request_limit_per_hour')
+
+        # check if the number of assistants of the organization is higher than the allowed limit
+        if ExportAssistantAPI.objects.filter(created_by_user=request.user).count() >= MAX_ASSISTANT_EXPORTS_ORGANIZATION:
+            messages.error(request, f"Maximum number of Export Assistant APIs reached for the organization.")
+            return self.render_to_response(self.get_context_data())
 
         if not assistant_id or not request_limit_per_hour:
             messages.error(request, "Assistant ID and Request Limit Per Hour are required.")
             return self.render_to_response(self.get_context_data())
 
         try:
-            ExportAssistantAPI.objects.create(
+            new_export_assistant = ExportAssistantAPI.objects.create(
                 assistant_id=assistant_id,
                 is_public=is_public,
                 request_limit_per_hour=request_limit_per_hour,
                 created_by_user=request.user
             )
+
+            # Add the exported assistant to organization
+            organization = assistant.organization
+            organization.exported_assistants.add(new_export_assistant)
+            organization.save()
+
+            # Start the endpoint immediately
+            start_endpoint_for_assistant(assistant=new_export_assistant)
+
             messages.success(request, "Export Assistant API created successfully!")
             return redirect("export_assistants:list")
         except Exception as e:
@@ -196,8 +250,89 @@ class CreateExportAssistantsView(TemplateView, LoginRequiredMixin):
 
 
 class UpdateExportAssistantsView(TemplateView, LoginRequiredMixin):
-    pass
+
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
+        context['export_assistant'] = export_assistant
+        context['assistants'] = Assistant.objects.all()  # Assuming you have an Assistant model
+        return context
+
+    def post(self, request, *args, **kwargs):
+        export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
+        export_assistant.assistant_id = request.POST.get('assistant')
+        export_assistant.request_limit_per_hour = request.POST.get('request_limit_per_hour')
+        export_assistant.is_public = request.POST.get('is_public') == 'on'
+
+        if export_assistant.assistant_id and export_assistant.request_limit_per_hour:
+            export_assistant.save()
+            messages.success(request, "Export Assistant updated successfully.")
+            return redirect('export_assistants:list')
+        else:
+            messages.error(request, "There was an error updating the Export Assistant.")
+
+        context = {
+            'export_assistant': export_assistant,
+            'assistants': Assistant.objects.all()
+        }
+        return render(request, self.template_name, context)
 
 
-class DeleteExportAssistantsView(DeleteView, LoginRequiredMixin):
-    pass
+class DeleteExportAssistantsView(LoginRequiredMixin, DeleteView):
+    model = ExportAssistantAPI
+    success_url = 'export_assistants:list'
+
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        return context
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        context_user = request.user
+        export_assistant = get_object_or_404(ExportAssistantAPI, id=self.kwargs['pk'])
+
+        ##############################
+        # PERMISSION CHECK FOR - EXPORT_ASSISTANTS/DELETE
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.DELETE_EXPORT_ASSISTANT not in user_permissions:
+            messages.error(request, "You do not have permission to delete assistant exports.")
+            return redirect('export_assistants:list')
+
+        export_assistant.delete()
+        success_message = "Export Assistant deleted successfully."
+
+        # remove the exported assistant from the organization
+        organization = export_assistant.assistant.organization
+        organization.exported_assistants.remove(export_assistant)
+        organization.save()
+
+        messages.success(request, success_message)
+        return redirect(self.success_url)
+
+
+class ToggleExportAssistantServiceView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
+        endpoint = EXPORT_API_BASE_URL + export_assistant.endpoint.split(EXPORT_API_BASE_URL)[1]
+        api_urls = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
+        export_assistant.is_online = not export_assistant.is_online
+        export_assistant.save()
+
+        # Pause or start the endpoint based on the assistant's new online status
+        if export_assistant.is_online:
+            # check if the endpoint is already in the url patterns
+            if not any(endpoint in str(url) for url in api_urls):
+                start_endpoint_for_assistant(export_assistant)
+
+        return redirect('export_assistants:list')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)

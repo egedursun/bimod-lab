@@ -227,6 +227,10 @@ __SERVICE_TAX_RATE = float(os.environ.get("SERVICE_TAX_RATE", default="0.18"))
 ENCRYPTION_SALT = os.environ.get("ENCRYPTION_SALT", default="")
 
 
+# Max Assistant exports per organization
+MAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ASSISTANT_EXPORTS_ORGANIZATION", default="5"))
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -298,7 +302,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_FROM_EMAIL = ""
 
 # API version for exporting agents
-EXPORT_API_VERSION = "v1"
+EXPORT_API_BASE_URL = "app/export_assistants/api/v1/export"
 
 
 

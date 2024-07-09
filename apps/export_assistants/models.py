@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 from apps.export_assistants.utils import generate_assistant_custom_api_key, generate_endpoint
+from config.settings import EXPORT_API_BASE_URL, BASE_URL
 
 
 # Create your models here.
@@ -16,6 +17,7 @@ class ExportAssistantAPI(models.Model):
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE)
     is_public = models.BooleanField(default=False)
     request_limit_per_hour = models.IntegerField(default=1000)
+    is_online = models.BooleanField(default=True)
 
     custom_api_key = models.CharField(max_length=1000, blank=True, null=True, unique=True)
     endpoint = models.CharField(max_length=1000, blank=True, null=True)
@@ -34,7 +36,7 @@ class ExportAssistantAPI(models.Model):
     ):
         # generate the endpoint for the exported assistant
         if not self.endpoint:
-            self.endpoint = generate_endpoint(self.assistant)
+            self.endpoint = BASE_URL + "/" + EXPORT_API_BASE_URL + "/" + generate_endpoint(self.assistant)
 
         # generate the API key for non-public usage of the exported assistant
         if not self.custom_api_key and (not self.is_public):

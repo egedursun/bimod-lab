@@ -1,8 +1,8 @@
-### POST request to get API response from an agent
+### POST request to get API response from an agent (currently the endpoint is invalid, so the request will fail)
 
-POST localhost:8000/api/v1/exported/6/MySmartFarm/19/WellnessandHealthAssistant/gpt4o/2024/7/7/0148554366978864
+POST http://127.0.0.1:8000/app/export_assistants/api/v1/export/6/MySmartFarm/3/WeatherAssistant/gpt4o/2024/7/3/8191124907428493
 Content-Type: application/json
-Authorization: bimod/6/MySmartFarm/19/WellnessandHealthAssistant/gpt4o/fabaab01b6f287ea7b56093b4924fdad9acb564d025aae0a051881d0a7626ec3
+Authorization: Bearer bimod/6/MySmartFarm/3/WeatherAssistant/gpt4o/72906fab054bd0e4b4af532d14edf24016eff5977251d0c24b611b902c01e5fe
 
     {
       "chat_history": [

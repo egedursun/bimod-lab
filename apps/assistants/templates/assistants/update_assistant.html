@@ -192,8 +192,8 @@
                 <input type="checkbox" class="switch-input" id="awarenessCheckbox" {% if assistant.time_awareness and assistant.place_awareness %}checked{% endif %}>
                 <span class="switch-toggle-slider">
                   <!-- Hidden fields for time_awareness and place_awareness -->
-                  <input type="hidden" name="time_awareness" id="timeAwareness" value="on">
-                  <input type="hidden" name="place_awareness" id="placeAwareness" value="on">
+                  <input type="hidden" name="time_awareness" id="timeAwareness" value="{% if assistant.time_awareness %}on{% else %}off{% endif %}">
+                  <input type="hidden" name="place_awareness" id="placeAwareness" value="{% if assistant.place_awareness %}on{% else %}off{% endif %}">
                   <span class="switch-on"><i class="ti ti-check"></i></span>
                   <span class="switch-off"><i class="ti ti-x"></i></span>
                 </span>

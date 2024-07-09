@@ -22,14 +22,14 @@ class RequestLogAdmin(admin.ModelAdmin):
 @admin.register(ExportAssistantAPI)
 class ExportAssistantAPIAdmin(admin.ModelAdmin):
     list_display = (
-        "assistant", "is_public", "request_limit_per_hour", "custom_api_key", "created_by_user", "created_at",
-        "updated_at")
+        "assistant", "is_public", "request_limit_per_hour", "custom_api_key", "created_by_user",
+        "is_online", "created_at", "updated_at")
     list_filter = (
-        "assistant", "is_public", "request_limit_per_hour", "custom_api_key", "created_by_user", "created_at",
-        "updated_at")
+        "assistant", "is_public", "request_limit_per_hour", "custom_api_key", "created_by_user",
+        "is_online", "created_at", "updated_at")
     search_fields = (
-        "assistant", "is_public", "request_limit_per_hour", "custom_api_key", "created_by_user", "created_at",
-        "updated_at")
+        "assistant", "is_public", "request_limit_per_hour", "custom_api_key", "created_by_user",
+        "is_online", "created_at", "updated_at")
     date_hierarchy = "created_at"
     ordering = ["-created_at"]
 

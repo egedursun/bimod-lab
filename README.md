@@ -73,9 +73,17 @@
 - [X] Show the messages in mark-down format.
 - [ ] Refine ideas regarding the dashboard page.
 - [X] Add memory objects to the permission management.
-- [ ] **URGENT:** Add the API endpoint not only when the server is started, but also when an endpoint is created.
-- [ ] **URGENT:** Limit the number of exportations users can create for API.
-- [ ] **URGENT:** Implement the rest of the pages for the export assistants application.
+- [X] Add the API endpoint not only when the server is started, but also when an endpoint is created.
+- [X] Limit the number of exports users can create for each organization.
+- [X] Show the number of exports remaining for the user.
+- [X] Implement the rest of the pages for the export assistants application.
+- [X] Check if the transactions are deleted when an ORGANIZATION is deleted, it must not be the case.
+- [ ] **URGENT:** Whenever an organization is deleted, the balance must be transferred to another organization. The
+                  last organization cannot be deleted to avoid this problem.
+- [X] There is a bug when updating the time & place awareness of the assistant. Fix it.
+- [ ] **URGENT:** Integrate the permissions for the export assistants.
+- [ ] **URGENT:** Implement pagination for the transactions page.
+- [ ] Implement the fine-tuning page.
 ---
 
 
@@ -91,7 +99,7 @@
 - [X] Complete the pages for the user permission management.
 - [X] Integrate the assistants pages.
 - [X] Integrate the chats pages.
-- [ ] Integrate the export assistant pages.
+- [X] Integrate the export assistant pages.
 - [X] Integrate the memories pages.
 - [X] Integrate the message templates pages.
 - [X] Integrate the starred messages pages.
