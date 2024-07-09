@@ -28,7 +28,7 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if (not obj.schema_data_json or obj.schema_data_json == {} or obj.schema_data_json is None
-         or obj.schema_data_json == 'null'):
+                or obj.schema_data_json == 'null'):
             obj.schema_data_json = self.retrieve_schema(obj)
         super().save_model(request, obj, form, change)
 
@@ -127,4 +127,3 @@ class CustomSQLQueryAdmin(admin.ModelAdmin):
             'fields': ('created_at', 'updated_at')
         }),
     )
-

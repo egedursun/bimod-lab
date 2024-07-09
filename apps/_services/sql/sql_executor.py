@@ -3,18 +3,37 @@ import psycopg2
 from mysql.connector.cursor import MySQLCursorDict
 from psycopg2.extras import RealDictCursor
 
-from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.datasource_sql.models import SQLDatabaseConnection, DBMSChoicesNames
+
+
+# This function will refresh the schema data before executing the SQL query, which will improve the accuracy
+# and comprehension of the AI assistant
+def before_execute_sql_query(connection: SQLDatabaseConnection):
+    # This function is called before executing the SQL query, to refresh the database schema
+    old_schema_json = connection.schema_data_json
+    new_schema = {}
+    if connection.dbms_type == DBMSChoicesNames.POSTGRESQL:
+        new_schema = connection.retrieve_postgresql_schema()
+    elif connection.dbms_type == DBMSChoicesNames.MYSQL:
+        new_schema = connection.retrieve_mysql_schema()
+    if new_schema != old_schema_json:
+        connection.schema_data_json = new_schema
+        connection.save()
 
 
 class PostgresSQLExecutor:
     def __init__(self, connection: SQLDatabaseConnection):
+        ##################################################
+        # run the before_execute_sql_query function to refresh the schema
+        before_execute_sql_query(connection)
+        ##################################################
+
         self.conn_params = {
             'dbname': connection.database_name,
             'user': connection.username,
             'password': connection.password,
             'host': connection.host,
-            'port': connection.port,
-            'options': f'-c search_path={connection.schema_name}'
+            'port': connection.port
         }
 
     def execute_read(self, query, parameters=None):
@@ -44,6 +63,11 @@ class PostgresSQLExecutor:
 
 class MySQLExecutor:
     def __init__(self, connection: SQLDatabaseConnection):
+        ##################################################
+        # run the before_execute_sql_query function to refresh the schema
+        before_execute_sql_query(connection)
+        ##################################################
+
         self.conn_params = {
             'user': connection.username,
             'password': connection.password,
