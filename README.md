@@ -94,7 +94,7 @@
       specifiers such as "use tool" or "respond", etc.
 - [ ] There must be limits for "how many times the same tool can be reached one after another", and "how many different
       tools can be piped one after another".
-- [ ] Discuss the "github repo integration" and assitant interpretation module.
+- [ ] Discuss the "GitHub repo integration" and assitant interpretation module.
 ---
 
 
