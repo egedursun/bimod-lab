@@ -115,29 +115,41 @@ class OrganizationUpdateView(TemplateView, LoginRequiredMixin):
 
 
 class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
+    model = Organization
+    context_object_name = 'organization'
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        user_organizations = Organization.objects.filter(users__in=[self.request.user])
+        context['user_organizations'] = user_organizations
+        context['user_organizations_count'] = user_organizations.count()
         return context
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
-        organization = get_object_or_404(Organization, users__in=[context_user], id=kwargs['pk'])
+        organization = self.get_object()
+        transfer_organization_id = request.POST.get('transfer_organization_id')
 
+        # Ensure the user has the required permission
         ##############################
         # PERMISSION CHECK FOR - ORGANIZATION/DELETE
         ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).values_list('permission_type', flat=True)
         if PermissionNames.DELETE_ORGANIZATIONS not in user_permissions:
             messages.error(request, "You do not have permission to delete organizations.")
             return redirect('organization:list')
         ##############################
 
+        # Ensure the transfer organization is valid and belongs to the user
+        transfer_organization = get_object_or_404(Organization, id=transfer_organization_id, users__in=[context_user])
+
+        # Transfer the balance to another organization
+        transfer_organization.balance += organization.balance
+        transfer_organization.save()
+
+        # Delete the organization
         organization.delete()
+        messages.success(request, f'Organization "{organization.name}" has been deleted and the balance has been transferred to "{transfer_organization.name}".')
         return redirect('organization:list')
 
     def get_queryset(self):

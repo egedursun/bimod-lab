@@ -83,7 +83,7 @@
 - [X] Transaction calculations are not correct, system messages are not added to the calculation,
                   creating discrepancies in the balance. Additionally, the logic somehow does not work for
                   the API exports. Fix these issues.
-- [ ] **URGENT:** Whenever an organization is deleted, the balance must be transferred to another organization. The
+- [X] Whenever an organization is deleted, the balance must be transferred to another organization. The
                   last organization cannot be deleted to avoid this problem.
 - [X] Implement pagination for the transactions page.
 - [ ] Implement the fine-tuning pages & management.
