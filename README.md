@@ -71,19 +71,21 @@
 - [X] Transactions must also include the responsible user, to associate the costs with the users.
 - [X] Show a loading bar while the message response is being calculated.
 - [X] Show the messages in mark-down format.
-- [ ] Refine ideas regarding the dashboard page.
 - [X] Add memory objects to the permission management.
 - [X] Add the API endpoint not only when the server is started, but also when an endpoint is created.
 - [X] Limit the number of exports users can create for each organization.
 - [X] Show the number of exports remaining for the user.
 - [X] Implement the rest of the pages for the export assistants application.
 - [X] Check if the transactions are deleted when an ORGANIZATION is deleted, it must not be the case.
+- [X] There is a bug when updating the time & place awareness of the assistant. Fix it.
+- [X] Integrate the permissions for the export assistants.
 - [ ] **URGENT:** Whenever an organization is deleted, the balance must be transferred to another organization. The
                   last organization cannot be deleted to avoid this problem.
-- [X] There is a bug when updating the time & place awareness of the assistant. Fix it.
-- [ ] **URGENT:** Integrate the permissions for the export assistants.
 - [ ] **URGENT:** Implement pagination for the transactions page.
-- [ ] Implement the fine-tuning page.
+- [ ] Implement the fine-tuning pages & management.
+- [ ] Implement the SQL data source integration & management.
+- [ ] Implement the NOSQL data source integration & management.
+- [ ] Refine ideas regarding the dashboard page & management.
 ---
 
 
