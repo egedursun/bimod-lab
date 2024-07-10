@@ -21,6 +21,11 @@ def before_execute_sql_query(connection: SQLDatabaseConnection):
         connection.save()
 
 
+# Checking the read and write permissions
+def can_write_to_database(connection: SQLDatabaseConnection):
+    return not connection.is_read_only
+
+
 class PostgresSQLExecutor:
     def __init__(self, connection: SQLDatabaseConnection):
         ##################################################

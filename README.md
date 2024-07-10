@@ -92,14 +92,18 @@
                   without having to delete the account then re-register the user.
 - [ ] **URGENT:** Implement the SQL data source integration & management.
   - [X] Implement the creation for data source.
-  - [ ] Implement the listing for the data source.
-  - [ ] Implement the update for the data source.
-  - [ ] Implement the deletion for the data source.
+  - [X] Implement the listing for the data source.
+  - [X] Implement the update for the data source.
+  - [X] Implement the deletion for the data source.
+  - [ ] Integrate the user permissions to the views.
   - [ ] Implement the creation for the custom queries
   - [ ] Implement the listing for the custom queries
   - [ ] Implement the update for the custom queries
   - [ ] Implement the deletion for the custom queries
   - [ ] Implement the integration of the data source to the main chat feature of the AI assistants.
+    - [ ] Custom query execution. (Read and write controlled by is_read_only field)
+    - [ ] Query generation + execution (Read and write controlled by is_read_only field)
+    - [ ] Integration to the chat multimodality.
 - [ ] Implement the NOSQL data source integration & management.
 - [ ] Refine ideas regarding the dashboard page & management.
 - [ ] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
