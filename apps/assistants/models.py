@@ -47,24 +47,6 @@ class Assistant(models.Model):
     memories = models.ManyToManyField("memories.AssistantMemory", related_name='assistants',
                                       blank=True)
 
-    ##############################
-    # add the chat FK fields here
-    ##############################
-    # ...this will not be added now
-    ##############################
-
-    ##############################
-    # add the data source FK fields here
-    ##############################
-    # ...this will not be added now
-    ##############################
-
-    ##############################
-    # add the multi-modality tools FK fields here
-    ##############################
-    # ...this will not be added now
-    ##############################
-
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name='assistants_created_by_user')
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name='assistants_updated_by_user')
 
