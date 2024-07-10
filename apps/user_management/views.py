@@ -95,6 +95,10 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
             organization.users.add(created_user)
             organization.save()
 
+            # add user as a subuser to the user
+            created_by_user.profile.sub_users.add(created_user)
+            created_by_user.profile.save()
+
             send_verification_email(email, token)
             if settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD:
                 messages.success(request, "Verification email sent successfully.")
@@ -110,11 +114,10 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
 class AddUserToOrganizationView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context_user = self.request.user
 
-        context_user_organizations = Organization.objects.filter(users__in=[self.request.user])
-        context_users_users = context_user_organizations.values_list('users', flat=True)
-        raw_users = User.objects.exclude(id__in=context_users_users)
-        context['users'] = raw_users.filter(organizations__in=context_user_organizations).all()
+        context_sub_users = context_user.profile.sub_users.all()
+        context['users'] = context_sub_users
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         return context
 
@@ -238,6 +241,40 @@ class RemoveUserFromOrganizationView(TemplateView, LoginRequiredMixin):
         organization.save()
 
         messages.success(request, f'User removed from {organization.name} successfully.')
+        return redirect('user_management:list')
+
+
+class RemoveUserFromAllOrganizationsView(TemplateView, LoginRequiredMixin):
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        user = get_object_or_404(User, id=kwargs['pk'])
+        context['user_to_remove'] = user
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - USER/REMOVE FROM ORGANIZATION
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.DELETE_USERS not in user_permissions:
+            messages.error(request, "You do not have permission to remove users from organizations.")
+            return redirect('user_management:list')
+        ##############################
+
+        user = get_object_or_404(User, id=kwargs['pk'])
+        organizations = Organization.objects.filter(users__in=[user])
+        for organization in organizations:
+            organization.users.remove(user)
+            organization.save()
+
+        messages.success(request, f'User removed from all organizations successfully.')
         return redirect('user_management:list')
 
 

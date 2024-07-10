@@ -121,14 +121,21 @@
               <td>
                 {% if user.id != context_user.id %}
                   <a href="{% url "user_management:remove_user_from_organization" user.id organization.id %}" class="btn btn-sm btn-warning">
-                    Disconnect from Organization
+                    <strong>Remove from Organization</strong>
+                  </a>
+                {% endif %}
+              </td>
+              <td>
+                {% if user.id != context_user.id %}
+                  <a href="{% url "user_management:remove_user_from_all_organizations" user.id %}" class="btn btn-sm btn-warning">
+                    <strong>Remove from All Organizations</strong>
                   </a>
                 {% endif %}
               </td>
               <td>
                 {% if user.id != context_user.id %}
                   <a href="{% url "user_management:remove" user.id %}" class="btn btn-sm btn-danger">
-                    Delete from All Organizations
+                    <strong>Delete User Account</strong>
                   </a>
                 {% endif %}
               </td>

@@ -10,7 +10,7 @@
 - [ ] Real PostgreSQL DBMS integration.
 - [ ] Real e-mail SMTP integration.
 - [ ] HTTPS Configuration for the application + CORS configuration.
-- [ ] Real media management with AWS S3 Storages (e.g. profile pictures, organization images, etc.)
+- [X] Real media management with AWS S3 Storages (e.g. profile pictures, organization images, etc.)
 - [ ] Better validation and logging system.
 - [X] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
@@ -86,7 +86,7 @@
 - [X] Whenever an organization is deleted, the balance must be transferred to another organization. The
                   last organization cannot be deleted to avoid this problem.
 - [X] Implement pagination for the transactions page.
-- [ ] **URGENT:** Currently, when a user is disassociated from organizations, but not deleted from the system, there
+- [X] Currently, when a user is disassociated from organizations, but not deleted from the system, there
                   is no way to add that user back to the organization since the user is permanently disassociated 
                   from the organization. We need to think of a possible way to add that user back to the organization
                   without having to delete the account then re-register the user.

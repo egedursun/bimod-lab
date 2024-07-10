@@ -67,6 +67,8 @@ class Profile(models.Model):
     # Credit card information for the subscription.
     credit_cards = models.ManyToManyField(UserCreditCard, related_name='user_credit_cards', blank=True)
 
+    sub_users = models.ManyToManyField(User, related_name='sub_users', blank=True)
+
     def __str__(self):
         return self.user.username
 

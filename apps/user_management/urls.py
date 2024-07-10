@@ -1,7 +1,7 @@
 from django.urls import path
 
 from apps.user_management.views import AddNewUserView, ListUsersView, RemoveUserView, UpdateUserStatusView, \
-    AddUserToOrganizationView, RemoveUserFromOrganizationView
+    AddUserToOrganizationView, RemoveUserFromOrganizationView, RemoveUserFromAllOrganizationsView
 
 app_name = "user_management"
 
@@ -17,4 +17,7 @@ urlpatterns = [
     path('remove_user_from_organization/<int:pk>/<int:org_id>/', RemoveUserFromOrganizationView.as_view(
         template_name="user_management/confirm_remove_from_organization.html"
     ), name='remove_user_from_organization'),
+    path('remove_user_from_all_organizations/<int:pk>/', RemoveUserFromAllOrganizationsView.as_view(
+        template_name="user_management/confirm_remove_from_all_organizations.html"
+    ), name='remove_user_from_all_organizations'),
 ]
