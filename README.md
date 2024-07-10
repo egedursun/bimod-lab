@@ -95,7 +95,7 @@
   - [X] Implement the listing for the data source.
   - [X] Implement the update for the data source.
   - [X] Implement the deletion for the data source.
-  - [ ] Integrate the user permissions to the views.
+  - [X] Integrate the user permissions to the views.
   - [ ] Implement the creation for the custom queries
   - [ ] Implement the listing for the custom queries
   - [ ] Implement the update for the custom queries

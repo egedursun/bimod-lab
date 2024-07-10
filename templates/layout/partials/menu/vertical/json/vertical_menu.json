@@ -210,7 +210,12 @@
         {
           "name": "Add Custom SQL Query",
           "slug": "sql-query",
-          "url": "datasource_sql:create"
+          "url": "datasource_sql:create_query"
+        },
+        {
+          "name": "Custom SQL Queries",
+          "slug": "sql-query",
+          "url": "datasource_sql:list_queries"
         }
       ]
     },

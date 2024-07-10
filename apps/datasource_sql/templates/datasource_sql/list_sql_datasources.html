@@ -57,57 +57,113 @@
 </div>
 
 <!-- SQL Database Connections Cards -->
-<div class="row g-6 mb-8">
-  {% for connection in sql_connections %}
-  <div class="col-xl-6 col-md-6">
-    <div class="card h-100">
-      <div class="card-header d-flex justify-content-between">
-        <div class="card-title mb-0">
-          <p class="mb-1 label bg-label-info rounded p-2 mb-4"><strong>{{ connection.assistant }}</strong></p>
-          <h5 class="mb-4"><strong>{{ connection.name }}</strong></h5>
-          <p class="card-subtitle mb-4"><strong>
-            <i class="fa fa-database me-4"></i> System: &nbsp;&nbsp;</strong>
-            {{ connection.dbms_type }}
-          </p>
-          <p class="card-subtitle"><strong>
-            <i class="fa fa-id-badge me-4"></i> DB Name: &nbsp;&nbsp;</strong>
-            {{ connection.database_name }}
-          </p>
+{% for organization, assistants in connections_by_organization.items %}
+<div class="card mb-6">
+  <div class="card-header border-bottom">
+    <a class="collapsed" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
+      <h4>
+        {{ organization.name }}
+      </h4>
+    </a>
+    <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
+    <span data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
+      <strong>&nbsp; See SQL Connections of Assistants</strong>
+    </span>
+  </div>
+  <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
+    {% for assistant, connections in assistants.items %}
+    <div class="assistant-group m-8">
+      <h5 class="assistant-title ms-4"><strong>{{ assistant.name }}</strong></h5>
+      <div class="row g-6 mb-4">
+        {% for connection in connections %}
+        <div class="col-xl-6 col-md-6">
+          <div class="card h-100">
+            <div class="card-header d-flex justify-content-between">
+              <div class="card-title mb-0">
+                <p class="card-subtitle mb-4"><strong>
+                  <i class="fa fa-id-badge me-4"></i> Connection Name: &nbsp;&nbsp;</strong>
+                  {{ connection.name }}
+                </p>
+                <p class="card-subtitle mb-4"><strong>
+                  <i class="fa fa-database me-4"></i> DB Type: &nbsp;&nbsp;</strong>
+                  {{ connection.dbms_type }}
+                </p>
+              </div>
+            </div>
+            <div class="card-body">
+              <ul class="p-0 m-0">
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body me-4"><strong>Description:</strong></span>
+                  <span class="text-wrap">{{ connection.description|linebreaksbr }}</span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Host:</strong></span>
+                  <span class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.host }}</strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Port:</strong></span>
+                  <span class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.port }}</strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Username:</strong></span>
+                  <span class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.username }}</strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Read Only:</strong></span>
+                  <span class="text-wrap {% if connection.is_read_only %}bg-label-success{% else %}bg-label-danger{% endif %} rounded p-2"><strong>{{ connection.is_read_only|yesno:"Yes,No" }}</strong></span>
+                </li>
+              </ul>
+              <hr>
+              <div class="d-flex justify-content-center">
+                <a href="{% url 'datasource_sql:update' connection.id %}" class="btn btn-primary me-3"><i class="ti ti-edit me-2"></i><strong>Edit Connection</strong></a>
+                <a href="{% url 'datasource_sql:delete' connection.id %}" class="btn btn-danger"><i class="ti ti-trash"></i><strong> Delete </strong></a>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <hr>
-      <div class="card-body">
-        <ul class="p-0 m-0 mb-8">
-          <li class="mb-4 d-flex justify-content-between align-items-center">
-            <span class="text-body"><strong>Host:</strong></span>
-            <span class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.host }}</strong></span>
-          </li>
-          <li class="mb-4 d-flex justify-content-between align-items-center">
-            <span class="text-body"><strong>Port:</strong></span>
-            <span class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.port }}</strong></span>
-          </li>
-          <li class="mb-4 d-flex justify-content-between align-items-center">
-            <span class="text-body"><strong>Username:</strong></span>
-            <span class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.username }}</strong></span>
-          </li>
-          <li class="mb-4 d-flex justify-content-between align-items-center">
-            <span class="text-body me-4"><strong>Description:</strong></span>
-            <span class="text-wrap">{{ connection.description|linebreaksbr }}</span>
-          </li>
-          <li class="mb-4 d-flex justify-content-between align-items-center">
-            <span class="text-body"><strong>Read Only:</strong></span>
-            <span class="text-wrap {% if connection.is_read_only %}bg-label-success{% else %}bg-label-danger{% endif %} rounded p-2"><strong>{{ connection.is_read_only|yesno:"Yes,No" }}</strong></span>
-          </li>
-        </ul>
-        <hr class="pb-4">
-        <div class="d-flex justify-content-center">
-          <a href="{% url 'datasource_sql:update' connection.id %}" class="btn btn-primary me-3"><i class="ti ti-edit me-2"></i><strong>Edit Connection</strong></a>
-          <a href="{% url 'datasource_sql:delete' connection.id %}" class="btn btn-danger"><i class="ti ti-trash"></i><strong> Delete </strong></a>
-        </div>
+        {% endfor %}
       </div>
     </div>
+    <hr>
+    {% endfor %}
   </div>
-  {% endfor %}
 </div>
+{% endfor %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+      icon.addEventListener('click', function() {
+        var target = document.querySelector(this.getAttribute('data-target'));
+        var bootstrapCollapse = new bootstrap.Collapse(target, {
+          toggle: false
+        });
+        if (target.classList.contains('show')) {
+          bootstrapCollapse.hide();
+        } else {
+          bootstrapCollapse.show();
+        }
+      });
+    });
+
+    document.querySelectorAll('.collapse').forEach(function(collapse) {
+      collapse.addEventListener('show.bs.collapse', function() {
+        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+        if (icon) {
+          icon.classList.remove('fa-arrow-alt-circle-down');
+          icon.classList.add('fa-arrow-alt-circle-up');
+        }
+      });
+
+      collapse.addEventListener('hide.bs.collapse', function() {
+        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+        if (icon) {
+          icon.classList.remove('fa-arrow-alt-circle-up');
+          icon.classList.add('fa-arrow-alt-circle-down');
+        }
+      });
+    });
+  });
+</script>
 
 {% endblock %}
