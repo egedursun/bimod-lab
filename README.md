@@ -110,7 +110,7 @@
     - [X] Test permission write request.
     - [X] Test run custom query (read)
     - [X] Test run custom query (write)
-    - [ ] Tweak the UI to make the messages look better with the tool retrievals.
+    - [X] Tweak the UI to make the messages look better with the tool retrievals.
 - [ ] **URGENT:** There must be limits for "how many times the same tool can be reached one after another", and "how many different
       tools can be piped one after another".
 - [ ] Implement the NOSQL data source integration & management. (MongoDB)

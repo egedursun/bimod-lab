@@ -66,7 +66,6 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
                     SELECT column_name, data_type FROM information_schema.columns WHERE table_name = '{table_name}'
                     """)
                 columns = cursor.fetchall()
-                print("columns: ", columns)
                 schema[table_name] = [{'name': col[0], 'type': col[1]} for col in columns]
             cursor.close()
             connection.close()
@@ -93,7 +92,6 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
                 WHERE table_schema NOT IN ('information_schema', 'mysql', 'performance_schema', 'sys');
                 """)
             tables = cursor.fetchall()
-            print("Tables: ", tables)
             for table in tables:
                 table_name = table[0]
                 cursor.execute(
@@ -102,7 +100,6 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
                     WHERE table_name = '{table_name}'
                     """)
                 columns = cursor.fetchall()
-                print("columns: ", columns)
                 schema[table_name] = [{'name': col[0], 'type': col[1]} for col in columns]
             cursor.close()
             connection.close()
