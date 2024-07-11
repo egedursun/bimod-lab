@@ -30,8 +30,8 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         filter_value = request.POST.get('filter')
-        delta_specifier = request.POST.get('delta_specifier')
-        time_specifier = request.POST.get('time_specifier')
+        delta_specifier = request.POST.get('delta_specifier', "30")
+        time_specifier = request.POST.get('time_specifier', 'days')
         context = self.get_context_data(filter_value=filter_value, **kwargs)
         context['filter'] = filter_value
         context['filter_types'] = FILTER_TYPES
@@ -44,13 +44,9 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
         context_user = self.request.user
         organizations = Organization.objects.filter(users__in=[context_user])
 
-        filter_value = self.request.POST.get('filter')
-        delta_specifier = self.request.POST.get('delta_specifier')
-        if not delta_specifier:
-            delta_specifier = "30"
-        time_specifier = self.request.POST.get('time_specifier')
-        if not time_specifier:
-            time_specifier = 'days'
+        filter_value = self.request.POST.get('filter', 'specific')
+        delta_specifier = self.request.POST.get('delta_specifier', "30")
+        time_specifier = self.request.POST.get('time_specifier', 'days')
         filter_date = self.get_filter_date(filter_value, delta_specifier, time_specifier)
 
         data = []
@@ -66,7 +62,7 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
                 transactions = LLMTransaction.objects.filter(organization=organization, model=llm_model,
                                                              created_at__gte=filter_date)
 
-                # Paginate transactions (20 items per page)
+                # Paginate transactions (5 items per page)
                 paginator = Paginator(transactions, DEFAULT_PAGINATION_SIZE_LIST_TRANSACTIONS)
                 page_number = self.request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
@@ -91,7 +87,7 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
 
     def get_filter_date(self, filter_value, delta_specifier, time_specifier):
         now = timezone.now()
-        if filter_value == 'all' or not delta_specifier or not time_specifier:
+        if filter_value == 'all':
             return now - timedelta(hours=100_000)
         else:
             delta = int(delta_specifier.lower().strip())

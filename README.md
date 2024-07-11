@@ -105,11 +105,11 @@
     - [X] Query generation + execution (Read and write controlled by is_read_only field)
     - [X] Integration to the chat multimodality.
     - [X] Test mysql retrieval
-    - [ ] Test postgresql retrieval
-    - [ ] Test -no- permission write request.
-    - [ ] Test permission write request.
-    - [ ] Test run custom query (read)
-    - [ ] Test run custom query (write)
+    - [X] Test postgresql retrieval
+    - [X] Test -no- permission write request.
+    - [X] Test permission write request.
+    - [X] Test run custom query (read)
+    - [X] Test run custom query (write)
     - [ ] Tweak the UI to make the messages look better with the tool retrievals.
 - [ ] **URGENT:** There must be limits for "how many times the same tool can be reached one after another", and "how many different
       tools can be piped one after another".

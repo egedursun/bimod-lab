@@ -151,14 +151,14 @@ class InternalOpenAIClient:
             if final_response == DEFAULT_ERROR_MESSAGE:
                 final_response += f"""
 
-                    **Technical Details about the Error:**
+                    Technical Details about the Error:
 
                     If the issue persists, please contact the system administrator and deliver the error message
                     below to provide a solution to the problem as soon as possible.
 
                     '''
 
-                    **{str(e)}**
+                    {str(e)}
 
                     '''
                 """

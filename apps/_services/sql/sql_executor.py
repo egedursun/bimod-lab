@@ -87,6 +87,7 @@ class MySQLExecutor:
             'database': connection.database_name,
             'port': connection.port
         }
+        self.connection_object = connection
 
     def execute_read(self, query, parameters=None):
         results = {"status": True, "error": ""}
@@ -102,6 +103,9 @@ class MySQLExecutor:
         return results
 
     def execute_write(self, query, parameters=None):
+        if not can_write_to_database(self.connection_object):
+            return {"status": False, "error": "No write permission within this database connection."}
+
         output = {"status": True, "error": ""}
         try:
             with mysql.connector.connect(**self.conn_params) as conn:

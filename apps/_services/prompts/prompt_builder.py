@@ -209,7 +209,7 @@ class PromptBuilder:
                     Query Description: {custom_query.description}
                     SQL Query:
                     '''
-                    {custom_query.query}
+                    {custom_query.sql_query}
                     '''
                 """
 
