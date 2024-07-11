@@ -96,6 +96,10 @@
 - [X] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
       specifiers such as "use tool" or "respond", etc.
 - [ ] Implement the NOSQL data source integration & management. (MongoDB)
+  - [ ] Implement the custom query feature.
+  - [ ] Integrate the prompt + the tool.
+  - [ ] Test the read-only db retrieval.
+  - [ ] Test the write db tool.
 - [ ] Implement the browsing tool for the web browser & web scraping features.
 
 <br><br>
@@ -125,7 +129,7 @@
 - [X] Integrate the starred messages pages.
 - [ ] Integrate the orchestration pages.
 - [X] Integrate the registration page.
-- [ ] Integrate SQL database features.
+- [X] Integrate SQL database features.
 - [ ] Integrate NOSQL database features.
 - [ ] Integrate the knowledge base & document features.
 - [ ] Integrate the web browser & web scraping features.
@@ -164,10 +168,16 @@
 ### CUSTOM REMINDERS
 
 **Tools we Use for Testing:**
-- Login Credentials: 
-  - **@Via Google Account** -> edogandursun@gmail.com
+
 - SQL DB Data Source Tests - Aiven Console.
-  - Has a PostgreSQL instance.
-  - Has a MySQL instance.
+  - Login Credentials: 
+    - **@Via Google Account** -> edogandursun@gmail.com
+    - Has a PostgreSQL instance.
+    - Has a MySQL instance.
+
+- NoSQL DB Data Source Tests - MongoDB Atlas.
+  - Login Credentials:
+    - **@Via Google Account** -> edogandursun@gmail.com
+    - Has a MongoDB cluster instance.
 
 ---

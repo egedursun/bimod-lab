@@ -109,7 +109,7 @@ class ToolExecutor:
 
     def use_tool(self):
         error = validate_main_tool_json(tool_usage_json=self.tool_usage_json)
-        if error: return error
+        if error: return error, None
 
         tool_name = self.tool_usage_json.get("tool")
         tool_response = f"""
@@ -122,7 +122,7 @@ class ToolExecutor:
         # SQL Query Execution Tool
         if tool_name == ToolTypeNames.SQL_QUERY_EXECUTION:
             error = validate_sql_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
-            if error: return error
+            if error: return error, None
 
             sql_response = self._execute_sql_query(
                 connection_id=self.tool_usage_json.get("parameters").get("database_connection_id")
@@ -138,7 +138,7 @@ class ToolExecutor:
             return """
                 There is no tool with the name: " + tool_name + " in the system. Please make sure you are defining
                 the correct tool name in the tool_usage_json.
-            """
+            """, tool_name
         ##################################################
 
         tool_response += f"""

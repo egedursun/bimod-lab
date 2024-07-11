@@ -89,7 +89,7 @@ class UpdateSQLDatabaseConnectionView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        connection = SQLDatabaseConnection.objects.get(id=kwargs['pk'], created_by_user=context_user)
+        connection = SQLDatabaseConnection.objects.get(id=kwargs['pk'])
         user_organizations = context_user.organizations.all()
         assistants = Assistant.objects.filter(organization__in=user_organizations)
         context['dbms_choices'] = DBMS_CHOICES

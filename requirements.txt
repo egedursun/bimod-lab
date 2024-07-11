@@ -14,3 +14,5 @@ openai~=1.35.10
 markdown~=3.6
 psycopg2-binary~=2.9.9
 mysql-connector-python~=9.0.0
+pymongo~=4.8.0
+certifi~=2024.6.2

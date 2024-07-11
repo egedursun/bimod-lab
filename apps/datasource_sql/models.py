@@ -52,9 +52,7 @@ class SQLDatabaseConnection(models.Model):
         return self.dbms_type + ' - ' + self.name
 
     def save(self, *args, **kwargs):
-        if (not self.schema_data_json or self.schema_data_json == {} or self.schema_data_json is None
-                or self.schema_data_json == 'null'):
-            self.schema_data_json = self.retrieve_schema()
+        self.schema_data_json = self.retrieve_schema()
         super().save(*args, **kwargs)
 
     def retrieve_schema(self):
