@@ -111,13 +111,16 @@
     - [ ] Test run custom query (read)
     - [ ] Test run custom query (write)
     - [ ] Tweak the UI to make the messages look better with the tool retrievals.
-- [ ] Implement the NOSQL data source integration & management.
-- [ ] Refine ideas regarding the dashboard page & management.
-- [ ] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
-      specifiers such as "use tool" or "respond", etc.
-- [ ] There must be limits for "how many times the same tool can be reached one after another", and "how many different
+- [ ] **URGENT:** There must be limits for "how many times the same tool can be reached one after another", and "how many different
       tools can be piped one after another".
-- [ ] Discuss the "GitHub repo integration" and assitant interpretation module.
+- [ ] Implement the NOSQL data source integration & management. (MongoDB)
+- [X] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
+      specifiers such as "use tool" or "respond", etc.
+
+<br><br>
+
+- [ ] Refine ideas regarding the dashboard page & management.
+- [ ] Discuss the "GitHub repo integration" and assistant interpretation module.
 ---
 
 
