@@ -135,7 +135,7 @@ class ExportAssistantAPIView(View):
 
         try:
             llm_client = InternalLLMClient.get(assistant=export_assistant.assistant, multimodal_chat=api_chat)
-            llm_response_text = llm_client.respond(user_query_message=user_message)
+            llm_response_text = llm_client.respond(latest_message=user_message)
             MultimodalChatMessage.objects.create(
                 multimodal_chat=api_chat,
                 sender_type='ASSISTANT',

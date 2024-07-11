@@ -1,5 +1,6 @@
 import mysql
 import psycopg2
+from mysql.connector import cursor_cext
 from mysql.connector.cursor import MySQLCursorDict
 from psycopg2.extras import RealDictCursor
 
@@ -32,7 +33,6 @@ class PostgresSQLExecutor:
         # run the before_execute_sql_query function to refresh the schema
         before_execute_sql_query(connection)
         ##################################################
-
         self.conn_params = {
             'dbname': connection.database_name,
             'user': connection.username,
@@ -40,19 +40,26 @@ class PostgresSQLExecutor:
             'host': connection.host,
             'port': connection.port
         }
+        self.connection_object = connection
 
     def execute_read(self, query, parameters=None):
-        results = []
+        results = {"status": True, "error": ""}
         try:
             with psycopg2.connect(**self.conn_params) as conn:
                 with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                    print(f"Executing Query: {query}")
                     cursor.execute(query, parameters)
                     results = cursor.fetchall()
         except Exception as e:
             print(f"Error executing PostgreSQL / Read Query: {e}")
+            results["status"] = False
+            results["error"] = str(e)
         return results
 
     def execute_write(self, query, parameters=None) -> dict:
+        if not can_write_to_database(self.connection_object):
+            return {"status": False, "error": "No write permission within this database connection."}
+
         output = {"status": True, "error": ""}
         try:
             with psycopg2.connect(**self.conn_params) as conn:
@@ -82,21 +89,23 @@ class MySQLExecutor:
         }
 
     def execute_read(self, query, parameters=None):
-        results = []
+        results = {"status": True, "error": ""}
         try:
             with mysql.connector.connect(**self.conn_params) as conn:
-                with conn.cursor(cursor_class=MySQLCursorDict) as cursor:
+                with conn.cursor(cursor_class=cursor_cext.CMySQLCursorDict, buffered=True) as cursor:
                     cursor.execute(query, parameters)
                     results = cursor.fetchall()
         except Exception as e:
             print(f"Error executing MySQL / Read Query: {e}")
+            results["status"] = False
+            results["error"] = str(e)
         return results
 
     def execute_write(self, query, parameters=None):
         output = {"status": True, "error": ""}
         try:
             with mysql.connector.connect(**self.conn_params) as conn:
-                with conn.cursor() as cursor:
+                with conn.cursor(buffered=True) as cursor:
                     cursor.execute(query, parameters)
                     conn.commit()
         except Exception as e:

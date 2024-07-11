@@ -97,7 +97,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
             )
             user_message = MultimodalChatMessage.objects.filter(multimodal_chat=chat).last()
             internal_llm_client = InternalLLMClient.get(assistant=chat.assistant, multimodal_chat=chat)
-            response = internal_llm_client.respond(user_query_message=user_message)
+            response = internal_llm_client.respond(latest_message=user_message)
             MultimodalChatMessage.objects.create(
                 multimodal_chat=chat,
                 sender_type='ASSISTANT',

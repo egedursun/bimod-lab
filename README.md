@@ -96,14 +96,21 @@
   - [X] Implement the update for the data source.
   - [X] Implement the deletion for the data source.
   - [X] Integrate the user permissions to the views.
-  - [ ] Implement the creation for the custom queries
-  - [ ] Implement the listing for the custom queries
-  - [ ] Implement the update for the custom queries
-  - [ ] Implement the deletion for the custom queries
-  - [ ] Implement the integration of the data source to the main chat feature of the AI assistants.
-    - [ ] Custom query execution. (Read and write controlled by is_read_only field)
-    - [ ] Query generation + execution (Read and write controlled by is_read_only field)
-    - [ ] Integration to the chat multimodality.
+  - [X] Implement the creation for the custom queries
+  - [X] Implement the listing for the custom queries
+  - [X] Implement the update for the custom queries
+  - [X] Implement the deletion for the custom queries
+  - [X] Implement the integration of the data source to the main chat feature of the AI assistants.
+    - [X] Custom query execution. (Read and write controlled by is_read_only field)
+    - [X] Query generation + execution (Read and write controlled by is_read_only field)
+    - [X] Integration to the chat multimodality.
+    - [X] Test mysql retrieval
+    - [ ] Test postgresql retrieval
+    - [ ] Test -no- permission write request.
+    - [ ] Test permission write request.
+    - [ ] Test run custom query (read)
+    - [ ] Test run custom query (write)
+    - [ ] Tweak the UI to make the messages look better with the tool retrievals.
 - [ ] Implement the NOSQL data source integration & management.
 - [ ] Refine ideas regarding the dashboard page & management.
 - [ ] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 

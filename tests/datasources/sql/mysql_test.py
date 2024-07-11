@@ -66,6 +66,36 @@ def create_test_tables_mysql():
     conn.close()
 
 
+def add_parties():
+    conn = mysql.connector.connect(
+        user=USER,
+        password=PASSWORD,
+        host=HOST,
+        database=DATABASE_NAME,
+        port=PORT
+    )
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO parties (name, date, location) VALUES ('Birthday Party', '2022-01-01', 'New York')
+        """
+    )
+    cursor.execute(
+        """
+        INSERT INTO parties (name, date, location) VALUES ('Wedding Party', '2022-02-02', 'Los Angeles')
+        """
+    )
+    cursor.execute(
+        """
+        INSERT INTO parties (name, date, location) VALUES ('Graduation Party', '2022-03-03', 'San Francisco')
+        """
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+
 if __name__ == '__main__':
-    create_test_tables_mysql()
+    # create_test_tables_mysql()
+    add_parties()
 

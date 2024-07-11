@@ -54,12 +54,14 @@ class MessageSenderTypeNames:
     USER = "USER"
     ASSISTANT = "ASSISTANT"
     SYSTEM = "SYSTEM"
+    TOOL = "TOOL"
 
 
 MESSAGE_SENDER_TYPES = [
     ("USER", "User"),
     ("ASSISTANT", "Assistant"),
     ("SYSTEM", "System"),
+    ("TOOL", "Tool"),
 ]
 
 
