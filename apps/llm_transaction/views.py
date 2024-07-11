@@ -1,5 +1,4 @@
 from datetime import timedelta
-from pprint import pprint
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator

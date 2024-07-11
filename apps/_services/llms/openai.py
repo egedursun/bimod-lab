@@ -19,8 +19,9 @@ class ChatRoles:
     ASSISTANT = "assistant"
     # TOOL = "tool"
 
-
 ACTIVE_RETRY_COUNT = 0
+ACTIVE_TOOL_RETRY_COUNT = 0
+ACTIVE_CHAIN_SIZE = 0
 
 DEFAULT_ERROR_MESSAGE = "Failed to respond at the current moment. Please try again later."
 
@@ -59,7 +60,7 @@ class InternalOpenAIClient:
         self.assistant = assistant
         self.chat = multimodal_chat
 
-    def respond(self, latest_message: MultimodalChatMessage):
+    def respond(self, latest_message: MultimodalChatMessage, prev_tool_name=None):
         c = self.connection
         user = self.chat.user
 
@@ -80,7 +81,7 @@ class InternalOpenAIClient:
                 text=latest_message
             )
             if latest_message_billable_cost > self.chat.organization.balance:
-                response = ("**System Message:**\n\n\n- I'm sorry, but it seems like you don't have enough balance to "
+                response = ("System Message:\n\n\n- I'm sorry, but it seems like you don't have enough balance to "
                             "continue this conversation. \n\n- Please contact your organization's administrator to "
                             "top up your balance, or if you have the necessary permissions, you can top up your "
                             "balance yourself.")
@@ -169,13 +170,96 @@ class InternalOpenAIClient:
         # if the final_response includes a tool usage call, execute the tool
         tool_response, json_part_of_response = None, ""
         if find_json_presence(final_response) is not None:
+
+            # check for the rate limits
+            global ACTIVE_CHAIN_SIZE
+            if ACTIVE_CHAIN_SIZE > self.assistant.tool_max_chains:
+                idle_overflow_message = f"""
+                    {final_response}
+
+                    ---
+
+                    System Message:
+
+                    The maximum number of tool chains has been reached. No further tool chains can be executed.
+                    If you believe you need to be able to chain more tools, please increase the limit in the assistant
+                    settings.
+
+                    The response retrieval cycle will be stopped now.
+
+                    ---
+
+                """
+                idle_overflow_transaction = LLMTransaction.objects.create(
+                    organization=self.chat.organization,
+                    model=self.chat.assistant.llm_model,
+                    responsible_user=self.chat.user,
+                    responsible_assistant=self.chat.assistant,
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    transaction_context_content=idle_overflow_message,
+                    llm_cost=0,
+                    internal_service_cost=0,
+                    tax_cost=0,
+                    total_cost=0,
+                    total_billable_cost=0,
+                    transaction_type=ChatRoles.ASSISTANT,
+                    transaction_source=self.chat.chat_source
+                )
+                self.chat.transactions.add(idle_overflow_transaction)
+                self.chat.save()
+
+                return idle_overflow_message
+
+            global ACTIVE_TOOL_RETRY_COUNT
+            if ACTIVE_TOOL_RETRY_COUNT > self.assistant.tool_max_attempts_per_instance:
+                idle_overflow_message = f"""
+                    {final_response}
+
+                    ---
+
+                    System Message:
+
+                    The maximum number of attempts for the tool has been reached. No further attempts can be made
+                    for retrieval via this tool in this request. If you believe you need to be able to make more
+                    attempts for using the same tool, please increase the limit in the assistant settings.
+
+                    The response retrieval cycle will be stopped now.
+
+                """
+                idle_overflow_transaction = LLMTransaction.objects.create(
+                    organization=self.chat.organization,
+                    model=self.chat.assistant.llm_model,
+                    responsible_user=self.chat.user,
+                    responsible_assistant=self.chat.assistant,
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    transaction_context_content=idle_overflow_message,
+                    llm_cost=0,
+                    internal_service_cost=0,
+                    tax_cost=0,
+                    total_cost=0,
+                    total_billable_cost=0,
+                    transaction_type=ChatRoles.ASSISTANT,
+                    transaction_source=self.chat.chat_source
+                )
+                self.chat.transactions.add(idle_overflow_transaction)
+                self.chat.save()
+
+                return idle_overflow_message
+
+            # increase the retry count for the tool
+            ACTIVE_TOOL_RETRY_COUNT += 1
+
             json_part_of_response = find_json_presence(final_response)
             try:
                 tool_executor = ToolExecutor(assistant=self.assistant, tool_usage_json_str=json_part_of_response)
-                tool_response = tool_executor.use_tool()
+                tool_response, tool_name = tool_executor.use_tool()
+                if tool_name is not None and tool_name != prev_tool_name:
+                    ACTIVE_CHAIN_SIZE += 1
+                    prev_tool_name = tool_name
+
             except JSONDecodeError as e:
                 tool_response = f"""
-                    **System Message:**
+                    System Message:
 
                     An error occurred while decoding the JSON response provided by the AI assistant. This might be
                     related to the incorrect formatting of the response. Please make sure that the response is in the
@@ -187,6 +271,9 @@ class InternalOpenAIClient:
                     {str(e)}
                     '''
                 """
+        else:
+            # Reset the retry mechanism
+            ACTIVE_TOOL_RETRY_COUNT = 0
 
         if tool_response:
             # Create the request as a multimodal chat message and add it to the chat
@@ -226,8 +313,10 @@ class InternalOpenAIClient:
             )
 
             # now apply the recursive call to the self function to get another reply from the assistant
-            return self.respond(latest_message=tool_message)
+            return self.respond(latest_message=tool_message, prev_tool_name=prev_tool_name)
 
+        # reset the active chain size
+        ACTIVE_CHAIN_SIZE = 0
         return final_response
 
 

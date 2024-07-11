@@ -1,5 +1,4 @@
 import uuid
-from pprint import pprint
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -212,7 +211,6 @@ class RemoveUserFromOrganizationView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = get_object_or_404(User, id=kwargs['pk'])
-        print(user)
         organization = get_object_or_404(Organization, id=kwargs['org_id'])
         context['user_to_remove'] = user
         context['organization'] = organization

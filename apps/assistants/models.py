@@ -36,6 +36,9 @@ class Assistant(models.Model):
     response_language = models.CharField(max_length=10, choices=ASSISTANT_RESPONSE_LANGUAGES, default="auto")
     max_retry_count = models.IntegerField(default=3)
 
+    tool_max_attempts_per_instance = models.IntegerField(default=3)
+    tool_max_chains = models.IntegerField(default=3)
+
     time_awareness = models.BooleanField(default=True)
     place_awareness = models.BooleanField(default=True)
 
@@ -47,8 +50,10 @@ class Assistant(models.Model):
     memories = models.ManyToManyField("memories.AssistantMemory", related_name='assistants',
                                       blank=True)
 
-    created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name='assistants_created_by_user')
-    last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name='assistants_updated_by_user')
+    created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
+                                        related_name='assistants_created_by_user')
+    last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
+                                             related_name='assistants_updated_by_user')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

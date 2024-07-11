@@ -145,4 +145,4 @@ class ToolExecutor:
             '''
         """
 
-        return tool_response
+        return tool_response, tool_name
