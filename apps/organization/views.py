@@ -32,7 +32,6 @@ class CreateOrganizationView(TemplateView, LoginRequiredMixin):
             'permission_type',
             flat=True
         )
-        print(user_permissions)
         if PermissionNames.ADD_ORGANIZATIONS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to create organizations."}

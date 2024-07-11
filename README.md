@@ -90,7 +90,7 @@
                   is no way to add that user back to the organization since the user is permanently disassociated 
                   from the organization. We need to think of a possible way to add that user back to the organization
                   without having to delete the account then re-register the user.
-- [ ] **URGENT:** Implement the SQL data source integration & management.
+- [X] Implement the SQL data source integration & management.
   - [X] Implement the creation for data source.
   - [X] Implement the listing for the data source.
   - [X] Implement the update for the data source.
@@ -113,6 +113,9 @@
     - [X] Tweak the UI to make the messages look better with the tool retrievals.
 - [ ] **URGENT:** There must be limits for "how many times the same tool can be reached one after another", and "how many different
       tools can be piped one after another".
+  - [ ] Add the maximum tool retry field to assistants & make the UI updates.
+  - [ ] Add the maximum tool chaining field to assistants & make the UI updates.
+  - [ ] Test the features.
 - [ ] Implement the NOSQL data source integration & management. (MongoDB)
 - [X] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
       specifiers such as "use tool" or "respond", etc.

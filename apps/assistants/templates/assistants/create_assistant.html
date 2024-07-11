@@ -138,6 +138,34 @@
             response the first time. Please be aware that setting this value too high may cause the assistant to
             spend too much time and credits to generate a response.
           </div>
+          <div class="mb-6 col-lg-6">
+            <label class="form-label" for="tool_max_attempts_per_instance">Maximum Tool Retry Count</label>
+            <!-- slider bar here -->
+            <input type="range" class="form-range" id="tool_max_attempts_per_instance" name="tool_max_attempts_per_instance" min="0" max="10" step="1" value="3" oninput="this.nextElementSibling.value = this.value">
+            <output>3</output>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+            The maximum number of times the assistant will retry using a tool if it fails to retrieve a data
+            the first time. Please be aware that setting this value too high may cause the assistant to spend
+            too much time and credits to retrieve data.
+          </div>
+          <div class="mb-6 col-lg-6">
+            <label class="form-label" for="tool_max_chains">Maximum Pipeline Length</label>
+            <!-- slider bar here -->
+            <input type="range" class="form-range" id="tool_max_chains" name="tool_max_chains" min="0" max="20" step="1" value="3" oninput="this.nextElementSibling.value = this.value">
+            <output>3</output>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+            The maximum number of tools the assistant will use in a single response, one used after the other.
+            Please be aware that setting this value too high may cause the assistant to spend too much time and
+            credits to generate a response, similar to the maximum response retry count and maximum tool retry count.
+          </div>
           <div class="mb-6">
             <label class="form-label" for="tone">Tone</label>
             <input type="text" class="form-control" id="tone" name="tone" placeholder="Enter tone" />

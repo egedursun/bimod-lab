@@ -47,6 +47,8 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         response_template = request.POST.get('response_template')
         audience = request.POST.get('audience')
         max_retry_count = request.POST.get('max_retry_count')
+        tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
+        tool_max_chains = request.POST.get('tool_max_chains')
         tone = request.POST.get('tone')
         response_language = request.POST.get('response_language')
         time_awareness = request.POST.get('time_awareness') == 'on'
@@ -68,6 +70,8 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             instructions=instructions,
             audience=audience,
             max_retry_count=max_retry_count,
+            tool_max_attempts_per_instance=tool_max_attempts_per_instance,
+            tool_max_chains=tool_max_chains,
             tone=tone,
             assistant_image=assistant_image,
             created_by_user=context_user,
@@ -140,6 +144,8 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         assistant.instructions = request.POST.get('instructions')
         assistant.audience = request.POST.get('audience')
         assistant.max_retry_count = request.POST.get('max_retry_count')
+        assistant.tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
+        assistant.tool_max_chains = request.POST.get('tool_max_chains')
         assistant.tone = request.POST.get('tone')
         assistant.llm_model_id = request.POST.get('llm_model')
         assistant.response_template = request.POST.get('response_template')
