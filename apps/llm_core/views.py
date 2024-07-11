@@ -97,11 +97,8 @@ class UpdateLLMCoreView(TemplateView, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         llm_core = LLMCore.objects.get(id=kwargs['pk'])
         prev_organization = llm_core.organization
-        print("LLM Core of Operation: ", llm_core)
         form = LLMCoreForm(request.POST, request.FILES, instance=llm_core)
-        print("Form.OrganizationData: ", request.POST['organization'])
         context_user = request.user
-        print("User of Operation: ", context_user)
 
         ##############################
         # PERMISSION CHECK FOR - LLM/UPDATE

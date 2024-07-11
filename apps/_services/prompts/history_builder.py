@@ -9,6 +9,7 @@ class HistoryBuilder:
         SYSTEM = "SYSTEM"
         USER = "USER"
         ASSISTANT = "ASSISTANT"
+        TOOL = "TOOL"
 
     @staticmethod
     def build(chat: MultimodalChat):
@@ -16,6 +17,8 @@ class HistoryBuilder:
         context_history = []
         for chat_message in chat_messages:
             sender_type = chat_message.sender_type
+            if sender_type == HistoryBuilder.ChatRoles.TOOL:
+                sender_type = HistoryBuilder.ChatRoles.ASSISTANT
             message_text_content = chat_message.message_text_content
             if sender_type != HistoryBuilder.ChatRoles.SYSTEM:
                 context_history.append({

@@ -152,8 +152,8 @@ class CustomSQLQuery(models.Model):
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         # add itself to the database connection's custom queries
-        self.database_connection.custom_queries.add(self)
         super().save(force_insert, force_update, using, update_fields)
+        self.database_connection.custom_queries.add(self)
 
     class Meta:
         ordering = ['-created_at']

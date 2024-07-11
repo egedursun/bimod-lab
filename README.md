@@ -92,21 +92,35 @@
                   without having to delete the account then re-register the user.
 - [ ] **URGENT:** Implement the SQL data source integration & management.
   - [X] Implement the creation for data source.
-  - [ ] Implement the listing for the data source.
-  - [ ] Implement the update for the data source.
-  - [ ] Implement the deletion for the data source.
-  - [ ] Implement the creation for the custom queries
-  - [ ] Implement the listing for the custom queries
-  - [ ] Implement the update for the custom queries
-  - [ ] Implement the deletion for the custom queries
-  - [ ] Implement the integration of the data source to the main chat feature of the AI assistants.
-- [ ] Implement the NOSQL data source integration & management.
-- [ ] Refine ideas regarding the dashboard page & management.
-- [ ] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
-      specifiers such as "use tool" or "respond", etc.
-- [ ] There must be limits for "how many times the same tool can be reached one after another", and "how many different
+  - [X] Implement the listing for the data source.
+  - [X] Implement the update for the data source.
+  - [X] Implement the deletion for the data source.
+  - [X] Integrate the user permissions to the views.
+  - [X] Implement the creation for the custom queries
+  - [X] Implement the listing for the custom queries
+  - [X] Implement the update for the custom queries
+  - [X] Implement the deletion for the custom queries
+  - [X] Implement the integration of the data source to the main chat feature of the AI assistants.
+    - [X] Custom query execution. (Read and write controlled by is_read_only field)
+    - [X] Query generation + execution (Read and write controlled by is_read_only field)
+    - [X] Integration to the chat multimodality.
+    - [X] Test mysql retrieval
+    - [X] Test postgresql retrieval
+    - [X] Test -no- permission write request.
+    - [X] Test permission write request.
+    - [X] Test run custom query (read)
+    - [X] Test run custom query (write)
+    - [X] Tweak the UI to make the messages look better with the tool retrievals.
+- [ ] **URGENT:** There must be limits for "how many times the same tool can be reached one after another", and "how many different
       tools can be piped one after another".
-- [ ] Discuss the "GitHub repo integration" and assitant interpretation module.
+- [ ] Implement the NOSQL data source integration & management. (MongoDB)
+- [X] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
+      specifiers such as "use tool" or "respond", etc.
+
+<br><br>
+
+- [ ] Refine ideas regarding the dashboard page & management.
+- [ ] Discuss the "GitHub repo integration" and assistant interpretation module.
 ---
 
 

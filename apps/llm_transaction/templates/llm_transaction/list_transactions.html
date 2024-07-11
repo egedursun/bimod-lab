@@ -90,7 +90,7 @@
                 </label>
                 <label>
                   <button type="submit" class="nav-link waves-effect waves-light {% if filter == 'specific' %}active{% endif %}" name="filter" value="specific">Update</button>
-                  <button type="submit" class="nav-link waves-effect waves-light {% if filter %}{% if filter == 'all' %}active{% endif %}{% else %}active{% endif %}" name="filter" value="all">All Transactions</button>
+                  <button type="submit" class="nav-link waves-effect waves-light {% if filter %}{% if filter == 'all' %}active{% endif %}{% else %}{% if filter != 'specific' %}active{% endif %}{% endif %}" name="filter" value="all">All Transactions</button>
                 </label>
               </form>
             </li>

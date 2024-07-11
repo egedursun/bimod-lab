@@ -1,0 +1,99 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Create SQL Query{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    $('#database_connection').select2();
+  });
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Create a New Custom SQL Query</h5>
+        <small class="text-muted float-end"></small>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+          <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              Create a new custom SQL query by providing the necessary information. You can use this query to
+              connect to a SQL database and make your assistants be able to reach the data inside the database.
+              Normally, the assistants are already able to build their own queries, but you can create a query
+              that is frequently used by the assistants to save time and make the process more efficient.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label class="form-label" for="database_connection">Database Connection</label>
+            <select class="form-select" id="database_connection" name="database_connection">
+              <option value="" disabled selected>Select Database Connection</option>
+              {% for connection in database_connections %}
+                <option value="{{ connection.id }}">{{ connection.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="name">Query Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter query name" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" placeholder="Enter query description"></textarea>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-info-circle"></i>
+              </span>
+              It is always great to put a clear and concise description for your SQL query. This will help the
+              assistant to figure out what the query is about and when to use it. You can also provide examples
+              scenarios where the query can be used.
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="sql_query">SQL Query</label>
+            <textarea class="form-control" id="sql_query" name="sql_query" placeholder="Paste your SQL query here"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary d-grid w-100">Create SQL Query</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

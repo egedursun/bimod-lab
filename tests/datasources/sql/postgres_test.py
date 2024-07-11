@@ -53,5 +53,38 @@ def create_test_tables_postgres():
     conn.close()
 
 
+def add_products():
+    conn = psycopg2.connect(
+        dbname=DATABASE_NAME,
+        user=USER,
+        password=PASSWORD,
+        host=HOST,
+        port=PORT
+    )
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO products (name, price, stock)
+        VALUES
+            ('Apple', 1.0, 100),
+            ('Banana', 0.5, 200),
+            ('Orange', 1.5, 150)
+        """
+    )
+    conn.commit()
+    cursor.execute(
+        """
+        INSERT INTO products (name, price, stock)
+        VALUES
+            ('Strawberry', 3.0, 50),
+            ('Pineapple', 2.5, 75),
+            ('Kiwi', 2.0, 100)
+        """
+    )
+    conn.commit()
+    cursor.close()
+
+
 if __name__ == '__main__':
-    create_test_tables_postgres()
+    # create_test_tables_postgres()
+    add_products()
