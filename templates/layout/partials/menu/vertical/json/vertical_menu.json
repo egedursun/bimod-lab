@@ -223,7 +223,28 @@
       "name": "NoSQL Databases",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "nosql-databases",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add NoSQL Database",
+          "slug": "nosql-database",
+          "url": "datasource_nosql:create"
+        },
+        {
+          "name": "NoSQL Databases",
+          "slug": "nosql-database",
+          "url": "datasource_nosql:list"
+        },
+        {
+          "name": "Add Custom Query",
+          "slug": "nosql-query",
+          "url": "datasource_nosql:create_query"
+        },
+        {
+          "name": "Custom Queries",
+          "slug": "nosql-query",
+          "url": "datasource_nosql:list_queries"
+        }
+      ]
     },
     {
       "name": "Knowledge Bases",

@@ -99,6 +99,7 @@ INSTALLED_APPS = [
     "apps.message_templates",
     "apps.export_assistants",
     "apps.datasource_sql",
+    "apps.datasource_nosql",
     #############################
 ]
 
