@@ -151,6 +151,7 @@ class InternalOpenAIClient:
 
             # Get the error message
             if final_response == DEFAULT_ERROR_MESSAGE:
+                raise Exception(e)
                 final_response += f"""
 
                     Technical Details about the Error:

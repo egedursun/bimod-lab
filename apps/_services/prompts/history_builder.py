@@ -1,3 +1,4 @@
+from apps._services.chat_context.chat_context_manager import ChatContextManager
 from apps.assistants.models import Assistant
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat
@@ -20,6 +21,7 @@ class HistoryBuilder:
             if sender_type == HistoryBuilder.ChatRoles.TOOL:
                 sender_type = HistoryBuilder.ChatRoles.ASSISTANT
             message_text_content = chat_message.message_text_content
+
             if sender_type != HistoryBuilder.ChatRoles.SYSTEM:
                 context_history.append({
                     "role": sender_type.lower(),
@@ -45,5 +47,11 @@ class HistoryBuilder:
             chat.transactions.add(transaction)
             chat.save()
             chat_message.save()
+
+        # use the context manager to handle overflows
+        context_history = ChatContextManager.handle_context(
+            chat_history=context_history,
+            assistant=chat.assistant,
+        )
 
         return context_history
