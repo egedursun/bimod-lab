@@ -95,10 +95,11 @@
       tools can be piped one after another".
 - [X] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
       specifiers such as "use tool" or "respond", etc.
-- [ ] **URGENT:**: Storing the text for the transactions cause a heavy overload on the tables, which is something
+- [X] Storing the text for the transactions cause a heavy overload on the tables, which is something
                   we need to avoid. So, I will remove the text field from the transactions, and calculate the token
                   cost beforehand (instead of doing it in save method of the models.py), and store the token cost
                   in the transaction. This way, we can avoid the heavy load on the database.
+- [X] It seems like the tool retry & chain retry limits are not working as intended. Debug and fix this.
 - [ ] **URGENT:** 'INTRINSIC_ONE_TIME_SQL_RETRIEVAL_LIMIT (max=100)' must be determined by the assistant's configuration 
                     according to the user's preferences. Plus, there needs to be a 'ONE_TIME_SQL_RETRIEVAL_TOKEN_LIMIT 
                     (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
@@ -145,9 +146,7 @@
 - [ ] Integrate the knowledge base & document features.
 - [ ] Integrate the web browser & web scraping features.
 - [ ] Integrate ML models usage features.
-- [ ] Integrate the image storage features.
-- [ ] Integrate the video storage features.
-- [ ] Integrate the audio storage features.
+- [ ] Integrate the media storage features (image, audio, video).
 - [ ] Integrate the file system manipulation features.
 - [ ] Integrate the functions multi-modality.
 - [ ] Integrate the API multi-modality.

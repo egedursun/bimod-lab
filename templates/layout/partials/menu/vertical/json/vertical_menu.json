@@ -232,21 +232,9 @@
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Image Storages",
-      "icon": "menu-icon tf-icons ti ti-camera",
-      "slug": "image-storages",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Video Storages",
+      "name": "Media Storages",
       "icon": "menu-icon tf-icons ti ti-video",
-      "slug": "video-storages",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Audio Storages",
-      "icon": "menu-icon tf-icons ti ti-music",
-      "slug": "audio-storages",
+      "slug": "media-storages",
       "url": "dashboard:main-dashboard"
     },
     {
@@ -283,19 +271,13 @@
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Blockchain",
-      "icon": "menu-icon tf-icons ti ti-cube",
-      "slug": "blockchain",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Image Gen & Analysis",
+      "name": "Image Generation",
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "triggers",
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Audio Gen & Analysis",
+      "name": "Audio Generation",
       "icon": "menu-icon tf-icons ti ti-music",
       "slug": "triggers",
       "url": "dashboard:main-dashboard"

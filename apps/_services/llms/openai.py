@@ -19,6 +19,7 @@ class ChatRoles:
     ASSISTANT = "assistant"
     # TOOL = "tool"
 
+
 ACTIVE_RETRY_COUNT = 0
 ACTIVE_TOOL_RETRY_COUNT = 0
 ACTIVE_CHAIN_SIZE = 0
@@ -244,6 +245,7 @@ class InternalOpenAIClient:
                 self.chat.transactions.add(idle_overflow_transaction)
                 self.chat.save()
 
+                ACTIVE_TOOL_RETRY_COUNT = 0
                 return idle_overflow_message
 
             # increase the retry count for the tool
@@ -271,9 +273,6 @@ class InternalOpenAIClient:
                     {str(e)}
                     '''
                 """
-        else:
-            # Reset the retry mechanism
-            ACTIVE_TOOL_RETRY_COUNT = 0
 
         if tool_response:
             # Create the request as a multimodal chat message and add it to the chat
