@@ -41,12 +41,36 @@ def build_structured_tool_usage_instructions_prompt(assistant: Assistant, user: 
         parameters that the tool requires to execute.
 
         - **BE AWARE:** You must not put "'''" or "'''" in the JSON file you output. This is just a template
-        for you to understand how the JSON file should be structured. Your output must start with "{" and end
-        with "}" for the system to correctly interpret the JSON file.
+        for you to understand how the JSON file should be structured. Your output must start with { and end
+        with } for the system to correctly interpret the JSON file.
 
         - For every tool you have, a sample JSON file will be provided for you to understand how the tool will
         be called.
 
+        - **NOTE about TOOL USAGE & CHAINING LIMITS:** There are system limits implemented in the background, limiting
+        the number of times a single tool can be reached out in a single 'assistant response pipeline'. Assistant
+        response pipeline means that the assistant receives a message from the user, processes it, and then creates
+        '1 or more' responses to the user, to provide more accurate and detailed information.
+
+        - If you hit this limit, the system will append an error message to the conversation, and this is how you will
+        be aware of the issue. If you see this message, you should consider changing your strategy, and trying again.
+        THEREFORE, the limits are in place for ''a single assistant response pipeline'', and not for the whole
+        conversation.
+
+        **THE LIMITS:**
+
+        - The maximum number of 'different' tools that can be used in a single ''assistant response pipeline'':
+    """
+
+    response_prompt += f"""
+        {assistant.tool_max_chains}
+
+        - The maximum number of times a single tool can be called consecutively in a single
+        ''assistant response pipeline'':
+
+        {assistant.tool_max_attempts_per_instance}
+
+        ---
     """
 
     return response_prompt

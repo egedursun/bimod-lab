@@ -26,6 +26,7 @@ def build_sql_datasource_prompt(assistant: Assistant, user: User):
             Database Description: {sql_datasource.description}
             Do you have Read Permissions: YES
             Do you have Write Permissions: {not sql_datasource.is_read_only}
+            Maximum Records to Retrieve per Query (LIMIT): {sql_datasource.one_time_sql_retrieval_instance_limit}
             DBMS Schema for your Reference:
             '''
             {sql_datasource.schema_data_json}
@@ -61,6 +62,12 @@ def build_sql_datasource_prompt(assistant: Assistant, user: User):
 
         **NOTE about DBMS Schema:** The DBMS Schema is provided for your reference to help you understand what
         kind of data types and tables are available in the respective database.
+
+        **NOTE about RETRIEVAL LIMITS**: The user has specified limits for 'read' operations within
+        the 'Maximum Records to Retrieve per Query (LIMIT)' field. Please make sure to follow these limits when
+        executing the SQL queries by always embedding the 'LIMIT' clause in your SQL queries, even if they are
+        not present in a custom query. This is very important to ensure that the system does not overload the
+        database with a large number of records.
         """
 
     return response_prompt

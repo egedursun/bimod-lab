@@ -112,6 +112,14 @@
                   <span class="text-body"><strong>Read Only:</strong></span>
                   <span class="text-wrap {% if connection.is_read_only %}bg-label-success{% else %}bg-label-danger{% endif %} rounded p-2"><strong>{{ connection.is_read_only|yesno:"Yes,No" }}</strong></span>
                 </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Max Records per Retrieval: </strong></span>
+                  <span class="text-wrap bg-label-info rounded p-2"><strong>{{ connection.one_time_sql_retrieval_instance_limit }}</strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Max Tokens per Retrieval: </strong></span>
+                  <span class="text-wrap bg-label-info rounded p-2"><strong>{{ connection.one_time_sql_retrieval_token_limit }}</strong></span>
+                </li>
               </ul>
               <hr>
               <div class="d-flex justify-content-center">

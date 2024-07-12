@@ -31,6 +31,9 @@ class SQLDatabaseConnection(models.Model):
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
 
+    one_time_sql_retrieval_instance_limit = models.IntegerField(default=100)
+    one_time_sql_retrieval_token_limit = models.IntegerField(default=10_000)
+
     is_read_only = models.BooleanField(default=True)
 
     schema_data_json = models.JSONField(blank=True, null=True)

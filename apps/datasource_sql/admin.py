@@ -11,6 +11,7 @@ import mysql.connector
 @admin.register(SQLDatabaseConnection)
 class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
     list_display = ('id', 'assistant', 'dbms_type', 'name', 'description', 'host', 'port', 'database_name', 'username',
+                    'one_time_sql_retrieval_instance_limit', 'one_time_sql_retrieval_token_limit',
                     'is_read_only', 'password', 'created_at', 'updated_at', 'created_by_user')
     list_filter = ('dbms_type', 'created_at', 'updated_at')
     search_fields = ('name', 'host', 'database_name', 'username', 'is_read_only')
@@ -19,6 +20,7 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('assistant', 'dbms_type', 'name', 'description', 'host', 'port', 'database_name', 'username',
+                          'one_time_sql_retrieval_instance_limit', 'one_time_sql_retrieval_token_limit',
                        'is_read_only', 'password', 'schema_data_json', 'created_by_user')
         }),
         ('Dates', {

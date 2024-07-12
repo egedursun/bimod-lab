@@ -117,6 +117,34 @@
               </span>
             </label>
           </div>
+          <div class="mb-6 col-lg-6">
+            <label class="form-label" for="one_time_sql_retrieval_instance_limit">Maximum Record Retrieval per Request</label>
+            <!-- slider bar here -->
+            <input type="range" class="form-range" id="one_time_sql_retrieval_instance_limit" name="one_time_sql_retrieval_instance_limit" min="1" max="100" step="1" value="{{ connection.one_time_sql_retrieval_instance_limit }}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{ connection.one_time_sql_retrieval_instance_limit }}</output>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+            The maximum number of records that can be retrieved in a single request. This is to prevent any accidental
+            data leaks or performance issues. You can change this value later on if you need to. Higher values can
+            result in increased costs while lower values can result in decreased accuracy of the assistants.
+          </div>
+          <div class="mb-6 col-lg-6">
+            <label class="form-label" for="one_time_sql_retrieval_token_limit">Maximum Tokens per Retrieval</label>
+            <!-- slider bar here -->
+            <input type="range" class="form-range" id="one_time_sql_retrieval_token_limit" name="one_time_sql_retrieval_token_limit" min="100" max="10000" step="100" value="{{ connection.one_time_sql_retrieval_token_limit }}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{ connection.one_time_sql_retrieval_token_limit }}</output>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+            The maximum number of records that can be retrieved in a single request. This is to prevent any accidental
+            data leaks or performance issues. You can change this value later on if you need to. Higher values can
+            result in increased costs while lower values can result in decreased accuracy of the assistants.
+          </div>
           <div class="alert alert-solid-danger d-flex align-items-center mt-6" role="alert">
               <span class="alert-icon rounded">
                 <i class="ti ti-alert-triangle-filled"></i>

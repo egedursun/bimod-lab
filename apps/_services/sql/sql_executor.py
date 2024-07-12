@@ -6,6 +6,13 @@ from psycopg2.extras import RealDictCursor
 from apps.datasource_sql.models import SQLDatabaseConnection, DBMSChoicesNames
 
 
+INTRINSIC_MAXIMUM_QUERY_RECORD_LIMIT = 1000
+
+
+class SQLKeywords:
+    LIMIT = "LIMIT"
+
+
 # This function will refresh the schema data before executing the SQL query, which will improve the accuracy
 # and comprehension of the AI assistant
 def before_execute_sql_query(connection: SQLDatabaseConnection):
@@ -42,6 +49,12 @@ class PostgresSQLExecutor:
         self.connection_object = connection
 
     def execute_read(self, query, parameters=None):
+        if SQLKeywords.LIMIT not in query.lower():
+            # check if there is a ";" at the end of the query to prevent errors
+            if query[-1] == ";":
+                query = query[:-1]
+            query += f" {SQLKeywords.LIMIT} {INTRINSIC_MAXIMUM_QUERY_RECORD_LIMIT};"
+
         results = {"status": True, "error": ""}
         try:
             with psycopg2.connect(**self.conn_params) as conn:
@@ -89,6 +102,9 @@ class MySQLExecutor:
         self.connection_object = connection
 
     def execute_read(self, query, parameters=None):
+        if SQLKeywords.LIMIT not in query.lower():
+            query += f" {SQLKeywords.LIMIT} {INTRINSIC_MAXIMUM_QUERY_RECORD_LIMIT}"
+
         results = {"status": True, "error": ""}
         try:
             with mysql.connector.connect(**self.conn_params) as conn:

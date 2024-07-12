@@ -41,7 +41,7 @@ class PromptBuilder:
         # GENERIC PROMPTS
         primary_guidelines_prompt = build_structured_primary_guidelines()
         structured_name_prompt = get_structured_name_prompt(name, chat.chat_name)
-        structured_instructions_prompt = get_structured_instructions_prompt(instructions)
+        structured_instructions_prompt = get_structured_instructions_prompt(assistant)
         structured_response_template_prompt = get_structured_response_template_prompt(response_template)
         structured_audience_prompt = get_structured_audience_prompt(audience)
         structured_tone_prompt = get_structured_tone_prompt(tone)

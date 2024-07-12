@@ -103,13 +103,17 @@
 - [ ] **URGENT:** 'INTRINSIC_ONE_TIME_SQL_RETRIEVAL_LIMIT (max=100)' must be determined by the assistant's configuration 
                     according to the user's preferences. Plus, there needs to be a 'ONE_TIME_SQL_RETRIEVAL_TOKEN_LIMIT 
                     (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
-- [ ] **URGENT:** Implement the context cut-off tool to prevent context window from overflowing.
-      - Two possible choices:
-        1. **Simple:** Cut-off the first messages and exclude them from the context, only keep the last N messages.
-        2. **Complex:** Summarize the first M messages in X sentences, save the summary as an experience for a "chat",
-                        then use the summary as the context for the next messages and forget the first N messages.
+  - [ ] **URGENT:** Implement the context cut-off tool to prevent context window from overflowing.
+        - Two possible choices:
+          1. **Forget:** Cut-off the first messages and exclude them from the context, only keep the last N messages.
+          2. **Summarize:** Summarize the first M messages in X sentences, save the summary as an experience for a "chat",
+                          then use the summary as the context for the next messages and forget the first N messages.
+          3. **Vectorize:**: Vectorize the first M messages, and use the knowledge base as the Q/A tool for the next 
+                            messages.
 - [ ] Implement the Knowledge Base tool for the web browser & web scraping features.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
+  - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low", which will determine
+          how difficult the agent will trust on an online source.
 - [ ] Implement the File System tool for the file system manipulation features.
 - [ ] Implement the ML Model tool for the ML models usage features.
 - [ ] Implement the Image, Audio, Video tools for the media storage features.

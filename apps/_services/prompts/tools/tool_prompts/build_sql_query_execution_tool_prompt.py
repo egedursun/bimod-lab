@@ -1,9 +1,6 @@
 from apps._services.tools.const import ToolTypeNames
 
 
-INTRINSIC_ONE_TIME_SQL_RETRIEVAL_LIMIT = 10
-
-
 def build_structured_tool_prompt__sql_query_execution():
     response_prompt = f"""
         **TOOL**: SQL Query Execution
@@ -41,12 +38,6 @@ def build_structured_tool_prompt__sql_query_execution():
             that not all database connections have write permissions, so make sure to check the permissions
             before executing those queries.
 
-        **IMPORTANT NOTE ABOUT THE RETRIEVAL 'LIMIT'**: The system has an intrinsic limit of
-        {INTRINSIC_ONE_TIME_SQL_RETRIEVAL_LIMIT}. ALWAYS put a limit on the number of documents you are
-        fetching from the SQL Database Connections based on this limit. This is to ensure that the system
-        does not get overloaded with the data and can provide a quick response to the user. If you don't have enough
-        information from the first retrieval, you can always fetch more data in the next assistant messages instead,
-        or by using a more use-case specific query.
     """
 
     return response_prompt
