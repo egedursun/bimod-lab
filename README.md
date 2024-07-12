@@ -95,20 +95,24 @@
       tools can be piped one after another".
 - [X] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
       specifiers such as "use tool" or "respond", etc.
-- [X] Implement the NOSQL data source integration & management. (MongoDB)
-  - [X] Implement the custom query feature.
-  - [X] Integrate the prompt + the tool.
-  - [X] Test the read-only db retrieval.
-    - [X] Test the write db tool.
-    [ ] **URGENT:** 'INTRINSIC_ONE_TIME_SQL_RETRIEVAL_LIMIT (max=100)' must be determined by the assistant's configuration 
+- [ ] **URGENT:**: Storing the text for the transactions cause a heavy overload on the tables, which is something
+                  we need to avoid. So, I will remove the text field from the transactions, and calculate the token
+                  cost beforehand (instead of doing it in save method of the models.py), and store the token cost
+                  in the transaction. This way, we can avoid the heavy load on the database.
+- [ ] **URGENT:** 'INTRINSIC_ONE_TIME_SQL_RETRIEVAL_LIMIT (max=100)' must be determined by the assistant's configuration 
                     according to the user's preferences. Plus, there needs to be a 'ONE_TIME_SQL_RETRIEVAL_TOKEN_LIMIT 
                     (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
-    [ ] **URGENT:** Implement the context cut-off tool to prevent context window from overflowing.
+- [ ] **URGENT:** Implement the context cut-off tool to prevent context window from overflowing.
       - Two possible choices:
         1. **Simple:** Cut-off the first messages and exclude them from the context, only keep the last N messages.
         2. **Complex:** Summarize the first M messages in X sentences, save the summary as an experience for a "chat",
                         then use the summary as the context for the next messages and forget the first N messages.
-- [ ] Implement the browsing tool for the web browser & web scraping features.
+- [ ] Implement the Knowledge Base tool for the web browser & web scraping features.
+- [ ] Implement the Browsing tool for the web browser & web scraping features.
+- [ ] Implement the File System tool for the file system manipulation features.
+- [ ] Implement the ML Model tool for the ML models usage features.
+- [ ] Implement the Image, Audio, Video tools for the media storage features.
+- 
 
 <br><br>
 
@@ -116,6 +120,7 @@
 - [ ] **NEW FEATURE IDEA:** Discuss the "GitHub repo integration" and assistant interpretation module.
 - [ ] **NEW FEATURE IDEA:** Discuss ERP integration and assistant interpretation module.
 - [ ] **NEW FEATURE IDEA:** Discuss the Chrome Extension to automatically understand the web pages etc.
+- [ ] **NEW FEATURE IDEA:** Integrate the recommended messages to the chat to provide ease of use.
 ---
 
 
@@ -135,10 +140,8 @@
 - [X] Integrate the memories pages.
 - [X] Integrate the message templates pages.
 - [X] Integrate the starred messages pages.
-- [ ] Integrate the orchestration pages.
 - [X] Integrate the registration page.
 - [X] Integrate SQL database features.
-- [X] Integrate NOSQL database features.
 - [ ] Integrate the knowledge base & document features.
 - [ ] Integrate the web browser & web scraping features.
 - [ ] Integrate ML models usage features.
@@ -154,6 +157,7 @@
 - [ ] Integrate Image generation multi-modality.
 - [ ] Integrate Audio generation multi-modality.
 - [ ] Develop functions for different "industries".
+- [ ] Integrate the orchestration pages.
 - [ ] Integrate "Integrations multi-modality".
 - [ ] Integrate "Meta-Integrations multi-modality".
 
@@ -165,7 +169,7 @@
 - [ ] Develop the data privacy policy and terms of service to the application. (LEGAL)
 - [ ] Integrate social media accounts on: Facebook, Twitter, LinkedIn, Instagram. (Hüseyin)
 - [ ] Marketing via Webrazzi, Product Hunt, Hacker News, Reddit, etc. (Hüseyin)
-- [ ] Company formation + Crunchbase Profile. (Ege)
+- [ ] Company formation + CrunchBase Profile. (Ege)
 - [ ] Incubation center + investor meetings. (Ege & Hüseyin)
 - [ ] SEO optimization for the application. (Emre?)
 - [ ] Blog application on the website for better SEO management. (Selin)
@@ -182,10 +186,5 @@
     - **@Via Google Account** -> edogandursun@gmail.com
     - Has a PostgreSQL instance.
     - Has a MySQL instance.
-
-- NoSQL DB Data Source Tests - MongoDB Atlas.
-  - Login Credentials:
-    - **@Via Google Account** -> edogandursun@gmail.com
-    - Has a MongoDB cluster instance.
 
 ---
