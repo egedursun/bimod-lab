@@ -103,13 +103,10 @@
 - [X] 'INTRINSIC_ONE_TIME_SQL_RETRIEVAL_LIMIT (max=100)' must be determined by the assistant's configuration 
                     according to the user's preferences. Plus, there needs to be a 'ONE_TIME_SQL_RETRIEVAL_TOKEN_LIMIT 
                     (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
-- [ ] **URGENT:** Implement the context cut-off tool to prevent context window from overflowing.
+- [X] **URGENT:** Implement the context cut-off tool to prevent context window from overflowing.
       - Two possible choices:
-        1. **Forget:** Cut-off the first messages and exclude them from the context, only keep the last N messages.
-        2. **Summarize:** Summarize the first M messages in X sentences, save the summary as an experience for a "chat",
-                        then use the summary as the context for the next messages and forget the first N messages.
         3. **Vectorize:**: Vectorize the first M messages, and use the knowledge base as the Q/A tool for the next 
-                          messages.
+                          messages. (Requires Knowledge Base Tool)
 - [ ] Implement the Knowledge Base tool for the web browser & web scraping features.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
   - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low", which will determine
@@ -126,6 +123,7 @@
 - [ ] **NEW FEATURE IDEA:** Discuss ERP integration and assistant interpretation module.
 - [ ] **NEW FEATURE IDEA:** Discuss the Chrome Extension to automatically understand the web pages etc.
 - [ ] **NEW FEATURE IDEA:** Integrate the recommended messages to the chat to provide ease of use.
+- [ ] **NEW FEATURE IDEA:** Glossaries for Technical Terminology integration to the chats. ( can take up space in terms of tokens )
 ---
 
 
