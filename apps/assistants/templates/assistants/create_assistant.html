@@ -206,6 +206,54 @@
               </span>
             </label>
           </div>
+          <div class="mb-6 col-lg-6">
+            <label class="form-label" for="max_context_messages">Maximum Context Messages</label>
+            <!-- slider bar here -->
+            <input type="range" class="form-range" id="max_context_messages" name="max_context_messages" min="10" max="1000" step=10" value="50" oninput="this.nextElementSibling.value = this.value">
+            <output>50</output>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="context_overflow_strategy">Context Overflow Management Strategy</label>
+            <select class="form-select" id="context_overflow_strategy" name="context_overflow_strategy">
+              <option value="" disabled selected>Select Strategy</option>
+              {% for strategy in context_overflow_strategies %}
+                <option value="{{ strategy.0 }}">{{ strategy.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-info-circle"></i>
+              </span>
+              Select the strategy the assistant will use to manage context overflow. If you select 'Stop Conversation',
+              the assistant will stop the conversation if the context reaches the specified number of messages. If you
+              select 'Forget Oldest Messages', the assistant will forget the oldest messages surpassing the specified
+              number of messages. If you select 'Vectorize Oldest Messages', the assistant will vectorize the oldest
+              messages surpassing the specified number of messages, and be able to query them whenever needed.
+          </div>
+          <div id="memory-vectorizer-selection-bar" class="mb-6 d-none">
+            <label class="form-label" for="vectorizer_name">Chat Memory Vectorizer</label>
+            <select class="form-select" id="vectorizer_name" name="vectorizer_name">
+              <option value="" disabled selected>Select Vectorizer</option>
+              {% for vectorizer in vectorizers %}
+                <option value="{{ vectorizer.0 }}">{{ vectorizer.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+           <div id="memory-vectorizer-api-key-bar" class="mb-6 d-none">
+            <label class="form-label" for="vectorizer_api_key">Vectorizer API Key</label>
+            <input type="text" class="form-control" id="vectorizer_api_key" name="vectorizer_api_key" placeholder="Enter the API key for your OpenAI account" />
+          </div>
+          <div id="memory-vectorizer-alert-bar" class="alert alert-solid-info d-flex align-items-center mt-6 d-none" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+            The vectorizer API key is used to connect to the vectorizer service. The vectorizer service is used to
+            vectorize the oldest messages surpassing the specified number of messages, and be able to query them whenever
+            needed. To be able to use this feature, you need to connect your OpenAI account to the vectorizer service
+            by using the API key provided by OpenAI. In the future, we are planning to support other vectorizer services
+            as well.
+          </div>
           <div class="mb-6">
             <label class="form-label" for="assistant_image">Assistant Image</label>
             <input type="file" class="form-control" id="assistant_image" name="assistant_image" />
@@ -257,6 +305,40 @@
       } else {
         timeAwarenessField.value = 'off';
         placeAwarenessField.value = 'off';
+      }
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const contextOverflowStrategySelect = document.getElementById('context_overflow_strategy');
+    const maxContextMessagesInput = document.getElementById('max_context_messages');
+    const memoryVectorizerSelectionBar = document.getElementById('memory-vectorizer-selection-bar');
+    const memoryVectorizerApiKeyBar = document.getElementById('memory-vectorizer-api-key-bar');
+    const memoryVectorizerAlertBar = document.getElementById('memory-vectorizer-alert-bar');
+
+    contextOverflowStrategySelect.addEventListener('change', function() {
+      const selectedStrategy = this.value;
+
+      if (selectedStrategy === 'vectorize') {
+        memoryVectorizerSelectionBar.classList.remove('d-none');
+        memoryVectorizerApiKeyBar.classList.remove('d-none');
+        memoryVectorizerAlertBar.classList.remove('d-none');
+      } else {
+        memoryVectorizerSelectionBar.classList.add('d-none');
+        memoryVectorizerApiKeyBar.classList.add('d-none');
+        memoryVectorizerAlertBar.classList.add('d-none');
+      }
+    });
+
+    maxContextMessagesInput.addEventListener('input', function() {
+      const selectedStrategy = contextOverflowStrategySelect.value;
+
+      if (selectedStrategy === 'vectorize') {
+        memoryVectorizerSelectionBar.classList.remove('d-none');
+        memoryVectorizerApiKeyBar.classList.remove('d-none');
+        memoryVectorizerAlertBar.classList.remove('d-none');
       }
     });
   });

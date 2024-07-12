@@ -3,7 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
-from apps.assistants.models import Assistant, ASSISTANT_RESPONSE_LANGUAGES
+from apps.assistants.models import Assistant, ASSISTANT_RESPONSE_LANGUAGES, ContextOverflowStrategyNames, \
+    CONTEXT_OVERFLOW_STRATEGY, VECTORIZERS, VectorizerNames
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
@@ -20,6 +21,8 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
         context['response_languages'] = ASSISTANT_RESPONSE_LANGUAGES
+        context['context_overflow_strategies'] = CONTEXT_OVERFLOW_STRATEGY
+        context['vectorizers'] = VECTORIZERS
         return context
 
     def post(self, request, *args, **kwargs):
@@ -49,6 +52,19 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         max_retry_count = request.POST.get('max_retry_count')
         tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
         tool_max_chains = request.POST.get('tool_max_chains')
+
+        context_overflow_strategy = request.POST.get('context_overflow_strategy')
+        max_context_messages = request.POST.get('max_context_messages')
+        vectorizer_name = None
+        vectorizer_api_key = None
+        if context_overflow_strategy == ContextOverflowStrategyNames.FORGET:
+            pass
+        elif context_overflow_strategy == ContextOverflowStrategyNames.STOP:
+            pass
+        elif context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE:
+            vectorizer_name = request.POST.get('vectorizer_name')
+            vectorizer_api_key = request.POST.get('vectorizer_api_key')
+
         tone = request.POST.get('tone')
         response_language = request.POST.get('response_language')
         time_awareness = request.POST.get('time_awareness') == 'on'
@@ -74,6 +90,10 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             tool_max_chains=tool_max_chains,
             tone=tone,
             assistant_image=assistant_image,
+            context_overflow_strategy=context_overflow_strategy,
+            max_context_messages=max_context_messages,
+            vectorizer_name=vectorizer_name,
+            vectorizer_api_key=vectorizer_api_key,
             created_by_user=context_user,
             last_updated_by_user=context_user,
             response_template=response_template,
@@ -118,6 +138,10 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
         context['assistant'] = assistant
         context['response_languages'] = ASSISTANT_RESPONSE_LANGUAGES
+        context['context_overflow_strategies'] = CONTEXT_OVERFLOW_STRATEGY
+        context['vectorizers'] = VECTORIZERS
+        context["assistant_current_strategy"] = ContextOverflowStrategyNames.as_dict()[assistant.context_overflow_strategy]
+        context["assistant_current_vectorizer"] = VectorizerNames.as_dict()[assistant.vectorizer_name] if assistant.vectorizer_name else None
         return context
 
     def post(self, request, *args, **kwargs):
@@ -146,6 +170,22 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         assistant.max_retry_count = request.POST.get('max_retry_count')
         assistant.tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
         assistant.tool_max_chains = request.POST.get('tool_max_chains')
+
+        assistant.context_overflow_strategy = request.POST.get('context_overflow_strategy')
+        assistant.max_context_messages = request.POST.get('max_context_messages')
+        vectorizer_name = None
+        vectorizer_api_key = None
+        if assistant.context_overflow_strategy == ContextOverflowStrategyNames.FORGET:
+            pass
+        elif assistant.context_overflow_strategy == ContextOverflowStrategyNames.STOP:
+            pass
+        elif assistant.context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE:
+            vectorizer_name = request.POST.get('vectorizer_name')
+            vectorizer_api_key = request.POST.get('vectorizer_api_key')
+
+        assistant.vectorizer_name = vectorizer_name
+        assistant.vectorizer_api_key = vectorizer_api_key
+
         assistant.tone = request.POST.get('tone')
         assistant.llm_model_id = request.POST.get('llm_model')
         assistant.response_template = request.POST.get('response_template')

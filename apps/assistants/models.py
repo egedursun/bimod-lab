@@ -20,6 +20,36 @@ ASSISTANT_RESPONSE_LANGUAGES = [
 ASSISTANT_RESPONSE_LANGUAGES = [ASSISTANT_RESPONSE_LANGUAGES[0]] + sorted(ASSISTANT_RESPONSE_LANGUAGES[1:], key=lambda x: x[1])
 
 
+CONTEXT_OVERFLOW_STRATEGY = [
+    ("stop", "Stop Conversation"),
+    ("forget", "Forget Oldest Messages"),
+    ("vectorize", "Vectorize Oldest Messages"),
+]
+
+
+class ContextOverflowStrategyNames:
+    STOP = "stop"
+    FORGET = "forget"
+    VECTORIZE = "vectorize"
+
+    @staticmethod
+    def as_dict():
+        return { "stop": "Stop Conversation", "forget": "Forget Oldest Messages", "vectorize": "Vectorize Oldest Messages" }
+
+
+VECTORIZERS = [
+    ("text2vec-openai", "Text2Vec (OpenAI)"),
+]
+
+
+class VectorizerNames:
+    TEXT2VEC_OPENAI = "text2vec-openai"
+
+    @staticmethod
+    def as_dict():
+        return { "text2vec-openai": "Text2Vec (OpenAI)" }
+
+
 # Create your models here.
 
 
@@ -49,6 +79,17 @@ class Assistant(models.Model):
 
     memories = models.ManyToManyField("memories.AssistantMemory", related_name='assistants',
                                       blank=True)
+
+    context_overflow_strategy = models.CharField(max_length=100, choices=CONTEXT_OVERFLOW_STRATEGY, default="forget")
+    # in case of ->
+    # - stop: stop the conversation after the limit is reached
+    # - forget: forget oldest messages starting from the limit, start from oldest
+    # - vectorize: store the messages overflowing the context in the vectorstore, in their relevant assistant/chat dir.
+    max_context_messages = models.IntegerField(default=25)
+    # only in case of -> vectorize
+    vectorizer_name = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai",
+                                       null=True, blank=True)
+    vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
 
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                         related_name='assistants_created_by_user')
