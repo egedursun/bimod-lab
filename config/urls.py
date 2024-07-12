@@ -43,7 +43,8 @@ urlpatterns = [
     path("app/message_templates/", include("apps.message_templates.urls", namespace="message_templates")),
     path("app/export_assistants/", include("apps.export_assistants.urls", namespace="export_assistants")),
     path("app/datasource_sql/", include("apps.datasource_sql.urls", namespace="datasource_sql")),
-    path("app/datasource_nosql/", include("apps.datasource_nosql.urls", namespace="datasource_nosql")),
+    # path("app/datasource_nosql/", include("apps.datasource_nosql.urls", namespace="datasource_nosql")),
+    #  - requires hard work for handling the flexibility of the NoSQL queries
 ]
 
 

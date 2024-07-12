@@ -23,6 +23,7 @@ FILTER_TYPES = [
 
 
 DEFAULT_PAGINATION_SIZE_LIST_TRANSACTIONS = 5
+MAXIMUM_TOTAL_PAGES = 50
 
 
 class ListTransactionsView(TemplateView, LoginRequiredMixin):
@@ -54,12 +55,14 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
             org_data = {
                 'organization': organization,
                 'llm_models': [],
-                'cost_sums': sum_costs(LLMTransaction.objects.filter(organization=organization,
-                                                                     created_at__gte=filter_date))
+                'cost_sums': sum_costs(LLMTransaction.objects.defer("transaction_context_content")
+                                       .filter(organization=organization, created_at__gte=filter_date))
             }
             for llm_model in llm_models:
-                transactions = LLMTransaction.objects.filter(organization=organization, model=llm_model,
-                                                             created_at__gte=filter_date)
+                transactions = LLMTransaction.objects.filter(
+                    organization=organization,
+                    model=llm_model,
+                    created_at__gte=filter_date)[:(DEFAULT_PAGINATION_SIZE_LIST_TRANSACTIONS * MAXIMUM_TOTAL_PAGES)]
 
                 # Paginate transactions (5 items per page)
                 paginator = Paginator(transactions, DEFAULT_PAGINATION_SIZE_LIST_TRANSACTIONS)

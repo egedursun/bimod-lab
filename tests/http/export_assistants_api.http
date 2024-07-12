@@ -1,8 +1,8 @@
 ### POST request to get API response from an agent (currently the endpoint is invalid, so the request will fail)
 
-POST http://127.0.0.1:8000/app/export_assistants/api/v1/export/9/NewOrganizationTest/20/SportsAssistant/gpt4o/2024/7/9/1494099916458623
+POST http://127.0.0.1:8000/app/export_assistants/api/v1/export/6/MySmartFarm/19/WellnessandHealthAssistant/gpt4o/2024/7/7/6728446830903538
 Content-Type: application/json
-Authorization: Bearer bimod/9/NewOrganizationTest/20/SportsAssistant/gpt4o/b6237f8754cf86b7908f4c5070af601eb341ef297616f754fde90e02fa4ded93
+Authorization: Bearer bimod/6/MySmartFarm/19/WellnessandHealthAssistant/gpt4o/7e0fd904bd8541cecf853f3de2e733cee6acf66bf3ca0e2cb7a5532961bd2a8d
 
     {
       "chat_history": [

@@ -1,7 +1,6 @@
 import mysql
 import psycopg2
 from mysql.connector import cursor_cext
-from mysql.connector.cursor import MySQLCursorDict
 from psycopg2.extras import RealDictCursor
 
 from apps.datasource_sql.models import SQLDatabaseConnection, DBMSChoicesNames

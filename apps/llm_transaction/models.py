@@ -64,12 +64,20 @@ class LLMTransaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.responsible_user.username} - {self.created_at}"
+        return f"{self.organization} - {self.model} - {self.created_at}"
 
     class Meta:
         verbose_name = "Transaction"
         verbose_name_plural = "Transactions"
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=['organization']),
+            models.Index(fields=['model']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['organization', 'model', 'created_at']),
+            models.Index(fields=['organization', 'created_at']),
+            models.Index(fields=['model', 'created_at']),
+        ]
 
     def save(self, *args, **kwargs):
         if self.transaction_context_content:
@@ -85,4 +93,5 @@ class LLMTransaction(models.Model):
         self.organization.balance -= decimal.Decimal().from_float(self.total_billable_cost)
         # Update the transaction's organization
         self.organization.save()
+        self.transaction_context_content = ""
         super().save(*args, **kwargs)

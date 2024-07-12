@@ -95,11 +95,19 @@
       tools can be piped one after another".
 - [X] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
       specifiers such as "use tool" or "respond", etc.
-- [ ] Implement the NOSQL data source integration & management. (MongoDB)
-  - [ ] Implement the custom query feature.
-  - [ ] Integrate the prompt + the tool.
-  - [ ] Test the read-only db retrieval.
-  - [ ] Test the write db tool.
+- [X] Implement the NOSQL data source integration & management. (MongoDB)
+  - [X] Implement the custom query feature.
+  - [X] Integrate the prompt + the tool.
+  - [X] Test the read-only db retrieval.
+    - [X] Test the write db tool.
+    [ ] **URGENT:** 'INTRINSIC_ONE_TIME_SQL_RETRIEVAL_LIMIT (max=100)' must be determined by the assistant's configuration 
+                    according to the user's preferences. Plus, there needs to be a 'ONE_TIME_SQL_RETRIEVAL_TOKEN_LIMIT 
+                    (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
+    [ ] **URGENT:** Implement the context cut-off tool to prevent context window from overflowing.
+      - Two possible choices:
+        1. **Simple:** Cut-off the first messages and exclude them from the context, only keep the last N messages.
+        2. **Complex:** Summarize the first M messages in X sentences, save the summary as an experience for a "chat",
+                        then use the summary as the context for the next messages and forget the first N messages.
 - [ ] Implement the browsing tool for the web browser & web scraping features.
 
 <br><br>
@@ -130,7 +138,7 @@
 - [ ] Integrate the orchestration pages.
 - [X] Integrate the registration page.
 - [X] Integrate SQL database features.
-- [ ] Integrate NOSQL database features.
+- [X] Integrate NOSQL database features.
 - [ ] Integrate the knowledge base & document features.
 - [ ] Integrate the web browser & web scraping features.
 - [ ] Integrate ML models usage features.

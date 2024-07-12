@@ -3,6 +3,7 @@ from time import timezone
 
 from django.contrib.auth.models import User
 
+from apps._services.prompts.datasource.build_nosql_datasource_prompt import build_nosql_datasource_prompt
 from apps._services.prompts.datasource.build_sql_datasource_prompt import build_sql_datasource_prompt
 from apps._services.prompts.generic.build_audience_prompt import get_structured_audience_prompt
 from apps._services.prompts.generic.build_instructions_prompt import get_structured_instructions_prompt
@@ -16,6 +17,8 @@ from apps._services.prompts.generic.build_tone_prompt import get_structured_tone
 from apps._services.prompts.generic.build_user_information_prompt import build_structured_user_information_prompt
 from apps._services.prompts.tools.build_tool_usage_instructions_prompt import \
     build_structured_tool_usage_instructions_prompt
+from apps._services.prompts.tools.tool_prompts.build_nosql_query_execution_tool_prompt import \
+    build_structured_tool_prompt__nosql_query_execution
 from apps._services.prompts.tools.tool_prompts.build_sql_query_execution_tool_prompt import \
     build_structured_tool_prompt__sql_query_execution
 from apps.assistants.models import Assistant
@@ -51,6 +54,8 @@ class PromptBuilder:
         ##################################################
         # DATASOURCE PROMPTS
         structured_sql_datasource_prompt = build_sql_datasource_prompt(assistant, user)
+        _ = build_nosql_datasource_prompt(assistant, user)
+        # - for now, excluding NoSQL datasource prompt
         ##################################################
         # TOOL PROMPTS
         structured_tool_usage_instructions_prompt = (
@@ -59,6 +64,10 @@ class PromptBuilder:
         structured_sql_query_execution_tool_prompt = (
             build_structured_tool_prompt__sql_query_execution()
         )
+        _ = (
+            build_structured_tool_prompt__nosql_query_execution()
+        )
+        # - for now, excluding NoSQL query execution tool prompt
         ##################################################
 
         # Combine the prompts
@@ -72,11 +81,17 @@ class PromptBuilder:
         merged_prompt += structured_user_information_prompt
         merged_prompt += structured_memory_prompt
         merged_prompt += structured_place_and_time_prompt
+        ##################################################
         merged_prompt += structured_sql_datasource_prompt
+        # merged_prompt += structured_nosql_datasource_prompt
+        #  - for now, excluding NoSQL datasource prompt
+        ##################################################
         merged_prompt += structured_tool_usage_instructions_prompt
 
         # add the tool usage prompts
         merged_prompt += structured_sql_query_execution_tool_prompt
+        # merged_prompt += structured_nosql_query_execution_tool_prompt
+        #  - for now, excluding NoSQL query execution tool prompt
 
         # Build the dictionary with the role
         prompt = {

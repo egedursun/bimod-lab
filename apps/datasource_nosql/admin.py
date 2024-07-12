@@ -4,7 +4,7 @@ import certifi
 from django.contrib import admin
 from pymongo import MongoClient
 
-from .models import NoSQLDatabaseConnection, CustomNoSQLQuery, DBMSChoicesNames
+from .models import NoSQLDatabaseConnection, CustomNoSQLQuery, NoSQLDBMSChoicesNames
 from .utils import get_simplified_mongodb_schema
 
 
@@ -39,7 +39,7 @@ class NoSQLDatabaseConnectionAdmin(admin.ModelAdmin):
     @staticmethod
     def retrieve_schema(obj):
         schema = {}
-        if obj.dbms_type == DBMSChoicesNames.MONGODB:
+        if obj.dbms_type == NoSQLDBMSChoicesNames.MONGODB:
             schema = obj.retrieve_mongodb_schema(obj.connection_string, obj.db_name)
         return schema
 

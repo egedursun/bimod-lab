@@ -16,7 +16,7 @@ DBMS_CHOICES = [
 ]
 
 
-class DBMSChoicesNames:
+class NoSQLDBMSChoicesNames:
     MONGODB = 'mongodb'
 
 
@@ -64,7 +64,7 @@ class NoSQLDatabaseConnection(models.Model):
 
     def retrieve_schema(self):
         schema = {}
-        if self.dbms_type == DBMSChoicesNames.MONGODB:
+        if self.dbms_type == NoSQLDBMSChoicesNames.MONGODB:
             schema = self.retrieve_mongodb_schema(self.connection_string, self.db_name)
         return schema
 
