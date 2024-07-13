@@ -1,6 +1,9 @@
+import os
+
 from django.db import models
 
 from apps.assistants.utils import generate_random_string
+from slugify import slugify
 
 
 ASSISTANT_RESPONSE_LANGUAGES = [
@@ -91,6 +94,8 @@ class Assistant(models.Model):
                                        null=True, blank=True)
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
 
+    document_base_directory = models.CharField(max_length=1000, null=True, blank=True)
+
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                         related_name='assistants_created_by_user')
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
@@ -101,6 +106,17 @@ class Assistant(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        if self.document_base_directory is None:
+            dir_name = f"media/documents/{slugify(self.organization.name)}/{slugify(self.llm_model.model_name)}/{slugify(self.name)}/"
+            self.document_base_directory = dir_name
+            os.system(f"mkdir -p {dir_name}")
+            os.system(f"touch {dir_name}/__init__.py")
+
+        super().save(force_insert, force_update, using, update_fields)
 
     class Meta:
         verbose_name = "Assistant"
