@@ -29,7 +29,6 @@ def build_document_orm_structure(document: dict, knowledge_base, path: str):
     except Exception as e:
         error = f"Error building the document ORM structure: {e}"
 
-    print("Document ORM Object: ", id)
     return id, error
 
 
@@ -71,12 +70,12 @@ def embed_document_sync(executor_params, document_id, document_weaviate_object: 
     executor = KnowledgeBaseSystemDecoder.get(connection=connection_orm_object)
     c = executor.client
     error = None
+    uuid = None
 
     try:
         # Save the object to Weaviate
         collection = c.collections.get(executor.connection_object.class_name)
         uuid = collection.data.insert(properties=document_weaviate_object)
-        executor.close_connection()
 
         if not uuid:
             error = "Error inserting the document into Weaviate"
@@ -92,14 +91,14 @@ def embed_document_sync(executor_params, document_id, document_weaviate_object: 
     except Exception as e:
         error = f"Error embedding the document: {e}"
 
-    return error
+    return uuid, error
 
 
 def embed_document_helper(executor_params: dict, document: dict, path: str, number_of_chunks: int):
     from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
 
     # Retrieve connection object
-    document_id = None
+    document_id, document_uuid = None, None
     connection_id = executor_params["connection_id"]
     connection_orm_object = DocumentKnowledgeBaseConnection.objects.get(id=connection_id)
 
@@ -120,14 +119,14 @@ def embed_document_helper(executor_params: dict, document: dict, path: str, numb
         if error:
             return document_id, error
 
-        error = embed_document_sync(
+        document_uuid, error = embed_document_sync(
             executor_params=executor_params,
             document_id=document_id,
             document_weaviate_object=document_weaviate_object
         )
         if error:
-            return document_id, error
+            return document_id, document_uuid, error
 
     except Exception as e:
         return f"Error embedding the document: {e}"
-    return document_id, error
+    return document_id, document_uuid, error

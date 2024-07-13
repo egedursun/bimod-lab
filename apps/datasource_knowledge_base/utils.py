@@ -8,17 +8,20 @@ def generate_random_words():
     chat_name_1 = wonderwords.RandomWord().word(
         word_min_length=4,
         word_max_length=32,
-        include_categories = ["noun"]
+        include_categories = ["noun"],
+        regex=r"^[a-zA-Z]+$"
     )
     chat_name_2 = wonderwords.RandomWord().word(
         word_min_length=4,
         word_max_length=32,
-        include_categories = ["noun"]
+        include_categories = ["noun"],
+        regex=r"^[a-zA-Z]+$"
     )
     chat_name_3 = wonderwords.RandomWord().word(
         word_min_length=4,
         word_max_length=32,
-        include_categories = ["noun"]
+        include_categories = ["noun"],
+        regex=r"^[a-zA-Z]+$"
     )
     chat_name_1 = chat_name_1.capitalize()
     chat_name_2 = chat_name_2.capitalize()
@@ -30,7 +33,9 @@ def generate_random_words():
 def convert_given_name_to_class_name(given_name: str):
     given_name_alnum = ""
     for char in given_name:
-        if char.isalnum():
+        if char.isalnum() and char not in [" ", "_", "-", ".", ":", ";", ",", "'", '"', "!", "@", "#", "$", "%", "^",
+                                           "&", "*", "(", ")", "+", "=", "{", "}", "[", "]", "<", ">", "?", "/", "\\",
+                                           "|", "`", "~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
             given_name_alnum += char
     given_name_alnum_list = given_name_alnum.lower().capitalize()
     return given_name_alnum_list

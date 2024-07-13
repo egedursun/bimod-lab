@@ -255,9 +255,9 @@ def load_xlsx_helper(path: str):
 
 @shared_task
 def embed_document_data(executor_params, document, path, number_of_chunks):
-    doc_id = None
+    doc_id, doc_uuid = None, None
     try:
-        doc_id, error = embed_document_helper(
+        doc_id, doc_uuid, error = embed_document_helper(
             executor_params=executor_params,
             document=document,
             path=path,
@@ -265,17 +265,18 @@ def embed_document_data(executor_params, document, path, number_of_chunks):
         )
     except Exception as e:
         error = f"Error embedding the document: {e}"
-    return doc_id, error
+    return doc_id, doc_uuid, error
 
 
 @shared_task
-def embed_document_chunks(executor_params, chunks, path, document_id):
+def embed_document_chunks(executor_params, chunks, path, document_id, document_uuid):
     try:
         error = embed_document_chunks_helper(
             executor_params=executor_params,
             chunks=chunks,
             path=path,
-            document_id=document_id
+            document_id=document_id,
+            document_uuid=document_uuid
         )
     except Exception as e:
         error = f"Error embedding the document chunks: {e}"
@@ -286,9 +287,11 @@ def embed_document_chunks(executor_params, chunks, path, document_id):
 ############################################################################################################
 
 @shared_task
-def split_document_into_chunks(doc):
+def split_document_into_chunks(connection_id, doc):
+    from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
+    connection = DocumentKnowledgeBaseConnection.objects.get(id=connection_id)
     splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
-        chunk_size=100, chunk_overlap=20
+        chunk_size=connection.embedding_chunk_size, chunk_overlap=connection.embedding_chunk_overlap
     )
     chunks = splitter.split_text(doc["page_content"])
     clean_chunks = []

@@ -108,13 +108,15 @@
                     (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
 - [X] Implement the context cut-off tool to prevent context window from overflowing.
 - [ ] Implement the Knowledge Base tool for the web browser & web scraping features.
-  - [ ] Implement the document format decoders.
-  - [ ] Implement the document loaders.
-  - [ ] Implement the document embedder.
-  - [ ] Implement the document chunker.
-  - [ ] Implement the document chunk embedder.
+  - [X] Implement the document format decoders.
+  - [X] Implement the document loaders.
+  - [X] Implement the document embedder.
+  - [X] Implement the document chunker.
+  - [X] Implement the document chunk embedder.
+  - [X] Try and test with the admin panel.
+  - [X] Deleting the items from weaviate whenever the knowledge base or docs are deleted.
+  - [ ] Convert the LLM temperature etc. fields to slider bar.
   - [ ] Create the interface for file upload (? how in admin panel, file path ?)
-  - [ ] Try and test with the admin panel.
   - [ ] Implement the pages & views for the document uploading.
   - [ ] Try in the front end to upload the documents, test the Weaviate embeddings.
   - [ ] Create the search interfaces / execution interface for the embeddings.

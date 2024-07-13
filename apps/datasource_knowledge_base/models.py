@@ -105,6 +105,14 @@ class DocumentKnowledgeBaseConnection(models.Model):
         self.schema_json = client.retrieve_schema()
         super().save(force_insert, force_update, using, update_fields)
 
+    def delete(self, using=None, keep_parents=False):
+        client = KnowledgeBaseSystemDecoder.get(self)
+        if client is not None:
+            result = client.delete_weaviate_classes(class_name=self.class_name)
+            if not result["status"]:
+                print(f"Error deleting Weaviate classes: {result['error']}")
+        super().delete(using, keep_parents)
+
 
 class KnowledgeBaseDocument(models.Model):
     knowledge_base = models.ForeignKey("DocumentKnowledgeBaseConnection", on_delete=models.CASCADE,
@@ -127,7 +135,7 @@ class KnowledgeBaseDocument(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.document_file_name + " - " + self.knowledge_base.name + " - " + self.knowledge_base_uuid
+        return self.document_file_name + " - " + self.knowledge_base.name + " - " + str(self.knowledge_base.id)
 
     class Meta:
         verbose_name = "Knowledge Base Document"
@@ -139,6 +147,16 @@ class KnowledgeBaseDocument(models.Model):
     ):
         self.document_content_temporary = None
         super().save(force_insert, force_update, using, update_fields)
+
+    def delete(self, using=None, keep_parents=False):
+        client = KnowledgeBaseSystemDecoder.get(self.knowledge_base)
+        if client is not None:
+            result = client.delete_weaviate_document(
+                class_name=self.knowledge_base.class_name,
+                document_uuid=self.knowledge_base_uuid)
+            if not result["status"]:
+                print(f"Error deleting Weaviate document: {result['error']}")
+        super().delete(using, keep_parents)
 
 
 class KnowledgeBaseDocumentChunk(models.Model):
@@ -154,6 +172,7 @@ class KnowledgeBaseDocumentChunk(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     knowledge_base_uuid = models.CharField(max_length=1000, null=True, blank=True)
+    document_uuid = models.CharField(max_length=1000, null=True, blank=True)
 
     def __str__(self):
         return str(self.chunk_number) + " - " + self.document.document_file_name + " - " + self.document.knowledge_base.name

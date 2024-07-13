@@ -5,6 +5,7 @@ import json
 def build_chunk_orm_structure(chunk: dict,
                               knowledge_base,
                               document_id: int,
+                              document_uuid: str,
                               path: str,
                               chunk_index: int):
     from apps.datasource_knowledge_base.models import KnowledgeBaseDocumentChunk
@@ -13,6 +14,7 @@ def build_chunk_orm_structure(chunk: dict,
     try:
         chunk_knowledge_base = knowledge_base
         chunk_document = KnowledgeBaseDocument.objects.filter(id=document_id).first()
+        chunk_document_uuid = document_uuid
         chunk_document_type = path.split(".")[-1]
         chunk_number = chunk_index
         chunk_content = chunk["page_content"]
@@ -26,7 +28,8 @@ def build_chunk_orm_structure(chunk: dict,
             chunk_content=chunk_content,
             chunk_metadata=chunk_metadata,
             chunk_document_uri=chunk_document_uri,
-            document=chunk_document
+            document=chunk_document,
+            document_uuid=chunk_document_uuid
         )
         id = chunk_orm_object.id
     except Exception as e:
@@ -36,7 +39,8 @@ def build_chunk_orm_structure(chunk: dict,
 
 
 def build_chunk_weaviate_structure(chunk: dict, path: str,
-                                   chunk_index: int):
+                                   chunk_index: int,
+                                   document_uuid: str):
     chunk_weaviate_object, error = None, None
     try:
         weav_chunk_document_type = path.split(".")[-1]
@@ -46,6 +50,7 @@ def build_chunk_weaviate_structure(chunk: dict, path: str,
         weav_chunk_created_at = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
         chunk_weaviate_object = {
+            "document_uuid": document_uuid,
             "chunk_document_type": weav_chunk_document_type,
             "chunk_number": weav_chunk_number,
             "chunk_content": weav_chunk_content,
@@ -80,19 +85,18 @@ def embed_document_chunk_sync(executor_params,
         uuid = collection.data.insert(
             properties=chunk_weaviate_object
         )
-        executor.close_connection()
 
         if not uuid:
             error = "Error inserting the chunk into Weaviate"
 
         # Save the object to the ORM
-        chunk_orm_object = KnowledgeBaseDocumentChunk.objects.filter(id=chunk_id)
+        chunk_orm_object = KnowledgeBaseDocumentChunk.objects.filter(id=chunk_id).first()
         chunk_orm_object.knowledge_base_uuid = str(uuid)
         chunk_orm_object.save()
 
         # add the chunk to the document chunks
         document = chunk_orm_object.document
-        document.chunks.add(chunk_orm_object)
+        document.document_chunks.add(chunk_orm_object)
         document.save()
 
     except Exception as e:
@@ -100,7 +104,8 @@ def embed_document_chunk_sync(executor_params,
     return error
 
 
-def embed_document_chunks_helper(executor_params, chunks: list, path: str, document_id: int):
+def embed_document_chunks_helper(executor_params, chunks: list, path: str, document_id: int,
+                                 document_uuid: str):
     from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
 
     errors = []
@@ -114,7 +119,8 @@ def embed_document_chunks_helper(executor_params, chunks: list, path: str, docum
                 chunk=chunk,
                 path=path,
                 chunk_index=i,
-                document_id=document_id
+                document_id=document_id,
+                document_uuid=document_uuid
             )
             if error:
                 errors.append(error)
@@ -123,7 +129,8 @@ def embed_document_chunks_helper(executor_params, chunks: list, path: str, docum
             document_weaviate_object, error = build_chunk_weaviate_structure(
                 chunk=chunk,
                 path=path,
-                chunk_index=i
+                chunk_index=i,
+                document_uuid=document_uuid
             )
             if error:
                 errors.append(error)
@@ -140,5 +147,4 @@ def embed_document_chunks_helper(executor_params, chunks: list, path: str, docum
 
     except Exception as e:
         errors.append(f"Error embedding the chunks: {e}")
-    print("Items successfully processed: (", (len(chunks) - len(errors)), "/", len(chunks), ")")
     return errors
