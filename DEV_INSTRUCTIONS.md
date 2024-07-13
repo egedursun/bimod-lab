@@ -155,14 +155,46 @@ touch .env.prod
 
 ---
 
-#### 19. Run the Django server to start the application.
+### 19. Install Redis Server
+
+*Ubuntu*
+```bash
+sudo apt update
+sudo apt install redis-server
+```
+
+
+*MacOS*
+
+- *Brew*: If you don't already have "Homebrew" installed, you can install it by running the following command 
+          in your terminal.
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+
+```bash
+brew install redis
+```
+
+*Start Redis Server*
+  
+  ```bash
+  redis-server
+  ```
+
+---
+
+#### 20. Run the Django server to start the application.
 ```bash
 python manage.py runserver
 ```
 
 ---
 
-#### 20. Open your web browser and navigate to the following URL.
+#### 21. Open your web browser and navigate to the following URL.
 ```text
 http://localhost:8000
 ```
@@ -171,18 +203,38 @@ http://localhost:8000
 
 ### - *Important Instruction [1]*
 
-#### 21. If you need to run the application in production mode, reach the admin to provide you with the necessary environment variables, and guide you through the process if required.
+#### If you need to run the application in production mode, reach the admin to provide you with the necessary environment variables, and guide you through the process if required.
 
 ---
 
 ### - *Important Instruction [2]*
 
-#### 22. Never add your '.env' and '.env.prod' files to the version control system as they contain sensitive information.
+#### Never add your '.env' and '.env.prod' files to the version control system as they contain sensitive information.
 
 ---
 
 ### - *Important Instruction [3]*
 
-#### 23. Do not add your '.idea' directory to the version control system as it contains your local development settings.
+#### Do not add your '.idea' directory to the version control system as it contains your local development settings.
+
+---
+---
+
+## Development Instructions
+
+#### Starting the Celery Worker with Flower
+  
+  *In the first tab of the terminal window*
+  ```bash
+  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+  celery -A config worker --loglevel=info -E
+  ```
+
+  *In the second tab of the terminal window*
+  ```bash
+  export FLOWER_UNAUTHENTICATED_API=true
+  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+  celery -A config flower --loglevel=info -E
+  ```
 
 ---

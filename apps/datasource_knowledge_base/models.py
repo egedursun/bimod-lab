@@ -27,9 +27,25 @@ SUPPORTED_DOCUMENT_TYPES = [
     ('md', 'MD'),
     ('rtf', 'RTF'),
     ('odt', 'ODT'),
-    ('powerpoint', 'POWERPOINT'),
+    ('pptx', 'POWERPOINT'),
     ('xlsx', 'XLSX')
 ]
+
+
+class SupportedDocumentTypesNames:
+    PDF = 'pdf'
+    HTML = 'html'
+    CSV = 'csv'
+    DOCX = 'docx'
+    IPYNB = 'ipynb'
+    JSON = 'json'
+    XML = 'xml'
+    TXT = 'txt'
+    MD = 'md'
+    RTF = 'rtf'
+    ODT = 'odt'
+    POWERPOINT = 'pptx'
+    XLSX = 'xlsx'
 
 ###################################################################################################################
 

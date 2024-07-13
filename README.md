@@ -5,7 +5,7 @@
 
 - [ ] Integrating the Payment Gateway to get the payment done (for balance)
 - [X] Handling the negative balance and stopping transactions when required. Also, for adding negative balances (-123), there needs to be a validation to prevent.
-- [ ] Rate limiting the usage for safety.
+- [X] Rate limiting the usage for safety.
 - [ ] Additional cost column for custom tools. (start + continuation)
 - [ ] Real PostgreSQL DBMS integration.
 - [ ] Real e-mail SMTP integration.
@@ -19,9 +19,8 @@
 - [ ] A better payment method management (for credit card storage and usage).
 - [ ] Proper documentation & tutorial.
 - [ ] Sample instructions to help the people through the application.
-- [ ] Dev instructions markdown to help people set up the project in their own computers / repositories.
 - [ ] Create the indexes for all data models to increase the performance.
-- [ ] Automated balance top ups (monthly or as it goes low).
+- [ ] Automated balance top-ups (monthly or as it goes low).
 - [ ] Template messages must show up next to the message creation form.
 - [ ] Drive and dropbox integration for media and document storage & automated transfer within the system and knowledge bases.
 
@@ -108,8 +107,6 @@
                     according to the user's preferences. Plus, there needs to be a 'ONE_TIME_SQL_RETRIEVAL_TOKEN_LIMIT 
                     (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
 - [X] Implement the context cut-off tool to prevent context window from overflowing.
-- [ ] Just as they are knowledge bases, there must be a way to let users connect their own document data in a storage
-      to the system, either with an API or by uploading.
 - [ ] Implement the Knowledge Base tool for the web browser & web scraping features.
   - [ ] Implement the document format decoders.
   - [ ] Implement the document loaders.
@@ -149,9 +146,7 @@
 - [ ] Implement the ML Model tool for the ML models usage features.
   - [ ] Think about how to implement (?)
 - [ ] Implement the Document, Image, Audio, Video tools for the media storage features.
-  - [ ] 3 pages for managing the media files (images, audio, video, documents).
-  - [ ] When document pipelines are connected, they are automatically transferred to the knowledge base.
-        Therefore, the user needs to create a knowledge base to connect a document storage pipe.
+  - [ ] 3 pages for managing the media files (images, audio, video).
   - [ ] For photographs, these will be stored in the media storage, and the assistant will be able to query
         these images via tools to interpret them and have information. The photographs will have metadata
         for the assistant to understand the context.
@@ -170,6 +165,8 @@
 - [ ] **NEW FEATURE IDEA:** Discuss ERP integration and assistant interpretation module.
 - [ ] **NEW FEATURE IDEA:** Discuss the Chrome Extension to automatically understand the web pages etc.
 - [ ] **NEW FEATURE IDEA:** Glossaries for Technical Terminology integration to the chats. ( can take up space in terms of tokens )
+- [ ] **NEW FEATURE IDEA:** Boilerplate knowledge bases for direct integration with assistants.
+- 
 ---
 
 
