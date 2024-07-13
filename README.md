@@ -19,7 +19,9 @@
 - [ ] A better payment method management (for credit card storage and usage).
 - [ ] Proper documentation & tutorial.
 - [ ] Sample instructions to help the people through the application.
-- [ ] Dev instructions markdown to help people setup the project in their own computers / repositories.
+- [ ] Dev instructions markdown to help people set up the project in their own computers / repositories.
+- [ ] Create the indexes for all data models to increase the performance.
+- [ ] Automated balance top ups (monthly or as it goes low).
 
 ---
 
@@ -103,11 +105,11 @@
 - [X] 'INTRINSIC_ONE_TIME_SQL_RETRIEVAL_LIMIT (max=100)' must be determined by the assistant's configuration 
                     according to the user's preferences. Plus, there needs to be a 'ONE_TIME_SQL_RETRIEVAL_TOKEN_LIMIT 
                     (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
-- [X] **URGENT:** Implement the context cut-off tool to prevent context window from overflowing.
-      - Two possible choices:
-        3. **Vectorize:**: Vectorize the first M messages, and use the knowledge base as the Q/A tool for the next 
-                          messages. (Requires Knowledge Base Tool)
+- [X] Implement the context cut-off tool to prevent context window from overflowing.
+- [ ] Just as they are knowledge bases, there must be a way to let users connect their own document data in a storage
+      to the system, either with an API or by uploading.
 - [ ] Implement the Knowledge Base tool for the web browser & web scraping features.
+  - [ ] Implement the permissions to the knowledge base tool.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
   - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low", which will determine
           how difficult the agent will trust on an online source.

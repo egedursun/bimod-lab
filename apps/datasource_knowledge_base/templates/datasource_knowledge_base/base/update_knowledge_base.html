@@ -1,0 +1,152 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Update Knowledge Base{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Update Knowledge Base</h5>
+        <small class="text-muted float-end"></small>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+          <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              Update the knowledge base by providing the necessary information. This will allow your assistant to access
+              the documents stored in the knowledge base and utilize them to provide better insights and recommendations.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label class="form-label" for="provider">Knowledge Base System</label>
+            <select class="form-select" id="provider" name="provider">
+              <option value="" disabled>Select Knowledge Base System</option>
+              {% for key, value in knowledge_base_systems %}
+                <option value="{{ key }}" {% if key == connection.provider %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="assistant">Assistant</label>
+            <select class="form-select" id="assistant" name="assistant">
+              {% for assistant in assistants %}
+                <option value="{{ assistant.id }}" {% if assistant.id == connection.assistant.id %}selected{% endif %}>{{ assistant.name }}</option>
+              {% endfor %}
+            </select>
+            <div class="form-text"></div>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ connection.name }}" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" id="description" name="description">{{ connection.description }}</textarea>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="host_url">Host URL</label>
+            <input type="text" class="form-control" id="host_url" name="host_url" value="{{ connection.host_url }}" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="provider_api_key">Provider API Key</label>
+            <input type="text" class="form-control" id="provider_api_key" name="provider_api_key" value="{{ connection.provider_api_key }}" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="vectorizer">Vectorizer</label>
+            <select class="form-select" id="vectorizer" name="vectorizer">
+              <option value="" disabled>Select Vectorizer</option>
+              {% for key, value in vectorizers %}
+                <option value="{{ key }}" {% if key == connection.vectorizer %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="vectorizer_api_key">Vectorizer API Key</label>
+            <input type="text" class="form-control" id="vectorizer_api_key" name="vectorizer_api_key" value="{{ connection.vectorizer_api_key }}" />
+          </div>
+          <div class="mb-6 col-lg-6">
+            <label class="form-label" for="embedding_chunk_size">Embedding Chunk Size</label>
+            <!-- slider bar here -->
+            <input type="range" class="form-range" id="embedding_chunk_size" name="embedding_chunk_size" min="500" max="4000" step="100" value="{{ connection.embedding_chunk_size }}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{ connection.embedding_chunk_size }}</output>
+          </div>
+          <div class="mb-6 col-lg-6">
+            <label class="form-label" for="embedding_chunk_overlap">Embedding Chunk Overlap</label>
+            <!-- slider bar here -->
+            <input type="range" class="form-range" id="embedding_chunk_overlap" name="embedding_chunk_overlap" min="0" max="400" step="10" value="{{ connection.embedding_chunk_overlap }}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{ connection.embedding_chunk_overlap }}</output>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-info-circle"></i>
+              </span>
+              The chunk size and overlap determine how the documents will be divided into smaller parts for embedding.
+              Adjust these values according to the size and structure of your documents. A larger chunk size will result
+              in fewer chunks, yet it may cause the model to be less accurate. A smaller chunk size will result in more
+              chunks however, very small chunks can split important information into multiple parts which may affect the
+              model's accuracy. The overlap value determines how much of the previous chunk will be included in the next
+              chunk. A lower overlap may cause the model to have a harder time associating the chunks with each other,
+              while a higher one may cause an excessive amount of chunks that can overcrowd the knowledge base.
+          </div>
+          <input type="hidden" name="created_by_user" value="{{ connection.created_by_user.id }}">
+          <button type="submit" class="btn btn-primary d-grid w-100">Update Knowledge Base</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('isReadOnlyCheckbox');
+    const isReadOnlyField = document.getElementById('is-read-only');
+
+    checkbox.addEventListener('change', function() {
+      isReadOnlyField.value = checkbox.checked ? 'on' : 'off';
+    });
+  });
+</script>
+
+{% endblock %}

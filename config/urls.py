@@ -45,6 +45,7 @@ urlpatterns = [
     path("app/datasource_sql/", include("apps.datasource_sql.urls", namespace="datasource_sql")),
     # path("app/datasource_nosql/", include("apps.datasource_nosql.urls", namespace="datasource_nosql")),
     #  - requires hard work for handling the flexibility of the NoSQL queries
+    path("app/datasource_knowledge_base/", include("apps.datasource_knowledge_base.urls")),
 ]
 
 

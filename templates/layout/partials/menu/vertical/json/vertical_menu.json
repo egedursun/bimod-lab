@@ -223,7 +223,18 @@
       "name": "Knowledge Bases",
       "icon": "menu-icon tf-icons ti ti-vector",
       "slug": "knowledge-bases",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add Knowledge Base",
+          "slug": "knowledge-base",
+          "url": "datasource_knowledge_base:create"
+        },
+        {
+          "name": "Knowledge Bases",
+          "slug": "knowledge-base",
+          "url": "datasource_knowledge_base:list"
+        }
+      ]
     },
     {
       "name": "ML Models",

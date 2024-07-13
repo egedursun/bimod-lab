@@ -100,6 +100,7 @@ INSTALLED_APPS = [
     "apps.export_assistants",
     "apps.datasource_sql",
     "apps.datasource_nosql",
+    "apps.datasource_knowledge_base",
     #############################
 ]
 
