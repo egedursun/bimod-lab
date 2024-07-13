@@ -5,7 +5,10 @@ from apps._services.knowledge_base.document.helpers.class_creator import create_
 from apps.assistants.models import VectorizerNames
 from apps.datasource_knowledge_base.tasks import load_csv_helper, load_pdf_helper, load_html_helper, load_docx_helper, \
     load_ipynb_helper, load_json_helper, load_xml_helper, load_txt_helper, load_md_helper, load_rtf_helper, \
-    load_odt_helper, load_pptx_helper, load_xlsx_helper
+    load_odt_helper, load_pptx_helper, load_xlsx_helper, split_document_into_chunks, embed_document_data, \
+    embed_document_chunks
+
+TASK_PROCESSING_TIMEOUT_SECONDS = (60 * 15)  # 15 minutes
 
 
 class SupportedDocumentTypesNames:
@@ -34,7 +37,10 @@ class WeaviateExecutor:
         try:
             c = weaviate.connect_to_weaviate_cloud(
                 cluster_url=host_url,
-                auth_credentials=weaviate.auth.AuthApiKey(api_key=weaviate_api_key)
+                auth_credentials=weaviate.auth.AuthApiKey(api_key=weaviate_api_key),
+                headers={
+                    "X-OpenAI-Api-Key": connection.vectorizer_api_key
+                }
             )
             self.client = c
         except Exception as e:
@@ -77,41 +83,88 @@ class WeaviateExecutor:
         self.close_connection()
         return output
 
-    def index_documents(self):
+    def index_documents(self, document_paths: list|str):
         ##################################################
-        # TODO: WRAPPER method
-        pass
+        if isinstance(document_paths, str):
+            document_paths = [document_paths]
+        # Iterate through the documents
+        for path in document_paths:
+            try:
+                # Get the file extension
+                extension = path.split(".")[-1]
+                # Load the document
+                document = self.document_loader(file_path=path, file_type=extension)
+
+                # Chunk the document
+                chunks = self.chunk_document(document)
+                number_of_chunks = len(chunks) if chunks else 0
+
+                # Embed the document
+                doc_id, error = self.embed_document(document=document, path=path, number_of_chunks=number_of_chunks)
+                if error:
+                    print(f"Error embedding the document with path: {path} - Error: {error}")
+                    continue
+
+                # Embed the document chunks
+                errors = self.embed_document_chunks(chunks=chunks, path=path, document_id=doc_id)
+                if errors:
+                    print(f"Error embedding at least one of the document chunks with the document path: {path} -"
+                          f" Error: {errors}")
+                    continue
+
+            except Exception as e:
+                print(f"Error indexing the document with path: {path} - Error: {e}")
+                continue
+
         ##################################################
 
-    def file_type_decoder(self, file_type):
-        # TODO:-X: implement the file type decoder to understand the file type and use the appropriate methods
-        if file_type == SupportedDocumentTypesNames.PDF: load_pdf_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.HTML: load_html_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.CSV: load_csv_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.DOCX: load_docx_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.IPYNB: load_ipynb_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.JSON: load_json_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.XML: load_xml_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.TXT: load_txt_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.MD: load_md_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.RTF: load_rtf_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.ODT: load_odt_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.POWERPOINT: load_pptx_helper.delay()
-        elif file_type == SupportedDocumentTypesNames.XLSX: load_xlsx_helper.delay()
+    def document_loader(self, file_path, file_type):
+        d = None
+        if file_type == SupportedDocumentTypesNames.PDF: d = load_pdf_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.HTML: d = load_html_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.CSV: d = load_csv_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.DOCX: d = load_docx_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.IPYNB: d = load_ipynb_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.JSON: d = load_json_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.XML: d = load_xml_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.TXT: d = load_txt_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.MD: d = load_md_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.RTF: d = load_rtf_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.ODT: d = load_odt_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.POWERPOINT: d = load_pptx_helper.delay(path=file_path)
+        elif file_type == SupportedDocumentTypesNames.XLSX: d = load_xlsx_helper.delay(path=file_path)
         else: print("[File Type Decoder]: Unsupported file type for the document.")
 
-    def load_document(self):
-        # TODO: step-1 load the document
-        pass
+        result = d.get(timeout=TASK_PROCESSING_TIMEOUT_SECONDS)
+        return result
 
-    def embed_document(self):
-        # TODO: step-2 embed the document
-        pass
+    def chunk_document(self, document: dict):
+        chunks_task = split_document_into_chunks.delay(document)
+        chunks = chunks_task.get(timeout=TASK_PROCESSING_TIMEOUT_SECONDS)
+        return chunks
 
-    def chunk_document(self):
-        # TODO: step-2 chunk the document [retrieve CHUNKS]
-        pass
+    def embed_document(self, document: dict, path: str, number_of_chunks: int = 0):
+        executor_params = {
+            "client": {
+                "host_url": self.connection_object.host_url,
+                "api_key": self.connection_object.provider_api_key
+            },
+            "connection_id": self.connection_object.id
+        }
+        embed_document_task = embed_document_data.delay(executor_params=executor_params, document=document, path=path,
+                                                        number_of_chunks=number_of_chunks)
+        doc_id, error = embed_document_task.get(timeout=TASK_PROCESSING_TIMEOUT_SECONDS)
+        return doc_id, error
 
-    def embed_document_chunks(self):
-        # TODO: step-3 embed the chunks
-        pass
+    def embed_document_chunks(self, chunks: list, path: str, document_id: int):
+        executor_params = {
+            "client": {
+                "host_url": self.connection_object.host_url,
+                "api_key": self.connection_object.provider_api_key
+            },
+            "connection_id": self.connection_object.id
+        }
+        embed_chunks_task = embed_document_chunks.delay(executor_params=executor_params, chunks=chunks, path=path,
+                                                        document_id=document_id)
+        errors = embed_chunks_task.get(timeout=TASK_PROCESSING_TIMEOUT_SECONDS)
+        return errors

@@ -95,6 +95,12 @@ def create_classes_helper(executor):
                     tokenization=wvc.config.Tokenization.LOWERCASE
                 ),
                 wvc.config.Property(
+                    name="chunk_metadata",
+                    data_type=wvc.config.DataType.TEXT,
+                    vectorize_property_name=True,
+                    tokenization=wvc.config.Tokenization.LOWERCASE
+                ),
+                wvc.config.Property(
                     name="created_at",
                     data_type=wvc.config.DataType.TEXT,
                     vectorize_property_name=False,

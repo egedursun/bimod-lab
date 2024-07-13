@@ -114,6 +114,10 @@ class KnowledgeBaseDocument(models.Model):
     document_file_name = models.CharField(max_length=1000)
     document_description = models.TextField()
     document_metadata = models.JSONField()
+    document_uri = models.CharField(max_length=1000, null=True, blank=True)
+
+    # to associate the element with the Weaviate object
+    knowledge_base_uuid = models.CharField(max_length=1000, null=True, blank=True)
 
     # Documents have chunks
     document_content_temporary = models.TextField(blank=True, null=True)  # This will be emptied before indexing
@@ -123,7 +127,7 @@ class KnowledgeBaseDocument(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.document_file_name + " - " + self.knowledge_base.name + " - " + self.created_at.strftime("%Y%m%d%H%M%S")
+        return self.document_file_name + " - " + self.knowledge_base.name + " - " + self.knowledge_base_uuid
 
     class Meta:
         verbose_name = "Knowledge Base Document"
@@ -133,9 +137,8 @@ class KnowledgeBaseDocument(models.Model):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        # TODO: take in the content, chunk it, and save the chunks
         self.document_content_temporary = None
-        pass
+        super().save(force_insert, force_update, using, update_fields)
 
 
 class KnowledgeBaseDocumentChunk(models.Model):
@@ -146,12 +149,14 @@ class KnowledgeBaseDocumentChunk(models.Model):
     chunk_number = models.IntegerField()
     chunk_content = models.TextField()  # This will be the text content of the chunk
     chunk_metadata = models.TextField()
-
+    chunk_document_uri = models.CharField(max_length=1000, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    knowledge_base_uuid = models.CharField(max_length=1000, null=True, blank=True)
+
     def __str__(self):
-        return str(self.chunk_number) + " - " + self.document.document_file_name + " - " + self.document.knowledge_base.name + " - " + self.created_at.strftime("%Y%m%d%H%M%S")
+        return str(self.chunk_number) + " - " + self.document.document_file_name + " - " + self.document.knowledge_base.name
 
     class Meta:
         verbose_name = "Knowledge Base Document Chunk"
@@ -161,7 +166,7 @@ class KnowledgeBaseDocumentChunk(models.Model):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        pass
+        super().save(force_insert, force_update, using, update_fields)
 
 
 ###################################################################################################################

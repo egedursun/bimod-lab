@@ -7,6 +7,10 @@ from langchain_community.document_loaders import (PyPDFLoader, UnstructuredHTMLL
                                                   UnstructuredODTLoader, UnstructuredPowerPointLoader,
                                                   UnstructuredExcelLoader)
 from langchain_community.document_loaders.csv_loader import UnstructuredCSVLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+from apps._services.knowledge_base.document.helpers.document_chunk_embedder import embed_document_chunks_helper
+from apps._services.knowledge_base.document.helpers.document_embedder import embed_document_helper
 
 
 ############################################################################################################
@@ -52,7 +56,7 @@ def load_html_helper(path: str):
 
 @shared_task
 def load_csv_helper(path: str):
-    loader = UnstructuredCSVLoader(file_path=path, mode="elements")
+    loader = UnstructuredCSVLoader(file_path=path, mode="single")
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
@@ -246,10 +250,56 @@ def load_xlsx_helper(path: str):
 
 
 ############################################################################################################
-# CHUNKERS
+# EMBEDDERS
 ############################################################################################################
+
+@shared_task
+def embed_document_data(executor_params, document, path, number_of_chunks):
+    doc_id = None
+    try:
+        doc_id, error = embed_document_helper(
+            executor_params=executor_params,
+            document=document,
+            path=path,
+            number_of_chunks=number_of_chunks
+        )
+    except Exception as e:
+        error = f"Error embedding the document: {e}"
+    return doc_id, error
 
 
 @shared_task
-def split_document_into_chunks():
-    pass
+def embed_document_chunks(executor_params, chunks, path, document_id):
+    try:
+        error = embed_document_chunks_helper(
+            executor_params=executor_params,
+            chunks=chunks,
+            path=path,
+            document_id=document_id
+        )
+    except Exception as e:
+        error = f"Error embedding the document chunks: {e}"
+    return error
+
+############################################################################################################
+# CHUNKERS
+############################################################################################################
+
+@shared_task
+def split_document_into_chunks(doc):
+    splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+        chunk_size=100, chunk_overlap=20
+    )
+    chunks = splitter.split_text(doc["page_content"])
+    clean_chunks = []
+    for i, chunk in enumerate(chunks):
+        doc["metadata"]["chunk_index"] = i
+        clean_chunk = {
+            "page_content": chunk,
+            "metadata": doc["metadata"]
+        }
+        clean_chunks.append(clean_chunk)
+    return clean_chunks
+
+
+############################################################################################################

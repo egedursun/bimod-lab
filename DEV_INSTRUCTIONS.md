@@ -1,5 +1,5 @@
 
-# Getting Started
+__# Getting Started
 
 ---
 
@@ -236,5 +236,14 @@ http://localhost:8000
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
   celery -A config flower --loglevel=info -E
   ```
+
+---
+
+#### Forcefully Killing Celery Worker in Case of Stuck Process
+
+*In a new terminal window*
+```bash
+ps auxww | grep '[c]elery worker' | awk '{print $2}' | xargs kill 
+```
 
 ---
