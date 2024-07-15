@@ -65,10 +65,10 @@ def build_chunk_weaviate_structure(chunk: dict, path: str,
 
 def embed_document_chunk_sync(executor_params,
                               chunk_id,
-                              chunk_weaviate_object: dict):
+                              chunk_weaviate_object: dict,
+                              path: str):
     from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
-    from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
-    from apps.datasource_knowledge_base.models import KnowledgeBaseDocumentChunk
+    from apps.datasource_knowledge_base.models import (DocumentKnowledgeBaseConnection, KnowledgeBaseDocumentChunk)
 
     # Retrieve connection details
     connection_id = executor_params["connection_id"]
@@ -76,7 +76,9 @@ def embed_document_chunk_sync(executor_params,
 
     # Re-initialize the executor
     executor = KnowledgeBaseSystemDecoder.get(connection=connection_orm_object)
-    c = executor.client
+    c = executor.connect_c()
+    if not c:
+        print(f"[Chunk Embedder]: Error while connecting to Weaviate")
     error = None
     try:
         # Save the object to Weaviate
@@ -100,13 +102,16 @@ def embed_document_chunk_sync(executor_params,
         document.save()
 
     except Exception as e:
+        print(f"Error embedding the chunk: {e}")
         error = f"Error embedding the chunk: {e}"
+    print(f"Successfully embedded the chunk...")
     return error
 
 
 def embed_document_chunks_helper(executor_params, chunks: list, path: str, document_id: int,
                                  document_uuid: str):
-    from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
+    from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection, DocumentUploadStatusNames
+    from apps.datasource_knowledge_base.tasks import add_document_upload_log
 
     errors = []
     # Retrieve connection object
@@ -114,6 +119,7 @@ def embed_document_chunks_helper(executor_params, chunks: list, path: str, docum
     connection_orm_object = DocumentKnowledgeBaseConnection.objects.get(id=connection_id)
     try:
         for i, chunk in enumerate(chunks):
+            print(f"Building ORM and Weaviate structures for chunk: {i}")
             chunk_id, error = build_chunk_orm_structure(
                 knowledge_base=connection_orm_object,
                 chunk=chunk,
@@ -136,14 +142,18 @@ def embed_document_chunks_helper(executor_params, chunks: list, path: str, docum
                 errors.append(error)
                 continue
 
+            print(f"Embedding chunk: {i}")
             error = embed_document_chunk_sync(
                 executor_params=executor_params,
                 chunk_id=chunk_id,
-                chunk_weaviate_object=document_weaviate_object
+                chunk_weaviate_object=document_weaviate_object,
+                path=path
             )
             if error:
                 errors.append(error)
                 continue
+        add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.EMBEDDED_CHUNKS)
+        add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.SAVED_CHUNKS)
 
     except Exception as e:
         errors.append(f"Error embedding the chunks: {e}")

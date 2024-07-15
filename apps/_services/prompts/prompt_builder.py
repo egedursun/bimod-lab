@@ -70,6 +70,8 @@ class PromptBuilder:
             build_structured_tool_prompt__nosql_query_execution()
         )
         # - for now, excluding NoSQL query execution tool prompt
+        # TODO: add the knowledge base introduction prompt
+        # TODO: add the vectorized context history introduction prompt
         ##################################################
 
         # Combine the prompts
@@ -95,6 +97,9 @@ class PromptBuilder:
         merged_prompt += structured_sql_query_execution_tool_prompt
         # merged_prompt += structured_nosql_query_execution_tool_prompt
         #  - for now, excluding NoSQL query execution tool prompt
+
+        # TODO-PROMPT: add the knowledge base tool prompt
+        # TODO-PROMPT: add the vectorized context history tool prompt
 
         # Build the dictionary with the role
         prompt = {

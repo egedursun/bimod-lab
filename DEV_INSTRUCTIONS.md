@@ -227,7 +227,7 @@ http://localhost:8000
   *In the first tab of the terminal window*
   ```bash
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-  celery -A config worker --loglevel=info -E
+  celery -A config worker --pool solo --loglevel=info -E
   ```
 
   *In the second tab of the terminal window*

@@ -1,0 +1,301 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Upload Documents{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/form-layouts.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const organizations = {{ organizations|safe }};
+        const assistants = {{ assistants|safe }};
+        const knowledgeBases = {{ knowledge_bases|safe }};
+
+        const organizationSelect = document.getElementById('organization') || null;
+        const assistantSelect = document.getElementById('assistant') || null;
+        const knowledgeBaseSelect = document.getElementById('knowledge_base') || null;
+
+        organizationSelect.addEventListener('change', function() {
+            const selectedOrganization = this.value;
+            assistantSelect.innerHTML = '<option value="" disabled selected>Select Assistant</option>';
+            knowledgeBaseSelect.innerHTML = '<option value="" disabled selected>Select Knowledge Base</option>';
+
+            assistants.forEach(assistant => {
+                if (assistant.organization_id == selectedOrganization) {
+                    const option = document.createElement('option');
+                    option.value = assistant.id;
+                    option.textContent = assistant.name;
+                    assistantSelect.appendChild(option);
+                }
+            });
+        });
+
+        assistantSelect.addEventListener('change', function() {
+            const selectedAssistant = this.value;
+            knowledgeBaseSelect.innerHTML = '<option value="" disabled selected>Select Knowledge Base</option>';
+
+            knowledgeBases.forEach(kb => {
+
+                if (kb.assistant_id == selectedAssistant) {
+                    const option = document.createElement('option');
+                    option.value = kb.id;
+                    option.textContent = kb.name;
+                    knowledgeBaseSelect.appendChild(option);
+                }
+            });
+        });
+
+        document.getElementById('document_files').addEventListener('change', function(event) {
+            const fileList = Array.from(event.target.files);
+            const fileDisplayArea = document.getElementById('file_display_area');
+            fileDisplayArea.innerHTML = '<h5 class="card-header"><strong>Document Staging</strong></h5><hr>';
+            fileList.forEach((file, index) => {
+                const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const iconMap = {
+                    'pdf': 'pdf.png',
+                    'html': 'html.png',
+                    'csv': 'csv.png',
+                    'docx': 'doc.png',
+                    'ipynb': 'ipynb.png',
+                    'json': 'json.png',
+                    'xml': 'xml.png',
+                    'txt': 'txt.png',
+                    'md': 'md.png',
+                    'rtf': 'rtf.png',
+                    'odt': 'odt.png',
+                    'pptx': 'pptx.png',
+                    'xlsx': 'xlsx.png'
+                };
+                const icon = iconMap[fileExtension] || 'file.png';
+                let filename_root = file.name.split(".")[0];
+                let filename_extension = file.name.split(".")[1];
+                if (filename_root.length > 64) {
+                    filename_root = filename_root.substring(0, 64) + '...';
+                }
+                const fileElement = document.createElement('div');
+                fileElement.classList.add('col-lg-12');
+                fileElement.innerHTML = `
+                    <div class="badge bg-lighter d-flex align-items-center my-2">
+                        <img src="{% static 'img/icons/misc/' %}${icon}" alt="${fileExtension}" width="15" class="me-2">
+                        <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                        <button type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                    </div>
+                `;
+                fileDisplayArea.appendChild(fileElement);
+            });
+
+            document.querySelectorAll('.btn-close').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    fileList.splice(index, 1);
+                    const dataTransfer = new DataTransfer();
+                    fileList.forEach(file => dataTransfer.items.add(file));
+                    document.getElementById('document_files').files = dataTransfer.files;
+                    this.parentElement.remove();
+                });
+            });
+        });
+
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('loadingBarWarning').classList.remove('d-none');
+            document.getElementById('loadingBar').classList.remove('d-none');
+            this.querySelector('button[type="submit"]').disabled = true;
+        });
+    });
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Upload Documents to Knowledge Base</h5>
+        <small class="text-muted float-end"></small>
+      </div>
+      <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+          <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              Upload documents to a knowledge base by selecting the knowledge base and the document files. This will
+              allow your assistant to access the documents stored in the knowledge base and utilize them to provide
+              better insights and recommendations.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
+      <div class="card-body">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label class="form-label" for="organization">Organization</label>
+            <select class="form-select" id="organization" name="organization">
+              <option value="" disabled selected>Select Organization</option>
+              {% for org in organizations %}
+                <option value="{{ org.id }}">{{ org.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="assistant">Assistant</label>
+            <select class="form-select" id="assistant" name="assistant">
+              <option value="" disabled selected>Select Assistant</option>
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="knowledge_base">Knowledge Base</label>
+            <select class="form-select" id="knowledge_base" name="knowledge_base">
+              <option value="" disabled selected>Select Knowledge Base</option>
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="document_files">Document Files (Multiple Files Allowed)</label>
+            <input type="file" class="form-control" id="document_files" name="document_files" multiple>
+          </div>
+          <div class="row align-items-center justify-content-start mt-2" id="file_display_area">
+            <!-- Dynamic content will be inserted here
+              ... ... ...
+              ... ... ...
+            -->
+          </div>
+          <button type="submit" class="btn btn-primary d-grid w-100 mt-8"><strong>Upload Documents</strong></button>
+        </form>
+        <!-- Loading bar warning -->
+        <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
+            <span class="alert-icon rounded">
+                <i class="ti ti-brain"></i>
+            </span>
+            <div class="d-flex flex-column ps-1 pt-4">
+                <p class="alert-heading"><strong>Uploading Documents...</strong></p>
+            </div>
+        </div>
+        <!-- Loading bar -->
+        <div id="loadingBar" class="progress d-none mt-3 mb-1">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%; height:10px;"></div>
+        </div>
+        <div class="row align-items-center justify-content-start mt-2">
+            <div class="card-header">
+              <h5><strong>Supported File Formats</strong></h5>
+              <small class="text-muted">
+                Currently, the following file formats are supported for document uploads. If you have a different file
+                format, please consider converting it to one of the supported formats. Eventually, we are planning
+                to support more file formats.
+              </small>
+              <hr>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/pdf.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.pdf</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/html.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.html</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/csv.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.csv</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/docx.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.docx</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/ipynb.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.ipynb</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/json.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.json</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/xml.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.xml</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/txt.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.txt</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/md.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.md</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/rtf.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.rtf</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/odt.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.odt</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/pptx.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.pptx</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center my-2">
+                <img src="{% static 'img/icons/misc/xlsx.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.xlsx</strong></span>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

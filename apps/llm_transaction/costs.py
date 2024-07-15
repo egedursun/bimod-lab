@@ -17,14 +17,6 @@ class LLMCostsPerMillionTokens:
             "input": 30.00,
             "output": 60.00,
         },
-        "gpt-3.5-turbo-16k" : {
-            "input": 3.00,
-            "output": 4.00,
-        },
-        "GPT-3.5-turbo-0125" : {
-            "input": 1.00,
-            "output": 2.00,
-        }
     }
 
 

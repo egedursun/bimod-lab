@@ -233,6 +233,16 @@
           "name": "Knowledge Bases",
           "slug": "knowledge-base",
           "url": "datasource_knowledge_base:list"
+        },
+        {
+          "name": "Add Document",
+          "slug": "knowledge-base-document",
+          "url": "datasource_knowledge_base:create_documents"
+        },
+        {
+          "name": "Documents",
+          "slug": "knowledge-base-document",
+          "url": "datasource_knowledge_base:list_documents"
         }
       ]
     },

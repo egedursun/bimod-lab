@@ -46,7 +46,7 @@ class ChatContextManager:
 
     @staticmethod
     def store_as_vector(chat_history, max_messages, vectorizer_name, vectorizer_api_key):
-        # TODO: implement here
+        # TODO-VECTOR-CONTEXT-HISTORY-EMBEDDING: manage the embedding strategies here
         return chat_history
 
     @staticmethod

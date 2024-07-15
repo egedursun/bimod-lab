@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
 from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection, KnowledgeBaseDocument, \
-    KnowledgeBaseDocumentChunk
+    KnowledgeBaseDocumentChunk, DocumentProcessingLog
 from apps.datasource_knowledge_base.utils import generate_class_name
 from django.contrib.admin.actions import delete_selected as django_delete_selected
 
@@ -86,6 +86,17 @@ class KnowledgeBaseDocumentChunkAdmin(admin.ModelAdmin):
                     'document_uuid', 'created_at']
     list_filter = ['document', 'chunk_document_type', 'knowledge_base_uuid', 'document_uuid', 'created_at']
     search_fields = ['document', 'chunk_document_type', 'chunk_content', 'chunk_metadata', 'chunk_document_uri', 'knowledge_base_uuid', 'created_at']
+    readonly_fields = ['created_at']
+
+    list_per_page = 20
+    list_max_show_all = 100
+
+
+@admin.register(DocumentProcessingLog)
+class DocumentProcessingLogAdmin(admin.ModelAdmin):
+    list_display = ['document_full_uri', 'log_message', 'created_at']
+    list_filter = ['document_full_uri', 'log_message', 'created_at']
+    search_fields = ['document_full_uri', 'log_message']
     readonly_fields = ['created_at']
 
     list_per_page = 20

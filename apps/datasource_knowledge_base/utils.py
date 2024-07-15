@@ -48,5 +48,9 @@ def generate_class_name(connection):
     return f"{given_class_name_generation}{randoms}"
 
 
+def generate_document_uri(base_dir, document_name, file_type):
+    return f"{base_dir}{document_name.split('.')[0]}_{str(random.randint(1_000_000, 9_999_999))}.{file_type}"
+
+
 if __name__ == "__main__":
     pass

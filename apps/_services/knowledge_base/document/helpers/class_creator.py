@@ -7,7 +7,7 @@ DEFAULT_GENERATIVE_SEARCH_MODEL = "gpt-4-32k"
 def create_classes_helper(executor):
     output = {"status": True, "error": ""}
     conn = executor.connection_object
-    c = executor.client
+    c = executor.connect_c()
 
     try:
         new_document_class = c.collections.create(

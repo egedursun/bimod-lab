@@ -1,7 +1,7 @@
 
 
 def delete_weaviate_class_helper(executor, class_name):
-    c = executor.client
+    c = executor.connect_c()
     output = {"status": True, "error": ""}
     try:
         # Delete - Document class

@@ -1,11 +1,17 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views import View
 from django.views.generic import TemplateView, DeleteView
 
+from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
 from apps.assistants.models import VECTORIZERS, Assistant
 from apps.datasource_knowledge_base.forms import DocumentKnowledgeBaseForm
-from apps.datasource_knowledge_base.models import KNOWLEDGE_BASE_SYSTEMS, DocumentKnowledgeBaseConnection
+from apps.datasource_knowledge_base.tasks import index_document_helper, add_document_upload_log
+from apps.datasource_knowledge_base.models import KNOWLEDGE_BASE_SYSTEMS, DocumentKnowledgeBaseConnection, \
+    KnowledgeBaseDocument, DocumentUploadStatusNames, DocumentProcessingLog
+from apps.datasource_knowledge_base.utils import generate_document_uri
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
@@ -164,13 +170,128 @@ class DocumentKnowledgeBaseDeleteView(LoginRequiredMixin, DeleteView):
         return DocumentKnowledgeBaseConnection.objects.filter(assistant__organization__users__in=[context_user])
 
 
-# ...
-
-
 # DOCUMENT VIEWS
 
 
-# ...
+class AddDocumentView(LoginRequiredMixin, TemplateView):
+
+    def get(self, request, *args, **kwargs):
+        user_assistants = Assistant.objects.filter(organization__users__in=[request.user])
+        knowledge_bases = DocumentKnowledgeBaseConnection.objects.filter(
+            assistant__in=user_assistants
+        )
+        organizations = Organization.objects.filter(users__in=[request.user])
+
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context['organizations'] = list(organizations.values('id', 'name'))
+        context['assistants'] = list(user_assistants.values('id', 'name', 'organization_id'))
+        context['knowledge_bases'] = list(knowledge_bases.values('id', 'name', 'assistant_id'))
+        return self.render_to_response(context)
+
+    def post(self, request, *args, **kwargs):
+        knowledge_base_id = request.POST.get('knowledge_base') or None
+        if not knowledge_base_id:
+            messages.error(request, 'Please select a knowledge base.')
+            return redirect('datasource_knowledge_base:create_documents')
+        knowledge_base = DocumentKnowledgeBaseConnection.objects.get(pk=knowledge_base_id)
+        files = request.FILES.getlist('document_files')
+        if knowledge_base_id and files:
+            assistant_base_directory = knowledge_base.assistant.document_base_directory
+            file_paths = []
+            for file in files:
+                file_type = file.name.split('.')[-1]
+                document_uri = generate_document_uri(assistant_base_directory, file.name, file_type)
+                file_paths.append(document_uri)
+                add_document_upload_log(document_full_uri=document_uri, log_name=DocumentUploadStatusNames.STAGED)
+                # SAVE the FILE to the document_uri
+                with open(document_uri, 'wb+') as destination:
+                    file_data = file.read()
+                    destination.write(file_data)
+                    add_document_upload_log(document_full_uri=document_uri, log_name=DocumentUploadStatusNames.UPLOADED)
+
+            # handle the task asynchronously inside the knowledge base system
+            KnowledgeBaseSystemDecoder.get(knowledge_base).index_documents(document_paths=file_paths)
+
+            messages.success(request, 'Documents uploaded successfully.')
+            return redirect('datasource_knowledge_base:list_documents')
+        else:
+            messages.error(request, 'Please select a knowledge base and upload documents.')
+        return redirect('datasource_knowledge_base:create_documents')
+
+
+class ListDocumentsView(LoginRequiredMixin, TemplateView):
+
+    def get(self, request, *args, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        organizations = Organization.objects.filter(users__in=[request.user])
+        data = []
+        for org in organizations:
+            assistants = Assistant.objects.filter(organization=org)
+            assistant_data_list = []
+            for assistant in assistants:
+                knowledge_bases = DocumentKnowledgeBaseConnection.objects.filter(assistant=assistant)
+                kb_data_list = []
+                for kb in knowledge_bases:
+                    documents = KnowledgeBaseDocument.objects.filter(knowledge_base=kb).order_by('-created_at')
+                    paginator = Paginator(documents, 5)  # 5 documents per page
+                    page_number = request.GET.get('page')
+                    page_obj = paginator.get_page(page_number)
+
+                    document_data_list = []
+                    for document in page_obj:
+                        log_entries = DocumentProcessingLog.objects.filter(document_full_uri=document.document_uri)
+                        current_statuses = [log.log_message for log in log_entries]
+                        document_data_list.append({
+                            'document': document,
+                            'current_statuses': current_statuses,
+                        })
+                    kb_data_list.append({
+                        'knowledge_base': kb,
+                        'documents': page_obj,
+                        'document_data': document_data_list,
+                    })
+                assistant_data_list.append({
+                    'assistant': assistant,
+                    'knowledge_bases': kb_data_list,
+                })
+            data.append({
+                'organization': org,
+                'assistants': assistant_data_list,
+            })
+
+        context['data'] = data
+        context['document_statuses'] = [
+            'staged',
+            'uploaded',
+            'loaded',
+            'chunked',
+            'embedded_document',
+            'saved_document',
+            'processed_document',
+            'embedded_chunks',
+            'saved_chunks',
+            'processed_chunks',
+            'completed'
+        ]
+        context['failed_statuses'] = ['failed']
+        context['partially_failed_statuses'] = ['partially_failed']
+
+        return self.render_to_response(context)
+
+    def post(self, request, *args, **kwargs):
+        document_ids = request.POST.getlist('selected_documents')
+        if document_ids:
+            KnowledgeBaseDocument.objects.filter(id__in=document_ids).delete()
+            messages.success(request, 'Selected documents deleted successfully.')
+        return redirect('datasource_knowledge_base:list_documents')
+
+
+class DeleteAllDocumentsView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        knowledge_base_id = kwargs.get('kb_id')
+        KnowledgeBaseDocument.objects.filter(knowledge_base_id=knowledge_base_id).delete()
+        messages.success(request, 'All documents in the selected knowledge base have been deleted successfully.')
+        return redirect('datasource_knowledge_base:list_documents')
 
 
 

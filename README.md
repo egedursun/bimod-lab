@@ -115,12 +115,11 @@
   - [X] Implement the document chunk embedder.
   - [X] Try and test with the admin panel.
   - [X] Deleting the items from weaviate whenever the knowledge base or docs are deleted.
-  - [ ] Convert the LLM temperature etc. fields to slider bar.
-  - [ ] Create the interface for file upload (? how in admin panel, file path ?)
-  - [ ] Implement the pages & views for the document uploading.
-  - [ ] Try in the front end to upload the documents, test the Weaviate embeddings.
-  - [ ] Create the search interfaces / execution interface for the embeddings.
-  - [ ] Decide the flexibility of the searches (only defined hybrid queries, or custom queries allowed?)
+  - [X] Convert the LLM temperature etc. fields to slider bar.
+  - [X] Create the interface for file upload
+  - [X] Implement the pages & views for the document uploading.
+  - [X] Try in the front end to upload the documents, test the Weaviate embeddings.
+  - [ ] Create the search interfaces / execution interface for the embeddings & design the strategy for retrieval.
   - [ ] Apply generative search for lookups.
   - [ ] Implement the prompts for the knowledge base implementation.
   - [ ] Integrate the prompts to the chat.
@@ -168,7 +167,8 @@
 - [ ] **NEW FEATURE IDEA:** Discuss the Chrome Extension to automatically understand the web pages etc.
 - [ ] **NEW FEATURE IDEA:** Glossaries for Technical Terminology integration to the chats. ( can take up space in terms of tokens )
 - [ ] **NEW FEATURE IDEA:** Boilerplate knowledge bases for direct integration with assistants.
-- 
+- [ ] **NEW FEATURE IDEA:** Text-to-Speech and Speech-to-Text integration for the assistants.
+- [ ] **NEW FEATURE IDEA:** Word Plugin and possibly other MS Office tools to auto-complete and active help.
 ---
 
 

@@ -1,9 +1,10 @@
 import os
+import random
 
 from django.contrib import admin
 
 from apps.assistants.models import Assistant
-from slugify import slugify
+from django.contrib.admin.actions import delete_selected as django_delete_selected
 
 
 # Register your models here.
@@ -35,9 +36,28 @@ class AssistantAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if obj.document_base_directory is None:
-            dir_name = f"media/documents/{slugify(obj.organization.name)}/{slugify(obj.llm_model.model_name)}/{slugify(obj.name)}/"
+            dir_name = f"media/documents/{str(obj.organization.id)}/{str(obj.llm_model.id)}/{str(obj.id)}_{str(random.randint(1_000_000, 9_999_999))}/"
             obj.document_base_directory = dir_name
             os.system(f"mkdir -p {dir_name}")
             os.system(f"touch {dir_name}/__init__.py")
 
         super().save_model(request, obj, form, change)
+
+    def delete_selected(self, request, queryset):
+
+        # Remove the document directory
+        for obj in queryset:
+            if obj.document_base_directory is not None:
+                os.system(f"rm -rf {obj.document_base_directory}")
+
+        # TODO-DELETE-ASSISTANT-WEAVIATE: Remove the weaviate classes
+        """
+        conn = self.context_memory_connection
+        client = ContextHistoryExecutor(conn)
+        if client is not None:
+            result = client.delete_weaviate_class()
+            if not result["status"]:
+                print(f"Error deleting Weaviate classes: {result['error']}")
+        """
+
+        return django_delete_selected(self, request, queryset)

@@ -3,7 +3,7 @@ from weaviate.classes.query import Filter
 
 
 def delete_document_helper(executor, class_name: str, document_uuid):
-    c = executor.client
+    c = executor.connect_c()
     output = {"status": True, "error": ""}
     try:
         # Delete the document

@@ -1,4 +1,3 @@
-import datetime
 import json
 
 
@@ -57,10 +56,11 @@ def build_document_weaviate_structure(document: dict, path: str,
     return document_weaviate_object, error
 
 
-def embed_document_sync(executor_params, document_id, document_weaviate_object: dict):
+def embed_document_sync(executor_params, document_id, document_weaviate_object: dict, path: str):
     from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
-    from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
-    from apps.datasource_knowledge_base.models import KnowledgeBaseDocument
+    from apps.datasource_knowledge_base.models import (DocumentKnowledgeBaseConnection, KnowledgeBaseDocument,
+                                                       DocumentUploadStatusNames)
+    from apps.datasource_knowledge_base.tasks import add_document_upload_log
 
     # Retrieve connection details
     connection_id = executor_params["connection_id"]
@@ -68,7 +68,9 @@ def embed_document_sync(executor_params, document_id, document_weaviate_object: 
 
     # Re-initialize the executor
     executor = KnowledgeBaseSystemDecoder.get(connection=connection_orm_object)
-    c = executor.client
+    c = executor.connect_c()
+    if not c:
+        print(f"[Document Embedder]: Error while connecting to Weaviate")
     error = None
     uuid = None
 
@@ -79,6 +81,7 @@ def embed_document_sync(executor_params, document_id, document_weaviate_object: 
 
         if not uuid:
             error = "Error inserting the document into Weaviate"
+        add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.EMBEDDED_DOCUMENT)
 
         document_orm_object = KnowledgeBaseDocument.objects.get(id=document_id)
         document_orm_object.knowledge_base_uuid = str(uuid)
@@ -87,6 +90,7 @@ def embed_document_sync(executor_params, document_id, document_weaviate_object: 
         except Exception as e:
             error = f"Error saving the document ORM object into DB: {e}"
             print("DB Save error.")
+        add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.SAVED_DOCUMENT)
 
     except Exception as e:
         error = f"Error embedding the document: {e}"
@@ -109,7 +113,9 @@ def embed_document_helper(executor_params: dict, document: dict, path: str, numb
             path=path
         )
         if error:
-            return document_id, error
+            print(f"Error building the document ORM structure: {error}")
+            return document_id, document_uuid, error
+        print(f"Document ORM object created: {document_id}")
 
         document_weaviate_object, error = build_document_weaviate_structure(
             document=document,
@@ -117,15 +123,20 @@ def embed_document_helper(executor_params: dict, document: dict, path: str, numb
             number_of_chunks=number_of_chunks
         )
         if error:
-            return document_id, error
+            print(f"Error building the document Weaviate structure: {error}")
+            return document_id, document_uuid, error
+        print(f"Document Weaviate object created: {document_weaviate_object}")
 
         document_uuid, error = embed_document_sync(
             executor_params=executor_params,
             document_id=document_id,
-            document_weaviate_object=document_weaviate_object
+            document_weaviate_object=document_weaviate_object,
+            path=path
         )
         if error:
+            print(f"Error embedding the document and saving the ORM object: {error}")
             return document_id, document_uuid, error
+        print(f"Document embedded successfully: {document_uuid}")
 
     except Exception as e:
         return f"Error embedding the document: {e}"

@@ -1,4 +1,5 @@
 import os
+import random
 
 from django.db import models
 
@@ -96,6 +97,11 @@ class Assistant(models.Model):
 
     document_base_directory = models.CharField(max_length=1000, null=True, blank=True)
 
+    # TODO-MODEL: Define a context memory object for the assistant to reach out to the context memory
+    #   context_memory_connection = models.ManyToManyField("...", related_name='assistants')
+
+    ##############################
+
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                         related_name='assistants_created_by_user')
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
@@ -111,12 +117,29 @@ class Assistant(models.Model):
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         if self.document_base_directory is None:
-            dir_name = f"media/documents/{slugify(self.organization.name)}/{slugify(self.llm_model.model_name)}/{slugify(self.name)}/"
+            dir_name = f"media/documents/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{str(random.randint(1_000_000, 9_999_999))}/"
             self.document_base_directory = dir_name
             os.system(f"mkdir -p {dir_name}")
             os.system(f"touch {dir_name}/__init__.py")
 
         super().save(force_insert, force_update, using, update_fields)
+
+    def delete(self, using=None, keep_parents=False):
+
+        # Remove the document directory
+        if self.document_base_directory is not None:
+            os.system(f"rm -rf {self.document_base_directory}")
+
+        """
+        conn = self.context_memory_connection
+        client = ContextHistoryExecutor(conn)
+        if client is not None:
+            result = client.delete_weaviate_class()
+            if not result["status"]:
+                print(f"Error deleting Weaviate classes: {result['error']}")
+        """
+
+        super().delete(using, keep_parents)
 
     class Meta:
         verbose_name = "Assistant"
