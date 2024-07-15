@@ -14,13 +14,13 @@ from django.contrib.admin.actions import delete_selected as django_delete_select
 class DocumentKnowledgeBaseConnectionAdmin(admin.ModelAdmin):
     list_display = ['provider', 'host_url', 'provider_api_key', 'assistant', 'name', 'class_name', 'description',
                     'vectorizer', 'vectorizer_api_key', 'embedding_chunk_size', 'embedding_chunk_overlap',
-                    'created_at', 'updated_at']
+                    'search_instance_retrieval_limit', 'created_at', 'updated_at']
     list_filter = ['provider', 'host_url', 'provider_api_key', 'assistant', 'name', 'class_name', 'description',
                    'vectorizer', 'vectorizer_api_key', 'embedding_chunk_size', 'embedding_chunk_overlap',
                    'created_at', 'updated_at']
     search_fields = ['provider', 'host_url', 'provider_api_key', 'assistant', 'name', 'class_name', 'description',
                      'vectorizer', 'vectorizer_api_key', 'embedding_chunk_size', 'embedding_chunk_overlap',
-                     'created_at', 'updated_at']
+                     'search_instance_retrieval_limit', 'created_at', 'updated_at']
     readonly_fields = ['created_at', 'updated_at']
 
     list_per_page = 20

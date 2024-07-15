@@ -43,6 +43,7 @@ def build_chunk_weaviate_structure(chunk: dict, path: str,
                                    document_uuid: str):
     chunk_weaviate_object, error = None, None
     try:
+        weav_chunk_document_file_name = str(path)
         weav_chunk_document_type = path.split(".")[-1]
         weav_chunk_number = chunk_index
         weav_chunk_content = chunk["page_content"]
@@ -51,6 +52,7 @@ def build_chunk_weaviate_structure(chunk: dict, path: str,
 
         chunk_weaviate_object = {
             "document_uuid": document_uuid,
+            "chunk_document_file_name": weav_chunk_document_file_name,
             "chunk_document_type": weav_chunk_document_type,
             "chunk_number": weav_chunk_number,
             "chunk_content": weav_chunk_content,

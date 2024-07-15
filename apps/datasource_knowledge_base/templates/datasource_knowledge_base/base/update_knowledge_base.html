@@ -130,8 +130,23 @@
               chunk. A lower overlap may cause the model to have a harder time associating the chunks with each other,
               while a higher one may cause an excessive amount of chunks that can overcrowd the knowledge base.
           </div>
+          <div class="mb-6 col-lg-6">
+            <label class="form-label" for="search_instance_retrieval_limit">Retrieval Limit</label>
+            <!-- slider bar here -->
+            <input type="range" class="form-range" id="search_instance_retrieval_limit" name="search_instance_retrieval_limit" min="1" max="30" step=1" value="{{ connection.search_instance_retrieval_limit }}" oninput="this.nextElementSibling.value = this.value">
+            <output>{{ connection.search_instance_retrieval_limit }}</output>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-info-circle"></i>
+              </span>
+              The retrieval limit determines how many documents will be retrieved in a single time, when a search query
+              is made. Adjust this value according to the size of your knowledge base and the amount of information you
+              want to retrieve. Higher values may cause additional costs and longer response times, while lower values
+              may cause the assistant to miss important information.
+          </div>
           <input type="hidden" name="created_by_user" value="{{ connection.created_by_user.id }}">
-          <button type="submit" class="btn btn-primary d-grid w-100">Update Knowledge Base</button>
+          <button type="submit" class="btn btn-primary d-grid w-100"><strong>Update Knowledge Base</strong></button>
         </form>
       </div>
     </div>

@@ -1,8 +1,11 @@
 import json
 
 from apps._services.tools.const import ToolTypeNames
+from apps._services.tools.execution_handlers.knowledge_base_query_execution_handler import execute_knowledge_base_query
 from apps._services.tools.execution_handlers.nosql_query_execution_handler import execute_nosql_query
 from apps._services.tools.execution_handlers.sql_query_execution_handler import execute_sql_query
+from apps._services.tools.validators.knowledge_base_query_execution_tool_validator import \
+    validate_knowledge_base_query_execution_tool_json
 from apps._services.tools.validators.main_json_validator import validate_main_tool_json
 from apps._services.tools.validators.nosql_query_execution_tool_validator import \
     validate_nosql_query_execution_tool_json
@@ -66,6 +69,23 @@ class ToolExecutor:
             # Convert the tool response to a string and pretty format
             nosql_response_raw_str = json.dumps(nosql_response, sort_keys=True, default=str)
             tool_response += nosql_response_raw_str
+        ##################################################
+        # Knowledge Base Query Execution Tool
+        elif tool_name == ToolTypeNames.KNOWLEDGE_BASE_QUERY_EXECUTION:
+            error = validate_knowledge_base_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None
+
+            connection_id = self.tool_usage_json.get("parameters").get("knowledge_base_connection_id")
+            query = self.tool_usage_json.get("parameters").get("query")
+            alpha = self.tool_usage_json.get("parameters").get("alpha")
+            knowledge_base_response = execute_knowledge_base_query(
+                connection_id=connection_id,
+                query=query,
+                alpha=alpha
+            )
+            # Convert the tool response to a string and pretty format
+            knowledge_base_response_raw_str = json.dumps(knowledge_base_response, sort_keys=True, default=str)
+            tool_response += knowledge_base_response_raw_str
         ##################################################
 
         # ...

@@ -17,7 +17,8 @@ class DocumentKnowledgeBaseForm(forms.ModelForm):
             'vectorizer',
             'vectorizer_api_key',
             'embedding_chunk_size',
-            'embedding_chunk_overlap'
+            'embedding_chunk_overlap',
+            'search_instance_retrieval_limit'
         ]
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3}),

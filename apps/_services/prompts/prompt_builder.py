@@ -1,8 +1,8 @@
-import datetime
-from time import timezone
 
 from django.contrib.auth.models import User
 
+from apps._services.prompts.datasource.build_knowledge_base_datasource_prompt import \
+    build_knowledge_base_datasource_prompt
 from apps._services.prompts.datasource.build_nosql_datasource_prompt import build_nosql_datasource_prompt
 from apps._services.prompts.datasource.build_sql_datasource_prompt import build_sql_datasource_prompt
 from apps._services.prompts.generic.build_audience_prompt import get_structured_audience_prompt
@@ -18,6 +18,8 @@ from apps._services.prompts.generic.build_tone_prompt import get_structured_tone
 from apps._services.prompts.generic.build_user_information_prompt import build_structured_user_information_prompt
 from apps._services.prompts.tools.build_tool_usage_instructions_prompt import \
     build_structured_tool_usage_instructions_prompt
+from apps._services.prompts.tools.tool_prompts.build_knowledge_base_query_execution_tool_prompt import \
+    build_structured_tool_prompt__knowledge_base_query_execution
 from apps._services.prompts.tools.tool_prompts.build_nosql_query_execution_tool_prompt import \
     build_structured_tool_prompt__nosql_query_execution
 from apps._services.prompts.tools.tool_prompts.build_sql_query_execution_tool_prompt import \
@@ -58,6 +60,7 @@ class PromptBuilder:
         structured_sql_datasource_prompt = build_sql_datasource_prompt(assistant, user)
         _ = build_nosql_datasource_prompt(assistant, user)
         # - for now, excluding NoSQL datasource prompt
+        structured_knowledge_base_datasource_prompt = build_knowledge_base_datasource_prompt(assistant, user)
         ##################################################
         # TOOL PROMPTS
         structured_tool_usage_instructions_prompt = (
@@ -70,8 +73,10 @@ class PromptBuilder:
             build_structured_tool_prompt__nosql_query_execution()
         )
         # - for now, excluding NoSQL query execution tool prompt
-        # TODO: add the knowledge base introduction prompt
+        structured_knowledge_base_query_execution_tool_prompt = build_structured_tool_prompt__knowledge_base_query_execution()
+
         # TODO: add the vectorized context history introduction prompt
+
         ##################################################
 
         # Combine the prompts
@@ -88,6 +93,7 @@ class PromptBuilder:
         merged_prompt += structured_context_overflow_prompt
         ##################################################
         merged_prompt += structured_sql_datasource_prompt
+        merged_prompt += structured_knowledge_base_datasource_prompt
         # merged_prompt += structured_nosql_datasource_prompt
         #  - for now, excluding NoSQL datasource prompt
         ##################################################
@@ -95,11 +101,12 @@ class PromptBuilder:
 
         # add the tool usage prompts
         merged_prompt += structured_sql_query_execution_tool_prompt
+        merged_prompt += structured_knowledge_base_query_execution_tool_prompt
         # merged_prompt += structured_nosql_query_execution_tool_prompt
         #  - for now, excluding NoSQL query execution tool prompt
 
-        # TODO-PROMPT: add the knowledge base tool prompt
         # TODO-PROMPT: add the vectorized context history tool prompt
+
 
         # Build the dictionary with the role
         prompt = {

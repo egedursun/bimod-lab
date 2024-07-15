@@ -180,10 +180,24 @@ class WeaviateExecutor:
         print(f"[Document Chunk Embedder]: Embedded the document chunks: {document_id}")
         return errors
 
-    def custom_generative_search(self):
-        # TODO-RETRIEVAL-1: Implement the custom generative search here
-        pass
-
-    def boilerplate_generative_search(self):
-        # TODO-RETRIEVAL-2: Implement the boilerplate generative search here
-        pass
+    def search_hybrid(self, query: str, alpha: float):
+        search_knowledge_base_class_name = f"{self.connection_object.class_name}Chunks"
+        client = self.connect_c()
+        documents_collection = client.collections.get(search_knowledge_base_class_name)
+        response = documents_collection.query.hybrid(
+            query_properties=["chunk_document_file_name", "chunk_content"],
+            query=query,
+            alpha=float(alpha),
+            limit=int(self.connection_object.search_instance_retrieval_limit)
+        )
+        # clean the response
+        cleaned_documents = []
+        for o in response.objects:
+            cleaned_object = {}
+            if not o.properties:
+                continue
+            for k, v in o.properties.items():
+                if k in ["chunk_document_file_name", "chunk_content", "chunk_number", "created_at"]:
+                    cleaned_object[k] = v
+            cleaned_documents.append(cleaned_object)
+        return cleaned_documents

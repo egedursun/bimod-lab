@@ -1,7 +1,7 @@
 import weaviate.classes as wvc
 
 
-DEFAULT_GENERATIVE_SEARCH_MODEL = "gpt-4-32k"
+DEFAULT_GENERATIVE_SEARCH_MODEL = "gpt-4"
 
 
 def create_classes_helper(executor):
@@ -72,11 +72,17 @@ def create_classes_helper(executor):
                 conn.vectorizer
             ),
             generative_config=wvc.config.Configure.Generative.openai(
-                model="gpt-4-32k",
+                model=DEFAULT_GENERATIVE_SEARCH_MODEL,
                 temperature=conn.assistant.llm_model.temperature,
                 max_tokens=conn.assistant.llm_model.maximum_tokens,
             ),
             properties=[
+                wvc.config.Property(
+                    name="chunk_document_file_name",
+                    data_type=wvc.config.DataType.TEXT,
+                    vectorize_property_name=True,
+                    tokenization=wvc.config.Tokenization.LOWERCASE
+                ),
                 wvc.config.Property(
                     name="chunk_document_type",
                     data_type=wvc.config.DataType.TEXT,

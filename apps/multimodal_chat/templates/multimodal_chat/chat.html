@@ -270,10 +270,16 @@
                   </div>
                   {% endif %}
                   <div class="chat-message-wrapper flex-grow-1">
-                    <div id="copied-message-{{ message.id }}" class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-label-warning{% endif %}">
+                    <div id="copied-message-{{ message.id }}" class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-lightest{% endif %}">
                       {% if message.sender_type != 'TOOL' %}
                         <p class="mb-0 markdown-content">{{ message.message_text_content|safe }}</p>
                       {% else %}
+                        <p class="text-bg-primary card rounded mt-4 ms-4 me-4 ps-4 pe-4 pt-4 pb-4">
+                          <strong>
+                            <i class="fa fa-gears me-4"></i>
+                            System Message
+                          </strong>
+                        </p>
                         <strong><p class="mb-0 markdown-content">{{ message.message_text_content|safe|slice:":500"|linebreaks }} ... {{ message.message_text_content|safe|linebreaks|slice:"-500:"|linebreaks }}</p></strong>
                       {% endif %}
                     </div>

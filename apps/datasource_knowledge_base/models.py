@@ -76,7 +76,12 @@ class DocumentKnowledgeBaseConnection(models.Model):
     schema_json = models.TextField(null=True, blank=True)
 
     # Knowledge bases have documents
-    knowledge_base_documents = models.ManyToManyField("KnowledgeBaseDocument", related_name='knowledge_bases', blank=True)
+    knowledge_base_documents = models.ManyToManyField(
+        "KnowledgeBaseDocument",
+        related_name='knowledge_bases',
+        blank=True)
+
+    search_instance_retrieval_limit = models.IntegerField(default=10)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
