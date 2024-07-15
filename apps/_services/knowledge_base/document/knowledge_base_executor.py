@@ -180,5 +180,10 @@ class WeaviateExecutor:
         print(f"[Document Chunk Embedder]: Embedded the document chunks: {document_id}")
         return errors
 
-    # TODO-RETRIEVAL: Implement the retrieval of the documents from Weaviate here, so that the assistants can have
-    #                access to the documents stored in the Weaviate knowledge base.
+    def custom_generative_search(self):
+        # TODO-RETRIEVAL-1: Implement the custom generative search here
+        pass
+
+    def boilerplate_generative_search(self):
+        # TODO-RETRIEVAL-2: Implement the boilerplate generative search here
+        pass

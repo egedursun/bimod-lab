@@ -15,13 +15,3 @@ class DashboardMainView(TemplateView):
         # ...
         ##################################################
         return context
-
-
-# TODO: active test data for knowledge base
-"""
-        sample_conn = DocumentKnowledgeBaseConnection.objects.first()
-        executor = KnowledgeBaseSystemDecoder.get(sample_conn)
-        executor.index_documents([
-            "apps/datasource_knowledge_base/developers/test.pdf",
-        ])
-"""

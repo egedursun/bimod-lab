@@ -12,8 +12,6 @@ from web_project import TemplateLayout
 # Create your views here.
 
 
-# TODO: implement the views
-
 class CreateMessageTemplateView(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):

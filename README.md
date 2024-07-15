@@ -23,6 +23,7 @@
 - [ ] Automated balance top-ups (monthly or as it goes low).
 - [ ] Template messages must show up next to the message creation form.
 - [ ] Drive and dropbox integration for media and document storage & automated transfer within the system and knowledge bases.
+- [ ] Exclude the media from Git versioning (IMPORTANT!!)
 
 ---
 
@@ -243,6 +244,9 @@
 
 - Total Lines of Code by 2024-07-14: 
   - **1,075,000 - 1,315,000**
+
+- Total Lines of Code by 2024-07-15:
+  - **1,116,000 - 1,118,000**
 
 *To count:*
 
