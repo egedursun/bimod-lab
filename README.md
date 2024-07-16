@@ -109,13 +109,7 @@
                     (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
 - [X] Implement the context cut-off tool to prevent context window from overflowing.
 - [X] Implement the Knowledge Base tool for the web browser & web scraping features.
-- [ ] Implement the Vectorizer Memory for context overflows, within the same class with knowledge base.
-  - [ ] Design the data model.
-  - [ ] Design the admin model.
-  - [ ] Create the executor functions for creation + embedding + retrieval.
-  - [ ] Implement the prompts for the vectorizer memory implementation.
-  - [ ] Integrate the prompts to the chat.
-  - [ ] Test within the chat and evaluate the performance.
+- [X] Implement the Vectorizer Memory for context overflows, within the same class with knowledge base.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
   - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low", which will determine
           how difficult the agent will trust on an online source.

@@ -108,7 +108,9 @@ class InternalOpenAIClient:
                 final_response = response
                 return final_response
 
+            #######################################################################################################
             # Retrieve the response
+            #######################################################################################################
             response = c.chat.completions.create(
                 model=self.assistant.llm_model.model_name,
                 messages=prompt_messages,
@@ -120,6 +122,7 @@ class InternalOpenAIClient:
                 # TODO: to be implement later
                 #  stop=self.assistant.llm_model.stop_sequences
             )
+            #######################################################################################################
 
             choices = response.choices
             first_choice = choices[0]
@@ -151,7 +154,6 @@ class InternalOpenAIClient:
 
             # Get the error message
             if final_response == DEFAULT_ERROR_MESSAGE:
-                raise Exception(e)
                 final_response += f"""
 
                     Technical Details about the Error:
@@ -254,13 +256,17 @@ class InternalOpenAIClient:
 
             json_part_of_response = find_json_presence(final_response)
             try:
-                tool_executor = ToolExecutor(assistant=self.assistant, tool_usage_json_str=json_part_of_response)
+                tool_executor = ToolExecutor(
+                    assistant=self.assistant,
+                    chat=self.chat,
+                    tool_usage_json_str=json_part_of_response
+                )
                 tool_response, tool_name = tool_executor.use_tool()
                 if tool_name is not None and tool_name != prev_tool_name:
                     ACTIVE_CHAIN_SIZE += 1
                     prev_tool_name = tool_name
 
-            except JSONDecodeError as e:
+            except Exception as e:
                 tool_response = f"""
                     System Message:
 
@@ -274,6 +280,8 @@ class InternalOpenAIClient:
                     {str(e)}
                     '''
                 """
+
+                return tool_response
 
         if tool_response:
             # Create the request as a multimodal chat message and add it to the chat

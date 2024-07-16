@@ -1,9 +1,15 @@
 import json
+from json import JSONDecodeError
 
+from apps._services.prompts.tools.tool_prompts.build_vectorized_context_history_query_execution_tool_prompt import \
+    build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt
 from apps._services.tools.const import ToolTypeNames
 from apps._services.tools.execution_handlers.knowledge_base_query_execution_handler import execute_knowledge_base_query
+from apps._services.tools.execution_handlers.memory_query_execution_handler import execute_memory_query
 from apps._services.tools.execution_handlers.nosql_query_execution_handler import execute_nosql_query
 from apps._services.tools.execution_handlers.sql_query_execution_handler import execute_sql_query
+from apps._services.tools.validators.context_history_query_execution_tool_validator import \
+    validate_context_history_query_execution_tool_json
 from apps._services.tools.validators.knowledge_base_query_execution_tool_validator import \
     validate_knowledge_base_query_execution_tool_json
 from apps._services.tools.validators.main_json_validator import validate_main_tool_json
@@ -11,18 +17,22 @@ from apps._services.tools.validators.nosql_query_execution_tool_validator import
     validate_nosql_query_execution_tool_json
 from apps._services.tools.validators.sql_query_execution_tool_validator import validate_sql_query_execution_tool_json
 from apps.assistants.models import Assistant
+from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+from apps.multimodal_chat.models import MultimodalChat
 
 
 class ToolExecutor:
 
-    def __init__(self, assistant: Assistant, tool_usage_json_str: dict):
+    def __init__(self, assistant: Assistant, chat: MultimodalChat, tool_usage_json_str: dict):
         self.assistant = assistant
+        self.chat = chat
         self.tool_usage_json_str = tool_usage_json_str
         self.tool_usage_json = {}
         try:
             self.tool_usage_json = json.loads(tool_usage_json_str)
         except Exception as e:
             print("Error decoding the JSON: ", e)
+            raise Exception("Error decoding the JSON")
 
     def use_tool(self):
         error = validate_main_tool_json(tool_usage_json=self.tool_usage_json)
@@ -80,6 +90,34 @@ class ToolExecutor:
             alpha = self.tool_usage_json.get("parameters").get("alpha")
             knowledge_base_response = execute_knowledge_base_query(
                 connection_id=connection_id,
+                query=query,
+                alpha=alpha
+            )
+            # Convert the tool response to a string and pretty format
+            knowledge_base_response_raw_str = json.dumps(knowledge_base_response, sort_keys=True, default=str)
+            tool_response += knowledge_base_response_raw_str
+        ##################################################
+        # Vector Chat History Query Execution Tool
+        elif tool_name == ToolTypeNames.VECTOR_CHAT_HISTORY_QUERY_EXECUTION:
+            error = validate_context_history_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None
+
+            connection = ContextHistoryKnowledgeBaseConnection.objects.filter(
+                chat=self.chat,
+                assistant=self.assistant
+            ).first()
+
+            if not connection:
+                return f"""
+                    The Context History Knowledge Base Connection for the chat: {self.chat.chat_name} and assistant: {self.assistant.name}
+                    does not exist in the system. Please make sure you have the connection setup in the system.
+                """, None
+
+            query = self.tool_usage_json.get("parameters").get("query")
+            alpha = self.tool_usage_json.get("parameters").get("alpha")
+
+            knowledge_base_response = execute_memory_query(
+                connection_id=connection.id,
                 query=query,
                 alpha=alpha
             )

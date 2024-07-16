@@ -1,17 +1,57 @@
+from apps._services.tools.const import ToolTypeNames
 
 
 def build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt():
+    response_prompt = f"""
+        **TOOL**: Vector Chat History (Long Term Memory) Query Execution
 
-    # TODO-RETRIEVAL: As can be guessed, there are several things that needs to be considered on retrieval:
-    #       - Before generative search:
-    #           - The assistant needs to have a "limit" for the objects to retrieve.
-    #           - The assistant needs to have a "specific graphQL query" to retrieve the objects.
-    #           - The assistant needs to have an "alpha" value, determining the semantic similarity of the objects.
-    #           - There can be other additional things.
-    #   ...
-    #   **UNLIKE KNOWLEDGE BASE FOR DOCUMENTS**, this tool is for context history retrieval, if the vectorized
-    #   context retrieval has been selected for the assistant by the user.
-    #   ...
-    #   You need to explain the assistant how to perform the queries, and explain how to accomplish the usage
+        - The Vector Chat History Query Execution Tool is a tool you can use to search within your chat history
+        with the user, as this is a vector-based tool, it has almost infinite capabilities for you to bypass the
+        limits of your 'context window'.
 
-    pass
+        - The standardized format for the JSON file that you will output to use the Vector Chat History Query Execution
+        Tool is as follows:
+
+        '''
+            {{
+                "tool": "{ToolTypeNames.VECTOR_CHAT_HISTORY_QUERY_EXECUTION}",
+                "parameters": {{
+                    "query": "...",
+                    "alpha": 0.0 <= value_of_alpha <= 1.0,
+                    }}
+                }}
+        '''
+
+        **INSTRUCTIONS:** The "query" field will be the string that you would like to search within your chat history
+        with the user. The "alpha" parameter is a float value between 0.0 and 1.0 that determines the weight of
+        semantic versus keyword-based search in the search algorithm:
+
+        - An alpha of 1.0 means that your search will be purely vector-based (semantic) search.
+        - An alpha of 0.0 means that your search will be purely keyword-based search.
+        - Thus, the value of alpha can be adjusted between float values of 0.0 and 1.0 to adjust the balance
+        between semantic and keyword-based search, according to the question of the user and your judgment.
+
+        To use this tool, you need to provide the following fields for the system 'VERY CAREFULLY':
+
+        1. The "query" field should be a string that you would like to search within the knowledge base documents.
+        This string can be a question or a keyword that you would like to search within the documents.
+
+        2. The "alpha" field should be a float value between 0.0 and 1.0 that determines the weight of semantic
+        versus keyword-based search in the search algorithm.
+
+        **NOTE**: The system will provide you with the results of the search in the next 'assistant' message.
+        This message will have a list of memories that are most relevant to the query you have provided. The
+        fields will include: "chunk_number", which is the number of the chunk within the document (ordered)
+        that contains the retrieved information; and "chunk_content", which is the text of the chunk that
+        contains the retrieved memory in textual format.
+
+        - You are expected to take in this response, and use it to provide an answer to the user's question.
+
+        - You MUST use this tool, if the user asks you a question that you don't remember the answer to. This probably
+        means that your 'context window' has been exceeded, and some of the messages you had was removed from the
+        context history. Therefore, you must use this tool to search within your long-term memory to provide an
+        accurate response to the user's question.
+
+    """
+
+    return response_prompt

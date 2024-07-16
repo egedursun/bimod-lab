@@ -88,7 +88,7 @@
           </div>
           {% for assistant in assistants %}
           <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-            <form method="post" action=".">
+            <form id="create-chat-form" method="post" action=".">
               {% csrf_token %}
               <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
               <button type="submit" class="btn btn-link p-0">
@@ -131,6 +131,20 @@
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
               </button>
             </div>
+          </div>
+          <!-- loading bar warning -->
+          <div class="alert-container"></div>
+          <div id="loadingBarWarningCreateChat" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-brain"></i>
+            </span>
+            <div class="d-flex flex-column ps-1 pt-4">
+              <p class="alert-heading"><strong>Creating your chat, please hold on...</strong></p>
+            </div>
+          </div>
+          <!-- Loading bar -->
+          <div id="loadingBarCreateChat" class="progress d-none mt-3 mb-1">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%; height:10px;"></div>
           </div>
           {% for chat in chats %}
             <li class="card card-border-shadow-dark chat-contact-list-item mb-2 {% if chat.id == active_chat.id %} border border-1 rounded border-primary alert-secondary{% endif %}">
@@ -270,7 +284,7 @@
                   </div>
                   {% endif %}
                   <div class="chat-message-wrapper flex-grow-1">
-                    <div id="copied-message-{{ message.id }}" class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-lightest{% endif %}">
+                    <div id="copied-message-{{ message.id }}" class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-primary-subtle{% endif %} border-primary" style="{% if message.sender_type == 'TOOL' %}border: 2px solid{% endif %};">
                       {% if message.sender_type != 'TOOL' %}
                         <p class="mb-0 markdown-content">{{ message.message_text_content|safe }}</p>
                       {% else %}
@@ -280,7 +294,9 @@
                             System Message
                           </strong>
                         </p>
-                        <strong><p class="mb-0 markdown-content">{{ message.message_text_content|safe|slice:":500"|linebreaks }} ... {{ message.message_text_content|safe|linebreaks|slice:"-500:"|linebreaks }}</p></strong>
+                        <div class="text fw-semibold text-black font-monospace" style="font-size:0.75rem;">
+                          <p class="mb-0 markdown-content">{{ message.message_text_content|safe|slice:":500"|linebreaks }} ... {{ message.message_text_content|safe|linebreaks|slice:"-500:"|linebreaks }}</p>
+                        </div>
                       {% endif %}
                     </div>
                     <div class="text-muted mt-2">
@@ -332,7 +348,7 @@
                   <i class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                   <input type="file" id="attach-doc" hidden>
                 </label>
-                <button class="btn btn-primary d-flex send-msg-btn" type="submit">
+                <button id="send-chat-message-button" class="btn btn-primary d-flex send-msg-btn" type="submit">
                   <span class="align-middle d-md-inline-block d-none">Send</span>
                   <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
                 </button>
@@ -416,13 +432,26 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const chatForm = document.querySelector('.form-send-message');
+  const createChatForm = document.querySelector('#create-chat-form');
+
   const loadingBar = document.getElementById('loadingBar');
   const loadingBarWarning = document.getElementById('loadingBarWarning');
+  const submitMessageButton = document.querySelector('#send-chat-message-button');
+
+  const loadingBarCreateChat = document.getElementById('loadingBarCreateChat');
+  const loadingBarWarningCreateChat = document.getElementById('loadingBarWarningCreateChat');
 
   chatForm.addEventListener('submit', function (event) {
     // Show the loading bar
     loadingBar.classList.remove('d-none');
     loadingBarWarning.classList.remove('d-none');
+    submitMessageButton.disabled = true;
+  });
+
+  createChatForm.addEventListener('submit', function (event) {
+    // Show the loading bar
+    loadingBarCreateChat.classList.remove('d-none');
+    loadingBarWarningCreateChat.classList.remove('d-none');
   });
 });
 

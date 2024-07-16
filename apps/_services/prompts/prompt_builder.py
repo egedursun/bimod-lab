@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 from apps._services.prompts.datasource.build_knowledge_base_datasource_prompt import \
     build_knowledge_base_datasource_prompt
-from apps._services.prompts.datasource.build_nosql_datasource_prompt import build_nosql_datasource_prompt
 from apps._services.prompts.datasource.build_sql_datasource_prompt import build_sql_datasource_prompt
 from apps._services.prompts.generic.build_audience_prompt import get_structured_audience_prompt
 from apps._services.prompts.generic.build_context_overflow_prompt import get_structured_context_overflow_prompt
@@ -24,6 +23,8 @@ from apps._services.prompts.tools.tool_prompts.build_nosql_query_execution_tool_
     build_structured_tool_prompt__nosql_query_execution
 from apps._services.prompts.tools.tool_prompts.build_sql_query_execution_tool_prompt import \
     build_structured_tool_prompt__sql_query_execution
+from apps._services.prompts.tools.tool_prompts.build_vectorized_context_history_query_execution_tool_prompt import \
+    build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt
 from apps.assistants.models import Assistant
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat
@@ -34,7 +35,6 @@ class PromptBuilder:
     @staticmethod
     def build(chat: MultimodalChat, assistant: Assistant, user: User, role: str):
         name = assistant.name
-        instructions = assistant.instructions
         response_template = assistant.response_template
         audience = assistant.audience
         tone = assistant.tone
@@ -58,8 +58,6 @@ class PromptBuilder:
         ##################################################
         # DATASOURCE PROMPTS
         structured_sql_datasource_prompt = build_sql_datasource_prompt(assistant, user)
-        _ = build_nosql_datasource_prompt(assistant, user)
-        # - for now, excluding NoSQL datasource prompt
         structured_knowledge_base_datasource_prompt = build_knowledge_base_datasource_prompt(assistant, user)
         ##################################################
         # TOOL PROMPTS
@@ -74,8 +72,7 @@ class PromptBuilder:
         )
         # - for now, excluding NoSQL query execution tool prompt
         structured_knowledge_base_query_execution_tool_prompt = build_structured_tool_prompt__knowledge_base_query_execution()
-
-        # TODO: add the vectorized context history introduction prompt
+        structured_vectorized_context_history_query_execution_tool_prompt = build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt()
 
         ##################################################
 
@@ -102,11 +99,7 @@ class PromptBuilder:
         # add the tool usage prompts
         merged_prompt += structured_sql_query_execution_tool_prompt
         merged_prompt += structured_knowledge_base_query_execution_tool_prompt
-        # merged_prompt += structured_nosql_query_execution_tool_prompt
-        #  - for now, excluding NoSQL query execution tool prompt
-
-        # TODO-PROMPT: add the vectorized context history tool prompt
-
+        merged_prompt += structured_vectorized_context_history_query_execution_tool_prompt
 
         # Build the dictionary with the role
         prompt = {

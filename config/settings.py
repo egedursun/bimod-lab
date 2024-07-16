@@ -236,7 +236,7 @@ MAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ASSISTANT_EXPORTS_O
 # Weaviate credentials
 WEAVIATE_CLUSTER_URL = os.environ.get("WEAVIATE_CLUSTER_URL", default="")
 WEAVIATE_API_KEY = os.environ.get("WEAVIATE_API_KEY", default="")
-
+WEAVIATE_SINGLE_TIME_MEMORY_RETRIEVAL_LIMIT = int(os.environ.get("WEAVIATE_SINGLE_TIME_MEMORY_RETRIEVAL_LIMIT", default="10"))
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

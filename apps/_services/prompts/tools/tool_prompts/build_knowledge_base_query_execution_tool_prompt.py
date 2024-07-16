@@ -51,9 +51,6 @@ def build_structured_tool_prompt__knowledge_base_query_execution():
             for the user).
 
             - You are expected to take in this response, and use it to provide an answer to the user's question.
-            Imagine this other GPT assistant as an employee of yours that you have asked to find the answer to a
-            question for you. You are expected to take the answer from this employee 'but' deliver it to the user
-            in your own words, taking the user as your primary audience.
 
         """
 

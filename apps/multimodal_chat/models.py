@@ -51,6 +51,8 @@ class MultimodalChat(models.Model):
         ordering = ["-created_at"]
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
         # Create the knowledge base connection in the ORM
         if (self.assistant.context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE
                 and self.context_memory_connection is None):
@@ -71,8 +73,6 @@ class MultimodalChat(models.Model):
             # Create the Weaviate classes for the context chat history memory
             connection = ContextHistoryKnowledgeBaseConnection.objects.get(id=context_history.id)
             self.context_memory_connection = connection
-
-        super().save(*args, **kwargs)
 
     def delete(self, using=None, keep_parents=False):
         # Remove the context memory connection

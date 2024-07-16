@@ -25,7 +25,7 @@ def get_structured_context_overflow_prompt(assistant: Assistant):
         - **Store as Vector**: When the limit is reached, the messages will be stored in the vector store.
         IF AND ONLY IF this strategy is set, the overflowed chat messages will be stored in the vector store
         that you can use to refer back to the messages. If you have such a strategy, you can refer to the relevant
-        section in your prompt to understand how to use it.
+        section (defined as a 'TOOL') in your prompt to understand how to use it.
 
         ---
 
