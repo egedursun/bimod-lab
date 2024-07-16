@@ -3,26 +3,21 @@
 
 ---
 
-- [ ] Integrating the Payment Gateway to get the payment done (for balance)
 - [X] Handling the negative balance and stopping transactions when required. Also, for adding negative balances (-123), there needs to be a validation to prevent.
 - [X] Rate limiting the usage for safety.
+- [X] Real media management with AWS S3 Storages (e.g. profile pictures, organization images, etc.)
+- [X] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
+- [ ] Integrating the Payment Gateway to get the payment done (for balance) + credit card safety / storage and usage
 - [ ] Additional cost column for custom tools. (start + continuation)
 - [ ] Real PostgreSQL DBMS integration.
-- [ ] Real e-mail SMTP integration.
+- [ ] Real E-mail SMTP integration.
+- [ ] Stop Sequence Integration
 - [ ] HTTPS Configuration for the application + CORS configuration.
-- [X] Real media management with AWS S3 Storages (e.g. profile pictures, organization images, etc.)
 - [ ] Better validation and logging system.
-- [X] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 - [ ] Privacy Policy and Terms of Service development & integration for the application.
-- [ ] Stop Sequence Integration
-- [ ] A better payment method management (for credit card storage and usage).
-- [ ] Proper documentation & tutorial.
-- [ ] Sample instructions to help the people through the application.
-- [ ] Create the indexes for all data models to increase the performance.
+- [ ] Proper Documentation & tutorial, instructions (FAQ and Support) for the application.
 - [ ] Automated balance top-ups (monthly or as it goes low).
-- [ ] Template messages must show up next to the message creation form.
-- [ ] Drive and dropbox integration for media and document storage & automated transfer within the system and knowledge bases.
 - [ ] Exclude the media from Git versioning (IMPORTANT!!)
 
 ---
@@ -110,6 +105,8 @@
 - [X] Implement the context cut-off tool to prevent context window from overflowing.
 - [X] Implement the Knowledge Base tool for the web browser & web scraping features.
 - [X] Implement the Vectorizer Memory for context overflows, within the same class with knowledge base.
+- [ ] Create the indexes for all data models to increase the performance.
+- [ ] Template messages must show up next to the message creation form.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
   - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low", which will determine
           how difficult the agent will trust on an online source.
@@ -148,6 +145,7 @@
 - [ ] **NEW FEATURE IDEA:** Boilerplate knowledge bases for direct integration with assistants.
 - [ ] **NEW FEATURE IDEA:** Text-to-Speech and Speech-to-Text integration for the assistants.
 - [ ] **NEW FEATURE IDEA:** Word Plugin and possibly other MS Office tools to auto-complete and active help.
+- [ ] **NEW FEATURE IDEA:** Drive and dropbox integration for media and document storage & automated transfer within the system and knowledge bases.
 ---
 
 
@@ -225,6 +223,13 @@
 
 - Total Lines of Code by 2024-07-15:
   - **1,116,000 - 1,118,000**
+
+- Total Lines of Code by 2024-07-16:
+  - **1,168,000 - 1,476,000**
+
+- Current System Prompt Cost: **5,400 Tokens**
+  - **1M Token** = $5,00
+  - **System Prompt Unit Cost** = $0,027 (TRY 0,90)
 
 *To count:*
 
