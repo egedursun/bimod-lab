@@ -7,6 +7,8 @@ from .models import MultimodalChat, MultimodalChatMessage, ChatSourcesNames
 from .utils import generate_chat_name
 from apps._services.llms.llm_decoder import InternalLLMClient
 from ..assistants.models import Assistant
+from ..message_templates.models import MessageTemplate
+from ..organization.models import Organization
 from ..user_permissions.models import UserPermission, PermissionNames
 
 
@@ -15,6 +17,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         active_chat = None
+        context_user = self.request.user
+
         if 'chat_id' in self.request.GET:
             active_chat = get_object_or_404(MultimodalChat, id=self.request.GET['chat_id'], user=self.request.user)
 
@@ -28,6 +32,13 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 active_chat = chats[0]
 
         assistants = Assistant.objects.filter(organization__users=self.request.user)
+        organizations = Organization.objects.filter(
+            organization_assistants__in=assistants
+        )
+        message_templates = MessageTemplate.objects.filter(
+            user = context_user,
+            organization__in=organizations
+        )
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         active_chat_messages = active_chat.chat_messages.all().order_by('sent_at') if active_chat else None
@@ -36,7 +47,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 "chats": chats,
                 "assistants": assistants,
                 "active_chat": active_chat,
-                "chat_messages": active_chat_messages
+                "chat_messages": active_chat_messages,
+                "message_templates": message_templates
             }
         )
         return context

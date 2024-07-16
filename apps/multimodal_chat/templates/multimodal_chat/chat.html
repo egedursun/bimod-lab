@@ -338,10 +338,35 @@
           </div>
           <!-- Chat message form -->
           <div class="chat-history-footer shadow-xs">
-            <form class="form-send-message d-flex justify-content-between align-items-center" method="post" action="." enctype="multipart/form-data">
+            <small class="text-muted m-6"><strong>Message Templates</strong></small>
+            <div class="card m-4 overflow-scroll" style="max-height: 150px;">
+              <div class="row">
+              {% for message_template in message_templates %}
+                <span class="card bg-label-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template" data-full-text="{{ message_template.template_text }}">
+                  <span class="text-dark">{{ message_template.template_text|truncatechars:50 }}..</span>
+                </span>
+              {% empty %}
+                <span class="card bg-label-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template" data-full-text="What are your instructions?">
+                  <span class="text-dark">What are your instructions?</span>
+                </span>
+                <span class="card bg-label-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template" data-full-text="What can you tell me about myself and my organization?">
+                  <span class="text-dark">What can you tell me about myself and my organization?</span>
+                </span>
+                <span class="card bg-label-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template" data-full-text="What are the datasources you have access to?">
+                  <span class="text-dark">What are the datasources you have access to?</span>
+                </span>
+                <span class="card bg-label-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template" data-full-text="What type of tools are you able to use?">
+                  <span class="text-dark">What type of tools are you able to use?</span>
+                </span>
+              {% endfor %}
+              </div>
+            </div>
+            <hr>
+            <small class="text-muted m-4"><strong>Your Message</strong></small>
+            <form class="form-send-message d-flex justify-content-between align-items-center mt-4" method="post" action="." enctype="multipart/form-data">
               {% csrf_token %}
               <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
-              <input class="form-control message-input border-0 me-4 shadow-none" name="message_content" placeholder="Type your message here...">
+              <textarea class="form-control message-input border-0 me-4 shadow-none" name="message_content" placeholder="Type your message here..." rows="1"></textarea>
               <div class="message-actions d-flex align-items-center">
                 <i class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
                 <label for="attach-doc" class="form-label mb-0">
@@ -354,6 +379,9 @@
                 </button>
               </div>
             </form>
+          </div>
+          <div class="">
+            <span>&nbsp;</span>
           </div>
         </div>
       {% endif %}
@@ -417,6 +445,18 @@
     }
   }
 </style>
+<style>
+  /* Add hover effect and cursor pointer to template cards */
+  .card-template {
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .card-template:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+</style>
 
 <!-- Include a markdown library, for example, Showdown.js -->
 <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
@@ -453,97 +493,108 @@ document.addEventListener('DOMContentLoaded', function () {
     loadingBarCreateChat.classList.remove('d-none');
     loadingBarWarningCreateChat.classList.remove('d-none');
   });
+
 });
 
-document.querySelectorAll('.copy-btn').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    const messageId = this.getAttribute('data-message-id');
-    const templateTextElement = document.getElementById(`copied-message-${messageId}`);
-    const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.card-template').forEach(function (template) {
+    template.addEventListener('click', function () {
+      const fullText = this.getAttribute('data-full-text');
+      console.log(fullText);
+      const chatInput = document.querySelector('.message-input');
+      chatInput.value = fullText;
 
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
-      const successAlert = document.createElement('div');
-      successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
-      successAlert.role = 'alert';
-      successAlert.innerHTML = `
-        <span class="alert-icon rounded">
-          <i class="ti ti-check"></i>
-        </span>
-        Plain Text copied to clipboard!
-      `;
-      alertContainer.appendChild(successAlert);
+      navigator.clipboard.writeText(fullText).then(() => {
+        const alertContainer = document.querySelector('.alert-container');
+        const successAlert = document.createElement('div');
+        successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+        successAlert.role = 'alert';
+        successAlert.innerHTML = `
+          <span class="alert-icon rounded">
+            <i class="ti ti-check"></i>
+          </span>
+          Template text copied to chat input!
+        `;
+        alertContainer.appendChild(successAlert);
 
-      setTimeout(() => {
-        successAlert.remove();
-      }, 1000);
-    }).catch(err => {
-      alert('Failed to copy text: ' + err);
+        setTimeout(() => {
+          successAlert.remove();
+        }, 1000);
+      }).catch(err => {
+        alert('Failed to copy text: ' + err);
+      });
     });
   });
 });
 
-document.querySelectorAll('.copy-btn-html').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    const messageId = this.getAttribute('data-message-id');
-    const templateTextElement = document.getElementById(`copied-message-${messageId}`);
-    const textToCopy = templateTextElement ? templateTextElement.innerText : '';
-    const converter = new showdown.Converter();
-    const textToCopyHtml = converter.makeHtml(textToCopy);
-    console.log(textToCopyHtml);
+    document.querySelectorAll('.copy-btn-html').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const messageId = this.getAttribute('data-message-id');
+        const templateTextElement = document.getElementById(`copied-message-${messageId}`);
+        const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+        const converter = new showdown.Converter();
+        const textToCopyHtml = converter.makeHtml(textToCopy);
 
-    navigator.clipboard.writeText(textToCopyHtml).then(() => {
-      const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
-      const successAlert = document.createElement('div');
-      successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
-      successAlert.role = 'alert';
-      successAlert.innerHTML = `
+        navigator.clipboard.writeText(textToCopyHtml).then(() => {
+          const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
+          const successAlert = document.createElement('div');
+          successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+          successAlert.role = 'alert';
+          successAlert.innerHTML = `
         <span class="alert-icon rounded">
           <i class="ti ti-check"></i>
         </span>
         Formatted Text copied to clipboard!
       `;
-      alertContainer.appendChild(successAlert);
+          alertContainer.appendChild(successAlert);
 
-      setTimeout(() => {
-        successAlert.remove();
-      }, 1000);
-    }).catch(err => {
-      alert('Failed to copy text: ' + err);
+          setTimeout(() => {
+            successAlert.remove();
+          }, 1000);
+        }).catch(err => {
+          alert('Failed to copy text: ' + err);
+        });
+      });
+    });
+
+document.addEventListener('DOMContentLoaded', function () {
+  const chatInput = document.querySelector('.message-input');
+
+  chatInput.addEventListener('input', function () {
+    this.style.height = 'auto'; // Reset the height
+    this.style.height = (this.scrollHeight) + 'px'; // Set the height to match the content
+  });
+
+  document.querySelectorAll('.card-template').forEach(function (template) {
+    template.addEventListener('click', function () {
+      const fullText = this.getAttribute('data-full-text');
+      chatInput.value = fullText;
+      chatInput.style.height = 'auto'; // Reset the height
+      chatInput.style.height = (chatInput.scrollHeight) + 'px'; // Adjust height to match content
+
+      navigator.clipboard.writeText(fullText).then(() => {
+        const alertContainer = document.querySelector('.alert-container');
+        const successAlert = document.createElement('div');
+        successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+        successAlert.role = 'alert';
+        successAlert.innerHTML = `
+          <span class="alert-icon rounded">
+            <i class="ti ti-check"></i>
+          </span>
+          Template text copied to chat input!
+        `;
+        alertContainer.appendChild(successAlert);
+
+        setTimeout(() => {
+          successAlert.remove();
+        }, 1000);
+      }).catch(err => {
+        alert('Failed to copy text: ' + err);
+      });
     });
   });
 });
 
-document.querySelectorAll('.copy-btn-markdown').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    const messageId = this.getAttribute('data-message-id');
-    const templateTextElement = document.getElementById(`copied-message-${messageId}`);
-    const textToCopy = templateTextElement ? templateTextElement.innerText : '';
-    const converter = new showdown.Converter();
-    const textToCopyHtml = converter.makeHtml(textToCopy);
-    const textToCopyMarkdown = converter.makeMarkdown(textToCopyHtml);
-
-    navigator.clipboard.writeText(textToCopyMarkdown).then(() => {
-      const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
-      const successAlert = document.createElement('div');
-      successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
-      successAlert.role = 'alert';
-      successAlert.innerHTML = `
-        <span class="alert-icon rounded">
-          <i class="ti ti-check"></i>
-        </span>
-        Markdown Text copied to clipboard!
-      `;
-      alertContainer.appendChild(successAlert);
-
-      setTimeout(() => {
-        successAlert.remove();
-      }, 1000);
-    }).catch(err => {
-      alert('Failed to copy text: ' + err);
-    });
-  });
-});
 
 </script>
 

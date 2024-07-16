@@ -255,6 +255,7 @@ class InternalOpenAIClient:
             ACTIVE_TOOL_RETRY_COUNT += 1
 
             json_part_of_response = find_json_presence(final_response)
+            tool_name = None
             try:
                 tool_executor = ToolExecutor(
                     assistant=self.assistant,
@@ -267,21 +268,25 @@ class InternalOpenAIClient:
                     prev_tool_name = tool_name
 
             except Exception as e:
-                tool_response = f"""
-                    System Message:
+                if tool_name is not None:
+                    tool_response = f"""
+                        System Message:
 
-                    An error occurred while decoding the JSON response provided by the AI assistant. This might be
-                    related to the incorrect formatting of the response. Please make sure that the response is in the
-                    correct JSON format.
+                        An error occurred while decoding the JSON response provided by the AI assistant. This might be
+                        related to the incorrect formatting of the response. Please make sure that the response is in the
+                        correct JSON format.
 
-                    Error Details:
+                        Error Details:
 
-                    '''
-                    {str(e)}
-                    '''
-                """
+                        '''
+                        {str(e)}
+                        '''
+                    """
 
-                return tool_response
+                    return tool_response
+                else:
+                    tool_response = json.dumps(final_response)
+                    return tool_response
 
         if tool_response:
             # Create the request as a multimodal chat message and add it to the chat
