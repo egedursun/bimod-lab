@@ -24,6 +24,17 @@ class StarredMessage(models.Model):
     class Meta:
         verbose_name = "Starred Message"
         verbose_name_plural = "Starred Messages"
+        ordering = ["-starred_at"]
+        indexes = [
+            models.Index(fields=["user", "organization", "assistant", "chat", "chat_message"]),
+            models.Index(fields=["user", "organization", "assistant", "chat", "starred_at"]),
+            models.Index(fields=["user", "organization", "assistant", "chat", "sender_type"]),
+            models.Index(fields=["user", "organization", "assistant", "chat", "sender_type", "starred_at"]),
+            models.Index(fields=["user", "organization", "assistant", "chat", "sender_type", "chat_message"]),
+            models.Index(fields=["user", "organization", "assistant", "chat", "chat_message", "starred_at"]),
+            models.Index(fields=["user", "organization", "assistant", "chat", "chat_message", "sender_type"]),
+            models.Index(fields=["user", "organization", "assistant", "chat", "chat_message", "sender_type", "starred_at"]),
+        ]
 
     def __str__(self):
         return f"{self.user} starred {self.chat_message}"

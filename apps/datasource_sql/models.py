@@ -50,6 +50,13 @@ class SQLDatabaseConnection(models.Model):
         ordering = ['-created_at']
         verbose_name_plural = 'SQL Database Connections'
         verbose_name = 'SQL Database Connection'
+        indexes = [
+            models.Index(fields=['assistant', 'dbms_type', 'name']),
+            models.Index(fields=['assistant', 'dbms_type', 'created_at']),
+            models.Index(fields=['assistant', 'dbms_type', 'updated_at']),
+            models.Index(fields=['assistant', 'dbms_type', 'name', 'created_at']),
+            models.Index(fields=['assistant', 'dbms_type', 'name', 'updated_at']),
+        ]
 
     def __str__(self):
         return self.dbms_type + ' - ' + self.name
@@ -160,3 +167,10 @@ class CustomSQLQuery(models.Model):
         ordering = ['-created_at']
         verbose_name_plural = 'Custom SQL Queries'
         verbose_name = 'Custom SQL Query'
+        indexes = [
+            models.Index(fields=['database_connection', 'name']),
+            models.Index(fields=['database_connection', 'created_at']),
+            models.Index(fields=['database_connection', 'updated_at']),
+            models.Index(fields=['database_connection', 'name', 'created_at']),
+            models.Index(fields=['database_connection', 'name', 'updated_at']),
+        ]

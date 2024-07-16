@@ -17,6 +17,17 @@ class MessageTemplate(models.Model):
     class Meta:
         verbose_name = "Message Template"
         verbose_name_plural = "Message Templates"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["user", "organization", "created_at"]),
+            models.Index(fields=["user", "organization"]),
+            models.Index(fields=["user", "created_at"]),
+            models.Index(fields=["organization", "created_at"]),
+            models.Index(fields=["template_text"]),
+            models.Index(fields=["user", "organization", "template_text"]),
+            models.Index(fields=["user", "template_text"]),
+            models.Index(fields=["organization", "template_text"]),
+        ]
 
     def __str__(self):
         return f"{self.user} - {self.organization} - {self.template_text}"

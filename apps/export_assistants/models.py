@@ -12,6 +12,16 @@ class RequestLog(models.Model):
     export_assistant = models.ForeignKey('ExportAssistantAPI', on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Request Log"
+        verbose_name_plural = "Request Logs"
+        ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['export_assistant']),
+            models.Index(fields=['timestamp']),
+            models.Index(fields=['export_assistant', 'timestamp']),
+        ]
+
 
 class ExportAssistantAPI(models.Model):
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE)
@@ -54,3 +64,12 @@ class ExportAssistantAPI(models.Model):
         verbose_name = "Export Assistant API"
         verbose_name_plural = "Export Assistant APIs"
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['assistant']),
+            models.Index(fields=['created_by_user']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['updated_at']),
+            models.Index(fields=['assistant', 'created_at']),
+            models.Index(fields=['assistant', 'updated_at']),
+            models.Index(fields=['assistant', 'created_by_user']),
+        ]

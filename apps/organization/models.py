@@ -49,6 +49,18 @@ class Organization(models.Model):
         verbose_name = "Organization"
         verbose_name_plural = "Organizations"
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["name"]),
+            models.Index(fields=["email"]),
+            models.Index(fields=["phone"]),
+            models.Index(fields=["industry"]),
+            models.Index(fields=["is_active"]),
+            models.Index(fields=["created_at"]),
+            models.Index(fields=["updated_at"]),
+            models.Index(fields=["created_by_user"]),
+            models.Index(fields=["last_updated_by_user"]),
+            models.Index(fields=["balance"]),
+        ]
 
 
 

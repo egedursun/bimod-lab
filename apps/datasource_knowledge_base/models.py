@@ -98,6 +98,13 @@ class DocumentKnowledgeBaseConnection(models.Model):
         verbose_name_plural = "Document Knowledge Base Connections"
         ordering = ["-created_at"]
         unique_together = ['host_url', 'assistant']
+        indexes = [
+            models.Index(fields=["provider", "assistant", "name"]),
+            models.Index(fields=["provider", "assistant", "created_at"]),
+            models.Index(fields=["provider", "assistant", "updated_at"]),
+            models.Index(fields=["class_name"]),
+            models.Index(fields=["vectorizer"]),
+        ]
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
@@ -156,6 +163,11 @@ class KnowledgeBaseDocument(models.Model):
         verbose_name = "Knowledge Base Document"
         verbose_name_plural = "Knowledge Base Documents"
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["knowledge_base", "document_file_name"]),
+            models.Index(fields=["knowledge_base", "created_at"]),
+            models.Index(fields=["knowledge_base", "updated_at"]),
+        ]
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
@@ -208,6 +220,11 @@ class KnowledgeBaseDocumentChunk(models.Model):
         verbose_name = "Knowledge Base Document Chunk"
         verbose_name_plural = "Knowledge Base Document Chunks"
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["knowledge_base", "document", "chunk_number"]),
+            models.Index(fields=["knowledge_base", "document", "created_at"]),
+            models.Index(fields=["knowledge_base", "document", "updated_at"]),
+        ]
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
@@ -241,6 +258,14 @@ class ContextHistoryKnowledgeBaseConnection(models.Model):
         verbose_name = "Context History Knowledge Base Connection"
         verbose_name_plural = "Context History Knowledge Base Connections"
         ordering = ["-created_at"]
+        unique_together = ['assistant', 'chat']
+        indexes = [
+            models.Index(fields=["assistant", "chat"]),
+            models.Index(fields=["created_at"]),
+            models.Index(fields=["updated_at"]),
+            models.Index(fields=["class_name"]),
+            models.Index(fields=["vectorizer"]),
+        ]
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
@@ -289,6 +314,11 @@ class ContextHistoryMemory(models.Model):
         verbose_name = "Context History Memory"
         verbose_name_plural = "Context History Memories"
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["context_history_base", "memory_name"]),
+            models.Index(fields=["context_history_base", "created_at"]),
+            models.Index(fields=["context_history_base", "updated_at"]),
+        ]
 
     def delete(self, using=None, keep_parents=False):
         # delete the document from Weaviate
@@ -324,13 +354,11 @@ class ContextHistoryMemoryChunk(models.Model):
         verbose_name = "Context History Memory Chunk"
         verbose_name_plural = "Context History Memory Chunks"
         ordering = ["-created_at"]
-
-
-###################################################################################################################
-
-
-# [3B] TODO: A data model for the objects stored in the knowledge base as web pages
-# [3C] TODO: A data model for the objects stored in the knowledge base as web page chunks
+        indexes = [
+            models.Index(fields=["context_history_base", "memory", "chunk_number"]),
+            models.Index(fields=["context_history_base", "memory", "created_at"]),
+            models.Index(fields=["context_history_base", "memory", "updated_at"]),
+        ]
 
 
 ###################################################################################################################
@@ -381,3 +409,7 @@ class DocumentProcessingLog(models.Model):
         verbose_name = "Document Processing Log"
         verbose_name_plural = "Document Processing Logs"
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["document_full_uri"]),
+            models.Index(fields=["created_at"]),
+        ]

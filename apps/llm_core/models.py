@@ -44,6 +44,24 @@ class LLMCore(models.Model):
     class Meta:
         verbose_name = "LLM Core"
         verbose_name_plural = "LLM Cores"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["nickname"]),
+            models.Index(fields=["provider"]),
+            models.Index(fields=["model_name"]),
+            models.Index(fields=["created_at"]),
+            models.Index(fields=["updated_at"]),
+            models.Index(fields=["organization"]),
+            models.Index(fields=["created_by_user"]),
+            models.Index(fields=["last_updated_by_user"]),
+            models.Index(fields=["organization", "nickname"]),
+            models.Index(fields=["organization", "provider"]),
+            models.Index(fields=["organization", "model_name"]),
+            models.Index(fields=["organization", "created_at"]),
+            models.Index(fields=["organization", "updated_at"]),
+            models.Index(fields=["organization", "created_by_user"]),
+            models.Index(fields=["organization", "last_updated_by_user"]),
+        ]
 
     def get_provider_name(self):
         return dict(LLM_CORE_PROVIDERS)[self.provider]

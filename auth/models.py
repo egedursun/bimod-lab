@@ -24,6 +24,11 @@ class UserCreditCard(models.Model):
         verbose_name = "Credit Card"
         verbose_name_plural = "Credit Cards"
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=['user', 'name_on_card', 'card_number', 'created_at']),
+            models.Index(fields=['user', 'name_on_card', 'card_number', 'card_expiration_month', 'card_expiration_year',
+                                    'card_cvc', 'created_at'])
+        ]
 
     # convert every name_on_card letters to uppercase on save
     def save(self, *args, **kwargs):
@@ -90,3 +95,27 @@ class Profile(models.Model):
     class Meta:
         verbose_name = "User Profile"
         verbose_name_plural = "User Profiles"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['email']),
+            models.Index(fields=['user', 'email']),
+            models.Index(fields=['user', 'email', 'is_verified']),
+            models.Index(fields=['user', 'email', 'is_verified', 'created_at']),
+            models.Index(fields=['first_name', 'last_name']),
+            models.Index(fields=['first_name', 'last_name', 'created_at']),
+            models.Index(fields=['phone_number']),
+            models.Index(fields=['phone_number', 'created_at']),
+            models.Index(fields=['address']),
+            models.Index(fields=['address', 'created_at']),
+            models.Index(fields=['city']),
+            models.Index(fields=['city', 'created_at']),
+            models.Index(fields=['country']),
+            models.Index(fields=['country', 'created_at']),
+            models.Index(fields=['postal_code']),
+            models.Index(fields=['postal_code', 'created_at']),
+            models.Index(fields=['is_active']),
+            models.Index(fields=['is_active', 'created_at']),
+            models.Index(fields=['created_by_user']),
+            models.Index(fields=['created_by_user', 'created_at']),
+        ]

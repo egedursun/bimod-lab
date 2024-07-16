@@ -129,3 +129,12 @@ class Assistant(models.Model):
         verbose_name = "Assistant"
         verbose_name_plural = "Assistants"
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["organization", "llm_model", "name"]),
+            models.Index(fields=["organization", "llm_model", "created_by_user"]),
+            models.Index(fields=["organization", "llm_model", "last_updated_by_user"]),
+            models.Index(fields=["organization", "llm_model", "created_at"]),
+            models.Index(fields=["organization", "llm_model", "updated_at"]),
+            models.Index(fields=["organization", "llm_model", "name", "created_at"]),
+            models.Index(fields=["organization", "llm_model", "name", "updated_at"]),
+        ]

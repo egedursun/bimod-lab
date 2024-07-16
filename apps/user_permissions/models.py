@@ -315,6 +315,21 @@ class UserPermission(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['user', 'permission_type'], name='unique_user_permission')
         ]
+        indexes = [
+            models.Index(fields=['user', 'permission_type']),
+            models.Index(fields=['user', 'permission_type', 'is_active']),
+            models.Index(fields=['user', 'is_active']),
+            models.Index(fields=['permission_type', 'is_active']),
+            models.Index(fields=['permission_type']),
+            models.Index(fields=['is_active']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['user', 'created_at']),
+            models.Index(fields=['permission_type', 'created_at']),
+            models.Index(fields=['user', 'permission_type', 'created_at']),
+            models.Index(fields=['user', 'permission_type', 'is_active', 'created_at']),
+            models.Index(fields=['user', 'is_active', 'created_at']),
+            models.Index(fields=['permission_type', 'is_active', 'created_at']),
+        ]
 
     def get_permission_type_name(self):
         return dict(PERMISSION_TYPES)[self.permission_type]

@@ -49,6 +49,20 @@ class MultimodalChat(models.Model):
         verbose_name = "Multimodal Chat"
         verbose_name_plural = "Multimodal Chats"
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=['organization', 'assistant', 'user']),
+            models.Index(fields=['organization', 'assistant', 'user', 'created_at']),
+            models.Index(fields=['organization', 'assistant', 'user', 'updated_at']),
+            models.Index(fields=['organization', 'assistant', 'created_at']),
+            models.Index(fields=['organization', 'assistant', 'updated_at']),
+            models.Index(fields=['organization', 'created_at']),
+            models.Index(fields=['organization', 'updated_at']),
+            models.Index(fields=['assistant', 'created_at']),
+            models.Index(fields=['assistant', 'updated_at']),
+            models.Index(fields=['user', 'created_at']),
+            models.Index(fields=['user', 'updated_at']),
+            models.Index(fields=['chat_source']),
+        ]
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -73,6 +87,7 @@ class MultimodalChat(models.Model):
             # Create the Weaviate classes for the context chat history memory
             connection = ContextHistoryKnowledgeBaseConnection.objects.get(id=context_history.id)
             self.context_memory_connection = connection
+            self.save()
 
     def delete(self, using=None, keep_parents=False):
         # Remove the context memory connection
@@ -115,6 +130,14 @@ class MultimodalChatMessage(models.Model):
         verbose_name = "Multimodal Chat Message"
         verbose_name_plural = "Multimodal Chat Messages"
         ordering = ["-sent_at"]
+        indexes = [
+            models.Index(fields=['multimodal_chat', 'sender_type']),
+            models.Index(fields=['multimodal_chat', 'sent_at']),
+            models.Index(fields=['multimodal_chat', 'sender_type', 'sent_at']),
+            models.Index(fields=['multimodal_chat', 'sender_type', 'starred']),
+            models.Index(fields=['multimodal_chat', 'starred']),
+            models.Index(fields=['multimodal_chat', 'starred', 'sent_at']),
+        ]
 
     def get_organization_balance(self):
         return self.multimodal_chat.organization.balance

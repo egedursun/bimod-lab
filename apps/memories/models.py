@@ -24,3 +24,10 @@ class AssistantMemory(models.Model):
     class Meta:
         verbose_name = "Memory"
         verbose_name_plural = "Memories"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["assistant", "user", "created_at"]),
+            models.Index(fields=["assistant", "user"]),
+            models.Index(fields=["assistant", "created_at"]),
+            models.Index(fields=["user", "created_at"]),
+        ]
