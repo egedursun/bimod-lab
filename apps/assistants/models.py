@@ -94,6 +94,7 @@ class Assistant(models.Model):
                                        null=True, blank=True)
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
     document_base_directory = models.CharField(max_length=1000, null=True, blank=True)
+    storages_base_directory = models.CharField(max_length=1000, null=True, blank=True)
 
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                         related_name='assistants_created_by_user')
@@ -115,6 +116,12 @@ class Assistant(models.Model):
             os.system(f"mkdir -p {dir_name}")
             os.system(f"touch {dir_name}/__init__.py")
 
+        if self.storages_base_directory is None:
+            dir_name = f"media/storages/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{str(random.randint(1_000_000, 9_999_999))}/"
+            self.storages_base_directory = dir_name
+            os.system(f"mkdir -p {dir_name}")
+            os.system(f"touch {dir_name}/__init__.py")
+
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
@@ -122,6 +129,10 @@ class Assistant(models.Model):
         # Remove the document directory
         if self.document_base_directory is not None:
             os.system(f"rm -rf {self.document_base_directory}")
+
+        # Remove the storages directory
+        if self.storages_base_directory is not None:
+            os.system(f"rm -rf {self.storages_base_directory}")
 
         super().delete(using, keep_parents)
 

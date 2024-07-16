@@ -60,7 +60,7 @@ class DocumentKnowledgeBaseCreateView(LoginRequiredMixin, TemplateView):
             messages.success(request, "Knowledge Base created successfully.")
             return redirect('datasource_knowledge_base:list')
         else:
-            messages.error(request, "Error creating Knowledge Base. Please check the form for errors.")
+            messages.error(request, "Error creating Knowledge Base. Please check the form for errors: %s" % form.errors)
             context = self.get_context_data(**kwargs)
             context['form'] = form
             return self.render_to_response(context)

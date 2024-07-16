@@ -63,6 +63,9 @@ class PromptBuilder:
         structured_sql_datasource_prompt = build_sql_datasource_prompt(assistant, user)
         structured_knowledge_base_datasource_prompt = build_knowledge_base_datasource_prompt(assistant, user)
         structured_file_system_prompt = build_file_system_datasource_prompt(assistant, user)
+
+        # TODO: add the prompt here (media storage)
+        structured_media_storage_prompt = None
         ##################################################
         # TOOL PROMPTS
         structured_tool_usage_instructions_prompt = (
@@ -74,10 +77,12 @@ class PromptBuilder:
         _ = (
             build_structured_tool_prompt__nosql_query_execution()
         )
-        # - for now, excluding NoSQL query execution tool prompt
         structured_knowledge_base_query_execution_tool_prompt = build_structured_tool_prompt__knowledge_base_query_execution()
         structured_vectorized_context_history_query_execution_tool_prompt = build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt()
         structured_file_system_command_execution_tool_prompt = build_structured_tool_prompt__file_system_command_execution()
+
+        # TODO: add the prompt here (media storage)
+        structured_storage_query_execution_tool_prompt = None
         ##################################################
 
         # Combine the prompts
@@ -96,8 +101,9 @@ class PromptBuilder:
         merged_prompt += structured_sql_datasource_prompt
         merged_prompt += structured_knowledge_base_datasource_prompt
         merged_prompt += structured_file_system_prompt
-        # merged_prompt += structured_nosql_datasource_prompt
-        #  - for now, excluding NoSQL datasource prompt
+
+        # TODO: append to the main prompt here (media storage)
+
         ##################################################
         merged_prompt += structured_tool_usage_instructions_prompt
 

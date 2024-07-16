@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     "apps.datasource_nosql",
     "apps.datasource_knowledge_base",
     "apps.datasource_file_systems",
+    "apps.datasource_media_storages",
     #############################
 ]
 

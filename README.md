@@ -107,6 +107,8 @@
 - [X] Implement the Vectorizer Memory for context overflows, within the same class with knowledge base.
 - [X] Create the indexes for all data models to increase the performance.
 - [X] Template messages must show up next to the message creation form.
+- [ ] **URGENT:** Implement the permissions for the file system tool.
+- [ ] **URGENT:** Implement the permissions for the media storage tool.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
   - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low", which will determine
           how difficult the agent will trust on an online source.
@@ -118,22 +120,16 @@
   - [ ] Implementation of the prompt for the browsing tool.
   - [ ] Integration of the prompt to the chat.
   - [ ] Testing within the chat and evaluation of the performance.
-- [ ] Implement the File System tool for the file system manipulation features.
-  - [ ] Think about how to implement (?)
+- [X] Implement the File System tool for the file system manipulation features.
 - [ ] Implement the ML Model tool for the ML models usage features.
-  - [ ] Think about how to implement (?)
-- [ ] Implement the Document, Image, Audio, Video tools for the media storage features.
-  - [ ] 3 pages for managing the media files (images, audio, video).
-  - [ ] For photographs, these will be stored in the media storage, and the assistant will be able to query
-        these images via tools to interpret them and have information. The photographs will have metadata
-        for the assistant to understand the context.
-  - [ ] For audio, these will be stored in the media storage, and the assistant will be able to query
-        these audio files via tools to interpret them and have information. The audio files will have metadata
-        for the assistant to understand the context.
-  - [ ] For video, these will be stored in the media storage, and the assistant will be able to query these
-        video files via tools to interpret them and have information. The video files will have metadata
-        for the assistant to understand the context.
-- 
+- [ ] Implement the media storage features.
+  - [ ] Implement the media item description field for the upload staging section.
+  - [ ] Implement the list media items page.
+  - [ ] Implement the list media items description field.
+  - [ ] Implement the retrieval function for the assistant.
+  - [ ] Implement the image interpretation tool.
+  - [ ] Integrate the prompts.
+  - [ ] Test the functionality.
 
 <br><br>
 

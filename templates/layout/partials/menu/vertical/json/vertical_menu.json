@@ -274,7 +274,35 @@
       "name": "Media Storages",
       "icon": "menu-icon tf-icons ti ti-video",
       "slug": "media-storages",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add Media Storage",
+          "slug": "media-storage",
+          "url": "datasource_media_storages:create"
+        },
+        {
+          "name": "Media Storages",
+          "slug": "media-storage",
+          "url": "datasource_media_storages:list"
+        }
+      ]
+    },
+    {
+      "name": "Multimedia Files",
+      "icon": "menu-icon tf-icons ti ti-file",
+      "slug": "multimedia-files",
+      "submenu": [
+        {
+          "name": "Add Files",
+          "slug": "multimedia-files",
+          "url": "datasource_media_storages:create_item"
+        },
+        {
+          "name": "Manage Files",
+          "slug": "multimedia-files",
+          "url": "dashboard:main-dashboard"
+        }
+      ]
     },
     {
       "menu_header": "Tools"

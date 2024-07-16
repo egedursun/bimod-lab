@@ -140,7 +140,11 @@ class ToolExecutor:
             file_system_response_raw_str = json.dumps(file_system_response, sort_keys=True, default=str)
             tool_response += file_system_response_raw_str
         ##################################################
-
+        # Media Storage Query Execution Tool
+        elif tool_name == ToolTypeNames.MEDIA_STORAGE_QUERY_EXECUTION:
+            # TODO: implement the tool call logic here
+            pass
+        ##################################################
         # ...
 
         ##################################################

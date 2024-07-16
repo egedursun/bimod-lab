@@ -50,14 +50,4 @@ class AssistantAdmin(admin.ModelAdmin):
             if obj.document_base_directory is not None:
                 os.system(f"rm -rf {obj.document_base_directory}")
 
-        # TODO-DELETE-ASSISTANT-WEAVIATE: Remove the weaviate classes
-        """
-        conn = self.context_memory_connection
-        client = ContextHistoryExecutor(conn)
-        if client is not None:
-            result = client.delete_weaviate_class()
-            if not result["status"]:
-                print(f"Error deleting Weaviate classes: {result['error']}")
-        """
-
         return django_delete_selected(self, request, queryset)
