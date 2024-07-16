@@ -184,7 +184,18 @@
       "name": "File Systems",
       "icon": "menu-icon tf-icons ti ti-server",
       "slug": "file-systems",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add File System (SSH)",
+          "slug": "file-system",
+          "url": "datasource_file_systems:create"
+        },
+        {
+          "name": "File Systems",
+          "slug": "file-system",
+          "url": "datasource_file_systems:list"
+        }
+      ]
     },
     {
       "name": "Web Browsers",

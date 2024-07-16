@@ -10,7 +10,7 @@ def build_structured_tool_prompt__knowledge_base_query_execution():
             of the user to provide a more accurate response to the user's questions. You can try to reach any of the
             specified knowledge bases defined within the "Knowledge Base Connections" section.
 
-            - The standardized format for the JSON file that you will output to use the Knowledge Base Query Execution
+            - The standardized format for the dictionary that you will output to use the Knowledge Base Query Execution
             Tool is as follows:
 
             '''
@@ -23,6 +23,8 @@ def build_structured_tool_prompt__knowledge_base_query_execution():
                         }}
                     }}
             '''
+
+            **DO NOT WRITE: ** 'json' anywhere in your dictionary or next to "'''" elements.
 
             **INSTRUCTIONS:** The "knowledge_base_connection_id" will be the ID of the Knowledge Base Connection that
             you would like to execute your query on, and the "query" will be the string that you would like to search

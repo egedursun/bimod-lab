@@ -106,7 +106,7 @@
 - [X] Implement the Knowledge Base tool for the web browser & web scraping features.
 - [X] Implement the Vectorizer Memory for context overflows, within the same class with knowledge base.
 - [X] Create the indexes for all data models to increase the performance.
-- [ ] Template messages must show up next to the message creation form.
+- [X] Template messages must show up next to the message creation form.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
   - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low", which will determine
           how difficult the agent will trust on an online source.
@@ -204,11 +204,21 @@
 
 **Tools we Use for Testing:**
 
+- Hosting Service (Hostinger).
+  - Login Credentials: 
+    - **@Via Google Account** ->
+      - **E-mail:** edogandursun@gmail.com
+      - **PW:** ***
+  - SSH Connection:
+    - **Username:** root
+    - **PW:** t@G0trEhboeOWWDSi5Bg
+
 - SQL DB Data Source Tests - Aiven Console.
   - Login Credentials: 
     - **@Via Google Account** -> edogandursun@gmail.com
     - Has a PostgreSQL instance.
     - Has a MySQL instance.
+
 
 ---
 

@@ -9,7 +9,7 @@ def build_structured_tool_prompt__sql_query_execution():
         Connections that you have access to. This tool is very useful when you need to fetch data from the
         SQL Database Connections to provide a more accurate response to the user's questions.
 
-        - The standardized format for the JSON file that you will output to use the SQL Query Execution Tool
+        - The standardized format for the dictionary that you will output to use the SQL Query Execution Tool
         is as follows:
 
         '''
@@ -22,6 +22,8 @@ def build_structured_tool_prompt__sql_query_execution():
                     }}
                 }}
         '''
+
+        **DO NOT WRITE: ** 'json' anywhere in your dictionary or next to "'''" elements.
 
         **INSTRUCTIONS:** The "database_connection_id" will be the ID of the SQL Database Connection that you
         would like to execute the SQL query on, and the "sql_query" will be the SQL query that you would like to

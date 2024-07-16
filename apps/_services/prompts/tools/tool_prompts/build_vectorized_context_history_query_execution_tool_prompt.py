@@ -9,7 +9,7 @@ def build_structured_tool_prompt__vectorized_context_history__query_execution_to
         with the user, as this is a vector-based tool, it has almost infinite capabilities for you to bypass the
         limits of your 'context window'.
 
-        - The standardized format for the JSON file that you will output to use the Vector Chat History Query Execution
+        - The standardized format for the dictionary that you will output to use the Vector Chat History Query Execution
         Tool is as follows:
 
         '''
@@ -21,6 +21,8 @@ def build_structured_tool_prompt__vectorized_context_history__query_execution_to
                     }}
                 }}
         '''
+
+        **DO NOT WRITE: ** 'json' anywhere in your dictionary or next to "'''" elements.
 
         **INSTRUCTIONS:** The "query" field will be the string that you would like to search within your chat history
         with the user. The "alpha" parameter is a float value between 0.0 and 1.0 that determines the weight of

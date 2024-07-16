@@ -1,6 +1,7 @@
 
 from django.contrib.auth.models import User
 
+from apps._services.prompts.datasource.build_file_system_datasource_prompt import build_file_system_datasource_prompt
 from apps._services.prompts.datasource.build_knowledge_base_datasource_prompt import \
     build_knowledge_base_datasource_prompt
 from apps._services.prompts.datasource.build_sql_datasource_prompt import build_sql_datasource_prompt
@@ -17,6 +18,8 @@ from apps._services.prompts.generic.build_tone_prompt import get_structured_tone
 from apps._services.prompts.generic.build_user_information_prompt import build_structured_user_information_prompt
 from apps._services.prompts.tools.build_tool_usage_instructions_prompt import \
     build_structured_tool_usage_instructions_prompt
+from apps._services.prompts.tools.tool_prompts.build_file_system_command_execution_tool_prompt import \
+    build_structured_tool_prompt__file_system_command_execution
 from apps._services.prompts.tools.tool_prompts.build_knowledge_base_query_execution_tool_prompt import \
     build_structured_tool_prompt__knowledge_base_query_execution
 from apps._services.prompts.tools.tool_prompts.build_nosql_query_execution_tool_prompt import \
@@ -59,6 +62,7 @@ class PromptBuilder:
         # DATASOURCE PROMPTS
         structured_sql_datasource_prompt = build_sql_datasource_prompt(assistant, user)
         structured_knowledge_base_datasource_prompt = build_knowledge_base_datasource_prompt(assistant, user)
+        structured_file_system_prompt = build_file_system_datasource_prompt(assistant, user)
         ##################################################
         # TOOL PROMPTS
         structured_tool_usage_instructions_prompt = (
@@ -73,7 +77,7 @@ class PromptBuilder:
         # - for now, excluding NoSQL query execution tool prompt
         structured_knowledge_base_query_execution_tool_prompt = build_structured_tool_prompt__knowledge_base_query_execution()
         structured_vectorized_context_history_query_execution_tool_prompt = build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt()
-
+        structured_file_system_command_execution_tool_prompt = build_structured_tool_prompt__file_system_command_execution()
         ##################################################
 
         # Combine the prompts
@@ -91,6 +95,7 @@ class PromptBuilder:
         ##################################################
         merged_prompt += structured_sql_datasource_prompt
         merged_prompt += structured_knowledge_base_datasource_prompt
+        merged_prompt += structured_file_system_prompt
         # merged_prompt += structured_nosql_datasource_prompt
         #  - for now, excluding NoSQL datasource prompt
         ##################################################
@@ -100,6 +105,7 @@ class PromptBuilder:
         merged_prompt += structured_sql_query_execution_tool_prompt
         merged_prompt += structured_knowledge_base_query_execution_tool_prompt
         merged_prompt += structured_vectorized_context_history_query_execution_tool_prompt
+        merged_prompt += structured_file_system_command_execution_tool_prompt
 
         # Build the dictionary with the role
         prompt = {

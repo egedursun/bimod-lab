@@ -37,12 +37,14 @@ def build_structured_tool_usage_instructions_prompt(assistant: Assistant, user: 
         }
         '''
 
+        **DO NOT WRITE: ** 'json' anywhere in your dictionary or next to "'''" elements.
+
         - The "tool" parameter will be the name of the tool you would like to use, and the "parameters" will be the
         parameters that the tool requires to execute.
 
-        - **BE AWARE:** You must not put "'''" or "'''" in the JSON file you output. This is just a template
-        for you to understand how the JSON file should be structured. Your output must start with { and end
-        with } for the system to correctly interpret the JSON file.
+        - **BE AWARE:** YOU MUST STRICTLY FOLLOW THE DICTIONARY FORMAT PROVIDED ABOVE. NEVER, EVER, CHANGE THE FORMAT
+        OF THE DICTIONARY YOU OUTPUT. Start with ''', then open the curly braces, then write your JSON, then close the
+        curly braces, and then close with '''. DO NOT EVER write 'json' next to the "'''" elements or anything else.
 
         - For every tool you have, a sample JSON file will be provided for you to understand how the tool will
         be called.
