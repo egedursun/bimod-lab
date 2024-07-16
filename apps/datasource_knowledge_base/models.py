@@ -4,8 +4,10 @@ from django.db import models
 from slugify import slugify
 
 from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
+from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
 from apps.assistants.models import VECTORIZERS
-from apps.datasource_knowledge_base.utils import generate_class_name
+from apps.datasource_knowledge_base.utils import generate_class_name, generate_random_alphanumeric, \
+    generate_chat_history_class_name
 
 # Create your models here.
 
@@ -50,10 +52,12 @@ class SupportedDocumentTypesNames:
     POWERPOINT = 'pptx'
     XLSX = 'xlsx'
 
+
 ###################################################################################################################
 
 
 class DocumentKnowledgeBaseConnection(models.Model):
+
     # Main information
     provider = models.CharField(max_length=100, choices=KNOWLEDGE_BASE_SYSTEMS)
     host_url = models.CharField(max_length=1000)
@@ -121,8 +125,6 @@ class DocumentKnowledgeBaseConnection(models.Model):
             if not result["status"]:
                 print(f"Error deleting Weaviate classes: {result['error']}")
 
-        # delete the class documents path
-
         super().delete(using, keep_parents)
 
 
@@ -147,7 +149,8 @@ class KnowledgeBaseDocument(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return slugify(self.document_file_name) + " - " + self.knowledge_base.name + " - " + str(self.knowledge_base.id)
+        return slugify(self.document_file_name) + " - " + self.knowledge_base.name + " - " + str(
+            self.knowledge_base.id)
 
     class Meta:
         verbose_name = "Knowledge Base Document"
@@ -198,7 +201,8 @@ class KnowledgeBaseDocumentChunk(models.Model):
     document_uuid = models.CharField(max_length=1000, null=True, blank=True)
 
     def __str__(self):
-        return str(self.chunk_number) + " - " + self.document.document_file_name + " - " + self.document.knowledge_base.name
+        return str(
+            self.chunk_number) + " - " + self.document.document_file_name + " - " + self.document.knowledge_base.name
 
     class Meta:
         verbose_name = "Knowledge Base Document Chunk"
@@ -212,22 +216,16 @@ class KnowledgeBaseDocumentChunk(models.Model):
 
 
 ###################################################################################################################
+###################################################################################################################
 
 
-# [2A] TODO: A data model for a specific type of knowledge base, more concrete (for storing previous chats)
-#       This will not be reached by the user, therefore will have no 'templates', but it will be used
-#       by the assistants if the strategy for vectorization has been selected.
 class ContextHistoryKnowledgeBaseConnection(models.Model):
-    assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE)
+    assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, default=1)
+    chat = models.ForeignKey('multimodal_chat.MultimodalChat', on_delete=models.CASCADE, default=1)
+
+    class_name = models.CharField(max_length=1000, null=True, blank=True)
     vectorizer = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai")
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
-
-    # Langchain chunking rules
-    embedding_chunk_size = models.IntegerField(default=1024)
-    embedding_chunk_overlap = models.IntegerField(default=256)
-
-    # Schema (for defining the overall structure to the assistant)
-    schema_json = models.TextField(null=True, blank=True)
 
     # Knowledge bases have memories
     context_history_memories = models.ManyToManyField("ContextHistoryMemory", related_name='knowledge_bases',
@@ -237,7 +235,7 @@ class ContextHistoryKnowledgeBaseConnection(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.assistant.name + " - " + self.vectorizer + " - " + self.created_at.strftime("%Y%m%d%H%M%S")
+        return self.assistant.name + " - " + self.created_at.strftime("%Y%m%d%H%M%S")
 
     class Meta:
         verbose_name = "Context History Knowledge Base Connection"
@@ -247,55 +245,91 @@ class ContextHistoryKnowledgeBaseConnection(models.Model):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        # TODO-ON-SAVE: when a new context history knowledge base connection is created, create the Weaviate classes
-        #   and store the schema in the schema_json field
         if self.vectorizer is None:
             self.vectorizer = "text2vec-openai"
 
-        """
-        client = ContextHistoryExecutor(connection)
-        if client is not None:
-            result = client.create_weaviate_class()
-            if not result["status"]:
-                print(f"Error creating Weaviate classes: {result['error']}")
+        if self.class_name is None:
+            self.class_name = generate_chat_history_class_name()
 
-        self.schema_json = client.retrieve_schema()
-        """
         super().save(force_insert, force_update, using, update_fields)
 
+        client = MemoryExecutor(connection=self)
+        if client is not None:
+            result = client.create_chat_history_classes()
+            if not result["status"]:
+                print(f"Error creating Chat History class: {result['error']}")
 
-# [2B] TODO: The data model for the objects stored in the knowledge base as memories
+    def delete(self, using=None, keep_parents=False):
+        # delete the classes from Weaviate
+        client = MemoryExecutor(connection=self)
+        if client is not None:
+            result = client.delete_chat_history_classes(class_name=self.class_name)
+            if not result["status"]:
+                print(f"Error deleting Chat History class: {result['error']}")
+
+        super().delete(using, keep_parents)
+
+
 class ContextHistoryMemory(models.Model):
     context_history_base = models.ForeignKey("ContextHistoryKnowledgeBaseConnection", on_delete=models.CASCADE,
-                                       related_name='memories')
-    content_text = models.TextField()
+                                             related_name='memories')
+    memory_name = models.CharField(max_length=1000, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     # to associate the element with the Weaviate object
     knowledge_base_memory_uuid = models.CharField(max_length=1000, null=True, blank=True)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    memory_chunks = models.ManyToManyField("ContextHistoryMemoryChunk", related_name='memories', blank=True)
 
     def __str__(self):
-        return (slugify(self.content_text[:50]) + " - " + self.context_history_base.assistant.name + " - " +
-                str(self.context_history_base.id))
+        return self.context_history_base.assistant.name + " - " + self.created_at.strftime("%Y%m%d%H%M%S")
 
     class Meta:
         verbose_name = "Context History Memory"
         verbose_name_plural = "Context History Memories"
         ordering = ["-created_at"]
 
+    def delete(self, using=None, keep_parents=False):
+        # delete the document from Weaviate
+        client = MemoryExecutor(connection=self.context_history_base)
+        if client is not None:
+            result = client.delete_chat_history_document(
+                class_name=self.context_history_base.class_name,
+                document_uuid=self.knowledge_base_memory_uuid)
+            if not result["status"]:
+                print(f"Error deleting Weaviate document: {result['error']}")
+        # delete the object from ORM
+        super().delete(using, keep_parents)
+
+
+class ContextHistoryMemoryChunk(models.Model):
+    context_history_base = models.ForeignKey("ContextHistoryKnowledgeBaseConnection", on_delete=models.CASCADE)
+    memory = models.ForeignKey("ContextHistoryMemory", on_delete=models.CASCADE, related_name='chunks')
+
+    chunk_number = models.IntegerField()
+    chunk_content = models.TextField()  # This will be the text content of the chunk
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    knowledge_base_memory_uuid = models.CharField(max_length=1000, null=True, blank=True)
+    chunk_uuid = models.CharField(max_length=1000, null=True, blank=True)
+
+    def __str__(self):
+        return (str(self.chunk_number) + " - " + self.memory.context_history_base.assistant.name + " - " +
+                self.created_at.strftime("%Y%m%d%H%M%S"))
+
+    class Meta:
+        verbose_name = "Context History Memory Chunk"
+        verbose_name_plural = "Context History Memory Chunks"
+        ordering = ["-created_at"]
+
 
 ###################################################################################################################
 
 
-# [3A] TODO: A data model for a specific type of knowledge base, more concrete (for storing browsed web pages)
-#       This will not be reached by the user, therefore will have no 'templates', but it will be used
-#       by the assistants if the strategy for vectorization has been selected.
-
-
 # [3B] TODO: A data model for the objects stored in the knowledge base as web pages
-
 # [3C] TODO: A data model for the objects stored in the knowledge base as web page chunks
 
 

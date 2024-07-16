@@ -108,23 +108,7 @@
                     according to the user's preferences. Plus, there needs to be a 'ONE_TIME_SQL_RETRIEVAL_TOKEN_LIMIT 
                     (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
 - [X] Implement the context cut-off tool to prevent context window from overflowing.
-- [ ] Implement the Knowledge Base tool for the web browser & web scraping features.
-  - [X] Implement the document format decoders.
-  - [X] Implement the document loaders.
-  - [X] Implement the document embedder.
-  - [X] Implement the document chunker.
-  - [X] Implement the document chunk embedder.
-  - [X] Try and test with the admin panel.
-  - [X] Deleting the items from weaviate whenever the knowledge base or docs are deleted.
-  - [X] Convert the LLM temperature etc. fields to slider bar.
-  - [X] Create the interface for file upload
-  - [X] Implement the pages & views for the document uploading.
-  - [X] Try in the front end to upload the documents, test the Weaviate embeddings.
-  - [ ] Create the search interfaces / execution interface for the embeddings & design the strategy for retrieval.
-  - [ ] Apply generative search for lookups.
-  - [ ] Implement the prompts for the knowledge base implementation.
-  - [ ] Integrate the prompts to the chat.
-  - [ ] Test within the chat and evaluate the performance.
+- [X] Implement the Knowledge Base tool for the web browser & web scraping features.
 - [ ] Implement the Vectorizer Memory for context overflows, within the same class with knowledge base.
   - [ ] Design the data model.
   - [ ] Design the admin model.
@@ -191,7 +175,7 @@
 - [X] Integrate the starred messages pages.
 - [X] Integrate the registration page.
 - [X] Integrate SQL database features.
-- [ ] Integrate the knowledge base & document features.
+- [X] Integrate the knowledge base & document features.
 - [ ] Integrate the web browser & web scraping features.
 - [ ] Integrate ML models usage features.
 - [ ] Integrate the media storage features (image, audio, video).

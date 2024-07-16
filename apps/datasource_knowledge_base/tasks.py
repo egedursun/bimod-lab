@@ -9,8 +9,14 @@ from langchain_community.document_loaders import (PyPDFLoader, UnstructuredHTMLL
 from langchain_community.document_loaders.csv_loader import UnstructuredCSVLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from apps._services.knowledge_base.document.helpers.document_chunk_embedder import embed_document_chunks_helper
-from apps._services.knowledge_base.document.helpers.document_embedder import embed_document_helper
+from apps._services.knowledge_base.document.helpers.document_chunk_embedder import embed_document_chunks_helper, \
+    embed_memory_chunks_helper
+from apps._services.knowledge_base.document.helpers.document_embedder import embed_document_helper, embed_memory_helper
+from apps.assistants.models import Assistant
+
+
+MEMORY_DEFAULT_CHUNK_SIZE = 1000
+MEMORY_DEFAULT_CHUNK_OVERLAP = 200
 
 
 ############################################################################################################
@@ -99,6 +105,63 @@ def index_document_helper(connection_id, document_paths):
             continue
     # make sure that the return statement is outside the loop
     return
+
+
+def chunk_memory(message_text: str):
+    chunks, error = [], None
+    # Split the message into chunks
+    splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+        chunk_size=MEMORY_DEFAULT_CHUNK_SIZE,
+        chunk_overlap=MEMORY_DEFAULT_CHUNK_OVERLAP
+    )
+    chunks = splitter.split_text(message_text)
+    if chunks:
+        print(f"Message chunked into {len(chunks)} chunk(s).")
+    else:
+        error = "Error chunking the message."
+    return chunks, error
+
+
+@shared_task
+def index_memory_helper(connection_id, assistant_id, chat_id, message_text):
+    from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+    from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
+    from apps.multimodal_chat.models import MultimodalChatMessage
+
+    output = {"status": True, "error": None}
+
+    connection = ContextHistoryKnowledgeBaseConnection.objects.get(id=connection_id)
+    executor = MemoryExecutor(connection=connection)
+    try:
+        print("Indexing memory..")
+        # Chunk the message
+        chunks, error = chunk_memory(message_text=message_text)
+        if error or not chunks:
+            print(f"Error chunking the chat history memory: {error}")
+            output = {"status": False, "error": error}
+            return output
+
+        # Embed the memory doc
+        number_of_chunks = len(chunks)
+        print(f"Number of chunks extracted: {number_of_chunks}")
+
+        doc_id, doc_uuid, error = executor.embed_memory(number_of_chunks=number_of_chunks)
+        if error or not doc_id or not doc_uuid:
+            print(f"Error embedding the memory: {error}")
+            output = {"status": False, "error": error}
+            return output
+
+        # Embed the memory chunks
+        error = executor.embed_memory_chunks(chunks=chunks, memory_id=doc_id, memory_uuid=doc_uuid)
+        if error:
+            print(f"Error embedding the memory chunks: {error}")
+            output = {"status": False, "error": error}
+            return output
+
+        print("Memory indexed successfully..")
+    except Exception as e:
+        output = {"status": False, "error": str(e)}
+    return output
 
 
 ############################################################################################################
@@ -331,6 +394,20 @@ def embed_document_data(executor_params, document, path, number_of_chunks):
     return doc_id, doc_uuid, error
 
 
+def embed_memory_data(executor_params, number_of_chunks):
+    doc_id, doc_uuid = None, None
+    try:
+        print("Calling embed_memory_helper...")
+        doc_id, doc_uuid, error = embed_memory_helper(
+            executor_params=executor_params,
+            number_of_chunks=number_of_chunks
+        )
+        print(f"Memory ID: {doc_id}")
+    except Exception as e:
+        error = f"Error embedding the memory: {e}"
+    return doc_id, doc_uuid, error
+
+
 def embed_document_chunks(executor_params, chunks, path, document_id, document_uuid):
     try:
         error = embed_document_chunks_helper(
@@ -343,6 +420,20 @@ def embed_document_chunks(executor_params, chunks, path, document_id, document_u
     except Exception as e:
         error = f"Error embedding the document chunks: {e}"
     return error
+
+
+def embed_memory_chunks(executor_params, chunks, memory_id, memory_uuid):
+    try:
+        error = embed_memory_chunks_helper(
+            executor_params=executor_params,
+            chunks=chunks,
+            memory_id=memory_id,
+            memory_uuid=memory_uuid
+        )
+    except Exception as e:
+        error = f"Error embedding the memory chunks: {e}"
+    return error
+
 
 
 ############################################################################################################

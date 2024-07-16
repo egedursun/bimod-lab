@@ -233,6 +233,10 @@ ENCRYPTION_SALT = os.environ.get("ENCRYPTION_SALT", default="")
 # Max Assistant exports per organization
 MAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ASSISTANT_EXPORTS_ORGANIZATION", default="5"))
 
+# Weaviate credentials
+WEAVIATE_CLUSTER_URL = os.environ.get("WEAVIATE_CLUSTER_URL", default="")
+WEAVIATE_API_KEY = os.environ.get("WEAVIATE_API_KEY", default="")
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

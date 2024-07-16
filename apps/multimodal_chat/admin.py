@@ -1,6 +1,10 @@
 from django.contrib import admin
 
+from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
+from apps.assistants.models import ContextOverflowStrategyNames
+from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
+from django.contrib.admin.actions import delete_selected as django_delete_selected
 
 
 # Register your models here.
@@ -19,6 +23,26 @@ class MultimodalChatAdmin(admin.ModelAdmin):
     list_display_links = ["organization"]
     list_select_related = False
     list_display_links_details = False
+
+    def save_model(self, request, obj, form, change):
+        if obj.assistant.context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE:
+            if obj.assistant.vectorizer_name is None:
+                print("The assistant does not have a vectorizer name set.")
+                return
+            if obj.assistant.vectorizer_api_key is None:
+                print("The assistant does not have a vectorizer API key set.")
+                return
+
+        super().save_model(request, obj, form, change)
+
+    def delete_selected(self, request, queryset):
+        for obj in queryset:
+            # delete the context memory from Weaviate
+            if obj.context_memory_connection:
+                executor = MemoryExecutor(connection=obj.context_memory_connection)
+                executor.delete_chat_history_classes(class_name=obj.context_memory_connection.class_name)
+                obj.context_memory_connection.delete()
+        return django_delete_selected(self, request, queryset)
 
 
 @admin.register(MultimodalChatMessage)

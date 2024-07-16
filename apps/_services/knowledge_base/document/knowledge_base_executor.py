@@ -5,7 +5,6 @@ from weaviate.config import AdditionalConfig, Timeout
 from apps._services.knowledge_base.document.helpers.class_creator import create_classes_helper
 from apps._services.knowledge_base.document.helpers.class_deleter import delete_weaviate_class_helper
 from apps._services.knowledge_base.document.helpers.document_deleter import delete_document_helper
-from apps.assistants.models import VectorizerNames
 from apps.datasource_knowledge_base.tasks import load_csv_helper, load_pdf_helper, load_html_helper, load_docx_helper, \
     load_ipynb_helper, load_json_helper, load_xml_helper, load_txt_helper, load_md_helper, load_rtf_helper, \
     load_odt_helper, load_pptx_helper, load_xlsx_helper, split_document_into_chunks, embed_document_data, \
@@ -73,6 +72,8 @@ class WeaviateExecutor:
 
     @staticmethod
     def decode_vectorizer(vectorizer_name):
+        from apps.assistants.models import VectorizerNames
+
         ##################################################
         # OPENAI VECTORIZER
         if vectorizer_name == VectorizerNames.TEXT2VEC_OPENAI:

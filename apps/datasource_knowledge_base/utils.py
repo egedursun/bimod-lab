@@ -48,8 +48,49 @@ def generate_class_name(connection):
     return f"{given_class_name_generation}{randoms}"
 
 
+def generate_chat_history_class_name():
+    # Generate random words
+    randoms = generate_random_alphanumeric()
+    return f"ChatHistory{randoms}"
+
+
 def generate_document_uri(base_dir, document_name, file_type):
     return f"{base_dir}{document_name.split('.')[0]}_{str(random.randint(1_000_000, 9_999_999))}.{file_type}"
+
+
+def generate_random_alphanumeric(numeric_component=True):
+    chat_name_1 = wonderwords.RandomWord().word(
+        word_min_length=4,
+        word_max_length=32,
+        include_categories=["noun"],
+        regex=r"^[a-zA-Z]+$"
+    )
+    chat_name_2 = wonderwords.RandomWord().word(
+        word_min_length=4,
+        word_max_length=32,
+        include_categories=["noun"],
+        regex=r"^[a-zA-Z]+$"
+    )
+    chat_name_3 = wonderwords.RandomWord().word(
+        word_min_length=4,
+        word_max_length=32,
+        include_categories=["noun"],
+        regex=r"^[a-zA-Z]+$"
+    )
+    chat_name_4 = wonderwords.RandomWord().word(
+        word_min_length=4,
+        word_max_length=32,
+        include_categories=["noun"],
+        regex=r"^[a-zA-Z]+$"
+    )
+    numeric = "0123456789"
+    alpha_string = (chat_name_1.capitalize() + chat_name_2.capitalize() + chat_name_3.capitalize() +
+                    chat_name_4.capitalize())
+    numeric_string = "".join(random.choice(numeric) for _ in range(8))
+    if numeric_component:
+        return f"{alpha_string}{numeric_string}"
+    else:
+        return alpha_string
 
 
 if __name__ == "__main__":

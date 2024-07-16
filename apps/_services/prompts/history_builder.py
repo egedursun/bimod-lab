@@ -52,6 +52,7 @@ class HistoryBuilder:
         context_history = ChatContextManager.handle_context(
             chat_history=context_history,
             assistant=chat.assistant,
+            chat_object=chat
         )
 
         return context_history

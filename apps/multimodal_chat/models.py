@@ -1,13 +1,10 @@
-import decimal
-
 from django.db import models
-from django.db.models import QuerySet
 
+from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
+from apps.assistants.models import ContextOverflowStrategyNames
+from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.llm_transaction.models import LLMTransaction
-from apps.multimodal_chat.utils import calculate_billable_cost, calculate_internal_service_cost, calculate_tax_cost, \
-    calculate_llm_cost, calculate_number_of_tokens
 from apps.starred_messages.models import StarredMessage
-
 
 CHAT_SOURCES = [
     ("app", "Application"),
@@ -34,9 +31,13 @@ class MultimodalChat(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     # Chat Messages
     chat_messages = models.ManyToManyField('multimodal_chat.MultimodalChatMessage', related_name='multimodal_chats',
-                                      blank=True)
+                                           blank=True)
     transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_chats',
                                           blank=True)
+
+    # Context Memory
+    context_memory_connection = models.OneToOneField(ContextHistoryKnowledgeBaseConnection, on_delete=models.CASCADE,
+                                                     related_name='multimodal_chat', null=True, blank=True)
 
     # Management for APIs
     chat_source = models.CharField(max_length=100, choices=CHAT_SOURCES, default="app")
@@ -48,6 +49,38 @@ class MultimodalChat(models.Model):
         verbose_name = "Multimodal Chat"
         verbose_name_plural = "Multimodal Chats"
         ordering = ["-created_at"]
+
+    def save(self, *args, **kwargs):
+        # Create the knowledge base connection in the ORM
+        if (self.assistant.context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE
+                and self.context_memory_connection is None):
+            if self.assistant.vectorizer_name is None:
+                print("The assistant does not have a vectorizer name set.")
+                return
+            if self.assistant.vectorizer_api_key is None:
+                print("The assistant does not have a vectorizer API key set.")
+                return
+
+            context_history = ContextHistoryKnowledgeBaseConnection.objects.create(
+                assistant=self.assistant,
+                chat=self,
+                vectorizer=self.assistant.vectorizer_name,
+                vectorizer_api_key=self.assistant.vectorizer_api_key
+            )
+
+            # Create the Weaviate classes for the context chat history memory
+            connection = ContextHistoryKnowledgeBaseConnection.objects.get(id=context_history.id)
+            self.context_memory_connection = connection
+
+        super().save(*args, **kwargs)
+
+    def delete(self, using=None, keep_parents=False):
+        # Remove the context memory connection
+        if self.context_memory_connection:
+            executor = MemoryExecutor(connection=self.context_memory_connection)
+            executor.delete_chat_history_classes(class_name=self.context_memory_connection.class_name)
+            self.context_memory_connection.delete()
+        super().delete(using, keep_parents)
 
 
 class MessageSenderTypeNames:
@@ -110,4 +143,3 @@ class MultimodalChatMessage(models.Model):
             starred_message = StarredMessage.objects.filter(chat_message=self.id)
             if starred_message:
                 starred_message.delete()
-

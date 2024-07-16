@@ -31,6 +31,24 @@ def build_document_orm_structure(document: dict, knowledge_base, path: str):
     return id, error
 
 
+def build_memory_orm_structure(memory_name: str, knowledge_base):
+    from apps.datasource_knowledge_base.models import ContextHistoryMemory
+
+    id, error = None, None
+    try:
+        # Prepare the object but don't save it yet
+        memory_orm_object = ContextHistoryMemory.objects.create(
+            context_history_base=knowledge_base,
+            memory_name=memory_name
+        )
+        memory_orm_object.save()
+        id = memory_orm_object.id
+    except Exception as e:
+        error = f"Error building the memory ORM structure: {e}"
+
+    return id, error
+
+
 def build_document_weaviate_structure(document: dict, path: str,
                                       number_of_chunks: int):
     document_weaviate_object, error = None, None
@@ -54,6 +72,23 @@ def build_document_weaviate_structure(document: dict, path: str,
         error = f"Error building the document Weaviate structure: {e}"
 
     return document_weaviate_object, error
+
+
+def build_memory_weaviate_structure(memory_name: str, number_of_chunks: int):
+    memory_weaviate_object, error = None, None
+    try:
+        weave_memory_name = memory_name
+        weave_memory_created_at = ""  # empty for now
+
+        memory_weaviate_object = {
+            "memory_name": weave_memory_name,
+            "created_at": weave_memory_created_at,
+            "number_of_chunks": number_of_chunks
+        }
+    except Exception as e:
+        error = f"Error building the memory Weaviate structure: {e}"
+
+    return memory_weaviate_object, error
 
 
 def embed_document_sync(executor_params, document_id, document_weaviate_object: dict, path: str):
@@ -94,6 +129,44 @@ def embed_document_sync(executor_params, document_id, document_weaviate_object: 
 
     except Exception as e:
         error = f"Error embedding the document: {e}"
+
+    return uuid, error
+
+
+def embed_memory_sync(executor_params, memory_id, memory_weaviate_object: dict):
+    from apps.datasource_knowledge_base.models import (ContextHistoryKnowledgeBaseConnection, ContextHistoryMemory)
+    from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
+
+    # Retrieve connection details
+    connection_id = executor_params["connection_id"]
+    connection_orm_object = ContextHistoryKnowledgeBaseConnection.objects.get(id=connection_id)
+
+    # Re-initialize the executor
+    executor = MemoryExecutor(connection=connection_orm_object)
+    c = executor.connect_c()
+    if not c:
+        print(f"[Memory Embedder]: Error while connecting to Weaviate")
+    error = None
+    uuid = None
+
+    try:
+        # Save the object to Weaviate
+        collection = c.collections.get(executor.connection_object.class_name)
+        uuid = collection.data.insert(properties=memory_weaviate_object)
+
+        if not uuid:
+            error = "Error inserting the memory item into Weaviate"
+
+        memory_orm_object = ContextHistoryMemory.objects.get(id=memory_id)
+        memory_orm_object.knowledge_base_memory_uuid = str(uuid)
+        try:
+            memory_orm_object.save()
+        except Exception as e:
+            error = f"Error saving the memory ORM object into DB: {e}"
+            print("DB Save error.")
+
+    except Exception as e:
+        error = f"Error embedding the memory: {e}"
 
     return uuid, error
 
@@ -141,3 +214,47 @@ def embed_document_helper(executor_params: dict, document: dict, path: str, numb
     except Exception as e:
         return f"Error embedding the document: {e}"
     return document_id, document_uuid, error
+
+
+def embed_memory_helper(executor_params: dict, number_of_chunks: int):
+    from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+
+    # Retrieve connection object
+    memory_id, memory_uuid = None, None
+    connection_id = executor_params["connection_id"]
+    connection_orm_object = ContextHistoryKnowledgeBaseConnection.objects.get(id=connection_id)
+    from apps.datasource_knowledge_base.utils import generate_random_alphanumeric
+    memory_name = generate_random_alphanumeric(numeric_component=False)
+
+    try:
+        memory_id, error = build_memory_orm_structure(
+            knowledge_base=connection_orm_object,
+            memory_name=memory_name
+        )
+        if error:
+            print(f"Error building the memory ORM structure: {error}")
+            return memory_id, memory_uuid, error
+        print(f"Memory ORM object created: {memory_id}")
+
+        memory_weaviate_object, error = build_memory_weaviate_structure(
+            memory_name=memory_name,
+            number_of_chunks=number_of_chunks
+        )
+        if error:
+            print(f"Error building the memory Weaviate structure: {error}")
+            return memory_id, memory_uuid, error
+        print(f"Memory Weaviate object created: {memory_weaviate_object}")
+
+        memory_uuid, error = embed_memory_sync(
+            executor_params=executor_params,
+            memory_id=memory_id,
+            memory_weaviate_object=memory_weaviate_object
+        )
+        if error:
+            print(f"Error embedding the memory and saving the ORM object: {error}")
+            return memory_id, memory_uuid, error
+        print(f"Memory has been embedded successfully: {memory_uuid}")
+
+    except Exception as e:
+        return f"Error embedding the memory: {e}"
+    return memory_id, memory_uuid, error

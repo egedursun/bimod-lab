@@ -122,3 +122,90 @@ def create_classes_helper(executor):
 
     print(f"Created Weaviate classes: {new_document_class}, {document_chunk_class}")
     return output
+
+
+def create_chat_history_classes_helper(executor):
+
+    output = {"status": True, "error": ""}
+    conn = executor.connection_object
+    c = executor.connect_c()
+
+    try:
+        new_chat_history_class = c.collections.create(
+            name=conn.class_name,
+            vectorizer_config=executor.decode_vectorizer(
+                conn.vectorizer
+            ),
+            generative_config=wvc.config.Configure.Generative.openai(
+                model=DEFAULT_GENERATIVE_SEARCH_MODEL,
+                temperature=conn.assistant.llm_model.temperature,
+                max_tokens=conn.assistant.llm_model.maximum_tokens,
+            ),
+            properties=[
+                wvc.config.Property(
+                    name="memory_name",
+                    data_type=wvc.config.DataType.TEXT,
+                    vectorize_property_name=True,
+                ),
+                wvc.config.Property(
+                    name="number_of_chunks",
+                    data_type=wvc.config.DataType.INT,
+                    vectorize_property_name=False,
+                ),
+                wvc.config.Property(
+                    name="created_at",
+                    data_type=wvc.config.DataType.TEXT,
+                    vectorize_property_name=False,
+                    tokenization=wvc.config.Tokenization.LOWERCASE
+                ),
+            ]
+        )
+    except Exception as e:
+        print(f"Error creating Chat History class: {e}")
+        output["status"] = False
+        output["error"] = str(e)
+        return output
+
+    try:
+        chat_history_chunk_class = c.collections.create(
+            name=f"{conn.class_name}Chunks",
+            vectorizer_config=executor.decode_vectorizer(
+                conn.vectorizer
+            ),
+            generative_config=wvc.config.Configure.Generative.openai(
+                model=DEFAULT_GENERATIVE_SEARCH_MODEL,
+                temperature=conn.assistant.llm_model.temperature,
+                max_tokens=conn.assistant.llm_model.maximum_tokens,
+            ),
+            properties=[
+                wvc.config.Property(
+                    name="memory_name",
+                    data_type=wvc.config.DataType.TEXT,
+                    vectorize_property_name=False,
+                ),
+                wvc.config.Property(
+                    name="chunk_number",
+                    data_type=wvc.config.DataType.INT,
+                    vectorize_property_name=False,
+                ),
+                wvc.config.Property(
+                    name="chunk_content",
+                    data_type=wvc.config.DataType.TEXT,
+                    vectorize_property_name=True,
+                    tokenization=wvc.config.Tokenization.LOWERCASE
+                ),
+                wvc.config.Property(
+                    name="created_at",
+                    data_type=wvc.config.DataType.TEXT,
+                    vectorize_property_name=False,
+                    tokenization=wvc.config.Tokenization.LOWERCASE
+                ),
+        ])
+    except Exception as e:
+        print(f"Error creating Chat History Chunks class: {e}")
+        output["status"] = False
+        output["error"] = str(e)
+        return output
+
+    print(f"Created Chat History classes: {new_chat_history_class}, {chat_history_chunk_class}")
+    return output

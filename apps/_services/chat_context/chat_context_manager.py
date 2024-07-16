@@ -1,4 +1,7 @@
+from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
 from apps.assistants.models import ContextOverflowStrategyNames, Assistant
+from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+from apps.multimodal_chat.models import MultimodalChat
 
 
 class ChatContextManager:
@@ -45,14 +48,36 @@ class ChatContextManager:
             return chat_history
 
     @staticmethod
-    def store_as_vector(chat_history, max_messages, vectorizer_name, vectorizer_api_key):
-        # TODO-VECTOR-CONTEXT-HISTORY-EMBEDDING: manage the embedding strategies here
+    def store_as_vector(assistant, chat_history, max_messages, vectorizer_name, vectorizer_api_key,
+                        chat_object):
+        connection = ContextHistoryKnowledgeBaseConnection.objects.filter(assistant=assistant,
+                                                                          chat=chat_object).first()
+        executor = MemoryExecutor(connection=connection)
+
+        if len(chat_history) > max_messages:
+            combined_history = ""
+            for message in chat_history[-max_messages:]:
+                combined_history += f"""
+                    ----------------------------------------
+                    - Role: {message["role"]}
+                    - Content:
+                    '''
+                    {message["content"]}
+                    '''
+                    ----------------------------------------
+                """
+            executor.index_memory(connection_id=connection.id,
+                                  assistant_id=assistant.id,
+                                  chat_id=chat_object.id,
+                                  message_text=combined_history)
+            return chat_history[-max_messages:]
         return chat_history
 
     @staticmethod
     def handle_context(
         chat_history,
-        assistant: Assistant
+        assistant: Assistant,
+        chat_object: MultimodalChat
     ):
         context_overflow_strategy = assistant.context_overflow_strategy
         max_messages = assistant.max_context_messages
@@ -66,7 +91,14 @@ class ChatContextManager:
         elif context_overflow_strategy == ContextOverflowStrategyNames.STOP:
             context_messages = ChatContextManager.stop_conversation(chat_history, max_messages)
         elif context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE:
-            context_messages = ChatContextManager.store_as_vector(chat_history, max_messages, vectorizer_name, vectorizer_api_key)
+            context_messages = ChatContextManager.store_as_vector(
+                assistant=assistant,
+                chat_history=chat_history,
+                chat_object=chat_object,
+                max_messages=max_messages,
+                vectorizer_name=vectorizer_name,
+                vectorizer_api_key=vectorizer_api_key
+            )
         else:
             # No strategy has been set, default to forget
             context_messages = ChatContextManager.forget_oldest(chat_history, max_messages)

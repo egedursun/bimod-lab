@@ -4,7 +4,6 @@ import random
 from django.db import models
 
 from apps.assistants.utils import generate_random_string
-from slugify import slugify
 
 
 ASSISTANT_RESPONSE_LANGUAGES = [
@@ -87,20 +86,14 @@ class Assistant(models.Model):
     context_overflow_strategy = models.CharField(max_length=100, choices=CONTEXT_OVERFLOW_STRATEGY, default="forget")
     # in case of ->
     # - stop: stop the conversation after the limit is reached
-    # - forget: forget oldest messages starting from the limit, start from oldest
+    # - forget: forget old messages starting from the limit, start from oldest
     # - vectorize: store the messages overflowing the context in the vectorstore, in their relevant assistant/chat dir.
     max_context_messages = models.IntegerField(default=25)
     # only in case of -> vectorize
     vectorizer_name = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai",
                                        null=True, blank=True)
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
-
     document_base_directory = models.CharField(max_length=1000, null=True, blank=True)
-
-    # TODO-MODEL: Define a context memory object for the assistant to reach out to the context memory
-    #   context_memory_connection = models.ManyToManyField("...", related_name='assistants')
-
-    ##############################
 
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                         related_name='assistants_created_by_user')
@@ -129,15 +122,6 @@ class Assistant(models.Model):
         # Remove the document directory
         if self.document_base_directory is not None:
             os.system(f"rm -rf {self.document_base_directory}")
-
-        """
-        conn = self.context_memory_connection
-        client = ContextHistoryExecutor(conn)
-        if client is not None:
-            result = client.delete_weaviate_class()
-            if not result["status"]:
-                print(f"Error deleting Weaviate classes: {result['error']}")
-        """
 
         super().delete(using, keep_parents)
 

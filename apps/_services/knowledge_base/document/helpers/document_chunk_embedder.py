@@ -38,6 +38,31 @@ def build_chunk_orm_structure(chunk: dict,
     return id, error
 
 
+def build_memory_chunk_orm_structure(chunk: str, knowledge_base, memory_id: int, memory_uuid: str,
+                                        chunk_index: int):
+    from apps.datasource_knowledge_base.models import ContextHistoryMemoryChunk
+    from apps.datasource_knowledge_base.models import ContextHistoryMemory
+
+    id, error = None, None
+    try:
+        context_history_base = knowledge_base
+        memory = ContextHistoryMemory.objects.filter(id=memory_id).first()
+        knowledge_base_memory_uuid = memory_uuid
+
+        chunk_orm_object = ContextHistoryMemoryChunk.objects.create(
+            memory=memory,
+            chunk_number=chunk_index,
+            chunk_content=chunk,
+            knowledge_base_memory_uuid=knowledge_base_memory_uuid,
+            context_history_base=context_history_base,
+        )
+        id = chunk_orm_object.id
+    except Exception as e:
+        error = f"Error building the chunk ORM structure: {e}"
+
+    return id, error
+
+
 def build_chunk_weaviate_structure(chunk: dict, path: str,
                                    chunk_index: int,
                                    document_uuid: str):
@@ -61,6 +86,26 @@ def build_chunk_weaviate_structure(chunk: dict, path: str,
         }
     except Exception as e:
         error = f"Error building the chunk Weaviate structure: {e}"
+
+    return chunk_weaviate_object, error
+
+
+def build_memory_chunk_weaviate_structure(memory, chunk: str, chunk_index: int, memory_uuid: str):
+    chunk_weaviate_object, error = None, None
+    try:
+        weav_chunk_number = chunk_index
+        weav_chunk_content = chunk
+        weav_chunk_created_at = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+
+        chunk_weaviate_object = {
+            "memory_uuid": memory_uuid,
+            "memory_name": memory.memory_name,
+            "chunk_number": weav_chunk_number,
+            "chunk_content": weav_chunk_content,
+            "created_at": weav_chunk_created_at
+        }
+    except Exception as e:
+        error = f"Error building the memory chunk Weaviate structure: {e}"
 
     return chunk_weaviate_object, error
 
@@ -95,7 +140,7 @@ def embed_document_chunk_sync(executor_params,
 
         # Save the object to the ORM
         chunk_orm_object = KnowledgeBaseDocumentChunk.objects.filter(id=chunk_id).first()
-        chunk_orm_object.knowledge_base_uuid = str(uuid)
+        chunk_orm_object.chunk_uuid = str(uuid)
         chunk_orm_object.save()
 
         # add the chunk to the document chunks
@@ -107,6 +152,49 @@ def embed_document_chunk_sync(executor_params,
         print(f"Error embedding the chunk: {e}")
         error = f"Error embedding the chunk: {e}"
     print(f"Successfully embedded the chunk...")
+    return error
+
+
+def embed_memory_chunk_sync(executor_params, chunk_id, chunk_weaviate_object: dict):
+    from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection, ContextHistoryMemoryChunk
+    from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
+
+    # Retrieve connection details
+    connection_id = executor_params["connection_id"]
+    connection_orm_object = ContextHistoryKnowledgeBaseConnection.objects.get(id=connection_id)
+
+    # Re-initialize the executor
+    executor = MemoryExecutor(connection=connection_orm_object)
+    c = executor.connect_c()
+    if not c:
+        print(f"[Memory Chunk Embedder]: Error while connecting to Weaviate")
+    error = None
+    try:
+        # Save the object to Weaviate
+        chunk_class_name = f"{executor.connection_object.class_name}Chunks"
+        collection = c.collections.get(chunk_class_name)
+        uuid = collection.data.insert(
+            properties=chunk_weaviate_object
+        )
+
+        if not uuid:
+            error = "Error inserting the memory chunk into Weaviate"
+
+        # Save the object to the ORM
+        chunk_orm_object = ContextHistoryMemoryChunk.objects.filter(id=chunk_id).first()
+        chunk_orm_object.chunk_uuid = str(uuid)
+        chunk_orm_object.save()
+
+        # add the chunk to the document chunks
+        memory_object = chunk_orm_object.memory
+        memory_object.memory_chunks.add(chunk_orm_object)
+        memory_object.save()
+
+    except Exception as e:
+        print(f"Error embedding the memory chunk: {e}")
+        error = f"Error embedding the memory chunk: {e}"
+
+    print(f"Successfully embedded the memory chunk...")
     return error
 
 
@@ -159,4 +247,52 @@ def embed_document_chunks_helper(executor_params, chunks: list, path: str, docum
 
     except Exception as e:
         errors.append(f"Error embedding the chunks: {e}")
+    return errors
+
+
+def embed_memory_chunks_helper(executor_params, chunks: list, memory_id: int, memory_uuid: str):
+    from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+    from apps.datasource_knowledge_base.models import ContextHistoryMemory
+
+    errors = []
+    # Retrieve connection object
+    connection_id = executor_params["connection_id"]
+    connection_orm_object = ContextHistoryKnowledgeBaseConnection.objects.get(id=connection_id)
+    memory = ContextHistoryMemory.objects.filter(id=memory_id).first()
+    try:
+        for i, chunk in enumerate(chunks):
+            print(f"Building ORM and Weaviate structures for memory chunk: {i}")
+            chunk_id, error = build_memory_chunk_orm_structure(
+                knowledge_base=connection_orm_object,
+                chunk=chunk,
+                chunk_index=i,
+                memory_id=memory_id,
+                memory_uuid=memory_uuid
+            )
+            if error:
+                errors.append(error)
+                continue
+
+            chunk_weaviate_object, error = build_memory_chunk_weaviate_structure(
+                memory=memory,
+                chunk=chunk,
+                chunk_index=i,
+                memory_uuid=memory_uuid
+            )
+            if error:
+                errors.append(error)
+                continue
+
+            print(f"Embedding memory chunk: {i}")
+            error = embed_memory_chunk_sync(
+                executor_params=executor_params,
+                chunk_id=chunk_id,
+                chunk_weaviate_object=chunk_weaviate_object
+            )
+            if error:
+                errors.append(error)
+                continue
+
+    except Exception as e:
+        errors.append(f"Error embedding the memory chunks: {e}")
     return errors
