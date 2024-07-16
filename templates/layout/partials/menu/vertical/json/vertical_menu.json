@@ -233,15 +233,22 @@
           "name": "Knowledge Bases",
           "slug": "knowledge-base",
           "url": "datasource_knowledge_base:list"
-        },
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "documents",
+      "submenu": [
         {
-          "name": "Add Document",
-          "slug": "knowledge-base-document",
+          "name": "Add Documents",
+          "slug": "documents",
           "url": "datasource_knowledge_base:create_documents"
         },
         {
-          "name": "Documents",
-          "slug": "knowledge-base-document",
+          "name": "Manage Documents",
+          "slug": "documents",
           "url": "datasource_knowledge_base:list_documents"
         }
       ]

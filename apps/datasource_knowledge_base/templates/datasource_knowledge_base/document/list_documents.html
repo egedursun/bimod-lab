@@ -104,6 +104,31 @@
                 checkboxes.forEach(cb => cb.checked = this.checked);
             });
         });
+
+        // Confirmation dialog for delete buttons
+    document.querySelectorAll('.delete-selected-btn, .delete-all-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const form = button.closest('form');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this action.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete the documents.',
+                customClass: {
+                  confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+                  cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
     });
 </script>
 {% endblock page_js %}
@@ -260,12 +285,12 @@
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
-                                            <button type="submit" class="btn btn-warning btn-sm w-25 mt-4"><strong>Delete Selected</strong></button>
+                                            <button type="submit" class="btn btn-warning btn-sm w-25 mt-4 delete-selected-btn"><strong>Delete Selected Documents</strong></button>
                                         </form>
                                         <nav aria-label="Page navigation">
                                             <form method="post" action="{% url 'datasource_knowledge_base:delete_all_documents' kb_data.knowledge_base.id %}" class="d-inline">
                                                 {% csrf_token %}
-                                                <button type="submit" class="btn btn-danger btn-sm w-25 mt-2"><strong>Delete All</strong></button>
+                                                <button type="submit" class="btn btn-danger btn-sm w-25 mt-2 delete-all-btn"><strong>DELETE ALL</strong></button>
                                             </form>
                                             <ul class="pagination pagination-rounded pt-8 overflow-scroll">
                                                 {% if kb_data.documents.has_previous %}
@@ -306,83 +331,83 @@
     <div class="mt-8"></div>
     <hr>
     <div class="row align-items-center justify-content-start mt-2">
-                                            <div class="card-header">
-                                                <h5><strong>Legend</strong></h5>
-                                                <small class="text-muted">
-                                                    The following badges represent the status of the document while it is being processed in our
-                                                    servers. You can refer to the icons next to the document to understand the current status of the
-                                                    document. If you have any questions, please contact our support team to have more detailed
-                                                    information about how the documents are processed and what is the purpose of each step
-                                                    of processing.
-                                                </small>
-                                                <hr>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-info d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-clock me-4"></i> &nbsp; <strong>Staged</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-info d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-file-upload me-4"></i> &nbsp; <strong>Uploaded</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-info d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-magnifying-glass me-4"></i> &nbsp; <strong>Loaded</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-info d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-scissors me-4"></i> &nbsp; <strong>Chunked</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-info d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-file-signature me-4"></i> &nbsp; <strong>Embedded Document</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-info d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-file-archive me-4"></i> &nbsp; <strong>Saved Document</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-info d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-file-circle-check me-4"></i> &nbsp; <strong>Processed Document</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-info d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-boxes-packing me-4"></i> &nbsp; <strong>Embedded Chunks</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-info d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-box-archive me-4"></i> &nbsp; <strong>Saved Chunks</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-info d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-list-check me-4"></i> &nbsp; <strong>Processed Chunks</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-success d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-check-square me-4"></i> &nbsp; <strong>Completed</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-danger d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-warning me-4"></i> &nbsp; <strong>Failed</strong>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="badge bg-warning d-flex align-items-center m-2 p-2">
-                                                    <i class="fa fa-warning me-4"></i> &nbsp; <strong>Partially Failed</strong>
-                                                </div>
-                                            </div>
-                                        </div>
+      <div class="card-header">
+          <h5><strong>Legend</strong></h5>
+          <small class="text-muted">
+              The following badges represent the status of the document while it is being processed in our
+              servers. You can refer to the icons next to the document to understand the current status of the
+              document. If you have any questions, please contact our support team to have more detailed
+              information about how the documents are processed and what is the purpose of each step
+              of processing.
+          </small>
+          <hr>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-info d-flex align-items-center m-2 p-2">
+              <i class="fa fa-clock me-4"></i> &nbsp; <strong>Staged</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-info d-flex align-items-center m-2 p-2">
+              <i class="fa fa-file-upload me-4"></i> &nbsp; <strong>Uploaded</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-info d-flex align-items-center m-2 p-2">
+              <i class="fa fa-magnifying-glass me-4"></i> &nbsp; <strong>Loaded</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-info d-flex align-items-center m-2 p-2">
+              <i class="fa fa-scissors me-4"></i> &nbsp; <strong>Chunked</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-info d-flex align-items-center m-2 p-2">
+              <i class="fa fa-file-signature me-4"></i> &nbsp; <strong>Embedded Document</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-info d-flex align-items-center m-2 p-2">
+              <i class="fa fa-file-archive me-4"></i> &nbsp; <strong>Saved Document</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-info d-flex align-items-center m-2 p-2">
+              <i class="fa fa-file-circle-check me-4"></i> &nbsp; <strong>Processed Document</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-info d-flex align-items-center m-2 p-2">
+              <i class="fa fa-boxes-packing me-4"></i> &nbsp; <strong>Embedded Chunks</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-info d-flex align-items-center m-2 p-2">
+              <i class="fa fa-box-archive me-4"></i> &nbsp; <strong>Saved Chunks</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-info d-flex align-items-center m-2 p-2">
+              <i class="fa fa-list-check me-4"></i> &nbsp; <strong>Processed Chunks</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-success d-flex align-items-center m-2 p-2">
+              <i class="fa fa-check-square me-4"></i> &nbsp; <strong>Completed</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-danger d-flex align-items-center m-2 p-2">
+              <i class="fa fa-warning me-4"></i> &nbsp; <strong>Failed</strong>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="badge bg-warning d-flex align-items-center m-2 p-2">
+              <i class="fa fa-warning me-4"></i> &nbsp; <strong>Partially Failed</strong>
+          </div>
+      </div>
+  </div>
 </div>
 
 {% endblock %}
