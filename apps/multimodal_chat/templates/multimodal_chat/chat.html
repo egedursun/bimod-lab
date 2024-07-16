@@ -109,6 +109,7 @@
           {% endfor %}
         </ul>
       </div>
+      <hr>
     </div>
     <div class="col app-chat-contacts app-sidebar border-end overflow-auto" id="app-chat-chats">
       <div class="sidebar-body">
@@ -170,6 +171,7 @@
           {% endfor %}
         </ul>
       </div>
+      <hr>
     </div>
   </div>
   <!-- /Chat & Assistants -->
@@ -265,7 +267,7 @@
               <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%; height:10px;"></div>
             </div>
           </div>
-          <div class="chat-history-body">
+          <div class="chat-history-body" style="max-height: 350px;">
             <ul class="list-unstyled chat-history" style="height: 95%">
               {% for message in chat_messages.all %}
               <li class="chat-message {% if message.sender_type == 'USER' %}chat-message-right{% endif %}">
