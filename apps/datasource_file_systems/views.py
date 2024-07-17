@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from apps.assistants.models import Assistant
 from apps.datasource_file_systems.models import DataSourceFileSystem, DataSourceFileSystemsOsTypeNames, \
     DATASOURCE_FILE_SYSTEMS_OS_TYPES
+from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 
 
@@ -29,6 +30,22 @@ class DataSourceFileSystemListCreateView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - FILE SYSTEMS / CREATE
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.ADD_FILE_SYSTEMS not in user_permissions:
+            messages.error(request, "You do not have permission to create a file system connection.")
+            return redirect('datasource_file_systems:list')
+        ##############################
+
         name = request.POST.get('name')
         description = request.POST.get('description')
         os_type = request.POST.get('os_type')
@@ -90,6 +107,22 @@ class DataSourceFileSystemUpdateView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - FILE SYSTEMS / UPDATE
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.UPDATE_FILE_SYSTEMS not in user_permissions:
+            messages.error(request, "You do not have permission to update a file system connection.")
+            return redirect('datasource_file_systems:list')
+        ##############################
+
         try:
             connection = get_object_or_404(DataSourceFileSystem, pk=kwargs['pk'])
         except DataSourceFileSystem.DoesNotExist:
@@ -156,6 +189,22 @@ class DataSourceFileSystemDeleteView(LoginRequiredMixin, TemplateView):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - FILE SYSTEMS / UPDATE
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.DELETE_FILE_SYSTEMS not in user_permissions:
+            messages.error(request, "You do not have permission to delete a file system connection.")
+            return redirect('datasource_file_systems:list')
+        ##############################
+
         data_source = get_object_or_404(DataSourceFileSystem, pk=kwargs['pk'])
         data_source.delete()
         return redirect('datasource_file_systems:list')

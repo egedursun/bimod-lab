@@ -317,7 +317,7 @@ class DeleteAllDocumentsView(LoginRequiredMixin, TemplateView):
         context_user = request.user
 
         ##############################
-        # PERMISSION CHECK FOR - DOCUMENT / UPLOAD
+        # PERMISSION CHECK FOR - DOCUMENT / DELETE
         ##############################
         user_permissions = UserPermission.active_permissions.filter(
             user=context_user

@@ -66,7 +66,7 @@
         document.getElementById('media_files').addEventListener('change', function(event) {
             const fileList = Array.from(event.target.files);
             const fileDisplayArea = document.getElementById('file_display_area');
-            fileDisplayArea.innerHTML = '<h5 class="card-header"><strong>Document Staging</strong></h5><hr>';
+            fileDisplayArea.innerHTML = '<h5 class="card-header"><strong>Media File Staging</strong></h5><hr>';
             fileList.forEach((file, index) => {
                 const fileSize = (file.size / 1024).toFixed(2) + ' KB';
                 const fileExtension = file.name.split('.').pop().toLowerCase();
@@ -119,6 +119,7 @@
                     <div class="badge bg-lighter d-flex align-items-center my-2">
                         <img src="{% static 'img/icons/misc/' %}${icon}" alt="${fileExtension}" width="15" class="me-2">
                         <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                        <textarea class="form-control ms-3" name="file_descriptions[]" placeholder="Enter description for the media file"></textarea>
                         <button type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
                     </div>
                 `;
@@ -206,6 +207,10 @@
             <label class="form-label" for="media_files">Media Files (Multiple Files Allowed)</label>
             <input type="file" class="form-control" id="media_files" name="media_files" multiple>
           </div>
+          <small class="text-muted mb-2">If you add a description for the media file, it will be easier for your
+            assistant to understand the media file and utilize it to provide better insights and
+            recommendations.
+          </small>
           <div class="row align-items-center justify-content-start mt-2" id="file_display_area">
             <!-- Dynamic content will be inserted here
               ... ... ...

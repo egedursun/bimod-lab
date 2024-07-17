@@ -300,7 +300,7 @@
         {
           "name": "Manage Files",
           "slug": "multimedia-files",
-          "url": "dashboard:main-dashboard"
+          "url": "datasource_media_storages:list_items"
         }
       ]
     },

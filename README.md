@@ -107,8 +107,8 @@
 - [X] Implement the Vectorizer Memory for context overflows, within the same class with knowledge base.
 - [X] Create the indexes for all data models to increase the performance.
 - [X] Template messages must show up next to the message creation form.
-- [ ] **URGENT:** Implement the permissions for the file system tool.
-- [ ] **URGENT:** Implement the permissions for the media storage tool.
+- [X] Implement the permissions for the file system tool.
+- [X] Implement the permissions for the media storage tool.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
   - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low", which will determine
           how difficult the agent will trust on an online source.
@@ -123,9 +123,8 @@
 - [X] Implement the File System tool for the file system manipulation features.
 - [ ] Implement the ML Model tool for the ML models usage features.
 - [ ] Implement the media storage features.
-  - [ ] Implement the media item description field for the upload staging section.
-  - [ ] Implement the list media items page.
-  - [ ] Implement the list media items description field.
+  - [X] Implement the media item description field for the upload staging section.
+  - [X] Implement the list media items page.
   - [ ] Implement the retrieval function for the assistant.
   - [ ] Implement the image interpretation tool.
   - [ ] Integrate the prompts.

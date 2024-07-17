@@ -71,20 +71,10 @@ class PermissionNames:
     LIST_KNOWLEDGE_BASES = 'list_knowledge_bases'
     DELETE_KNOWLEDGE_BASES = 'delete_knowledge_bases'
     ######################################################
-    ADD_IMAGE_STORAGES = 'add_image_storages'
-    UPDATE_IMAGE_STORAGES = 'update_image_storages'
-    LIST_IMAGE_STORAGES = 'list_image_storages'
-    DELETE_IMAGE_STORAGES = 'delete_image_storages'
-    ######################################################
-    ADD_VIDEO_STORAGES = 'add_video_storages'
-    UPDATE_VIDEO_STORAGES = 'update_video_storages'
-    LIST_VIDEO_STORAGES = 'list_video_storages'
-    DELETE_VIDEO_STORAGES = 'delete_video_storages'
-    ######################################################
-    ADD_AUDIO_STORAGES = 'add_audio_storages'
-    UPDATE_AUDIO_STORAGES = 'update_audio_storages'
-    LIST_AUDIO_STORAGES = 'list_audio_storages'
-    DELETE_AUDIO_STORAGES = 'delete_audio_storages'
+    ADD_MEDIA_STORAGES = 'add_media_storages'
+    UPDATE_MEDIA_STORAGES = 'update_media_storages'
+    LIST_MEDIA_STORAGES = 'list_media_storages'
+    DELETE_MEDIA_STORAGES = 'delete_media_storages'
     ######################################################
     ADD_FUNCTIONS = 'add_functions'
     UPDATE_FUNCTIONS = 'update_functions'
@@ -218,22 +208,10 @@ PERMISSION_TYPES = [
     ('delete_knowledge_bases', 'Delete Knowledge Bases'),
     ######################################################
     # IMAGE STORAGES
-    ('add_image_storages', 'Add Image Storages'),
-    ('update_image_storages', 'Update Image Storages'),
-    ('list_image_storages', 'List Image Storages'),
-    ('delete_image_storages', 'Delete Image Storages'),
-    ######################################################
-    # VIDEO STORAGES
-    ('add_video_storages', 'Add Video Storages'),
-    ('update_video_storages', 'Update Video Storages'),
-    ('list_video_storages', 'List Video Storages'),
-    ('delete_video_storages', 'Delete Video Storages'),
-    ######################################################
-    # AUDIO STORAGES
-    ('add_audio_storages', 'Add Audio Storages'),
-    ('update_audio_storages', 'Update Audio Storages'),
-    ('list_audio_storages', 'List Audio Storages'),
-    ('delete_audio_storages', 'Delete Audio Storages'),
+    ('add_media_storages', 'Add Media Storages'),
+    ('update_media_storages', 'Update Media Storages'),
+    ('list_media_storages', 'List Media Storages'),
+    ('delete_media_storages', 'Delete Media Storages'),
     ######################################################
     # FUNCTIONS
     ('add_functions', 'Add Functions'),

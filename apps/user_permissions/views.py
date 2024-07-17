@@ -133,23 +133,11 @@ class AddPermissionsView(TemplateView):
                 ('list_knowledge_bases', 'List Knowledge Bases'),
                 ('delete_knowledge_bases', 'Delete Knowledge Bases')
             ],
-            "Image Storage Permissions": [
-                ('add_image_storages', 'Add Image Storages'),
-                ('update_image_storages', 'Update Image Storages'),
-                ('list_image_storages', 'List Image Storages'),
-                ('delete_image_storages', 'Delete Image Storages')
-            ],
-            "Video Storage Permissions": [
-                ('add_video_storages', 'Add Video Storages'),
-                ('update_video_storages', 'Update Video Storages'),
-                ('list_video_storages', 'List Video Storages'),
-                ('delete_video_storages', 'Delete Video Storages')
-            ],
-            "Audio Storage Permissions": [
-                ('add_audio_storages', 'Add Audio Storages'),
-                ('update_audio_storages', 'Update Audio Storages'),
-                ('list_audio_storages', 'List Audio Storages'),
-                ('delete_audio_storages', 'Delete Audio Storages')
+            "Media Storage Permissions": [
+                ('add_media_storages', 'Add Media Storages'),
+                ('update_media_storages', 'Update Media Storages'),
+                ('list_media_storages', 'List Media Storages'),
+                ('delete_media_storages', 'Delete Media Storages')
             ],
             "Function Permissions": [
                 ('add_functions', 'Add Functions'),
