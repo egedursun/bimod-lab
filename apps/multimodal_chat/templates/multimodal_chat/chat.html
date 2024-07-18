@@ -702,10 +702,19 @@
     document.addEventListener('DOMContentLoaded', function () {
       const floatingButton = document.querySelector('.floating-button');
       floatingButton.addEventListener('click', function () {
-        window.scrollTo({
-          top: document.body.scrollHeight,
-          behavior: 'smooth'
-        });
+        if (floatingButton.innerHTML.includes('Chat')) {
+            window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+          });
+          floatingButton.innerHTML = '<i class="fa fa-robot rounded text-dark me-2"></i><span class="text-dark"><strong>List</strong></span>';
+        } else {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+          floatingButton.innerHTML = '<i class="fa fa-message me-2 text-dark"></i><span class="text-dark"><strong>Chat</strong></span>';
+        }
       });
     });
   </script>
