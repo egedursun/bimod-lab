@@ -45,3 +45,16 @@ HELPER_ASSISTANT_PROMPTS = {
         "model": "gpt-4o",
     }
 }
+
+
+GENERATE_FILE_DESCRIPTION_QUERY = f"""
+    Please interpret the file or image I sent you, and provide a clear and concise description about the contents
+    within the image. Do not write an overly long description, and keep it to the point. It would be the best
+    if your description is less than 1000 characters in total. Make sure your interpretations are accurate and
+    does not contain subjective opinions; but instead focus on the facts and information that can be extracted
+    from the image or file itself.
+
+    **NOTE:** You must deliver the description in plain text format, without markdown elements or any other
+    special formatting, nor lists, multiple paragraphs, or bullet points. Just a single paragraph of plain text
+    is what I need.
+"""

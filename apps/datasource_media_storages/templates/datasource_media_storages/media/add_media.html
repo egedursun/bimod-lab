@@ -111,6 +111,10 @@
                     'json': 'json.png',
                     'xml': 'xml.png',
                     'tsv': 'tsv.png',
+                    'docx': 'docx.png',
+                    'pptx': 'pptx.png',
+                    'pdf': 'pdf.png',
+                    'txt': 'txt.png',
                 };
                 const icon = iconMap[fileExtension] || 'file.png';
                 let filename_root = file.name.split(".")[0];
@@ -511,6 +515,30 @@
               <div class="badge bg-lighter d-flex align-items-center mb-1">
                 <img src="{% static 'img/icons/misc/tsv.png' %}" alt="img" width="15" class="me-2">
                 <span class="h6 mb-0 text-body"><strong>.tsv</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center mb-1">
+                <img src="{% static 'img/icons/misc/docx.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.docx</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center mb-1">
+                <img src="{% static 'img/icons/misc/pptx.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.pptx</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center mb-1">
+                <img src="{% static 'img/icons/misc/pdf.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.pdf</strong></span>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="badge bg-lighter d-flex align-items-center mb-1">
+                <img src="{% static 'img/icons/misc/txt.png' %}" alt="img" width="15" class="me-2">
+                <span class="h6 mb-0 text-body"><strong>.txt</strong></span>
               </div>
             </div>
         </div>

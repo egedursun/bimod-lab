@@ -1,4 +1,6 @@
 import os
+import re
+from pprint import pprint
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -6,15 +8,49 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 
+from apps._services.llms.helpers.helper_prompts import GENERATE_FILE_DESCRIPTION_QUERY
+from apps._services.tools.execution_handlers.storage_query_execution_handler import execute_storage_query
+from apps._services.tools.tool_executor import ExecutionTypesNames
 from apps.assistants.models import Assistant
 from apps.datasource_media_storages.models import MEDIA_CATEGORIES, DataSourceMediaStorageConnection, \
     DataSourceMediaStorageItem
+from apps.datasource_media_storages.utils import decode_xlsx, decode_pptx, decode_docx
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
+from config.settings import BASE_URL
 from web_project import TemplateLayout
 
-
 # Create your views here.
+
+
+FILE_TYPE_HIGHLIGHTING_DECODER = {
+    "py": "python",
+    "js": "javascript",
+    "ts": "typescript",
+    "php": "php",
+    "css": "css",
+    "html": "html",
+    "java": "java",
+    "c": "c",
+    "cpp": "cpp",
+    "h": "h",
+    "sh": "shell",
+    "go": "golang",
+    "dart": "dart",
+    "yml": "yaml",
+    "yaml": "yaml",
+    "sql": "sql",
+    "pkl": "plaintext",  # plain text
+    "csv": "plaintext",  # plain text
+    "xlsx": "plaintext",  # plain text
+    "json": "json",
+    "xml": "xml",
+    "tsv": "plaintext",  # plain text
+    "docx": "plaintext",  # plain text
+    "pptx": "plaintext",  # plain text
+    "pdf": "plaintext",  # plain text
+    "txt": "plaintext",  # plain text
+}
 
 
 class DataSourceMediaStorageConnectionCreateView(LoginRequiredMixin, TemplateView):
@@ -259,6 +295,56 @@ class DataSourceMediaStorageItemCreateView(LoginRequiredMixin, TemplateView):
         return redirect('datasource_media_storages:create_item')
 
 
+class DataSourceMediaStorageItemDetailAndUpdateView(LoginRequiredMixin, TemplateView):
+
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        media_item = DataSourceMediaStorageItem.objects.get(id=kwargs['pk'])
+        context['media_item'] = media_item
+        # decode binary data to string
+        media_item_contents = "File contents could not be decoded."
+        try:
+            if media_item.media_file_type == 'txt':
+                media_item_contents = media_item.file_bytes.decode('utf-8')
+            elif media_item.media_file_type == 'docx':
+                media_item_contents = decode_docx(media_item.file_bytes)
+            elif media_item.media_file_type == 'pptx':
+                media_item_contents = decode_pptx(media_item.file_bytes)
+            elif media_item.media_file_type == 'xlsx':
+                media_item_contents = decode_xlsx(media_item.file_bytes)
+            else:
+                media_item_contents = media_item.file_bytes.decode('utf-8', errors='ignore')
+        except Exception as e:
+            print(f"Error decoding binary data: {e}")
+        context['media_item_contents'] = media_item_contents
+        context['file_type_highlighting'] = FILE_TYPE_HIGHLIGHTING_DECODER.get(media_item.media_file_type, 'plaintext')
+        return context
+
+    def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - MEDIA ITEM / UPDATE
+        ##############################
+        context_user = self.request.user
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.UPDATE_MEDIA_STORAGES not in user_permissions:
+            messages.error(request, "You do not have permission to update media items.")
+            return redirect('datasource_media_storages:list_items')
+        ##############################
+
+        media_item = DataSourceMediaStorageItem.objects.get(id=kwargs['pk'])
+        description = request.POST.get('description')
+        media_item.description = description
+        media_item.save()
+        messages.success(request, 'Media item updated successfully.')
+        return redirect('datasource_media_storages:list_items')
+
+
 class DataSourceMediaStorageItemListView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -291,6 +377,7 @@ class DataSourceMediaStorageItemListView(LoginRequiredMixin, TemplateView):
                 'organization': org,
                 'assistants': assistant_data_list, })
         context['data'] = data
+        context['base_url'] = BASE_URL
         return context
 
     def post(self, request, *args, **kwargs):
@@ -361,3 +448,96 @@ class DataSourceMediaStorageAllItemsDeleteView(LoginRequiredMixin, TemplateView)
         DataSourceMediaStorageItem.objects.filter(storage_base_id=base_id).delete()
         messages.success(request, 'All media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')
+
+
+class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, TemplateView):
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        generated_description = None
+        if 'generated_description' in kwargs:
+            context['generated_description'] = kwargs['generated_description']
+            print(f"Generated Description: {kwargs['generated_description']}")
+        return context
+
+    @staticmethod
+    def decode_media_item_type(media_item_type):
+
+        class MediaFileTypesNamesLists:
+            IMAGE = ['jpg', 'png', 'gif', 'svg', 'bmp', 'tiff']
+            AUDIO = ['mp3', 'wav', 'flac', 'aac', 'ogg']
+            VIDEO = ['mp4', 'avi', 'mkv', 'mov']
+            COMPRESSED = ['zip', 'rar', 'tar']
+            CODE = ['py', 'js', 'ts', 'php', 'css', 'html', 'java', 'c', 'cpp', 'h', 'sh', 'go', 'dart']
+            DATA = ['yml', 'yaml', 'sql', 'pkl', 'csv', 'xlsx', 'json', 'xml', 'tsv', 'docx', 'pptx', 'pdf', 'txt']
+
+        if media_item_type in MediaFileTypesNamesLists.IMAGE:
+            return ExecutionTypesNames.IMAGE_INTERPRETATION
+        elif media_item_type in (MediaFileTypesNamesLists.COMPRESSED or
+                                 media_item_type in MediaFileTypesNamesLists.DATA or
+                                 media_item_type in MediaFileTypesNamesLists.CODE):
+            return ExecutionTypesNames.FILE_INTERPRETATION
+        else:
+            # assume file interpretation
+            return ExecutionTypesNames.FILE_INTERPRETATION
+
+    @staticmethod
+    def normalize_whitespace(text):
+        # Remove leading and trailing whitespace
+        text = text.strip()
+        text = text.replace('\n', ' ')
+        text = text.replace('\r', ' ')
+        text = text.replace('\t', ' ')
+        text = text.replace('\v', ' ')
+        text = text.replace('\f', ' ')
+        text = text.replace('\0', ' ')
+        text = text.strip()
+        # Replace all sequences of whitespace (including newlines, tabs, etc.) with a single space
+        text = re.sub(r'\s+', ' ', text, flags=re.UNICODE)
+        return text
+
+    def post(self, request, *args, **kwargs):
+        ##############################
+        # PERMISSION CHECK FOR - MEDIA ITEM / UPDATE
+        ##############################
+        context_user = self.request.user
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.UPDATE_MEDIA_STORAGES not in user_permissions:
+            messages.error(request, "You do not have permission to update media items.")
+
+            return redirect('datasource_media_storages:list_items')
+        ##############################
+
+        media_item_id = kwargs.get('pk')
+        media_item = DataSourceMediaStorageItem.objects.get(id=media_item_id)
+
+        execution_type = self.decode_media_item_type(media_item.media_file_type)
+
+        texts, _, _ = execute_storage_query(chat_id=None,
+                                            connection_id=media_item.storage_base.id,
+                                            execution_type=execution_type,
+                                            file_paths=[media_item.full_file_path],
+                                            query=(GENERATE_FILE_DESCRIPTION_QUERY + f"""
+                                                    File Type Information:
+                                                    - Format: {media_item.media_file_type}
+                                               """),
+                                            without_chat=True)
+        kwargs['pk'] = media_item_id
+        if execution_type == ExecutionTypesNames.IMAGE_INTERPRETATION:
+            generated_description = texts
+            media_item.description = generated_description
+            media_item.save()
+        elif execution_type == ExecutionTypesNames.FILE_INTERPRETATION:
+            try:
+                generated_description = str(texts["response"].split("---")[0])
+                # remove everything except a single space
+                generated_description = self.normalize_whitespace(generated_description)
+                media_item.description = generated_description
+                media_item.save()
+            except Exception as e:
+                print(f"Error parsing generated description: {e}")
+        return redirect('datasource_media_storages:item_detail', **kwargs)

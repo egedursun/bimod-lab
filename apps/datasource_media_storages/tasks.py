@@ -76,6 +76,11 @@ MEDIA_FILE_TYPES = (
     ('json', 'JSON'),
     ('xml', 'XML'),
     ('tsv', 'TSV'),
+
+    ('docx', 'DOCX'),
+    ('pptx', 'PPTX'),
+    ('pdf', 'PDF'),
+    ('txt', 'TXT'),
     ############################
 )
 
@@ -86,7 +91,7 @@ class MediaFileTypesNamesLists:
     VIDEO = ['mp4', 'avi', 'mkv', 'mov']
     COMPRESSED = ['zip', 'rar', 'tar']
     CODE = ['py', 'js', 'ts', 'php', 'css', 'html', 'java', 'c', 'cpp', 'h', 'sh', 'go', 'dart']
-    DATA = ['yml', 'yaml', 'sql', 'pkl', 'csv', 'xlsx', 'json', 'xml', 'tsv']
+    DATA = ['yml', 'yaml', 'sql', 'pkl', 'csv', 'xlsx', 'json', 'xml', 'tsv', 'docx', 'pptx', 'pdf', 'txt']
 
 
 @shared_task

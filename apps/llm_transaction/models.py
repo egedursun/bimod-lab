@@ -34,13 +34,13 @@ class TransactionTypeRolesNames:
 class TransactionSourcesNames:
     APP = "app"
     API = "api"
+    GENERATION = "generation"
 
 
 # Create your models here.
 
 class LLMTransaction(models.Model):
-    responsible_user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, related_name='transactions', default=1,
-                                         null=True)
+    responsible_user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, related_name='transactions', null=True, blank=True)
     responsible_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.SET_NULL,
                                               related_name='transactions',
                                               null=True, blank=True)

@@ -9,6 +9,7 @@ from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS,
 from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
 from apps._services.tools.tool_executor import ToolExecutor
+from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from apps.multimodal_chat.utils import calculate_billable_cost_from_raw
 from config.settings import BASE_URL
 
@@ -351,11 +352,11 @@ class InternalOpenAIClient:
         client = self.connection
         if len(full_file_paths) > 20:
             return ("System Message: The number of files to be interpreted is too high. Please provide a smaller "
-                    "number of files. The maximum number supported by the system is 20.")
+                    "number of files. The maximum number supported by the system is 20."), [], []
 
         file_contents = []
         for path in full_file_paths:
-            if not path: return "System Message: The file path is empty."
+            if not path: return "System Message: The file path is empty.", [], []
             try: # Read binary file contents
                 with open(path, "rb") as file: file_contents.append(file.read())
             except FileNotFoundError:
@@ -367,7 +368,7 @@ class InternalOpenAIClient:
                 print(f"Error Details: {str(e)}")
                 continue
 
-        if not file_contents: return "System Message: No file contents could be read from the provided file paths."
+        if not file_contents: return "System Message: No file contents could be read from the provided file paths.", [], []
 
         # Upload the file to OpenAI server
         file_objects = []
@@ -392,7 +393,7 @@ class InternalOpenAIClient:
         except Exception as e:
             print(f"System Message: An error occurred while preparing the assistant for the file interpretation.")
             print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while preparing the assistant for the file interpretation."
+            return "System Message: An error occurred while preparing the assistant for the file interpretation.", [], []
 
         # Prepare the thread
         try:
@@ -400,7 +401,7 @@ class InternalOpenAIClient:
         except Exception as e:
             print(f"System Message: An error occurred while preparing the thread for the file interpretation.")
             print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while preparing the thread for the file interpretation."
+            return "System Message: An error occurred while preparing the thread for the file interpretation.", [], []
 
         # Retrieve the response from the assistant
         try:
@@ -408,7 +409,7 @@ class InternalOpenAIClient:
         except Exception as e:
             print(f"System Message: An error occurred while retrieving the response from the file interpreter assistant.")
             print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while retrieving the response from the file interpreter assistant."
+            return "System Message: An error occurred while retrieving the response from the file interpreter assistant.", [], []
 
         # Format and get the messages
         texts, image_download_ids, file_download_ids = [], [], []
@@ -482,7 +483,24 @@ class InternalOpenAIClient:
         except Exception as e:
             print(f"System Message: An error occurred while cleaning up the file storage, assistant, and thread.")
             print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while cleaning up the file storage, assistant, and thread."
+            return "System Message: An error occurred while cleaning up the file storage, assistant, and thread.", [], []
+
+        # Create the transactions
+        LLMTransaction.objects.create(
+            organization=self.assistant.organization,
+            model=self.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=texts,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.ASSISTANT,
+            transaction_source=TransactionSourcesNames.GENERATION
+        )
 
         return texts, downloaded_files, downloaded_images
 
@@ -555,4 +573,22 @@ class InternalOpenAIClient:
             print(f"Error Details: {str(e)}")
             return ("System Message: An error occurred while processing the response from the image interpreter "
                     "assistant.")
+
+        # Create the transactions
+        LLMTransaction.objects.create(
+            organization=self.assistant.organization,
+            model=self.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=final_response,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.ASSISTANT,
+            transaction_source=TransactionSourcesNames.GENERATION
+        )
+
         return final_response

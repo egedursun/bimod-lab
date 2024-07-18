@@ -36,7 +36,7 @@
 ### HELPER PAGES
 
 - [X] Profile page for the user.
-- [X] Settings page for miscellaneous settings related to the account. (Adding/Modifying/Deleting credit card, deleting account, etc.)
+- [X] Settings page for miscellaneous settings related to the account. (Adding / Modifying / Deleting credit card, deleting account, etc.)
 - [X] F.A.Q. page for the users and explanations regardign the application.
 - [X] Documentation page for explaining how the application works, and tutorials for the users.
 - [X] Support page for the users to contact the support team.
@@ -100,9 +100,8 @@
                   cost beforehand (instead of doing it in save method of the models.py), and store the token cost
                   in the transaction. This way, we can avoid the heavy load on the database.
 - [X] It seems like the tool retry & chain retry limits are not working as intended. Debug and fix this.
-- [X] 'INTRINSIC_ONE_TIME_SQL_RETRIEVAL_LIMIT (max=100)' must be determined by the assistant's configuration 
-                    according to the user's preferences. Plus, there needs to be a 'ONE_TIME_SQL_RETRIEVAL_TOKEN_LIMIT 
-                    (max=10_000)' to prevent using too many tokens, and to prevent very large results. 
+- [X] One time SQL retrieval limit must be determined by the assistant's configuration 
+                  according to the user's preferences. Plus, there needs to be a limit to prevent using too many tokens, and to prevent very large results. 
 - [X] Implement the context cut-off tool to prevent context window from overflowing.
 - [X] Implement the Knowledge Base tool for the web browser & web scraping features.
 - [X] Implement the Vectorizer Memory for context overflows, within the same class with knowledge base.
@@ -112,7 +111,7 @@
 - [X] Implement the permissions for the media storage tool.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
   - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low", which will determine
-          how difficult the agent will trust on an online source.
+                  how difficult the agent will trust on an online source.
   - [ ] Browsed pages must be stored in a knowledge base for future reference. 
   - [ ] A data model for the browsed pages must also be designed.
   - [ ] Admin model + save() and save_model() methods must also be needed to integrated.
@@ -155,6 +154,9 @@
 - [X] Integrate user management.
 - [X] Integrate permission management.
 - [X] Complete the pages for the user permission management.
+
+*Milestone-1*
+
 - [X] Integrate the assistants pages.
 - [X] Integrate the chats pages.
 - [X] Integrate the export assistant pages.
@@ -162,20 +164,30 @@
 - [X] Integrate the message templates pages.
 - [X] Integrate the starred messages pages.
 - [X] Integrate the registration page.
+
+*Milestone-2*
+
 - [X] Integrate SQL database features.
 - [X] Integrate the knowledge base & document features.
 - [ ] Integrate the web browser & web scraping features.
 - [ ] Integrate ML models usage features.
-- [ ] Integrate the media storage features (image, audio, video).
+- [X] Integrate the media storage features (image, audio, video).
 - [X] Integrate the file system manipulation features.
+- 
+*Milestone-3*
+
 - [ ] Integrate the functions multi-modality.
 - [ ] Integrate the API multi-modality.
 - [ ] Integrate the Conditionals multi-modality.
 - [ ] Integrate the Scheduled jobs multi-modality.
+- [ ] Integrate the Scripts multi-modality.
 - [ ] Integrate the Webhooks / triggers multi-modality.
 - [ ] Integrate Image generation multi-modality.
 - [ ] Integrate Audio generation multi-modality.
 - [ ] Develop functions for different "industries".
+
+*Milestone-4*
+
 - [ ] Integrate the orchestration pages.
 - [ ] Integrate "Integrations multi-modality".
 - [ ] Integrate "Meta-Integrations multi-modality".
@@ -236,6 +248,9 @@
 - Total Lines of Code by 2024-07-17:
   - **1,555,000**
 
+- Total Lines of Code by 2024-07-18:
+  - **1,563,000**
+
 - Current System Prompt Cost: **~10,800 Tokens**
   - **1M Token** = $5,00
   - **System Prompt Unit Cost** = $0,054 (TRY 1,80) (for **GPT**) 
@@ -251,28 +266,22 @@ git ls-files | xargs wc -l
 **THINGS TO REMEMBER:**
 
 File Systems:
-- [ ] Implement script generation (similar to function usage). (~3-4 hours) -- do it in its relevant time
+- [ ] Implement script generation (similar to function usage). (~3-4 hours) -- do it in its relevant time (7?)
 
 ---
 
 Important:
-- [ ] We need a "page" to store and show the user the generated files and images. -- 9
-- [ ] Implement direct chat image and file interpretation + show user images in the chat. (~3-4 hours) -- 10
+- [ ] We need a "page" to store and show the user the generated files and images. -- 5
+- [ ] Implement direct chat image and file interpretation + show user images in the chat. (~3-4 hours) -- 6
 
 
 Moderate:
-- [ ] Implement the image detail page for the media storage items. (~1-2 hours) -- 5
-- [ ] Implement auto-generated image descriptions for the image creation page. (~1-2 hours) -- 6
-- [ ] Implement download image (image) / retrieve with link (file) page for the media storage items page. (~1-2 hours) -- 7
-- [ ] Implement downloading as a tool for chats. (the previous one is on media storage pages) (~1-2 hours) -- 8
+- [ ] retrieve with link (file) page for the media storage items page. (~1-2 hours) -- 3
+- [ ] Implement downloading as a tool for chats. (the previous one is on media storage pages) (~1-2 hours) -- 4
 
 
 Cosmetic Improvements:
-- [ ] For images, on list media items page, show little image thumbnails. (~1 hour) -- 1
-- [ ] For audios, on list media items page, show little audio players.  (~1 hour) -- 2
-- [ ] For videos, on list media items page, show little video cover images. (~1 hour) -- 3
-- [ ] For code and data files, skip... -- 4
-- [ ] "Add New" buttons for all relevant pages. (~1 hour) -- handle later
+- [ ] "Add New" buttons for all relevant pages. (~1 hour) -- handle later (8?)
 
 ---
 

@@ -81,6 +81,11 @@ MEDIA_FILE_TYPES = (
     ('json', 'JSON'),
     ('xml', 'XML'),
     ('tsv', 'TSV'),
+
+    ('docx', 'DOCX'),
+    ('pptx', 'PPTX'),
+    ('pdf', 'PDF'),
+    ('txt', 'TXT'),
     ############################
 )
 
@@ -137,6 +142,10 @@ class MediaFileTypesNames:
         JSON = 'json'
         XML = 'xml'
         TSV = 'tsv'
+        DOCX = 'docx'
+        PPTX = 'pptx'
+        PDF = 'pdf'
+        TXT = 'txt'
 
 
 class DataSourceMediaStorageConnection(models.Model):

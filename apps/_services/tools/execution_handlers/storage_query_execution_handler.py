@@ -4,9 +4,11 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 from apps.multimodal_chat.models import MultimodalChat
 
 
-def execute_storage_query(connection_id, chat_id, execution_type, file_paths, query):
+def execute_storage_query(connection_id, chat_id, execution_type, file_paths, query, without_chat=False):
     connection = DataSourceMediaStorageConnection.objects.get(id=connection_id)
-    chat = MultimodalChat.objects.get(id=chat_id)
+    chat = None
+    if without_chat is False:
+        chat = MultimodalChat.objects.get(id=chat_id)
     executor = StorageExecutor(connection=connection, chat=chat)
     response, file_uris, image_uris = "", [], []
     if execution_type == ExecutionTypesNames.FILE_INTERPRETATION:

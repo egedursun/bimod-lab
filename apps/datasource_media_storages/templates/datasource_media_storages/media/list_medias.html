@@ -218,6 +218,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                                         <th>File Format</th>
                                                         <th>Description</th>
                                                         <th>Uploaded At</th>
+                                                        <th>Details</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -227,7 +228,23 @@ document.addEventListener("DOMContentLoaded", function() {
                                                             <input type="checkbox" class="select-item-checkbox" name="selected_items" value="{{ item_data.item.id }}" data-storage-id="{{ storage_data.storage.id }}">
                                                         </td>
                                                         <td>
-                                                            <img src="{% static 'img/icons/misc/' %}{{ item_data.item.media_file_type }}.png" alt="{{ item_data.item.media_file_type }}" width="20">
+                                                            {% if storage_data.storage.media_category == "image"  %}
+                                                              <img src="{{ base_url }}/{{ item_data.item.full_file_path }}" width="50" height="50" class="rounded">
+                                                            {% elif storage_data.storage.media_category == "audio" %}
+                                                              <audio class="plyr-audio-player pe-2 ps-2" controls>
+                                                                <source src="{{ base_url }}/{{ item_data.item.full_file_path }}" type="audio/mp3" />
+                                                              </audio>
+                                                            {% elif storage_data.storage.media_category == "video" %}
+                                                              <video class="plyr-video-player rounded" controls style="max-width: 250px;">
+                                                                <source src="{{ base_url }}/{{ item_data.item.full_file_path }}" type="video/mp4" />
+                                                              </video>
+                                                            {% elif storage_data.storage.media_category == "compressed" %}
+                                                              <img src="{% static 'img/icons/misc/' %}{{ item_data.item.media_file_type }}.png" width="30" height="30" class="rounded">
+                                                            {% elif storage_data.storage.media_category == "code" %}
+                                                              <img src="{% static 'img/icons/misc/' %}{{ item_data.item.media_file_type }}.png" width="30" height="30" class="rounded">
+                                                            {% elif storage_data.storage.media_category == "data" %}
+                                                              <img src="{% static 'img/icons/misc/' %}{{ item_data.item.media_file_type }}.png" width="30" height="30" class="rounded">
+                                                            {% endif %}
                                                         </td>
                                                         <td>{{ item_data.item.id }}</td>
                                                         <td>{{ item_data.item.media_file_name }}</td>
@@ -236,6 +253,11 @@ document.addEventListener("DOMContentLoaded", function() {
                                                           {{ item_data.item.description }}
                                                         </td>
                                                         <td>{{ item_data.item.created_at }}</td>
+                                                        <td>
+                                                          <a href="{{ base_url }}/app/datasource_media_storages/item/detail/{{ item_data.item.id }}" class="text-white">
+                                                            <i class="fa fa-edit"></i>
+                                                          </a>
+                                                        </td>
                                                     </tr>
                                                     {% endfor %}
                                                 </tbody>
@@ -284,4 +306,8 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
     {% endfor %}
 </div>
+
+<script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
+
 {% endblock %}
+
