@@ -19,6 +19,7 @@
 - [ ] Proper Documentation & tutorial, instructions (FAQ and Support) for the application.
 - [ ] Automated balance top-ups (monthly or as it goes low).
 - [ ] Exclude the media from Git versioning (IMPORTANT!!)
+- [ ] Fix the search bar for having correct redirection links.
 
 ---
 

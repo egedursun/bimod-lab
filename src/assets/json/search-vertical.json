@@ -67,12 +67,6 @@
       "url": "/message_templates/list"
     },
     {
-      "name": "Fine Tuning",
-      "icon": "menu-icon tf-icons ti ti-ruler",
-      "slug": "fine-tuning",
-      "url": "/fine_tuning/list"
-    },
-    {
       "name": "Export Assistants",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "file-systems",
@@ -103,16 +97,22 @@
       "url": "/sql_databases/list"
     },
     {
-      "name": "NoSQL Databases",
-      "icon": "menu-icon tf-icons ti ti-database",
-      "slug": "nosql-databases",
-      "url": "/nosql_databases/list"
-    },
-    {
       "name": "Knowledge Bases",
       "icon": "menu-icon tf-icons ti ti-vector",
       "slug": "knowledge-bases",
       "url": "/knowledge_bases/list"
+    },
+    {
+      "name": "Documents",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "documents",
+      "url": "/data_storages/list"
+    },
+    {
+      "name": "Code Repositories",
+      "icon": "menu-icon tf-icons ti ti-tag",
+      "slug": "code-repositories",
+      "url": "/code_repositories/list"
     },
     {
       "name": "ML Models",
@@ -121,22 +121,16 @@
       "url": "/ml_models/list"
     },
     {
-      "name": "Image Storages",
+      "name": "Media Storages",
       "icon": "menu-icon tf-icons ti ti-camera",
-      "slug": "image-storages",
-      "url": "/image_storages/list"
+      "slug": "media-storages",
+      "url": "/media_storages/list"
     },
     {
-      "name": "Video Storages",
-      "icon": "menu-icon tf-icons ti ti-video",
-      "slug": "video-storages",
-      "url": "/video_storages/list"
-    },
-    {
-      "name": "Audio Storages",
-      "icon": "menu-icon tf-icons ti ti-music",
-      "slug": "audio-storages",
-      "url": "/audio_storages/list"
+      "name": "Multimedia Files",
+      "icon": "menu-icon tf-icons ti ti-file",
+      "slug": "multimedia-files",
+      "url": "/multimedia_files/list"
     },
     {
       "name": "Functions",
@@ -149,6 +143,12 @@
       "icon": "menu-icon tf-icons ti ti-network",
       "slug": "apis",
       "url": "/apis/list"
+    },
+    {
+      "name": "Scripts",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/scripts/list"
     },
     {
       "name": "Conditionals",
@@ -167,12 +167,6 @@
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
       "url": "/triggers/list"
-    },
-    {
-      "name": "Blockchain",
-      "icon": "menu-icon tf-icons ti ti-cube",
-      "slug": "blockchain",
-      "url": "/blockchain/list"
     },
     {
       "name": "Image Gen & Analysis",
