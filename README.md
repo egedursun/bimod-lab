@@ -133,7 +133,6 @@
 <br><br>
 
 - [ ] Refine ideas regarding the dashboard page & management.
-- [ ] **NEW FEATURE IDEA:** Simply entering a URL of an image to download it to a storage. + image retrieval from URL
 - [ ] **NEW FEATURE IDEA:** Discuss the "GitHub Repo Integration" and assistant interpretation module.
 - [ ] **NEW FEATURE IDEA:** Discuss ERP integration and assistant interpretation module.
 - [ ] **NEW FEATURE IDEA:** Discuss the Chrome Extension to automatically understand the web pages etc.
@@ -251,36 +250,36 @@ git ls-files | xargs wc -l
 **THINGS TO REMEMBER:**
 
 Templates:
-- [ ] Add a save as template button to the chat.
+- [ ] Add a save as template button to the chat. (~1 hour)
 
 File Systems:
-- [ ] Implement script generation (similar to function generation).
+- [ ] Implement script generation (similar to function generation). (~3-4 hours)
 
 Exported Assistants API:
-- [ ] Add the generated file and images thing to the exported assistants.
+- [ ] Add the generated file and images thing to the exported assistants. (~3-4 hours)
 
 ---
 
 Small Chores:
-- [ ] Migrate the image interpretation temperature and token max length.
+- [ ] Migrate the image interpretation temperature and token max length. (~0.5 hours)
 
 Important:
-- [ ] Show the assistant images in the chat, to the user. -> currently shows up, but the size is too big and awkward. Fix this.
-- [ ] Implement direct chat image and file interpretation + show user images in the chat.
+- [ ] Show the assistant images in the chat, to the user. -> currently shows up, but the size is too big and awkward. Fix this. (~1-2 hours)
+- [ ] Implement direct chat image and file interpretation + show user images in the chat. (~3-4 hours)
 
 
 Moderate:
-- [ ] Implement the image detail page for the media storage items.
-- [ ] Implement auto-generated image descriptions for the image detail page.
-- [ ] Implement download / retrieve with link page for the media storage items page.
-- [ ] Implement download as a tool for chats.
+- [ ] Implement the image detail page for the media storage items. (~1-2 hours)
+- [ ] Implement auto-generated image descriptions for the image detail page. (~1-2 hours)
+- [ ] Implement download / retrieve with link page for the media storage items page. (~1-2 hours)
+- [ ] Implement download as a tool for chats. (~1-2 hours)
 
 Cosmetic Improvements:
-- [ ] For images, on list media items page, show little image thumbnails.
-- [ ] For audios, on list media items page, show little audio players.
-- [ ] For videos, on list media items page, show little video cover images.
+- [ ] For images, on list media items page, show little image thumbnails. (~1 hour)
+- [ ] For audios, on list media items page, show little audio players.  (~1 hour)
+- [ ] For videos, on list media items page, show little video cover images. (~1 hour)
 - [ ] For code and data files, skip...
-- [ ] "Add New" buttons for all relevant pages.
+- [ ] "Add New" buttons for all relevant pages. (~1 hour)
 
 ---
 

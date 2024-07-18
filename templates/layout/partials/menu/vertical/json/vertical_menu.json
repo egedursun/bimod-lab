@@ -265,6 +265,12 @@
       ]
     },
     {
+      "name": "Code Repositories",
+      "icon": "menu-icon tf-icons ti ti-tag",
+      "slug": "code-repositories",
+      "url": "dashboard:main-dashboard"
+    },
+    {
       "name": "ML Models",
       "icon": "menu-icon tf-icons ti ti-wand",
       "slug": "machine-learning-models",
@@ -317,6 +323,12 @@
       "name": "APIs",
       "icon": "menu-icon tf-icons ti ti-network",
       "slug": "apis",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Scripts",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
       "url": "dashboard:main-dashboard"
     },
     {
