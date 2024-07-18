@@ -76,6 +76,11 @@ MEDIA_FILE_TYPES = (
     ('yaml', 'YAML'),
     ('sql', 'SQL'),
     ('pkl', 'Pickle'),
+    ('csv', 'CSV'),
+    ('xlsx', 'XLSX'),
+    ('json', 'JSON'),
+    ('xml', 'XML'),
+    ('tsv', 'TSV'),
     ############################
 )
 
@@ -127,6 +132,11 @@ class MediaFileTypesNames:
         YAML = 'yaml'
         SQL = 'sql'
         Pickle = 'pkl'
+        CSV = 'csv'
+        XLSX = 'xlsx'
+        JSON = 'json'
+        XML = 'xml'
+        TSV = 'tsv'
 
 
 class DataSourceMediaStorageConnection(models.Model):
@@ -138,6 +148,9 @@ class DataSourceMediaStorageConnection(models.Model):
     directory_full_path = models.CharField(max_length=255, blank=True, null=True)
 
     directory_schema = models.TextField(blank=True, null=True)
+
+    interpretation_temperature = models.FloatField(default=0.25)
+    interpretation_maximum_tokens = models.IntegerField(default=2048)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -209,23 +222,19 @@ class DataSourceMediaStorageItem(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         self.media_file_name = slugify(self.media_file_name)
+        file_type = self.media_file_type
         if not self.full_file_path:
             base_dir = self.storage_base.directory_full_path
             file_name = self.media_file_name
-            file_type = self.media_file_type
             full_path = f"{base_dir}{file_name.split('.')[0]}_{str(random.randint(1_000_000, 9_999_999))}.{file_type}"
             self.full_file_path = full_path
+
+        if file_type not in [ft[0] for ft in MEDIA_FILE_TYPES]:
+            print(f"Invalid file format: {file_type}, skipping file...")
+            return False
 
         super().save(force_insert, force_update, using, update_fields)
 
         # Upload the file to the storage
         upload_file_to_storage.delay(file_bytes=self.file_bytes, full_path=self.full_file_path,
                                      media_category=self.storage_base.media_category)
-
-    def delete(self, using=None, keep_parents=False):
-
-        # Remove the file
-        if self.full_file_path is not None:
-            os.system(f"rm -rf {self.full_file_path}")
-
-        super().delete(using, keep_parents)

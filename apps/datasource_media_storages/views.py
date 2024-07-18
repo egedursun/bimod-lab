@@ -17,9 +17,6 @@ from web_project import TemplateLayout
 # Create your views here.
 
 
-# TODO: create the views for the media storages here
-
-
 class DataSourceMediaStorageConnectionCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
@@ -315,6 +312,13 @@ class DataSourceMediaStorageItemListView(LoginRequiredMixin, TemplateView):
 
         if 'selected_items' in request.POST:
             item_ids = request.POST.getlist('selected_items')
+            items_to_be_deleted = DataSourceMediaStorageItem.objects.filter(id__in=item_ids)
+            for item in items_to_be_deleted:
+                if item.full_file_path is not None:
+                    try:
+                        os.system(f"rm -rf {item.full_file_path}")
+                    except Exception as e:
+                        print(f"Error deleting the file from the media storage path: {item.full_file_path} // {e}")
             DataSourceMediaStorageItem.objects.filter(id__in=item_ids).delete()
             messages.success(request, 'Selected media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')
@@ -347,6 +351,13 @@ class DataSourceMediaStorageAllItemsDeleteView(LoginRequiredMixin, TemplateView)
         ##############################
 
         base_id = kwargs.get('id')
+        all_items = DataSourceMediaStorageItem.objects.filter(storage_base_id=base_id)
+        for item in all_items:
+            if item.full_file_path is not None:
+                try:
+                    os.system(f"rm -rf {item.full_file_path}")
+                except Exception as e:
+                    print(f"Error deleting the file from the media storage path: {item.full_file_path} // {e}")
         DataSourceMediaStorageItem.objects.filter(storage_base_id=base_id).delete()
         messages.success(request, 'All media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')

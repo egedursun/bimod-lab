@@ -5,7 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from web_project import TemplateLayout, TemplateHelper
 from .models import MultimodalChat, MultimodalChatMessage, ChatSourcesNames
 from .utils import generate_chat_name
-from apps._services.llms.llm_decoder import InternalLLMClient
 from ..assistants.models import Assistant
 from ..message_templates.models import MessageTemplate
 from ..organization.models import Organization
@@ -54,6 +53,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        from .._services.llms.llm_decoder import InternalLLMClient
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
 

@@ -133,6 +133,7 @@
 <br><br>
 
 - [ ] Refine ideas regarding the dashboard page & management.
+- [ ] **NEW FEATURE IDEA:** Simply entering a URL of an image to download it to a storage. + image retrieval from URL
 - [ ] **NEW FEATURE IDEA:** Discuss the "GitHub Repo Integration" and assistant interpretation module.
 - [ ] **NEW FEATURE IDEA:** Discuss ERP integration and assistant interpretation module.
 - [ ] **NEW FEATURE IDEA:** Discuss the Chrome Extension to automatically understand the web pages etc.
@@ -221,31 +222,67 @@
 ### FUN FACTS
 
 - Total Lines of Code by 2024-07-13: 
-  - **1,070,000 - 1,090,000** 
+  - **1,090,000** 
 
 - Total Lines of Code by 2024-07-14: 
-  - **1,075,000 - 1,315,000**
+  - **1,315,000**
 
 - Total Lines of Code by 2024-07-15:
-  - **1,116,000 - 1,118,000**
+  - **1,118,000**
 
 - Total Lines of Code by 2024-07-16:
-  - **1,168,000 - 1,476,000**
+  - **1,476,000**
 
-- Current System Prompt Cost: **5,400 Tokens**
+- Total Lines of Code by 2024-07-17:
+  - **1,555,000**
+
+- Current System Prompt Cost: **~10,800 Tokens**
   - **1M Token** = $5,00
-  - **System Prompt Unit Cost** = $0,027 (TRY 0,90)
+  - **System Prompt Unit Cost** = $0,054 (TRY 1,80) (for **GPT**) 
 
 *To count:*
-
-```bash
-find . | xargs wc -l
-```
-
-*or*
 
 ```bash
 git ls-files | xargs wc -l
 ```
 
 ---
+
+**THINGS TO REMEMBER:**
+
+Templates:
+- [ ] Add a save as template button to the chat.
+
+File Systems:
+- [ ] Implement script generation (similar to function generation).
+
+Exported Assistants API:
+- [ ] Add the generated file and images thing to the exported assistants.
+
+---
+
+Small Chores:
+- [ ] Migrate the image interpretation temperature and token max length.
+
+Important:
+- [ ] Show the assistant images in the chat, to the user. -> currently shows up, but the size is too big and awkward. Fix this.
+- [ ] Implement direct chat image and file interpretation + show user images in the chat.
+
+
+Moderate:
+- [ ] Implement the image detail page for the media storage items.
+- [ ] Implement auto-generated image descriptions for the image detail page.
+- [ ] Implement download / retrieve with link page for the media storage items page.
+- [ ] Implement download as a tool for chats.
+
+Cosmetic Improvements:
+- [ ] For images, on list media items page, show little image thumbnails.
+- [ ] For audios, on list media items page, show little audio players.
+- [ ] For videos, on list media items page, show little video cover images.
+- [ ] For code and data files, skip...
+- [ ] "Add New" buttons for all relevant pages.
+
+---
+
+Notes:
+- [ ] Use the code interpreter tool of GPT assistants as a way to run GPT-generated functions, instead of custom functions.

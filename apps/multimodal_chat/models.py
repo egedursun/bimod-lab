@@ -118,7 +118,12 @@ class MultimodalChatMessage(models.Model):
                                         related_name='messages_chat')
     sender_type = models.CharField(max_length=10, choices=MESSAGE_SENDER_TYPES)
     message_text_content = models.TextField()
-    message_json_content = models.JSONField(default=dict, blank=True, null=True)
+    message_json_content = models.JSONField(default=dict, blank=True, null=True)  # Not used for now
+
+    # Multimedia Contents
+    message_image_contents = models.JSONField(default=list, blank=True, null=True)
+    message_file_contents = models.JSONField(default=list, blank=True, null=True)
+
     starred = models.BooleanField(default=False)
 
     sent_at = models.DateTimeField(auto_now_add=True)

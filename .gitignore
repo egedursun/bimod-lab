@@ -187,3 +187,8 @@ cython_debug/
 /.idea/workspace.xml
 .idea/dataSources.xml
 .idea/dataSources.local.xml
+
+
+# Generated media files
+media/generated/files/*
+media/generated/images/*

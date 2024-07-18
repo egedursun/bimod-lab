@@ -5,6 +5,7 @@ from apps._services.prompts.datasource.build_file_system_datasource_prompt impor
 from apps._services.prompts.datasource.build_knowledge_base_datasource_prompt import \
     build_knowledge_base_datasource_prompt
 from apps._services.prompts.datasource.build_sql_datasource_prompt import build_sql_datasource_prompt
+from apps._services.prompts.datasource.build_storage_datasource_prompt import build_storage_datasource_prompt
 from apps._services.prompts.generic.build_audience_prompt import get_structured_audience_prompt
 from apps._services.prompts.generic.build_context_overflow_prompt import get_structured_context_overflow_prompt
 from apps._services.prompts.generic.build_instructions_prompt import get_structured_instructions_prompt
@@ -26,6 +27,8 @@ from apps._services.prompts.tools.tool_prompts.build_nosql_query_execution_tool_
     build_structured_tool_prompt__nosql_query_execution
 from apps._services.prompts.tools.tool_prompts.build_sql_query_execution_tool_prompt import \
     build_structured_tool_prompt__sql_query_execution
+from apps._services.prompts.tools.tool_prompts.build_storage_query_execution_tool_prompt import \
+    build_structured_tool_prompt__media_storage_query_execution
 from apps._services.prompts.tools.tool_prompts.build_vectorized_context_history_query_execution_tool_prompt import \
     build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt
 from apps.assistants.models import Assistant
@@ -63,9 +66,7 @@ class PromptBuilder:
         structured_sql_datasource_prompt = build_sql_datasource_prompt(assistant, user)
         structured_knowledge_base_datasource_prompt = build_knowledge_base_datasource_prompt(assistant, user)
         structured_file_system_prompt = build_file_system_datasource_prompt(assistant, user)
-
-        # TODO: add the prompt here (media storage)
-        structured_media_storage_prompt = None
+        structured_media_storage_prompt = build_storage_datasource_prompt(assistant, user)
         ##################################################
         # TOOL PROMPTS
         structured_tool_usage_instructions_prompt = (
@@ -80,9 +81,7 @@ class PromptBuilder:
         structured_knowledge_base_query_execution_tool_prompt = build_structured_tool_prompt__knowledge_base_query_execution()
         structured_vectorized_context_history_query_execution_tool_prompt = build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt()
         structured_file_system_command_execution_tool_prompt = build_structured_tool_prompt__file_system_command_execution()
-
-        # TODO: add the prompt here (media storage)
-        structured_storage_query_execution_tool_prompt = None
+        structured_storage_query_execution_tool_prompt = build_structured_tool_prompt__media_storage_query_execution()
         ##################################################
 
         # Combine the prompts
@@ -101,17 +100,17 @@ class PromptBuilder:
         merged_prompt += structured_sql_datasource_prompt
         merged_prompt += structured_knowledge_base_datasource_prompt
         merged_prompt += structured_file_system_prompt
-
-        # TODO: append to the main prompt here (media storage)
-
+        merged_prompt += structured_media_storage_prompt
         ##################################################
         merged_prompt += structured_tool_usage_instructions_prompt
-
+        ##################################################
         # add the tool usage prompts
         merged_prompt += structured_sql_query_execution_tool_prompt
         merged_prompt += structured_knowledge_base_query_execution_tool_prompt
         merged_prompt += structured_vectorized_context_history_query_execution_tool_prompt
         merged_prompt += structured_file_system_command_execution_tool_prompt
+        merged_prompt += structured_storage_query_execution_tool_prompt
+        ##################################################
 
         # Build the dictionary with the role
         prompt = {

@@ -1,8 +1,99 @@
+from uuid import uuid4
+import filetype
 
 
-# TODO: implement the storage execution manager here
+GENERATED_FILES_ROOT_PATH = "media/generated/files/"
+GENERATED_IMAGES_ROOT_PATH = "media/generated/images/"
+
 
 class StorageExecutor:
 
-    def __init__(self, connection):
-        pass
+    def __init__(self, connection, chat):
+        self.connection_object = connection
+        self.chat = chat
+
+    def generate_save_name(self, extension):
+        generated_uuid = str(uuid4())
+        additional_uuid = str(uuid4())
+        return f"{generated_uuid}_{additional_uuid}.{extension}"
+
+    def merge_texts(self, texts):
+        return "\n\n---\n\n".join(texts)
+
+    def save_file_and_provide_full_uri(self, file_bytes):
+        guess_file_type = filetype.guess(file_bytes)
+        if guess_file_type is None:
+            guess_file_type = ".bin"
+        extension = guess_file_type.extension
+        save_name = self.generate_save_name(extension=extension)
+        full_uri = f"{GENERATED_FILES_ROOT_PATH}{save_name}"
+        try:
+            with open(full_uri, "wb") as file:
+                file.write(file_bytes)
+        except Exception as e:
+            print(f"Error occurred while saving file: {str(e)}")
+            return None
+        return full_uri
+
+    def save_image_and_provide_full_uri(self, image_bytes):
+        guess_file_type = filetype.guess(image_bytes)
+        if guess_file_type is None:
+            guess_file_type = ".bin"
+        extension = guess_file_type.extension
+        save_name = self.generate_save_name(extension=extension)
+        full_uri = f"{GENERATED_IMAGES_ROOT_PATH}{save_name}"
+        try:
+            with open(full_uri, "wb") as image:
+                image.write(image_bytes)
+        except Exception as e:
+            print(f"Error occurred while saving image: {str(e)}")
+            return None
+        return full_uri
+
+    def save_files_and_provide_full_uris(self, file_bytes_list):
+        full_uris = []
+        for file_bytes in file_bytes_list:
+            full_uri = self.save_file_and_provide_full_uri(file_bytes)
+            if full_uri is not None:
+                full_uris.append(full_uri)
+        return full_uris
+
+    def save_images_and_provide_full_uris(self, image_bytes_list):
+        full_uris = []
+        for image_bytes in image_bytes_list:
+            full_uri = self.save_image_and_provide_full_uri(image_bytes)
+            if full_uri is not None:
+                full_uris.append(full_uri)
+        return full_uris
+
+    def interpret_file(self, full_file_paths: list, query_string: str):
+        from apps._services.llms.openai import InternalOpenAIClient
+        try:
+            openai_client = InternalOpenAIClient(
+                assistant=self.connection_object.assistant,
+                multimodal_chat=self.chat)
+        except Exception as e:
+            print(f"Error occurred while creating the OpenAI client: {str(e)}")
+            return None
+        texts, files, images = openai_client.ask_about_file(full_file_paths=full_file_paths, query_string=query_string)
+        # Prepare the texts
+        merged_text = self.merge_texts(texts)
+        # Save the files
+        full_uris = self.save_files_and_provide_full_uris(files)
+        # Save the images
+        full_image_uris = self.save_images_and_provide_full_uris(images)
+        # Prepare the response in the dictionary format
+        response = {"response": merged_text, "file_uris": full_uris, "image_uris": full_image_uris}
+        return response
+
+    def interpret_image(self, full_image_paths: list, query_string: str):
+        from apps._services.llms.openai import InternalOpenAIClient
+
+        try:
+            openai_client = InternalOpenAIClient(assistant=self.connection_object.assistant,
+                                                 multimodal_chat=self.chat)
+        except Exception as e:
+            print(f"Error occurred while creating the OpenAI client: {str(e)}")
+            return None
+        response = openai_client.ask_about_image(full_image_paths=full_image_paths, query_string=query_string)
+        return response

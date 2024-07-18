@@ -38,3 +38,4 @@ openpyxl~=3.2.0b1
 xlrd~=2.0.1
 python-slugify~=8.0.4
 paramiko~=3.4.0
+filetype~=1.2.0

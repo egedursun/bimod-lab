@@ -16,9 +16,16 @@ from apps._services.tools.validators.main_json_validator import validate_main_to
 from apps._services.tools.validators.nosql_query_execution_tool_validator import \
     validate_nosql_query_execution_tool_json
 from apps._services.tools.validators.sql_query_execution_tool_validator import validate_sql_query_execution_tool_json
+from apps._services.tools.validators.storage_query_execution_tool_validator import \
+    validate_media_storage_query_execution_tool_json
 from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.multimodal_chat.models import MultimodalChat
+
+
+class ExecutionTypesNames:
+    FILE_INTERPRETATION = "file_interpretation"
+    IMAGE_INTERPRETATION = "image_interpretation"
 
 
 class ToolExecutor:
@@ -35,6 +42,11 @@ class ToolExecutor:
             raise Exception("Error decoding the JSON")
 
     def use_tool(self):
+        from apps._services.tools.execution_handlers.storage_query_execution_handler import execute_storage_query
+
+        # For file and image generation by the tools
+        file_uris, image_uris = [], []
+
         error = validate_main_tool_json(tool_usage_json=self.tool_usage_json)
         if error: return error, None
 
@@ -142,8 +154,21 @@ class ToolExecutor:
         ##################################################
         # Media Storage Query Execution Tool
         elif tool_name == ToolTypeNames.MEDIA_STORAGE_QUERY_EXECUTION:
-            # TODO: implement the tool call logic here
-            pass
+            error = validate_media_storage_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None
+
+            connection_id = self.tool_usage_json.get("parameters").get("media_storage_connection_id")
+            chat_id = self.chat.id
+            query = self.tool_usage_json.get("parameters").get("query")
+            type = self.tool_usage_json.get("parameters").get("type")
+            file_paths = self.tool_usage_json.get("parameters").get("file_paths")
+
+            media_storage_response, file_uris, image_uris = execute_storage_query(
+                connection_id=connection_id, chat_id=chat_id, execution_type=type, file_paths=file_paths, query=query
+            )
+            # Convert the tool response to a string and pretty format
+            response_raw_str = json.dumps(media_storage_response, sort_keys=True, default=str)
+            tool_response += response_raw_str
         ##################################################
         # ...
 
@@ -161,4 +186,4 @@ class ToolExecutor:
         """
 
         print("TOOL RESPONSE: ", tool_response)
-        return tool_response, tool_name
+        return tool_response, tool_name, file_uris, image_uris

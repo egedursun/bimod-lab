@@ -1,16 +1,20 @@
 import json
-from json import JSONDecodeError
 import re
+import base64 as b64
 
 from openai import OpenAI
+from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
+from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, AssistantRunStatuses
 from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
 from apps._services.tools.tool_executor import ToolExecutor
-from apps.assistants.models import Assistant
-from apps.llm_transaction.models import LLMTransaction
-from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
 from apps.multimodal_chat.utils import calculate_billable_cost_from_raw
+
+
+# TODO: MIGRATE TO DATA MODEL
+IMAGE_INTERPRETATION_TEMPERATURE = 0.0
+IMAGE_INTERPRETATION_MAX_TOKENS = 1024
 
 
 class ChatRoles:
@@ -28,8 +32,10 @@ DEFAULT_ERROR_MESSAGE = "Failed to respond at the current moment. Please try aga
 
 GPT_DEFAULT_ENCODING_ENGINE = "cl100k_base"
 
+CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION = 20
 
-def retry_mechanism(client, latest_message: MultimodalChatMessage):
+
+def retry_mechanism(client, latest_message):
     # if fails retry 3 times
     global ACTIVE_RETRY_COUNT
     if ACTIVE_RETRY_COUNT < client.assistant.max_retry_count:
@@ -52,8 +58,8 @@ def find_json_presence(response: str):
 
 class InternalOpenAIClient:
     def __init__(self,
-                 assistant: Assistant,
-                 multimodal_chat: MultimodalChat
+                 assistant,
+                 multimodal_chat
                  ):
         self.connection = OpenAI(
             api_key=assistant.llm_model.api_key,
@@ -61,7 +67,10 @@ class InternalOpenAIClient:
         self.assistant = assistant
         self.chat = multimodal_chat
 
-    def respond(self, latest_message: MultimodalChatMessage, prev_tool_name=None):
+    def respond(self, latest_message, prev_tool_name=None):
+        from apps.multimodal_chat.models import MultimodalChatMessage
+        from apps.llm_transaction.models import LLMTransaction
+
         c = self.connection
         user = self.chat.user
 
@@ -173,6 +182,7 @@ class InternalOpenAIClient:
 
         # if the final_response includes a tool usage call, execute the tool
         tool_response, json_part_of_response = None, ""
+        file_uris, image_uris = [], []
         if find_json_presence(final_response) is not None:
 
             # check for the rate limits
@@ -262,7 +272,7 @@ class InternalOpenAIClient:
                     chat=self.chat,
                     tool_usage_json_str=json_part_of_response
                 )
-                tool_response, tool_name = tool_executor.use_tool()
+                tool_response, tool_name, file_uris, image_uris = tool_executor.use_tool()
                 if tool_name is not None and tool_name != prev_tool_name:
                     ACTIVE_CHAIN_SIZE += 1
                     prev_tool_name = tool_name
@@ -303,7 +313,9 @@ class InternalOpenAIClient:
             tool_message = MultimodalChatMessage.objects.create(
                 multimodal_chat=self.chat,
                 sender_type="TOOL",
-                message_text_content=tool_response
+                message_text_content=tool_response,
+                message_file_contents=file_uris,
+                message_image_contents=image_uris
             )
             self.chat.chat_messages.add(tool_message)
             self.chat.save()
@@ -332,5 +344,210 @@ class InternalOpenAIClient:
         ACTIVE_CHAIN_SIZE = 0
         return final_response
 
+    def ask_about_file(self, full_file_paths: list, query_string: str):
+        client = self.connection
+        if len(full_file_paths) > 20:
+            return ("System Message: The number of files to be interpreted is too high. Please provide a smaller "
+                    "number of files. The maximum number supported by the system is 20.")
 
+        file_contents = []
+        for path in full_file_paths:
+            if not path: return "System Message: The file path is empty."
+            try: # Read binary file contents
+                with open(path, "rb") as file: file_contents.append(file.read())
+            except FileNotFoundError:
+                print(f"System Message: The file at the path '{path}' could not be found, skipping file...")
+                continue
+            except Exception as e:
+                print(f"System Message: An error occurred while reading the file at the path '{path}', "
+                      f"skipping file...")
+                print(f"Error Details: {str(e)}")
+                continue
 
+        if not file_contents: return "System Message: No file contents could be read from the provided file paths."
+
+        # Upload the file to OpenAI server
+        file_objects = []
+        for content in file_contents:
+            try:
+                file = client.files.create(purpose="assistants", file=content)
+                file_objects.append(file)
+            except Exception as e:
+                print(f"System Message: An error occurred while uploading the file to the OpenAI server.")
+                print(f"Error Details: {str(e)}")
+                continue
+
+        # Prepare the assistant for the file interpretation
+        try:
+            assistant = client.beta.assistants.create(
+                name=HELPER_ASSISTANT_PROMPTS["file_interpreter"]["name"],
+                description=HELPER_ASSISTANT_PROMPTS["file_interpreter"]["description"],
+                model="gpt-4o", tools=[{"type": "code_interpreter"}],
+                tool_resources={"code_interpreter": {"file_ids": [x.id for x in file_objects]}}
+            )
+        except Exception as e:
+            print(f"System Message: An error occurred while preparing the assistant for the file interpretation.")
+            print(f"Error Details: {str(e)}")
+            return "System Message: An error occurred while preparing the assistant for the file interpretation."
+
+        # Prepare the thread
+        try:
+            thread = client.beta.threads.create(messages=[{"role": ChatRoles.USER, "content": query_string,}])
+        except Exception as e:
+            print(f"System Message: An error occurred while preparing the thread for the file interpretation.")
+            print(f"Error Details: {str(e)}")
+            return "System Message: An error occurred while preparing the thread for the file interpretation."
+
+        # Retrieve the response from the assistant
+        try:
+            run = client.beta.threads.runs.create_and_poll(thread_id=thread.id, assistant_id=assistant.id)
+        except Exception as e:
+            print(f"System Message: An error occurred while retrieving the response from the file interpreter assistant.")
+            print(f"Error Details: {str(e)}")
+            return "System Message: An error occurred while retrieving the response from the file interpreter assistant."
+
+        # Format and get the messages
+        texts, image_download_ids, file_download_ids = [], [], []
+        if run.status == AssistantRunStatuses.COMPLETED:
+            messages = client.beta.threads.messages.list(thread_id=thread.id)
+            for message in messages.data:
+                if message.role == ChatRoles.ASSISTANT:
+                    root_content = message.content
+                    for content in root_content:
+                        if isinstance(content, TextContentBlock):
+                            text_content = content.text
+                            texts.append(text_content.value)
+                            if text_content.annotations:
+                                for annotation in text_content.annotations:
+                                    file_id = annotation.file_path.file_id
+                                    file_download_ids.append(file_id)
+                                # END FOR
+                            # END IF
+                        elif isinstance(content, ImageFileContentBlock):
+                            image_content = content.image_file.file_id
+                            image_download_ids.append(image_content)
+                        # END IF
+                    # END FOR
+                # END IF
+            # END FOR
+        else:
+            if run.status == AssistantRunStatuses.FAILED:
+                messages = "System Message: The file interpretation process has failed on the OpenAI server."
+            elif run.status == AssistantRunStatuses.INCOMPLETE:
+                messages = "System Message: The file interpretation process is incomplete on the OpenAI server."
+            elif run.status == AssistantRunStatuses.EXPIRED:
+                messages = "System Message: The file interpretation process has expired on the OpenAI server."
+            elif run.status == AssistantRunStatuses.CANCELLED:
+                messages = "System Message: The file interpretation process has been cancelled on the OpenAI server."
+            else: messages = f"System Message: Terminal {run.status.upper()} status on the OpenAI server."
+        # END IF
+
+        # Download the generated images and files (if any)
+        downloaded_files = []
+        for file_id in file_download_ids:
+            try:
+                binary_content = client.files.content(file_id).read()
+                downloaded_files.append(binary_content)
+            except Exception as e:
+                print(f"System Message: An error occurred while downloading the file with ID '{file_id}'.")
+                print(f"Error Details: {str(e)}")
+                continue
+        # END FOR
+
+        downloaded_images = []
+        for image_id in image_download_ids:
+            try:
+                binary_content = client.files.content(image_id).read()
+                downloaded_images.append(binary_content)
+            except Exception as e:
+                print(f"System Message: An error occurred while downloading the image with ID '{image_id}'.")
+                print(f"Error Details: {str(e)}")
+                continue
+        # END FOR
+
+        # Clean the file storage, assistant, and thread
+        try:
+            for file in file_objects:
+                try: client.files.delete(file.id)
+                except Exception as e:
+                    print(f"System Message: An error occurred while deleting the file with ID '{file.id}'.")
+                    print(f"Error Details: {str(e)}")
+                    continue
+            client.beta.threads.delete(thread.id)
+            client.beta.assistants.delete(assistant.id)
+        except Exception as e:
+            print(f"System Message: An error occurred while cleaning up the file storage, assistant, and thread.")
+            print(f"Error Details: {str(e)}")
+            return "System Message: An error occurred while cleaning up the file storage, assistant, and thread."
+
+        return texts, downloaded_files, downloaded_images
+
+    def ask_about_image(self, full_image_paths: list, query_string: str):
+        client = self.connection
+        if len(full_image_paths) > 20:
+            return ("System Message: The number of images to be interpreted is too high. Please provide a smaller "
+                    "number of images. The maximum number supported by the system is 20.")
+        image_contents = []
+        for path in full_image_paths:
+            if not path:
+                return "System Message: The image path is empty."
+
+            try:
+                # Read binary image contents
+                with open(path, "rb") as file: image_contents.append({"binary": file.read(), "extension": path.split(".")[-1]})
+            except FileNotFoundError:
+                print(f"System Message: The image at the path '{path}' could not be found, skipping image...")
+                continue
+            except Exception as e:
+                print(f"System Message: An error occurred while reading the image at the path '{path}', skipping image...")
+                print(f"Error Details: {str(e)}")
+                continue
+
+        # Convert binaries to base64
+        image_objects = []
+        for image_content in image_contents:
+            binary = image_content["binary"]
+            extension = image_content["extension"]
+            # convert to base64
+            image_base64 = b64.b64encode(binary).decode("utf-8")
+            image_objects.append({"base64": image_base64, "extension": extension})
+
+        # Prepare the thread
+        messages = [
+            {"role": ChatRoles.SYSTEM,
+             "content": [{"type": "text", "text": HELPER_ASSISTANT_PROMPTS["image_interpreter"]["description"]}]},
+            {"role": ChatRoles.USER, "content": [{"type": "text", "text": query_string}]}
+        ]
+        for image_object in image_objects:
+            formatted_uri = f"data:image/{image_object['extension']};base64,{image_object['base64']}"
+            messages[-1]["content"].append({"type": "image_url", "image_url": {"url": formatted_uri}})
+        # END FOR
+
+        # Retrieve the response from the assistant
+        try:
+            response = client.chat.completions.create(
+                model=HELPER_ASSISTANT_PROMPTS["image_interpreter"]["model"],
+                messages=messages,
+                temperature=IMAGE_INTERPRETATION_TEMPERATURE,
+                max_tokens=IMAGE_INTERPRETATION_MAX_TOKENS
+            )
+        except Exception as e:
+            print(f"System Message: An error occurred while retrieving the response from the image interpreter "
+                  f"assistant.")
+            print(f"Error Details: {str(e)}")
+            return ("System Message: An error occurred while retrieving the response from the image interpreter "
+                    "assistant.")
+
+        try:
+            choices = response.choices
+            first_choice = choices[0]
+            choice_message = first_choice.message
+            choice_message_content = choice_message.content
+            final_response = choice_message_content
+        except Exception as e:
+            print(f"System Message: An error occurred while processing the response from the image interpreter "
+                  f"assistant.")
+            print(f"Error Details: {str(e)}")
+            return ("System Message: An error occurred while processing the response from the image interpreter "
+                    "assistant.")
+        return final_response
