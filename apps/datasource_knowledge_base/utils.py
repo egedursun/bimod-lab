@@ -1,6 +1,9 @@
 import random
+import warnings
 
-import wonderwords
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    import wonderwords
 
 
 def generate_random_words():

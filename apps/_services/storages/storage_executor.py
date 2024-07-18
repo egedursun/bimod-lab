@@ -1,7 +1,6 @@
 from uuid import uuid4
 import filetype
 
-
 GENERATED_FILES_ROOT_PATH = "media/generated/files/"
 GENERATED_IMAGES_ROOT_PATH = "media/generated/images/"
 
@@ -75,7 +74,9 @@ class StorageExecutor:
         except Exception as e:
             print(f"Error occurred while creating the OpenAI client: {str(e)}")
             return None
-        texts, files, images = openai_client.ask_about_file(full_file_paths=full_file_paths, query_string=query_string)
+        texts, files, images = openai_client.ask_about_file(full_file_paths=full_file_paths, query_string=query_string,
+                                                            interpretation_temperature=self.connection_object.interpretation_temperature,
+                                                            interpretation_maximum_tokens=self.connection_object.interpretation_maximum_tokens)
         # Prepare the texts
         merged_text = self.merge_texts(texts)
         # Save the files
@@ -95,5 +96,7 @@ class StorageExecutor:
         except Exception as e:
             print(f"Error occurred while creating the OpenAI client: {str(e)}")
             return None
-        response = openai_client.ask_about_image(full_image_paths=full_image_paths, query_string=query_string)
+        response = openai_client.ask_about_image(full_image_paths=full_image_paths, query_string=query_string,
+                                                 interpretation_temperature=self.connection_object.interpretation_temperature,
+                                                 interpretation_maximum_tokens=self.connection_object.interpretation_maximum_tokens)
         return response

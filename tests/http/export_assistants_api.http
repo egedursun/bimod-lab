@@ -8,15 +8,7 @@ Authorization: Bearer bimod/6/MySmartFarm/19/WellnessandHealthAssistant/gpt4o/7e
       "chat_history": [
         {
           "role": "user",
-          "content": "I am feeling very tired and weak today. Can you suggest me some remedies?"
-        },
-        {
-          "role": "assistant",
-          "content": "Hey Ege! Feeling like a deflated balloon today, huh? No worries, I've got some tips to pump you back up:\n\n1. **Hydrate Like a Boss**: Water is your best friend. Sometimes fatigue is just dehydration in disguise. Drink up!\n\n2. **Snack Attack**: Grab a healthy snack like nuts, fruits, or yogurt. Avoid the sugary stuff; it’ll just make you crash later.\n\n3. **Power Nap**: A quick 20-minute nap can work wonders. Think of it as a mini-reboot for your brain.\n\n4. **Move It**: A short walk or some light stretching can get your blood flowing and boost your energy levels.\n\n5. **Breathe Deep**: Try some deep breathing exercises. Inhale through your nose, hold for a few seconds, and exhale slowly. Instant relaxation!\n\n6. **Vitamin Boost**: Make sure you’re getting enough vitamins, especially B12 and D. A multivitamin might help if you’re lacking.\n\n7. **Caffeine, But Not Too Much**: A cup of coffee or tea can give you a quick boost, but don’t overdo it or you’ll end up jittery.\n\n8. **Sleep Hygiene**: Ensure you’re getting quality sleep at night. A consistent sleep schedule can make a big difference.\n\nRemember, if this tiredness sticks around, it might be worth chatting with a healthcare professional. Take care, and may the energy be with you! 🌟"
-        },
-        {
-          "role": "user",
-          "content": "Thank you for the tips. Which one would you recommend the most?"
+          "content": "Generate any bar chart using the data in my media storage about the customers. Do not ask for me to choose a field or something, just create a chart"
         }
       ]
     }

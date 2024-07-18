@@ -135,7 +135,7 @@ class ExportAssistantAPIView(View):
 
         try:
             llm_client = InternalLLMClient.get(assistant=export_assistant.assistant, multimodal_chat=api_chat)
-            llm_response_text = llm_client.respond(latest_message=user_message)
+            llm_response_text, file_uris, image_uris = llm_client.respond(latest_message=user_message, with_media=True)
             MultimodalChatMessage.objects.create(
                 multimodal_chat=api_chat,
                 sender_type='ASSISTANT',
@@ -167,7 +167,11 @@ class ExportAssistantAPIView(View):
                 "message": {
                     "assistant_name": export_assistant.assistant.name,
                     "content": llm_response_text,
-                    "role": "assistant"
+                    "role": "assistant",
+                    "media": {
+                        "files": file_uris,
+                        "images": image_uris
+                    }
                 }
             }
         }

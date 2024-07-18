@@ -75,6 +75,27 @@
             <label class="form-label" for="description">Description</label>
             <textarea class="form-control" id="description" name="description" placeholder="Enter storage description"></textarea>
           </div>
+          <div class="mb-6">
+            <label class="form-label" for="interpretation_temperature">Interpretation Temperature</label>
+            <input type="number" class="form-control" id="interpretation_temperature" name="interpretation_temperature"
+                   step="0.05" min="0" max="2" placeholder="Enter interpretation temperature" value="0.25"/>
+            <div class="form-text"></div>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+            The interpretation temperature is a hyperparameter that controls the randomness of the model's
+            contextual interpretation for the images. A higher temperature will result in more randomness,
+            while a lower temperature will result in more deterministic outputs, but may also result in
+            repetitive and less creative outputs.
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="interpretation_maximum_tokens">Interpretation Maximum Tokens</label>
+            <input type="number" class="form-control" id="interpretation_maximum_tokens" name="interpretation_maximum_tokens"
+                   min="512" max="4032" step="64"  placeholder="Enter maximum tokens" value="2048"/>
+            <div class="form-text"></div>
+          </div>
           <input type="hidden" name="created_by_user" value="{{ user.id }}">
           <button type="submit" class="btn btn-primary d-grid w-100"><strong>Create Data Source Media Storage</strong></button>
         </form>

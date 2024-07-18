@@ -10,11 +10,7 @@ from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
 from apps._services.tools.tool_executor import ToolExecutor
 from apps.multimodal_chat.utils import calculate_billable_cost_from_raw
-
-
-# TODO: MIGRATE TO DATA MODEL
-IMAGE_INTERPRETATION_TEMPERATURE = 0.0
-IMAGE_INTERPRETATION_MAX_TOKENS = 1024
+from config.settings import BASE_URL
 
 
 class ChatRoles:
@@ -67,7 +63,7 @@ class InternalOpenAIClient:
         self.assistant = assistant
         self.chat = multimodal_chat
 
-    def respond(self, latest_message, prev_tool_name=None):
+    def respond(self, latest_message, prev_tool_name=None, with_media=False, file_uris=None, image_uris=None):
         from apps.multimodal_chat.models import MultimodalChatMessage
         from apps.llm_transaction.models import LLMTransaction
 
@@ -182,7 +178,6 @@ class InternalOpenAIClient:
 
         # if the final_response includes a tool usage call, execute the tool
         tool_response, json_part_of_response = None, ""
-        file_uris, image_uris = [], []
         if find_json_presence(final_response) is not None:
 
             # check for the rate limits
@@ -338,13 +333,21 @@ class InternalOpenAIClient:
             )
 
             # now apply the recursive call to the self function to get another reply from the assistant
-            return self.respond(latest_message=tool_message, prev_tool_name=prev_tool_name)
+            return self.respond(latest_message=tool_message, prev_tool_name=prev_tool_name, with_media=with_media,
+                                file_uris=file_uris, image_uris=image_uris)
 
         # reset the active chain size
         ACTIVE_CHAIN_SIZE = 0
+
+        # for export assistants API
+        if with_media:
+            file_uris = [f"{BASE_URL}/{x}" for x in file_uris]
+            image_uris = [f"{BASE_URL}/{x}" for x in image_uris]
+            return final_response, file_uris, image_uris
         return final_response
 
-    def ask_about_file(self, full_file_paths: list, query_string: str):
+    def ask_about_file(self, full_file_paths: list, query_string: str, interpretation_temperature: float,
+                       interpretation_maximum_tokens: int):
         client = self.connection
         if len(full_file_paths) > 20:
             return ("System Message: The number of files to be interpreted is too high. Please provide a smaller "
@@ -383,7 +386,8 @@ class InternalOpenAIClient:
                 name=HELPER_ASSISTANT_PROMPTS["file_interpreter"]["name"],
                 description=HELPER_ASSISTANT_PROMPTS["file_interpreter"]["description"],
                 model="gpt-4o", tools=[{"type": "code_interpreter"}],
-                tool_resources={"code_interpreter": {"file_ids": [x.id for x in file_objects]}}
+                tool_resources={"code_interpreter": {"file_ids": [x.id for x in file_objects]}},
+                temperature=interpretation_temperature,
             )
         except Exception as e:
             print(f"System Message: An error occurred while preparing the assistant for the file interpretation.")
@@ -482,7 +486,8 @@ class InternalOpenAIClient:
 
         return texts, downloaded_files, downloaded_images
 
-    def ask_about_image(self, full_image_paths: list, query_string: str):
+    def ask_about_image(self, full_image_paths: list, query_string: str, interpretation_temperature: float,
+                        interpretation_maximum_tokens: int):
         client = self.connection
         if len(full_image_paths) > 20:
             return ("System Message: The number of images to be interpreted is too high. Please provide a smaller "
@@ -528,8 +533,8 @@ class InternalOpenAIClient:
             response = client.chat.completions.create(
                 model=HELPER_ASSISTANT_PROMPTS["image_interpreter"]["model"],
                 messages=messages,
-                temperature=IMAGE_INTERPRETATION_TEMPERATURE,
-                max_tokens=IMAGE_INTERPRETATION_MAX_TOKENS
+                temperature=interpretation_temperature,
+                max_tokens=interpretation_maximum_tokens
             )
         except Exception as e:
             print(f"System Message: An error occurred while retrieving the response from the image interpreter "

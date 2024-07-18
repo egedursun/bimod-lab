@@ -90,7 +90,8 @@ def ask_about_file(client, full_file_paths: list, query_string: str):
             "code_interpreter": {
                 "file_ids": [x.id for x in file_objects]
             }
-        }
+        },
+        temperature=0.25
     )
 
     timer_assistant_creation = time.time()

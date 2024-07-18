@@ -167,7 +167,7 @@
 - [ ] Integrate the web browser & web scraping features.
 - [ ] Integrate ML models usage features.
 - [ ] Integrate the media storage features (image, audio, video).
-- [ ] Integrate the file system manipulation features.
+- [X] Integrate the file system manipulation features.
 - [ ] Integrate the functions multi-modality.
 - [ ] Integrate the API multi-modality.
 - [ ] Integrate the Conditionals multi-modality.
@@ -250,39 +250,31 @@ git ls-files | xargs wc -l
 
 **THINGS TO REMEMBER:**
 
-Templates:
-- [ ] Add a save as template button to the chat. (~1 hour)
-
 File Systems:
-- [ ] Implement script generation (similar to function generation). (~3-4 hours)
-
-Exported Assistants API:
-- [ ] Add the generated file and images thing to the exported assistants. (~3-4 hours)
+- [ ] Implement script generation (similar to function usage). (~3-4 hours) -- do it in its relevant time
 
 ---
 
-Small Chores:
-- [ ] Migrate the image interpretation temperature and token max length. (~0.5 hours)
-
 Important:
-- [ ] Show the assistant images in the chat, to the user. -> currently shows up, but the size is too big and awkward. Fix this. (~1-2 hours)
-- [ ] Implement direct chat image and file interpretation + show user images in the chat. (~3-4 hours)
+- [ ] We need a "page" to store and show the user the generated files and images. -- 9
+- [ ] Implement direct chat image and file interpretation + show user images in the chat. (~3-4 hours) -- 10
 
 
 Moderate:
-- [ ] Implement the image detail page for the media storage items. (~1-2 hours)
-- [ ] Implement auto-generated image descriptions for the image detail page. (~1-2 hours)
-- [ ] Implement download / retrieve with link page for the media storage items page. (~1-2 hours)
-- [ ] Implement download as a tool for chats. (~1-2 hours)
+- [ ] Implement the image detail page for the media storage items. (~1-2 hours) -- 5
+- [ ] Implement auto-generated image descriptions for the image creation page. (~1-2 hours) -- 6
+- [ ] Implement download image (image) / retrieve with link (file) page for the media storage items page. (~1-2 hours) -- 7
+- [ ] Implement downloading as a tool for chats. (the previous one is on media storage pages) (~1-2 hours) -- 8
+
 
 Cosmetic Improvements:
-- [ ] For images, on list media items page, show little image thumbnails. (~1 hour)
-- [ ] For audios, on list media items page, show little audio players.  (~1 hour)
-- [ ] For videos, on list media items page, show little video cover images. (~1 hour)
-- [ ] For code and data files, skip...
-- [ ] "Add New" buttons for all relevant pages. (~1 hour)
+- [ ] For images, on list media items page, show little image thumbnails. (~1 hour) -- 1
+- [ ] For audios, on list media items page, show little audio players.  (~1 hour) -- 2
+- [ ] For videos, on list media items page, show little video cover images. (~1 hour) -- 3
+- [ ] For code and data files, skip... -- 4
+- [ ] "Add New" buttons for all relevant pages. (~1 hour) -- handle later
 
 ---
 
 Notes:
-- [ ] Use the code interpreter tool of GPT assistants as a way to run GPT-generated functions, instead of custom functions.
+- Use the code interpreter tool of GPT assistants as a way to run GPT-generated functions, instead of custom functions.

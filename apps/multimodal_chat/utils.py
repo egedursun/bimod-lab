@@ -1,5 +1,10 @@
+import warnings
+
 import tiktoken
-import wonderwords
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    import wonderwords
 
 from apps.llm_transaction.costs import LLMCostsPerMillionTokens, SERVICE_PROFIT_MARGIN, VAT_TAX_RATE
 

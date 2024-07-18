@@ -8,6 +8,13 @@
 {% block page_css %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'vendor/css/pages/page-profile.css' %}" />
+<style>
+  /* Ensure images within markdown content fit within their container */
+  .markdown-content img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
 {% endblock page_css %}
 
 {% block content %}
