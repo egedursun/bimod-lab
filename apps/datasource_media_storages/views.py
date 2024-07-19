@@ -1,10 +1,10 @@
 import os
 import re
-from pprint import pprint
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 
@@ -19,6 +19,9 @@ from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
 from config.settings import BASE_URL
 from web_project import TemplateLayout
+
+from .tasks import download_file_from_url
+from ..multimodal_chat.models import MultimodalChat
 
 # Create your views here.
 
@@ -541,3 +544,133 @@ class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, Template
             except Exception as e:
                 print(f"Error parsing generated description: {e}")
         return redirect('datasource_media_storages:item_detail', **kwargs)
+
+
+class DataSourceMediaStorageItemFetchFileFromUrl(LoginRequiredMixin, TemplateView):
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        return context
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        ##############################
+        # PERMISSION CHECK FOR - MEDIA ITEM / CREATE
+        ##############################
+        context_user = self.request.user
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.ADD_MEDIA_STORAGES not in user_permissions:
+            messages.error(request, "You do not have permission to create media items.")
+            return redirect('datasource_media_storages:list_items')
+        ##############################
+
+        media_storage_id = request.POST.get('storage_id') or None
+        if not media_storage_id:
+            messages.error(request, 'Invalid media storage ID.')
+            return redirect('datasource_media_storages:create_item')
+
+        download_url = request.POST.get('download_url') or None
+        if not download_url:
+            messages.error(request, 'Invalid download URL.')
+            return redirect('datasource_media_storages:create_item')
+
+        media_storage_id_int = int(media_storage_id)
+        download_file_from_url.delay(storage_id=media_storage_id_int, url=download_url)
+        messages.success(request, 'File download from URL initiated.')
+        return redirect('datasource_media_storages:list_items')
+
+
+class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateView):
+
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        organizations = Organization.objects.filter(users__in=[self.request.user])
+        data = []
+        for org in organizations:
+            assistants = Assistant.objects.filter(organization=org)
+            assistant_data_list = []
+            for assistant in assistants:
+                multimodal_chats_of_assistants = MultimodalChat.objects.filter(assistant=assistant)
+
+                messages_with_images = []
+                messages_with_files = []
+                for chat in multimodal_chats_of_assistants:
+                    file_or_image_messages = chat.chat_messages.filter(Q(message_image_contents__isnull=False) |
+                                                         Q(message_file_contents__isnull=False))
+                    for m in file_or_image_messages:
+                        if m.message_image_contents:
+                            for img in m.message_image_contents:
+                                message_data = {
+                                    'message': m,
+                                    'image': img
+                                }
+                                messages_with_images.append(message_data)
+                        if m.message_file_contents:
+                            for file in m.message_file_contents:
+                                message_data = {
+                                    'message': m,
+                                    'file': file
+                                }
+                                messages_with_files.append(message_data)
+
+                # prepare paginated images
+                paginator_images = Paginator(messages_with_images, 5)  # 5 items per page
+                page_number_images = self.request.GET.get('page_images')
+                page_obj_images = paginator_images.get_page(page_number_images)
+
+                # prepare paginated files
+                paginator_files = Paginator(messages_with_files, 5)
+                page_number_files = self.request.GET.get('page_files')
+                page_obj_files = paginator_files.get_page(page_number_files)
+
+                assistant_data_list.append({
+                    'assistant': assistant,
+                    'messages_with_images': page_obj_images,
+                    'messages_with_files': page_obj_files
+                })
+            data.append({
+                'organization': org,
+                'assistants': assistant_data_list,
+            })
+
+        context['data'] = data
+        print(data)
+        context['base_url'] = BASE_URL
+        return context
+
+    def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - MEDIA ITEM / DELETE
+        ##############################
+        context_user = self.request.user
+        user_permissions = UserPermission.active_permissions.filter(
+            user=context_user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
+            messages.error(request, "You do not have permission to delete generated media items.")
+            return redirect('datasource_media_storages:list_items')
+        ##############################
+
+        if 'selected_items' in request.POST:
+            item_ids = request.POST.getlist('selected_items')
+            items_to_be_deleted = DataSourceMediaStorageItem.objects.filter(id__in=item_ids)
+            for item in items_to_be_deleted:
+                if item.full_file_path is not None:
+                    try:
+                        os.system(f"rm -rf {item.full_file_path}")
+                    except Exception as e:
+                        print(f"Error deleting the generated file from the media storage path: {item.full_file_path} // {e}")
+
+            DataSourceMediaStorageItem.objects.filter(id__in=item_ids).delete()
+            messages.success(request, 'Selected generated media files deleted successfully.')
+        return redirect('datasource_media_storages:list_items')

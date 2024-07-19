@@ -17,7 +17,6 @@
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 - [ ] Privacy Policy and Terms of Service development & integration for the application.
 - [ ] Proper Documentation & tutorial, instructions (FAQ and Support) for the application.
-- [ ] Automated balance top-ups (monthly or as it goes low).
 - [ ] Exclude the media from Git versioning (IMPORTANT!!)
 - [ ] Fix the search bar for having correct redirection links.
 
@@ -51,6 +50,11 @@
   - [X] Pricing section.
   - [X] Contact Us section.
   - [X] Footer section.
+  - [ ] Improve F.A.Q. page
+  - [ ] Improve Documentation page
+  - [ ] Improve Privacy Policy page
+  - [ ] Improve Terms of Service page
+  - [ ] Improve Support page
 
 
 ---
@@ -110,8 +114,7 @@
 - [X] Implement the permissions for the file system tool.
 - [X] Implement the permissions for the media storage tool.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
-  - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low", which will determine
-                  how difficult the agent will trust on an online source.
+  - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low".
   - [ ] Browsed pages must be stored in a knowledge base for future reference. 
   - [ ] A data model for the browsed pages must also be designed.
   - [ ] Admin model + save() and save_model() methods must also be needed to integrated.
@@ -122,25 +125,17 @@
   - [ ] Testing within the chat and evaluation of the performance.
 - [X] Implement the File System tool for the file system manipulation features.
 - [ ] Implement the ML Model tool for the ML models usage features.
-- [ ] Implement the media storage features.
-  - [X] Implement the media item description field for the upload staging section.
-  - [X] Implement the list media items page.
-  - [ ] Implement the retrieval function for the assistant.
-  - [ ] Implement the image interpretation tool.
-  - [ ] Integrate the prompts.
-  - [ ] Test the functionality.
+- [ ] Implement code repository integration module.
+- [X] Implement the media storage features.
 
 <br><br>
 
-- [ ] Refine ideas regarding the dashboard page & management.
-- [ ] **NEW FEATURE IDEA:** Discuss the "GitHub Repo Integration" and assistant interpretation module.
-- [ ] **NEW FEATURE IDEA:** Discuss ERP integration and assistant interpretation module.
-- [ ] **NEW FEATURE IDEA:** Discuss the Chrome Extension to automatically understand the web pages etc.
-- [ ] **NEW FEATURE IDEA:** Glossaries for Technical Terminology integration to the chats. ( can take up space in terms of tokens )
-- [ ] **NEW FEATURE IDEA:** Boilerplate knowledge bases for direct integration with assistants.
-- [ ] **NEW FEATURE IDEA:** Text-to-Speech and Speech-to-Text integration for the assistants.
-- [ ] **NEW FEATURE IDEA:** Word Plugin and possibly other MS Office tools to auto-complete and active help.
-- [ ] **NEW FEATURE IDEA:** Drive and dropbox integration for media and document storage & automated transfer within the system and knowledge bases.
+- [ ] **NEW FEATURE IDEA:** Discuss ERP integration and assistant interpretation module. [BIG]
+- [ ] **NEW FEATURE IDEA:** Discuss the Chrome Extension to automatically understand the web pages etc. [BIG]
+- [ ] **NEW FEATURE IDEA:** Boilerplate knowledge bases for direct integration with assistants. [BIG]
+- [ ] **NEW FEATURE IDEA:** Text-to-Speech and Speech-to-Text integration for the assistants. [BIG]
+- [ ] **NEW FEATURE IDEA:** Word Plugin and possibly other MS Office tools to auto-complete and active help. [BIG]
+- [ ] **NEW FEATURE IDEA:** Drive and dropbox integration for media and document storage & automated transfer within the system and knowledge bases. [BIG]
 ---
 
 
@@ -171,8 +166,10 @@
 - [X] Integrate the knowledge base & document features.
 - [ ] Integrate the web browser & web scraping features.
 - [ ] Integrate ML models usage features.
+- [ ] Git repository / Code repository integration module.
 - [X] Integrate the media storage features (image, audio, video).
 - [X] Integrate the file system manipulation features.
+- [X] Integrate the generated image & files page.
 - 
 *Milestone-3*
 
@@ -188,6 +185,7 @@
 
 *Milestone-4*
 
+- [ ] Dashboard Integration
 - [ ] Integrate the orchestration pages.
 - [ ] Integrate "Integrations multi-modality".
 - [ ] Integrate "Meta-Integrations multi-modality".
@@ -266,22 +264,24 @@ git ls-files | xargs wc -l
 **THINGS TO REMEMBER:**
 
 File Systems:
-- [ ] Implement script generation (similar to function usage). (~3-4 hours) -- do it in its relevant time (7?)
+- [ ] Implement script generation (similar to function usage). (~3-4 hours) -- do it in its relevant time (5?)
 
 ---
 
 Important:
-- [ ] We need a "page" to store and show the user the generated files and images. -- 5
-- [ ] Implement direct chat image and file interpretation + show user images in the chat. (~3-4 hours) -- 6
+- [ ] Implement direct chat image and file interpretation + show user images in the chat. These elements will be uploaded to the storage base as well. (~3-4 hours) -- 2
 
 
 Moderate:
-- [ ] retrieve with link (file) page for the media storage items page. (~1-2 hours) -- 3
-- [ ] Implement downloading as a tool for chats. (the previous one is on media storage pages) (~1-2 hours) -- 4
-
+- [ ] Implement downloading as a tool for chats. (the previous one is on media storage pages) (~1 hour) -- 3
+- [ ] Currently direct file generation is not supported since there is a need to retrieve files. Fix it, it shouldn't be necessary. (~1-2 hour) --2
+- [ ] Automated balance top-ups and increasing balance as it goes down from a certain threshold. (~3-4 hours) --5
+        - AUTO-TOP: Value(X), Value(Y), Value(Z) -> If balance < X, then top-up to value Y. (X < Y), Never exceed Z per month. (Y < Z).
+        - AUTO-INTERVAL: Value(X), Value(Y), Value(N) -> Value(X) to be loaded to balance every N days. Do not buy if the balance is already above value Y. (X < Y)
 
 Cosmetic Improvements:
-- [ ] "Add New" buttons for all relevant pages. (~1 hour) -- handle later (8?)
+- [ ] "Add New" buttons for all relevant pages. (~1 hour) -- handle later (8?) -- easy? a few minutes per page (1-2 hours total) --4
+- [ ] Add glossaries (terminology) to the assistants creation and update page (~1 hour) --1
 
 ---
 

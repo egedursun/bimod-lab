@@ -5,7 +5,8 @@ import base64 as b64
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
-from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, AssistantRunStatuses
+from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, AssistantRunStatuses, \
+    AFFIRMATION_PROMPT
 from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
 from apps._services.tools.tool_executor import ToolExecutor
@@ -397,7 +398,8 @@ class InternalOpenAIClient:
 
         # Prepare the thread
         try:
-            thread = client.beta.threads.create(messages=[{"role": ChatRoles.USER, "content": query_string,}])
+            thread = client.beta.threads.create(messages=[{"role": ChatRoles.USER,
+                                                           "content": (query_string + AFFIRMATION_PROMPT)}])
         except Exception as e:
             print(f"System Message: An error occurred while preparing the thread for the file interpretation.")
             print(f"Error Details: {str(e)}")
@@ -425,7 +427,7 @@ class InternalOpenAIClient:
                             if text_content.annotations:
                                 for annotation in text_content.annotations:
                                     file_id = annotation.file_path.file_id
-                                    file_download_ids.append(file_id)
+                                    file_download_ids.append((file_id, annotation.text))
                                 # END FOR
                             # END IF
                         elif isinstance(content, ImageFileContentBlock):
@@ -449,10 +451,10 @@ class InternalOpenAIClient:
 
         # Download the generated images and files (if any)
         downloaded_files = []
-        for file_id in file_download_ids:
+        for file_id, remote_path in file_download_ids:
             try:
                 binary_content = client.files.content(file_id).read()
-                downloaded_files.append(binary_content)
+                downloaded_files.append((binary_content, remote_path))
             except Exception as e:
                 print(f"System Message: An error occurred while downloading the file with ID '{file_id}'.")
                 print(f"Error Details: {str(e)}")
@@ -501,7 +503,7 @@ class InternalOpenAIClient:
             transaction_type=ChatRoles.ASSISTANT,
             transaction_source=TransactionSourcesNames.GENERATION
         )
-
+        print(texts)
         return texts, downloaded_files, downloaded_images
 
     def ask_about_image(self, full_image_paths: list, query_string: str, interpretation_temperature: float,
@@ -539,7 +541,7 @@ class InternalOpenAIClient:
         messages = [
             {"role": ChatRoles.SYSTEM,
              "content": [{"type": "text", "text": HELPER_ASSISTANT_PROMPTS["image_interpreter"]["description"]}]},
-            {"role": ChatRoles.USER, "content": [{"type": "text", "text": query_string}]}
+            {"role": ChatRoles.USER, "content": [{"type": "text", "text": (query_string + AFFIRMATION_PROMPT)}]}
         ]
         for image_object in image_objects:
             formatted_uri = f"data:image/{image_object['extension']};base64,{image_object['base64']}"

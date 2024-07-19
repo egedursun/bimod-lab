@@ -1,0 +1,297 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load markdown_extras %}
+
+{% block title %}Generated Media Files{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+<script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Function to store the collapsed tab state
+    function storeCollapsedTabState() {
+        const collapsedTabs = [];
+        document.querySelectorAll('.collapse:not(.show)').forEach(collapse => {
+            collapsedTabs.push(collapse.id);
+        });
+        localStorage.setItem('collapsedTabs', JSON.stringify(collapsedTabs));
+    }
+
+    // Function to restore the collapsed tab state
+    function restoreCollapsedTabState() {
+        const collapsedTabs = JSON.parse(localStorage.getItem('collapsedTabs'));
+        if (collapsedTabs && Array.isArray(collapsedTabs)) {
+            collapsedTabs.forEach(tabId => {
+                const collapseElement = document.getElementById(tabId);
+                if (collapseElement) {
+                    new bootstrap.Collapse(collapseElement, {
+                        toggle: true
+                    });
+                }
+            });
+        }
+    }
+
+    // Store the collapsed tab state on collapse and expand events
+    document.querySelectorAll('.collapse').forEach(collapse => {
+        collapse.addEventListener('show.bs.collapse', storeCollapsedTabState);
+        collapse.addEventListener('hide.bs.collapse', storeCollapsedTabState);
+    });
+
+    // Restore the collapsed tab state on page load
+    restoreCollapsedTabState();
+
+    // Toggle icon logic
+    document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
+            var target = document.querySelector(this.getAttribute('data-target'));
+            var bootstrapCollapse = new bootstrap.Collapse(target, {
+                toggle: true
+            });
+            if (target.classList.contains('show')) {
+                bootstrapCollapse.hide();
+                icon.classList.remove('fa-arrow-alt-circle-up');
+                icon.classList.add('fa-arrow-alt-circle-down');
+            } else {
+                bootstrapCollapse.show();
+                icon.classList.remove('fa-arrow-alt-circle-down');
+                icon.classList.add('fa-arrow-alt-circle-up');
+            }
+        });
+    });
+
+    // Update toggle icons based on collapse state
+    document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
+            var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+            if (icon) {
+                icon.classList.remove('fa-arrow-alt-circle-down');
+                icon.classList.add('fa-arrow-alt-circle-up');
+            }
+        });
+
+        collapse.addEventListener('hide.bs.collapse', function() {
+            var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+            if (icon) {
+                icon.classList.remove('fa-arrow-alt-circle-up');
+                icon.classList.add('fa-arrow-alt-circle-down');
+            }
+        });
+    });
+
+    // Select all checkboxes
+    document.querySelectorAll('.select-all-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const storageId = this.getAttribute('data-storage-id');
+            const checkboxes = document.querySelectorAll(`.select-item-checkbox[data-storage-id="${storageId}"]`);
+            checkboxes.forEach(cb => cb.checked = this.checked);
+        });
+    });
+
+    // Confirmation dialog for delete buttons
+        document.querySelectorAll('.delete-selected-btn, .delete-all-btn').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const form = button.closest('form');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this action.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete the documents.',
+                    customClass: {
+                      confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+                      cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+});
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="mb-0">Generated Media Files</h3>
+        </div>
+    </div>
+
+    {% for organization_data in data %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <p>
+                        <a data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button" aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
+                            <h4 class="mb-0">{{ organization_data.organization.name }}</h4>
+                            <small class="text-muted">{{ organization_data.organization.email }}</small>
+                        </a>
+                    </p>
+                    <i class="fa fa-arrow-alt-circle-up toggle-icon mt-5" data-target="#collapse-org-{{ organization_data.organization.id }}"></i>
+                    <span data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button" aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
+                        <strong>&nbsp; See Generated Media Files</strong>
+                    </span>
+                </div>
+                <div id="collapse-org-{{ organization_data.organization.id }}" class="card-body collapse show">
+                    {% for assistant_data in organization_data.assistants %}
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4 class="mb-0">{{ assistant_data.assistant.name }}</h4>
+                            <small class="text-muted">{{ assistant_data.assistant.description }}</small>
+                        </div>
+                        <div id="collapse-assistant-{{ assistant_data.assistant.id }}" class="card-body collapse show">
+                            <h5>Generated Images</h5>
+                            <div class="table-responsive mb-4">
+                                <table class="table datatables-document">
+                                    <thead>
+                                        <tr>
+                                            <th>Preview</th>
+                                            <th>Chat Name</th>
+                                            <th>User</th>
+                                            <th>Output Prompt</th>
+                                            <th>Generated At</th>
+                                            <th>Download</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in assistant_data.messages_with_images %}
+                                        <tr>
+                                            <td>
+                                                <img src="{{ base_url }}/{{ item.image }}" width="50" height="50" class="rounded">
+                                            </td>
+                                            <td>{{ item.message.multimodal_chat.chat_name }}</td>
+                                            <td>{{ item.message.multimodal_chat.user }}</td>
+                                            <td><strong><pre><code class="json" style="max-width: 600px;">{{ item.message.message_text_content|safe|linebreaks }}</code></pre></strong></td>
+                                            <td>{{ item.message.sent_at }}</td>
+                                            <td>
+                                              <a href="{{ base_url }}/{{ item.image }}" target="_blank" class="text-white">
+                                                <i class="fa fa-download"></i>
+                                              </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-rounded pt-8 overflow-scroll">
+                                        {% if assistant_data.images.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page_images=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page_images={{ assistant_data.images.previous_page_number }}"><i class="ti ti-chevron-left ti-sm"></i></a>
+                                        </li>
+                                        {% endif %}
+                                        {% for page_num in assistant_data.images.paginator.page_range %}
+                                        <li class="page-item {% if assistant_data.images.number == page_num %}active{% endif %} mb-4">
+                                            <a class="page-link" href="?page_images={{ page_num }}">{{ page_num }}</a>
+                                        </li>
+                                        {% endfor %}
+                                        {% if assistant_data.images.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page_images={{ assistant_data.images.next_page_number }}"><i class="ti ti-chevron-right ti-sm"></i></a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page_images={{ assistant_data.images.paginator.num_pages }}"><i class="ti ti-chevrons-right ti-sm"></i></a>
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                            <h5>Generated Files</h5>
+                            <div class="table-responsive">
+                                <table class="table datatables-document">
+                                    <thead>
+                                        <tr>
+                                            <th>Chat Name</th>
+                                            <th>User</th>
+                                            <th>Output Prompt</th>
+                                            <th>Generated At</th>
+                                            <th>Download</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in assistant_data.messages_with_files %}
+                                        <tr>
+                                            <td>{{ item.message.multimodal_chat.chat_name }}</td>
+                                            <td>{{ item.message.multimodal_chat.user }}</td>
+                                            <td><strong><pre><code class="json" style="max-width: 600px;">{{ item.message.message_text_content|safe|linebreaks }}</code></pre></strong></td>
+                                            <td>{{ item.message.sent_at }}</td>
+                                            <td>
+                                              <a href="{{ base_url }}/{{ item.file }}" target="_blank" class="text-white">
+                                                <i class="fa fa-download"></i>
+                                              </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-rounded pt-8 overflow-scroll">
+                                        {% if assistant_data.files.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page_files=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page_files={{ assistant_data.files.previous_page_number }}"><i class="ti ti-chevron-left ti-sm"></i></a>
+                                        </li>
+                                        {% endif %}
+                                        {% for page_num in assistant_data.files.paginator.page_range %}
+                                        <li class="page-item {% if assistant_data.files.number == page_num %}active{% endif %} mb-4">
+                                            <a class="page-link" href="?page_files={{ page_num }}">{{ page_num }}</a>
+                                        </li>
+                                        {% endfor %}
+                                        {% if assistant_data.files.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page_files={{ assistant_data.files.next_page_number }}"><i class="ti ti-chevron-right ti-sm"></i></a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page_files={{ assistant_data.files.paginator.num_pages }}"><i class="ti ti-chevrons-right ti-sm"></i></a>
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
+
+{% endblock %}

@@ -4,7 +4,8 @@ from apps.datasource_media_storages.views import DataSourceMediaStorageConnectio
     DataSourceListMediaStorageConnectionsView, DataSourceMediaStorageConnectionUpdateView, \
     DataSourceMediaStorageConnectionDeleteView, DataSourceMediaStorageItemCreateView, \
     DataSourceMediaStorageItemListView, DataSourceMediaStorageAllItemsDeleteView, \
-    DataSourceMediaStorageItemDetailAndUpdateView, DataSourceMediaStorageItemGenerateDescription
+    DataSourceMediaStorageItemDetailAndUpdateView, DataSourceMediaStorageItemGenerateDescription, \
+    DataSourceMediaStorageItemFetchFileFromUrl, DataSourceMediaStorageGeneratedItemsListView
 
 app_name = "datasource_media_storages"
 
@@ -36,4 +37,8 @@ urlpatterns = [
     path('items/generate_description/<int:pk>/', DataSourceMediaStorageItemGenerateDescription.as_view(
         template_name="datasource_media_storages/media/detail_media.html"
     ), name='generate_description'),
+    path('items/fetch_file_from_url/', DataSourceMediaStorageItemFetchFileFromUrl.as_view(), name='fetch_file_from_url'),
+    path('items/list_generated/', DataSourceMediaStorageGeneratedItemsListView.as_view(
+        template_name="datasource_media_storages/generated/list_generated_media.html"
+    ), name='list_generated_items')
 ]

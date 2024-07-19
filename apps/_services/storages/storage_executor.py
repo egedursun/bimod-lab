@@ -19,11 +19,15 @@ class StorageExecutor:
     def merge_texts(self, texts):
         return "\n\n---\n\n".join(texts)
 
-    def save_file_and_provide_full_uri(self, file_bytes):
-        guess_file_type = filetype.guess(file_bytes)
-        if guess_file_type is None:
-            guess_file_type = ".bin"
-        extension = guess_file_type.extension
+    def save_file_and_provide_full_uri(self, file_bytes, remote_name):
+        if not remote_name:
+            guess_file_type = filetype.guess(file_bytes)
+            if guess_file_type is None:
+                guess_file_type = ".bin"
+            extension = guess_file_type.extension
+        else:
+            extension = remote_name.split(".")[-1]
+
         save_name = self.generate_save_name(extension=extension)
         full_uri = f"{GENERATED_FILES_ROOT_PATH}{save_name}"
         try:
@@ -49,10 +53,10 @@ class StorageExecutor:
             return None
         return full_uri
 
-    def save_files_and_provide_full_uris(self, file_bytes_list):
+    def save_files_and_provide_full_uris(self, file_bytes_list:list[tuple]):
         full_uris = []
-        for file_bytes in file_bytes_list:
-            full_uri = self.save_file_and_provide_full_uri(file_bytes)
+        for file_bytes, remote_name in file_bytes_list:
+            full_uri = self.save_file_and_provide_full_uri(file_bytes, remote_name)
             if full_uri is not None:
                 full_uris.append(full_uri)
         return full_uris
@@ -74,17 +78,16 @@ class StorageExecutor:
         except Exception as e:
             print(f"Error occurred while creating the OpenAI client: {str(e)}")
             return None
-        texts, files, images = openai_client.ask_about_file(full_file_paths=full_file_paths, query_string=query_string,
+        texts, files, images = openai_client.ask_about_file(full_file_paths=full_file_paths,
+                                                            query_string=query_string,
                                                             interpretation_temperature=self.connection_object.interpretation_temperature,
                                                             interpretation_maximum_tokens=self.connection_object.interpretation_maximum_tokens)
-        # Prepare the texts
-        merged_text = self.merge_texts(texts)
         # Save the files
         full_uris = self.save_files_and_provide_full_uris(files)
         # Save the images
         full_image_uris = self.save_images_and_provide_full_uris(images)
         # Prepare the response in the dictionary format
-        response = {"response": merged_text, "file_uris": full_uris, "image_uris": full_image_uris}
+        response = {"response": texts, "file_uris": full_uris, "image_uris": full_image_uris}
         return response
 
     def interpret_image(self, full_image_paths: list, query_string: str):

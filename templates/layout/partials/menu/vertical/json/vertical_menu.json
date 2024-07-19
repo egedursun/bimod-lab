@@ -311,6 +311,12 @@
       ]
     },
     {
+      "name": "Generated",
+      "icon": "menu-icon tf-icons ti ti-checkbox",
+      "slug": "generated",
+      "url": "datasource_media_storages:list_generated_items"
+    },
+    {
       "menu_header": "Tools"
     },
     {

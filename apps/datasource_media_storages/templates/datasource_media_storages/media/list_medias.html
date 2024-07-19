@@ -203,6 +203,16 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <strong>{{ storage_data.storage.media_category|capfirst }} Storage</strong>
                                   </p>
                                   <small class="text-muted">{{ storage_data.storage.description }}</small>
+                                  <form method="post" action="{% url 'datasource_media_storages:fetch_file_from_url' %}" class="mt-4">
+                                    {% csrf_token %}
+                                    <input type="text" name="download_url" class="form-control w-50 d-inline" placeholder="Enter URL to fetch media file">
+                                    <input type="hidden" name="storage_id" value="{{ storage_data.storage.id }}">
+                                    <button type="submit" class="btn btn-success btn-sm w-10 ms-4 d-inline-block" style="height: 38px;">
+                                      <strong>
+                                        <i class="fa fa-plus me-4"> </i>Fetch from URL
+                                      </strong>
+                                    </button>
+                                  </form>
                                 </div>
                                 <div id="collapse-storage-{{ storage_data.storage.id }}" class="card-body collapse show">
                                     <div class="table-responsive">

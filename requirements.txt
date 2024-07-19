@@ -39,3 +39,4 @@ xlrd~=2.0.1
 python-slugify~=8.0.4
 paramiko~=3.4.0
 filetype~=1.2.0
+docx~=0.2.4
