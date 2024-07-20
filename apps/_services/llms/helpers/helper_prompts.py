@@ -22,8 +22,8 @@ HELPER_ASSISTANT_PROMPTS = {
             files and data, and provide users with the best answer based on the information you have extracted.
             '''
 
-            Your answer should be clear, concise, and to the point. If there are operations you need to do for
-            analysis, requiring use of 'code interpreter'.
+            Your answer should be clear, concise, and to the point. Use your code interpreter to provide
+            accurate and detailed information.
 
         """,
         "model": "gpt-4o",
@@ -38,12 +38,28 @@ HELPER_ASSISTANT_PROMPTS = {
             and provide users with the best answer based on the information you have extracted.
             '''
 
-            Your answer should be clear, concise, and to the point. If there are operations you need to do for
-            analysis, requiring use of 'code interpreter'.
+            Your answer should be clear, concise, and to the point. Use your code interpreter to provide
+            accurate and detailed information.
 
         """,
         "model": "gpt-4o",
-    }
+    },
+    #################################################################################################################
+    "ml_model_predictor": {
+        "name": "Machine Learning Model Predictor Assistant",
+        "description": """
+            *NEVER ASK QUESTIONS, JUST DO THE JOB.*
+            '''
+            You are a Machine Learning Model Predictor Assistant. You take in a pre-trained torch model and input
+            data, prepare the data for the model, feed it to the model, and provide the prediction results.
+            '''
+
+            Your answer should be clear, concise, and to the point. Use your code interpreter to provide
+            accurate and detailed information.
+
+        """,
+        "model": "gpt-4o",
+    },
 }
 
 

@@ -9,3 +9,4 @@ class ToolTypeNames:
     FILE_SYSTEM_COMMAND_EXECUTION = 'File System Command Execution'
     MEDIA_STORAGE_QUERY_EXECUTION = 'Media Storage Query Execution'
     URL_FILE_DOWNLOADER = 'URL File Downloader'
+    PREDICTION_WITH_ML_MODEL = 'Prediction with ML Model'

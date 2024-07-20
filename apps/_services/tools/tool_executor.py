@@ -5,6 +5,7 @@ from apps._services.tools.execution_handlers.file_system_command_execution_handl
 from apps._services.tools.execution_handlers.knowledge_base_query_execution_handler import execute_knowledge_base_query
 from apps._services.tools.execution_handlers.memory_query_execution_handler import execute_memory_query
 from apps._services.tools.execution_handlers.nosql_query_execution_handler import execute_nosql_query
+from apps._services.tools.execution_handlers.predict_with_ml_model_execution_handler import execute_predict_ml_model
 from apps._services.tools.execution_handlers.sql_query_execution_handler import execute_sql_query
 from apps._services.tools.execution_handlers.url_file_downloader_execution_handler import execute_url_file_downloader
 from apps._services.tools.validators.context_history_query_execution_tool_validator import \
@@ -16,6 +17,8 @@ from apps._services.tools.validators.knowledge_base_query_execution_tool_validat
 from apps._services.tools.validators.main_json_validator import validate_main_tool_json
 from apps._services.tools.validators.nosql_query_execution_tool_validator import \
     validate_nosql_query_execution_tool_json
+from apps._services.tools.validators.predict_with_ml_model_execution_tool_validator import \
+    validate_predict_with_ml_model_execution_tool_json
 from apps._services.tools.validators.sql_query_execution_tool_validator import validate_sql_query_execution_tool_json
 from apps._services.tools.validators.storage_query_execution_tool_validator import \
     validate_media_storage_query_execution_tool_json
@@ -188,6 +191,27 @@ class ToolExecutor:
             # Convert the tool response to a string and pretty format
             url_downloader_response_raw_str = json.dumps(url_downloader_response, sort_keys=True, default=str)
             tool_response += url_downloader_response_raw_str
+        ##################################################
+        # Prediction with ML Model Tool
+        elif tool_name == ToolTypeNames.PREDICTION_WITH_ML_MODEL:
+            error = validate_predict_with_ml_model_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+
+            ml_base_connection_id = self.tool_usage_json.get("parameters").get("ml_base_connection_id")
+            model_path = self.tool_usage_json.get("parameters").get("model_path")
+            input_data_paths = self.tool_usage_json.get("parameters").get("input_data_paths")
+            query = self.tool_usage_json.get("parameters").get("query")
+
+            predict_ml_response = execute_predict_ml_model(
+                connection_id=ml_base_connection_id,
+                chat_id=self.chat.id,
+                model_url=model_path,
+                input_data_paths=input_data_paths,
+                query=query
+            )
+            # Convert the tool response to a string and pretty format
+            predict_ml_response_raw_str = json.dumps(predict_ml_response, sort_keys=True, default=str)
+            tool_response += predict_ml_response_raw_str
         ##################################################
         # ...
 

@@ -61,7 +61,6 @@ class Assistant(models.Model):
     llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE, related_name='assistants')
     name = models.CharField(max_length=255)
     description = models.TextField(default="", blank=True)
-    # this description is for the users to see, not included in the API call for the LLM (e.g. OpenAI)
     instructions = models.TextField(default="", blank=True)
     response_template = models.TextField(default="", blank=True)
     audience = models.CharField(max_length=1000)
@@ -86,17 +85,13 @@ class Assistant(models.Model):
                                       blank=True)
 
     context_overflow_strategy = models.CharField(max_length=100, choices=CONTEXT_OVERFLOW_STRATEGY, default="forget")
-    # in case of ->
-    # - stop: stop the conversation after the limit is reached
-    # - forget: forget old messages starting from the limit, start from oldest
-    # - vectorize: store the messages overflowing the context in the vectorstore, in their relevant assistant/chat dir.
     max_context_messages = models.IntegerField(default=25)
-    # only in case of -> vectorize
     vectorizer_name = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai",
                                        null=True, blank=True)
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
     document_base_directory = models.CharField(max_length=1000, null=True, blank=True)
     storages_base_directory = models.CharField(max_length=1000, null=True, blank=True)
+    ml_models_base_directory = models.CharField(max_length=1000, null=True, blank=True)
 
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                         related_name='assistants_created_by_user')
@@ -121,6 +116,12 @@ class Assistant(models.Model):
         if self.storages_base_directory is None:
             dir_name = f"media/storages/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{str(random.randint(1_000_000, 9_999_999))}/"
             self.storages_base_directory = dir_name
+            os.system(f"mkdir -p {dir_name}")
+            os.system(f"touch {dir_name}/__init__.py")
+
+        if self.ml_models_base_directory is None:
+            dir_name = f"media/ml_models/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{str(random.randint(1_000_000, 9_999_999))}/"
+            self.ml_models_base_directory = dir_name
             os.system(f"mkdir -p {dir_name}")
             os.system(f"touch {dir_name}/__init__.py")
 

@@ -46,6 +46,7 @@ urlpatterns = [
     path("app/datasource_knowledge_base/", include("apps.datasource_knowledge_base.urls")),
     path("app/datasource_file_systems/", include("apps.datasource_file_systems.urls", namespace="datasource_file_systems")),
     path("app/datasource_media_storages/", include("apps.datasource_media_storages.urls", namespace="datasource_media_storages")),
+    path("app/datasource_ml_models/", include("apps.datasource_ml_models.urls", namespace="datasource_ml_models")),
 ]
 
 

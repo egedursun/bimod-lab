@@ -197,7 +197,7 @@
       "url": "dashboard:main-dashboard",
       "name": "Orchestrations",
       "icon": "menu-icon tf-icons ti ti-bolt",
-      "slug": "/orchestrations"
+      "slug": "orchestrations"
     },
     {
       "menu_header": "Data Sources"
@@ -296,7 +296,28 @@
       "name": "ML Models",
       "icon": "menu-icon tf-icons ti ti-wand",
       "slug": "machine-learning-models",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add ML Storage",
+          "slug": "machine-learning-model",
+          "url": "datasource_ml_models:create"
+        },
+        {
+          "name": "ML Storages",
+          "slug": "machine-learning-model-version",
+          "url": "datasource_ml_models:list"
+        },
+        {
+          "name": "Add ML Model",
+          "slug": "machine-learning-model-item",
+          "url": "datasource_ml_models:item_create"
+        },
+        {
+          "name": "Manage ML Models",
+          "slug": "machine-learning-model-item",
+          "url": "datasource_ml_models:item_list"
+        }
+      ]
     },
     {
       "name": "Media Storages",
@@ -344,7 +365,7 @@
     {
       "name": "Functions",
       "icon": "menu-icon tf-icons ti ti-plug",
-      "slug": "app-invoice",
+      "slug": "functions",
       "url": "dashboard:main-dashboard"
     },
     {
@@ -360,7 +381,7 @@
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Conditionals",
+      "name": "Piconaut®",
       "icon": "menu-icon tf-icons ti ti-code",
       "slug": "conditionals",
       "url": "dashboard:main-dashboard"
@@ -378,15 +399,9 @@
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Image Generation",
+      "name": "Media Generation",
       "icon": "menu-icon tf-icons ti ti-eye",
-      "slug": "triggers",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Audio Generation",
-      "icon": "menu-icon tf-icons ti ti-music",
-      "slug": "triggers",
+      "slug": "media-generation",
       "url": "dashboard:main-dashboard"
     },
     {
@@ -395,13 +410,13 @@
     {
       "name": "Integrations",
       "icon": "menu-icon tf-icons ti ti-dashboard",
-      "slug": "triggers",
+      "slug": "integrations",
       "url": "dashboard:main-dashboard"
     },
     {
       "name": "Meta Integrations",
       "icon": "menu-icon tf-icons ti ti-rocket",
-      "slug": "triggers",
+      "slug": "meta-integrations",
       "url": "dashboard:main-dashboard"
     }
   ]

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from apps._services.prompts.datasource.build_file_system_datasource_prompt import build_file_system_datasource_prompt
 from apps._services.prompts.datasource.build_knowledge_base_datasource_prompt import \
     build_knowledge_base_datasource_prompt
+from apps._services.prompts.datasource.build_ml_models_datasource_prompt import build_ml_models_datasource_prompt
 from apps._services.prompts.datasource.build_sql_datasource_prompt import build_sql_datasource_prompt
 from apps._services.prompts.datasource.build_storage_datasource_prompt import build_storage_datasource_prompt
 from apps._services.prompts.generic.build_audience_prompt import get_structured_audience_prompt
@@ -26,6 +27,8 @@ from apps._services.prompts.tools.tool_prompts.build_knowledge_base_query_execut
     build_structured_tool_prompt__knowledge_base_query_execution
 from apps._services.prompts.tools.tool_prompts.build_nosql_query_execution_tool_prompt import \
     build_structured_tool_prompt__nosql_query_execution
+from apps._services.prompts.tools.tool_prompts.build_predict_ml_models_execution_tool_prompt import \
+    build_structured_tool_prompt__predict_with_ml_model_execution
 from apps._services.prompts.tools.tool_prompts.build_sql_query_execution_tool_prompt import \
     build_structured_tool_prompt__sql_query_execution
 from apps._services.prompts.tools.tool_prompts.build_storage_query_execution_tool_prompt import \
@@ -71,6 +74,7 @@ class PromptBuilder:
         structured_knowledge_base_datasource_prompt = build_knowledge_base_datasource_prompt(assistant, user)
         structured_file_system_prompt = build_file_system_datasource_prompt(assistant, user)
         structured_media_storage_prompt = build_storage_datasource_prompt(assistant, user)
+        structured_ml_model_prompt = build_ml_models_datasource_prompt(assistant, user)
         ##################################################
         # TOOL PROMPTS
         structured_tool_usage_instructions_prompt = (
@@ -87,6 +91,7 @@ class PromptBuilder:
         structured_file_system_command_execution_tool_prompt = build_structured_tool_prompt__file_system_command_execution()
         structured_storage_query_execution_tool_prompt = build_structured_tool_prompt__media_storage_query_execution()
         structured_url_file_downloader_tool_prompt = build_structured_tool_prompt__url_file_downloader()
+        structured_predict_with_ml_model_execution_tool_prompt = build_structured_tool_prompt__predict_with_ml_model_execution()
         ##################################################
 
         # Combine the prompts
@@ -107,6 +112,7 @@ class PromptBuilder:
         merged_prompt += structured_knowledge_base_datasource_prompt
         merged_prompt += structured_file_system_prompt
         merged_prompt += structured_media_storage_prompt
+        merged_prompt += structured_ml_model_prompt
         ##################################################
         merged_prompt += structured_tool_usage_instructions_prompt
         ##################################################
@@ -117,6 +123,7 @@ class PromptBuilder:
         merged_prompt += structured_file_system_command_execution_tool_prompt
         merged_prompt += structured_storage_query_execution_tool_prompt
         merged_prompt += structured_url_file_downloader_tool_prompt
+        merged_prompt += structured_predict_with_ml_model_execution_tool_prompt
         ##################################################
 
         # Build the dictionary with the role

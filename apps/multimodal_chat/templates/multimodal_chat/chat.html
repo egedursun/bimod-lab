@@ -139,6 +139,15 @@
                   </button>
                 </form>
               </li>
+            {% empty %}
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+              <p class="text-dark mb-2 mt-2"><strong>Oops. It seems like you don't have any assistants yet. Want to create a new one?</strong></p>
+              <a href="{% url 'assistants:create' %}">
+                <button class="btn btn-success mb-4 mt-4 w-100" style="min-height: 60px;">
+                  <i class="fa fa-plus me-4"></i><strong>Create a New Assistant</strong>
+                </button>
+              </a>
+              </li>
             {% endfor %}
           </ul>
         </div>
