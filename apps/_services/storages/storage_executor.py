@@ -11,15 +11,14 @@ class StorageExecutor:
         self.connection_object = connection
         self.chat = chat
 
-    def generate_save_name(self, extension):
+    @staticmethod
+    def generate_save_name(extension):
         generated_uuid = str(uuid4())
         additional_uuid = str(uuid4())
         return f"{generated_uuid}_{additional_uuid}.{extension}"
 
-    def merge_texts(self, texts):
-        return "\n\n---\n\n".join(texts)
-
-    def save_file_and_provide_full_uri(self, file_bytes, remote_name):
+    @staticmethod
+    def save_file_and_provide_full_uri(file_bytes, remote_name):
         if not remote_name:
             guess_file_type = filetype.guess(file_bytes)
             if guess_file_type is None:
@@ -28,7 +27,7 @@ class StorageExecutor:
         else:
             extension = remote_name.split(".")[-1]
 
-        save_name = self.generate_save_name(extension=extension)
+        save_name = StorageExecutor.generate_save_name(extension=extension)
         full_uri = f"{GENERATED_FILES_ROOT_PATH}{save_name}"
         try:
             with open(full_uri, "wb") as file:
@@ -38,12 +37,13 @@ class StorageExecutor:
             return None
         return full_uri
 
-    def save_image_and_provide_full_uri(self, image_bytes):
+    @staticmethod
+    def save_image_and_provide_full_uri(image_bytes):
         guess_file_type = filetype.guess(image_bytes)
         if guess_file_type is None:
             guess_file_type = ".bin"
         extension = guess_file_type.extension
-        save_name = self.generate_save_name(extension=extension)
+        save_name = StorageExecutor.generate_save_name(extension=extension)
         full_uri = f"{GENERATED_IMAGES_ROOT_PATH}{save_name}"
         try:
             with open(full_uri, "wb") as image:
@@ -53,18 +53,20 @@ class StorageExecutor:
             return None
         return full_uri
 
-    def save_files_and_provide_full_uris(self, file_bytes_list:list[tuple]):
+    @staticmethod
+    def save_files_and_provide_full_uris(file_bytes_list:list[tuple]):
         full_uris = []
         for file_bytes, remote_name in file_bytes_list:
-            full_uri = self.save_file_and_provide_full_uri(file_bytes, remote_name)
+            full_uri = StorageExecutor.save_file_and_provide_full_uri(file_bytes, remote_name)
             if full_uri is not None:
                 full_uris.append(full_uri)
         return full_uris
 
-    def save_images_and_provide_full_uris(self, image_bytes_list):
+    @staticmethod
+    def save_images_and_provide_full_uris(image_bytes_list):
         full_uris = []
         for image_bytes in image_bytes_list:
-            full_uri = self.save_image_and_provide_full_uri(image_bytes)
+            full_uri = StorageExecutor.save_image_and_provide_full_uri(image_bytes)
             if full_uri is not None:
                 full_uris.append(full_uri)
         return full_uris

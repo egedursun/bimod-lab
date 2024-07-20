@@ -47,8 +47,17 @@
         </div>
       </div>
 
+<div class="card-datatable table-responsive">
+  <a href="{% url 'user_permissions:list_permissions' %}">
+    <button class="btn btn-secondary mt-4 mb-8">
+      <i class="fa fa-dashboard me-4"></i>
+      <strong> Manage User Permissions</strong>
+    </button>
+  </a>
+</div>
 <form method="get" action="{% url 'user_permissions:add_permissions' %}">
     <div class="card mb-4">
+        <hr>
         <div class="card-body">
             <div class="row g-6 mb-6">
                 <div class="col-md-4">

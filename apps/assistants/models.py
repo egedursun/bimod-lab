@@ -72,6 +72,8 @@ class Assistant(models.Model):
     tool_max_attempts_per_instance = models.IntegerField(default=3)
     tool_max_chains = models.IntegerField(default=3)
 
+    glossary = models.JSONField(default=dict, blank=True)
+
     time_awareness = models.BooleanField(default=True)
     place_awareness = models.BooleanField(default=True)
 

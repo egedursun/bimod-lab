@@ -93,5 +93,65 @@ class LLMTransaction(models.Model):
         self.organization.balance -= decimal.Decimal().from_float(self.total_billable_cost)
         # Update the transaction's organization
         self.organization.save()
+
+        # check if the organization's auto top-up is enabled
+        if self.organization.auto_balance_topup and self.organization.auto_balance_topup.on_balance_threshold_trigger:
+            if self.organization.balance <= self.organization.auto_balance_topup.balance_lower_trigger_threshold_value:
+                # check if the addition amount is within the monthly hard limit
+                if (self.organization.auto_balance_topup.calendar_month_total_auto_addition_value + self.organization.auto_balance_topup.addition_on_balance_threshold_trigger) <= self.organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount:
+                    # Perform the top-up
+                    self.organization.balance += self.organization.auto_balance_topup.addition_on_balance_threshold_trigger
+                    self.organization.save()
+                    # Update the  calendar month total
+                    self.organization.auto_balance_topup.calendar_month_total_auto_addition_value += self.organization.auto_balance_topup.addition_on_balance_threshold_trigger
+                    self.organization.auto_balance_topup.save()
+                else:
+                    # If the hard limit is reached, subtract the excess from the total
+                    reduced_addition_amount = (self.organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount - self.organization.auto_balance_topup.calendar_month_total_auto_addition_value)
+                    # Perform the top-up if there is still a balance that can be added
+                    if reduced_addition_amount > 0:
+                        # Perform the top-up
+                        self.organization.balance += reduced_addition_amount
+                        self.organization.save()
+                        # Update the calendar month total
+                        self.organization.auto_balance_topup.calendar_month_total_auto_addition_value += reduced_addition_amount
+                        self.organization.auto_balance_topup.save()
+                    else:
+                        # If the reduced addition amount is 0, do nothing
+                        print("Hard limit reached, no top-up performed for organization: ", self.organization)
+
         self.transaction_context_content = ""
         super().save(*args, **kwargs)
+
+
+class AutoBalanceTopUpModel(models.Model):
+    organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL, related_name='auto_balance_top_ups',
+                                     null=True)
+    # trigger types
+    on_balance_threshold_trigger = models.BooleanField(default=False)
+    on_interval_by_days_trigger = models.BooleanField(default=False)
+
+    # on balance threshold parameters
+    balance_lower_trigger_threshold_value = models.DecimalField(max_digits=12, decimal_places=6, null=True, blank=True)
+    addition_on_balance_threshold_trigger = models.DecimalField(max_digits=12, decimal_places=6, null=True, blank=True)
+
+    # on interval by days parameters
+    regular_by_days_interval = models.IntegerField(null=True, blank=True)
+    addition_on_interval_by_days_trigger = models.DecimalField(max_digits=12, decimal_places=6, null=True, blank=True)
+    date_of_last_auto_top_up = models.DateTimeField(null=True, blank=True)
+
+    # common parameters
+    calendar_month_total_auto_addition_value = models.DecimalField(max_digits=12, decimal_places=6, null=True, blank=True)
+    monthly_hard_limit_auto_addition_amount = models.DecimalField(max_digits=12, decimal_places=6, null=True,
+                                                                  blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.organization} - {self.created_at}"
+
+    class Meta:
+        verbose_name = "Auto Balance Top Up"
+        verbose_name_plural = "Auto Balance Top Ups"
+        ordering = ["-created_at"]

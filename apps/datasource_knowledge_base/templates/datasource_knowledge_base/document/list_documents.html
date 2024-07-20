@@ -181,6 +181,14 @@
                         <div class="card-header">
                             <h4 class="mb-0">{{ assistant_data.assistant.name }}</h4>
                             <small class="text-muted">{{ assistant_data.assistant.description }}</small>
+                            <div class="card-datatable table-responsive">
+                              <a href="{% url 'datasource_sql:create_query' %}">
+                                <button class="btn btn-info mt-4 mb-8">
+                                  <i class="fa fa-file-upload me-4"></i>
+                                  <strong> Add New Document</strong>
+                                </button>
+                              </a>
+                            </div>
                         </div>
                         <div id="collapse-assistant-{{ assistant_data.assistant.id }}" class="card-body collapse show">
                             {% for kb_data in assistant_data.knowledge_bases %}

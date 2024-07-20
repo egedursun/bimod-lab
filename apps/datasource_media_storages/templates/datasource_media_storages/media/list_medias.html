@@ -167,6 +167,14 @@ document.addEventListener("DOMContentLoaded", function() {
                         <a data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button" aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
                             <h4 class="mb-0">{{ organization_data.organization.name }}</h4>
                             <small class="text-muted">{{ organization_data.organization.email }}</small>
+                            <div class="card-datatable table-responsive">
+                              <a href="{% url 'datasource_media_storages:create_item' %}">
+                                <button class="btn btn-info mt-4 mb-8">
+                                  <i class="fa fa-file-upload me-4"></i>
+                                  <strong> Add New Media Item</strong>
+                                </button>
+                              </a>
+                            </div>
                         </a>
                     </p>
                     <i class="fa fa-arrow-alt-circle-up toggle-icon mt-5" data-target="#collapse-org-{{ organization_data.organization.id }}"></i>

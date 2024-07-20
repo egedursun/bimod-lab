@@ -12,7 +12,7 @@ def build_structured_tool_prompt__file_system_command_execution():
             about files, directories, and other file system-related information; as well as execute commands
             on the file system to update, delete, or create files and directories, or develop and run scripts.
 
-            - The standardized format for the dictionary that you will output to use the Knowledge Base Query Execution
+            - The standardized format for the dictionary that you will output to use the File System Command Execution
             Tool is as follows:
 
             '''

@@ -170,6 +170,13 @@
           <!-- Top-up Form Card -->
           <div class="col-6">
             <div class="card h-100">
+              <div class="card-header">
+                <a href="{% url 'llm_transaction:auto_top_up_create' %}">
+                  <button class="btn btn-info w-100" type="submit">
+                    <i class="fa fa-refresh me-2"></i><strong>Create an Automated Balance Top-Up Plan</strong>
+                  </button>
+                </a>
+              </div>
               <div class="card-body d-flex align-items-center">
                 <form method="post" action="{% url 'organization:add_credits' organization_data.organization.id %}" class="w-100">
                   {% csrf_token %}

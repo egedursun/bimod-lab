@@ -42,6 +42,10 @@ class Organization(models.Model):
     exported_assistants = models.ManyToManyField("export_assistants.ExportAssistantAPI",
                                                  related_name="organizations", blank=True)
 
+    auto_balance_topup = models.OneToOneField("llm_transaction.AutoBalanceTopUpModel",
+                                              on_delete=models.SET_NULL, blank=True, null=True,
+                                              related_name="organization_auto_balance_topup")
+
     def __str__(self):
         return self.name
 

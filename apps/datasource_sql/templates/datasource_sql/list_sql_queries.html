@@ -112,7 +112,15 @@
   <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
     {% for assistant, queries in assistants.items %}
     <div class="assistant-group m-8">
-      <h5 class="assistant-title ms-4"><strong>{{ assistant.name }}</strong></h5>
+      <h5 class="assistant-title"><strong>{{ assistant.name }}</strong></h5>
+      <div class="card-datatable table-responsive">
+        <a href="{% url 'datasource_sql:create_query' %}">
+          <button class="btn btn-info mt-4 mb-8">
+            <i class="fa fa-code me-4"></i>
+            <strong> Add Custom SQL Query</strong>
+          </button>
+        </a>
+      </div>
       <div class="row g-6 mb-4">
         {% for query in queries %}
         <div class="col-xl-6 col-md-6">

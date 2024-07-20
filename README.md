@@ -264,26 +264,18 @@ git ls-files | xargs wc -l
 **THINGS TO REMEMBER:**
 
 File Systems:
-- [ ] Implement script generation (similar to function usage). (~3-4 hours) -- do it in its relevant time (5?)
+- [ ] Implement script generation (similar to function usage). (~3-4 hours) -- do it in its relevant time (not now)
 
 ---
 
-Important:
-- [ ] Implement direct chat image and file interpretation + show user images in the chat. These elements will be uploaded to the storage base as well. (~3-4 hours) -- 2
-
-
-Moderate:
-- [ ] Implement downloading as a tool for chats. (the previous one is on media storage pages) (~1 hour) -- 3
-- [ ] Currently direct file generation is not supported since there is a need to retrieve files. Fix it, it shouldn't be necessary. (~1-2 hour) --2
-- [ ] Automated balance top-ups and increasing balance as it goes down from a certain threshold. (~3-4 hours) --5
-        - AUTO-TOP: Value(X), Value(Y), Value(Z) -> If balance < X, then top-up to value Y. (X < Y), Never exceed Z per month. (Y < Z).
-        - AUTO-INTERVAL: Value(X), Value(Y), Value(N) -> Value(X) to be loaded to balance every N days. Do not buy if the balance is already above value Y. (X < Y)
-
 Cosmetic Improvements:
-- [ ] "Add New" buttons for all relevant pages. (~1 hour) -- handle later (8?) -- easy? a few minutes per page (1-2 hours total) --4
-- [ ] Add glossaries (terminology) to the assistants creation and update page (~1 hour) --1
+- [ ] On the registration, add a promo code field for the users to use for free balance top-ups. (~1 hour)
+        - PROMO-CODE: connected to user(A), when the user(B) registers; if the user(B) uses the promo code of user(A), 
+                      user(A) will get +$X balance, and user(B) will get +$Y balance.
+        - PARAMETERS: [promo_beneficiary, promo_beneficiary_gift, promo_invitee_gift, promo_limit, promo_expiry_date]
 
 ---
 
 Notes:
 - Use the code interpreter tool of GPT assistants as a way to run GPT-generated functions, instead of custom functions.
+- ??? - GPT 4o-mini for controller integrations and robotics (???)

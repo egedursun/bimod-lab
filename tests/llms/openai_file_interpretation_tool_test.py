@@ -62,8 +62,10 @@ def ask_about_file(client, full_file_paths: list, query_string: str):
             print(f"Error Details: {str(e)}")
             continue
 
+    """
     if not file_contents:
         return "System Message: No file contents could be read from the provided file paths."
+    """
 
     timer_file_reading = time.time()
     print(f"File Reading Time: [{timer_file_reading - timer_validation}] seconds.")
@@ -223,5 +225,5 @@ file_path_2 = './jeopardy.xlsx'  # put an Excel file here for testing
 c = OpenAI(api_key=OPENAI_API_KEY)
 
 ask_about_file(c,
-               [file_path_1],
+               [],
                "Create an empty chart.")

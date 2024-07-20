@@ -369,8 +369,6 @@ class InternalOpenAIClient:
                 print(f"Error Details: {str(e)}")
                 continue
 
-        if not file_contents: return "System Message: No file contents could be read from the provided file paths.", [], []
-
         # Upload the file to OpenAI server
         file_objects = []
         for content in file_contents:

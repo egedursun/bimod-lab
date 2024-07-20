@@ -12,7 +12,7 @@ def build_structured_tool_prompt__nosql_query_execution():
         Database Connections that you have access to. This tool is very useful when you need to fetch data from the
         SQL Database Connections to provide a more accurate response to the user's questions.
 
-        - The standardized format for the dictionary that you will output to use the SQL Query Execution Tool
+        - The standardized format for the dictionary that you will output to use the No-SQL Query Execution Tool
         is as follows:
 
         '''

@@ -53,6 +53,11 @@
         <!-- /Search -->
         {% endif %}
         <ul class="navbar-nav flex-row align-items-center ms-auto">
+          <a href="{% url 'multimodal_chat:chat' %}">
+            <button class="btn btn-primary rounded me-4">
+              <i class="fa fa-robot me-4"></i><strong>Chat</strong>
+            </button>
+          </a>
           <!--/ Language -->
           {% if menu_horizontal %}
           <!-- Search -->
@@ -63,14 +68,14 @@
           </li>
           <!-- /Search -->
           {% endif %}
-        
+
           <!-- Main Website Link -->
           <li class="nav-item">
             <a class="nav-link btn btn-text-secondary btn-icon rounded-pill" href="{% url 'landing:index' %}" target="_blank">
               <i class="ti ti-world ti-md"></i>
             </a>
           </li>
-        
+
           <!-- Language -->
           <li class="nav-item dropdown-language dropdown">
             <a class="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">

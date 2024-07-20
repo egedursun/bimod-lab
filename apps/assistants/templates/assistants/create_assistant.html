@@ -31,6 +31,14 @@
 <div class="row">
   <div class="col-xl mb-6">
     <div class="card">
+      <div class="card-datatable table-responsive">
+        <a href="{% url 'assistants:list' %}">
+          <button class="btn btn-secondary ms-4 mt-4 mb-8">
+            <i class="fa fa-dashboard me-4"></i>
+            <strong> Manage Assistants</strong>
+          </button>
+        </a>
+      </div>
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Create a New Assistant</h5> <small class="text-muted float-end"></small>
       </div>
@@ -255,6 +263,35 @@
             as well.
           </div>
           <div class="mb-6">
+            <label class="form-label" for="glossary">Glossary</label>
+            <table id="keyValueTable" class="table table-bordered">
+              <thead>
+                  <tr>
+                      <th>Term</th>
+                      <th>Definition</th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td style="width:47%;"><input type="text" name="terms[]" placeholder="Enter term" class="form-control"></td>
+                      <td style="width:47%;"><input type="text" name="definitions[]" placeholder="Enter definition for the term" class="form-control"></td>
+                      <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
+                  </tr>
+              </tbody>
+          </table>
+            <button type="button" onclick="addRow()" class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New Row</strong></button>
+          </div>
+          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-info-circle"></i>
+              </span>
+              You can provide a glossary for the assistant. The glossary is a list of terms and their definitions that
+              the assistant can use to provide more accurate and relevant responses. For example, if you provide a term
+              "Aortic Anuerysm" with the definition "A bulge in a blood vessel in the brain", the assistant will be able
+              to provide more accurate responses when the user asks about aortic aneurysms.
+          </div>
+          <div class="mb-6">
             <label class="form-label" for="assistant_image">Assistant Image</label>
             <input type="file" class="form-control" id="assistant_image" name="assistant_image" />
           </div>
@@ -341,6 +378,39 @@
         memoryVectorizerAlertBar.classList.remove('d-none');
       }
     });
+  });
+</script>
+
+<script>
+  function addRow() {
+      const tableBody = document.querySelector('#keyValueTable tbody');
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+          <td><input type="text" name="terms[]" placeholder="Enter term" class="form-control"></td>
+          <td><input type="text" name="definitions[]" placeholder="Enter definition for the term" class="form-control"></td>
+          <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
+      `;
+      tableBody.appendChild(newRow);
+  }
+
+  function removeRow(button) {
+      const row = button.closest('tr');
+      row.remove();
+  }
+
+  document.getElementById('keyValueForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      const keys = formData.getAll('keys[]');
+      const values = formData.getAll('values[]');
+
+      const keyValuePairs = keys.map((key, index) => ({
+          key: key,
+          value: values[index]
+      }));
+
+      console.log(keyValuePairs);
+      // You can send keyValuePairs to the server or process them as needed
   });
 </script>
 

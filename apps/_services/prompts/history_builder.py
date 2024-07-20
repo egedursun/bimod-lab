@@ -2,7 +2,8 @@ from apps._services.chat_context.chat_context_manager import ChatContextManager
 from apps.assistants.models import Assistant
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat
-
+from config.settings import BASE_URL
+import base64 as b64
 
 class HistoryBuilder:
 
@@ -21,12 +22,27 @@ class HistoryBuilder:
             if sender_type == HistoryBuilder.ChatRoles.TOOL:
                 sender_type = HistoryBuilder.ChatRoles.ASSISTANT
             message_text_content = chat_message.message_text_content
+            message_image_urls = chat_message.message_image_contents
+
+            message_object = {"role": sender_type.lower()}
+            content_wrapper = [{"type": "text", "text": message_text_content}]
+            if message_image_urls:
+                for image_url in message_image_urls:
+                    # get the object from local storage
+                    full_uri = f"{image_url}"
+                    try:
+                        with open(full_uri, "rb") as image_file:
+                            image_bytes = image_file.read()
+                            image_b64 = b64.b64encode(image_bytes).decode("utf-8")
+                    except Exception as e:
+                        print(f"Error reading image file: {e}")
+                        continue
+                    image_content_wrapper = {"type": "image_url", "image_url": {"url": f"data:image/{image_url.split(".")[-1]};base64,{image_b64}"}}
+                    content_wrapper.append(image_content_wrapper)
+            message_object["content"] = content_wrapper
 
             if sender_type != HistoryBuilder.ChatRoles.SYSTEM:
-                context_history.append({
-                    "role": sender_type.lower(),
-                    "content": message_text_content
-                })
+                context_history.append(message_object)
 
             # Create the transactions and add them to the chat
             transaction = LLMTransaction.objects.create(

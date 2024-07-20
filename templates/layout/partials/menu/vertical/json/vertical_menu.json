@@ -47,7 +47,29 @@
       "name": "Usage & Payment",
       "icon": "menu-icon tf-icons ti ti-receipt",
       "slug": "usage",
-      "url": "llm_transaction:list"
+      "submenu": [
+        {
+          "name": "Transactions",
+          "slug": "usage",
+          "url": "llm_transaction:list"
+        },
+        {
+          "name": "Automatic Top-ups",
+          "slug": "payment",
+          "submenu": [
+            {
+              "name": "Add New Plan",
+              "slug": "payment",
+              "url": "llm_transaction:auto_top_up_create"
+            },
+            {
+              "name": "Manage Plans",
+              "slug": "payment",
+              "url": "llm_transaction:auto_top_up_list"
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "Users",

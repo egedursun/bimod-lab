@@ -61,6 +61,14 @@
 <div class="card mb-6">
   <div class="card-header border-bottom">
     <h4>{{ org_data.organization.name }}</h4>
+    <div class="card-datatable table-responsive">
+      <a href="{% url 'datasource_media_storages:create' %}">
+        <button class="btn btn-success mt-4 mb-8">
+          <i class="fa fa-add me-4"></i>
+          <strong> Add New Media Storage</strong>
+        </button>
+      </a>
+    </div>
   </div>
   <div class="card-body">
     {% for assistant_data in org_data.assistants %}

@@ -53,6 +53,10 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
         tool_max_chains = request.POST.get('tool_max_chains')
 
+        terms = request.POST.getlist('terms[]')
+        definitions = request.POST.getlist('definitions[]')
+        glossary = {term: definition for term, definition in zip(terms, definitions)}
+
         context_overflow_strategy = request.POST.get('context_overflow_strategy')
         max_context_messages = request.POST.get('max_context_messages')
         vectorizer_name = None
@@ -99,7 +103,8 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             response_template=response_template,
             response_language=response_language,
             time_awareness=time_awareness,
-            place_awareness=place_awareness
+            place_awareness=place_awareness,
+            glossary=glossary
         )
 
         # retrieve the assistants of the organization and add the new assistant
@@ -170,6 +175,13 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         assistant.max_retry_count = request.POST.get('max_retry_count')
         assistant.tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
         assistant.tool_max_chains = request.POST.get('tool_max_chains')
+
+        terms = request.POST.getlist('terms[]')
+        definitions = request.POST.getlist('definitions[]')
+        updated_glossary = {}
+        for term, definition in zip(terms, definitions):
+            updated_glossary[term] = definition
+        assistant.glossary = updated_glossary
 
         assistant.context_overflow_strategy = request.POST.get('context_overflow_strategy')
         assistant.max_context_messages = request.POST.get('max_context_messages')

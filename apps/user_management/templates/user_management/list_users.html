@@ -76,6 +76,20 @@
       </span>
     </div>
     <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse">
+      <div class="card-datatable table-responsive">
+        <a href="{% url 'user_management:add' %}">
+          <button class="btn btn-success mt-4 ms-4">
+            <i class="fa fa-add me-4"></i>
+            <strong> Invite New User</strong>
+          </button>
+        </a>
+        <a href="{% url 'user_management:add_user_to_organization' %}">
+          <button class="btn btn-info mt-4 ms-4">
+            <i class="fa fa-chain me-4"></i>
+            <strong> Add Existing User to Organization</strong>
+          </button>
+        </a>
+      </div>
       <table class="datatables-users-management table">
         <thead class="border-top">
           <tr>

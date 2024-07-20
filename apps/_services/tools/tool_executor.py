@@ -6,6 +6,7 @@ from apps._services.tools.execution_handlers.knowledge_base_query_execution_hand
 from apps._services.tools.execution_handlers.memory_query_execution_handler import execute_memory_query
 from apps._services.tools.execution_handlers.nosql_query_execution_handler import execute_nosql_query
 from apps._services.tools.execution_handlers.sql_query_execution_handler import execute_sql_query
+from apps._services.tools.execution_handlers.url_file_downloader_execution_handler import execute_url_file_downloader
 from apps._services.tools.validators.context_history_query_execution_tool_validator import \
     validate_context_history_query_execution_tool_json
 from apps._services.tools.validators.file_system_command_execution_tool_validator import \
@@ -18,6 +19,8 @@ from apps._services.tools.validators.nosql_query_execution_tool_validator import
 from apps._services.tools.validators.sql_query_execution_tool_validator import validate_sql_query_execution_tool_json
 from apps._services.tools.validators.storage_query_execution_tool_validator import \
     validate_media_storage_query_execution_tool_json
+from apps._services.tools.validators.url_file_downloader_execution_tool_validator import \
+    validate_url_file_downloader_execution_tool_json
 from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.multimodal_chat.models import MultimodalChat
@@ -48,7 +51,7 @@ class ToolExecutor:
         file_uris, image_uris = [], []
 
         error = validate_main_tool_json(tool_usage_json=self.tool_usage_json)
-        if error: return error, None
+        if error: return error, None, None, None
 
         tool_name = self.tool_usage_json.get("tool")
         tool_response = f"""
@@ -61,7 +64,7 @@ class ToolExecutor:
         # SQL Query Execution Tool
         if tool_name == ToolTypeNames.SQL_QUERY_EXECUTION:
             error = validate_sql_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
-            if error: return error, None
+            if error: return error, None, None, None
 
             connection_id = self.tool_usage_json.get("parameters").get("database_connection_id")
             query_type = self.tool_usage_json.get("parameters").get("type")
@@ -78,7 +81,7 @@ class ToolExecutor:
         # NoSQL Query Execution Tool
         elif tool_name == ToolTypeNames.NOSQL_QUERY_EXECUTION:
             error = validate_nosql_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
-            if error: return error, None
+            if error: return error, None, None, None
 
             connection_id = self.tool_usage_json.get("parameters").get("database_connection_id")
             query_type = self.tool_usage_json.get("parameters").get("type")
@@ -95,7 +98,7 @@ class ToolExecutor:
         # Knowledge Base Query Execution Tool
         elif tool_name == ToolTypeNames.KNOWLEDGE_BASE_QUERY_EXECUTION:
             error = validate_knowledge_base_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
-            if error: return error, None
+            if error: return error, None, None, None
 
             connection_id = self.tool_usage_json.get("parameters").get("knowledge_base_connection_id")
             query = self.tool_usage_json.get("parameters").get("query")
@@ -112,7 +115,7 @@ class ToolExecutor:
         # Vector Chat History Query Execution Tool
         elif tool_name == ToolTypeNames.VECTOR_CHAT_HISTORY_QUERY_EXECUTION:
             error = validate_context_history_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
-            if error: return error, None
+            if error: return error, None, None, None
 
             connection = ContextHistoryKnowledgeBaseConnection.objects.filter(
                 chat=self.chat,
@@ -123,7 +126,7 @@ class ToolExecutor:
                 return f"""
                     The Context History Knowledge Base Connection for the chat: {self.chat.chat_name} and assistant: {self.assistant.name}
                     does not exist in the system. Please make sure you have the connection setup in the system.
-                """, None
+                """, None, None, None
 
             query = self.tool_usage_json.get("parameters").get("query")
             alpha = self.tool_usage_json.get("parameters").get("alpha")
@@ -140,7 +143,7 @@ class ToolExecutor:
         # File System Command Execution Tool
         elif tool_name == ToolTypeNames.FILE_SYSTEM_COMMAND_EXECUTION:
             error = validate_file_system_command_execution_tool_json(tool_usage_json=self.tool_usage_json)
-            if error: return error, None
+            if error: return error, None, None, None
 
             connection_id = self.tool_usage_json.get("parameters").get("file_system_connection_id")
             commands = self.tool_usage_json.get("parameters").get("commands")
@@ -155,7 +158,7 @@ class ToolExecutor:
         # Media Storage Query Execution Tool
         elif tool_name == ToolTypeNames.MEDIA_STORAGE_QUERY_EXECUTION:
             error = validate_media_storage_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
-            if error: return error, None
+            if error: return error, None, None, None
 
             connection_id = self.tool_usage_json.get("parameters").get("media_storage_connection_id")
             chat_id = self.chat.id
@@ -170,6 +173,22 @@ class ToolExecutor:
             response_raw_str = json.dumps(media_storage_response, sort_keys=True, default=str)
             tool_response += response_raw_str
         ##################################################
+        # URL File Downloader Tool
+        elif tool_name == ToolTypeNames.URL_FILE_DOWNLOADER:
+            error = validate_url_file_downloader_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+
+            connection_id = self.tool_usage_json.get("parameters").get("media_storage_connection_id")
+            download_url = self.tool_usage_json.get("parameters").get("url")
+
+            url_downloader_response = execute_url_file_downloader(
+                connection_id=connection_id,
+                url=download_url
+            )
+            # Convert the tool response to a string and pretty format
+            url_downloader_response_raw_str = json.dumps(url_downloader_response, sort_keys=True, default=str)
+            tool_response += url_downloader_response_raw_str
+        ##################################################
         # ...
 
         ##################################################
@@ -178,7 +197,7 @@ class ToolExecutor:
             return f"""
                 There is no tool with the name: {tool_name} in the system. Please make sure you are defining
                 the correct tool name in the tool_usage_json.
-            """, tool_name
+            """, tool_name, file_uris, image_uris
         ##################################################
 
         tool_response += f"""

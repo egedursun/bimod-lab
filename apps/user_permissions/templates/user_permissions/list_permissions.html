@@ -108,6 +108,14 @@
           </div>
           <div id="collapse-{{ user.id }}" class="collapse">
             <div class="card-body">
+              <div class="card-datatable table-responsive">
+                <a href="{% url 'user_permissions:add_permissions' %}">
+                  <button class="btn btn-success mt-4">
+                    <i class="fa fa-add me-4"></i>
+                    <strong> Add Permission to User</strong>
+                  </button>
+                </a>
+              </div>
               <div class="table-responsive">
                 <form method="post" action="{% url 'user_permissions:list_permissions' %}">
                   {% csrf_token %}

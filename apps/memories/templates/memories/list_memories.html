@@ -76,6 +76,14 @@
     </span>
   </div>
   <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse">
+    <div class="card-datatable table-responsive">
+      <a href="{% url 'memories:create' %}">
+        <button class="btn btn-success mt-4 ms-4">
+          <i class="fa fa-add me-4"></i>
+          <strong> Add Memory Item</strong>
+        </button>
+      </a>
+    </div>
     <table class="datatables-memories table">
       <thead class="border-top">
         <tr>
@@ -106,7 +114,7 @@
             <td>{{ memory.memory_text_content }}</td>
             <td>{{ memory.created_at }}</td>
             <td>
-              <a href="{% url 'memories:delete' memory.id %}" class="btn btn-sm btn-danger">Delete Memory</a>
+              <a href="{% url 'memories:delete' memory.id %}" class="btn btn-sm btn-danger"><strong>Delete Memory</strong></a>
             </td>
           </tr>
         {% endfor %}

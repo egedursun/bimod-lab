@@ -8,6 +8,7 @@ from apps._services.prompts.datasource.build_sql_datasource_prompt import build_
 from apps._services.prompts.datasource.build_storage_datasource_prompt import build_storage_datasource_prompt
 from apps._services.prompts.generic.build_audience_prompt import get_structured_audience_prompt
 from apps._services.prompts.generic.build_context_overflow_prompt import get_structured_context_overflow_prompt
+from apps._services.prompts.generic.build_glossary_prompt import build_structured_glossary_prompt
 from apps._services.prompts.generic.build_instructions_prompt import get_structured_instructions_prompt
 from apps._services.prompts.generic.build_memory_prompt import build_structured_memory_prompt
 from apps._services.prompts.generic.build_name_prompt import get_structured_name_prompt
@@ -29,6 +30,8 @@ from apps._services.prompts.tools.tool_prompts.build_sql_query_execution_tool_pr
     build_structured_tool_prompt__sql_query_execution
 from apps._services.prompts.tools.tool_prompts.build_storage_query_execution_tool_prompt import \
     build_structured_tool_prompt__media_storage_query_execution
+from apps._services.prompts.tools.tool_prompts.build_url_file_downloader_tool_prompt import \
+    build_structured_tool_prompt__url_file_downloader
 from apps._services.prompts.tools.tool_prompts.build_vectorized_context_history_query_execution_tool_prompt import \
     build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt
 from apps.assistants.models import Assistant
@@ -57,6 +60,7 @@ class PromptBuilder:
         structured_response_language_prompt = get_structured_response_language_prompt(response_language)
         structured_user_information_prompt = build_structured_user_information_prompt(user)
         structured_memory_prompt = build_structured_memory_prompt(assistant, user)
+        structured_glossary_prompt = build_structured_glossary_prompt(assistant.glossary)
         structured_place_and_time_prompt = ""
         if assistant.time_awareness and assistant.place_awareness:
             structured_place_and_time_prompt = build_structured_place_and_time_prompt(assistant, user)
@@ -82,6 +86,7 @@ class PromptBuilder:
         structured_vectorized_context_history_query_execution_tool_prompt = build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt()
         structured_file_system_command_execution_tool_prompt = build_structured_tool_prompt__file_system_command_execution()
         structured_storage_query_execution_tool_prompt = build_structured_tool_prompt__media_storage_query_execution()
+        structured_url_file_downloader_tool_prompt = build_structured_tool_prompt__url_file_downloader()
         ##################################################
 
         # Combine the prompts
@@ -94,6 +99,7 @@ class PromptBuilder:
         merged_prompt += structured_response_language_prompt
         merged_prompt += structured_user_information_prompt
         merged_prompt += structured_memory_prompt
+        merged_prompt += structured_glossary_prompt
         merged_prompt += structured_place_and_time_prompt
         merged_prompt += structured_context_overflow_prompt
         ##################################################
@@ -110,6 +116,7 @@ class PromptBuilder:
         merged_prompt += structured_vectorized_context_history_query_execution_tool_prompt
         merged_prompt += structured_file_system_command_execution_tool_prompt
         merged_prompt += structured_storage_query_execution_tool_prompt
+        merged_prompt += structured_url_file_downloader_tool_prompt
         ##################################################
 
         # Build the dictionary with the role

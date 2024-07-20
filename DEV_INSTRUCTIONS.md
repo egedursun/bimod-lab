@@ -224,13 +224,18 @@ http://localhost:8000
 
 #### Starting the Celery Worker with Flower
   
-  *In the first tab of the terminal window*
+  *In the first tab of the terminal window* (for processing tasks)
   ```bash
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
   celery -A config worker --pool solo --loglevel=info -E
   ```
 
-  *In the second tab of the terminal window*
+  *In the second tab of the terminal window* (for scheduling tasks / cron jobs)
+  ```bash
+  celery -A config beat -l info
+  ```
+
+  *In the third tab of the terminal window* (for monitoring tasks)
   ```bash
   export FLOWER_UNAUTHENTICATED_API=true
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES

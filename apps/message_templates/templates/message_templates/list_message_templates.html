@@ -14,6 +14,14 @@
 <div class="row g-6 mb-6">
   <div class="col-sm-6 col-xl-4 label card card-border-primary rounded mt-8 ms-3 py-4 ps-4">
     <h3 class="mb-0">Message Templates <i class="ti ti-template text-primary ms-4 pb-1" style="font-size: 24px;"></i></h3>
+    <div class="card-datatable table-responsive">
+    <a href="{% url 'message_templates:create' %}">
+      <button class="btn btn-success mt-4 w-100">
+        <i class="fa fa-add me-4"></i>
+        <strong> Add Message Template</strong>
+      </button>
+    </a>
+  </div>
   </div>
 </div>
 

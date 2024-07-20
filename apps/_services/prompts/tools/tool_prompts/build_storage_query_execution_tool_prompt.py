@@ -18,7 +18,7 @@ def build_structured_tool_prompt__media_storage_query_execution():
             expected to deliver this response in your own words to the user, based on your instructions and the
             needs of the user.
 
-            - The standardized format for the dictionary that you will output to use the Knowledge Base Query Execution
+            - The standardized format for the dictionary that you will output to use the Media Storage Query Execution
             Tool is as follows:
 
             '''

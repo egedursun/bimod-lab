@@ -2,10 +2,13 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import TemplateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from config.settings import BASE_URL
 from web_project import TemplateLayout, TemplateHelper
 from .models import MultimodalChat, MultimodalChatMessage, ChatSourcesNames
 from .utils import generate_chat_name
+from .._services.storages.storage_executor import StorageExecutor
 from ..assistants.models import Assistant
+from ..datasource_media_storages.models import DataSourceMediaStorageItem
 from ..message_templates.models import MessageTemplate
 from ..organization.models import Organization
 from ..user_permissions.models import UserPermission, PermissionNames
@@ -47,7 +50,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 "assistants": assistants,
                 "active_chat": active_chat,
                 "chat_messages": active_chat_messages,
-                "message_templates": message_templates
+                "message_templates": message_templates,
+                "base_url": BASE_URL
             }
         )
         return context
@@ -102,10 +106,38 @@ class ChatView(LoginRequiredMixin, TemplateView):
             chat_id = request.POST.get('chat_id')
             chat = get_object_or_404(MultimodalChat, id=chat_id, user=request.user)
             message_content = request.POST.get('message_content')
+            attached_images = request.FILES.getlist('attached_images[]')
+            attached_files = request.FILES.getlist('attached_files[]')
+
+            # Upload the attached images
+            image_bytes_list = []
+            for image in attached_images:
+                try:
+                    image_bytes = image.read()
+                except Exception as e:
+                    print(f"Error reading image file: {e}")
+                    continue
+                image_bytes_list.append(image_bytes)
+            image_full_uris = StorageExecutor.save_images_and_provide_full_uris(image_bytes_list)
+
+            # Upload the attached files
+            file_bytes_list = []
+            for file in attached_files:
+                file_name = file.name
+                try:
+                    file_bytes = file.read()
+                except Exception as e:
+                    print(f"Error reading file: {e}")
+                    continue
+                file_bytes_list.append((file_bytes, file_name))
+            file_full_uris = StorageExecutor.save_files_and_provide_full_uris(file_bytes_list)
+
             MultimodalChatMessage.objects.create(
                 multimodal_chat=chat,
                 sender_type='USER',
-                message_text_content=message_content
+                message_text_content=message_content,
+                message_image_contents=image_full_uris,
+                message_file_contents=file_full_uris
             )
             user_message = MultimodalChatMessage.objects.filter(multimodal_chat=chat).last()
             internal_llm_client = InternalLLMClient.get(assistant=chat.assistant, multimodal_chat=chat)

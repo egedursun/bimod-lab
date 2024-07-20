@@ -39,6 +39,9 @@ class MultimodalChat(models.Model):
     context_memory_connection = models.OneToOneField(ContextHistoryKnowledgeBaseConnection, on_delete=models.CASCADE,
                                                      related_name='multimodal_chat', null=True, blank=True)
 
+    starred_messages = models.ManyToManyField('starred_messages.StarredMessage', related_name='multimodal_chats',
+                                                blank=True)
+
     # Management for APIs
     chat_source = models.CharField(max_length=100, choices=CHAT_SOURCES, default="app")
 
@@ -157,15 +160,20 @@ class MultimodalChatMessage(models.Model):
 
         # if the message is starred, create the starred item
         if self.starred:
-            StarredMessage.objects.create(
-                user=self.multimodal_chat.user,
-                organization=self.multimodal_chat.organization,
-                assistant=self.multimodal_chat.assistant,
-                chat=self.multimodal_chat,
-                chat_message=self,
-                message_text=self.message_text_content,
-                sender_type=self.sender_type
-            )
+            if not self.multimodal_chat.starred_messages.filter(chat_message=self.id).exists():
+                new_starred_message = StarredMessage.objects.create(
+                    user=self.multimodal_chat.user,
+                    organization=self.multimodal_chat.organization,
+                    assistant=self.multimodal_chat.assistant,
+                    chat=self.multimodal_chat,
+                    chat_message=self,
+                    message_text=self.message_text_content,
+                    sender_type=self.sender_type
+                )
+                self.multimodal_chat.starred_messages.add(new_starred_message)
+                self.multimodal_chat.save()
+            else:
+                pass
         else:
             # remove the starred item if it exists
             starred_message = StarredMessage.objects.filter(chat_message=self.id)
