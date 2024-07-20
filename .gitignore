@@ -192,3 +192,6 @@ cython_debug/
 # Generated media files
 media/generated/files/*
 media/generated/images/*
+
+# ML Test dataset paths (any directory that contains the name MNIST)
+**/MNIST/**
