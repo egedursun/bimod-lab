@@ -24,7 +24,7 @@ def build_structured_tool_prompt__predict_with_ml_model_execution():
                 {{
                     "tool": "{ToolTypeNames.PREDICTION_WITH_ML_MODEL}",
                     "parameters": {{
-                        "ml_model_connection_id": "...",
+                        "ml_base_connection_id": "...",
                         "model_path": "...",
                         "input_data_paths": ["...", "...", "..."],
                         "query": "..."

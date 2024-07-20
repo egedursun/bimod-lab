@@ -6,7 +6,7 @@ from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
 from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, AssistantRunStatuses, \
-    AFFIRMATION_PROMPT
+    AFFIRMATION_PROMPT, ML_AFFIRMATION_PROMPT
 from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
 from apps._services.tools.tool_executor import ToolExecutor
@@ -600,7 +600,6 @@ class InternalOpenAIClient:
             return ("System Message: The number of input data to be predicted is too high. Please provide a smaller "
                     "number of input data. The maximum number supported by the system is 10."), [], []
 
-        loaded_ml_model = None
         try:
             # Load the pre-trained model
             with open(ml_model_path, "rb") as file:
@@ -661,7 +660,7 @@ class InternalOpenAIClient:
         # Prepare the thread
         try:
             thread = client.beta.threads.create(messages=[{"role": ChatRoles.USER,
-                                                           "content": (query_string + AFFIRMATION_PROMPT)}])
+                                                           "content": (query_string + AFFIRMATION_PROMPT + ML_AFFIRMATION_PROMPT)}])
         except Exception as e:
             print(f"System Message: An error occurred while preparing the thread for the ML model prediction.")
             print(f"Error Details: {str(e)}")

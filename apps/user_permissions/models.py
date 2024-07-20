@@ -76,6 +76,11 @@ class PermissionNames:
     LIST_MEDIA_STORAGES = 'list_media_storages'
     DELETE_MEDIA_STORAGES = 'delete_media_storages'
     ######################################################
+    ADD_ML_MODEL_CONNECTIONS = 'add_ml_model_connections'
+    UPDATE_ML_MODEL_CONNECTIONS = 'update_ml_model_connections'
+    LIST_ML_MODEL_CONNECTIONS = 'list_ml_model_connections'
+    DELETE_ML_MODEL_CONNECTIONS = 'delete_ml_model_connections'
+    ######################################################
     ADD_FUNCTIONS = 'add_functions'
     UPDATE_FUNCTIONS = 'update_functions'
     LIST_FUNCTIONS = 'list_functions'
@@ -212,6 +217,12 @@ PERMISSION_TYPES = [
     ('update_media_storages', 'Update Media Storages'),
     ('list_media_storages', 'List Media Storages'),
     ('delete_media_storages', 'Delete Media Storages'),
+    ######################################################
+    # ML MODEL CONNECTIONS
+    ('add_ml_model_connections', 'Add ML Model Connections'),
+    ('update_ml_model_connections', 'Update ML Model Connections'),
+    ('list_ml_model_connections', 'List ML Model Connections'),
+    ('delete_ml_model_connections', 'Delete ML Model Connections'),
     ######################################################
     # FUNCTIONS
     ('add_functions', 'Add Functions'),

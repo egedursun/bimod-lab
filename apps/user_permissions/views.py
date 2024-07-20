@@ -139,6 +139,12 @@ class AddPermissionsView(TemplateView):
                 ('list_media_storages', 'List Media Storages'),
                 ('delete_media_storages', 'Delete Media Storages')
             ],
+            "ML Model Permissions": [
+                ('add_ml_model_connections', 'Add ML Model Connections'),
+                ('update_ml_model_connections', 'Update ML Model Connections'),
+                ('list_ml_model_connections', 'List ML Model Connections'),
+                ('delete_ml_model_connections', 'Delete ML Model Connections'),
+            ],
             "Function Permissions": [
                 ('add_functions', 'Add Functions'),
                 ('update_functions', 'Update Functions'),

@@ -41,6 +41,11 @@ def build_ml_models_datasource_prompt(assistant: Assistant, user: User):
 
             '''
 
+            **VERY IMPORTANT NOTE ABOUT THE ''URL DOWNLOADER TOOL''**
+            - When the user sends you an image content through CHAT, this content is automatically processed and
+            saved, so you DON'T NEED to use your 'URL RETRIEVER' tool to download the image content, since it is
+            already saved in your storage.
+
             **NOTE**: These are the ML Model datasource connections you have. You can use these connections
             to retrieve information about the ML Models, ask queries and questions about them, and retrieve
             predictions from them.

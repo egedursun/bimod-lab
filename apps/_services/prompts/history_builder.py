@@ -38,7 +38,10 @@ class HistoryBuilder:
                         print(f"Error reading image file: {e}")
                         continue
                     image_content_wrapper = {"type": "image_url", "image_url": {"url": f"data:image/{image_url.split(".")[-1]};base64,{image_b64}"}}
+                    image_uri_info_wrapper = {"type": "text", "text": f"Detected Image URLs: {image_url}"}
                     content_wrapper.append(image_content_wrapper)
+                    content_wrapper.append(image_uri_info_wrapper)
+
             message_object["content"] = content_wrapper
 
             if sender_type != HistoryBuilder.ChatRoles.SYSTEM:
