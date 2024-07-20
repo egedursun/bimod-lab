@@ -25,4 +25,6 @@ urlpatterns = [
         template_name='datasource_ml_models/models/update_datasource_ml_model_item.html'), name='item_update'),
     path('item/list/', DataSourceMLModelItemListView.as_view(
         template_name='datasource_ml_models/models/list_datasource_ml_model_items.html'), name='item_list'),
+    path('item/delete/', DataSourceMLModelItemListView.as_view(
+        template_name='datasource_ml_models/models/list_datasource_ml_model_items.html'), name='item_delete'),
 ]

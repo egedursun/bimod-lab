@@ -111,29 +111,29 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Confirmation dialog for delete buttons
-        document.querySelectorAll('.delete-selected-btn, .delete-all-btn').forEach(function(button) {
-            button.addEventListener('click', function(event) {
-                event.preventDefault();
-                const form = button.closest('form');
+    document.querySelectorAll('.delete-selected-btn, .delete-all-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const form = button.closest('form');
 
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this action.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete the documents.',
-                    customClass: {
-                      confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-                      cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-                    },
-                    buttonsStyling: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this action.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete the documents.',
+                customClass: {
+                  confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+                  cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
             });
         });
+    });
 });
 </script>
 {% endblock page_js %}
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                             <td><strong><pre><code class="json" style="max-width: 600px;">{{ item.message.message_text_content|safe|linebreaks }}</code></pre></strong></td>
                                             <td>{{ item.message.sent_at }}</td>
                                             <td>
-                                              <a href="{{ base_url }}/{{ item.image }}" target="_blank" class="text-white">
+                                              <a href="{{ base_url }}/{{ item.image }}" target="_blank" class="text-dark">
                                                 <i class="fa fa-download"></i>
                                               </a>
                                             </td>
@@ -204,25 +204,25 @@ document.addEventListener("DOMContentLoaded", function() {
                                 </table>
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination pagination-rounded pt-8 overflow-scroll">
-                                        {% if assistant_data.images.has_previous %}
+                                        {% if assistant_data.messages_with_images.has_previous %}
                                         <li class="page-item">
                                             <a class="page-link" href="?page_images=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
                                         </li>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page_images={{ assistant_data.images.previous_page_number }}"><i class="ti ti-chevron-left ti-sm"></i></a>
+                                            <a class="page-link" href="?page_images={{ assistant_data.messages_with_images.previous_page_number }}"><i class="ti ti-chevron-left ti-sm"></i></a>
                                         </li>
                                         {% endif %}
-                                        {% for page_num in assistant_data.images.paginator.page_range %}
-                                        <li class="page-item {% if assistant_data.images.number == page_num %}active{% endif %} mb-4">
+                                        {% for page_num in assistant_data.messages_with_images.paginator.page_range %}
+                                        <li class="page-item {% if assistant_data.messages_with_images.number == page_num %}active{% endif %} mb-4">
                                             <a class="page-link" href="?page_images={{ page_num }}">{{ page_num }}</a>
                                         </li>
                                         {% endfor %}
-                                        {% if assistant_data.images.has_next %}
+                                        {% if assistant_data.messages_with_images.has_next %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page_images={{ assistant_data.images.next_page_number }}"><i class="ti ti-chevron-right ti-sm"></i></a>
+                                            <a class="page-link" href="?page_images={{ assistant_data.messages_with_images.next_page_number }}"><i class="ti ti-chevron-right ti-sm"></i></a>
                                         </li>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page_images={{ assistant_data.images.paginator.num_pages }}"><i class="ti ti-chevrons-right ti-sm"></i></a>
+                                            <a class="page-link" href="?page_images={{ assistant_data.messages_with_images.paginator.num_pages }}"><i class="ti ti-chevrons-right ti-sm"></i></a>
                                         </li>
                                         {% endif %}
                                     </ul>
@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                             <td>{{ item.message.sent_at }}</td>
                                             <td>
                                               <a href="{{ base_url }}/{{ item.file }}" target="_blank" class="text-white">
-                                                <i class="fa fa-download"></i>
+                                                <i class="fa fa-download">here</i>
                                               </a>
                                             </td>
                                         </tr>
@@ -258,25 +258,25 @@ document.addEventListener("DOMContentLoaded", function() {
                                 </table>
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination pagination-rounded pt-8 overflow-scroll">
-                                        {% if assistant_data.files.has_previous %}
+                                        {% if assistant_data.messages_with_files.has_previous %}
                                         <li class="page-item">
                                             <a class="page-link" href="?page_files=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
                                         </li>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page_files={{ assistant_data.files.previous_page_number }}"><i class="ti ti-chevron-left ti-sm"></i></a>
+                                            <a class="page-link" href="?page_files={{ assistant_data.messages_with_files.previous_page_number }}"><i class="ti ti-chevron-left ti-sm"></i></a>
                                         </li>
                                         {% endif %}
-                                        {% for page_num in assistant_data.files.paginator.page_range %}
-                                        <li class="page-item {% if assistant_data.files.number == page_num %}active{% endif %} mb-4">
+                                        {% for page_num in assistant_data.messages_with_files.paginator.page_range %}
+                                        <li class="page-item {% if assistant_data.messages_with_files.number == page_num %}active{% endif %} mb-4">
                                             <a class="page-link" href="?page_files={{ page_num }}">{{ page_num }}</a>
                                         </li>
                                         {% endfor %}
-                                        {% if assistant_data.files.has_next %}
+                                        {% if assistant_data.messages_with_files.has_next %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page_files={{ assistant_data.files.next_page_number }}"><i class="ti ti-chevron-right ti-sm"></i></a>
+                                            <a class="page-link" href="?page_files={{ assistant_data.messages_with_files.next_page_number }}"><i class="ti ti-chevron-right ti-sm"></i></a>
                                         </li>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page_files={{ assistant_data.files.paginator.num_pages }}"><i class="ti ti-chevrons-right ti-sm"></i></a>
+                                            <a class="page-link" href="?page_files={{ assistant_data.messages_with_files.paginator.num_pages }}"><i class="ti ti-chevrons-right ti-sm"></i></a>
                                         </li>
                                         {% endif %}
                                     </ul>

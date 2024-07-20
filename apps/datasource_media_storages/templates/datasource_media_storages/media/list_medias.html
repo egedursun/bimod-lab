@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                                     {% for item_data in storage_data.item_data %}
                                                     <tr>
                                                         <td>
-                                                            <input type="checkbox" class="select-item-checkbox" name="selected_items" value="{{ item_data.item.id }}" data-storage-id="{{ storage_data.storage.id }}">
+                                                          <input type="checkbox" class="select-item-checkbox" name="selected_items" value="{{ item_data.item.id }}" data-storage-id="{{ storage_data.storage.id }}">
                                                         </td>
                                                         <td>
                                                             {% if storage_data.storage.media_category == "image"  %}
@@ -272,7 +272,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                                         </td>
                                                         <td>{{ item_data.item.created_at }}</td>
                                                         <td>
-                                                          <a href="{{ base_url }}/app/datasource_media_storages/item/detail/{{ item_data.item.id }}" class="text-white">
+                                                          <a href="{{ base_url }}/app/datasource_media_storages/item/detail/{{ item_data.item.id }}" class="text-dark">
                                                             <i class="fa fa-edit"></i>
                                                           </a>
                                                         </td>

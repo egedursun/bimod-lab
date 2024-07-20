@@ -124,7 +124,7 @@
   - [ ] Integration of the prompt to the chat.
   - [ ] Testing within the chat and evaluation of the performance.
 - [X] Implement the File System tool for the file system manipulation features.
-- [ ] Implement the ML Model tool for the ML models usage features.
+- [X] Implement the ML Model tool for the ML models usage features.
 - [ ] Implement Code Repository integration module.
 - [X] Implement the media storage features.
 
@@ -165,7 +165,7 @@
 - [X] Integrate SQL database features.
 - [X] Integrate the knowledge base & document features.
 - [ ] Integrate the web browser & web scraping features.
-- [ ] Integrate ML models usage features.
+- [X] Integrate ML models usage features.
 - [ ] Git repository / Code repository integration module.
 - [X] Integrate the media storage features (image, audio, video).
 - [X] Integrate the file system manipulation features.

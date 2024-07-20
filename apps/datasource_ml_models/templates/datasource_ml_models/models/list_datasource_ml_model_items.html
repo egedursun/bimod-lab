@@ -1,3 +1,288 @@
+{% extends layout_path %}
 
+{% load static %}
+{% load i18n %}
 
-# List ML Model Items Test
+{% block title %}ML Models{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Function to store the collapsed tab state
+    function storeCollapsedTabState() {
+        const collapsedTabs = [];
+        document.querySelectorAll('.collapse:not(.show)').forEach(collapse => {
+            collapsedTabs.push(collapse.id);
+        });
+        localStorage.setItem('collapsedTabs', JSON.stringify(collapsedTabs));
+    }
+
+    // Function to restore the collapsed tab state
+    function restoreCollapsedTabState() {
+        const collapsedTabs = JSON.parse(localStorage.getItem('collapsedTabs'));
+        if (collapsedTabs && Array.isArray(collapsedTabs)) {
+            collapsedTabs.forEach(tabId => {
+                const collapseElement = document.getElementById(tabId);
+                if (collapseElement) {
+                    new bootstrap.Collapse(collapseElement, {
+                        toggle: true
+                    });
+                }
+            });
+        }
+    }
+
+    // Store the collapsed tab state on collapse and expand events
+    document.querySelectorAll('.collapse').forEach(collapse => {
+        collapse.addEventListener('show.bs.collapse', storeCollapsedTabState);
+        collapse.addEventListener('hide.bs.collapse', storeCollapsedTabState);
+    });
+
+    // Restore the collapsed tab state on page load
+    restoreCollapsedTabState();
+
+    // Toggle icon logic
+    document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
+            var target = document.querySelector(this.getAttribute('data-target'));
+            var bootstrapCollapse = new bootstrap.Collapse(target, {
+                toggle: true
+            });
+            if (target.classList.contains('show')) {
+                bootstrapCollapse.hide();
+                icon.classList.remove('fa-arrow-alt-circle-up');
+                icon.classList.add('fa-arrow-alt-circle-down');
+            } else {
+                bootstrapCollapse.show();
+                icon.classList.remove('fa-arrow-alt-circle-down');
+                icon.classList.add('fa-arrow-alt-circle-up');
+            }
+        });
+    });
+
+    // Update toggle icons based on collapse state
+    document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
+            var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+            if (icon) {
+                icon.classList.remove('fa-arrow-alt-circle-down');
+                icon.classList.add('fa-arrow-alt-circle-up');
+            }
+        });
+
+        collapse.addEventListener('hide.bs.collapse', function() {
+            var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+            if (icon) {
+                icon.classList.remove('fa-arrow-alt-circle-up');
+                icon.classList.add('fa-arrow-alt-circle-down');
+            }
+        });
+    });
+
+    // Select all checkboxes
+    document.querySelectorAll('.select-all-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const storageId = this.getAttribute('data-storage-id');
+            const checkboxes = document.querySelectorAll(`.select-item-checkbox[data-storage-id="${storageId}"]`);
+            checkboxes.forEach(cb => cb.checked = this.checked);
+        });
+    });
+
+    // Confirmation dialog for delete buttons
+    document.querySelectorAll('.delete-selected-btn, .delete-all-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const form = button.closest('form');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this action.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete the documents.',
+                customClass: {
+                  confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+                  cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = button.classList.contains('delete-all-btn') ? 'delete_all' : 'delete_selected';
+                    input.value = 'true';
+                    form.appendChild(input);
+                    form.submit();
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="mb-0">ML Models</h3>
+        </div>
+    </div>
+
+    <div class="alert alert-secondary alert-dismissible d-flex align-items-center" role="alert">
+        <img src="{% static 'img/custom-illustrations/boy-core-list.png' %}" width="15%" class="justify-content-end">
+        <span class="alert-icon rounded ms-4">
+            <i class="ti ti-bookmark"></i>
+        </span>
+        <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+                In this page, you can manage your ML models. You can delete models by selecting them and clicking on the
+                "Delete Selected" button. You can also delete all models in a model connection by clicking on the "Delete All"
+                button. Please note that the delete actions are irreversible, and you will need to upload the models again if
+                you delete them.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
+    {% for organization_data in connections_by_organization %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <p>
+                        <a data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button" aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
+                            <h4 class="mb-0">{{ organization_data.organization.name }}</h4>
+                            <small class="text-muted">{{ organization_data.organization.email }}</small>
+                            <div class="card-datatable table-responsive">
+                              <a href="{% url 'datasource_ml_models:item_create' %}">
+                                <button class="btn btn-info mt-4 mb-8">
+                                  <i class="fa fa-file-upload me-4"></i>
+                                  <strong> Add New ML Model Item</strong>
+                                </button>
+                              </a>
+                            </div>
+                        </a>
+                    </p>
+                    <i class="fa fa-arrow-alt-circle-up toggle-icon mt-5" data-target="#collapse-org-{{ organization_data.organization.id }}"></i>
+                    <span data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button" aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
+                        <strong>&nbsp; See Complete List of Assistants</strong>
+                    </span>
+                </div>
+                <div id="collapse-org-{{ organization_data.organization.id }}" class="card-body collapse show">
+                    {% for assistant_data in organization_data.assistants %}
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4 class="mb-0">{{ assistant_data.assistant.name }}</h4>
+                            <small class="text-muted">{{ assistant_data.assistant.description }}</small>
+                        </div>
+                        <div id="collapse-assistant-{{ assistant_data.assistant.id }}" class="card-body collapse show">
+                            {% for storage_data in assistant_data.ml_model_connections %}
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                  <h5 class="mb-0"><strong>{{ storage_data.connection.name }}</strong></h5>
+                                  <p class="bg-label-info rounded p-2 mt-4 mb-4 w-20">
+                                    {% if storage_data.connection.model_object_category == "pth" %}
+                                      <i class="fa fa-database me-4"></i>
+                                    {% endif %}
+                                    <strong>{{ storage_data.connection.model_object_category|capfirst }} Storage</strong>
+                                  </p>
+                                  <small class="text-muted">{{ storage_data.connection.description }}</small>
+                                </div>
+                                <div id="collapse-storage-{{ storage_data.connection.id }}" class="card-body collapse show">
+                                    <div class="table-responsive">
+                                        <form method="post" action="{% url 'datasource_ml_models:item_list' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="storage_id" value="{{ storage_data.connection.id }}">
+                                            <table class="table datatables-document">
+                                                <thead>
+                                                    <tr>
+                                                        <th><input type="checkbox" class="select-all-checkbox" data-storage-id="{{ storage_data.connection.id }}"></th>
+                                                        <th></th>
+                                                        <th>Model Id</th>
+                                                        <th>Model Name</th>
+                                                        <th>Description</th>
+                                                        <th>Uploaded At</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for item_data in storage_data.items %}
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" class="select-item-checkbox" name="selected_items" value="{{ item_data.id }}" data-storage-id="{{ storage_data.connection.id }}">
+                                                        </td>
+                                                        <td>{{ item_data.id }}</td>
+                                                        <td></td>
+                                                        <td>{{ item_data.ml_model_name }}</td>
+                                                        <td class="w-50">
+                                                          {{ item_data.description }}
+                                                        </td>
+                                                        <td>{{ item_data.created_at }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <button type="submit" class="btn btn-warning btn-sm w-25 mt-4 delete-selected-btn"><strong>Delete Selected ML Models</strong></button>
+                                        </form>
+                                        <form method="post" action="{% url 'datasource_ml_models:item_list' %}" class="mt-4">
+                                          {% csrf_token %}
+                                          <input type="hidden" name="storage_id" value="{{ storage_data.connection.id }}">
+                                          <button type="submit" class="btn btn-danger btn-sm w-25 delete-all-btn"><strong>DELETE ALL</strong></button>
+                                        </form>
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination pagination-rounded pt-8 overflow-scroll">
+                                                {% if storage_data.items.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ storage_data.items.previous_page_number }}"><i class="ti ti-chevron-left ti-sm"></i></a>
+                                                </li>
+                                                {% endif %}
+                                                {% for page_num in storage_data.items.paginator.page_range %}
+                                                <li class="page-item {% if storage_data.items.number == page_num %}active{% endif %} mb-4">
+                                                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                                </li>
+                                                {% endfor %}
+                                                {% if storage_data.items.has_next %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ storage_data.items.next_page_number }}"><i class="ti ti-chevron-right ti-sm"></i></a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ storage_data.items.paginator.num_pages }}"><i class="ti ti-chevrons-right ti-sm"></i></a>
+                                                </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

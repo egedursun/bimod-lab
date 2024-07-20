@@ -1,11 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
 from apps.assistants.models import Assistant
 from apps.datasource_ml_models.forms import DataSourceMLModelConnectionForm, DataSourceMLModelItemForm
-from apps.datasource_ml_models.models import DataSourceMLModelConnection
+from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSourceMLModelItem
 from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 
@@ -217,9 +218,62 @@ class DataSourceMLModelItemUpdateView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
+    template_name = 'datasource_ml_models/models/list_datasource_ml_model_items.html'
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context_user = self.request.user
+        connections_by_organization = []
+        organizations = context_user.organizations.all()
+
+        for organization in organizations:
+            assistants_data = []
+            assistants = Assistant.objects.filter(organization=organization)
+            for assistant in assistants:
+                connections_data = []
+                connections = DataSourceMLModelConnection.objects.filter(assistant=assistant)
+                for connection in connections:
+                    items = DataSourceMLModelItem.objects.filter(ml_model_base=connection)
+
+                    # Pagination
+                    page = self.request.GET.get('page', 1)
+                    paginator = Paginator(items, 5)  # Show 5 items per page
+                    try:
+                        paginated_items = paginator.page(page)
+                    except PageNotAnInteger:
+                        paginated_items = paginator.page(1)
+                    except EmptyPage:
+                        paginated_items = paginator.page(paginator.num_pages)
+
+                    connections_data.append({
+                        'connection': connection,
+                        'items': paginated_items
+                    })
+                assistants_data.append({
+                    'assistant': assistant,
+                    'ml_model_connections': connections_data
+                })
+            connections_by_organization.append({
+                'organization': organization,
+                'assistants': assistants_data
+            })
+
+        context['connections_by_organization'] = connections_by_organization
         return context
+
+    def post(self, request, *args, **kwargs):
+        storage_id = request.POST.get('storage_id')
+        selected_items = request.POST.getlist('selected_items')
+        selected_items = [item for item in selected_items if item]  # Filter out any empty values
+
+        if 'delete_all' in request.POST:
+            DataSourceMLModelItem.objects.filter(ml_model_base__id=storage_id).delete()
+            messages.success(request, 'All ML models in the selected connection have been deleted.')
+        elif selected_items:
+            DataSourceMLModelItem.objects.filter(id__in=selected_items).delete()
+            messages.success(request, 'Selected ML models have been deleted.')
+
+        return redirect('datasource_ml_models:item_list')
 
 
 class DataSourceMLModelItemDeleteView(LoginRequiredMixin, TemplateView):
