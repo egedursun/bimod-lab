@@ -1,0 +1,808 @@
+{% extends layout_path %}
+{% load markdown_extras %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Archive - Apps{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}"/>
+  <style>
+    /* Ensure images within markdown content fit within their container */
+    .markdown-content img {
+      max-width: 35%;
+      height: auto;
+    }
+  </style>
+  <style>
+    /* Add this to your CSS block or stylesheet */
+    .floating-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        width: 90px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+  </style>
+
+{% endblock page_css %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/app-chat.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6" id="assistant-chats-title">
+    <div class="col-sm-6 col-xl-3">
+      <h3 class="mb-0">Archived Chats</h3>
+    </div>
+  </div>
+
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations/boy-blue-1.png' %}" width="25%" class="justify-content-end">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        The archived chats are the chats that you have had with the AI assistants. You can inspect the history of your
+        conversations with the assistant by clicking on any of the archived chats. You can also restore your chats,
+        however, please note that you cannot continue the conversation in archived chats. If you would like to continue
+        having chat with this assistant, please restore the chat.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  <div class="app-chat card">
+    <div class="row g-0">
+      <!-- Sidebar Left -->
+      <div class="col app-chat-sidebar-left app-sidebar overflow-hidden" id="app-chat-sidebar-left">
+        <div
+          class="chat-sidebar-left-user sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
+          <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
+            <img src="
+              {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
+                 alt="Avatar" class="rounded">
+          </div>
+          <i class="ti ti-x ti-lg cursor-pointer close-sidebar" data-bs-toggle="sidebar" data-overlay
+             data-target="#app-chat-sidebar-left"></i>
+        </div>
+      </div>
+      <!-- /Sidebar Left-->
+    </div>
+
+    <!-- Chat & Assistants -->
+    <div class="card-datatable table-responsive">
+      <a href="{% url 'multimodal_chat:chat' %}">
+        <button class="btn btn-success ms-4 mt-4 mb-8">
+          <i class="fa fa-bolt-lightning me-4"></i>
+          <strong> Go to Ongoing Chats</strong>
+        </button>
+      </a>
+    </div>
+    <div class="row g-0">
+      <div class="col app-chat-contacts app-sidebar border-end overflow-auto" id="app-chat-chats">
+        <div class="sidebar-body">
+          <!-- Chats -->
+          <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
+            <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
+              <h5 class="text-primary mb-0"><strong>Archived Chats</strong></h5>
+            </li>
+            <li class="chat-contact-list-item chat-list-item-0 d-none">
+              <h6 class="text-muted mb-0"><strong>No Chats Found</strong></h6>
+            </li>
+            <div class="alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-brain"></i>
+            </span>
+              <div class="d-flex flex-column ps-1">
+                <small class="mb-0">
+                  Click on any of your existing chats to inspect the history of your conversations with the assistant.
+                </small>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+              </div>
+            </div>
+            <!-- loading bar warning -->
+            <div class="alert-container"></div>
+            <div id="loadingBarWarningCreateChat"
+                 class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-brain"></i>
+            </span>
+              <div class="d-flex flex-column ps-1 pt-4 ms-4 me-4 ">
+                <p class="alert-heading"><strong>Loading your chat, please hold on...</strong></p>
+                <!-- Loading bar -->
+                <div id="loadingBarCreateChat" class="progress d-none mt-3 mb-1 w-100">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                       style="width: 100%; height:10px;"></div>
+                </div>
+              </div>
+            </div>
+            {% for chat in chats %}
+              <li
+                class="card card-border-shadow-dark chat-contact-list-item mb-2 {% if chat.id == active_chat.id %} border border-1 rounded border-primary alert-secondary{% endif %}">
+                <a href="?chat_id={{ chat.id }}" class="d-flex flex-grow-1 text-decoration-none">
+                  <form method="post" action=".">
+                    {% csrf_token %}
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="flex-shrink-0 avatar {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded"
+                        {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
+                        <img src="
+                          {% if chat.assistant.assistant_image %}{{ chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                             class="rounded">
+                      </div>
+                      <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                        <h6 class="chat-contact-name text-truncate m-0 fw-normal"><strong>{{ chat.chat_name }}</strong>
+                        </h6>
+                        <small class="text-muted"><i
+                          class="fa fa-clock-rotate-left me-1"></i>{{ chat.updated_at|date:"H:i A" }}</small>
+                        <br>
+                        <small
+                          class="d-block text-truncate bg-label-primary ps-2 pt-1 pe-2 pb-1 rounded mt-1"><strong>{{ chat.assistant.name }}</strong></small>
+                        <small
+                          class="d-block text-truncate bg-label-primary ps-2 pt-1 pe-2 pb-1 rounded mt-1">{{ chat.organization.name }}</small>
+                        <small
+                          class="d-block text-truncate chat-contact-status mt-1">{{ chat.messages.last.message_text_content }}</small>
+                      </div>
+                    </div>
+                  </form>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <hr>
+      </div>
+    </div>
+    <!-- /Chat & Assistants -->
+
+    <!-- Chat History -->
+    <div class="row g-0">
+      <div class="col app-chat-history">
+        <h5 class="text-primary mt-12"><strong></strong></h5>
+        {% if not active_chat %}
+          <!-- inform the user that no active chat is selected at the moment -->
+          <div class="chat-history-wrapper">
+            <div class="chat-history-header border-bottom">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex overflow-hidden align-items-center">
+                  <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar"
+                     data-overlay data-target="#app-chat-contacts"></i>
+                  <div class="chat-contact-info flex-grow-1 ms-4">
+                    <h6 class="m-0 fw-normal"><strong>No Chat Selected</strong></h6>
+                    <small class="user-status text-body">Select a chat to start inspecting the archived chat history.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-solid-primary alert-dismissible d-flex col-lg-10 align-items-center mt-10 ms-10"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations/boy-power.png' %}" width="25%" class="justify-content-end">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="alert-icon rounded">
+            <i class="ti ti-alert-circle-filled"></i>
+          </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                Oops. It looks like you either haven't selected a chat or you don't have any chat at all. Come on,
+                click on an archived chat to discover how powerful you can become with {% get_theme_variables 'template_name' %}
+                AI assistants!
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+        {% else %}
+          <div class="chat-history-wrapper">
+            <div class="chat-history-header">
+              <small class="text-muted mt-2"><strong>Active Chat (Archived)</strong></small>
+              <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="d-flex overflow-hidden align-items-center">
+                  <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar"
+                     data-overlay data-target="#app-chat-chats"></i>
+                  <div class="flex-shrink-0 avatar avatar-online">
+                    <img src="
+                      {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                         class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4">
+                    <div class="d-flex justify-content-between align-items-center mt-1">
+                      <p class="m-0 fw-bold mt-1 ms-1"><strong>{{ active_chat.chat_name }}</strong></p>
+                    </div>
+                    <h6 class="m-0 fw-normal mt-1 ms-1">
+                      <small class="text-muted">
+                        <strong>
+                          {{ active_chat.assistant.organization }} / {{ active_chat.assistant.name }}
+                          / {{ active_chat.assistant.llm_model.nickname }}
+                          / {{ active_chat.assistant.llm_model.model_name }}
+                        </strong>
+                      </small>
+                    </h6>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow"
+                      data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions"><i
+                      class="ti ti-dots-vertical ti-md"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
+                      <a class="dropdown-item bg-label-warning mb-2" href="{% url 'multimodal_chat:unarchive' active_chat.id %}">
+                        <strong>
+                          <i class="fa fa-box-open me-2"></i>Restore Chat
+                        </strong>
+                      </a>
+                      <a class="dropdown-item bg-label-danger" href="{% url 'multimodal_chat:delete' active_chat.id %}">
+                        <strong>
+                          <i class="fa fa-trash me-2"></i>Delete
+                        </strong></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-history-body" style="max-height: 100%;">
+              <ul class="list-unstyled chat-history" style="height: 95%">
+                {% for message in chat_messages.all %}
+                  <li class="chat-message {% if message.sender_type == 'USER' %}chat-message-right{% endif %}">
+                    <div class="d-flex overflow-hidden">
+                      {% if message.sender_type == 'ASSISTANT' %}
+                        <div class="user-avatar flex-shrink-0 me-4">
+                          <div class="avatar avatar-xl">
+                            <img src="
+                              {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                                 alt="Avatar" class="rounded">
+                          </div>
+                        </div>
+                      {% elif message.sender_type == 'TOOL' %}
+                        <div class="user-avatar flex-shrink-0 me-4">
+                          <div class="avatar avatar-xl">
+                            <img src="{% static 'img/custom-illustrations/tool-executor.png' %}" alt="Avatar"
+                                 class="rounded">
+                          </div>
+                        </div>
+                      {% endif %}
+                      <div class="chat-message-wrapper flex-grow-1">
+                        <div id="copied-message-{{ message.id }}"
+                             class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-primary-subtle{% endif %} border-primary"
+                             style="{% if message.sender_type == 'TOOL' %}border: 2px solid{% endif %};">
+                          {% if message.sender_type != 'TOOL' %}
+                            <p class="mb-0 markdown-content">{{ message.message_text_content|safe }}</p>
+                            <hr>
+                            {% if message.message_image_contents %}
+                              <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image Attachments</strong></p>
+                              {% for image in message.message_image_contents %}
+                                <img src="{{ base_url }}/{{ image }}" class="img-fluid mt-2 rounded" style="max-width:35%" alt="Image">
+                              {% endfor %}
+                            {% endif %}
+                            <hr>
+                            {% if message.message_file_contents %}
+                              <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4"><strong>File Attachments</strong></p>
+                              {% for file in message.message_file_contents %}
+                                <div class="label bg-label-secondary p-2 rounded mb-2">
+                                  <i class="fa fa-file me-4 bg-label-secondary p-2 rounded"></i>
+                                  <span class="text mb-2 bg-label-secondary rounded p-2">
+                                    <strong>
+                                      <a href="{{ base_url }}/{{ file|linebreaksbr }}" target="_blank">{{ file|linebreaksbr|slice:":100" }}...</a>
+                                    </strong>
+                                  </span>
+                                </div>
+                              {% endfor %}
+                            {% endif %}
+                          {% else %}
+                            <p class="text-bg-primary card rounded mt-4 ms-4 me-4 ps-4 pe-4 pt-4 pb-4">
+                              <strong>
+                                <i class="fa fa-gears me-4"></i>
+                                System Message
+                              </strong>
+                            </p>
+                            <div class="text fw-semibold text-black font-monospace" style="font-size:0.67rem;">
+                              <p
+                                class="mb-0 markdown-content">{{ message.message_text_content|safe|slice:":500"|linebreaks }}
+                                ... {{ message.message_text_content|safe|linebreaks|slice:"-500:"|linebreaks }}</p>
+                              <hr>
+                            {% if message.message_image_contents %}
+                              <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image Attachments</strong></p>
+                              {% for image in message.message_image_contents %}
+                                <img src="{{ base_url }}/{{ image }}" class="img-fluid mt-2 rounded" style="max-width:35%" alt="Image">
+                              {% endfor %}
+                            {% endif %}
+                            <hr>
+                            {% if message.message_file_contents %}
+                              <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4"><strong>File Attachments</strong></p>
+                              {% for file in message.message_file_contents %}
+                                <div class="label bg-label-secondary p-2 rounded mb-2">
+                                  <i class="fa fa-file me-4 bg-label-secondary p-2 rounded"></i>
+                                  <span class="text mb-2 bg-label-secondary rounded p-2">
+                                    <strong>
+                                      <a href="{{ base_url }}/{{ file|linebreaksbr }}" target="_blank">{{ file|linebreaksbr|slice:":100" }}...</a>
+                                    </strong>
+                                  </span>
+                                </div>
+                              {% endfor %}
+                            {% endif %}
+                            </div>
+                          {% endif %}
+                        </div>
+                        <div class="text-muted mt-2">
+                          <small>
+                            <form method="post" action=".">
+                              {% csrf_token %}
+                              <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
+                              <input type="hidden" name="message_id" value="{{ message.id }}">
+                              <input type="hidden" name="starred_message" value="{{ message.starred }}">
+                              <strong class="text-primary me-2">{% if message.starred %}Starred{% endif %}</strong>
+                              <i class="{% if message.starred %}ti ti-star-filled text-primary {% else %} ti ti-star text-light {% endif %}"></i>
+                              <strong class="ps-2 {% if message.starred %}text-primary{% else %}text-light{% endif %}">{{ message.sent_at|date:"H:i A" }}</strong>
+                            </form>
+                          </small>
+                        </div>
+                      </div>
+                      {% if message.sender_type == 'USER' %}
+                        <div class="user-avatar flex-shrink-0 ms-4">
+                          <div class="avatar avatar-xl">
+                            <img src="
+                              {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
+                                 alt="Avatar" class="rounded">
+                          </div>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <!-- Chat message form -->
+            <div class="chat-history-footer shadow-xs p-4">
+              <div class="row align-items-center justify-content-start mt-2 mb-2" id="image_display_area">
+                <!-- Dynamic content will be inserted here
+                    ... ... ...
+                    ... ... ...
+                 -->
+                <small class="text-muted">
+                  <strong>This is an archived chat. It is not possible to continue the conversation in archived chats. If
+                    you would like to continue having chat with this assistant, please restore the chat.</strong>
+                </small>
+              </div>
+            </div>
+            <div class="">
+              <span>&nbsp;</span>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <!-- /Chat History -->
+
+    <!-- Sidebar Right -->
+    {% if active_chat %}
+      <div class="row g-0">
+        <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-right">
+          <div class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
+            <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
+              <img src="
+                {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   alt="Avatar" class="rounded">
+            </div>
+            <h5 class="mt-4 mb-0">{{ active_chat.assistant.name }}</h5>
+            <span>{{ active_chat.assistant.description }}</span>
+            <i class="ti ti-x ti-lg cursor-pointer close-sidebar d-block" data-bs-toggle="sidebar" data-overlay
+               data-target="#app-chat-sidebar-right"></i>
+          </div>
+          <div class="sidebar-body p-6 pt-0">
+            <div class="my-6">
+              <p class="text-uppercase mb-1 text-muted">About</p>
+              <p class="mb-0">{{ active_chat.assistant.description }}</p>
+            </div>
+            <div class="my-6">
+              <p class="text-uppercase text-muted mb-1">Personal Information</p>
+              <ul class="list-unstyled d-grid gap-4 mb-0 ms-2 py-2 text-heading">
+                <li class="d-flex align-items-center">
+                  <i class='ti ti-mail ti-md'></i>
+                  <span class="align-middle ms-2">{{ active_chat.assistant.email }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='ti ti-phone-call ti-md'></i>
+                  <span class="align-middle ms-2">{{ active_chat.assistant.phone }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='ti ti-clock ti-md'></i>
+                  <span class="align-middle ms-2">Available 24/7</span>
+                </li>
+              </ul>
+            </div>
+            <div class="d-flex mt-6">
+              <button class="btn btn-danger w-100" data-bs-toggle="sidebar" data-overlay
+                      data-target="#app-chat-sidebar-right">Delete Chat<i class='ti ti-trash ti-16px ms-2'></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    <!-- /Sidebar Right -->
+
+    <div class="app-overlay"></div>
+  </div>
+
+  <a class="floating-button label bg-label-hover-primary border border-1 border-primary rounded">
+    <i class="fa fa-message me-2 text-dark"></i><span class="text text-dark"><strong>Chat</strong></span>
+  </a>
+
+  <style>
+    @keyframes border-color-change {
+      0% {
+        border-color: mediumslateblue;
+      }
+      100% {
+        border-color: #ffbf00;
+      }
+    }
+  </style>
+  <style>
+    /* Add hover effect and cursor pointer to template cards */
+    .card-template {
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .card-template:hover {
+      background-color: #f0f0f0;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+
+  <!-- Include a markdown library, for example, Showdown.js -->
+  <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const converter = new showdown.Converter();
+      document.querySelectorAll('.markdown-content').forEach(function (element) {
+        element.innerHTML = converter.makeHtml(element.innerHTML);
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const chatForm = document.querySelector('.form-send-message');
+      const createChatForm = document.querySelector('#create-chat-form');
+
+      const loadingBar = document.getElementById('loadingBar');
+      const loadingBarWarning = document.getElementById('loadingBarWarning');
+      const submitMessageButton = document.querySelector('#send-chat-message-button');
+
+      const loadingBarCreateChat = document.getElementById('loadingBarCreateChat');
+      const loadingBarWarningCreateChat = document.getElementById('loadingBarWarningCreateChat');
+
+      chatForm.addEventListener('submit', function (event) {
+        // Show the loading bar
+        loadingBar.classList.remove('d-none');
+        loadingBarWarning.classList.remove('d-none');
+        submitMessageButton.disabled = true;
+      });
+
+      createChatForm.addEventListener('submit', function (event) {
+        // Show the loading bar
+        loadingBarCreateChat.classList.remove('d-none');
+        loadingBarWarningCreateChat.classList.remove('d-none');
+      });
+
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.card-template').forEach(function (template) {
+        template.addEventListener('click', function () {
+          const fullText = this.getAttribute('data-full-text');
+          console.log(fullText);
+          const chatInput = document.querySelector('.message-input');
+          chatInput.value = fullText;
+
+          navigator.clipboard.writeText(fullText).then(() => {
+            const alertContainer = document.querySelector('.alert-container');
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+            successAlert.role = 'alert';
+            successAlert.innerHTML = `
+          <span class="alert-icon rounded">
+            <i class="ti ti-check"></i>
+          </span>
+          Template text copied to chat input!
+        `;
+            alertContainer.appendChild(successAlert);
+
+            setTimeout(() => {
+              successAlert.remove();
+            }, 1000);
+          }).catch(err => {
+            alert('Failed to copy text: ' + err);
+          });
+        });
+      });
+    });
+
+    document.querySelectorAll('.copy-btn-html').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const messageId = this.getAttribute('data-message-id');
+        const templateTextElement = document.getElementById(`copied-message-${messageId}`);
+        const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+        const converter = new showdown.Converter();
+        const textToCopyHtml = converter.makeHtml(textToCopy);
+
+        navigator.clipboard.writeText(textToCopyHtml).then(() => {
+          const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
+          const successAlert = document.createElement('div');
+          successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+          successAlert.role = 'alert';
+          successAlert.innerHTML = `
+        <span class="alert-icon rounded">
+          <i class="ti ti-check"></i>
+        </span>
+        Formatted Text copied to clipboard!
+      `;
+          alertContainer.appendChild(successAlert);
+
+          setTimeout(() => {
+            successAlert.remove();
+          }, 1000);
+        }).catch(err => {
+          alert('Failed to copy text: ' + err);
+        });
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const chatInput = document.querySelector('.message-input');
+
+      chatInput.addEventListener('input', function () {
+        this.style.height = 'auto'; // Reset the height
+        this.style.height = (this.scrollHeight) + 'px'; // Set the height to match the content
+      });
+
+      document.querySelectorAll('.card-template').forEach(function (template) {
+        template.addEventListener('click', function () {
+          const fullText = this.getAttribute('data-full-text');
+          chatInput.value = fullText;
+          chatInput.style.height = 'auto'; // Reset the height
+          chatInput.style.height = (chatInput.scrollHeight) + 'px'; // Adjust height to match content
+
+          navigator.clipboard.writeText(fullText).then(() => {
+            const alertContainer = document.querySelector('.alert-container');
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+            successAlert.role = 'alert';
+            successAlert.innerHTML = `
+          <span class="alert-icon rounded">
+            <i class="ti ti-check"></i>
+          </span>
+          Template text copied to chat input!
+        `;
+            alertContainer.appendChild(successAlert);
+
+            setTimeout(() => {
+              successAlert.remove();
+            }, 1000);
+          }).catch(err => {
+            alert('Failed to copy text: ' + err);
+          });
+        });
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const floatingButton = document.querySelector('.floating-button');
+      floatingButton.addEventListener('click', function () {
+        if (floatingButton.innerHTML.includes('Chat')) {
+            window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+          });
+          floatingButton.innerHTML = '<i class="fa fa-robot rounded text-dark me-2"></i><span class="text-dark"><strong>List</strong></span>';
+        } else {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+          floatingButton.innerHTML = '<i class="fa fa-message me-2 text-dark"></i><span class="text-dark"><strong>Chat</strong></span>';
+        }
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const btnCollapseTemplates = document.querySelector('.btn-collapse-templates');
+      const cardTemplateContainer = document.querySelector('#message-templates-container');
+      btnCollapseTemplates.addEventListener('click', function () {
+        cardTemplateContainerClasses = cardTemplateContainer.classList;
+        if (cardTemplateContainerClasses.contains('d-none')) {
+          cardTemplateContainer.classList.remove('d-none');
+          // convert the icon to compress
+          btnCollapseTemplates.innerHTML = '<i class="fa fa-compress-arrows-alt rounded"></i><small></small>';
+        } else {
+          cardTemplateContainer.classList.add('d-none');
+          // convert the icon to expand
+          btnCollapseTemplates.innerHTML = '<i class="fa fa-expand-arrows-alt rounded"></i><small></small>';
+        }
+      });
+  });
+  </script>
+
+  <script>
+     document.addEventListener('DOMContentLoaded', function () {
+       document.getElementById('attach-doc').addEventListener('change', function(event) {
+            const fileList = Array.from(event.target.files);
+            const fileDisplayArea = document.getElementById('file_display_area');
+            fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media File Staging</strong></small><hr>';
+            fileList.forEach((file, index) => {
+                const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const iconMap = {
+                    'jpg': 'jpg.png',
+                    'png': 'png.png',
+                    'gif': 'gif.png',
+                    'svg': 'svg.png',
+                    'bmp': 'bmp.png',
+                    'tiff': 'tiff.png',
+                    'mp3': 'mp3.png',
+                    'wav': 'wav.png',
+                    'flac': 'flac.png',
+                    'aac': 'aac.png',
+                    'ogg': 'ogg.png',
+                    'mp4': 'mp4.png',
+                    'avi': 'avi.png',
+                    'mkv': 'mkv.png',
+                    'mov': 'mov.png',
+                    'zip': 'zip.png',
+                    'rar': 'rar.png',
+                    'tar': 'tar.png',
+                    'py': 'py.png',
+                    'js': 'js.png',
+                    'ts': 'ts.png',
+                    'php': 'php.png',
+                    'css': 'css.png',
+                    'html': 'html.png',
+                    'java': 'java.png',
+                    'c': 'c.png',
+                    'cpp': 'cpp.png',
+                    'h': 'h.png',
+                    'sh': 'sh.png',
+                    'go': 'go.png',
+                    'dart': 'dart.png',
+                    'yml': 'yml.png',
+                    'yaml': 'yaml.png',
+                    'sql': 'sql.png',
+                    'pkl': 'pkl.png',
+                    'csv': 'csv.png',
+                    'xlsx': 'xlsx.png',
+                    'json': 'json.png',
+                    'xml': 'xml.png',
+                    'tsv': 'tsv.png',
+                    'docx': 'docx.png',
+                    'pptx': 'pptx.png',
+                    'pdf': 'pdf.png',
+                    'txt': 'txt.png',
+                };
+                const icon = iconMap[fileExtension] || 'file.png';
+                let filename_root = file.name.split(".")[0];
+                let filename_extension = file.name.split(".")[1];
+                if (filename_root.length > 64) {
+                    filename_root = filename_root.substring(0, 64) + '...';
+                }
+                const fileElement = document.createElement('div');
+                fileElement.classList.add('col-lg-12');
+                fileElement.innerHTML = `
+                    <div class="badge bg-lighter d-flex align-items-center my-2">
+                        <img src="{% static 'img/icons/misc/' %}${icon}" alt="${fileExtension}" width="15" class="me-2">
+                        <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                        <button type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                    </div>
+                `;
+                fileDisplayArea.appendChild(fileElement);
+            });
+
+            document.querySelectorAll('.btn-close').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    fileList.splice(index, 1);
+                    const dataTransfer = new DataTransfer();
+                    fileList.forEach(file => dataTransfer.items.add(file));
+                    document.getElementById('attach-doc').files = dataTransfer.files;
+                    this.parentElement.remove();
+                });
+            });
+        });
+
+       document.getElementById('attach-image').addEventListener('change', function(event) {
+            const fileList = Array.from(event.target.files);
+            const fileDisplayArea = document.getElementById('image_display_area');
+            fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media Image Staging</strong></small><hr>';
+            fileList.forEach((file, index) => {
+                const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const image_data = null; // ????
+                let filename_root = file.name.split(".")[0];
+                let filename_extension = file.name.split(".")[1];
+                if (filename_root.length > 64) {
+                    filename_root = filename_root.substring(0, 64) + '...';
+                }
+                const fileElement = document.createElement('div');
+                fileElement.classList.add('col-lg-12');
+
+                const reader = new FileReader();
+                  reader.onload = function(e) {
+                      const imageUrl = e.target.result;
+                      fileElement.innerHTML = `
+                          <div class="badge bg-lighter d-flex align-items-center my-2">
+                              <img src="${imageUrl}" alt="${fileExtension}" width="50" class="me-2">
+                              <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                              <button id="btn-close-image-${index}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                          </div>
+                      `;
+                      fileDisplayArea.appendChild(fileElement);
+
+                      document.getElementById(`btn-close-image-${index}`).addEventListener('click', function() {
+                          const index = this.getAttribute('data-index');
+                          fileList.splice(index, 1);
+                          const dataTransfer = new DataTransfer();
+                          fileList.forEach(file => dataTransfer.items.add(file));
+                          document.getElementById('attach-image').files = dataTransfer.files;
+                          this.parentElement.remove();
+                      });
+                  };
+                  reader.readAsDataURL(file);
+            });
+
+            document.querySelectorAll('.btn-close').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    fileList.splice(index, 1);
+                    const dataTransfer = new DataTransfer();
+                    fileList.forEach(file => dataTransfer.items.add(file));
+                    document.getElementById('attach-doc').files = dataTransfer.files;
+                    this.parentElement.remove();
+                });
+            });
+
+            document.getElementById('.btn-close-image').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    fileList.splice(index, 1);
+                    const dataTransfer = new DataTransfer();
+                    fileList.forEach(file => dataTransfer.items.add(file));
+                    document.getElementById('attach-image').files = dataTransfer.files;
+                    this.parentElement.remove();
+                });
+            });
+        });
+     });
+  </script>
+
+{% endblock %}

@@ -5,6 +5,7 @@ from django.views.generic import TemplateView, DeleteView
 
 from apps.starred_messages.models import StarredMessage
 from apps.user_permissions.models import UserPermission, PermissionNames
+from config.settings import BASE_URL
 from web_project import TemplateLayout
 
 
@@ -31,6 +32,7 @@ class ListStarredMessageView(TemplateView, LoginRequiredMixin):
 
         context.update({
             'org_assistants_messages': org_assistants_messages,
+            'base_url': BASE_URL
         })
         return context
 

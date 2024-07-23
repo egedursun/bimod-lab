@@ -75,6 +75,7 @@ class PromptBuilder:
         structured_file_system_prompt = build_file_system_datasource_prompt(assistant, user)
         structured_media_storage_prompt = build_storage_datasource_prompt(assistant, user)
         structured_ml_model_prompt = build_ml_models_datasource_prompt(assistant, user)
+        # TODO-12: Put the code repository data source prompt here
         ##################################################
         # TOOL PROMPTS
         structured_tool_usage_instructions_prompt = (
@@ -92,6 +93,7 @@ class PromptBuilder:
         structured_storage_query_execution_tool_prompt = build_structured_tool_prompt__media_storage_query_execution()
         structured_url_file_downloader_tool_prompt = build_structured_tool_prompt__url_file_downloader()
         structured_predict_with_ml_model_execution_tool_prompt = build_structured_tool_prompt__predict_with_ml_model_execution()
+        # TODO-13: Put the code repository query execution tool prompt here
         ##################################################
 
         # Combine the prompts
@@ -113,6 +115,7 @@ class PromptBuilder:
         merged_prompt += structured_file_system_prompt
         merged_prompt += structured_media_storage_prompt
         merged_prompt += structured_ml_model_prompt
+        # TODO-14: Merge the code repository data source prompt here
         ##################################################
         merged_prompt += structured_tool_usage_instructions_prompt
         ##################################################
@@ -124,6 +127,7 @@ class PromptBuilder:
         merged_prompt += structured_storage_query_execution_tool_prompt
         merged_prompt += structured_url_file_downloader_tool_prompt
         merged_prompt += structured_predict_with_ml_model_execution_tool_prompt
+        # TODO-15: Merge the code repository query execution tool prompt here
         ##################################################
 
         # Build the dictionary with the role

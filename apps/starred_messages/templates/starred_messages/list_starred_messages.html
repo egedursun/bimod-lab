@@ -69,6 +69,26 @@
                 <div id="full-text-{{ message.id }}" class="collapse">
                   <p class="text-primary mb-2"><strong>Full Text</strong></p>
                   <p class="card-text markdown-content">{{ message.message_text|linebreaksbr|safe }}</p>
+                  <hr>
+                  <small class="text-muted"><strong>Image Content</strong></small>
+                  <div class="row mb-4">
+                    {% for image_url in message.message_image_urls %}
+                    <div class="col-6 mt-4">
+                      <img src="{{ base_url }}/{{ image_url }}" alt="Image" class="img-fluid rounded" />
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <hr>
+                  <small class="text-muted"><strong>File Content</strong></small>
+                  <div class="row mb-4 w-100">
+                    {% for file_url in message.message_file_urls %}
+                    <div class="col-6 mt-4 ms-4 bg-label-primary p-2 rounded">
+                      <i class="fa fa-file text-dark me-2"></i>
+                      <strong><a href="{{ base_url }}/{{ file_url }}" target="_blank" class="text-dark">{{ file_url }}</a></strong>
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <hr>
                 </div>
                 <strong><small>
                   <a href="javascript:void(0);" class="expand-btn" data-bs-toggle="collapse" data-bs-target="#full-text-{{ message.id }}" aria-expanded="false" aria-controls="full-text-{{ message.id }}">

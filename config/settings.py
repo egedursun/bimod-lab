@@ -104,6 +104,7 @@ INSTALLED_APPS = [
     "apps.datasource_file_systems",
     "apps.datasource_media_storages",
     "apps.datasource_ml_models",
+    "apps.datasource_code_repository",
     #############################
 ]
 

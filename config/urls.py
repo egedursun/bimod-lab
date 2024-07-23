@@ -26,8 +26,7 @@ urlpatterns = [
     path("", include("apps.landing.urls", namespace="landing")),
     path("admin/", admin.site.urls),
     path("app/", include("auth.urls")),
-    path("app/user_profile_management/", include("apps.user_profile_management.urls",
-                                                 namespace="user_profile_management")),
+    path("app/user_profile_management/", include("apps.user_profile_management.urls", namespace="user_profile_management")),
     path("app/user_settings/", include("apps.user_settings.urls", namespace="user_settings")),
     path("app/dashboard/", include("apps.dashboard.urls", namespace="dashboard")),
     path("app/organization/", include("apps.organization.urls", namespace="organization")),
@@ -47,6 +46,7 @@ urlpatterns = [
     path("app/datasource_file_systems/", include("apps.datasource_file_systems.urls", namespace="datasource_file_systems")),
     path("app/datasource_media_storages/", include("apps.datasource_media_storages.urls", namespace="datasource_media_storages")),
     path("app/datasource_ml_models/", include("apps.datasource_ml_models.urls", namespace="datasource_ml_models")),
+    path("app/datasource_code_repository/", include("apps.datasource_code_repository.urls", namespace="datasource_code_repository")),
 ]
 
 

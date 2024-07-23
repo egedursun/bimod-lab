@@ -42,6 +42,9 @@ class MultimodalChat(models.Model):
     starred_messages = models.ManyToManyField('starred_messages.StarredMessage', related_name='multimodal_chats',
                                                 blank=True)
 
+    # For archiving the chats
+    is_archived = models.BooleanField(default=False)
+
     # Management for APIs
     chat_source = models.CharField(max_length=100, choices=CHAT_SOURCES, default="app")
 

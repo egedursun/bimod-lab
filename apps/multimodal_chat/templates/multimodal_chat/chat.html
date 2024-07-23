@@ -19,10 +19,21 @@
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}"/>
   <style>
+    .markdown-content {
+      width: 100%;
+      overflow-x: auto;
+    }
     /* Ensure images within markdown content fit within their container */
     .markdown-content img {
       max-width: 35%;
       height: auto;
+    }
+    .markdown-content table {
+      margin-bottom: 1rem;
+    }
+    .markdown-content table th, .markdown-content table td {
+      border: 1px solid #aaa;
+      max-width: 80px;
     }
   </style>
   <style>
@@ -93,6 +104,14 @@
     </div>
 
     <!-- Chat & Assistants -->
+    <div class="card-datatable table-responsive">
+      <a href="{% url 'multimodal_chat:archive_list' %}">
+        <button class="btn btn-warning ms-4 mt-4 mb-8">
+          <i class="fa fa-box-archive me-4"></i>
+          <strong> Go to Archived Chats</strong>
+        </button>
+      </a>
+    </div>
     <div class="row g-0">
       <div class="col app-chat-contacts app-sidebar border-end overflow-auto" id="app-chat-contacts">
         <div class="sidebar-body">
@@ -182,14 +201,14 @@
             <span class="alert-icon rounded">
               <i class="ti ti-brain"></i>
             </span>
-              <div class="d-flex flex-column ps-1 pt-4">
+              <div class="d-flex flex-column ps-1 pt-4 ms-4 me-4 ">
                 <p class="alert-heading"><strong>Creating your chat, please hold on...</strong></p>
+                <!-- Loading bar -->
+                <div id="loadingBarCreateChat" class="progress d-none mt-3 mb-1 w-100">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                       style="width: 100%; height:10px;"></div>
+                </div>
               </div>
-            </div>
-            <!-- Loading bar -->
-            <div id="loadingBarCreateChat" class="progress d-none mt-3 mb-1">
-              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                   style="width: 100%; height:10px;"></div>
             </div>
             {% for chat in chats %}
               <li
@@ -309,10 +328,18 @@
                     <button
                       class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow"
                       data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions"><i
-                      class="ti ti-dots-vertical ti-md"></i></button>
+                      class="ti ti-dots-vertical ti-md"></i>
+                    </button>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
-                      <a class="dropdown-item bg-label-danger" href="{% url 'multimodal_chat:delete' active_chat.id %}"><strong>Delete
-                        Chat</strong></a>
+                      <a class="dropdown-item bg-label-warning mb-2" href="{% url 'multimodal_chat:archive' active_chat.id %}">
+                        <strong>
+                          <i class="fa fa-archive me-2"></i>Archive
+                        </strong>
+                      </a>
+                      <a class="dropdown-item bg-label-danger" href="{% url 'multimodal_chat:delete' active_chat.id %}">
+                        <strong>
+                          <i class="fa fa-trash me-2"></i>Delete
+                        </strong></a>
                     </div>
                   </div>
                 </div>
@@ -527,7 +554,7 @@
 
                   <label for="attach-image" class="form-label mb-0">
                     <i class="ti ti-photo ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
-                    <input type="file" id="attach-image" name="attached_images[]" multiple hidden>
+                    <input type="file" id="attach-image" name="attached_images[]" multiple hidden accept=".jpeg,.png,.gif,.webp">
                   </label>
                   <label for="attach-doc" class="form-label mb-0">
                     <i class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
@@ -632,6 +659,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const converter = new showdown.Converter();
+      converter.setOption('tables', true);
       document.querySelectorAll('.markdown-content').forEach(function (element) {
         element.innerHTML = converter.makeHtml(element.innerHTML);
       });

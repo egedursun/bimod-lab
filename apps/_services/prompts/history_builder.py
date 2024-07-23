@@ -1,9 +1,8 @@
 from apps._services.chat_context.chat_context_manager import ChatContextManager
-from apps.assistants.models import Assistant
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat
-from config.settings import BASE_URL
 import base64 as b64
+
 
 class HistoryBuilder:
 
@@ -23,10 +22,11 @@ class HistoryBuilder:
                 sender_type = HistoryBuilder.ChatRoles.ASSISTANT
             message_text_content = chat_message.message_text_content
             message_image_urls = chat_message.message_image_contents
+            message_file_urls = chat_message.message_file_contents
 
             message_object = {"role": sender_type.lower()}
             content_wrapper = [{"type": "text", "text": message_text_content}]
-            if message_image_urls:
+            if message_image_urls and sender_type == HistoryBuilder.ChatRoles.USER:
                 for image_url in message_image_urls:
                     # get the object from local storage
                     full_uri = f"{image_url}"
@@ -41,6 +41,11 @@ class HistoryBuilder:
                     image_uri_info_wrapper = {"type": "text", "text": f"Detected Image URLs: {image_url}"}
                     content_wrapper.append(image_content_wrapper)
                     content_wrapper.append(image_uri_info_wrapper)
+            if message_file_urls and sender_type == HistoryBuilder.ChatRoles.USER:
+                for file_url in message_file_urls:
+                    # get the object from local storage
+                    file_uri_info_wrapper = {"type": "text", "text": f"Detected File URLs: {file_url}"}
+                    content_wrapper.append(file_uri_info_wrapper)
 
             message_object["content"] = content_wrapper
 

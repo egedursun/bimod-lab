@@ -268,6 +268,14 @@ git ls-files | xargs wc -l
 
 **THINGS TO REMEMBER:**
 
+Quick:
+
+- [ ] Add the glossary templates as JSON files.
+  - [ ] There is no document_uuid or repository_uuid field in the chunks classes for weaviate, yet they are used in the code
+        for deletions, fix this.
+ 
+---
+
 File Systems:
 - [ ] Implement script generation (similar to function usage). (~3-4 hours) -- do it in its relevant time (not now)
 
@@ -284,3 +292,4 @@ Cosmetic Improvements:
 Notes:
 - Use the code interpreter tool of GPT assistants as a way to run GPT-generated functions, instead of custom functions.
 - ??? - GPT 4o-mini for controller integrations and robotics (???)
+

@@ -18,6 +18,8 @@ class StarredMessage(models.Model):
 
     # Original field derived from chat_message
     message_text = models.TextField(blank=True, null=True)
+    message_image_urls = models.JSONField(blank=True, null=True)
+    message_file_urls = models.JSONField(blank=True, null=True)
 
     starred_at = models.DateTimeField(auto_now_add=True)
 
@@ -41,4 +43,6 @@ class StarredMessage(models.Model):
 
     def save(self, *args, **kwargs):
         self.message_text = self.chat_message.message_text_content
+        self.message_file_urls = self.chat_message.message_file_contents
+        self.message_image_urls = self.chat_message.message_image_contents
         super().save(*args, **kwargs)

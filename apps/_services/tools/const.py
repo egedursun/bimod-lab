@@ -10,3 +10,5 @@ class ToolTypeNames:
     MEDIA_STORAGE_QUERY_EXECUTION = 'Media Storage Query Execution'
     URL_FILE_DOWNLOADER = 'URL File Downloader'
     PREDICTION_WITH_ML_MODEL = 'Prediction with ML Model'
+
+    # TODO-7: Add the new tool type name here (code repository executor)

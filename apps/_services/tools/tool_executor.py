@@ -41,14 +41,19 @@ class ToolExecutor:
         self.chat = chat
         self.tool_usage_json_str = tool_usage_json_str
         self.tool_usage_json = {}
-        try:
-            self.tool_usage_json = json.loads(tool_usage_json_str)
-        except Exception as e:
-            print("Error decoding the JSON: ", e)
-            raise Exception("Error decoding the JSON")
 
     def use_tool(self):
         from apps._services.tools.execution_handlers.storage_query_execution_handler import execute_storage_query
+
+        try:
+            self.tool_usage_json = json.loads(self.tool_usage_json_str)
+        except Exception as e:
+            print("Error decoding the JSON: ", e)
+            return f"""
+                There was an error decoding the JSON string. Please make sure the JSON string is in the correct format.
+                If you forgot to escape any characters, this might be the reason of the issue. Please make sure you
+                are sending out a properly formatted JSON string.
+            """, None, None, None
 
         # For file and image generation by the tools
         file_uris, image_uris = [], []
@@ -212,6 +217,9 @@ class ToolExecutor:
             # Convert the tool response to a string and pretty format
             predict_ml_response_raw_str = json.dumps(predict_ml_response, sort_keys=True, default=str)
             tool_response += predict_ml_response_raw_str
+        ##################################################
+        # TODO-6: Add the code repository execution tool handler here
+        # ...
         ##################################################
         # ...
 
