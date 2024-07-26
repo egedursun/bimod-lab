@@ -60,6 +60,8 @@ class TransactionSourcesNames:
     ML_MODEL_PREDICTION = "ml-model-prediction"
     INTERNAL_FUNCTION_EXECUTION = "internal-function-execution"
     EXTERNAL_FUNCTION_EXECUTION = "external-function-execution"
+    INTERNAL_API_EXECUTION = "internal-api-execution"
+    EXTERNAL_API_EXECUTION = "external-api-execution"
     INTERPRET_FILE = "interpret-file"
     INTERPRET_IMAGE = "interpret-image"
 

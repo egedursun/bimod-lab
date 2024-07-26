@@ -108,6 +108,7 @@ INSTALLED_APPS = [
     # add browsing app here #
     #############################
     "apps.mm_functions",
+    "apps.mm_apis",
 ]
 
 MIDDLEWARE = [

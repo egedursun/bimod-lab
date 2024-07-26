@@ -87,6 +87,18 @@ class CreateCustomFunctionView(LoginRequiredMixin, TemplateView):
                 })
             custom_function.output_fields = output_fields
 
+            # Process secrets fields
+            secret_field_names = request.POST.getlist('secrets[][name]')
+            secret_field_keys = request.POST.getlist('secrets[][key]')
+
+            secrets = []
+            for i in range(len(secret_field_names)):
+                secrets.append({
+                    'name': secret_field_names[i] if i < len(secret_field_names) else '',
+                    'key': secret_field_keys[i] if i < len(secret_field_keys) else ''
+                })
+            custom_function.secrets = secrets
+
             # Save the image
             if request.FILES.get('function_picture'):
                 custom_function.function_picture = request.FILES.get('function_picture')

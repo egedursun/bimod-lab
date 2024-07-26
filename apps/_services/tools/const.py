@@ -12,3 +12,4 @@ class ToolTypeNames:
     PREDICTION_WITH_ML_MODEL = 'Prediction with ML Model'
     CODE_INTERPRETER = 'Code Interpreter'
     CUSTOM_FUNCTION_EXECUTOR = 'Custom Function Executor'
+    CUSTOM_API_EXECUTOR = 'Custom API Executor'

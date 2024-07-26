@@ -27,6 +27,13 @@ def mm_function_execution_task(custom_function_id, input_values: dict):
 
     package_imports = "\n".join([f"import {package['name']}" for package in packages])
 
+    # Secrets
+    secrets = ""
+    for secret_item in custom_function.secrets:
+        name = secret_item["name"]
+        key = secret_item["key"]
+        secrets += f"{name} = '{key}'\n"
+
     # Convert inputs dictionary to variable declarations
     variables = ""
     for field in input_fields:
@@ -74,6 +81,10 @@ def mm_function_execution_task(custom_function_id, input_values: dict):
 ######################################
 {package_imports}
 print("[INFO] Loaded the Packages:", {packages})
+######################################
+# Assign the secrets
+{secrets}
+print("[INFO] Loaded the Secrets: ********")
 ######################################
 # Auto-Generated Variables from Inputs
 ######################################

@@ -51,6 +51,7 @@ urlpatterns = [
     # add browsing capabilities here #
     # Multi-modality Features #
     path("app/mm_functions/", include("apps.mm_functions.urls", namespace="mm_functions")),
+    path("app/mm_apis/", include("apps.mm_apis.urls", namespace="mm_apis")),
 ]
 
 

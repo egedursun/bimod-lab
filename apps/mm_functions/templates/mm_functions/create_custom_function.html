@@ -176,6 +176,30 @@
             </table>
             <button type="button" onclick="addRow('outputFieldsTable')" class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New Row</strong></button>
           </div>
+          <div class="mb-6">
+            <label class="form-label" for="secrets">Secrets</label>
+            <table id="secretsTable" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Key</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" name="secrets[][name]" placeholder="Enter secret name" class="form-control"></td>
+                  <td><input type="password" name="secrets[][key]" placeholder="Enter secret value" class="form-control"></td>
+                  <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" onclick="addRow('secretsTable')" class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New Row</strong></button>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="env_file">Upload Environment / Secrets File (.json)</label>
+            <input type="file" class="form-control" id="env_file" name="env_file" accept="env" onchange="parseSecretsFile(this)" />
+          </div>
           <div class="mb-6 rounded">
             <label class="form-label" for="code_text">Code</label>
             <textarea class="form-control" id="code_text" name="code_text" placeholder="Enter the code for the function"></textarea>
@@ -265,6 +289,14 @@
           <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
         </tr>
       `;
+    } else if (tableId === 'secretsTable') {
+      newRow = `
+        <tr>
+          <td><input type="text" name="secrets[][name]" placeholder="Enter secret name" class="form-control"></td>
+          <td><input type="text" name="secrets[][key]" placeholder="Enter secret value" class="form-control"></td>
+          <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
+        </tr>
+      `;
     }
     tableBody.insertAdjacentHTML('beforeend', newRow);
   }
@@ -341,6 +373,37 @@
     } else {
       console.error('Code textarea not found');
     }
+
+    function parseSecretsFile(input) {
+    const file = input.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const content = e.target.result;
+        const secrets = JSON.parse(content);
+
+        const tableBody = document.querySelector('#secretsTable tbody');
+        tableBody.innerHTML = ''; // Clear existing rows
+
+        Object.keys(secrets).forEach(key => {
+          const newRow = `
+            <tr>
+              <td><input type="text" name="secrets[][name]" value="${key}" class="form-control"></td>
+              <td><input type="password" name="secrets[][key]" value="${secrets[key]}" class="form-control"></td>
+              <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
+            </tr>
+          `;
+          tableBody.insertAdjacentHTML('beforeend', newRow);
+        });
+      };
+      reader.readAsText(file);
+    }
+  }
+
+  // Attach event listener to .env file input
+  document.getElementById('env_file').addEventListener('change', function() {
+    parseSecretsFile(this);
+  });
   });
 </script>
 

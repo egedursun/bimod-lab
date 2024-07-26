@@ -85,6 +85,7 @@ class CustomFunction(models.Model):
     input_fields = models.JSONField(default=list, blank=True)
     output_fields = models.JSONField(default=list, blank=True)
     code_text = models.TextField(default="", blank=True)
+    secrets = models.JSONField(default=dict, blank=True)
 
     custom_function_references = models.ManyToManyField("CustomFunctionReference", blank=True)
     function_picture = models.ImageField(upload_to="custom_functions/%YYYY/%mm/%dd/", blank=True, null=True)
@@ -110,4 +111,3 @@ class CustomFunction(models.Model):
             models.Index(fields=["is_featured"]),
             models.Index(fields=["name", "is_public"]),
         ]
-

@@ -3,6 +3,7 @@ import json
 from apps._services.multimodality.mm_functions_executor import CustomFunctionExecutor
 from apps._services.tools.const import ToolTypeNames
 from apps._services.tools.execution_handlers.code_interpreter_execution_handler import execute_code_interpreter
+from apps._services.tools.execution_handlers.custom_api_execution_handler import execute_api_executor
 from apps._services.tools.execution_handlers.custom_function_execution_handler import execute_custom_code_executor
 from apps._services.tools.execution_handlers.file_system_command_execution_handler import execute_file_system_commands
 from apps._services.tools.execution_handlers.knowledge_base_query_execution_handler import execute_knowledge_base_query
@@ -15,6 +16,7 @@ from apps._services.tools.validators.code_interpreter_execution_tool_validator i
     validate_code_interpreter_execution_tool_json
 from apps._services.tools.validators.context_history_query_execution_tool_validator import \
     validate_context_history_query_execution_tool_json
+from apps._services.tools.validators.custom_api_execution_tool_validator import validate_custom_api_execution_tool_json
 from apps._services.tools.validators.custom_function_execution_tool_validator import \
     validate_custom_function_execution_tool_json
 from apps._services.tools.validators.file_system_command_execution_tool_validator import \
@@ -260,6 +262,27 @@ class ToolExecutor:
             # Convert the tool response to a string and pretty format
             custom_function_response_raw_str = json.dumps(custom_function_response, sort_keys=True, default=str)
             tool_response += custom_function_response_raw_str
+        ##################################################
+        # Custom API Executor Tool
+        elif tool_name == ToolTypeNames.CUSTOM_API_EXECUTOR:
+            error = validate_custom_api_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+
+            custom_api_reference_id = self.tool_usage_json.get("parameters").get("custom_api_reference_id")
+            endpoint_name = self.tool_usage_json.get("parameters").get("endpoint_name")
+            path_values = self.tool_usage_json.get("parameters").get("path_values")
+            query_values = self.tool_usage_json.get("parameters").get("query_values")
+            body_values = self.tool_usage_json.get("parameters").get("body_values")
+
+            custom_api_response = execute_api_executor(custom_api_reference_id=custom_api_reference_id,
+                                                       endpoint_name=endpoint_name,
+                                                       path_values=path_values,
+                                                       query_values=query_values,
+                                                       body_values=body_values)
+
+            # Convert the tool response to a string and pretty format
+            custom_api_response_raw_str = json.dumps(custom_api_response, sort_keys=True, default=str)
+            tool_response += custom_api_response_raw_str
         ##################################################
         # ...
 
