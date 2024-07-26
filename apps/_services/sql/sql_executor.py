@@ -3,8 +3,9 @@ import psycopg2
 from mysql.connector import cursor_cext
 from psycopg2.extras import RealDictCursor
 
+from apps._services.config.costs_map import ToolCostsMap
 from apps.datasource_sql.models import SQLDatabaseConnection, DBMSChoicesNames
-
+from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 INTRINSIC_MAXIMUM_QUERY_RECORD_LIMIT = 1000
 
@@ -49,12 +50,6 @@ class PostgresSQLExecutor:
         self.connection_object = connection
 
     def execute_read(self, query, parameters=None):
-        if SQLKeywords.LIMIT not in query.lower():
-            # check if there is a ";" at the end of the query to prevent errors
-            if query[-1] == ";":
-                query = query[:-1]
-            query += f" {SQLKeywords.LIMIT} {INTRINSIC_MAXIMUM_QUERY_RECORD_LIMIT};"
-
         results = {"status": True, "error": ""}
         try:
             with psycopg2.connect(**self.conn_params) as conn:
@@ -66,6 +61,20 @@ class PostgresSQLExecutor:
             print(f"Error executing PostgreSQL / Read Query: {e}")
             results["status"] = False
             results["error"] = str(e)
+
+        new_transaction = LLMTransaction(
+            organization=self.connection_object.assistant.organization,
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.SQLReadExecutor.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.SQL_READ,
+            is_tool_cost=True
+        )
+        new_transaction.save()
+
         return results
 
     def execute_write(self, query, parameters=None) -> dict:
@@ -82,6 +91,20 @@ class PostgresSQLExecutor:
             print(f"Error executing PostgreSQL / Write Query: {e}")
             output["status"] = False
             output["error"] = str(e)
+
+        new_transaction = LLMTransaction(
+            organization=self.connection_object.assistant.organization,
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.SQLWriteExecutor.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.SQL_WRITE,
+            is_tool_cost=True
+        )
+        new_transaction.save()
+
         return output
 
 
@@ -102,9 +125,6 @@ class MySQLExecutor:
         self.connection_object = connection
 
     def execute_read(self, query, parameters=None):
-        if SQLKeywords.LIMIT not in query.lower():
-            query += f" {SQLKeywords.LIMIT} {INTRINSIC_MAXIMUM_QUERY_RECORD_LIMIT}"
-
         results = {"status": True, "error": ""}
         try:
             with mysql.connector.connect(**self.conn_params) as conn:
@@ -115,6 +135,20 @@ class MySQLExecutor:
             print(f"Error executing MySQL / Read Query: {e}")
             results["status"] = False
             results["error"] = str(e)
+
+        new_transaction = LLMTransaction(
+            organization=self.connection_object.assistant.organization,
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.SQLReadExecutor.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.SQL_READ,
+            is_tool_cost=True
+        )
+        new_transaction.save()
+
         return results
 
     def execute_write(self, query, parameters=None):
@@ -131,4 +165,18 @@ class MySQLExecutor:
             print(f"Error executing MySQL / Write Query: {e}")
             output["status"] = False
             output["error"] = str(e)
+
+        new_transaction = LLMTransaction(
+            organization=self.connection_object.assistant.organization,
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.SQLWriteExecutor.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.SQL_WRITE,
+            is_tool_cost=True
+        )
+        new_transaction.save()
+
         return output

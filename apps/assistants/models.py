@@ -101,6 +101,10 @@ class Assistant(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # tools and multimodality
+    custom_function_references = models.ManyToManyField("mm_functions.CustomFunctionReference", related_name='assistants',
+                                                        blank=True)
+
     def __str__(self):
         return self.name
 

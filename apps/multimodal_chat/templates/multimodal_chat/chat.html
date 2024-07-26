@@ -60,6 +60,7 @@
 {% endblock page_js %}
 
 {% block content %}
+
   <div class="row g-6 mb-6" id="assistant-chats-title">
     <div class="col-sm-6 col-xl-3">
       <h3 class="mb-0">Assistant Chats</h3>
@@ -251,6 +252,7 @@
 
     <!-- Chat History -->
     <div class="row g-0">
+      <div class="app-overlay"></div>
       <div class="col app-chat-history">
         <h5 class="text-primary mt-12"><strong></strong></h5>
         {% if not active_chat %}
@@ -442,7 +444,7 @@
                                 <strong
                                   class="ps-2 {% if message.starred %}text-primary{% else %}text-light{% endif %}">{{ message.sent_at|date:"H:i A" }}</strong>
                               </button>
-                              <a href="javascript:void(0);" class="copy-btn ms-12 text-light"
+                              <a href="javascript:void(0);" class="copy-btn-plain ms-12 text-light"
                                  data-message-id="{{ message.id }}">
                                 <i class="fa fa-copy"></i><i class="fa fa-file-text ms-1"></i><span
                                 class="ms-2"><strong>Plain</strong></span>
@@ -580,7 +582,7 @@
     <!-- Sidebar Right -->
     {% if active_chat %}
       <div class="row g-0">
-        <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-right">
+        <div class="col app-chat-sidebar-right app-sidebar overflow-hidden h-100" id="app-chat-sidebar-right">
           <div class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
             <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
               <img src="
@@ -588,32 +590,49 @@
                    alt="Avatar" class="rounded">
             </div>
             <h5 class="mt-4 mb-0">{{ active_chat.assistant.name }}</h5>
-            <span>{{ active_chat.assistant.description }}</span>
+            <span>{{ active_chat.assistant.organization }}</span>
             <i class="ti ti-x ti-lg cursor-pointer close-sidebar d-block" data-bs-toggle="sidebar" data-overlay
                data-target="#app-chat-sidebar-right"></i>
           </div>
           <div class="sidebar-body p-6 pt-0">
             <div class="my-6">
-              <p class="text-uppercase mb-1 text-muted">About</p>
+              <p class="text-uppercase mb-1 text-muted">Description</p>
               <p class="mb-0">{{ active_chat.assistant.description }}</p>
             </div>
             <div class="my-6">
-              <p class="text-uppercase text-muted mb-1">Personal Information</p>
+              <p class="text-uppercase text-muted mb-1">Details</p>
               <ul class="list-unstyled d-grid gap-4 mb-0 ms-2 py-2 text-heading">
                 <li class="d-flex align-items-center">
-                  <i class='ti ti-mail ti-md'></i>
-                  <span class="align-middle ms-2">{{ active_chat.assistant.email }}</span>
+                  <i class='fa fa-robot'></i>
+                  <span class="align-middle ms-2"><strong>Model Name: </strong>{{ active_chat.assistant.llm_model.model_name|upper }}</span>
                 </li>
                 <li class="d-flex align-items-center">
-                  <i class='ti ti-phone-call ti-md'></i>
-                  <span class="align-middle ms-2">{{ active_chat.assistant.phone }}</span>
+                  <i class='fa fa-temperature-2'></i>
+                  <span class="align-middle ms-2"><strong>Temperature: </strong>{{ active_chat.assistant.llm_model.temperature }}</span>
                 </li>
                 <li class="d-flex align-items-center">
-                  <i class='ti ti-clock ti-md'></i>
-                  <span class="align-middle ms-2">Available 24/7</span>
+                  <i class='fa fa-chalkboard-teacher'></i>
+                  <span class="align-middle ms-2"><strong>Audience / Tone: </strong>{{ active_chat.assistant.audience|capfirst }} / {{ active_chat.assistant.tone|capfirst }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-language'></i>
+                  <span class="align-middle ms-2"><strong>Language: </strong>{{ active_chat.assistant.response_language|upper }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-lightbulb'></i>
+                  <span class="align-middle ms-2"><strong>Context Strategy: </strong>{{ active_chat.assistant.context_overflow_strategy|capfirst }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-people-group'></i>
+                  <span class="align-middle ms-2"><strong>Audience: </strong>{{ active_chat.assistant.audience|capfirst }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-timeline'></i>
+                  <span class="align-middle ms-2"><strong>Time / Place Awareness: </strong>{{ active_chat.assistant.time_awareness|capfirst }} / {{ active_chat.assistant.place_awareness }}</span>
                 </li>
               </ul>
             </div>
+            <hr>
             <div class="d-flex mt-6">
               <button class="btn btn-danger w-100" data-bs-toggle="sidebar" data-overlay
                       data-target="#app-chat-sidebar-right">Delete Chat<i class='ti ti-trash ti-16px ms-2'></i></button>
@@ -623,8 +642,6 @@
       </div>
     {% endif %}
     <!-- /Sidebar Right -->
-
-    <div class="app-overlay"></div>
   </div>
 
   <a class="floating-button label bg-label-hover-primary border border-1 border-primary rounded">
@@ -724,6 +741,35 @@
       });
     });
 
+    document.querySelectorAll('.copy-btn-plain').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const messageId = this.getAttribute('data-message-id');
+        const templateTextElement = document.getElementById(`copied-message-${messageId}`);
+        const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+        const converter = new showdown.Converter();
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
+          const successAlert = document.createElement('div');
+          successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+          successAlert.role = 'alert';
+          successAlert.innerHTML = `
+        <span class="alert-icon rounded">
+          <i class="ti ti-check"></i>
+        </span>
+        Plain Text copied to clipboard!
+      `;
+          alertContainer.appendChild(successAlert);
+
+          setTimeout(() => {
+            successAlert.remove();
+          }, 1000);
+        }).catch(err => {
+          alert('Failed to copy text: ' + err);
+        });
+      });
+    });
+
     document.querySelectorAll('.copy-btn-html').forEach(function (btn) {
       btn.addEventListener('click', function () {
         const messageId = this.getAttribute('data-message-id');
@@ -741,7 +787,37 @@
         <span class="alert-icon rounded">
           <i class="ti ti-check"></i>
         </span>
-        Formatted Text copied to clipboard!
+        Formatted HTML copied to clipboard!
+      `;
+          alertContainer.appendChild(successAlert);
+
+          setTimeout(() => {
+            successAlert.remove();
+          }, 1000);
+        }).catch(err => {
+          alert('Failed to copy text: ' + err);
+        });
+      });
+    });
+
+    document.querySelectorAll('.copy-btn-markdown').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const messageId = this.getAttribute('data-message-id');
+        const templateTextElement = document.getElementById(`copied-message-${messageId}`);
+        const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+        const converter = new showdown.Converter();
+        const textToCopyMarkdown = converter.makeMarkdown(textToCopy);
+
+        navigator.clipboard.writeText(textToCopyMarkdown).then(() => {
+          const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
+          const successAlert = document.createElement('div');
+          successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+          successAlert.role = 'alert';
+          successAlert.innerHTML = `
+        <span class="alert-icon rounded">
+          <i class="ti ti-check"></i>
+        </span>
+        Formatted Markdown copied to clipboard!
       `;
           alertContainer.appendChild(successAlert);
 

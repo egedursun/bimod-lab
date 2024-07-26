@@ -1,9 +1,11 @@
 import uuid
 
+from apps._services.config.costs_map import ToolCostsMap
 from apps.datasource_media_storages.models import DataSourceMediaStorageConnection, DataSourceMediaStorageItem
-from apps.multimodal_chat.models import MultimodalChat
 import requests
 import filetype
+
+from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 
 class DownloadExecutor:
@@ -47,6 +49,19 @@ class DownloadExecutor:
             file_bytes=response.content
         )
         media_storage_item.save()
+
+        transaction = LLMTransaction(
+            organization=self.storage.assistant.organization,
+            model=self.storage.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.storage.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.DownloadExecutor.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.DOWNLOAD_FILE,
+            is_tool_cost=True
+        )
+        transaction.save()
 
         # return the file path
         return media_storage_item.full_file_path

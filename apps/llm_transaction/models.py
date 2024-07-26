@@ -22,6 +22,20 @@ TRANSACTION_TYPE_ROLES = [
 TRANSACTION_SOURCES = [
     ("app", "Application"),
     ("api", "API"),
+    ("generation", "Generation"),
+    ("sql-read", "SQL Read"),
+    ("sql-write", "SQL Write"),
+    ("store-memory", "Store Memory"),
+    ("interpret-code", "Interpret Code"),
+    ("download-file", "Download File"),
+    ("file-system-commands", "File System Commands"),
+    ("knowledge-base-search", "Knowledge Base Search"),
+    ("retrieve-memory", "Retrieve Memory"),
+    ("ml-model-prediction", "ML Model Prediction"),
+    ("internal-function-execution", "Internal Function Execution"),
+    ("external-function-execution", "External Function Execution"),
+    ("interpret-file", "Interpret File"),
+    ("interpret-image", "Interpret Image"),
 ]
 
 
@@ -35,6 +49,19 @@ class TransactionSourcesNames:
     APP = "app"
     API = "api"
     GENERATION = "generation"
+    SQL_READ = "sql-read"
+    SQL_WRITE = "sql-write"
+    STORE_MEMORY = "store-memory"
+    INTERPRET_CODE = "interpret-code"
+    DOWNLOAD_FILE = "download-file"
+    FILE_SYSTEM_COMMANDS = "file-system-commands"
+    KNOWLEDGE_BASE_SEARCH = "knowledge-base-search"
+    RETRIEVE_MEMORY = "retrieve-memory"
+    ML_MODEL_PREDICTION = "ml-model-prediction"
+    INTERNAL_FUNCTION_EXECUTION = "internal-function-execution"
+    EXTERNAL_FUNCTION_EXECUTION = "external-function-execution"
+    INTERPRET_FILE = "interpret-file"
+    INTERPRET_IMAGE = "interpret-image"
 
 
 # Create your models here.
@@ -63,6 +90,8 @@ class LLMTransaction(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    is_tool_cost = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.organization} - {self.model} - {self.created_at}"
 
@@ -80,10 +109,18 @@ class LLMTransaction(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-        if self.transaction_context_content:
+
+        if self.transaction_context_content and self.is_tool_cost is False:
             self.number_of_tokens = calculate_number_of_tokens(self.encoding_engine, self.transaction_context_content)
             # Calculate the costs
             self.llm_cost = calculate_llm_cost(self.model.model_name, self.number_of_tokens)
+            self.internal_service_cost = calculate_internal_service_cost(self.llm_cost)
+            self.tax_cost = calculate_tax_cost(self.internal_service_cost)
+            self.total_billable_cost = calculate_billable_cost(self.internal_service_cost, self.tax_cost)
+            self.total_cost = calculate_total_cost(self.llm_cost, self.total_billable_cost)
+
+        # for tool transactions
+        if self.is_tool_cost:
             self.internal_service_cost = calculate_internal_service_cost(self.llm_cost)
             self.tax_cost = calculate_tax_cost(self.internal_service_cost)
             self.total_billable_cost = calculate_billable_cost(self.internal_service_cost, self.tax_cost)

@@ -41,12 +41,16 @@ urlpatterns = [
     path("app/starred_messages/", include("apps.starred_messages.urls", namespace="starred_messages")),
     path("app/message_templates/", include("apps.message_templates.urls", namespace="message_templates")),
     path("app/export_assistants/", include("apps.export_assistants.urls", namespace="export_assistants")),
+    # Data Sources #
     path("app/datasource_sql/", include("apps.datasource_sql.urls", namespace="datasource_sql")),
     path("app/datasource_knowledge_base/", include("apps.datasource_knowledge_base.urls")),
     path("app/datasource_file_systems/", include("apps.datasource_file_systems.urls", namespace="datasource_file_systems")),
     path("app/datasource_media_storages/", include("apps.datasource_media_storages.urls", namespace="datasource_media_storages")),
     path("app/datasource_ml_models/", include("apps.datasource_ml_models.urls", namespace="datasource_ml_models")),
-    path("app/datasource_code_repository/", include("apps.datasource_code_repository.urls", namespace="datasource_code_repository")),
+    # add code repositories here #
+    # add browsing capabilities here #
+    # Multi-modality Features #
+    path("app/mm_functions/", include("apps.mm_functions.urls", namespace="mm_functions")),
 ]
 
 

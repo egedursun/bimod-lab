@@ -2,9 +2,11 @@ import json
 
 import paramiko
 
+from apps._services.config.costs_map import ToolCostsMap
 from apps._services.file_systems.internal_command_sets import INTERNAL_COMMAND_SETS, LIST_DIRECTORY_RECURSIVE
 from paramiko import SSHClient
 
+from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 MAX_CHARACTERS_RETRIEVAL = 10_000
 
@@ -115,5 +117,18 @@ class FileSystemsExecutor:
         updated_schema = self.retrieve_file_tree_schema()
         results["updated_schema"] = updated_schema
         self.close_c()
+
+        transaction = LLMTransaction(
+            organization=self.connection.assistant.organization,
+            model=self.connection.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.FileSystemsExecutor.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.FILE_SYSTEM_COMMANDS,
+            is_tool_cost=True
+        )
+        transaction.save()
 
         return results

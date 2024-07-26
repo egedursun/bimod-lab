@@ -1,6 +1,7 @@
 import json
 import re
 import base64 as b64
+from decimal import Decimal
 
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
@@ -219,6 +220,7 @@ class InternalOpenAIClient:
                 self.chat.transactions.add(idle_overflow_transaction)
                 self.chat.save()
 
+                ACTIVE_CHAIN_SIZE = 0
                 return idle_overflow_message
 
             global ACTIVE_TOOL_RETRY_COUNT
@@ -772,4 +774,158 @@ class InternalOpenAIClient:
             transaction_source=TransactionSourcesNames.GENERATION
         )
         print(texts)
+        return texts, downloaded_files, downloaded_images
+
+    def interpret_code(self, full_file_paths: list, query_string: str, interpretation_temperature: float):
+        client = self.connection
+        if len(full_file_paths) > 20:
+            return ("System Message: The number of files included is too high. Please provide a smaller "
+                    "number of files. The maximum number supported by the system is 20."), [], []
+
+        file_contents = []
+        for path in full_file_paths:
+            if not path: return "System Message: The file path is empty.", [], []
+            try: # Read binary file contents
+                with open(path, "rb") as file: file_contents.append(file.read())
+            except FileNotFoundError:
+                print(f"System Message: The file at the path '{path}' could not be found, skipping file...")
+                continue
+            except Exception as e:
+                print(f"System Message: An error occurred while reading the file at the path '{path}', "
+                      f"skipping file...")
+                print(f"Error Details: {str(e)}")
+                continue
+
+        # Upload the content to OpenAI server
+        file_objects = []
+        for content in file_contents:
+            try:
+                file = client.files.create(purpose="assistants", file=content)
+                file_objects.append(file)
+            except Exception as e:
+                print(f"System Message: An error occurred while uploading the file to the OpenAI server.")
+                print(f"Error Details: {str(e)}")
+                continue
+
+        # Prepare the assistant for the code interpretation
+        try:
+            assistant = client.beta.assistants.create(
+                name=HELPER_ASSISTANT_PROMPTS["code_interpreter"]["name"],
+                description=HELPER_ASSISTANT_PROMPTS["code_interpreter"]["description"],
+                model="gpt-4o", tools=[{"type": "code_interpreter"}],
+                tool_resources={"code_interpreter": {"file_ids": [x.id for x in file_objects]}},
+                temperature=float(interpretation_temperature)
+            )
+        except Exception as e:
+            print(f"System Message: An error occurred while preparing the assistant for the code interpretation.")
+            print(f"Error Details: {str(e)}")
+            return "System Message: An error occurred while preparing the assistant for the code interpretation.", [], []
+
+        # Prepare the thread
+        try:
+            thread = client.beta.threads.create(messages=[{"role": ChatRoles.USER,
+                                                           "content": (query_string + AFFIRMATION_PROMPT)}])
+        except Exception as e:
+            print(f"System Message: An error occurred while preparing the thread for the code interpretation.")
+            print(f"Error Details: {str(e)}")
+            return "System Message: An error occurred while preparing the thread for the code interpretation.", [], []
+
+        # Retrieve the response from the assistant
+        try:
+            run = client.beta.threads.runs.create_and_poll(thread_id=thread.id, assistant_id=assistant.id)
+        except Exception as e:
+            print(f"System Message: An error occurred while retrieving the response from the code interpreter assistant.")
+            print(f"Error Details: {str(e)}")
+            return "System Message: An error occurred while retrieving the response from the code interpreter assistant.", [], []
+
+        # Format and get the messages
+        texts, image_download_ids, file_download_ids = [], [], []
+        if run.status == AssistantRunStatuses.COMPLETED:
+            messages = client.beta.threads.messages.list(thread_id=thread.id)
+            for message in messages.data:
+                if message.role == ChatRoles.ASSISTANT:
+                    root_content = message.content
+                    for content in root_content:
+                        if isinstance(content, TextContentBlock):
+                            text_content = content.text
+                            texts.append(text_content.value)
+                            if text_content.annotations:
+                                for annotation in text_content.annotations:
+                                    file_id = annotation.file_path.file_id
+                                    file_download_ids.append((file_id, annotation.text))
+                                # END FOR
+                            # END IF
+                        elif isinstance(content, ImageFileContentBlock):
+                            image_content = content.image_file.file_id
+                            image_download_ids.append(image_content)
+                        # END IF
+                    # END FOR
+                # END IF
+            # END FOR
+        else:
+            if run.status == AssistantRunStatuses.FAILED:
+                messages = "System Message: The code interpretation process has failed on the OpenAI server."
+            elif run.status == AssistantRunStatuses.INCOMPLETE:
+                messages = "System Message: The code interpretation process is incomplete on the OpenAI server."
+            elif run.status == AssistantRunStatuses.EXPIRED:
+                messages = "System Message: The code interpretation process has expired on the OpenAI server."
+            elif run.status == AssistantRunStatuses.CANCELLED:
+                messages = "System Message: The code interpretation process has been cancelled on the OpenAI server."
+            else: messages = f"System Message: Terminal {run.status.upper()} status on the OpenAI server."
+        # END IF
+
+        # Download the generated images and files (if any)
+        downloaded_files = []
+        for file_id, remote_path in file_download_ids:
+            try:
+                binary_content = client.files.content(file_id).read()
+                downloaded_files.append((binary_content, remote_path))
+            except Exception as e:
+                print(f"System Message: An error occurred while downloading the file with ID '{file_id}'.")
+                print(f"Error Details: {str(e)}")
+                continue
+        # END FOR
+
+        downloaded_images = []
+        for image_id in image_download_ids:
+            try:
+                binary_content = client.files.content(image_id).read()
+                downloaded_images.append(binary_content)
+            except Exception as e:
+                print(f"System Message: An error occurred while downloading the image with ID '{image_id}'.")
+                print(f"Error Details: {str(e)}")
+                continue
+        # END FOR
+
+        # Clean the file storage, assistant, and thread
+        try:
+            for file in file_objects:
+                try: client.files.delete(file.id)
+                except Exception as e:
+                    print(f"System Message: An error occurred while deleting the file with ID '{file.id}'.")
+                    print(f"Error Details: {str(e)}")
+                    continue
+            client.beta.threads.delete(thread.id)
+            client.beta.assistants.delete(assistant.id)
+        except Exception as e:
+            print(f"System Message: An error occurred while cleaning up the file storage, assistant, and thread.")
+            print(f"Error Details: {str(e)}")
+            return "System Message: An error occurred while cleaning up the file storage, assistant, and thread.", [], []
+
+        # Create the transactions
+        LLMTransaction.objects.create(
+            organization=self.assistant.organization,
+            model=self.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=texts,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.ASSISTANT,
+            transaction_source=TransactionSourcesNames.GENERATION
+        )
         return texts, downloaded_files, downloaded_images

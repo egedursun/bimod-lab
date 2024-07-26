@@ -1,10 +1,12 @@
 import weaviate
 from weaviate.config import AdditionalConfig, Timeout
 
+from apps._services.config.costs_map import ToolCostsMap
 from apps._services.knowledge_base.document.helpers.class_creator import create_chat_history_classes_helper
 from apps._services.knowledge_base.document.helpers.class_deleter import delete_chat_history_class_helper
 from apps._services.knowledge_base.document.helpers.document_deleter import delete_chat_history_document_helper
 from apps.datasource_knowledge_base.tasks import index_memory_helper, embed_memory_data, embed_memory_chunks
+from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from config.settings import WEAVIATE_CLUSTER_URL, WEAVIATE_API_KEY, WEAVIATE_SINGLE_TIME_MEMORY_RETRIEVAL_LIMIT
 import weaviate.classes as wvc
 
@@ -140,4 +142,18 @@ class MemoryExecutor:
                 if k in ["chunk_content", "chunk_number", "created_at"]:
                     cleaned_object[k] = v
             cleaned_memories.append(cleaned_object)
+
+        transaction = LLMTransaction(
+            organization=self.connection_object.assistant.organization,
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.ContextMemoryRetrieval.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.RETRIEVE_MEMORY,
+            is_tool_cost=True
+        )
+        transaction.save()
+
         return cleaned_memories

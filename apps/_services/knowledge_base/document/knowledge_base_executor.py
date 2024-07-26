@@ -2,6 +2,7 @@ import weaviate
 import weaviate.classes as wvc
 from weaviate.config import AdditionalConfig, Timeout
 
+from apps._services.config.costs_map import ToolCostsMap
 from apps._services.knowledge_base.document.helpers.class_creator import create_classes_helper
 from apps._services.knowledge_base.document.helpers.class_deleter import delete_weaviate_class_helper
 from apps._services.knowledge_base.document.helpers.document_deleter import delete_document_helper
@@ -9,6 +10,7 @@ from apps.datasource_knowledge_base.tasks import load_csv_helper, load_pdf_helpe
     load_ipynb_helper, load_json_helper, load_xml_helper, load_txt_helper, load_md_helper, load_rtf_helper, \
     load_odt_helper, load_pptx_helper, load_xlsx_helper, split_document_into_chunks, embed_document_data, \
     embed_document_chunks, index_document_helper
+from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 TASK_PROCESSING_TIMEOUT_SECONDS = (60 * 60)  # 60 minutes for all the tasks for a pipeline to complete
 
@@ -201,4 +203,18 @@ class WeaviateExecutor:
                 if k in ["chunk_document_file_name", "chunk_content", "chunk_number", "created_at"]:
                     cleaned_object[k] = v
             cleaned_documents.append(cleaned_object)
+
+        transaction = LLMTransaction(
+            organization=self.connection_object.assistant.organization,
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.KnowledgeBaseExecutor.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH,
+            is_tool_cost=True
+        )
+        transaction.save()
+
         return cleaned_documents

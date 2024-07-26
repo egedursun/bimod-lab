@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
 <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -57,18 +58,35 @@
   </div>
 </div>
 
-{% for organization, user_datas in org_users.items %}
+<!-- Search Form -->
+<div class="row g-4 mb-4">
+  <div class="col-xl-12">
+    <h6 class="text-muted">Filter Users</h6>
+    <div class="card text-center mb-4">
+      <div class="card-header">
+        <div class="nav-align-top">
+          <form method="get" action=".">
+            <div class="input-group mb-3">
+              <input type="text" name="search" value="{{ request.GET.search }}" class="form-control" placeholder="Search by username, email, first name, or last name">
+              <button type="submit" class="btn btn-primary"><strong>Search</strong></button>
+              <a href="." class="btn btn-secondary"><strong>Clear</strong></a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% for organization, user_data in org_users.items %}
   <div class="card mb-6">
     <div class="card-header border-bottom">
       <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
-        <h4>
-          {{ organization.name }}
-
-        </h4>
+        <h4>{{ organization.name }}</h4>
       </a>
       <p>
         <i class="fa fa-user-astronaut"></i>
-        <strong>&nbsp; Number of Users: </strong> {{ user_datas|length }}
+        <strong>&nbsp; Number of Users: </strong> {{ user_data.page_obj.paginator.count }}
       </p>
       <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
       <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
@@ -110,7 +128,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for user, profile in user_datas %}
+          {% for user, profile in user_data.user_profiles %}
             <tr>
               <td>{{ user.username }}</td>
               <td>{{ profile.created_by_user.username }}</td>
@@ -157,6 +175,45 @@
             {% endfor %}
         </tbody>
       </table>
+
+      <!-- Pagination controls -->
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-rounded justify-content-center p-4 overflow-scroll">
+          {% if user_data.page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1&search={{ user_data.search_query }}" aria-label="First">
+              <i class="bi bi-chevron-double-left"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ user_data.page_obj.previous_page_number }}&search={{ user_data.search_query }}" aria-label="Previous">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          </li>
+          {% endif %}
+
+          {% for num in user_data.page_obj.paginator.page_range %}
+          {% if user_data.page_obj.number == num %}
+          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+          {% elif num > user_data.page_obj.number|add:'-5' and num < user_data.page_obj.number|add:'5' %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}&search={{ user_data.search_query }}">{{ num }}</a></li>
+          {% endif %}
+          {% endfor %}
+
+          {% if user_data.page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ user_data.page_obj.next_page_number }}&search={{ user_data.search_query }}" aria-label="Next">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ user_data.page_obj.paginator.num_pages }}&search={{ user_data.search_query }}" aria-label="Last">
+              <i class="bi bi-chevron-double-right"></i>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
     </div>
   </div>
   {% endfor %}

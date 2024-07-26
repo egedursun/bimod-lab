@@ -18,7 +18,8 @@
 - [ ] Privacy Policy and Terms of Service development & integration for the application.
 - [ ] Proper Documentation & tutorial, instructions (FAQ and Support) for the application.
 - [ ] Exclude the media from Git versioning (IMPORTANT!!)
-- [ ] Fix the search bar for having correct redirection links.
+- [ ] Fix the main search bar for having correct redirection links.
+- [ ] Integrate paginations and global searches for the relevant pages.
 
 ---
 
@@ -62,57 +63,6 @@
 
 ### QUICK FIXES
 
-- [X] Add the page to include users to other organizations / remove them.
-- [X] Add an active field to permissions. When the user is deactivated, the permissions are also deactivated. When the user is reactivated, the permissions are also reactivated.
-- [X] The LLM models are all over the place, they are not unique to the organization anymore. Either we need to change how balance calculation works in the transactions page, or we need to make the LLM models unique to the organization.
-- [X] Handle the additional information in the registration page.
-- [X] Integrate the chat deletion page and functionality.
-- [X] Connect user message creation form.
-- [X] Connect assistant response framework.
-- [X] Test the flow of chat.
-- [X] When the chat is created the first time, there is a bug preventing the user message to be sent.
-- [X] Fix the documentation page and include content.
-- [X] Fix the FAQ page and include content.
-- [X] Transactions must also include the responsible user, to associate the costs with the users.
-- [X] Show a loading bar while the message response is being calculated.
-- [X] Show the messages in mark-down format.
-- [X] Add memory objects to the permission management.
-- [X] Add the API endpoint not only when the server is started, but also when an endpoint is created.
-- [X] Limit the number of exports users can create for each organization.
-- [X] Show the number of exports remaining for the user.
-- [X] Implement the rest of the pages for the export assistants application.
-- [X] Check if the transactions are deleted when an ORGANIZATION is deleted, it must not be the case.
-- [X] There is a bug when updating the time & place awareness of the assistant. Fix it.
-- [X] Integrate the permissions for the export assistants.
-- [X] Transaction calculations are not correct, system messages are not added to the calculation,
-                  creating discrepancies in the balance. Additionally, the logic somehow does not work for
-                  the API exports. Fix these issues.
-- [X] Whenever an organization is deleted, the balance must be transferred to another organization. The
-                  last organization cannot be deleted to avoid this problem.
-- [X] Implement pagination for the transactions page.
-- [X] Currently, when a user is disassociated from organizations, but not deleted from the system, there
-                  is no way to add that user back to the organization since the user is permanently disassociated 
-                  from the organization. We need to think of a possible way to add that user back to the organization
-                  without having to delete the account then re-register the user.
-- [X] Implement the SQL data source integration & management.
-- [X] There must be limits for "how many times the same tool can be reached one after another", and "how many different
-      tools can be piped one after another".
-- [X] Agent tool pipelines must be chainable to be able to use multiple tools one after another, prompt must include 
-      specifiers such as "use tool" or "respond", etc.
-- [X] Storing the text for the transactions cause a heavy overload on the tables, which is something
-                  we need to avoid. So, I will remove the text field from the transactions, and calculate the token
-                  cost beforehand (instead of doing it in save method of the models.py), and store the token cost
-                  in the transaction. This way, we can avoid the heavy load on the database.
-- [X] It seems like the tool retry & chain retry limits are not working as intended. Debug and fix this.
-- [X] One time SQL retrieval limit must be determined by the assistant's configuration 
-                  according to the user's preferences. Plus, there needs to be a limit to prevent using too many tokens, and to prevent very large results. 
-- [X] Implement the context cut-off tool to prevent context window from overflowing.
-- [X] Implement the Knowledge Base tool for the web browser & web scraping features.
-- [X] Implement the Vectorizer Memory for context overflows, within the same class with knowledge base.
-- [X] Create the indexes for all data models to increase the performance.
-- [X] Template messages must show up next to the message creation form.
-- [X] Implement the permissions for the file system tool.
-- [X] Implement the permissions for the media storage tool.
 - [ ] Implement the Browsing tool for the web browser & web scraping features.
   - [ ] Browsing must have a choice to select "data cautiousness": "high", "medium", "low".
   - [ ] Browsed pages must be stored in a knowledge base for future reference. 
@@ -123,10 +73,6 @@
   - [ ] Implementation of the prompt for the browsing tool.
   - [ ] Integration of the prompt to the chat.
   - [ ] Testing within the chat and evaluation of the performance.
-- [X] Implement the File System tool for the file system manipulation features.
-- [X] Implement the ML Model tool for the ML models usage features.
-- [ ] Implement Code Repository integration module.
-- [X] Implement the media storage features.
 
 <br><br>
 
@@ -141,46 +87,19 @@
 
 ### NEXT INTEGRATIONS
 
-- [X] Integrate login.
-- [X] Integrate organization management.
-- [X] Integrate LLM model management.
-- [X] Integrate transaction management.
-- [X] Integrate subscription management.
-- [X] Integrate user management.
-- [X] Integrate permission management.
-- [X] Complete the pages for the user permission management.
+*Milestone-1* : ACHIEVED
+*Milestone-2* : ACHIEVED
 
-*Milestone-1*
-
-- [X] Integrate the assistants pages.
-- [X] Integrate the chats pages.
-- [X] Integrate the export assistant pages.
-- [X] Integrate the memories pages.
-- [X] Integrate the message templates pages.
-- [X] Integrate the starred messages pages.
-- [X] Integrate the registration page.
-
-*Milestone-2*
-
-- [X] Integrate SQL database features.
-- [X] Integrate the knowledge base & document features.
 - [ ] Integrate the web browser & web scraping features.
-- [X] Integrate ML models usage features.
 - [ ] Git repository / Code repository integration module.
-- [X] Integrate the media storage features (image, audio, video).
-- [X] Integrate the file system manipulation features.
-- [X] Integrate the generated image & files page.
-- 
+
 *Milestone-3*
 
-- [ ] Integrate the functions multi-modality.
 - [ ] Integrate the API multi-modality.
-- [ ] Integrate the Conditionals multi-modality.
 - [ ] Integrate the Scheduled jobs multi-modality.
 - [ ] Integrate the Scripts multi-modality.
 - [ ] Integrate the Webhooks / triggers multi-modality.
-- [ ] Integrate Image generation multi-modality.
-- [ ] Integrate Audio generation multi-modality.
+- [ ] Integrate Media generation multi-modality.
 - [ ] Develop functions for different "industries".
 
 *Milestone-4*
@@ -193,7 +112,7 @@
 
 ---
 
-### PRODUCTION LEVEL IMPROVEMENTS
+### BUSINESS SIDE IMPROVEMENTS FOR APPLICATION
 
 - [ ] Develop the data privacy policy and terms of service to the application. (LEGAL)
 - [ ] Integrate social media accounts on: Facebook, Twitter, LinkedIn, Instagram. (Hüseyin)
@@ -208,7 +127,7 @@
 
 ### CUSTOM REMINDERS
 
-**Tools we Use for Testing:**
+**Active Tools for Testing:**
 
 - Hosting Service (Hostinger).
   - Login Credentials: 
@@ -266,30 +185,39 @@ git ls-files | xargs wc -l
 
 ---
 
+[ ] same text queries JSON must be prevented !!!! 
+
 **THINGS TO REMEMBER:**
 
-Quick:
+*Important:*
+- [ ] Implement permissions for the views of the [FUNCTIONS].
 
-- [ ] Add the glossary templates as JSON files.
+- [ ] Integrate the [API] multimodality (COPY OF FUNCTIONS)
+- [ ] Integrate the [SCRIPTS] multimodality (COPY OF FUNCTIONS)
+
+- [ ] Integrate the [SCHEDULED JOBS] multimodality.
+- [ ] Integrate the [TRIGGERS] multimodality.
+- [ ] Media generation must be embedded as a [TOOL] and a choice (via switch button) for the assistants.
+- [ ] Integrate [PICONAUT] with GPT-4o-mini.
+
+- [ ] Implement the [CODE REPOSITORY] data source.
+- [ ] Implement the [WEB BROWSING] data source.
+
+- [ ] Implement the [ORCHESTRATION] manager.
+
+- [ ] Implement the [DASHBOARD] page.
+
+*Issues:*
+
   - [ ] There is no document_uuid or repository_uuid field in the chunks classes for weaviate, yet they are used in the code
-        for deletions, fix this.
- 
----
-
-File Systems:
-- [ ] Implement script generation (similar to function usage). (~3-4 hours) -- do it in its relevant time (not now)
+        for deletions, fix this. [INVESTIGATION REQUIRED]
 
 ---
 
-Cosmetic Improvements:
+*Cosmetic Improvements:*
 - [ ] On the registration, add a promo code field for the users to use for free balance top-ups. (~1 hour)
         - PROMO-CODE: connected to user(A), when the user(B) registers; if the user(B) uses the promo code of user(A), 
                       user(A) will get +$X balance, and user(B) will get +$Y balance.
         - PARAMETERS: [promo_beneficiary, promo_beneficiary_gift, promo_invitee_gift, promo_limit, promo_expiry_date]
 
 ---
-
-Notes:
-- Use the code interpreter tool of GPT assistants as a way to run GPT-generated functions, instead of custom functions.
-- ??? - GPT 4o-mini for controller integrations and robotics (???)
-

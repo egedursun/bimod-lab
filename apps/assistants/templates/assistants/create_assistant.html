@@ -282,6 +282,10 @@
           </table>
             <button type="button" onclick="addRow()" class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New Row</strong></button>
           </div>
+          <div class="mb-6">
+            <label class="form-label" for="csv_file">Import Glossary from CSV</label>
+            <input type="file" class="form-control" id="csv_file" accept=".csv" />
+          </div>
           <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
               <span class="alert-icon rounded">
                 <i class="ti ti-info-circle"></i>
@@ -327,7 +331,6 @@
     });
   });
 </script>
-
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -398,20 +401,41 @@
       row.remove();
   }
 
-  document.getElementById('keyValueForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const formData = new FormData(this);
-      const keys = formData.getAll('keys[]');
-      const values = formData.getAll('values[]');
+  document.getElementById('csv_file').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) {
+          return;
+      }
 
-      const keyValuePairs = keys.map((key, index) => ({
-          key: key,
-          value: values[index]
-      }));
+      const reader = new FileReader();
+      reader.onload = function(event) {
+          // remove the existing row
+          const tableBody = document.querySelector('#keyValueTable tbody');
+          tableBody.innerHTML = '';
+          const text = event.target.result;
+          const rows = text.split('\n');
 
-      console.log(keyValuePairs);
-      // You can send keyValuePairs to the server or process them as needed
+          rows.forEach(row => {
+              const cols = row.split(',');
+              if (cols.length === 2) {
+                  addRowWithValues(cols[0].trim(), cols[1].trim());
+              }
+          });
+      };
+
+      reader.readAsText(file);
   });
+
+  function addRowWithValues(term, definition) {
+      const tableBody = document.querySelector('#keyValueTable tbody');
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+          <td><input type="text" name="terms[]" value="${term}" class="form-control"></td>
+          <td><input type="text" name="definitions[]" value="${definition}" class="form-control"></td>
+          <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
+      `;
+      tableBody.appendChild(newRow);
+  }
 </script>
 
 {% endblock %}

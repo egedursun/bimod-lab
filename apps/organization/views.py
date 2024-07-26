@@ -2,6 +2,7 @@ import decimal
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
@@ -54,18 +55,18 @@ class CreateOrganizationView(TemplateView, LoginRequiredMixin):
 
 
 class OrganizationListView(TemplateView, LoginRequiredMixin):
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
 
-        ##############################
-        # PERMISSION CHECK FOR - ORGANIZATION/LIST
-        ##############################
-        # For now, we will allow all users to view the list of organizations
-        ##############################
-
         organizations = Organization.objects.filter(users__in=[context_user])
-        context['organizations'] = organizations
+
+        paginator = Paginator(organizations, 10)  # Show 10 organizations per page.
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        context['page_obj'] = page_obj
         return context
 
 

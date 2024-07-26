@@ -1,6 +1,9 @@
 from uuid import uuid4
 import filetype
 
+from apps._services.config.costs_map import ToolCostsMap
+from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+
 GENERATED_FILES_ROOT_PATH = "media/generated/files/"
 GENERATED_IMAGES_ROOT_PATH = "media/generated/images/"
 
@@ -90,6 +93,20 @@ class StorageExecutor:
         full_image_uris = self.save_images_and_provide_full_uris(images)
         # Prepare the response in the dictionary format
         response = {"response": texts, "file_uris": full_uris, "image_uris": full_image_uris}
+
+        transaction = LLMTransaction(
+            organization=self.connection_object.assistant.organization,
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.FileInterpreter.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.INTERPRET_FILE,
+            is_tool_cost=True
+        )
+        transaction.save()
+
         return response
 
     def interpret_image(self, full_image_paths: list, query_string: str):
@@ -104,4 +121,18 @@ class StorageExecutor:
         response = openai_client.ask_about_image(full_image_paths=full_image_paths, query_string=query_string,
                                                  interpretation_temperature=self.connection_object.interpretation_temperature,
                                                  interpretation_maximum_tokens=self.connection_object.interpretation_maximum_tokens)
+
+        transaction = LLMTransaction(
+            organization=self.connection_object.assistant.organization,
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.ImageInterpreter.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.INTERPRET_IMAGE,
+            is_tool_cost=True
+        )
+        transaction.save()
+
         return response

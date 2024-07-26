@@ -23,6 +23,10 @@ app.conf.beat_schedule = {
         'task': 'apps.llm_transaction.tasks.check_and_perform_auto_top_up',
         'schedule': crontab(minute=0, hour=0),
     },
+    'randomize_featured_functions-every-6-hours': {
+        'task': 'apps.mm_functions.tasks.randomize_featured_functions',
+        'schedule': crontab(minute=0, hour='*/6'),
+    },
 }
 
 

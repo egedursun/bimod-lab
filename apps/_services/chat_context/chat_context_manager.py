@@ -1,6 +1,8 @@
+from apps._services.config.costs_map import ToolCostsMap
 from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
 from apps.assistants.models import ContextOverflowStrategyNames, Assistant
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from apps.multimodal_chat.models import MultimodalChat
 
 
@@ -70,6 +72,20 @@ class ChatContextManager:
                                   assistant_id=assistant.id,
                                   chat_id=chat_object.id,
                                   message_text=combined_history)
+
+            transaction = LLMTransaction(
+                organization=chat_object.assistant.organization,
+                model=chat_object.assistant.llm_model,
+                responsible_user=chat_object.user,
+                responsible_assistant=chat_object.assistant,
+                encoding_engine="cl100k_base",
+                llm_cost=ToolCostsMap.ContextMemory.COST,
+                transaction_type="system",
+                transaction_source=TransactionSourcesNames.STORE_MEMORY,
+                is_tool_cost=True
+            )
+            transaction.save()
+
             return chat_history[-max_messages:]
         return chat_history
 

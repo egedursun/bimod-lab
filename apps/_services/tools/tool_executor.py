@@ -1,6 +1,9 @@
 import json
 
+from apps._services.multimodality.mm_functions_executor import CustomFunctionExecutor
 from apps._services.tools.const import ToolTypeNames
+from apps._services.tools.execution_handlers.code_interpreter_execution_handler import execute_code_interpreter
+from apps._services.tools.execution_handlers.custom_function_execution_handler import execute_custom_code_executor
 from apps._services.tools.execution_handlers.file_system_command_execution_handler import execute_file_system_commands
 from apps._services.tools.execution_handlers.knowledge_base_query_execution_handler import execute_knowledge_base_query
 from apps._services.tools.execution_handlers.memory_query_execution_handler import execute_memory_query
@@ -8,8 +11,12 @@ from apps._services.tools.execution_handlers.nosql_query_execution_handler impor
 from apps._services.tools.execution_handlers.predict_with_ml_model_execution_handler import execute_predict_ml_model
 from apps._services.tools.execution_handlers.sql_query_execution_handler import execute_sql_query
 from apps._services.tools.execution_handlers.url_file_downloader_execution_handler import execute_url_file_downloader
+from apps._services.tools.validators.code_interpreter_execution_tool_validator import \
+    validate_code_interpreter_execution_tool_json
 from apps._services.tools.validators.context_history_query_execution_tool_validator import \
     validate_context_history_query_execution_tool_json
+from apps._services.tools.validators.custom_function_execution_tool_validator import \
+    validate_custom_function_execution_tool_json
 from apps._services.tools.validators.file_system_command_execution_tool_validator import \
     validate_file_system_command_execution_tool_json
 from apps._services.tools.validators.knowledge_base_query_execution_tool_validator import \
@@ -26,6 +33,7 @@ from apps._services.tools.validators.url_file_downloader_execution_tool_validato
     validate_url_file_downloader_execution_tool_json
 from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+from apps.mm_functions.models import CustomFunction
 from apps.multimodal_chat.models import MultimodalChat
 
 
@@ -218,8 +226,40 @@ class ToolExecutor:
             predict_ml_response_raw_str = json.dumps(predict_ml_response, sort_keys=True, default=str)
             tool_response += predict_ml_response_raw_str
         ##################################################
-        # TODO-6: Add the code repository execution tool handler here
-        # ...
+        # Code Interpretation Tool
+        elif tool_name == ToolTypeNames.CODE_INTERPRETER:
+            error = validate_code_interpreter_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+
+            # Get the file paths and the query string
+            file_paths = self.tool_usage_json.get("parameters").get("file_paths")
+            query_string = self.tool_usage_json.get("parameters").get("query")
+
+            execute_code_response = execute_code_interpreter(
+                assistant_id=self.assistant.id,
+                chat_id=self.chat.id,
+                file_paths=file_paths,
+                query=query_string
+            )
+
+            # Convert the tool response to a string and pretty format
+            code_interpreter_response_raw_str = json.dumps(execute_code_response, sort_keys=True, default=str)
+            tool_response += code_interpreter_response_raw_str
+        ##################################################
+        # Custom Function Executor Tool
+        elif tool_name == ToolTypeNames.CUSTOM_FUNCTION_EXECUTOR:
+            error = validate_custom_function_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+
+            custom_function_reference_id = self.tool_usage_json.get("parameters").get("custom_function_reference_id")
+            input_data = self.tool_usage_json.get("parameters").get("input_data")
+
+            custom_function_response = execute_custom_code_executor(custom_function_reference_id=custom_function_reference_id,
+                                                                    input_values=input_data)
+
+            # Convert the tool response to a string and pretty format
+            custom_function_response_raw_str = json.dumps(custom_function_response, sort_keys=True, default=str)
+            tool_response += custom_function_response_raw_str
         ##################################################
         # ...
 

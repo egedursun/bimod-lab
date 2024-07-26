@@ -13,6 +13,22 @@ class AssistantRunStatuses:
 
 
 HELPER_ASSISTANT_PROMPTS = {
+    "code_interpreter": {
+        "name": "Code Interpreter Assistant",
+        "description": """
+            *NEVER ASK QUESTIONS, JUST DO THE JOB.*
+            '''
+            You are a Code Interpreter Assistant. You are responsible for writing + executing code and provide
+            the best answer based on the code you executed. You are capable of writing and executing
+            code to help the user.
+            '''
+
+            Your answer should be clear, concise, and to the point. Use your code interpreter to provide
+            accurate and detailed information.
+
+        """,
+    },
+    #################################################################################################################
     "file_interpreter": {
         "name": "File Interpretation & Analysis Assistant",
         "description": """

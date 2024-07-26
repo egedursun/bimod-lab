@@ -3,6 +3,8 @@ import uuid
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
@@ -162,7 +164,6 @@ class AddUserToOrganizationView(LoginRequiredMixin, TemplateView):
 
 
 class ListUsersView(LoginRequiredMixin, TemplateView):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -174,14 +175,26 @@ class ListUsersView(LoginRequiredMixin, TemplateView):
         ##############################
 
         organizations = Organization.objects.filter(users__in=[context_user])
-        org_users = {organization: {"user": organization.users.all(), "profile": []} for organization in organizations}
-        # retrieve the profile of each user and add to the org_user's related dictionary
-        for org, users in org_users.items():
-            for user in users['user']:
-                profile = Profile.objects.filter(user=user).first()
-                users['profile'].append(profile)
-        # zip the profile and user together
-        org_users = {org: tuple(zip(users['user'], users['profile'])) for org, users in org_users.items()}
+        search_query = self.request.GET.get('search', '')
+        page_number = self.request.GET.get('page', 1)
+
+        org_users = {}
+        for organization in organizations:
+            users = organization.users.all()
+            if search_query:
+                users = users.filter(
+                    Q(username__icontains=search_query) |
+                    Q(email__icontains=search_query) |
+                    Q(profile__first_name__icontains=search_query) |
+                    Q(profile__last_name__icontains=search_query)
+                )
+
+            paginator = Paginator(users, 10)  # Show 10 users per page
+            page_obj = paginator.get_page(page_number)
+
+            user_profiles = [(user, Profile.objects.filter(user=user).first()) for user in page_obj]
+            org_users[organization] = {'page_obj': page_obj, 'user_profiles': user_profiles, 'search_query': search_query}
+
         context['org_users'] = org_users
         context['context_user'] = context_user
         return context

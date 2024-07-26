@@ -366,7 +366,28 @@
       "name": "Functions",
       "icon": "menu-icon tf-icons ti ti-plug",
       "slug": "functions",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add Custom Function",
+          "slug": "function",
+          "url": "mm_functions:create"
+        },
+        {
+          "name": "My Functions",
+          "slug": "function",
+          "url": "mm_functions:list"
+        },
+        {
+          "name": "Manage Connections",
+          "slug": "function",
+          "url": "mm_functions:connect"
+        },
+        {
+          "name": "Function Store",
+          "slug": "function",
+          "url": "mm_functions:store"
+        }
+      ]
     },
     {
       "name": "APIs",
@@ -396,12 +417,6 @@
       "name": "Triggers",
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Media Generation",
-      "icon": "menu-icon tf-icons ti ti-eye",
-      "slug": "media-generation",
       "url": "dashboard:main-dashboard"
     },
     {
