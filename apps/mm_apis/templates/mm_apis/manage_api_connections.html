@@ -1,0 +1,211 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load get_api_item %}
+
+{% block title %}Manage API Connections{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/app-assistant-connections.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-4">
+    <h3 class="mb-0">Manage API Connections</h3>
+  </div>
+</div>
+
+<a href="{% url 'mm_apis:list' %}">
+  <button class="btn btn-secondary mb-8">
+    <i class="fa fa-dashboard me-4"></i>
+    <strong> Manage Custom APIs</strong>
+  </button>
+</a>
+<a href="{% url 'mm_apis:store' %}">
+  <button class="btn btn-warning ms-4 mb-8">
+    <i class="fa fa-store me-4"></i>
+    <strong> API Store</strong>
+  </button>
+</a>
+
+<div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+  <img src="{% static 'img/custom-illustrations/boy-user-edit.png' %}" width="25%" class="justify-content-end">
+  <span class="alert-icon rounded ms-4">
+    <i class="bi bi-info-circle"></i>
+  </span>
+  <div class="d-flex flex-column ps-1">
+    <h5 class="alert-heading mb-2">Tip</h5>
+    <p class="mb-0">
+      Welcome to the Assistant API Connections Manager! Here you can see all the APIs connected to your assistants.
+      You can also connect new APIs to your assistants or remove existing connections. To connect a new API,
+      select the API from the dropdown and click on the "Create Connection" button. To remove a connection, click on
+      the "Remove Connection" button.
+    </p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+</div>
+
+{% for organization in connected_organizations %}
+<div class="card mb-6">
+  <div class="card-header border-bottom">
+    <a data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="true" aria-controls="collapse-{{ organization.id }}">
+      <h4>{{ organization.name }}</h4>
+    </a>
+    <i class="fa fa-arrow-alt-circle-up toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
+    <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="true" aria-controls="collapse-{{ organization.id }}">
+      <strong>&nbsp; See Connected APIs of the Organization</strong>
+    </span>
+  </div>
+  <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse show overflow-scroll">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="border-top">
+            <tr>
+              <th></th>
+              <th>Assistant</th>
+              <th>Manage Internal APIs</th>
+              <th>Connect Internal APIs</th>
+              <th>Manage External APIs</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for assistant in assistants %}
+            {% if assistant.organization == organization %}
+            <tr>
+              <td><img class="avatar avatar-lg rounded" src="{% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"></td>
+              <td style="min-width: 300px;">
+                <strong><i class="fa fa-robot me-4"></i>{{ assistant.name }}</strong>
+                <br>
+                <i class="fa fa-info-circle me-5 mt-2"></i><small>{{ assistant.description|linebreaksbr }}</small>
+              </td>
+              <td>
+                <ul class="list-unstyled">
+                  {% for reference in assistant_api_map|get_api_item:assistant.id %}
+                  <li class="m-3 bg-label-secondary p-2 rounded" style="min-width: 400px;">
+                    <img class="avatar avatar-lg rounded me-4" src="{% if reference.custom_api.api_picture %}{{ reference.custom_api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
+                    <strong class="me-4">{{ reference.custom_api.name }}</strong>
+                    <p class="w-25 my-2 p-1 text-white {% if reference.custom_api.is_public %}bg-success rounded{% else %}bg-warning rounded{% endif %}"><i class="fa fa-globe me-4"></i><strong>{{ reference.custom_api.is_public|yesno:"Public,Private" }}</strong></p>
+                    <form method="post" class="d-inline">
+                      {% csrf_token %}
+                      <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
+                      <input type="hidden" name="reference_id" value="{{ reference.id }}">
+                      <input type="hidden" name="action" value="remove">
+                      <button type="submit" class="mt-2 btn btn-danger d-flex ms-auto w-100"><i class="fa fa-trash me-4"></i><strong>Remove Connection</strong></button>
+                    </form>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </td>
+              <td>
+                <form method="post" class="d-inline-block">
+                  {% csrf_token %}
+                  <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
+                  <input type="hidden" name="action" value="add">
+                  <select name="api_id" class="form-select form-select-sm">
+                    <option value="">Select API</option>
+                    {% for api in apis %}
+                      <!-- put only if not already in the API references -->
+                      {% if api.id not in assistant_api_map|get_api_ids:assistant.id %}
+                        <option value="{{ api.id }}">{{ api.name }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-primary mt-4 w-100" style="min-height: 40px; min-width: 180px;">
+                    <i class="fa fa-plus me-4"></i>
+                    <strong>Connect</strong>
+                  </button>
+                </form>
+              </td>
+              <td>
+                <ul class="list-unstyled">
+                  {% for reference in external_api_references_map|get_api_item:assistant.id %}
+                  <li class="m-3 bg-label-secondary p-2 rounded" style="min-width: 400px;">
+                    <img class="avatar avatar-lg rounded me-4" src="{% if reference.custom_api.api_picture %}{{ reference.custom_api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
+                    <strong class="me-4">{{ reference.custom_api.name }}</strong>
+                    <p class="w-25 my-2 p-1 text-white {% if reference.custom_api.is_public %}bg-success rounded{% else %}bg-warning rounded{% endif %}"><i class="fa fa-globe me-4"></i><strong>{{ reference.custom_api.is_public|yesno:"Public,Private" }}</strong></p>
+                    <form method="post" class="d-inline">
+                      {% csrf_token %}
+                      <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
+                      <input type="hidden" name="reference_id" value="{{ reference.id }}">
+                      <input type="hidden" name="action" value="remove">
+                      <button type="submit" class="mt-2 btn btn-danger d-flex ms-auto w-100"><i class="fa fa-trash me-4"></i><strong>Remove Connection</strong></button>
+                    </form>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    $('.select2').select2();
+
+    document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+      icon.addEventListener('click', function() {
+        var target = document.querySelector(this.getAttribute('data-target'));
+        var bootstrapCollapse = new bootstrap.Collapse(target, {
+          toggle: false
+        });
+        if (target.classList.contains('show')) {
+          bootstrapCollapse.hide();
+          this.classList.remove('fa-arrow-alt-circle-up');
+          this.classList.add('fa-arrow-alt-circle-down');
+        } else {
+          bootstrapCollapse.show();
+          this.classList.remove('fa-arrow-alt-circle-down');
+          this.classList.add('fa-arrow-alt-circle-up');
+        }
+      });
+    });
+
+    document.querySelectorAll('.collapse').forEach(function(collapse) {
+      collapse.addEventListener('show.bs.collapse', function() {
+        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+        if (icon) {
+          icon.classList.remove('fa-arrow-alt-circle-down');
+          icon.classList.add('fa-arrow-alt-circle-up');
+        }
+      });
+
+      collapse.addEventListener('hide.bs.collapse', function() {
+        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+        if (icon) {
+          icon.classList.remove('fa-arrow-alt-circle-up');
+          icon.classList.add('fa-arrow-alt-circle-down');
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}

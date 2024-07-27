@@ -38,7 +38,7 @@
   <div class="d-flex flex-column ps-1">
     <h5 class="alert-heading mb-2">Tip</h5>
     <p class="mb-0">
-      Use the search box to find specific APIs by name or description. Please note that these are the internal APIs created by you or anyone in your organization. To use these APIs in your projects, you need to connect them to the appropriate modules. You can also delete the APIs if you no longer need them.
+      Use the search box to find specific APIs by name or description. Please note that these are the internal APIs created by you or anyone in your organization. To use these APIs in your projects, you need to connect them to the appropriate assistants. You can also delete the APIs if you no longer need them.
     </p>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
     </button>
@@ -184,7 +184,7 @@
             {% endif %}
           </td>
           <td>
-            <a href="{% url 'mm_apis:connect' %}" class="btn btn-label-success"><i class="bi bi-code-square me-2"></i><strong>Connect Module(s)</strong></a>
+            <a href="{% url 'mm_apis:connect' %}" class="btn btn-label-success"><i class="bi bi-code-square me-2"></i><strong>Connect Assistant(s)</strong></a>
           </td>
           <td>
             <a href="{% url 'mm_apis:delete' api.pk %}" class="btn btn-label-danger"><i class="bi bi-trash me-2"></i><strong>Delete</strong></a>
