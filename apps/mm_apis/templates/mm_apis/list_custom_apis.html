@@ -1,0 +1,224 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Custom APIs List{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/custom-apis-list.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-3">
+    <h3 class="mb-0">Custom APIs</h3>
+  </div>
+</div>
+
+<div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+  <img src="{% static 'img/custom-illustrations/boy-user-edit.png' %}" width="25%" class="justify-content-end">
+  <span class="alert-icon rounded ms-4">
+    <i class="bi bi-info-circle"></i>
+  </span>
+  <div class="d-flex flex-column ps-1">
+    <h5 class="alert-heading mb-2">Tip</h5>
+    <p class="mb-0">
+      Use the search box to find specific APIs by name or description. Please note that these are the internal APIs created by you or anyone in your organization. To use these APIs in your projects, you need to connect them to the appropriate modules. You can also delete the APIs if you no longer need them.
+    </p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+</div>
+
+<!-- Search and Filter Form -->
+<div class="row g-4 mb-4">
+  <div class="col-xl-12">
+    <h5 class="text-muted"><strong>Filter APIs</strong></h5>
+    <div class="card text-center mb-4">
+      <div class="card-header">
+        <div class="nav-align-top">
+          <form method="get" action=".">
+            <div class="input-group mb-3">
+              <input type="text" name="search" value="{{ request.GET.search }}" class="form-control" placeholder="Search by name or description">
+              <button type="submit" class="btn btn-primary"><strong>Search</strong></button>
+              <a href="." class="btn btn-secondary"><strong>Clear</strong></a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom APIs List Table -->
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title">Internal API Library</h5>
+  </div>
+  <div class="card-datatable table-responsive">
+    <a href="{% url 'mm_apis:create' %}">
+      <button class="btn btn-success ms-4 mb-8">
+        <i class="fa fa-plus me-4"></i>
+        <strong> Design New API</strong>
+      </button>
+    </a>
+    <a href="{% url 'mm_apis:connect' %}">
+      <button class="btn btn-info ms-4 mb-8">
+        <i class="fa fa-chain me-4"></i>
+        <strong> Manage Connections</strong>
+      </button>
+    </a>
+    <a href="{% url 'mm_apis:store' %}">
+      <button class="btn btn-warning ms-4 mb-8">
+        <i class="fa fa-store me-4"></i>
+        <strong> API Store</strong>
+      </button>
+    </a>
+    <table class="table datatables-custom-apis">
+      <thead class="border-top">
+        <tr>
+          <th></th>
+          <th></th>
+          <th style="min-width: 200px;">Name</th>
+          <th style="min-width: 140px;">Creator</th>
+          <th style="min-width: 240px;">Description</th>
+          <th style="min-width: 500px;">Endpoints</th>
+          <th style="min-width: 100px;">Scope</th>
+          <th></th>
+          <th style="min-width: 180px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for api in page_obj %}
+        <tr>
+          <td></td>
+          <td>
+            <img src="{% if api.api_picture %}{{ api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}" alt="{{ api.name }}" class="avatar rounded">
+          </td>
+          <td style="min-width: 200px;">{{ api.name }}</td>
+          <td><strong>{{ api.created_by_user }}</strong></td>
+          <td style="min-width: 300px;">{{ api.description }}</td>
+          <td>
+            <ul class="list-unstyled d-flex ms-auto">
+              {% for name, data in api.endpoints.items %}
+              <li class="badge bg-label-secondary rounded m-1 w-100">
+                <p class="label bg-label-light text-dark rounded p-4 m-2 border border-2 border-primary"><strong>{{ name }}</strong>: {{ data.description|truncatechars:64 }}</p>
+                <p class="label bg-label-light text-dark rounded p-2 m-1"><strong>Path:</strong> {{ data.path }}</p>
+                <p class="label bg-label-light text-dark rounded p-2 m-1"><strong>Method:</strong> {{ data.method }}</p>
+                <br>
+                {% if data.header_params %}
+                <div class="card card-border card-border-shadow-light p-2 m-1">
+                  <strong class="text-dark mb-1">Header Parameters</strong>
+                  {% for header_param in data.query_params %}
+                    {% if header_param != "" %}
+                    <p class="label bg-label-light text-dark rounded p-1 m-1">
+                      {{ header_param }}
+                    </p>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                {% endif %}
+                <br>
+                {% if data.query_params %}
+                <div class="card card-border card-border-shadow-light p-2 m-1">
+                  <strong class="text-dark mb-1">Query Parameters</strong>
+                  {% for query_param in data.query_params %}
+                    {% if query_param != "" %}
+                    <p class="label bg-label-light text-dark rounded p-1 m-1">
+                      {{ query_param }}
+                    </p>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                {% endif %}
+                <br>
+                {% if data.path_params %}
+                  <div class="card card-border card-border-shadow-light p-2 m-1">
+                  <strong class="text-dark mb-1">Path Parameters</strong>
+                  {% for path_param in data.path_params %}
+                    {% if path_param != "" %}
+                    <p class="label bg-label-light text-dark rounded p-1 m-1">
+                      {{ path_param }}
+                    </p>
+                    {% endif %}
+                  {% endfor %}
+                  </div>
+                {% endif %}
+                <br>
+                {% if data.body_params %}
+                  <div class="card card-border card-border-shadow-light p-2 m-1">
+                  <strong class="text-dark mb-1">Body Parameters</strong>
+                  {% for body_param in data.body_params %}
+                    {% if body_param != "" %}
+                    <p class="label bg-label-light text-dark rounded p-1 m-1">
+                      {{ body_param }}
+                    </p>
+                    {% endif %}
+                  {% endfor %}
+                  </div>
+                {% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+          </td>
+          <td>
+            {% if api.is_public %}
+              <span class="badge bg-success py-4 px-4 w-100"><strong>PUBLIC</strong></span>
+            {% else %}
+              <span class="badge bg-warning py-4 px-4 w-100"><strong>PRIVATE</strong></span>
+            {% endif %}
+          </td>
+          <td>
+            <a href="{% url 'mm_apis:connect' %}" class="btn btn-label-success"><i class="bi bi-code-square me-2"></i><strong>Connect Module(s)</strong></a>
+          </td>
+          <td>
+            <a href="{% url 'mm_apis:delete' api.pk %}" class="btn btn-label-danger"><i class="bi bi-trash me-2"></i><strong>Delete</strong></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination pagination-rounded m-4 pb-4 overflow-scroll">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}"><i class="bi bi-chevron-double-left"></i></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"><i class="bi bi-chevron-left"></i></a>
+        </li>
+        {% endif %}
+        {% for page_num in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
+          <a class="page-link" href="?page={{ page_num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ page_num }}</a>
+        </li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"><i class="bi bi-chevron-right"></i></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}"><i class="bi bi-chevron-double-right"></i></a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+{% endblock %}

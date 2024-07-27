@@ -173,9 +173,12 @@
 - Total Lines of Code by 2024-07-19: (Day: 21)
   - **1,476,000**
 
-- Current System Prompt Cost: **~10,800 Tokens**
+- Total Lines of Code by 2024-07-27: (Day: 29)
+  - **1,574,000**
+
+- Current System Prompt Cost: **~19,000 Tokens**
   - **1M Token** = $5,00
-  - **System Prompt Unit Cost** = $0,054 (TRY 1,80) (for **GPT**) 
+  - **System Prompt Unit Cost** = $0,095 (TRY 3.13) (for **GPT**) 
 
 *To count:*
 

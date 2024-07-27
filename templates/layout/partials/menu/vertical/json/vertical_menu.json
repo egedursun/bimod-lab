@@ -393,7 +393,28 @@
       "name": "APIs",
       "icon": "menu-icon tf-icons ti ti-network",
       "slug": "apis",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add API",
+          "slug": "api",
+          "url": "mm_apis:create"
+        },
+        {
+          "name": "My APIs",
+          "slug": "api",
+          "url": "mm_apis:list"
+        },
+        {
+          "name": "Manage Connections",
+          "slug": "api",
+          "url": "mm_apis:connect"
+        },
+        {
+          "name": "API Store",
+          "slug": "api",
+          "url": "mm_apis:store"
+        }
+      ]
     },
     {
       "name": "Scripts",

@@ -107,7 +107,10 @@ class CreateCustomFunctionView(LoginRequiredMixin, TemplateView):
             custom_function.save()
 
             return redirect('mm_functions:list')
-        return render(request, self.template_name, {'form': form, 'assistants': Assistant.objects.all()})
+        return render(request, self.template_name, {'form': form,
+                                                    'assistants': Assistant.objects.filter(
+                                                        organization__users__in=[request.user]
+                                                    )})
 
 
 class ListCustomFunctionsView(LoginRequiredMixin, TemplateView):
