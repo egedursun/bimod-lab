@@ -22,6 +22,7 @@ from apps._services.prompts.generic.build_user_information_prompt import build_s
 from apps._services.prompts.multimodality.build_apis_multimodality_prompt import build_apis_multimodality_prompt
 from apps._services.prompts.multimodality.build_functions_multimodality_prompt import \
     build_functions_multimodality_prompt
+from apps._services.prompts.multimodality.build_scripts_multimodality_prompt import build_scripts_multimodality_prompt
 from apps._services.prompts.tools.build_tool_usage_instructions_prompt import \
     build_structured_tool_usage_instructions_prompt
 from apps._services.prompts.tools.tool_prompts.build_code_interpreter_tool_prompt import \
@@ -30,6 +31,8 @@ from apps._services.prompts.tools.tool_prompts.build_custom_api_execution_tool_p
     build_structured_tool_prompt__custom_api_execution
 from apps._services.prompts.tools.tool_prompts.build_custom_code_execution_tool_prompt import \
     build_structured_tool_prompt__custom_code_execution
+from apps._services.prompts.tools.tool_prompts.build_custom_script_execution_tool_prompt import \
+    build_structured_tool_prompt__custom_script_content_retrieval
 from apps._services.prompts.tools.tool_prompts.build_file_system_command_execution_tool_prompt import \
     build_structured_tool_prompt__file_system_command_execution
 from apps._services.prompts.tools.tool_prompts.build_knowledge_base_query_execution_tool_prompt import \
@@ -88,6 +91,7 @@ class PromptBuilder:
         # MULTI MODALITY PROMPTS
         structured_functions_prompt = build_functions_multimodality_prompt(assistant)
         structured_apis_prompt = build_apis_multimodality_prompt(assistant)
+        structured_scripts_prompt = build_scripts_multimodality_prompt(assistant)
         ##################################################
         # TOOL PROMPTS
         structured_tool_usage_instructions_prompt = (
@@ -108,6 +112,7 @@ class PromptBuilder:
         structured_code_interpreter_tool_prompt = build_structured_tool_prompt__code_interpreter()
         structured_custom_function_execution_tool_prompt = build_structured_tool_prompt__custom_code_execution()
         structured_custom_api_execution_tool_prompt = build_structured_tool_prompt__custom_api_execution()
+        structured_custom_script_content_retrieval_tool_prompt = build_structured_tool_prompt__custom_script_content_retrieval()
         ##################################################
 
         # Combine the prompts
@@ -134,6 +139,7 @@ class PromptBuilder:
         # MULTI MODALITY PROMPTS
         merged_prompt += structured_functions_prompt
         merged_prompt += structured_apis_prompt
+        merged_prompt += structured_scripts_prompt
         ##################################################
         # GENERIC TOOL PROMPT
         merged_prompt += structured_tool_usage_instructions_prompt
@@ -149,6 +155,7 @@ class PromptBuilder:
         merged_prompt += structured_code_interpreter_tool_prompt
         merged_prompt += structured_custom_function_execution_tool_prompt
         merged_prompt += structured_custom_api_execution_tool_prompt
+        merged_prompt += structured_custom_script_content_retrieval_tool_prompt
         ##################################################
 
         # Build the dictionary with the role

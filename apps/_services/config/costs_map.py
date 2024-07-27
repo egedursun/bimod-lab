@@ -33,6 +33,18 @@ class ToolCostsMap:
     class ExternalCustomFunctionExecutor:
         COST = 0.0075 * MULTIPLIER
 
+    class InternalCustomAPIExecutor:
+        COST = 0.0150 * MULTIPLIER
+
+    class ExternalCustomAPIExecutor:
+        COST = 0.0075 * MULTIPLIER
+
+    class InternalCustomScriptRetriever:
+        COST = 0.0050 * MULTIPLIER
+
+    class ExternalCustomScriptRetriever:
+        COST = 0.0025 * MULTIPLIER
+
     class SQLReadExecutor:
         COST = 0.0050 * MULTIPLIER
 

@@ -91,6 +91,11 @@ class PermissionNames:
     LIST_APIS = 'list_apis'
     DELETE_APIS = 'delete_apis'
     ######################################################
+    ADD_SCRIPTS = 'add_scripts'
+    UPDATE_SCRIPTS = 'update_scripts'
+    LIST_SCRIPTS = 'list_scripts'
+    DELETE_SCRIPTS = 'delete_scripts'
+    ######################################################
     ADD_SCHEDULED_JOBS = 'add_scheduled_jobs'
     UPDATE_SCHEDULED_JOBS = 'update_scheduled_jobs'
     LIST_SCHEDULED_JOBS = 'list_scheduled_jobs'
@@ -235,6 +240,12 @@ PERMISSION_TYPES = [
     ('update_apis', 'Update APIs'),
     ('list_apis', 'List APIs'),
     ('delete_apis', 'Delete APIs'),
+    ######################################################
+    # SCRIPTS
+    ('add_scripts', 'Add Scripts'),
+    ('update_scripts', 'Update Scripts'),
+    ('list_scripts', 'List Scripts'),
+    ('delete_scripts', 'Delete Scripts'),
     ######################################################
     # SCHEDULED JOBS
     ('add_scheduled_jobs', 'Add Scheduled Jobs'),

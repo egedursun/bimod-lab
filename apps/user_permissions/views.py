@@ -157,6 +157,12 @@ class AddPermissionsView(TemplateView):
                 ('list_apis', 'List APIs'),
                 ('delete_apis', 'Delete APIs')
             ],
+            "Script Permissions": [
+                ('add_scripts', 'Add Scripts'),
+                ('update_scripts', 'Update Scripts'),
+                ('list_scripts', 'List Scripts'),
+                ('delete_scripts', 'Delete Scripts')
+            ],
             "Scheduled Job Permissions": [
                 ('add_scheduled_jobs', 'Add Scheduled Jobs'),
                 ('update_scheduled_jobs', 'Update Scheduled Jobs'),

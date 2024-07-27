@@ -95,7 +95,6 @@
 
 *Milestone-3*
 
-- [ ] Integrate the API multi-modality.
 - [ ] Integrate the Scheduled jobs multi-modality.
 - [ ] Integrate the Scripts multi-modality.
 - [ ] Integrate the Webhooks / triggers multi-modality.
@@ -193,9 +192,6 @@ git ls-files | xargs wc -l
 **THINGS TO REMEMBER:**
 
 *Important:*
-- [ ] Implement permissions for the views of the [FUNCTIONS].
-
-- [ ] Integrate the [API] multimodality (COPY OF FUNCTIONS)
 - [ ] Integrate the [SCRIPTS] multimodality (COPY OF FUNCTIONS)
 
 - [ ] Integrate the [SCHEDULED JOBS] multimodality.

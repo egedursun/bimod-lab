@@ -420,7 +420,28 @@
       "name": "Scripts",
       "icon": "menu-icon tf-icons ti ti-script",
       "slug": "scripts",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add Script",
+          "slug": "script",
+          "url": "mm_scripts:create"
+        },
+        {
+          "name": "My Scripts",
+          "slug": "script",
+          "url": "mm_scripts:list"
+        },
+        {
+          "name": "Manage Connections",
+          "slug": "script",
+          "url": "mm_scripts:connect"
+        },
+        {
+          "name": "Script Store",
+          "slug": "script",
+          "url": "mm_scripts:store"
+        }
+      ]
     },
     {
       "name": "Piconaut®",

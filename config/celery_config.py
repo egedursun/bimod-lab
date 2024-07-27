@@ -19,12 +19,24 @@ app.autodiscover_tasks()
 
 
 app.conf.beat_schedule = {
+    # PERFORM AUTOMATIC BALANCE TOP-UP OPERATIONS (1/24 hours)
     'check-and-perform-auto-top-up-every-night': {
         'task': 'apps.llm_transaction.tasks.check_and_perform_auto_top_up',
         'schedule': crontab(minute=0, hour=0),
     },
+    # PERFORM RANDOM FEATURED FUNCTION ASSIGNMENT (1/6 hours)
     'randomize_featured_functions-every-6-hours': {
         'task': 'apps.mm_functions.tasks.randomize_featured_functions',
+        'schedule': crontab(minute=0, hour='*/6'),
+    },
+    # PERFORM RANDOM FEATURED API ASSIGNMENT (1/6 hours)
+    'randomize_featured_apis-every-6-hours': {
+        'task': 'apps.mm_apis.tasks.randomize_featured_apis',
+        'schedule': crontab(minute=0, hour='*/6'),
+    },
+    # PERFORM RANDOM FEATURED SCRIPT ASSIGNMENT (1/6 hours)
+    'randomize_featured_scripts-every-6-hours': {
+        'task': 'apps.mm_scripts.tasks.randomize_featured_scripts',
         'schedule': crontab(minute=0, hour='*/6'),
     },
 }

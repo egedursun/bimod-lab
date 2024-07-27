@@ -109,6 +109,7 @@ INSTALLED_APPS = [
     #############################
     "apps.mm_functions",
     "apps.mm_apis",
+    "apps.mm_scripts",
 ]
 
 MIDDLEWARE = [

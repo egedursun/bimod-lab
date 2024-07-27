@@ -26,9 +26,9 @@ class CustomAPIExecutor:
             responsible_user=None,
             responsible_assistant=None,
             encoding_engine="cl100k_base",
-            llm_cost=ToolCostsMap.ExternalCustomFunctionExecutor.COST
+            llm_cost=ToolCostsMap.ExternalCustomAPIExecutor.COST
             if self.api.is_public else
-            ToolCostsMap.InternalCustomFunctionExecutor.COST,
+            ToolCostsMap.InternalCustomAPIExecutor.COST,
             transaction_type="system",
             transaction_source=TransactionSourcesNames.EXTERNAL_API_EXECUTION
             if self.api.is_public else

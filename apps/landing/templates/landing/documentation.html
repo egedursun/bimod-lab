@@ -12,6 +12,12 @@
 
 {% block content %}
 <div class="faq-header d-flex flex-column justify-content-center align-items-center h-px-300 position-relative">
+  <a href="{% url 'dashboard:main-dashboard' %}">
+    <button class="btn btn-sm btn-secondary ms-4 mt-4 mb-8">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Turn Back to Your Dashboard</strong>
+    </button>
+  </a>
   <img src="{% static 'img/pages/header.png' %}" class="scaleX-n1-rtl faq-banner-img z-n1 rounded" alt="background image" />
   <h4 class="text-center mb-2"> <strong>Documentation</strong> </h4>
   <p class="text-center mb-0 px-4">Access documentation and tutorials to help you get started with our app.</p>

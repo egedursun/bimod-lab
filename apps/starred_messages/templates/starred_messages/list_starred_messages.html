@@ -41,7 +41,7 @@
               <div class="d-flex align-items-start">
                 <div class="d-flex align-items-center">
                   <div class="avatar me-4">
-                    <img src="{{ message.assistant.assistant_image.url }}" alt="Avatar" class="rounded" />
+                    <img src="{% if message.assistant.assistant_image %}{{ message.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}" alt="Avatar" class="rounded" />
                   </div>
                   <div class="me-2">
                     <h5 class="mb-0"><strong>{{ assistant_name }}</strong></h5>

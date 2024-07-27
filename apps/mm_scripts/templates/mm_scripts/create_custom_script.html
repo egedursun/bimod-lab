@@ -1,0 +1,220 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Create Custom Script{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/shell/shell.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-datatable table-responsive">
+        <a href="{% url 'mm_scripts:list' %}">
+          <button class="btn btn-secondary ms-4 mt-4 mb-8">
+            <i class="fa fa-dashboard me-4"></i>
+            <strong> Manage Custom Scripts</strong>
+          </button>
+        </a>
+      </div>
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Create a New Custom Script</h5>
+        <small class="text-muted float-end"></small>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+          <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              In this page, you can create a new custom script. Fill out the form fields and click on the "Create" button to create the custom script. You can also share the script in the script store by checking the "Share in Script Store" checkbox.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label class="form-label" for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter script name" required />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" placeholder="Enter script description" required></textarea>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="script_picture">Thumbnail Image</label>
+            <input type="file" class="form-control" id="script_picture" name="script_picture" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="categories">Categories</label>
+            <div id="categories" class="form-control overflow-auto" style="max-height: 200px;">
+              {% for value, label in CUSTOM_SCRIPT_CATEGORIES %}
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input category-checkbox" name="categories" value="{{ value }}" id="category-{{ value }}">
+                  <label class="form-check-label" for="category-{{ value }}">{{ label }}</label>
+                </div>
+              {% endfor %}
+            </div>
+            <small id="categoryLimitAlert" class="text-danger" style="display: none;">You can select up to 5 categories.</small>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="code_text">Code</label>
+            <textarea class="form-control" id="code_text" name="code_text" placeholder="Enter the code for the script"></textarea>
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="code_file">Upload Code File (.sh)</label>
+            <input type="file" class="form-control" id="code_file" name="code_file" accept=".sh" onchange="parseCodeFile(this)" />
+          </div>
+          <div class="mb-6">
+            <label class="form-label" for="script_step_guide">Step Guide</label>
+            <table id="stepGuideTable" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Step</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" name="script_step_guide[]" placeholder="Enter step description" class="form-control"></td>
+                  <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" onclick="addRow('stepGuideTable')" class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New Row</strong></button>
+          </div>
+          <div class="mb-6 form-check bg-label-success p-4 rounded">
+            <input type="checkbox" class="form-check-input ms-2" id="is_public" name="is_public">
+            <label class="form-check-label ms-4" for="is_public">
+              <strong>Share in Script Store</strong>
+              <br>
+              <small>
+                <i class="fa fa-info-circle me-2 mt-4"></i> For your contribution to the community, if you choose to share your script in the public store, there will be a 50% discount on your requests for this script.
+              </small>
+            </label>
+          </div>
+          <input type="hidden" name="created_by_user" value="{{ request.user.id }}">
+          <button type="submit" class="btn btn-primary d-grid w-100"><strong>Create Custom Script</strong></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function addRow(tableId) {
+    const tableBody = document.querySelector(`#${tableId} tbody`);
+    const newRow = `
+      <tr>
+        <td><input type="text" name="script_step_guide[]" placeholder="Enter step description" class="form-control"></td>
+        <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
+      </tr>
+    `;
+    tableBody.insertAdjacentHTML('beforeend', newRow);
+  }
+
+  function removeRow(button) {
+    const row = button.closest('tr');
+    row.remove();
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var codeTextArea = document.getElementById('code_text');
+
+    if (codeTextArea) {
+      var editor = CodeMirror.fromTextArea(codeTextArea, {
+        mode: "shell",
+        theme: "material",
+        lineNumbers: true,
+        matchBrackets: true,
+        autoRefresh: true,
+      });
+
+      // Ensure the original textarea is updated on form submission
+      document.querySelector('form').addEventListener('submit', function() {
+        codeTextArea.value = editor.getValue();
+      });
+
+      // Function to handle the file upload and set the content in CodeMirror
+      function parseCodeFile(input) {
+        const file = input.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const content = e.target.result;
+            editor.setValue(content);  // Update CodeMirror content
+          };
+          reader.readAsText(file);
+        }
+      }
+
+      // Attach event listener to file input
+      document.getElementById('code_file').addEventListener('change', function() {
+        parseCodeFile(this);
+      });
+    } else {
+      console.error('Code textarea not found');
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+    const maxCategories = 5;
+    const categoryLimitAlert = document.getElementById('categoryLimitAlert');
+
+    categoryCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const checkedCheckboxes = document.querySelectorAll('.category-checkbox:checked');
+        if (checkedCheckboxes.length > maxCategories) {
+          this.checked = false;
+          categoryLimitAlert.style.display = 'block';
+        } else {
+          categoryLimitAlert.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}

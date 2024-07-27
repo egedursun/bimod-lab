@@ -62,6 +62,8 @@ class TransactionSourcesNames:
     EXTERNAL_FUNCTION_EXECUTION = "external-function-execution"
     INTERNAL_API_EXECUTION = "internal-api-execution"
     EXTERNAL_API_EXECUTION = "external-api-execution"
+    INTERNAL_SCRIPT_RETRIEVAL = "internal-script-retrieval"
+    EXTERNAL_SCRIPT_RETRIEVAL = "external-script-retrieval"
     INTERPRET_FILE = "interpret-file"
     INTERPRET_IMAGE = "interpret-image"
 

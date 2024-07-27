@@ -5,6 +5,7 @@ from apps._services.tools.const import ToolTypeNames
 from apps._services.tools.execution_handlers.code_interpreter_execution_handler import execute_code_interpreter
 from apps._services.tools.execution_handlers.custom_api_execution_handler import execute_api_executor
 from apps._services.tools.execution_handlers.custom_function_execution_handler import execute_custom_code_executor
+from apps._services.tools.execution_handlers.custom_script_content_retrieval_handler import retrieve_script_content
 from apps._services.tools.execution_handlers.file_system_command_execution_handler import execute_file_system_commands
 from apps._services.tools.execution_handlers.knowledge_base_query_execution_handler import execute_knowledge_base_query
 from apps._services.tools.execution_handlers.memory_query_execution_handler import execute_memory_query
@@ -19,6 +20,8 @@ from apps._services.tools.validators.context_history_query_execution_tool_valida
 from apps._services.tools.validators.custom_api_execution_tool_validator import validate_custom_api_execution_tool_json
 from apps._services.tools.validators.custom_function_execution_tool_validator import \
     validate_custom_function_execution_tool_json
+from apps._services.tools.validators.custom_script_content_retriever_tool_validator import \
+    validate_custom_script_retriever_tool_json
 from apps._services.tools.validators.file_system_command_execution_tool_validator import \
     validate_file_system_command_execution_tool_json
 from apps._services.tools.validators.knowledge_base_query_execution_tool_validator import \
@@ -283,6 +286,21 @@ class ToolExecutor:
             # Convert the tool response to a string and pretty format
             custom_api_response_raw_str = json.dumps(custom_api_response, sort_keys=True, default=str)
             tool_response += custom_api_response_raw_str
+        ##################################################
+        # Custom Script Content Retrieval Tool
+        elif tool_name == ToolTypeNames.CUSTOM_SCRIPT_CONTENT_RETRIEVAL:
+            error = validate_custom_script_retriever_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+
+            custom_script_reference_id = self.tool_usage_json.get("parameters").get("custom_script_reference_id")
+
+            custom_script_content_response = retrieve_script_content(
+                custom_script_reference_id=custom_script_reference_id
+            )
+
+            # Convert the tool response to a string and pretty format
+            custom_script_content_response_raw_str = json.dumps(custom_script_content_response, sort_keys=True, default=str)
+            tool_response += custom_script_content_response_raw_str
         ##################################################
         # ...
 
