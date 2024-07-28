@@ -75,6 +75,7 @@ class ScheduledJobInstance(models.Model):
     scheduled_job = models.ForeignKey(ScheduledJob, on_delete=models.CASCADE, related_name='instances', null=True)
     status = models.CharField(max_length=255, choices=SCHEDULED_JOB_INSTANCE_STATUSES, default='pending')
     logs = models.JSONField(default=list)
+    execution_index = models.IntegerField(default=0, null=True)
 
     # Metadata
     started_at = models.DateTimeField(auto_now_add=True)

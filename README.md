@@ -187,7 +187,6 @@ git ls-files | xargs wc -l
 
 ---
 
-[ ] test the performance of the multiple requests in a single assistant tool calls. (SUNDAY 28/07)
 [ ] implement the rest of the pages for the "scheduled jobs" (SUNDAY 28/07)
 [ ] integrate the triggers functionality. (SUNDAY 28/07)
 
@@ -204,6 +203,14 @@ git ls-files | xargs wc -l
 - [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 03/08, 04/08)
 
 - [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY 05/08, 06/08)
+
+---
+
+*Helper Functionalities:*
+
+- [ ] Helper for building from scratch (meta helper for creating organizations, assistants, connections, etc.)
+
+---
 
 *Issues:*
 

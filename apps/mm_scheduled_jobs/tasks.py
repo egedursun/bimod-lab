@@ -2,6 +2,7 @@ import json
 from uuid import uuid4
 
 from celery import shared_task
+from django.utils import timezone
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
 from slugify import slugify
 
@@ -47,6 +48,8 @@ def execute_scheduled_job(scheduled_job_id):
         # [1] Update the job run count
         job.current_run_count += 1
         job.save()
+        new_instance.execution_index = job.current_run_count
+        new_instance.save()
 
         # [2] Create a chat
         chat = MultimodalChat.objects.create(
@@ -155,6 +158,7 @@ def execute_scheduled_job(scheduled_job_id):
 
         # [14] Set the status as completed
         new_instance.status = ScheduledJobInstanceStatusesNames.COMPLETED
+        new_instance.ended_at = timezone.now()
         new_instance.save()
 
     except Exception as e:

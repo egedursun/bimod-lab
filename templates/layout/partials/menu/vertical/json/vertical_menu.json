@@ -463,11 +463,6 @@
           "name": "Scheduled Jobs",
           "slug": "scheduled-job",
           "url": "mm_scheduled_jobs:list"
-        },
-        {
-          "name": "Execution Logs",
-          "slug": "scheduled-job",
-          "url": "mm_scheduled_jobs:logs"
         }
       ]
     },

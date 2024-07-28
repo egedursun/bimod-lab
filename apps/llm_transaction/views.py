@@ -73,7 +73,9 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
                 llm_data = {
                     'model': llm_model,
                     'transactions': page_obj,  # Use paginated transactions
-                    'cost_sums': sum_costs(transactions)
+                    'cost_sums': sum_costs(LLMTransaction.objects.filter(
+                        organization=organization, model=llm_model, created_at__gte=filter_date)
+                    )
                 }
                 org_data['llm_models'].append(llm_data)
             data.append(org_data)
