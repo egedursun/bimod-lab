@@ -9,12 +9,14 @@ from apps.starred_messages.models import StarredMessage
 CHAT_SOURCES = [
     ("app", "Application"),
     ("api", "API"),
+    ("scheduled", "Scheduled"),
 ]
 
 
 class ChatSourcesNames:
     APP = "app"
     API = "api"
+    SCHEDULED = "scheduled"
 
 
 # Create your models here.

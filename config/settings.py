@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_celery_beat",
     "apps.theme.dashboards",
     "apps.theme.layouts",
     "apps.theme.front_pages",
@@ -110,6 +111,7 @@ INSTALLED_APPS = [
     "apps.mm_functions",
     "apps.mm_apis",
     "apps.mm_scripts",
+    "apps.mm_scheduled_jobs",
 ]
 
 MIDDLEWARE = [
@@ -327,6 +329,22 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
 
 
 

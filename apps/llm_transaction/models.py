@@ -66,6 +66,7 @@ class TransactionSourcesNames:
     EXTERNAL_SCRIPT_RETRIEVAL = "external-script-retrieval"
     INTERPRET_FILE = "interpret-file"
     INTERPRET_IMAGE = "interpret-image"
+    SCHEDULED_JOB_EXECUTION = "scheduled-job-execution"
 
 
 # Create your models here.

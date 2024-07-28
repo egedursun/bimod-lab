@@ -33,7 +33,20 @@
     }
     .markdown-content table th, .markdown-content table td {
       border: 1px solid #aaa;
-      max-width: 80px;
+      max-width: 80%;
+    }
+    /* todo: handle json showing in the chat */
+    .markdown-content pre code {
+      display: block;
+      padding: 1rem;
+      overflow: auto;
+      background: #000000;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      color: #ffffff;
+      font-weight: bolder;
+      font-size: 10px;
+      font-family: monospace;
     }
   </style>
   <style>
@@ -371,7 +384,7 @@
                       <div class="chat-message-wrapper flex-grow-1">
                         <div id="copied-message-{{ message.id }}"
                              class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-primary-subtle{% endif %} border-primary"
-                             style="{% if message.sender_type == 'TOOL' %}border: 2px solid{% endif %};">
+                             style="{% if message.sender_type == 'TOOL' %}border: 2px solid{% endif %}; max-width:80%;">
                           {% if message.sender_type != 'TOOL' %}
                             <p class="mb-0 markdown-content">{{ message.message_text_content|safe }}</p>
                             <hr>
@@ -427,6 +440,11 @@
                                 </div>
                               {% endfor %}
                             {% endif %}
+                            <div class="bg-label-dark rounded p-2">
+                              <i class="fa fa-circle text-success me-2"></i><small class="fw-bold text-success">Tool Delivered</small>
+                            </div>
+                            <div class="bg-label-dark rounded p-2 mt-2 mb-4">
+                              <i class="fa fa-circle text-warning me-2"></i><small class="fw-bold text-warning">On Listening Mode</small>
                             </div>
                           {% endif %}
                         </div>
@@ -677,8 +695,46 @@
     document.addEventListener('DOMContentLoaded', function () {
       const converter = new showdown.Converter();
       converter.setOption('tables', true);
+      converter.setOption('ghCodeBlocks', true);
       document.querySelectorAll('.markdown-content').forEach(function (element) {
         element.innerHTML = converter.makeHtml(element.innerHTML);
+      });
+
+      document.querySelectorAll('.markdown-content').forEach(function (element) {
+      element.innerHTML = converter.makeHtml(element.innerHTML);
+    });
+
+      // Function to apply syntax highlighting to JSON content
+      function highlightJSON(json) {
+        return json
+          .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:\s*)?)/g, '<span class="string">$1</span>')
+          .replace(/\b(true|false|null)\b/g, '<span class="boolean">$1</span>')
+          .replace(/\b\d+(\.\d+)?\b/g, '<span class="number">$&</span>');
+      }
+
+      document.querySelectorAll('.markdown-content pre code').forEach(function (block) {
+        let text = block.innerText;
+        // Only highlight JSON code blocks
+        if (text.trim().startsWith('{') && text.trim().endsWith('}')) {
+          block.innerHTML = highlightJSON(text);
+        }
+        // add an icon under the code block
+        const activeIcon = document.createElement('i');
+        activeIcon.className = 'fa fa-circle text-success ms-2 mt-6';
+        const iconText = document.createElement('span');
+        iconText.className = 'text text-success fw-bolder';
+        iconText.style.fontFamily = 'monospace';
+        iconText.innerText = ' Systems Active';
+        const logIcon = document.createElement('i');
+        logIcon.className = 'fa fa-circle text-warning ms-12 mt-2';
+        const logText = document.createElement('span');
+        logText.className = 'text text-warning fw-bolder';
+        logText.style.fontFamily = 'monospace';
+        logText.innerText = ' Tools Running';
+        block.parentElement.appendChild(activeIcon);
+        block.parentElement.appendChild(iconText);
+        block.parentElement.appendChild(logIcon);
+        block.parentElement.appendChild(logText);
       });
     });
   </script>

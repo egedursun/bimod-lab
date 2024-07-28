@@ -453,7 +453,23 @@
       "name": "Scheduled Jobs",
       "icon": "menu-icon tf-icons ti ti-clock",
       "slug": "scheduled-jobs",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add Scheduled Job",
+          "slug": "scheduled-job",
+          "url": "mm_scheduled_jobs:create"
+        },
+        {
+          "name": "Scheduled Jobs",
+          "slug": "scheduled-job",
+          "url": "mm_scheduled_jobs:list"
+        },
+        {
+          "name": "Execution Logs",
+          "slug": "scheduled-job",
+          "url": "mm_scheduled_jobs:logs"
+        }
+      ]
     },
     {
       "name": "Triggers",

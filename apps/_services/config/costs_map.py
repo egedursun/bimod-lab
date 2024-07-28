@@ -57,6 +57,9 @@ class ToolCostsMap:
     class ImageInterpreter:
         COST = 0.0100 * MULTIPLIER
 
+    class ScheduledJobExecutor:
+        COST = 0.0050 * MULTIPLIER
+
 
 
 

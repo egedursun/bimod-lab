@@ -25,6 +25,11 @@ def build_structured_tool_usage_instructions_prompt(assistant: Assistant, user: 
                 user with the natural language (or however requested from the user), or if you would like to use
                 another tool, or same tool again with different parameters, etc.
 
+            3. You CAN share multiple JSON files in a single response, and the system will execute them one by one,
+            and provide you the output of the tools in the same order you have shared them. HOWEVER, make sure that
+            the JSON files you share are in the correct format, and they are splitted from each other clearly in order
+            to prevent any errors.
+
         - A standardized format for the JSON file that you will output is as follows:
 
         '''

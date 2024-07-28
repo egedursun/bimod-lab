@@ -24,10 +24,10 @@ class FileSystemsExecutor:
 
     def connect_c(self):
         try:
-            ssh_connection_host = "185.170.198.44"
-            ssh_port = 22
-            ssh_username = "root"
-            ssh_password = "t@G0trEhboeOWWDSi5Bg"
+            ssh_connection_host = self.connection.host_url
+            ssh_port = self.connection.port
+            ssh_username = self.connection.username
+            ssh_password = self.connection.password
 
             ssh = SSHClient()
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())

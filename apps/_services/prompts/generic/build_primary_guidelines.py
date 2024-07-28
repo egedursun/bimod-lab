@@ -37,7 +37,5 @@ def build_structured_primary_guidelines():
             - INSTEAD: ALWAYS proceed with the action you have mentioned, and then ask the user if they need more
             information, or if they have any other questions.
         7) IF YOU ARE EXECUTING A TOOL: **DO NOT SHARE ANYTHING ELSE** other than the **JSON** for executing the TOOL.
-        8) **NEVER EXECUTE MORE THAN A SINGLE TOOL** in a single response. If you want to execute multiple tools,
-        first execute the first one, then after you see the response, execute the second one.
         ======
     """

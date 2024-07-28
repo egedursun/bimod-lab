@@ -1,7 +1,6 @@
 import json
-import re
 import base64 as b64
-from decimal import Decimal
+import pprint
 
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
@@ -46,13 +45,27 @@ def retry_mechanism(client, latest_message):
 
 
 def find_json_presence(response: str):
-    # put a regex to find a JSON within the response string, which will be like "...{...}..."
-    pattern = re.compile(r'{.*}', re.DOTALL)
-    json_matches = pattern.findall(response)
-    if json_matches:
-        # return the matched part of the response
-        return json_matches[0]
-    return None
+    json_objects = []
+    brace_count = 0
+    json_str = ""
+    in_json = False
+
+    for char in response:
+        if char == '{':
+            if brace_count == 0: in_json = True
+            brace_count += 1
+        if in_json: json_str += char
+        if char == '}':
+            brace_count -= 1
+            if brace_count == 0:
+                in_json = False
+                try:
+                    json.loads(json_str)
+                    json_objects.append(json_str)
+                except json.JSONDecodeError:
+                    print(f"Invalid JSON found in the response: {json_str}")
+                json_str = ""
+    return json_objects if json_objects else None
 
 
 class InternalOpenAIClient:
@@ -180,8 +193,8 @@ class InternalOpenAIClient:
                 ACTIVE_RETRY_COUNT = 0
 
         # if the final_response includes a tool usage call, execute the tool
-        tool_response, json_part_of_response = None, ""
-        if find_json_presence(final_response) is not None:
+        tool_response_list, json_parts_of_response = [], []
+        if find_json_presence(final_response):
 
             # check for the rate limits
             global ACTIVE_CHAIN_SIZE
@@ -263,46 +276,84 @@ class InternalOpenAIClient:
             # increase the retry count for the tool
             ACTIVE_TOOL_RETRY_COUNT += 1
 
-            json_part_of_response = find_json_presence(final_response)
+            json_parts_of_response = find_json_presence(final_response)
             tool_name = None
-            try:
-                tool_executor = ToolExecutor(
-                    assistant=self.assistant,
-                    chat=self.chat,
-                    tool_usage_json_str=json_part_of_response
-                )
-                tool_response, tool_name, file_uris, image_uris = tool_executor.use_tool()
-                if tool_name is not None and tool_name != prev_tool_name:
-                    ACTIVE_CHAIN_SIZE += 1
-                    prev_tool_name = tool_name
+            for i, json_part in enumerate(json_parts_of_response):
+                try:
+                        tool_executor = ToolExecutor(
+                            assistant=self.assistant,
+                            chat=self.chat,
+                            tool_usage_json_str=json_part
+                        )
+                        tool_response, tool_name, file_uris, image_uris = tool_executor.use_tool()
+                        if tool_name is not None and tool_name != prev_tool_name:
+                            ACTIVE_CHAIN_SIZE += 1
+                            prev_tool_name = tool_name
 
-            except Exception as e:
-                if tool_name is not None:
-                    tool_response = f"""
-                        System Message:
+                        tool_response_list.append(f"""
+                            [{i}] "tool_name": {tool_name},
+                                [{i}a.] "tool_response": {tool_response},
+                                [{i}b.] "file_uris": {file_uris},
+                                [{i}c.] "image_uris": {image_uris}
+                        """)
+                except Exception as e:
+                    if tool_name is not None:
+                        tool_response = f"""
+                            System Message:
 
-                        An error occurred while decoding the JSON response provided by the AI assistant. This might be
-                        related to the incorrect formatting of the response. Please make sure that the response is in the
-                        correct JSON format.
+                            An error occurred while decoding the JSON response provided by the AI assistant. This might be
+                            related to the incorrect formatting of the response. Please make sure that the response is in the
+                            correct JSON format.
 
-                        Error Details:
+                            Error Details:
 
-                        '''
-                        {str(e)}
-                        '''
-                    """
+                            '''
+                            {str(e)}
+                            '''
+                        """
 
-                    return tool_response
-                else:
-                    tool_response = json.dumps(final_response)
-                    return tool_response
+                        tool_response_list.append(f"""
+                            [{i}] [FAILED] "tool_name": {tool_name},
+                                [{i}a.] "tool_response": {tool_response},
+                                [{i}b.] "file_uris": [],
+                                [{i}c.] "image_uris": []
+                        """)
+                    else:
+                        tool_response = f"""
+                            System Message:
 
-        if tool_response:
+                            An error occurred while decoding the JSON response provided by the AI assistant. This might be
+                            related to the incorrect formatting of the response. Please make sure that the response is in the
+                            correct JSON format.
+
+                            Error Details:
+
+                            '''
+                            {str(e)}
+                            '''
+                        """
+                        tool_response_list.append(f"""
+                            [{i}] [FAILED] "tool_name": {tool_name},
+                                [{i}a.] "tool_response": {tool_response},
+                                [{i}b.] "file_uris": [],
+                                [{i}c.] "image_uris": []
+                        """)
+
+        if tool_response_list:
             # Create the request as a multimodal chat message and add it to the chat
             tool_request = MultimodalChatMessage.objects.create(
                 multimodal_chat=self.chat,
                 sender_type="ASSISTANT",
-                message_text_content=final_response
+                message_text_content=f"""
+
+**Assistant Tool Call:**
+
+```
+
+{json_parts_of_response}
+
+```
+""",
             )
             self.chat.chat_messages.add(tool_request)
             self.chat.save()
@@ -312,7 +363,7 @@ class InternalOpenAIClient:
             tool_message = MultimodalChatMessage.objects.create(
                 multimodal_chat=self.chat,
                 sender_type="TOOL",
-                message_text_content=tool_response,
+                message_text_content=str(tool_response_list),
                 message_file_contents=file_uris,
                 message_image_contents=image_uris
             )
@@ -326,7 +377,7 @@ class InternalOpenAIClient:
                 responsible_user=self.chat.user,
                 responsible_assistant=self.chat.assistant,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                transaction_context_content=tool_response,
+                transaction_context_content=str(tool_response_list),
                 llm_cost=0,
                 internal_service_cost=0,
                 tax_cost=0,
@@ -343,7 +394,7 @@ class InternalOpenAIClient:
         # reset the active chain size
         ACTIVE_CHAIN_SIZE = 0
 
-        # for export assistants API
+        # ONLY for export assistants API
         if with_media:
             file_uris = [f"{BASE_URL}/{x}" for x in file_uris]
             image_uris = [f"{BASE_URL}/{x}" for x in image_uris]

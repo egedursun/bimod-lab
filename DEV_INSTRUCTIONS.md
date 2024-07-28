@@ -232,7 +232,7 @@ http://localhost:8000
 
   *In the second tab of the terminal window* (for scheduling tasks / cron jobs)
   ```bash
-  celery -A config beat -l info
+  celery -A config beat --loglevel=debug
   ```
 
   *In the third tab of the terminal window* (for monitoring tasks)

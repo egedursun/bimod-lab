@@ -3,6 +3,7 @@ from django.urls import path
 from apps.mm_scripts.views import CreateCustomScriptView, ListCustomScriptsView, \
     ManageCustomScriptAssistantConnectionsView, DeleteCustomScriptView, ScriptStoreView
 
+
 app_name = "mm_scripts"
 
 
@@ -19,7 +20,6 @@ urlpatterns = [
     path("delete/<int:pk>/", DeleteCustomScriptView.as_view(
         template_name="mm_scripts/confirm_delete_custom_script.html"
     ), name="delete"),
-
     path("store/", ScriptStoreView.as_view(
         template_name="mm_scripts/script_store.html"
     ), name="store"),

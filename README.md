@@ -187,24 +187,23 @@ git ls-files | xargs wc -l
 
 ---
 
-[ ] same text queries JSON must be prevented !!!! 
+[ ] test the performance of the multiple requests in a single assistant tool calls. (SUNDAY 28/07)
+[ ] implement the rest of the pages for the "scheduled jobs" (SUNDAY 28/07)
+[ ] integrate the triggers functionality. (SUNDAY 28/07)
 
 **THINGS TO REMEMBER:**
 
 *Important:*
-- [ ] Integrate the [SCRIPTS] multimodality (COPY OF FUNCTIONS)
-
-- [ ] Integrate the [SCHEDULED JOBS] multimodality.
 - [ ] Integrate the [TRIGGERS] multimodality.
-- [ ] Media generation must be embedded as a [TOOL] and a choice (via switch button) for the assistants.
-- [ ] Integrate [PICONAUT] with GPT-4o-mini.
+- [ ] Media generation must be embedded as a [TOOL] and a choice (via switch button) for the assistants. (MONDAY 29/07)
+- [ ] Integrate [PICONAUT] with GPT-4o-mini. (TUESDAY 29/07)
 
-- [ ] Implement the [CODE REPOSITORY] data source.
-- [ ] Implement the [WEB BROWSING] data source.
+- [ ] Implement the [WEB BROWSING] data source. (WEDNESDAY, THURSDAY 30/07, 31/07)
+- [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 01/08, 02/08)
 
-- [ ] Implement the [ORCHESTRATION] manager.
+- [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 03/08, 04/08)
 
-- [ ] Implement the [DASHBOARD] page.
+- [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY 05/08, 06/08)
 
 *Issues:*
 
