@@ -511,19 +511,19 @@
       ]
     },
     {
-      "name": "Triggers",
+      "name": "Triggered Jobs",
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
       "submenu": [
         {
           "name": "Add Trigger",
           "slug": "trigger",
-          "url": "dashboard:main-dashboard"
+          "url": "mm_triggered_jobs:create"
         },
         {
           "name": "Triggers",
           "slug": "trigger",
-          "url": "dashboard:main-dashboard"
+          "url": "mm_triggered_jobs:list"
         }
       ]
     },

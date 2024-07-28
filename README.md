@@ -8,12 +8,11 @@
 - [X] Real media management with AWS S3 Storages (e.g. profile pictures, organization images, etc.)
 - [X] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
 - [ ] Integrating the Payment Gateway to get the payment done (for balance) + credit card safety / storage and usage
-- [ ] Additional cost column for custom tools. (start + continuation)
 - [ ] Real PostgreSQL DBMS integration.
 - [ ] Real E-mail SMTP integration.
 - [ ] Stop Sequence Integration
 - [ ] HTTPS Configuration for the application + CORS configuration.
-- [ ] Better validation and logging system.
+- [ ] Better logging system.
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 - [ ] Privacy Policy and Terms of Service development & integration for the application.
 - [ ] Proper Documentation & tutorial, instructions (FAQ and Support) for the application.
@@ -187,22 +186,55 @@ git ls-files | xargs wc -l
 
 ---
 
-[ ] implement the rest of the pages for the "scheduled jobs" (SUNDAY 28/07)
-[ ] integrate the triggers functionality. (SUNDAY 28/07)
-
 **THINGS TO REMEMBER:**
 
 *Important:*
-- [ ] Integrate the [TRIGGERS] multimodality.
-- [ ] Media generation must be embedded as a [TOOL] and a choice (via switch button) for the assistants. (MONDAY 29/07)
-- [ ] Integrate [PICONAUT] with GPT-4o-mini. (TUESDAY 29/07)
+- [ ] Integrate the [TRIGGERS] multimodality. (SUNDAY 29/07)
+- [ ] Media generation must be embedded as a [TOOL] and a choice (via switch button) for the assistants. (MONDAY 30/07)
+- [ ] Integrate [PICONAUT] with GPT-4o-mini. (MONDAY 30/07)
+- [ ] Implement the [WEB BROWSING] data source. (TUESDAY, WEDNESDAY, THURSDAY 31/07, 01/08, 02/08)
+- [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
+- [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 05/08, 06/08)
+- [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY, THURSDAY 07/08, 08/08, 09/08)
 
-- [ ] Implement the [WEB BROWSING] data source. (WEDNESDAY, THURSDAY 30/07, 31/07)
-- [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 01/08, 02/08)
+Deployment Changes:
+- [ ] Implement [LOGGING] to all pages.
+- [ ] Migrate to [POSTGRES] database.
+- [ ] Implement [HTTPS] configuration.
+- [ ] Implement [CORS] configuration.
+- [ ] Implement [SMTP] configuration.
+- [ ] Implement [STOP SEQUENCE] integration for the OpenAI API.
+- [ ] Implement [PAYMENT GATEWAY] for the application.
+- [ ] Implement and fix [MAIN SEARCH BAR] for the application.
+- [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+- [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
+- [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
+- [ ] Delete the [INTERNAL MEDIA DIRECTORY] from the repository.
+- [ ] Code [CLEANUP AND REFACTORING].
+- [ ] Prepare the [DEPLOYMENT] changes for the production environment.
+- [ ] Deploy the [APPLICATION].
+- [ ] Protect the [MAIN BRANCH] from direct merges.
+- [ ] Create the [DEVELOPMENT BRANCH] from the main branch.
+- [ ] Protect [DIRECT MERGES] to the development branch.
+- [ ] RELEASE v0.1.0 [RELEASE: BETA] version of the application.
+---
 
-- [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 03/08, 04/08)
+*After first deployment:*
+- [ ] Named Entity Recognition [NER] integration.
+- [ ] [DOCUMENTATION & API GUIDE] page development.
+- [ ] [FAQ] page development.
+- [ ] [TERMS & CONDITIONS] development with the law firms.
+- [ ] [PRIVACY POLICY & DATA POLICY] development with the law firms.
+- [ ] Creation of the [BLOG] page.
+- [ ] Creation of the [FORUM] page.
+- [ ] [TEXT-TO-SPEECH] and [SPEECH-TO-TEXT] integration for the application.
+- [ ] [ARCHITECTURE BUILDING ASSISTANT] Integration (Meta control over application).
+- [ ] [CHROME EXTENSION] development for the application.
+- [ ] [WORD PLUGIN] development for the application.
+- [ ] [DRIVE & DROPBOX] integration for the application.
+- [ ] RELEASE v0.2.0 [RELEASE: BETA] version of the application.
+---
 
-- [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY 05/08, 06/08)
 
 ---
 
@@ -224,5 +256,6 @@ git ls-files | xargs wc -l
         - PROMO-CODE: connected to user(A), when the user(B) registers; if the user(B) uses the promo code of user(A), 
                       user(A) will get +$X balance, and user(B) will get +$Y balance.
         - PARAMETERS: [promo_beneficiary, promo_beneficiary_gift, promo_invitee_gift, promo_limit, promo_expiry_date]
+- [ ] Add copy buttons for the starred messages.
 
 ---

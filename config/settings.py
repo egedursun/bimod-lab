@@ -112,6 +112,7 @@ INSTALLED_APPS = [
     "apps.mm_apis",
     "apps.mm_scripts",
     "apps.mm_scheduled_jobs",
+    "apps.mm_triggered_jobs",
 ]
 
 MIDDLEWARE = [
