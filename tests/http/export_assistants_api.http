@@ -1,14 +1,17 @@
-### POST request to get API response from an agent (currently the endpoint is invalid, so the request will fail)
+### POST request to get API response from an agent ( the endpoint might be invalid, so the request will fail)
 
-POST http://127.0.0.1:8000/app/export_assistants/api/v1/export/6/MySmartFarm/19/WellnessandHealthAssistant/gpt4o/2024/7/7/6728446830903538
+POST http://127.0.0.1:8000/app/export_assistants/api/v1/export/11/MySmartFarm/1/HelpfulAssistant/gpt4o/2024/7/20/0614796371619611
 Content-Type: application/json
-Authorization: Bearer bimod/6/MySmartFarm/19/WellnessandHealthAssistant/gpt4o/7e0fd904bd8541cecf853f3de2e733cee6acf66bf3ca0e2cb7a5532961bd2a8d
+Authorization: Bearer bimod/11/MySmartFarm/1/HelpfulAssistant/gpt4o/b536eea085de3f7e7d4961073f7c376688565cae4b29cffc362947ea66be1f0f
 
     {
       "chat_history": [
         {
           "role": "user",
-          "content": "Generate any bar chart using the data in my media storage about the customers. Do not ask for me to choose a field or something, just create a chart"
+          "content": "What do you see in this image.",
+          "image_uris": [
+            "media/generated/images/6e1a7cb2-7733-4e45-a2f0-ab522a4b1ca7_77fc31dd-9383-4641-a68c-5ad5e612f8bf.png"
+          ]
         }
       ]
     }

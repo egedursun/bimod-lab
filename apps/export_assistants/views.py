@@ -119,10 +119,14 @@ class ExportAssistantAPIView(View):
             for message in chat_history:
                 role = message["role"]
                 content = message["content"]
+                file_uris = message.get("file_uris") or []
+                image_uris = message.get("image_uris") or []
                 api_chat.chat_messages.create(
                     multimodal_chat=api_chat,
                     sender_type=role.upper(),
-                    message_text_content=content
+                    message_text_content=content,
+                    message_file_contents=file_uris,
+                    message_image_contents=image_uris
                 )
                 user_message = api_chat.chat_messages.filter(sender_type=role.upper()).last()
 

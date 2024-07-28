@@ -396,8 +396,9 @@ class InternalOpenAIClient:
 
         # ONLY for export assistants API
         if with_media:
-            file_uris = [f"{BASE_URL}/{x}" for x in file_uris]
-            image_uris = [f"{BASE_URL}/{x}" for x in image_uris]
+            file_uris = [f"{BASE_URL}/{x}" for x in file_uris] if file_uris else []
+            image_uris = [f"{BASE_URL}/{x}" for x in image_uris] if image_uris else []
+
             return final_response, file_uris, image_uris
         return final_response
 

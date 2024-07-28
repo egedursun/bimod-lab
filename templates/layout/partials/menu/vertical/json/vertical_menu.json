@@ -137,7 +137,7 @@
       "url": "multimodal_chat:chat"
     },
     {
-      "name": "Starred Responses",
+      "name": "Starred Messages",
       "icon": "menu-icon tf-icons ti ti-star",
       "slug": "chats",
       "url": "starred_messages:list"
@@ -197,7 +197,18 @@
       "url": "dashboard:main-dashboard",
       "name": "Orchestrations",
       "icon": "menu-icon tf-icons ti ti-bolt",
-      "slug": "orchestrations"
+      "submenu": [
+        {
+          "name": "Add Orchestration",
+          "slug": "orchestration",
+          "url": "dashboard:main-dashboard"
+        },
+        {
+          "name": "Orchestrations",
+          "slug": "orchestration",
+          "url": "dashboard:main-dashboard"
+        }
+      ]
     },
     {
       "menu_header": "Data Sources"
@@ -223,7 +234,18 @@
       "name": "Web Browsers",
       "icon": "menu-icon tf-icons ti ti-browser",
       "slug": "web-browsers",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Connect Browser",
+          "slug": "web-browser",
+          "url": "dashboard:main-dashboard"
+        },
+        {
+          "name": "Browser Connections",
+          "slug": "web-browser",
+          "url": "dashboard:main-dashboard"
+        }
+      ]
     },
     {
       "name": "SQL Databases",
@@ -290,7 +312,18 @@
       "name": "Code Repositories",
       "icon": "menu-icon tf-icons ti ti-tag",
       "slug": "code-repositories",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add Code Repo",
+          "slug": "code-repository",
+          "url": "dashboard:main-dashboard"
+        },
+        {
+          "name": "My Code Repos",
+          "slug": "code-repository",
+          "url": "dashboard:main-dashboard"
+        }
+      ]
     },
     {
       "name": "ML Models",
@@ -447,7 +480,18 @@
       "name": "Piconaut®",
       "icon": "menu-icon tf-icons ti ti-code",
       "slug": "conditionals",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add New Controller",
+          "slug": "conditional",
+          "url": "dashboard:main-dashboard"
+        },
+        {
+          "name": "My Controllers",
+          "slug": "conditional",
+          "url": "dashboard:main-dashboard"
+        }
+      ]
     },
     {
       "name": "Scheduled Jobs",
@@ -470,7 +514,18 @@
       "name": "Triggers",
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
-      "url": "dashboard:main-dashboard"
+      "submenu": [
+        {
+          "name": "Add Trigger",
+          "slug": "trigger",
+          "url": "dashboard:main-dashboard"
+        },
+        {
+          "name": "Triggers",
+          "slug": "trigger",
+          "url": "dashboard:main-dashboard"
+        }
+      ]
     },
     {
       "menu_header": "Modules"
