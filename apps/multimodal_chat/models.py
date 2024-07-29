@@ -17,6 +17,7 @@ class ChatSourcesNames:
     APP = "app"
     API = "api"
     SCHEDULED = "scheduled"
+    TRIGGERED = "triggered"
 
 
 # Create your models here.

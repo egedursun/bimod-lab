@@ -94,7 +94,7 @@
       <tbody>
         {% for job in page_obj %}
         <tr>
-          <td style="min-width: 200px;">{{ job.name }}</td>
+          <td style="min-width: 200px;"><strong>{{ job.name }}</strong></td>
           <td style="min-width: 300px;">{{ job.task_description }}</td>
           <td><strong>{{ job.created_by_user }}</strong></td>
           <td>{{ job.assistant.name }}</td>

@@ -174,14 +174,17 @@
 - Total Lines of Code by 2024-07-27: (Day: 29)
   - **1,574,000**
 
-- Current System Prompt Cost: **~19,000 Tokens**
+- Total Lines of Code by 2024-07-28: (Day: 30)
+  - **2,578,000**
+
+- Current System Prompt Cost: **~21,000 Tokens**
   - **1M Token** = $5,00
-  - **System Prompt Unit Cost** = $0,095 (TRY 3.13) (for **GPT**) 
+  - **System Prompt Unit Cost** = $0,105 (TRY 3.46) (for **GPT**) 
 
 *To count:*
 
 ```bash
-git ls-files | xargs wc -l
+find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 ```
 
 ---

@@ -167,7 +167,6 @@ def execute_scheduled_job(scheduled_job_id):
         print("[Scheduled Job Executor Error]: ", e)
 
 
-
 def add_periodic_task(scheduled_job):
     crontab_schedule, created = CrontabSchedule.objects.get_or_create(
         minute=scheduled_job.minute or '*',
