@@ -73,6 +73,7 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         response_language = request.POST.get('response_language')
         time_awareness = request.POST.get('time_awareness') == 'on'
         place_awareness = request.POST.get('place_awareness') == 'on'
+        image_generation_capability = request.POST.get('image_generation_capability') == 'on'
         assistant_image = request.FILES.get('assistant_image')
 
         if not (organization_id and llm_model_id and name and description and instructions and audience and tone):
@@ -104,6 +105,7 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             response_language=response_language,
             time_awareness=time_awareness,
             place_awareness=place_awareness,
+            image_generation_capability=image_generation_capability,
             glossary=glossary
         )
 
@@ -204,6 +206,7 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         assistant.response_language = request.POST.get('response_language')
         assistant.time_awareness = request.POST.get('time_awareness') == 'on'
         assistant.place_awareness = request.POST.get('place_awareness') == 'on'
+        assistant.image_generation_capability = request.POST.get('image_generation_capability') == 'on'
         assistant.last_updated_by_user = request.user
         if 'assistant_image' in request.FILES:
             assistant.assistant_image = request.FILES['assistant_image']

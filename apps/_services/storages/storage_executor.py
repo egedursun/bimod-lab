@@ -41,6 +41,32 @@ class StorageExecutor:
         return full_uri
 
     @staticmethod
+    def save_edit_images(edit_image_dict):
+        edit_image_bytes = edit_image_dict.get("edit_image")
+        edit_image_mask_bytes = edit_image_dict.get("edit_image_mask")
+
+        guess_file_type_edit_image = filetype.guess(edit_image_bytes)
+        guess_file_type_edit_image_mask = filetype.guess(edit_image_mask_bytes)
+        if guess_file_type_edit_image is None:
+            guess_file_type_edit_image = ".bin"
+        if guess_file_type_edit_image_mask is None:
+            guess_file_type_edit_image_mask = ".bin"
+        extension_edit_image = guess_file_type_edit_image.extension
+        extension_edit_image_mask = guess_file_type_edit_image_mask.extension
+
+        save_name_edit_image = "edit_image__original_version__" + str(uuid4()) + "." + extension_edit_image
+        save_name_edit_image_mask = "edit_image__masked_version__" + str(uuid4()) + "." + extension_edit_image_mask
+        full_uri_edit_image = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_edit_image}"
+        full_uri_edit_image_mask = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_edit_image_mask}"
+        try:
+            with open(full_uri_edit_image, "wb") as image: image.write(edit_image_bytes)
+            with open(full_uri_edit_image_mask, "wb") as image_mask: image_mask.write(edit_image_mask_bytes)
+        except Exception as e:
+            print(f"Error occurred while saving image: {str(e)}")
+            return None, None
+        return [full_uri_edit_image, full_uri_edit_image_mask]
+
+    @staticmethod
     def save_image_and_provide_full_uri(image_bytes):
         guess_file_type = filetype.guess(image_bytes)
         if guess_file_type is None:

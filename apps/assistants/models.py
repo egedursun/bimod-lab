@@ -98,6 +98,8 @@ class Assistant(models.Model):
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                              related_name='assistants_updated_by_user')
 
+    image_generation_capability = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

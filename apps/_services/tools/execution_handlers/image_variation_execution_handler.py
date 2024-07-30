@@ -1,0 +1,20 @@
+from apps._services.image_generation.image_variation_executor import ImageVariationExecutor
+from apps.assistants.models import Assistant
+from apps.multimodal_chat.models import MultimodalChat
+
+
+def execute_image_variation(assistant_id, chat_id, image_uri, image_size):
+    assistant = Assistant.objects.get(id=assistant_id)
+    chat = MultimodalChat.objects.get(id=chat_id)
+    executor = ImageVariationExecutor(assistant=assistant, chat=chat)
+
+    if assistant.image_generation_capability is False:
+        return ("This assistant is not authorized to create variations of images. The assistant must first be edited "
+                "to allow image generation capabilities to be able to use this tool.")
+
+    try:
+        response = executor.execute_variate_image(image_uri=image_uri, image_size=image_size)
+    except Exception as e:
+        print(f"Error occurred while creating variations of the image: {str(e)}")
+        return f"Error occurred while creating variations of the image: {str(e)}"
+    return response

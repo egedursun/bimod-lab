@@ -1,12 +1,14 @@
 import json
 
-from apps._services.multimodality.mm_functions_executor import CustomFunctionExecutor
 from apps._services.tools.const import ToolTypeNames
 from apps._services.tools.execution_handlers.code_interpreter_execution_handler import execute_code_interpreter
 from apps._services.tools.execution_handlers.custom_api_execution_handler import execute_api_executor
 from apps._services.tools.execution_handlers.custom_function_execution_handler import execute_custom_code_executor
 from apps._services.tools.execution_handlers.custom_script_content_retrieval_handler import retrieve_script_content
 from apps._services.tools.execution_handlers.file_system_command_execution_handler import execute_file_system_commands
+from apps._services.tools.execution_handlers.image_generator_execution_handler import execute_image_generation
+from apps._services.tools.execution_handlers.image_modification_execution_handler import execute_image_modification
+from apps._services.tools.execution_handlers.image_variation_execution_handler import execute_image_variation
 from apps._services.tools.execution_handlers.knowledge_base_query_execution_handler import execute_knowledge_base_query
 from apps._services.tools.execution_handlers.memory_query_execution_handler import execute_memory_query
 from apps._services.tools.execution_handlers.nosql_query_execution_handler import execute_nosql_query
@@ -24,6 +26,9 @@ from apps._services.tools.validators.custom_script_content_retriever_tool_valida
     validate_custom_script_retriever_tool_json
 from apps._services.tools.validators.file_system_command_execution_tool_validator import \
     validate_file_system_command_execution_tool_json
+from apps._services.tools.validators.image_generation_tool_validator import validate_image_generation_tool_json
+from apps._services.tools.validators.image_modification_tool_validator import validate_image_modification_tool_json
+from apps._services.tools.validators.image_variation_tool_validator import validate_image_variation_tool_json
 from apps._services.tools.validators.knowledge_base_query_execution_tool_validator import \
     validate_knowledge_base_query_execution_tool_json
 from apps._services.tools.validators.main_json_validator import validate_main_tool_json
@@ -301,6 +306,75 @@ class ToolExecutor:
             # Convert the tool response to a string and pretty format
             custom_script_content_response_raw_str = json.dumps(custom_script_content_response, sort_keys=True, default=str)
             tool_response += custom_script_content_response_raw_str
+        ##################################################
+        # Image Generation Tool
+        elif tool_name == ToolTypeNames.IMAGE_GENERATION:
+            error = validate_image_generation_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+
+            prompt = self.tool_usage_json.get("parameters").get("prompt")
+            size = self.tool_usage_json.get("parameters").get("size")
+            quality = self.tool_usage_json.get("parameters").get("quality")
+
+            image_generation_response = execute_image_generation(
+                assistant_id=self.assistant.id,
+                chat_id=self.chat.id,
+                prompt=prompt,
+                image_size=size,
+                quality=quality
+            )
+            image_uri = image_generation_response.get("image_uri")
+            image_uris.append(image_uri)
+
+            # Convert the tool response to a string and pretty format
+            image_generation_response_raw_str = json.dumps(image_generation_response, sort_keys=True, default=str)
+            tool_response += image_generation_response_raw_str
+        ##################################################
+        # Image Modification Tool
+        elif tool_name == ToolTypeNames.IMAGE_MODIFICATION:
+            error = validate_image_modification_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+
+            prompt = self.tool_usage_json.get("parameters").get("prompt")
+            edit_image_uri = self.tool_usage_json.get("parameters").get("edit_image_uri")
+            edit_image_mask_uri = self.tool_usage_json.get("parameters").get("edit_image_mask_uri")
+            image_size = self.tool_usage_json.get("parameters").get("image_size")
+
+            image_modification_response = execute_image_modification(
+                assistant_id=self.assistant.id,
+                chat_id=self.chat.id,
+                prompt=prompt,
+                edit_image_uri=edit_image_uri,
+                edit_image_mask_uri=edit_image_mask_uri,
+                image_size=image_size
+            )
+            image_uri = image_modification_response.get("image_uri")
+            image_uris.append(image_uri)
+
+            # Convert the tool response to a string and pretty format
+            image_modification_response_raw_str = json.dumps(image_modification_response, sort_keys=True, default=str)
+            tool_response += image_modification_response_raw_str
+        ##################################################
+        # Image Variation Creation Tool
+        elif tool_name == ToolTypeNames.IMAGE_VARIATION:
+            error = validate_image_variation_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+
+            image_uri = self.tool_usage_json.get("parameters").get("image_uri")
+            image_size = self.tool_usage_json.get("parameters").get("image_size")
+
+            image_variation_response = execute_image_variation(
+                assistant_id=self.assistant.id,
+                chat_id=self.chat.id,
+                image_uri=image_uri,
+                image_size=image_size
+            )
+            image_uri = image_variation_response.get("image_uri")
+            image_uris.append(image_uri)
+
+            # Convert the tool response to a string and pretty format
+            image_variation_response_raw_str = json.dumps(image_variation_response, sort_keys=True, default=str)
+            tool_response += image_variation_response_raw_str
         ##################################################
         # ...
 

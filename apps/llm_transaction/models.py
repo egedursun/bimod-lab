@@ -67,6 +67,9 @@ class TransactionSourcesNames:
     INTERPRET_FILE = "interpret-file"
     INTERPRET_IMAGE = "interpret-image"
     SCHEDULED_JOB_EXECUTION = "scheduled-job-execution"
+    GENERATE_IMAGE = "generate-image"
+    MODIFY_IMAGE = "modify-image"
+    VARIATE_IMAGE = "variate-image"
 
 
 # Create your models here.

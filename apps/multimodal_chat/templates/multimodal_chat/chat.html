@@ -572,6 +572,13 @@
                 <div class="message-actions d-flex align-items-center">
                   <i class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
 
+                  <!-- TODO: new functionality here: edit images -->
+                  <label for="edit-image" class="form-label mb-0">
+                    <i class="ti ti-paint ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
+                    <input type="file" id="edit-image" name="edit_image" hidden accept=".jpeg,.png,.gif,.webp">
+                  </label>
+                  <input type="hidden" name="edit_image_mask" id="edit-image-mask" value="">
+
                   <label for="attach-image" class="form-label mb-0">
                     <i class="ti ti-photo ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                     <input type="file" id="attach-image" name="attached_images[]" multiple hidden accept=".jpeg,.png,.gif,.webp">
@@ -662,6 +669,41 @@
     <!-- /Sidebar Right -->
   </div>
 
+  <!-- Image Edit Modal -->
+  <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="imageEditModalLabel"><strong>Create an Image Mask</strong></h5>
+          <button type="button" class="btn-close bg-danger-subtle" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <hr>
+        <div class="modal-body" style="justify-content: center; display: flex; align-items: center;">
+          <div id="imageCanvas" class="border border-label-primary border-3 rounded m-2 mb-8"></div>
+        </div>
+        <div class="alert alert-solid-info d-flex align-items-center mt-4 mb-8" role="alert" style="margin-left: 20%; margin-right: 20%;">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+            Please mark the places you would like to change within the image. You can use the drawing tool to draw on
+            the image. Please make sure not marking the places you would like to keep as they are, for optimal results.
+        </div>
+        <div class="d-flex align-items-center mb-12">
+          <i class="fa fa-paint-brush me-12" style="margin-left: 20%;"></i>
+          <input type="range" class="form-range me-12" id="brushSize" min="1" max="100" value="50" style="max-width: 400px;">
+          <button type="button" class="btn btn-secondary m-2" id="eraserTool">
+            <i class="fa fa-eraser me-2"></i>
+            <strong>Reset Image</strong>
+          </button>
+          <button type="button" class="btn btn-primary m-2" id="saveImageEdits">
+            <i class="fa fa-save me-2" style="margin-right: 20%;"></i>
+            <strong>Submit Image</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <a class="floating-button label bg-label-hover-primary border border-1 border-primary rounded">
     <i class="fa fa-message me-2 text-dark"></i><span class="text text-dark"><strong>Chat</strong></span>
   </a>
@@ -688,6 +730,98 @@
       box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     }
   </style>
+
+<script src="https://unpkg.com/konva@9.3.14/konva.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('edit-image');
+    const maskInput = document.getElementById('edit-image-mask');
+    let stage, layer, imageNode;
+    let isErasing = false;
+    let brushSize = 50;
+    let originalImage;
+
+    fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    originalImage = img.src;
+                    if (stage) {
+                        stage.destroy();
+                    }
+                    stage = new Konva.Stage({
+                        container: 'imageCanvas', // Make sure this matches your canvas container ID
+                        width: img.width,
+                        height: img.height
+                    });
+
+                    layer = new Konva.Layer();
+                    stage.add(layer);
+
+                    imageNode = new Konva.Image({
+                        image: img,
+                        width: img.width,
+                        height: img.height
+                    });
+
+                    layer.add(imageNode);
+                    layer.draw();
+
+                    stage.on('mousedown touchstart', function() {
+                        isErasing = true;
+                    });
+
+                    stage.on('mouseup touchend', function() {
+                        isErasing = false;
+                    });
+
+                    stage.on('mousemove touchmove', function(e) {
+                        if (!isErasing) {
+                            return;
+                        }
+
+                        const pos = stage.getPointerPosition();
+                        layer.add(new Konva.Circle({
+                            x: pos.x,
+                            y: pos.y,
+                            radius: brushSize / 2,
+                            fill: 'black',
+                            globalCompositeOperation: 'destination-out'
+                        }));
+                        layer.batchDraw();
+                    });
+
+                    $('#imageEditModal').modal('show');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.getElementById('brushSize').addEventListener('input', function() {
+        brushSize = this.value;
+    });
+
+    document.getElementById('eraserTool').addEventListener('click', function() {
+        // clear the layer
+        layer.destroyChildren();
+        layer.add(imageNode);
+        layer.draw();
+    });
+
+    document.getElementById('saveImageEdits').addEventListener('click', function() {
+        maskInput.value = stage.toDataURL({ pixelRatio: 1 });
+        $('#imageEditModal').modal('hide');
+    });
+});
+
+</script>
+
 
   <!-- Include a markdown library, for example, Showdown.js -->
   <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
@@ -1073,6 +1207,70 @@
                           <div class="badge bg-lighter d-flex align-items-center my-2">
                               <img src="${imageUrl}" alt="${fileExtension}" width="50" class="me-2">
                               <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                              <button id="btn-close-image-${index}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                          </div>
+                      `;
+                      fileDisplayArea.appendChild(fileElement);
+
+                      document.getElementById(`btn-close-image-${index}`).addEventListener('click', function() {
+                          const index = this.getAttribute('data-index');
+                          fileList.splice(index, 1);
+                          const dataTransfer = new DataTransfer();
+                          fileList.forEach(file => dataTransfer.items.add(file));
+                          document.getElementById('attach-image').files = dataTransfer.files;
+                          this.parentElement.remove();
+                      });
+                  };
+                  reader.readAsDataURL(file);
+            });
+
+            document.querySelectorAll('.btn-close').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    fileList.splice(index, 1);
+                    const dataTransfer = new DataTransfer();
+                    fileList.forEach(file => dataTransfer.items.add(file));
+                    document.getElementById('attach-doc').files = dataTransfer.files;
+                    this.parentElement.remove();
+                });
+            });
+
+            document.getElementById('.btn-close-image').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    fileList.splice(index, 1);
+                    const dataTransfer = new DataTransfer();
+                    fileList.forEach(file => dataTransfer.items.add(file));
+                    document.getElementById('attach-image').files = dataTransfer.files;
+                    this.parentElement.remove();
+                });
+            });
+        });
+
+        document.getElementById('edit-image').addEventListener('change', function(event) {
+            const fileList = Array.from(event.target.files);
+            const fileDisplayArea = document.getElementById('image_display_area');
+            fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Image Modification Staging</strong></small><hr>';
+            fileList.forEach((file, index) => {
+                const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const image_data = null; // ????
+                let filename_root = file.name.split(".")[0];
+                let filename_extension = file.name.split(".")[1];
+                if (filename_root.length > 64) {
+                    filename_root = filename_root.substring(0, 64) + '...';
+                }
+                const fileElement = document.createElement('div');
+                fileElement.classList.add('col-lg-12');
+
+                const reader = new FileReader();
+                  reader.onload = function(e) {
+                      const imageUrl = e.target.result;
+                      fileElement.innerHTML = `
+                          <div class="badge bg-warning d-flex align-items-center my-2">
+                              <strong>MOD <i class="fa fa-bolt-lightning me-4"></i></strong>
+                              <img src="${imageUrl}" alt="${fileExtension}" width="50" class="me-2">
+                              <span class="h6 mb-0 text-white"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
                               <button id="btn-close-image-${index}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
                           </div>
                       `;

@@ -1,3 +1,5 @@
+import base64
+
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import TemplateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -42,7 +44,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
             organization_assistants__in=assistants
         )
         message_templates = MessageTemplate.objects.filter(
-            user = context_user,
+            user=context_user,
             organization__in=organizations
         )
 
@@ -111,7 +113,21 @@ class ChatView(LoginRequiredMixin, TemplateView):
             chat = get_object_or_404(MultimodalChat, id=chat_id, user=request.user)
             message_content = request.POST.get('message_content')
             attached_images = request.FILES.getlist('attached_images[]')
+
             attached_files = request.FILES.getlist('attached_files[]')
+
+            edit_image_bytes_dict = {'edit_image': None, 'edit_image_mask': None}
+            attached_edit_image = request.FILES.get('edit_image')
+            attached_edit_image_mask = request.POST.get('edit_image_mask')
+            edit_image_full_uris_list = []
+            try:
+                edit_image_bytes = attached_edit_image.read()
+                edit_image_mask_bytes = base64.b64decode(attached_edit_image_mask.split("base64,")[1].encode())
+                edit_image_bytes_dict['edit_image'] = edit_image_bytes
+                edit_image_bytes_dict['edit_image_mask'] = edit_image_mask_bytes
+                edit_image_full_uris_list = StorageExecutor.save_edit_images(edit_image_dict=edit_image_bytes_dict)
+            except Exception as e:
+                print(f"Error in 'edit image' or 'edit image mask' file: {e}")
 
             # Upload the attached images
             image_bytes_list = []
@@ -123,6 +139,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
                     continue
                 image_bytes_list.append(image_bytes)
             image_full_uris = StorageExecutor.save_images_and_provide_full_uris(image_bytes_list)
+            if edit_image_full_uris_list:
+                image_full_uris.extend(edit_image_full_uris_list)
 
             # Upload the attached files
             file_bytes_list = []
@@ -300,4 +318,3 @@ class ChatArchiveListView(LoginRequiredMixin, TemplateView):
             }
         )
         return context
-

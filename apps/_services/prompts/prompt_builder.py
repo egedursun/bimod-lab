@@ -35,6 +35,12 @@ from apps._services.prompts.tools.tool_prompts.build_custom_script_execution_too
     build_structured_tool_prompt__custom_script_content_retrieval
 from apps._services.prompts.tools.tool_prompts.build_file_system_command_execution_tool_prompt import \
     build_structured_tool_prompt__file_system_command_execution
+from apps._services.prompts.tools.tool_prompts.build_image_generation_tool_prompt import \
+    build_structured_tool_prompt__image_generator
+from apps._services.prompts.tools.tool_prompts.build_image_modification_tool_prompt import \
+    build_structured_tool_prompt__image_modification
+from apps._services.prompts.tools.tool_prompts.build_image_variation_tool_prompt import \
+    build_structured_tool_prompt__image_variation
 from apps._services.prompts.tools.tool_prompts.build_knowledge_base_query_execution_tool_prompt import \
     build_structured_tool_prompt__knowledge_base_query_execution
 from apps._services.prompts.tools.tool_prompts.build_nosql_query_execution_tool_prompt import \
@@ -113,6 +119,9 @@ class PromptBuilder:
         structured_custom_function_execution_tool_prompt = build_structured_tool_prompt__custom_code_execution()
         structured_custom_api_execution_tool_prompt = build_structured_tool_prompt__custom_api_execution()
         structured_custom_script_content_retrieval_tool_prompt = build_structured_tool_prompt__custom_script_content_retrieval()
+        structured_image_generation_tool_prompt = build_structured_tool_prompt__image_generator()
+        structured_image_modification_tool_prompt = build_structured_tool_prompt__image_modification()
+        structured_image_variation_tool_prompt = build_structured_tool_prompt__image_variation()
         ##################################################
 
         # Combine the prompts
@@ -156,6 +165,9 @@ class PromptBuilder:
         merged_prompt += structured_custom_function_execution_tool_prompt
         merged_prompt += structured_custom_api_execution_tool_prompt
         merged_prompt += structured_custom_script_content_retrieval_tool_prompt
+        merged_prompt += structured_image_generation_tool_prompt
+        merged_prompt += structured_image_modification_tool_prompt
+        merged_prompt += structured_image_variation_tool_prompt
         ##################################################
 
         # Build the dictionary with the role

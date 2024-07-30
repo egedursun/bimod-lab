@@ -27,10 +27,27 @@ ACTIVE_TOOL_RETRY_COUNT = 0
 ACTIVE_CHAIN_SIZE = 0
 
 DEFAULT_ERROR_MESSAGE = "Failed to respond at the current moment. Please try again later."
-
 GPT_DEFAULT_ENCODING_ENGINE = "cl100k_base"
-
 CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION = 20
+
+DEFAULT_IMAGE_GENERATION_MODEL = "dall-e-3"
+DEFAULT_IMAGE_MODIFICATION_MODEL = "dall-e-2"
+DEFAULT_IMAGE_VARIATION_MODEL = "dall-e-2"
+DEFAULT_IMAGE_GENERATION_N = 1
+DEFAULT_IMAGE_MODIFICATION_N = 1
+DEFAULT_IMAGE_VARIATION_N = 1
+
+
+class DefaultImageResolutionChoices:
+    class Min1024Max1792:
+        SQUARE = "1024x1024"
+        PORTRAIT = "1024x1792"
+        LANDSCAPE = "1792x1024"
+
+
+class DefaultImageQualityChoices:
+    STANDARD = "standard"
+    HIGH_DEFINITION = "hd"
 
 
 def retry_mechanism(client, latest_message):
@@ -981,3 +998,109 @@ class InternalOpenAIClient:
             transaction_source=TransactionSourcesNames.GENERATION
         )
         return texts, downloaded_files, downloaded_images
+
+    def generate_image(self, prompt: str, image_size: str, quality: str):
+        response = {"success": False, "message": "", "image_url": ""}
+        image_generation_model = DEFAULT_IMAGE_GENERATION_MODEL
+
+        if image_size == "SQUARE":
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.SQUARE
+        elif image_size == "PORTRAIT":
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.PORTRAIT
+        elif image_size == "LANDSCAPE":
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.LANDSCAPE
+        else:
+            # Take SQUARE as the default choice
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.SQUARE
+
+        if quality == "STANDARD":
+            quality = DefaultImageQualityChoices.STANDARD
+        elif quality == "HIGH_DEFINITION":
+            quality = DefaultImageQualityChoices.HIGH_DEFINITION
+        else:
+            # Take STANDARD as the default choice
+            quality = DefaultImageQualityChoices.STANDARD
+
+        try:
+            image_generation_response = self.connection.images.generate(
+                model=image_generation_model,
+                prompt=prompt,
+                size=image_size,
+                quality=quality,
+                n=DEFAULT_IMAGE_GENERATION_N
+            )
+            image_url = image_generation_response.data[0].url
+            response["success"] = True
+            response["image_url"] = image_url
+            return response
+        except Exception as e:
+            response["message"] = f"System Message: An error occurred while generating the image. Error Details: {str(e)}"
+            return response
+
+    def edit_image(self, prompt: str, edit_image_uri: str, edit_image_mask_uri: str, image_size: str):
+        response = {"success": False, "message": "", "image_url": ""}
+        image_modification_model = DEFAULT_IMAGE_MODIFICATION_MODEL
+
+        if image_size == "SQUARE":
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.SQUARE
+        elif image_size == "PORTRAIT":
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.PORTRAIT
+        elif image_size == "LANDSCAPE":
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.LANDSCAPE
+        else:
+            # Take SQUARE as the default choice
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.SQUARE
+
+        try:
+            with open(edit_image_uri, "rb") as edit_image_file:
+                edit_image_bytes = edit_image_file.read()
+            with open(edit_image_mask_uri, "rb") as mask_image_file:
+                mask_image_bytes = mask_image_file.read()
+
+            image_modification_response = self.connection.images.edit(
+                model=image_modification_model, image=edit_image_bytes, mask=mask_image_bytes,
+                prompt=prompt, n=DEFAULT_IMAGE_MODIFICATION_N, size=image_size
+            )
+            image_url = image_modification_response.data[0].url
+            response["success"] = True
+            response["image_url"] = image_url
+            return response
+        except Exception as e:
+            response[
+                "message"] = f"System Message: An error occurred while editing the image. Error Details: {str(e)}"
+            return response
+
+    def create_image_variation(self, image_uri: str, image_size: str):
+        response = {"success": False, "message": "", "image_url": ""}
+        image_variation_model = DEFAULT_IMAGE_VARIATION_MODEL
+
+        if image_size == "SQUARE":
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.SQUARE
+        elif image_size == "PORTRAIT":
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.PORTRAIT
+        elif image_size == "LANDSCAPE":
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.LANDSCAPE
+        else:
+            # Take SQUARE as the default choice
+            image_size = DefaultImageResolutionChoices.Min1024Max1792.SQUARE
+
+        try:
+            with open(image_uri, "rb") as image_file:
+                image_bytes = image_file.read()
+
+            image_variation_response = self.connection.images.create_variation(
+                model=image_variation_model,
+                image=image_bytes,
+                n=DEFAULT_IMAGE_VARIATION_N,
+                size=image_size
+            )
+            image_url = image_variation_response.data[0].url
+            response["success"] = True
+            response["image_url"] = image_url
+        except Exception as e:
+            response["message"] = (f"System Message: An error occurred while creating the image variation. Error "
+                                   f"Details: {str(e)}")
+            return response
+
+        return response
+

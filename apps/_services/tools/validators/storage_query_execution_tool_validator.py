@@ -3,8 +3,8 @@
 def validate_media_storage_query_execution_tool_json(tool_usage_json: dict):
     if "parameters" not in tool_usage_json:
         return """
-            The 'parameters' field is missing from the tool_usage_json. This field is mandatory for using the SQL Query
-            Execution tool. Please make sure you are defining the 'parameters' field in the tool_usage_json.
+            The 'parameters' field is missing from the tool_usage_json. This field is mandatory for using the Media Storage
+            Query Execution tool. Please make sure you are defining the 'parameters' field in the tool_usage_json.
         """
     parameters = tool_usage_json.get("parameters")
 

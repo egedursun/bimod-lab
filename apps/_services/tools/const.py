@@ -14,3 +14,6 @@ class ToolTypeNames:
     CUSTOM_FUNCTION_EXECUTOR = 'Custom Function Executor'
     CUSTOM_API_EXECUTOR = 'Custom API Executor'
     CUSTOM_SCRIPT_CONTENT_RETRIEVAL = 'Custom Script Content Retrieval'
+    IMAGE_GENERATION = 'Image Generation'
+    IMAGE_MODIFICATION = 'Image Modification'
+    IMAGE_VARIATION = 'Image Variation'
