@@ -109,16 +109,19 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 **THINGS TO REMEMBER:**
 
 *Important:*
-1. [ ] Users page [PROMO CODE] and [BIRTHDATE] integration to the data model.
+1. [ ] Add a [TRY AGAIN] button for the users to recreate responses that they dont like / or failed.
+2. [ ] Users page [PROMO CODE] and [BIRTHDATE] integration to the data model.
 2. [ ] Integrate the [COPY BUTTON] feature for the starred messages.
-3. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
-4. [ ] Implement [DRAWING TOOL] for scratch boards. Mind storming ? 
-5. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
-6. [ ] Implement the [WEB BROWSING] data source. (TUESDAY, WEDNESDAY, THURSDAY 31/07, 01/08, 02/08)
-7. [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
-8. [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 05/08, 06/08)
-9. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
-10. [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY, THURSDAY 07/08, 08/08, 09/08)
+3. [ ] Implement [STOP SEQUENCE] integration for the OpenAI API.
+4. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
+5. [ ] Implement [DRAWING TOOL] for scratch boards. Mind storming ? 
+6. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
+7. [ ] ImplC
+8. BMement the [WEB BROWSING] data source. (TUESDAY, WEDNESDAY, THURSDAY 31/07, 01/08, 02/08)
+8. [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
+9. [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 05/08, 06/08)
+10. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
+11. [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY, THURSDAY 07/08, 08/08, 09/08)
 
 *Deployment Changes:*
 1. [ ] Implement [LOGGING] to all pages.
@@ -126,7 +129,6 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 3. [ ] Implement [HTTPS] configuration.
 4. [ ] Implement [CORS] configuration.
 5. [ ] Implement [SMTP] configuration.
-6. [ ] Implement [STOP SEQUENCE] integration for the OpenAI API.
 7. [ ] Implement [PAYMENT GATEWAY] for the application.
 8. [ ] Implement and fix [MAIN SEARCH BAR] for the application.
 9. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
@@ -166,12 +168,11 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 4. [ ] RELEASE v0.4.0 [RELEASE: BETA] version of the application.
 5. [ ] Boilerplate knowledge bases [BOILERPLATE KNOWLEDGE BASES]
 6. [ ] RELEASE v0.5.0 [RELEASE: BETA] version of the application.
-7. [ ] ERP Integration [ERP INTEGRATION]
-8. [ ] RELEASE v0.6.0 [RELEASE: BETA] version of the application.
-9. [ ] Integration (Boilerplate assistant) Systems [ASSISTANT - INTEGRATION SYSTEMS]
-10. [ ] RELEASE v0.7.0 [RELEASE: BETA] version of the application.
-11. [ ] Meta-Integration (Boilerplate group of assistants) Systems [POLY-ASSISTANT - META-INTEGRATION SYSTEMS]
-12. [ ] RELEASE v0.8.0 [RELEASE: BETA] version of the application.
+7. [ ] RELEASE v0.6.0 [RELEASE: BETA] version of the application.
+8. [ ] Integration (Boilerplate assistant) Systems [ASSISTANT - INTEGRATION SYSTEMS]
+9. [ ] RELEASE v0.7.0 [RELEASE: BETA] version of the application.
+10. [ ] Meta-Integration (Boilerplate group of assistants) Systems [POLY-ASSISTANT - META-INTEGRATION SYSTEMS]
+11. [ ] RELEASE v0.8.0 [RELEASE: BETA] version of the application.
 
 ---
 

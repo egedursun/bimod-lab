@@ -41,6 +41,24 @@ class StorageExecutor:
         return full_uri
 
     @staticmethod
+    def save_sketch_images(sketch_image_dict):
+        sketch_image_bytes = sketch_image_dict.get("sketch_image")
+
+        guess_file_type_sketch_image = filetype.guess(sketch_image_bytes)
+        if guess_file_type_sketch_image is None:
+            guess_file_type_sketch_image = ".bin"
+        extension_sketch_image = guess_file_type_sketch_image.extension
+
+        save_name_sketch_image = "free_form__user_sketch__" + str(uuid4()) + "." + extension_sketch_image
+        full_uri_sketch_image = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_sketch_image}"
+        try:
+            with open(full_uri_sketch_image, "wb") as image: image.write(sketch_image_bytes)
+        except Exception as e:
+            print(f"Error occurred while saving image: {str(e)}")
+            return None, None
+        return [full_uri_sketch_image]
+
+    @staticmethod
     def save_edit_images(edit_image_dict):
         edit_image_bytes = edit_image_dict.get("edit_image")
         edit_image_mask_bytes = edit_image_dict.get("edit_image_mask")

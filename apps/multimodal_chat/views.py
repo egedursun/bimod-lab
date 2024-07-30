@@ -116,6 +116,18 @@ class ChatView(LoginRequiredMixin, TemplateView):
 
             attached_files = request.FILES.getlist('attached_files[]')
 
+            # canvas image
+            sketch_image = {'sketch_image': None}
+            attached_canvas_image = request.POST.get('sketch_image')
+            sketch_image_full_uris_list = []
+            try:
+                sketch_image_bytes = base64.b64decode(attached_canvas_image.split("base64,")[1].encode())
+                sketch_image['sketch_image'] = sketch_image_bytes
+                sketch_image_full_uris_list = StorageExecutor.save_sketch_images(sketch_image_dict=sketch_image)
+            except Exception as e:
+                print(f"Error in 'sketch image' file: {e}")
+
+            # image modification
             edit_image_bytes_dict = {'edit_image': None, 'edit_image_mask': None}
             attached_edit_image = request.FILES.get('edit_image')
             attached_edit_image_mask = request.POST.get('edit_image_mask')
@@ -139,6 +151,9 @@ class ChatView(LoginRequiredMixin, TemplateView):
                     continue
                 image_bytes_list.append(image_bytes)
             image_full_uris = StorageExecutor.save_images_and_provide_full_uris(image_bytes_list)
+
+            if sketch_image_full_uris_list:
+                image_full_uris.extend(sketch_image_full_uris_list)
             if edit_image_full_uris_list:
                 image_full_uris.extend(edit_image_full_uris_list)
 

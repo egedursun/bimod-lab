@@ -572,18 +572,16 @@
                 <div class="message-actions d-flex align-items-center">
                   <i class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
 
-                  <!-- TODO: new functionality here: sketch images -->
-                  <label for="sketch-image" class="form-label mb-0">
-                    <i class="ti ti-brush ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
-                    <!-- ... -->
+                  <label for="sketch-image-label" class="form-label mb-0">
+                    <i class="ti ti-brush ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"
+                       data-bs-toggle="modal" data-bs-target="#canvasEditModal"></i>
                   </label>
-
+                  <input type="hidden" id="sketch-image" name="sketch_image" class="d-none" hidden accept=".jpeg,.png,.gif,.webp">
                   <label for="edit-image" class="form-label mb-0">
                     <i class="ti ti-photo-edit ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                     <input type="file" id="edit-image" name="edit_image" hidden accept=".jpeg,.png,.gif,.webp">
                   </label>
                   <input type="hidden" name="edit_image_mask" id="edit-image-mask" value="">
-
                   <label for="attach-image" class="form-label mb-0">
                     <i class="ti ti-photo ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                     <input type="file" id="attach-image" name="attached_images[]" multiple hidden accept=".jpeg,.png,.gif,.webp">
@@ -674,6 +672,54 @@
     <!-- /Sidebar Right -->
   </div>
 
+  <!-- Freeform Drawing Modal -->
+<div class="modal fade" id="canvasEditModal" tabindex="-1" aria-labelledby="canvasEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 60%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="canvasEditModalLabel"><strong>Draw on Canvas</strong></h5>
+                <button type="button" class="btn-close bg-danger-subtle" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <hr>
+            <div class="modal-body" style="justify-content: center; display: flex; align-items: center;">
+                <div id="canvasContainer" class="border border-label-primary mb-8"></div>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-4 mb-8" role="alert" style="margin-left: 20%; margin-right: 20%;">
+                <span class="alert-icon rounded">
+                    <i class="ti ti-info-circle"></i>
+                </span>
+                Use the drawing tool to draw on the canvas. You can switch to the eraser to remove any drawn sections.
+            </div>
+            <div class="d-flex align-items-center justify-content-center align-content-center mb-12">
+                <i class="fa fa-brush me-1"></i>
+                <i class="fa fa-circle-dot me-12"></i>
+                <input type="range" class="form-range me-12" id="brushSize" min="1" max="100" value="50" style="max-width: 400px;">
+                <button type="button" class="btn btn-warning m-2" id="brushTool">
+                    <i class="fa fa-paint-brush"></i>
+                </button>
+                <button type="button" class="btn btn-warning m-2" id="eraserTool">
+                    <i class="fa fa-eraser"></i>
+                </button>
+                <button type="button" class="btn btn-danger m-2" id="resetTool">
+                    <i class="fa fa-trash"></i>
+                </button>
+                <button type="button" class="btn btn-primary m-2" id="saveCanvasEdits">
+                    <i class="fa fa-save me-2"></i>
+                    <strong>Save Canvas</strong>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+  <style>
+        #canvasContainer {
+            width: 100%;
+            height: 500px;
+            display: inline-block;
+            background-color: white;
+        }
+    </style>
+
   <!-- Image Edit Modal -->
   <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="max-width: 80%;">
@@ -739,91 +785,190 @@
 <script src="https://unpkg.com/konva@9.3.14/konva.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const fileInput = document.getElementById('edit-image');
-    const maskInput = document.getElementById('edit-image-mask');
-    let stage, layer, imageNode;
-    let isErasing = false;
-    let brushSize = 50;
-    let originalImage;
+    document.addEventListener('DOMContentLoaded', function() {
+        let stage, layer, background;
+        let isDrawing = false;
+        let mode = 'draw';
+        let brushSize = 25;
 
-    fileInput.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    originalImage = img.src;
-                    if (stage) {
-                        stage.destroy();
-                    }
-                    stage = new Konva.Stage({
-                        container: 'imageCanvas', // Make sure this matches your canvas container ID
-                        width: img.width,
-                        height: img.height
-                    });
+        function initCanvas() {
+            stage = new Konva.Stage({
+                container: 'canvasContainer',
+                width: document.getElementById('canvasContainer').offsetWidth,
+                height: document.getElementById('canvasContainer').offsetHeight
+            });
 
-                    layer = new Konva.Layer();
-                    stage.add(layer);
+            layer = new Konva.Layer();
+            stage.add(layer);
 
-                    imageNode = new Konva.Image({
-                        image: img,
-                        width: img.width,
-                        height: img.height
-                    });
+            background = new Konva.Rect({
+                x: 0,
+                y: 0,
+                width: stage.width(),
+                height: stage.height(),
+                fill: 'white'
+            });
+            layer.add(background);
+            layer.draw();
 
-                    layer.add(imageNode);
-                    layer.draw();
+            stage.on('mousedown touchstart', function() {
+                isDrawing = true;
+            });
 
-                    stage.on('mousedown touchstart', function() {
-                        isErasing = true;
-                    });
+            stage.on('mouseup touchend', function() {
+                isDrawing = false;
+            });
 
-                    stage.on('mouseup touchend', function() {
-                        isErasing = false;
-                    });
+            stage.on('mousemove touchmove', function(e) {
+                if (!isDrawing) return;
 
-                    stage.on('mousemove touchmove', function(e) {
-                        if (!isErasing) {
-                            return;
-                        }
+                const pos = stage.getPointerPosition();
 
-                        const pos = stage.getPointerPosition();
-                        layer.add(new Konva.Circle({
-                            x: pos.x,
-                            y: pos.y,
-                            radius: brushSize / 2,
-                            fill: 'black',
-                            globalCompositeOperation: 'destination-out'
-                        }));
-                        layer.batchDraw();
-                    });
-
-                    $('#imageEditModal').modal('show');
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+                if (mode === 'draw') {
+                    layer.add(new Konva.Circle({
+                        x: pos.x,
+                        y: pos.y,
+                        radius: brushSize / 2,
+                        fill: 'black'
+                    }));
+                } else if (mode === 'erase') {
+                    layer.add(new Konva.Circle({
+                        x: pos.x,
+                        y: pos.y,
+                        radius: brushSize / 2,
+                        fill: 'white',
+                        globalCompositeOperation: 'destination-out'
+                    }));
+                }
+                layer.batchDraw();
+            });
         }
-    });
 
-    document.getElementById('brushSize').addEventListener('input', function() {
-        brushSize = this.value;
-    });
+        $('#canvasEditModal').on('shown.bs.modal', function () {
+            initCanvas();
+        });
 
-    document.getElementById('eraserTool').addEventListener('click', function() {
-        // clear the layer
-        layer.destroyChildren();
-        layer.add(imageNode);
-        layer.draw();
-    });
+        document.getElementById('brushSize').addEventListener('input', function() {
+            brushSize = this.value;
+        });
 
-    document.getElementById('saveImageEdits').addEventListener('click', function() {
-        maskInput.value = stage.toDataURL({ pixelRatio: 1 });
-        $('#imageEditModal').modal('hide');
+        document.getElementById('brushTool').addEventListener('click', function() {
+            mode = 'draw';
+        });
+
+        document.getElementById('eraserTool').addEventListener('click', function() {
+            mode = 'erase';
+        });
+
+        document.getElementById('resetTool').addEventListener('click', function() {
+          // clear the layer
+          layer.destroyChildren();
+          layer.add(background);
+          layer.draw();
+      });
+
+        document.getElementById('saveCanvasEdits').addEventListener('click', function() {
+          document.getElementById('sketch-image').value = stage.toDataURL({pixelRatio: 1});
+          $('#canvasEditModal').modal('hide');
+          // show the thumbnail in the image staging
+          const stagingElement = document.getElementById('image_display_area');
+          const divElement = stagingElement.appendChild(document.createElement('div'));
+          divElement.innerHTML = `
+          <div class="badge bg-info d-flex align-items-center my-2">
+              <strong>SKETCH <i class="fa fa-lightbulb me-4"></i></strong>
+              <img src="${stage.toDataURL({pixelRatio: 0.5})}" class="img-fluid rounded" style="max-width: 100px;" alt="Image">
+          </div>
+          `;
+        });
     });
-});
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const fileInput = document.getElementById('edit-image');
+      const maskInput = document.getElementById('edit-image-mask');
+      let stage, layer, imageNode;
+      let isErasing = false;
+      let brushSize = 50;
+      let originalImage;
+
+      fileInput.addEventListener('change', function(event) {
+          const file = event.target.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                  const img = new Image();
+                  img.onload = function() {
+                      originalImage = img.src;
+                      if (stage) {
+                          stage.destroy();
+                      }
+                      stage = new Konva.Stage({
+                          container: 'imageCanvas', // Make sure this matches your canvas container ID
+                          width: img.width,
+                          height: img.height
+                      });
+
+                      layer = new Konva.Layer();
+                      stage.add(layer);
+
+                      imageNode = new Konva.Image({
+                          image: img,
+                          width: img.width,
+                          height: img.height
+                      });
+
+                      layer.add(imageNode);
+                      layer.draw();
+
+                      stage.on('mousedown touchstart', function() {
+                          isErasing = true;
+                      });
+
+                      stage.on('mouseup touchend', function() {
+                          isErasing = false;
+                      });
+
+                      stage.on('mousemove touchmove', function(e) {
+                          if (!isErasing) {
+                              return;
+                          }
+
+                          const pos = stage.getPointerPosition();
+                          layer.add(new Konva.Circle({
+                              x: pos.x,
+                              y: pos.y,
+                              radius: brushSize / 2,
+                              fill: 'black',
+                              globalCompositeOperation: 'destination-out'
+                          }));
+                          layer.batchDraw();
+                      });
+
+                      $('#imageEditModal').modal('show');
+                  };
+                  img.src = e.target.result;
+              };
+              reader.readAsDataURL(file);
+          }
+      });
+
+      document.getElementById('brushSize').addEventListener('input', function() {
+          brushSize = this.value;
+      });
+
+      document.getElementById('eraserTool').addEventListener('click', function() {
+          // clear the layer
+          layer.destroyChildren();
+          layer.add(imageNode);
+          layer.draw();
+      });
+
+      document.getElementById('saveImageEdits').addEventListener('click', function() {
+          maskInput.value = stage.toDataURL({ pixelRatio: 1 });
+          $('#imageEditModal').modal('hide');
+      });
+  });
 
 </script>
 
@@ -1052,7 +1197,6 @@ document.addEventListener('DOMContentLoaded', function() {
           Template text copied to chat input!
         `;
             alertContainer.appendChild(successAlert);
-
             setTimeout(() => {
               successAlert.remove();
             }, 1000);

@@ -73,6 +73,12 @@ def build_structured_tool_prompt__media_storage_query_execution():
 
             **IMPORTANT NOTES:**
 
+            - *IMAGE PREFIXES*:
+                - If the image URI you have includes a prefix 'free_form__user_sketch__', this means that the image
+                is a user sketch. This information is shared with you so that you can understand that the user drew
+                this picture while interacting with you, within the chat interface. You can use this information to
+                provide a more accurate response to the user's question.
+
             - "NEVER, EVER" try to operate on "files" and "images" at the same time. Instead of this approach, first
             operate on the "files" and then operate on the "images" in a separate operation. This is because the
             system will not be able to understand which operation you would like to perform if you provide both
