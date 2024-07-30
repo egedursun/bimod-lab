@@ -88,6 +88,7 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
         context['filter'] = filter_value
         context['delta_specifier'] = delta_specifier
         context['time_specifier'] = time_specifier
+        context['user_organizations'] = organizations
         return context
 
     def get_filter_date(self, filter_value, delta_specifier, time_specifier):

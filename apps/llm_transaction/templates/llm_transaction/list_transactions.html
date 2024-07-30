@@ -55,6 +55,42 @@
   </div>
 </div>
 
+<div class="row mb-6">
+  <div class="col-sm-12 col-xl-12">
+    <h6 class="text-muted">Balance Transfer</h6>
+    <form method="post" action="{% url 'organization:balance_transfer' %}">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="source_org" class="form-label">Source Organization</label>
+        <select class="form-select" id="source_org" name="source_org" required>
+          {% for org in user_organizations %}
+          <option value="{{ org.id }}">
+            {{ org.name }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ Balance: ${{ org.balance }} ]
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="destination_org" class="form-label">Destination Organization</label>
+        <select class="form-select" id="destination_org" name="destination_org" required>
+          {% for org in user_organizations %}
+            <option value="{{ org.id }}">
+              {{ org.name }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ Balance: ${{ org.balance }} ]
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="transfer_amount" class="form-label">Amount</label>
+        <input type="number" class="form-control" id="transfer_amount" name="transfer_amount" placeholder="Enter amount to transfer" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-25"><strong>Transfer Balance</strong></button>
+    </form>
+  </div>
+</div>
+
+<hr>
+
 <!-- Tabs for Filtering -->
 <div class="row g-4 mb-4">
   <div class="col-xl-12">

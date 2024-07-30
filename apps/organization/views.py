@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, get_object_or_404
+from django.views import View
 from django.views.generic import TemplateView, DeleteView
 
 from apps.organization.forms import OrganizationForm
@@ -215,3 +216,42 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
 
         return redirect('llm_transaction:list')
 
+
+class OrganizationBalanceTransferView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        source_org_id = request.POST.get('source_org')
+        destination_org_id = request.POST.get('destination_org')
+        transfer_amount = request.POST.get('transfer_amount')
+
+        if transfer_amount is None:
+            messages.error(request, "Invalid transfer amount.")
+            return redirect('llm_transaction:list')
+
+        try:
+            transfer_amount = decimal.Decimal(transfer_amount)
+        except decimal.InvalidOperation:
+            messages.error(request, "Invalid transfer amount.")
+            return redirect('llm_transaction:list')
+
+        if transfer_amount <= 0:
+            messages.error(request, "Transfer amount must be greater than zero.")
+            return redirect('llm_transaction:list')
+        if source_org_id == destination_org_id:
+            messages.error(request, "Source and destination organizations cannot be the same.")
+            return redirect('llm_transaction:list')
+
+        source_org = get_object_or_404(Organization, id=source_org_id, users__in=[request.user])
+        destination_org = get_object_or_404(Organization, id=destination_org_id, users__in=[request.user])
+
+        if source_org.balance < transfer_amount:
+            messages.error(request, "Insufficient balance in the source organization.")
+            return redirect('llm_transaction:list')
+
+        source_org.balance -= transfer_amount
+        destination_org.balance += transfer_amount
+
+        source_org.save()
+        destination_org.save()
+
+        messages.success(request, f"${transfer_amount} successfully transferred from {source_org.name} to {destination_org.name}.")
+        return redirect('llm_transaction:list')

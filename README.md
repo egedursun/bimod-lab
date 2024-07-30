@@ -172,6 +172,7 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 1. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
 2. [ ] Users page [PROMO CODE] integration to the data model.
 3. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
+4. [ ] [BLOCKCHAIN] integration for the application.
 
 
 *Helper Functionalities:*
