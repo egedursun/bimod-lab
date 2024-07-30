@@ -1,14 +1,14 @@
 
 
-def delete_weaviate_class_helper(executor, class_name):
+def delete_code_repository_class_helper(executor, class_name):
     c = executor.connect_c()
     output = {"status": True, "error": ""}
     try:
-        # Delete - Code Repository Class
+        # Delete - Document class
         r = c.collections.delete(class_name)
-        # Delete - Code repository chunks class
+        # Delete - Document Chunks class
         r = c.collections.delete(f"{class_name}Chunks")
     except Exception as e:
         output["status"] = False
-        output["error"] = f"Error deleting code repository classes: {e}"
+        output["error"] = f"Error deleting code repository Weaviate classes: {e}"
     return output

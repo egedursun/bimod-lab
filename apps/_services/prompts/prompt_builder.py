@@ -1,6 +1,7 @@
 
 from django.contrib.auth.models import User
 
+from apps._services.prompts.datasource.build_browser_datasource_prompt import build_browsing_datasource_prompt
 from apps._services.prompts.datasource.build_file_system_datasource_prompt import build_file_system_datasource_prompt
 from apps._services.prompts.datasource.build_knowledge_base_datasource_prompt import \
     build_knowledge_base_datasource_prompt
@@ -25,6 +26,8 @@ from apps._services.prompts.multimodality.build_functions_multimodality_prompt i
 from apps._services.prompts.multimodality.build_scripts_multimodality_prompt import build_scripts_multimodality_prompt
 from apps._services.prompts.tools.build_tool_usage_instructions_prompt import \
     build_structured_tool_usage_instructions_prompt
+from apps._services.prompts.tools.tool_prompts.build_browsing_executor_tool_prompt import \
+    build_structured_tool_prompt__browsing_executor
 from apps._services.prompts.tools.tool_prompts.build_code_interpreter_tool_prompt import \
     build_structured_tool_prompt__code_interpreter
 from apps._services.prompts.tools.tool_prompts.build_custom_api_execution_tool_prompt import \
@@ -93,6 +96,7 @@ class PromptBuilder:
         structured_file_system_prompt = build_file_system_datasource_prompt(assistant, user)
         structured_media_storage_prompt = build_storage_datasource_prompt(assistant, user)
         structured_ml_model_prompt = build_ml_models_datasource_prompt(assistant, user)
+        structured_browsing_datasource_prompt = build_browsing_datasource_prompt(assistant, user)
         ##################################################
         # MULTI MODALITY PROMPTS
         structured_functions_prompt = build_functions_multimodality_prompt(assistant)
@@ -115,6 +119,7 @@ class PromptBuilder:
         structured_storage_query_execution_tool_prompt = build_structured_tool_prompt__media_storage_query_execution()
         structured_url_file_downloader_tool_prompt = build_structured_tool_prompt__url_file_downloader()
         structured_predict_with_ml_model_execution_tool_prompt = build_structured_tool_prompt__predict_with_ml_model_execution()
+        structured_browsing_execution_tool_prompt = build_structured_tool_prompt__browsing_executor()
         structured_code_interpreter_tool_prompt = build_structured_tool_prompt__code_interpreter()
         structured_custom_function_execution_tool_prompt = build_structured_tool_prompt__custom_code_execution()
         structured_custom_api_execution_tool_prompt = build_structured_tool_prompt__custom_api_execution()
@@ -144,6 +149,7 @@ class PromptBuilder:
         merged_prompt += structured_file_system_prompt
         merged_prompt += structured_media_storage_prompt
         merged_prompt += structured_ml_model_prompt
+        merged_prompt += structured_browsing_datasource_prompt
         ##################################################
         # MULTI MODALITY PROMPTS
         merged_prompt += structured_functions_prompt
@@ -161,6 +167,7 @@ class PromptBuilder:
         merged_prompt += structured_storage_query_execution_tool_prompt
         merged_prompt += structured_url_file_downloader_tool_prompt
         merged_prompt += structured_predict_with_ml_model_execution_tool_prompt
+        merged_prompt += structured_browsing_execution_tool_prompt
         merged_prompt += structured_code_interpreter_tool_prompt
         merged_prompt += structured_custom_function_execution_tool_prompt
         merged_prompt += structured_custom_api_execution_tool_prompt

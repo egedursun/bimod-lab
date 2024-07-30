@@ -24,6 +24,12 @@ class ToolCostsMap:
     class KnowledgeBaseExecutor:
         COST = 0.0100 * MULTIPLIER
 
+    class BrowsingExecutor:
+        COST = 0.0025 * MULTIPLIER
+
+    class CodeRepositoryExecutor:
+        COST = 0.0100 * MULTIPLIER
+
     class MLModelExecutor:
         COST = 0.0150 * MULTIPLIER
 

@@ -34,12 +34,6 @@ def create_classes_helper(executor):
                     tokenization=wvc.config.Tokenization.LOWERCASE
                 ),
                 wvc.config.Property(
-                    name="repository_type",
-                    data_type=wvc.config.DataType.TEXT,
-                    vectorize_property_name=True,
-                    tokenization=wvc.config.Tokenization.LOWERCASE
-                ),
-                wvc.config.Property(
                     name="repository_metadata",
                     data_type=wvc.config.DataType.TEXT,
                     vectorize_property_name=True,
@@ -60,13 +54,13 @@ def create_classes_helper(executor):
             ]
         )
     except Exception as e:
-        print(f"Error creating Weaviate class: {e}")
+        print(f"Error creating Code Repository Weaviate class: {e}")
         output["status"] = False
         output["error"] = str(e)
         return output
 
     try:
-        new_repository_content_chunks_class = c.collections.create(
+        new_repository_chunks_class = c.collections.create(
             name=f"{conn.class_name}Chunks",
             vectorizer_config=executor.decode_vectorizer(
                 conn.vectorizer
@@ -131,5 +125,5 @@ def create_classes_helper(executor):
         output["error"] = str(e)
         return output
 
-    print(f"Created Code Repository classes: {new_code_repository_class}, {new_repository_content_chunks_class}")
+    print(f"Created Code Repository classes: {new_code_repository_class}, {new_repository_chunks_class}")
     return output

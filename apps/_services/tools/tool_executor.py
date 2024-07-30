@@ -1,6 +1,7 @@
 import json
 
 from apps._services.tools.const import ToolTypeNames
+from apps._services.tools.execution_handlers.browser_execution_tool_handler import execute_browser_action
 from apps._services.tools.execution_handlers.code_interpreter_execution_handler import execute_code_interpreter
 from apps._services.tools.execution_handlers.custom_api_execution_handler import execute_api_executor
 from apps._services.tools.execution_handlers.custom_function_execution_handler import execute_custom_code_executor
@@ -15,6 +16,7 @@ from apps._services.tools.execution_handlers.nosql_query_execution_handler impor
 from apps._services.tools.execution_handlers.predict_with_ml_model_execution_handler import execute_predict_ml_model
 from apps._services.tools.execution_handlers.sql_query_execution_handler import execute_sql_query
 from apps._services.tools.execution_handlers.url_file_downloader_execution_handler import execute_url_file_downloader
+from apps._services.tools.validators.browser_execution_tool_validator import validate_browser_execution_tool_json
 from apps._services.tools.validators.code_interpreter_execution_tool_validator import \
     validate_code_interpreter_execution_tool_json
 from apps._services.tools.validators.context_history_query_execution_tool_validator import \
@@ -375,6 +377,29 @@ class ToolExecutor:
             # Convert the tool response to a string and pretty format
             image_variation_response_raw_str = json.dumps(image_variation_response, sort_keys=True, default=str)
             tool_response += image_variation_response_raw_str
+        ##################################################
+        # Browsing Tool
+        elif tool_name == ToolTypeNames.BROWSING:
+            error = validate_browser_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+
+            connection_id = self.tool_usage_json.get("parameters").get("browser_connection_id")
+            action = self.tool_usage_json.get("parameters").get("action")
+            query, page, search_results, click_url = None, None, None, None
+            if action == "browser_search":
+                query = self.tool_usage_json.get("parameters").get("query")
+                page = self.tool_usage_json.get("parameters").get("page")
+            elif action == "click_url_in_search":
+                search_results = self.tool_usage_json.get("parameters").get("search_results")
+                click_url = self.tool_usage_json.get("parameters").get("click_url")
+
+            browser_response = execute_browser_action(
+                connection_id=connection_id, action=action, query=query, page=page, search_results=search_results,
+                click_url=click_url)
+
+            # Convert the tool response to a string and pretty format
+            browser_response_raw_str = json.dumps(browser_response, sort_keys=True, default=str)
+            tool_response += browser_response_raw_str
         ##################################################
         # ...
 

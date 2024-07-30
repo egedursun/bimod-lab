@@ -1,0 +1,172 @@
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Browsing Logs for {{ browser_connection.name }}{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/browsing-logs.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-3">
+    <h3 class="mb-0">Browsing Logs</h3>
+    <h5 class="mb-0">{{ browser_connection.name }}</h5>
+  </div>
+</div>
+
+<div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+  <img src="{% static 'img/custom-illustrations/boy-user-edit.png' %}" width="25%" class="justify-content-end">
+  <span class="alert-icon rounded ms-4">
+    <i class="bi bi-info-circle"></i>
+  </span>
+  <div class="d-flex flex-column ps-1">
+    <h5 class="alert-heading mb-2">Tip</h5>
+    <p class="mb-0">
+      Use the search box to find specific logs by action or content. You can view the details of each log to understand the browsing activity.
+    </p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+  </div>
+</div>
+
+<!-- Search and Filter Form -->
+<div class="row g-4 mb-4">
+  <div class="col-xl-12">
+    <h5 class="text-muted"><strong>Filter Browsing Logs</strong></h5>
+    <div class="card text-center mb-4">
+      <div class="card-header">
+        <div class="nav-align-top">
+          <form method="get" action=".">
+            <div class="input-group mb-3">
+              <input type="text" name="search" value="{{ request.GET.search }}" class="form-control" placeholder="Search by action or content">
+              <button type="submit" class="btn btn-primary"><strong>Search</strong></button>
+              <a href="." class="btn btn-secondary"><strong>Clear</strong></a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Browsing Logs List Table -->
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title">Browsing Logs</h5>
+  </div>
+  <div class="card-datatable table-responsive">
+    <table class="table datatables-browsing-logs">
+      <thead class="border-top">
+        <tr>
+          <th><strong>Action</strong></th>
+          <th>Context URL</th>
+          <th>HTML Content</th>
+          <th>Context Content</th>
+          <th>Log Content</th>
+          <th>Created At</th>
+          <th>Download HTML</th>
+          <th>Download Context Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in page_obj %}
+        <tr>
+          <td>
+            <div class="bg-label-success m-2 p-2 rounded">
+              <strong>{{ log.action|capfirst }}</strong>
+            </div>
+          </td>
+          <td>
+              {% if log.context_url %}
+                <p class="bg-label-info p-4 m-2 rounded" style="font-size: 12px;">
+                  <strong><a href="{{ log.context_url }}" target="_blank">{{ log.context_url }}</a></strong>
+                </p>
+              {% else %}
+                <p class="bg-label-warning p-4 m-2 rounded">
+                  <small>No context URL available</small>
+                </p>
+              {% endif %}
+          </td>
+          <td style="max-width: 400px;">
+              {% if log.html_content %}
+                <div class="bg-label-dark rounded p-2 m-2 overflow-scroll font-monospace" style="max-height: 200px; font-size: 11px;">
+                  {{ log.html_content|linebreaks }}
+                </div>
+              {% else %}
+                <div class="bg-label-warning rounded p-2 m-2">
+                  <small>No HTML content available</small>
+                </div>
+              {% endif %}
+          </td>
+          <td style="max-width: 400px;">
+              {% if log.context_content %}
+                <div class="bg-label-dark rounded p-2 m-2 overflow-scroll font-monospace" style="max-height: 200px; font-size: 11px;">
+                  {{ log.context_content|linebreaks }}
+                </div>
+              {% else %}
+                <div class="bg-label-warning rounded p-2 m-2">
+                  <small>No context content available</small>
+                </div>
+              {% endif %}
+          </td>
+          <td style="max-width: 400px;">
+            <p class="bg-label-secondary p-4 m-2 rounded text-dark font-monospace" style="font-size: 11px;">
+              {{ log.log_content|linebreaksbr }}
+            </p>
+          </td>
+          <td style="min-width:250px;">{{ log.created_at }}</td>
+          <td>
+            <a href="{% url 'datasource_browser:download_html' log.pk %}" class="btn btn-primary"><i class="bi bi-download me-4"></i><strong>Download HTML</strong></a>
+          </td>
+          <td>
+            <a href="{% url 'datasource_browser:download_context' log.pk %}" class="btn btn-primary"><i class="bi bi-download me-4"></i><strong>Download JSON</strong></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination pagination-rounded m-4 pb-4 overflow-scroll">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}"><i class="bi bi-chevron-double-left"></i></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"><i class="bi bi-chevron-left"></i></a>
+        </li>
+        {% endif %}
+        {% for page_num in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
+          <a class="page-link" href="?page={{ page_num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ page_num }}</a>
+        </li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"><i class="bi bi-chevron-right"></i></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}"><i class="bi bi-chevron-double-right"></i></a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+{% endblock %}

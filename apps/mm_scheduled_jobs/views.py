@@ -8,6 +8,7 @@ from django.views.generic import TemplateView
 
 from apps.mm_scheduled_jobs.forms import ScheduledJobForm
 from apps.mm_scheduled_jobs.models import ScheduledJob, ScheduledJobInstance
+from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 
 
@@ -22,6 +23,21 @@ class CreateScheduledJobView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = ScheduledJobForm(request.POST)
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD SCHEDULED JOBS
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=request.user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.ADD_SCHEDULED_JOBS not in user_permissions:
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {"Permission Error": "You do not have permission to add scheduled jobs."}
+            return self.render_to_response(context)
+        ##############################
 
         if form.is_valid():
             scheduled_job = form.save(commit=False)
@@ -108,6 +124,22 @@ class ConfirmDeleteScheduledJobView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE SCHEDULED JOBS
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=request.user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.DELETE_SCHEDULED_JOBS not in user_permissions:
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {"Permission Error": "You do not have permission to delete scheduled jobs."}
+            return self.render_to_response(context)
+        ##############################
+
         scheduled_job_id = self.kwargs.get('pk')
         scheduled_job = get_object_or_404(ScheduledJob, id=scheduled_job_id)
         scheduled_job.delete()

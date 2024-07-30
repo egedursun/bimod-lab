@@ -125,7 +125,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 sketch_image['sketch_image'] = sketch_image_bytes
                 sketch_image_full_uris_list = StorageExecutor.save_sketch_images(sketch_image_dict=sketch_image)
             except Exception as e:
-                print(f"Error in 'sketch image' file: {e}")
+                # No image attached
+                pass
 
             # image modification
             edit_image_bytes_dict = {'edit_image': None, 'edit_image_mask': None}
@@ -139,7 +140,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 edit_image_bytes_dict['edit_image_mask'] = edit_image_mask_bytes
                 edit_image_full_uris_list = StorageExecutor.save_edit_images(edit_image_dict=edit_image_bytes_dict)
             except Exception as e:
-                print(f"Error in 'edit image' or 'edit image mask' file: {e}")
+                # No image attached
+                pass
 
             # Upload the attached images
             image_bytes_list = []

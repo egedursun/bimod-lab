@@ -18,6 +18,7 @@ from apps.mm_triggered_jobs.forms import TriggeredJobForm
 from apps.mm_triggered_jobs.models import TriggeredJob, TriggeredJobInstance, TriggeredJobInstanceStatusesNames
 from apps.mm_triggered_jobs.utils import generate_triggered_job_chat_name
 from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
+from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 
 
@@ -203,6 +204,21 @@ class CreateTriggeredJobView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = TriggeredJobForm(request.POST)
 
+        ##############################
+        # PERMISSION CHECK FOR - ADD TRIGGERED JOB
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=request.user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.ADD_TRIGGERS not in user_permissions:
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {"Permission Error": "You do not have permission to add triggered jobs."}
+            return self.render_to_response(context)
+        ##############################
+
         if form.is_valid():
             triggered_job = form.save(commit=False)
             triggered_job.created_by_user = request.user
@@ -288,6 +304,22 @@ class ConfirmDeleteTriggeredJobView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD TRIGGERED JOB
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=request.user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.DELETE_TRIGGERS not in user_permissions:
+            context = self.get_context_data(**kwargs)
+            context['error_messages'] = {"Permission Error": "You do not have permission to delete triggered jobs."}
+            return self.render_to_response(context)
+        ##############################
+
         triggered_job_id = self.kwargs.get('pk')
         triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)
         triggered_job.delete()

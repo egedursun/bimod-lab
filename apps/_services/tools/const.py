@@ -8,6 +8,7 @@ class ToolTypeNames:
     VECTOR_CHAT_HISTORY_QUERY_EXECUTION = 'Vector Chat History Query Execution'
     FILE_SYSTEM_COMMAND_EXECUTION = 'File System Command Execution'
     MEDIA_STORAGE_QUERY_EXECUTION = 'Media Storage Query Execution'
+    BROWSING = 'Browsing'
     URL_FILE_DOWNLOADER = 'URL File Downloader'
     PREDICTION_WITH_ML_MODEL = 'Prediction with ML Model'
     CODE_INTERPRETER = 'Code Interpreter'

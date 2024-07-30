@@ -108,12 +108,10 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 
 **THINGS TO REMEMBER:**
 
+
 *Important:*
-1. Implement the [WEB BROWSING] data source. (TUESDAY, WEDNESDAY, THURSDAY 31/07, 01/08, 02/08)
-2. [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
-3. [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 05/08, 06/08)
-4. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
-5. [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY, THURSDAY 07/08, 08/08, 09/08)
+1. [ ] Implement the [DASHBOARD] page.
+2. [ ] Implement the [ORCHESTRATION] manager.
 
 *Deployment Changes:*
 1. [ ] Implement [LOGGING] to all pages.
@@ -121,19 +119,19 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 3. [ ] Implement [HTTPS] configuration.
 4. [ ] Implement [CORS] configuration.
 5. [ ] Implement [SMTP] configuration.
-7. [ ] Implement [PAYMENT GATEWAY] for the application.
-8. [ ] Implement and fix [MAIN SEARCH BAR] for the application.
-9. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-10. [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
-11. [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
-12. [ ] Delete the [INTERNAL MEDIA DIRECTORY] from the repository.
-13. [ ] Code [CLEANUP AND REFACTORING].
-14. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
-15. [ ] Deploy the [APPLICATION].
-16. [ ] Protect the [MAIN BRANCH] from direct merges.
-17. [ ] Create the [DEVELOPMENT BRANCH] from the main branch.
-18. [ ] Protect [DIRECT MERGES] to the development branch.
-19. [ ] RELEASE v0.1.0 [RELEASE: BETA] version of the application.
+6. [ ] Implement [PAYMENT GATEWAY] for the application.
+7. [ ] Implement and fix [MAIN SEARCH BAR] for the application.
+8. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+9. [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
+10. [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
+11. [ ] Delete the [INTERNAL MEDIA DIRECTORY] from the repository.
+12. [ ] Code [CLEANUP AND REFACTORING].
+13. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
+14. [ ] Deploy the [APPLICATION].
+15. [ ] Protect the [MAIN BRANCH] from direct merges.
+16. [ ] Create the [DEVELOPMENT BRANCH] from the main branch.
+17. [ ] Protect [DIRECT MERGES] to the development branch.
+18. [ ] RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---
 
 *After first deployment:*
@@ -154,17 +152,11 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 ---
 
 *Ongoing Improvements:*
-1. [ ] Bugfixes and Stability improvements [BUGFIX & STABILITY]
-2. [ ] RELEASE v0.3.0 [RELEASE: BETA] version of the application.
-3. [ ] Store additions [FUNC STORE, API STORE, SCRIPT STORE]
-4. [ ] RELEASE v0.4.0 [RELEASE: BETA] version of the application.
-5. [ ] Boilerplate knowledge bases [BOILERPLATE KNOWLEDGE BASES]
-6. [ ] RELEASE v0.5.0 [RELEASE: BETA] version of the application.
-7. [ ] RELEASE v0.6.0 [RELEASE: BETA] version of the application.
-8. [ ] Integration (Boilerplate assistant) Systems [ASSISTANT - INTEGRATION SYSTEMS]
-9. [ ] RELEASE v0.7.0 [RELEASE: BETA] version of the application.
-10. [ ] Meta-Integration (Boilerplate group of assistants) Systems [POLY-ASSISTANT - META-INTEGRATION SYSTEMS]
-11. [ ] RELEASE v0.8.0 [RELEASE: BETA] version of the application.
+1. [ ] Bugfixes and Stability improvements [BUGFIX & STABILITY] / RELEASE v0.3.0 [RELEASE: BETA] version of the application.
+2. [ ] Store additions [FUNC STORE, API STORE, SCRIPT STORE] / RELEASE v0.4.0 [RELEASE: BETA] version of the application.
+3. [ ] Boilerplate knowledge bases [BOILERPLATE KNOWLEDGE BASES] / [ ] RELEASE v0.5.0 [RELEASE: BETA] version of the application.
+4. [ ] Integration (Boilerplate assistant) Systems [ASSISTANT - INTEGRATION SYSTEMS] / RELEASE v0.6.0 [RELEASE: BETA] version of the application.
+5. [ ] Meta-Integration (Boilerplate group of assistants) Systems [POLY-ASSISTANT - META-INTEGRATION SYSTEMS] / RELEASE v0.7.0 [RELEASE: BETA] version of the application.
 
 ---
 
@@ -173,15 +165,8 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 2. [ ] Users page [PROMO CODE] integration to the data model.
 3. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
 4. [ ] [BLOCKCHAIN] integration for the application.
-
-
-*Helper Functionalities:*
-
-- [ ] Helper for building from scratch (meta helper for creating organizations, assistants, connections, etc.)
-- [ ] add a promo code field for the users to use for free balance top-ups. (~1 hour)
-        - PROMO-CODE: connected to user(A), when the user(B) registers; if the user(B) uses the promo code of user(A), 
-                      user(A) will get +$X balance, and user(B) will get +$Y balance.
-        - PARAMETERS: [promo_beneficiary, promo_beneficiary_gift, promo_invitee_gift, promo_limit, promo_expiry_date]
+5. [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
+6. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
 
 ---
 
@@ -193,13 +178,13 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 ---
 
 *Standalone Applications:*
-- [] Django Mainframe (Server + Web Application)
+- [ ] Django Mainframe (Server + Web Application)
   - [ ] For the main application and the frontend of the web application.
   - [ ] The flagship application for the Bimod project.
-- [] Electron Copilot (Desktop Application) 
+- [ ] Electron Copilot (Desktop Application) 
   - [ ] For image and text-based management and manipulation within the OS and overall system usage.
   - [ ] Can also understand the context of the browsers while the user is actively using the browser and OS.
-- [] Progressive Web App (PWA) (Android & iOS Application)
+- [ ] Progressive Web App (PWA) (Android & iOS Application)
      - Primarily for:
        - [ ] Connecting an exported assistant and chatting with the assistant.
        - [ ] Communicating with STT and TTS services.

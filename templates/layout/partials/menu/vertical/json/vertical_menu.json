@@ -238,12 +238,12 @@
         {
           "name": "Connect Browser",
           "slug": "web-browser",
-          "url": "dashboard:main-dashboard"
+          "url": "datasource_browsers:create"
         },
         {
           "name": "Browser Connections",
           "slug": "web-browser",
-          "url": "dashboard:main-dashboard"
+          "url": "datasource_browsers:list"
         }
       ]
     },
@@ -305,23 +305,6 @@
           "name": "Manage Documents",
           "slug": "documents",
           "url": "datasource_knowledge_base:list_documents"
-        }
-      ]
-    },
-    {
-      "name": "Code Repositories",
-      "icon": "menu-icon tf-icons ti ti-tag",
-      "slug": "code-repositories",
-      "submenu": [
-        {
-          "name": "Add Code Repo",
-          "slug": "code-repository",
-          "url": "dashboard:main-dashboard"
-        },
-        {
-          "name": "My Code Repos",
-          "slug": "code-repository",
-          "url": "dashboard:main-dashboard"
         }
       ]
     },

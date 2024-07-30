@@ -105,8 +105,7 @@ INSTALLED_APPS = [
     "apps.datasource_file_systems",
     "apps.datasource_media_storages",
     "apps.datasource_ml_models",
-    # add code repository app here #
-    # add browsing app here #
+    "apps.datasource_browsers",
     #############################
     "apps.mm_functions",
     "apps.mm_apis",
