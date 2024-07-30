@@ -94,9 +94,13 @@
                   <a href="javascript:void(0);" class="expand-btn" data-bs-toggle="collapse" data-bs-target="#full-text-{{ message.id }}" aria-expanded="false" aria-controls="full-text-{{ message.id }}">
                     <i class="fa fa-expand"></i><span class="ms-2">Expand / Collapse</span>
                   </a>
+                  <a href="javascript:void(0);" class="copy-btn ms-12" data-message-id="{{ message.id }}">
+                    <i class="fa fa-copy"></i><span class="ms-2">Copy to Clipboard</span>
+                  </a>
                 </small></strong>
               </div>
               <small class="mt-8"><strong>Starred At: &nbsp;</strong> {{ message.starred_at|date:"d M Y, H:i" }}</small>
+              <div class="alert-container"></div>
             </div>
           </div>
         </div>
@@ -130,7 +134,36 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  document.querySelectorAll('.copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const messageId = this.getAttribute('data-message-id');
+      const messageTextElement = document.getElementById(`full-text-${messageId}`);
+      const textToCopy = messageTextElement ? messageTextElement.innerText : '';
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const alertContainer = this.closest('.card-body').querySelector('.alert-container');
+        const successAlert = document.createElement('div');
+        successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+        successAlert.role = 'alert';
+        successAlert.innerHTML = `
+          <span class="alert-icon rounded">
+            <i class="ti ti-check"></i>
+          </span>
+          Starred Message copied to clipboard!
+        `;
+        alertContainer.appendChild(successAlert);
+
+        setTimeout(() => {
+          successAlert.remove();
+        }, 1000);
+      }).catch(err => {
+        alert('Failed to copy text: ' + err);
+      });
+    });
+  });
 });
+
 </script>
 
 {% endblock %}

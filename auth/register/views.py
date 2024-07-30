@@ -38,6 +38,7 @@ class RegisterView(AuthView):
         first_name = request.POST.get("first_name")
         last_name = request.POST.get("last_name")
         phone_number = request.POST.get("phone_number")
+        birthdate = request.POST.get("birthdate")
         address = request.POST.get("address")
         city = request.POST.get("city")
         country = request.POST.get("country")
@@ -81,6 +82,7 @@ class RegisterView(AuthView):
         user_profile.first_name = first_name
         user_profile.last_name = last_name
         user_profile.phone_number = phone_number
+        user_profile.birthdate = birthdate
         user_profile.address = address
         user_profile.city = city
         user_profile.country = country

@@ -226,7 +226,12 @@ class ListTriggeredJobsView(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         search_query = self.request.GET.get('search', '')
 
-        triggered_jobs_list = TriggeredJob.objects.all()
+        user_organizations = self.request.user.organizations.all()
+        organization_assistants = user_organizations.values_list('assistants', flat=True)
+
+        triggered_jobs_list = TriggeredJob.objects.filter(
+            trigger_assistant__in=organization_assistants
+        )
 
         if search_query:
             triggered_jobs_list = triggered_jobs_list.filter(

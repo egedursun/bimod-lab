@@ -6,7 +6,8 @@ from auth.models import Profile, UserCreditCard
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'address', 'city', 'country', 'postal_code', 'profile_picture']
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'birthdate',
+                  'address', 'city', 'country', 'postal_code', 'profile_picture']
 
 
 class CreditCardForm(forms.ModelForm):

@@ -109,12 +109,8 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 **THINGS TO REMEMBER:**
 
 *Important:*
-1. [ ] Add a [TRY AGAIN] button for the users to recreate responses that they dont like / or failed.
-2. [ ] Users page [PROMO CODE] and [BIRTHDATE] integration to the data model.
-2. [ ] Integrate the [COPY BUTTON] feature for the starred messages.
-3. [ ] Implement [STOP SEQUENCE] integration for the OpenAI API.
+2. [ ] Users page [PROMO CODE] integration to the data model.
 4. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
-5. [ ] Implement [DRAWING TOOL] for scratch boards. Mind storming ? 
 6. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
 7. [ ] ImplC
 8. BMement the [WEB BROWSING] data source. (TUESDAY, WEDNESDAY, THURSDAY 31/07, 01/08, 02/08)

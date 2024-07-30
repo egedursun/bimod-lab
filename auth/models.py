@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 from apps.user_permissions.models import UserPermission, PERMISSION_TYPES
 from auth.utils import generate_random_string
@@ -53,6 +54,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=250, blank=True, null=True)
     last_name = models.CharField(max_length=250, blank=True, null=True)
     phone_number = models.CharField(max_length=60, blank=True, null=True)
+    birthdate = models.DateField(default=timezone.now)
     address = models.CharField(max_length=500, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)

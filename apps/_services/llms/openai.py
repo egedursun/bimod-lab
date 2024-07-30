@@ -157,7 +157,6 @@ class InternalOpenAIClient:
                 presence_penalty=float(self.assistant.llm_model.presence_penalty),
                 max_tokens=int(self.assistant.llm_model.maximum_tokens),
                 top_p=float(self.assistant.llm_model.top_p),
-                # TODO: to be implement later
                 #  stop=self.assistant.llm_model.stop_sequences
             )
             #######################################################################################################

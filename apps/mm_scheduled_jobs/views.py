@@ -46,8 +46,12 @@ class ListScheduledJobsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         search_query = self.request.GET.get('search', '')
+        user_organizations = self.request.user.organizations.all()
+        organization_assistants = user_organizations.values_list('assistants', flat=True)
 
-        scheduled_jobs_list = ScheduledJob.objects.all()
+        scheduled_jobs_list = ScheduledJob.objects.filter(
+            assistant__in=organization_assistants
+        )
 
         if search_query:
             scheduled_jobs_list = scheduled_jobs_list.filter(

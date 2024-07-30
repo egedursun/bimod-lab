@@ -595,6 +595,9 @@
                     <span class="align-middle d-md-inline-block d-none">Send</span>
                     <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
                   </button>
+                  <button id="retry-response-button" class="btn btn-danger d-flex retry-msg-btn ms-4 me-4" style="min-height: 38px;">
+                    <i class="fa fa-redo-alt ti-16px"></i>
+                  </button>
                 </div>
             </form>
             </div>
@@ -1031,6 +1034,15 @@
       const loadingBar = document.getElementById('loadingBar');
       const loadingBarWarning = document.getElementById('loadingBarWarning');
       const submitMessageButton = document.querySelector('#send-chat-message-button');
+      const retryButton = document.querySelector('#retry-response-button');
+
+      // if the button is clicked, set the value of the message to "Your response either failed, or I didn't like it. Please try again."
+      retryButton.addEventListener('click', function () {
+        const chatInput = document.querySelector('.message-input');
+        chatInput.value = "Your answer wasn't satisfactory, or you have made an error, or you have failed to provide a valid and comprehensive answer to me. Please try again.";
+        // automatically submit
+        chatForm.submit();
+      });
 
       const loadingBarCreateChat = document.getElementById('loadingBarCreateChat');
       const loadingBarWarningCreateChat = document.getElementById('loadingBarWarningCreateChat');

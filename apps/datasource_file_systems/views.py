@@ -163,7 +163,11 @@ class DataSourceFileSystemsListView(LoginRequiredMixin, TemplateView):
         context_user = self.request.user
 
         connections_by_organization = {}
-        assistants = Assistant.objects.all()
+        assistants = Assistant.objects.filter(
+            organization__in=context_user.organizations.filter(
+                users__in=[context_user]
+            )
+        )
 
         for assistant in assistants:
             organization = assistant.organization
