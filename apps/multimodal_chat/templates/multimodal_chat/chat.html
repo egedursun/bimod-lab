@@ -572,9 +572,14 @@
                 <div class="message-actions d-flex align-items-center">
                   <i class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
 
-                  <!-- TODO: new functionality here: edit images -->
+                  <!-- TODO: new functionality here: sketch images -->
+                  <label for="sketch-image" class="form-label mb-0">
+                    <i class="ti ti-brush ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
+                    <!-- ... -->
+                  </label>
+
                   <label for="edit-image" class="form-label mb-0">
-                    <i class="ti ti-paint ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
+                    <i class="ti ti-photo-edit ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                     <input type="file" id="edit-image" name="edit_image" hidden accept=".jpeg,.png,.gif,.webp">
                   </label>
                   <input type="hidden" name="edit_image_mask" id="edit-image-mask" value="">
@@ -583,7 +588,7 @@
                     <i class="ti ti-photo ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                     <input type="file" id="attach-image" name="attached_images[]" multiple hidden accept=".jpeg,.png,.gif,.webp">
                   </label>
-                  <label for="attach-doc" class="form-label mb-0">
+                  <label for="attach-doc" class="form-label mb-0 me-4">
                     <i class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                     <input type="file" id="attach-doc" name="attached_files[]" multiple hidden>
                   </label>

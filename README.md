@@ -90,6 +90,7 @@
 - Total Lines of Code by 2024-07-27: (Day: 29) **1,574,000**
 - Total Lines of Code by 2024-07-28: (Day: 30) **2,578,000**
 - Total Lines of Code by 2024-07-29: (Day: 31) **2,578,000**
+- Total Lines of Code by 2024-07-30: (Day: 32) **2,713,000**
 
 ---
 
@@ -108,13 +109,13 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 **THINGS TO REMEMBER:**
 
 *Important:*
-2. [ ] Integrate [PICONAUT] with GPT-4o-mini. (MONDAY 30/07)
+6. [ ] Users page [PROMO CODE] and [BIRTHDATE] integration to the data model.
+7. [ ] Integrate the [COPY BUTTON] feature for the starred messages.
+2. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
 3. [ ] Implement [DRAWING TOOL] for scratch boards. Mind storming ? 
-4. [ ] Implement [MAP MANAGEMENT] for geolocation purposes.
+4. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
 3. [ ] Implement the [WEB BROWSING] data source. (TUESDAY, WEDNESDAY, THURSDAY 31/07, 01/08, 02/08)
 4. [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
-5. [ ] Integrate the [COPY BUTTON] feature for the starred messages.
-6. [ ] Users page [PROMO CODE] and [BIRTHDATE] integration to the data model.
 7. [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 05/08, 06/08)
 8. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
 9. [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY, THURSDAY 07/08, 08/08, 09/08)
@@ -150,8 +151,9 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 34. [ ] Creation of the [BLOG] page.
 35. [ ] Creation of the [FORUM] page.
 36. [ ] [TEXT-TO-SPEECH] and [SPEECH-TO-TEXT] integration for the application.
-37. [ ] [DESKTOP COPILOT EXTENSION] development for the application.
-38. [ ] [WORD PLUGIN] development for the application.
+37. [ ] [DESKTOP COPILOT EXTENSION] development for the application. -> requires a desktop application / applet.
+38. [ ] [WORD PLUGIN] development for the application. -> requires a word/ms office plugin.
+39. [ ] [MOBILE APPLICATION FOR ANDROID & IOS] only for connecting endpoints, and being able to chat with them and receive answers. -> requires a mobile application development.
 39. [ ] [DRIVE & DROPBOX] integration for the application.
 40. [ ] RELEASE v0.2.0 [RELEASE: BETA] version of the application.
 
@@ -191,6 +193,20 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 
 ---
 
-*Ideas:*
-- [ ] [MAP LOCATOR] for location management with AI.
-- [ ] [SCRATCH PAPER] analyzer to understand and interpret drawings.
+*Standalone Applications:*
+- [] Django Mainframe (Server + Web Application)
+  - [ ] For the main application and the frontend of the web application.
+  - [ ] The flagship application for the Bimod project.
+- [] Electron Copilot (Desktop Application) 
+  - [ ] For image and text-based management and manipulation within the OS and overall system usage.
+  - [ ] Can also understand the context of the browsers while the user is actively using the browser and OS.
+- [] Progressive Web App (PWA) (Android & iOS Application)
+     - Primarily for:
+       - [ ] Connecting an exported assistant and chatting with the assistant.
+       - [ ] Communicating with STT and TTS services.
+       - [ ] Sending and receiving messages from the assistant.
+       - [ ] Sending and receiving files from the assistant.
+       - [ ] Sending and receiving images from the assistant.
+       - [ ] For the assistant to track location & other data.
+       - [ ] For the assistant to be able to send notifications & reminders.
+
