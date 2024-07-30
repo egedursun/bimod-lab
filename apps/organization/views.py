@@ -9,6 +9,7 @@ from django.views.generic import TemplateView, DeleteView
 from apps.organization.forms import OrganizationForm
 from apps.organization.models import Organization
 from apps.user_permissions.models import PermissionNames, UserPermission
+from auth.models import PromoCode
 from web_project import TemplateLayout
 
 
@@ -164,6 +165,7 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
         organization_id = kwargs.get('pk')
         organization = get_object_or_404(Organization, id=organization_id, users__in=[context_user])
         topup_amount = request.POST.get('topup_amount')
+        promo_code = request.POST.get('promo_code')
 
         # top up amount can't be zero or negative
         if float(topup_amount) <= 0:
@@ -184,8 +186,27 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
             return redirect('llm_transaction:list')
         ##############################
 
+        # try to retrieve the code
+        bonus_amount_referrer, bonus_amount_referee = 0, 0
+        bonus_percentage_referrer, bonus_percentage_referee = 0, 0
+        promo_code = PromoCode.objects.filter(code=promo_code).first()
+        referrer = promo_code.user
+        if promo_code.current_referrals + 1 > promo_code.max_referral_limit:
+            promo_code.is_active = False
+            promo_code.save()
+        else:
+            promo_code.current_referrals += 1
+            bonus_percentage_referrer = promo_code.bonus_percentage_referrer
+            bonus_percentage_referee = promo_code.bonus_percentage_referee
+            promo_code.save()
+
+            referee_organization = Organization.objects.filter(users__in=[referrer]).first()
+            referee_organization.balance += decimal.Decimal.from_float(float(float(topup_amount) * bonus_percentage_referrer / 100))
+            referee_organization.save()
+
         try:
             topup_amount = float(topup_amount)
+            topup_amount += float(float(topup_amount) * bonus_percentage_referee / 100)
             organization.balance += decimal.Decimal.from_float(topup_amount)
             organization.save()
             messages.success(request, f'Credits successfully added. New balance: ${organization.balance}')

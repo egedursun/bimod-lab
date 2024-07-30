@@ -477,23 +477,6 @@
       ]
     },
     {
-      "name": "Piconaut®",
-      "icon": "menu-icon tf-icons ti ti-code",
-      "slug": "conditionals",
-      "submenu": [
-        {
-          "name": "Add New Controller",
-          "slug": "conditional",
-          "url": "dashboard:main-dashboard"
-        },
-        {
-          "name": "My Controllers",
-          "slug": "conditional",
-          "url": "dashboard:main-dashboard"
-        }
-      ]
-    },
-    {
       "name": "Scheduled Jobs",
       "icon": "menu-icon tf-icons ti ti-clock",
       "slug": "scheduled-jobs",

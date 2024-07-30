@@ -150,7 +150,6 @@ class CreateAutomatedTopUpPlan(LoginRequiredMixin, TemplateView):
             addition_on_interval_by_days_trigger = request.POST.get('addition_on_interval_by_days_trigger')
             date_of_last_auto_top_up = timezone.now()
 
-
         # common parameters
         monthly_hard_limit_auto_addition_amount = request.POST.get('monthly_hard_limit_auto_addition_amount')
 

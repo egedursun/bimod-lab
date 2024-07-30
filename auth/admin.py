@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, UserCreditCard
+from .models import Profile, UserCreditCard, PromoCode
 
 
 # Register your models here.
@@ -20,6 +20,21 @@ class UserCreditCardAdmin(admin.ModelAdmin):
         "card_expiration_month",
         "card_expiration_year",
         "card_cvc",
+        "created_at",
+    )
+
+
+@admin.register(PromoCode)
+class PromoCodeAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "code",
+        "bonus_percentage_referrer",
+        "bonus_percentage_referee",
+        "is_active",
+        "current_referrals",
+        "max_referral_limit",
+        "datetime_limit",
         "created_at",
     )
 

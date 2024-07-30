@@ -109,15 +109,11 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 **THINGS TO REMEMBER:**
 
 *Important:*
-2. [ ] Users page [PROMO CODE] integration to the data model.
-4. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
-6. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
-7. [ ] ImplC
-8. BMement the [WEB BROWSING] data source. (TUESDAY, WEDNESDAY, THURSDAY 31/07, 01/08, 02/08)
-8. [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
-9. [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 05/08, 06/08)
-10. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
-11. [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY, THURSDAY 07/08, 08/08, 09/08)
+1. Implement the [WEB BROWSING] data source. (TUESDAY, WEDNESDAY, THURSDAY 31/07, 01/08, 02/08)
+2. [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
+3. [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 05/08, 06/08)
+4. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
+5. [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY, THURSDAY 07/08, 08/08, 09/08)
 
 *Deployment Changes:*
 1. [ ] Implement [LOGGING] to all pages.
@@ -171,6 +167,11 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 11. [ ] RELEASE v0.8.0 [RELEASE: BETA] version of the application.
 
 ---
+
+*TO BE DISCUSSED:*
+1. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
+2. [ ] Users page [PROMO CODE] integration to the data model.
+3. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
 
 
 *Helper Functionalities:*

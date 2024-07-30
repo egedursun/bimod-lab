@@ -6,7 +6,10 @@ from django.dispatch import receiver
 from django.utils import timezone
 
 from apps.user_permissions.models import UserPermission, PERMISSION_TYPES
-from auth.utils import generate_random_string
+from auth.utils import generate_random_string, generate_referral_code
+
+
+REFERRAL_DEFAULT_BONUS_PERCENTAGE = 50
 
 
 class UserCreditCard(models.Model):
@@ -74,15 +77,37 @@ class Profile(models.Model):
     # Credit card information for the subscription.
     credit_cards = models.ManyToManyField(UserCreditCard, related_name='user_credit_cards', blank=True)
 
+    # user referral code
+    referral_code = models.ForeignKey('PromoCode', on_delete=models.SET_NULL, related_name='referral_code', blank=True, null=True)
+
     sub_users = models.ManyToManyField(User, related_name='sub_users', blank=True)
 
     def __str__(self):
         return self.user.username
 
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        if self.referral_code is None:
+            promo_code = PromoCode.objects.create(
+                user=self.user,
+                code=generate_referral_code(),
+                bonus_percentage_referrer=REFERRAL_DEFAULT_BONUS_PERCENTAGE,
+                bonus_percentage_referee=REFERRAL_DEFAULT_BONUS_PERCENTAGE,
+                is_active=True,
+                current_referrals=0,
+                max_referral_limit=5,
+                datetime_limit=timezone.now() + timezone.timedelta(days=360)
+            )
+            self.referral_code = promo_code
+            self.save()
+        super(Profile, self).save(force_insert, force_update, using, update_fields)
+
     @receiver(post_save, sender=User)
     def create_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance, email=instance.email)
+
         if instance.is_superuser:
             for permission in PERMISSION_TYPES:
                 UserPermission.objects.get_or_create(user=instance, permission_type=permission[0])
@@ -120,4 +145,31 @@ class Profile(models.Model):
             models.Index(fields=['is_active', 'created_at']),
             models.Index(fields=['created_by_user']),
             models.Index(fields=['created_by_user', 'created_at']),
+        ]
+
+
+class PromoCode(models.Model):
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="promo_codes")
+    code = models.CharField(max_length=255)
+    bonus_percentage_referrer = models.IntegerField(default=REFERRAL_DEFAULT_BONUS_PERCENTAGE)
+    bonus_percentage_referee = models.IntegerField(default=REFERRAL_DEFAULT_BONUS_PERCENTAGE)
+    is_active = models.BooleanField(default=True)
+
+    current_referrals = models.IntegerField(default=0)
+    max_referral_limit = models.IntegerField(default=0)
+
+    datetime_limit = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name = "Promo Code"
+        verbose_name_plural = "Promo Codes"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["code"]),
+            models.Index(fields=["is_active"]),
+            models.Index(fields=["created_at"]),
         ]

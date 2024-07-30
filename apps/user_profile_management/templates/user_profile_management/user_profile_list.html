@@ -68,13 +68,13 @@
                 <img src="{{ request.user.profile.profile_picture.url }}" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded" id="uploadedAvatar" />
                 <div class="button-wrapper">
                   <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
-                    <span class="d-none d-sm-block">Upload new photo</span>
+                    <span class="d-none d-sm-block"><strong>Upload new photo</strong></span>
                     <i class="ti ti-upload d-block d-sm-none"></i>
                     <input type="file" id="upload" name="profile_picture" class="account-file-input" hidden accept="image/png, image/jpeg" />
                   </label>
                   <button type="button" class="btn btn-label-secondary account-image-reset mb-4" id="resetImage">
                     <i class="ti ti-refresh-dot d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Reset</span>
+                    <span class="d-none d-sm-block"><strong>Reset</strong></span>
                   </button>
                   <div>Allowed JPG, GIF or PNG. Max size of 800K</div>
                   <div id="upload-warning" class="card rounded bg-label-warning d-none ps-2 pe-2 pt-1 pb-1"><strong>The changes are not saved yet. Please click the save button to proceed.</strong></div>
@@ -121,6 +121,19 @@
                 <div class="mb-4 col-md-6">
                   <label for="postal_code" class="form-label">Postal Code</label>
                   <input type="text" class="form-control" id="postal_code" name="postal_code" value="{{ request.user.profile.postal_code }}" />
+                </div>
+                <div class="mb-4 col-md-6">
+                  <label for="referral_code" class="form-label">Referral Code</label>
+                  <span class="form-control bg-dark text-lightest mb-2"><strong>{{ request.user.profile.referral_code.code }}</strong></span>
+                  <span class="bg-label-primary rounded p-1 m-1">
+                    <small><strong>Redeemed: {{ request.user.profile.referral_code.current_referrals }} / {{ request.user.profile.referral_code.max_referral_limit }}</strong></small>
+                  </span>
+                  <span class="bg-label-secondary rounded p-1 m-1">
+                    <small><strong>{{ request.user.profile.referral_code.bonus_percentage_referrer }}% Bonus to Referrer</strong></small>
+                  </span>
+                  <span class="bg-label-secondary rounded p-1 m-1">
+                    <small><strong>{{ request.user.profile.referral_code.bonus_percentage_referee }}% Bonus to Referee</strong></small>
+                  </span>
                 </div>
               </div>
               <div class="mt-2">

@@ -180,12 +180,13 @@
               <div class="card-body d-flex align-items-center">
                 <form method="post" action="{% url 'organization:add_credits' organization_data.organization.id %}" class="w-100">
                   {% csrf_token %}
+                  <input type="text" class="form-control mb-2" name="promo_code" value="" placeholder="You have a referral or promo code?">
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <span class="input-group-text pt-2 pb-2"><strong>$ (USD)</strong></span>
+                      <span class="input-group-text pt-2 pb-2 me-1"><strong>$ (USD)</strong></span>
                     </div>
-                    <input type="number" class="form-control" name="topup_amount" placeholder="Enter amount" required>
-                    <button class="btn btn-primary" type="submit">Add Credits</button>
+                    <input type="number" class="form-control rounded me-1" name="topup_amount" placeholder="Enter amount" required>
+                    <button class="btn btn-primary rounded" type="submit">Add Credits</button>
                   </div>
                 </form>
               </div>
