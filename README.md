@@ -109,69 +109,69 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 **THINGS TO REMEMBER:**
 
 *Important:*
-6. [ ] Users page [PROMO CODE] and [BIRTHDATE] integration to the data model.
-7. [ ] Integrate the [COPY BUTTON] feature for the starred messages.
-2. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
-3. [ ] Implement [DRAWING TOOL] for scratch boards. Mind storming ? 
-4. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
-3. [ ] Implement the [WEB BROWSING] data source. (TUESDAY, WEDNESDAY, THURSDAY 31/07, 01/08, 02/08)
-4. [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
-7. [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 05/08, 06/08)
-8. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
-9. [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY, THURSDAY 07/08, 08/08, 09/08)
+1. [ ] Users page [PROMO CODE] and [BIRTHDATE] integration to the data model.
+2. [ ] Integrate the [COPY BUTTON] feature for the starred messages.
+3. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
+4. [ ] Implement [DRAWING TOOL] for scratch boards. Mind storming ? 
+5. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
+6. [ ] Implement the [WEB BROWSING] data source. (TUESDAY, WEDNESDAY, THURSDAY 31/07, 01/08, 02/08)
+7. [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
+8. [ ] Implement the [ORCHESTRATION] manager. (SUNDAY, MONDAY 05/08, 06/08)
+9. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
+10. [ ] Implement the [DASHBOARD] page. (TUESDAY, WEDNESDAY, THURSDAY 07/08, 08/08, 09/08)
 
 *Deployment Changes:*
-10. [ ] Implement [LOGGING] to all pages.
-11. [ ] Migrate to [POSTGRES] database.
-12. [ ] Implement [HTTPS] configuration.
-13. [ ] Implement [CORS] configuration.
-14. [ ] Implement [SMTP] configuration.
-15. [ ] Implement [STOP SEQUENCE] integration for the OpenAI API.
-16. [ ] Implement [PAYMENT GATEWAY] for the application.
-17. [ ] Implement and fix [MAIN SEARCH BAR] for the application.
-18. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-19. [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
-20. [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
-21. [ ] Delete the [INTERNAL MEDIA DIRECTORY] from the repository.
-22. [ ] Code [CLEANUP AND REFACTORING].
-23. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
-24. [ ] Deploy the [APPLICATION].
-25. [ ] Protect the [MAIN BRANCH] from direct merges.
-26. [ ] Create the [DEVELOPMENT BRANCH] from the main branch.
-27. [ ] Protect [DIRECT MERGES] to the development branch.
-28. [ ] RELEASE v0.1.0 [RELEASE: BETA] version of the application.
+1. [ ] Implement [LOGGING] to all pages.
+2. [ ] Migrate to [POSTGRES] database.
+3. [ ] Implement [HTTPS] configuration.
+4. [ ] Implement [CORS] configuration.
+5. [ ] Implement [SMTP] configuration.
+6. [ ] Implement [STOP SEQUENCE] integration for the OpenAI API.
+7. [ ] Implement [PAYMENT GATEWAY] for the application.
+8. [ ] Implement and fix [MAIN SEARCH BAR] for the application.
+9. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+10. [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
+11. [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
+12. [ ] Delete the [INTERNAL MEDIA DIRECTORY] from the repository.
+13. [ ] Code [CLEANUP AND REFACTORING].
+14. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
+15. [ ] Deploy the [APPLICATION].
+16. [ ] Protect the [MAIN BRANCH] from direct merges.
+17. [ ] Create the [DEVELOPMENT BRANCH] from the main branch.
+18. [ ] Protect [DIRECT MERGES] to the development branch.
+19. [ ] RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---
 
 *After first deployment:*
-29. [ ] Named Entity Recognition [NER] integration.
-30. [ ] [DOCUMENTATION & API GUIDE] page development.
-31. [ ] [FAQ] page development.
-32. [ ] [TERMS & CONDITIONS] development with the law firms.
-33. [ ] [PRIVACY POLICY & DATA POLICY] development with the law firms.
-34. [ ] Creation of the [BLOG] page.
-35. [ ] Creation of the [FORUM] page.
-36. [ ] [TEXT-TO-SPEECH] and [SPEECH-TO-TEXT] integration for the application.
-37. [ ] [DESKTOP COPILOT EXTENSION] development for the application. -> requires a desktop application / applet.
-38. [ ] [WORD PLUGIN] development for the application. -> requires a word/ms office plugin.
-39. [ ] [MOBILE APPLICATION FOR ANDROID & IOS] only for connecting endpoints, and being able to chat with them and receive answers. -> requires a mobile application development.
-39. [ ] [DRIVE & DROPBOX] integration for the application.
-40. [ ] RELEASE v0.2.0 [RELEASE: BETA] version of the application.
+1. [ ] Named Entity Recognition [NER] integration.
+2. [ ] [DOCUMENTATION & API GUIDE] page development.
+3. [ ] [FAQ] page development.
+4. [ ] [TERMS & CONDITIONS] development with the law firms.
+5. [ ] [PRIVACY POLICY & DATA POLICY] development with the law firms.
+6. [ ] Creation of the [BLOG] page.
+7. [ ] Creation of the [FORUM] page.
+8. [ ] [TEXT-TO-SPEECH] and [SPEECH-TO-TEXT] integration for the application.
+9. [ ] [DESKTOP COPILOT EXTENSION] development for the application. -> requires a desktop application / applet.
+10. [ ] [WORD PLUGIN] development for the application. -> requires a word/ms office plugin.
+11. [ ] [MOBILE APPLICATION FOR ANDROID & IOS] only for connecting endpoints, and being able to chat with them and receive answers. -> requires a mobile application development.
+12. [ ] [DRIVE & DROPBOX] integration for the application.
+13. [ ] RELEASE v0.2.0 [RELEASE: BETA] version of the application.
 
 ---
 
 *Ongoing Improvements:*
-41. [ ] Bugfixes and Stability improvements [BUGFIX & STABILITY]
-42. [ ] RELEASE v0.3.0 [RELEASE: BETA] version of the application.
-43. [ ] Store additions [FUNC STORE, API STORE, SCRIPT STORE]
-44. [ ] RELEASE v0.4.0 [RELEASE: BETA] version of the application.
-45. [ ] Boilerplate knowledge bases [BOILERPLATE KNOWLEDGE BASES]
-46. [ ] RELEASE v0.5.0 [RELEASE: BETA] version of the application.
-47. [ ] ERP Integration [ERP INTEGRATION]
-48. [ ] RELEASE v0.6.0 [RELEASE: BETA] version of the application.
-49. [ ] Integration (Boilerplate assistant) Systems [ASSISTANT - INTEGRATION SYSTEMS]
-50. [ ] RELEASE v0.7.0 [RELEASE: BETA] version of the application.
-51. [ ] Meta-Integration (Boilerplate group of assistants) Systems [POLY-ASSISTANT - META-INTEGRATION SYSTEMS]
-52. [ ] RELEASE v0.8.0 [RELEASE: BETA] version of the application.
+1. [ ] Bugfixes and Stability improvements [BUGFIX & STABILITY]
+2. [ ] RELEASE v0.3.0 [RELEASE: BETA] version of the application.
+3. [ ] Store additions [FUNC STORE, API STORE, SCRIPT STORE]
+4. [ ] RELEASE v0.4.0 [RELEASE: BETA] version of the application.
+5. [ ] Boilerplate knowledge bases [BOILERPLATE KNOWLEDGE BASES]
+6. [ ] RELEASE v0.5.0 [RELEASE: BETA] version of the application.
+7. [ ] ERP Integration [ERP INTEGRATION]
+8. [ ] RELEASE v0.6.0 [RELEASE: BETA] version of the application.
+9. [ ] Integration (Boilerplate assistant) Systems [ASSISTANT - INTEGRATION SYSTEMS]
+10. [ ] RELEASE v0.7.0 [RELEASE: BETA] version of the application.
+11. [ ] Meta-Integration (Boilerplate group of assistants) Systems [POLY-ASSISTANT - META-INTEGRATION SYSTEMS]
+12. [ ] RELEASE v0.8.0 [RELEASE: BETA] version of the application.
 
 ---
 
