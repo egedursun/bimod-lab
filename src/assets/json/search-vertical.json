@@ -4,193 +4,1141 @@
       "name": "Dashboard",
       "icon": "menu-icon tf-icons ti ti-smart-home",
       "slug": "main-dashboard",
-      "url": "/dashboard"
+      "url": "/app/dashboard"
     },
     {
-      "name": "Organizations",
+      "name": "Create Organization",
       "icon": "menu-icon tf-icons ti ti-world",
       "slug": "organizations",
-      "url": "/organization/list"
+      "url": "/app/organization/create"
     },
     {
-      "name": "LLM Models",
+      "name": "Add Organization",
+      "icon": "menu-icon tf-icons ti ti-world",
+      "slug": "organizations",
+      "url": "/app/organization/add"
+    },
+    {
+      "name": "Build Organization",
+      "icon": "menu-icon tf-icons ti ti-world",
+      "slug": "organizations",
+      "url": "/app/organization/create"
+    },
+    {
+      "name": "Manage Organizations",
+      "icon": "menu-icon tf-icons ti ti-world",
+      "slug": "organizations",
+      "url": "/app/organization/list"
+    },
+    {
+      "name": "List Organizations",
+      "icon": "menu-icon tf-icons ti ti-world",
+      "slug": "organizations",
+      "url": "/app/organization/list"
+    },
+    {
+      "name": "Control Organizations",
+      "icon": "menu-icon tf-icons ti ti-world",
+      "slug": "organizations",
+      "url": "/app/organization/list"
+    },
+    {
+      "name": "Add LLM Model",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-cores",
-      "url": "/llm_core/list"
+      "url": "/app/llm_core/create"
     },
     {
-      "name": "Usage & Payment",
+      "name": "Create LLM Model",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "llm-cores",
+      "url": "/app/llm_core/create"
+    },
+    {
+      "name": "Build LLM Model",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "llm-cores",
+      "url": "/app/llm_core/create"
+    },
+    {
+      "name": "Manage LLM Models",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "llm-cores",
+      "url": "/app/llm_core/list"
+    },
+    {
+      "name": "Control LLM Models",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "llm-cores",
+      "url": "/app/llm_core/list"
+    },
+    {
+      "name": "List LLM Models",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "llm-cores",
+      "url": "/app/llm_core/list"
+    },
+    {
+      "name": "Transactions",
       "icon": "menu-icon tf-icons ti ti-receipt",
       "slug": "usage",
-      "url": "/llm_transaction/list"
+      "url": "/app/llm_transaction/list"
     },
     {
-      "name": "Users",
+      "name": "See Transactions",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "/app/llm_transaction/list"
+    },
+    {
+      "name": "List Transactions",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "/app/llm_transaction/list"
+    },
+    {
+      "name": "Manage Balance",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "/app/llm_transaction/list"
+    },
+    {
+      "name": "Add Balance",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "/app/llm_transaction/list"
+    },
+    {
+      "name": "Transfer Balance",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "/app/llm_transaction/list"
+    },
+    {
+      "name": "Create Automatic Top-up Plan",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "/app/llm_transaction/auto_top_up/create"
+    },
+    {
+      "name": "Add Automatic Top-up Plan",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "/app/llm_transaction/auto_top_up/create"
+    },
+    {
+      "name": "Automatic Top-ups",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "/app/llm_transaction/auto_top_up/list"
+    },
+    {
+      "name": "Top-up Plans",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "/app/llm_transaction/auto_top_up/list"
+    },
+    {
+      "name": "Add User",
       "icon": "menu-icon tf-icons ti ti-user",
       "slug": "users",
-      "url": "/user_management/list"
+      "url": "/app/user_management/add"
     },
     {
-      "name": "Permissions",
+      "name": "Invite User",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "/app/user_management/add"
+    },
+    {
+      "name": "Create User",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "/app/user_management/add"
+    },
+    {
+      "name": "Connect User to Organization",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "/app/user_management/add_user_to_organization"
+    },
+    {
+      "name": "Connect User",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "/app/user_management/add_user_to_organization"
+    },
+    {
+      "name": "See Users",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "/app/user_management/list"
+    },
+    {
+      "name": "List Users",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "/app/user_management/list"
+    },
+    {
+      "name": "Manage Users",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "/app/user_management/list"
+    },
+    {
+      "name": "Add Permissions to User",
       "icon": "menu-icon tf-icons ti ti-key",
       "slug": "permissions",
-      "url": "/user_permissions/list"
+      "url": "/app/user_permissions/add"
     },
     {
-      "name": "Assistants",
+      "name": "See Existing Permissions",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "permissions",
+      "url": "/app/user_permissions/list"
+    },
+    {
+      "name": "List Existing Permissions",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "permissions",
+      "url": "/app/user_permissions/list"
+    },
+    {
+      "name": "Manage Existing Permissions",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "permissions",
+      "url": "/app/user_permissions/list"
+    },
+    {
+      "name": "See User Permissions",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "permissions",
+      "url": "/app/user_permissions/list"
+    },
+    {
+      "name": "List User Permissions",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "permissions",
+      "url": "/app/user_permissions/list"
+    },
+    {
+      "name": "Manage User Permissions",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "permissions",
+      "url": "/app/user_permissions/list"
+    },
+    {
+      "name": "Create Assistant",
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "assistants",
-      "url": "/assistants/list"
+      "url": "/app/assistants/list"
+    },
+    {
+      "name": "Add Assistant",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "assistants",
+      "url": "/app/assistants/list"
+    },
+    {
+      "name": "Build Assistant",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "assistants",
+      "url": "/app/assistants/list"
+    },
+    {
+      "name": "See Assistants",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "assistants",
+      "url": "/app/assistants/list"
+    },
+    {
+      "name": "List Assistants",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "assistants",
+      "url": "/app/assistants/list"
+    },
+    {
+      "name": "Manage Assistants",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "assistants",
+      "url": "/app/assistants/list"
     },
     {
       "name": "Chats",
       "icon": "menu-icon tf-icons ti ti-messages",
       "slug": "chats",
-      "url": "/multimodal_chat/chat"
+      "url": "/app/multimodal_chat/chat"
+    },
+    {
+      "name": "Create Chat",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "chats",
+      "url": "/app/multimodal_chat/chat"
+    },
+    {
+      "name": "Control Chats",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "chats",
+      "url": "/app/multimodal_chat/chat"
+    },
+    {
+      "name": "Chat with Assistant",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "chats",
+      "url": "/app/multimodal_chat/chat"
+    },
+    {
+      "name": "Manage Chats",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "chats",
+      "url": "/app/multimodal_chat/chat"
+    },
+    {
+      "name": "Archived Chats",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "chats",
+      "url": "/app/multimodal_chat/chat/archive"
+    },
+    {
+      "name": "Chat Archive",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "chats",
+      "url": "/app/multimodal_chat/chat/archive"
+    },
+    {
+      "name": "Archived Messages",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "chats",
+      "url": "/app/multimodal_chat/chat/archive"
+    },
+    {
+      "name": "Archive",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "chats",
+      "url": "/app/multimodal_chat/chat/archive"
     },
     {
       "name": "Starred Responses",
       "icon": "menu-icon tf-icons ti ti-star",
       "slug": "starred-responses",
-      "url": "/starred_responses/list"
+      "url": "/app/starred_messages/list"
     },
     {
-      "name": "Memory",
+      "name": "Starred Messages",
+      "icon": "menu-icon tf-icons ti ti-star",
+      "slug": "starred-responses",
+      "url": "/app/starred_messages/list"
+    },
+    {
+      "name": "Favorite Responses",
+      "icon": "menu-icon tf-icons ti ti-star",
+      "slug": "starred-responses",
+      "url": "/app/starred_messages/list"
+    },
+    {
+      "name": "Favorite Messages",
+      "icon": "menu-icon tf-icons ti ti-star",
+      "slug": "starred-responses",
+      "url": "/app/starred_messages/list"
+    },
+    {
+      "name": "Add Memory",
       "icon": "menu-icon tf-icons ti ti-archive",
       "slug": "memory",
-      "url": "/memory/list"
+      "url": "/app/memories/create"
     },
     {
-      "name": "Message Templates",
+      "name": "Create Memory",
+      "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "memory",
+      "url": "/app/memories/create"
+    },
+    {
+      "name": "Build Memory",
+      "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "memory",
+      "url": "/app/memories/create"
+    },
+    {
+      "name": "List Memories",
+      "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "memory",
+      "url": "/app/memories/list"
+    },
+    {
+      "name": "Manage Memories",
+      "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "memory",
+      "url": "/app/memories/list"
+    },
+    {
+      "name": "See Memories",
+      "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "memory",
+      "url": "/app/memories/list"
+    },
+    {
+      "name": "Create Message Template",
       "icon": "menu-icon tf-icons ti ti-template",
       "slug": "message-templates",
-      "url": "/message_templates/list"
+      "url": "/app/message_templates/create"
     },
     {
-      "name": "Export Assistants",
+      "name": "Add Message Template",
+      "icon": "menu-icon tf-icons ti ti-template",
+      "slug": "message-templates",
+      "url": "/app/message_templates/create"
+    },
+    {
+      "name": "Build Message Template",
+      "icon": "menu-icon tf-icons ti ti-template",
+      "slug": "message-templates",
+      "url": "/app/message_templates/create"
+    },
+    {
+      "name": "List Message Templates",
+      "icon": "menu-icon tf-icons ti ti-template",
+      "slug": "message-templates",
+      "url": "/app/message_templates/list"
+    },
+    {
+      "name": "See Message Templates",
+      "icon": "menu-icon tf-icons ti ti-template",
+      "slug": "message-templates",
+      "url": "/app/message_templates/list"
+    },
+    {
+      "name": "Manage Message Templates",
+      "icon": "menu-icon tf-icons ti ti-template",
+      "slug": "message-templates",
+      "url": "/app/message_templates/list"
+    },
+    {
+      "name": "Export Assistant",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "file-systems",
-      "url": "/file_systems/list"
+      "url": "/app/export_assistants/create"
     },
     {
-      "url": "dashboard:main-dashboard",
-      "name": "Orchestrations",
-      "icon": "menu-icon tf-icons ti ti-bolt",
-      "slug": "/orchestrations/list"
+      "name": "Share Assistant",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "file-systems",
+      "url": "/app/export_assistants/create"
     },
     {
-      "name": "File Systems",
+      "name": "Publish Assistant",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "file-systems",
+      "url": "/app/export_assistants/create"
+    },
+    {
+      "name": "List Exported Assistants",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "file-systems",
+      "url": "/app/export_assistants/list"
+    },
+    {
+      "name": "Manage Exported Assistants",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "file-systems",
+      "url": "/app/export_assistants/list"
+    },
+    {
+      "name": "See Exported Assistants",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "file-systems",
+      "url": "/app/export_assistants/list"
+    },
+    {
+      "name": "Add File System",
       "icon": "menu-icon tf-icons ti ti-server",
       "slug": "file-systems",
-      "url": "/file_systems/list"
+      "url": "/app/datasource_file_systems/create"
+    },
+    {
+      "name": "Connect File System",
+      "icon": "menu-icon tf-icons ti ti-server",
+      "slug": "file-systems",
+      "url": "/app/datasource_file_systems/create"
+    },
+    {
+      "name": "Create File System",
+      "icon": "menu-icon tf-icons ti ti-server",
+      "slug": "file-systems",
+      "url": "/app/datasource_file_systems/create"
+    },
+    {
+      "name": "See File Systems",
+      "icon": "menu-icon tf-icons ti ti-server",
+      "slug": "file-systems",
+      "url": "/app/datasource_file_systems/list"
+    },
+    {
+      "name": "List File Systems",
+      "icon": "menu-icon tf-icons ti ti-server",
+      "slug": "file-systems",
+      "url": "/app/datasource_file_systems/list"
+    },
+    {
+      "name": "Manage File Systems",
+      "icon": "menu-icon tf-icons ti ti-server",
+      "slug": "file-systems",
+      "url": "/app/datasource_file_systems/list"
+    },
+    {
+      "name": "List Web Browsers",
+      "icon": "menu-icon tf-icons ti ti-browser",
+      "slug": "web-browsers",
+      "url": "/app/datasource_browsers/list"
+    },
+    {
+      "name": "Connect Browser",
+      "icon": "menu-icon tf-icons ti ti-browser",
+      "slug": "web-browsers",
+      "url": "/app/datasource_browsers/create"
+    },
+    {
+      "name": "Add Browser",
+      "icon": "menu-icon tf-icons ti ti-browser",
+      "slug": "web-browsers",
+      "url": "/app/datasource_browsers/create"
+    },
+    {
+      "name": "Add Browser Connection",
+      "icon": "menu-icon tf-icons ti ti-browser",
+      "slug": "web-browsers",
+      "url": "/app/datasource_browsers/create"
+    },
+    {
+      "name": "List Web Browsers",
+      "icon": "menu-icon tf-icons ti ti-browser",
+      "slug": "web-browsers",
+      "url": "/app/datasource_browsers/list"
+    },
+    {
+      "name": "List Browsers",
+      "icon": "menu-icon tf-icons ti ti-browser",
+      "slug": "web-browsers",
+      "url": "/app/datasource_browsers/list"
+    },
+    {
+      "name": "Manage Browsers",
+      "icon": "menu-icon tf-icons ti ti-browser",
+      "slug": "web-browsers",
+      "url": "/app/datasource_browsers/list"
     },
     {
       "name": "Web Browsers",
       "icon": "menu-icon tf-icons ti ti-browser",
       "slug": "web-browsers",
-      "url": "/web_browsers/list"
+      "url": "/app/datasource_browsers/list"
+    },
+    {
+      "name": "Connect SQL Database",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/create"
+    },
+    {
+      "name": "Add SQL Database",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/create"
     },
     {
       "name": "SQL Databases",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "sql-databases",
-      "url": "/sql_databases/list"
+      "url": "/app/datasource_sql/list"
     },
     {
-      "name": "Knowledge Bases",
+      "name": "Manage SQL Database Connections",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/list"
+    },
+    {
+      "name": "List SQL Databases",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/list"
+    },
+    {
+      "name": "List SQL Connections",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/list"
+    },
+    {
+      "name": "Add Custom SQL Query",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/create_query"
+    },
+    {
+      "name": "Build Custom SQL Query",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/create_query"
+    },
+    {
+      "name": "Manage Custom SQL Queries",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/list_queries"
+    },
+    {
+      "name": "See Custom SQL Queries",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/list_queries"
+    },
+    {
+      "name": "List Custom SQL Queries",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/list_queries"
+    },
+    {
+      "name": "Add Knowledge Base",
       "icon": "menu-icon tf-icons ti ti-vector",
       "slug": "knowledge-bases",
-      "url": "/knowledge_bases/list"
+      "url": "/app/datasource_knowledge_base/create"
     },
     {
-      "name": "Documents",
-      "icon": "menu-icon tf-icons ti ti-folder",
-      "slug": "documents",
-      "url": "/data_storages/list"
+      "name": "Connect Knowledge Base",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/create"
     },
     {
-      "name": "Code Repositories",
-      "icon": "menu-icon tf-icons ti ti-tag",
-      "slug": "code-repositories",
-      "url": "/code_repositories/list"
+      "name": "Add Knowledge Base Connection",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/create"
+    },
+    {
+      "name": "List Knowledge Bases",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/list"
+    },
+    {
+      "name": "Manage Knowledge Bases",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/list"
+    },
+    {
+      "name": "See Knowledge Bases",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/list"
+    },
+    {
+      "name": "Upload Documents",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/create_documents"
+    },
+    {
+      "name": "Add Documents",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/create_documents"
+    },
+    {
+      "name": "Index Documents",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/create_documents"
+    },
+    {
+      "name": "Create Documents",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/create_documents"
+    },
+    {
+      "name": "See Documents",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/list_documents"
+    },
+    {
+      "name": "List Documents",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/list_documents"
+    },
+    {
+      "name": "Manage Documents",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/list_documents"
+    },
+    {
+      "name": "Add Machine Learning Storage",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-models",
+      "url": "/app/datasource_ml_models/create"
+    },
+    {
+      "name": "Add ML Storage",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-models",
+      "url": "/app/datasource_ml_models/create"
+    },
+    {
+      "name": "Machine Learning Storages",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-models",
+      "url": "/app/datasource_ml_models/list"
+    },
+    {
+      "name": "ML Storages",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-models",
+      "url": "/app/datasource_ml_models/list"
+    },
+    {
+      "name": "Add Machine Learning Model",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-models",
+      "url": "/app/datasource_ml_models/item/create"
+    },
+    {
+      "name": "Add ML Model",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-models",
+      "url": "/app/datasource_ml_models/item/create"
+    },
+    {
+      "name": "Machine Learning Models",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-models",
+      "url": "/app/datasource_ml_models/item/list"
     },
     {
       "name": "ML Models",
       "icon": "menu-icon tf-icons ti ti-wand",
       "slug": "machine-learning-models",
-      "url": "/ml_models/list"
+      "url": "/app/datasource_ml_models/item/list"
     },
     {
-      "name": "Media Storages",
+      "name": "Machine Learning Models",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-models",
+      "url": "/app/datasource_ml_models/item_list"
+    },
+    {
+      "name": "Add Media Storage",
       "icon": "menu-icon tf-icons ti ti-camera",
       "slug": "media-storages",
-      "url": "/media_storages/list"
+      "url": "/app/datasource_media_storages/create"
     },
     {
-      "name": "Multimedia Files",
-      "icon": "menu-icon tf-icons ti ti-file",
-      "slug": "multimedia-files",
-      "url": "/multimedia_files/list"
+      "name": "Create Media Storage",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/create"
     },
     {
-      "name": "Functions",
+      "name": "List Media Storages",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/list"
+    },
+    {
+      "name": "See Media Storages",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/list"
+    },
+    {
+      "name": "Manage Media Storages",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/list"
+    },
+    {
+      "name": "Add Media File",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/create_item"
+    },
+    {
+      "name": "Upload Media File",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/create_item"
+    },
+    {
+      "name": "Create Media File",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/create_item"
+    },
+    {
+      "name": "List Media Files",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/list_items"
+    },
+    {
+      "name": "See Media Files",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/list_items"
+    },
+    {
+      "name": "Manage Media Files",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/list_items"
+    },
+    {
+      "name": "Generated Files",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/items/list_generated"
+    },
+    {
+      "name": "See Generated Files",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/items/list_generated"
+    },
+    {
+      "name": "List Generated Files",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/items/list_generated"
+    },
+    {
+      "name": "Add Function",
       "icon": "menu-icon tf-icons ti ti-plug",
       "slug": "app-invoice",
-      "url": "/functions/list"
+      "url": "/app/mm_functions/create"
     },
     {
-      "name": "APIs",
+      "name": "Create Function",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "/app/mm_functions/create"
+    },
+    {
+      "name": "Build Function",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "/app/mm_functions/create"
+    },
+    {
+      "name": "List Functions",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "/app/mm_functions/list"
+    },
+    {
+      "name": "Manage Functions",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "/app/mm_functions/list"
+    },
+    {
+      "name": "See Functions",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "/app/mm_functions/list"
+    },
+    {
+      "name": "Connect Function to Assistant",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "/app/mm_functions/connect"
+    },
+    {
+      "name": "Connect Function",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "/app/mm_functions/connect"
+    },
+    {
+      "name": "Search Functions",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "/app/mm_functions/store"
+    },
+    {
+      "name": "Function Store",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "/app/mm_functions/store"
+    },
+    {
+      "name": "Create API",
       "icon": "menu-icon tf-icons ti ti-network",
       "slug": "apis",
-      "url": "/apis/list"
+      "url": "/app/mm_apis/create"
     },
     {
-      "name": "Scripts",
+      "name": "Add API",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/create"
+    },
+    {
+      "name": "Build API",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/create"
+    },
+    {
+      "name": "List APIs",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/list"
+    },
+    {
+      "name": "Manage APIs",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/list"
+    },
+    {
+      "name": "See APIs",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/list"
+    },
+    {
+      "name": "Connect API to Assistant",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/connect"
+    },
+    {
+      "name": "Connect API",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/connect"
+    },
+    {
+      "name": "Search APIs",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/store"
+    },
+    {
+      "name": "API Store",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/store"
+    },
+    {
+      "name": "Add Script",
       "icon": "menu-icon tf-icons ti ti-script",
       "slug": "scripts",
-      "url": "/scripts/list"
+      "url": "/app/mm_scripts/create"
     },
     {
-      "name": "Conditionals",
-      "icon": "menu-icon tf-icons ti ti-code",
-      "slug": "conditionals",
-      "url": "/conditionals/list"
+      "name": "Create Script",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/create"
     },
     {
-      "name": "Scheduled Jobs",
+      "name": "Build Script",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/create"
+    },
+    {
+      "name": "List Scripts",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/list"
+    },
+    {
+      "name": "Manage Scripts",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/list"
+    },
+    {
+      "name": "See Scripts",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/list"
+    },
+    {
+      "name": "Connect Script to Assistant",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/connect"
+    },
+    {
+      "name": "Connect Script",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/connect"
+    },
+    {
+      "name": "Search Scripts",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/store"
+    },
+    {
+      "name": "Script Store",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/store"
+    },
+    {
+      "name": "Create Scheduled Job",
       "icon": "menu-icon tf-icons ti ti-clock",
       "slug": "scheduled-jobs",
-      "url": "/scheduled_jobs/list"
+      "url": "/app/mm_scheduled_jobs/create"
     },
     {
-      "name": "Triggers",
+      "name": "Add Scheduled Job",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "scheduled-jobs",
+      "url": "/app/mm_scheduled_jobs/create"
+    },
+    {
+      "name": "Plan Scheduled Job",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "scheduled-jobs",
+      "url": "/app/mm_scheduled_jobs/create"
+    },
+    {
+      "name": "List Scheduled Jobs",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "scheduled-jobs",
+      "url": "/app/mm_scheduled_jobs/list"
+    },
+    {
+      "name": "See Scheduled Jobs",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "scheduled-jobs",
+      "url": "/app/mm_scheduled_jobs/list"
+    },
+    {
+      "name": "Manage Scheduled Jobs",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "scheduled-jobs",
+      "url": "/app/mm_scheduled_jobs/list"
+    },
+    {
+      "name": "Create Trigger",
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
-      "url": "/triggers/list"
+      "url": "/app/mm_triggered_jobs/create"
     },
     {
-      "name": "Image Gen & Analysis",
-      "icon": "menu-icon tf-icons ti ti-eye",
+      "name": "Add Trigger",
+      "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
-      "url": "/image_gen_analysis/list"
+      "url": "/app/mm_triggered_jobs/create"
     },
     {
-      "name": "Audio Gen & Analysis",
-      "icon": "menu-icon tf-icons ti ti-music",
+      "name": "Build Trigger",
+      "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
-      "url": "/audio_gen_analysis/list"
+      "url": "/app/mm_triggered_jobs/create"
     },
     {
-      "name": "Integrations",
-      "icon": "menu-icon tf-icons ti ti-dashboard",
+      "name": "List Triggers",
+      "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
-      "url": "/integrations/list"
+      "url": "/app/mm_triggered_jobs/list"
     },
     {
-      "name": "Meta Integrations",
-      "icon": "menu-icon tf-icons ti ti-rocket",
+      "name": "Manage Triggers",
+      "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
-      "url": "/meta_integrations/list"
+      "url": "/app/mm_triggered_jobs/list"
+    },
+    {
+      "name": "See Triggers",
+      "icon": "menu-icon tf-icons ti ti-anchor",
+      "slug": "triggers",
+      "url": "/app/mm_triggered_jobs/list"
+    },
+    {
+      "name": "See Profile",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "triggers",
+      "url": "/app/user_profile_management/profile"
+    },
+    {
+      "name": "See Personal Information",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "triggers",
+      "url": "/app/user_profile_management/profile"
+    },
+    {
+      "name": "See Profile Information",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "triggers",
+      "url": "/app/user_profile_management/profile"
+    },
+    {
+      "name": "Edit Profile",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "triggers",
+      "url": "/app/user_profile_management/profile"
+    },
+    {
+      "name": "Add Credit Card",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "triggers",
+      "url": "/app/user_profile_management/profile"
+    },
+    {
+      "name": "Add Payment Method",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "triggers",
+      "url": "/app/user_profile_management/profile"
+    },
+    {
+      "name": "Manage Payment Methods",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "triggers",
+      "url": "/app/user_profile_management/profile"
+    },
+    {
+      "name": "Frequently Asked Questions",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "triggers",
+      "url": "/faq"
+    },
+    {
+      "name": "FAQ",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "triggers",
+      "url": "/faq"
+    },
+    {
+      "name": "Documentation",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "triggers",
+      "url": "/docs"
+    },
+    {
+      "name": "Usage Manual",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "triggers",
+      "url": "/docs"
+    },
+    {
+      "name": "Usage Guide",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "triggers",
+      "url": "/docs"
     }
   ]
 }

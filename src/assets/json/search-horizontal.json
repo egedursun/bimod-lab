@@ -4,13 +4,13 @@
       "name": "Dashboard",
       "icon": "menu-icon tf-icons ti ti-smart-home",
       "slug": "main-dashboard",
-      "url": "/dashboard"
+      "url": "/app/dashboard/main_dashboard"
     },
     {
-      "name": "Organizations",
+      "name": "Create Organization",
       "icon": "menu-icon tf-icons ti ti-world",
       "slug": "organizations",
-      "url": "/organization/list"
+      "url": "organization:create"
     },
     {
       "name": "LLM Models",

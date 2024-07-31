@@ -61,7 +61,6 @@ class OrganizationListView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-
         organizations = Organization.objects.filter(users__in=[context_user])
 
         paginator = Paginator(organizations, 10)  # Show 10 organizations per page.
