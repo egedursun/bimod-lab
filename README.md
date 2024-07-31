@@ -91,6 +91,7 @@
 - Total Lines of Code by 2024-07-28: (Day: 30) **2,578,000**
 - Total Lines of Code by 2024-07-29: (Day: 31) **2,578,000**
 - Total Lines of Code by 2024-07-30: (Day: 32) **2,713,000**
+- Total Lines of Code by 2024-07-31: (Day: 33) **2,857,000**
 
 ---
 
@@ -110,28 +111,28 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 
 
 *Important:*
+1. [ ] Fix the search bar [SEARCH BAR].
 1. [ ] Implement the [DASHBOARD] page.
 2. [ ] Implement the [ORCHESTRATION] manager.
 
 *Deployment Changes:*
-1. [ ] Implement [LOGGING] to all pages.
-2. [ ] Migrate to [POSTGRES] database.
-3. [ ] Implement [HTTPS] configuration.
-4. [ ] Implement [CORS] configuration.
-5. [ ] Implement [SMTP] configuration.
-6. [ ] Implement [PAYMENT GATEWAY] for the application.
-7. [ ] Implement and fix [MAIN SEARCH BAR] for the application.
-8. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-9. [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
-10. [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
-11. [ ] Delete the [INTERNAL MEDIA DIRECTORY] from the repository.
-12. [ ] Code [CLEANUP AND REFACTORING].
-13. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
-14. [ ] Deploy the [APPLICATION].
-15. [ ] Protect the [MAIN BRANCH] from direct merges.
-16. [ ] Create the [DEVELOPMENT BRANCH] from the main branch.
-17. [ ] Protect [DIRECT MERGES] to the development branch.
-18. [ ] RELEASE v0.1.0 [RELEASE: BETA] version of the application.
+1. [ ] Migrate to [POSTGRES] database.
+2. [ ] Implement [HTTPS] configuration.
+3. [ ] Implement [CORS] configuration.
+4. [ ] Implement [SMTP] configuration.
+5. [ ] Implement [PAYMENT GATEWAY] for the application.
+6. [ ] Implement and fix [MAIN SEARCH BAR] for the application.
+7. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+8. [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
+9. [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
+10. [ ] Delete the [INTERNAL MEDIA DIRECTORY] from the repository.
+11. [ ] Code [CLEANUP AND REFACTORING].
+12. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
+13. [ ] Deploy the [APPLICATION].
+14. [ ] Protect the [MAIN BRANCH] from direct merges.
+15. [ ] Create the [DEVELOPMENT BRANCH] from the main branch.
+16. [ ] Protect [DIRECT MERGES] to the development branch.
+17. [ ] RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---
 
 *After first deployment:*
@@ -165,8 +166,7 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 2. [ ] Users page [PROMO CODE] integration to the data model.
 3. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
 4. [ ] [BLOCKCHAIN] integration for the application.
-5. [ ] Implement the [CODE REPOSITORY] data source. (FRIDAY, SATURDAY 03/08, 04/08)
-6. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
+5. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
 
 ---
 

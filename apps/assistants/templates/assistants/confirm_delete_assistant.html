@@ -13,6 +13,13 @@
         <small class="text-muted float-end"></small>
       </div>
       <div class="card-body">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
         <form method="post">
           {% csrf_token %}
           <p>Are you sure you want to delete the assistant <strong>"{{ assistant.name }}"</strong>?</p><br>
