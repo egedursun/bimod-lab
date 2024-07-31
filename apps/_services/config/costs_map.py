@@ -66,6 +66,9 @@ class ToolCostsMap:
     class ScheduledJobExecutor:
         COST = 0.0050 * MULTIPLIER
 
+    class TriggeredJobExecutor:
+        COST = 0.0025 * MULTIPLIER
+
     class ImageGenerator:
         COST = 0.0050 * MULTIPLIER
 

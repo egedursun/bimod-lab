@@ -6,7 +6,9 @@ from django.utils import timezone
 from django_celery_beat.models import PeriodicTask, CrontabSchedule
 from slugify import slugify
 
+from apps._services.config.costs_map import ToolCostsMap
 from apps._services.llms.llm_decoder import InternalLLMClient
+from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
 
 
@@ -160,6 +162,20 @@ def execute_scheduled_job(scheduled_job_id):
         new_instance.status = ScheduledJobInstanceStatusesNames.COMPLETED
         new_instance.ended_at = timezone.now()
         new_instance.save()
+
+        # [15] Add the transaction
+        transaction = LLMTransaction(
+            organization=job.assistant.organization,
+            model=job.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=job.assistant,
+            encoding_engine="cl100k_base",
+            llm_cost=ToolCostsMap.ScheduledJobExecutor.COST,
+            transaction_type="system",
+            transaction_source=TransactionSourcesNames.SCHEDULED_JOB_EXECUTION,
+            is_tool_cost=True
+        )
+        transaction.save()
 
     except Exception as e:
         new_instance.status = ScheduledJobInstanceStatusesNames.FAILED

@@ -12,8 +12,10 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
+from apps._services.config.costs_map import ToolCostsMap
 from apps._services.llms.llm_decoder import InternalLLMClient
 from apps.assistants.models import Assistant
+from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from apps.mm_triggered_jobs.forms import TriggeredJobForm
 from apps.mm_triggered_jobs.models import TriggeredJob, TriggeredJobInstance, TriggeredJobInstanceStatusesNames
 from apps.mm_triggered_jobs.utils import generate_triggered_job_chat_name
@@ -187,6 +189,20 @@ class TriggeredJobWebhookListenerView(View):
             instance.status = TriggeredJobInstanceStatusesNames.COMPLETED
             instance.ended_at = timezone.now()
             instance.save()
+
+            # [15] Add the transaction
+            transaction = LLMTransaction(
+                organization=job.assistant.organization,
+                model=job.assistant.llm_model,
+                responsible_user=None,
+                responsible_assistant=job.assistant,
+                encoding_engine="cl100k_base",
+                llm_cost=ToolCostsMap.TriggeredJobExecutor.COST,
+                transaction_type="system",
+                transaction_source=TransactionSourcesNames.TRIGGER_JOB_EXECUTION,
+                is_tool_cost=True
+            )
+            transaction.save()
 
         except Exception as e:
             instance.status = TriggeredJobInstanceStatusesNames.FAILED

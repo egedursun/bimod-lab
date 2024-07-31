@@ -69,9 +69,42 @@ class TransactionSourcesNames:
     INTERPRET_FILE = "interpret-file"
     INTERPRET_IMAGE = "interpret-image"
     SCHEDULED_JOB_EXECUTION = "scheduled-job-execution"
+    TRIGGER_JOB_EXECUTION = "trigger-job-execution"
     GENERATE_IMAGE = "generate-image"
     MODIFY_IMAGE = "modify-image"
     VARIATE_IMAGE = "variate-image"
+
+    @staticmethod
+    def as_list():
+        return [
+            TransactionSourcesNames.APP,
+            TransactionSourcesNames.API,
+            TransactionSourcesNames.GENERATION,
+            TransactionSourcesNames.SQL_READ,
+            TransactionSourcesNames.SQL_WRITE,
+            TransactionSourcesNames.STORE_MEMORY,
+            TransactionSourcesNames.INTERPRET_CODE,
+            TransactionSourcesNames.DOWNLOAD_FILE,
+            TransactionSourcesNames.FILE_SYSTEM_COMMANDS,
+            TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH,
+            TransactionSourcesNames.RETRIEVE_MEMORY,
+            TransactionSourcesNames.CODE_REPOSITORY_SEARCH,
+            TransactionSourcesNames.ML_MODEL_PREDICTION,
+            TransactionSourcesNames.BROWSING,
+            TransactionSourcesNames.INTERNAL_FUNCTION_EXECUTION,
+            TransactionSourcesNames.EXTERNAL_FUNCTION_EXECUTION,
+            TransactionSourcesNames.INTERNAL_API_EXECUTION,
+            TransactionSourcesNames.EXTERNAL_API_EXECUTION,
+            TransactionSourcesNames.INTERNAL_SCRIPT_RETRIEVAL,
+            TransactionSourcesNames.EXTERNAL_SCRIPT_RETRIEVAL,
+            TransactionSourcesNames.INTERPRET_FILE,
+            TransactionSourcesNames.INTERPRET_IMAGE,
+            TransactionSourcesNames.SCHEDULED_JOB_EXECUTION,
+            TransactionSourcesNames.TRIGGER_JOB_EXECUTION,
+            TransactionSourcesNames.GENERATE_IMAGE,
+            TransactionSourcesNames.MODIFY_IMAGE,
+            TransactionSourcesNames.VARIATE_IMAGE,
+        ]
 
 
 # Create your models here.

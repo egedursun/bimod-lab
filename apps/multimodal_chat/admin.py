@@ -3,7 +3,7 @@ from django.contrib import admin
 from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
 from apps.assistants.models import ContextOverflowStrategyNames
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
-from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
+from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage, ChatCreationLog, ChatMessageCreationLog
 from django.contrib.admin.actions import delete_selected as django_delete_selected
 
 
@@ -57,3 +57,17 @@ class MultimodalChatMessageAdmin(admin.ModelAdmin):
     list_editable = []
     list_select_related = False
     list_display_links_details = False
+
+
+@admin.register(ChatCreationLog)
+class ChatCreationLogAdmin(admin.ModelAdmin):
+    list_display = ["organization", 'created_at']
+    list_filter = ['created_at']
+    search_fields = ['created_at']
+
+
+@admin.register(ChatMessageCreationLog)
+class ChatMessageCreationLogAdmin(admin.ModelAdmin):
+    list_display = ["organization", 'created_at']
+    list_filter = ['created_at']
+    search_fields = ['created_at']

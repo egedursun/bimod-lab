@@ -185,3 +185,35 @@ class MultimodalChatMessage(models.Model):
             starred_message = StarredMessage.objects.filter(chat_message=self.id)
             if starred_message:
                 starred_message.delete()
+
+
+class ChatCreationLog(models.Model):
+    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.created_at}"
+
+    class Meta:
+        verbose_name = "Chat Creation Log"
+        verbose_name_plural = "Chat Creation Logs"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=['created_at']),
+        ]
+
+
+class ChatMessageCreationLog(models.Model):
+    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.created_at}"
+
+    class Meta:
+        verbose_name = "Chat Message Creation Log"
+        verbose_name_plural = "Chat Message Creation Logs"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=['created_at']),
+        ]
