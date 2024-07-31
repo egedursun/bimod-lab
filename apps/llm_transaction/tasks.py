@@ -2,7 +2,8 @@
 from celery import shared_task
 from django.utils import timezone
 
-from apps.llm_transaction.models import AutoBalanceTopUpModel
+from apps.llm_transaction.models import AutoBalanceTopUpModel, OrganizationBalanceSnapshot
+from apps.organization.models import Organization
 
 
 @shared_task
@@ -46,4 +47,16 @@ def check_and_perform_auto_top_up():
         else:
             print("Days since last top-up is less than the interval for organization: ", plan.organization)
             continue
+    return True
+
+
+@shared_task
+def track_organization_balances():
+    all_organizations = Organization.objects.all()
+    for organization in all_organizations:
+        balance_snapshot = OrganizationBalanceSnapshot(
+            organization=organization,
+            balance=organization.balance
+        )
+        balance_snapshot.save()
     return True

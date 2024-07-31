@@ -112,7 +112,9 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 
 *Important:*
 1. [ ] Implement the [DASHBOARD] page.
-2. [ ] Implement the [ORCHESTRATION] manager.
+2. [ ] Code [CLEANUP AND REFACTORING].
+3. [ ] Implement the [ORCHESTRATION] manager.
+
 
 *Deployment Changes:*
 1. [ ] Migrate to [POSTGRES] database.
@@ -123,13 +125,11 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 6. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
 7. [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
 8. [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
-9. [ ] Delete the [INTERNAL MEDIA DIRECTORY] from the repository.
-10. [ ] Code [CLEANUP AND REFACTORING].
-11. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
-12. [ ] Deploy the [APPLICATION].
-13. [ ] Protect the [MAIN BRANCH] from direct merges.
-14. [ ] Create the [DEVELOPMENT BRANCH] from the main branch.
-15. [ ] Protect [DIRECT MERGES] to the development branch.
+9. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
+10. [ ] Deploy the [APPLICATION].
+11. [ ] Protect the [MAIN BRANCH] for direct merges.
+12. [ ] Create the [DEVELOPMENT BRANCH] for the main branch.
+13. [ ] Protect [DIRECT MERGES] to the development branch.
 ---
 RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---

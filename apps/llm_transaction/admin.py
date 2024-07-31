@@ -3,7 +3,7 @@ import decimal
 from django.contrib import admin
 from django.contrib.admin import widgets
 
-from .models import LLMTransaction, AutoBalanceTopUpModel
+from .models import LLMTransaction, AutoBalanceTopUpModel, OrganizationBalanceSnapshot
 from .utils import calculate_number_of_tokens, calculate_llm_cost, calculate_internal_service_cost, calculate_tax_cost, \
     calculate_total_cost, calculate_billable_cost
 
@@ -69,3 +69,10 @@ class AutoBalanceTopUpModelAdmin(admin.ModelAdmin):
     list_display = ["organization", "on_balance_threshold_trigger", "on_interval_by_days_trigger",
                     "balance_lower_trigger_threshold_value", "addition_on_balance_threshold_trigger"]
     ordering = ["-created_at"]
+
+
+@admin.register(OrganizationBalanceSnapshot)
+class OrganizationBalanceSnapshotAdmin(admin.ModelAdmin):
+    list_display = ["organization", "balance", "created_at"]
+    ordering = ["-created_at"]
+    date_hierarchy = "created_at"

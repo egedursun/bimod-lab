@@ -41,6 +41,11 @@ app.conf.beat_schedule = {
         'task': 'apps.mm_scripts.tasks.randomize_featured_scripts',
         'schedule': crontab(minute=0, hour='*/6'),
     },
+    # CRON TASK TO TRACK ORGANIZATION BALANCE SNAPSHOTS
+    'track-organization-balances-every-1-hour': {
+        'task': 'apps.llm_transaction.tasks.track_organization_balances',
+        'schedule': crontab(minute=0, hour='*/1'),
+    },
 }
 
 
