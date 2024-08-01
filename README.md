@@ -92,7 +92,7 @@
 - Total Lines of Code by 2024-07-29: (Day: 31) **2,578,000**
 - Total Lines of Code by 2024-07-30: (Day: 32) **2,713,000**
 - Total Lines of Code by 2024-07-31: (Day: 33) **2,857,000**
-- Total Lines of Code by 2024-08-01: (Day: 34) **6,175,000**
+- Total Lines of Code by 2024-08-01: (Day: 34) **6,186,000**
 
 ---
 
@@ -112,24 +112,26 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 
 
 *Important:*
-2. [ ] Code [CLEANUP AND REFACTORING].
-3. [ ] Implement the [ORCHESTRATION] manager.
+1. [ ] Code [CLEANUP AND REFACTORING].
+2. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+3. [ ] Migrate to [POSTGRES] database.
+4. [ ] Implement [HTTPS] configuration.
+5. [ ] Implement [CORS] configuration.
+6. [ ] Implement [SMTP] configuration.
+7. [ ] Implement the [ORCHESTRATION] manager.
 
 
-*Deployment Changes:*
-1. [ ] Migrate to [POSTGRES] database.
-2. [ ] Implement [HTTPS] configuration.
-3. [ ] Implement [CORS] configuration.
-4. [ ] Implement [SMTP] configuration.
-5. [ ] Implement [PAYMENT GATEWAY] for the application.
-6. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-7. [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
-8. [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
-9. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
-10. [ ] Deploy the [APPLICATION].
-11. [ ] Protect the [MAIN BRANCH] for direct merges.
-12. [ ] Create the [DEVELOPMENT BRANCH] for the main branch.
-13. [ ] Protect [DIRECT MERGES] to the development branch.
+*Pre-Deployment Changes:*
+1. [ ] Implement [PAYMENT GATEWAY] for the application.
+2. [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
+3. [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
+
+*Deploy:*
+1. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
+2. [ ] Deploy the [APPLICATION].
+3. [ ] Protect the [MAIN BRANCH] for direct merges.
+4. [ ] Create the [DEVELOPMENT BRANCH] for the main branch.
+5. [ ] Protect [DIRECT MERGES] to the development branch.
 ---
 RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---

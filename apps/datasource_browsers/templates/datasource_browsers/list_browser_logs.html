@@ -75,6 +75,7 @@
       <thead class="border-top">
         <tr>
           <th><strong>Action</strong></th>
+          <th>Screenshot</th>
           <th>Context URL</th>
           <th>HTML Content</th>
           <th>Context Content</th>
@@ -91,6 +92,17 @@
             <div class="bg-label-success m-2 p-2 rounded">
               <strong>{{ log.action|capfirst }}</strong>
             </div>
+          </td>
+          <td>
+            {% if log.screenshot %}
+              <a href="{{ log.screenshot.url }}" target="_blank">
+                <img src="{{ log.screenshot.url }}" class="img-fluid rounded border border-2 border-primary rounded" style="max-height: 200px;">
+              </a>
+            {% else %}
+              <p class="bg-label-warning p-4 m-2 rounded">
+                <small>No screenshot available</small>
+              </p>
+            {% endif %}
           </td>
           <td>
               {% if log.context_url %}

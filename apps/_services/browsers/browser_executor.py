@@ -1,6 +1,9 @@
+import base64
 import time
+import uuid
 from pprint import pprint
 
+from django.core.files.base import ContentFile
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from lxml.html.clean import Cleaner
@@ -86,7 +89,7 @@ class BrowsingExecutor:
         transaction.save()
 
         if action == ActionsNames.BROWSER_SEARCH:
-            search_response =  self.browser_search(kwargs["query"], kwargs["page"])
+            search_response, image_bytes =  self.browser_search(kwargs["query"], kwargs["page"])
 
             new_log_instance = self.connection.logs.create(
                 connection=self.connection,
@@ -96,11 +99,12 @@ class BrowsingExecutor:
                 context_content=search_response,
                 log_content=f"Search query: {kwargs['query']} for the {kwargs['page']}th page of the {self.engine} "
                             f"search engine.",
+                screenshot=ContentFile(image_bytes, name=f"{uuid.uuid4()}.png")
             )
             new_log_instance.save()
             return search_response
         elif action == ActionsNames.CLICK_URL_IN_SEARCH:
-            click_response = self.click_url_in_search(kwargs["search_results"], kwargs["click_url"])
+            click_response, image_bytes = self.click_url_in_search(kwargs["search_results"], kwargs["click_url"])
 
             new_log_instance = self.connection.logs.create(
                 connection=self.connection,
@@ -109,6 +113,7 @@ class BrowsingExecutor:
                 html_content=click_response,
                 context_content=None,
                 log_content=f"Clicked the URL: {kwargs['click_url']} in the search results.",
+                screenshot=ContentFile(image_bytes, name=f"{uuid.uuid4()}.png")
             )
             new_log_instance.save()
             return click_response
@@ -123,6 +128,7 @@ class BrowsingExecutor:
         try:
             options = webdriver.ChromeOptions()
             options.add_argument('headless')
+            options.add_argument("--window-size=1920x1080")  # Set window size
             d = webdriver.Chrome(options=options)
             self.d = d
         except Exception as e:
@@ -174,6 +180,8 @@ class BrowsingExecutor:
                     f"browsing: {e}")
 
     def get_search_results(self):
+        image_b64 = self.d.get_screenshot_as_base64()
+        image_bytes = base64.b64decode(image_b64)
         try:
             raw_results = self.d.find_elements(By.CSS_SELECTOR, "div.g")
             clean_results = self.get_cleaned_search_results(raw_results)
@@ -182,7 +190,7 @@ class BrowsingExecutor:
                 clean_results = self.filter_on_whitelist(clean_results)
             elif self.mode == self.BrowsingModes.BLACKLIST:
                 clean_results = self.filter_on_blacklist(clean_results)
-            return clean_results
+            return clean_results, image_bytes
         except Exception as e:
             return (f"There has been an unexpected error while trying to get the search results "
                     f"on browsing: {e}")
@@ -213,8 +221,12 @@ class BrowsingExecutor:
             for r in search_results:
                 if r["url"] == click_url:
                     self.get_page(r["url"])
+
+                    image_b64 = self.d.get_screenshot_as_base64()
+                    image_bytes = base64.b64decode(image_b64)
+
                     content = self.get_page_content()
-                    return content
+                    return content, image_bytes
             return f"URL not found in search results: {click_url}"
         except Exception as e:
             return (f"There has been an unexpected error while trying to click the URL in the "

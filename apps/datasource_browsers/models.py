@@ -73,6 +73,7 @@ class DataSourceBrowserBrowsingLog(models.Model):
     html_content = models.TextField(blank=True, null=True)
     context_content = models.TextField(blank=True, null=True)
     log_content = models.TextField(blank=True, null=True)
+    screenshot = models.ImageField(upload_to="datasource_browser_screenshots/%Y/%m/%d", blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
