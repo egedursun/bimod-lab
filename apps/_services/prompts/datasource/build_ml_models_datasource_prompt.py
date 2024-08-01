@@ -65,3 +65,37 @@ def build_ml_models_datasource_prompt(assistant: Assistant, user: User):
             """
 
     return response_prompt
+
+
+def build_lean_ml_models_datasource_prompt():
+    # Build the prompt
+    response_prompt = """
+            **ML MODELS RESOURCE CONNECTIONS:**
+
+            '''
+            <This information is redacted because you won't need it to serve your instructions.>
+            '''
+
+            **VERY IMPORTANT NOTE ABOUT THE ''URL DOWNLOADER TOOL''**
+            - When the user sends you an image content through CHAT, this content is automatically processed and
+            saved, so you DON'T NEED to use your 'URL RETRIEVER' tool to download the image content, since it is
+            already saved in your storage.
+
+            **NOTE**: These are the ML Model datasource connections you have. You can use these connections
+            to retrieve information about the ML Models, ask queries and questions about them, and retrieve
+            predictions from them.
+
+            **VERY IMPORTANT NOTE ABOUT 'ML MODELS' RESOURCE CONNECTIONS:**
+            - This is a direct connection to the ML Models you have. You can use these connections to retrieve
+            information about the ML Models, ask queries and questions about them, and retrieve predictions from them.
+            - You can also request chart generations and other types of data visualizations to provide a more
+            accurate and detailed response to your queries.
+
+            **HOW YOUR QUERIES ARE BEING PROCESSED:**
+            - Your queries along with the file paths you have given will be send to a distinct GPT assistant which
+            will process the queries and provide you with the results. The results will be displayed in the
+            response of the assistant, along with the URIs of the generated files, if any.
+
+            -------
+            """
+    return response_prompt

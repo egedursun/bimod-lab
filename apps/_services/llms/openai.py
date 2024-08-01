@@ -1,6 +1,5 @@
 import json
 import base64 as b64
-import pprint
 
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
@@ -9,6 +8,7 @@ from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS,
     AFFIRMATION_PROMPT, ML_AFFIRMATION_PROMPT
 from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
+from apps._services.prompts.statistics.usage_statistics_prompt import build_usage_statistics_system_prompt
 from apps._services.tools.tool_executor import ToolExecutor
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from apps.multimodal_chat.utils import calculate_billable_cost_from_raw
@@ -95,6 +95,12 @@ class InternalOpenAIClient:
         )
         self.assistant = assistant
         self.chat = multimodal_chat
+
+    @staticmethod
+    def get_no_scope_connection(llm_model):
+        return OpenAI(
+            api_key=llm_model.api_key,
+        )
 
     def respond(self, latest_message, prev_tool_name=None, with_media=False, file_uris=None, image_uris=None):
         from apps.multimodal_chat.models import MultimodalChatMessage
@@ -1102,4 +1108,35 @@ class InternalOpenAIClient:
             return response
 
         return response
+
+    @staticmethod
+    def provide_analysis(llm_model, statistics):
+        try:
+            instructions = build_usage_statistics_system_prompt(statistics=statistics)
+            lean_prompt = PromptBuilder.build_lean(
+                assistant_name="Bimod Platform Usage Statistics Assistant",
+                instructions=instructions,
+                audience = "Standard / Bimod Application Users",
+                tone = "Formal & Descriptive",
+                chat_name = "Statistics Analysis & Evaluation")
+
+            # retrieve the answer from the assistant
+            c = InternalOpenAIClient.get_no_scope_connection(llm_model=llm_model)
+            response = c.chat.completions.create(
+                model=llm_model.model_name,
+                messages=[
+                    {"role": "system", "content": json.dumps(lean_prompt, indent=4, sort_keys=True, default=str)}
+                ],
+                temperature=0.25,
+                max_tokens=4000,
+            )
+            choices = response.choices
+            first_choice = choices[0]
+            choice_message = first_choice.message
+            choice_message_content = choice_message.content
+            response = choice_message_content
+        except Exception as e:
+            response = f"System Message: An error occurred while providing the analysis. Error Details: {str(e)}"
+        return response
+
 

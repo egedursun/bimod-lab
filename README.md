@@ -112,7 +112,6 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 
 
 *Important:*
-1. [ ] Implement the [DASHBOARD] page.
 2. [ ] Code [CLEANUP AND REFACTORING].
 3. [ ] Implement the [ORCHESTRATION] manager.
 

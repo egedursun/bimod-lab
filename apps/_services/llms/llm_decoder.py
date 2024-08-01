@@ -19,3 +19,9 @@ class InternalLLMClient:
                 assistant=assistant,
                 multimodal_chat=multimodal_chat
             )
+
+    @staticmethod
+    def provide_analysis(llm_model, statistics):
+        if llm_model.provider == InternalLLMClient.LLM_CORE_PROVIDERS["OPENAI"]["code"]:
+            return InternalOpenAIClient.provide_analysis(llm_model=llm_model, statistics=statistics)
+        return f"Provider {llm_model.provider} is currently not supported."

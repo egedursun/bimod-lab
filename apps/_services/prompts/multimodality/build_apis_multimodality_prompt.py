@@ -76,3 +76,54 @@ def build_apis_multimodality_prompt(assistant: Assistant):
             """
 
     return response_prompt
+
+
+def build_lean_apis_multimodality_prompt():
+    # Build the prompt
+    response_prompt = """
+            **CUSTOM API CONNECTIONS:**
+
+            '''
+            <This information is redacted because you won't need it to serve your instructions.>
+            '''
+
+            **THE NOTE ABOUT THE FORMAT OF THE BASE URL, ENDPOINTS, AND DESCRIPTIONS ARE DELIVERED:**
+            - This information is shared with you for you to have a more clear understanding about the custom APIs
+            given in the system. You can use this information to execute the custom APIs properly by providing the
+            necessary input data and the API ID more easily.
+
+            *Base URL:*
+            - The base URL field will be shared as a string that represents the base URL of the custom API.
+
+            *Endpoints & Descriptions:*
+            - The endpoints field will be shared as a dictionary where each key represents the endpoint name and the value
+            represents the important details about the endpoint in the following format:
+            '''
+            {
+                "Some Endpoint Name": {
+                    "description": "Some natural language description explaining what this endpoint does.",
+                    "path": "/users/{user_id}/details",
+                    "method": "POST",
+                    "header_params": ["Authorization"],
+                    "path_params": ["user_id"],
+                    "query_params": ["age", "sex"],
+                    "body_params": ["name", "email", "password"]
+                },
+                "Other Endpoint Name" = {
+                    ...
+                }
+            }
+            '''
+
+            -------
+
+            **NOTE**: You need to primarily choose an API you would like to use depending on the use case, and also
+            the name of the endpoint you would like to use for the API. You can then provide the necessary input data
+            to the API to get the desired output. The input data can be provided in the form of path parameters, query
+            parameters, and body parameters as shown in the endpoint details, and future explanations will be made
+            on the relevant tool section of your prompt.
+
+            -------
+            """
+
+    return response_prompt
