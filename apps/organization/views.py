@@ -187,26 +187,29 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
         ##############################
 
         # try to retrieve the code
-        bonus_amount_referrer, bonus_amount_referee = 0, 0
         bonus_percentage_referrer, bonus_percentage_referee = 0, 0
         promo_code = PromoCode.objects.filter(code=promo_code).first()
-        referrer = promo_code.user
-        if promo_code.current_referrals + 1 > promo_code.max_referral_limit:
-            promo_code.is_active = False
-            promo_code.save()
-        else:
-            promo_code.current_referrals += 1
-            bonus_percentage_referrer = promo_code.bonus_percentage_referrer
-            bonus_percentage_referee = promo_code.bonus_percentage_referee
-            promo_code.save()
 
-            referee_organization = Organization.objects.filter(users__in=[referrer]).first()
-            referee_organization.balance += decimal.Decimal.from_float(float(float(topup_amount) * bonus_percentage_referrer / 100))
-            referee_organization.save()
+        if promo_code is None:
+            bonus_percentage_referee = 0
+        else:
+            referrer = promo_code.user
+            if promo_code.current_referrals + 1 > promo_code.max_referral_limit:
+                promo_code.is_active = False
+                promo_code.save()
+            else:
+                promo_code.current_referrals += 1
+                bonus_percentage_referrer = promo_code.bonus_percentage_referrer
+                bonus_percentage_referee = promo_code.bonus_percentage_referee
+                promo_code.save()
+
+                referrer_organization = Organization.objects.filter(users__in=[referrer]).first()
+                referrer_organization.balance += decimal.Decimal.from_float(float(float(topup_amount) * ((bonus_percentage_referrer) / 100)))
+                referrer_organization.save()
 
         try:
             topup_amount = float(topup_amount)
-            topup_amount += float(float(topup_amount) * bonus_percentage_referee / 100)
+            topup_amount += float(float(topup_amount) * (bonus_percentage_referee) / 100)
             organization.balance += decimal.Decimal.from_float(topup_amount)
             organization.save()
             messages.success(request, f'Credits successfully added. New balance: ${organization.balance}')

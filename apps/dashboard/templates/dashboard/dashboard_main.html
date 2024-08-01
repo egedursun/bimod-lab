@@ -4127,6 +4127,7 @@
             </div>
           </div>
           <form action="{% url 'dashboard:main-dashboard' %}" method="POST" id="form-analysis">
+            {% csrf_token %}
             <div class="col-12">
               <div class="card-body">
                 <div class="d-flex justify-content-center">
