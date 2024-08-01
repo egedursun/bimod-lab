@@ -10,6 +10,7 @@ def build_structured_user_information_prompt(user: User):
         User's Email: {user.email}
         User's City: {user.profile.city}
         User's Country: {user.profile.country}
+        User's Birthday: {user.profile.birthdate}
         '''
 
         **NOTE**: This is the information about the user you are currently chatting with. Make sure to keep

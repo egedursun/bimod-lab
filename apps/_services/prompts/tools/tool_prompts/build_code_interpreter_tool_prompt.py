@@ -3,7 +3,6 @@ from config.settings import BASE_URL
 
 
 def build_structured_tool_prompt__code_interpreter():
-
     response_prompt = f"""
             **TOOL**: Code Interpreter Tool
 
@@ -73,5 +72,4 @@ def build_structured_tool_prompt__code_interpreter():
             appending the file path to the base URL.
 
         """
-
     return response_prompt

@@ -11,8 +11,12 @@ from config.settings import WEAVIATE_CLUSTER_URL, WEAVIATE_API_KEY, WEAVIATE_SIN
 import weaviate.classes as wvc
 
 
-class MemoryExecutor:
+WEAVIATE_INITIALIZATION_TIMEOUT = 30  # 30 seconds for the weaviate initialization
+WEAVIATE_QUERY_TIMEOUT = 60  # 60 seconds for the weaviate query
+WEAVIATE_INSERT_TIMEOUT = 120  # 120 seconds for the weaviate insert
 
+
+class MemoryExecutor:
     def __init__(self, connection):
         self.connection_object = connection
         self.client = None
@@ -22,11 +26,11 @@ class MemoryExecutor:
             c = weaviate.connect_to_weaviate_cloud(
                 cluster_url=WEAVIATE_CLUSTER_URL,
                 auth_credentials=weaviate.auth.AuthApiKey(api_key=WEAVIATE_API_KEY),
-                headers={
-                    "X-OpenAI-Api-Key": self.connection_object.vectorizer_api_key
-                },
+                headers={"X-OpenAI-Api-Key": self.connection_object.vectorizer_api_key},
                 additional_config=AdditionalConfig(
-                    timeout=Timeout(init=30, query=60, insert=120)  # Values in seconds
+                    timeout=Timeout(init=WEAVIATE_INITIALIZATION_TIMEOUT,
+                                    query=WEAVIATE_QUERY_TIMEOUT,
+                                    insert=WEAVIATE_INSERT_TIMEOUT)
                 )
             )
             self.client = c
@@ -46,15 +50,9 @@ class MemoryExecutor:
     @staticmethod
     def decode_vectorizer(vectorizer_name):
         from apps.assistants.models import VectorizerNames
-
-        ##################################################
-        # OPENAI VECTORIZER
         if vectorizer_name == VectorizerNames.TEXT2VEC_OPENAI:
             return wvc.config.Configure.Vectorizer.text2vec_openai()
-        ##################################################
-        # DEFAULT VECTORIZER
         else:
-            # Return the default vectorizer (text2vec-openai)
             return wvc.config.Configure.Vectorizer.text2vec_openai()
         ##################################################
 
@@ -83,7 +81,6 @@ class MemoryExecutor:
     ##################################################
 
     def index_memory(self, connection_id: int, assistant_id: int, chat_id: int, message_text: str):
-        ##################################################
         _ = self.connect_c()
         index_memory_helper.delay(
             connection_id=connection_id,
@@ -96,33 +93,22 @@ class MemoryExecutor:
 
     def embed_memory(self, number_of_chunks: int):
         executor_params = {
-            "client": {
-                "host_url": WEAVIATE_CLUSTER_URL,
-                "api_key": WEAVIATE_API_KEY
-            },
-            "connection_id": self.connection_object.id
-        }
-        print(f"[Memory Embedder]: Prepare to embed the memory:...")
+            "client": {"host_url": WEAVIATE_CLUSTER_URL, "api_key": WEAVIATE_API_KEY},
+            "connection_id": self.connection_object.id}
         doc_id, doc_uuid, error = embed_memory_data(executor_params=executor_params,
                                                     number_of_chunks=number_of_chunks)
-        print(f"[Document Embedder]: Embedded the document:...")
         return doc_id, doc_uuid, error
 
     def embed_memory_chunks(self, chunks: list, memory_id: int, memory_uuid: str):
-        print(f"[Memory Chunk Embedder]: Prepare to embed the memory chunks: {memory_id}")
         executor_params = {
-            "client": {
-                "host_url": WEAVIATE_CLUSTER_URL,
-                "api_key": WEAVIATE_API_KEY
-            },
-            "connection_id": self.connection_object.id
-        }
+            "client": {"host_url": WEAVIATE_CLUSTER_URL, "api_key": WEAVIATE_API_KEY},
+            "connection_id": self.connection_object.id}
         errors = embed_memory_chunks(executor_params=executor_params, chunks=chunks,
                                      memory_id=memory_id, memory_uuid=memory_uuid)
-        print(f"[Document Chunk Embedder]: Embedded the memory chunks: {memory_id}")
         return errors
 
     def search_hybrid(self, query: str, alpha: float):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         search_memory_class_name = f"{self.connection_object.class_name}Chunks"
         client = self.connect_c()
         memories_collection = client.collections.get(search_memory_class_name)
@@ -148,12 +134,11 @@ class MemoryExecutor:
             model=self.connection_object.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.ContextMemoryRetrieval.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.RETRIEVE_MEMORY,
             is_tool_cost=True
         )
         transaction.save()
-
         return cleaned_memories

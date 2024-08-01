@@ -71,6 +71,8 @@ class DataSourceMLModelItem(models.Model):
     description = models.TextField(blank=True, null=True)
     ml_model_size = models.BigIntegerField(null=True, blank=True)
 
+    interpretation_temperature = models.FloatField(default=0.25)
+
     full_file_path = models.CharField(max_length=1000, blank=True, null=True)
     file_bytes = models.BinaryField(null=True, blank=True)
 

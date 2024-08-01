@@ -220,6 +220,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                                         <th>Model Id</th>
                                                         <th>Model Name</th>
                                                         <th>Description</th>
+                                                        <th>Interpretation Temperature</th>
                                                         <th>Uploaded At</th>
                                                     </tr>
                                                 </thead>
@@ -234,6 +235,9 @@ document.addEventListener("DOMContentLoaded", function() {
                                                         <td>{{ item_data.ml_model_name }}</td>
                                                         <td class="w-50">
                                                           {{ item_data.description }}
+                                                        </td>
+                                                        <td>
+                                                          {{ item_data.interpretation_temperature }}
                                                         </td>
                                                         <td>{{ item_data.created_at }}</td>
                                                     </tr>

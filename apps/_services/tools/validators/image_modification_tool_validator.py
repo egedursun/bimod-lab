@@ -35,5 +35,4 @@ def validate_image_modification_tool_json(tool_usage_json: dict):
             for using the Image Modification tool. Please make sure you are defining the 'edit_image_mask_uri' field in the parameters
             field of the tool_usage_json.
         """
-
     return None

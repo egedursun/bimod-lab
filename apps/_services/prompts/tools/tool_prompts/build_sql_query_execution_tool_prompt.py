@@ -41,5 +41,4 @@ def build_structured_tool_prompt__sql_query_execution():
             before executing those queries.
 
     """
-
     return response_prompt

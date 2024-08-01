@@ -1,13 +1,11 @@
-from django.contrib.auth.models import User
 
 from apps.assistants.models import Assistant
 from apps.datasource_sql.models import SQLDatabaseConnection
 
 
-def build_sql_datasource_prompt(assistant: Assistant, user: User):
-    response_prompt = ""
+def build_sql_data_source_prompt(assistant: Assistant):
     # Gather the SQL datasource connections of the assistant
-    sql_datasources = SQLDatabaseConnection.objects.filter(assistant=assistant)
+    sql_data_sources = SQLDatabaseConnection.objects.filter(assistant=assistant)
     # Build the prompt
     response_prompt = """
         **SQL DATABASE CONNECTIONS:**
@@ -15,21 +13,19 @@ def build_sql_datasource_prompt(assistant: Assistant, user: User):
         '''
         """
 
-    for i, sql_datasource in enumerate(sql_datasources):
-
-        custom_queries_of_datasource = sql_datasource.custom_queries.all()
-
+    for i, sql_data_source in enumerate(sql_data_sources):
+        custom_queries_of_datasource = sql_data_source.custom_queries.all()
         response_prompt += f"""
-        [SQL Datasource ID: {sql_datasource.id}]
-            DBMS System Type: {sql_datasource.dbms_type}
-            Database Name: {sql_datasource.database_name}
-            Database Description: {sql_datasource.description}
+        [SQL Data Source ID: {sql_data_source.id}]
+            DBMS System Type: {sql_data_source.dbms_type}
+            Database Name: {sql_data_source.database_name}
+            Database Description: {sql_data_source.description}
             Do you have Read Permissions: YES
-            Do you have Write Permissions: {not sql_datasource.is_read_only}
-            Maximum Records to Retrieve per Query (LIMIT): {sql_datasource.one_time_sql_retrieval_instance_limit}
+            Do you have Write Permissions: {not sql_data_source.is_read_only}
+            Maximum Records to Retrieve per Query (LIMIT): {sql_data_source.one_time_sql_retrieval_instance_limit}
             DBMS Schema for your Reference:
             '''
-            {sql_datasource.schema_data_json}
+            {sql_data_source.schema_data_json}
             '''
 
             **Custom Queries of this Datasource:**
@@ -73,7 +69,7 @@ def build_sql_datasource_prompt(assistant: Assistant, user: User):
     return response_prompt
 
 
-def build_lean_sql_datasource_prompt():
+def build_lean_sql_data_source_prompt():
     # Build the prompt
     response_prompt = """
         **SQL DATABASE CONNECTIONS:**

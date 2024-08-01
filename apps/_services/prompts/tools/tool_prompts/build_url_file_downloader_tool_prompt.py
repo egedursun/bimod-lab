@@ -3,7 +3,6 @@ from config.settings import BASE_URL
 
 
 def build_structured_tool_prompt__url_file_downloader():
-
     response_prompt = f"""
             **TOOL**: URL File Downloader
 
@@ -67,5 +66,4 @@ def build_structured_tool_prompt__url_file_downloader():
             appending the file path to the base URL.
 
         """
-
     return response_prompt

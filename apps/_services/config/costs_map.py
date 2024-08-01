@@ -1,85 +1,105 @@
+from config.settings import COSTS_MAP
 
 
-MULTIPLIER = 1
-
-
-# Per Request
 class ToolCostsMap:
 
+    @staticmethod
+    def as_list():
+        return [
+            ToolCostsMap.ContextMemory.COST,
+            ToolCostsMap.ContextMemoryRetrieval.COST,
+            ToolCostsMap.CodeInterpreter.COST,
+            ToolCostsMap.DownloadExecutor.COST,
+            ToolCostsMap.FileSystemsExecutor.COST,
+            ToolCostsMap.KnowledgeBaseExecutor.COST,
+            ToolCostsMap.BrowsingExecutor.COST,
+            ToolCostsMap.CodeRepositoryExecutor.COST,
+            ToolCostsMap.MLModelExecutor.COST,
+            ToolCostsMap.InternalCustomFunctionExecutor.COST,
+            ToolCostsMap.ExternalCustomFunctionExecutor.COST,
+            ToolCostsMap.InternalCustomAPIExecutor.COST,
+            ToolCostsMap.ExternalCustomAPIExecutor.COST,
+            ToolCostsMap.InternalCustomScriptExecutor.COST,
+            ToolCostsMap.ExternalCustomScriptExecutor.COST,
+            ToolCostsMap.SQLReadExecutor.COST,
+            ToolCostsMap.SQLWriteExecutor.COST,
+            ToolCostsMap.FileInterpreter.COST,
+            ToolCostsMap.ImageInterpreter.COST,
+            ToolCostsMap.ScheduledJobExecutor.COST,
+            ToolCostsMap.TriggeredJobExecutor.COST,
+            ToolCostsMap.ImageGenerator.COST,
+            ToolCostsMap.ImageModification.COST,
+            ToolCostsMap.ImageVariation.COST,
+        ]
+
     class ContextMemory:
-        COST = 0.0100 * MULTIPLIER
+        COST = COSTS_MAP["CONTEXT_MEMORY"]
 
     class ContextMemoryRetrieval:
-        COST = 0.0050 * MULTIPLIER
+        COST = COSTS_MAP["CONTEXT_MEMORY_RETRIEVAL"]
 
     class CodeInterpreter:
-        COST = 0.0100 * MULTIPLIER
+        COST = COSTS_MAP["CODE_INTERPRETER"]
 
     class DownloadExecutor:
-        COST = 0.0050 * MULTIPLIER
+        COST = COSTS_MAP["DOWNLOAD_EXECUTOR"]
 
     class FileSystemsExecutor:
-        COST = 0.0100 * MULTIPLIER
+        COST = COSTS_MAP["FILE_SYSTEMS_EXECUTOR"]
 
     class KnowledgeBaseExecutor:
-        COST = 0.0100 * MULTIPLIER
+        COST = COSTS_MAP["KNOWLEDGE_BASE_EXECUTOR"]
 
     class BrowsingExecutor:
-        COST = 0.0025 * MULTIPLIER
+        COST = COSTS_MAP["BROWSING_EXECUTOR"]
 
     class CodeRepositoryExecutor:
-        COST = 0.0100 * MULTIPLIER
+        COST = COSTS_MAP["CODE_REPOSITORY_EXECUTOR"]
 
     class MLModelExecutor:
-        COST = 0.0150 * MULTIPLIER
+        COST = COSTS_MAP["ML_MODEL_EXECUTOR"]
 
     class InternalCustomFunctionExecutor:
-        COST = 0.0150 * MULTIPLIER
+        COST = COSTS_MAP["INTERNAL_CUSTOM_FUNCTION_EXECUTOR"]
 
     class ExternalCustomFunctionExecutor:
-        COST = 0.0075 * MULTIPLIER
+        COST = COSTS_MAP["EXTERNAL_CUSTOM_FUNCTION_EXECUTOR"]
 
     class InternalCustomAPIExecutor:
-        COST = 0.0150 * MULTIPLIER
+        COST = COSTS_MAP["INTERNAL_CUSTOM_API_EXECUTOR"]
 
     class ExternalCustomAPIExecutor:
-        COST = 0.0075 * MULTIPLIER
+        COST = COSTS_MAP["EXTERNAL_CUSTOM_API_EXECUTOR"]
 
-    class InternalCustomScriptRetriever:
-        COST = 0.0050 * MULTIPLIER
+    class InternalCustomScriptExecutor:
+        COST = COSTS_MAP["INTERNAL_CUSTOM_SCRIPT_EXECUTOR"]
 
-    class ExternalCustomScriptRetriever:
-        COST = 0.0025 * MULTIPLIER
+    class ExternalCustomScriptExecutor:
+        COST = COSTS_MAP["EXTERNAL_CUSTOM_SCRIPT_EXECUTOR"]
 
     class SQLReadExecutor:
-        COST = 0.0050 * MULTIPLIER
+        COST = COSTS_MAP["SQL_READ_EXECUTOR"]
 
     class SQLWriteExecutor:
-        COST = 0.0100 * MULTIPLIER
+        COST = COSTS_MAP["SQL_WRITE_EXECUTOR"]
 
     class FileInterpreter:
-        COST = 0.0050 * MULTIPLIER
+        COST = COSTS_MAP["FILE_INTERPRETER"]
 
     class ImageInterpreter:
-        COST = 0.0100 * MULTIPLIER
+        COST = COSTS_MAP["IMAGE_INTERPRETER"]
 
     class ScheduledJobExecutor:
-        COST = 0.0050 * MULTIPLIER
+        COST = COSTS_MAP["SCHEDULED_JOB_EXECUTOR"]
 
     class TriggeredJobExecutor:
-        COST = 0.0025 * MULTIPLIER
+        COST = COSTS_MAP["TRIGGERED_JOB_EXECUTOR"]
 
     class ImageGenerator:
-        COST = 0.0050 * MULTIPLIER
+        COST = COSTS_MAP["IMAGE_GENERATOR"]
 
     class ImageModification:
-        COST = 0.0025 * MULTIPLIER
+        COST = COSTS_MAP["IMAGE_MODIFICATION"]
 
     class ImageVariation:
-        COST = 0.0025 * MULTIPLIER
-
-
-
-
-
-
+        COST = COSTS_MAP["IMAGE_VARIATION"]

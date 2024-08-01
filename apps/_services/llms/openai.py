@@ -5,7 +5,20 @@ from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
 from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, AssistantRunStatuses, \
-    AFFIRMATION_PROMPT, ML_AFFIRMATION_PROMPT
+    ONE_SHOT_AFFIRMATION_PROMPT, ML_AFFIRMATION_PROMPT, INSUFFICIENT_BALANCE_PROMPT, get_technical_error_log, \
+    get_maximum_tool_chains_reached_log, get_maximum_tool_attempts_reached_log, get_json_decode_error_log, \
+    embed_tool_call_in_prompt, get_number_of_files_too_high_log, EMPTY_FILE_PATH_LOG, \
+    FILE_INTERPRETER_PREPARATION_ERROR_LOG, FILE_INTERPRETER_THREAD_CREATION_ERROR_LOG, \
+    FILE_INTERPRETER_RESPONSE_RETRIEVAL_ERROR_LOG, get_file_interpreter_status_log, FILE_STORAGE_CLEANUP_ERROR_LOG, \
+    IMAGE_INTERPRETER_RESPONSE_RETRIEVAL_ERROR_LOG, IMAGE_INTERPRETER_RESPONSE_PROCESSING_ERROR_LOG, \
+    get_number_of_ml_predictions_too_high_log, ML_MODEL_NOT_FOUND_ERROR_LOG, ML_MODEL_LOADING_ERROR_LOG, \
+    ML_MODEL_OPENAI_UPLOAD_ERROR_LOG, ML_MODEL_ASSISTANT_PREPARATION_ERROR_LOG, ML_MODEL_THREAD_CREATION_ERROR_LOG, \
+    ML_MODEL_RESPONSE_RETRIEVAL_ERROR_LOG, get_ml_prediction_status_log, ML_MODEL_CLEANUP_ERROR_LOG, \
+    get_number_of_codes_too_high_log, CODE_INTERPRETER_ASSISTANT_PREPARATION_ERROR_LOG, \
+    CODE_INTERPRETER_THREAD_CREATION_ERROR_LOG, CODE_INTERPRETER_RESPONSE_RETRIEVAL_ERROR_LOG, \
+    get_code_interpreter_status_log, CODE_INTERPRETER_CLEANUP_ERROR_LOG, get_image_generation_error_log, \
+    get_image_modification_error_log, get_image_variation_error_log, get_statistics_analysis_error_log
+from apps._services.llms.utils import find_json_presence
 from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
 from apps._services.prompts.statistics.usage_statistics_prompt import build_usage_statistics_system_prompt
@@ -19,7 +32,10 @@ class ChatRoles:
     SYSTEM = "system"
     USER = "user"
     ASSISTANT = "assistant"
-    # TOOL = "tool"
+    ###
+    # Hidden Types (Internal)
+    # [i] - TOOL
+    ###
 
 
 ACTIVE_RETRY_COUNT = 0
@@ -29,6 +45,7 @@ ACTIVE_CHAIN_SIZE = 0
 DEFAULT_ERROR_MESSAGE = "Failed to respond at the current moment. Please try again later."
 GPT_DEFAULT_ENCODING_ENGINE = "cl100k_base"
 CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION = 20
+CONCRETE_LIMIT_ML_MODEL_PREDICTIONS = 10
 
 DEFAULT_IMAGE_GENERATION_MODEL = "dall-e-3"
 DEFAULT_IMAGE_MODIFICATION_MODEL = "dall-e-2"
@@ -36,6 +53,13 @@ DEFAULT_IMAGE_VARIATION_MODEL = "dall-e-2"
 DEFAULT_IMAGE_GENERATION_N = 1
 DEFAULT_IMAGE_MODIFICATION_N = 1
 DEFAULT_IMAGE_VARIATION_N = 1
+
+DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS = 4000
+DEFAULT_STATISTICS_TEMPERATURE = 0.50
+DEFAULT_STATISTICS_ASSISTANT_NAME_PLACEHOLDER = "Bimod Platform Usage Statistics Assistant"
+DEFAULT_STATISTICS_ASSISTANT_AUDIENCE = "Standard / Bimod Application Users"
+DEFAULT_STATISTICS_ASSISTANT_TONE = "Formal & Descriptive"
+DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME = "Statistics Analysis & Evaluation"
 
 
 class DefaultImageResolutionChoices:
@@ -51,61 +75,27 @@ class DefaultImageQualityChoices:
 
 
 def retry_mechanism(client, latest_message):
-    # if fails retry 3 times
     global ACTIVE_RETRY_COUNT
     if ACTIVE_RETRY_COUNT < client.assistant.max_retry_count:
         ACTIVE_RETRY_COUNT += 1
         return client.respond(latest_message=latest_message)
     else:
-        # Return the error message
         return DEFAULT_ERROR_MESSAGE
 
 
-def find_json_presence(response: str):
-    json_objects = []
-    brace_count = 0
-    json_str = ""
-    in_json = False
-
-    for char in response:
-        if char == '{':
-            if brace_count == 0: in_json = True
-            brace_count += 1
-        if in_json: json_str += char
-        if char == '}':
-            brace_count -= 1
-            if brace_count == 0:
-                in_json = False
-                try:
-                    json.loads(json_str)
-                    json_objects.append(json_str)
-                except json.JSONDecodeError:
-                    print(f"Invalid JSON found in the response: {json_str}")
-                json_str = ""
-    return json_objects if json_objects else None
-
-
 class InternalOpenAIClient:
-    def __init__(self,
-                 assistant,
-                 multimodal_chat
-                 ):
-        self.connection = OpenAI(
-            api_key=assistant.llm_model.api_key,
-        )
+    def __init__(self,assistant, multimodal_chat):
+        self.connection = OpenAI(api_key=assistant.llm_model.api_key)
         self.assistant = assistant
         self.chat = multimodal_chat
 
     @staticmethod
     def get_no_scope_connection(llm_model):
-        return OpenAI(
-            api_key=llm_model.api_key,
-        )
+        return OpenAI(api_key=llm_model.api_key)
 
     def respond(self, latest_message, prev_tool_name=None, with_media=False, file_uris=None, image_uris=None):
         from apps.multimodal_chat.models import MultimodalChatMessage
         from apps.llm_transaction.models import LLMTransaction
-
         c = self.connection
         user = self.chat.user
 
@@ -119,17 +109,14 @@ class InternalOpenAIClient:
             # Create the Chat History
             prompt_messages.extend(HistoryBuilder.build(chat=self.chat))
 
-            # Ask question to the GPT if the user has enough balance
+            # Ask question to the GPT if user has enough balance
             latest_message_billable_cost = calculate_billable_cost_from_raw(
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 model=self.chat.assistant.llm_model.model_name,
                 text=latest_message
             )
             if latest_message_billable_cost > self.chat.organization.balance:
-                response = ("System Message:\n\n\n- I'm sorry, but it seems like you don't have enough balance to "
-                            "continue this conversation. \n\n- Please contact your organization's administrator to "
-                            "top up your balance, or if you have the necessary permissions, you can top up your "
-                            "balance yourself.")
+                response = INSUFFICIENT_BALANCE_PROMPT
                 # Still add the transactions related to the user message
                 idle_response_transaction = LLMTransaction.objects.create(
                     organization=self.chat.organization,
@@ -148,12 +135,13 @@ class InternalOpenAIClient:
                 )
                 self.chat.transactions.add(idle_response_transaction)
                 self.chat.save()
-
                 final_response = response
                 return final_response
 
             #######################################################################################################
-            # Retrieve the response
+            # *************************************************************************************************** #
+            #######################################################################################################
+            # RETRIEVE LLM RESPONSE
             #######################################################################################################
             response = c.chat.completions.create(
                 model=self.assistant.llm_model.model_name,
@@ -163,8 +151,9 @@ class InternalOpenAIClient:
                 presence_penalty=float(self.assistant.llm_model.presence_penalty),
                 max_tokens=int(self.assistant.llm_model.maximum_tokens),
                 top_p=float(self.assistant.llm_model.top_p),
-                #  stop=self.assistant.llm_model.stop_sequences
             )
+            #######################################################################################################
+            # *************************************************************************************************** #
             #######################################################################################################
 
             choices = response.choices
@@ -172,7 +161,6 @@ class InternalOpenAIClient:
             choice_message = first_choice.message
             choice_message_content = choice_message.content
 
-            # Add the transaction of the assistant
             LLMTransaction.objects.create(
                 organization=self.chat.organization,
                 model=self.chat.assistant.llm_model,
@@ -188,28 +176,15 @@ class InternalOpenAIClient:
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=self.chat.chat_source
             )
-
             final_response = choice_message_content
 
-        # Retry mechanism for the OpenAI API, for N times
+        # Retry mechanism
         except Exception as e:
             final_response = retry_mechanism(client=self, latest_message=latest_message)
 
             # Get the error message
             if final_response == DEFAULT_ERROR_MESSAGE:
-                final_response += f"""
-
-                    Technical Details about the Error:
-
-                    If the issue persists, please contact the system administrator and deliver the error message
-                    below to provide a solution to the problem as soon as possible.
-
-                    '''
-
-                    {str(e)}
-
-                    '''
-                """
+                final_response += get_technical_error_log(error_logs=str(e))
                 # Reset the retry mechanism
                 global ACTIVE_RETRY_COUNT
                 ACTIVE_RETRY_COUNT = 0
@@ -217,26 +192,11 @@ class InternalOpenAIClient:
         # if the final_response includes a tool usage call, execute the tool
         tool_response_list, json_parts_of_response = [], []
         if find_json_presence(final_response):
-
             # check for the rate limits
             global ACTIVE_CHAIN_SIZE
             if ACTIVE_CHAIN_SIZE > self.assistant.tool_max_chains:
-                idle_overflow_message = f"""
-                    {final_response}
+                idle_overflow_message = get_maximum_tool_chains_reached_log(final_response=final_response)
 
-                    ---
-
-                    System Message:
-
-                    The maximum number of tool chains has been reached. No further tool chains can be executed.
-                    If you believe you need to be able to chain more tools, please increase the limit in the assistant
-                    settings.
-
-                    The response retrieval cycle will be stopped now.
-
-                    ---
-
-                """
                 idle_overflow_transaction = LLMTransaction.objects.create(
                     organization=self.chat.organization,
                     model=self.chat.assistant.llm_model,
@@ -260,20 +220,8 @@ class InternalOpenAIClient:
 
             global ACTIVE_TOOL_RETRY_COUNT
             if ACTIVE_TOOL_RETRY_COUNT > self.assistant.tool_max_attempts_per_instance:
-                idle_overflow_message = f"""
-                    {final_response}
+                idle_overflow_message = get_maximum_tool_attempts_reached_log(final_response=final_response)
 
-                    ---
-
-                    System Message:
-
-                    The maximum number of attempts for the tool has been reached. No further attempts can be made
-                    for retrieval via this tool in this request. If you believe you need to be able to make more
-                    attempts for using the same tool, please increase the limit in the assistant settings.
-
-                    The response retrieval cycle will be stopped now.
-
-                """
                 idle_overflow_transaction = LLMTransaction.objects.create(
                     organization=self.chat.organization,
                     model=self.chat.assistant.llm_model,
@@ -295,7 +243,7 @@ class InternalOpenAIClient:
                 ACTIVE_TOOL_RETRY_COUNT = 0
                 return idle_overflow_message
 
-            # increase the retry count for the tool
+            # increase the retry count for tool
             ACTIVE_TOOL_RETRY_COUNT += 1
 
             json_parts_of_response = find_json_presence(final_response)
@@ -320,20 +268,7 @@ class InternalOpenAIClient:
                         """)
                 except Exception as e:
                     if tool_name is not None:
-                        tool_response = f"""
-                            System Message:
-
-                            An error occurred while decoding the JSON response provided by the AI assistant. This might be
-                            related to the incorrect formatting of the response. Please make sure that the response is in the
-                            correct JSON format.
-
-                            Error Details:
-
-                            '''
-                            {str(e)}
-                            '''
-                        """
-
+                        tool_response = get_json_decode_error_log(error_logs=str(e))
                         tool_response_list.append(f"""
                             [{i}] [FAILED] "tool_name": {tool_name},
                                 [{i}a.] "tool_response": {tool_response},
@@ -341,21 +276,9 @@ class InternalOpenAIClient:
                                 [{i}c.] "image_uris": []
                         """)
                     else:
-                        tool_response = f"""
-                            System Message:
-
-                            An error occurred while decoding the JSON response provided by the AI assistant. This might be
-                            related to the incorrect formatting of the response. Please make sure that the response is in the
-                            correct JSON format.
-
-                            Error Details:
-
-                            '''
-                            {str(e)}
-                            '''
-                        """
+                        tool_response = get_json_decode_error_log(error_logs=str(e))
                         tool_response_list.append(f"""
-                            [{i}] [FAILED] "tool_name": {tool_name},
+                            [{i}] [FAILED / NO TOOL NAME] "tool_name": {tool_name},
                                 [{i}a.] "tool_response": {tool_response},
                                 [{i}b.] "file_uris": [],
                                 [{i}c.] "image_uris": []
@@ -365,26 +288,16 @@ class InternalOpenAIClient:
             # Create the request as a multimodal chat message and add it to the chat
             tool_request = MultimodalChatMessage.objects.create(
                 multimodal_chat=self.chat,
-                sender_type="ASSISTANT",
-                message_text_content=f"""
-
-**Assistant Tool Call:**
-
-```
-
-{json_parts_of_response}
-
-```
-""",
+                sender_type=ChatRoles.ASSISTANT.upper(),
+                message_text_content=embed_tool_call_in_prompt(json_parts_of_response=json_parts_of_response),
             )
             self.chat.chat_messages.add(tool_request)
             self.chat.save()
 
-            # if there is a response from the tool, create a new multimodal chat message with the tool response,
-            # and add it to the chat
+            # if there is response from tool, create new chat message with the tool response and add it to the chat
             tool_message = MultimodalChatMessage.objects.create(
                 multimodal_chat=self.chat,
-                sender_type="TOOL",
+                sender_type=HistoryBuilder.ChatRoles.TOOL.upper(),
                 message_text_content=str(tool_response_list),
                 message_file_contents=file_uris,
                 message_image_contents=image_uris
@@ -408,14 +321,12 @@ class InternalOpenAIClient:
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=self.chat.chat_source
             )
-
-            # now apply the recursive call to the self function to get another reply from the assistant
+            # apply the recursive call to the self function to get another reply from the assistant
             return self.respond(latest_message=tool_message, prev_tool_name=prev_tool_name, with_media=with_media,
                                 file_uris=file_uris, image_uris=image_uris)
 
         # reset the active chain size
         ACTIVE_CHAIN_SIZE = 0
-
         # ONLY for export assistants API
         if with_media:
             file_uris = [f"{BASE_URL}/{x}" for x in file_uris] if file_uris else []
@@ -424,25 +335,23 @@ class InternalOpenAIClient:
             return final_response, file_uris, image_uris
         return final_response
 
-    def ask_about_file(self, full_file_paths: list, query_string: str, interpretation_temperature: float,
-                       interpretation_maximum_tokens: int):
+    def ask_about_file(self, full_file_paths: list, query_string: str, interpretation_temperature: float):
         client = self.connection
-        if len(full_file_paths) > 20:
-            return ("System Message: The number of files to be interpreted is too high. Please provide a smaller "
-                    "number of files. The maximum number supported by the system is 20."), [], []
+        if len(full_file_paths) > CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION:
+            return get_number_of_files_too_high_log(max=CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION), [], []
 
         file_contents = []
         for path in full_file_paths:
-            if not path: return "System Message: The file path is empty.", [], []
-            try: # Read binary file contents
+            if not path:
+                return EMPTY_FILE_PATH_LOG, [], []
+            try:
                 with open(path, "rb") as file: file_contents.append(file.read())
             except FileNotFoundError:
-                print(f"System Message: The file at the path '{path}' could not be found, skipping file...")
+                print(f"[InternalOpenAIClient.ask_about_file] The file at the path '{path}' could not be found, skipping file...")
                 continue
             except Exception as e:
-                print(f"System Message: An error occurred while reading the file at the path '{path}', "
-                      f"skipping file...")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.ask_about_file] An error occurred while reading the file at the path '{path}', skipping file...")
+                print(f"[InternalOpenAIClient.ask_about_file] Error Details: {str(e)}")
                 continue
 
         # Upload the file to OpenAI server
@@ -452,8 +361,8 @@ class InternalOpenAIClient:
                 file = client.files.create(purpose="assistants", file=content)
                 file_objects.append(file)
             except Exception as e:
-                print(f"System Message: An error occurred while uploading the file to the OpenAI server.")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.ask_about_file] An error occurred while uploading the file to the OpenAI server.")
+                print(f"[InternalOpenAIClient.ask_about_file] Error Details: {str(e)}")
                 continue
 
         # Prepare the assistant for the file interpretation
@@ -466,26 +375,26 @@ class InternalOpenAIClient:
                 temperature=interpretation_temperature,
             )
         except Exception as e:
-            print(f"System Message: An error occurred while preparing the assistant for the file interpretation.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while preparing the assistant for the file interpretation.", [], []
+            print(f"[InternalOpenAIClient.ask_about_file] An error occurred while preparing the assistant for the file interpretation.")
+            print(f"[InternalOpenAIClient.ask_about_file] Error Details: {str(e)}")
+            return FILE_INTERPRETER_PREPARATION_ERROR_LOG, [], []
 
         # Prepare the thread
         try:
             thread = client.beta.threads.create(messages=[{"role": ChatRoles.USER,
-                                                           "content": (query_string + AFFIRMATION_PROMPT)}])
+                                                           "content": (query_string + ONE_SHOT_AFFIRMATION_PROMPT)}])
         except Exception as e:
-            print(f"System Message: An error occurred while preparing the thread for the file interpretation.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while preparing the thread for the file interpretation.", [], []
+            print(f"[InternalOpenAIClient.ask_about_file] An error occurred while preparing the thread for the file interpretation.")
+            print(f"[InternalOpenAIClient.ask_about_file] Error Details: {str(e)}")
+            return FILE_INTERPRETER_THREAD_CREATION_ERROR_LOG, [], []
 
         # Retrieve the response from the assistant
         try:
             run = client.beta.threads.runs.create_and_poll(thread_id=thread.id, assistant_id=assistant.id)
         except Exception as e:
-            print(f"System Message: An error occurred while retrieving the response from the file interpreter assistant.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while retrieving the response from the file interpreter assistant.", [], []
+            print(f"[InternalOpenAIClient.ask_about_file] An error occurred while retrieving the response from the file interpreter assistant.")
+            print(f"[InternalOpenAIClient.ask_about_file] Error Details: {str(e)}")
+            return FILE_INTERPRETER_RESPONSE_RETRIEVAL_ERROR_LOG, [], []
 
         # Format and get the messages
         texts, image_download_ids, file_download_ids = [], [], []
@@ -513,14 +422,15 @@ class InternalOpenAIClient:
             # END FOR
         else:
             if run.status == AssistantRunStatuses.FAILED:
-                messages = "System Message: The file interpretation process has failed on the OpenAI server."
+                messages = get_file_interpreter_status_log(status="failed")
             elif run.status == AssistantRunStatuses.INCOMPLETE:
-                messages = "System Message: The file interpretation process is incomplete on the OpenAI server."
+                messages = get_file_interpreter_status_log(status="incomplete")
             elif run.status == AssistantRunStatuses.EXPIRED:
-                messages = "System Message: The file interpretation process has expired on the OpenAI server."
+                messages = get_file_interpreter_status_log(status="expired")
             elif run.status == AssistantRunStatuses.CANCELLED:
-                messages = "System Message: The file interpretation process has been cancelled on the OpenAI server."
-            else: messages = f"System Message: Terminal {run.status.upper()} status on the OpenAI server."
+                messages = get_file_interpreter_status_log(status="cancelled")
+            else:
+                messages = get_file_interpreter_status_log(status="unknown")
         # END IF
 
         # Download the generated images and files (if any)
@@ -530,8 +440,8 @@ class InternalOpenAIClient:
                 binary_content = client.files.content(file_id).read()
                 downloaded_files.append((binary_content, remote_path))
             except Exception as e:
-                print(f"System Message: An error occurred while downloading the file with ID '{file_id}'.")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.ask_about_file] An error occurred while downloading the file with ID '{file_id}'.")
+                print(f"[InternalOpenAIClient.ask_about_file] Error Details: {str(e)}")
                 continue
         # END FOR
 
@@ -541,8 +451,8 @@ class InternalOpenAIClient:
                 binary_content = client.files.content(image_id).read()
                 downloaded_images.append(binary_content)
             except Exception as e:
-                print(f"System Message: An error occurred while downloading the image with ID '{image_id}'.")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.ask_about_file] An error occurred while downloading the image with ID '{image_id}'.")
+                print(f"[InternalOpenAIClient.ask_about_file] Error Details: {str(e)}")
                 continue
         # END FOR
 
@@ -551,15 +461,15 @@ class InternalOpenAIClient:
             for file in file_objects:
                 try: client.files.delete(file.id)
                 except Exception as e:
-                    print(f"System Message: An error occurred while deleting the file with ID '{file.id}'.")
-                    print(f"Error Details: {str(e)}")
+                    print(f"[InternalOpenAIClient.ask_about_file] An error occurred while deleting the file with ID '{file.id}'.")
+                    print(f"[InternalOpenAIClient.ask_about_file] Error Details: {str(e)}")
                     continue
             client.beta.threads.delete(thread.id)
             client.beta.assistants.delete(assistant.id)
         except Exception as e:
-            print(f"System Message: An error occurred while cleaning up the file storage, assistant, and thread.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while cleaning up the file storage, assistant, and thread.", [], []
+            print(f"[InternalOpenAIClient.ask_about_file] An error occurred while cleaning up the file storage, assistant, and thread.")
+            print(f"[InternalOpenAIClient.ask_about_file] Error Details: {str(e)}")
+            return FILE_STORAGE_CLEANUP_ERROR_LOG, [], []
 
         # Create the transactions
         LLMTransaction.objects.create(
@@ -582,23 +492,21 @@ class InternalOpenAIClient:
     def ask_about_image(self, full_image_paths: list, query_string: str, interpretation_temperature: float,
                         interpretation_maximum_tokens: int):
         client = self.connection
-        if len(full_image_paths) > 20:
-            return ("System Message: The number of images to be interpreted is too high. Please provide a smaller "
-                    "number of images. The maximum number supported by the system is 20.")
+        if len(full_image_paths) > CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION:
+            return get_number_of_files_too_high_log(max=CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION)
+
         image_contents = []
         for path in full_image_paths:
             if not path:
-                return "System Message: The image path is empty."
-
+                return EMPTY_FILE_PATH_LOG
             try:
-                # Read binary image contents
                 with open(path, "rb") as file: image_contents.append({"binary": file.read(), "extension": path.split(".")[-1]})
             except FileNotFoundError:
-                print(f"System Message: The image at the path '{path}' could not be found, skipping image...")
+                print(f"[InternalOpenAIClient.ask_about_image] The image at the path '{path}' could not be found, skipping image...")
                 continue
             except Exception as e:
-                print(f"System Message: An error occurred while reading the image at the path '{path}', skipping image...")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.ask_about_image] An error occurred while reading the image at the path '{path}', skipping image...")
+                print(f"[InternalOpenAIClient.ask_about_image] Error Details: {str(e)}")
                 continue
 
         # Convert binaries to base64
@@ -606,7 +514,6 @@ class InternalOpenAIClient:
         for image_content in image_contents:
             binary = image_content["binary"]
             extension = image_content["extension"]
-            # convert to base64
             image_base64 = b64.b64encode(binary).decode("utf-8")
             image_objects.append({"base64": image_base64, "extension": extension})
 
@@ -614,14 +521,13 @@ class InternalOpenAIClient:
         messages = [
             {"role": ChatRoles.SYSTEM,
              "content": [{"type": "text", "text": HELPER_ASSISTANT_PROMPTS["image_interpreter"]["description"]}]},
-            {"role": ChatRoles.USER, "content": [{"type": "text", "text": (query_string + AFFIRMATION_PROMPT)}]}
+            {"role": ChatRoles.USER, "content": [{"type": "text", "text": (query_string + ONE_SHOT_AFFIRMATION_PROMPT)}]}
         ]
         for image_object in image_objects:
             formatted_uri = f"data:image/{image_object['extension']};base64,{image_object['base64']}"
             messages[-1]["content"].append({"type": "image_url", "image_url": {"url": formatted_uri}})
         # END FOR
 
-        # Retrieve the response from the assistant
         try:
             response = client.chat.completions.create(
                 model=HELPER_ASSISTANT_PROMPTS["image_interpreter"]["model"],
@@ -630,11 +536,9 @@ class InternalOpenAIClient:
                 max_tokens=interpretation_maximum_tokens
             )
         except Exception as e:
-            print(f"System Message: An error occurred while retrieving the response from the image interpreter "
-                  f"assistant.")
-            print(f"Error Details: {str(e)}")
-            return ("System Message: An error occurred while retrieving the response from the image interpreter "
-                    "assistant.")
+            print(f"[InternalOpenAIClient.ask_about_image] An error occurred on retrieving response from image interpreter.")
+            print(f"[InternalOpenAIClient.ask_about_image] Error Details: {str(e)}")
+            return IMAGE_INTERPRETER_RESPONSE_RETRIEVAL_ERROR_LOG
 
         try:
             choices = response.choices
@@ -643,11 +547,9 @@ class InternalOpenAIClient:
             choice_message_content = choice_message.content
             final_response = choice_message_content
         except Exception as e:
-            print(f"System Message: An error occurred while processing the response from the image interpreter "
-                  f"assistant.")
-            print(f"Error Details: {str(e)}")
-            return ("System Message: An error occurred while processing the response from the image interpreter "
-                    "assistant.")
+            print(f"[InternalOpenAIClient.ask_about_image] An error occurred on processing the response from image interpreter.")
+            print(f"[InternalOpenAIClient.ask_about_image] Error Details: {str(e)}")
+            return IMAGE_INTERPRETER_RESPONSE_PROCESSING_ERROR_LOG
 
         # Create the transactions
         LLMTransaction.objects.create(
@@ -665,42 +567,40 @@ class InternalOpenAIClient:
             transaction_type=ChatRoles.ASSISTANT,
             transaction_source=TransactionSourcesNames.GENERATION
         )
-
         return final_response
 
     def predict_with_ml_model(self, ml_model_path, input_data_urls:list, query_string: str,
                               interpretation_temperature:float = 0.25):
         client = self.connection
 
-        if len(input_data_urls) > 10:
-            return ("System Message: The number of input data to be predicted is too high. Please provide a smaller "
-                    "number of input data. The maximum number supported by the system is 10."), [], []
+        if len(input_data_urls) > CONCRETE_LIMIT_ML_MODEL_PREDICTIONS:
+            return get_number_of_ml_predictions_too_high_log(max=CONCRETE_LIMIT_ML_MODEL_PREDICTIONS), [], []
 
         try:
             # Load the pre-trained model
             with open(ml_model_path, "rb") as file:
                 loaded_ml_model = file.read()
         except FileNotFoundError:
-            print(f"System Message: The model could not be found at the path '{ml_model_path}'.")
-            return "System Message: The model could not be found.", [], []
+            print(f"[InternalOpenAIClient.predict_with_ml_model] The model could not be found at the path '{ml_model_path}'.")
+            return ML_MODEL_NOT_FOUND_ERROR_LOG, [], []
         except Exception as e:
-            print(f"System Message: An error occurred while loading the model at the path '{ml_model_path}'.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while loading the model.", [], []
+            print(f"[InternalOpenAIClient.predict_with_ml_model] An error occurred while loading the model at the path '{ml_model_path}'.")
+            print(f"[InternalOpenAIClient.predict_with_ml_model] Error Details: {str(e)}")
+            return ML_MODEL_LOADING_ERROR_LOG, [], []
 
         file_contents = []
         for path in input_data_urls:
-            if not path: return "System Message: The file path is empty.", [], []
+            if not path:
+                return EMPTY_FILE_PATH_LOG, [], []
             try:  # Read binary file contents
                 with open(path, "rb") as file:
                     file_contents.append(file.read())
             except FileNotFoundError:
-                print(f"System Message: The file at the path '{path}' could not be found, skipping file...")
+                print(f"[InternalOpenAIClient.predict_with_ml_model] The file at the path '{path}' could not be found, skipping file...")
                 continue
             except Exception as e:
-                print(f"System Message: An error occurred while reading the file at the path '{path}', "
-                      f"skipping file...")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.predict_with_ml_model] An error occurred while reading the file at the path '{path}', skipping file...")
+                print(f"[InternalOpenAIClient.predict_with_ml_model] Error Details: {str(e)}")
                 continue
         # append the machine learning model to the file contents
         file_contents.append(loaded_ml_model)
@@ -712,10 +612,10 @@ class InternalOpenAIClient:
                 file = client.files.create(purpose="assistants", file=content)
                 file_objects.append(file)
             except Exception as e:
-                print(f"System Message: An error occurred while uploading the file to the OpenAI server.")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.predict_with_ml_model] An error occurred while uploading the file to the OpenAI server.")
+                print(f"[InternalOpenAIClient.predict_with_ml_model] Error Details: {str(e)}")
                 if i == len(file_contents) - 1:
-                    return "System Message: An error occurred while uploading the model to the OpenAI server.", [], []
+                    return ML_MODEL_OPENAI_UPLOAD_ERROR_LOG, [], []
                 continue
 
         # Prepare the assistant for the file interpretation
@@ -728,32 +628,26 @@ class InternalOpenAIClient:
                 temperature=interpretation_temperature,
             )
         except Exception as e:
-            print(
-                f"System Message: An error occurred while preparing the assistant for the ML model prediction.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while preparing the assistant for the ML model prediction.", [], []
+            print(f"[InternalOpenAIClient.predict_with_ml_model] An error occurred while preparing the assistant for the ML model prediction.")
+            print(f"[InternalOpenAIClient.predict_with_ml_model] Error Details: {str(e)}")
+            return ML_MODEL_ASSISTANT_PREPARATION_ERROR_LOG, [], []
 
         # Prepare the thread
         try:
             thread = client.beta.threads.create(messages=[{"role": ChatRoles.USER,
-                                                           "content": (query_string + AFFIRMATION_PROMPT + ML_AFFIRMATION_PROMPT)}])
+                                                           "content": (query_string + ONE_SHOT_AFFIRMATION_PROMPT + ML_AFFIRMATION_PROMPT)}])
         except Exception as e:
-            print(f"System Message: An error occurred while preparing the thread for the ML model prediction.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while preparing the thread for the ML model prediction.", [], []
-
-        ###
+            print(f"[InternalOpenAIClient.predict_with_ml_model] An error occurred while preparing the thread for the ML model prediction.")
+            print(f"[InternalOpenAIClient.predict_with_ml_model] Error Details: {str(e)}")
+            return ML_MODEL_THREAD_CREATION_ERROR_LOG, [], []
 
         # Retrieve the response from the assistant
         try:
             run = client.beta.threads.runs.create_and_poll(thread_id=thread.id, assistant_id=assistant.id)
         except Exception as e:
-            print(
-                f"System Message: An error occurred while retrieving the response from the ML model prediction "
-                f"assistant.")
-            print(f"Error Details: {str(e)}")
-            return ("System Message: An error occurred while retrieving the response from the ML model prediction "
-                    "assistant."), [], []
+            print(f"[InternalOpenAIClient.predict_with_ml_model] An error occurred while retrieving the response from the ML model prediction assistant.")
+            print(f"[InternalOpenAIClient.predict_with_ml_model] Error Details: {str(e)}")
+            return ML_MODEL_RESPONSE_RETRIEVAL_ERROR_LOG, [], []
 
         # Format and get the messages
         texts, image_download_ids, file_download_ids = [], [], []
@@ -781,15 +675,15 @@ class InternalOpenAIClient:
             # END FOR
         else:
             if run.status == AssistantRunStatuses.FAILED:
-                messages = "System Message: The ML model prediction process has failed on the OpenAI server."
+                messages = get_ml_prediction_status_log(status="failed")
             elif run.status == AssistantRunStatuses.INCOMPLETE:
-                messages = "System Message: The ML model prediction process is incomplete on the OpenAI server."
+                messages = get_ml_prediction_status_log(status="incomplete")
             elif run.status == AssistantRunStatuses.EXPIRED:
-                messages = "System Message: The ML model prediction process has expired on the OpenAI server."
+                messages = get_ml_prediction_status_log(status="expired")
             elif run.status == AssistantRunStatuses.CANCELLED:
-                messages = "System Message: The ML model prediction process has been cancelled on the OpenAI server."
+                messages = get_ml_prediction_status_log(status="cancelled")
             else:
-                messages = f"System Message: Terminal {run.status.upper()} status on the OpenAI server."
+                messages = get_ml_prediction_status_log(status="unknown")
         # END IF
 
         # Download the generated images and files (if any)
@@ -799,8 +693,8 @@ class InternalOpenAIClient:
                 binary_content = client.files.content(file_id).read()
                 downloaded_files.append((binary_content, remote_path))
             except Exception as e:
-                print(f"System Message: An error occurred while downloading the file with ID '{file_id}'.")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.predict_with_ml_model] An error occurred while downloading the file with ID '{file_id}'.")
+                print(f"[InternalOpenAIClient.predict_with_ml_model] Error Details: {str(e)}")
                 continue
         # END FOR
 
@@ -810,8 +704,8 @@ class InternalOpenAIClient:
                 binary_content = client.files.content(image_id).read()
                 downloaded_images.append(binary_content)
             except Exception as e:
-                print(f"System Message: An error occurred while downloading the image with ID '{image_id}'.")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.predict_with_ml_model] An error occurred while downloading the image with ID '{image_id}'.")
+                print(f"[InternalOpenAIClient.predict_with_ml_model] Error Details: {str(e)}")
                 continue
         # END FOR
 
@@ -821,15 +715,15 @@ class InternalOpenAIClient:
                 try:
                     client.files.delete(file.id)
                 except Exception as e:
-                    print(f"System Message: An error occurred while deleting the file with ID '{file.id}'.")
-                    print(f"Error Details: {str(e)}")
+                    print(f"[InternalOpenAIClient.predict_with_ml_model] An error occurred while deleting the file with ID '{file.id}'.")
+                    print(f"[InternalOpenAIClient.predict_with_ml_model] Error Details: {str(e)}")
                     continue
             client.beta.threads.delete(thread.id)
             client.beta.assistants.delete(assistant.id)
         except Exception as e:
-            print(f"System Message: An error occurred while cleaning up the file storage, assistant, and thread.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while cleaning up the file storage, assistant, and thread.", [], []
+            print(f"[InternalOpenAIClient.predict_with_ml_model] An error occurred while cleaning up the file storage, assistant, and thread.")
+            print(f"[InternalOpenAIClient.predict_with_ml_model] Error Details: {str(e)}")
+            return ML_MODEL_CLEANUP_ERROR_LOG, [], []
 
         # Create the transactions
         LLMTransaction.objects.create(
@@ -847,27 +741,26 @@ class InternalOpenAIClient:
             transaction_type=ChatRoles.ASSISTANT,
             transaction_source=TransactionSourcesNames.GENERATION
         )
-        print(texts)
         return texts, downloaded_files, downloaded_images
 
     def interpret_code(self, full_file_paths: list, query_string: str, interpretation_temperature: float):
         client = self.connection
-        if len(full_file_paths) > 20:
-            return ("System Message: The number of files included is too high. Please provide a smaller "
-                    "number of files. The maximum number supported by the system is 20."), [], []
+        if len(full_file_paths) > CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION:
+            return get_number_of_codes_too_high_log(max=CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION), [], []
 
         file_contents = []
         for path in full_file_paths:
-            if not path: return "System Message: The file path is empty.", [], []
-            try: # Read binary file contents
-                with open(path, "rb") as file: file_contents.append(file.read())
+            if not path:
+                return EMPTY_FILE_PATH_LOG, [], []
+            try:
+                with open(path, "rb") as file:
+                    file_contents.append(file.read())
             except FileNotFoundError:
-                print(f"System Message: The file at the path '{path}' could not be found, skipping file...")
+                print(f"[InternalOpenAIClient.interpret_code] The file at the path '{path}' could not be found, skipping file...")
                 continue
             except Exception as e:
-                print(f"System Message: An error occurred while reading the file at the path '{path}', "
-                      f"skipping file...")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.interpret_code] An error occurred while reading the file at the path '{path}', skipping file...")
+                print(f"[InternalOpenAIClient.interpret_code] Error Details: {str(e)}")
                 continue
 
         # Upload the content to OpenAI server
@@ -877,8 +770,8 @@ class InternalOpenAIClient:
                 file = client.files.create(purpose="assistants", file=content)
                 file_objects.append(file)
             except Exception as e:
-                print(f"System Message: An error occurred while uploading the file to the OpenAI server.")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.interpret_code] An error occurred while uploading the file to the OpenAI server.")
+                print(f"[InternalOpenAIClient.interpret_code] Error Details: {str(e)}")
                 continue
 
         # Prepare the assistant for the code interpretation
@@ -891,26 +784,25 @@ class InternalOpenAIClient:
                 temperature=float(interpretation_temperature)
             )
         except Exception as e:
-            print(f"System Message: An error occurred while preparing the assistant for the code interpretation.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while preparing the assistant for the code interpretation.", [], []
+            print(f"[InternalOpenAIClient.interpret_code] An error occurred while preparing the assistant for the code interpretation.")
+            print(f"[InternalOpenAIClient.interpret_code] Error Details: {str(e)}")
+            return CODE_INTERPRETER_ASSISTANT_PREPARATION_ERROR_LOG, [], []
 
         # Prepare the thread
         try:
-            thread = client.beta.threads.create(messages=[{"role": ChatRoles.USER,
-                                                           "content": (query_string + AFFIRMATION_PROMPT)}])
+            thread = client.beta.threads.create(messages=[{"role": ChatRoles.USER, "content": (query_string + ONE_SHOT_AFFIRMATION_PROMPT)}])
         except Exception as e:
-            print(f"System Message: An error occurred while preparing the thread for the code interpretation.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while preparing the thread for the code interpretation.", [], []
+            print(f"[InternalOpenAIClient.interpret_code] An error occurred while preparing the thread for the code interpretation.")
+            print(f"[InternalOpenAIClient.interpret_code] Error Details: {str(e)}")
+            return CODE_INTERPRETER_THREAD_CREATION_ERROR_LOG, [], []
 
         # Retrieve the response from the assistant
         try:
             run = client.beta.threads.runs.create_and_poll(thread_id=thread.id, assistant_id=assistant.id)
         except Exception as e:
-            print(f"System Message: An error occurred while retrieving the response from the code interpreter assistant.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while retrieving the response from the code interpreter assistant.", [], []
+            print(f"[InternalOpenAIClient.interpret_code] An error occurred while retrieving the response from the code interpreter assistant.")
+            print(f"[InternalOpenAIClient.interpret_code] Error Details: {str(e)}")
+            return CODE_INTERPRETER_RESPONSE_RETRIEVAL_ERROR_LOG, [], []
 
         # Format and get the messages
         texts, image_download_ids, file_download_ids = [], [], []
@@ -938,14 +830,15 @@ class InternalOpenAIClient:
             # END FOR
         else:
             if run.status == AssistantRunStatuses.FAILED:
-                messages = "System Message: The code interpretation process has failed on the OpenAI server."
+                messages = get_code_interpreter_status_log(status="failed")
             elif run.status == AssistantRunStatuses.INCOMPLETE:
-                messages = "System Message: The code interpretation process is incomplete on the OpenAI server."
+                messages = get_code_interpreter_status_log(status="incomplete")
             elif run.status == AssistantRunStatuses.EXPIRED:
-                messages = "System Message: The code interpretation process has expired on the OpenAI server."
+                messages = get_code_interpreter_status_log(status="expired")
             elif run.status == AssistantRunStatuses.CANCELLED:
-                messages = "System Message: The code interpretation process has been cancelled on the OpenAI server."
-            else: messages = f"System Message: Terminal {run.status.upper()} status on the OpenAI server."
+                messages = get_code_interpreter_status_log(status="cancelled")
+            else:
+                messages = get_code_interpreter_status_log(status="unknown")
         # END IF
 
         # Download the generated images and files (if any)
@@ -955,8 +848,8 @@ class InternalOpenAIClient:
                 binary_content = client.files.content(file_id).read()
                 downloaded_files.append((binary_content, remote_path))
             except Exception as e:
-                print(f"System Message: An error occurred while downloading the file with ID '{file_id}'.")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.interpret_code] An error occurred while downloading the file with ID '{file_id}'.")
+                print(f"[InternalOpenAIClient.interpret_code] Error Details: {str(e)}")
                 continue
         # END FOR
 
@@ -966,8 +859,8 @@ class InternalOpenAIClient:
                 binary_content = client.files.content(image_id).read()
                 downloaded_images.append(binary_content)
             except Exception as e:
-                print(f"System Message: An error occurred while downloading the image with ID '{image_id}'.")
-                print(f"Error Details: {str(e)}")
+                print(f"[InternalOpenAIClient.interpret_code] An error occurred while downloading the image with ID '{image_id}'.")
+                print(f"[InternalOpenAIClient.interpret_code] Error Details: {str(e)}")
                 continue
         # END FOR
 
@@ -976,15 +869,15 @@ class InternalOpenAIClient:
             for file in file_objects:
                 try: client.files.delete(file.id)
                 except Exception as e:
-                    print(f"System Message: An error occurred while deleting the file with ID '{file.id}'.")
-                    print(f"Error Details: {str(e)}")
+                    print(f"[InternalOpenAIClient.interpret_code] An error occurred while deleting the file with ID '{file.id}'.")
+                    print(f"[InternalOpenAIClient.interpret_code] Error Details: {str(e)}")
                     continue
             client.beta.threads.delete(thread.id)
             client.beta.assistants.delete(assistant.id)
         except Exception as e:
-            print(f"System Message: An error occurred while cleaning up the file storage, assistant, and thread.")
-            print(f"Error Details: {str(e)}")
-            return "System Message: An error occurred while cleaning up the file storage, assistant, and thread.", [], []
+            print(f"[InternalOpenAIClient.interpret_code] An error occurred while cleaning up the file storage, assistant, and thread.")
+            print(f"[InternalOpenAIClient.interpret_code] Error Details: {str(e)}")
+            return CODE_INTERPRETER_CLEANUP_ERROR_LOG, [], []
 
         # Create the transactions
         LLMTransaction.objects.create(
@@ -1039,7 +932,7 @@ class InternalOpenAIClient:
             response["image_url"] = image_url
             return response
         except Exception as e:
-            response["message"] = f"System Message: An error occurred while generating the image. Error Details: {str(e)}"
+            response["message"] = get_image_generation_error_log(error_logs=str(e))
             return response
 
     def edit_image(self, prompt: str, edit_image_uri: str, edit_image_mask_uri: str, image_size: str):
@@ -1071,8 +964,7 @@ class InternalOpenAIClient:
             response["image_url"] = image_url
             return response
         except Exception as e:
-            response[
-                "message"] = f"System Message: An error occurred while editing the image. Error Details: {str(e)}"
+            response["message"] = get_image_modification_error_log(error_logs=str(e))
             return response
 
     def create_image_variation(self, image_uri: str, image_size: str):
@@ -1103,10 +995,8 @@ class InternalOpenAIClient:
             response["success"] = True
             response["image_url"] = image_url
         except Exception as e:
-            response["message"] = (f"System Message: An error occurred while creating the image variation. Error "
-                                   f"Details: {str(e)}")
+            response["message"] = get_image_variation_error_log(error_logs=str(e))
             return response
-
         return response
 
     @staticmethod
@@ -1114,11 +1004,11 @@ class InternalOpenAIClient:
         try:
             instructions = build_usage_statistics_system_prompt(statistics=statistics)
             lean_prompt = PromptBuilder.build_lean(
-                assistant_name="Bimod Platform Usage Statistics Assistant",
+                assistant_name=DEFAULT_STATISTICS_ASSISTANT_NAME_PLACEHOLDER,
                 instructions=instructions,
-                audience = "Standard / Bimod Application Users",
-                tone = "Formal & Descriptive",
-                chat_name = "Statistics Analysis & Evaluation")
+                audience = DEFAULT_STATISTICS_ASSISTANT_AUDIENCE,
+                tone = DEFAULT_STATISTICS_ASSISTANT_TONE,
+                chat_name = DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME)
 
             # retrieve the answer from the assistant
             c = InternalOpenAIClient.get_no_scope_connection(llm_model=llm_model)
@@ -1127,8 +1017,8 @@ class InternalOpenAIClient:
                 messages=[
                     {"role": "system", "content": json.dumps(lean_prompt, indent=4, sort_keys=True, default=str)}
                 ],
-                temperature=0.25,
-                max_tokens=4000,
+                temperature=DEFAULT_STATISTICS_TEMPERATURE,
+                max_tokens=DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS
             )
             choices = response.choices
             first_choice = choices[0]
@@ -1136,7 +1026,5 @@ class InternalOpenAIClient:
             choice_message_content = choice_message.content
             response = choice_message_content
         except Exception as e:
-            response = f"System Message: An error occurred while providing the analysis. Error Details: {str(e)}"
+            response = get_statistics_analysis_error_log(error_logs=str(e))
         return response
-
-

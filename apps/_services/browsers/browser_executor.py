@@ -1,7 +1,6 @@
 import base64
 import time
 import uuid
-from pprint import pprint
 
 from django.core.files.base import ContentFile
 from selenium import webdriver
@@ -9,9 +8,11 @@ from selenium.webdriver.common.by import By
 from lxml.html.clean import Cleaner
 
 from apps._services.config.costs_map import ToolCostsMap
-from apps.datasource_browsers.models import BrowsingReadingAbilitiesNames, DataSourceBrowserBrowsingLog
+from apps.datasource_browsers.models import BrowsingReadingAbilitiesNames
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
+
+# Browser implicit waiting duration
 IMPLICIT_WAIT_SECONDS = 2
 
 
@@ -39,13 +40,13 @@ class FindByTypes:
                 FindByTypes.PARTIAL_LINK_TEXT, FindByTypes.TAG_NAME, FindByTypes.CLASS_NAME]
 
 
-class ActionsNames:
+class BrowserActionsNames:
     BROWSER_SEARCH = "browser_search"
     CLICK_URL_IN_SEARCH = "click_url_in_search"
 
     @staticmethod
     def as_list():
-        return [ActionsNames.BROWSER_SEARCH, ActionsNames.CLICK_URL_IN_SEARCH]
+        return [BrowserActionsNames.BROWSER_SEARCH, BrowserActionsNames.CLICK_URL_IN_SEARCH]
 
 
 class BrowsingExecutor:
@@ -53,6 +54,10 @@ class BrowsingExecutor:
         STANDARD = "standard"
         WHITELIST = "whitelist"
         BLACKLIST = "blacklist"
+
+    class BrowsingExecutorOptions:
+        HEADLESS = "headless"
+        WINDOW_SIZE = "--window-size=1920x1080"
 
     def __init__(self, connection):
         self.connection = connection
@@ -69,26 +74,22 @@ class BrowsingExecutor:
         self.mode = mode
         self.connect_c()
 
-    ##################################################
-    # AUTOMATOR
-    ##################################################
-
     def act(self, action, **kwargs):
-
+        from apps._services.llms.openai import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
         transaction = LLMTransaction(
             organization=self.connection.assistant.organization,
             model=self.connection.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.BrowsingExecutor.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.BROWSING,
             is_tool_cost=True
         )
         transaction.save()
 
-        if action == ActionsNames.BROWSER_SEARCH:
+        if action == BrowserActionsNames.BROWSER_SEARCH:
             search_response, image_bytes =  self.browser_search(kwargs["query"], kwargs["page"])
 
             new_log_instance = self.connection.logs.create(
@@ -103,7 +104,7 @@ class BrowsingExecutor:
             )
             new_log_instance.save()
             return search_response
-        elif action == ActionsNames.CLICK_URL_IN_SEARCH:
+        elif action == BrowserActionsNames.CLICK_URL_IN_SEARCH:
             click_response, image_bytes = self.click_url_in_search(kwargs["search_results"], kwargs["click_url"])
 
             new_log_instance = self.connection.logs.create(
@@ -118,27 +119,23 @@ class BrowsingExecutor:
             new_log_instance.save()
             return click_response
         else:
-            return f"Invalid action: {action}. Must be one of {ActionsNames.as_list()}."
-
-    ##################################################
-    # VISIBLE METHODS
-    ##################################################
+            return f"[BrowsingExecutor.act] Invalid action: {action}. Must be one of {BrowserActionsNames.as_list()}."
 
     def connect_c(self):
         try:
             options = webdriver.ChromeOptions()
-            options.add_argument('headless')
-            options.add_argument("--window-size=1920x1080")  # Set window size
+            options.add_argument(BrowsingExecutor.BrowsingExecutorOptions.HEADLESS)  # Set headless mode
+            options.add_argument(BrowsingExecutor.BrowsingExecutorOptions.WINDOW_SIZE)  # Set window size
             d = webdriver.Chrome(options=options)
             self.d = d
         except Exception as e:
-            return f"There has been an unexpected error while trying to connect to the driver: {e}"
+            return f"[BrowsingExecutor.connect_c] There has been an unexpected error while trying to connect to the driver: {e}"
 
     def close_c(self):
         try:
             self.d.quit()
         except Exception as e:
-            return f"There has been an unexpected error while trying to close the driver: {e}"
+            return f"[BrowsingExecutor.close_c] There has been an unexpected error while trying to close the driver: {e}"
 
     ##################################################
 
@@ -146,7 +143,7 @@ class BrowsingExecutor:
         if self.engine == SearchEnginesNames.GOOGLE:
             self.get_page(BrowserURLs.GOOGLE)
         else:
-            return f"Invalid search engine: {self.engine}."
+            return f"[BrowsingExecutor.browser_search] Invalid search engine: {self.engine}."
         search_input = self.find(FindByTypes.NAME, "q")
         self.send_keys(search_input, query)
         search_input.submit()
@@ -163,21 +160,20 @@ class BrowsingExecutor:
         try:
             self.d.get(url)
         except Exception as e:
-            return f"There has been an unexpected error while trying to get the url on browsing: {e}"
+            return f"[BrowsingExecutor.get_page] There has been an unexpected error while trying to get the url on browsing: {e}"
 
     def get_title(self):
         try:
             return self.d.title
         except Exception as e:
-            return f"There has been an unexpected error while trying to get the title on browsing: {e}"
+            return f"[BrowsingExecutor.get_title] There has been an unexpected error while trying to get the title on browsing: {e}"
 
     def get_page_content(self):
         try:
             clean_content = self.clean_page_content(self.d.page_source)
             return clean_content
         except Exception as e:
-            return (f"There has been an unexpected error while trying to get the content on "
-                    f"browsing: {e}")
+            return (f"[BrowsingExecutor.get_page_content] There has been an unexpected error while trying to get the content on browsing: {e}")
 
     def get_search_results(self):
         image_b64 = self.d.get_screenshot_as_base64()
@@ -192,29 +188,27 @@ class BrowsingExecutor:
                 clean_results = self.filter_on_blacklist(clean_results)
             return clean_results, image_bytes
         except Exception as e:
-            return (f"There has been an unexpected error while trying to get the search results "
-                    f"on browsing: {e}")
+            return (f"[BrowsingExecutor.get_search_results] There has been an unexpected error while trying to get the search results on browsing: {e}")
 
     def wait(self):
         try:
             time.sleep(IMPLICIT_WAIT_SECONDS)
         except Exception as e:
-            return f"There has been an unexpected error while trying to wait on browsing: {e}"
+            return f"[[BrowsingExecutor.wait] There has been an unexpected error while trying to wait on browsing: {e}"
 
     def find(self, by, query):
         try:
             if by not in FindByTypes.as_list():
-                return f"Invalid 'by' type: {by}. Must be one of {FindByTypes.as_list()}."
+                return f"[BrowsingExecutor.find] Invalid 'by' type: {by}. Must be one of {FindByTypes.as_list()}."
             return self.d.find_element(by=by, value=query)
         except Exception as e:
-            return (f"There has been an unexpected error while trying to find the element on "
-                    f"browsing: {e}")
+            return (f"[BrowsingExecutor.find] There has been an unexpected error while trying to find the element on browsing: {e}")
 
     def send_keys(self, element, text):
         try:
             element.send_keys(text)
         except Exception as e:
-            return f"There has been an unexpected error while trying to send keys to the element on browsing: {e}"
+            return f"[BrowsingExecutor.send_keys] There has been an unexpected error while trying to send keys to the element on browsing: {e}"
 
     def click_url_in_search(self, search_results, click_url):
         try:
@@ -227,16 +221,16 @@ class BrowsingExecutor:
 
                     content = self.get_page_content()
                     return content, image_bytes
-            return f"URL not found in search results: {click_url}"
+            return f"[BrowsingExecutor.click_url_in_search] URL not found in search results: {click_url}"
         except Exception as e:
-            return (f"There has been an unexpected error while trying to click the URL in the "
+            return (f"[BrowsingExecutor.click_url_in_search] There has been an unexpected error while trying to click the URL in the "
                                        f"search results on browsing: {e}")
 
     def click(self, element):
         try:
             element.click()
         except Exception as e:
-            return f"There has been an unexpected error while trying to click the element on browsing: {e}"
+            return f"[BrowsingExecutor.click] There has been an unexpected error while trying to click the element on browsing: {e}"
 
     def filter_on_whitelist(self, res):
         filtered_results = []
@@ -260,10 +254,6 @@ class BrowsingExecutor:
                     break
             if not blacklisted: filtered_results.append(r)
         return filtered_results
-
-    ##################################################
-    # INVISIBLE METHODS
-    ##################################################
 
     @staticmethod
     def get_cleaned_search_results(raw_selenium_results):
@@ -304,29 +294,4 @@ class BrowsingExecutor:
         text = (text.replace("<div>", "").replace("</div>", "").replace("\n", "")
                 .replace("\t", ""))
         text = " ".join(text.split())
-        pprint(text)
         return text
-
-
-##################################################
-# Sample Usage
-##################################################
-
-"""
-search_query = "resmi gazete yayınları"
-
-# Create a connection
-executor = BrowsingExecutor(connection=None)
-
-# [1] Connect
-executor.act(ActionsNames.CONNECT)
-
-# [2] Search
-results = executor.act(ActionsNames.BROWSER_SEARCH, search_query=search_query, page=2)
-
-# [3] Click the first result
-executor.act(ActionsNames.CLICK_URL_IN_SEARCH, search_results=results, click_url=results[0]["url"])
-
-# [4] Close
-executor.act(ActionsNames.CLOSE)
-"""

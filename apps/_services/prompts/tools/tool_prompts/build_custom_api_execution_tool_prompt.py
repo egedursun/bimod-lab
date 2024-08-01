@@ -2,7 +2,6 @@ from apps._services.tools.const import ToolTypeNames
 
 
 def build_structured_tool_prompt__custom_api_execution():
-
     response_prompt = f"""
             **TOOL**: Custom API Execution Tool
 
@@ -95,5 +94,4 @@ def build_structured_tool_prompt__custom_api_execution():
             have the output of the query execution, and you will be expected to take this response and provide an answer
             to the user's question based on the response that you receive, in your own words.
         """
-
     return response_prompt

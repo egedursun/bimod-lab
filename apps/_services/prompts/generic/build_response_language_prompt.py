@@ -1,7 +1,7 @@
 from apps.assistants.models import ASSISTANT_RESPONSE_LANGUAGES
 
 
-def get_structured_response_language_prompt(response_language: str):
+def build_structured_response_language_prompt(response_language: str):
     return f"""
         **YOUR RESPONSE LANGUAGE:**
 

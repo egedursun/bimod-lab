@@ -28,5 +28,4 @@ def validate_code_interpreter_execution_tool_json(tool_usage_json: dict):
             mandatory for using the Code Interpreter Execution tool. Please make sure you are defining the 'file_paths' field in
             the parameters field of the tool_usage_json.
         """
-
     return None

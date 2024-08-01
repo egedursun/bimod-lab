@@ -1,5 +1,5 @@
 
-def get_structured_tone_prompt(tone: str):
+def build_structured_tone_prompt(tone: str):
     return f"""
         **YOUR TONE:**
 

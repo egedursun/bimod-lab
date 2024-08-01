@@ -1,13 +1,11 @@
-from django.contrib.auth.models import User
 
 from apps.assistants.models import Assistant
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
 
 
-def build_ml_models_datasource_prompt(assistant: Assistant, user: User):
-    response_prompt = ""
+def build_ml_models_data_source_prompt(assistant: Assistant):
     # Gather the ML Model datasource connections of the assistant
-    ml_model_datasources = DataSourceMLModelConnection.objects.filter(assistant=assistant)
+    ml_model_data_sources = DataSourceMLModelConnection.objects.filter(assistant=assistant)
     # Build the prompt
     response_prompt = """
             **ML MODELS RESOURCE CONNECTIONS:**
@@ -15,17 +13,17 @@ def build_ml_models_datasource_prompt(assistant: Assistant, user: User):
             '''
             """
 
-    for i, ml_model_datasource in enumerate(ml_model_datasources):
+    for i, ml_model_data_source in enumerate(ml_model_data_sources):
         response_prompt += f"""
-                [ML Model Datasource ID: {ml_model_datasource.id}]
-                    ML Model Name: {ml_model_datasource.name}
-                    ML Model Description: {ml_model_datasource.description}
-                    Ml Model Object Category: {ml_model_datasource.model_object_category}
+                [ML Model Data Source ID: {ml_model_data_source.id}]
+                    ML Model Name: {ml_model_data_source.name}
+                    ML Model Description: {ml_model_data_source.description}
+                    Ml Model Object Category: {ml_model_data_source.model_object_category}
 
                     *Names and Descriptions of the ML Models within this Connection:*
                 """
 
-        ml_model_items = ml_model_datasource.items.all()
+        ml_model_items = ml_model_data_source.items.all()
         for j, model_item in enumerate(ml_model_items):
             response_prompt += f"""
                     - [ML Model Item ID: {model_item.id}]
@@ -67,7 +65,7 @@ def build_ml_models_datasource_prompt(assistant: Assistant, user: User):
     return response_prompt
 
 
-def build_lean_ml_models_datasource_prompt():
+def build_lean_ml_models_data_source_prompt():
     # Build the prompt
     response_prompt = """
             **ML MODELS RESOURCE CONNECTIONS:**

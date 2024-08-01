@@ -1,14 +1,11 @@
-from django.contrib.auth.models import User
 
 from apps.assistants.models import Assistant
 from apps.datasource_file_systems.models import DataSourceFileSystem
 
 
-def build_file_system_datasource_prompt(assistant: Assistant, user: User):
-
-    response_prompt = ""
+def build_file_system_data_source_prompt(assistant: Assistant):
     # Gather the File System datasource connections of the assistant
-    file_system_datasources = DataSourceFileSystem.objects.filter(assistant=assistant)
+    file_system_data_sources = DataSourceFileSystem.objects.filter(assistant=assistant)
     # Build the prompt
     response_prompt = """
             **FILE SYSTEM CONNECTIONS (via SSH):**
@@ -16,18 +13,18 @@ def build_file_system_datasource_prompt(assistant: Assistant, user: User):
             '''
             """
 
-    for i, file_system_datasource in enumerate(file_system_datasources):
+    for i, file_system_data_source in enumerate(file_system_data_sources):
         response_prompt += f"""
-                [File System Datasource ID: {file_system_datasource.id}]
-                    Operating System Type: {file_system_datasource.os_type}
-                    File System Name: {file_system_datasource.name}
-                    File System Description: {file_system_datasource.description}
-                    Host URL: {file_system_datasource.host_url}
-                    Port: {file_system_datasource.port}
-                    Username: {file_system_datasource.username}
-                    Maximum Records to Retrieve per Query (LIMIT): {file_system_datasource.os_read_limit_tokens}
-                    Is Read Only: {file_system_datasource.is_read_only}
-                    Schema of the File System: {file_system_datasource.file_directory_tree}
+                [File System Data Source ID: {file_system_data_source.id}]
+                    Operating System Type: {file_system_data_source.os_type}
+                    File System Name: {file_system_data_source.name}
+                    File System Description: {file_system_data_source.description}
+                    Host URL: {file_system_data_source.host_url}
+                    Port: {file_system_data_source.port}
+                    Username: {file_system_data_source.username}
+                    Maximum Records to Retrieve per Query (LIMIT): {file_system_data_source.os_read_limit_tokens}
+                    Is Read Only: {file_system_data_source.is_read_only}
+                    Schema of the File System: {file_system_data_source.file_directory_tree}
                 """
 
     response_prompt += """
@@ -44,7 +41,7 @@ def build_file_system_datasource_prompt(assistant: Assistant, user: User):
             yet, so be careful with the number of records you retrieve per query, and always make sure you
             are within the retrieval limits specified by the user.
 
-            **VERY IMPORTANT NOTE ABOUT 'FILE SYSTEM' DATASOURCES:**
+            **VERY IMPORTANT NOTE ABOUT 'FILE SYSTEM' DATA SOURCES / CONNECTIONS:**
             - This is a direct connection to the file system of the server via an SSH client connection created in the
             background for your use. You can use this connection to retrieve file system information, execute commands,
             and retrieve the schema of the file system. Be careful with the commands you execute, as they can have
@@ -63,7 +60,7 @@ def build_file_system_datasource_prompt(assistant: Assistant, user: User):
     return response_prompt
 
 
-def build_lean_file_system_datasource_prompt():
+def build_lean_file_system_data_source_prompt():
     # Build the prompt
     response_prompt = """
             **FILE SYSTEM CONNECTIONS (via SSH):**
@@ -82,7 +79,7 @@ def build_lean_file_system_datasource_prompt():
             yet, so be careful with the number of records you retrieve per query, and always make sure you
             are within the retrieval limits specified by the user.
 
-            **VERY IMPORTANT NOTE ABOUT 'FILE SYSTEM' DATASOURCES:**
+            **VERY IMPORTANT NOTE ABOUT 'FILE SYSTEM' DATA SOURCES / CONNECTIONS:**
             - This is a direct connection to the file system of the server via an SSH client connection created in the
             background for your use. You can use this connection to retrieve file system information, execute commands,
             and retrieve the schema of the file system. Be careful with the commands you execute, as they can have

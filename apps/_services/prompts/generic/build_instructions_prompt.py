@@ -1,7 +1,7 @@
 from apps.assistants.models import Assistant
 
 
-def get_structured_instructions_prompt(assistant: Assistant):
+def build_structured_instructions_prompt(assistant: Assistant):
     return f"""
         **YOUR INSTRUCTIONS:**
 

@@ -106,6 +106,11 @@
 find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 ```
 
+*To count the number of files in total for specific file types:*
+```bash
+find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss" -o -name "*.html" -o -name "*.txt" \) -o -type d | wc -l
+```
+
 ---
 
 **THINGS TO REMEMBER:**
@@ -119,7 +124,6 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 5. [ ] Implement [CORS] configuration.
 6. [ ] Implement [SMTP] configuration.
 7. [ ] Implement the [ORCHESTRATION] manager.
-
 
 *Pre-Deployment Changes:*
 1. [ ] Implement [PAYMENT GATEWAY] for the application.

@@ -28,5 +28,4 @@ def validate_custom_function_execution_tool_json(tool_usage_json: dict):
             mandatory for using the Custom Function Execution tool. Please make sure you are defining the 'input_data'
             field in the parameters field of the tool_usage_json.
         """
-
     return None

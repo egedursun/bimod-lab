@@ -3,7 +3,6 @@ from config.settings import BASE_URL
 
 
 def build_structured_tool_prompt__media_storage_query_execution():
-
     response_prompt = f"""
             **TOOL**: Media Storage Query Execution Tool
 

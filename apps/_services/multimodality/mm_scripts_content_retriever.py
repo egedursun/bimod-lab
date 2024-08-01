@@ -10,6 +10,7 @@ class CustomScriptsContentRetriever:
         self.context_assistant = context_assistant
 
     def retrieve_custom_script_content(self):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         script = self.script
         script_content = script.script_content
 
@@ -18,11 +19,11 @@ class CustomScriptsContentRetriever:
             model=self.context_assistant.llm_model,
             responsible_user=None,
             responsible_assistant=None,
-            encoding_engine="cl100k_base",
-            llm_cost=ToolCostsMap.ExternalCustomScriptRetriever.COST
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=ToolCostsMap.ExternalCustomScriptExecutor.COST
             if self.script.is_public else
-            ToolCostsMap.InternalCustomScriptRetriever.COST,
-            transaction_type="system",
+            ToolCostsMap.InternalCustomScriptExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.EXTERNAL_SCRIPT_RETRIEVAL
             if self.script.is_public else
             TransactionSourcesNames.INTERNAL_SCRIPT_RETRIEVAL,

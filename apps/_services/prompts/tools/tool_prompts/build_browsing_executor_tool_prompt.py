@@ -3,7 +3,6 @@ from config.settings import BASE_URL
 
 
 def build_structured_tool_prompt__browsing_executor():
-
     response_prompt = f"""
             **TOOL**: Browsing Executor Tool
 
@@ -128,5 +127,4 @@ def build_structured_tool_prompt__browsing_executor():
             appending the file path to the base URL.
 
         """
-
     return response_prompt

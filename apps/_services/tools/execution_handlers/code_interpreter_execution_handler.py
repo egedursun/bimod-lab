@@ -10,7 +10,7 @@ def execute_code_interpreter(assistant_id, chat_id, file_paths, query):
     try:
         response = executor.interpret_code(full_file_paths=file_paths, query_string=query)
     except Exception as e:
-        print(f"Error occurred while interpreting the code: {str(e)}")
+        print(f"[code_interpreter_execution_handler.execute_code_interpreter] Error occurred while interpreting the code: {str(e)}")
         return None, None, None
     file_uris = response.get("file_uris")
     image_uris = response.get("image_uris")

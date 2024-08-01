@@ -1,14 +1,11 @@
-from django.contrib.auth.models import User
 
 from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
 
 
-def build_knowledge_base_datasource_prompt(assistant: Assistant, user: User):
-
-    response_prompt = ""
+def build_knowledge_base_data_source_prompt(assistant: Assistant):
     # Gather the Knowledge Base datasource connections of the assistant
-    knowledge_base_datasources = DocumentKnowledgeBaseConnection.objects.filter(assistant=assistant)
+    knowledge_base_data_sources = DocumentKnowledgeBaseConnection.objects.filter(assistant=assistant)
     # Build the prompt
     response_prompt = """
             **KNOWLEDGE BASE CONNECTIONS:**
@@ -16,10 +13,10 @@ def build_knowledge_base_datasource_prompt(assistant: Assistant, user: User):
             '''
             """
 
-    for i, knowledge_base_datasource in enumerate(knowledge_base_datasources):
-        kb:DocumentKnowledgeBaseConnection = knowledge_base_datasource
+    for i, knowledge_base_data_source in enumerate(knowledge_base_data_sources):
+        kb:DocumentKnowledgeBaseConnection = knowledge_base_data_source
         response_prompt += f"""
-                [Knowledge Base Datasource ID: {kb.id}]
+                [Knowledge Base Data Source ID: {kb.id}]
                     System Provider: {kb.provider}
                     Knowledge Base Name: {kb.name}
                     Knowledge Base Class Name: {kb.class_name}
@@ -57,7 +54,7 @@ def build_knowledge_base_datasource_prompt(assistant: Assistant, user: User):
     return response_prompt
 
 
-def build_lean_knowledge_base_datasource_prompt():
+def build_lean_knowledge_base_data_source_prompt():
     # Build the prompt
     response_prompt = """
             **KNOWLEDGE BASE CONNECTIONS:**

@@ -14,6 +14,7 @@ class HistoryBuilder:
 
     @staticmethod
     def build(chat: MultimodalChat):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE
         chat_messages = chat.chat_messages.all().order_by("sent_at")
         context_history = []
         for chat_message in chat_messages:
@@ -35,7 +36,7 @@ class HistoryBuilder:
                             image_bytes = image_file.read()
                             image_b64 = b64.b64encode(image_bytes).decode("utf-8")
                     except Exception as e:
-                        print(f"Error reading image file: {e}")
+                        print(f"[HistoryBuilder.build] Error reading image file: {e}")
                         continue
                     image_content_wrapper = {"type": "image_url", "image_url": {"url": f"data:image/{image_url.split(".")[-1]};base64,{image_b64}"}}
                     image_uri_info_wrapper = {"type": "text", "text": f"Detected Image URLs: {image_url}"}
@@ -58,7 +59,7 @@ class HistoryBuilder:
                 model=chat.assistant.llm_model,
                 responsible_user=chat.user,
                 responsible_assistant=chat.assistant,
-                encoding_engine="cl100k_base",
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=message_text_content,
                 llm_cost=0,
                 internal_service_cost=0,

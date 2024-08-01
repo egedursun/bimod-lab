@@ -60,7 +60,7 @@ def create_classes_helper(executor):
             ]
         )
     except Exception as e:
-        print(f"Error creating Weaviate class: {e}")
+        print(f"[class_creator.create_classes_helper] Error creating Weaviate class: {e}")
         output["status"] = False
         output["error"] = str(e)
         return output
@@ -119,13 +119,10 @@ def create_classes_helper(executor):
         output["status"] = False
         output["error"] = str(e)
         return output
-
-    print(f"Created Weaviate classes: {new_document_class}, {document_chunk_class}")
     return output
 
 
 def create_chat_history_classes_helper(executor):
-
     output = {"status": True, "error": ""}
     conn = executor.connection_object
     c = executor.connect_c()
@@ -202,10 +199,8 @@ def create_chat_history_classes_helper(executor):
                 ),
         ])
     except Exception as e:
-        print(f"Error creating Chat History Chunks class: {e}")
+        print(f"[class_creator.create_chat_history_classes_helper] Error creating Chat History Chunks class: {e}")
         output["status"] = False
         output["error"] = str(e)
         return output
-
-    print(f"Created Chat History classes: {new_chat_history_class}, {chat_history_chunk_class}")
     return output

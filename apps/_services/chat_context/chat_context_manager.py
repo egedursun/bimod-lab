@@ -1,31 +1,22 @@
 from apps._services.config.costs_map import ToolCostsMap
 from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
+from apps._services.prompts.context_memory.build_context_memory_instruction import \
+    build_context_memory_instructions_prompt, build_context_memory_stop_conversation_prompt
 from apps.assistants.models import ContextOverflowStrategyNames, Assistant
-from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
-from apps.multimodal_chat.models import MultimodalChat
 
 
 class ChatContextManager:
-
-    # Create a summarizer prompt manager, we will pass these as a parameter to the chat system prompt
-
     def __init__(self):
         pass
 
     @staticmethod
     def forget_oldest(chat_history, max_messages):
+        from apps._services.llms.openai import ChatRoles
+        instructions = build_context_memory_instructions_prompt()
         message = {
-            "role": "system",
-            "content": f"""
-                ---
-                **[SYSTEM]**: This conversation has more messages than you are actually able to see. Some of the
-                messages has been deleted since the context window limit determined by the user has been reached.
-                Therefore, please be aware of the fact that you might not be remembering some of the things the
-                user has said. If you don't remember something, you can let the user know about this strategy and
-                ask them to repeat the message.
-                ---
-            """
+            "role": ChatRoles.SYSTEM,
+            "content": instructions
         }
         if len(chat_history) > max_messages:
             return chat_history[-max_messages:] + [message]
@@ -34,15 +25,12 @@ class ChatContextManager:
 
     @staticmethod
     def stop_conversation(chat_history: list, max_messages):
+        from apps._services.llms.openai import ChatRoles
+        instructions = build_context_memory_stop_conversation_prompt()
         if len(chat_history) > max_messages:
             message = {
-                "role": "system",
-                "content": f"""
-                    ---
-                    **[SYSTEM]**: The conversation needs to be stopped. Please let the user know about the context
-                    overflow and respectfully end the conversation.
-                    ---
-                """
+                "role": ChatRoles.SYSTEM,
+                "content": instructions
             }
             chat_history = chat_history[-max_messages:] + [message]
             return chat_history
@@ -50,10 +38,11 @@ class ChatContextManager:
             return chat_history
 
     @staticmethod
-    def store_as_vector(assistant, chat_history, max_messages, vectorizer_name, vectorizer_api_key,
+    def store_as_vector(assistant, chat_history, max_messages,
                         chat_object):
-        connection = ContextHistoryKnowledgeBaseConnection.objects.filter(assistant=assistant,
-                                                                          chat=chat_object).first()
+        from apps._services.llms.openai import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
+        from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+        connection = ContextHistoryKnowledgeBaseConnection.objects.filter(assistant=assistant, chat=chat_object).first()
         executor = MemoryExecutor(connection=connection)
 
         if len(chat_history) > max_messages:
@@ -78,9 +67,9 @@ class ChatContextManager:
                 model=chat_object.assistant.llm_model,
                 responsible_user=chat_object.user,
                 responsible_assistant=chat_object.assistant,
-                encoding_engine="cl100k_base",
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 llm_cost=ToolCostsMap.ContextMemory.COST,
-                transaction_type="system",
+                transaction_type=ChatRoles.SYSTEM,
                 transaction_source=TransactionSourcesNames.STORE_MEMORY,
                 is_tool_cost=True
             )
@@ -93,12 +82,10 @@ class ChatContextManager:
     def handle_context(
         chat_history,
         assistant: Assistant,
-        chat_object: MultimodalChat
+        chat_object
     ):
         context_overflow_strategy = assistant.context_overflow_strategy
         max_messages = assistant.max_context_messages
-        vectorizer_name = assistant.vectorizer_name
-        vectorizer_api_key = assistant.vectorizer_api_key
 
         # This function will be called by the chat system, after every message.
         # It will check the context overflow strategy of the assistant, and handle the context accordingly.
@@ -111,12 +98,9 @@ class ChatContextManager:
                 assistant=assistant,
                 chat_history=chat_history,
                 chat_object=chat_object,
-                max_messages=max_messages,
-                vectorizer_name=vectorizer_name,
-                vectorizer_api_key=vectorizer_api_key
+                max_messages=max_messages
             )
         else:
             # No strategy has been set, default to forget
             context_messages = ChatContextManager.forget_oldest(chat_history, max_messages)
-
         return context_messages

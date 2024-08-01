@@ -1,14 +1,4 @@
 
-"""
-                {{
-                    "tool": "{ToolTypeNames.FILE_SYSTEM_COMMAND_EXECUTION}",
-                    "parameters": {{
-                        "file_system_connection_id": "...",
-                        "commands": ["...", "...", "..."]
-                        }}
-                    }}
-"""
-
 
 def validate_file_system_command_execution_tool_json(tool_usage_json: dict):
     if "parameters" not in tool_usage_json:
@@ -44,5 +34,4 @@ def validate_file_system_command_execution_tool_json(tool_usage_json: dict):
             that you would like to execute on the file system. Please make sure you are defining the 'commands' field as a list of strings
             in the parameters field of the tool_usage_json.
         """
-
     return None

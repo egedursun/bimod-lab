@@ -8,6 +8,9 @@ from apps._services.ml_models.ml_model_executor import GENERATED_IMAGES_ROOT_PAT
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 
+UNCLASSIFIED_FILE_EXTENSION = ".bin"
+
+
 class ImageVariationExecutor:
 
     def __init__(self, assistant, chat):
@@ -15,13 +18,13 @@ class ImageVariationExecutor:
         self.chat = chat
 
     def execute_variate_image(self, image_uri, image_size):
-        from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.openai import InternalOpenAIClient, GPT_DEFAULT_ENCODING_ENGINE
         try:
             openai_client = InternalOpenAIClient(
                 assistant=self.assistant,
                 multimodal_chat=self.chat)
         except Exception as e:
-            print(f"Error occurred while creating the OpenAI client: {str(e)}")
+            print(f"[ImageVariationExecutor.execute_variate_image] Error occurred while creating the OpenAI client: {str(e)}")
             return None
 
         response = openai_client.create_image_variation(image_uri=image_uri, image_size=image_size)
@@ -34,7 +37,7 @@ class ImageVariationExecutor:
             try:
                 image_bytes = requests.get(image_openai_url).content
             except Exception as e:
-                print(f"Error occurred while downloading the image variation resulting file: {str(e)}")
+                print(f"[ImageVariationExecutor.execute_variate_image] Error occurred while downloading the image variation resulting file: {str(e)}")
                 return {"success": False, "message": "Error occurred while downloading the image variation resulting "
                                                      "file.", "image_url": None}
 
@@ -43,9 +46,9 @@ class ImageVariationExecutor:
                 model=self.chat.assistant.llm_model,
                 responsible_user=self.chat.user,
                 responsible_assistant=self.chat.assistant,
-                encoding_engine="cl100k_base",
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 llm_cost=ToolCostsMap.ImageVariation.COST,
-                transaction_type="system",
+                transaction_type=ChatRoles.SYSTEM,
                 transaction_source=TransactionSourcesNames.VARIATE_IMAGE,
                 is_tool_cost=True
             )
@@ -54,7 +57,6 @@ class ImageVariationExecutor:
             if image_bytes:
                 image_uri = self.save_images_and_provide_full_uris([image_bytes])[0]
                 return {"success": True, "message": "", "image_uri": image_uri}
-
         return {"success": False, "message": "Error occurred while downloading the image variation resulting file.",
                 "image_url": None}
 
@@ -71,7 +73,7 @@ class ImageVariationExecutor:
     def save_image_and_provide_full_uri(image_bytes):
         guess_file_type = filetype.guess(image_bytes)
         if guess_file_type is None:
-            guess_file_type = ".bin"
+            guess_file_type = UNCLASSIFIED_FILE_EXTENSION
         extension = guess_file_type.extension
         save_name = ImageVariationExecutor.generate_save_name(extension=extension)
         full_uri = f"{GENERATED_IMAGES_ROOT_PATH}{save_name}"
@@ -79,7 +81,7 @@ class ImageVariationExecutor:
             with open(full_uri, "wb") as image:
                 image.write(image_bytes)
         except Exception as e:
-            print(f"Error occurred while saving variation image: {str(e)}")
+            print(f"[ImageVariationExecutor.save_image_and_provide_full_uri] Error occurred while saving variation image: {str(e)}")
             return None
         return full_uri
 

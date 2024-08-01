@@ -28,5 +28,4 @@ def validate_image_generation_tool_json(tool_usage_json: dict):
             using the Image Generation tool. Please make sure you are defining the 'quality' field in the parameters field
             of the tool_usage_json.
         """
-
     return None

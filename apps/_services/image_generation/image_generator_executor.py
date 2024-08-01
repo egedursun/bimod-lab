@@ -8,36 +8,35 @@ from apps._services.storages.storage_executor import GENERATED_IMAGES_ROOT_PATH
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 
-class ImageGeneratorExecutor:
+UNCLASSIFIED_FILE_EXTENSION = ".bin"
 
+
+class ImageGeneratorExecutor:
     def __init__(self, assistant, chat):
         self.assistant = assistant
         self.chat = chat
 
     def execute_generate_image(self, prompt, image_size, quality):
-        from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.openai import InternalOpenAIClient, GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         try:
             openai_client = InternalOpenAIClient(
                 assistant=self.assistant,
                 multimodal_chat=self.chat)
         except Exception as e:
-            print(f"Error occurred while creating the OpenAI client: {str(e)}")
+            print(f"[ImageGeneratorExecutor.execute_generate_image] Error occurred while creating the OpenAI client: {str(e)}")
             return None
 
-        response = openai_client.generate_image(prompt=prompt,
-                                                image_size=image_size,
-                                                quality=quality)
+        response = openai_client.generate_image(prompt=prompt, image_size=image_size, quality=quality)
         if response["success"] is False:
             return response
 
         if response["image_url"]:
             image_openai_url = response["image_url"]
-            image_bytes = None
             # download the image from the URL
             try:
                 image_bytes = requests.get(image_openai_url).content
             except Exception as e:
-                print(f"Error occurred while downloading the image: {str(e)}")
+                print(f"[ImageGeneratorExecutor.execute_generate_image] Error occurred while downloading the image: {str(e)}")
                 return {"success": False, "message": "Error occurred while downloading the image.", "image_url": None}
 
             transaction = LLMTransaction(
@@ -45,9 +44,9 @@ class ImageGeneratorExecutor:
                 model=self.chat.assistant.llm_model,
                 responsible_user=self.chat.user,
                 responsible_assistant=self.chat.assistant,
-                encoding_engine="cl100k_base",
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 llm_cost=ToolCostsMap.ImageGenerator.COST,
-                transaction_type="system",
+                transaction_type=ChatRoles.SYSTEM,
                 transaction_source=TransactionSourcesNames.GENERATE_IMAGE,
                 is_tool_cost=True
             )
@@ -56,7 +55,6 @@ class ImageGeneratorExecutor:
             if image_bytes:
                 image_uri = self.save_images_and_provide_full_uris([image_bytes])[0]
                 return {"success": True, "message": "", "image_uri": image_uri}
-
         return {"success": False, "message": "Error occurred while downloading the image.", "image_url": None}
 
     @staticmethod
@@ -72,7 +70,7 @@ class ImageGeneratorExecutor:
     def save_image_and_provide_full_uri(image_bytes):
         guess_file_type = filetype.guess(image_bytes)
         if guess_file_type is None:
-            guess_file_type = ".bin"
+            guess_file_type = UNCLASSIFIED_FILE_EXTENSION
         extension = guess_file_type.extension
         save_name = ImageGeneratorExecutor.generate_save_name(extension=extension)
         full_uri = f"{GENERATED_IMAGES_ROOT_PATH}{save_name}"
@@ -80,7 +78,7 @@ class ImageGeneratorExecutor:
             with open(full_uri, "wb") as image:
                 image.write(image_bytes)
         except Exception as e:
-            print(f"Error occurred while saving image: {str(e)}")
+            print(f"[ImageGeneratorExecutor.save_image_and_provide_full_uri] Error occurred while saving image: {str(e)}")
             return None
         return full_uri
 

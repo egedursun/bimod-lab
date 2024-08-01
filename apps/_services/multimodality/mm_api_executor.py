@@ -11,6 +11,7 @@ class CustomAPIExecutor:
         self.context_assistant = context_assistant
 
     def execute_custom_api(self, endpoint_name: str, path_values=None, query_values=None, body_values=None):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         api_id = self.api.id
         promise = mm_api_execution_task.delay(
             custom_api_id=api_id,
@@ -25,16 +26,15 @@ class CustomAPIExecutor:
             model=self.context_assistant.llm_model,
             responsible_user=None,
             responsible_assistant=None,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.ExternalCustomAPIExecutor.COST
             if self.api.is_public else
             ToolCostsMap.InternalCustomAPIExecutor.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.EXTERNAL_API_EXECUTION
             if self.api.is_public else
             TransactionSourcesNames.INTERNAL_API_EXECUTION,
             is_tool_cost=True
         )
         transaction.save()
-
         return response

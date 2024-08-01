@@ -1,10 +1,8 @@
-from django.contrib.auth.models import User
 
 from apps.assistants.models import Assistant
 
 
-def build_structured_tool_usage_instructions_prompt(assistant: Assistant, user: User):
-
+def build_structured_tool_usage_instructions_prompt(assistant: Assistant):
     response_prompt = """
         **TOOL USAGE ABILITY:** (Very important! - Make sure to UNDERSTAND this part well)
 

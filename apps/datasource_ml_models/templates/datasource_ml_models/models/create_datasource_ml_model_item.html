@@ -85,6 +85,12 @@
             <label class="form-label" for="description">Description</label>
             <textarea class="form-control" id="description" name="description" placeholder="Enter description for the ML model"></textarea>
           </div>
+          <div class="mb-6">
+            <label class="form-label" for="interpretation_temperature">Temperature</label>
+            <input type="number" class="form-control" id="interpretation_temperature" name="interpretation_temperature" step="0.05"
+                   min="0" max="2" placeholder="Enter temperature" value="0.25"/>
+            <div class="form-text"></div>
+          </div>
           <button type="submit" class="btn btn-primary d-grid w-100 mt-8"><strong>Upload ML Model</strong></button>
         </form>
         <!-- Loading bar warning -->

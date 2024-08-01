@@ -30,28 +30,22 @@ def build_usage_statistics_system_prompt(statistics):
         '''
 
         **Sample Analysis Topics:**
-        i. Can there be a way to reduce the costs based on the statistics?
-        ii. Can there be a way to optimize the performance based on the statistics?
-        iii. Can there be a way to improve the benefit from the system based on the statistics?
-        iv. Can there be a way to balance out the system based on the statistics?
-        v. Can there be a way to improve the data models within the context elements in the statistics?
-        vi. What are the most important insights that can be derived from the statistics?
-        vii. What are the most important recommendations that can be derived from the statistics?
-        viii. What are the most important actions that can be derived from the statistics?
-        ix. What are the most important decisions that can be derived from the statistics?
-        x. What are the most important predictions that can be derived from the statistics?
-        xi. What are the most important trends that can be derived from the statistics?
-        xii. What are the most important patterns that can be derived from the statistics?
-        xiii. What are the most important correlations that can be derived from the statistics?
-        xiv. What are the most important anomalies that can be derived from the statistics?
-        xv. What are the most important outliers that can be derived from the statistics?
-        xvi. How can the system be improved based on the statistics?
-        xvii. How can the system be optimized based on the statistics?
-        xviii. How can the system be balanced based on the statistics?
-        xix. How can the system be enhanced based on the statistics?
-        xx. Should there be any changes in the system based on the statistics?
-        xxi. Where does the system stand based on the statistics?
+        i. Can there be a way to reduce the costs?
+        ii. Can there be a way to optimize the performance?
+        iii. Can there be a way to improve the benefit from the system?
+        iv. Can there be a way to balance out the system?
+        v. What are the most important insights?
+        vi. What are the most important recommendations?
+        vii. What are the most important actions or decisions?
+        viii. What are the most important predictions?
+        ix. What are the most important trends?
+        x. What are the most important anomalies?
 
+        - You can (and expected) to come up with your own analysis topics based on the data shared with you and
+        you must delve deep into these topics to detect how the data can be beneficial to the user. The topics above
+        are shared purely as an example, and you don't have to answer all of these questions in your analysis; since
+        the analysis must depend on the availability and contextual relevance of the data. Therefore, be very careful
+        about coming up with relevant and useful, beneficial topics that can help the user get the most of the system.
         ---
     """
 

@@ -1,26 +1,20 @@
 import json
-
 import paramiko
-
 from apps._services.config.costs_map import ToolCostsMap
 from apps._services.file_systems.internal_command_sets import INTERNAL_COMMAND_SETS, LIST_DIRECTORY_RECURSIVE
 from paramiko import SSHClient
-
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+
 
 MAX_CHARACTERS_RETRIEVAL = 10_000
 
 
 class FileSystemsExecutor:
     def __init__(self, connection):
-        ##################################################
-        # run the before_execute_sql_query function to refresh the schema
         self.connection = connection
         self.client = None
         self.connect_c()
         self.schema_str = self.retrieve_file_tree_schema()
-
-    ##################################################
 
     def connect_c(self):
         try:
@@ -36,7 +30,7 @@ class FileSystemsExecutor:
 
             self.client = ssh
         except Exception as e:
-            print(f"Error connecting to SSH: {e}")
+            print(f"[FileSystemsExecutor.connect_c] Error connecting to SSH: {e}")
         return self.client
 
     def close_c(self):
@@ -46,7 +40,7 @@ class FileSystemsExecutor:
             self.client.stderr.close()
             self.client.ssh.close()
         except Exception as e:
-            print(f"Error closing SSH connection: {e}")
+            print(f"[FileSystemsExecutor.close_c] Error closing SSH connection: {e}")
         return
 
     ##################################################
@@ -99,6 +93,7 @@ class FileSystemsExecutor:
         return directory_dict
 
     def execute_file_system_command_set(self, commands: list[str]):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         client = self.connect_c()
         results = {
             "status": True,
@@ -123,12 +118,11 @@ class FileSystemsExecutor:
             model=self.connection.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.FileSystemsExecutor.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.FILE_SYSTEM_COMMANDS,
             is_tool_cost=True
         )
         transaction.save()
-
         return results

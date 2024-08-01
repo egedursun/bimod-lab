@@ -26,7 +26,7 @@ class DataSourceMLModelItemForm(forms.ModelForm):
 
     class Meta:
         model = DataSourceMLModelItem
-        fields = ['ml_model_base', 'ml_model_name', 'description']
+        fields = ['ml_model_base', 'ml_model_name', 'description', 'interpretation_temperature']
         widgets = {
             'ml_model_base': forms.Select(attrs={'class': 'form-select'}),
             'ml_model_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter ML model name'}),

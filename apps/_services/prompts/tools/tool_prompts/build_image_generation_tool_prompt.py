@@ -3,7 +3,6 @@ from config.settings import BASE_URL
 
 
 def build_structured_tool_prompt__image_generator():
-
     response_prompt = f"""
             **TOOL**: Image Generation Tool
 
@@ -67,5 +66,4 @@ def build_structured_tool_prompt__image_generator():
             appending the file path to the base URL.
 
         """
-
     return response_prompt

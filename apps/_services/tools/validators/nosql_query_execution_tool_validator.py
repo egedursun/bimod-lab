@@ -42,5 +42,4 @@ def validate_nosql_query_execution_tool_json(tool_usage_json: dict):
             The NoSQL Database Connection with the ID: {connection.id} does not exist in the system.
             Please make sure you are passing a valid database connection ID.
         """
-
     return None

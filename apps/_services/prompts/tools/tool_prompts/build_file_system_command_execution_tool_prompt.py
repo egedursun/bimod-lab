@@ -2,7 +2,6 @@ from apps._services.tools.const import ToolTypeNames
 
 
 def build_structured_tool_prompt__file_system_command_execution():
-
     response_prompt = f"""
             **TOOL**: File System Command Execution
 
@@ -49,5 +48,4 @@ def build_structured_tool_prompt__file_system_command_execution():
             question.
 
         """
-
     return response_prompt

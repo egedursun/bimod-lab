@@ -1,16 +1,11 @@
+
+
 class DataSourceFileSystemsOsTypeNames:
     LINUX = 'linux'
     MACOS = 'macos'
 
-####################################################################################################
-# COMMANDS
-####################################################################################################
 
 LIST_DIRECTORY_RECURSIVE = 'list_directory_recursive'
-
-####################################################################################################
-
-
 INTERNAL_COMMAND_SETS = {
     LIST_DIRECTORY_RECURSIVE: {
         'description': 'List directory contents recursively',

@@ -50,5 +50,4 @@ def validate_media_storage_query_execution_tool_json(tool_usage_json: dict):
             mandatory for using the Media Storage Query Execution tool. Please make sure you are defining the 'file_paths'
             field in the parameters field of the tool_usage_json.
         """
-
     return None

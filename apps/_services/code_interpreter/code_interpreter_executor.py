@@ -7,6 +7,9 @@ from apps._services.ml_models.ml_model_executor import GENERATED_IMAGES_ROOT_PAT
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 
+UNCATEGORIZED_FILE_FORMAT_EXTENSION = ".bin"
+
+
 class CodeInterpreterExecutor:
 
     def __init__(self, assistant, chat):
@@ -15,19 +18,19 @@ class CodeInterpreterExecutor:
 
     def interpret_code(self, full_file_paths: list, query_string: str):
         from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.openai import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
         try:
             openai_client = InternalOpenAIClient(
                 assistant=self.assistant,
                 multimodal_chat=self.chat)
         except Exception as e:
-            print(f"Error occurred while creating the OpenAI client: {str(e)}")
+            print(f"[CodeInterpreterExecutor.interpret_code] Error occurred while creating the OpenAI client: {str(e)}")
             return None
         texts, files, images = openai_client.interpret_code(full_file_paths=full_file_paths,
                                                             query_string=query_string,
                                                             interpretation_temperature=float(self.assistant.llm_model.temperature))
-        # Save the files
+        # Save the files and images
         full_uris = self.save_files_and_provide_full_uris(files)
-        # Save the images
         full_image_uris = self.save_images_and_provide_full_uris(images)
         # Prepare the response in the dictionary format
         response = {"response": texts, "file_uris": full_uris, "image_uris": full_image_uris}
@@ -37,9 +40,9 @@ class CodeInterpreterExecutor:
             model=self.chat.assistant.llm_model,
             responsible_user=self.chat.user,
             responsible_assistant=self.chat.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.CodeInterpreter.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.INTERPRET_CODE,
             is_tool_cost=True
         )
@@ -58,7 +61,7 @@ class CodeInterpreterExecutor:
         if not remote_name:
             guess_file_type = filetype.guess(file_bytes)
             if guess_file_type is None:
-                guess_file_type = ".bin"
+                guess_file_type = UNCATEGORIZED_FILE_FORMAT_EXTENSION
             extension = guess_file_type.extension
         else:
             extension = remote_name.split(".")[-1]
@@ -69,7 +72,7 @@ class CodeInterpreterExecutor:
             with open(full_uri, "wb") as file:
                 file.write(file_bytes)
         except Exception as e:
-            print(f"Error occurred while saving file: {str(e)}")
+            print(f"[CodeInterpreterExecutor.save_file_and_provide_full_uri] Error occurred while saving file: {str(e)}")
             return None
         return full_uri
 
@@ -77,7 +80,7 @@ class CodeInterpreterExecutor:
     def save_image_and_provide_full_uri(image_bytes):
         guess_file_type = filetype.guess(image_bytes)
         if guess_file_type is None:
-            guess_file_type = ".bin"
+            guess_file_type = UNCATEGORIZED_FILE_FORMAT_EXTENSION
         extension = guess_file_type.extension
         save_name = CodeInterpreterExecutor.generate_save_name(extension=extension)
         full_uri = f"{GENERATED_IMAGES_ROOT_PATH}{save_name}"
@@ -85,7 +88,7 @@ class CodeInterpreterExecutor:
             with open(full_uri, "wb") as image:
                 image.write(image_bytes)
         except Exception as e:
-            print(f"Error occurred while saving image: {str(e)}")
+            print(f"[CodeInterpreterExecutor.save_image_and_provide_full_uri] Error occurred while saving image: {str(e)}")
             return None
         return full_uri
 
@@ -106,4 +109,3 @@ class CodeInterpreterExecutor:
             if full_uri is not None:
                 full_uris.append(full_uri)
         return full_uris
-

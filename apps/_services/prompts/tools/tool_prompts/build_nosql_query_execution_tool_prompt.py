@@ -78,5 +78,4 @@ def build_structured_tool_prompt__nosql_query_execution():
 
         ----
     """
-
     return response_prompt

@@ -4,7 +4,7 @@ from openai import OpenAI
 from openai._legacy_response import HttpxBinaryResponseContent
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
-from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, AFFIRMATION_PROMPT
+from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, ONE_SHOT_AFFIRMATION_PROMPT
 
 
 #######################################################################################################################
@@ -104,7 +104,7 @@ def ask_about_file(client, full_file_paths: list, query_string: str):
         messages=[
             {
                 "role": ChatRoles.USER,
-                "content": (query_string + AFFIRMATION_PROMPT),
+                "content": (query_string + ONE_SHOT_AFFIRMATION_PROMPT),
             }
         ]
     )

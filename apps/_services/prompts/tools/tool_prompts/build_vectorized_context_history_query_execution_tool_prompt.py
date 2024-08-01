@@ -55,5 +55,4 @@ def build_structured_tool_prompt__vectorized_context_history__query_execution_to
         accurate response to the user's question.
 
     """
-
     return response_prompt

@@ -2,6 +2,11 @@ from apps._services.nosql.nosql_decoder import InternalNoSQLClient
 from apps.datasource_nosql.models import NoSQLDatabaseConnection
 
 
+#####################################################################################################################
+# THIS FILE IS EXCLUDED FOR NOW
+#####################################################################################################################
+
+
 def execute_nosql_query(connection_id: int, query_type: str, nosql_query: str):
     nosql_response = None
 

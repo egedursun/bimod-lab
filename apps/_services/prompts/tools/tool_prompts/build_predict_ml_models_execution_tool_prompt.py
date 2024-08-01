@@ -3,7 +3,6 @@ from config.settings import BASE_URL
 
 
 def build_structured_tool_prompt__predict_with_ml_model_execution():
-
     response_prompt = f"""
             **TOOL**: Predict with ML Model Execution Tool
 
@@ -90,5 +89,4 @@ def build_structured_tool_prompt__predict_with_ml_model_execution():
             appending the file path to the base URL.
 
         """
-
     return response_prompt

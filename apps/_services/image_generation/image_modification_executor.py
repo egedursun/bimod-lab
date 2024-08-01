@@ -8,24 +8,23 @@ from apps._services.ml_models.ml_model_executor import GENERATED_IMAGES_ROOT_PAT
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 
-class ImageModificationExecutor:
+UNCLASSIFIED_FILE_EXTENSION = ".bin"
 
+
+class ImageModificationExecutor:
     def __init__(self, assistant, chat):
         self.assistant = assistant
         self.chat = chat
 
     def execute_modify_image(self, prompt, edit_image_uri, edit_image_mask_uri, image_size):
-        from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.openai import InternalOpenAIClient, GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         try:
-            openai_client = InternalOpenAIClient(
-                assistant=self.assistant,
-                multimodal_chat=self.chat)
+            openai_client = InternalOpenAIClient(assistant=self.assistant, multimodal_chat=self.chat)
         except Exception as e:
-            print(f"Error occurred while creating the OpenAI client: {str(e)}")
+            print(f"[ImageModificationExecutor.execute_modify_image] Error occurred while creating the OpenAI client: {str(e)}")
             return None
 
-        response = openai_client.edit_image(prompt=prompt,
-                                            edit_image_uri=edit_image_uri,
+        response = openai_client.edit_image(prompt=prompt, edit_image_uri=edit_image_uri,
                                             edit_image_mask_uri=edit_image_mask_uri,
                                             image_size=image_size)
         if response["success"] is False:
@@ -33,12 +32,11 @@ class ImageModificationExecutor:
 
         if response["image_url"]:
             image_openai_url = response["image_url"]
-            image_bytes = None
             # download the image from the URL
             try:
                 image_bytes = requests.get(image_openai_url).content
             except Exception as e:
-                print(f"Error occurred while downloading the edit image resulting file: {str(e)}")
+                print(f"[ImageModificationExecutor.execute_modify_image] Error occurred while downloading the edit image resulting file: {str(e)}")
                 return {"success": False, "message": "Error occurred while downloading the edit image resulting file.", "image_url": None}
 
             transaction = LLMTransaction(
@@ -46,9 +44,9 @@ class ImageModificationExecutor:
                 model=self.chat.assistant.llm_model,
                 responsible_user=self.chat.user,
                 responsible_assistant=self.chat.assistant,
-                encoding_engine="cl100k_base",
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 llm_cost=ToolCostsMap.ImageModification.COST,
-                transaction_type="system",
+                transaction_type=ChatRoles.SYSTEM,
                 transaction_source=TransactionSourcesNames.MODIFY_IMAGE,
                 is_tool_cost=True
             )
@@ -57,7 +55,6 @@ class ImageModificationExecutor:
             if image_bytes:
                 image_uri = self.save_images_and_provide_full_uris([image_bytes])[0]
                 return {"success": True, "message": "", "image_uri": image_uri}
-
         return {"success": False, "message": "Error occurred while downloading the edit image resulting file.", "image_url": None}
 
     @staticmethod
@@ -73,7 +70,7 @@ class ImageModificationExecutor:
     def save_image_and_provide_full_uri(image_bytes):
         guess_file_type = filetype.guess(image_bytes)
         if guess_file_type is None:
-            guess_file_type = ".bin"
+            guess_file_type = UNCLASSIFIED_FILE_EXTENSION
         extension = guess_file_type.extension
         save_name = ImageModificationExecutor.generate_save_name(extension=extension)
         full_uri = f"{GENERATED_IMAGES_ROOT_PATH}{save_name}"
@@ -81,7 +78,7 @@ class ImageModificationExecutor:
             with open(full_uri, "wb") as image:
                 image.write(image_bytes)
         except Exception as e:
-            print(f"Error occurred while saving image: {str(e)}")
+            print(f"[ImageModificationExecutor.save_image_and_provide_full_uri] Error occurred while saving image: {str(e)}")
             return None
         return full_uri
 

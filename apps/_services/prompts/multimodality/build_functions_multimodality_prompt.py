@@ -1,14 +1,10 @@
 from apps.assistants.models import Assistant
-from apps.mm_functions.models import CustomFunction, CustomFunctionReference
+from apps.mm_functions.models import CustomFunctionReference
 
 
-def build_functions_multimodality_prompt(assistant: Assistant):
-
-    response_prompt = ""
-
+def build_functions_multi_modality_prompt(assistant: Assistant):
     # Retrieve the functions of the assistant
     custom_function_references = CustomFunctionReference.objects.filter(assistant=assistant)
-
     # Build the prompt
     response_prompt = """
             **CUSTOM FUNCTIONS:**
@@ -71,7 +67,7 @@ def build_functions_multimodality_prompt(assistant: Assistant):
     return response_prompt
 
 
-def build_lean_functions_multimodality_prompt():
+def build_lean_functions_multi_modality_prompt():
     # Build the prompt
     response_prompt = """
             **CUSTOM FUNCTIONS:**
@@ -113,5 +109,4 @@ def build_lean_functions_multimodality_prompt():
             and are available for execution in the system. You can call these functions properly by providing the
             necessary input data and the function ID.
     """
-
     return response_prompt

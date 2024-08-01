@@ -4,13 +4,9 @@ from apps.assistants.models import Assistant
 from apps.mm_apis.models import CustomAPIReference
 
 
-def build_apis_multimodality_prompt(assistant: Assistant):
-
-    response_prompt = ""
-
+def build_apis_multi_modality_prompt(assistant: Assistant):
     # Retrieve the functions of the assistant
     custom_api_references = CustomAPIReference.objects.filter(assistant=assistant)
-
     # Build the prompt
     response_prompt = """
             **CUSTOM API CONNECTIONS:**
@@ -74,11 +70,10 @@ def build_apis_multimodality_prompt(assistant: Assistant):
 
             -------
             """
-
     return response_prompt
 
 
-def build_lean_apis_multimodality_prompt():
+def build_lean_apis_multi_modality_prompt():
     # Build the prompt
     response_prompt = """
             **CUSTOM API CONNECTIONS:**
@@ -125,5 +120,4 @@ def build_lean_apis_multimodality_prompt():
 
             -------
             """
-
     return response_prompt

@@ -7,6 +7,7 @@ from apps._services.config.costs_map import ToolCostsMap
 from apps.datasource_sql.models import SQLDatabaseConnection, DBMSChoicesNames
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
+
 INTRINSIC_MAXIMUM_QUERY_RECORD_LIMIT = 1000
 
 
@@ -36,10 +37,8 @@ def can_write_to_database(connection: SQLDatabaseConnection):
 
 class PostgresSQLExecutor:
     def __init__(self, connection: SQLDatabaseConnection):
-        ##################################################
         # run the before_execute_sql_query function to refresh the schema
         before_execute_sql_query(connection)
-        ##################################################
         self.conn_params = {
             'dbname': connection.database_name,
             'user': connection.username,
@@ -50,15 +49,16 @@ class PostgresSQLExecutor:
         self.connection_object = connection
 
     def execute_read(self, query, parameters=None):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         results = {"status": True, "error": ""}
         try:
             with psycopg2.connect(**self.conn_params) as conn:
                 with conn.cursor(cursor_factory=RealDictCursor) as cursor:
-                    print(f"Executing Query: {query}")
+                    print(f"[PostgresSQLExecutor.execute_read] Executing Query: {query}")
                     cursor.execute(query, parameters)
                     results = cursor.fetchall()
         except Exception as e:
-            print(f"Error executing PostgreSQL / Read Query: {e}")
+            print(f"[PostgresSQLExecutor.execute_read] Error executing PostgreSQL / Read Query: {e}")
             results["status"] = False
             results["error"] = str(e)
 
@@ -67,9 +67,9 @@ class PostgresSQLExecutor:
             model=self.connection_object.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.SQLReadExecutor.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.SQL_READ,
             is_tool_cost=True
         )
@@ -78,6 +78,7 @@ class PostgresSQLExecutor:
         return results
 
     def execute_write(self, query, parameters=None) -> dict:
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         if not can_write_to_database(self.connection_object):
             return {"status": False, "error": "No write permission within this database connection."}
 
@@ -88,7 +89,7 @@ class PostgresSQLExecutor:
                     cursor.execute(query, parameters)
                     conn.commit()
         except Exception as e:
-            print(f"Error executing PostgreSQL / Write Query: {e}")
+            print(f"[PostgresSQLExecutor.execute_write] Error executing PostgreSQL / Write Query: {e}")
             output["status"] = False
             output["error"] = str(e)
 
@@ -97,14 +98,13 @@ class PostgresSQLExecutor:
             model=self.connection_object.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.SQLWriteExecutor.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.SQL_WRITE,
             is_tool_cost=True
         )
         new_transaction.save()
-
         return output
 
 
@@ -125,6 +125,7 @@ class MySQLExecutor:
         self.connection_object = connection
 
     def execute_read(self, query, parameters=None):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         results = {"status": True, "error": ""}
         try:
             with mysql.connector.connect(**self.conn_params) as conn:
@@ -132,7 +133,7 @@ class MySQLExecutor:
                     cursor.execute(query, parameters)
                     results = cursor.fetchall()
         except Exception as e:
-            print(f"Error executing MySQL / Read Query: {e}")
+            print(f"[PostgresSQLExecutor.execute_read] Error executing MySQL / Read Query: {e}")
             results["status"] = False
             results["error"] = str(e)
 
@@ -141,9 +142,9 @@ class MySQLExecutor:
             model=self.connection_object.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.SQLReadExecutor.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.SQL_READ,
             is_tool_cost=True
         )
@@ -152,6 +153,7 @@ class MySQLExecutor:
         return results
 
     def execute_write(self, query, parameters=None):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         if not can_write_to_database(self.connection_object):
             return {"status": False, "error": "No write permission within this database connection."}
 
@@ -162,7 +164,7 @@ class MySQLExecutor:
                     cursor.execute(query, parameters)
                     conn.commit()
         except Exception as e:
-            print(f"Error executing MySQL / Write Query: {e}")
+            print(f"[PostgresSQLExecutor.execute_write] Error executing MySQL / Write Query: {e}")
             output["status"] = False
             output["error"] = str(e)
 
@@ -171,9 +173,9 @@ class MySQLExecutor:
             model=self.connection_object.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.SQLWriteExecutor.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.SQL_WRITE,
             is_tool_cost=True
         )

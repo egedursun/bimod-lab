@@ -3,7 +3,6 @@ from config.settings import BASE_URL
 
 
 def build_structured_tool_prompt__image_modification():
-
     response_prompt = f"""
             **TOOL**: Image Modification Tool
 
@@ -80,5 +79,4 @@ def build_structured_tool_prompt__image_modification():
             appending the file path to the base URL.
 
         """
-
     return response_prompt

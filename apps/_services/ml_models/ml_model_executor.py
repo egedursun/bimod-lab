@@ -3,10 +3,14 @@ from uuid import uuid4
 import filetype
 
 from apps._services.config.costs_map import ToolCostsMap
+from apps.datasource_ml_models.models import DataSourceMLModelItem
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 GENERATED_FILES_ROOT_PATH = "media/generated/files/"
 GENERATED_IMAGES_ROOT_PATH = "media/generated/images/"
+
+
+UNCLASSIFIED_FILE_EXTENSION = ".bin"
 
 
 class MLModelExecutor:
@@ -26,7 +30,7 @@ class MLModelExecutor:
         if not remote_name:
             guess_file_type = filetype.guess(file_bytes)
             if guess_file_type is None:
-                guess_file_type = ".bin"
+                guess_file_type = UNCLASSIFIED_FILE_EXTENSION
             extension = guess_file_type.extension
         else:
             extension = remote_name.split(".")[-1]
@@ -37,7 +41,7 @@ class MLModelExecutor:
             with open(full_uri, "wb") as file:
                 file.write(file_bytes)
         except Exception as e:
-            print(f"Error occurred while saving file: {str(e)}")
+            print(f"[MLModelExecutor.save_file_and_provide_full_uri] Error occurred while saving file: {str(e)}")
             return None
         return full_uri
 
@@ -53,7 +57,7 @@ class MLModelExecutor:
             with open(full_uri, "wb") as image:
                 image.write(image_bytes)
         except Exception as e:
-            print(f"Error occurred while saving image: {str(e)}")
+            print(f"[MLModelExecutor.save_image_and_provide_full_uri] Error occurred while saving image: {str(e)}")
             return None
         return full_uri
 
@@ -78,22 +82,24 @@ class MLModelExecutor:
     #################################################################################################################
 
     def execute_predict_with_ml_model(self, model_url, file_urls, input_data):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         from apps._services.llms.openai import InternalOpenAIClient
         try:
             openai_client = InternalOpenAIClient(
                 assistant=self.connection_object.assistant,
                 multimodal_chat=self.chat)
         except Exception as e:
-            print(f"Error occurred while creating the OpenAI client: {str(e)}")
+            print(f"[MLModelExecutor.execute_predict_with_ml_model] Error occurred while creating the OpenAI client: {str(e)}")
             return None
+        retrieve_model_object = DataSourceMLModelItem.objects.get(full_file_path=model_url)
+        model_temperature = retrieve_model_object.interpretation_temperature
         texts, files, images = openai_client.predict_with_ml_model(
             ml_model_path=model_url,
             input_data_urls=file_urls,
             query_string=input_data,
-            interpretation_temperature=0.25)
-        # Save the files
+            interpretation_temperature=model_temperature)
+        # Save the files and images
         full_uris = self.save_files_and_provide_full_uris(files)
-        # Save the images
         full_image_uris = self.save_images_and_provide_full_uris(images)
         # Prepare the response in the dictionary format
         response = {"response": texts, "file_uris": full_uris, "image_uris": full_image_uris}
@@ -103,12 +109,11 @@ class MLModelExecutor:
             model=self.connection_object.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.MLModelExecutor.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.ML_MODEL_PREDICTION,
             is_tool_cost=True
         )
         transaction.save()
-
         return response

@@ -1,5 +1,5 @@
 
-def get_structured_audience_prompt(audience: str):
+def build_structured_audience_prompt(audience: str):
     return f"""
         **YOUR AUDIENCE:**
 

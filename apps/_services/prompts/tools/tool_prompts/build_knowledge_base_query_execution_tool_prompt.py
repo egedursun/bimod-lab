@@ -2,7 +2,6 @@ from apps._services.tools.const import ToolTypeNames
 
 
 def build_structured_tool_prompt__knowledge_base_query_execution():
-
     response_prompt = f"""
             **TOOL**: Knowledge Base Document Search Query Execution
 
@@ -55,5 +54,4 @@ def build_structured_tool_prompt__knowledge_base_query_execution():
             - You are expected to take in this response, and use it to provide an answer to the user's question.
 
         """
-
     return response_prompt

@@ -4,8 +4,16 @@ import filetype
 from apps._services.config.costs_map import ToolCostsMap
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
+
+UNCLASSIFIED_FILE_EXTENSION = ".bin"
+
+
 GENERATED_FILES_ROOT_PATH = "media/generated/files/"
 GENERATED_IMAGES_ROOT_PATH = "media/generated/images/"
+
+DEFAULT_PATH_FREEFORM_USER_SKETCH = "free_form__user_sketch__"
+DEFAULT_PATH_EDIT_IMAGE_ORIGINAL = "edit_image__original_version__"
+DEFAULT_PATH_EDIT_IMAGE_MASKED = "edit_image__masked_version__"
 
 
 class StorageExecutor:
@@ -25,7 +33,7 @@ class StorageExecutor:
         if not remote_name:
             guess_file_type = filetype.guess(file_bytes)
             if guess_file_type is None:
-                guess_file_type = ".bin"
+                guess_file_type = UNCLASSIFIED_FILE_EXTENSION
             extension = guess_file_type.extension
         else:
             extension = remote_name.split(".")[-1]
@@ -36,7 +44,7 @@ class StorageExecutor:
             with open(full_uri, "wb") as file:
                 file.write(file_bytes)
         except Exception as e:
-            print(f"Error occurred while saving file: {str(e)}")
+            print(f"[StorageExecutor.save_file_and_provide_full_uri] Error occurred while saving file: {str(e)}")
             return None
         return full_uri
 
@@ -46,15 +54,15 @@ class StorageExecutor:
 
         guess_file_type_sketch_image = filetype.guess(sketch_image_bytes)
         if guess_file_type_sketch_image is None:
-            guess_file_type_sketch_image = ".bin"
+            guess_file_type_sketch_image = UNCLASSIFIED_FILE_EXTENSION
         extension_sketch_image = guess_file_type_sketch_image.extension
 
-        save_name_sketch_image = "free_form__user_sketch__" + str(uuid4()) + "." + extension_sketch_image
+        save_name_sketch_image = DEFAULT_PATH_FREEFORM_USER_SKETCH + str(uuid4()) + "." + extension_sketch_image
         full_uri_sketch_image = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_sketch_image}"
         try:
             with open(full_uri_sketch_image, "wb") as image: image.write(sketch_image_bytes)
         except Exception as e:
-            print(f"Error occurred while saving image: {str(e)}")
+            print(f"[StorageExecutor.save_sketch_images] Error occurred while saving image: {str(e)}")
             return None, None
         return [full_uri_sketch_image]
 
@@ -66,21 +74,21 @@ class StorageExecutor:
         guess_file_type_edit_image = filetype.guess(edit_image_bytes)
         guess_file_type_edit_image_mask = filetype.guess(edit_image_mask_bytes)
         if guess_file_type_edit_image is None:
-            guess_file_type_edit_image = ".bin"
+            guess_file_type_edit_image = UNCLASSIFIED_FILE_EXTENSION
         if guess_file_type_edit_image_mask is None:
-            guess_file_type_edit_image_mask = ".bin"
+            guess_file_type_edit_image_mask = UNCLASSIFIED_FILE_EXTENSION
         extension_edit_image = guess_file_type_edit_image.extension
         extension_edit_image_mask = guess_file_type_edit_image_mask.extension
 
-        save_name_edit_image = "edit_image__original_version__" + str(uuid4()) + "." + extension_edit_image
-        save_name_edit_image_mask = "edit_image__masked_version__" + str(uuid4()) + "." + extension_edit_image_mask
+        save_name_edit_image = DEFAULT_PATH_EDIT_IMAGE_ORIGINAL + str(uuid4()) + "." + extension_edit_image
+        save_name_edit_image_mask = DEFAULT_PATH_EDIT_IMAGE_MASKED + str(uuid4()) + "." + extension_edit_image_mask
         full_uri_edit_image = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_edit_image}"
         full_uri_edit_image_mask = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_edit_image_mask}"
         try:
             with open(full_uri_edit_image, "wb") as image: image.write(edit_image_bytes)
             with open(full_uri_edit_image_mask, "wb") as image_mask: image_mask.write(edit_image_mask_bytes)
         except Exception as e:
-            print(f"Error occurred while saving image: {str(e)}")
+            print(f"[StorageExecutor.save_edit_images] Error occurred while saving image: {str(e)}")
             return None, None
         return [full_uri_edit_image, full_uri_edit_image_mask]
 
@@ -88,7 +96,7 @@ class StorageExecutor:
     def save_image_and_provide_full_uri(image_bytes):
         guess_file_type = filetype.guess(image_bytes)
         if guess_file_type is None:
-            guess_file_type = ".bin"
+            guess_file_type = UNCLASSIFIED_FILE_EXTENSION
         extension = guess_file_type.extension
         save_name = StorageExecutor.generate_save_name(extension=extension)
         full_uri = f"{GENERATED_IMAGES_ROOT_PATH}{save_name}"
@@ -96,7 +104,7 @@ class StorageExecutor:
             with open(full_uri, "wb") as image:
                 image.write(image_bytes)
         except Exception as e:
-            print(f"Error occurred while saving image: {str(e)}")
+            print(f"[StorageExecutor.save_image_and_provide_full_uri] Error occurred while saving image: {str(e)}")
             return None
         return full_uri
 
@@ -119,21 +127,19 @@ class StorageExecutor:
         return full_uris
 
     def interpret_file(self, full_file_paths: list, query_string: str):
-        from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.openai import InternalOpenAIClient, GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         try:
             openai_client = InternalOpenAIClient(
                 assistant=self.connection_object.assistant,
                 multimodal_chat=self.chat)
         except Exception as e:
-            print(f"Error occurred while creating the OpenAI client: {str(e)}")
+            print(f"[StorageExecutor.interpret_file] Error occurred while creating the OpenAI client: {str(e)}")
             return None
         texts, files, images = openai_client.ask_about_file(full_file_paths=full_file_paths,
                                                             query_string=query_string,
-                                                            interpretation_temperature=self.connection_object.interpretation_temperature,
-                                                            interpretation_maximum_tokens=self.connection_object.interpretation_maximum_tokens)
-        # Save the files
+                                                            interpretation_temperature=self.connection_object.interpretation_temperature)
+        # Save the files and files
         full_uris = self.save_files_and_provide_full_uris(files)
-        # Save the images
         full_image_uris = self.save_images_and_provide_full_uris(images)
         # Prepare the response in the dictionary format
         response = {"response": texts, "file_uris": full_uris, "image_uris": full_image_uris}
@@ -143,24 +149,23 @@ class StorageExecutor:
             model=self.connection_object.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.FileInterpreter.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.INTERPRET_FILE,
             is_tool_cost=True
         )
         transaction.save()
-
         return response
 
     def interpret_image(self, full_image_paths: list, query_string: str):
-        from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.openai import InternalOpenAIClient, GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 
         try:
             openai_client = InternalOpenAIClient(assistant=self.connection_object.assistant,
                                                  multimodal_chat=self.chat)
         except Exception as e:
-            print(f"Error occurred while creating the OpenAI client: {str(e)}")
+            print(f"[StorageExecutor.interpret_image] Error occurred while creating the OpenAI client: {str(e)}")
             return None
         response = openai_client.ask_about_image(full_image_paths=full_image_paths, query_string=query_string,
                                                  interpretation_temperature=self.connection_object.interpretation_temperature,
@@ -171,12 +176,11 @@ class StorageExecutor:
             model=self.connection_object.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.ImageInterpreter.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.INTERPRET_IMAGE,
             is_tool_cost=True
         )
         transaction.save()
-
         return response

@@ -1,13 +1,12 @@
-from django.contrib.auth.models import User
 
 from apps.assistants.models import Assistant
 from apps.datasource_media_storages.models import DataSourceMediaStorageConnection
 
 
-def build_storage_datasource_prompt(assistant: Assistant, user: User):
+def build_storage_data_source_prompt(assistant: Assistant):
     response_prompt = ""
     # Gather the File System datasource connections of the assistant
-    media_storage_datasources = DataSourceMediaStorageConnection.objects.filter(assistant=assistant)
+    media_storage_data_sources = DataSourceMediaStorageConnection.objects.filter(assistant=assistant)
     # Build the prompt
     response_prompt = """
             **MEDIA STORAGE RESOURCE CONNECTIONS:**
@@ -15,17 +14,17 @@ def build_storage_datasource_prompt(assistant: Assistant, user: User):
             '''
             """
 
-    for i, media_storage_datasource in enumerate(media_storage_datasources):
+    for i, media_storage_data_source in enumerate(media_storage_data_sources):
         response_prompt += f"""
-                [Media Storage Datasource ID: {media_storage_datasource.id}]
-                    Media Storage Name: {media_storage_datasource.name}
-                    Media Storage Description: {media_storage_datasource.description}
-                    Media Category: {media_storage_datasource.media_category}
+                [Media Storage Data Source ID: {media_storage_data_source.id}]
+                    Media Storage Name: {media_storage_data_source.name}
+                    Media Storage Description: {media_storage_data_source.description}
+                    Media Category: {media_storage_data_source.media_category}
 
                     *Names and Descriptions of the Media Items:*
                 """
 
-        media_items = media_storage_datasource.items.all()
+        media_items = media_storage_data_source.items.all()
         for j, media_item in enumerate(media_items):
             response_prompt += f"""
                     - [Media Item ID: {media_item.id}]
@@ -47,7 +46,7 @@ def build_storage_datasource_prompt(assistant: Assistant, user: User):
              mind while responding to the user's messages. If this part is EMPTY, it means that the user has
             not provided any Media Storage Resource Connections (yet), so neglect this part if that is the case.
 
-            **VERY IMPORTANT NOTE ABOUT 'MEDIA STORAGE' DATASOURCES:**
+            **VERY IMPORTANT NOTE ABOUT 'MEDIA STORAGE' DATA SOURCES / CONNECTIONS:**
             - This is a direct connection to the media storage of the server. You can use this connection to retrieve
             media information, ask queries and questions about the media, and retrieve information regarding them;
             additionally you can build queries to generate charts, interpret images, describe an algorithm / goal
@@ -64,7 +63,7 @@ def build_storage_datasource_prompt(assistant: Assistant, user: User):
     return response_prompt
 
 
-def build_lean_storage_datasource_prompt():
+def build_lean_storage_data_source_prompt():
     # Build the prompt
     response_prompt = """
             **MEDIA STORAGE RESOURCE CONNECTIONS:**

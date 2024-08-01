@@ -1,10 +1,9 @@
-from django.contrib.auth.models import User
 
 from apps.assistants.models import Assistant
 from apps.datasource_nosql.models import NoSQLDatabaseConnection
 
 
-def build_nosql_datasource_prompt(assistant: Assistant, user: User):
+def build_nosql_datasource_prompt(assistant: Assistant):
     response_prompt = ""
     # Gather the NoSQL datasource connections of the assistant
     nosql_datasources = NoSQLDatabaseConnection.objects.filter(assistant=assistant)

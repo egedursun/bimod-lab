@@ -4,12 +4,9 @@ from apps.assistants.models import Assistant
 from apps.mm_scripts.models import CustomScriptReference
 
 
-def build_scripts_multimodality_prompt(assistant: Assistant):
-    response_prompt = ""
-
+def build_scripts_multi_modality_prompt(assistant: Assistant):
     # Retrieve the scripts of the assistant
     custom_script_references = CustomScriptReference.objects.filter(assistant=assistant)
-
     # Build the prompt
     response_prompt = """
             **CUSTOM SCRIPTS:**
@@ -75,7 +72,7 @@ def build_scripts_multimodality_prompt(assistant: Assistant):
     return response_prompt
 
 
-def build_lean_scripts_multimodality_prompt():
+def build_lean_scripts_multi_modality_prompt():
     # Build the prompt
     response_prompt = """
             **CUSTOM SCRIPTS:**
@@ -121,5 +118,4 @@ def build_lean_scripts_multimodality_prompt():
 
             -------
             """
-
     return response_prompt

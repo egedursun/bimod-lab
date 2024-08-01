@@ -6,10 +6,7 @@ from apps.multimodal_chat.models import MultimodalChat
 class InternalLLMClient:
 
     LLM_CORE_PROVIDERS = {
-        "OPENAI": {
-            "code": "OA",
-            "name": "OpenAI-GPT"
-        },
+        "OPENAI": {"code": "OA", "name": "OpenAI-GPT"},
     }
 
     @staticmethod

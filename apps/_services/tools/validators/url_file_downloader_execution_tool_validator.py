@@ -21,5 +21,4 @@ def validate_url_file_downloader_execution_tool_json(tool_usage_json: dict):
             for using the URL File Downloader tool. Please make sure you are defining the 'download_url' field in the
             parameters field of the tool_usage_json.
         """
-
     return None

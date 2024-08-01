@@ -12,7 +12,10 @@ from apps.datasource_knowledge_base.tasks import load_csv_helper, load_pdf_helpe
     embed_document_chunks, index_document_helper
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
-TASK_PROCESSING_TIMEOUT_SECONDS = (60 * 60)  # 60 minutes for all the tasks for a pipeline to complete
+TASK_PROCESSING_TIMEOUT_SECONDS = (60 * 60)  # 60 minutes for all the tasks for a pipeline to complete maximum
+WEAVIATE_INITIALIZATION_TIMEOUT = 30  # 30 seconds for the weaviate initialization
+WEAVIATE_QUERY_TIMEOUT = 60  # 60 seconds for the weaviate query
+WEAVIATE_INSERT_TIMEOUT = 120  # 120 seconds for the weaviate insert
 
 
 class SupportedDocumentTypesNames:
@@ -42,13 +45,11 @@ class WeaviateExecutor:
             c = weaviate.connect_to_weaviate_cloud(
                 cluster_url=self.connection_object.host_url,
                 auth_credentials=weaviate.auth.AuthApiKey(api_key=self.connection_object.provider_api_key),
-                headers={
-                    "X-OpenAI-Api-Key": self.connection_object.vectorizer_api_key
-                },
+                headers={"X-OpenAI-Api-Key": self.connection_object.vectorizer_api_key},
                 additional_config=AdditionalConfig(
-                    timeout=Timeout(init=30, query=60, insert=120)  # Values in seconds
-                )
-            )
+                    timeout=Timeout(init=WEAVIATE_INITIALIZATION_TIMEOUT,
+                                    query=WEAVIATE_QUERY_TIMEOUT,
+                                    insert=WEAVIATE_INSERT_TIMEOUT)))
             self.client = c
         except Exception as e:
             return self.client
@@ -75,15 +76,9 @@ class WeaviateExecutor:
     @staticmethod
     def decode_vectorizer(vectorizer_name):
         from apps.assistants.models import VectorizerNames
-
-        ##################################################
-        # OPENAI VECTORIZER
         if vectorizer_name == VectorizerNames.TEXT2VEC_OPENAI:
             return wvc.config.Configure.Vectorizer.text2vec_openai()
-        ##################################################
-        # DEFAULT VECTORIZER
         else:
-            # Return the default vectorizer (text2vec-openai)
             return wvc.config.Configure.Vectorizer.text2vec_openai()
         ##################################################
 
@@ -106,15 +101,12 @@ class WeaviateExecutor:
         return output
 
     def index_documents(self, document_paths: list | str):
-        ##################################################
         _ = self.connect_c()
         index_document_helper.delay(connection_id=self.connection_object.id, document_paths=document_paths)
         self.close_c()
         return
 
     def document_loader(self, file_path, file_type):
-        print(f"[Document Loader]: Prepare to load the document: {file_path}")
-
         d = None
         if file_type == SupportedDocumentTypesNames.PDF:
             d = load_pdf_helper(path=file_path)
@@ -144,46 +136,32 @@ class WeaviateExecutor:
             d = load_xlsx_helper(path=file_path)
         else:
             print("[File Type Decoder]: Unsupported file type for the document.")
-
         result = d
-        print(f"[Document Loader]: Loaded the document: {file_path}")
         return result
 
     def chunk_document(self, connection_id, document: dict):
-        print(f"[Document Chunker]: Prepare to chunk the document...")
         chunks = split_document_into_chunks(connection_id, document)
-        print(f"[Document Chunker]: Chunked the document...")
         return chunks
 
     def embed_document(self, document: dict, path: str, number_of_chunks: int = 0):
-        executor_params = {
-            "client": {
-                "host_url": self.connection_object.host_url,
-                "api_key": self.connection_object.provider_api_key
-            },
-            "connection_id": self.connection_object.id
-        }
-        print(f"[Document Embedder]: Prepare to embed the document:...")
+        executor_params = {"client": {"host_url": self.connection_object.host_url,
+                                      "api_key": self.connection_object.provider_api_key},
+                           "connection_id": self.connection_object.id}
         doc_id, doc_uuid, error = embed_document_data(executor_params=executor_params, document=document, path=path,
                                                       number_of_chunks=number_of_chunks)
-        print(f"[Document Embedder]: Embedded the document:...")
         return doc_id, doc_uuid, error
 
     def embed_document_chunks(self, chunks: list, path: str, document_id: int, document_uuid: str):
-        print(f"[Document Chunk Embedder]: Prepare to embed the document chunks: {document_id}")
         executor_params = {
-            "client": {
-                "host_url": self.connection_object.host_url,
-                "api_key": self.connection_object.provider_api_key
-            },
-            "connection_id": self.connection_object.id
-        }
+            "client": {"host_url": self.connection_object.host_url,
+                       "api_key": self.connection_object.provider_api_key},
+            "connection_id": self.connection_object.id}
         errors = embed_document_chunks(executor_params=executor_params, chunks=chunks, path=path,
                                        document_id=document_id, document_uuid=document_uuid)
-        print(f"[Document Chunk Embedder]: Embedded the document chunks: {document_id}")
         return errors
 
     def search_hybrid(self, query: str, alpha: float):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         search_knowledge_base_class_name = f"{self.connection_object.class_name}Chunks"
         client = self.connect_c()
         documents_collection = client.collections.get(search_knowledge_base_class_name)
@@ -209,12 +187,11 @@ class WeaviateExecutor:
             model=self.connection_object.assistant.llm_model,
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
-            encoding_engine="cl100k_base",
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=ToolCostsMap.KnowledgeBaseExecutor.COST,
-            transaction_type="system",
+            transaction_type=ChatRoles.SYSTEM,
             transaction_source=TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH,
             is_tool_cost=True
         )
         transaction.save()
-
         return cleaned_documents
