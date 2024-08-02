@@ -111,7 +111,7 @@ class DocumentKnowledgeBaseConnection(models.Model):
         if client is not None:
             result = client.create_weaviate_classes()
             if not result["status"]:
-                print(f"Error creating Weaviate classes: {result['error']}")
+                print(f"[DocumentKnowledgeBaseConnection.save] Error creating Weaviate classes: {result['error']}")
 
         self.schema_json = client.retrieve_schema()
         super().save(force_insert, force_update, using, update_fields)
@@ -122,7 +122,7 @@ class DocumentKnowledgeBaseConnection(models.Model):
         if client is not None:
             result = client.delete_weaviate_classes(class_name=self.class_name)
             if not result["status"]:
-                print(f"Error deleting Weaviate classes: {result['error']}")
+                print(f"[DocumentKnowledgeBaseConnection.save] Error deleting Weaviate classes: {result['error']}")
 
         super().delete(using, keep_parents)
 
@@ -177,14 +177,14 @@ class KnowledgeBaseDocument(models.Model):
                 class_name=self.knowledge_base.class_name,
                 document_uuid=self.knowledge_base_uuid)
             if not result["status"]:
-                print(f"Error deleting Weaviate document: {result['error']}")
+                print(f"[DocumentKnowledgeBaseConnection.delete] Error deleting Weaviate document: {result['error']}")
             # remove the document from the directory
             document_full_path = self.document_uri
             if document_full_path is not None:
                 try:
                     os.remove(document_full_path)
                 except Exception as e:
-                    print(f"Error deleting the document file: {e}")
+                    print(f"[DocumentKnowledgeBaseConnection.delete] Error deleting the document file: {e}")
         # delete the object from ORM
         super().delete(using, keep_parents)
 
@@ -218,9 +218,7 @@ class KnowledgeBaseDocumentChunk(models.Model):
             models.Index(fields=["knowledge_base", "document", "updated_at"]),
         ]
 
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         super().save(force_insert, force_update, using, update_fields)
 
 
@@ -260,17 +258,15 @@ class ContextHistoryKnowledgeBaseConnection(models.Model):
     ):
         if self.vectorizer is None:
             self.vectorizer = "text2vec-openai"
-
         if self.class_name is None:
             self.class_name = generate_chat_history_class_name()
-
         super().save(force_insert, force_update, using, update_fields)
 
         client = MemoryExecutor(connection=self)
         if client is not None:
             result = client.create_chat_history_classes()
             if not result["status"]:
-                print(f"Error creating Chat History class: {result['error']}")
+                print(f"[ContextHistoryKnowledgeBaseConnection.save] Error creating Chat History class: {result['error']}")
 
     def delete(self, using=None, keep_parents=False):
         # delete the classes from Weaviate
@@ -278,8 +274,7 @@ class ContextHistoryKnowledgeBaseConnection(models.Model):
         if client is not None:
             result = client.delete_chat_history_classes(class_name=self.class_name)
             if not result["status"]:
-                print(f"Error deleting Chat History class: {result['error']}")
-
+                print(f"[ContextHistoryKnowledgeBaseConnection.delete] Error deleting Chat History class: {result['error']}")
         super().delete(using, keep_parents)
 
 
@@ -292,7 +287,6 @@ class ContextHistoryMemory(models.Model):
 
     # to associate the element with the Weaviate object
     knowledge_base_memory_uuid = models.CharField(max_length=1000, null=True, blank=True)
-
     memory_chunks = models.ManyToManyField("ContextHistoryMemoryChunk", related_name='memories', blank=True)
 
     def __str__(self):
@@ -316,7 +310,7 @@ class ContextHistoryMemory(models.Model):
                 class_name=self.context_history_base.class_name,
                 document_uuid=self.knowledge_base_memory_uuid)
             if not result["status"]:
-                print(f"Error deleting Weaviate document: {result['error']}")
+                print(f"[ContextHistoryMemory.delete] Error deleting Weaviate document: {result['error']}")
         # delete the object from ORM
         super().delete(using, keep_parents)
 

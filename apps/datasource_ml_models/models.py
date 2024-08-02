@@ -46,7 +46,6 @@ class DataSourceMLModelConnection(models.Model):
             dir_suffix = self.model_object_category
             full_path = f"{base_dir}{dir_suffix}/"
             self.directory_full_path = full_path
-
             os.system(f"mkdir -p {full_path}")
             os.system(f"touch {full_path}/__init__.py")
         super().save(force_insert, force_update, using, update_fields)
@@ -97,7 +96,6 @@ class DataSourceMLModelItem(models.Model):
             file_name = self.ml_model_name
             full_path = f"{base_dir}{file_name.split('.')[0]}_{str(random.randint(1_000_000, 9_999_999))}.{file_type}"
             self.full_file_path = full_path
-
         super().save(force_insert, force_update, using, update_fields)
         # Upload the ml model to ml model base
         upload_model_to_ml_model_base.delay(file_bytes=self.file_bytes, full_path=self.full_file_path)

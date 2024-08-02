@@ -42,7 +42,6 @@ class DataSourceBrowserConnection(models.Model):
     name = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)
     browser_type = models.CharField(max_length=100, choices=BROWSER_TYPES)
-
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
 
     # hyper-parameters
@@ -72,7 +71,6 @@ class DataSourceBrowserBrowsingLog(models.Model):
     context_content = models.TextField(blank=True, null=True)
     log_content = models.TextField(blank=True, null=True)
     screenshot = models.ImageField(upload_to="datasource_browser_screenshots/%Y/%m/%d", blank=True, null=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

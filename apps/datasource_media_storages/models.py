@@ -172,7 +172,6 @@ class DataSourceMediaStorageConnection(models.Model):
             dir_suffix = self.media_category
             full_path = f"{base_dir}{dir_suffix}/"
             self.directory_full_path = full_path
-
             os.system(f"mkdir -p {full_path}")
             os.system(f"touch {full_path}/__init__.py")
         super().save(force_insert, force_update, using, update_fields)
@@ -225,7 +224,7 @@ class DataSourceMediaStorageItem(models.Model):
             self.full_file_path = full_path
 
         if file_type not in [ft[0] for ft in MEDIA_FILE_TYPES]:
-            print(f"Invalid file format: {file_type}, skipping file...")
+            print(f"[DataSourceMediaStorageItem.save] Invalid file format: {file_type}, skipping file...")
             return False
 
         super().save(force_insert, force_update, using, update_fields)

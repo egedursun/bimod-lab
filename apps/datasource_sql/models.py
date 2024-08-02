@@ -102,7 +102,7 @@ class SQLDatabaseConnection(models.Model):
             cursor.close()
             connection.close()
         except Exception as e:
-            print(f"Error retrieving PostgreSQL schema: {e}")
+            print(f"[SQLDatabaseConnection.save] Error retrieving PostgreSQL schema: {e}")
             return {}
         return schema
 
@@ -136,7 +136,7 @@ class SQLDatabaseConnection(models.Model):
             cursor.close()
             connection.close()
         except Exception as e:
-            print(f"Error retrieving MySQL schema: {e}")
+            print(f"[SQLDatabaseConnection.retrieve_mysql_schema] Error retrieving MySQL schema: {e}")
             return {}
         return schema
 

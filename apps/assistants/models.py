@@ -78,7 +78,6 @@ class Assistant(models.Model):
     # assistant image
     assistant_image_save_path = 'assistant_images/%Y/%m/%d/' + generate_random_string()
     assistant_image = models.ImageField(upload_to=assistant_image_save_path, blank=True, max_length=1000, null=True)
-
     memories = models.ManyToManyField("memories.AssistantMemory", related_name='assistants',
                                       blank=True)
 
@@ -86,6 +85,7 @@ class Assistant(models.Model):
     max_context_messages = models.IntegerField(default=25)
     vectorizer_name = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai",
                                        null=True, blank=True)
+
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
     document_base_directory = models.CharField(max_length=1000, null=True, blank=True)
     storages_base_directory = models.CharField(max_length=1000, null=True, blank=True)
@@ -116,31 +116,25 @@ class Assistant(models.Model):
             self.document_base_directory = dir_name
             os.system(f"mkdir -p {dir_name}")
             os.system(f"touch {dir_name}/__init__.py")
-
         if self.storages_base_directory is None:
             dir_name = f"media/storages/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{self.generate_random_name_suffix()}/"
             self.storages_base_directory = dir_name
             os.system(f"mkdir -p {dir_name}")
             os.system(f"touch {dir_name}/__init__.py")
-
         if self.ml_models_base_directory is None:
             dir_name = f"media/ml_models/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{self.generate_random_name_suffix()}/"
             self.ml_models_base_directory = dir_name
             os.system(f"mkdir -p {dir_name}")
             os.system(f"touch {dir_name}/__init__.py")
-
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
-
         # Remove the document directory
         if self.document_base_directory is not None:
             os.system(f"rm -rf {self.document_base_directory}")
-
         # Remove the storages directory
         if self.storages_base_directory is not None:
             os.system(f"rm -rf {self.storages_base_directory}")
-
         super().delete(using, keep_parents)
 
     class Meta:

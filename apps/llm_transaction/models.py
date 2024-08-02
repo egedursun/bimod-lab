@@ -197,7 +197,7 @@ class LLMTransaction(models.Model):
                         self.organization.auto_balance_topup.save()
                     else:
                         # If the reduced addition amount is 0, do nothing
-                        print("Hard limit reached, no top-up performed for organization: ", self.organization)
+                        print("[LLMTransaction.save] Hard limit reached, no top-up performed for organization: ", self.organization)
         self.transaction_context_content = ""
         super().save(*args, **kwargs)
 

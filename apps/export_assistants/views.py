@@ -3,19 +3,19 @@ import json
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView, DeleteView, UpdateView
+from django.views.generic import TemplateView, DeleteView
 
 from apps._services.llms.llm_decoder import InternalLLMClient
 from apps.assistants.models import Assistant
 from apps.export_assistants.management.commands.start_exported_assistants import start_endpoint_for_assistant
 from apps.export_assistants.models import ExportAssistantAPI, RequestLog
 from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
-from apps.multimodal_chat.utils import generate_chat_name, calculate_billable_cost_from_raw
+from apps.multimodal_chat.utils import generate_chat_name
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
 from config import settings

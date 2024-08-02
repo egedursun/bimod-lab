@@ -7,8 +7,6 @@ from apps._services.code_repository.code_repository_decoder import CodeRepositor
 from apps.datasource_code_repository.utils import generate_class_name
 from apps.datasource_knowledge_base.models import KNOWLEDGE_BASE_SYSTEMS
 
-# Create your models here.
-
 
 VECTORIZERS = [
     ("text2vec-openai", "Text2Vec (OpenAI)"),
@@ -41,10 +39,7 @@ class CodeRepositoryConnection(models.Model):
     schema_json = models.TextField(null=True, blank=True)
 
     # Code repositories have chunks
-    code_repository_chunks = models.ManyToManyField(
-        "CodeRepositoryChunk",
-        related_name='repositories',
-        blank=True)
+    code_repository_chunks = models.ManyToManyField("CodeRepositoryChunk", related_name='repositories', blank=True)
 
     search_instance_retrieval_limit = models.IntegerField(default=10)
 

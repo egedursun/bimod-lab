@@ -35,14 +35,11 @@ class MultimodalChat(models.Model):
                                            blank=True)
     transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_chats',
                                           blank=True)
-
     # Context Memory
     context_memory_connection = models.OneToOneField(ContextHistoryKnowledgeBaseConnection, on_delete=models.CASCADE,
                                                      related_name='multimodal_chat', null=True, blank=True)
-
     starred_messages = models.ManyToManyField('starred_messages.StarredMessage', related_name='multimodal_chats',
                                                 blank=True)
-
     # For archiving the chats
     is_archived = models.BooleanField(default=False)
     # Management for APIs
@@ -76,10 +73,10 @@ class MultimodalChat(models.Model):
         if (self.assistant.context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE
                 and self.context_memory_connection is None):
             if self.assistant.vectorizer_name is None:
-                print("The assistant does not have a vectorizer name set.")
+                print("[MultimodalChat.save] The assistant does not have a vectorizer name set.")
                 return
             if self.assistant.vectorizer_api_key is None:
-                print("The assistant does not have a vectorizer API key set.")
+                print("[MultimodalChat.save] The assistant does not have a vectorizer API key set.")
                 return
             context_history = ContextHistoryKnowledgeBaseConnection.objects.create(
                 assistant=self.assistant, chat=self, vectorizer=self.assistant.vectorizer_name,
@@ -158,8 +155,7 @@ class MultimodalChatMessage(models.Model):
                 new_starred_message = StarredMessage.objects.create(
                     user=self.multimodal_chat.user, organization=self.multimodal_chat.organization,
                     assistant=self.multimodal_chat.assistant, chat=self.multimodal_chat,
-                    chat_message=self, message_text=self.message_text_content,
-                    sender_type=self.sender_type
+                    chat_message=self, message_text=self.message_text_content, sender_type=self.sender_type
                 )
                 self.multimodal_chat.starred_messages.add(new_starred_message)
                 self.multimodal_chat.save()
