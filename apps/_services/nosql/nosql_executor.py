@@ -93,7 +93,7 @@ class MongoDBQueryExecutor:
                     token_limit=TOTAL_DATA_SAFETY_THRESHOLD_TOKENS) + "... <overflow_truncated>"
 
             results["data"] = limited_results_text
-            print(f"Results: {results["data"]}")
+            print(f"Results: {results['data']}")
         except Exception as e:
             print(f"Error executing MongoDB / Read Query: {e}")
             results["status"] = False
