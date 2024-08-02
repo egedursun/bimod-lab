@@ -275,7 +275,7 @@
       User=www-data
       Group=www-data
       WorkingDirectory=/var/www/bimod_dev/bimod-app
-      ExecStart=/var/www/bimod_dev/bimod-app/venv/bin/celery -A config worker --loglevel=info
+      ExecStart=/usr/local/bin/celery -A config worker --loglevel=info
     
       [Install]
       WantedBy=multi-user.target
@@ -299,7 +299,7 @@
     User=www-data
     Group=www-data
     WorkingDirectory=/var/www/bimod_dev/bimod-app
-    ExecStart=/var/www/bimod_dev/bimod-app/venv/bin/celery -A config beat --loglevel=info
+    ExecStart=/usr/local/bin/celery -A config beat --loglevel=info
     
     [Install]
     WantedBy=multi-user.target
@@ -308,20 +308,80 @@
 16. Enable and start the Celery services.
 
     ```bash
+    sudo systemctl daemon-reload
+    sudo systemctl restart celery
     sudo systemctl start celery
     sudo systemctl enable celery
     sudo systemctl start celerybeat
     sudo systemctl enable celerybeat
+    
+    sudo systemctl status celery
+    sudo systemctl status celerybeat
+    ```
+    
+17. Setting up the Flower service.
+
+    ```bash
+    sudo nano /etc/systemd/system/flower.service
+    ```
+    
+    Add the following lines to the file.
+
+    ```text
+    [Unit]
+    Description=Flower Service
+    After=network.target
+    
+    [Service]
+    Type=simple
+    User=www-data
+    Group=www-data
+    WorkingDirectory=/var/www/bimod_dev/bimod-app
+    ExecStart=/var/www/bimod_dev/bimod-app/venv/bin/flower --port=5555 --broker=redis://localhost:6379/0
+    Restart=always
+    
+    [Install]
+    WantedBy=multi-user.target
+    ```
+    
+    Enable and start the Flower service.
+
+    ```bash
+    sudo systemctl daemon-reload
+    sudo systemctl restart flower
+    sudo systemctl start flower
+    sudo systemctl enable flower
+    
+    sudo systemctl status flower
+    ```
+    
+    Update the firewall settings.
+
+    ```bash
+    sudo ufw allow 5555
+    sudo ufw reload
+    ```
+
+    
+18. Setting up the Redis service.
+
+    ```bash
+    sudo apt update
+    sudo apt install redis-server
+    sudo nano /etc/redis/redis.conf
+    ```
+    
+    Find the line that says `supervised no` and change it to `supervised systemd`.
+
+    Save and exit the file.
+
+    ```bash
+    sudo systemctl restart redis-server
+    sudo systemctl enable redis-server
+    
+    sudo systemctl status redis-server
     ```
     
 
-    
-
-
 
     
-
-
-
-
-

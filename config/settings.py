@@ -321,14 +321,14 @@ EXPORT_API_BASE_URL = "app/export_assistants/api/v1/export"
 
 # Celery task manager
 LEAN_BASE_URL = BASE_URL.split("://")[-1].split(":")[0]
-CELERY_BROKER_URL = f'redis://{LEAN_BASE_URL}:6379/0'
-CELERY_RESULT_BACKEND = f'redis://{LEAN_BASE_URL}:6379/0'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-
 
 CLEAN_DEBUG = True
 
