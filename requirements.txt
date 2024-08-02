@@ -26,7 +26,6 @@ redis~=5.1.0b7
 flower~=2.0.1
 pillow-heif~=0.17.0
 matplotlib~=3.9.1
-pdfminer.six~=20240706
 unstructured-inference~=0.7.36
 billiard~=4.2.0
 docx2txt~=0.8

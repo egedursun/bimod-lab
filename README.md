@@ -79,7 +79,7 @@
 
 - GitHub Account:
 - **Username:** egedursun
-- **Fine Grained Token:** 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
+- **Fine Grained Token:** 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
 
 ---
 

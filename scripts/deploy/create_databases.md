@@ -70,9 +70,22 @@
 
     ```bash
     cd bimod_dev
-    git clone https://egedursun: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@github.com/Bimod-HQ/bimod-app.git
-       # Username: egedursun
-       # Password: ***
-    cd bimod-app
+    git clone -b dev https://egedursun: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@github.com/Bimod-HQ/bimod-app.git
+    cd ..
+    
+    cd bimod_prod
+    git clone -b main https://egedursun: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@github.com/Bimod-HQ/bimod-app.git
+    cd ..
+    ```
+   
+10. Setting up the virtual environment.
+
+    ```bash
+    cd /var/www/bimod_dev/bimod-app
+    sudo apt install python3-venv
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    deactivate
 
 
