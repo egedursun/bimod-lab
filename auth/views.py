@@ -16,8 +16,6 @@ class AuthView(TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         # Update the context
         context.update(
-            {
-                "layout_path": TemplateHelper.set_layout("layout_blank.html", context), "countries": COUNTRIES,
-            }
+            {"layout_path": TemplateHelper.set_layout("layout_blank.html", context), "countries": COUNTRIES}
         )
         return context
