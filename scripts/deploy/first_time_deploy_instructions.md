@@ -6,26 +6,23 @@
     ```bash
     ssh root@185.170.198.44
     ```
-
 2. Update the package list and upgrade the packages.
 
     ```bash
+    cd /root/var/www
     sudo apt update
     sudo apt upgrade
     ```
-   
 3. Install the necessary packages for the project.
 
     ```bash
    sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib nginx curl
     ```
-   
 4. Connect to the PostgreSQL database.
 
     ```bash
     sudo -u postgres psql
    ```
-   
 5. Create a new database for the project.
 
     ```sql
@@ -43,19 +40,16 @@
     ALTER ROLE admin_prod SET timezone TO 'UTC';
     GRANT ALL PRIVILEGES ON DATABASE bimod_prod TO admin_prod;
     ```
-   
 6. Exit the PSQL.
 
     ```sql
     \q
     ```
-   
 7. Exit PostgreSQL.
 
     ```bash
     exit
     ```
-   
 8. Setting up the project folders.
 
     ```bash
@@ -64,8 +58,8 @@
     sudo mkdir bimod_prod
     sudo chown -R root:www-data bimod_dev
     sudo chown -R root:www-data bimod_prod
+    sudo chmod o+x /root
    ```
-   
 9. Clone the project repository.
 
     ```bash
@@ -77,25 +71,23 @@
     git clone -b main https://egedursun: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@github.com/Bimod-HQ/bimod-app.git
     cd ..
     ```
-   
 10. Setting up the virtual environment.
 
     ```bash
-    cd /var/www/bimod_dev/bimod-app
+    cd /root/var/www/bimod_dev/bimod-app
     sudo apt install python3-venv
     python3 -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
     deactivate
     
-    cd ../bimod_prod/bimod-app
+    cd /root/var/www/bimod_prod/bimod-app
     python3 -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
     deactivate
     cd ../..
     ```
-
 11. Allow Postgres to listen to your local machine:
 
     ```bash
@@ -129,14 +121,21 @@
 
     ```bash
     sudo systemctl restart postgresql
-    ```
-    
+    ``` 
 12. Setting up the environment variables.
 
     ```bash
-    cd /var/www/bimod_dev/bimod-app
+    cd /root/var/www/bimod_dev/bimod-app
     touch .env
     nano .env
+    touch .env.prod
+    nano .env.prod
+    
+    cd /root/var/www/bimod_prod/bimod-app
+    touch .env
+    nano .env
+    touch .env.prod
+    nano .env.prod
     ```
     
     Add the environment variables to the `.env` file.
@@ -163,8 +162,7 @@
     python3 manage.py migrate
     python3 manage.py collectstatic
     deactivate
-    ```
-    
+    ``` 
 13. Setting up the Gunicorn service.
 
     ```bash
@@ -174,30 +172,30 @@
     Add the following lines to the file.
 
     ```text
-    [Unit]
-    Description=gunicorn daemon
-    After=network.target
-    
-    [Service]
-    User=www-data
-    Group=www-data
-    WorkingDirectory=/var/www/bimod_dev/bimod-app
-    ExecStart=/var/www/bimod_dev/bimod-app/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/var/www/bimod_dev/bimod-app/gunicorn.sock config.wsgi:application
-    
-    [Install]
-    WantedBy=multi-user.target
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/root/var/www/bimod_dev/bimod-app
+ExecStart=/bin/bash -c 'source /root/var/www/bimod_dev/bimod-app/venv/bin/activate && exec gunicorn --access-logfile - --workers 3 --bind unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock config.wsgi:application'
+
+[Install]
+WantedBy=multi-user.target
+
     ```
     
     Enable and start the Gunicorn service.
 
     ```bash
-    sudo mkdir -p /var/www/bimod_dev/bimod-app/
-    sudo chown -R www-data:www-data /var/www/bimod_dev/bimod-app/
-    sudo chmod -R 755 /var/www/bimod_dev/bimod-app/
+    sudo mkdir -p /root/var/www/bimod_dev/bimod-app/
+    sudo chown -R www-data:www-data /root/var/www/bimod_dev/bimod-app/
+    sudo chmod -R 755 /root/var/www/bimod_dev/bimod-app/
     sudo systemctl start gunicorn
     sudo systemctl enable gunicorn
     ```
-    
 14. Setting up the Nginx server.
 
     ```bash
@@ -213,15 +211,15 @@
     
         location = /favicon.ico { access_log off; log_not_found off; }
         location /static/ {
-            root /var/www/bimod_dev/bimod-app;
+            root /root/var/www/bimod_dev/bimod-app;
         }
         location /media/ {
-            root /var/www/bimod_dev/bimod-app;
+            root /root/var/www/bimod_dev/bimod-app;
         }
     
         location / {
             include proxy_params;
-            proxy_pass http://unix:/var/www/bimod_dev/bimod-app/gunicorn.sock;
+            proxy_pass http://unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock;
         }
     
         # Redirect HTTP to HTTPS
@@ -241,15 +239,15 @@
     
         location = /favicon.ico { access_log off; log_not_found off; }
         location /static/ {
-            root /var/www/bimod_dev/bimod-app;
+            root /root/var/www/bimod_dev/bimod-app;
         }
         location /media/ {
-            root /var/www/bimod_dev/bimod-app;
+            root /root/var/www/bimod_dev/bimod-app;
         }
     
         location / {
             include proxy_params;
-            proxy_pass http://unix:/var/www/bimod_dev/bimod-app/gunicorn.sock;
+            proxy_pass http://unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock;
         }
     }
     ```
@@ -261,23 +259,9 @@
     sudo nginx -t
     sudo systemctl restart nginx
     ```
-    
-14. Set Up the Logging Directory
-
-    ```bash
-    sudo mkdir /var/log/bimod_dev
-    sudo touch /var/log/bimod_dev/django_debug.log
-    sudo chown www-data:www-data /var/log/bimod_dev/django_debug.log
-    sudo chmod 644 /var/log/bimod_dev/django_debug.log
-    
-    sudo mkdir /var/log/bimod_prod
-    sudo touch /var/log/bimod_prod/django_debug.log
-    sudo chown www-data:www-data /var/log/bimod_prod/django_debug.log
-    sudo chmod 644 /var/log/bimod_prod/django_debug.log
-    ```
 
     
-15. Setting up Celery.
+14. Setting up Celery.
 
     ```bash
     sudo nano /etc/systemd/system/celery.service
@@ -285,20 +269,39 @@
     
     Add the following lines to the file.
 
-    ```text
-      [Unit]
-      Description=Celery Service
-      After=network.target
-    
-      [Service]
-      Type=forking
-      User=www-data
-      Group=www-data
-      WorkingDirectory=/var/www/bimod_dev/bimod-app
-      ExecStart=/usr/local/bin/celery -A config worker --loglevel=info
-    
-      [Install]
-      WantedBy=multi-user.target
+    ```service
+[Unit]
+Description=Celery Service
+After=network.target
+
+[Service]
+Type=forking
+User=www-data
+Group=www-data
+WorkingDirectory=/root/var/www/bimod_dev/bimod-app
+ExecStart=/bin/bash -c 'source /root/var/www/bimod_dev/bimod-app/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery.pid'
+ExecStartPost=/bin/sleep 5
+PIDFile=/run/celery/celery.pid
+Restart=always
+RestartSec=5
+StartLimitInterval=60
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
+    ```
+
+    Enable and start the Celery service.
+
+    ```bash
+    sudo mkdir -p /run/celery
+    sudo chown www-data:www-data /run/celery
+    sudo systemctl daemon-reload
+    sudo systemctl restart celery
+    sudo systemctl start celery
+    sudo systemctl enable celery
+
+    sudo systemctl status celery
     ```
 
 15. Setting up Celery Beat.
@@ -310,20 +313,20 @@
     Add the following lines to the file.
 
     ```text
-    [Unit]
-    Description=Celery Beat Service
-    After=network.target
-    
-    [Service]
-    Type=simple
-    User=www-data
-    Group=www-data
-    WorkingDirectory=/var/www/bimod_dev/bimod-app
-    ExecStart=/usr/local/bin/celery -A config beat --loglevel=info
-    Restart=always
-    
-    [Install]
-    WantedBy=multi-user.target
+[Unit]
+Description=Celery Beat Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/root/var/www/bimod_dev/bimod-app
+ExecStart=/bin/bash -c 'source /root/var/www/bimod_dev/bimod-app/venv/bin/activate && exec celery -A config beat --loglevel=info'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
     ```
     
 16. Enable and start the Celery services.
@@ -331,7 +334,6 @@
     ```bash
     sudo systemctl daemon-reload
     sudo systemctl restart celery
-    sudo systemctl start celery
     sudo systemctl enable celery
     sudo systemctl start celerybeat
     sudo systemctl enable celerybeat
@@ -349,20 +351,21 @@
     Add the following lines to the file.
 
     ```text
-    [Unit]
-    Description=Flower Service
-    After=network.target
-    
-    [Service]
-    Type=simple
-    User=www-data
-    Group=www-data
-    WorkingDirectory=/var/www/bimod_dev/bimod-app
-    ExecStart=/usr/local/bin/celery -A config flower --port=5555 --broker=redis://localhost:6379/0
-    Restart=always
-    
-    [Install]
-    WantedBy=multi-user.target
+[Unit]
+Description=Flower Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/root/var/www/bimod_dev/bimod-app
+ExecStart=/bin/bash -c 'source /root/var/www/bimod_dev/bimod-app/venv/bin/activate && exec celery -A config flower --port=5555 --broker=redis://localhost:6379/0'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
     ```
     
     Enable and start the Flower service.

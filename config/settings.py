@@ -346,36 +346,17 @@ LOGGING = {
         },
     },
     'handlers': {
-        'console': {
-            'level': 'DEBUG' if DEBUG and not CLEAN_DEBUG else 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_debug.log'),
             'formatter': 'verbose',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'DEBUG' if DEBUG and not CLEAN_DEBUG else 'INFO',
-            'propagate': True,
-        },
-        'django.request': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'DEBUG' if DEBUG and not CLEAN_DEBUG else 'INFO',
-            'propagate': False,
-        },
-        'django.security': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'DEBUG' if DEBUG and not CLEAN_DEBUG else 'INFO',
-            'propagate': False,
-        },
-        'config': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'DEBUG' if DEBUG and not CLEAN_DEBUG else 'INFO',
+            'handlers': ['file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     },
