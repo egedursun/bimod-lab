@@ -180,6 +180,7 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 2. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
 3. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
 4. [ ] [BLOCKCHAIN] integration for the application.
+5. [ ] [FACIAL RECOGNITION / OPENCV] technologies integration ?
 
 ---
 
