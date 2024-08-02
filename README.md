@@ -10,9 +10,7 @@
 - [ ] Integrating the Payment Gateway to get the payment done (for balance) + credit card safety / storage and usage
 - [ ] Real PostgreSQL DBMS integration.
 - [ ] Real E-mail SMTP integration.
-- [ ] Stop Sequence Integration
 - [ ] HTTPS Configuration for the application + CORS configuration.
-- [ ] Better logging system.
 - [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 - [ ] Privacy Policy and Terms of Service development & integration for the application.
 - [ ] Proper Documentation & tutorial, instructions (FAQ and Support) for the application.
@@ -62,16 +60,26 @@
     - **@Via Google Account** ->
       - **E-mail:** edogandursun@gmail.com
       - **PW:** ***
-  - SSH Connection:
+  - SSH Connection for VPS Server:
     - **Username:** root
-    - **PW:** t@G0trEhboeOWWDSi5Bg
+    - **PW:** 7#Ao141j3$sI?k5#aDrR
+  - Email Accounts:
+    - **Provider:** mail.hostiner.com
+      - **Username:** admin@bimod.io
+      - **PW:** FXYP9tU5o^
 
-- SQL DB Data Source Tests - Aiven Console.
-  - Login Credentials: 
-    - **@Via Google Account** -> edogandursun@gmail.com
-    - Has a PostgreSQL instance.
-    - Has a MySQL instance.
+- PostgreSQL DB:
+  - Login Credentials:
+    - bimod_dev
+      - **Username:** admin_dev
+      - **PW:** rOrHWB6VuWODW9O
+    - bimod_prod
+      - **Username:** admin_prod
+      - **PW:** XRUs1Cz3Dxiwb6e
 
+- GitHub Account:
+- **Username:** egedursun
+- **Fine Grained Token:** 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
 
 ---
 
@@ -93,6 +101,7 @@
 - Total Lines of Code by 2024-07-30: (Day: 32) **2,713,000**
 - Total Lines of Code by 2024-07-31: (Day: 33) **2,857,000**
 - Total Lines of Code by 2024-08-01: (Day: 34) **6,186,000**
+- Total Lines of Code by 2024-08-02: (Day: 35) **6,203,000**
 
 ---
 
@@ -117,12 +126,12 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 
 *Important:*
-1. [ ] Code [CLEANUP AND REFACTORING].
-2. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-3. [ ] Migrate to [POSTGRES] database.
-4. [ ] Implement [HTTPS] configuration.
-5. [ ] Implement [CORS] configuration.
-6. [ ] Implement [SMTP] configuration.
+1. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+2. [ ] Migrate to [POSTGRES] database.
+3. [ ] Implement [HTTPS] configuration.
+4. [ ] Implement [CORS] configuration.
+5. [ ] Implement [SMTP] configuration.
+6. [ ] [STORAGE MEDIA] service migrations.
 7. [ ] Implement the [ORCHESTRATION] manager.
 
 *Pre-Deployment Changes:*
@@ -141,18 +150,18 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---
 
 *After first deployment:*
-1. [ ] Named Entity Recognition [NER] integration.
-2. [ ] [DOCUMENTATION & API GUIDE] page development.
-3. [ ] [FAQ] page development.
-4. [ ] [TERMS & CONDITIONS] development with the law firms.
-5. [ ] [PRIVACY POLICY & DATA POLICY] development with the law firms.
-6. [ ] Creation of the [BLOG] page.
-7. [ ] Creation of the [FORUM] page.
-8. [ ] [TEXT-TO-SPEECH] and [SPEECH-TO-TEXT] integration for the application.
-9. [ ] [DESKTOP COPILOT EXTENSION] development for the application. -> requires a desktop application / applet.
-10. [ ] [WORD PLUGIN] development for the application. -> requires a word/ms office plugin.
-11. [ ] [MOBILE APPLICATION FOR ANDROID & IOS] only for connecting endpoints, and being able to chat with them and receive answers. -> requires a mobile application development.
-12. [ ] [DRIVE & DROPBOX] integration for the application.
+1. [ ] Creation of the [BLOG] page.
+2. [ ] Creation of the [FORUM] page.
+3. [ ] [DOCUMENTATION & API GUIDE] page development.
+4. [ ] [FAQ] page development.
+5. [ ] [TERMS & CONDITIONS] development with the law firms.
+6. [ ] [PRIVACY POLICY & DATA POLICY] development with the law firms.
+7. [ ] [TEXT-TO-SPEECH] and [SPEECH-TO-TEXT] integration for the application.
+8. [ ] Named Entity Recognition [NER] integration.
+9. [ ] [MOBILE APPLICATION FOR ANDROID & IOS] only for connecting endpoints, and being able to chat with them and receive answers. -> requires a mobile application development.
+10. [ ] [DESKTOP COPILOT EXTENSION] development for the application. -> requires a desktop application / applet.
+11. [ ] [DRIVE & DROPBOX] integration for the application.
+12. [ ] [WORD PLUGIN] development for the application. -> requires a word/ms office plugin.
 13. [ ] RELEASE v0.2.0 [RELEASE: BETA] version of the application.
 
 ---
@@ -167,11 +176,10 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---
 
 *TO BE DISCUSSED:*
-1. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
-2. [ ] Users page [PROMO CODE] integration to the data model.
+1. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
+2. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
 3. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
 4. [ ] [BLOCKCHAIN] integration for the application.
-5. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
 
 ---
 
@@ -183,19 +191,69 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---
 
 *Standalone Applications:*
-- [ ] Django Mainframe (Server + Web Application)
-  - [ ] For the main application and the frontend of the web application.
-  - [ ] The flagship application for the Bimod project.
-- [ ] Electron Copilot (Desktop Application) 
-  - [ ] For image and text-based management and manipulation within the OS and overall system usage.
-  - [ ] Can also understand the context of the browsers while the user is actively using the browser and OS.
-- [ ] Progressive Web App (PWA) (Android & iOS Application)
-     - Primarily for:
-       - [ ] Connecting an exported assistant and chatting with the assistant.
-       - [ ] Communicating with STT and TTS services.
-       - [ ] Sending and receiving messages from the assistant.
-       - [ ] Sending and receiving files from the assistant.
-       - [ ] Sending and receiving images from the assistant.
-       - [ ] For the assistant to track location & other data.
-       - [ ] For the assistant to be able to send notifications & reminders.
+- **Django Mainframe (Server + Web Application)**
+  - For the main application and the frontend of the web application.
+  - The flagship application for the Bimod project.
+- **Electron Copilot (Desktop Application)**
+  - For image and text-based management and manipulation within the OS and overall system usage.
+  - Can also understand the context of the browsers while the user is actively using the browser and OS.
+- **Progressive Web App (PWA) (Android & iOS Application)**
+  - Connecting an exported assistant and chatting with the assistant.
+  - Communicating with STT and TTS services.
+  - Sending and receiving messages from the assistant.
+  - Sending and receiving files from the assistant.
+  - Sending and receiving images from the assistant.
+  - For the assistant to track location & other data.
+  - For the assistant to be able to send notifications & reminders.
 
+
+
+---
+
+
+**MAINTENANCE COST ANALYSIS:**
+- *One-Off:*
+  - Company Formation Costs: $?
+  - Legal Documentation Costs
+    - Privacy Policy: $?
+    - Terms of Service: $?
+    - User Agreements: $?
+    - Company Agreements: $?
+  
+
+- *Monthly:*
+  - Company Expenses
+    - Regular Taxations: $?
+      * Paid: [monthly/yearly]
+    - Accountant Service: $?
+      * Paid: [monthly/yearly]
+    - Virtual Office Service: $?
+      * Paid: [monthly/yearly]
+    - Trade Room Registry and Membership: $?
+      * Paid: [monthly/yearly]
+  - Hosting Service: $?
+    * Paid: [monthly/yearly]
+  - Domain Service: $?
+    * Paid: [monthly/yearly]
+  - SSL Certification: $?
+    * Paid: [monthly/yearly]
+  - Organization Emails: $1 per account x 10 = $10
+    * Paid: yearly = $12 x 10 = $120
+      1. admin@bimod.io / internal operations
+      2. info@bimod.io / general inquiries
+      3. support@bimod.io / support inquiries
+      4. careers@bimod.io / job applications
+      5. colab@bimod.io / collaborations and partnerships
+      6. ege.dursun@bimod.io / Ege Dursun
+      7. huseyin.ersay@bimod.io / Huseyin Ersay
+      8. selin.canbulut@bimod.io / Selin Ceren Canbulut
+      9. emre.oge@bimod.io / Emre Oge
+      10. mert.tekin@bimod.io / Mert Tekin
+  - PostgreSQL Database: $?
+    * Paid: [monthly/yearly]
+  - SMTP Cloud Service: $?
+    * Paid: [monthly/yearly]
+  - Weaviate Cloud Server: $?
+    * Paid: [monthly/yearly]
+  - Cloud Translation Service: $?
+    * Paid: [monthly/yearly]
