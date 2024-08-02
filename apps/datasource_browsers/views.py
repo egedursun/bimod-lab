@@ -14,20 +14,13 @@ from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 
 
-# Create your views here.
-
-
 class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        organizations = context_user.organizations.filter(
-            users__in=[context_user]
-        )
-        context['assistants'] = Assistant.objects.filter(
-            organization__in=organizations
-        )
+        organizations = context_user.organizations.filter(users__in=[context_user])
+        context['assistants'] = Assistant.objects.filter(organization__in=organizations)
         context['browser_types'] = BROWSER_TYPES
         context['user'] = context_user
         return context
@@ -38,9 +31,7 @@ class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
         ##############################
         # PERMISSION CHECK FOR - ADD BROWSER CONNECTIONS
         ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=request.user
-        ).all().values_list(
+        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
             'permission_type',
             flat=True
         )
@@ -74,35 +65,20 @@ class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
         ra_remove_tags = request.POST.get('ra_remove_tags') == 'on'
 
         reading_abilities = {
-            "javascript": ra_javascript,
-            "style": ra_style,
-            "inline_style": ra_inline_style,
-            "comments": ra_comments,
-            "links": ra_links,
-            "meta": ra_meta,
-            "page_structure": ra_page_structure,
-            "processing_instructions": ra_processing_instructions,
-            "embedded": ra_embedded,
-            "frames": ra_frames,
-            "forms": ra_forms,
-            "remove_tags": ra_remove_tags
+            "javascript": ra_javascript, "style": ra_style, "inline_style": ra_inline_style, "comments": ra_comments,
+            "links": ra_links, "meta": ra_meta, "page_structure": ra_page_structure,
+            "processing_instructions": ra_processing_instructions, "embedded": ra_embedded, "frames": ra_frames,
+            "forms": ra_forms, "remove_tags": ra_remove_tags
         }
-
         created_by_user = request.user
 
         try:
             assistant = Assistant.objects.get(id=assistant_id)
             data_source = DataSourceBrowserConnection.objects.create(
-                name=name,
-                description=description,
-                browser_type=browser_type,
-                assistant=assistant,
-                data_selectivity=data_selectivity,
-                minimum_investigation_sites=minimum_investigation_sites,
-                whitelisted_extensions=whitelisted_extensions,
-                blacklisted_extensions=blacklisted_extensions,
-                reading_abilities=reading_abilities,
-                created_by_user=created_by_user
+                name=name, description=description, browser_type=browser_type, assistant=assistant,
+                data_selectivity=data_selectivity, minimum_investigation_sites=minimum_investigation_sites,
+                whitelisted_extensions=whitelisted_extensions, blacklisted_extensions=blacklisted_extensions,
+                reading_abilities=reading_abilities, created_by_user=created_by_user
             )
             data_source.save()
             messages.success(request, 'Data Source Browser Connection created successfully.')
@@ -116,7 +92,6 @@ class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
 
 
 class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -130,21 +105,14 @@ class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
-
-        ##############################
         # PERMISSION CHECK FOR - UPDATE BROWSER CONNECTIONS
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=request.user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=request.user).all()
+                            .values_list('permission_type', flat=True))
         if PermissionNames.UPDATE_WEB_BROWSERS not in user_permissions:
             context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to update browser connections."}
+            context['error_messages'] = {
+                "Permission Error": "You do not have permission to update browser connections."}
             return self.render_to_response(context)
-        ##############################
 
         connection_id = kwargs.get('pk')
         browser_connection = get_object_or_404(DataSourceBrowserConnection, pk=connection_id)
@@ -173,20 +141,11 @@ class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
         ra_remove_tags = request.POST.get('ra_remove_tags') == 'on'
 
         reading_abilities = {
-            "javascript": ra_javascript,
-            "style": ra_style,
-            "inline_style": ra_inline_style,
-            "comments": ra_comments,
-            "links": ra_links,
-            "meta": ra_meta,
-            "page_structure": ra_page_structure,
-            "processing_instructions": ra_processing_instructions,
-            "embedded": ra_embedded,
-            "frames": ra_frames,
-            "forms": ra_forms,
-            "remove_tags": ra_remove_tags
+            "javascript": ra_javascript, "style": ra_style, "inline_style": ra_inline_style, "comments": ra_comments,
+            "links": ra_links, "meta": ra_meta, "page_structure": ra_page_structure,
+            "processing_instructions": ra_processing_instructions, "embedded": ra_embedded, "frames": ra_frames,
+            "forms": ra_forms, "remove_tags": ra_remove_tags
         }
-
         created_by_user = request.user
 
         try:
@@ -213,28 +172,20 @@ class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
 
 
 class DeleteBrowserConnectionView(LoginRequiredMixin, TemplateView):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['browser_connection'] = get_object_or_404(DataSourceBrowserConnection, pk=self.kwargs['pk'])
         return context
 
     def post(self, request, *args, **kwargs):
-
-        ##############################
         # PERMISSION CHECK FOR - DELETE BROWSER CONNECTIONS
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=request.user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=request.user)
+                            .all().values_list('permission_type',flat=True))
         if PermissionNames.DELETE_WEB_BROWSERS not in user_permissions:
             context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to delete browser connections."}
+            context['error_messages'] = {
+                "Permission Error": "You do not have permission to delete browser connections."}
             return self.render_to_response(context)
-        ##############################
 
         browser_connection = get_object_or_404(DataSourceBrowserConnection, pk=self.kwargs['pk'])
         browser_connection.delete()
@@ -249,9 +200,7 @@ class ListBrowserConnectionsView(LoginRequiredMixin, TemplateView):
 
         connections_by_organization = {}
         assistants = Assistant.objects.filter(
-            organization__in=context_user.organizations.filter(
-                users__in=[context_user]
-            )
+            organization__in=context_user.organizations.filter(users__in=[context_user])
         )
 
         for assistant in assistants:
@@ -273,7 +222,6 @@ class ListBrowsingLogsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context_user = self.request.user
         connection_id = kwargs.get('pk')
         browser_connection = get_object_or_404(DataSourceBrowserConnection, pk=connection_id)
         context['browser_connection'] = browser_connection
@@ -281,14 +229,15 @@ class ListBrowsingLogsView(LoginRequiredMixin, TemplateView):
         logs = browser_connection.logs.all()
         search_query = self.request.GET.get('search', '')
         if search_query:
-            logs = logs.filter(action__icontains=search_query) | logs.filter(html_content__icontains=search_query) | logs.filter(context_content__icontains=search_query) | logs.filter(log_content__icontains=search_query)
+            logs = logs.filter(action__icontains=search_query) | logs.filter(
+                html_content__icontains=search_query) | logs.filter(
+                context_content__icontains=search_query) | logs.filter(log_content__icontains=search_query)
 
         paginator = Paginator(logs, 10)  # Show 10 logs per page
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         context['search_query'] = search_query
-
         return context
 
 
@@ -296,7 +245,8 @@ class DownloadHtmlContentView(LoginRequiredMixin, View):
     def get(self, request, pk, *args, **kwargs):
         log = get_object_or_404(DataSourceBrowserBrowsingLog, pk=pk)
         response = HttpResponse(log.html_content, content_type='text/html')
-        response['Content-Disposition'] = f'attachment; filename="{log.connection.name}_html_content_{log.created_at.strftime("%Y%m%d%H%M%S")}.html"'
+        response[
+            'Content-Disposition'] = f'attachment; filename="{log.connection.name}_html_content_{log.created_at.strftime("%Y%m%d%H%M%S")}.html"'
         return response
 
 
@@ -305,5 +255,6 @@ class DownloadContextDataView(LoginRequiredMixin, View):
         log = get_object_or_404(DataSourceBrowserBrowsingLog, pk=pk)
         context_data = json.dumps(log.context_content, indent=4)
         response = HttpResponse(context_data, content_type='application/json')
-        response['Content-Disposition'] = f'attachment; filename="{log.connection.name}_context_data_{log.created_at.strftime("%Y%m%d%H%M%S")}.json"'
+        response[
+            'Content-Disposition'] = f'attachment; filename="{log.connection.name}_context_data_{log.created_at.strftime("%Y%m%d%H%M%S")}.json"'
         return response

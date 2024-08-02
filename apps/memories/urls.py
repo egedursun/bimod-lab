@@ -2,9 +2,7 @@ from django.urls import path
 
 from apps.memories.views import ListAssistantMemoryView, CreateAssistantMemoryView, DeleteAssistantMemoryView
 
-
 app_name = "memories"
-
 
 urlpatterns = [
     path("list/", ListAssistantMemoryView.as_view(

@@ -5,30 +5,34 @@
 {% block title %}Delete ML Model Connection{% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-xl mb-6">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Delete ML Model Connection</h3>
-        <small class="text-muted float-end"></small>
-      </div>
-      <div class="card-body">
-        <form method="post">
-          {% csrf_token %}
-          <p>Are you sure you want to delete the ML Model Connection <strong>"{{ object.name }}"</strong>?</p><br>
-          <h6><strong>
-            • This operation will result in the complete removal of the ML Model Connection from the system.
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">Delete ML Model Connection</h3>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete the ML Model Connection <strong>"{{ object.name }}"</strong>?</p><br>
+            <h6><strong>
+              • This operation will result in the complete removal of the ML Model Connection from the system.
+              <br>
+              • This deletion operation is completely irreversible and will entirely remove the ML Model Connection and
+              all associated data from the system.
+            </strong></h6>
+            <img src="{% static 'img/custom-illustrations/boy-core-edit.png' %}" width="25%"
+                 class="justify-content-end">
             <br>
-            • This deletion operation is completely irreversible and will entirely remove the ML Model Connection and all associated data from the system.
-          </strong></h6>
-          <img src="{% static 'img/custom-illustrations/boy-core-edit.png' %}" width="25%" class="justify-content-end">
-          <br>
-          <button type="submit" class="btn btn-danger"><strong>DELETE &nbsp;</strong> the ML Model Connection.</button>
-          <br><br>
-          <a href="{% url 'datasource_ml_models:list' %}" class="btn btn-secondary"><strong>CANCEL &nbsp;</strong> the deletion operation.</a>
-        </form>
+            <button type="submit" class="btn btn-danger"><strong>DELETE &nbsp;</strong> the ML Model Connection.
+            </button>
+            <br><br>
+            <a href="{% url 'datasource_ml_models:list' %}" class="btn btn-secondary"><strong>CANCEL &nbsp;</strong> the
+              deletion operation.</a>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

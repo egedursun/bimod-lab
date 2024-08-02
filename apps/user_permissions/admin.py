@@ -6,9 +6,7 @@ from apps.user_permissions.models import UserPermission
 @admin.register(UserPermission)
 class UserPermissionsAdmin(admin.ModelAdmin):
     list_display = (
-        "user",
-        "permission_type",
-        "created_at",
+        "user", "permission_type", "created_at",
     )
     list_filter = ("user", "permission_type", "created_at")
     search_fields = ("user", "permission_type")

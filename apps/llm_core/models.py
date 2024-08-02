@@ -65,4 +65,3 @@ class LLMCore(models.Model):
 
     def get_provider_name(self):
         return dict(LLM_CORE_PROVIDERS)[self.provider]
-

@@ -6,22 +6,22 @@ from apps.mm_functions.views import (CreateCustomFunctionView, ListCustomFunctio
 
 app_name = "mm_functions"
 
-
 urlpatterns = [
     path("create/", CreateCustomFunctionView.as_view(
-        template_name="mm_functions/create_custom_function.html"
+        template_name="mm_functions/functions/create_custom_function.html"
     ), name="create"),
     path("list/", ListCustomFunctionsView.as_view(
-        template_name="mm_functions/list_custom_functions.html"
+        template_name="mm_functions/functions/list_custom_functions.html"
     ), name="list"),
-    path("connect/", ManageCustomFunctionAssistantConnectionsView.as_view(
-        template_name="mm_functions/manage_assistant_connections.html"
-    ), name="connect"),
     path("delete/<int:pk>/", DeleteCustomFunctionView.as_view(
-        template_name="mm_functions/confirm_delete_custom_function.html"
+        template_name="mm_functions/functions/confirm_delete_custom_function.html"
     ), name="delete"),
 
+    path("connect/", ManageCustomFunctionAssistantConnectionsView.as_view(
+        template_name="mm_functions/connections/manage_assistant_connections.html"
+    ), name="connect"),
+
     path("store/", FunctionStoreView.as_view(
-        template_name="mm_functions/function_store.html"
+        template_name="mm_functions/store/function_store.html"
     ), name="store"),
 ]

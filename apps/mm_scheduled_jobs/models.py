@@ -1,10 +1,6 @@
 from django.db import models
 from django_celery_beat.models import PeriodicTask
 
-from apps.mm_scheduled_jobs.tasks import add_periodic_task
-
-# Create your models here.
-
 
 class ScheduledJob(models.Model):
     name = models.CharField(max_length=255)

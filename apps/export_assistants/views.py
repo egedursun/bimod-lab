@@ -23,8 +23,6 @@ from config.settings import MAX_ASSISTANT_EXPORTS_ORGANIZATION, BASE_URL, EXPORT
 from web_project import TemplateLayout
 
 
-# Create your views here.
-
 class StatusCodes:
     OK = 200
     NOT_FOUND = 404
@@ -36,41 +34,34 @@ class StatusCodes:
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ExportAssistantAPIView(View):
-
     def post(self, request, *args, **kwargs):
         endpoint = BASE_URL + request.path
         api_key = request.headers.get('Authorization')
-
         try:
             export_assistant = ExportAssistantAPI.objects.get(endpoint=endpoint)
 
         # Endpoint existence control
         except ExportAssistantAPI.DoesNotExist:
             return JsonResponse({
-                "message": "Invalid endpoint",
-                "data": {},
-                "status": StatusCodes.NOT_FOUND
+                "message": "Invalid endpoint", "data": {}, "status": StatusCodes.NOT_FOUND
             }, status=StatusCodes.NOT_FOUND)
 
         # Check if the endpoint is active
         if not export_assistant.is_online:
             return JsonResponse({
-                "message": "The endpoint is currently offline. Please try again later.",
-                "data": {},
+                "message": "The endpoint is currently offline. Please try again later.", "data": {},
                 "status": StatusCodes.SERVICE_OFFLINE
             }, status=StatusCodes.SERVICE_OFFLINE)
 
         # API key correctness control
         if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
             return JsonResponse({
-                "message": "The API key provided is invalid, please provide a valid API key.",
-                "data": {},
+                "message": "The API key provided is invalid, please provide a valid API key.", "data": {},
                 "status": StatusCodes.UNAUTHORIZED
             }, status=StatusCodes.UNAUTHORIZED)
 
         # add the RequestLog
         RequestLog.objects.create(export_assistant=export_assistant)
-
         # Request limit control
         if export_assistant.requests_in_last_hour() > export_assistant.request_limit_per_hour:
             return JsonResponse({
@@ -99,20 +90,17 @@ class ExportAssistantAPIView(View):
                 raise ValueError("The 'content' key in the first element of the chat history must be a string.")
         except Exception as e:
             return JsonResponse({
-                "message": "Internal server error: " + str(e),
-                "data": {},
-                "status": StatusCodes.INTERNAL_SERVER_ERROR
+                "message": "Internal server error: " + str(e), "data": {}, "status": StatusCodes.INTERNAL_SERVER_ERROR
             }, status=StatusCodes.INTERNAL_SERVER_ERROR)
 
         # Create a chat that's associated with the user
         api_chat = MultimodalChat.objects.create(
-                organization=export_assistant.assistant.organization,
-                assistant=export_assistant.assistant,
-                user=export_assistant.created_by_user,
-                chat_name= generate_chat_name(),
-                created_by_user=export_assistant.created_by_user,
-                chat_source=ChatSourcesNames.API)
-
+            organization=export_assistant.assistant.organization,
+            assistant=export_assistant.assistant,
+            user=export_assistant.created_by_user,
+            chat_name=generate_chat_name(),
+            created_by_user=export_assistant.created_by_user,
+            chat_source=ChatSourcesNames.API)
         # Add the user messages to the chat
         user_message = None
         try:
@@ -122,73 +110,44 @@ class ExportAssistantAPIView(View):
                 file_uris = message.get("file_uris") or []
                 image_uris = message.get("image_uris") or []
                 api_chat.chat_messages.create(
-                    multimodal_chat=api_chat,
-                    sender_type=role.upper(),
-                    message_text_content=content,
-                    message_file_contents=file_uris,
-                    message_image_contents=image_uris
+                    multimodal_chat=api_chat, sender_type=role.upper(), message_text_content=content,
+                    message_file_contents=file_uris, message_image_contents=image_uris
                 )
                 user_message = api_chat.chat_messages.filter(sender_type=role.upper()).last()
 
         except Exception as e:
             return JsonResponse({
-                "message": "Internal server error: " + str(e),
-                "data": {},
-                "status": StatusCodes.INTERNAL_SERVER_ERROR
+                "message": "Internal server error: " + str(e), "data": {}, "status": StatusCodes.INTERNAL_SERVER_ERROR
             }, status=StatusCodes.INTERNAL_SERVER_ERROR)
 
         try:
             llm_client = InternalLLMClient.get(assistant=export_assistant.assistant, multimodal_chat=api_chat)
             llm_response_text, file_uris, image_uris = llm_client.respond(latest_message=user_message, with_media=True)
             MultimodalChatMessage.objects.create(
-                multimodal_chat=api_chat,
-                sender_type='ASSISTANT',
-                message_text_content=llm_response_text
+                multimodal_chat=api_chat, sender_type='ASSISTANT', message_text_content=llm_response_text
             )
         except Exception as e:
             return JsonResponse({
-                "message": "Internal server error: " + str(e),
-                "data": {},
-                "status": StatusCodes.INTERNAL_SERVER_ERROR
+                "message": "Internal server error: " + str(e), "data": {}, "status": StatusCodes.INTERNAL_SERVER_ERROR
             }, status=StatusCodes.INTERNAL_SERVER_ERROR)
 
         # Implement the logic for the assistant's response
-        response_data = {
-            "message": "Success",
-            "data": {
-                "metadata": {
-                    "organization": {
-                        "organization_name": export_assistant.assistant.organization.name,
-                    },
-                    "assistant": {
-                        "assistant_name": export_assistant.assistant.name,
-                        "assistant_description": export_assistant.assistant.description,
-                    },
-                    "chat": {
-                        "chat_name": api_chat.chat_name,
-                    }
-                },
-                "message": {
-                    "assistant_name": export_assistant.assistant.name,
-                    "content": llm_response_text,
-                    "role": "assistant",
-                    "media": {
-                        "files": file_uris,
-                        "images": image_uris
-                    }
-                }
-            }
-        }
+        response_data = {"message": "Success", "data": {
+            "metadata": {"organization": {"organization_name": export_assistant.assistant.organization.name, },
+                         "assistant": {"assistant_name": export_assistant.assistant.name,
+                                       "assistant_description": export_assistant.assistant.description, },
+                         "chat": {"chat_name": api_chat.chat_name, }},
+            "message": {"assistant_name": export_assistant.assistant.name, "content": llm_response_text,
+                        "role": "assistant", "media": {"files": file_uris, "images": image_uris}
+                        }}}
         return JsonResponse(response_data, status=StatusCodes.OK)
 
 
 class ListExportAssistantsView(TemplateView, LoginRequiredMixin):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user_context = self.request.user
         max_export_assistants = settings.MAX_ASSISTANT_EXPORTS_ORGANIZATION
-
         organization_data = []
         organizations = Organization.objects.filter(users=user_context)
 
@@ -196,20 +155,14 @@ class ListExportAssistantsView(TemplateView, LoginRequiredMixin):
             export_assistants_count = organization.exported_assistants.count()
             assistants_percentage = round((export_assistants_count / max_export_assistants) * 100, 2)
             export_assistants = organization.exported_assistants.all()
-
             for assistant in export_assistants:
                 assistant.usage_percentage = 100  # Set this to actual percentage if needed
-
             organization_data.append({
-                'organization': organization,
-                'export_assistants_count': export_assistants_count,
-                'assistants_percentage': assistants_percentage,
-                'export_assistants': export_assistants,
+                'organization': organization, 'export_assistants_count': export_assistants_count,
+                'assistants_percentage': assistants_percentage, 'export_assistants': export_assistants,
                 'limit': max_export_assistants
             })
-
         export_assistants = ExportAssistantAPI.objects.filter(created_by_user=user_context)
-
         context["user"] = user_context
         context["organization_data"] = organization_data
         context["export_assistants"] = export_assistants
@@ -232,22 +185,17 @@ class CreateExportAssistantsView(TemplateView, LoginRequiredMixin):
         request_limit_per_hour = request.POST.get('request_limit_per_hour')
         context_user = request.user
 
-        ##############################
         # PERMISSION CHECK FOR - EXPORT_ASSISTANTS/CREATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.ADD_EXPORT_ASSISTANT not in user_permissions:
             messages.error(request, "You do not have permission to create assistant exports.")
             return redirect('export_assistants:list')
-        ##############################
 
         # check if the number of assistants of the organization is higher than the allowed limit
-        if ExportAssistantAPI.objects.filter(created_by_user=request.user).count() > MAX_ASSISTANT_EXPORTS_ORGANIZATION:
+        if ExportAssistantAPI.objects.filter(
+            created_by_user=request.user).count() > MAX_ASSISTANT_EXPORTS_ORGANIZATION:
             messages.error(request, f"Maximum number of Export Assistant APIs reached for the organization.")
             return self.render_to_response(self.get_context_data())
 
@@ -257,20 +205,15 @@ class CreateExportAssistantsView(TemplateView, LoginRequiredMixin):
 
         try:
             new_export_assistant = ExportAssistantAPI.objects.create(
-                assistant_id=assistant_id,
-                is_public=is_public,
-                request_limit_per_hour=request_limit_per_hour,
+                assistant_id=assistant_id, is_public=is_public, request_limit_per_hour=request_limit_per_hour,
                 created_by_user=request.user
             )
-
             # Add the exported assistant to organization
             organization = assistant.organization
             organization.exported_assistants.add(new_export_assistant)
             organization.save()
-
             # Start the endpoint immediately
             start_endpoint_for_assistant(assistant=new_export_assistant)
-
             messages.success(request, "Export Assistant API created successfully!")
             return redirect("export_assistants:list")
         except Exception as e:
@@ -279,7 +222,6 @@ class CreateExportAssistantsView(TemplateView, LoginRequiredMixin):
 
 
 class UpdateExportAssistantsView(TemplateView, LoginRequiredMixin):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
@@ -290,25 +232,17 @@ class UpdateExportAssistantsView(TemplateView, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
         context_user = request.user
-
-        ##############################
         # PERMISSION CHECK FOR - EXPORT_ASSISTANTS/UPDATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.UPDATE_EXPORT_ASSIST not in user_permissions:
             messages.error(request, "You do not have permission to update assistant exports.")
             return redirect('export_assistants:list')
-        ##############################
 
         export_assistant.assistant_id = request.POST.get('assistant')
         export_assistant.request_limit_per_hour = request.POST.get('request_limit_per_hour')
         export_assistant.is_public = request.POST.get('is_public') == 'on'
-
         if export_assistant.assistant_id and export_assistant.request_limit_per_hour:
             export_assistant.save()
             messages.success(request, "Export Assistant updated successfully.")
@@ -317,8 +251,7 @@ class UpdateExportAssistantsView(TemplateView, LoginRequiredMixin):
             messages.error(request, "There was an error updating the Export Assistant.")
 
         context = {
-            'export_assistant': export_assistant,
-            'assistants': Assistant.objects.all()
+            'export_assistant': export_assistant, 'assistants': Assistant.objects.all()
         }
         return render(request, self.template_name, context)
 
@@ -337,29 +270,20 @@ class DeleteExportAssistantsView(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         context_user = request.user
         export_assistant = get_object_or_404(ExportAssistantAPI, id=self.kwargs['pk'])
-
-        ##############################
         # PERMISSION CHECK FOR - EXPORT_ASSISTANTS/DELETE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.DELETE_EXPORT_ASSISTANT not in user_permissions:
             messages.error(request, "You do not have permission to delete assistant exports.")
             return redirect('export_assistants:list')
-        ##############################
 
         export_assistant.delete()
         success_message = "Export Assistant deleted successfully."
-
         # remove the exported assistant from the organization
         organization = export_assistant.assistant.organization
         organization.exported_assistants.remove(export_assistant)
         organization.save()
-
         messages.success(request, success_message)
         return redirect(self.success_url)
 
@@ -369,20 +293,13 @@ class ToggleExportAssistantServiceView(LoginRequiredMixin, View):
         export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
         endpoint = EXPORT_API_BASE_URL + export_assistant.endpoint.split(EXPORT_API_BASE_URL)[1]
         context_user = request.user
-
-        ##############################
         # PERMISSION CHECK FOR - EXPORT_ASSISTANTS/UPDATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.UPDATE_EXPORT_ASSIST not in user_permissions:
             messages.error(request, "You do not have permission to update assistant exports.")
             return redirect('export_assistants:list')
-        ##############################
 
         api_urls = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
         export_assistant.is_online = not export_assistant.is_online
@@ -393,7 +310,6 @@ class ToggleExportAssistantServiceView(LoginRequiredMixin, View):
             # check if the endpoint is already in the url patterns
             if not any(endpoint in str(url) for url in api_urls):
                 start_endpoint_for_assistant(export_assistant)
-
         return redirect('export_assistants:list')
 
     def get(self, request, *args, **kwargs):

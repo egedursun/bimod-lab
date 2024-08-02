@@ -2,12 +2,8 @@ from django.contrib import admin
 
 from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
 from apps.assistants.models import ContextOverflowStrategyNames
-from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage, ChatCreationLog, ChatMessageCreationLog
 from django.contrib.admin.actions import delete_selected as django_delete_selected
-
-
-# Register your models here.
 
 
 @admin.register(MultimodalChat)
@@ -32,7 +28,6 @@ class MultimodalChatAdmin(admin.ModelAdmin):
             if obj.assistant.vectorizer_api_key is None:
                 print("The assistant does not have a vectorizer API key set.")
                 return
-
         super().save_model(request, obj, form, change)
 
     def delete_selected(self, request, queryset):
@@ -51,7 +46,6 @@ class MultimodalChatMessageAdmin(admin.ModelAdmin):
     list_filter = ['multimodal_chat', 'sender_type', 'sent_at']
     search_fields = ['multimodal_chat', 'sender_type', 'sent_at']
     readonly_fields = ['sent_at']
-
     list_per_page = 20
     list_max_show_all = 100
     list_editable = []

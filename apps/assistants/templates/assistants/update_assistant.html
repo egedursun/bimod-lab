@@ -7,253 +7,288 @@
 {% block title %}Update Assistant{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
-<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
-<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/form-layouts.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<!-- Basic Layout -->
-<div class="row">
-  <div class="col-xl mb-6">
-    <div class="card">
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
       <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          {% if assistant.assistant_image %}
-            <img src="{{ assistant.assistant_image.url }}" class="rounded" width="170" height="170" alt="Assistant Image">
-          {% else %}
-            <img src="{% static 'img/avatars/org-0.png' %}" class="rounded" width="170" height="170" alt="Assistant Image">
-          {% endif %}
-          <h3 class="mb-0">
-            <strong>
-              {{ assistant.name }}
-            </strong>
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            {% if assistant.assistant_image %}
+              <img src="{{ assistant.assistant_image.url }}" class="rounded" width="170" height="170"
+                   alt="Assistant Image">
+            {% else %}
+              <img src="{% static 'img/avatars/org-0.png' %}" class="rounded" width="170" height="170"
+                   alt="Assistant Image">
+            {% endif %}
+            <h3 class="mb-0">
+              <strong>
+                {{ assistant.name }}
+              </strong>
+              <br><br>
+              <small class="text">
+                <i class="fas fa-building"></i>
+                Audience:
+                <strong>{{ assistant.audience }}</strong>
+              </small>
+              <br>
+              <small class="text">
+                <i class="fas fa-user-astronaut"></i>
+                Tone:
+                <strong>{{ assistant.tone }}</strong>
+              </small>
+            </h3>
             <br><br>
-            <small class="text">
-              <i class="fas fa-building"></i>
-              Audience:
-              <strong>{{ assistant.audience }}</strong>
-            </small>
-            <br>
-            <small class="text">
-              <i class="fas fa-user-astronaut"></i>
-              Tone:
-              <strong>{{ assistant.tone }}</strong>
-            </small>
-          </h3>
-          <br><br>
+          </div>
         </div>
-      </div>
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Update Assistant Information</h5> <small class="text-muted float-end"></small>
-      </div>
-      <div class="card-body">
-        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-          <img src="{% static 'img/custom-illustrations/boy-red-3.png' %}" width="25%" class="justify-content-end">
-        <span class="alert-icon rounded">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Update Assistant Information</h5> <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations/boy-red-3.png' %}" width="25%" class="justify-content-end">
+            <span class="alert-icon rounded">
           <i class="ti ti-bookmark"></i>
         </span>
-        <div class="d-flex flex-column ps-1">
-          <h5 class="alert-heading mb-2">Tip</h5>
-          <p class="mb-0">
-            In this page, you can update the information of an assistant. You can change the name, description, instructions,
-            audience, tone, and the image of the assistant. Once you have updated the information, click on the "Update Information"
-            button to save the changes.
-          </p>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-          </button>
-        </div>
-      </div>
-        {% if error_messages %}
-          {% for key, message in error_messages.items %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
-              <strong>{{ key | field_name_to_label }}:</strong> {{ message }}
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can update the information of an assistant. You can change the name, description,
+                instructions,
+                audience, tone, and the image of the assistant. Once you have updated the information, click on the
+                "Update Information"
+                button to save the changes.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
             </div>
-          {% endfor %}
-        {% endif %}
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="mb-6">
-            <label class="form-label" for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter assistant name" value="{{ assistant.name }}"/>
-            <div class="form-text"></div>
           </div>
-          <div class="mb-6">
-            <label class="form-label" for="description">Description</label>
-            <input type="text" class="form-control" id="description" name="description" placeholder="Enter assistant description" value="{{ assistant.description }}"/>
-            <div class="form-text"></div>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+          {% if error_messages %}
+            {% for key, message in error_messages.items %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                <strong>{{ key | field_name_to_label }}:</strong> {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label class="form-label" for="name">Name</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Enter assistant name"
+                     value="{{ assistant.name }}"/>
+              <div class="form-text"></div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="description">Description</label>
+              <input type="text" class="form-control" id="description" name="description"
+                     placeholder="Enter assistant description" value="{{ assistant.description }}"/>
+              <div class="form-text"></div>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            This description will not be used to communicate or train the assistant. It is for human-readers to understand the assistant's purpose.
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="instructions">Instructions</label>
-            <textarea class="form-control" id="instructions" name="instructions" placeholder="Enter assistant instructions">{{ assistant.instructions }}</textarea>
-            <div class="form-text"></div>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              This description will not be used to communicate or train the assistant. It is for human-readers to
+              understand the assistant's purpose.
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="instructions">Instructions</label>
+              <textarea class="form-control" id="instructions" name="instructions"
+                        placeholder="Enter assistant instructions">{{ assistant.instructions }}</textarea>
+              <div class="form-text"></div>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            These instructions will be used to train the assistant. For example, "This assistant is designed to help students with their homework."
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="response_template">Response Template</label>
-            <textarea class="form-control" id="response_template" name="response_template" placeholder="Enter assistant response template">{{ assistant.response_template }}</textarea>
-            <div class="form-text"></div>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              These instructions will be used to train the assistant. For example, "This assistant is designed to help
+              students with their homework."
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="response_template">Response Template</label>
+              <textarea class="form-control" id="response_template" name="response_template"
+                        placeholder="Enter assistant response template">{{ assistant.response_template }}</textarea>
+              <div class="form-text"></div>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            This response template will be used to generate responses for the assistant. If you don't have a solid
-            response template for the assistant, you can leave this field empty. You can also put a sample response
-            in this field to make it more clear for the assistant to understand how it should respond to the user.
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="audience">Audience</label>
-            <input type="text" class="form-control" id="audience" name="audience" placeholder="Enter assistant audience" value="{{ assistant.audience }}"/>
-            <div class="form-text"></div>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              This response template will be used to generate responses for the assistant. If you don't have a solid
+              response template for the assistant, you can leave this field empty. You can also put a sample response
+              in this field to make it more clear for the assistant to understand how it should respond to the user.
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="audience">Audience</label>
+              <input type="text" class="form-control" id="audience" name="audience"
+                     placeholder="Enter assistant audience" value="{{ assistant.audience }}"/>
+              <div class="form-text"></div>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            Describe the audience for this assistant. For example, "This assistant is designed for students in the 9th grade."
-          </div>
-          <div class="mb-6 col-lg-6">
-            <label class="form-label" for="max_retry_count">Maximum Response Retry Count</label>
-            <input type="range" class="form-range" id="max_retry_count" name="max_retry_count" min="0" max="10" step="1" value="{{ assistant.max_retry_count }}" oninput="this.nextElementSibling.value = this.value">
-            <output>{{ assistant.max_retry_count }}</output>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              Describe the audience for this assistant. For example, "This assistant is designed for students in the 9th
+              grade."
+            </div>
+            <div class="mb-6 col-lg-6">
+              <label class="form-label" for="max_retry_count">Maximum Response Retry Count</label>
+              <input type="range" class="form-range" id="max_retry_count" name="max_retry_count" min="0" max="10"
+                     step="1" value="{{ assistant.max_retry_count }}"
+                     oninput="this.nextElementSibling.value = this.value">
+              <output>{{ assistant.max_retry_count }}</output>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            The maximum number of times the assistant will retry generating a response if it fails to generate a response the first time. Please be aware that setting this value too high may cause the assistant to spend too much time and credits to generate a response.
-          </div>
-          <div class="mb-6 col-lg-6">
-            <label class="form-label" for="tool_max_attempts_per_instance">Maximum Tool Retry Count</label>
-            <!-- slider bar here -->
-            <input type="range" class="form-range" id="tool_max_attempts_per_instance" name="tool_max_attempts_per_instance" min="0" max="10" step="1" value="{{ assistant.tool_max_attempts_per_instance }}" oninput="this.nextElementSibling.value = this.value">
-            <output>{{ assistant.tool_max_attempts_per_instance }}</output>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              The maximum number of times the assistant will retry generating a response if it fails to generate a
+              response the first time. Please be aware that setting this value too high may cause the assistant to spend
+              too much time and credits to generate a response.
+            </div>
+            <div class="mb-6 col-lg-6">
+              <label class="form-label" for="tool_max_attempts_per_instance">Maximum Tool Retry Count</label>
+              <!-- slider bar here -->
+              <input type="range" class="form-range" id="tool_max_attempts_per_instance"
+                     name="tool_max_attempts_per_instance" min="0" max="10" step="1"
+                     value="{{ assistant.tool_max_attempts_per_instance }}"
+                     oninput="this.nextElementSibling.value = this.value">
+              <output>{{ assistant.tool_max_attempts_per_instance }}</output>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            The maximum number of times the assistant will retry using a tool if it fails to retrieve a data
-            the first time. Please be aware that setting this value too high may cause the assistant to spend
-            too much time and credits to retrieve data.
-          </div>
-          <div class="mb-6 col-lg-6">
-            <label class="form-label" for="tool_max_chains">Maximum Pipeline Length</label>
-            <!-- slider bar here -->
-            <input type="range" class="form-range" id="tool_max_chains" name="tool_max_chains" min="0" max="20" step="1" value="{{ assistant.tool_max_chains }}" oninput="this.nextElementSibling.value = this.value">
-            <output>{{ assistant.tool_max_chains }}</output>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              The maximum number of times the assistant will retry using a tool if it fails to retrieve a data
+              the first time. Please be aware that setting this value too high may cause the assistant to spend
+              too much time and credits to retrieve data.
+            </div>
+            <div class="mb-6 col-lg-6">
+              <label class="form-label" for="tool_max_chains">Maximum Pipeline Length</label>
+              <!-- slider bar here -->
+              <input type="range" class="form-range" id="tool_max_chains" name="tool_max_chains" min="0" max="20"
+                     step="1" value="{{ assistant.tool_max_chains }}"
+                     oninput="this.nextElementSibling.value = this.value">
+              <output>{{ assistant.tool_max_chains }}</output>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            The maximum number of tools the assistant will use in a single response, one used after the other.
-            Please be aware that setting this value too high may cause the assistant to spend too much time and
-            credits to generate a response, similar to the maximum response retry count and maximum tool retry count.
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="tone">Tone</label>
-            <input type="text" class="form-control" id="tone" name="tone" placeholder="Enter assistant tone" value="{{ assistant.tone }}"/>
-            <div class="form-text"></div>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              The maximum number of tools the assistant will use in a single response, one used after the other.
+              Please be aware that setting this value too high may cause the assistant to spend too much time and
+              credits to generate a response, similar to the maximum response retry count and maximum tool retry count.
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="tone">Tone</label>
+              <input type="text" class="form-control" id="tone" name="tone" placeholder="Enter assistant tone"
+                     value="{{ assistant.tone }}"/>
+              <div class="form-text"></div>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            Describe the tone for this assistant. For example, "This assistant intends to be friendly and helpful, in a casual tone."
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="llm_model">LLM Model</label>
-            <select class="form-select" id="llm_model" name="llm_model">
-              {% for model in llm_models %}
-                <option value="{{ model.id }}" {% if assistant.llm_model.id == model.id %}selected{% endif %}>{{ model.nickname }}</option>
-              {% endfor %}
-            </select>
-            <div class="form-text"></div>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="response_language">Response Language</label>
-            <select class="form-select" id="response_language" name="response_language">
-              <option value="">Select Response Language</option>
-              {% for language in response_languages %}
-                <option value="{{ language.0 }}" {% if language.0 == assistant.response_language %}selected{% endif %}>{{ language.1 }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              Describe the tone for this assistant. For example, "This assistant intends to be friendly and helpful, in
+              a casual tone."
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="llm_model">LLM Model</label>
+              <select class="form-select" id="llm_model" name="llm_model">
+                {% for model in llm_models %}
+                  <option value="{{ model.id }}"
+                          {% if assistant.llm_model.id == model.id %}selected{% endif %}>{{ model.nickname }}</option>
+                {% endfor %}
+              </select>
+              <div class="form-text"></div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="response_language">Response Language</label>
+              <select class="form-select" id="response_language" name="response_language">
+                <option value="">Select Response Language</option>
+                {% for language in response_languages %}
+                  <option value="{{ language.0 }}"
+                          {% if language.0 == assistant.response_language %}selected{% endif %}>{{ language.1 }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
               <span class="alert-icon rounded">
                 <i class="ti ti-info-circle"></i>
               </span>
               Select the language in which the assistant will respond to the user. If you select "auto", the
               assistant will automatically detect the language of the user's input and respond in the same language.
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="time_awareness">Time &amp; Location Awareness (Recommended)</label>
-            <br>
-            <label class="switch switch-square switch-lg mt-2">
-              <input type="checkbox" class="switch-input" id="awarenessCheckbox" {% if assistant.time_awareness and assistant.place_awareness %}checked{% endif %}>
-              <span class="switch-toggle-slider">
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="time_awareness">Time &amp; Location Awareness (Recommended)</label>
+              <br>
+              <label class="switch switch-square switch-lg mt-2">
+                <input type="checkbox" class="switch-input" id="awarenessCheckbox"
+                       {% if assistant.time_awareness and assistant.place_awareness %}checked{% endif %}>
+                <span class="switch-toggle-slider">
                 <!-- Hidden fields for time_awareness and place_awareness -->
-                <input type="hidden" name="time_awareness" id="timeAwareness" value="{% if assistant.time_awareness %}on{% else %}off{% endif %}">
-                <input type="hidden" name="place_awareness" id="placeAwareness" value="{% if assistant.place_awareness %}on{% else %}off{% endif %}">
+                <input type="hidden" name="time_awareness" id="timeAwareness"
+                       value="{% if assistant.time_awareness %}on{% else %}off{% endif %}">
+                <input type="hidden" name="place_awareness" id="placeAwareness"
+                       value="{% if assistant.place_awareness %}on{% else %}off{% endif %}">
                 <span class="switch-on"><i class="ti ti-check"></i></span>
                 <span class="switch-off"><i class="ti ti-x"></i></span>
               </span>
-            </label>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="time_awareness">Image Generation Capability (Recommended)</label>
-            <br>
-            <label class="switch switch-square switch-lg mt-2">
-              <input type="checkbox" class="switch-input" id="imageGenerationCapabilityCheckbox" {% if assistant.image_generation_capability %}checked{% endif %}>
-              <span class="switch-toggle-slider">
-                <input type="hidden" name="image_generation_capability" id="image_generation_capability" value="{% if assistant.image_generation_capability %}on{% else %}off{% endif %}">
+              </label>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="time_awareness">Image Generation Capability (Recommended)</label>
+              <br>
+              <label class="switch switch-square switch-lg mt-2">
+                <input type="checkbox" class="switch-input" id="imageGenerationCapabilityCheckbox"
+                       {% if assistant.image_generation_capability %}checked{% endif %}>
+                <span class="switch-toggle-slider">
+                <input type="hidden" name="image_generation_capability" id="image_generation_capability"
+                       value="{% if assistant.image_generation_capability %}on{% else %}off{% endif %}">
                 <span class="switch-on"><i class="ti ti-check"></i></span>
                 <span class="switch-off"><i class="ti ti-x"></i></span>
               </span>
-            </label>
-          </div>
-          <div class="mb-6 col-lg-6">
-            <label class="form-label" for="max_context_messages">Maximum Context Messages</label>
-            <!-- slider bar here -->
-            <input type="range" class="form-range" id="max_context_messages" name="max_context_messages" min="10" max="100" step=1" value="{{ assistant.max_context_messages }}" oninput="this.nextElementSibling.value = this.value">
-            <output>{{ assistant.max_context_messages }}</output>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="context_overflow_strategy">Context Overflow Management Strategy</label>
-            <select class="form-select" id="context_overflow_strategy" name="context_overflow_strategy">
-              {% for strategy in context_overflow_strategies %}
-                <option value="{{ strategy.0 }}" {% if strategy.0 == assistant.context_overflow_strategy %}selected{% endif %}>{{ strategy.1 }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              </label>
+            </div>
+            <div class="mb-6 col-lg-6">
+              <label class="form-label" for="max_context_messages">Maximum Context Messages</label>
+              <!-- slider bar here -->
+              <input type="range" class="form-range" id="max_context_messages" name="max_context_messages" min="10"
+                     max="100" step=1" value="{{ assistant.max_context_messages }}"
+                     oninput="this.nextElementSibling.value = this.value">
+              <output>{{ assistant.max_context_messages }}</output>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="context_overflow_strategy">Context Overflow Management Strategy</label>
+              <select class="form-select" id="context_overflow_strategy" name="context_overflow_strategy">
+                {% for strategy in context_overflow_strategies %}
+                  <option value="{{ strategy.0 }}"
+                          {% if strategy.0 == assistant.context_overflow_strategy %}selected{% endif %}>{{ strategy.1 }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
               <span class="alert-icon rounded">
                 <i class="ti ti-info-circle"></i>
               </span>
@@ -262,53 +297,65 @@
               select 'Forget Oldest Messages', the assistant will forget the oldest messages surpassing the specified
               number of messages. If you select 'Vectorize Oldest Messages', the assistant will vectorize the oldest
               messages surpassing the specified number of messages, and be able to query them whenever needed.
-          </div>
-          <div id="memory-vectorizer-selection-bar" class="mb-6 d-none">
-            <label class="form-label" for="vectorizer_name">Chat Memory Vectorizer</label>
-            <select class="form-select" id="vectorizer_name" name="vectorizer_name">
-              <option value="" disabled selected>Select Vectorizer</option>
-              {% for vectorizer in vectorizers %}
-                <option value="{{ vectorizer.0 }}" {% if vectorizer.0 == assistant.vectorizer_name %}selected{% endif %}>{{ vectorizer.1 }}</option>
-              {% endfor %}
-            </select>
-          </div>
-           <div id="memory-vectorizer-api-key-bar" class="mb-6 d-none">
-            <label class="form-label" for="vectorizer_api_key">Vectorizer API Key</label>
-            <input type="text" class="form-control" id="vectorizer_api_key" name="vectorizer_api_key" placeholder="Enter the API key for your OpenAI account" value="{{ assistant.vectorizer_api_key }}" />
-          </div>
-          <div id="memory-vectorizer-alert-bar" class="alert alert-solid-info d-flex align-items-center mt-6 d-none" role="alert">
+            </div>
+            <div id="memory-vectorizer-selection-bar" class="mb-6 d-none">
+              <label class="form-label" for="vectorizer_name">Chat Memory Vectorizer</label>
+              <select class="form-select" id="vectorizer_name" name="vectorizer_name">
+                <option value="" disabled selected>Select Vectorizer</option>
+                {% for vectorizer in vectorizers %}
+                  <option value="{{ vectorizer.0 }}"
+                          {% if vectorizer.0 == assistant.vectorizer_name %}selected{% endif %}>{{ vectorizer.1 }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div id="memory-vectorizer-api-key-bar" class="mb-6 d-none">
+              <label class="form-label" for="vectorizer_api_key">Vectorizer API Key</label>
+              <input type="text" class="form-control" id="vectorizer_api_key" name="vectorizer_api_key"
+                     placeholder="Enter the API key for your OpenAI account"
+                     value="{{ assistant.vectorizer_api_key }}"/>
+            </div>
+            <div id="memory-vectorizer-alert-bar" class="alert alert-solid-info d-flex align-items-center mt-6 d-none"
+                 role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            The vectorizer API key is used to connect to the vectorizer service. The vectorizer service is used to
-            vectorize the oldest messages surpassing the specified number of messages, and be able to query them whenever
-            needed. To be able to use this feature, you need to connect your OpenAI account to the vectorizer service
-            by using the API key provided by OpenAI. In the future, we are planning to support other vectorizer services
-            as well.
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="glossary">Glossary</label>
-            <table id="keyValueTable" class="table table-bordered">
-              <thead>
+              The vectorizer API key is used to connect to the vectorizer service. The vectorizer service is used to
+              vectorize the oldest messages surpassing the specified number of messages, and be able to query them
+              whenever
+              needed. To be able to use this feature, you need to connect your OpenAI account to the vectorizer service
+              by using the API key provided by OpenAI. In the future, we are planning to support other vectorizer
+              services
+              as well.
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="glossary">Glossary</label>
+              <table id="keyValueTable" class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>Term</th>
+                  <th>Definition</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for glossary_item, glossary_definition in assistant.glossary.items %}
                   <tr>
-                      <th>Term</th>
-                      <th>Definition</th>
-                      <th></th>
+                    <td><input type="text" name="terms[]" placeholder="Enter term" class="form-control"
+                               value="{{ glossary_item }}"></td>
+                    <td><input type="text" name="definitions[]" placeholder="Enter definition for the term"
+                               class="form-control" value="{{ glossary_definition }}"></td>
+                    <td>
+                      <button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i
+                        class="fa fa-remove"></i></button>
+                    </td>
                   </tr>
-              </thead>
-              <tbody>
-                  {% for glossary_item, glossary_definition in assistant.glossary.items %}
-                      <tr>
-                          <td><input type="text" name="terms[]" placeholder="Enter term" class="form-control" value="{{ glossary_item }}"></td>
-                          <td><input type="text" name="definitions[]" placeholder="Enter definition for the term" class="form-control" value="{{ glossary_definition }}"></td>
-                          <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
-                      </tr>
-                  {% endfor %}
-              </tbody>
-          </table>
-            <button type="button" onclick="addRow()" class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New Row</strong></button>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                {% endfor %}
+                </tbody>
+              </table>
+              <button type="button" onclick="addRow()" class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New
+                Row</strong></button>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
               <span class="alert-icon rounded">
                 <i class="ti ti-info-circle"></i>
               </span>
@@ -316,96 +363,96 @@
               the assistant can use to provide more accurate and relevant responses. For example, if you provide a term
               "Aortic Anuerysm" with the definition "A bulge in a blood vessel in the brain", the assistant will be able
               to provide more accurate responses when the user asks about aortic aneurysms.
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="assistant_image">Assistant Image</label>
-            <input type="file" class="form-control" id="assistant_image" name="assistant_image"/>
-            <div class="form-text"></div>
-          </div>
-          <button type="submit" class="btn btn-primary d-grid w-100">Update Assistant</button>
-        </form>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="assistant_image">Assistant Image</label>
+              <input type="file" class="form-control" id="assistant_image" name="assistant_image"/>
+              <div class="form-text"></div>
+            </div>
+            <button type="submit" class="btn btn-primary d-grid w-100">Update Assistant</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const checkbox = document.getElementById('awarenessCheckbox');
-    const timeAwarenessField = document.getElementById('timeAwareness');
-    const placeAwarenessField = document.getElementById('placeAwareness');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const checkbox = document.getElementById('awarenessCheckbox');
+      const timeAwarenessField = document.getElementById('timeAwareness');
+      const placeAwarenessField = document.getElementById('placeAwareness');
 
-    checkbox.addEventListener('change', function() {
-      if (checkbox.checked) {
-        timeAwarenessField.value = 'on';
-        placeAwarenessField.value = 'on';
-      } else {
-        timeAwarenessField.value = 'off';
-        placeAwarenessField.value = 'off';
-      }
+      checkbox.addEventListener('change', function () {
+        if (checkbox.checked) {
+          timeAwarenessField.value = 'on';
+          placeAwarenessField.value = 'on';
+        } else {
+          timeAwarenessField.value = 'off';
+          placeAwarenessField.value = 'off';
+        }
+      });
     });
-  });
-</script>
+  </script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const checkbox = document.getElementById('imageGenerationCapabilityCheckbox');
-    const imageGenerationCapabilityField = document.getElementById('image_generation_capability');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const checkbox = document.getElementById('imageGenerationCapabilityCheckbox');
+      const imageGenerationCapabilityField = document.getElementById('image_generation_capability');
 
-    checkbox.addEventListener('change', function() {
-      if (checkbox.checked) {
-        imageGenerationCapabilityField.value = 'on';
-      } else {
-        imageGenerationCapabilityField.value = 'off';
-      }
+      checkbox.addEventListener('change', function () {
+        if (checkbox.checked) {
+          imageGenerationCapabilityField.value = 'on';
+        } else {
+          imageGenerationCapabilityField.value = 'off';
+        }
+      });
     });
-  });
-</script>
+  </script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const contextOverflowStrategySelect = document.getElementById('context_overflow_strategy');
-    const maxContextMessagesInput = document.getElementById('max_context_messages');
-    const memoryVectorizerSelectionBar = document.getElementById('memory-vectorizer-selection-bar');
-    const memoryVectorizerApiKeyBar = document.getElementById('memory-vectorizer-api-key-bar');
-    const memoryVectorizerAlertBar = document.getElementById('memory-vectorizer-alert-bar');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const contextOverflowStrategySelect = document.getElementById('context_overflow_strategy');
+      const maxContextMessagesInput = document.getElementById('max_context_messages');
+      const memoryVectorizerSelectionBar = document.getElementById('memory-vectorizer-selection-bar');
+      const memoryVectorizerApiKeyBar = document.getElementById('memory-vectorizer-api-key-bar');
+      const memoryVectorizerAlertBar = document.getElementById('memory-vectorizer-alert-bar');
 
-    if (contextOverflowStrategySelect.value === 'vectorize') {
-      memoryVectorizerSelectionBar.classList.remove('d-none');
-      memoryVectorizerApiKeyBar.classList.remove('d-none');
-      memoryVectorizerAlertBar.classList.remove('d-none');
-    }
-
-    contextOverflowStrategySelect.addEventListener('change', function() {
-      const selectedStrategy = this.value;
-
-      if (selectedStrategy === 'vectorize') {
-        console.log("entering inside for removal...");
-        memoryVectorizerSelectionBar.classList.remove('d-none');
-        memoryVectorizerApiKeyBar.classList.remove('d-none');
-        memoryVectorizerAlertBar.classList.remove('d-none');
-      } else {
-        memoryVectorizerSelectionBar.classList.add('d-none');
-        memoryVectorizerApiKeyBar.classList.add('d-none');
-        memoryVectorizerAlertBar.classList.add('d-none');
-      }
-    });
-
-    maxContextMessagesInput.addEventListener('input', function() {
-      const selectedStrategy = contextOverflowStrategySelect.value;
-
-      if (selectedStrategy === 'vectorize') {
+      if (contextOverflowStrategySelect.value === 'vectorize') {
         memoryVectorizerSelectionBar.classList.remove('d-none');
         memoryVectorizerApiKeyBar.classList.remove('d-none');
         memoryVectorizerAlertBar.classList.remove('d-none');
       }
-    });
-  });
-</script>
 
-<script>
-  function addRow() {
+      contextOverflowStrategySelect.addEventListener('change', function () {
+        const selectedStrategy = this.value;
+
+        if (selectedStrategy === 'vectorize') {
+          console.log("entering inside for removal...");
+          memoryVectorizerSelectionBar.classList.remove('d-none');
+          memoryVectorizerApiKeyBar.classList.remove('d-none');
+          memoryVectorizerAlertBar.classList.remove('d-none');
+        } else {
+          memoryVectorizerSelectionBar.classList.add('d-none');
+          memoryVectorizerApiKeyBar.classList.add('d-none');
+          memoryVectorizerAlertBar.classList.add('d-none');
+        }
+      });
+
+      maxContextMessagesInput.addEventListener('input', function () {
+        const selectedStrategy = contextOverflowStrategySelect.value;
+
+        if (selectedStrategy === 'vectorize') {
+          memoryVectorizerSelectionBar.classList.remove('d-none');
+          memoryVectorizerApiKeyBar.classList.remove('d-none');
+          memoryVectorizerAlertBar.classList.remove('d-none');
+        }
+      });
+    });
+  </script>
+
+  <script>
+    function addRow() {
       const tableBody = document.querySelector('#keyValueTable tbody');
       const newRow = document.createElement('tr');
       newRow.innerHTML = `
@@ -414,27 +461,27 @@
           <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
       `;
       tableBody.appendChild(newRow);
-  }
+    }
 
-  function removeRow(button) {
+    function removeRow(button) {
       const row = button.closest('tr');
       row.remove();
-  }
+    }
 
-  document.getElementById('keyValueForm').addEventListener('submit', function(event) {
+    document.getElementById('keyValueForm').addEventListener('submit', function (event) {
       event.preventDefault();
       const formData = new FormData(this);
       const keys = formData.getAll('keys[]');
       const values = formData.getAll('values[]');
 
       const keyValuePairs = keys.map((key, index) => ({
-          key: key,
-          value: values[index]
+        key: key,
+        value: values[index]
       }));
 
       console.log(keyValuePairs);
       // You can send keyValuePairs to the server or process them as needed
-  });
-</script>
+    });
+  </script>
 
 {% endblock %}

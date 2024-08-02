@@ -7,141 +7,147 @@
 {% block title %}Create File System Connection{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block content %}
-<!-- Basic Layout -->
-<div class="row">
-  <div class="col-xl mb-6">
-    <div class="card">
-      <div class="card-datatable table-responsive">
-        <a href="{% url 'datasource_file_systems:list' %}">
-          <button class="btn btn-secondary ms-4 mt-4 mb-8">
-            <i class="fa fa-dashboard me-4"></i>
-            <strong> Manage File Systems</strong>
-          </button>
-        </a>
-      </div>
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Create a New File System Connection</h5>
-        <small class="text-muted float-end"></small>
-      </div>
-      <div class="card-body">
-        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-          <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
-          <span class="alert-icon rounded">
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'datasource_file_systems:list' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong> Manage File Systems</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Create a New File System Connection</h5>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+            <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
-          <div class="d-flex flex-column ps-1">
-            <h5 class="alert-heading mb-2">Tip</h5>
-            <p class="mb-0">
-              Create a new data source file system by providing the necessary information. You can use this data source to
-              connect to a file system and make your assistants be able to reach the data within your organization
-              to provide better insights and recommendations. This is a very powerful feature that you can utilize
-              in many different ways. However, make sure that you take regular backups of your data sources and
-              keep your data sources secure since there is no 100% guarantee that the assistants won't make a
-              mistake and delete or modify your data.
-            </p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
-          </div>
-        </div>
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
-              {{ message }}
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                Create a new data source file system by providing the necessary information. You can use this data
+                source to
+                connect to a file system and make your assistants be able to reach the data within your organization
+                to provide better insights and recommendations. This is a very powerful feature that you can utilize
+                in many different ways. However, make sure that you take regular backups of your data sources and
+                keep your data sources secure since there is no 100% guarantee that the assistants won't make a
+                mistake and delete or modify your data.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
             </div>
-          {% endfor %}
-        {% endif %}
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="mb-6">
-            <label class="form-label" for="os_type">OS Type</label>
-            <select class="form-select" id="os_type" name="os_type">
-              <option value="" disabled selected>Select OS Type</option>
-              {% for key, value in os_choices %}
-                <option value="{{ key }}">{{ value }}</option>
-              {% endfor %}
-            </select>
           </div>
-          <div class="mb-6">
-            <label class="form-label" for="assistant">Assistant</label>
-            <select class="form-select" id="assistant" name="assistant">
-              {% for assistant in assistants %}
-                <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-              {% endfor %}
-            </select>
-            <div class="form-text"></div>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name" />
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="description">Description</label>
-            <textarea class="form-control" id="description" name="description" placeholder="Enter data source description"></textarea>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="host_url">Host</label>
-            <input type="text" class="form-control" id="host_url" name="host_url" placeholder="Enter host" />
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="port">Port</label>
-            <input type="number" class="form-control" id="port" name="port" placeholder="Enter port" />
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="username">Username</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" />
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" />
-          </div>
-          <div class="mb-6 col-lg-6">
-            <label class="form-label" for="os_read_limit_tokens">Maximum Record Retrieval per Request (Characters)</label>
-            <!-- slider bar here -->
-            <input type="range" class="form-range" id="os_read_limit_tokens" name="os_read_limit_tokens" min="1" max="10000" step="50" value="5000" oninput="this.nextElementSibling.value = this.value">
-            <output>5000</output>
-          </div>
-          <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label class="form-label" for="os_type">OS Type</label>
+              <select class="form-select" id="os_type" name="os_type">
+                <option value="" disabled selected>Select OS Type</option>
+                {% for key, value in os_choices %}
+                  <option value="{{ key }}">{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="assistant">Assistant</label>
+              <select class="form-select" id="assistant" name="assistant">
+                {% for assistant in assistants %}
+                  <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                {% endfor %}
+              </select>
+              <div class="form-text"></div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="name">Name</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name"/>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="description">Description</label>
+              <textarea class="form-control" id="description" name="description"
+                        placeholder="Enter data source description"></textarea>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="host_url">Host</label>
+              <input type="text" class="form-control" id="host_url" name="host_url" placeholder="Enter host"/>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="port">Port</label>
+              <input type="number" class="form-control" id="port" name="port" placeholder="Enter port"/>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="username">Username</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Enter username"/>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="password">Password</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Enter password"/>
+            </div>
+            <div class="mb-6 col-lg-6">
+              <label class="form-label" for="os_read_limit_tokens">Maximum Record Retrieval per Request
+                (Characters)</label>
+              <!-- slider bar here -->
+              <input type="range" class="form-range" id="os_read_limit_tokens" name="os_read_limit_tokens" min="1"
+                     max="10000" step="50" value="5000" oninput="this.nextElementSibling.value = this.value">
+              <output>5000</output>
+            </div>
+            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            The maximum record retrieval per request is the maximum number of characters that the assistant can read
-            from the file system in a single request. This is a security feature to prevent the assistant from reading
-            too much data at once, and spend too many tokens, which can lead to increased costs.
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="is_read_only">Read-Only</label>
-            <br>
-            <label class="switch switch-square switch-lg mt-2">
-              <input type="checkbox" class="switch-input" id="isReadOnlyCheckbox" name="is_read_only" checked>
-              <span class="switch-toggle-slider">
+              The maximum record retrieval per request is the maximum number of characters that the assistant can read
+              from the file system in a single request. This is a security feature to prevent the assistant from reading
+              too much data at once, and spend too many tokens, which can lead to increased costs.
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="is_read_only">Read-Only</label>
+              <br>
+              <label class="switch switch-square switch-lg mt-2">
+                <input type="checkbox" class="switch-input" id="isReadOnlyCheckbox" name="is_read_only" checked>
+                <span class="switch-toggle-slider">
                 <span class="switch-on"><i class="ti ti-check"></i></span>
                 <span class="switch-off"><i class="ti ti-x"></i></span>
               </span>
-            </label>
-          </div>
-          <div class="alert alert-solid-danger d-flex align-items-center mt-6" role="alert">
+              </label>
+            </div>
+            <div class="alert alert-solid-danger d-flex align-items-center mt-6" role="alert">
               <span class="alert-icon rounded">
                 <i class="ti ti-alert-triangle-filled"></i>
               </span>
               We recommend that you create a read-only instance for the data source to prevent any accidental data loss
               or leaks. Do not forget that the users who have access to the chat can ask for deletion or modification
               of your data which can have unintended consequences.
-          </div>
-          <input type="hidden" name="created_by_user" value="{{ user.id }}">
-          <button type="submit" class="btn btn-primary d-grid w-100">Create Data Source File System</button>
-        </form>
+            </div>
+            <input type="hidden" name="created_by_user" value="{{ user.id }}">
+            <button type="submit" class="btn btn-primary d-grid w-100">Create Data Source File System</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

@@ -18,7 +18,7 @@ from web_project import TemplateLayout
 # Create your views here.
 
 class CreateCustomFunctionView(LoginRequiredMixin, TemplateView):
-    template_name = "mm_functions/create_custom_function.html"
+    template_name = "mm_functions/functions/create_custom_function.html"
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -114,7 +114,7 @@ class CreateCustomFunctionView(LoginRequiredMixin, TemplateView):
 
 
 class ListCustomFunctionsView(LoginRequiredMixin, TemplateView):
-    template_name = "mm_functions/list_custom_functions.html"
+    template_name = "mm_functions/functions/list_custom_functions.html"
     paginate_by = 10  # Adjust the number of items per page
 
     def get_context_data(self, **kwargs):
@@ -272,7 +272,7 @@ class DeleteCustomFunctionView(LoginRequiredMixin, TemplateView):
 
 
 class FunctionStoreView(LoginRequiredMixin, TemplateView):
-    template_name = "mm_functions/function_store.html"
+    template_name = "mm_functions/store/function_store.html"
     paginate_by = 10  # Adjust the number of items per page
 
     def get_context_data(self, **kwargs):

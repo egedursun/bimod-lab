@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
 from apps.assistants.models import Assistant, ASSISTANT_RESPONSE_LANGUAGES, ContextOverflowStrategyNames, \
@@ -10,8 +10,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 
-
-# Create your views here.
 
 class CreateAssistantView(LoginRequiredMixin, TemplateView):
     template_name = "assistants/create_assistant.html"

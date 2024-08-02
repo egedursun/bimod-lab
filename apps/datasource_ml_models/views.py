@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
 from apps.assistants.models import Assistant
@@ -10,8 +10,6 @@ from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSo
 from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 
-
-# Create your views here.
 
 class DataSourceMLModelConnectionCreateView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
@@ -23,20 +21,13 @@ class DataSourceMLModelConnectionCreateView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = DataSourceMLModelConnectionForm(request.POST)
         context_user = request.user
-
-        ##############################
         # PERMISSION CHECK FOR - ML MODEL CONNECTION CREATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.ADD_ML_MODEL_CONNECTIONS not in user_permissions:
             messages.error(request, "You do not have permission to create ML Model Connections.")
             return redirect('datasource_ml_models:list')
-        ##############################
 
         if form.is_valid():
             ml_model_connection = form.save(commit=False)
@@ -66,20 +57,13 @@ class DataSourceMLModelConnectionUpdateView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
-
-        ##############################
         # PERMISSION CHECK FOR - ML MODEL CONNECTION UPDATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.UPDATE_ML_MODEL_CONNECTIONS not in user_permissions:
             messages.error(request, "You do not have permission to update ML Model Connections.")
             return redirect('datasource_ml_models:list')
-        ##############################
 
         connection = DataSourceMLModelConnection.objects.get(id=kwargs['pk'])
         form = DataSourceMLModelConnectionForm(request.POST, instance=connection)
@@ -111,12 +95,9 @@ class DataSourceMLModelConnectionListView(LoginRequiredMixin, TemplateView):
 
             if organization not in connections_by_organization:
                 connections_by_organization[organization] = {}
-
             if assistant not in connections_by_organization[organization]:
                 connections_by_organization[organization][assistant] = []
-
             connections_by_organization[organization][assistant].append(connection)
-
         context['connections_by_organization'] = connections_by_organization
         return context
 
@@ -132,20 +113,13 @@ class DataSourceMLModelConnectionDeleteView(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-
-        ##############################
         # PERMISSION CHECK FOR - ML MODEL CONNECTION DELETE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.DELETE_ML_MODEL_CONNECTIONS not in user_permissions:
             messages.error(request, "You do not have permission to delete ML Model Connections.")
             return redirect('datasource_ml_models:list')
-        ##############################
 
         ml_model_connection = get_object_or_404(DataSourceMLModelConnection, id=kwargs['pk'])
         ml_model_connection.delete()
@@ -154,9 +128,6 @@ class DataSourceMLModelConnectionDeleteView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         user = self.request.user
         return DataSourceMLModelConnection.objects.filter(assistant__organization__in=user.organizations.all())
-
-
-######################################################################################################################
 
 
 class DataSourceMLModelItemCreateView(LoginRequiredMixin, TemplateView):
@@ -178,19 +149,13 @@ class DataSourceMLModelItemCreateView(LoginRequiredMixin, TemplateView):
         form = DataSourceMLModelItemForm(request.POST, request.FILES)
         context_user = request.user
 
-        ##############################
         # PERMISSION CHECK FOR - ML MODEL ITEM CREATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.ADD_ML_MODEL_CONNECTIONS not in user_permissions:
             messages.error(request, "You do not have permission to create ML Model Items.")
             return redirect('datasource_ml_models:item_list')
-        ##############################
 
         if form.is_valid():
             ml_model_item = form.save(commit=False)
@@ -234,7 +199,6 @@ class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
                 connections = DataSourceMLModelConnection.objects.filter(assistant=assistant)
                 for connection in connections:
                     items = DataSourceMLModelItem.objects.filter(ml_model_base=connection)
-
                     # Pagination
                     page = self.request.GET.get('page', 1)
                     paginator = Paginator(items, 5)  # Show 5 items per page
@@ -245,19 +209,9 @@ class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
                     except EmptyPage:
                         paginated_items = paginator.page(paginator.num_pages)
 
-                    connections_data.append({
-                        'connection': connection,
-                        'items': paginated_items
-                    })
-                assistants_data.append({
-                    'assistant': assistant,
-                    'ml_model_connections': connections_data
-                })
-            connections_by_organization.append({
-                'organization': organization,
-                'assistants': assistants_data
-            })
-
+                    connections_data.append({'connection': connection, 'items': paginated_items})
+                assistants_data.append({'assistant': assistant, 'ml_model_connections': connections_data})
+            connections_by_organization.append({'organization': organization, 'assistants': assistants_data})
         context['connections_by_organization'] = connections_by_organization
         return context
 
@@ -272,7 +226,6 @@ class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
         elif selected_items:
             DataSourceMLModelItem.objects.filter(id__in=selected_items).delete()
             messages.success(request, 'Selected ML models have been deleted.')
-
         return redirect('datasource_ml_models:item_list')
 
 

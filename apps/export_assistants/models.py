@@ -5,9 +5,6 @@ from apps.export_assistants.utils import generate_assistant_custom_api_key, gene
 from config.settings import EXPORT_API_BASE_URL, BASE_URL
 
 
-# Create your models here.
-
-
 class RequestLog(models.Model):
     export_assistant = models.ForeignKey('ExportAssistantAPI', on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -47,7 +44,6 @@ class ExportAssistantAPI(models.Model):
         # generate the endpoint for the exported assistant
         if not self.endpoint:
             self.endpoint = BASE_URL + "/" + EXPORT_API_BASE_URL + "/" + generate_endpoint(self.assistant)
-
         # generate the API key for non-public usage of the exported assistant
         if not self.custom_api_key and (not self.is_public):
             self.custom_api_key = generate_assistant_custom_api_key(self.assistant)

@@ -6,120 +6,125 @@
 {% block title %}Media Item Detail{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
-<script>hljs.highlightAll();</script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const audioPlayer = new Plyr('#plyr-audio-player');
-    const videoPlayer = new Plyr('#plyr-video-player');
-});
-</script>
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const audioPlayer = new Plyr('#plyr-audio-player');
+      const videoPlayer = new Plyr('#plyr-video-player');
+    });
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row">
-  <div class="col-12 mb-6">
-    <div class="card">
-      <h5 class="card-header">Metadata</h5>
-      <div class="card-body">
-        <p><strong>Storage Base:</strong> &nbsp;&nbsp; {{ media_item.storage_base }}</p>
-        <p><strong>Media Category:</strong> &nbsp;&nbsp; {{ media_item.storage_base.media_category }}</p>
-        <hr>
-        <p><strong>File Name:</strong> &nbsp;&nbsp; {{ media_item.media_file_name }}.{{ media_item.media_file_type }}</p>
-        <p><strong>File Size:</strong> &nbsp;&nbsp; {{ media_item.media_file_size }} bytes</p>
-        <p><strong>File Type:</strong> &nbsp;&nbsp; {{ media_item.media_file_type }}</p>
-        <p><strong>Full File Path:</strong> &nbsp;&nbsp; <a href="{{ base_url }}/{{ media_item.full_file_path }}" target="_blank">{{ media_item.full_file_path }}</a></p>
+  <div class="row">
+    <div class="col-12 mb-6">
+      <div class="card">
+        <h5 class="card-header">Metadata</h5>
+        <div class="card-body">
+          <p><strong>Storage Base:</strong> &nbsp;&nbsp; {{ media_item.storage_base }}</p>
+          <p><strong>Media Category:</strong> &nbsp;&nbsp; {{ media_item.storage_base.media_category }}</p>
+          <hr>
+          <p><strong>File Name:</strong> &nbsp;&nbsp; {{ media_item.media_file_name }}.{{ media_item.media_file_type }}
+          </p>
+          <p><strong>File Size:</strong> &nbsp;&nbsp; {{ media_item.media_file_size }} bytes</p>
+          <p><strong>File Type:</strong> &nbsp;&nbsp; {{ media_item.media_file_type }}</p>
+          <p><strong>Full File Path:</strong> &nbsp;&nbsp; <a href="{{ base_url }}/{{ media_item.full_file_path }}"
+                                                              target="_blank">{{ media_item.full_file_path }}</a></p>
+        </div>
       </div>
     </div>
-  </div>
-  {% if media_item.storage_base.media_category == 'audio' %}
-  <!-- Audio Player -->
-  <div class="col-12 mb-6">
-    <div class="card">
-      <h5 class="card-header">Audio</h5>
-      <div class="card-body">
-        <audio class="w-100" id="plyr-audio-player" controls>
-          <source src="{{ base_url }}/{{ media_item.full_file_path }}" type="audio/mp3" />
-        </audio>
+    {% if media_item.storage_base.media_category == 'audio' %}
+      <!-- Audio Player -->
+      <div class="col-12 mb-6">
+        <div class="card">
+          <h5 class="card-header">Audio</h5>
+          <div class="card-body">
+            <audio class="w-100" id="plyr-audio-player" controls>
+              <source src="{{ base_url }}/{{ media_item.full_file_path }}" type="audio/mp3"/>
+            </audio>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  {% elif media_item.storage_base.media_category == 'video' %}
-  <!-- Video Player -->
-  <div class="col-12 mb-6">
-    <div class="card">
-      <h5 class="card-header">Video</h5>
-      <div class="card-body">
-        <video class="w-100" id="plyr-video-player" playsinline controls>
-          <source src="{{ base_url }}/{{ media_item.full_file_path }}" type="video/mp4" />
-        </video>
+    {% elif media_item.storage_base.media_category == 'video' %}
+      <!-- Video Player -->
+      <div class="col-12 mb-6">
+        <div class="card">
+          <h5 class="card-header">Video</h5>
+          <div class="card-body">
+            <video class="w-100" id="plyr-video-player" playsinline controls>
+              <source src="{{ base_url }}/{{ media_item.full_file_path }}" type="video/mp4"/>
+            </video>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  {% elif media_item.storage_base.media_category == 'image' %}
-  <!-- Image Display -->
-  <div class="col-12 mb-6">
-    <div class="card">
-      <h5 class="card-header">Image</h5>
-      <div class="card-body text-center">
-        <img src="{{ base_url }}/{{ media_item.full_file_path }}" alt="Image" class="img-fluid">
+    {% elif media_item.storage_base.media_category == 'image' %}
+      <!-- Image Display -->
+      <div class="col-12 mb-6">
+        <div class="card">
+          <h5 class="card-header">Image</h5>
+          <div class="card-body text-center">
+            <img src="{{ base_url }}/{{ media_item.full_file_path }}" alt="Image" class="img-fluid">
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  {% else %}
-  <!-- Other Media Types -->
-  <div class="col-12 mb-6">
-    <div class="card">
-      <h5 class="card-header">File Contents</h5>
-      <pre><code class="{{ file_type_highlighting }} me-12 ms-12 p-12 rounded overflow-scroll" style="max-height: 600px;">{{ media_item_contents|linenumbers }}</code></pre>
-      <div class="card-body text-center">
-        <a href="{{ base_url }}/{{ media_item.full_file_path }}" class="btn btn-primary" download><strong>Download File</strong></a>
+    {% else %}
+      <!-- Other Media Types -->
+      <div class="col-12 mb-6">
+        <div class="card">
+          <h5 class="card-header">File Contents</h5>
+          <pre><code class="{{ file_type_highlighting }} me-12 ms-12 p-12 rounded overflow-scroll"
+                     style="max-height: 600px;">{{ media_item_contents|linenumbers }}</code></pre>
+          <div class="card-body text-center">
+            <a href="{{ base_url }}/{{ media_item.full_file_path }}" class="btn btn-primary" download><strong>Download
+              File</strong></a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  {% endif %}
+    {% endif %}
 
-  <!-- Description and Update Form -->
-  <div class="col-12 mb-12">
-    <div class="card">
-      <h5 class="card-header">Item Details</h5>
-      <div class="card-body">
+    <!-- Description and Update Form -->
+    <div class="col-12 mb-12">
+      <div class="card">
+        <h5 class="card-header">Item Details</h5>
+        <div class="card-body">
           <form method="post" action="{% url 'datasource_media_storages:item_detail' media_item.pk %}">
-          {% csrf_token %}
-          <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" id="description" name="description" rows="5">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea class="form-control" id="description" name="description" rows="5">
               {% if generated_description %}
                 {{ generated_description.strip|safe }}
               {% else %}
-                  {{ media_item.description|safe }}
+                {{ media_item.description|safe }}
               {% endif %}
             </textarea>
-          </div>
-          <button type="submit" class="btn btn-primary w-25"><strong>Update Description</strong></button>
-        </form>
-        {% if media_item.storage_base.media_category == 'data' or media_item.storage_base.media_category == 'code' or media_item.storage_base.media_category == 'image' %}
-          <form method="post" action="{% url 'datasource_media_storages:generate_description' media_item.pk %}" class="generate-description-form">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-success mt-3 w-25 btn-generate-description">
-              <i class="fa fa-wand-sparkles me-4"></i>
-              <strong>Generate Description with AI</strong>
-            </button>
+            </div>
+            <button type="submit" class="btn btn-primary w-25"><strong>Update Description</strong></button>
           </form>
-        {% endif %}
-        <!-- loading bar warning -->
+          {% if media_item.storage_base.media_category == 'data' or media_item.storage_base.media_category == 'code' or media_item.storage_base.media_category == 'image' %}
+            <form method="post" action="{% url 'datasource_media_storages:generate_description' media_item.pk %}"
+                  class="generate-description-form">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success mt-3 w-25 btn-generate-description">
+                <i class="fa fa-wand-sparkles me-4"></i>
+                <strong>Generate Description with AI</strong>
+              </button>
+            </form>
+          {% endif %}
+          <!-- loading bar warning -->
           <div class="alert-container"></div>
           <div id="loadingBarWarningGenerateDescription"
                class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
@@ -127,7 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
             <i class="ti ti-brain"></i>
           </span>
             <div class="d-flex flex-column ps-1 pt-4">
-              <p class="alert-heading"><strong>Producing a great description for your file, please hold on...</strong></p>
+              <p class="alert-heading"><strong>Producing a great description for your file, please hold on...</strong>
+              </p>
             </div>
           </div>
           <!-- Loading bar -->
@@ -135,27 +141,27 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
                  style="width: 100%; height:10px;"></div>
           </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const generateDescriptionForm = document.querySelector('.generate-description-form');
-    const generateDescriptionButton = document.querySelector('.btn-generate-description');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const generateDescriptionForm = document.querySelector('.generate-description-form');
+      const generateDescriptionButton = document.querySelector('.btn-generate-description');
 
-    const loadingBarGenerateDescription = document.getElementById('loadingBarGenerateDescription');
-    const loadingBarWarningGenerateDescription = document.getElementById('loadingBarWarningGenerateDescription');
+      const loadingBarGenerateDescription = document.getElementById('loadingBarGenerateDescription');
+      const loadingBarWarningGenerateDescription = document.getElementById('loadingBarWarningGenerateDescription');
 
-    generateDescriptionForm.addEventListener('submit', function (event) {
-      // Show the loading bar
-      loadingBarGenerateDescription.classList.remove('d-none');
-      loadingBarWarningGenerateDescription.classList.remove('d-none');
-      generateDescriptionButton.disabled = true;
+      generateDescriptionForm.addEventListener('submit', function (event) {
+        // Show the loading bar
+        loadingBarGenerateDescription.classList.remove('d-none');
+        loadingBarWarningGenerateDescription.classList.remove('d-none');
+        generateDescriptionButton.disabled = true;
+      });
+
     });
-
-  });
-</script>
+  </script>
 
 {% endblock %}

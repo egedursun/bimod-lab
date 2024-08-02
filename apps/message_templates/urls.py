@@ -5,7 +5,6 @@ from apps.message_templates.views import ListMessageTemplateView, CreateMessageT
 
 app_name = "message_templates"
 
-
 urlpatterns = [
     path("list/", ListMessageTemplateView.as_view(
         template_name="message_templates/list_message_templates.html"

@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import TemplateView, DeleteView, UpdateView
+from django.views.generic import TemplateView, DeleteView
 
 from apps.message_templates.forms import MessageTemplateForm
 from apps.message_templates.models import MessageTemplate
@@ -9,11 +9,7 @@ from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 
 
-# Create your views here.
-
-
 class CreateMessageTemplateView(TemplateView, LoginRequiredMixin):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['organizations'] = self.request.user.organizations.all()
@@ -22,20 +18,13 @@ class CreateMessageTemplateView(TemplateView, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         form = MessageTemplateForm(request.POST)
         context_user = request.user
-
-        ##############################
         # PERMISSION CHECK FOR - TEMPLATE MESSAGE/CREATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.ADD_TEMPLATE_MESSAGES not in user_permissions:
             messages.error(request, "You do not have permission to create message templates.")
             return redirect('message_templates:list')
-        ##############################
 
         if form.is_valid():
             message_template = form.save(commit=False)
@@ -53,13 +42,11 @@ class ListMessageTemplateView(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        organizations = self.request.user.organizations.all()
         context['message_templates'] = MessageTemplate.objects.filter(user=self.request.user)
         return context
 
 
 class UpdateMessageTemplateView(TemplateView, LoginRequiredMixin):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         organizations = self.request.user.organizations.all()
@@ -92,26 +79,15 @@ class DeleteMessageTemplateView(DeleteView, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         context_user = request.user
         starred_message = get_object_or_404(MessageTemplate, id=self.kwargs['pk'])
-
-        ##############################
         # PERMISSION CHECK FOR - TEMPLATE MESSAGE/DELETION
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.REMOVE_TEMPLATE_MESSAGES not in user_permissions:
             messages.error(request, "You do not have permission to delete message templates.")
             return redirect('message_templates:list')
-        ##############################
 
         starred_message.delete()
         success_message = "Message template deleted successfully."
-
         messages.success(request, success_message)
         return redirect(self.success_url)
-
-
-

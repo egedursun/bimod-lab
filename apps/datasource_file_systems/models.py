@@ -1,13 +1,11 @@
-from django.db import models
-from paramiko import SSHClient
 
+from django.db import models
 from apps._services.file_systems.file_systems_executor import FileSystemsExecutor
 
 # Create your models here.
 
 
 SSH_CONNECTION_DEFAULT_BANNER_TIMEOUT = 200
-
 
 DATASOURCE_FILE_SYSTEMS_OS_TYPES = [
     ('linux', 'Linux'),
@@ -22,8 +20,8 @@ class DataSourceFileSystemsOsTypeNames:
 
 class DataSourceFileSystem(models.Model):
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE,
-                                    related_name='data_source_file_systems',
-                                    default=None, null=True)
+                                  related_name='data_source_file_systems',
+                                  default=None, null=True)
     os_type = models.CharField(max_length=50, choices=DATASOURCE_FILE_SYSTEMS_OS_TYPES)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)

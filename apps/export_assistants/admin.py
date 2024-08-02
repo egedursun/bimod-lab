@@ -3,9 +3,6 @@ from django.contrib import admin
 from apps.export_assistants.models import ExportAssistantAPI, RequestLog
 
 
-# Register your models here.
-
-
 @admin.register(RequestLog)
 class RequestLogAdmin(admin.ModelAdmin):
     list_display = ("export_assistant", "timestamp")

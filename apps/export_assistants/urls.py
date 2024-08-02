@@ -5,7 +5,6 @@ from apps.export_assistants.views import ListExportAssistantsView, CreateExportA
 
 app_name = 'export_assistants'
 
-
 urlpatterns = [
     path('list/', ListExportAssistantsView.as_view(
         template_name="export_assistants/list_export_assistants.html"

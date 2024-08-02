@@ -7,7 +7,6 @@ from auth.helpers import send_verification_email
 import uuid
 
 
-
 class VerifyEmailTokenView(AuthView):
     def get(self, request, token):
         try:
@@ -21,10 +20,10 @@ class VerifyEmailTokenView(AuthView):
                 messages.success(request, "Email has been verified successfully")
             return redirect("login")
             # Now, redirect to the login page
-
         except Profile.DoesNotExist:
             messages.error(request, "Invalid token, please try again")
             return redirect("verify-email-page")
+
 
 class VerifyEmailView(AuthView):
     def get(self, request):
@@ -35,7 +34,6 @@ class VerifyEmailView(AuthView):
 class SendVerificationView(AuthView):
     def get(self, request):
         email, message = self.get_email_and_message(request)
-
         if email:
             token = str(uuid.uuid4())
             user_profile = Profile.objects.filter(email=email).first()
@@ -45,13 +43,11 @@ class SendVerificationView(AuthView):
             messages.success(request, message)
         else:
             messages.error(request, "Email has not been found in the session")
-
         return redirect("verify-email-page")
 
     def get_email_and_message(self, request):
         if request.user.is_authenticated:
             email = request.user.profile.email
-
             if settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD:
                 message = messages.success(request, "Verification email sent successfully")
             else:
@@ -62,5 +58,4 @@ class SendVerificationView(AuthView):
                 message = "Resent the verification email successfully" if email else None
             else:
                  message = messages.error(request, "Email settings are not properly configured. Unable to send verification email.")
-
         return email, message

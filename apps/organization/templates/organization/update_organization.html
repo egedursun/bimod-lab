@@ -7,132 +7,156 @@
 {% block title %}Update Organization{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
-<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
-<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/form-layouts.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<!-- Basic Layout -->
-<div class="row">
-  <div class="col-xl mb-6">
-    <div class="card">
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
       <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}" class="rounded" width="170" height="170" alt="Organization Image">
-          <h3 class="mb-0">
-            <strong>
-              {{ organization.name }}
-            </strong>
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <img src="
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 class="rounded" width="170" height="170" alt="Organization Image">
+            <h3 class="mb-0">
+              <strong>
+                {{ organization.name }}
+              </strong>
+              <br><br>
+              <small class="text">
+                <i class="fas fa-building"></i>
+                Industry:
+                <strong>{{ organization.industry }}</strong>
+              </small>
+              <br>
+              <small class="text">
+                <i class="fas fa-user-astronaut"></i>
+                Organization owned by:
+                <strong>@{{ user.username }}</strong>
+              </small>
+            </h3>
             <br><br>
-            <small class="text">
-              <i class="fas fa-building"></i>
-              Industry:
-              <strong>{{ organization.industry }}</strong>
-            </small>
-            <br>
-            <small class="text">
-              <i class="fas fa-user-astronaut"></i>
-              Organization owned by:
-              <strong>@{{ user.username }}</strong>
-            </small>
-          </h3>
-          <br><br>
+          </div>
         </div>
-      </div>
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Update Organization Information</h5> <small class="text-muted float-end"></small>
-      </div>
-      <div class="card-body">
-        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-          <img src="{% static 'img/custom-illustrations/boy-organization-edit.png' %}" width="25%" class="justify-content-end">
-          <span class="alert-icon rounded">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Update Organization Information</h5> <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations/boy-organization-edit.png' %}" width="25%"
+                 class="justify-content-end">
+            <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
-          <div class="d-flex flex-column ps-1">
-            <h5 class="alert-heading mb-2">Tip</h5>
-            <p class="mb-0">
-              In this page, you can update the organization's information. Fill in the form with the organization's information
-              and click on the "Update Information" button to save the organization. While you are updating an organization, make
-              sure that you have filled in all the required fields. Once you update the organization, the changes will be saved
-              automatically.
-            </p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
-          </div>
-        </div>
-        {% if error_messages %}
-          {% for key, message in error_messages.items %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
-              <strong>{{ key | field_name_to_label }}:</strong> {{ message }}
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can update the organization's information. Fill in the form with the organization's
+                information
+                and click on the "Update Information" button to save the organization. While you are updating an
+                organization, make
+                sure that you have filled in all the required fields. Once you update the organization, the changes will
+                be saved
+                automatically.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
             </div>
-          {% endfor %}
-        {% endif %}
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="mb-6">
-            <label class="form-label" for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter organization name" value="{{ organization.name }}"/>
-            <div class="form-text"></div>
           </div>
-          <div class="mb-6">
-            <label class="form-label" for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Enter organization email" value="{{ organization.email }}"/>
-            <div class="form-text"></div>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="phone">Phone</label>
-            <input type="text" class="form-control phone-mask" id="phone" name="phone" placeholder="Enter organization phone" value="{% if organization.phone %}{{ organization.phone }}{% endif %}"/>
-            <div class="form-text">Include the country code and the area code for more accuracy.</div>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="address">Address</label>
-            <input type="text" class="form-control" id="address" name="address" placeholder="Enter organization address" value="{% if organization.address %}{{ organization.address }}{% endif %}"/>
-            <div class="form-text">The municipality or district, street number, block number, and the apartment number if applies.</div>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="city">City</label>
-            <input type="text" class="form-control" id="city" name="city" placeholder="Enter organization city" value="{% if organization.city %}{{ organization.city }}{% endif %}"/>
-            <div class="form-text">You can also include the state if it applies to your country.</div>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="country">Country</label>
-            <input type="text" class="form-control" id="country" name="country" placeholder="Enter organization country" value="{% if organization.country %}{{ organization.country }}{% endif %}"/>
-            <div class="form-text"></div>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="postal_code">Postal Code</label>
-            <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Enter postal code" value="{% if organization.postal_code %}{{ organization.postal_code }}{% endif %}"/>
-            <div class="form-text"></div>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="industry">Industry</label>
-            <input type="text" class="form-control" id="industry" name="industry" placeholder="Enter organization industry" value="{% if organization.industry %}{{ organization.industry }}{% endif %}"/>
-            <div class="form-text"></div>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="organization_image">Organization Image</label>
-            <input type="file" class="form-control" id="organization_image" name="organization_image" value="{% if organization.organization_image %}{{ organization.organization_image.url }}{% endif %}"/>
-            <div class="form-text"></div>
-          </div>
-          <button type="submit" class="btn btn-primary d-grid w-100">Update Information</button>
-        </form>
+          {% if error_messages %}
+            {% for key, message in error_messages.items %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                <strong>{{ key | field_name_to_label }}:</strong> {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label class="form-label" for="name">Name</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Enter organization name"
+                     value="{{ organization.name }}"/>
+              <div class="form-text"></div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="email">Email</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Enter organization email"
+                     value="{{ organization.email }}"/>
+              <div class="form-text"></div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="phone">Phone</label>
+              <input type="text" class="form-control phone-mask" id="phone" name="phone"
+                     placeholder="Enter organization phone"
+                     value="{% if organization.phone %}{{ organization.phone }}{% endif %}"/>
+              <div class="form-text">Include the country code and the area code for more accuracy.</div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="address">Address</label>
+              <input type="text" class="form-control" id="address" name="address"
+                     placeholder="Enter organization address"
+                     value="{% if organization.address %}{{ organization.address }}{% endif %}"/>
+              <div class="form-text">The municipality or district, street number, block number, and the apartment number
+                if applies.
+              </div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="city">City</label>
+              <input type="text" class="form-control" id="city" name="city" placeholder="Enter organization city"
+                     value="{% if organization.city %}{{ organization.city }}{% endif %}"/>
+              <div class="form-text">You can also include the state if it applies to your country.</div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="country">Country</label>
+              <input type="text" class="form-control" id="country" name="country"
+                     placeholder="Enter organization country"
+                     value="{% if organization.country %}{{ organization.country }}{% endif %}"/>
+              <div class="form-text"></div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="postal_code">Postal Code</label>
+              <input type="text" class="form-control" id="postal_code" name="postal_code"
+                     placeholder="Enter postal code"
+                     value="{% if organization.postal_code %}{{ organization.postal_code }}{% endif %}"/>
+              <div class="form-text"></div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="industry">Industry</label>
+              <input type="text" class="form-control" id="industry" name="industry"
+                     placeholder="Enter organization industry"
+                     value="{% if organization.industry %}{{ organization.industry }}{% endif %}"/>
+              <div class="form-text"></div>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="organization_image">Organization Image</label>
+              <input type="file" class="form-control" id="organization_image" name="organization_image" value="
+                {% if organization.organization_image %}{{ organization.organization_image.url }}{% endif %}"/>
+              <div class="form-text"></div>
+            </div>
+            <button type="submit" class="btn btn-primary d-grid w-100">Update Information</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

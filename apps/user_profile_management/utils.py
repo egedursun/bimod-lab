@@ -7,7 +7,6 @@ def get_card_type(card_number):
         'mastercard': r'^5[1-5][0-9]{14}$',
         'amex': r'^3[47][0-9]{13}$',
     }
-
     for card_type, pattern in card_types.items():
         if re.match(pattern, card_number):
             return card_type

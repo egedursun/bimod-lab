@@ -1,4 +1,3 @@
-from pprint import pprint
 
 from django.db import models
 

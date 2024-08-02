@@ -80,14 +80,9 @@ class MemoryExecutor:
 
     ##################################################
 
-    def index_memory(self, connection_id: int, assistant_id: int, chat_id: int, message_text: str):
+    def index_memory(self, connection_id: int, message_text: str):
         _ = self.connect_c()
-        index_memory_helper.delay(
-            connection_id=connection_id,
-            assistant_id=assistant_id,
-            chat_id=chat_id,
-            message_text=message_text
-        )
+        index_memory_helper.delay(connection_id=connection_id, message_text=message_text)
         self.close_c()
         return
 

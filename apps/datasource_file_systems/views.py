@@ -10,41 +10,26 @@ from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 
 
-# Create your views here.
-
-
 class DataSourceFileSystemListCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'datasource_file_systems/create_datasource_file_system.html'
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        organizations = context_user.organizations.filter(
-            users__in=[context_user]
-        )
-        context['assistants'] = Assistant.objects.filter(
-            organization__in=organizations
-        )
+        organizations = context_user.organizations.filter(users__in=[context_user])
+        context['assistants'] = Assistant.objects.filter(organization__in=organizations)
         context['os_choices'] = DATASOURCE_FILE_SYSTEMS_OS_TYPES
         context['user'] = context_user
         return context
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
-
-        ##############################
         # PERMISSION CHECK FOR - FILE SYSTEMS / CREATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.ADD_FILE_SYSTEMS not in user_permissions:
             messages.error(request, "You do not have permission to create a file system connection.")
             return redirect('datasource_file_systems:list')
-        ##############################
 
         name = request.POST.get('name')
         description = request.POST.get('description')
@@ -61,17 +46,9 @@ class DataSourceFileSystemListCreateView(LoginRequiredMixin, TemplateView):
         try:
             assistant = Assistant.objects.get(id=assistant_id)
             data_source = DataSourceFileSystem.objects.create(
-                name=name,
-                description=description,
-                os_type=os_type,
-                assistant=assistant,
-                host_url=host_url,
-                port=port,
-                username=username,
-                password=password,
-                os_read_limit_tokens=os_read_limit_tokens,
-                is_read_only=is_read_only,
-                created_by_user=created_by_user
+                name=name, description=description, os_type=os_type, assistant=assistant, host_url=host_url,
+                port=port, username=username, password=password, os_read_limit_tokens=os_read_limit_tokens,
+                is_read_only=is_read_only, created_by_user=created_by_user
             )
             data_source.save()
             messages.success(request, 'Data Source File System created successfully.')
@@ -90,12 +67,8 @@ class DataSourceFileSystemUpdateView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        organizations = context_user.organizations.filter(
-            users__in=[context_user]
-        )
-        context['assistants'] = Assistant.objects.filter(
-            organization__in=organizations
-        )
+        organizations = context_user.organizations.filter(users__in=[context_user])
+        context['assistants'] = Assistant.objects.filter(organization__in=organizations)
         context['os_choices'] = DATASOURCE_FILE_SYSTEMS_OS_TYPES
         context['user'] = context_user
         try:
@@ -108,20 +81,12 @@ class DataSourceFileSystemUpdateView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
-
-        ##############################
         # PERMISSION CHECK FOR - FILE SYSTEMS / UPDATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.UPDATE_FILE_SYSTEMS not in user_permissions:
             messages.error(request, "You do not have permission to update a file system connection.")
             return redirect('datasource_file_systems:list')
-        ##############################
 
         try:
             connection = get_object_or_404(DataSourceFileSystem, pk=kwargs['pk'])
@@ -161,12 +126,9 @@ class DataSourceFileSystemsListView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-
         connections_by_organization = {}
         assistants = Assistant.objects.filter(
-            organization__in=context_user.organizations.filter(
-                users__in=[context_user]
-            )
+            organization__in=context_user.organizations.filter(users__in=[context_user])
         )
 
         for assistant in assistants:
@@ -175,7 +137,6 @@ class DataSourceFileSystemsListView(LoginRequiredMixin, TemplateView):
                 connections_by_organization[organization] = {}
             if assistant not in connections_by_organization[organization]:
                 connections_by_organization[organization][assistant] = []
-
             connections = DataSourceFileSystem.objects.filter(assistant=assistant)
             connections_by_organization[organization][assistant].extend(connections)
 
@@ -194,20 +155,12 @@ class DataSourceFileSystemDeleteView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
-
-        ##############################
         # PERMISSION CHECK FOR - FILE SYSTEMS / UPDATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.DELETE_FILE_SYSTEMS not in user_permissions:
             messages.error(request, "You do not have permission to delete a file system connection.")
             return redirect('datasource_file_systems:list')
-        ##############################
 
         data_source = get_object_or_404(DataSourceFileSystem, pk=kwargs['pk'])
         data_source.delete()

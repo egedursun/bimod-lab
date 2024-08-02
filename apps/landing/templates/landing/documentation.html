@@ -6,358 +6,360 @@
 {% block title %}Documentation - Bimod.io{% endblock %}
 
 {% block page_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/page-faq.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-faq.css' %}"/>
 {% endblock page_css %}
 
 {% block content %}
-<div class="faq-header d-flex flex-column justify-content-center align-items-center h-px-300 position-relative">
-  <a href="{% url 'dashboard:main-dashboard' %}">
-    <button class="btn btn-sm btn-secondary ms-4 mt-4 mb-8">
-      <i class="fa fa-chevron-left me-4"></i>
-      <strong> Turn Back to Your Dashboard</strong>
-    </button>
-  </a>
-  <img src="{% static 'img/pages/header.png' %}" class="scaleX-n1-rtl faq-banner-img z-n1 rounded" alt="background image" />
-  <h4 class="text-center mb-2"> <strong>Documentation</strong> </h4>
-  <p class="text-center mb-0 px-4">Access documentation and tutorials to help you get started with our app.</p>
-  <!-- search bar: deactivated for now
-  <div class="input-wrapper mt-4 input-group input-group-merge px-lg-5">
-    <span class="input-group-text" id="basic-addon1"><i class="ti ti-search"></i></span>
-    <input type="text" class="form-control" placeholder="Search articles..." aria-label="Search" aria-describedby="basic-addon1" />
+  <div class="faq-header d-flex flex-column justify-content-center align-items-center h-px-300 position-relative">
+    <a href="{% url 'dashboard:main-dashboard' %}">
+      <button class="btn btn-sm btn-secondary ms-4 mt-4 mb-8">
+        <i class="fa fa-chevron-left me-4"></i>
+        <strong> Turn Back to Your Dashboard</strong>
+      </button>
+    </a>
+    <img src="{% static 'img/pages/header.png' %}" class="scaleX-n1-rtl faq-banner-img z-n1 rounded"
+         alt="background image"/>
+    <h4 class="text-center mb-2"><strong>Documentation</strong></h4>
+    <p class="text-center mb-0 px-4">Access documentation and tutorials to help you get started with our app.</p>
+    <!-- search bar: deactivated for now
+    <div class="input-wrapper mt-4 input-group input-group-merge px-lg-5">
+      <span class="input-group-text" id="basic-addon1"><i class="ti ti-search"></i></span>
+      <input type="text" class="form-control" placeholder="Search articles..." aria-label="Search" aria-describedby="basic-addon1" />
+    </div>
+    -->
   </div>
-  -->
-</div>
 
-<div class="row mt-6">
-  <!-- Navigation -->
-  <div class="col-lg-3 col-md-4 col-12 mb-md-0 mb-4">
-    <div class="d-flex justify-content-between flex-column nav-align-left mb-2 mb-md-0">
-      <ul class="nav nav-pills flex-column">
-        <li class="nav-item">
-          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#payment">
-            <i class="ti ti-building me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Organizations</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#delivery">
-            <i class="ti ti-box-model me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">LLM Models</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cancellation">
-            <i class="ti ti-rotate-clockwise-2 me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Usage &amp; Payment</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#orders">
-            <i class="ti ti-user me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Users</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-lock-access me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Permissions</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-robot-face me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Assistants</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-message me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Chats</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-star me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Starred Responses</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-server me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Memory</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-template me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Message Templates</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-adjustments me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Fine Tuning</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-file-export me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Exporting Assistants</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-bolt me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Orchestrations</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-folder me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">File Systems</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-browser me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Web Browsers</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-database me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">SQL Databases</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-database me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">NOSQL Databases</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-vector me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Knowledge Bases</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-ai me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">ML Models</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-photo me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Image Storages</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-music me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Audio Storages</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-video me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Video Storages</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-function me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Functions</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-api me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">APIs</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-code me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Conditionals</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-clock me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Scheduled Jobs</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-anchor me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Triggers</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-cube me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Blockchain</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-photo-ai me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Image Generation &amp; Analysis</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-music-bolt me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Audio Generation &amp; Analysis</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-wand me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Integrations</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-            <i class="ti ti-wand me-1_5 ti-sm"></i>
-            <span class="align-middle fw-medium">Meta Integrations</span>
-          </button>
-        </li>
-      </ul>
-      <div class="d-none d-md-block">
-        <div class="mt-12 ms-6">
-          <img src="{% static 'img/illustrations/girl-sitting-with-laptop.png' %}" class="img-fluid" width="270" alt="FAQ Image">
+  <div class="row mt-6">
+    <!-- Navigation -->
+    <div class="col-lg-3 col-md-4 col-12 mb-md-0 mb-4">
+      <div class="d-flex justify-content-between flex-column nav-align-left mb-2 mb-md-0">
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#payment">
+              <i class="ti ti-building me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Organizations</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#delivery">
+              <i class="ti ti-box-model me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">LLM Models</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cancellation">
+              <i class="ti ti-rotate-clockwise-2 me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Usage &amp; Payment</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#orders">
+              <i class="ti ti-user me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Users</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-lock-access me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Permissions</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-robot-face me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Assistants</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-message me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Chats</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-star me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Starred Responses</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-server me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Memory</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-template me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Message Templates</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-adjustments me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Fine Tuning</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-file-export me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Exporting Assistants</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-bolt me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Orchestrations</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-folder me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">File Systems</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-browser me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Web Browsers</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-database me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">SQL Databases</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-database me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">NOSQL Databases</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-vector me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Knowledge Bases</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-ai me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">ML Models</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-photo me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Image Storages</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-music me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Audio Storages</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-video me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Video Storages</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-function me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Functions</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-api me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">APIs</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-code me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Conditionals</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-clock me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Scheduled Jobs</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-anchor me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Triggers</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-cube me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Blockchain</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-photo-ai me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Image Generation &amp; Analysis</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-music-bolt me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Audio Generation &amp; Analysis</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-wand me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Integrations</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+              <i class="ti ti-wand me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Meta Integrations</span>
+            </button>
+          </li>
+        </ul>
+        <div class="d-none d-md-block">
+          <div class="mt-12 ms-6">
+            <img src="{% static 'img/illustrations/girl-sitting-with-laptop.png' %}" class="img-fluid" width="270"
+                 alt="FAQ Image">
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- /Navigation -->
+    <!-- /Navigation -->
 
-  <!-- TODO: documentation needs to be properly designed -->
+    <!-- TODO: documentation needs to be properly designed -->
 
-  <!-- Documentation -->
-  <div class="col-lg-9 col-md-8 col-12">
-    <div class="tab-content p-0">
-      <!--
-      <div class="tab-pane fade" id="delivery" role="tabpanel">
-        <div class="d-flex mb-4 gap-4 align-items-center">
-          <div class="avatar avatar-md">
-            <span class="avatar-initial bg-label-primary rounded">
-              <i class="ti ti-briefcase ti-30px"></i>
-            </span>
+    <!-- Documentation -->
+    <div class="col-lg-9 col-md-8 col-12">
+      <div class="tab-content p-0">
+        <!--
+        <div class="tab-pane fade" id="delivery" role="tabpanel">
+          <div class="d-flex mb-4 gap-4 align-items-center">
+            <div class="avatar avatar-md">
+              <span class="avatar-initial bg-label-primary rounded">
+                <i class="ti ti-briefcase ti-30px"></i>
+              </span>
+            </div>
+            <div>
+              <h5 class="mb-0">
+                <span class="align-middle">Delivery</span>
+              </h5>
+              <span>Lorem ipsum, dolor sit amet.</span>
+            </div>
           </div>
-          <div>
-            <h5 class="mb-0">
-              <span class="align-middle">Delivery</span>
-            </h5>
-            <span>Lorem ipsum, dolor sit amet.</span>
+          <div id="accordionDelivery" class="accordion">
+            <div class="card accordion-item active">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#accordionDelivery-1" aria-controls="accordionDelivery-1">
+                  How would you ship my order?
+                </button>
+              </h2>
+
+              <div id="accordionDelivery-1" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                  For large products, we deliver your product via a third party
+                  logistics company offering you the “room of choice” scheduled
+                  delivery service. For small products, we offer free parcel
+                  delivery.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionDelivery-2" aria-controls="accordionDelivery-2">
+                  What is the delivery cost of my order?
+                </button>
+              </h2>
+              <div id="accordionDelivery-2" class="accordion-collapse collapse">
+                <div class="accordion-body">The cost of scheduled delivery is $69 or $99 per order, depending on the destination postal code. The parcel delivery is free.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionDelivery-4" aria-controls="accordionDelivery-4">
+                  What to do if my product arrives damaged?
+                </button>
+              </h2>
+              <div id="accordionDelivery-4" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  We will promptly replace any product that is damaged in transit.
+                  Just contact our
+                  <a href="javascript:void(0);">support team</a>, to notify us of the situation
+                  within 48 hours of product arrival.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div id="accordionDelivery" class="accordion">
-          <div class="card accordion-item active">
-            <h2 class="accordion-header">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#accordionDelivery-1" aria-controls="accordionDelivery-1">
-                How would you ship my order?
-              </button>
-            </h2>
-
-            <div id="accordionDelivery-1" class="accordion-collapse collapse show">
-              <div class="accordion-body">
-                For large products, we deliver your product via a third party
-                logistics company offering you the “room of choice” scheduled
-                delivery service. For small products, we offer free parcel
-                delivery.
-              </div>
-            </div>
-          </div>
-
-          <div class="card accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionDelivery-2" aria-controls="accordionDelivery-2">
-                What is the delivery cost of my order?
-              </button>
-            </h2>
-            <div id="accordionDelivery-2" class="accordion-collapse collapse">
-              <div class="accordion-body">The cost of scheduled delivery is $69 or $99 per order, depending on the destination postal code. The parcel delivery is free.
-              </div>
-            </div>
-          </div>
-
-          <div class="card accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionDelivery-4" aria-controls="accordionDelivery-4">
-                What to do if my product arrives damaged?
-              </button>
-            </h2>
-            <div id="accordionDelivery-4" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                We will promptly replace any product that is damaged in transit.
-                Just contact our
-                <a href="javascript:void(0);">support team</a>, to notify us of the situation
-                within 48 hours of product arrival.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      -->
-      <div class="alert alert-warning alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-      <img src="{% static 'img/custom-illustrations/boy-blue-1.png' %}" width="25%" class="justify-content-end">
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <span class="alert-icon rounded">
+        -->
+        <div class="alert alert-warning alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+          <img src="{% static 'img/custom-illustrations/boy-blue-1.png' %}" width="25%" class="justify-content-end">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="alert-icon rounded">
         <i class="ti ti-bookmark"></i>
       </span>
-      <div class="d-flex flex-column ps-1">
-        <h5 class="alert-heading mb-2"><strong>Coming Soon</strong></h5>
-        <p class="mb-0">
-          We are working hard to provide you with the best documentation. As we are currently in the beta
-          phase, we are constantly updating our documentation, thus we are not able to provide you with
-          the documentation you are looking for. Please check back later. If you have any questions, feel
-          free to contact us at <a href="mailto:info@bimod.io">info@bimod.io</a>.
-        </p>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-        </button>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2"><strong>Coming Soon</strong></h5>
+            <p class="mb-0">
+              We are working hard to provide you with the best documentation. As we are currently in the beta
+              phase, we are constantly updating our documentation, thus we are not able to provide you with
+              the documentation you are looking for. Please check back later. If you have any questions, feel
+              free to contact us at <a href="mailto:info@bimod.io">info@bimod.io</a>.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
       </div>
-</div>
+    </div>
+    <!-- /FAQ's -->
+  </div>
+
+  <!-- Contact -->
+  <div class="row my-6">
+    <div class="col-12 text-center my-6">
+      <div class="badge bg-label-primary"><strong>Help</strong></div>
+      <h4 class="my-2">Documentation didn't help?</h4>
+      <p class="mb-0">We are always happy to help. Feel free to reach out to us via phone or email.</p>
     </div>
   </div>
-  <!-- /FAQ's -->
-</div>
-
-<!-- Contact -->
-<div class="row my-6">
-  <div class="col-12 text-center my-6">
-    <div class="badge bg-label-primary"><strong>Help</strong></div>
-    <h4 class="my-2">Documentation didn't help?</h4>
-    <p class="mb-0">We are always happy to help. Feel free to reach out to us via phone or email.</p>
-  </div>
-</div>
-<div class="row justify-content-center gap-sm-0 gap-6">
-  <div class="col-sm-6">
-    <div class="py-6 rounded bg-faq-section d-flex align-items-center flex-column">
-      <div class="avatar avatar-md">
+  <div class="row justify-content-center gap-sm-0 gap-6">
+    <div class="col-sm-6">
+      <div class="py-6 rounded bg-faq-section d-flex align-items-center flex-column">
+        <div class="avatar avatar-md">
         <span class="avatar-initial bg-label-primary rounded">
           <i class="ti ti-phone ti-26px"></i>
         </span>
+        </div>
+        <h5 class="mt-4 mb-1"><a class="text-heading" href="tel:+90-500-500-50-50">+90-500-500-50-50</a></h5>
+        <p class="mb-0">Available between <strong>9:00 am - 5:00 pm (UTC+3).</strong></p>
       </div>
-      <h5 class="mt-4 mb-1"><a class="text-heading" href="tel:+90-500-500-50-50">+90-500-500-50-50</a></h5>
-      <p class="mb-0">Available between <strong>9:00 am - 5:00 pm (UTC+3).</strong></p>
     </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="py-6 rounded bg-faq-section d-flex align-items-center flex-column">
-      <div class="avatar avatar-md">
+    <div class="col-sm-6">
+      <div class="py-6 rounded bg-faq-section d-flex align-items-center flex-column">
+        <div class="avatar avatar-md">
         <span class="avatar-initial bg-label-primary rounded">
           <i class="ti ti-mail ti-26px"></i>
         </span>
+        </div>
+        <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:info@bimod.io">info@bimod.io</a></h5>
+        <p class="mb-0">Best way to get a quick response, <strong>available 24/7.</strong></p>
       </div>
-      <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:info@bimod.io">info@bimod.io</a></h5>
-      <p class="mb-0">Best way to get a quick response, <strong>available 24/7.</strong></p>
     </div>
   </div>
-</div>
-<!-- /Contact -->
+  <!-- /Contact -->
 {% endblock %}

@@ -7,38 +7,38 @@
 {% block title %}Upload ML Model{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/form-layouts.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<!-- Basic Layout -->
-<div class="row">
-  <div class="col-xl mb-6">
-    <div class="card">
-      <div class="card-datatable table-responsive">
-        <a href="{% url 'datasource_ml_models:item_list' %}">
-          <button class="btn btn-secondary ms-4 mt-4 mb-8">
-            <i class="fa fa-dashboard me-4"></i>
-            <strong>Manage ML Models</strong>
-          </button>
-        </a>
-      </div>
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Upload ML Model</h5>
-        <small class="text-muted float-end"></small>
-      </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'datasource_ml_models:item_list' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong>Manage ML Models</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Upload ML Model</h5>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
           <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
           <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
@@ -46,7 +46,8 @@
           <div class="d-flex flex-column ps-1">
             <h5 class="alert-heading mb-2">Tip</h5>
             <p class="mb-0">
-              Upload an ML model to be utilized by your assistant. Please note that only PyTorch models (.pth) are supported
+              Upload an ML model to be utilized by your assistant. Please note that only PyTorch models (.pth) are
+              supported
               at this time. Your assistant will be able to use this model to make predictions on your data, and you can
               also use it to train your model with new data by providing the model with the necessary resources.
             </p>
@@ -54,61 +55,68 @@
             </button>
           </div>
         </div>
-      <div class="card-body">
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-              {{ message }}
+        <div class="card-body">
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label class="form-label" for="ml_model_base">ML Model Connection</label>
+              <select class="form-select" id="ml_model_base" name="ml_model_base">
+                <option value="" disabled selected>Select ML Model Connection</option>
+                {% for connection in ml_model_connections %}
+                  <option value="{{ connection.id }}">{{ connection.name }}</option>
+                {% endfor %}
+              </select>
             </div>
-          {% endfor %}
-        {% endif %}
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="mb-6">
-            <label class="form-label" for="ml_model_base">ML Model Connection</label>
-            <select class="form-select" id="ml_model_base" name="ml_model_base">
-              <option value="" disabled selected>Select ML Model Connection</option>
-              {% for connection in ml_model_connections %}
-                <option value="{{ connection.id }}">{{ connection.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="file">Upload File</label>
-            <input type="file" class="form-control" id="file" name="file" accept=".pth">
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="ml_model_name">ML Model Name</label>
-            <input type="text" class="form-control" id="ml_model_name" name="ml_model_name" placeholder="Enter ML model name">
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="description">Description</label>
-            <textarea class="form-control" id="description" name="description" placeholder="Enter description for the ML model"></textarea>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="interpretation_temperature">Temperature</label>
-            <input type="number" class="form-control" id="interpretation_temperature" name="interpretation_temperature" step="0.05"
-                   min="0" max="2" placeholder="Enter temperature" value="0.25"/>
-            <div class="form-text"></div>
-          </div>
-          <button type="submit" class="btn btn-primary d-grid w-100 mt-8"><strong>Upload ML Model</strong></button>
-        </form>
-        <!-- Loading bar warning -->
-        <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
+            <div class="mb-6">
+              <label class="form-label" for="file">Upload File</label>
+              <input type="file" class="form-control" id="file" name="file" accept=".pth">
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="ml_model_name">ML Model Name</label>
+              <input type="text" class="form-control" id="ml_model_name" name="ml_model_name"
+                     placeholder="Enter ML model name">
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="description">Description</label>
+              <textarea class="form-control" id="description" name="description"
+                        placeholder="Enter description for the ML model"></textarea>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="interpretation_temperature">Temperature</label>
+              <input type="number" class="form-control" id="interpretation_temperature"
+                     name="interpretation_temperature" step="0.05"
+                     min="0" max="2" placeholder="Enter temperature" value="0.25"/>
+              <div class="form-text"></div>
+            </div>
+            <button type="submit" class="btn btn-primary d-grid w-100 mt-8"><strong>Upload ML Model</strong></button>
+          </form>
+          <!-- Loading bar warning -->
+          <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none"
+               role="alert">
             <span class="alert-icon rounded">
                 <i class="ti ti-brain"></i>
             </span>
             <div class="d-flex flex-column ps-1 pt-4">
-                <p class="alert-heading"><strong>Uploading ML Model...</strong></p>
+              <p class="alert-heading"><strong>Uploading ML Model...</strong></p>
             </div>
-        </div>
-        <!-- Loading bar -->
-        <hr>
-        <div id="loadingBar" class="progress d-none mt-3 mb-1">
-            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%; height:10px;"></div>
+          </div>
+          <!-- Loading bar -->
+          <hr>
+          <div id="loadingBar" class="progress d-none mt-3 mb-1">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                 style="width: 100%; height:10px;"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

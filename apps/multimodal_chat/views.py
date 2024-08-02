@@ -10,28 +10,22 @@ from .models import MultimodalChat, MultimodalChatMessage, ChatSourcesNames
 from .utils import generate_chat_name
 from .._services.storages.storage_executor import StorageExecutor
 from ..assistants.models import Assistant
-from ..datasource_media_storages.models import DataSourceMediaStorageItem
 from ..message_templates.models import MessageTemplate
 from ..organization.models import Organization
 from ..user_permissions.models import UserPermission, PermissionNames
 
 
 class ChatView(LoginRequiredMixin, TemplateView):
-    template_name = 'multimodal_chat/chat.html'
+    template_name = 'multimodal_chat/chats/chat.html'
 
     def get_context_data(self, **kwargs):
         active_chat = None
         context_user = self.request.user
-
         if 'chat_id' in self.request.GET:
             active_chat = get_object_or_404(MultimodalChat, id=self.request.GET['chat_id'], user=self.request.user)
-
         chats = MultimodalChat.objects.filter(
-            user=self.request.user,
-            chat_source=ChatSourcesNames.APP,
-            is_archived=False
+            user=self.request.user, chat_source=ChatSourcesNames.APP, is_archived=False
         )
-
         # if there is an active chat, put the active chat at the beginning of the list
         if active_chat:
             chats = [active_chat] + [chat for chat in chats if chat.id != active_chat.id]
@@ -40,24 +34,14 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 active_chat = chats[0]
 
         assistants = Assistant.objects.filter(organization__users=self.request.user)
-        organizations = Organization.objects.filter(
-            organization_assistants__in=assistants
-        )
-        message_templates = MessageTemplate.objects.filter(
-            user=context_user,
-            organization__in=organizations
-        )
-
+        organizations = Organization.objects.filter(organization_assistants__in=assistants)
+        message_templates = MessageTemplate.objects.filter(user=context_user, organization__in=organizations)
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         active_chat_messages = active_chat.chat_messages.all().order_by('sent_at') if active_chat else None
         context.update(
             {
-                "chats": chats,
-                "assistants": assistants,
-                "active_chat": active_chat,
-                "chat_messages": active_chat_messages,
-                "message_templates": message_templates,
-                "base_url": BASE_URL
+                "chats": chats, "assistants": assistants, "active_chat": active_chat,
+                "chat_messages": active_chat_messages, "message_templates": message_templates, "base_url": BASE_URL
             }
         )
         return context
@@ -66,31 +50,21 @@ class ChatView(LoginRequiredMixin, TemplateView):
         from .._services.llms.llm_decoder import InternalLLMClient
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-
-        ##############################
         # PERMISSION CHECK FOR - CHAT / CREATE AND USE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to create and use chats."}
             return self.render_to_response(context)
-        ##############################
 
         if 'assistant_id' in request.POST:
             assistant_id = request.POST.get('assistant_id')
             assistant = get_object_or_404(Assistant, id=assistant_id, organization__users=request.user)
             chat = MultimodalChat.objects.create(
-                organization=assistant.organization,
-                assistant=assistant,
-                user=request.user,
-                chat_name=request.POST.get('chat_name', generate_chat_name()),
-                created_by_user=request.user,
+                organization=assistant.organization, assistant=assistant, user=request.user,
+                chat_name=request.POST.get('chat_name', generate_chat_name()), created_by_user=request.user,
                 chat_source=ChatSourcesNames.APP
             )
             active_chat = chat
@@ -113,9 +87,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
             chat = get_object_or_404(MultimodalChat, id=chat_id, user=request.user)
             message_content = request.POST.get('message_content')
             attached_images = request.FILES.getlist('attached_images[]')
-
             attached_files = request.FILES.getlist('attached_files[]')
-
             # canvas image
             sketch_image = {'sketch_image': None}
             attached_canvas_image = request.POST.get('sketch_image')
@@ -153,12 +125,10 @@ class ChatView(LoginRequiredMixin, TemplateView):
                     continue
                 image_bytes_list.append(image_bytes)
             image_full_uris = StorageExecutor.save_images_and_provide_full_uris(image_bytes_list)
-
             if sketch_image_full_uris_list:
                 image_full_uris.extend(sketch_image_full_uris_list)
             if edit_image_full_uris_list:
                 image_full_uris.extend(edit_image_full_uris_list)
-
             # Upload the attached files
             file_bytes_list = []
             for file in attached_files:
@@ -170,13 +140,9 @@ class ChatView(LoginRequiredMixin, TemplateView):
                     continue
                 file_bytes_list.append((file_bytes, file_name))
             file_full_uris = StorageExecutor.save_files_and_provide_full_uris(file_bytes_list)
-
             MultimodalChatMessage.objects.create(
-                multimodal_chat=chat,
-                sender_type='USER',
-                message_text_content=message_content,
-                message_image_contents=image_full_uris,
-                message_file_contents=file_full_uris
+                multimodal_chat=chat, sender_type='USER', message_text_content=message_content,
+                message_image_contents=image_full_uris, message_file_contents=file_full_uris
             )
             user_message = MultimodalChatMessage.objects.filter(multimodal_chat=chat).last()
             internal_llm_client = InternalLLMClient.get(assistant=chat.assistant, multimodal_chat=chat)
@@ -184,32 +150,24 @@ class ChatView(LoginRequiredMixin, TemplateView):
                                                    image_uris=image_full_uris,
                                                    file_uris=file_full_uris)
             MultimodalChatMessage.objects.create(
-                multimodal_chat=chat,
-                sender_type='ASSISTANT',
-                message_text_content=response
+                multimodal_chat=chat, sender_type='ASSISTANT', message_text_content=response
             )
-
             active_chat = chat
-
         chats = MultimodalChat.objects.filter(user=request.user, chat_source=ChatSourcesNames.APP)
         assistants = Assistant.objects.filter(organization__users=request.user)
-
         context.update(
             {
                 "layout_path": TemplateHelper.set_layout("layout_vertical.html", context),
-                'chat_id': active_chat.id if active_chat else None,
-                'chats': chats,
-                'assistants': assistants,
+                'chat_id': active_chat.id if active_chat else None, 'chats': chats, 'assistants': assistants,
                 'active_chat': active_chat
             }
         )
-
         redirect_string = self.request.path_info + '?chat_id=' + str(active_chat.id)
         return redirect(redirect_string, *args, **kwargs)
 
 
 class ChatDeleteView(LoginRequiredMixin, DeleteView):
-    template_name = 'multimodal_chat/confirm_delete_chat.html'
+    template_name = 'multimodal_chat/chats/confirm_delete_chat.html'
     success_url = '/chat/'
 
     def get_context_data(self, **kwargs):
@@ -233,29 +191,19 @@ class ChatArchiveView(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
         context_user = self.request.user
-
-        ##############################
         # PERMISSION CHECK FOR - CHAT / ARCHIVE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to archive chats."}
             return self.render_to_response(context)
-        ##############################
-
         pk = kwargs.get('pk')
         chat = get_object_or_404(MultimodalChat, id=pk, user=self.request.user)
         chat.is_archived = True
         chat.save()
-
         return redirect('multimodal_chat:chat')
 
 
@@ -265,29 +213,20 @@ class ChatUnarchiveView(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
         context_user = self.request.user
-
-        ##############################
         # PERMISSION CHECK FOR - CHAT / ARCHIVE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to archive chats."}
             return self.render_to_response(context)
-        ##############################
 
         pk = kwargs.get('pk')
         chat = get_object_or_404(MultimodalChat, id=pk, user=self.request.user)
         chat.is_archived = False
         chat.save()
-
         return redirect('multimodal_chat:chat')
 
 
@@ -300,12 +239,10 @@ class ChatArchiveListView(LoginRequiredMixin, TemplateView):
             active_chat = get_object_or_404(MultimodalChat, id=self.request.GET['chat_id'], user=self.request.user)
 
         chats = MultimodalChat.objects.filter(
-            user=self.request.user,
-            chat_source=ChatSourcesNames.APP,
+            user=self.request.user, chat_source=ChatSourcesNames.APP,
             # Only show the archived chats
             is_archived=True
         )
-
         # if there is an active chat, put the active chat at the beginning of the list
         if active_chat:
             chats = [active_chat] + [chat for chat in chats if chat.id != active_chat.id]
@@ -314,24 +251,14 @@ class ChatArchiveListView(LoginRequiredMixin, TemplateView):
                 active_chat = chats[0]
 
         assistants = Assistant.objects.filter(organization__users=self.request.user)
-        organizations = Organization.objects.filter(
-            organization_assistants__in=assistants
-        )
-        message_templates = MessageTemplate.objects.filter(
-            user=context_user,
-            organization__in=organizations
-        )
-
+        organizations = Organization.objects.filter(organization_assistants__in=assistants)
+        message_templates = MessageTemplate.objects.filter(user=context_user, organization__in=organizations)
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         active_chat_messages = active_chat.chat_messages.all().order_by('sent_at') if active_chat else None
         context.update(
             {
-                "chats": chats,
-                "assistants": assistants,
-                "active_chat": active_chat,
-                "chat_messages": active_chat_messages,
-                "message_templates": message_templates,
-                "base_url": BASE_URL
+                "chats": chats, "assistants": assistants, "active_chat": active_chat,
+                "chat_messages": active_chat_messages, "message_templates": message_templates, "base_url": BASE_URL
             }
         )
         return context

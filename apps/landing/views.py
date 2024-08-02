@@ -1,14 +1,10 @@
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from config import settings
 from web_project import TemplateLayout, TemplateHelper
-
-
-# Create your views here.
 
 
 class LandingPageView(TemplateView):
@@ -16,8 +12,7 @@ class LandingPageView(TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context.update(
             {
-                "layout": "blank",
-                "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+                "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
                 "display_customizer": False,
             }
         )
@@ -31,8 +26,7 @@ class ContactFormSubmitView(TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context.update(
             {
-                "layout": "blank",
-                "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+                "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
                 "display_customizer": False,
             }
         )
@@ -48,7 +42,6 @@ class ContactFormSubmitView(TemplateView):
 
         # take the usernames of all users
         usernames = User.objects.values_list('username', flat=True)
-
         email_message = f"""
         Full Name: {fullname}
         Email: {email}
@@ -58,7 +51,6 @@ class ContactFormSubmitView(TemplateView):
         ```
         {message}
         ```
-
         """
 
         # Construct the email message
@@ -96,11 +88,7 @@ class ContactFormSubmitView(TemplateView):
             subject = f"VISITOR QUERY: Message from {fullname}"
 
         send_mail(
-            subject,
-            email_message,
-            settings.DEFAULT_FROM_EMAIL,
-            [email],
-            fail_silently=False,
+            subject, email_message, settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False,
         )
         return redirect("landing:contact_form_submit", )
 
@@ -110,8 +98,7 @@ class DocumentationView(TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context.update(
             {
-                "layout": "blank",
-                "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+                "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
                 "display_customizer": False,
             }
         )
@@ -125,8 +112,7 @@ class FAQView(TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context.update(
             {
-                "layout": "blank",
-                "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+                "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
                 "display_customizer": False,
             }
         )

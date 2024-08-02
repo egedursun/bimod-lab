@@ -1,10 +1,8 @@
 from django.db import models
 
-
 BROWSER_TYPES = [
     ("google", "Google"),
 ]
-
 
 BROWSER_READING_ABILITIES = [
     # Remove these contents

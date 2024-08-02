@@ -1,15 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView, DeleteView
 
 from apps.starred_messages.models import StarredMessage
 from apps.user_permissions.models import UserPermission, PermissionNames
 from config.settings import BASE_URL
 from web_project import TemplateLayout
-
-
-# Create your views here.
 
 
 class ListStarredMessageView(TemplateView, LoginRequiredMixin):
@@ -29,11 +26,7 @@ class ListStarredMessageView(TemplateView, LoginRequiredMixin):
             if assistant_name not in org_assistants_messages[org_name]:
                 org_assistants_messages[org_name][assistant_name] = []
             org_assistants_messages[org_name][assistant_name].append(message)
-
-        context.update({
-            'org_assistants_messages': org_assistants_messages,
-            'base_url': BASE_URL
-        })
+        context.update({'org_assistants_messages': org_assistants_messages, 'base_url': BASE_URL})
         return context
 
 
@@ -51,27 +44,18 @@ class DeleteStarredMessageView(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         context_user = request.user
         starred_message = get_object_or_404(StarredMessage, id=self.kwargs['pk'])
-
-        ##############################
         # PERMISSION CHECK FOR - STARRED_MESSAGES/REMOVE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.REMOVE_STARRED_MESSAGES not in user_permissions:
             messages.error(request, "You do not have permission to delete starred messages.")
             return redirect('starred_messages:list')
-
         starred_message.delete()
         success_message = "Starred message deleted successfully."
-
         # assign the relevant message's starred field to False
         starred_message.chat_message.starred = False
         starred_message.chat_message.save()
-
         messages.success(request, success_message)
         return redirect(self.success_url)
 

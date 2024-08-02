@@ -50,9 +50,6 @@ def sum_costs(transactions):
         total_cost += transaction.total_cost
         billable_cost += transaction.total_billable_cost
     return {
-        "llm_cost": llm_cost,
-        "internal_service_cost": internal_service_cost,
-        "tax_cost": tax_cost,
-        "total_cost": total_cost,
-        "total_billable_cost": billable_cost,
+        "llm_cost": llm_cost, "internal_service_cost": internal_service_cost, "tax_cost": tax_cost,
+        "total_cost": total_cost, "total_billable_cost": billable_cost,
     }

@@ -3,9 +3,6 @@ from django.db import models
 from apps.organization.utils import generate_random_string
 
 
-# Create your models here.
-
-
 class Organization(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
@@ -20,11 +17,11 @@ class Organization(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                        related_name="organization_created_by_users",
-                                        default=1, blank=True, null=False)
+                                        related_name="organization_created_by_users", default=1, blank=True,
+                                        null=False)
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                             related_name="organization_last_updated_by_users",
-                                             default=1, blank=True, null=False)
+                                             related_name="organization_last_updated_by_users", default=1, blank=True,
+                                             null=False)
 
     # additional fields
     balance = models.DecimalField(max_digits=10, decimal_places=6, default=0.000000)
@@ -33,7 +30,6 @@ class Organization(models.Model):
     organization_image_save_path = 'organization_images/%Y/%m/%d/' + generate_random_string()
     organization_image = models.ImageField(upload_to=organization_image_save_path, blank=True, max_length=1000,
                                            null=True)
-
     # many to many fields
     users = models.ManyToManyField("auth.User", related_name="organizations")
     organization_assistants = models.ManyToManyField("assistants.Assistant", related_name="organizations",
@@ -41,7 +37,6 @@ class Organization(models.Model):
     llm_cores = models.ManyToManyField("llm_core.LLMCore", related_name="organizations")
     exported_assistants = models.ManyToManyField("export_assistants.ExportAssistantAPI",
                                                  related_name="organizations", blank=True)
-
     auto_balance_topup = models.OneToOneField("llm_transaction.AutoBalanceTopUpModel",
                                               on_delete=models.SET_NULL, blank=True, null=True,
                                               related_name="organization_auto_balance_topup")

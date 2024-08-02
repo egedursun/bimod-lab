@@ -56,23 +56,18 @@ class TriggeredJobWebhookListenerView(View):
 
             # [0] Create a new TriggeredJobInstance for tracking
             new_instance = TriggeredJobInstance.objects.create(
-                triggered_job=job,
-                status=TriggeredJobInstanceStatusesNames.PENDING,
-                webhook_payload=payload
+                triggered_job=job, status=TriggeredJobInstanceStatusesNames.PENDING, webhook_payload=payload
             )
             # add it to the job
             job.triggered_job_instances.add(new_instance)
             job.save()
-
             # [1] Update the job run count
             job.current_run_count += 1
             job.save()
             new_instance.execution_index = job.current_run_count
             new_instance.save()
-
             # Process the event
             self.handle_triggered_job(job=job, instance=new_instance)
-
             return JsonResponse({
                 'status': 'success', 'message': 'Webhook payload received successfully',
                 'data': { 'assistant_id': assistant_id, 'triggered_job_id': triggered_job_id, 'payload': payload }
@@ -82,6 +77,7 @@ class TriggeredJobWebhookListenerView(View):
 
     @staticmethod
     def handle_triggered_job(job, instance):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         try:
             # [2] Create a chat
             chat = MultimodalChat.objects.create(
@@ -92,11 +88,9 @@ class TriggeredJobWebhookListenerView(View):
                 created_by_user=job.created_by_user,
                 chat_source=ChatSourcesNames.TRIGGERED,
             )
-
             # [3] Set the status as building
             instance.status = TriggeredJobInstanceStatusesNames.BUILDING
             instance.save()
-
             # [4] Create the instruction prompt
             instruction_feed = f"""
                 **WARNING: This is an AUTO-GENERATED user message.**
@@ -148,62 +142,45 @@ class TriggeredJobWebhookListenerView(View):
 
                 ---
                 """
-
             # [5] Send the instruction feed message
             instruction_feed_message = MultimodalChatMessage.objects.create(
                 multimodal_chat=chat,
                 sender_type='USER',
                 message_text_content=instruction_feed
             )
-
             # [6] Set the status as initializing assistant
             instance.status = TriggeredJobInstanceStatusesNames.INITIALIZING_ASSISTANT
             instance.save()
-
             # [7] Initialize the assistant client
             llm_client = InternalLLMClient.get(assistant=chat.assistant, multimodal_chat=chat)
-
             # [8] Set the status as generating
             instance.status = TriggeredJobInstanceStatusesNames.GENERATING
             instance.save()
-
             # [9] Get the response
             response_text = llm_client.respond(latest_message=instruction_feed_message)
-
             # [10] Set the status as saving logs
             instance.status = TriggeredJobInstanceStatusesNames.SAVING_LOGS
             instance.save()
-
             # [11] Save the logs
             instance.logs = response_text
             instance.save()
-
             # [12] Set the status as cleaning up
             instance.status = TriggeredJobInstanceStatusesNames.CLEANING_UP
             instance.save()
-
             # [13] Delete the chat
             chat.delete()
-
             # [14] Set the status as completed
             instance.status = TriggeredJobInstanceStatusesNames.COMPLETED
             instance.ended_at = timezone.now()
             instance.save()
-
             # [15] Add the transaction
             transaction = LLMTransaction(
-                organization=job.assistant.organization,
-                model=job.assistant.llm_model,
-                responsible_user=None,
-                responsible_assistant=job.assistant,
-                encoding_engine="cl100k_base",
-                llm_cost=ToolCostsMap.TriggeredJobExecutor.COST,
-                transaction_type="system",
-                transaction_source=TransactionSourcesNames.TRIGGER_JOB_EXECUTION,
-                is_tool_cost=True
+                organization=job.assistant.organization, model=job.assistant.llm_model, responsible_user=None,
+                responsible_assistant=job.assistant, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                llm_cost=ToolCostsMap.TriggeredJobExecutor.COST, transaction_type=ChatRoles.SYSTEM,
+                transaction_source=TransactionSourcesNames.TRIGGER_JOB_EXECUTION, is_tool_cost=True
             )
             transaction.save()
-
         except Exception as e:
             instance.status = TriggeredJobInstanceStatusesNames.FAILED
             instance.save()
@@ -219,31 +196,22 @@ class CreateTriggeredJobView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = TriggeredJobForm(request.POST)
-
-        ##############################
         # PERMISSION CHECK FOR - ADD TRIGGERED JOB
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=request.user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.ADD_TRIGGERS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to add triggered jobs."}
             return self.render_to_response(context)
-        ##############################
 
         if form.is_valid():
             triggered_job = form.save(commit=False)
             triggered_job.created_by_user = request.user
-
             # Handle dynamic fields
             step_guide = request.POST.getlist('step_guide[]')
             triggered_job.step_guide = step_guide
             triggered_job.save()
-
             messages.success(request, "Triggered Job created successfully!")
             return redirect('mm_triggered_jobs:list')
         else:
@@ -257,24 +225,17 @@ class ListTriggeredJobsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         search_query = self.request.GET.get('search', '')
-
         user_organizations = self.request.user.organizations.all()
         organization_assistants = user_organizations.values_list('assistants', flat=True)
-
-        triggered_jobs_list = TriggeredJob.objects.filter(
-            trigger_assistant__in=organization_assistants
-        )
+        triggered_jobs_list = TriggeredJob.objects.filter(trigger_assistant__in=organization_assistants)
 
         if search_query:
             triggered_jobs_list = triggered_jobs_list.filter(
-                Q(name__icontains=search_query) |
-                Q(task_description__icontains=search_query)
+                Q(name__icontains=search_query) | Q(task_description__icontains=search_query)
             )
-
         paginator = Paginator(triggered_jobs_list, self.paginate_by)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-
         context['page_obj'] = page_obj
         context['triggered_jobs'] = page_obj.object_list
         context['total_triggered_jobs'] = TriggeredJob.objects.count()
@@ -290,19 +251,14 @@ class ListTriggeredJobLogsView(LoginRequiredMixin, TemplateView):
         triggered_job_id = self.kwargs.get('pk')
         triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)
         context['triggered_job'] = triggered_job
-
         search_query = self.request.GET.get('search', '')
         job_instances_list = TriggeredJobInstance.objects.filter(triggered_job=triggered_job)
-
         if search_query:
-            job_instances_list = job_instances_list.filter(
-                Q(status__icontains=search_query)
-            )
+            job_instances_list = job_instances_list.filter(Q(status__icontains=search_query))
 
         paginator = Paginator(job_instances_list, self.paginate_by)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-
         context['page_obj'] = page_obj
         context['triggered_job_instances'] = page_obj.object_list
         context['total_triggered_job_instances'] = job_instances_list.count()
@@ -320,21 +276,14 @@ class ConfirmDeleteTriggeredJobView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-
-        ##############################
         # PERMISSION CHECK FOR - ADD TRIGGERED JOB
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=request.user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.DELETE_TRIGGERS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to delete triggered jobs."}
             return self.render_to_response(context)
-        ##############################
 
         triggered_job_id = self.kwargs.get('pk')
         triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)

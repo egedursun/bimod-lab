@@ -2,8 +2,6 @@ from django.contrib import admin
 
 from apps.datasource_file_systems.models import DataSourceFileSystem
 
-# Register your models here.
-
 
 @admin.register(DataSourceFileSystem)
 class DataSourceFileSystemAdmin(admin.ModelAdmin):

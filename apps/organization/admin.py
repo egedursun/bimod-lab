@@ -2,8 +2,6 @@ from django.contrib import admin
 from .models import Organization
 
 
-# Register your models here.
-
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ("name", "email", "phone", "address", "industry", "is_active", "created_at", "updated_at")
@@ -11,7 +9,6 @@ class OrganizationAdmin(admin.ModelAdmin):
     search_fields = ("name", "email", "phone", "address", "industry")
     date_hierarchy = "created_at"
     ordering = ["-created_at"]
-
     list_per_page = 20
     list_max_show_all = 100
     list_editable = ["is_active"]

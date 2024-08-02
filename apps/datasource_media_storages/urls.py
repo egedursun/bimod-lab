@@ -9,7 +9,6 @@ from apps.datasource_media_storages.views import DataSourceMediaStorageConnectio
 
 app_name = "datasource_media_storages"
 
-
 urlpatterns = [
     path('create/', DataSourceMediaStorageConnectionCreateView.as_view(
         template_name="datasource_media_storages/storage/create_datasource_media_storage.html"
@@ -23,6 +22,7 @@ urlpatterns = [
     path('delete/<int:pk>/', DataSourceMediaStorageConnectionDeleteView.as_view(
         template_name="datasource_media_storages/storage/confirm_delete_datasource_media_storage.html"
     ), name="delete"),
+
     path('create_item/', DataSourceMediaStorageItemCreateView.as_view(
         template_name="datasource_media_storages/media/add_media.html"
     ), name="create_item"),
@@ -37,7 +37,9 @@ urlpatterns = [
     path('items/generate_description/<int:pk>/', DataSourceMediaStorageItemGenerateDescription.as_view(
         template_name="datasource_media_storages/media/detail_media.html"
     ), name='generate_description'),
-    path('items/fetch_file_from_url/', DataSourceMediaStorageItemFetchFileFromUrl.as_view(), name='fetch_file_from_url'),
+    path('items/fetch_file_from_url/', DataSourceMediaStorageItemFetchFileFromUrl.as_view(),
+         name='fetch_file_from_url'),
+
     path('items/list_generated/', DataSourceMediaStorageGeneratedItemsListView.as_view(
         template_name="datasource_media_storages/generated/list_generated_media.html"
     ), name='list_generated_items')

@@ -5,8 +5,6 @@ from django.db import models
 from slugify import slugify
 from .tasks import upload_file_to_storage
 
-# Create your models here.
-
 
 MEDIA_CATEGORIES = (
     ('image', 'Image'),
@@ -28,7 +26,6 @@ class MediaCategoriesNames:
 
 
 MEDIA_FILE_TYPES = (
-    ############################
     # Image Files
     ('jpg', 'JPEG'),
     ('png', 'PNG'),
@@ -36,25 +33,21 @@ MEDIA_FILE_TYPES = (
     ('svg', 'SVG'),
     ('bmp', 'BMP'),
     ('tiff', 'TIFF'),
-    ############################
     # Audio Files
     ('mp3', 'MP3'),
     ('wav', 'WAV'),
     ('flac', 'FLAC'),
     ('aac', 'AAC'),
     ('ogg', 'OGG'),
-    ############################
     # Video Files
     ('mp4', 'MP4'),
     ('avi', 'AVI'),
     ('mkv', 'MKV'),
     ('mov', 'MOV'),
-    ############################
     # Compressed Files
     ('zip', 'ZIP'),
     ('rar', 'RAR'),
     ('tar', 'TAR'),
-    ############################
     # Code Files
     ('py', 'Python'),
     ('js', 'JavaScript'),
@@ -69,8 +62,6 @@ MEDIA_FILE_TYPES = (
     ('sh', 'Shell'),
     ('go', 'Go'),
     ('dart', 'Dart'),
-
-    ############################
     # Data Configuration files
     ('yml', 'YML'),
     ('yaml', 'YAML'),
@@ -81,12 +72,10 @@ MEDIA_FILE_TYPES = (
     ('json', 'JSON'),
     ('xml', 'XML'),
     ('tsv', 'TSV'),
-
     ('docx', 'DOCX'),
     ('pptx', 'PPTX'),
     ('pdf', 'PDF'),
     ('txt', 'TXT'),
-    ############################
 )
 
 
@@ -155,7 +144,6 @@ class DataSourceMediaStorageConnection(models.Model):
     media_category = models.CharField(max_length=20, choices=MEDIA_CATEGORIES)
 
     directory_full_path = models.CharField(max_length=255, blank=True, null=True)
-
     directory_schema = models.TextField(blank=True, null=True)
 
     interpretation_temperature = models.FloatField(default=0.25)
@@ -187,14 +175,12 @@ class DataSourceMediaStorageConnection(models.Model):
 
             os.system(f"mkdir -p {full_path}")
             os.system(f"touch {full_path}/__init__.py")
-
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
         # Remove the directory
         if self.directory_full_path is not None:
             os.system(f"rm -rf {self.directory_full_path}")
-
         super().delete(using, keep_parents)
 
 
@@ -243,7 +229,6 @@ class DataSourceMediaStorageItem(models.Model):
             return False
 
         super().save(force_insert, force_update, using, update_fields)
-
         # Upload the file to the storage
         upload_file_to_storage.delay(file_bytes=self.file_bytes, full_path=self.full_file_path,
                                      media_category=self.storage_base.media_category)

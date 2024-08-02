@@ -7,124 +7,124 @@
 {% block title %}Upload Media Files{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
-<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
-<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/form-layouts.js' %}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const organizations = {{ organizations|safe }};
-        const assistants = {{ assistants|safe }};
-        const mediaStorages = {{ media_storages|safe }};
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const organizations = {{ organizations|safe }};
+      const assistants = {{ assistants|safe }};
+      const mediaStorages = {{ media_storages|safe }};
 
-        const organizationSelect = document.getElementById('organization') || null;
-        const assistantSelect = document.getElementById('assistant') || null;
-        const mediaStorageSelect = document.getElementById('media_storage') || null;
+      const organizationSelect = document.getElementById('organization') || null;
+      const assistantSelect = document.getElementById('assistant') || null;
+      const mediaStorageSelect = document.getElementById('media_storage') || null;
 
-        organizationSelect.addEventListener('change', function() {
-            const selectedOrganization = this.value;
-            assistantSelect.innerHTML = '<option value="" disabled selected>Select Assistant</option>';
-            mediaStorageSelect.innerHTML = '<option value="" disabled selected>Select Media Storage</option>';
+      organizationSelect.addEventListener('change', function () {
+        const selectedOrganization = this.value;
+        assistantSelect.innerHTML = '<option value="" disabled selected>Select Assistant</option>';
+        mediaStorageSelect.innerHTML = '<option value="" disabled selected>Select Media Storage</option>';
 
-            assistants.forEach(assistant => {
-                if (assistant.organization_id == selectedOrganization) {
-                    const option = document.createElement('option');
-                    option.value = assistant.id;
-                    option.textContent = assistant.name;
-                    assistantSelect.appendChild(option);
-                }
-            });
+        assistants.forEach(assistant => {
+          if (assistant.organization_id == selectedOrganization) {
+            const option = document.createElement('option');
+            option.value = assistant.id;
+            option.textContent = assistant.name;
+            assistantSelect.appendChild(option);
+          }
         });
+      });
 
-        assistantSelect.addEventListener('change', function() {
-            const selectedAssistant = this.value;
-            mediaStorageSelect.innerHTML = '<option value="" disabled selected>Select Media Storage</option>';
+      assistantSelect.addEventListener('change', function () {
+        const selectedAssistant = this.value;
+        mediaStorageSelect.innerHTML = '<option value="" disabled selected>Select Media Storage</option>';
 
-            mediaStorages.forEach(storage => {
-                if (storage.assistant_id == selectedAssistant) {
-                    const option = document.createElement('option');
-                    option.value = storage.id;
-                    option.textContent = storage.name;
-                    mediaStorageSelect.appendChild(option);
-                }
-            });
+        mediaStorages.forEach(storage => {
+          if (storage.assistant_id == selectedAssistant) {
+            const option = document.createElement('option');
+            option.value = storage.id;
+            option.textContent = storage.name;
+            mediaStorageSelect.appendChild(option);
+          }
         });
+      });
 
-        document.getElementById('media_files').addEventListener('change', function(event) {
-            const fileList = Array.from(event.target.files);
-            const fileDisplayArea = document.getElementById('file_display_area');
-            fileDisplayArea.innerHTML = '<h5 class="card-header"><strong>Media File Staging</strong></h5><hr>';
-            fileList.forEach((file, index) => {
-                const fileSize = (file.size / 1024).toFixed(2) + ' KB';
-                const fileExtension = file.name.split('.').pop().toLowerCase();
-                const iconMap = {
-                    'jpg': 'jpg.png',
-                    'png': 'png.png',
-                    'gif': 'gif.png',
-                    'svg': 'svg.png',
-                    'bmp': 'bmp.png',
-                    'tiff': 'tiff.png',
-                    'mp3': 'mp3.png',
-                    'wav': 'wav.png',
-                    'flac': 'flac.png',
-                    'aac': 'aac.png',
-                    'ogg': 'ogg.png',
-                    'mp4': 'mp4.png',
-                    'avi': 'avi.png',
-                    'mkv': 'mkv.png',
-                    'mov': 'mov.png',
-                    'zip': 'zip.png',
-                    'rar': 'rar.png',
-                    'tar': 'tar.png',
-                    'py': 'py.png',
-                    'js': 'js.png',
-                    'ts': 'ts.png',
-                    'php': 'php.png',
-                    'css': 'css.png',
-                    'html': 'html.png',
-                    'java': 'java.png',
-                    'c': 'c.png',
-                    'cpp': 'cpp.png',
-                    'h': 'h.png',
-                    'sh': 'sh.png',
-                    'go': 'go.png',
-                    'dart': 'dart.png',
-                    'yml': 'yml.png',
-                    'yaml': 'yaml.png',
-                    'sql': 'sql.png',
-                    'pkl': 'pkl.png',
-                    'csv': 'csv.png',
-                    'xlsx': 'xlsx.png',
-                    'json': 'json.png',
-                    'xml': 'xml.png',
-                    'tsv': 'tsv.png',
-                    'docx': 'docx.png',
-                    'pptx': 'pptx.png',
-                    'pdf': 'pdf.png',
-                    'txt': 'txt.png',
-                };
-                const icon = iconMap[fileExtension] || 'file.png';
-                let filename_root = file.name.split(".")[0];
-                let filename_extension = file.name.split(".")[1];
-                if (filename_root.length > 64) {
-                    filename_root = filename_root.substring(0, 64) + '...';
-                }
-                const fileElement = document.createElement('div');
-                fileElement.classList.add('col-lg-12');
-                fileElement.innerHTML = `
+      document.getElementById('media_files').addEventListener('change', function (event) {
+        const fileList = Array.from(event.target.files);
+        const fileDisplayArea = document.getElementById('file_display_area');
+        fileDisplayArea.innerHTML = '<h5 class="card-header"><strong>Media File Staging</strong></h5><hr>';
+        fileList.forEach((file, index) => {
+          const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+          const fileExtension = file.name.split('.').pop().toLowerCase();
+          const iconMap = {
+            'jpg': 'jpg.png',
+            'png': 'png.png',
+            'gif': 'gif.png',
+            'svg': 'svg.png',
+            'bmp': 'bmp.png',
+            'tiff': 'tiff.png',
+            'mp3': 'mp3.png',
+            'wav': 'wav.png',
+            'flac': 'flac.png',
+            'aac': 'aac.png',
+            'ogg': 'ogg.png',
+            'mp4': 'mp4.png',
+            'avi': 'avi.png',
+            'mkv': 'mkv.png',
+            'mov': 'mov.png',
+            'zip': 'zip.png',
+            'rar': 'rar.png',
+            'tar': 'tar.png',
+            'py': 'py.png',
+            'js': 'js.png',
+            'ts': 'ts.png',
+            'php': 'php.png',
+            'css': 'css.png',
+            'html': 'html.png',
+            'java': 'java.png',
+            'c': 'c.png',
+            'cpp': 'cpp.png',
+            'h': 'h.png',
+            'sh': 'sh.png',
+            'go': 'go.png',
+            'dart': 'dart.png',
+            'yml': 'yml.png',
+            'yaml': 'yaml.png',
+            'sql': 'sql.png',
+            'pkl': 'pkl.png',
+            'csv': 'csv.png',
+            'xlsx': 'xlsx.png',
+            'json': 'json.png',
+            'xml': 'xml.png',
+            'tsv': 'tsv.png',
+            'docx': 'docx.png',
+            'pptx': 'pptx.png',
+            'pdf': 'pdf.png',
+            'txt': 'txt.png',
+          };
+          const icon = iconMap[fileExtension] || 'file.png';
+          let filename_root = file.name.split(".")[0];
+          let filename_extension = file.name.split(".")[1];
+          if (filename_root.length > 64) {
+            filename_root = filename_root.substring(0, 64) + '...';
+          }
+          const fileElement = document.createElement('div');
+          fileElement.classList.add('col-lg-12');
+          fileElement.innerHTML = `
                     <div class="badge bg-lighter d-flex align-items-center my-2">
                         <img src="{% static 'img/icons/misc/' %}${icon}" alt="${fileExtension}" width="15" class="me-2">
                         <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
@@ -132,48 +132,48 @@
                         <button type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
                     </div>
                 `;
-                fileDisplayArea.appendChild(fileElement);
-            });
-
-            document.querySelectorAll('.btn-close').forEach(button => {
-                button.addEventListener('click', function() {
-                    const index = this.getAttribute('data-index');
-                    fileList.splice(index, 1);
-                    const dataTransfer = new DataTransfer();
-                    fileList.forEach(file => dataTransfer.items.add(file));
-                    document.getElementById('media_files').files = dataTransfer.files;
-                    this.parentElement.remove();
-                });
-            });
+          fileDisplayArea.appendChild(fileElement);
         });
 
-        document.querySelector('form').addEventListener('submit', function() {
-            document.getElementById('loadingBarWarning').classList.remove('d-none');
-            document.getElementById('loadingBar').classList.remove('d-none');
-            this.querySelector('button[type="submit"]').disabled = true;
+        document.querySelectorAll('.btn-close').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('media_files').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
         });
+      });
+
+      document.querySelector('form').addEventListener('submit', function () {
+        document.getElementById('loadingBarWarning').classList.remove('d-none');
+        document.getElementById('loadingBar').classList.remove('d-none');
+        this.querySelector('button[type="submit"]').disabled = true;
+      });
     });
-</script>
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<!-- Basic Layout -->
-<div class="row">
-  <div class="col-xl mb-6">
-    <div class="card">
-      <div class="card-datatable table-responsive">
-        <a href="{% url 'datasource_media_storages:list_items' %}">
-          <button class="btn btn-secondary ms-4 mt-4 mb-8">
-            <i class="fa fa-dashboard me-4"></i>
-            <strong> Manage Media Files</strong>
-          </button>
-        </a>
-      </div>
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Upload Media Files</h5>
-        <small class="text-muted float-end"></small>
-      </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'datasource_media_storages:list_items' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong> Manage Media Files</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Upload Media Files</h5>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
           <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
           <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
@@ -189,75 +189,79 @@
             </button>
           </div>
         </div>
-      <div class="card-body">
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-              {{ message }}
+        <div class="card-body">
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label class="form-label" for="organization">Organization</label>
+              <select class="form-select" id="organization" name="organization">
+                <option value="" disabled selected>Select Organization</option>
+                {% for org in organizations %}
+                  <option value="{{ org.id }}">{{ org.name }}</option>
+                {% endfor %}
+              </select>
             </div>
-          {% endfor %}
-        {% endif %}
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="mb-6">
-            <label class="form-label" for="organization">Organization</label>
-            <select class="form-select" id="organization" name="organization">
-              <option value="" disabled selected>Select Organization</option>
-              {% for org in organizations %}
-                <option value="{{ org.id }}">{{ org.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="assistant">Assistant</label>
-            <select class="form-select" id="assistant" name="assistant">
-              <option value="" disabled selected>Select Assistant</option>
-            </select>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="media_storage">Media Storage</label>
-            <select class="form-select" id="media_storage" name="media_storage">
-              <option value="" disabled selected>Select Media Storage</option>
-            </select>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="media_files">Media Files (Multiple Files Allowed)</label>
-            <input type="file" class="form-control" id="media_files" name="media_files" multiple>
-          </div>
-          <small class="text-muted mb-2">If you add a description for the media file, it will be easier for your
-            assistant to understand the media file and utilize it to provide better insights and
-            recommendations.
-          </small>
-          <div class="row align-items-center justify-content-start mt-2" id="file_display_area">
-            <!-- Dynamic content will be inserted here
-              ... ... ...
-              ... ... ...
-            -->
-          </div>
-          <button type="submit" class="btn btn-primary d-grid w-100 mt-8"><strong>Upload Media Files</strong></button>
-        </form>
-        <!-- Loading bar warning -->
-        <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
+            <div class="mb-6">
+              <label class="form-label" for="assistant">Assistant</label>
+              <select class="form-select" id="assistant" name="assistant">
+                <option value="" disabled selected>Select Assistant</option>
+              </select>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="media_storage">Media Storage</label>
+              <select class="form-select" id="media_storage" name="media_storage">
+                <option value="" disabled selected>Select Media Storage</option>
+              </select>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="media_files">Media Files (Multiple Files Allowed)</label>
+              <input type="file" class="form-control" id="media_files" name="media_files" multiple>
+            </div>
+            <small class="text-muted mb-2">If you add a description for the media file, it will be easier for your
+              assistant to understand the media file and utilize it to provide better insights and
+              recommendations.
+            </small>
+            <div class="row align-items-center justify-content-start mt-2" id="file_display_area">
+              <!-- Dynamic content will be inserted here
+                ... ... ...
+                ... ... ...
+              -->
+            </div>
+            <button type="submit" class="btn btn-primary d-grid w-100 mt-8"><strong>Upload Media Files</strong></button>
+          </form>
+          <!-- Loading bar warning -->
+          <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none"
+               role="alert">
             <span class="alert-icon rounded">
                 <i class="ti ti-brain"></i>
             </span>
             <div class="d-flex flex-column ps-1 pt-4">
-                <p class="alert-heading"><strong>Uploading Media Files...</strong></p>
+              <p class="alert-heading"><strong>Uploading Media Files...</strong></p>
             </div>
-        </div>
-        <!-- Loading bar -->
-        <hr>
-        <div id="loadingBar" class="progress d-none mt-3 mb-1">
-            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%; height:10px;"></div>
-        </div>
-        <h4><strong>Supported File Formats</strong></h4>
-        <small class="text-muted">
-          The following file formats are supported for media files. We are planning to add more file formats in the
-          future. If you have any specific file format that you would like to be supported, please let us know. If
-          you have any issues with uploading media files, please contact our support team.
-        </small>
-        <hr>
-        <div class="row align-items-center justify-content-start">
+          </div>
+          <!-- Loading bar -->
+          <hr>
+          <div id="loadingBar" class="progress d-none mt-3 mb-1">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                 style="width: 100%; height:10px;"></div>
+          </div>
+          <h4><strong>Supported File Formats</strong></h4>
+          <small class="text-muted">
+            The following file formats are supported for media files. We are planning to add more file formats in the
+            future. If you have any specific file format that you would like to be supported, please let us know. If
+            you have any issues with uploading media files, please contact our support team.
+          </small>
+          <hr>
+          <div class="row align-items-center justify-content-start">
             <h5><strong>Image Files</strong></h5>
             <!-- Supported file formats -->
             <div class="col-lg-2">
@@ -296,9 +300,9 @@
                 <span class="h6 mb-0 text-body"><strong>.tiff</strong></span>
               </div>
             </div>
-        </div>
-        <hr>
-        <div class="row align-items-center justify-content-start">
+          </div>
+          <hr>
+          <div class="row align-items-center justify-content-start">
             <h5><strong>Audio Files</strong></h5>
             <!-- Supported file formats -->
             <div class="col-lg-2">
@@ -331,9 +335,9 @@
                 <span class="h6 mb-0 text-body"><strong>.ogg</strong></span>
               </div>
             </div>
-        </div>
-        <hr>
-        <div class="row align-items-center justify-content-start">
+          </div>
+          <hr>
+          <div class="row align-items-center justify-content-start">
             <h5><strong>Video Files</strong></h5>
             <!-- Supported file formats -->
             <div class="col-lg-3">
@@ -360,9 +364,9 @@
                 <span class="h6 mb-0 text-body"><strong>.mov</strong></span>
               </div>
             </div>
-        </div>
-        <hr>
-        <div class="row align-items-center justify-content-start">
+          </div>
+          <hr>
+          <div class="row align-items-center justify-content-start">
             <h5><strong>Compressed Files</strong></h5>
             <!-- Supported file formats -->
             <div class="col-lg-4">
@@ -383,9 +387,9 @@
                 <span class="h6 mb-0 text-body"><strong>.tar</strong></span>
               </div>
             </div>
-        </div>
-        <hr>
-        <div class="row align-items-center justify-content-start">
+          </div>
+          <hr>
+          <div class="row align-items-center justify-content-start">
             <h5><strong>Code Files</strong></h5>
             <!-- Supported file formats -->
             <div class="col-lg-2">
@@ -466,9 +470,9 @@
                 <span class="h6 mb-0 text-body"><strong>.dart</strong></span>
               </div>
             </div>
-        </div>
-        <hr>
-        <div class="row align-items-center justify-content-start">
+          </div>
+          <hr>
+          <div class="row align-items-center justify-content-start">
             <h5><strong>Data Files</strong></h5>
             <!-- Supported file formats -->
             <div class="col-lg-2">
@@ -549,9 +553,9 @@
                 <span class="h6 mb-0 text-body"><strong>.txt</strong></span>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

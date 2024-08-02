@@ -5,9 +5,6 @@ from apps.datasource_sql.models import SQLDatabaseConnection, CustomSQLQuery, DB
 import mysql.connector
 
 
-# Register your models here.
-
-
 @admin.register(SQLDatabaseConnection)
 class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
     list_display = ('id', 'assistant', 'dbms_type', 'name', 'description', 'host', 'port', 'database_name', 'username',
@@ -23,9 +20,7 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
                           'one_time_sql_retrieval_instance_limit', 'one_time_sql_retrieval_token_limit',
                        'is_read_only', 'password', 'schema_data_json', 'created_by_user')
         }),
-        ('Dates', {
-            'fields': ('created_at', 'updated_at')
-        }),
+        ('Dates', {'fields': ('created_at', 'updated_at')}),
     )
 
     def save_model(self, request, obj, form, change):
@@ -45,11 +40,7 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
         schema = {}
         try:
             connection = psycopg2.connect(
-                dbname=obj.database_name,
-                user=obj.username,
-                password=obj.password,
-                host=obj.host,
-                port=obj.port
+                dbname=obj.database_name, user=obj.username, password=obj.password, host=obj.host, port=obj.port
             )
             cursor = connection.cursor()
             cursor.execute(
@@ -120,7 +111,5 @@ class CustomSQLQueryAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('database_connection', 'name', 'description', 'sql_query', 'parameters')
         }),
-        ('Dates', {
-            'fields': ('created_at', 'updated_at')
-        }),
+        ('Dates', {'fields': ('created_at', 'updated_at')}),
     )

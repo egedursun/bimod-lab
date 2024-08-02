@@ -1,0 +1,208 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Browser Connections{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <style>
+    .text-wrap {
+      white-space: normal;
+      word-break: break-all;
+    }
+  </style>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h3 class="mb-0"><strong>Your Browser Connections</strong></h3>
+    </div>
+  </div>
+
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can manage your browser connections for your assistants. You must be aware of the fact
+        that the browser connections are assistant-based. This means that the assistants will be able to use
+        the browser connections that you have created here, and if you want another assistant to use the same browser
+        connection, you need to create another connection for that assistant.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <!-- Browser Connections Cards -->
+  {% for organization, assistants in connections_by_organization.items %}
+    <div class="card mb-6">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
+          <h4>
+            {{ organization.name }}
+          </h4>
+        </a>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-org-{{ organization.id }}">
+      <strong>&nbsp; See Browser Connections of Assistants</strong>
+    </span>
+      </div>
+      <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
+        {% for assistant, connections in assistants.items %}
+          <div class="assistant-group m-8">
+            <h5 class="assistant-title ms-4"><strong>{{ assistant.name }}</strong></h5>
+            <div class="card-datatable table-responsive">
+              <a href="{% url 'datasource_browsers:create' %}">
+                <button class="btn btn-success ms-4 mb-8">
+                  <i class="fa fa-add me-4"></i>
+                  <strong> Add Browser Connection</strong>
+                </button>
+              </a>
+            </div>
+            <div class="row g-6 mb-4">
+              {% for connection in connections %}
+                <div class="col-xl-6 col-md-6">
+                  <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between">
+                      <div class="card-title mb-0">
+                        <p class="card-subtitle mb-4"><strong>
+                          <i class="fa fa-id-badge me-4"></i> Connection Name: &nbsp;&nbsp;</strong>
+                          {{ connection.name }}
+                        </p>
+                        <p class="card-subtitle mb-4"><strong>
+                          <i class="fa fa-desktop me-4"></i> Browser Type: &nbsp;&nbsp;</strong>
+                          {{ connection.get_browser_type_display }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <ul class="p-0 m-0">
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body me-4"><strong>Description:</strong></span>
+                          <span class="text-wrap">{{ connection.description|linebreaksbr }}</span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body"><strong>Data Selectivity:</strong></span>
+                          <span class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.data_selectivity }} / 1.0</strong></span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body"><strong>Minimum Investigation Sites:</strong></span>
+                          <span
+                            class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.minimum_investigation_sites }}</strong></span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body"><strong>Whitelisted Domain Extensions:</strong></span>
+                          <span class="text-wrap rounded"><strong>
+                    <ul class="p-0 m-0">
+                      {% for extension in connection.whitelisted_extensions %}
+                        <li class="list-unstyled m-1 p-1 rounded bg-label-success">{{ extension }}</li>
+                      {% empty %}
+                        <li class="list-unstyled m-2 p-2 rounded bg-label-dark">No Whitelisted Domains</li>
+                      {% endfor %}
+                    </ul>
+                  </strong></span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body"><strong>Blacklisted Domain Extensions:</strong></span>
+                          <span class="text-wrap rounded"><strong>
+                    <ul class="p-0 m-0">
+                      {% for extension in connection.blacklisted_extensions %}
+                        <li class="list-unstyled m-1 p-1 rounded bg-label-danger">{{ extension }}</li>
+                      {% empty %}
+                        <li class="list-unstyled m-2 p-2 rounded bg-label-dark">No Blacklisted Domains</li>
+                      {% endfor %}
+                    </ul>
+                  </strong>
+                  </span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body"><strong>HTML Cleaning Strategies:</strong></span>
+                          <ul class="p-0 m-0">
+                            {% for ability_name, value in connection.reading_abilities.items %}
+                              <li class="list-unstyled mb-4 bg-label-dark m-2 p-2 rounded">
+                                <div class=""><strong>{{ ability_name|capfirst }}:
+                                  {% if value == True %}
+                                    <strong class="bg-label-danger m-1 p-1 rounded">Remove</strong>
+                                  {% else %}
+                                    <strong class="bg-label-success m-1 p-1 rounded">Keep</strong>
+                                  {% endif %}
+                                </strong>
+                                </div>
+                              </li>
+                            {% endfor %}
+                            <ul>
+                        </li>
+                      </ul>
+                      <hr>
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'datasource_browsers:logs' connection.id %}" class="btn btn-success me-3"><i
+                          class="ti ti-report-analytics me-2"></i><strong>Browsing Logs</strong></a>
+                        <a href="{% url 'datasource_browsers:update' connection.id %}" class="btn btn-primary me-3"><i
+                          class="ti ti-edit me-2"></i><strong>Edit Connection</strong></a>
+                        <a href="{% url 'datasource_browsers:delete' connection.id %}" class="btn btn-danger"><i
+                          class="ti ti-trash"></i><strong> Delete </strong></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <hr>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
+        icon.addEventListener('click', function () {
+          var target = document.querySelector(this.getAttribute('data-target'));
+          var bootstrapCollapse = new bootstrap.Collapse(target, {
+            toggle: false
+          });
+          if (target.classList.contains('show')) {
+            bootstrapCollapse.hide();
+          } else {
+            bootstrapCollapse.show();
+          }
+        });
+      });
+
+      document.querySelectorAll('.collapse').forEach(function (collapse) {
+        collapse.addEventListener('show.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-down');
+            icon.classList.add('fa-arrow-alt-circle-up');
+          }
+        });
+
+        collapse.addEventListener('hide.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-up');
+            icon.classList.add('fa-arrow-alt-circle-down');
+          }
+        });
+      });
+    });
+  </script>
+
+{% endblock %}

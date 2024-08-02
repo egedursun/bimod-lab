@@ -6,213 +6,233 @@
 {% block title %}Create Scheduled Job{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block content %}
-<!-- Basic Layout -->
-<div class="row">
-  <div class="col-xl mb-6">
-    <div class="card">
-      <div class="card-datatable table-responsive">
-        <a href="{% url 'mm_scheduled_jobs:list' %}">
-          <button class="btn btn-secondary ms-4 mt-4 mb-8">
-            <i class="fa fa-dashboard me-4"></i>
-            <strong> Manage Scheduled Jobs</strong>
-          </button>
-        </a>
-      </div>
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Create a New Scheduled Job</h5>
-        <small class="text-muted float-end"></small>
-      </div>
-      <div class="card-body">
-        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-          <img src="{% static 'img/custom-illustrations/boy-core-edit.png' %}" width="25%" class="justify-content-end">
-          <span class="alert-icon rounded">
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'mm_scheduled_jobs:list' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong> Manage Scheduled Jobs</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Create a New Scheduled Job</h5>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations/boy-core-edit.png' %}" width="25%"
+                 class="justify-content-end">
+            <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
-          <div class="d-flex flex-column ps-1">
-            <h5 class="alert-heading mb-2">Tip</h5>
-            <p class="mb-0">
-              In this page, you can create a new scheduled job. You can set the job name, description, step guide,
-              assistant, trigger type, interval, period, minute, hour, day of the week, day of the month, month of the
-              year, and maximum runs. Once you fill in the required fields, click the "Create Scheduled Job" button to
-              create the scheduled job.
-            </p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
-          </div>
-        </div>
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
-              {{ message }}
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can create a new scheduled job. You can set the job name, description, step guide,
+                assistant, trigger type, interval, period, minute, hour, day of the week, day of the month, month of the
+                year, and maximum runs. Once you fill in the required fields, click the "Create Scheduled Job" button to
+                create the scheduled job.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
             </div>
-          {% endfor %}
-        {% endif %}
-        <form method="post">
-          {% csrf_token %}
-          <div class="mb-6">
-            <label class="form-label" for="assistant">Assistant</label>
-            <select class="form-select" id="assistant" name="assistant">
-              {% for assistant in form.fields.assistant.queryset %}
-                <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-              {% endfor %}
-            </select>
           </div>
-          <div class="mb-6">
-            <label class="form-label" for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter job name" required />
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="task_description">Description</label>
-            <textarea class="form-control" id="task_description" name="task_description" placeholder="Enter job description" required></textarea>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="step_guide">Step Guide</label>
-            <table id="stepGuideTable" class="table table-bordered">
-              <thead>
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label class="form-label" for="assistant">Assistant</label>
+              <select class="form-select" id="assistant" name="assistant">
+                {% for assistant in form.fields.assistant.queryset %}
+                  <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="name">Name</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Enter job name" required/>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="task_description">Description</label>
+              <textarea class="form-control" id="task_description" name="task_description"
+                        placeholder="Enter job description" required></textarea>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="step_guide">Step Guide</label>
+              <table id="stepGuideTable" class="table table-bordered">
+                <thead>
                 <tr>
                   <th>Step</th>
                   <th></th>
                 </tr>
-              </thead>
-              <tbody>
+                </thead>
+                <tbody>
                 <tr>
-                  <td><input type="text" name="step_guide[]" placeholder="Enter step description" class="form-control"></td>
-                  <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
+                  <td><input type="text" name="step_guide[]" placeholder="Enter step description" class="form-control">
+                  </td>
+                  <td>
+                    <button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i
+                      class="fa fa-remove"></i></button>
+                  </td>
                 </tr>
-              </tbody>
-            </table>
-            <button type="button" onclick="addRow('stepGuideTable')" class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New Row</strong></button>
-          </div>
-          <div id="cronFields">
-            <div class="row mb-6">
-              <div class="col">
-                <label class="form-label" for="minute">Minute (* for every minute)</label>
-                <input type="text" class="form-control" id="minute" name="minute" placeholder="* for every minute" value="*" oninput="updateLabels('minute')" />
-                <div id="minuteLabels" class="mt-2"></div>
-                <div class="alert alert-solid-info align-items-center mt-4" role="alert">
+                </tbody>
+              </table>
+              <button type="button" onclick="addRow('stepGuideTable')" class="btn btn-secondary d-grid w-20 mt-4">
+                <strong>Add New Row</strong></button>
+            </div>
+            <div id="cronFields">
+              <div class="row mb-6">
+                <div class="col">
+                  <label class="form-label" for="minute">Minute (* for every minute)</label>
+                  <input type="text" class="form-control" id="minute" name="minute" placeholder="* for every minute"
+                         value="*" oninput="updateLabels('minute')"/>
+                  <div id="minuteLabels" class="mt-2"></div>
+                  <div class="alert alert-solid-info align-items-center mt-4" role="alert">
                   <span class="alert-icon rounded mb-2">
                     <i class="ti ti-info-circle"></i>
                   </span>
-                  If you would like to execute the job on multiple minutes, you can separate the minutes with a comma. For
-                  example: &nbsp;&nbsp; <strong>0, 1, 2, 3, 4, 5, 20, 45</strong>
+                    If you would like to execute the job on multiple minutes, you can separate the minutes with a comma.
+                    For
+                    example: &nbsp;&nbsp; <strong>0, 1, 2, 3, 4, 5, 20, 45</strong>
+                  </div>
+                </div>
+                <div class="col">
+                  <label class="form-label" for="hour">Hour (* for every hour)</label>
+                  <input type="text" class="form-control" id="hour" name="hour" placeholder="* for every hour" value="*"
+                         oninput="updateLabels('hour')"/>
+                  <div id="hourLabels" class="mt-2"></div>
+                  <div class="alert alert-solid-info align-items-center mt-4" role="alert">
+                  <span class="alert-icon rounded mb-2">
+                    <i class="ti ti-info-circle"></i>
+                  </span>
+                    If you would like to execute the job on multiple hours, you can separate the minutes with a comma.
+                    For
+                    example: &nbsp;&nbsp; <strong>0, 1, 2, 3, 4, 20, 23</strong>
+                  </div>
                 </div>
               </div>
-              <div class="col">
-                <label class="form-label" for="hour">Hour (* for every hour)</label>
-                <input type="text" class="form-control" id="hour" name="hour" placeholder="* for every hour" value="*" oninput="updateLabels('hour')" />
-                <div id="hourLabels" class="mt-2"></div>
-                <div class="alert alert-solid-info align-items-center mt-4" role="alert">
+              <div class="row mb-6">
+                <div class="col">
+                  <label class="form-label" for="day_of_week">Day of the Week (* for every week)</label>
+                  <input type="text" class="form-control" id="day_of_week" name="day_of_week"
+                         placeholder="* for every week" value="*" oninput="updateLabels('day_of_week')"/>
+                  <div id="day_of_weekLabels" class="mt-2"></div>
+                  <div class="alert alert-solid-info align-items-center mt-4" role="alert">
                   <span class="alert-icon rounded mb-2">
                     <i class="ti ti-info-circle"></i>
                   </span>
-                  If you would like to execute the job on multiple hours, you can separate the minutes with a comma. For
-                  example: &nbsp;&nbsp; <strong>0, 1, 2, 3, 4, 20, 23</strong>
+                    If you would like to execute the job on multiple week days, you can separate the minutes with a
+                    comma. For
+                    example: &nbsp;&nbsp; <strong>1, 2, 4, 5, 7</strong>
+                  </div>
+                </div>
+                <div class="col">
+                  <label class="form-label" for="day_of_month">Day of the Month (* for every day)</label>
+                  <input type="text" class="form-control" id="day_of_month" name="day_of_month"
+                         placeholder="* for every day" value="*" oninput="updateLabels('day_of_month')"/>
+                  <div id="day_of_monthLabels" class="mt-2"></div>
+                  <div class="alert alert-solid-info align-items-center mt-4" role="alert">
+                  <span class="alert-icon rounded mb-2">
+                    <i class="ti ti-info-circle"></i>
+                  </span>
+                    If you would like to execute the job on multiple days of the month, you can separate the minutes
+                    with a
+                    comma. For example: &nbsp;&nbsp; <strong>1, 5, 7, 10, 15, 20, 25, 28</strong>
+                  </div>
+                </div>
+                <div class="col">
+                  <label class="form-label" for="month_of_year">Month of the Year (* for every month)</label>
+                  <input type="text" class="form-control" id="month_of_year" name="month_of_year"
+                         placeholder="* for every month" value="*" oninput="updateLabels('month_of_year')"/>
+                  <div id="month_of_yearLabels" class="mt-2"></div>
+                  <div class="alert alert-solid-info align-items-center mt-4" role="alert">
+                  <span class="alert-icon rounded mb-2">
+                    <i class="ti ti-info-circle"></i>
+                  </span>
+                    If you would like to execute the job on multiple months of the year, you can separate the minutes
+                    with
+                    a comma. For example: &nbsp;&nbsp; <strong>1, 2, 3, 5, 8, 10, 12</strong>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="row mb-6">
-              <div class="col">
-                <label class="form-label" for="day_of_week">Day of the Week (* for every week)</label>
-                <input type="text" class="form-control" id="day_of_week" name="day_of_week" placeholder="* for every week" value="*" oninput="updateLabels('day_of_week')" />
-                <div id="day_of_weekLabels" class="mt-2"></div>
-                <div class="alert alert-solid-info align-items-center mt-4" role="alert">
-                  <span class="alert-icon rounded mb-2">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                  If you would like to execute the job on multiple week days, you can separate the minutes with a comma. For
-                  example: &nbsp;&nbsp; <strong>1, 2, 4, 5, 7</strong>
-                </div>
-              </div>
-              <div class="col">
-                <label class="form-label" for="day_of_month">Day of the Month (* for every day)</label>
-                <input type="text" class="form-control" id="day_of_month" name="day_of_month" placeholder="* for every day" value="*" oninput="updateLabels('day_of_month')" />
-                <div id="day_of_monthLabels" class="mt-2"></div>
-                <div class="alert alert-solid-info align-items-center mt-4" role="alert">
-                  <span class="alert-icon rounded mb-2">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                  If you would like to execute the job on multiple days of the month, you can separate the minutes with a
-                  comma. For example: &nbsp;&nbsp; <strong>1, 5, 7, 10, 15, 20, 25, 28</strong>
-                </div>
-              </div>
-              <div class="col">
-                <label class="form-label" for="month_of_year">Month of the Year (* for every month)</label>
-                <input type="text" class="form-control" id="month_of_year" name="month_of_year" placeholder="* for every month" value="*" oninput="updateLabels('month_of_year')" />
-                <div id="month_of_yearLabels" class="mt-2"></div>
-                <div class="alert alert-solid-info align-items-center mt-4" role="alert">
-                  <span class="alert-icon rounded mb-2">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                  If you would like to execute the job on multiple months of the year, you can separate the minutes with
-                  a comma. For example: &nbsp;&nbsp; <strong>1, 2, 3, 5, 8, 10, 12</strong>
-                </div>
-              </div>
+            <div class="mb-6">
+              <label class="form-label" for="maximum_runs">Maximum Runs</label>
+              <input type="range" class="form-range" id="maximum_runs" name="maximum_runs" min="1" max="1000" step="1"
+                     value="100" oninput="this.nextElementSibling.value = this.value">
+              <output>100</output>
             </div>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="maximum_runs">Maximum Runs</label>
-            <input type="range" class="form-range" id="maximum_runs" name="maximum_runs" min="1" max="1000" step="1" value="100" oninput="this.nextElementSibling.value = this.value">
-            <output>100</output>
-          </div>
-          <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
+            <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-            It can take up to 15 minutes for the scheduled job to be integrated to the system. If the scheduled job is
-            not integrated even after a long while, please feel free to contact the support team to get help.
-          </div>
-          <button type="submit" class="btn btn-primary d-grid w-100"><strong>Create Scheduled Job</strong></button>
-        </form>
+              It can take up to 15 minutes for the scheduled job to be integrated to the system. If the scheduled job is
+              not integrated even after a long while, please feel free to contact the support team to get help.
+            </div>
+            <button type="submit" class="btn btn-primary d-grid w-100"><strong>Create Scheduled Job</strong></button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('#minute, #hour, #day_of_week, #day_of_month, #month_of_year').forEach(function(element) {
-      updateLabels(element.id);
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('#minute, #hour, #day_of_week, #day_of_month, #month_of_year').forEach(function (element) {
+        updateLabels(element.id);
+      });
     });
-  });
 
-  function addRow(tableId) {
-    const tableBody = document.querySelector(`#${tableId} tbody`);
-    const newRow = `
+    function addRow(tableId) {
+      const tableBody = document.querySelector(`#${tableId} tbody`);
+      const newRow = `
       <tr>
         <td><input type="text" name="step_guide[]" placeholder="Enter step description" class="form-control"></td>
         <td><button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i class="fa fa-remove"></i></button></td>
       </tr>
     `;
-    tableBody.insertAdjacentHTML('beforeend', newRow);
-  }
+      tableBody.insertAdjacentHTML('beforeend', newRow);
+    }
 
-  function removeRow(button) {
-    const row = button.closest('tr');
-    row.remove();
-  }
+    function removeRow(button) {
+      const row = button.closest('tr');
+      row.remove();
+    }
 
-  function updateLabels(fieldId) {
-    const input = document.getElementById(fieldId);
-    const labelsContainer = document.getElementById(`${fieldId}Labels`);
-    labelsContainer.innerHTML = '';
+    function updateLabels(fieldId) {
+      const input = document.getElementById(fieldId);
+      const labelsContainer = document.getElementById(`${fieldId}Labels`);
+      labelsContainer.innerHTML = '';
 
-    const values = input.value.split(',');
-    values.forEach(value => {
-      const label = document.createElement('span');
-      label.classList.add('badge', 'bg-success', 'me-2', "mb-2", "fw-bold");
-      label.textContent = value.trim();
-      labelsContainer.appendChild(label);
-    });
-  }
-</script>
+      const values = input.value.split(',');
+      values.forEach(value => {
+        const label = document.createElement('span');
+        label.classList.add('badge', 'bg-success', 'me-2', "mb-2", "fw-bold");
+        label.textContent = value.trim();
+        labelsContainer.appendChild(label);
+      });
+    }
+  </script>
 {% endblock %}

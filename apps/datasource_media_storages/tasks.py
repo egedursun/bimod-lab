@@ -25,7 +25,6 @@ class MediaCategoriesNames:
 
 
 MEDIA_FILE_TYPES = (
-    ############################
     # Image Files
     ('jpg', 'JPEG'),
     ('png', 'PNG'),
@@ -33,25 +32,21 @@ MEDIA_FILE_TYPES = (
     ('svg', 'SVG'),
     ('bmp', 'BMP'),
     ('tiff', 'TIFF'),
-    ############################
     # Audio Files
     ('mp3', 'MP3'),
     ('wav', 'WAV'),
     ('flac', 'FLAC'),
     ('aac', 'AAC'),
     ('ogg', 'OGG'),
-    ############################
     # Video Files
     ('mp4', 'MP4'),
     ('avi', 'AVI'),
     ('mkv', 'MKV'),
     ('mov', 'MOV'),
-    ############################
     # Compressed Files
     ('zip', 'ZIP'),
     ('rar', 'RAR'),
     ('tar', 'TAR'),
-    ############################
     # Code Files
     ('py', 'Python'),
     ('js', 'JavaScript'),
@@ -66,8 +61,6 @@ MEDIA_FILE_TYPES = (
     ('sh', 'Shell'),
     ('go', 'Go'),
     ('dart', 'Dart'),
-
-    ############################
     # Data Configuration files
     ('yml', 'YML'),
     ('yaml', 'YAML'),
@@ -78,12 +71,10 @@ MEDIA_FILE_TYPES = (
     ('json', 'JSON'),
     ('xml', 'XML'),
     ('tsv', 'TSV'),
-
     ('docx', 'DOCX'),
     ('pptx', 'PPTX'),
     ('pdf', 'PDF'),
     ('txt', 'TXT'),
-    ############################
 )
 
 
@@ -131,7 +122,6 @@ def upload_file_to_storage(file_bytes: bytes, full_path: str, media_category: st
     else:
         print(f"Invalid media category: {media_category}, skipping file...")
         return False
-
     try:
         with open(str("./"+full_path), "wb+") as file:
             # write the file
@@ -146,7 +136,6 @@ def upload_file_to_storage(file_bytes: bytes, full_path: str, media_category: st
 def download_file_from_url(storage_id: int, url: str):
     from apps.datasource_media_storages.models import DataSourceMediaStorageConnection, DataSourceMediaStorageItem
     import requests
-
     storage = DataSourceMediaStorageConnection.objects.get(id=storage_id)
     if not storage:
         print(f"Storage with ID: {storage_id} does not exist")

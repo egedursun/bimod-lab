@@ -6,172 +6,191 @@
 {% block title %}Landing Page - Bimod.io{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/nouislider/nouislider.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/swiper/swiper.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/nouislider/nouislider.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/swiper/swiper.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/nouislider/nouislider.js' %}"></script>
-<script src="{% static 'vendor/libs/swiper/swiper.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/nouislider/nouislider.js' %}"></script>
+  <script src="{% static 'vendor/libs/swiper/swiper.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static  'vendor/css/pages/front-page-landing.css' %}">
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static  'vendor/css/pages/front-page-landing.css' %}">
 {% endblock page_css %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/front-page-landing.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/front-page-landing.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div data-bs-spy="scroll" class="scrollspy-example">
-  <!-- Hero: Start -->
-  <section id="hero-animation">
-    <div id="landingHero" class="section-py landing-hero position-relative">
-      <img src="{% static 'img/front-pages/backgrounds/hero-bg.png' %}" alt="hero background" class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1" />
-      <div class="container">
-        <div class="hero-text-box text-center position-relative">
-          <h1 class="text-primary hero-title display-1 fw-extrabold"><strong>Bimod.io</strong></h1>
-          <h1 class="text-primary hero-title display-6 fw-extrabold">Build your AI workforce with the most flexible multimodal agent platform.</h1>
-          <h2 class="hero-sub-title h6 mb-6">
-            We are empowering businesses by providing a highly customizable and flexible <strong>AIaaS (Artificial Intelligence
-            as a Service)</strong> platform for managing multimodal AI assistants. Utilize hundreds of different multimodality
-            tools and tailor-made integrations to automate workflows at every scale.
-          </h2>
-          <div class="landing-hero-btn d-inline-block position-relative">
-            <span class="hero-btn-item position-absolute d-none d-md-flex fw-medium"><strong><span class="bg-label-primary rounded p-1 ms-1 me-1">$100</span> FREE CREDITS</strong>
-              <img src="{% static 'img/front-pages/icons/Join-community-arrow.png' %}" alt="Join community arrow" class="scaleX-n1-rtl" /></span>
-            <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-8" style="min-width: 250px;"><strong>TRY NOW</strong></a>
-          </div>
-        </div>
-        <div id="heroDashboardAnimation" class="hero-animation-img">
-          <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
-            <div id="heroAnimationImg" class="position-relative hero-dashboard-img">
-              <img src="{% static 'img/front-pages/landing-page/hero-dashboard-' %}{{ COOKIES.style|default:style }}.png" alt="hero dashboard" data-app-light-img="front-pages/landing-page/hero-dashboard-light.png" data-app-dark-img="front-pages/landing-page/hero-dashboard-dark.png"
-                  class="animation-img" style="border-radius: 25px; margin-top: 80px;" />
+  <div data-bs-spy="scroll" class="scrollspy-example">
+    <!-- Hero: Start -->
+    <section id="hero-animation">
+      <div id="landingHero" class="section-py landing-hero position-relative">
+        <img src="{% static 'img/front-pages/backgrounds/hero-bg.png' %}" alt="hero background"
+             class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1"/>
+        <div class="container">
+          <div class="hero-text-box text-center position-relative">
+            <h1 class="text-primary hero-title display-1 fw-extrabold"><strong>Bimod.io</strong></h1>
+            <h1 class="text-primary hero-title display-6 fw-extrabold">Build your AI workforce with the most flexible
+              multimodal agent platform.</h1>
+            <h2 class="hero-sub-title h6 mb-6">
+              We are empowering businesses by providing a highly customizable and flexible <strong>AIaaS (Artificial
+              Intelligence
+              as a Service)</strong> platform for managing multimodal AI assistants. Utilize hundreds of different
+              multimodality
+              tools and tailor-made integrations to automate workflows at every scale.
+            </h2>
+            <div class="landing-hero-btn d-inline-block position-relative">
+            <span class="hero-btn-item position-absolute d-none d-md-flex fw-medium"><strong><span
+              class="bg-label-primary rounded p-1 ms-1 me-1">$100</span> FREE CREDITS</strong>
+              <img src="{% static 'img/front-pages/icons/Join-community-arrow.png' %}" alt="Join community arrow"
+                   class="scaleX-n1-rtl"/></span>
+              <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-8" style="min-width: 250px;"><strong>TRY
+                NOW</strong></a>
             </div>
-          </a>
+          </div>
+          <div id="heroDashboardAnimation" class="hero-animation-img">
+            <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
+              <div id="heroAnimationImg" class="position-relative hero-dashboard-img">
+                <img
+                  src="{% static 'img/front-pages/landing-page/hero-dashboard-' %}{{ COOKIES.style|default:style }}.png"
+                  alt="hero dashboard" data-app-light-img="front-pages/landing-page/hero-dashboard-light.png"
+                  data-app-dark-img="front-pages/landing-page/hero-dashboard-dark.png"
+                  class="animation-img" style="border-radius: 25px; margin-top: 80px;"/>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="landing-hero-blank"></div>
-  </section>
-  <!-- Hero: End -->
+      <div class="landing-hero-blank"></div>
+    </section>
+    <!-- Hero: End -->
 
-  <!-- Useful features: Start -->
-  <section id="landingFeatures" class="section-py landing-features">
-    <div class="container">
-      <div class="text-center mb-4">
-        <span class="badge bg-label-primary"><strong>Services</strong></span>
-      </div>
-      <h4 class="text-center mb-1">
+    <!-- Useful features: Start -->
+    <section id="landingFeatures" class="section-py landing-features">
+      <div class="container">
+        <div class="text-center mb-4">
+          <span class="badge bg-label-primary"><strong>Services</strong></span>
+        </div>
+        <h4 class="text-center mb-1">
         <span class="position-relative fw-extrabold z-1">Everything you need to build
-          <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging" class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
+          <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
+               class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
-        the most powerful AIs for your organization.
-      </h4>
-      <p class="text-center mb-12">We offer a wide range of features to help you build and manage AI assistants with ease.</p>
-      <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="laptop charging" />
+          the most powerful AIs for your organization.
+        </h4>
+        <p class="text-center mb-12">We offer a wide range of features to help you build and manage AI assistants with
+          ease.</p>
+        <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="laptop charging"/>
+            </div>
+            <h5 class="mb-2"><strong>All in One Service You Need</strong></h5>
+            <p class="features-icon-description">Access all the tools you need to build and manage AI assistants in one
+              place.</p>
           </div>
-          <h5 class="mb-2"><strong>All in One Service You Need</strong></h5>
-          <p class="features-icon-description">Access all the tools you need to build and manage AI assistants in one place.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/keyboard.png' %}" alt="transition up" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/keyboard.png' %}" alt="transition up"/>
+            </div>
+            <h5 class="mb-2"><strong>Tenants, Users, Permissions</strong></h5>
+            <p class="features-icon-description">Easily manage multiple organizations and AI assistants from a single
+              dashboard.</p>
           </div>
-          <h5 class="mb-2"><strong>Tenants, Users, Permissions</strong></h5>
-          <p class="features-icon-description">Easily manage multiple organizations and AI assistants from a single dashboard.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/rocket.png' %}" alt="edit" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/rocket.png' %}" alt="edit"/>
+            </div>
+            <h5 class="mb-2"><strong>Fully Customizable LLM Models</strong></h5>
+            <p class="features-icon-description">Customize LLM models depending on your organization's needs.</p>
           </div>
-          <h5 class="mb-2"><strong>Fully Customizable LLM Models</strong></h5>
-          <p class="features-icon-description">Customize LLM models depending on your organization's needs.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/check.png' %}" alt="lifebelt" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/check.png' %}" alt="lifebelt"/>
+            </div>
+            <h5 class="mb-2"><strong>Unlimited Assistant Flexibility</strong></h5>
+            <p class="features-icon-description">Create multiple AI assistants that can handle a wide range of tasks and
+              workflows.</p>
           </div>
-          <h5 class="mb-2"><strong>Unlimited Assistant Flexibility</strong></h5>
-          <p class="features-icon-description">Create multiple AI assistants that can handle a wide range of tasks and workflows.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/rocket.png' %}" alt="google docs" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/rocket.png' %}" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>Make Assistants Remember</strong></h5>
+            <p class="features-icon-description">Add a memory to your AI assistants, so they can remember important
+              points and information.</p>
           </div>
-          <h5 class="mb-2"><strong>Make Assistants Remember</strong></h5>
-          <p class="features-icon-description">Add a memory to your AI assistants, so they can remember important points and information.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/paper.png' %}" alt="google docs" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/paper.png' %}" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>Create An AI Workforce</strong></h5>
+            <p class="features-icon-description">Build a workforce of AI assistants that can handle a wide range of
+              tasks and workflows and collaborate with each other.</p>
           </div>
-          <h5 class="mb-2"><strong>Create An AI Workforce</strong></h5>
-          <p class="features-icon-description">Build a workforce of AI assistants that can handle a wide range of tasks and workflows and collaborate with each other.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="google docs" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>Connect Your Databases</strong></h5>
+            <p class="features-icon-description">Connect your database to your AI assistants to make them reach your
+              data and provide more accurate responses.</p>
           </div>
-          <h5 class="mb-2"><strong>Connect Your Databases</strong></h5>
-          <p class="features-icon-description">Connect your database to your AI assistants to make them reach your data and provide more accurate responses.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/rocket.png' %}" alt="google docs" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/rocket.png' %}" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>Chat with Your Documents &amp; Files</strong></h5>
+            <p class="features-icon-description">Upload documents, files, images, audios, videos and much more to your
+              AI assistants and let them do the chores for you.</p>
           </div>
-          <h5 class="mb-2"><strong>Chat with Your Documents &amp; Files</strong></h5>
-          <p class="features-icon-description">Upload documents, files, images, audios, videos and much more to your AI assistants and let them do the chores for you.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/keyboard.png' %}" alt="google docs" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/keyboard.png' %}" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>Functions, APIs, Kernels, Scripts</strong></h5>
+            <p class="features-icon-description">Make AI use functions, APIs, and remote servers via SSH to provide
+              real-time information and automate your workflows.</p>
           </div>
-          <h5 class="mb-2"><strong>Functions, APIs, Kernels, Scripts</strong></h5>
-          <p class="features-icon-description">Make AI use functions, APIs, and remote servers via SSH to provide
-            real-time information and automate your workflows.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/paper.png' %}" alt="google docs" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/paper.png' %}" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>Scheduled Tasks &amp; Custom Triggers</strong></h5>
+            <p class="features-icon-description">Schedule timed tasks and custom triggers for your AI assistants to
+              provide you service 24/7 without any human intervention.</p>
           </div>
-          <h5 class="mb-2"><strong>Scheduled Tasks &amp; Custom Triggers</strong></h5>
-          <p class="features-icon-description">Schedule timed tasks and custom triggers for your AI assistants to
-            provide you service 24/7 without any human intervention.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="google docs" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>Generate Creative Media Materials</strong></h5>
+            <p class="features-icon-description">Generate images, presentations, documents, and much
+              more with your assistants within seconds.</p>
           </div>
-          <h5 class="mb-2"><strong>Generate Creative Media Materials</strong></h5>
-          <p class="features-icon-description">Generate images, presentations, documents, and much
-            more with your assistants within seconds.</p>
-        </div>
-        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
-          <div class="text-center mb-4">
-            <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="google docs" />
+          <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>Tailor-made, Custom Integrations</strong></h5>
+            <p class="features-icon-description">With a single click, integrate tools and assistants you need for
+              your organization and manage them easily with a simple UI.</p>
           </div>
-          <h5 class="mb-2"><strong>Tailor-made, Custom Integrations</strong></h5>
-          <p class="features-icon-description">With a single click, integrate tools and assistants you need for
-            your organization and manage them easily with a simple UI.</p>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- Useful features: End -->
+    </section>
+    <!-- Useful features: End -->
 
-  <!-- Real customers reviews: Start -->
-  <section id="landingReviews" class="section-py bg-body landing-reviews pb-0">
-    <!--
+    <!-- Real customers reviews: Start -->
+    <section id="landingReviews" class="section-py bg-body landing-reviews pb-0">
+      <!--
     What people say slider: Start
     <div class="container">
       <div class="row align-items-center gx-0 gy-4 g-lg-5 mb-5 pb-md-5">
@@ -267,537 +286,636 @@
       </div>
     </div>
     -->
-    <hr class="m-0 mt-6 mt-md-12" />
-    <!-- Logo slider: Start -->
-    <div class="container">
-      <div class="swiper-logo-carousel py-8">
+      <hr class="m-0 mt-6 mt-md-12"/>
+      <!-- Logo slider: Start -->
+      <div class="container">
+        <div class="swiper-logo-carousel py-8">
           <div class="swiper-wrapper mt-12 mx-auto justify-content-between" style="width: 80%;">
             <div class="swiper-slide col-lg-2">
-              <img src="{% static 'img/front-pages/branding/logo_1-' %}{{ COOKIES.style|default:style  }}.png" alt="client logo" class="client-logo" data-app-light-img="front-pages/branding/logo_1-light.png" data-app-dark-img="front-pages/branding/logo_1-dark.png" />
+              <img src="{% static 'img/front-pages/branding/logo_1-' %}{{ COOKIES.style|default:style }}.png"
+                   alt="client logo" class="client-logo" data-app-light-img="front-pages/branding/logo_1-light.png"
+                   data-app-dark-img="front-pages/branding/logo_1-dark.png"/>
             </div>
             <div class="swiper-slide col-lg-2">
-              <img src="{% static 'img/front-pages/branding/logo_2-' %}{{ COOKIES.style|default:style  }}.png" alt="client logo" class="client-logo" data-app-light-img="front-pages/branding/logo_2-light.png" data-app-dark-img="front-pages/branding/logo_2-dark.png" />
+              <img src="{% static 'img/front-pages/branding/logo_2-' %}{{ COOKIES.style|default:style }}.png"
+                   alt="client logo" class="client-logo" data-app-light-img="front-pages/branding/logo_2-light.png"
+                   data-app-dark-img="front-pages/branding/logo_2-dark.png"/>
             </div>
             <div class="swiper-slide col-lg-2">
-              <img src="{% static 'img/front-pages/branding/logo_3-' %}{{ COOKIES.style|default:style  }}.png" alt="client logo" class="client-logo" data-app-light-img="front-pages/branding/logo_3-light.png" data-app-dark-img="front-pages/branding/logo_3-dark.png" />
+              <img src="{% static 'img/front-pages/branding/logo_3-' %}{{ COOKIES.style|default:style }}.png"
+                   alt="client logo" class="client-logo" data-app-light-img="front-pages/branding/logo_3-light.png"
+                   data-app-dark-img="front-pages/branding/logo_3-dark.png"/>
             </div>
             <div class="swiper-slide col-lg-2">
-              <img src="{% static 'img/front-pages/branding/logo_4-' %}{{ COOKIES.style|default:style  }}.png" alt="client logo" class="client-logo" data-app-light-img="front-pages/branding/logo_4-light.png" data-app-dark-img="front-pages/branding/logo_4-dark.png" />
+              <img src="{% static 'img/front-pages/branding/logo_4-' %}{{ COOKIES.style|default:style }}.png"
+                   alt="client logo" class="client-logo" data-app-light-img="front-pages/branding/logo_4-light.png"
+                   data-app-dark-img="front-pages/branding/logo_4-dark.png"/>
             </div>
             <div class="swiper-slide col-lg-2">
-              <img src="{% static 'img/front-pages/branding/logo_5-' %}{{ COOKIES.style|default:style  }}.png" alt="client logo" class="client-logo" data-app-light-img="front-pages/branding/logo_5-light.png" data-app-dark-img="front-pages/branding/logo_5-dark.png" />
+              <img src="{% static 'img/front-pages/branding/logo_5-' %}{{ COOKIES.style|default:style }}.png"
+                   alt="client logo" class="client-logo" data-app-light-img="front-pages/branding/logo_5-light.png"
+                   data-app-dark-img="front-pages/branding/logo_5-dark.png"/>
             </div>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- Logo slider: End -->
-  </section>
-  <!-- Real customers reviews: End -->
+      <!-- Logo slider: End -->
+    </section>
+    <!-- Real customers reviews: End -->
 
-  <!-- Our great team: Start -->
-  <section id="landingTeam" class="section-py landing-team">
-    <div class="container">
-      <div class="text-center mb-4">
-        <span class="badge bg-label-primary"><strong>Our Team</strong></span>
-      </div>
-      <h4 class="text-center mb-1">
+    <!-- Our great team: Start -->
+    <section id="landingTeam" class="section-py landing-team">
+      <div class="container">
+        <div class="text-center mb-4">
+          <span class="badge bg-label-primary"><strong>Our Team</strong></span>
+        </div>
+        <h4 class="text-center mb-1">
         <span class="position-relative fw-extrabold z-1">Supported
-          <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging" class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
+          <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
+               class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
-        by passion and perseverance.
-      </h4>
-      <p class="text-center mb-md-11 pb-0 pb-xl-12">Meet the dedicated team behind <strong>Bimod.io</strong></p>
-      <div class="row gy-12 mt-2">
-        <div class="col-lg-6 col-sm-6 mb-8">
-          <div class="card mt-3 mt-lg-0 shadow-none">
-            <div class="bg-label-primary border border-bottom-0 border-label-primary position-relative team-image-box">
-              <img src="{% static 'img/front-pages/landing-page/team-member-ege.png' %}" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
-            </div>
-            <div class="card-body border border-top-0 border-label-primary text-center">
-              <h5 class="card-title mb-0"><strong>Ege Doğan DURSUN</strong></h5>
-              <p class="text mb-0"><strong>Co-Founder &amp; Chief Executive Officer (CEO)</strong></p>
-              <p class="text-muted mb-0"><strong>DENGCE, MENGRB, MSCCS, MSCFE, MBA, MAPM/BI, PGBC, PGDS</strong></p>
-              <p class="text-muted mb-0"><strong>Harvard University, Georgia Institute of Technology, University of London</strong></p>
-            </div>
-            <div class="card-body mx-auto">
-              <ul class="list-unstyled align-items-center">
-                <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span class="fw-medium mx-2"><strong>Email:</strong></span> <span> ege@bimod.io</span></li>
-                <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank" href="https://www.linkedin.com/in/egedogandursun">/in/egedogandursun</a></span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6 col-sm-6 mb-8">
-          <div class="card mt-3 mt-lg-0 shadow-none">
-            <div class="bg-label-info border border-bottom-0 border-label-info position-relative team-image-box">
-              <img src="{% static 'img/front-pages/landing-page/team-member-huseyin.png' %}" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
-            </div>
-            <div class="card-body border border-top-0 border-label-info text-center">
-              <h5 class="card-title mb-0"><strong>Hüseyin ERSAY</strong></h5>
-              <p class="text mb-0"><strong>Co-Founder &amp; Chief Operating Officer (COO)</strong></p>
-              <p class="text-muted mb-0"><strong>BENGCE, LLB</strong></p>
-              <p class="text-muted mb-0"><strong>Izmir Katip Celebi University, Anadolu University</strong></p>
-            </div>
-            <div class="card-body mx-auto">
-              <ul class="list-unstyled align-items-center">
-                <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span class="fw-medium mx-2"><strong>Email:</strong></span> <span> huseyin@bimod.io</span></li>
-                <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank" href="https://www.linkedin.com/in/huseyinersay">/in/huseyinersay</a></span></li>
-              </ul>
+          by passion and perseverance.
+        </h4>
+        <p class="text-center mb-md-11 pb-0 pb-xl-12">Meet the dedicated team behind <strong>Bimod.io</strong></p>
+        <div class="row gy-12 mt-2">
+          <div class="col-lg-6 col-sm-6 mb-8">
+            <div class="card mt-3 mt-lg-0 shadow-none">
+              <div
+                class="bg-label-primary border border-bottom-0 border-label-primary position-relative team-image-box">
+                <img src="{% static 'img/front-pages/landing-page/team-member-ege.png' %}"
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
+              </div>
+              <div class="card-body border border-top-0 border-label-primary text-center">
+                <h5 class="card-title mb-0"><strong>Ege Doğan DURSUN</strong></h5>
+                <p class="text mb-0"><strong>Co-Founder &amp; Chief Executive Officer (CEO)</strong></p>
+                <p class="text-muted mb-0"><strong>DENGCE, MENGRB, MSCCS, MSCFE, MBA, MAPM/BI, PGBC, PGDS</strong></p>
+                <p class="text-muted mb-0"><strong>Harvard University, Georgia Institute of Technology, University of
+                  London</strong></p>
+              </div>
+              <div class="card-body mx-auto">
+                <ul class="list-unstyled align-items-center">
+                  <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
+                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> ege@bimod.io</span></li>
+                  <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
+                    class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
+                                                                                      href="https://www.linkedin.com/in/egedogandursun">/in/egedogandursun</a></span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 mb-8">
-          <div class="card mt-3 mt-lg-0 shadow-none">
-            <div class="bg-label-danger border border-bottom-0 border-label-danger position-relative team-image-box">
-              <img src="{% static 'img/front-pages/landing-page/team-member-mert.png' %}" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image" />
-            </div>
-            <div class="card-body border border-top-0 border-label-danger text-center">
-              <h5 class="card-title mb-0"><strong>Mert TEKİN</strong></h5>
-              <p class="text mb-0"><strong>Chief Technology Officer (CTO) &amp; AI Engineer</strong></p>
-              <p class="text-muted mb-0"><strong>MENGRB, MSCS, BSME, AACS</strong></p>
-              <p class="text-muted mb-0"><strong>Izmir Katip Celebi University, Anadolu University</strong></p>
-            </div>
-            <div class="card-body mx-auto">
-              <ul class="list-unstyled align-items-center">
-                <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span class="fw-medium mx-2"><strong>Email:</strong></span> <span> mert@bimod.io</span></li>
-                <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank" href="https://www.linkedin.com/in/merttekin0">/in/merttekin0</a></span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 mb-8">
-          <div class="card mt-3 mt-lg-0 shadow-none">
-            <div class="bg-label-success border border-bottom-0 border-label-danger position-relative team-image-box">
-              <img src="{% static 'img/front-pages/landing-page/team-member-selin.png' %}" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image" />
-            </div>
-            <div class="card-body border border-top-0 border-label-danger text-center">
-              <h5 class="card-title mb-0"><strong>Selin Ceren CANBULUT</strong></h5>
-              <p class="text mb-0"><strong>Chief Marketing Officer (CTO) &amp; Legal Expert</strong></p>
-              <p class="text-muted mb-0"><strong>LLB, MSCS, BBA, BIR, AABC</strong></p>
-              <p class="text-muted mb-0"><strong>Anadolu University, Istanbul University</strong></p>
-            </div>
-            <div class="card-body mx-auto">
-              <ul class="list-unstyled align-items-center">
-                <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span class="fw-medium mx-2"><strong>Email:</strong></span> <span> selin@bimod.io</span></li>
-                <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank" href="https://www.linkedin.com/in/selinccanbulut">/in/selinccanbulut</a></span></li>
-              </ul>
+          <div class="col-lg-6 col-sm-6 mb-8">
+            <div class="card mt-3 mt-lg-0 shadow-none">
+              <div class="bg-label-info border border-bottom-0 border-label-info position-relative team-image-box">
+                <img src="{% static 'img/front-pages/landing-page/team-member-huseyin.png' %}"
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
+              </div>
+              <div class="card-body border border-top-0 border-label-info text-center">
+                <h5 class="card-title mb-0"><strong>Hüseyin ERSAY</strong></h5>
+                <p class="text mb-0"><strong>Co-Founder &amp; Chief Operating Officer (COO)</strong></p>
+                <p class="text-muted mb-0"><strong>BENGCE, LLB</strong></p>
+                <p class="text-muted mb-0"><strong>Izmir Katip Celebi University, Anadolu University</strong></p>
+              </div>
+              <div class="card-body mx-auto">
+                <ul class="list-unstyled align-items-center">
+                  <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
+                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> huseyin@bimod.io</span></li>
+                  <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
+                    class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
+                                                                                      href="https://www.linkedin.com/in/huseyinersay">/in/huseyinersay</a></span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <div class="card mt-3 mt-lg-0 shadow-none">
-            <div class="bg-label-danger border border-bottom-0 border-label-success position-relative team-image-box">
-              <img src="{% static 'img/front-pages/landing-page/team-member-emre.png' %}" class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image" />
+          <div class="col-lg-4 col-sm-6 mb-8">
+            <div class="card mt-3 mt-lg-0 shadow-none">
+              <div class="bg-label-danger border border-bottom-0 border-label-danger position-relative team-image-box">
+                <img src="{% static 'img/front-pages/landing-page/team-member-mert.png' %}"
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
+              </div>
+              <div class="card-body border border-top-0 border-label-danger text-center">
+                <h5 class="card-title mb-0"><strong>Mert TEKİN</strong></h5>
+                <p class="text mb-0"><strong>Chief Technology Officer (CTO) &amp; AI Engineer</strong></p>
+                <p class="text-muted mb-0"><strong>MENGRB, MSCS, BSME, AACS</strong></p>
+                <p class="text-muted mb-0"><strong>Izmir Katip Celebi University, Anadolu University</strong></p>
+              </div>
+              <div class="card-body mx-auto">
+                <ul class="list-unstyled align-items-center">
+                  <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
+                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> mert@bimod.io</span></li>
+                  <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
+                    class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
+                                                                                      href="https://www.linkedin.com/in/merttekin0">/in/merttekin0</a></span>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div class="card-body border border-top-0 border-label-success text-center">
-              <h5 class="card-title mb-0"><strong>Emre ÖĞE</strong></h5>
-              <p class="text mb-0"><strong>Chief Finance Officer (CFO) &amp; Solutions Architect</strong></p>
-              <p class="text-muted mb-0"><strong>MD, BBA</strong></p>
-              <p class="text-muted mb-0"><strong>Ege University, Anadolu University</strong></p>
+          </div>
+          <div class="col-lg-4 col-sm-6 mb-8">
+            <div class="card mt-3 mt-lg-0 shadow-none">
+              <div class="bg-label-success border border-bottom-0 border-label-danger position-relative team-image-box">
+                <img src="{% static 'img/front-pages/landing-page/team-member-selin.png' %}"
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
+              </div>
+              <div class="card-body border border-top-0 border-label-danger text-center">
+                <h5 class="card-title mb-0"><strong>Selin Ceren CANBULUT</strong></h5>
+                <p class="text mb-0"><strong>Chief Marketing Officer (CTO) &amp; Legal Expert</strong></p>
+                <p class="text-muted mb-0"><strong>LLB, MSCS, BBA, BIR, AABC</strong></p>
+                <p class="text-muted mb-0"><strong>Anadolu University, Istanbul University</strong></p>
+              </div>
+              <div class="card-body mx-auto">
+                <ul class="list-unstyled align-items-center">
+                  <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
+                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> selin@bimod.io</span></li>
+                  <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
+                    class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
+                                                                                      href="https://www.linkedin.com/in/selinccanbulut">/in/selinccanbulut</a></span>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div class="card-body mx-auto">
-              <ul class="list-unstyled align-items-center">
-                <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span class="fw-medium mx-2"><strong>Email:</strong></span> <span> emre@bimod.io</span></li>
-                <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank" href="https://www.linkedin.com/in/emreoge">/in/emreoge</a></span></li>
-              </ul>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <div class="card mt-3 mt-lg-0 shadow-none">
+              <div class="bg-label-danger border border-bottom-0 border-label-success position-relative team-image-box">
+                <img src="{% static 'img/front-pages/landing-page/team-member-emre.png' %}"
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
+              </div>
+              <div class="card-body border border-top-0 border-label-success text-center">
+                <h5 class="card-title mb-0"><strong>Emre ÖĞE</strong></h5>
+                <p class="text mb-0"><strong>Chief Finance Officer (CFO) &amp; Solutions Architect</strong></p>
+                <p class="text-muted mb-0"><strong>MD, BBA</strong></p>
+                <p class="text-muted mb-0"><strong>Ege University, Anadolu University</strong></p>
+              </div>
+              <div class="card-body mx-auto">
+                <ul class="list-unstyled align-items-center">
+                  <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
+                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> emre@bimod.io</span></li>
+                  <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
+                    class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
+                                                                                      href="https://www.linkedin.com/in/emreoge">/in/emreoge</a></span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- Our great team: End -->
+    </section>
+    <!-- Our great team: End -->
 
-  <hr>
+    <hr>
 
-  <!-- Pricing plans: Start -->
-  <section id="landingPricing" class="section-py bg-body landing-pricing">
-    <div class="container">
-      <div class="text-center mb-4">
-        <span class="badge bg-label-primary">Pricing Plans</span>
-      </div>
-      <h4 class="text-center mb-1">
+    <!-- Pricing plans: Start -->
+    <section id="landingPricing" class="section-py bg-body landing-pricing">
+      <div class="container">
+        <div class="text-center mb-4">
+          <span class="badge bg-label-primary">Pricing Plans</span>
+        </div>
+        <h4 class="text-center mb-1">
         <span class="position-relative fw-extrabold z-1">Never pay
-          <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging" class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
+          <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
+               class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
-        for more than you need.
-      </h4>
-      <p class="text-center pb-2 mb-7">Our flexible pay as you go pricing plans are designed to fit your organization's needs.
-      Top-up balance any time and pay only for what you use</p>
-      <div class="row g-6 pt-lg-5">
-        <!-- Basic Plan: Start -->
-        <div class="col-xl-3 col-lg-6">
-          <div class="card">
-            <div class="card-header">
-              <div class="text-center">
-                <img src="{% static 'img/front-pages/icons/paper-airplane.png' %}" alt="paper airplane icon" class="mb-8 pb-2" />
-                <h4 class="mb-0"><strong>Starter</strong></h4>
-                <div class="d-flex align-items-center justify-content-center">
-                  <strong class="me-12">Purchase </strong>
-                  <p class="price-monthly h5 text-primary fw-extrabold mb-0">$1,000 - 4,999</p>
-                </div>
-                <div class="d-flex align-items-center justify-content-center">
-                  <strong class="me-2">Receive </strong>
-                  <p class="price-monthly h3 text-primary fw-extrabold mb-0">+20% </p> <strong class="ms-2">more credits</strong>
+          for more than you need.
+        </h4>
+        <p class="text-center pb-2 mb-7">Our flexible pay as you go pricing plans are designed to fit your
+          organization's needs.
+          Top-up balance any time and pay only for what you use</p>
+        <div class="row g-6 pt-lg-5">
+          <!-- Basic Plan: Start -->
+          <div class="col-xl-3 col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <div class="text-center">
+                  <img src="{% static 'img/front-pages/icons/paper-airplane.png' %}" alt="paper airplane icon"
+                       class="mb-8 pb-2"/>
+                  <h4 class="mb-0"><strong>Starter</strong></h4>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <strong class="me-12">Purchase </strong>
+                    <p class="price-monthly h5 text-primary fw-extrabold mb-0">$1,000 - 4,999</p>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <strong class="me-2">Receive </strong>
+                    <p class="price-monthly h3 text-primary fw-extrabold mb-0">+20% </p> <strong class="ms-2">more
+                    credits</strong>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card-body">
-              <ul class="list-unstyled pricing-list">
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    All Tools &amp; Features Included
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 3 Organizations
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 5 LLM Models
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 10 AI Assistants
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 100 Chats / mo
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 1,000 Messages / mo
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Support in 5 Business Days
-                  </h6>
-                </li>
-              </ul>
+              <div class="card-body">
+                <ul class="list-unstyled pricing-list">
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      All Tools &amp; Features Included
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 3 Organizations
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 5 LLM Models
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 10 AI Assistants
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 100 Chats / mo
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 1,000 Messages / mo
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Support in 5 Business Days
+                    </h6>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- Basic Plan: End -->
+          <!-- Basic Plan: End -->
 
-        <!-- Favourite Plan: Start -->
-        <div class="col-xl-3 col-lg-6">
-          <div class="card border shadow-xl">
-            <div class="card-header">
-              <div class="text-center">
-                <img src="{% static 'img/front-pages/icons/plane.png' %}" alt="paper airplane icon" class="mb-8 pb-2" />
-                <h4 class="mb-0"><strong>Grower</strong></h4>
-                <div class="d-flex align-items-center justify-content-center">
-                  <strong class="me-12">Purchase </strong>
-                  <p class="price-monthly h5 text-primary fw-extrabold mb-0">$5,000 - 9,999</p>
-                </div>
-                <div class="d-flex align-items-center justify-content-center">
-                  <strong class="me-2">Receive </strong>
-                  <p class="price-monthly h3 text-primary fw-extrabold mb-0">+30% </p> <strong class="ms-2">more credits</strong>
+          <!-- Favourite Plan: Start -->
+          <div class="col-xl-3 col-lg-6">
+            <div class="card border shadow-xl">
+              <div class="card-header">
+                <div class="text-center">
+                  <img src="{% static 'img/front-pages/icons/plane.png' %}" alt="paper airplane icon"
+                       class="mb-8 pb-2"/>
+                  <h4 class="mb-0"><strong>Grower</strong></h4>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <strong class="me-12">Purchase </strong>
+                    <p class="price-monthly h5 text-primary fw-extrabold mb-0">$5,000 - 9,999</p>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <strong class="me-2">Receive </strong>
+                    <p class="price-monthly h3 text-primary fw-extrabold mb-0">+30% </p> <strong class="ms-2">more
+                    credits</strong>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card-body">
-              <ul class="list-unstyled pricing-list">
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Everything in Starter
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 10 Organizations
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 20 LLM Models
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 50 AI Assistants
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 500 Chats / mo
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 10,000 Messages / mo
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Support in 3 Business Days
-                  </h6>
-                </li>
-              </ul>
+              <div class="card-body">
+                <ul class="list-unstyled pricing-list">
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Everything in Starter
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 10 Organizations
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 20 LLM Models
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 50 AI Assistants
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 500 Chats / mo
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 10,000 Messages / mo
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Support in 3 Business Days
+                    </h6>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- Favourite Plan: End -->
+          <!-- Favourite Plan: End -->
 
-        <!-- Standard Plan: Start -->
-        <div class="col-xl-3 col-lg-6">
-          <div class="card">
-            <div class="card-header">
-              <div class="text-center">
-                <img src="{% static 'img/front-pages/icons/shuttle-rocket.png' %}" alt="paper airplane icon" class="mb-8 pb-2" />
-                <h4 class="mb-0"><strong>Professional</strong></h4>
-                <div class="d-flex align-items-center justify-content-center">
-                  <strong class="me-7">Purchase </strong>
-                  <p class="price-monthly h5 text-primary fw-extrabold mb-0">$10,000 - 49,999</p>
-                </div>
-                <div class="d-flex align-items-center justify-content-center">
-                  <strong class="me-2">Receive </strong>
-                  <p class="price-monthly h3 text-primary fw-extrabold mb-0">+40% </p> <strong class="ms-2">more credits</strong>
+          <!-- Standard Plan: Start -->
+          <div class="col-xl-3 col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <div class="text-center">
+                  <img src="{% static 'img/front-pages/icons/shuttle-rocket.png' %}" alt="paper airplane icon"
+                       class="mb-8 pb-2"/>
+                  <h4 class="mb-0"><strong>Professional</strong></h4>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <strong class="me-7">Purchase </strong>
+                    <p class="price-monthly h5 text-primary fw-extrabold mb-0">$10,000 - 49,999</p>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <strong class="me-2">Receive </strong>
+                    <p class="price-monthly h3 text-primary fw-extrabold mb-0">+40% </p> <strong class="ms-2">more
+                    credits</strong>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card-body">
-              <ul class="list-unstyled pricing-list">
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Everything in Grower
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 20 Organizations
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 50 LLM Models
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 100 AI Assistants
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 1,000 Chats / mo
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Up to 50,000 Messages / mo
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Support in 1 Business Day
-                  </h6>
-                </li>
-              </ul>
+              <div class="card-body">
+                <ul class="list-unstyled pricing-list">
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Everything in Grower
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 20 Organizations
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 50 LLM Models
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 100 AI Assistants
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 1,000 Chats / mo
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Up to 50,000 Messages / mo
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Support in 1 Business Day
+                    </h6>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Standard Plan: Start -->
-        <div class="col-xl-3 col-lg-6">
-          <div class="card">
-            <div class="card-header">
-              <div class="text-center">
-                <img src="{% static 'img/front-pages/icons/shuttle-rocket.png' %}" alt="paper airplane icon" class="mb-8 pb-2" />
-                <h4 class="mb-0"><strong>Enterprise</strong></h4>
-                <div class="d-flex align-items-center justify-content-center">
-                  <strong style="margin-right: 90px;">Purchase </strong>
-                  <p class="price-monthly h5 text-primary fw-extrabold mb-0">$50,000+</p>
-                </div>
-                <div class="d-flex align-items-center justify-content-center">
-                  <strong class="me-2">Receive </strong>
-                  <p class="price-monthly h3 text-primary fw-extrabold mb-0">+50% </p> <strong class="ms-2">more credits</strong>
+          <!-- Standard Plan: Start -->
+          <div class="col-xl-3 col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <div class="text-center">
+                  <img src="{% static 'img/front-pages/icons/shuttle-rocket.png' %}" alt="paper airplane icon"
+                       class="mb-8 pb-2"/>
+                  <h4 class="mb-0"><strong>Enterprise</strong></h4>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <strong style="margin-right: 90px;">Purchase </strong>
+                    <p class="price-monthly h5 text-primary fw-extrabold mb-0">$50,000+</p>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <strong class="me-2">Receive </strong>
+                    <p class="price-monthly h3 text-primary fw-extrabold mb-0">+50% </p> <strong class="ms-2">more
+                    credits</strong>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card-body">
-              <ul class="list-unstyled pricing-list">
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Everything in Professional
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Unlimited Organizations
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Unlimited LLM Models
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Unlimited AI Assistants
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Unlimited Chats / mo
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    Unlimited Messages / mo
-                  </h6>
-                </li>
-                <li>
-                  <h6 class="mb-3">
-                    <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i class="ti ti-check ti-14px"></i></span>
-                    24/7 Support
-                  </h6>
-                </li>
-              </ul>
+              <div class="card-body">
+                <ul class="list-unstyled pricing-list">
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Everything in Professional
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Unlimited Organizations
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Unlimited LLM Models
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Unlimited AI Assistants
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Unlimited Chats / mo
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      Unlimited Messages / mo
+                    </h6>
+                  </li>
+                  <li>
+                    <h6 class="mb-3">
+                      <span class="badge badge-center rounded-pill bg-label-primary p-0 me-2"><i
+                        class="ti ti-check ti-14px"></i></span>
+                      24/7 Support
+                    </h6>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
+          <!-- Standard Plan: End -->
         </div>
-        <!-- Standard Plan: End -->
       </div>
-    </div>
-  </section>
-  <!-- Pricing plans: End -->
+    </section>
+    <!-- Pricing plans: End -->
 
-  <!-- CTA: Start -->
-  <section id="landingCTA" class="section-py landing-cta position-relative p-lg-0 pb-0">
-    <img src="{% static 'img/front-pages/backgrounds/cta-bg-' %}{{ COOKIES.style|default:style }}.png" class="position-absolute bottom-0 end-0 scaleX-n1-rtl h-100 w-100 z-n1" alt="cta image" data-app-light-img="front-pages/backgrounds/cta-bg-light.png" data-app-dark-img="front-pages/backgrounds/cta-bg-dark.png" />
-    <div class="container">
-      <div class="row align-items-center gy-12">
-        <div class="col-lg-6 text-start text-sm-center text-lg-start">
-          <h3 class="cta-title text-primary fw-bold mb-0">Ready to Get Started?</h3>
-          <h5 class="text-body mb-12 mt-12 "><strong>Start and receive your first </strong><span class="bg-label-primary rounded p-6 ms-6 me-6"><strong>$100</strong></span><strong> credits for free.</strong></h5>
-          <h5 class="text-body mb-12 mt-12 ms-12"><strong class="ms-12">For every successful referral, receive </strong><span class="bg-label-primary rounded p-6 ms-6 me-6"><strong>$50</strong></span><strong> more credits.</strong></h5>
-          <h5 class="text-body mb-12 mt-12 ms-12"><strong class="ms-12">Each person you invite also receives</strong><span class="bg-label-primary rounded p-6 ms-6 me-6"><strong>$50</strong></span><strong>extra credits.</strong></h5>
-          <a href="{% url 'register' %}" class="btn btn-lg btn-primary"><strong>Join Our Community Now</strong></a>
-        </div>
-        <div class="col-lg-6 pt-lg-12 text-center text-lg-end">
-          <img src="{% static 'img/front-pages/landing-page/hero-dashboard-dark.png' %}" alt="cta dashboard" class="img-fluid mt-lg-4 mb-12" style="border-radius: 15px;" />
+    <!-- CTA: Start -->
+    <section id="landingCTA" class="section-py landing-cta position-relative p-lg-0 pb-0">
+      <img src="{% static 'img/front-pages/backgrounds/cta-bg-' %}{{ COOKIES.style|default:style }}.png"
+           class="position-absolute bottom-0 end-0 scaleX-n1-rtl h-100 w-100 z-n1" alt="cta image"
+           data-app-light-img="front-pages/backgrounds/cta-bg-light.png"
+           data-app-dark-img="front-pages/backgrounds/cta-bg-dark.png"/>
+      <div class="container">
+        <div class="row align-items-center gy-12">
+          <div class="col-lg-6 text-start text-sm-center text-lg-start">
+            <h3 class="cta-title text-primary fw-bold mb-0">Ready to Get Started?</h3>
+            <h5 class="text-body mb-12 mt-12 "><strong>Start and receive your first </strong><span
+              class="bg-label-primary rounded p-6 ms-6 me-6"><strong>$100</strong></span><strong> credits for
+              free.</strong></h5>
+            <h5 class="text-body mb-12 mt-12 ms-12"><strong class="ms-12">For every successful referral,
+              receive </strong><span class="bg-label-primary rounded p-6 ms-6 me-6"><strong>$50</strong></span><strong>
+              more credits.</strong></h5>
+            <h5 class="text-body mb-12 mt-12 ms-12"><strong class="ms-12">Each person you invite also
+              receives</strong><span class="bg-label-primary rounded p-6 ms-6 me-6"><strong>$50</strong></span><strong>extra
+              credits.</strong></h5>
+            <a href="{% url 'register' %}" class="btn btn-lg btn-primary"><strong>Join Our Community Now</strong></a>
+          </div>
+          <div class="col-lg-6 pt-lg-12 text-center text-lg-end">
+            <img src="{% static 'img/front-pages/landing-page/hero-dashboard-dark.png' %}" alt="cta dashboard"
+                 class="img-fluid mt-lg-4 mb-12" style="border-radius: 15px;"/>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- CTA: End -->
+    </section>
+    <!-- CTA: End -->
 
-  <!-- Contact Us: Start -->
-  <section id="landingContact" class="section-py bg-body landing-contact">
-    <div class="container">
-      <div class="text-center mb-4">
-        <span class="badge bg-label-primary"><strong>Contact</strong></span>
-      </div>
-      <h4 class="text-center mb-1">
+    <!-- Contact Us: Start -->
+    <section id="landingContact" class="section-py bg-body landing-contact">
+      <div class="container">
+        <div class="text-center mb-4">
+          <span class="badge bg-label-primary"><strong>Contact</strong></span>
+        </div>
+        <h4 class="text-center mb-1">
         <span class="position-relative fw-extrabold z-1">Let's collaborate together
-          <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging" class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
+          <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
+               class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
-        for your custom needs.
-      </h4>
-      <p class="text-center mb-12 pb-md-4">Do you have any questions or need help with your AI assistant? Feel free to contact us, and we would be happy to help you as soon as possible.</p>
-      <div class="row g-6">
-        <div class="col-lg-5">
-          <div class="contact-img-box position-relative border p-2 h-100">
-            <img src="{% static 'img/front-pages/icons/contact-border.png' %}" alt="contact border" class="contact-border-img position-absolute d-none d-lg-block scaleX-n1-rtl" />
-            <img src="{% static 'img/front-pages/landing-page/contact-customer-service.png' %}" alt="contact customer service" class="contact-img w-100 scaleX-n1-rtl" />
-            <div class="p-4 pb-2">
-              <div class="row g-4">
-                <div class="col-md-6 col-lg-12 col-xl-6">
-                  <div class="d-flex align-items-center">
-                    <div class="badge bg-label-primary rounded p-1_5 me-3"><i class="ti ti-mail ti-lg"></i></div>
-                    <div>
-                      <p class="mb-0"><strong>Contact E-mail</strong></p>
-                      <h6 class="mb-0"><a href="mailto:info@bimod.io" class="text-heading">info@bimod.io</a></h6>
+          for your custom needs.
+        </h4>
+        <p class="text-center mb-12 pb-md-4">Do you have any questions or need help with your AI assistant? Feel free to
+          contact us, and we would be happy to help you as soon as possible.</p>
+        <div class="row g-6">
+          <div class="col-lg-5">
+            <div class="contact-img-box position-relative border p-2 h-100">
+              <img src="{% static 'img/front-pages/icons/contact-border.png' %}" alt="contact border"
+                   class="contact-border-img position-absolute d-none d-lg-block scaleX-n1-rtl"/>
+              <img src="{% static 'img/front-pages/landing-page/contact-customer-service.png' %}"
+                   alt="contact customer service" class="contact-img w-100 scaleX-n1-rtl"/>
+              <div class="p-4 pb-2">
+                <div class="row g-4">
+                  <div class="col-md-6 col-lg-12 col-xl-6">
+                    <div class="d-flex align-items-center">
+                      <div class="badge bg-label-primary rounded p-1_5 me-3"><i class="ti ti-mail ti-lg"></i></div>
+                      <div>
+                        <p class="mb-0"><strong>Contact E-mail</strong></p>
+                        <h6 class="mb-0"><a href="mailto:info@bimod.io" class="text-heading">info@bimod.io</a></h6>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-md-6 col-lg-12 col-xl-6">
-                  <div class="d-flex align-items-center">
-                    <div class="badge bg-label-success rounded p-1_5 me-3"><i class="ti ti-phone-call ti-lg"></i></div>
-                    <div>
-                      <p class="mb-0"><strong>Contact Number</strong></p>
-                      <h6 class="mb-0"><a href="tel:+90-500-500-50-50" class="text-heading">+90-500-500-50-50</a></h6>
+                  <div class="col-md-6 col-lg-12 col-xl-6">
+                    <div class="d-flex align-items-center">
+                      <div class="badge bg-label-success rounded p-1_5 me-3"><i class="ti ti-phone-call ti-lg"></i>
+                      </div>
+                      <div>
+                        <p class="mb-0"><strong>Contact Number</strong></p>
+                        <h6 class="mb-0"><a href="tel:+90-500-500-50-50" class="text-heading">+90-500-500-50-50</a></h6>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-7">
-          <div class="card h-100">
-            <div class="card-body">
-              <h4 class="mb-2"><strong>Leave a Message</strong></h4>
-              <p class="mb-6">
-                If you would like to discuss anything related to payment, account, licensing,<br class="d-none d-lg-block" />
-                partnerships, or have any questions regarding the application or its features,<br class="d-none d-lg-block" />
-                please fill out the form below.
-              </p>
-              <form action="{% url 'landing:contact_form_submit' %}" method="post">
-                {% csrf_token %}
-                <div class="row g-4">
-                  <div class="col-md-12 card card-border-shadow-dark">
-                    <label class="form-label mt-4" for="contact-form-username"><strong>Customer Username</strong></label>
-                    <small class="text-muted mb-2"><strong>You can leave this field blank if you are currently not an active customer.</strong></small>
-                    <input type="text" class="form-control mb-4" id="contact-form-username" name="username" placeholder="janedoe85" />
+          <div class="col-lg-7">
+            <div class="card h-100">
+              <div class="card-body">
+                <h4 class="mb-2"><strong>Leave a Message</strong></h4>
+                <p class="mb-6">
+                  If you would like to discuss anything related to payment, account, licensing,<br
+                  class="d-none d-lg-block"/>
+                  partnerships, or have any questions regarding the application or its features,<br
+                  class="d-none d-lg-block"/>
+                  please fill out the form below.
+                </p>
+                <form action="{% url 'landing:contact_form_submit' %}" method="post">
+                  {% csrf_token %}
+                  <div class="row g-4">
+                    <div class="col-md-12 card card-border-shadow-dark">
+                      <label class="form-label mt-4" for="contact-form-username"><strong>Customer
+                        Username</strong></label>
+                      <small class="text-muted mb-2"><strong>You can leave this field blank if you are currently not an
+                        active customer.</strong></small>
+                      <input type="text" class="form-control mb-4" id="contact-form-username" name="username"
+                             placeholder="janedoe85"/>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label" for="contact-form-fullname"><strong>Full Name</strong></label>
+                      <input type="text" class="form-control" id="contact-form-fullname" name="fullname"
+                             placeholder="john"/>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label" for="contact-form-email"><strong>Your Email</strong></label>
+                      <input type="email" id="contact-form-email" class="form-control" name="email"
+                             placeholder="johndoe@gmail.com"/>
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label" for="contact-form-message"><strong>Your Message</strong></label>
+                      <textarea id="contact-form-message" class="form-control" name="message" rows="7"
+                                placeholder="Write a message"></textarea>
+                    </div>
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-primary"><strong>Send Inquiry</strong></button>
+                    </div>
                   </div>
-                  <div class="col-md-6">
-                    <label class="form-label" for="contact-form-fullname"><strong>Full Name</strong></label>
-                    <input type="text" class="form-control" id="contact-form-fullname" name="fullname" placeholder="john" />
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label" for="contact-form-email"><strong>Your Email</strong></label>
-                    <input type="email" id="contact-form-email" class="form-control" name="email" placeholder="johndoe@gmail.com" />
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label" for="contact-form-message"><strong>Your Message</strong></label>
-                    <textarea id="contact-form-message" class="form-control" name="message" rows="7" placeholder="Write a message"></textarea>
-                  </div>
-                  <div class="col-12">
-                    <button type="submit" class="btn btn-primary"><strong>Send Inquiry</strong></button>
-                  </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- Contact Us: End -->
-</div>
+    </section>
+    <!-- Contact Us: End -->
+  </div>
 {% endblock %}

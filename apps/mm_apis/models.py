@@ -1,17 +1,11 @@
 from django.db import models
 
 
-# Create your models here.
-
-
 # not used for now
 API_SOURCES = {
     "internal": "internal",
     "external": "external",
 }
-
-
-# Create your models here.
 
 
 class CustomAPIReference(models.Model):
@@ -89,15 +83,6 @@ class CustomAPI(models.Model):
     authentication_token = models.CharField(max_length=5000, default="", blank=True)
     base_url = models.CharField(max_length=5000, default="")
 
-    """ {"Some Endpoint Name" = {
-        "description": "Some natural language description.",
-        "path": "/users",
-        "method": "POST",
-        "header_params": ["Authorization"],
-        "path_params": [], "query_params": [],
-        "body_params": ["name", "email", "password"] },
-    "Other Endpoint Name" = { ... }, }
-    """
     endpoints = models.JSONField(default=dict, blank=True)
     """Structure definition above."""
 
@@ -107,7 +92,6 @@ class CustomAPI(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by_user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
-
     is_featured = models.BooleanField(default=False)
 
     def __str__(self):

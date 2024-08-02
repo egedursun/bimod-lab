@@ -1,4 +1,3 @@
-import datetime
 import decimal
 
 from django.db import models
@@ -17,7 +16,6 @@ TRANSACTION_TYPE_ROLES = [
     ("assistant", "Assistant"),
     ("system", "System"),
 ]
-
 
 TRANSACTION_SOURCES = [
     ("app", "Application"),
@@ -107,14 +105,14 @@ class TransactionSourcesNames:
         ]
 
 
-# Create your models here.
-
 class LLMTransaction(models.Model):
-    responsible_user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, related_name='transactions', null=True, blank=True)
+    responsible_user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, related_name='transactions',
+                                         null=True, blank=True)
     responsible_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.SET_NULL,
                                               related_name='transactions',
                                               null=True, blank=True)
-    organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL, related_name='transactions',
+    organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL,
+                                     related_name='transactions',
                                      null=True)
     model = models.ForeignKey('llm_core.LLMCore', on_delete=models.SET_NULL, related_name='transactions',
                               null=True)
@@ -152,7 +150,6 @@ class LLMTransaction(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-
         if self.transaction_context_content and self.is_tool_cost is False:
             self.number_of_tokens = calculate_number_of_tokens(self.encoding_engine, self.transaction_context_content)
             # Calculate the costs
@@ -178,7 +175,8 @@ class LLMTransaction(models.Model):
         if self.organization.auto_balance_topup and self.organization.auto_balance_topup.on_balance_threshold_trigger:
             if self.organization.balance <= self.organization.auto_balance_topup.balance_lower_trigger_threshold_value:
                 # check if the addition amount is within the monthly hard limit
-                if (self.organization.auto_balance_topup.calendar_month_total_auto_addition_value + self.organization.auto_balance_topup.addition_on_balance_threshold_trigger) <= self.organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount:
+                if (
+                    self.organization.auto_balance_topup.calendar_month_total_auto_addition_value + self.organization.auto_balance_topup.addition_on_balance_threshold_trigger) <= self.organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount:
                     # Perform the top-up
                     self.organization.balance += self.organization.auto_balance_topup.addition_on_balance_threshold_trigger
                     self.organization.save()
@@ -187,7 +185,8 @@ class LLMTransaction(models.Model):
                     self.organization.auto_balance_topup.save()
                 else:
                     # If the hard limit is reached, subtract the excess from the total
-                    reduced_addition_amount = (self.organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount - self.organization.auto_balance_topup.calendar_month_total_auto_addition_value)
+                    reduced_addition_amount = (
+                        self.organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount - self.organization.auto_balance_topup.calendar_month_total_auto_addition_value)
                     # Perform the top-up if there is still a balance that can be added
                     if reduced_addition_amount > 0:
                         # Perform the top-up
@@ -199,14 +198,15 @@ class LLMTransaction(models.Model):
                     else:
                         # If the reduced addition amount is 0, do nothing
                         print("Hard limit reached, no top-up performed for organization: ", self.organization)
-
         self.transaction_context_content = ""
         super().save(*args, **kwargs)
 
 
 class AutoBalanceTopUpModel(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL, related_name='auto_balance_top_ups',
+    organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL,
+                                     related_name='auto_balance_top_ups',
                                      null=True)
+
     # trigger types
     on_balance_threshold_trigger = models.BooleanField(default=False)
     on_interval_by_days_trigger = models.BooleanField(default=False)
@@ -221,10 +221,10 @@ class AutoBalanceTopUpModel(models.Model):
     date_of_last_auto_top_up = models.DateTimeField(null=True, blank=True)
 
     # common parameters
-    calendar_month_total_auto_addition_value = models.DecimalField(max_digits=12, decimal_places=6, null=True, blank=True)
+    calendar_month_total_auto_addition_value = models.DecimalField(max_digits=12, decimal_places=6, null=True,
+                                                                   blank=True)
     monthly_hard_limit_auto_addition_amount = models.DecimalField(max_digits=12, decimal_places=6, null=True,
                                                                   blank=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -238,8 +238,8 @@ class AutoBalanceTopUpModel(models.Model):
 
 
 class OrganizationBalanceSnapshot(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL, related_name='balance_snapshots',
-                                        null=True)
+    organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL,
+                                     related_name='balance_snapshots', null=True)
     balance = models.DecimalField(max_digits=12, decimal_places=6, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -3,8 +3,6 @@ from django.contrib import admin
 from apps.memories.models import AssistantMemory
 
 
-# Register your models here.
-
 @admin.register(AssistantMemory)
 class AssistantMemoryAdmin(admin.ModelAdmin):
     list_display = ["user", "assistant", "memory_type", "created_at", "memory_text_content", "created_at"]

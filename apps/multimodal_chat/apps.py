@@ -6,5 +6,4 @@ class MultimodalChatConfig(AppConfig):
     name = 'apps.multimodal_chat'
 
     def ready(self):
-        # Implicitly connect signal handlers decorated with @receiver.
         from . import signals

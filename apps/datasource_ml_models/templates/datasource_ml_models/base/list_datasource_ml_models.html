@@ -7,164 +7,172 @@
 {% block title %}ML Model Connections{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
-<style>
-  .text-wrap {
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <style>
+    .text-wrap {
       white-space: normal;
       word-break: break-all;
-  }
-</style>
+    }
+  </style>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
-<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
-<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/form-layouts.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row g-6 mb-6">
-  <div class="col-sm-6 col-xl-6">
-    <h3 class="mb-0"><strong>Your ML Model Connections</strong></h3>
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h3 class="mb-0"><strong>Your ML Model Connections</strong></h3>
+    </div>
   </div>
-</div>
 
-<div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-  <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
-  <span class="alert-icon rounded">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+    <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
-  <div class="d-flex flex-column ps-1">
-    <h5 class="alert-heading mb-2">Tip</h5>
-    <p class="mb-0">
-      In this page, you can manage your ML model connections for your assistants. Ensure that each assistant has the necessary connections configured to utilize the models effectively.
-    </p>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can manage your ML model connections for your assistants. Ensure that each assistant has the
+        necessary connections configured to utilize the models effectively.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   </div>
-</div>
 
-<!-- ML Model Connections Cards -->
-{% for organization, assistants in connections_by_organization.items %}
-<div class="card mb-6">
-  <div class="card-header border-bottom">
-    <a class="collapsed" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
-      <h4>
-        {{ organization.name }}
-      </h4>
-    </a>
-    <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
-    <span data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
+  <!-- ML Model Connections Cards -->
+  {% for organization, assistants in connections_by_organization.items %}
+    <div class="card mb-6">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
+          <h4>
+            {{ organization.name }}
+          </h4>
+        </a>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-org-{{ organization.id }}">
       <strong>&nbsp; See ML Model Connections of Assistants</strong>
     </span>
-  </div>
-  <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
-    {% for assistant, connections in assistants.items %}
-    <div class="assistant-group m-8">
-      <h5 class="assistant-title"><strong>{{ assistant.name }}</strong></h5>
-      <div class="card-datatable table-responsive">
-        <a href="{% url 'datasource_ml_models:create' %}">
-          <button class="btn btn-success mt-4 mb-8">
-            <i class="fa fa-add me-4"></i>
-            <strong> Add ML Model Connection</strong>
-          </button>
-        </a>
       </div>
-      <div class="row g-6 mb-4">
-        {% for connection in connections %}
-        <div class="col-xl-6 col-md-6">
-          <div class="card h-100">
-            <div class="card-header d-flex justify-content-between">
-              <div class="card-title mb-0">
-                <p class="card-subtitle mb-4"><strong>
-                  <i class="fa fa-id-badge me-4"></i> Connection Name: &nbsp;&nbsp;</strong>
-                  {{ connection.name }}
-                </p>
-                <p class="card-subtitle mb-4"><strong>
-                  <i class="fa fa-database me-4"></i> Model Category: &nbsp;&nbsp;</strong>
-                  {{ connection.get_model_object_category_display }}
-                </p>
-              </div>
+      <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
+        {% for assistant, connections in assistants.items %}
+          <div class="assistant-group m-8">
+            <h5 class="assistant-title"><strong>{{ assistant.name }}</strong></h5>
+            <div class="card-datatable table-responsive">
+              <a href="{% url 'datasource_ml_models:create' %}">
+                <button class="btn btn-success mt-4 mb-8">
+                  <i class="fa fa-add me-4"></i>
+                  <strong> Add ML Model Connection</strong>
+                </button>
+              </a>
             </div>
-            <div class="card-body">
-              <ul class="p-0 m-0">
-                <li class="mb-4 d-flex justify-content-between align-items-center">
-                  <span class="text-body me-4"><strong>Description:</strong></span>
-                  <span class="text-wrap">{{ connection.description|linebreaksbr }}</span>
-                </li>
-                <li class="mb-4 d-flex justify-content-between align-items-center">
-                  <span class="text-body"><strong>Directory Path:</strong></span>
-                  <span class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.directory_full_path }}</strong></span>
-                </li>
-                <li class="mb-4 d-flex justify-content-between align-items-center">
-                  <span class="text-body"><strong>Temperature:</strong></span>
-                  <span class="text-wrap bg-label-info p-2 rounded"><strong>{{ connection.interpretation_temperature }}</strong></span>
-                </li>
-                <li class="mb-4 d-flex justify-content-between align-items-center">
-                  <span class="text-body"><strong>Max Tokens:</strong></span>
-                  <span class="text-wrap bg-label-info p-2 rounded"><strong>{{ connection.interpretation_maximum_tokens }}</strong></span>
-                </li>
-              </ul>
-              <hr>
-              <div class="d-flex justify-content-center">
-                <a href="{% url 'datasource_ml_models:update' connection.id %}" class="btn btn-primary me-3"><i class="ti ti-edit me-2"></i><strong>Edit Connection</strong></a>
-                <a href="{% url 'datasource_ml_models:delete' connection.id %}" class="btn btn-danger"><i class="ti ti-trash"></i><strong> Delete </strong></a>
-              </div>
+            <div class="row g-6 mb-4">
+              {% for connection in connections %}
+                <div class="col-xl-6 col-md-6">
+                  <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between">
+                      <div class="card-title mb-0">
+                        <p class="card-subtitle mb-4"><strong>
+                          <i class="fa fa-id-badge me-4"></i> Connection Name: &nbsp;&nbsp;</strong>
+                          {{ connection.name }}
+                        </p>
+                        <p class="card-subtitle mb-4"><strong>
+                          <i class="fa fa-database me-4"></i> Model Category: &nbsp;&nbsp;</strong>
+                          {{ connection.get_model_object_category_display }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <ul class="p-0 m-0">
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body me-4"><strong>Description:</strong></span>
+                          <span class="text-wrap">{{ connection.description|linebreaksbr }}</span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body"><strong>Directory Path:</strong></span>
+                          <span
+                            class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.directory_full_path }}</strong></span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body"><strong>Temperature:</strong></span>
+                          <span
+                            class="text-wrap bg-label-info p-2 rounded"><strong>{{ connection.interpretation_temperature }}</strong></span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body"><strong>Max Tokens:</strong></span>
+                          <span
+                            class="text-wrap bg-label-info p-2 rounded"><strong>{{ connection.interpretation_maximum_tokens }}</strong></span>
+                        </li>
+                      </ul>
+                      <hr>
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'datasource_ml_models:update' connection.id %}" class="btn btn-primary me-3"><i
+                          class="ti ti-edit me-2"></i><strong>Edit Connection</strong></a>
+                        <a href="{% url 'datasource_ml_models:delete' connection.id %}" class="btn btn-danger"><i
+                          class="ti ti-trash"></i><strong> Delete </strong></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
             </div>
           </div>
-        </div>
+          <hr>
         {% endfor %}
       </div>
     </div>
-    <hr>
-    {% endfor %}
-  </div>
-</div>
-{% endfor %}
+  {% endfor %}
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('.toggle-icon').forEach(function(icon) {
-      icon.addEventListener('click', function() {
-        var target = document.querySelector(this.getAttribute('data-target'));
-        var bootstrapCollapse = new bootstrap.Collapse(target, {
-          toggle: false
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
+        icon.addEventListener('click', function () {
+          var target = document.querySelector(this.getAttribute('data-target'));
+          var bootstrapCollapse = new bootstrap.Collapse(target, {
+            toggle: false
+          });
+          if (target.classList.contains('show')) {
+            bootstrapCollapse.hide();
+          } else {
+            bootstrapCollapse.show();
+          }
         });
-        if (target.classList.contains('show')) {
-          bootstrapCollapse.hide();
-        } else {
-          bootstrapCollapse.show();
-        }
-      });
-    });
-
-    document.querySelectorAll('.collapse').forEach(function(collapse) {
-      collapse.addEventListener('show.bs.collapse', function() {
-        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
-        if (icon) {
-          icon.classList.remove('fa-arrow-alt-circle-down');
-          icon.classList.add('fa-arrow-alt-circle-up');
-        }
       });
 
-      collapse.addEventListener('hide.bs.collapse', function() {
-        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
-        if (icon) {
-          icon.classList.remove('fa-arrow-alt-circle-up');
-          icon.classList.add('fa-arrow-alt-circle-down');
-        }
+      document.querySelectorAll('.collapse').forEach(function (collapse) {
+        collapse.addEventListener('show.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-down');
+            icon.classList.add('fa-arrow-alt-circle-up');
+          }
+        });
+
+        collapse.addEventListener('hide.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-up');
+            icon.classList.add('fa-arrow-alt-circle-down');
+          }
+        });
       });
     });
-  });
-</script>
+  </script>
 
 {% endblock %}

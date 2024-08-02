@@ -24,6 +24,11 @@
     <orderEntry type="library" name="highlight.js" level="application" />
     <orderEntry type="library" name="codemirror" level="application" />
     <orderEntry type="library" name="select2" level="application" />
+    <orderEntry type="library" name="fabric.js" level="application" />
+    <orderEntry type="library" name="konva" level="application" />
+    <orderEntry type="library" name="bootstrap.bundle" level="application" />
+    <orderEntry type="library" name="apexcharts" level="application" />
+    <orderEntry type="library" name="float" level="application" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="format" value="PLAIN" />

@@ -23,36 +23,12 @@ from web_project import TemplateLayout
 from .tasks import download_file_from_url
 from ..multimodal_chat.models import MultimodalChat
 
-# Create your views here.
-
-
 FILE_TYPE_HIGHLIGHTING_DECODER = {
-    "py": "python",
-    "js": "javascript",
-    "ts": "typescript",
-    "php": "php",
-    "css": "css",
-    "html": "html",
-    "java": "java",
-    "c": "c",
-    "cpp": "cpp",
-    "h": "h",
-    "sh": "shell",
-    "go": "golang",
-    "dart": "dart",
-    "yml": "yaml",
-    "yaml": "yaml",
-    "sql": "sql",
-    "pkl": "plaintext",  # plain text
-    "csv": "plaintext",  # plain text
-    "xlsx": "plaintext",  # plain text
-    "json": "json",
-    "xml": "xml",
-    "tsv": "plaintext",  # plain text
-    "docx": "plaintext",  # plain text
-    "pptx": "plaintext",  # plain text
-    "pdf": "plaintext",  # plain text
-    "txt": "plaintext",  # plain text
+    "py": "python", "js": "javascript", "ts": "typescript", "php": "php", "css": "css", "html": "html",
+    "java": "java", "c": "c", "cpp": "cpp", "h": "h", "sh": "shell", "go": "golang", "dart": "dart",
+    "yml": "yaml", "yaml": "yaml", "sql": "sql", "pkl": "plaintext", "csv": "plaintext",
+    "xlsx": "plaintext", "json": "json", "xml": "xml", "tsv": "plaintext", "docx": "plaintext",
+    "pptx": "plaintext", "pdf": "plaintext", "txt": "plaintext",
 }
 
 
@@ -61,45 +37,29 @@ class DataSourceMediaStorageConnectionCreateView(LoginRequiredMixin, TemplateVie
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        user_organizations = Organization.objects.filter(
-            users__in=[context_user]
-        )
-        context['assistants'] = Assistant.objects.filter(
-            organization__in=user_organizations
-        )
+        user_organizations = Organization.objects.filter(users__in=[context_user])
+        context['assistants'] = Assistant.objects.filter(organization__in=user_organizations)
         context['media_categories'] = MEDIA_CATEGORIES
         context['user'] = context_user
         return context
 
     def post(self, request, *args, **kwargs):
-
-        ##############################
         # PERMISSION CHECK FOR - MEDIA STORAGE / CREATE
-        ##############################
         context_user = self.request.user
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.ADD_MEDIA_STORAGES not in user_permissions:
             messages.error(request, "You do not have permission to create media storages.")
             return redirect('datasource_media_storages:list')
-        ##############################
 
         name = request.POST.get('name')
         description = request.POST.get('description')
         media_category = request.POST.get('media_category')
         assistant_id = request.POST.get('assistant')
-
         try:
             assistant = Assistant.objects.get(id=assistant_id)
             data_source = DataSourceMediaStorageConnection.objects.create(
-                name=name,
-                description=description,
-                media_category=media_category,
-                assistant=assistant
+                name=name, description=description, media_category=media_category, assistant=assistant
             )
             data_source.save()
             messages.success(request, 'Data Source Media Storage created successfully.')
@@ -113,7 +73,6 @@ class DataSourceMediaStorageConnectionCreateView(LoginRequiredMixin, TemplateVie
 
 
 class DataSourceListMediaStorageConnectionsView(LoginRequiredMixin, TemplateView):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         organizations = Organization.objects.filter(users__in=[self.request.user])
@@ -125,17 +84,9 @@ class DataSourceListMediaStorageConnectionsView(LoginRequiredMixin, TemplateView
                 media_storages = DataSourceMediaStorageConnection.objects.filter(assistant=assistant)
                 storage_data_list = []
                 for storage in media_storages:
-                    storage_data_list.append({
-                        'storage': storage,
-                    })
-                assistant_data_list.append({
-                    'assistant': assistant,
-                    'media_storages': storage_data_list,
-                })
-            data.append({
-                'organization': org,
-                'assistants': assistant_data_list,
-            })
+                    storage_data_list.append({'storage': storage})
+                assistant_data_list.append({'assistant': assistant, 'media_storages': storage_data_list})
+            data.append({'organization': org, 'assistants': assistant_data_list})
         context['data'] = data
         return context
 
@@ -161,21 +112,13 @@ class DataSourceMediaStorageConnectionUpdateView(LoginRequiredMixin, TemplateVie
         return context
 
     def post(self, request, *args, **kwargs):
-
-        ##############################
         # PERMISSION CHECK FOR - MEDIA STORAGE / UPDATE
-        ##############################
         context_user = self.request.user
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.UPDATE_MEDIA_STORAGES not in user_permissions:
             messages.error(request, "You do not have permission to update media storages.")
             return redirect('datasource_media_storages:list')
-        ##############################
 
         media_storage = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
         name = request.POST.get('name')
@@ -201,7 +144,6 @@ class DataSourceMediaStorageConnectionUpdateView(LoginRequiredMixin, TemplateVie
 
 
 class DataSourceMediaStorageConnectionDeleteView(LoginRequiredMixin, TemplateView):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -211,20 +153,13 @@ class DataSourceMediaStorageConnectionDeleteView(LoginRequiredMixin, TemplateVie
         return context
 
     def post(self, request, *args, **kwargs):
-        ##############################
         # PERMISSION CHECK FOR - MEDIA STORAGE / CREATE
-        ##############################
         context_user = self.request.user
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
             messages.error(request, "You do not have permission to delete media storages.")
             return redirect('datasource_media_storages:list')
-        ##############################
 
         media_storage = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
         media_storage.delete()
@@ -232,16 +167,10 @@ class DataSourceMediaStorageConnectionDeleteView(LoginRequiredMixin, TemplateVie
         return redirect('datasource_media_storages:list')
 
 
-##################################################################################################################
-
-
 class DataSourceMediaStorageItemCreateView(LoginRequiredMixin, TemplateView):
-
     def get(self, request, *args, **kwargs):
         user_assistants = Assistant.objects.filter(organization__users__in=[request.user])
-        media_storages = DataSourceMediaStorageConnection.objects.filter(
-            assistant__in=user_assistants
-        )
+        media_storages = DataSourceMediaStorageConnection.objects.filter(assistant__in=user_assistants)
         organizations = Organization.objects.filter(users__in=[request.user])
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -252,21 +181,13 @@ class DataSourceMediaStorageItemCreateView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         media_storage_id = request.POST.get('media_storage') or None
-
-        ##############################
         # PERMISSION CHECK FOR - MEDIA ITEM / CREATE
-        ##############################
         context_user = self.request.user
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.ADD_MEDIA_STORAGES not in user_permissions:
             messages.error(request, "You do not have permission to create media items.")
             return redirect('datasource_media_storages:list_items')
-        ##############################
 
         if not media_storage_id:
             messages.error(request, 'Please select a media storage.')
@@ -290,7 +211,6 @@ class DataSourceMediaStorageItemCreateView(LoginRequiredMixin, TemplateView):
                     description=description
                 )
                 media_storage_item.save()
-
             messages.success(request, 'Files uploaded successfully.')
             return redirect('datasource_media_storages:list_items')
         else:
@@ -299,7 +219,6 @@ class DataSourceMediaStorageItemCreateView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceMediaStorageItemDetailAndUpdateView(LoginRequiredMixin, TemplateView):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         media_item = DataSourceMediaStorageItem.objects.get(id=kwargs['pk'])
@@ -324,21 +243,13 @@ class DataSourceMediaStorageItemDetailAndUpdateView(LoginRequiredMixin, Template
         return context
 
     def post(self, request, *args, **kwargs):
-
-        ##############################
         # PERMISSION CHECK FOR - MEDIA ITEM / UPDATE
-        ##############################
         context_user = self.request.user
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.UPDATE_MEDIA_STORAGES not in user_permissions:
             messages.error(request, "You do not have permission to update media items.")
             return redirect('datasource_media_storages:list_items')
-        ##############################
 
         media_item = DataSourceMediaStorageItem.objects.get(id=kwargs['pk'])
         description = request.POST.get('description')
@@ -367,38 +278,22 @@ class DataSourceMediaStorageItemListView(LoginRequiredMixin, TemplateView):
 
                     item_data_list = []
                     for item in page_obj:
-                        item_data_list.append({
-                            'item': item, })
-                    storage_data_list.append({
-                        'storage': storage,
-                        'items': page_obj,
-                        'item_data': item_data_list, })
-                assistant_data_list.append({
-                    'assistant': assistant,
-                    'media_storages': storage_data_list, })
-            data.append({
-                'organization': org,
-                'assistants': assistant_data_list, })
+                        item_data_list.append({'item': item, })
+                    storage_data_list.append({'storage': storage, 'items': page_obj, 'item_data': item_data_list, })
+                assistant_data_list.append({'assistant': assistant, 'media_storages': storage_data_list, })
+            data.append({'organization': org, 'assistants': assistant_data_list, })
         context['data'] = data
         context['base_url'] = BASE_URL
         return context
 
     def post(self, request, *args, **kwargs):
-
-        ##############################
         # PERMISSION CHECK FOR - MEDIA ITEM / DELETE
-        ##############################
         context_user = self.request.user
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
             messages.error(request, "You do not have permission to delete media items.")
             return redirect('datasource_media_storages:list_items')
-        ##############################
 
         if 'selected_items' in request.POST:
             item_ids = request.POST.getlist('selected_items')
@@ -424,21 +319,13 @@ class DataSourceMediaStorageAllItemsDeleteView(LoginRequiredMixin, TemplateView)
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
-
-        ##############################
         # PERMISSION CHECK FOR - MEDIA ITEM / DELETE
-        ##############################
         context_user = self.request.user
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
             messages.error(request, "You do not have permission to delete media items.")
             return redirect('datasource_media_storages:list_items')
-        ##############################
 
         base_id = kwargs.get('id')
         all_items = DataSourceMediaStorageItem.objects.filter(storage_base_id=base_id)
@@ -456,7 +343,6 @@ class DataSourceMediaStorageAllItemsDeleteView(LoginRequiredMixin, TemplateView)
 class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        generated_description = None
         if 'generated_description' in kwargs:
             context['generated_description'] = kwargs['generated_description']
             print(f"Generated Description: {kwargs['generated_description']}")
@@ -464,7 +350,6 @@ class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, Template
 
     @staticmethod
     def decode_media_item_type(media_item_type):
-
         class MediaFileTypesNamesLists:
             IMAGE = ['jpg', 'png', 'gif', 'svg', 'bmp', 'tiff']
             AUDIO = ['mp3', 'wav', 'flac', 'aac', 'ogg']
@@ -499,27 +384,17 @@ class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, Template
         return text
 
     def post(self, request, *args, **kwargs):
-        ##############################
         # PERMISSION CHECK FOR - MEDIA ITEM / UPDATE
-        ##############################
         context_user = self.request.user
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.UPDATE_MEDIA_STORAGES not in user_permissions:
             messages.error(request, "You do not have permission to update media items.")
-
             return redirect('datasource_media_storages:list_items')
-        ##############################
 
         media_item_id = kwargs.get('pk')
         media_item = DataSourceMediaStorageItem.objects.get(id=media_item_id)
-
         execution_type = self.decode_media_item_type(media_item.media_file_type)
-
         texts, _, _ = execute_storage_query(chat_id=None,
                                             connection_id=media_item.storage_base.id,
                                             execution_type=execution_type,
@@ -555,31 +430,21 @@ class DataSourceMediaStorageItemFetchFileFromUrl(LoginRequiredMixin, TemplateVie
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        ##############################
         # PERMISSION CHECK FOR - MEDIA ITEM / CREATE
-        ##############################
         context_user = self.request.user
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.ADD_MEDIA_STORAGES not in user_permissions:
             messages.error(request, "You do not have permission to create media items.")
             return redirect('datasource_media_storages:list_items')
-        ##############################
-
         media_storage_id = request.POST.get('storage_id') or None
         if not media_storage_id:
             messages.error(request, 'Invalid media storage ID.')
             return redirect('datasource_media_storages:create_item')
-
         download_url = request.POST.get('download_url') or None
         if not download_url:
             messages.error(request, 'Invalid download URL.')
             return redirect('datasource_media_storages:create_item')
-
         media_storage_id_int = int(media_storage_id)
         download_file_from_url.delay(storage_id=media_storage_id_int, url=download_url)
         messages.success(request, 'File download from URL initiated.')
@@ -587,7 +452,6 @@ class DataSourceMediaStorageItemFetchFileFromUrl(LoginRequiredMixin, TemplateVie
 
 
 class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateView):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         organizations = Organization.objects.filter(users__in=[self.request.user])
@@ -597,69 +461,44 @@ class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateV
             assistant_data_list = []
             for assistant in assistants:
                 multimodal_chats_of_assistants = MultimodalChat.objects.filter(assistant=assistant)
-
                 messages_with_images = []
                 messages_with_files = []
                 for chat in multimodal_chats_of_assistants:
                     file_or_image_messages = chat.chat_messages.filter(Q(message_image_contents__isnull=False) |
-                                                         Q(message_file_contents__isnull=False))
+                                                                       Q(message_file_contents__isnull=False))
                     for m in file_or_image_messages:
                         if m.message_image_contents:
                             for img in m.message_image_contents:
-                                message_data = {
-                                    'message': m,
-                                    'image': img
-                                }
+                                message_data = {'message': m, 'image': img}
                                 messages_with_images.append(message_data)
                         if m.message_file_contents:
                             for file in m.message_file_contents:
-                                message_data = {
-                                    'message': m,
-                                    'file': file
-                                }
+                                message_data = {'message': m, 'file': file}
                                 messages_with_files.append(message_data)
-
                 # prepare paginated images
                 paginator_images = Paginator(messages_with_images, 5)  # 5 items per page
                 page_number_images = self.request.GET.get('page_images')
                 page_obj_images = paginator_images.get_page(page_number_images)
-
                 # prepare paginated files
                 paginator_files = Paginator(messages_with_files, 5)
                 page_number_files = self.request.GET.get('page_files')
                 page_obj_files = paginator_files.get_page(page_number_files)
-
-                assistant_data_list.append({
-                    'assistant': assistant,
-                    'messages_with_images': page_obj_images,
-                    'messages_with_files': page_obj_files
-                })
-            data.append({
-                'organization': org,
-                'assistants': assistant_data_list,
-            })
-
+                assistant_data_list.append({'assistant': assistant, 'messages_with_images': page_obj_images,
+                                            'messages_with_files': page_obj_files})
+            data.append({'organization': org, 'assistants': assistant_data_list, })
         context['data'] = data
         print(data)
         context['base_url'] = BASE_URL
         return context
 
     def post(self, request, *args, **kwargs):
-
-        ##############################
         # PERMISSION CHECK FOR - MEDIA ITEM / DELETE
-        ##############################
         context_user = self.request.user
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
             messages.error(request, "You do not have permission to delete generated media items.")
             return redirect('datasource_media_storages:list_items')
-        ##############################
 
         if 'selected_items' in request.POST:
             item_ids = request.POST.getlist('selected_items')
@@ -669,8 +508,8 @@ class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateV
                     try:
                         os.system(f"rm -rf {item.full_file_path}")
                     except Exception as e:
-                        print(f"Error deleting the generated file from the media storage path: {item.full_file_path} // {e}")
-
+                        print(
+                            f"Error deleting the generated file from the media storage path: {item.full_file_path} // {e}")
             DataSourceMediaStorageItem.objects.filter(id__in=item_ids).delete()
             messages.success(request, 'Selected generated media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')

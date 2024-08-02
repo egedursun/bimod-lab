@@ -11,9 +11,6 @@ from apps.datasource_knowledge_base.utils import generate_class_name, generate_c
 from django.contrib.admin.actions import delete_selected as django_delete_selected
 
 
-# Register your models here.
-
-
 @admin.register(DocumentKnowledgeBaseConnection)
 class DocumentKnowledgeBaseConnectionAdmin(admin.ModelAdmin):
     list_display = ['provider', 'host_url', 'provider_api_key', 'assistant', 'name', 'class_name', 'description',
@@ -59,14 +56,11 @@ class DocumentKnowledgeBaseConnectionAdmin(admin.ModelAdmin):
 @admin.register(KnowledgeBaseDocument)
 class KnowledgeBaseDocumentAdmin(admin.ModelAdmin):
     list_display = ['knowledge_base', 'document_type', 'document_file_name', 'document_description',
-                    'document_metadata', 'document_uri',
-                    'created_at', 'updated_at']
+                    'document_metadata', 'document_uri', 'created_at', 'updated_at']
     list_filter = ['knowledge_base', 'document_type', 'document_file_name', 'document_description',
-                     'document_metadata', 'document_uri',
-                     'created_at', 'updated_at']
+                   'document_metadata', 'document_uri', 'created_at', 'updated_at']
     search_fields = ['knowledge_base', 'document_type', 'document_file_name', 'document_description',
-                     'document_metadata', 'document_uri',
-                     'created_at', 'updated_at']
+                     'document_metadata', 'document_uri', 'created_at', 'updated_at']
     readonly_fields = ['created_at', 'updated_at']
 
     list_per_page = 20
@@ -89,7 +83,8 @@ class KnowledgeBaseDocumentChunkAdmin(admin.ModelAdmin):
     list_display = ['knowledge_base', 'document', 'chunk_document_type', 'chunk_document_uri', 'knowledge_base_uuid',
                     'document_uuid', 'created_at']
     list_filter = ['document', 'chunk_document_type', 'knowledge_base_uuid', 'document_uuid', 'created_at']
-    search_fields = ['document', 'chunk_document_type', 'chunk_content', 'chunk_metadata', 'chunk_document_uri', 'knowledge_base_uuid', 'created_at']
+    search_fields = ['document', 'chunk_document_type', 'chunk_content', 'chunk_metadata', 'chunk_document_uri',
+                     'knowledge_base_uuid', 'created_at']
     readonly_fields = ['created_at']
 
     list_per_page = 20
@@ -107,14 +102,9 @@ class DocumentProcessingLogAdmin(admin.ModelAdmin):
     list_max_show_all = 100
 
 
-####################################################################################################################
-####################################################################################################################
-
-
 @admin.register(ContextHistoryKnowledgeBaseConnection)
 class ContextHistoryKnowledgeBaseConnectionAdmin(admin.ModelAdmin):
-    list_display = ["class_name", "vectorizer", "vectorizer_api_key", "created_at",
-                    "updated_at"]
+    list_display = ["class_name", "vectorizer", "vectorizer_api_key", "created_at", "updated_at"]
     list_filter = ["class_name", "vectorizer"]
     search_fields = ["class_name", "vectorizer"]
     readonly_fields = ['created_at', 'updated_at']
@@ -129,7 +119,6 @@ class ContextHistoryKnowledgeBaseConnectionAdmin(admin.ModelAdmin):
 
         if obj.class_name is None:
             obj.class_name = generate_chat_history_class_name()
-
         super().save_model(request, obj, form, change)
 
         client = MemoryExecutor(connection=obj)
@@ -144,16 +133,13 @@ class ContextHistoryKnowledgeBaseConnectionAdmin(admin.ModelAdmin):
             result = client.delete_chat_history_classes(class_name=obj.class_name)
             if not result["status"]:
                 print(f"Error deleting Chat History class: {result['error']}")
-
         super().delete_model(request, obj)
 
 
 @admin.register(ContextHistoryMemory)
 class ContextHistoryMemoryAdmin(admin.ModelAdmin):
-    list_display = [ "knowledge_base_memory_uuid", "knowledge_base_memory_uuid",
-                    "created_at", "updated_at"]
-    search_fields = ["knowledge_base_memory_uuid", "knowledge_base_memory_uuid",
-                     "created_at", "updated_at"]
+    list_display = ["knowledge_base_memory_uuid", "knowledge_base_memory_uuid", "created_at", "updated_at"]
+    search_fields = ["knowledge_base_memory_uuid", "knowledge_base_memory_uuid", "created_at", "updated_at"]
     readonly_fields = ['created_at', 'updated_at']
 
     list_per_page = 20
@@ -174,8 +160,7 @@ class ContextHistoryMemoryAdmin(admin.ModelAdmin):
 
 @admin.register(ContextHistoryMemoryChunk)
 class ContextHistoryMemoryChunkAdmin(admin.ModelAdmin):
-    list_display = ["chunk_number", "chunk_content", "knowledge_base_memory_uuid", "chunk_uuid",
-                    "created_at"]
+    list_display = ["chunk_number", "chunk_content", "knowledge_base_memory_uuid", "chunk_uuid", "created_at"]
     list_filter = ["chunk_number", "chunk_content", "knowledge_base_memory_uuid", "chunk_uuid"]
     search_fields = ["chunk_number", "chunk_content", "knowledge_base_memory_uuid", "chunk_uuid", "created_at"]
     readonly_fields = ['created_at', 'updated_at']

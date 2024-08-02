@@ -8,15 +8,11 @@ from apps.multimodal_chat.models import MultimodalChat, ChatCreationLog, ChatMes
 def create_chat_created_log(sender, instance, created, **kwargs):
     # Add a new periodic task for this ScheduledJob
     if created:
-        ChatCreationLog.objects.create(
-            organization=instance.assistant.organization
-        )
+        ChatCreationLog.objects.create(organization=instance.assistant.organization)
 
 
 @receiver(post_save, sender=MultimodalChatMessage)
 def create_chat_message_created_log(sender, instance, created, **kwargs):
     # Add a new periodic task for this ScheduledJob
     if created:
-        ChatMessageCreationLog.objects.create(
-            organization=instance.multimodal_chat.assistant.organization
-        )
+        ChatMessageCreationLog.objects.create(organization=instance.multimodal_chat.assistant.organization)

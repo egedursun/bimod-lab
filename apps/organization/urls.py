@@ -16,5 +16,6 @@ urlpatterns = [
          name="delete"),
     path('add_credits/<int:pk>/', OrganizationAddCreditsView.as_view(),
          name="add_credits"),
+
     path('balance_transfer/', OrganizationBalanceTransferView.as_view(), name='balance_transfer'),
 ]

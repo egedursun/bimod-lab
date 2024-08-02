@@ -3,8 +3,6 @@ from django.contrib import admin
 from apps.datasource_media_storages.models import DataSourceMediaStorageConnection, DataSourceMediaStorageItem
 
 
-# Register your models here.
-
 @admin.register(DataSourceMediaStorageConnection)
 class DataSourceMediaStorageConnectionAdmin(admin.ModelAdmin):
     list_display = ['assistant', 'name', 'media_category', 'directory_full_path', 'directory_schema', 'created_at',

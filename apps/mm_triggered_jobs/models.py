@@ -3,8 +3,6 @@ from django.db import models
 from config.settings import BASE_URL
 
 
-# Create your models here.
-
 class TriggeredJob(models.Model):
     name = models.CharField(max_length=255)
     task_description = models.TextField(blank=True, null=True)
@@ -81,7 +79,6 @@ class TriggeredJobInstance(models.Model):
 
     webhook_payload = models.JSONField(default=dict)
     logs = models.JSONField(default=list)
-
     execution_index = models.IntegerField(default=0, null=True)
 
     # Metadata
@@ -104,4 +101,3 @@ class TriggeredJobInstance(models.Model):
             models.Index(fields=['triggered_job', 'status', 'started_at', 'ended_at', 'id', 'status', 'logs',
                                  'webhook_payload']),
         ]
-

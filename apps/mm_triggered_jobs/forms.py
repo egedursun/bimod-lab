@@ -8,9 +8,7 @@ class TriggeredJobForm(forms.ModelForm):
         model = TriggeredJob
         fields = ['name', 'task_description', 'step_guide', 'trigger_assistant', 'trigger_source', 'event_type',
                   'maximum_runs']
-        widgets = {
-            'step_guide': forms.Textarea(attrs={'rows': 3}),
-        }
+        widgets = {'step_guide': forms.Textarea(attrs={'rows': 3})}
 
     def __init__(self, *args, **kwargs):
         super(TriggeredJobForm, self).__init__(*args, **kwargs)

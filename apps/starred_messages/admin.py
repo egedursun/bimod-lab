@@ -3,8 +3,6 @@ from django.contrib import admin
 from apps.starred_messages.models import StarredMessage
 
 
-# Register your models here.
-
 @admin.register(StarredMessage)
 class StarredMessageAdmin(admin.ModelAdmin):
 

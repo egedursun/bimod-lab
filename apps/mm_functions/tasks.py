@@ -3,12 +3,10 @@ import os
 import shutil
 import subprocess
 import uuid
-from random import shuffle
 
 from celery import shared_task
 
 from apps.mm_functions.models import CustomFunction
-
 
 NUMBER_OF_RANDOM_FEATURED_FUNCTIONS = 5
 
@@ -67,9 +65,10 @@ def mm_function_execution_task(custom_function_id, input_values: dict):
         for package in packages:
             package_name = package["name"]
             package_version = package["version"]
-            subprocess.run([os.path.join(venv_path, "bin", "pip3"), "install --retries 1", f"{package_name}~={package_version}"
-            if (package_version is not None and package_version != "") else package_name],
-                           check=False)
+            subprocess.run(
+                [os.path.join(venv_path, "bin", "pip3"), "install --retries 1", f"{package_name}~={package_version}"
+                if (package_version is not None and package_version != "") else package_name],
+                check=False)
 
         # Step 3: Write the code to a temporary script file
 
@@ -114,11 +113,9 @@ print("[INFO] Outputs for the Custom Execution:")
         # Step 5: Process the outputs
         stdout = result.stdout
         stderr = result.stderr
-
     except subprocess.CalledProcessError as e:
         # Handle errors (logging, notification, etc.)
         print(f"An error occurred: {e}")
-
     finally:
         # Step 6: Clean up the virtual environment
         shutil.rmtree(venv_path)
@@ -135,7 +132,6 @@ def randomize_featured_functions():
     for function in all_functions:
         function.is_featured = False
         function.save()
-
     # then select 5 random functions and set the is_featured field to true
     featured_functions = CustomFunction.objects.order_by('?')[:NUMBER_OF_RANDOM_FEATURED_FUNCTIONS]
     for function in featured_functions:

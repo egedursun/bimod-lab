@@ -9,9 +9,6 @@ from apps.user_permissions.models import PermissionNames, UserPermission, PERMIS
 from web_project import TemplateLayout
 
 
-# Create your views here.
-
-
 class AddPermissionsView(TemplateView):
 
     def get_context_data(self, **kwargs):
@@ -38,13 +35,11 @@ class AddPermissionsView(TemplateView):
         organization_id = request.POST.get('organization')
         user_id = request.POST.get('user')
         selected_permissions = request.POST.getlist('permissions')
-
         if organization_id and user_id and selected_permissions:
             user = get_object_or_404(User, id=user_id)
             for perm in selected_permissions:
                 UserPermission.objects.get_or_create(user=user, permission_type=perm)
             return redirect('user_permissions:list_permissions')
-
         context = self.get_context_data(**kwargs)
         context['error_messages'] = "All fields are required."
         return render(request, self.template_name, context)
@@ -193,7 +188,6 @@ class AddPermissionsView(TemplateView):
                 ('list_meta_integrations', 'List Meta Integrations'),
                 ('delete_meta_integrations', 'Delete Meta Integrations')
             ],
-            ######################################################
             "Starred Messages": [
                 ('add_starred_messages', 'Add Starred Messages'),
                 ('list_starred_messages', 'List Starred Messages'),
@@ -213,17 +207,10 @@ class ListPermissionsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
         user = self.request.user
         organizations = Organization.objects.filter(users__in=[user])
         org_users_permissions = {
-            org: {
-                "users": {
-                    user: user.permissions.all()
-                    for user in org.users.all()
-                }
-            }
-            for org in organizations
+            org: {"users": {user: user.permissions.all() for user in org.users.all()}} for org in organizations
         }
         context['org_users_permissions'] = org_users_permissions
         return context
@@ -231,27 +218,19 @@ class ListPermissionsView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         user_id = request.POST.get('user_id')
         context_user = self.request.user
-
-        ##############################
         # PERMISSION CHECK FOR - PERMISSIONS/UPDATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
         )
         if PermissionNames.MODIFY_USER_PERMISSIONS not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {
                 "Permission Error": "You do not have permission to update or modify user permissions."}
             return self.render_to_response(context)
-        ##############################
 
         user = get_object_or_404(User, id=user_id)
         permissions_data = request.POST.getlist('permissions')
         delete_requests = request.POST.getlist('delete_requests')
-
         # Process active/deactivate toggles
         for permission in user.permissions.all():
             if str(permission.id) in permissions_data and not permission.is_active:
@@ -260,13 +239,10 @@ class ListPermissionsView(LoginRequiredMixin, TemplateView):
             elif str(permission.id) not in permissions_data and permission.is_active:
                 permission.is_active = False
                 permission.save()
-
         # Process delete requests
         for permission_id in delete_requests:
             permission = get_object_or_404(UserPermission, id=permission_id)
             permission.delete()
-
         messages.success(request, 'Permissions updated successfully!')
-
         # Update only the relevant part of the page.
         return render(request, self.template_name, self.get_context_data(**kwargs))

@@ -1,19 +1,9 @@
-
-
-# Create your models here.
-
-
 from django.db import models
-
 
 # not used for now
 SCRIPT_SOURCES = {
-    "internal": "internal",
-    "external": "external",
+    "internal": "internal", "external": "external",
 }
-
-
-# Create your models here.
 
 
 class CustomScriptReference(models.Model):
@@ -26,7 +16,8 @@ class CustomScriptReference(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.custom_script.name + " - " + self.assistant.name + " - " + self.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        return self.custom_script.name + " - " + self.assistant.name + " - " + self.created_at.strftime(
+            "%Y-%m-%d %H:%M:%S")
 
     class Meta:
         verbose_name = "Custom Script Reference"
@@ -69,7 +60,6 @@ CUSTOM_SCRIPT_CATEGORIES = [
 class CustomScript(models.Model):
     is_public = models.BooleanField(default=False)
     categories = models.JSONField(default=list, blank=True)
-
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
 
@@ -101,4 +91,3 @@ class CustomScript(models.Model):
             models.Index(fields=["is_featured"]),
             models.Index(fields=["name", "is_public"]),
         ]
-

@@ -3,7 +3,6 @@ from . import views
 
 app_name = 'datasource_file_systems'
 
-
 urlpatterns = [
     path('create/', views.DataSourceFileSystemListCreateView.as_view(
         template_name='datasource_file_systems/create_datasource_file_system.html'

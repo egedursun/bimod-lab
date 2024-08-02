@@ -7,94 +7,99 @@
 {% block title %}Create ML Model Connection{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block content %}
-<!-- Basic Layout -->
-<div class="row">
-  <div class="col-xl mb-6">
-    <div class="card">
-      <div class="card-datatable table-responsive">
-        <a href="{% url 'datasource_ml_models:list' %}">
-          <button class="btn btn-secondary ms-4 mt-4 mb-8">
-            <i class="fa fa-dashboard me-4"></i>
-            <strong>Manage ML Model Connections</strong>
-          </button>
-        </a>
-      </div>
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Create a New ML Model Connection</h5>
-        <small class="text-muted float-end"></small>
-      </div>
-      <div class="card-body">
-        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-          <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
-          <span class="alert-icon rounded">
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'datasource_ml_models:list' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong>Manage ML Model Connections</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Create a New ML Model Connection</h5>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+            <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
-          <div class="d-flex flex-column ps-1">
-            <h5 class="alert-heading mb-2">Tip</h5>
-            <p class="mb-0">
-              Create a new ML model connection by providing the necessary information. You can use this connection
-              to manage and utilize ML models for your assistants. Ensure to maintain backups and secure your
-              connections to prevent data loss or unauthorized access.
-            </p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        </div>
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
-              {{ message }}
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                Create a new ML model connection by providing the necessary information. You can use this connection
+                to manage and utilize ML models for your assistants. Ensure to maintain backups and secure your
+                connections to prevent data loss or unauthorized access.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-          {% endfor %}
-        {% endif %}
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="mb-6">
-            <label class="form-label" for="assistant">Assistant</label>
-            <select class="form-select" id="assistant" name="assistant">
-              {% for assistant in form.fields.assistant.queryset %}
-                <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-              {% endfor %}
-            </select>
           </div>
-          <div class="mb-6">
-            <label class="form-label" for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name" />
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="description">Description</label>
-            <textarea class="form-control" id="description" name="description" placeholder="Enter data source description"></textarea>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="model_object_category">Model Object Category</label>
-            <select class="form-select" id="model_object_category" name="model_object_category">
-              {% for key, value in form.fields.model_object_category.choices %}
-                <option value="{{ key }}" {% if forloop.last %} selected{% endif %}>{{ value }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="interpretation_temperature">Interpretation Temperature</label>
-            <input type="number" class="form-control" id="interpretation_temperature" name="interpretation_temperature" max="2.0" min="0.0" step="0.05" value="0.50"/>
-          </div>
-          <div class="mb-6">
-            <label class="form-label" for="interpretation_maximum_tokens">Interpretation Maximum Tokens</label>
-            <input type="number" class="form-control" id="interpretation_maximum_tokens" name="interpretation_maximum_tokens" max="4032" min="512" step="32" value="4032"/>
-          </div>
-          <input type="hidden" name="created_by_user" value="{{ user.id }}">
-          <button type="submit" class="btn btn-primary d-grid w-100">Create ML Model Connection</button>
-        </form>
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label class="form-label" for="assistant">Assistant</label>
+              <select class="form-select" id="assistant" name="assistant">
+                {% for assistant in form.fields.assistant.queryset %}
+                  <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="name">Name</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name"/>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="description">Description</label>
+              <textarea class="form-control" id="description" name="description"
+                        placeholder="Enter data source description"></textarea>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="model_object_category">Model Object Category</label>
+              <select class="form-select" id="model_object_category" name="model_object_category">
+                {% for key, value in form.fields.model_object_category.choices %}
+                  <option value="{{ key }}" {% if forloop.last %} selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="interpretation_temperature">Interpretation Temperature</label>
+              <input type="number" class="form-control" id="interpretation_temperature"
+                     name="interpretation_temperature" max="2.0" min="0.0" step="0.05" value="0.50"/>
+            </div>
+            <div class="mb-6">
+              <label class="form-label" for="interpretation_maximum_tokens">Interpretation Maximum Tokens</label>
+              <input type="number" class="form-control" id="interpretation_maximum_tokens"
+                     name="interpretation_maximum_tokens" max="4032" min="512" step="32" value="4032"/>
+            </div>
+            <input type="hidden" name="created_by_user" value="{{ user.id }}">
+            <button type="submit" class="btn btn-primary d-grid w-100">Create ML Model Connection</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

@@ -11,7 +11,6 @@ from apps.llm_transaction.utils import sum_costs
 from apps.organization.models import Organization
 from web_project import TemplateLayout
 
-
 FILTER_TYPES = [
     ('seconds', 'seconds'),
     ('minutes', 'minutes'),
@@ -21,7 +20,6 @@ FILTER_TYPES = [
     ('months', 'months'),
     ('years', 'years'),
 ]
-
 
 DEFAULT_PAGINATION_SIZE_LIST_TRANSACTIONS = 5
 MAXIMUM_TOTAL_PAGES = 50
@@ -54,8 +52,7 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
         for organization in organizations:
             llm_models = organization.llm_cores.all()
             org_data = {
-                'organization': organization,
-                'llm_models': [],
+                'organization': organization, 'llm_models': [],
                 'cost_sums': sum_costs(LLMTransaction.objects.defer("transaction_context_content")
                                        .filter(organization=organization, created_at__gte=filter_date))
             }
@@ -69,10 +66,8 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
                 paginator = Paginator(transactions, DEFAULT_PAGINATION_SIZE_LIST_TRANSACTIONS)
                 page_number = self.request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
-
                 llm_data = {
-                    'model': llm_model,
-                    'transactions': page_obj,  # Use paginated transactions
+                    'model': llm_model, 'transactions': page_obj,
                     'cost_sums': sum_costs(LLMTransaction.objects.filter(
                         organization=organization, model=llm_model, created_at__gte=filter_date)
                     )
@@ -129,11 +124,15 @@ class CreateAutomatedTopUpPlan(LoginRequiredMixin, TemplateView):
         on_balance_threshold_trigger = request.POST.get('on_balance_threshold_trigger')
         on_interval_by_days_trigger = request.POST.get('on_interval_by_days_trigger')
 
-        if on_balance_threshold_trigger == 'on': on_balance_threshold_trigger = True
-        else: on_balance_threshold_trigger = False
+        if on_balance_threshold_trigger == 'on':
+            on_balance_threshold_trigger = True
+        else:
+            on_balance_threshold_trigger = False
 
-        if on_interval_by_days_trigger == 'on': on_interval_by_days_trigger = True
-        else: on_interval_by_days_trigger = False
+        if on_interval_by_days_trigger == 'on':
+            on_interval_by_days_trigger = True
+        else:
+            on_interval_by_days_trigger = False
 
         # on balance threshold parameters
         balance_lower_trigger_threshold_value = None
@@ -153,21 +152,18 @@ class CreateAutomatedTopUpPlan(LoginRequiredMixin, TemplateView):
 
         # common parameters
         monthly_hard_limit_auto_addition_amount = request.POST.get('monthly_hard_limit_auto_addition_amount')
-
         organization = Organization.objects.get(id=organization_id)
         if organization.auto_balance_topup:
             organization.auto_balance_topup.delete()
 
         top_up_model = AutoBalanceTopUpModel.objects.create(
-            organization=organization,
-            on_balance_threshold_trigger=on_balance_threshold_trigger,
+            organization=organization, on_balance_threshold_trigger=on_balance_threshold_trigger,
             on_interval_by_days_trigger=on_interval_by_days_trigger,
             balance_lower_trigger_threshold_value=balance_lower_trigger_threshold_value,
             addition_on_balance_threshold_trigger=addition_on_balance_threshold_trigger,
             regular_by_days_interval=regular_by_days_interval,
             addition_on_interval_by_days_trigger=addition_on_interval_by_days_trigger,
-            date_of_last_auto_top_up=date_of_last_auto_top_up,
-            calendar_month_total_auto_addition_value=0,
+            date_of_last_auto_top_up=date_of_last_auto_top_up, calendar_month_total_auto_addition_value=0,
             monthly_hard_limit_auto_addition_amount=monthly_hard_limit_auto_addition_amount
         )
         top_up_model.save()
@@ -190,4 +186,3 @@ class ListAutomatedTopUpPlans(LoginRequiredMixin, TemplateView):
             organization.auto_balance_topup = None
             organization.save()
         return redirect('llm_transaction:auto_top_up_list')
-

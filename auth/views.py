@@ -4,7 +4,6 @@ from auth.countries import COUNTRIES
 from web_project import TemplateLayout
 from web_project.template_helpers.theme import TemplateHelper
 
-
 """
 This file is a view controller for multiple pages as a module.
 Here you can override the page view layout.
@@ -18,8 +17,7 @@ class AuthView(TemplateView):
         # Update the context
         context.update(
             {
-                "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
-                "countries": COUNTRIES,
+                "layout_path": TemplateHelper.set_layout("layout_blank.html", context), "countries": COUNTRIES,
             }
         )
         return context

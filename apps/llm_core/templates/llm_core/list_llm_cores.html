@@ -6,159 +6,162 @@
 {% block title %}LLM Models{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
-<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/app-llm-core-list.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/app-llm-core-list.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row g-6 mb-6">
-  <div class="col-sm-6 col-xl-4">
-    <h3 class="mb-0">LLM Cores</h3>
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-4">
+      <h3 class="mb-0">LLM Cores</h3>
+    </div>
   </div>
-</div>
   <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-          <img src="{% static 'img/custom-illustrations/boy-core-list.png' %}" width="25%" class="justify-content-end">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <span class="alert-icon rounded">
+    <img src="{% static 'img/custom-illustrations/boy-core-list.png' %}" width="25%" class="justify-content-end">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
-          <div class="d-flex flex-column ps-1">
-            <h5 class="alert-heading mb-2">Tip</h5>
-            <p class="mb-0">
-              In this page, you can view all the LLM Cores of the organizations you have created. You can also edit or
-              delete any LLM Core that belongs to you as an administrator. To create a new LLM Core, click on the
-              "Create LLM Core" button, which is located in the tab on the left side of your screen.
-            </p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
-          </div>
-        </div>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view all the LLM Cores of the organizations you have created. You can also edit or
+        delete any LLM Core that belongs to you as an administrator. To create a new LLM Core, click on the
+        "Create LLM Core" button, which is located in the tab on the left side of your screen.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
 
-{% for organization, llm_cores in org_llm_cores.items %}
-<!-- Organization's LLM Cores List Table -->
-<div class="card mb-6">
-  <div class="card-header border-bottom">
-    <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
-      <h4>
-        {{ organization.name }}
-      </h4>
-    </a>
-    <p>
-      <i class="fa fa-computer"></i>
-      <strong>&nbsp; Number of Models: </strong> {{ llm_cores|length }}
-    </p>
-    <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
-    <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+  {% for organization, llm_cores in org_llm_cores.items %}
+    <!-- Organization's LLM Cores List Table -->
+    <div class="card mb-6">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+          <h4>
+            {{ organization.name }}
+          </h4>
+        </a>
+        <p>
+          <i class="fa fa-computer"></i>
+          <strong>&nbsp; Number of Models: </strong> {{ llm_cores|length }}
+        </p>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-{{ organization.id }}">
       <strong>&nbsp; See LLM core models</strong>
     </span>
-  </div>
-  <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse">
-    <div class="card-datatable table-responsive">
-      <a href="{% url 'llm_core:create' %}">
-        <button class="btn btn-success mt-4 ms-4">
-          <i class="fa fa-add me-4"></i>
-          <strong> Add LLM Model</strong>
-        </button>
-      </a>
-    </div>
-    <table class="datatables-llm-cores table">
-      <thead class="border-top">
-        <tr>
-          <th>Nickname</th>
-          <th>Description</th>
-          <th>Provider</th>
-          <th>Model Name</th>
-          <th>Temperature</th>
-          <th>Max Tokens</th>
-          <th>Top P</th>
-          <th>Frequency Penalty</th>
-          <th>Presence Penalty</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for llm_core in llm_cores %}
+      </div>
+      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'llm_core:create' %}">
+            <button class="btn btn-success mt-4 ms-4">
+              <i class="fa fa-add me-4"></i>
+              <strong> Add LLM Model</strong>
+            </button>
+          </a>
+        </div>
+        <table class="datatables-llm-cores table">
+          <thead class="border-top">
           <tr>
-            <td>{{ llm_core.nickname }}</td>
-            <td>{{ llm_core.description }}</td>
-            <td>{{ llm_core.get_provider_name }}</td>
-            <td>{{ llm_core.model_name }}</td>
-            <td>{{ llm_core.temperature }}</td>
-            <td>{{ llm_core.maximum_tokens }}</td>
-            <td>{{ llm_core.top_p }}</td>
-            <td>{{ llm_core.frequency_penalty }}</td>
-            <td>{{ llm_core.presence_penalty }}</td>
-            <td>
-              <a href="{% url 'llm_core:update' llm_core.id %}" class="btn btn-sm btn-primary">Edit</a>
-            </td>
-            <td>
-              <a href="{% url 'llm_core:delete' llm_core.id %}" class="btn btn-sm btn-danger">Delete</a>
-            </td>
+            <th>Nickname</th>
+            <th>Description</th>
+            <th>Provider</th>
+            <th>Model Name</th>
+            <th>Temperature</th>
+            <th>Max Tokens</th>
+            <th>Top P</th>
+            <th>Frequency Penalty</th>
+            <th>Presence Penalty</th>
+            <th></th>
+            <th></th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-{% endfor %}
+          </thead>
+          <tbody>
+          {% for llm_core in llm_cores %}
+            <tr>
+              <td>{{ llm_core.nickname }}</td>
+              <td>{{ llm_core.description }}</td>
+              <td>{{ llm_core.get_provider_name }}</td>
+              <td>{{ llm_core.model_name }}</td>
+              <td>{{ llm_core.temperature }}</td>
+              <td>{{ llm_core.maximum_tokens }}</td>
+              <td>{{ llm_core.top_p }}</td>
+              <td>{{ llm_core.frequency_penalty }}</td>
+              <td>{{ llm_core.presence_penalty }}</td>
+              <td>
+                <a href="{% url 'llm_core:update' llm_core.id %}" class="btn btn-sm btn-primary">Edit</a>
+              </td>
+              <td>
+                <a href="{% url 'llm_core:delete' llm_core.id %}" class="btn btn-sm btn-danger">Delete</a>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endfor %}
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('.toggle-icon').forEach(function(icon) {
-      icon.addEventListener('click', function() {
-        var target = document.querySelector(this.getAttribute('data-target'));
-        var bootstrapCollapse = new bootstrap.Collapse(target, {
-          toggle: false
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
+        icon.addEventListener('click', function () {
+          var target = document.querySelector(this.getAttribute('data-target'));
+          var bootstrapCollapse = new bootstrap.Collapse(target, {
+            toggle: false
+          });
+          if (target.classList.contains('show')) {
+            bootstrapCollapse.hide();
+          } else {
+            bootstrapCollapse.show();
+          }
         });
-        if (target.classList.contains('show')) {
-          bootstrapCollapse.hide();
-        } else {
-          bootstrapCollapse.show();
-        }
-      });
-    });
-
-    document.querySelectorAll('.collapse').forEach(function(collapse) {
-      collapse.addEventListener('show.bs.collapse', function() {
-        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
-        if (icon) {
-          icon.classList.remove('fa-arrow-alt-circle-down');
-          icon.classList.add('fa-arrow-alt-circle-up');
-        }
       });
 
-      collapse.addEventListener('hide.bs.collapse', function() {
-        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
-        if (icon) {
-          icon.classList.remove('fa-arrow-alt-circle-up');
-          icon.classList.add('fa-arrow-alt-circle-down');
-        }
+      document.querySelectorAll('.collapse').forEach(function (collapse) {
+        collapse.addEventListener('show.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-down');
+            icon.classList.add('fa-arrow-alt-circle-up');
+          }
+        });
+
+        collapse.addEventListener('hide.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-up');
+            icon.classList.add('fa-arrow-alt-circle-down');
+          }
+        });
       });
     });
-  });
-</script>
+  </script>
 
 {% endblock %}

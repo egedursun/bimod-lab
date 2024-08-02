@@ -7,143 +7,148 @@
 {% block title %}Exported Assistant Services{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
-<style>
-  .text-wrap {
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <style>
+    .text-wrap {
       white-space: normal;
       word-break: break-all;
-  }
-</style>
+    }
+  </style>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
-<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
-<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/form-layouts.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row g-6 mb-6">
-  <div class="col-sm-6 col-xl-6">
-    <h3 class="mb-0"><strong>Your Exported Assistants</strong></h3>
-  </div>
-</div>
-
-<div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-  <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
-  <span class="alert-icon rounded">
-    <i class="ti ti-bookmark"></i>
-  </span>
-  <div class="d-flex flex-column ps-1">
-    <h5 class="alert-heading mb-2">Tip</h5>
-    <p class="mb-0">
-      On this page, you can view all the export assistants you have created. You can also edit or delete any export assistant. To create a new export assistant, click on the "Create Export Assistant" button.
-    </p>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-</div>
-
-<div class="row g-6 mb-6">
-  <div class="col-sm-6 col-xl-6">
-    <h4 class="mb-0"><strong>Export Limits</strong></h4>
-  </div>
-</div>
-
-<!-- Export Assistants Cards -->
-<div class="row g-6 mb-8">
-  {% for data in organization_data %}
-  <div class="col-xl-6 col-md-6">
-    <div class="card h-100">
-      <div class="card-header d-flex justify-content-between">
-        <div class="card-title mb-0">
-          <h5 class="mb-1"><strong>{{ data.organization.name }}</strong></h5>
-          <p class="card-subtitle">{{ data.assistants_percentage }}% of the exportation limit used ({{ data.export_assistants_count }}/{{ data.limit }})</p>
-        </div>
-      </div>
-      <div class="card-datatable table-responsive">
-        <a href="{% url 'export_assistants:create' %}">
-          <button class="btn btn-success ms-6">
-            <i class="fa fa-add me-4"></i>
-            <strong> Add New Service</strong>
-          </button>
-        </a>
-      </div>
-      <div class="card-body">
-        <div class="progress mb-4" style="height: 20px;">
-          <div class="progress-bar bg-success" role="progressbar" style="width: {{ data.assistants_percentage }}%;" aria-valuenow="{{ data.assistants_percentage }}" aria-valuemin="0" aria-valuemax="100">
-            {{ data.assistants_percentage }}%
-          </div>
-        </div>
-        <ul class="p-0 m-0">
-          {% for export_assistant in data.export_assistants %}
-          <li class="mb-4 d-flex">
-            <div class="d-flex w-50 align-items-center me-4">
-              {% if export_assistant.assistant.assistant_image %}
-              <img src="{{ export_assistant.assistant.assistant_image.url }}" alt="Assistant Image" class="me-4" width="35">
-              {% else %}
-              <img src="{% static 'img/avatars/org-0.png' %}" alt="Assistant Image" class="me-4" width="35">
-              {% endif %}
-              <div>
-                <h6 class="mb-0"><strong>{{ export_assistant.assistant.name }}</strong></h6>
-                <small class="text-body">{{ export_assistant.assistant.organization.name }}</small>
-              </div>
-            </div>
-            <div class="d-flex flex-grow-1 align-items-center">
-              {% if export_assistant.is_online %}
-                <span class="text-success">
-                    <i class="fa fa-circle me-2"></i>Serving
-                </span>
-              {% else %}
-                <span class="text-warning">
-                  <i class="fa fa-circle me-2"></i>Paused
-                </span>
-              {% endif %}
-              {% if export_assistant.is_online %}
-                <a href="{% url 'export_assistants:toggle_service' export_assistant.id %}">
-                  <button class="btn btn-warning rounded ms-12"><strong>Pause Service</strong></button>
-                </a>
-              {% else %}
-                <a href="{% url 'export_assistants:toggle_service' export_assistant.id %}">
-                  <button class="btn btn-success rounded ms-12"><strong>Resume Service</strong></button>
-                </a>
-              {% endif %}
-            </div>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h3 class="mb-0"><strong>Your Exported Assistants</strong></h3>
     </div>
   </div>
-  {% endfor %}
-</div>
 
-<hr>
-<div class="row g-6 mb-6">
-  <div class="col-sm-6 col-xl-6">
-    <h4 class="mb-0"><strong>Active Services</strong></h4>
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        On this page, you can view all the export assistants you have created. You can also edit or delete any export
+        assistant. To create a new export assistant, click on the "Create Export Assistant" button.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   </div>
-</div>
 
-<div class="row g-0">
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h4 class="mb-0"><strong>Export Limits</strong></h4>
+    </div>
+  </div>
+
+  <!-- Export Assistants Cards -->
+  <div class="row g-6 mb-8">
+    {% for data in organization_data %}
+      <div class="col-xl-6 col-md-6">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between">
+            <div class="card-title mb-0">
+              <h5 class="mb-1"><strong>{{ data.organization.name }}</strong></h5>
+              <p class="card-subtitle">{{ data.assistants_percentage }}% of the exportation limit used
+                ({{ data.export_assistants_count }}/{{ data.limit }})</p>
+            </div>
+          </div>
+          <div class="card-datatable table-responsive">
+            <a href="{% url 'export_assistants:create' %}">
+              <button class="btn btn-success ms-6">
+                <i class="fa fa-add me-4"></i>
+                <strong> Add New Service</strong>
+              </button>
+            </a>
+          </div>
+          <div class="card-body">
+            <div class="progress mb-4" style="height: 20px;">
+              <div class="progress-bar bg-success" role="progressbar" style="width: {{ data.assistants_percentage }}%;"
+                   aria-valuenow="{{ data.assistants_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                {{ data.assistants_percentage }}%
+              </div>
+            </div>
+            <ul class="p-0 m-0">
+              {% for export_assistant in data.export_assistants %}
+                <li class="mb-4 d-flex">
+                  <div class="d-flex w-50 align-items-center me-4">
+                    {% if export_assistant.assistant.assistant_image %}
+                      <img src="{{ export_assistant.assistant.assistant_image.url }}" alt="Assistant Image" class="me-4"
+                           width="35">
+                    {% else %}
+                      <img src="{% static 'img/avatars/org-0.png' %}" alt="Assistant Image" class="me-4" width="35">
+                    {% endif %}
+                    <div>
+                      <h6 class="mb-0"><strong>{{ export_assistant.assistant.name }}</strong></h6>
+                      <small class="text-body">{{ export_assistant.assistant.organization.name }}</small>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-grow-1 align-items-center">
+                    {% if export_assistant.is_online %}
+                      <span class="text-success">
+                    <i class="fa fa-circle me-2"></i>Serving
+                </span>
+                    {% else %}
+                      <span class="text-warning">
+                  <i class="fa fa-circle me-2"></i>Paused
+                </span>
+                    {% endif %}
+                    {% if export_assistant.is_online %}
+                      <a href="{% url 'export_assistants:toggle_service' export_assistant.id %}">
+                        <button class="btn btn-warning rounded ms-12"><strong>Pause Service</strong></button>
+                      </a>
+                    {% else %}
+                      <a href="{% url 'export_assistants:toggle_service' export_assistant.id %}">
+                        <button class="btn btn-success rounded ms-12"><strong>Resume Service</strong></button>
+                      </a>
+                    {% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <hr>
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h4 class="mb-0"><strong>Active Services</strong></h4>
+    </div>
+  </div>
+
+  <div class="row g-0">
   {% for export_assistant in export_assistants %}
-  <div class="col-lg-12 col-xl-12 col-xxl-12 col-md-12">
+    <div class="col-lg-12 col-xl-12 col-xxl-12 col-md-12">
     <div class="card mb-6">
       <div class="card-body text-center">
         <div class="mx-auto my-2">
           {% if export_assistant.assistant.assistant_image %}
-          <img src="{{ export_assistant.assistant.assistant_image.url }}" alt="Assistant Image" class="rounded w-px-100">
+            <img src="{{ export_assistant.assistant.assistant_image.url }}" alt="Assistant Image"
+                 class="rounded w-px-100">
           {% else %}
-          <img src="{% static 'img/avatars/org-0.png' %}" alt="Assistant Image" class="rounded w-px-100">
+            <img src="{% static 'img/avatars/org-0.png' %}" alt="Assistant Image" class="rounded w-px-100">
           {% endif %}
         </div>
         <h5 class="mb-0 card-title"><strong>{{ export_assistant.assistant.name }}</strong></h5>
@@ -156,106 +161,113 @@
               <strong>{{ export_assistant.endpoint }}</strong>
             </span>
             <strong><small>
-              <a href="javascript:void(0);" class="copy-btn-endpoint ms-12" data-endpoint="{{ export_assistant.endpoint }}">
+              <a href="javascript:void(0);" class="copy-btn-endpoint ms-12"
+                 data-endpoint="{{ export_assistant.endpoint }}">
                 <i class="fa fa-copy"></i><span class="ms-2">Copy URL</span>
               </a>
             </small></strong>
           </div>
           <hr>
           {% if export_assistant.custom_api_key %}
-          <label class="text mt-2"><strong>Authorization:</strong></label><br>
-          <div class="me-2">
+            <label class="text mt-2"><strong>Authorization:</strong></label><br>
+            <div class="me-2">
             <span class="badge bg-label-warning text-wrap p-4 m-2">
               <strong>{{ export_assistant.custom_api_key }}</strong>
             </span>
-            <strong><small>
-              <a href="javascript:void(0);" class="copy-btn-key ms-12" data-key="{{ export_assistant.custom_api_key }}">
-                <i class="fa fa-copy"></i><span class="ms-2">Copy API Key</span>
-              </a>
-            </small></strong>
-          </div>
+              <strong><small>
+                <a href="javascript:void(0);" class="copy-btn-key ms-12"
+                   data-key="{{ export_assistant.custom_api_key }}">
+                  <i class="fa fa-copy"></i><span class="ms-2">Copy API Key</span>
+                </a>
+              </small></strong>
+            </div>
           {% else %}
-          <label class="text mt-2"><strong>Authorization:</strong></label><br>
-          <div class="me-2">
+            <label class="text mt-2"><strong>Authorization:</strong></label><br>
+            <div class="me-2">
             <span class="badge bg-label-success text-wrap p-4 m-2">
               <strong>This assistant is public, no API key required.</strong>
             </span>
           {% endif %}
+          </div>
+          <hr>
+          <div class="d-flex align-items-center justify-content-center my-6 gap-2">
+            <span
+              class="badge bg-label-{% if export_assistant.is_public %}info{% else %}danger{% endif %} me-2 text-wrap"><strong>Public: {{ export_assistant.is_public|yesno:"Yes,No" }}</strong></span>
+            <span
+              class="badge bg-label-info ms-2 text-wrap"><strong>Maximum Requests per Hour: {{ export_assistant.request_limit_per_hour }}</strong></span>
+          </div>
+          <div class="d-flex align-items-center justify-content-center">
+            <a href="{% url 'export_assistants:update' export_assistant.id %}"
+               class="btn btn-primary d-flex align-items-center me-4 waves-effect waves-light"><i
+              class="ti-xs me-1 ti ti-edit me-2"></i>Edit</a>
+            <a href="{% url 'export_assistants:delete' export_assistant.id %}"
+               class="btn btn-danger btn-icon waves-effect"><i class="ti ti-trash ti-md"></i></a>
+          </div>
+          <div class="alert-container"></div>
         </div>
-        <hr>
-        <div class="d-flex align-items-center justify-content-center my-6 gap-2">
-          <span class="badge bg-label-{% if export_assistant.is_public %}info{% else %}danger{% endif %} me-2 text-wrap"><strong>Public: {{ export_assistant.is_public|yesno:"Yes,No" }}</strong></span>
-          <span class="badge bg-label-info ms-2 text-wrap"><strong>Maximum Requests per Hour: {{ export_assistant.request_limit_per_hour }}</strong></span>
-        </div>
-        <div class="d-flex align-items-center justify-content-center">
-          <a href="{% url 'export_assistants:update' export_assistant.id %}" class="btn btn-primary d-flex align-items-center me-4 waves-effect waves-light"><i class="ti-xs me-1 ti ti-edit me-2"></i>Edit</a>
-          <a href="{% url 'export_assistants:delete' export_assistant.id %}" class="btn btn-danger btn-icon waves-effect"><i class="ti ti-trash ti-md"></i></a>
-        </div>
-        <div class="alert-container"></div>
       </div>
     </div>
-  </div>
   {% endfor %}
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
 
-  document.querySelectorAll('.copy-btn-endpoint').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const endpoint = this.getAttribute('data-endpoint');
-      const textToCopy = endpoint ? endpoint : '';
+      document.querySelectorAll('.copy-btn-endpoint').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const endpoint = this.getAttribute('data-endpoint');
+          const textToCopy = endpoint ? endpoint : '';
 
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        const alertContainer = this.closest('.card-body').querySelector('.alert-container');
-        const successAlert = document.createElement('div');
-        successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
-        successAlert.role = 'alert';
-        successAlert.innerHTML = `
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            const alertContainer = this.closest('.card-body').querySelector('.alert-container');
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+            successAlert.role = 'alert';
+            successAlert.innerHTML = `
           <span class="alert-icon rounded">
             <i class="ti ti-check"></i>
           </span>
           Endpoint URL copied to clipboard!
         `;
-        alertContainer.appendChild(successAlert);
+            alertContainer.appendChild(successAlert);
 
-        setTimeout(() => {
-          successAlert.remove();
-        }, 1000);
-      }).catch(err => {
-        alert('Failed to copy text: ' + err);
+            setTimeout(() => {
+              successAlert.remove();
+            }, 1000);
+          }).catch(err => {
+            alert('Failed to copy text: ' + err);
+          });
+        });
       });
-    });
-  });
 
-  document.querySelectorAll('.copy-btn-key').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const apiKey = this.getAttribute('data-key');
-      const textToCopy = apiKey ? apiKey : '';
+      document.querySelectorAll('.copy-btn-key').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const apiKey = this.getAttribute('data-key');
+          const textToCopy = apiKey ? apiKey : '';
 
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        const alertContainer = this.closest('.card-body').querySelector('.alert-container');
-        const successAlert = document.createElement('div');
-        successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
-        successAlert.role = 'alert';
-        successAlert.innerHTML = `
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            const alertContainer = this.closest('.card-body').querySelector('.alert-container');
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+            successAlert.role = 'alert';
+            successAlert.innerHTML = `
           <span class="alert-icon rounded">
             <i class="ti ti-check"></i>
           </span>
           API Key copied to clipboard!
         `;
-        alertContainer.appendChild(successAlert);
+            alertContainer.appendChild(successAlert);
 
-        setTimeout(() => {
-          successAlert.remove();
-        }, 1000);
-      }).catch(err => {
-        alert('Failed to copy text: ' + err);
+            setTimeout(() => {
+              successAlert.remove();
+            }, 1000);
+          }).catch(err => {
+            alert('Failed to copy text: ' + err);
+          });
+        });
       });
-    });
-  });
 
-});
-</script>
+    });
+  </script>
 
 {% endblock %}

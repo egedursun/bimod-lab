@@ -11,8 +11,6 @@ MODEL_OBJECT_CATEGORIES = (
 )
 
 
-# Create your models here.
-
 class DataSourceMLModelConnection(models.Model):
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
@@ -20,7 +18,6 @@ class DataSourceMLModelConnection(models.Model):
     model_object_category = models.CharField(max_length=20, choices=MODEL_OBJECT_CATEGORIES)
 
     directory_full_path = models.CharField(max_length=255, blank=True, null=True)
-
     directory_schema = models.TextField(blank=True, null=True)
 
     interpretation_temperature = models.FloatField(default=0.25)
@@ -52,14 +49,12 @@ class DataSourceMLModelConnection(models.Model):
 
             os.system(f"mkdir -p {full_path}")
             os.system(f"touch {full_path}/__init__.py")
-
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
         # Remove the directory
         if self.directory_full_path is not None:
             os.system(f"rm -rf {self.directory_full_path}")
-
         super().delete(using, keep_parents)
 
 
@@ -104,6 +99,5 @@ class DataSourceMLModelItem(models.Model):
             self.full_file_path = full_path
 
         super().save(force_insert, force_update, using, update_fields)
-
         # Upload the ml model to ml model base
         upload_model_to_ml_model_base.delay(file_bytes=self.file_bytes, full_path=self.full_file_path)

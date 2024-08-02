@@ -292,8 +292,6 @@ PERMISSION_TYPES = [
 ]
 
 
-# Create your models here.
-
 class ActiveUserPermissionManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_active=True)

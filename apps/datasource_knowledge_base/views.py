@@ -1,8 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
 from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
@@ -15,12 +14,6 @@ from apps.datasource_knowledge_base.utils import generate_document_uri
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
-
-
-# Create your views here.
-
-
-# KNOWLEDGE BASE VIEWS
 
 
 class DocumentKnowledgeBaseCreateView(LoginRequiredMixin, TemplateView):
@@ -41,19 +34,12 @@ class DocumentKnowledgeBaseCreateView(LoginRequiredMixin, TemplateView):
         form = DocumentKnowledgeBaseForm(request.POST)
         context_user = self.request.user
 
-        ##############################
         # PERMISSION CHECK FOR - KNOWLEDGE BASE / CREATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type',flat=True))
         if PermissionNames.ADD_KNOWLEDGE_BASES not in user_permissions:
             messages.error(request, "You do not have permission to create Knowledge Bases.")
             return redirect('datasource_knowledge_base:list')
-        ##############################
 
         if form.is_valid():
             form.save()
@@ -110,9 +96,7 @@ class DocumentKnowledgeBaseUpdateView(LoginRequiredMixin, TemplateView):
         knowledge_base = get_object_or_404(DocumentKnowledgeBaseConnection, pk=kwargs['pk'])
         context_user = self.request.user
 
-        ##############################
         # PERMISSION CHECK FOR - KNOWLEDGE BASE / UPDATE
-        ##############################
         user_permissions = UserPermission.active_permissions.filter(
             user=context_user
         ).all().values_list(
@@ -122,7 +106,6 @@ class DocumentKnowledgeBaseUpdateView(LoginRequiredMixin, TemplateView):
         if PermissionNames.UPDATE_KNOWLEDGE_BASES not in user_permissions:
             messages.error(request, "You do not have permission to update Knowledge Bases.")
             return redirect('datasource_knowledge_base:list')
-        ##############################
 
         form = DocumentKnowledgeBaseForm(request.POST, instance=knowledge_base)
         if form.is_valid():
@@ -149,19 +132,12 @@ class DocumentKnowledgeBaseDeleteView(LoginRequiredMixin, DeleteView):
         self.object = self.get_object()
         context_user = self.request.user
 
-        ##############################
         # PERMISSION CHECK FOR - KNOWLEDGE BASE / DELETE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type',flat=True))
         if PermissionNames.DELETE_KNOWLEDGE_BASES not in user_permissions:
             messages.error(request, "You do not have permission to delete Knowledge Bases.")
             return redirect('datasource_knowledge_base:list')
-        ##############################
 
         return super().post(request, *args, **kwargs)
 
@@ -170,18 +146,11 @@ class DocumentKnowledgeBaseDeleteView(LoginRequiredMixin, DeleteView):
         return DocumentKnowledgeBaseConnection.objects.filter(assistant__organization__users__in=[context_user])
 
 
-# DOCUMENT VIEWS
-
-
 class AddDocumentView(LoginRequiredMixin, TemplateView):
-
     def get(self, request, *args, **kwargs):
         user_assistants = Assistant.objects.filter(organization__users__in=[request.user])
-        knowledge_bases = DocumentKnowledgeBaseConnection.objects.filter(
-            assistant__in=user_assistants
-        )
+        knowledge_bases = DocumentKnowledgeBaseConnection.objects.filter(assistant__in=user_assistants)
         organizations = Organization.objects.filter(users__in=[request.user])
-
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['organizations'] = list(organizations.values('id', 'name'))
         context['assistants'] = list(user_assistants.values('id', 'name', 'organization_id'))
@@ -192,20 +161,13 @@ class AddDocumentView(LoginRequiredMixin, TemplateView):
         knowledge_base_id = request.POST.get('knowledge_base') or None
         context_user = request.user
 
-        ##############################
         # PERMISSION CHECK FOR - DOCUMENT / UPLOAD
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.ADD_KNOWLEDGE_BASES not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to upload documents."}
             return self.render_to_response(context)
-        ##############################
 
         if not knowledge_base_id:
             messages.error(request, 'Please select a knowledge base.')
@@ -220,15 +182,13 @@ class AddDocumentView(LoginRequiredMixin, TemplateView):
                 document_uri = generate_document_uri(assistant_base_directory, file.name, file_type)
                 file_paths.append(document_uri)
                 add_document_upload_log(document_full_uri=document_uri, log_name=DocumentUploadStatusNames.STAGED)
-                # SAVE the FILE to the document_uri
+                # SAVE the File to the document_uri
                 with open(document_uri, 'wb+') as destination:
                     file_data = file.read()
                     destination.write(file_data)
                     add_document_upload_log(document_full_uri=document_uri, log_name=DocumentUploadStatusNames.UPLOADED)
-
             # handle the task asynchronously inside the knowledge base system
             KnowledgeBaseSystemDecoder.get(knowledge_base).index_documents(document_paths=file_paths)
-
             messages.success(request, 'Documents uploaded successfully.')
             return redirect('datasource_knowledge_base:list_documents')
         else:
@@ -237,7 +197,6 @@ class AddDocumentView(LoginRequiredMixin, TemplateView):
 
 
 class ListDocumentsView(LoginRequiredMixin, TemplateView):
-
     def get(self, request, *args, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         organizations = Organization.objects.filter(users__in=[request.user])
@@ -258,41 +217,20 @@ class ListDocumentsView(LoginRequiredMixin, TemplateView):
                     for document in page_obj:
                         log_entries = DocumentProcessingLog.objects.filter(document_full_uri=document.document_uri)
                         current_statuses = [log.log_message for log in log_entries]
-                        document_data_list.append({
-                            'document': document,
-                            'current_statuses': current_statuses,
-                        })
+                        document_data_list.append({'document': document, 'current_statuses': current_statuses})
                     kb_data_list.append({
-                        'knowledge_base': kb,
-                        'documents': page_obj,
-                        'document_data': document_data_list,
+                        'knowledge_base': kb, 'documents': page_obj, 'document_data': document_data_list,
                     })
-                assistant_data_list.append({
-                    'assistant': assistant,
-                    'knowledge_bases': kb_data_list,
-                })
-            data.append({
-                'organization': org,
-                'assistants': assistant_data_list,
-            })
+                assistant_data_list.append({'assistant': assistant, 'knowledge_bases': kb_data_list})
+            data.append({'organization': org, 'assistants': assistant_data_list})
 
         context['data'] = data
         context['document_statuses'] = [
-            'staged',
-            'uploaded',
-            'loaded',
-            'chunked',
-            'embedded_document',
-            'saved_document',
-            'processed_document',
-            'embedded_chunks',
-            'saved_chunks',
-            'processed_chunks',
-            'completed'
+            'staged', 'uploaded', 'loaded', 'chunked', 'embedded_document', 'saved_document', 'processed_document',
+            'embedded_chunks', 'saved_chunks', 'processed_chunks', 'completed'
         ]
         context['failed_statuses'] = ['failed']
         context['partially_failed_statuses'] = ['partially_failed']
-
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
@@ -316,24 +254,14 @@ class DeleteAllDocumentsView(LoginRequiredMixin, TemplateView):
         knowledge_base_id = kwargs.get('kb_id')
         context_user = request.user
 
-        ##############################
         # PERMISSION CHECK FOR - DOCUMENT / DELETE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
+        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
+                            .all().values_list('permission_type', flat=True))
         if PermissionNames.DELETE_KNOWLEDGE_BASES not in user_permissions:
             context = self.get_context_data(**kwargs)
             context['error_messages'] = {"Permission Error": "You do not have permission to delete documents."}
             return self.render_to_response(context)
-        ##############################
 
         KnowledgeBaseDocument.objects.filter(knowledge_base_id=knowledge_base_id).delete()
         messages.success(request, 'All documents in the selected knowledge base have been deleted successfully.')
         return redirect('datasource_knowledge_base:list_documents')
-
-
-

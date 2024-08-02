@@ -20,8 +20,6 @@ class ChatSourcesNames:
     TRIGGERED = "triggered"
 
 
-# Create your models here.
-
 class MultimodalChat(models.Model):
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE,
@@ -47,7 +45,6 @@ class MultimodalChat(models.Model):
 
     # For archiving the chats
     is_archived = models.BooleanField(default=False)
-
     # Management for APIs
     chat_source = models.CharField(max_length=100, choices=CHAT_SOURCES, default="app")
 
@@ -75,7 +72,6 @@ class MultimodalChat(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-
         # Create the knowledge base connection in the ORM
         if (self.assistant.context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE
                 and self.context_memory_connection is None):
@@ -85,14 +81,10 @@ class MultimodalChat(models.Model):
             if self.assistant.vectorizer_api_key is None:
                 print("The assistant does not have a vectorizer API key set.")
                 return
-
             context_history = ContextHistoryKnowledgeBaseConnection.objects.create(
-                assistant=self.assistant,
-                chat=self,
-                vectorizer=self.assistant.vectorizer_name,
+                assistant=self.assistant, chat=self, vectorizer=self.assistant.vectorizer_name,
                 vectorizer_api_key=self.assistant.vectorizer_api_key
             )
-
             # Create the Weaviate classes for the context chat history memory
             connection = ContextHistoryKnowledgeBaseConnection.objects.get(id=context_history.id)
             self.context_memory_connection = connection
@@ -128,13 +120,10 @@ class MultimodalChatMessage(models.Model):
     sender_type = models.CharField(max_length=10, choices=MESSAGE_SENDER_TYPES)
     message_text_content = models.TextField()
     message_json_content = models.JSONField(default=dict, blank=True, null=True)  # Not used for now
-
     # Multimedia Contents
     message_image_contents = models.JSONField(default=list, blank=True, null=True)
     message_file_contents = models.JSONField(default=list, blank=True, null=True)
-
     starred = models.BooleanField(default=False)
-
     sent_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -163,17 +152,13 @@ class MultimodalChatMessage(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         MultimodalChat.objects.get(id=self.multimodal_chat.id).chat_messages.add(self.id)
-
         # if the message is starred, create the starred item
         if self.starred:
             if not self.multimodal_chat.starred_messages.filter(chat_message=self.id).exists():
                 new_starred_message = StarredMessage.objects.create(
-                    user=self.multimodal_chat.user,
-                    organization=self.multimodal_chat.organization,
-                    assistant=self.multimodal_chat.assistant,
-                    chat=self.multimodal_chat,
-                    chat_message=self,
-                    message_text=self.message_text_content,
+                    user=self.multimodal_chat.user, organization=self.multimodal_chat.organization,
+                    assistant=self.multimodal_chat.assistant, chat=self.multimodal_chat,
+                    chat_message=self, message_text=self.message_text_content,
                     sender_type=self.sender_type
                 )
                 self.multimodal_chat.starred_messages.add(new_starred_message)

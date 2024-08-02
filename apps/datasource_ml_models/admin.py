@@ -3,9 +3,6 @@ from .models import DataSourceMLModelConnection
 from .models import DataSourceMLModelItem
 
 
-# Register your models here.
-
-
 @admin.register(DataSourceMLModelConnection)
 class DataSourceMLModelConnectionAdmin(admin.ModelAdmin):
     list_display = ('id', 'assistant', 'name', 'model_object_category', 'directory_full_path', 'created_at',

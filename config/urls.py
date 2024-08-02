@@ -14,10 +14,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-
 from config import settings
 from web_project.views import SystemView
 
@@ -41,14 +41,12 @@ urlpatterns = [
     path("app/starred_messages/", include("apps.starred_messages.urls", namespace="starred_messages")),
     path("app/message_templates/", include("apps.message_templates.urls", namespace="message_templates")),
     path("app/export_assistants/", include("apps.export_assistants.urls", namespace="export_assistants")),
-    # Data Sources #
     path("app/datasource_sql/", include("apps.datasource_sql.urls", namespace="datasource_sql")),
     path("app/datasource_knowledge_base/", include("apps.datasource_knowledge_base.urls")),
     path("app/datasource_file_systems/", include("apps.datasource_file_systems.urls", namespace="datasource_file_systems")),
     path("app/datasource_media_storages/", include("apps.datasource_media_storages.urls", namespace="datasource_media_storages")),
     path("app/datasource_ml_models/", include("apps.datasource_ml_models.urls", namespace="datasource_ml_models")),
     path("app/datasource_browsers/", include("apps.datasource_browsers.urls", namespace="datasource_browser")),
-    # Multi-modality Features #
     path("app/mm_functions/", include("apps.mm_functions.urls", namespace="mm_functions")),
     path("app/mm_apis/", include("apps.mm_apis.urls", namespace="mm_apis")),
     path("app/mm_scripts/", include("apps.mm_scripts.urls", namespace="mm_scripts")),
@@ -59,14 +57,16 @@ urlpatterns = [
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
 handler404 = SystemView.as_view(template_name="pages_misc_error.html", status=404)
 handler403 = SystemView.as_view(template_name="pages_misc_not_authorized.html", status=403)
 handler400 = SystemView.as_view(template_name="pages_misc_error.html", status=400)
 handler500 = SystemView.as_view(template_name="pages_misc_error.html", status=500)
 
 
-# Dashboard urls
+#####################################################################################################################
+# THEME PAGES
+#####################################################################################################################
+
 # path("", include("apps.theme.dashboards.urls")),
 # layouts urls
 # path("", include("apps.theme.layouts.urls")),
@@ -126,3 +126,5 @@ handler500 = SystemView.as_view(template_name="pages_misc_error.html", status=50
 # path("", include("auth.urls")),
 # Transaction urls
 # path("", include("apps.theme.llm_transaction.urls")),
+
+#####################################################################################################################

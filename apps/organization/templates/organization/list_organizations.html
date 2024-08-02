@@ -6,68 +6,72 @@
 {% block title %}Organizations{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
-<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
-<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/organization-list.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/organization-list.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row g-6 mb-6">
-  <div class="col-sm-6 col-xl-3">
-    <h3 class="mb-0">My Organizations</h3>
-  </div>
-  <!-- Add more statistics cards if necessary -->
-</div>
-
-<div class="card">
-  <div class="card-header border-bottom">
-    <div class="d-flex justify-content-between align-items-center row pt-4 gap-4 gap-md-0">
-      <div class="col-md-4 organization_industry"></div>
-      <div class="col-md-4 organization_status"></div>
-      <div class="col-md-4 organization_country"></div>
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-3">
+      <h3 class="mb-0">My Organizations</h3>
     </div>
-    <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-      <img src="{% static 'img/custom-illustrations/boy-organization-list.png' %}" width="25%" class="justify-content-end">
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <span class="alert-icon rounded">
+    <!-- Add more statistics cards if necessary -->
+  </div>
+
+  <div class="card">
+    <div class="card-header border-bottom">
+      <div class="d-flex justify-content-between align-items-center row pt-4 gap-4 gap-md-0">
+        <div class="col-md-4 organization_industry"></div>
+        <div class="col-md-4 organization_status"></div>
+        <div class="col-md-4 organization_country"></div>
+      </div>
+      <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+        <img src="{% static 'img/custom-illustrations/boy-organization-list.png' %}" width="25%"
+             class="justify-content-end">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="alert-icon rounded">
         <i class="ti ti-bookmark"></i>
       </span>
-      <div class="d-flex flex-column ps-1">
-        <h5 class="alert-heading mb-2">Tip</h5>
-        <p class="mb-0">
-          In this page, you can view all the organizations you have created. You can also edit or delete any organization
-          that belongs to you as an administrator. To create a new organization, click on the "Create Organization" button,
-          which is located in the tab on the left side of your screen.
-        </p>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-        </button>
+        <div class="d-flex flex-column ps-1">
+          <h5 class="alert-heading mb-2">Tip</h5>
+          <p class="mb-0">
+            In this page, you can view all the organizations you have created. You can also edit or delete any
+            organization
+            that belongs to you as an administrator. To create a new organization, click on the "Create Organization"
+            button,
+            which is located in the tab on the left side of your screen.
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="card-datatable table-responsive">
-    <a href="{% url 'organization:create' %}">
-      <button class="btn btn-success mt-4 ms-4 mb-4">
-        <i class="fa fa-add me-4"></i>
-        <strong> Add Organization</strong>
-      </button>
-    </a>
-    <table class="datatables-organizations table">
-      <thead class="border-top">
+    <div class="card-datatable table-responsive">
+      <a href="{% url 'organization:create' %}">
+        <button class="btn btn-success mt-4 ms-4 mb-4">
+          <i class="fa fa-add me-4"></i>
+          <strong> Add Organization</strong>
+        </button>
+      </a>
+      <table class="datatables-organizations table">
+        <thead class="border-top">
         <tr>
           <th></th>
           <th></th>
@@ -83,76 +87,77 @@
           <th></th>
           <th></th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         {% for organization in page_obj %}
-        <tr>
-          <td></td>
-          <td></td>
-          <td>
-            {% if organization.organization_image %}
-            <img class="rounded" src="{{ organization.organization_image.url }}" alt="Organization Image" width="50">
-            {% else %}
-            <img class="rounded" src="{% static 'img/avatars/org-0.png' %}" alt="Organization Image" width="50">
-            {% endif %}
-          </td>
-          <td>{{ organization.name }}</td>
-          <td>{{ organization.email }}</td>
-          <td>{{ organization.phone }}</td>
-          <td>{{ organization.address }}</td>
-          <td>{{ organization.city }}</td>
-          <td>{{ organization.country }}</td>
-          <td>{{ organization.postal_code }}</td>
-          <td>{{ organization.industry }}</td>
-          <td>
-            <a href="{% url 'organization:update' organization.id %}" class="btn btn-sm btn-primary">Edit</a>
-          </td>
-          <td>
-            <a href="{% url 'organization:delete' organization.id %}" class="btn btn-sm btn-danger">Delete</a>
-          </td>
-        </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>
+              {% if organization.organization_image %}
+                <img class="rounded" src="{{ organization.organization_image.url }}" alt="Organization Image"
+                     width="50">
+              {% else %}
+                <img class="rounded" src="{% static 'img/avatars/org-0.png' %}" alt="Organization Image" width="50">
+              {% endif %}
+            </td>
+            <td>{{ organization.name }}</td>
+            <td>{{ organization.email }}</td>
+            <td>{{ organization.phone }}</td>
+            <td>{{ organization.address }}</td>
+            <td>{{ organization.city }}</td>
+            <td>{{ organization.country }}</td>
+            <td>{{ organization.postal_code }}</td>
+            <td>{{ organization.industry }}</td>
+            <td>
+              <a href="{% url 'organization:update' organization.id %}" class="btn btn-sm btn-primary">Edit</a>
+            </td>
+            <td>
+              <a href="{% url 'organization:delete' organization.id %}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+          </tr>
         {% endfor %}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination controls -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination pagination-rounded pb-4 justify-content-center overflow-scroll">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="First">
+              <i class="bi bi-chevron-double-left"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+          {% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' %}
+            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+              <i class="bi bi-chevron-double-right"></i>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
   </div>
-
-  <!-- Pagination controls -->
-  <nav aria-label="Page navigation">
-    <ul class="pagination pagination-rounded pb-4 justify-content-center overflow-scroll">
-      {% if page_obj.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?page=1" aria-label="First">
-          <i class="bi bi-chevron-double-left"></i>
-        </a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-          <i class="bi bi-chevron-left"></i>
-        </a>
-      </li>
-      {% endif %}
-
-      {% for num in page_obj.paginator.page_range %}
-      {% if page_obj.number == num %}
-      <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-      {% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' %}
-      <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-      {% endif %}
-      {% endfor %}
-
-      {% if page_obj.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-          <i class="bi bi-chevron-right"></i>
-        </a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
-          <i class="bi bi-chevron-double-right"></i>
-        </a>
-      </li>
-      {% endif %}
-    </ul>
-  </nav>
-</div>
 {% endblock %}

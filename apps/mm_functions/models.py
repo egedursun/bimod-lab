@@ -2,26 +2,18 @@ from django.db import models
 
 
 FUNCTION_IO_FIELDS_FORMAT = {
-    "name": "string",
-    "description": "string",
-    "type": "string",
-    "required": "boolean",
+    "name": "string", "description": "string", "type": "string", "required": "boolean",
 }
 
 FUNCTION_PACKAGES_FORMAT = {
-    "name": "string",
-    "version": "string",
+    "name": "string", "version": "string",
 }
 
 
 # not used for now
 FUNCTION_SOURCES = {
-    "internal": "internal",
-    "external": "external",
+    "internal": "internal", "external": "external",
 }
-
-
-# Create your models here.
 
 
 class CustomFunctionReference(models.Model):

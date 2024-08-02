@@ -2,9 +2,7 @@ from django.urls import path
 
 from .views import CreateLLMCoreView, UpdateLLMCoreView, DeleteLLMCoreView, ListLLMCoreView
 
-
 app_name = "llm_core"
-
 
 urlpatterns = [
     path('create/', CreateLLMCoreView.as_view(template_name="llm_core/create_llm_core.html"),

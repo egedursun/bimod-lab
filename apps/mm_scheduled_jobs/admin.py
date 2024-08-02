@@ -2,8 +2,6 @@ from django.contrib import admin
 from .models import ScheduledJob, ScheduledJobInstance
 
 
-# Register your models here.
-
 @admin.register(ScheduledJob)
 class ScheduledJobAdmin(admin.ModelAdmin):
     list_display = ['name', 'assistant',

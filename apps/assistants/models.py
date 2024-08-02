@@ -9,7 +9,6 @@ from apps.assistants.utils import generate_random_string
 ASSISTANT_RESPONSE_LANGUAGES = [
     # User's question language
     ("auto", "Auto (Detect)"),
-
     ("en", "English"), ("es", "Spanish"), ("fr", "French"), ("de", "German"), ("it", "Italian"),
     ("pt", "Portuguese"), ("nl", "Dutch"), ("ru", "Russian"), ("ja", "Japanese"), ("ko", "Korean"),
     ("zh", "Chinese"), ("ar", "Arabic"), ("tr", "Turkish"), ("pl", "Polish"), ("sv", "Swedish"),
@@ -78,8 +77,7 @@ class Assistant(models.Model):
 
     # assistant image
     assistant_image_save_path = 'assistant_images/%Y/%m/%d/' + generate_random_string()
-    assistant_image = models.ImageField(upload_to=assistant_image_save_path, blank=True, max_length=1000,
-                                           null=True)
+    assistant_image = models.ImageField(upload_to=assistant_image_save_path, blank=True, max_length=1000, null=True)
 
     memories = models.ManyToManyField("memories.AssistantMemory", related_name='assistants',
                                       blank=True)
@@ -103,7 +101,7 @@ class Assistant(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # tools and multimodality
+    # tools and multi modality
     custom_function_references = models.ManyToManyField("mm_functions.CustomFunctionReference", related_name='assistants',
                                                         blank=True)
 
@@ -114,19 +112,19 @@ class Assistant(models.Model):
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         if self.document_base_directory is None:
-            dir_name = f"media/documents/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{str(random.randint(1_000_000, 9_999_999))}/"
+            dir_name = f"media/documents/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{self.generate_random_name_suffix()}/"
             self.document_base_directory = dir_name
             os.system(f"mkdir -p {dir_name}")
             os.system(f"touch {dir_name}/__init__.py")
 
         if self.storages_base_directory is None:
-            dir_name = f"media/storages/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{str(random.randint(1_000_000, 9_999_999))}/"
+            dir_name = f"media/storages/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{self.generate_random_name_suffix()}/"
             self.storages_base_directory = dir_name
             os.system(f"mkdir -p {dir_name}")
             os.system(f"touch {dir_name}/__init__.py")
 
         if self.ml_models_base_directory is None:
-            dir_name = f"media/ml_models/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{str(random.randint(1_000_000, 9_999_999))}/"
+            dir_name = f"media/ml_models/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{self.generate_random_name_suffix()}/"
             self.ml_models_base_directory = dir_name
             os.system(f"mkdir -p {dir_name}")
             os.system(f"touch {dir_name}/__init__.py")
@@ -158,3 +156,7 @@ class Assistant(models.Model):
             models.Index(fields=["organization", "llm_model", "name", "created_at"]),
             models.Index(fields=["organization", "llm_model", "name", "updated_at"]),
         ]
+
+    @staticmethod
+    def generate_random_name_suffix():
+        return f"{str(random.randint(1_000_000, 9_999_999))}"

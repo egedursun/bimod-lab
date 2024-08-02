@@ -5,23 +5,16 @@ from apps.mm_apis.models import CustomAPI
 
 MAXIMUM_RETRIES = 3
 
-
 NUMBER_OF_RANDOM_FEATURED_APIS = 5
 
 
 @shared_task
-def mm_api_execution_task(
-    custom_api_id,
-    endpoint_name: str,
-    path_values=None,
-    query_values=None,
-    body_values=None):
+def mm_api_execution_task(custom_api_id, endpoint_name: str, path_values=None, query_values=None, body_values=None):
     if path_values is None:
         path_values = {}
     from apps.mm_apis.models import CustomAPI, AcceptedHTTPRequestMethods
 
     response = {"stdout": "", "stderr": ""}
-
     custom_api = CustomAPI.objects.get(id=custom_api_id)
     authentication_type = custom_api.authentication_type
     authentication_key = custom_api.authentication_token
@@ -81,7 +74,6 @@ def mm_api_execution_task(
         except Exception as e:
             response["stderr"] = str(e)
             continue
-
     return response
 
 
@@ -98,4 +90,3 @@ def randomize_featured_apis():
     for api in featured_apis:
         api.is_featured = True
         api.save()
-

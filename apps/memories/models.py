@@ -1,9 +1,5 @@
 from django.db import models
 
-
-# Create your models here.
-
-
 MEMORY_TYPE = [
     ("user-specific", "User-Specific"),
     ("assistant-specific", "Assistant-Specific"),

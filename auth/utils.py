@@ -13,7 +13,6 @@ def generate_referral_code(length=16):
     year = datetime.datetime.now().year.__str__()
     month = datetime.datetime.now().month.__str__()
     day = datetime.datetime.now().day.__str__()
-
     generated_alpha = ''.join(random.choice(alphas) for _ in range(length // 2))
     generated_numeric = ''.join(random.choice(numerics) for _ in range(length // 2))
     generated_date = f"{year}-{month}{day}"

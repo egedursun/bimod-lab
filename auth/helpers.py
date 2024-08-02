@@ -2,6 +2,7 @@ from django.core.mail import EmailMessage
 from django.urls import reverse
 from django.conf import settings
 
+
 def send_email(subject, email, message):
     try:
         email_from = settings.EMAIL_HOST_USER

@@ -1,4 +1,3 @@
-
 from django.utils import timezone
 
 from apps.assistants.models import Assistant
@@ -42,33 +41,33 @@ class TransactionSourcesNames:
     @staticmethod
     def as_list():
         return [
-            TransactionSourcesNames.APP, #
-            TransactionSourcesNames.API, #
-            TransactionSourcesNames.GENERATION, #
-            TransactionSourcesNames.SQL_READ, #
-            TransactionSourcesNames.SQL_WRITE, #
-            TransactionSourcesNames.STORE_MEMORY, #
-            TransactionSourcesNames.INTERPRET_CODE, #
-            TransactionSourcesNames.DOWNLOAD_FILE, #
-            TransactionSourcesNames.FILE_SYSTEM_COMMANDS, #
-            TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH, #
-            TransactionSourcesNames.RETRIEVE_MEMORY, #
-            TransactionSourcesNames.CODE_REPOSITORY_SEARCH, # --- exclude
+            TransactionSourcesNames.APP,
+            TransactionSourcesNames.API,
+            TransactionSourcesNames.GENERATION,
+            TransactionSourcesNames.SQL_READ,
+            TransactionSourcesNames.SQL_WRITE,
+            TransactionSourcesNames.STORE_MEMORY,
+            TransactionSourcesNames.INTERPRET_CODE,
+            TransactionSourcesNames.DOWNLOAD_FILE,
+            TransactionSourcesNames.FILE_SYSTEM_COMMANDS,
+            TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH,
+            TransactionSourcesNames.RETRIEVE_MEMORY,
+            TransactionSourcesNames.CODE_REPOSITORY_SEARCH,
             TransactionSourcesNames.ML_MODEL_PREDICTION,
-            TransactionSourcesNames.BROWSING, #
-            TransactionSourcesNames.INTERNAL_FUNCTION_EXECUTION, #
-            TransactionSourcesNames.EXTERNAL_FUNCTION_EXECUTION, #
-            TransactionSourcesNames.INTERNAL_API_EXECUTION, #
-            TransactionSourcesNames.EXTERNAL_API_EXECUTION, #
+            TransactionSourcesNames.BROWSING,
+            TransactionSourcesNames.INTERNAL_FUNCTION_EXECUTION,
+            TransactionSourcesNames.EXTERNAL_FUNCTION_EXECUTION,
+            TransactionSourcesNames.INTERNAL_API_EXECUTION,
+            TransactionSourcesNames.EXTERNAL_API_EXECUTION,
             TransactionSourcesNames.INTERNAL_SCRIPT_RETRIEVAL,
             TransactionSourcesNames.EXTERNAL_SCRIPT_RETRIEVAL,
-            TransactionSourcesNames.INTERPRET_FILE, #
-            TransactionSourcesNames.INTERPRET_IMAGE, #
+            TransactionSourcesNames.INTERPRET_FILE,
+            TransactionSourcesNames.INTERPRET_IMAGE,
             TransactionSourcesNames.SCHEDULED_JOB_EXECUTION,
             TransactionSourcesNames.TRIGGER_JOB_EXECUTION,
-            TransactionSourcesNames.GENERATE_IMAGE, #
-            TransactionSourcesNames.MODIFY_IMAGE, #
-            TransactionSourcesNames.VARIATE_IMAGE, #
+            TransactionSourcesNames.GENERATE_IMAGE,
+            TransactionSourcesNames.MODIFY_IMAGE,
+            TransactionSourcesNames.VARIATE_IMAGE,
         ]
 
 
@@ -76,128 +75,87 @@ class DashboardStatisticsCalculator:
     def __init__(self, user, last_days=30):
         self.user = user
         self.last_days = last_days
-        ############################################################
-        self.organizations = Organization.objects.filter(
-            users__in=[self.user]
-        )
+        self.organizations = Organization.objects.filter(users__in=[self.user])
         self.organization_users = []
         for organization in self.organizations:
             self.organization_users += organization.users.all()
         self.organization_users = list(set(self.organization_users))
-        self.assistants = Assistant.objects.filter(
-            organization__in=self.organizations
-        )
+        self.assistants = Assistant.objects.filter(organization__in=self.organizations)
         self.transactions = LLMTransaction.objects.filter(
             responsible_assistant__in=self.assistants,
             created_at__gte=timezone.now() - timezone.timedelta(days=self.last_days)
         )
-        self.export_assistants = ExportAssistantAPI.objects.filter(
-            assistant__in=self.assistants
-        )
-        self.scheduled_jobs = ScheduledJob.objects.filter(
-            assistant__in=self.assistants
-        )
-        self.triggered_jobs = TriggeredJob.objects.filter(
-            trigger_assistant__in=self.assistants
-        )
+        self.export_assistants = ExportAssistantAPI.objects.filter(assistant__in=self.assistants)
+        self.scheduled_jobs = ScheduledJob.objects.filter(assistant__in=self.assistants)
+        self.triggered_jobs = TriggeredJob.objects.filter(trigger_assistant__in=self.assistants)
         self.statistics = {
-            "costs": {},
-            "tokens": {},
-            "communication": {},
-            "exports": {},
-            "sql": {},
-            "file_system": {},
-            "browsing": {},
-            "knowledge_base": {},
-            "functions": {},
-            "apis": {},
-            "scripts": {},
-            "crons": {},
-            "triggers": {},
-            "users": {},
-            "ml": {},
+            "costs": {}, "tokens": {}, "communication": {}, "exports": {}, "sql": {}, "file_system": {},
+            "browsing": {}, "knowledge_base": {}, "functions": {}, "apis": {}, "scripts": {}, "crons": {},
+            "triggers": {}, "users": {}, "ml": {},
         }
         self._calculate()
 
     def _calculate(self):
-        ############################################################
         # COSTS
         self.costs_per_organizations()
         self.costs_per_assistants()
         self.costs_per_users()
         self.costs_per_sources()
-        ############################################################
-        # BALANCE SNAPSHOT
+        # BALANCE SNAPSHOTS
         self.balance_snapshot_per_organizations()
-        ############################################################
         # TOKENS
         self.tokens_per_organizations()
         self.tokens_per_assistants()
         self.tokens_per_users()
         self.tokens_per_sources()
-        ############################################################
         # ASSISTANT COMMUNICATION
         self.total_chats_per_organizations()
         self.total_messages_per_organizations()
         self.total_request_count_per_exported_assistants()
-        ############################################################
         # SQL DATABASE USAGE
         self.total_sql_read_queries_per_assistants()
         self.total_sql_write_queries_per_assistants()
         self.total_sql_queries_per_assistants()
-        ############################################################
         # FILE SYSTEMS
         self.total_ssh_file_system_access_per_assistants()
-        ############################################################
         # BROWSING
         self.total_web_queries_per_assistants()
-        ############################################################
         # ML MODEL PREDICTIONS
         self.total_ml_predictions_per_assistants()
-        ############################################################
         #  MULTIMEDIA MANAGEMENT
         self.total_documents_interpretations_per_assistants()
         self.total_image_interpretations_per_assistants()
         self.total_code_interpretations_per_assistants()
         self.total_file_downloads_per_assistants()
         self.total_multimedia_generations_per_assistants()
-        ############################################################
         # KNOWLEDGE BASE SEARCHES
         self.total_knowledge_base_searches_per_assistants()
-        ############################################################
         # MEMORY MANAGEMENT
         self.total_memory_saves_per_assistants()
         self.total_memory_retrievals_per_assistants()
-        ############################################################
         # FUNCTION EXECUTIONS
         self.total_internal_function_calls_per_assistants()
         self.total_external_function_calls_per_assistants()
         self.total_function_calls_per_assistants()
-        ############################################################
         # API EXECUTIONS
         self.total_internal_third_party_api_calls_per_assistants()
         self.total_external_third_party_api_calls_per_assistants()
         self.total_third_party_api_calls_per_assistants()
-        ############################################################
         # SCRIPT EXECUTIONS
         self.total_internal_script_executions_per_assistants()
         self.total_external_script_executions_per_assistants()
         self.total_script_executions_per_assistants()
-        ############################################################
         # CRON JOBS AND TRIGGERS
         self.total_scheduled_task_executions_per_assistants()
         self.total_triggered_task_executions_per_assistants()
-        ############################################################
         # USERS
         self.total_users_per_organizations()
         self.latest_registered_users_per_organizations()
-        ############################################################
 
     ########################################
     # COSTS
     ########################################
 
-    # [1]
     def costs_per_organizations(self):
         # Calculate the costs for each organization for the last self.last_days days
         # Return the costs as a dictionary
@@ -214,7 +172,6 @@ class DashboardStatisticsCalculator:
                 organization_costs[organization.name] = total_cost
         self.statistics["costs"]['costs_per_organizations'] = organization_costs
 
-    # [2]
     def costs_per_assistants(self):
         # Calculate the costs for each assistant for the last self.last_days days
         # Return the costs as a dictionary
@@ -231,7 +188,6 @@ class DashboardStatisticsCalculator:
                 assistant_costs[assistant.name] = total_cost
         self.statistics["costs"]['costs_per_assistants'] = assistant_costs
 
-    # [3]
     def costs_per_users(self):
         # Calculate the costs for each user for the last self.last_days days
         # Return the costs as a dictionary
@@ -248,14 +204,10 @@ class DashboardStatisticsCalculator:
                 user_costs[user.profile.username] = total_cost
         self.statistics["costs"]['costs_per_users'] = user_costs
 
-    # [4]
     def costs_per_sources(self):
         # Calculate the costs for each source for the last self.last_days days
         # Return the costs as a dictionary
-        source_costs = {
-            "main": {},
-            "tool": {},
-        }
+        source_costs = {"main": {}, "tool": {}}
         for source in TransactionSourcesNames.as_list():
             transactions = self.transactions.filter(
                 transaction_source=source,
@@ -271,7 +223,6 @@ class DashboardStatisticsCalculator:
                     source_costs["tool"][source] = total_cost
         self.statistics["costs"]['costs_per_sources'] = source_costs
 
-    # [5]
     def balance_snapshot_per_organizations(self):
         # Calculate the balance snapshot for each organization for the last self.last_days days
         # Return the balance snapshot as a dictionary
@@ -283,10 +234,7 @@ class DashboardStatisticsCalculator:
             )
             ss = []
             for s in balance_snapshots:
-                ss.append({
-                    "balance": float(s.balance),
-                    "created_at": s.created_at
-                })
+                ss.append({"balance": float(s.balance), "created_at": s.created_at})
             organization_balance_snapshots[organization.name] = ss
         self.statistics["costs"]['balance_snapshot_per_organizations'] = organization_balance_snapshots
 
@@ -294,7 +242,6 @@ class DashboardStatisticsCalculator:
     # TOKENS
     ########################################
 
-    # [6]
     def tokens_per_organizations(self):
         # Calculate the tokens for each organization for the last self.last_days days
         # Return the tokens as a dictionary
@@ -311,7 +258,6 @@ class DashboardStatisticsCalculator:
                 organization_tokens[organization.name] = total_tokens
         self.statistics["tokens"]['tokens_per_organizations'] = organization_tokens
 
-    # [7]
     def tokens_per_assistants(self):
         # Calculate the tokens for each assistant for the last self.last_days days
         # Return the tokens as a dictionary
@@ -328,7 +274,6 @@ class DashboardStatisticsCalculator:
                 assistant_tokens[assistant.name] = total_tokens
         self.statistics["tokens"]['tokens_per_assistants'] = assistant_tokens
 
-    # [8]
     def tokens_per_users(self):
         # Calculate the tokens for each user for the last self.last_days days
         # Return the tokens as a dictionary
@@ -345,14 +290,10 @@ class DashboardStatisticsCalculator:
                 user_tokens[user.profile.username] = total_tokens
         self.statistics["tokens"]['tokens_per_users'] = user_tokens
 
-    # [9]
     def tokens_per_sources(self):
         # Calculate the tokens for each source for the last self.last_days days
         # Return the tokens as a dictionary
-        source_tokens = {
-            "main": {},
-            "tool": {},
-        }
+        source_tokens = {"main": {}, "tool": {}}
         for source in TransactionSourcesNames.as_list():
             transactions = self.transactions.filter(
                 transaction_source=source,
@@ -372,7 +313,6 @@ class DashboardStatisticsCalculator:
     # ASSISTANT COMMUNICATION
     ########################################
 
-    # [10]
     def total_chats_per_organizations(self):
         # Calculate the total number of chats for each assistant for the last self.last_days days
         # Return the total chats as a dictionary
@@ -387,7 +327,6 @@ class DashboardStatisticsCalculator:
                 assistant_chats[organization.name] = total_chats
         self.statistics["communication"]['total_chats_per_organizations'] = assistant_chats
 
-    # [11]
     def total_messages_per_organizations(self):
         # Calculate the total number of messages for each assistant for the last self.last_days days
         # Return the total messages as a dictionary
@@ -406,7 +345,6 @@ class DashboardStatisticsCalculator:
     # EXPORTED ASSISTANTS
     ########################################
 
-    # [12]
     def total_request_count_per_exported_assistants(self):
         # Calculate the total number of requests for each assistant for the last self.last_days days
         # Return the total requests as a dictionary
@@ -425,7 +363,6 @@ class DashboardStatisticsCalculator:
     # SQL DATABASE USAGE
     ########################################
 
-    # [13]
     def total_sql_read_queries_per_assistants(self):
         # Calculate the total number of SQL read queries for each assistant for the last self.last_days days
         # Return the total SQL read queries as a dictionary
@@ -442,7 +379,6 @@ class DashboardStatisticsCalculator:
             assistant_sql_read_queries[assistant.name] = total_sql_read_queries
         self.statistics["sql"]['total_sql_read_queries_per_assistants'] = assistant_sql_read_queries
 
-    # [14]
     def total_sql_write_queries_per_assistants(self):
         # Calculate the total number of SQL write queries for each assistant for the last self.last_days days
         # Return the total SQL write queries as a dictionary
@@ -459,7 +395,6 @@ class DashboardStatisticsCalculator:
             assistant_sql_write_queries[assistant.name] = total_sql_write_queries
         self.statistics["sql"]['total_sql_write_queries_per_assistants'] = assistant_sql_write_queries
 
-    # [15]
     def total_sql_queries_per_assistants(self):
         # Calculate the total number of SQL queries for each assistant for the last self.last_days days
         # Return the total SQL queries as a dictionary
@@ -481,7 +416,6 @@ class DashboardStatisticsCalculator:
     # SSH FILE SYSTEMS
     ########################################
 
-    # [16]
     def total_ssh_file_system_access_per_assistants(self):
         # Calculate the total number of SSH file system access for each assistant for the last self.last_days days
         # Return the total SSH file system access as a dictionary
@@ -496,13 +430,13 @@ class DashboardStatisticsCalculator:
                 if transaction.transaction_source in [TransactionSourcesNames.FILE_SYSTEM_COMMANDS]:
                     total_ssh_file_system_access += 1
             assistant_ssh_file_system_access[assistant.name] = total_ssh_file_system_access
-        self.statistics["file_system"]['total_ssh_file_system_access_per_assistants'] = assistant_ssh_file_system_access
+        self.statistics["file_system"][
+            'total_ssh_file_system_access_per_assistants'] = assistant_ssh_file_system_access
 
     ########################################
     # BROWSING
     ########################################
 
-    # [17]
     def total_web_queries_per_assistants(self):
         # Calculate the total number of web queries for each assistant for the last self.last_days days
         # Return the total web queries as a dictionary
@@ -523,7 +457,6 @@ class DashboardStatisticsCalculator:
     # KNOWLEDGE BASE & MULTIMEDIA
     ########################################
 
-    # [18]
     def total_documents_interpretations_per_assistants(self):
         # Calculate the total number of documents uploaded for each assistant for the last self.last_days days
         # Return the total documents uploaded as a dictionary
@@ -538,9 +471,9 @@ class DashboardStatisticsCalculator:
                 if transaction.transaction_source in [TransactionSourcesNames.INTERPRET_FILE]:
                     total_documents_uploaded += 1
             assistant_documents_uploaded[assistant.name] = total_documents_uploaded
-        self.statistics["knowledge_base"]['total_documents_interpretations_per_assistants'] = assistant_documents_uploaded
+        self.statistics["knowledge_base"][
+            'total_documents_interpretations_per_assistants'] = assistant_documents_uploaded
 
-    # [19]
     def total_image_interpretations_per_assistants(self):
         # Calculate the total number of image interpretations for each assistant for the last self.last_days days
         # Return the total image interpretations as a dictionary
@@ -557,7 +490,6 @@ class DashboardStatisticsCalculator:
             assistant_images_interpreted[assistant.name] = total_images_interpreted
         self.statistics["knowledge_base"]['total_image_interpretations_per_assistants'] = assistant_images_interpreted
 
-    # [20]
     def total_code_interpretations_per_assistants(self):
         # Calculate the total number of code interpretations for each assistant for the last self.last_days days
         # Return the total code interpretations as a dictionary
@@ -574,7 +506,6 @@ class DashboardStatisticsCalculator:
             assistant_code_interpreted[assistant.name] = total_code_interpreted
         self.statistics["knowledge_base"]['total_code_interpretations_per_assistants'] = assistant_code_interpreted
 
-    # [21]
     def total_file_downloads_per_assistants(self):
         # Calculate the total number of file downloads for each assistant for the last self.last_days days
         # Return the total file downloads as a dictionary
@@ -591,7 +522,6 @@ class DashboardStatisticsCalculator:
             assistant_file_downloads[assistant.name] = total_file_downloads
         self.statistics["knowledge_base"]['total_file_downloads_per_assistants'] = assistant_file_downloads
 
-    # [22]
     def total_multimedia_generations_per_assistants(self):
         # Calculate the total number of multimedia generations for each assistant for the last self.last_days days
         # Return the total multimedia generations as a dictionary
@@ -609,9 +539,9 @@ class DashboardStatisticsCalculator:
                                                       TransactionSourcesNames.VARIATE_IMAGE]:
                     total_multimedia_generations += 1
             assistant_multimedia_generations[assistant.name] = total_multimedia_generations
-        self.statistics["knowledge_base"]['total_multimedia_generations_per_assistants'] = assistant_multimedia_generations
+        self.statistics["knowledge_base"][
+            'total_multimedia_generations_per_assistants'] = assistant_multimedia_generations
 
-    # [23]
     def total_knowledge_base_searches_per_assistants(self):
         # Calculate the total number of knowledge base searches for each assistant for the last self.last_days days
         # Return the total knowledge base searches as a dictionary
@@ -626,9 +556,9 @@ class DashboardStatisticsCalculator:
                 if transaction.transaction_source in [TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH]:
                     total_knowledge_base_searches += 1
             assistant_knowledge_base_searches[assistant.name] = total_knowledge_base_searches
-        self.statistics["knowledge_base"]['total_knowledge_base_searches_per_assistants'] = assistant_knowledge_base_searches
+        self.statistics["knowledge_base"][
+            'total_knowledge_base_searches_per_assistants'] = assistant_knowledge_base_searches
 
-    # [24]
     def total_memory_saves_per_assistants(self):
         # Calculate the total number of memory saves for each assistant for the last self.last_days days
         # Return the total memory saves as a dictionary
@@ -645,7 +575,6 @@ class DashboardStatisticsCalculator:
             assistant_memory_saves[assistant.name] = total_memory_saves
         self.statistics["knowledge_base"]['total_memory_saves_per_assistants'] = assistant_memory_saves
 
-    # [25]
     def total_memory_retrievals_per_assistants(self):
         # Calculate the total number of memory retrievals for each assistant for the last self.last_days days
         # Return the total memory retrievals as a dictionary
@@ -666,7 +595,6 @@ class DashboardStatisticsCalculator:
     # FUNCTIONS
     ########################################
 
-    # [26]
     def total_internal_function_calls_per_assistants(self):
         # Calculate the total number of internal function calls for each assistant for the last self.last_days days
         # Return the total internal function calls as a dictionary
@@ -681,9 +609,9 @@ class DashboardStatisticsCalculator:
                 if transaction.transaction_source in [TransactionSourcesNames.INTERNAL_FUNCTION_EXECUTION]:
                     total_internal_function_calls += 1
             assistant_internal_function_calls[assistant.name] = total_internal_function_calls
-        self.statistics["functions"]['total_internal_function_calls_per_assistants'] = assistant_internal_function_calls
+        self.statistics["functions"][
+            'total_internal_function_calls_per_assistants'] = assistant_internal_function_calls
 
-    # [27]
     def total_external_function_calls_per_assistants(self):
         # Calculate the total number of external function calls for each assistant for the last self.last_days days
         # Return the total external function calls as a dictionary
@@ -698,10 +626,9 @@ class DashboardStatisticsCalculator:
                 if transaction.transaction_source in [TransactionSourcesNames.EXTERNAL_FUNCTION_EXECUTION]:
                     total_external_function_calls += 1
             assistant_external_function_calls[assistant.name] = total_external_function_calls
-        self.statistics["functions"]['total_external_function_calls_per_assistants'] = assistant_external_function_calls
+        self.statistics["functions"][
+            'total_external_function_calls_per_assistants'] = assistant_external_function_calls
 
-
-    # [28]
     def total_function_calls_per_assistants(self):
         # Calculate the total number of function calls for each assistant for the last self.last_days days
         # Return the total function calls as a dictionary
@@ -723,7 +650,6 @@ class DashboardStatisticsCalculator:
     # THIRD-PARTY APIS
     ########################################
 
-    # [29]
     def total_internal_third_party_api_calls_per_assistants(self):
         # Calculate the total number of internal third-party API calls for each assistant for the last self.last_days days
         # Return the total internal third-party API calls as a dictionary
@@ -738,9 +664,9 @@ class DashboardStatisticsCalculator:
                 if transaction.transaction_source in [TransactionSourcesNames.INTERNAL_API_EXECUTION]:
                     total_internal_third_party_api_calls += 1
             assistant_internal_third_party_api_calls[assistant.name] = total_internal_third_party_api_calls
-        self.statistics["apis"]['total_internal_third_party_api_calls_per_assistants'] = assistant_internal_third_party_api_calls
+        self.statistics["apis"][
+            'total_internal_third_party_api_calls_per_assistants'] = assistant_internal_third_party_api_calls
 
-    # [30]
     def total_external_third_party_api_calls_per_assistants(self):
         # Calculate the total number of external third-party API calls for each assistant for the last self.last_days days
         # Return the total external third-party API calls as a dictionary
@@ -755,9 +681,9 @@ class DashboardStatisticsCalculator:
                 if transaction.transaction_source in [TransactionSourcesNames.EXTERNAL_API_EXECUTION]:
                     total_external_third_party_api_calls += 1
             assistant_external_third_party_api_calls[assistant.name] = total_external_third_party_api_calls
-        self.statistics["apis"]['total_external_third_party_api_calls_per_assistants'] = assistant_external_third_party_api_calls
+        self.statistics["apis"][
+            'total_external_third_party_api_calls_per_assistants'] = assistant_external_third_party_api_calls
 
-    # [31]
     def total_third_party_api_calls_per_assistants(self):
         # Calculate the total number of third-party API calls for each assistant for the last self.last_days days
         # Return the total third-party API calls as a dictionary
@@ -779,7 +705,6 @@ class DashboardStatisticsCalculator:
     # SCRIPTS
     ########################################
 
-    # [32]
     def total_internal_script_executions_per_assistants(self):
         # Calculate the total number of script executions for each assistant for the last self.last_days days
         # Return the total script executions as a dictionary
@@ -796,7 +721,6 @@ class DashboardStatisticsCalculator:
             assistant_script_executions[assistant.name] = total_script_executions
         self.statistics["scripts"]['total_internal_script_executions_per_assistants'] = assistant_script_executions
 
-    # [33]
     def total_external_script_executions_per_assistants(self):
         # Calculate the total number of external script executions for each assistant for the last self.last_days days
         # Return the total external script executions as a dictionary
@@ -813,7 +737,6 @@ class DashboardStatisticsCalculator:
             assistant_script_executions[assistant.name] = total_script_executions
         self.statistics["scripts"]['total_external_script_executions_per_assistants'] = assistant_script_executions
 
-    # [34]
     def total_script_executions_per_assistants(self):
         # Calculate the total number of script executions for each assistant for the last self.last_days days
         # Return the total script executions as a dictionary
@@ -835,7 +758,6 @@ class DashboardStatisticsCalculator:
     # SCHEDULED TASKS
     ########################################
 
-    # [35]
     def total_scheduled_task_executions_per_assistants(self):
         # Calculate the total number of scheduled task executions for each assistant for the last self.last_days days
         # Return the total scheduled task executions as a dictionary
@@ -849,13 +771,13 @@ class DashboardStatisticsCalculator:
                 )
                 assistant_jobs += scheduled_job_instances.count()
             assistant_scheduled_task_executions[assistant.name] = assistant_jobs
-        self.statistics["crons"]['total_scheduled_task_executions_per_assistants'] = assistant_scheduled_task_executions
+        self.statistics["crons"][
+            'total_scheduled_task_executions_per_assistants'] = assistant_scheduled_task_executions
 
     ########################################
     # TRIGGERED TASKS
     ########################################
 
-    # [36]
     def total_triggered_task_executions_per_assistants(self):
         # Calculate the total number of triggered task executions for each assistant for the last self.last_days days
         # Return the total triggered task executions as a dictionary
@@ -869,13 +791,13 @@ class DashboardStatisticsCalculator:
                 )
                 assistant_jobs += triggered_job_instances.count()
             assistant_triggered_task_executions[assistant.name] = assistant_jobs
-        self.statistics["triggers"]['total_triggered_task_executions_per_assistants'] = assistant_triggered_task_executions
+        self.statistics["triggers"][
+            'total_triggered_task_executions_per_assistants'] = assistant_triggered_task_executions
 
     ########################################
     # USERS
     ########################################
 
-    # [37]
     def total_users_per_organizations(self):
         # Calculate the total number of users for each organization
         # Return the total users as a dictionary
@@ -884,7 +806,6 @@ class DashboardStatisticsCalculator:
             organization_users[organization.name] = organization.users.count()
         self.statistics["users"]['total_users_per_organizations'] = organization_users
 
-    # [38]
     def latest_registered_users_per_organizations(self):
         # Calculate the latest registered users for each organization
         # Return the latest registered users as a dictionary
@@ -899,7 +820,6 @@ class DashboardStatisticsCalculator:
     # MACHINE LEARNING
     ########################################
 
-    # [39]
     def total_ml_predictions_per_assistants(self):
         # Calculate the total number of ML predictions for each assistant for the last self.last_days days
         # Return the total ML predictions as a dictionary
@@ -925,10 +845,8 @@ def prepare_data_for_charts(statistics, context):
     costs_per_sources = statistics.get("costs", {}).get("costs_per_sources", {})
     cost_per_sources_main = costs_per_sources.get("main", {})
     cost_per_sources_tools = costs_per_sources.get("tool", {})
-
-    # balance snapshots
-    # for now, skip...
-
+    # skip balance snapshots for now
+    # ...
     # tokens
     tokens_per_organizations = statistics.get("tokens", {}).get("tokens_per_organizations", {})
     tokens_per_assistants = statistics.get("tokens", {}).get("tokens_per_assistants", {})
@@ -936,28 +854,22 @@ def prepare_data_for_charts(statistics, context):
     tokens_per_sources = statistics.get("tokens", {}).get("tokens_per_sources", {})
     tokens_per_sources_main = tokens_per_sources.get("main", {})
     tokens_per_sources_tools = tokens_per_sources.get("tool", {})
-
     # assistant communication
     total_chats_per_organizations = statistics.get("communication").get("total_chats_per_organizations", {})
     total_messages_per_organizations = statistics.get("communication").get("total_messages_per_organizations", {})
     total_request_count_per_exported_assistants = statistics.get("exports").get(
         "total_request_count_per_exported_assistants", {})
-
     # sql database usage
     total_sql_read_queries_per_assistants = statistics.get("sql").get("total_sql_read_queries_per_assistants", {})
     total_sql_write_queries_per_assistants = statistics.get("sql").get("total_sql_write_queries_per_assistants", {})
     total_sql_queries_per_assistants = statistics.get("sql").get("total_sql_queries_per_assistants", {})
-
     # file systems
     total_ssh_file_system_access_per_assistants = statistics.get("file_system").get(
         "total_ssh_file_system_access_per_assistants", {})
-
     # web browsing
     total_web_queries_per_assistants = statistics.get("browsing").get("total_web_queries_per_assistants", {})
-
     # ml model predictions
     total_ml_predictions_per_assistants = statistics.get("ml").get("total_ml_predictions_per_assistants", {})
-
     # multimedia management
     total_documents_interpretations_per_assistants = statistics.get("knowledge_base").get(
         "total_documents_interpretations_per_assistants", {})
@@ -969,23 +881,19 @@ def prepare_data_for_charts(statistics, context):
                                                                                {})
     total_multimedia_generations_per_assistants = statistics.get("knowledge_base").get(
         "total_multimedia_generations_per_assistants", {})
-
     # knowledge base searches
     total_knowledge_base_searches_per_assistants = statistics.get("knowledge_base").get(
         "total_knowledge_base_searches_per_assistants", {})
-
     # memory management
     total_memory_saves_per_assistants = statistics.get("knowledge_base").get("total_memory_saves_per_assistants", {})
     total_memory_retrievals_per_assistants = statistics.get("knowledge_base").get(
         "total_memory_retrievals_per_assistants", {})
-
     # function execution
     total_internal_function_calls_per_assistants = statistics.get("functions").get(
         "total_internal_function_calls_per_assistants", {})
     total_external_function_calls_per_assistants = statistics.get("functions").get(
         "total_external_function_calls_per_assistants", {})
     total_function_calls_per_assistants = statistics.get("functions").get("total_function_calls_per_assistants", {})
-
     # api execution
     total_internal_third_party_api_calls_per_assistants = statistics.get("apis").get(
         "total_internal_third_party_api_calls_per_assistants", {})
@@ -993,7 +901,6 @@ def prepare_data_for_charts(statistics, context):
         "total_external_third_party_api_calls_per_assistants", {})
     total_third_party_api_calls_per_assistants = statistics.get("apis").get(
         "total_third_party_api_calls_per_assistants", {})
-
     # script execution
     total_internal_script_executions_per_assistants = statistics.get("scripts").get(
         "total_internal_script_executions_per_assistants", {})
@@ -1001,19 +908,15 @@ def prepare_data_for_charts(statistics, context):
         "total_external_script_executions_per_assistants", {})
     total_script_executions_per_assistants = statistics.get("scripts").get("total_script_executions_per_assistants",
                                                                            {})
-
     # cron and trigger jobs
     total_scheduled_task_executions_per_assistants = statistics.get("crons").get(
         "total_scheduled_task_executions_per_assistants", {})
     total_triggered_task_executions_per_assistants = statistics.get("triggers").get(
         "total_triggered_task_executions_per_assistants", {})
-
     # users
     total_users_per_organizations = statistics.get("users").get("total_users_per_organizations", {})
     latest_registered_users_per_organizations = statistics.get("users").get(
         "latest_registered_users_per_organizations", {})
-
-    ############################################################################################################
 
     # Prepare data for Chart.js / costs / labels
     context["costs_per_organizations_labels"] = list(costs_per_organizations.keys())

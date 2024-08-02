@@ -43,7 +43,6 @@ ENVIRONMENT = os.environ.get("DJANGO_ENVIRONMENT", default="local")
 
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -52,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_celery_beat",
+
     "apps.theme.dashboards",
     "apps.theme.layouts",
     "apps.theme.front_pages",
@@ -82,7 +82,6 @@ INSTALLED_APPS = [
     "apps.theme.maps",
     "auth.apps.AuthConfig",
     "apps.theme.transactions",
-    #############################
     "apps.landing",
     "apps.user_profile_management",
     "apps.user_settings",
@@ -106,21 +105,19 @@ INSTALLED_APPS = [
     "apps.datasource_media_storages",
     "apps.datasource_ml_models",
     "apps.datasource_browsers",
-    #############################
     "apps.mm_functions",
     "apps.mm_apis",
     "apps.mm_scripts",
     "apps.mm_scheduled_jobs",
     "apps.mm_triggered_jobs",
+
 ]
 
 MIDDLEWARE = [
-
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-
     "web_project.language_middleware.DefaultLanguageMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -198,10 +195,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Enable i18n and set the list of supported languages
 LANGUAGES = [
     ("en", _("English")),
-    ("fr", _("French")),
-    ("ar", _("Arabic")),
-    ("de", _("German")),
-    # Add more languages as needed
+    ("tr", _("Turkish")),
 ]
 
 # Set default language
@@ -390,6 +384,10 @@ LOGGING = {
 }
 
 
+#####################################################################################################################
+# CUSTOM ENVIRONMENT VARIABLES
+#####################################################################################################################
+
 # Load the environment variables from the environments file
 CONTEXT_MEMORY = os.environ.get("CONTEXT_MEMORY", default="0")
 CONTEXT_MEMORY_RETRIEVAL = os.environ.get("CONTEXT_MEMORY_RETRIEVAL", default="0")
@@ -442,3 +440,6 @@ COSTS_MAP = {
     "IMAGE_MODIFICATION": float(IMAGE_MODIFICATION),
     "IMAGE_VARIATION": float(IMAGE_VARIATION),
 }
+
+#####################################################################################################################
+#####################################################################################################################

@@ -8,7 +8,6 @@ from django.utils import timezone
 from apps.user_permissions.models import UserPermission, PERMISSION_TYPES
 from auth.utils import generate_random_string, generate_referral_code
 
-
 REFERRAL_DEFAULT_BONUS_PERCENTAGE = 50
 
 
@@ -30,15 +29,15 @@ class UserCreditCard(models.Model):
         ordering = ["-created_at"]
         indexes = [
             models.Index(fields=['user', 'name_on_card', 'card_number', 'created_at']),
-            models.Index(fields=['user', 'name_on_card', 'card_number', 'card_expiration_month', 'card_expiration_year',
-                                    'card_cvc', 'created_at'])
+            models.Index(
+                fields=['user', 'name_on_card', 'card_number', 'card_expiration_month', 'card_expiration_year',
+                        'card_cvc', 'created_at'])
         ]
 
     # convert every name_on_card letters to uppercase on save
     def save(self, *args, **kwargs):
         self.name_on_card = self.name_on_card.upper()
         super(UserCreditCard, self).save(*args, **kwargs)
-
         # add the card to the relevant user's credit cards
         self.user.profile.credit_cards.add(self)
 
@@ -73,13 +72,11 @@ class Profile(models.Model):
 
     # Add permissions for users
     permissions = models.ManyToManyField(UserPermission, related_name='user_permissions', blank=True)
-
     # Credit card information for the subscription.
     credit_cards = models.ManyToManyField(UserCreditCard, related_name='user_credit_cards', blank=True)
-
     # user referral code
-    referral_code = models.ForeignKey('PromoCode', on_delete=models.SET_NULL, related_name='referral_code', blank=True, null=True)
-
+    referral_code = models.ForeignKey('PromoCode', on_delete=models.SET_NULL, related_name='referral_code', blank=True,
+                                      null=True)
     sub_users = models.ManyToManyField(User, related_name='sub_users', blank=True)
 
     def __str__(self):
@@ -90,14 +87,10 @@ class Profile(models.Model):
     ):
         if self.referral_code is None:
             promo_code = PromoCode.objects.create(
-                user=self.user,
-                code=generate_referral_code(),
+                user=self.user, code=generate_referral_code(),
                 bonus_percentage_referrer=REFERRAL_DEFAULT_BONUS_PERCENTAGE,
-                bonus_percentage_referee=REFERRAL_DEFAULT_BONUS_PERCENTAGE,
-                is_active=True,
-                current_referrals=0,
-                max_referral_limit=5,
-                datetime_limit=timezone.now() + timezone.timedelta(days=360)
+                bonus_percentage_referee=REFERRAL_DEFAULT_BONUS_PERCENTAGE, is_active=True, current_referrals=0,
+                max_referral_limit=5, datetime_limit=timezone.now() + timezone.timedelta(days=360)
             )
             self.referral_code = promo_code
             self.save()
@@ -107,13 +100,11 @@ class Profile(models.Model):
     def create_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance, email=instance.email)
-
         if instance.is_superuser:
             for permission in PERMISSION_TYPES:
                 UserPermission.objects.get_or_create(user=instance, permission_type=permission[0])
             permissions_of_user = UserPermission.objects.filter(user=instance)
             instance.profile.permissions.add(*permissions_of_user)
-
         # if no profile image assign the default in the media folder
         if not instance.profile.profile_picture:
             instance.profile.profile_picture = 'profile_pictures/default.png'

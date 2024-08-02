@@ -2,8 +2,6 @@ from django.contrib import admin
 from .models import CustomAPIReference, CustomAPI
 
 
-# Register your models here.
-
 @admin.register(CustomAPIReference)
 class CustomAPIReferenceAdmin(admin.ModelAdmin):
     list_display = ["custom_api", "assistant", "api_source", "created_by_user", "created_at", "updated_at"]

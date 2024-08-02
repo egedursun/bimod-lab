@@ -53,11 +53,7 @@ class SupportedDocumentTypesNames:
     XLSX = 'xlsx'
 
 
-###################################################################################################################
-
-
 class DocumentKnowledgeBaseConnection(models.Model):
-
     # Main information
     provider = models.CharField(max_length=100, choices=KNOWLEDGE_BASE_SYSTEMS)
     host_url = models.CharField(max_length=1000)
@@ -68,8 +64,7 @@ class DocumentKnowledgeBaseConnection(models.Model):
     # Class metadata
     class_name = models.CharField(max_length=1000, null=True, blank=True)
     description = models.TextField()
-    vectorizer = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai",
-                                  null=True, blank=True)
+    vectorizer = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai", null=True, blank=True)
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
 
     # Langchain chunking rules
@@ -80,13 +75,10 @@ class DocumentKnowledgeBaseConnection(models.Model):
     schema_json = models.TextField(null=True, blank=True)
 
     # Knowledge bases have documents
-    knowledge_base_documents = models.ManyToManyField(
-        "KnowledgeBaseDocument",
-        related_name='knowledge_bases',
-        blank=True)
+    knowledge_base_documents = models.ManyToManyField("KnowledgeBaseDocument", related_name='knowledge_bases',
+                                                      blank=True)
 
     search_instance_retrieval_limit = models.IntegerField(default=10)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -232,10 +224,6 @@ class KnowledgeBaseDocumentChunk(models.Model):
         super().save(force_insert, force_update, using, update_fields)
 
 
-###################################################################################################################
-###################################################################################################################
-
-
 class ContextHistoryKnowledgeBaseConnection(models.Model):
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, default=1)
     chat = models.ForeignKey('multimodal_chat.MultimodalChat', on_delete=models.CASCADE, default=1)
@@ -359,9 +347,6 @@ class ContextHistoryMemoryChunk(models.Model):
             models.Index(fields=["context_history_base", "memory", "created_at"]),
             models.Index(fields=["context_history_base", "memory", "updated_at"]),
         ]
-
-
-###################################################################################################################
 
 
 DOCUMENT_UPLOAD_STATUS = [

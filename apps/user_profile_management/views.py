@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.user_profile_management.forms import ProfileUpdateForm, CreditCardForm
@@ -12,11 +11,7 @@ from web_project import TemplateLayout
 
 
 # Create your views here.
-
-
-# Create your views here.
 class UserProfileListView(LoginRequiredMixin, TemplateView):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['countries'] = COUNTRIES
@@ -26,10 +21,7 @@ class UserProfileListView(LoginRequiredMixin, TemplateView):
         cards_with_types = []
         for card in saved_cards:
             card_type = get_card_type(card.card_number)
-            cards_with_types.append({
-                'card': card,
-                'card_type': card_type,
-            })
+            cards_with_types.append({'card': card, 'card_type': card_type})
         context['saved_cards'] = cards_with_types
         return context
 

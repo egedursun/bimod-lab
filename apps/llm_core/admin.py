@@ -1,7 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
-
 from .models import LLMCore
 
 
@@ -38,4 +36,3 @@ class LLMCoreAdmin(admin.ModelAdmin):
     list_display_links = ["nickname"]
     list_select_related = False
     list_display_links_details = False
-

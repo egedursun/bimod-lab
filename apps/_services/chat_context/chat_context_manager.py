@@ -58,8 +58,6 @@ class ChatContextManager:
                     ----------------------------------------
                 """
             executor.index_memory(connection_id=connection.id,
-                                  assistant_id=assistant.id,
-                                  chat_id=chat_object.id,
                                   message_text=combined_history)
 
             transaction = LLMTransaction(

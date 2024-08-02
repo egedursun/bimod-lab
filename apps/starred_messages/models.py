@@ -1,6 +1,5 @@
 from django.db import models
 
-
 STARRED_MESSAGE_SENDER_TYPES = [
     ("USER", "User"),
     ("ASSISTANT", "Assistant"),
@@ -35,7 +34,8 @@ class StarredMessage(models.Model):
             models.Index(fields=["user", "organization", "assistant", "chat", "sender_type", "chat_message"]),
             models.Index(fields=["user", "organization", "assistant", "chat", "chat_message", "starred_at"]),
             models.Index(fields=["user", "organization", "assistant", "chat", "chat_message", "sender_type"]),
-            models.Index(fields=["user", "organization", "assistant", "chat", "chat_message", "sender_type", "starred_at"]),
+            models.Index(
+                fields=["user", "organization", "assistant", "chat", "chat_message", "sender_type", "starred_at"]),
         ]
 
     def __str__(self):

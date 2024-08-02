@@ -1,0 +1,145 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Automated Top-Up Plans{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <style>
+    .text-wrap {
+      white-space: normal;
+      word-break: break-all;
+    }
+  </style>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h3 class="mb-0"><strong>Your Automated Top-Up Plans</strong></h3>
+    </div>
+  </div>
+
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can manage your automated top-up plans for your organization. Simply click on a top-up plan to
+        delete it.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <!-- Automated Top-Up Plans Cards -->
+  <div class="row g-6 mb-4">
+    {% for organization in organizations %}
+      <div class="col-xl-6 col-md-6">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between">
+            <div class="card-title mb-0">
+              <h4>{{ organization.name }}</h4>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="p-0 m-0">
+              {% if organization.auto_balance_topup %}
+                {% if organization.auto_balance_topup.on_balance_threshold_trigger %}
+                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4">
+                    <i class="fa fa-circle text-success me-12 ms-4"></i>
+                    <strong>Trigger on Low Balance &nbsp;&nbsp; (Active)</strong>
+                  </div>
+                {% else %}
+                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4">
+                    <i class="fa fa-circle text-danger me-12"></i>
+                    <strong>Trigger on Low Balance &nbsp;&nbsp; (Inactive)</strong>
+                  </div>
+                {% endif %}
+                {% if organization.auto_balance_topup.on_interval_by_days_trigger %}
+                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4">
+                    <i class="fa fa-circle text-success me-12 ms-4"></i>
+                    <strong>Trigger on Interval by Days &nbsp;&nbsp; (Active)</strong>
+                  </div>
+                {% else %}
+                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4">
+                    <i class="fa fa-circle text-danger me-12"></i>
+                    <strong>Trigger on Interval by Days &nbsp;&nbsp; (Inactive)</strong>
+                  </div>
+                {% endif %}
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body me-4"><strong>Balance Lower Threshold Value:</strong></span>
+                  <span
+                    class="text-wrap bg-label-warning p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.balance_lower_trigger_threshold_value }}</strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Addition on Balance Threshold Trigger:</strong></span>
+                  <span
+                    class="text-wrap bg-label-success p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.addition_on_balance_threshold_trigger }}</strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Regular by Days Interval:</strong></span>
+                  <span
+                    class="text-wrap bg-label-info p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.regular_by_days_interval }}</strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Addition on Interval by Days Trigger:</strong></span>
+                  <span
+                    class="text-wrap bg-label-success p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.addition_on_interval_by_days_trigger }}</strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Current Usage of Monthly Hard Limit:</strong></span>
+                  <span
+                    class="text-wrap bg-label-danger p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.calendar_month_total_auto_addition_value }}</strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>Monthly Hard Limit Auto Addition Amount:</strong></span>
+                  <span
+                    class="text-wrap bg-label-danger p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount }}</strong></span>
+                </li>
+                </ul>
+                <hr>
+                <div class="d-flex justify-content-center">
+                  <form method="post" action="{% url 'llm_transaction:auto_top_up_list' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="organization_id" value="{{ organization.id }}">
+                    <input type="hidden" name="delete" value="delete">
+                    <button type="submit" class="btn btn-danger"><i class="ti ti-trash"></i><strong> Delete </strong>
+                    </button>
+                  </form>
+                </div>
+              {% else %}
+                <p>No top-up plan available for this organization.</p>
+                <hr>
+                <a href="{% url 'llm_transaction:auto_top_up_create' %}" class="btn btn-success"><i
+                  class="ti ti-plus"></i><strong> Create Top-Up Plan </strong></a>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}

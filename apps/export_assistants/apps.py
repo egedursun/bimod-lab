@@ -12,7 +12,6 @@ class ExportAssistantsConfig(AppConfig):
         # Schedule the command to run after the server starts
         def run_initialization_command():
             call_command('start_exported_assistants')
-
         # Use a separate thread to avoid blocking the server startup
         thread = Thread(target=run_initialization_command)
         thread.start()
