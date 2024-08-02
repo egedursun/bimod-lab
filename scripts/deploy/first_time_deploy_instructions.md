@@ -131,6 +131,34 @@
     sudo systemctl restart postgresql
     ```
     
+12. Setting up the environment variables.
+
+    ```bash
+    cd /var/www/bimod_dev/bimod-app
+    touch .env
+    nano .env
+    ```
+    
+    Add the environment variables to the `.env` file.
+
+    ```text
+    ***
+    ```
+    
+    Save and exit the file.
+
+    ```bash
+    cd /var/www/bimod_dev/bimod-app
+    source venv/bin/activate
+    python manage.py migrate
+    deactivate
+    
+    cd /var/www/bimod_prod/bimod-app
+    source venv/bin/activate
+    python manage.py migrate
+    deactivate
+    ```
+
 
     
 
