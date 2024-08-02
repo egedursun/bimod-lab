@@ -150,14 +150,173 @@
     ```bash
     cd /var/www/bimod_dev/bimod-app
     source venv/bin/activate
-    python manage.py migrate
+    python3 manage.py migrate
+    python3 manage.py makemigrations
+    python3 manage.py migrate
+    python3 manage.py collectstatic
     deactivate
     
     cd /var/www/bimod_prod/bimod-app
     source venv/bin/activate
-    python manage.py migrate
+    python3 manage.py migrate
+    python3 manage.py makemigrations
+    python3 manage.py migrate
+    python3 manage.py collectstatic
     deactivate
     ```
+    
+13. Setting up the Gunicorn service.
+
+    ```bash
+    sudo nano /etc/systemd/system/gunicorn.service
+    ```
+    
+    Add the following lines to the file.
+
+    ```text
+    [Unit]
+    Description=gunicorn daemon
+    After=network.target
+    
+    [Service]
+    User=www-data
+    Group=www-data
+    WorkingDirectory=/var/www/bimod_dev/bimod-app
+    ExecStart=/var/www/bimod_dev/bimod-app/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/var/www/bimod_dev/bimod-app/gunicorn.sock config.wsgi:application
+    
+    [Install]
+    WantedBy=multi-user.target
+    ```
+    
+    Enable and start the Gunicorn service.
+
+    ```bash
+    sudo systemctl start gunicorn
+    sudo systemctl enable gunicorn
+    ```
+    
+14. Setting up the Nginx server.
+
+    ```bash
+    sudo nano /etc/nginx/sites-available/bimod.io
+    ```
+    
+    Add the following lines to the file.
+
+    ```text
+    server {
+      listen 80;
+      server_name bimod.io www.bimod.io;
+    
+      location = /favicon.ico { access_log off; log_not_found off; }
+        location /static/ {
+          root /var/www/bimod_dev/bimod-app;
+        }
+        location /media/ {
+            root /var/www/bimod_dev/bimod-app;
+        }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/var/www/bimod_dev/bimod-app/gunicorn.sock;
+    }
+
+    listen [::]:443 ssl ipv6only=on;
+    listen 443 ssl; 
+    ssl_certificate /etc/letsencrypt/live/bimod.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/bimod.io/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    if ($scheme != "https") {
+        return 301 https://$host$request_uri;
+      } # managed by Certbot
+    }
+    ```
+    
+    Save and exit the file.
+
+    ```bash
+    sudo ln -s /etc/nginx/sites-available/bimod.io /etc/nginx/sites-enabled/
+    sudo nginx -t
+    sudo systemctl restart nginx
+    ```
+    
+14. Set Up the Logging Directory
+
+    ```bash
+    sudo mkdir /var/log/bimod_dev
+    sudo touch /var/log/bimod_dev/django_debug.log
+    sudo chown www-data:www-data /var/log/bimod_dev/django_debug.log
+    sudo chmod 644 /var/log/bimod_dev/django_debug.log
+    
+    sudo mkdir /var/log/bimod_prod
+    sudo touch /var/log/bimod_prod/django_debug.log
+    sudo chown www-data:www-data /var/log/bimod_prod/django_debug.log
+    sudo chmod 644 /var/log/bimod_prod/django_debug.log
+    ```
+
+    
+15. Setting up Celery.
+
+    ```bash
+    sudo nano /etc/systemd/system/celery.service
+    ```
+    
+    Add the following lines to the file.
+
+    ```text
+      [Unit]
+      Description=Celery Service
+      After=network.target
+    
+      [Service]
+      Type=forking
+      User=www-data
+      Group=www-data
+      WorkingDirectory=/var/www/bimod_dev/bimod-app
+      ExecStart=/var/www/bimod_dev/bimod-app/venv/bin/celery -A config worker --loglevel=info
+    
+      [Install]
+      WantedBy=multi-user.target
+    ```
+
+15. Setting up Celery Beat.
+
+    ```bash
+    sudo nano /etc/systemd/system/celerybeat.service
+    ```
+    
+    Add the following lines to the file.
+
+    ```text
+    [Unit]
+    Description=Celery Beat Service
+    After=network.target
+    
+    [Service]
+    Type=forking
+    User=www-data
+    Group=www-data
+    WorkingDirectory=/var/www/bimod_dev/bimod-app
+    ExecStart=/var/www/bimod_dev/bimod-app/venv/bin/celery -A config beat --loglevel=info
+    
+    [Install]
+    WantedBy=multi-user.target
+    ```
+    
+16. Enable and start the Celery services.
+
+    ```bash
+    sudo systemctl start celery
+    sudo systemctl enable celery
+    sudo systemctl start celerybeat
+    sudo systemctl enable celerybeat
+    ```
+    
+
+    
+
 
 
     

@@ -354,7 +354,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG' if DEBUG and not CLEAN_DEBUG else 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'django_debug.log',
+            'filename': 'django_debug.log' if ENVIRONMENT == 'local' else f'/var/log/bimod_{ENVIRONMENT}_django.log',
             'formatter': 'verbose',
         },
         'mail_admins': {
