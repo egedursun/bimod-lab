@@ -191,6 +191,9 @@
     Enable and start the Gunicorn service.
 
     ```bash
+    sudo mkdir -p /var/www/bimod_dev/bimod-app/
+    sudo chown -R www-data:www-data /var/www/bimod_dev/bimod-app/
+    sudo chmod -R 755 /var/www/bimod_dev/bimod-app/
     sudo systemctl start gunicorn
     sudo systemctl enable gunicorn
     ```
@@ -204,33 +207,50 @@
     Add the following lines to the file.
 
     ```text
-    server {
-      listen 80;
-      server_name bimod.io www.bimod.io;
+        server {
+        listen 80;
+        server_name bimod.io www.bimod.io;
     
-      location = /favicon.ico { access_log off; log_not_found off; }
+        location = /favicon.ico { access_log off; log_not_found off; }
         location /static/ {
-          root /var/www/bimod_dev/bimod-app;
+            root /var/www/bimod_dev/bimod-app;
         }
         location /media/ {
             root /var/www/bimod_dev/bimod-app;
         }
-
-    location / {
-        include proxy_params;
-        proxy_pass http://unix:/var/www/bimod_dev/bimod-app/gunicorn.sock;
+    
+        location / {
+            include proxy_params;
+            proxy_pass http://unix:/var/www/bimod_dev/bimod-app/gunicorn.sock;
+        }
+    
+        # Redirect HTTP to HTTPS
+        if ($scheme != "https") {
+            return 301 https://$host$request_uri;
+        }
     }
-
-    listen [::]:443 ssl ipv6only=on;
-    listen 443 ssl; 
-    ssl_certificate /etc/letsencrypt/live/bimod.io/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/bimod.io/privkey.pem;
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-
-    if ($scheme != "https") {
-        return 301 https://$host$request_uri;
-      } # managed by Certbot
+    
+    server {
+        listen 443 ssl;
+        server_name bimod.io www.bimod.io;
+    
+        ssl_certificate /etc/letsencrypt/live/bimod.io/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/bimod.io/privkey.pem;
+        include /etc/letsencrypt/options-ssl-nginx.conf;
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    
+        location = /favicon.ico { access_log off; log_not_found off; }
+        location /static/ {
+            root /var/www/bimod_dev/bimod-app;
+        }
+        location /media/ {
+            root /var/www/bimod_dev/bimod-app;
+        }
+    
+        location / {
+            include proxy_params;
+            proxy_pass http://unix:/var/www/bimod_dev/bimod-app/gunicorn.sock;
+        }
     }
     ```
     
@@ -295,11 +315,12 @@
     After=network.target
     
     [Service]
-    Type=forking
+    Type=simple
     User=www-data
     Group=www-data
     WorkingDirectory=/var/www/bimod_dev/bimod-app
     ExecStart=/usr/local/bin/celery -A config beat --loglevel=info
+    Restart=always
     
     [Install]
     WantedBy=multi-user.target
@@ -337,7 +358,7 @@
     User=www-data
     Group=www-data
     WorkingDirectory=/var/www/bimod_dev/bimod-app
-    ExecStart=/var/www/bimod_dev/bimod-app/venv/bin/flower --port=5555 --broker=redis://localhost:6379/0
+    ExecStart=/usr/local/bin/celery -A config flower --port=5555 --broker=redis://localhost:6379/0
     Restart=always
     
     [Install]
@@ -382,6 +403,37 @@
     sudo systemctl status redis-server
     ```
     
+19. Setting up the start up script.
 
-
+    ```bash
+    sudo nano /etc/rc.local
+    ```
     
+    Add the following lines to the file.
+
+    ```text
+    #!/bin/bash
+    sudo systemctl start gunicorn
+    sudo systemctl start celery
+    sudo systemctl start celerybeat
+    sudo systemctl start flower
+    sudo systemctl start redis-server
+    exit 0
+    ```
+    
+    Save and exit the file.
+
+    ```bash
+    
+    ```
+
+20. Run the server
+
+    ```bash
+    sudo systemctl start gunicorn
+    sudo systemctl start celery
+    sudo systemctl start celerybeat
+    sudo systemctl start flower
+    sudo systemctl start redis-server
+    sudo systemctl start nginx
+    ```
