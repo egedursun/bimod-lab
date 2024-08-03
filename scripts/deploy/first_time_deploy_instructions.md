@@ -212,6 +212,8 @@ server {
     listen 80;
     server_name bimod.io www.bimod.io;
 
+    client_max_body_size 500M;  # Apply the limit here
+
     location = /favicon.ico {
         alias /src/assets/img/favicon/favicon.ico;
         access_log off;
@@ -238,6 +240,8 @@ server {
 server {
     listen 443 ssl;
     server_name bimod.io www.bimod.io;
+
+    client_max_body_size 500M;  # Apply the limit here
 
     ssl_certificate /etc/letsencrypt/live/bimod.io/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/bimod.io/privkey.pem;

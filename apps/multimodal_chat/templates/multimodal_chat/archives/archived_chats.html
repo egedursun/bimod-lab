@@ -154,7 +154,7 @@
               <li
                 class="card card-border-shadow-dark chat-contact-list-item mb-2 {% if chat.id == active_chat.id %} border border-1 rounded border-primary alert-secondary{% endif %}">
                 <a href="?chat_id={{ chat.id }}" class="d-flex flex-grow-1 text-decoration-none">
-                  <form method="post" action="..">
+                  <form method="post" action=".">
                     {% csrf_token %}
                     <div class="d-flex align-items-center">
                       <div
@@ -403,7 +403,7 @@
                         </div>
                         <div class="text-muted mt-2">
                           <small>
-                            <form method="post" action="..">
+                            <form method="post" action=".">
                               {% csrf_token %}
                               <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
                               <input type="hidden" name="message_id" value="{{ message.id }}">

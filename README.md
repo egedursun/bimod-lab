@@ -120,13 +120,14 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 *Important:*
 1. [ ] Split the dev and prod server as different processes and workflows.
-2. [ ] Add the thumbnail and site sharing info (meta) to the website.
-3. [ ] NGINX, increase maximum request entity to a very large number.
-2. [ ] Implement [PAYMENT GATEWAY] for the application.
-2. [ ] Migrate to [MEDIA STORAGE] for the media files, update all the required places in the code.
-3. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-4. [ ] Implement [SMTP] configuration.
-5. [ ] Implement the [ORCHESTRATION] manager.
+2. [ ] Add the thumbnail and site sharing info (meta) to the website. (Vuexy is a modern...)
+4. [ ] bimod.io, www.bimod.io, https://www.bimod.io, http://www.bimod.io are supported. why not https://bimod.io and http://bimod.io supported? investigate and fix.
+4. [ ] Develop more serious illustrations for the application.
+4. [ ] Implement [PAYMENT GATEWAY] for the application.
+5. [ ] Migrate to [MEDIA STORAGE] for the media files, update all the required places in the code.
+6. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+7. [ ] Implement [SMTP] configuration.
+8. [ ] Implement the [ORCHESTRATION] manager.
 
 *Deploy:*
 1. [ ] Protect the [MAIN BRANCH] for direct merges.
