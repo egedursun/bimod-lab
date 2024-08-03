@@ -180,7 +180,10 @@ After=network.target
 User=www-data
 Group=www-data
 WorkingDirectory=/root/var/www/bimod_dev/bimod-app
-ExecStart=/bin/bash -c 'source /root/var/www/bimod_dev/bimod-app/venv/bin/activate && exec gunicorn --access-logfile - --workers 3 --bind unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock config.wsgi:application'
+Environment="PATH=/root/var/www/bimod_dev/bimod-app/venv/bin"
+ExecStart=/root/var/www/bimod_dev/bimod-app/venv/bin/gunicorn --access-logfile - --error-logfile - --log-level debug --workers 3 --bind unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock config.wsgi:application
+Restart=always
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
@@ -205,51 +208,51 @@ WantedBy=multi-user.target
     Add the following lines to the file.
 
     ```text
-        server {
-        listen 80;
-        server_name bimod.io www.bimod.io;
-    
-        location = /favicon.ico { access_log off; log_not_found off; }
-        location /static/ {
-            root /root/var/www/bimod_dev/bimod-app;
-        }
-        location /media/ {
-            root /root/var/www/bimod_dev/bimod-app;
-        }
-    
-        location / {
-            include proxy_params;
-            proxy_pass http://unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock;
-        }
-    
-        # Redirect HTTP to HTTPS
-        if ($scheme != "https") {
-            return 301 https://$host$request_uri;
-        }
+server {
+    listen 80;
+    server_name bimod.io www.bimod.io;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        alias /root/var/www/bimod_dev/bimod-app/staticfiles/;
     }
-    
-    server {
-        listen 443 ssl;
-        server_name bimod.io www.bimod.io;
-    
-        ssl_certificate /etc/letsencrypt/live/bimod.io/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/bimod.io/privkey.pem;
-        include /etc/letsencrypt/options-ssl-nginx.conf;
-        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-    
-        location = /favicon.ico { access_log off; log_not_found off; }
-        location /static/ {
-            root /root/var/www/bimod_dev/bimod-app;
-        }
-        location /media/ {
-            root /root/var/www/bimod_dev/bimod-app;
-        }
-    
-        location / {
-            include proxy_params;
-            proxy_pass http://unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock;
-        }
+    location /media/ {
+        alias /root/var/www/bimod_dev/bimod-app/media/;
     }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock;
+    }
+
+    # Redirect HTTP to HTTPS
+    if ($scheme != "https") {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name bimod.io www.bimod.io;
+
+    ssl_certificate /etc/letsencrypt/live/bimod.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/bimod.io/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        alias /root/var/www/bimod_dev/bimod-app/staticfiles/;
+    }
+    location /media/ {
+        alias /root/var/www/bimod_dev/bimod-app/media/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock;
+    }
+}
     ```
     
     Save and exit the file.
@@ -296,7 +299,7 @@ WantedBy=multi-user.target
     ```bash
     sudo mkdir -p /run/celery
     sudo chown www-data:www-data /run/celery
-    sudo systemctl daemon-reload
+    systemctl daemon-reload
     sudo systemctl restart celery
     sudo systemctl start celery
     sudo systemctl enable celery
