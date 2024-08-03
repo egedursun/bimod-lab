@@ -28,10 +28,13 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Database migrations
-python manage.py migrate
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py makemigrations
+python3 manage.py migrate
 
 # Collect static files
-python manage.py collectstatic --noinput
+python3 manage.py collectstatic --noinput
 
 if ! sudo systemctl is-active --quiet redis; then
     echo "[Deploy / Production] Redis is not active. Starting Redis..."
