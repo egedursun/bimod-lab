@@ -32,6 +32,11 @@ python manage.py migrate
 # Collect static files
 python manage.py collectstatic --noinput
 
+if ! sudo systemctl is-active --quiet redis-server; then
+    echo "Redis is not active. Starting Redis..."
+    sudo systemctl start redis-server
+fi
+
 # Restart services
 systemctl daemon-reload
 sudo systemctl restart gunicorn
