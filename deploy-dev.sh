@@ -44,9 +44,10 @@ sudo chmod 755 /run/celery
 
 systemctl daemon-reload
 sudo systemctl restart redis
-sudo systemctl restart gunicorn
+sudo systemctl restart gunicorn_dev
 sudo systemctl restart nginx
-sudo systemctl restart celery
-sudo systemctl restart celerybeat
+sudo systemctl restart celery_dev
+sudo systemctl restart celerybeat_dev
+sudo systemctl restart flower_dev
 
 echo "Deployment successful!"
