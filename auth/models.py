@@ -85,7 +85,8 @@ class Profile(models.Model):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        if self.referral_code is None:
+        is_new = self._state.adding
+        if is_new and self.referral_code is None:
             promo_code = PromoCode.objects.create(
                 user=self.user, code=generate_referral_code(),
                 bonus_percentage_referrer=REFERRAL_DEFAULT_BONUS_PERCENTAGE,
