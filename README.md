@@ -231,7 +231,7 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
     * Paid: yearly
   - SSL Certification: -- within the Hosting Service
     * Paid: yearly
-  - Organization Emails: $1 per account x 10 = $10
+  - Organization Emails: ???
     * Paid: yearly = $12 x 10 = $120
       1. admin@bimod.io / internal operations
       2. info@bimod.io / general inquiries
@@ -252,4 +252,6 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
   - Cloud Translation Service: $?
     * Paid: [monthly/yearly]
    - Cloud Media Storage Service: $?
+    * Paid: [monthly/yearly]
+  - Secrets Manager Service: ???
     * Paid: [monthly/yearly]
