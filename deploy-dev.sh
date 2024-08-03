@@ -14,8 +14,8 @@ if [ ! -d "$DEPLOY_DIR" ]; then
 else
   cd $DEPLOY_DIR
   git stash -u || true
-  sudo git checkout $BRANCH
-  sudo git pull origin $BRANCH
+  sudo git checkout dev
+  sudo git pull origin dev
 fi
 
 # Change to the directory
@@ -28,9 +28,6 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Database migrations
-python3 manage.py makemigrations
-python3 manage.py migrate
-python3 manage.py makemigrations
 python3 manage.py migrate
 
 # Collect static files

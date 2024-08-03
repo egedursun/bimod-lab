@@ -14,8 +14,8 @@ if [ ! -d "$DEPLOY_DIR" ]; then
 else
   cd $DEPLOY_DIR
   git stash -u || true
-  sudo git checkout $BRANCH
-  sudo git pull origin $BRANCH
+  sudo git checkout main
+  sudo git pull origin main
 fi
 
 # Change to the directory
