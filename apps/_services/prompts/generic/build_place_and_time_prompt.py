@@ -24,7 +24,8 @@ def build_structured_place_and_time_prompt(assistant: Assistant, user: User):
     # Get the current time
     current_time = f"""
         ---
-        [UTC] Current Time: {datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d %H:%M:%S")}
+        [UTC] Current Time: {datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                - The date above has been retrieved with standard datetime.datetime.now() function.
         [Local Time] Current Time: [Infer from the User's Country & City. Do not forget considering the season.]
         '''
 
