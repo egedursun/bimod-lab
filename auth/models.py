@@ -68,7 +68,7 @@ class Profile(models.Model):
     is_active = models.BooleanField(default=True)
 
     created_by_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile_created_by_users",
-                                        default=1, blank=True, null=False)
+                                        default=1, blank=True, null=True)
 
     # Add permissions for users
     permissions = models.ManyToManyField(UserPermission, related_name='user_permissions', blank=True)
@@ -93,7 +93,6 @@ class Profile(models.Model):
                 max_referral_limit=5, datetime_limit=timezone.now() + timezone.timedelta(days=360)
             )
             self.referral_code = promo_code
-            self.save()
         super(Profile, self).save(force_insert, force_update, using, update_fields)
 
     @receiver(post_save, sender=User)

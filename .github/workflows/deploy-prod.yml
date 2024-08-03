@@ -1,9 +1,9 @@
-name: Deploy to Development Server
+name: Deploy to Production Server
 
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   build:
@@ -21,9 +21,9 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Deploy to Development Server
+    - name: Deploy to Production Server
       run: |
         ssh -o "StrictHostKeyChecking=no" root@185.170.198.44 << 'EOF'
-        cd /root/var/www/bimod_dev/bimod-app
-        bash deploy-dev.sh main
+        cd /root/var/www/bimod_prod/bimod-app
+        bash deploy-prod.sh main
         EOF

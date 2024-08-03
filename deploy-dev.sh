@@ -33,7 +33,7 @@ python manage.py migrate
 python manage.py collectstatic --noinput
 
 if ! sudo systemctl is-active --quiet redis; then
-    echo "Redis is not active. Starting Redis..."
+    echo "[Deploy / Development] Redis is not active. Starting Redis..."
     sudo systemctl start redis
 fi
 
@@ -50,4 +50,4 @@ sudo systemctl restart celery_dev
 sudo systemctl restart celerybeat_dev
 sudo systemctl restart flower_dev
 
-echo "Deployment successful!"
+echo "[Deploy / Development] Deployment successful!"
