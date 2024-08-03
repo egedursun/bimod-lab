@@ -82,24 +82,18 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
-        is_new = self._state.adding
-        if is_new and self.referral_code is None:
-            promo_code = PromoCode.objects.create(
-                user=self.user, code=generate_referral_code(),
-                bonus_percentage_referrer=REFERRAL_DEFAULT_BONUS_PERCENTAGE,
-                bonus_percentage_referee=REFERRAL_DEFAULT_BONUS_PERCENTAGE, is_active=True, current_referrals=0,
-                max_referral_limit=5, datetime_limit=timezone.now() + timezone.timedelta(days=360)
-            )
-            self.referral_code = promo_code
-            super(Profile, self).save(force_insert, force_update, using, update_fields)
-
     @receiver(post_save, sender=User)
     def create_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance, email=instance.email)
+            if instance.profile.referral_code is None:
+                promo_code = PromoCode.objects.create(
+                    user=instance, code=generate_referral_code(),
+                    bonus_percentage_referrer=REFERRAL_DEFAULT_BONUS_PERCENTAGE,
+                    bonus_percentage_referee=REFERRAL_DEFAULT_BONUS_PERCENTAGE, is_active=True, current_referrals=0,
+                    max_referral_limit=5, datetime_limit=timezone.now() + timezone.timedelta(days=360)
+                )
+                instance.profile.referral_code = promo_code
         if instance.is_superuser:
             for permission in PERMISSION_TYPES:
                 UserPermission.objects.get_or_create(user=instance, permission_type=permission[0])
