@@ -117,6 +117,8 @@
 
 
 
+
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -158,18 +160,13 @@
             </div>
             {% for assistant in assistants %}
               <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                <form id="create-chat-form" method="post" action="..">
+                <form id="create-chat-form" method="post" action=".">
                   {% csrf_token %}
                   <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
                   <button type="submit" class="btn btn-link p-0">
                     <div class="d-flex align-items-center">
                       <div class="flex-shrink-0 avatar">
                         <img src="
-
-
-
-
-
 
                           {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              alt="Avatar" class="rounded">
@@ -228,11 +225,11 @@
             <!-- loading bar warning -->
             <div class="alert-container"></div>
             <div id="loadingBarWarningCreateChat"
-                 class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none" role="alert">
+                 class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none ms-4 w-75" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-brain"></i>
             </span>
-              <div class="d-flex flex-column ps-1 pt-4 ms-4 me-4 ">
+              <div class="d-flex flex-column ps-1 pt-4 ms-4 me-4">
                 <p class="alert-heading"><strong>Creating your chat, please hold on...</strong></p>
                 <!-- Loading bar -->
                 <div id="loadingBarCreateChat" class="progress d-none mt-3 mb-1 w-100">
@@ -245,19 +242,13 @@
               <li
                 class="card card-border-shadow-dark chat-contact-list-item mb-2 {% if chat.id == active_chat.id %} border border-1 rounded border-primary alert-secondary{% endif %}">
                 <a href="?chat_id={{ chat.id }}" class="d-flex flex-grow-1 text-decoration-none">
-                  <form method="post" action="..">
+                  <form method="post" action=".">
                     {% csrf_token %}
                     <div class="d-flex align-items-center">
                       <div
                         class="flex-shrink-0 avatar {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded"
                         {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
                         <img src="
-
-
-
-
-
-
                           {% if chat.assistant.assistant_image %}{{ chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              class="rounded">
                       </div>
@@ -335,17 +326,11 @@
                      data-overlay data-target="#app-chat-chats"></i>
                   <div class="flex-shrink-0 avatar avatar-online">
                     <img src="
-
-
-
-
-
-
                       {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
                   </div>
                   <div class="chat-contact-info flex-grow-1 ms-4">
-                    <form method="post" action="..">
+                    <form method="post" action=".">
                       {% csrf_token %}
                       <div class="d-flex justify-content-between align-items-center mt-1">
                         <input type="text" class="form-control bg-lightest text-bg-light" name="new_chat_name"
@@ -399,6 +384,8 @@
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
                             <img src="
+
+
 
 
 
@@ -496,7 +483,7 @@
                           </div>
                           <div class="text-muted mt-2">
                             <small>
-                              <form method="post" action="..">
+                              <form method="post" action=".">
                                 {% csrf_token %}
                                 <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
                                 <input type="hidden" name="message_id" value="{{ message.id }}">
@@ -530,6 +517,8 @@
                           <div class="user-avatar flex-shrink-0 ms-4">
                             <div class="avatar avatar-xl">
                               <img src="
+
+
 
 
 
@@ -617,7 +606,7 @@
               </div>
               <form class="form-send-message d-flex justify-content-between align-items-center mt-4" method="post"
                     style="margin-bottom: 40px;"
-                    action=".." enctype="multipart/form-data">
+                    action="." enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
                 <textarea class="form-control message-input border-0 me-4 shadow-none" name="message_content"
@@ -678,6 +667,8 @@
           <div class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
             <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
               <img src="
+
+
 
 
 

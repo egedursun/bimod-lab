@@ -121,6 +121,7 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 *Important:*
 1. [ ] Split the dev and prod server as different processes and workflows.
 2. [ ] Add the thumbnail and site sharing info (meta) to the website.
+3. [ ] NGINX, increase maximum request entity to a very large number.
 2. [ ] Implement [PAYMENT GATEWAY] for the application.
 2. [ ] Migrate to [MEDIA STORAGE] for the media files, update all the required places in the code.
 3. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
