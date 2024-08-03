@@ -21,7 +21,7 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Deploy to Server
+    - name: Deploy to Dev Server
       run: |
         ssh -o "StrictHostKeyChecking=no" root@185.170.198.44 << 'EOF'
         cd /root/var/www/bimod_dev/bimod-app
