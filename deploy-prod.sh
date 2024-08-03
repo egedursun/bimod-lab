@@ -13,6 +13,7 @@ if [ ! -d "$DEPLOY_DIR" ]; then
   sudo git clone -b $BRANCH $REPO_URL $DEPLOY_DIR
 else
   cd $DEPLOY_DIR
+  git stash -u
   sudo git checkout $BRANCH
   sudo git pull origin $BRANCH
 fi
