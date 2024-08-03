@@ -33,6 +33,7 @@ python manage.py migrate
 python manage.py collectstatic --noinput
 
 # Restart services
+systemctl daemon-reload
 sudo systemctl restart gunicorn
 sudo systemctl restart nginx
 sudo systemctl restart celery
