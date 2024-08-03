@@ -252,3 +252,14 @@ ps auxww | grep '[c]elery worker' | awk '{print $2}' | xargs kill
 ```
 
 ---
+
+
+#### Public and Private SSH Keys
+
+*For server-side operations:*
+
+```
+- Make sure you have the public and private key for the server.
+```
+
+---

@@ -212,7 +212,11 @@ server {
     listen 80;
     server_name bimod.io www.bimod.io;
 
-    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /favicon.ico {
+        alias /src/assets/img/favicon/favicon.ico;
+        access_log off;
+        log_not_found off;
+    }
     location /static/ {
         alias /root/var/www/bimod_dev/bimod-app/staticfiles/;
     }

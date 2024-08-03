@@ -3,22 +3,15 @@
 
 ---
 
-- [X] Handling the negative balance and stopping transactions when required. Also, for adding negative balances (-123), there needs to be a validation to prevent.
-- [X] Rate limiting the usage for safety.
-- [X] Real media management with AWS S3 Storages (e.g. profile pictures, organization images, etc.)
+- [ ] Real media management with AWS S3 Storages (e.g. profile pictures, organization images, etc.)
 - [X] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
 - [ ] Integrating the Payment Gateway to get the payment done (for balance) + credit card safety / storage and usage
-- [ ] Real PostgreSQL DBMS integration.
 - [ ] Real E-mail SMTP integration.
-- [ ] HTTPS Configuration for the application + CORS configuration.
-- [ ] Deploy / DEBUG to PRODUCTION changes and possible updates for the better usage.
 - [ ] Privacy Policy and Terms of Service development & integration for the application.
 - [ ] Proper Documentation & tutorial, instructions (FAQ and Support) for the application.
 - [ ] Exclude the media from Git versioning (IMPORTANT!!)
 - [ ] Fix the main search bar for having correct redirection links.
 - [ ] Integrate paginations and global searches for the relevant pages.
-- [ ] Docker compose YAML file design.
-- [ ] GitHub work-flows for CI/CD and integration testing with the application on the cloud.
 - [ ] Development of the unit and integration tests for the application.
 
 
@@ -126,25 +119,16 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 
 *Important:*
-1. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-2. [ ] Migrate to [POSTGRES] database.
-3. [ ] Implement [HTTPS] configuration.
-4. [ ] Implement [CORS] configuration.
-5. [ ] Implement [SMTP] configuration.
-6. [ ] [STORAGE MEDIA] service migrations.
-7. [ ] Implement the [ORCHESTRATION] manager.
-
-*Pre-Deployment Changes:*
 1. [ ] Implement [PAYMENT GATEWAY] for the application.
-2. [ ] GitHub [WORKFLOWS] for CI/CD integration on GitHub.
-3. [ ] Migrate to [CLOUD STORAGE] for the media files, update all the required places in the code.
+2. [ ] Migrate to [MEDIA STORAGE] for the media files, update all the required places in the code.
+3. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+4. [ ] Implement [SMTP] configuration.
+5. [ ] Implement the [ORCHESTRATION] manager.
 
 *Deploy:*
-1. [ ] Prepare the [DEPLOYMENT] changes for the production environment.
-2. [ ] Deploy the [APPLICATION].
-3. [ ] Protect the [MAIN BRANCH] for direct merges.
-4. [ ] Create the [DEVELOPMENT BRANCH] for the main branch.
-5. [ ] Protect [DIRECT MERGES] to the development branch.
+1. [ ] Protect the [MAIN BRANCH] for direct merges.
+2. [ ] Create the [DEVELOPMENT BRANCH] for the main branch.
+3. [ ] Protect [DIRECT MERGES] to the development branch.
 ---
 RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---
