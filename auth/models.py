@@ -93,7 +93,7 @@ class Profile(models.Model):
                 max_referral_limit=5, datetime_limit=timezone.now() + timezone.timedelta(days=360)
             )
             self.referral_code = promo_code
-        super(Profile, self).save(force_insert, force_update, using, update_fields)
+            super(Profile, self).save(force_insert, force_update, using, update_fields)
 
     @receiver(post_save, sender=User)
     def create_profile(sender, instance, created, **kwargs):
