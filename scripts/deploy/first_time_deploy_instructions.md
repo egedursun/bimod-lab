@@ -166,7 +166,7 @@
 13. Setting up the Gunicorn service.
 
     ```bash
-    sudo nano /etc/systemd/system/gunicorn.service
+    sudo nano /etc/systemd/system/gunicorn_dev.service
     ```
     
     Add the following lines to the file.
@@ -189,15 +189,57 @@ RestartSec=10
 WantedBy=multi-user.target
 
     ```
+
+    For production server:
+
+    ```bash
+    sudo nano /etc/systemd/system/gunicorn_prod.service
+    ```
+
+    Add the following lines to the file.
+
+    ```text
+[Unit]
+Description=gunicorn daemon for production
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/root/var/www/bimod_prod/bimod-app
+Environment="PATH=/root/var/www/bimod_prod/bimod-app/venv/bin"
+ExecStart=/root/var/www/bimod_prod/bimod-app/venv/bin/gunicorn --access-logfile - --error-logfile - --log-level debug --workers 3 --bind unix:/root/var/www/bimod_prod/bimod-app/gunicorn.sock config.wsgi:application
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+    ```
     
-    Enable and start the Gunicorn service.
+    Enable and start the Gunicorn services.
 
     ```bash
     sudo mkdir -p /root/var/www/bimod_dev/bimod-app/
     sudo chown -R www-data:www-data /root/var/www/bimod_dev/bimod-app/
     sudo chmod -R 755 /root/var/www/bimod_dev/bimod-app/
-    sudo systemctl start gunicorn
-    sudo systemctl enable gunicorn
+    sudo systemctl daemon-reload
+
+    sudo mkdir -p /root/var/www/bimod_prod/bimod-app/
+    sudo chown -R www-data:www-data /root/var/www/bimod_prod/bimod-app/
+    sudo chmod -R 755 /root/var/www/bimod_prod/bimod-app/
+    sudo systemctl daemon-reload
+
+    sudo systemctl start gunicorn_dev
+    sudo systemctl enable gunicorn_dev
+
+    sudo systemctl start gunicorn_prod
+    sudo systemctl enable gunicorn_prod
+
+    systemctl status guinicorn_dev
+    systemctl status guinicorn_prod
+
+    journalctl -u gunicorn_dev -f
+    journalctl -u gunicorn_prod -f
     ```
 14. Setting up the Nginx server.
 
@@ -208,6 +250,7 @@ WantedBy=multi-user.target
     Add the following lines to the file.
 
     ```text
+# Configuration for production
 server {
     listen 80;
     server_name bimod.io www.bimod.io;
@@ -219,6 +262,38 @@ server {
         access_log off;
         log_not_found off;
     }
+
+    location /static/ {
+        alias /root/var/www/bimod_prod/bimod-app/staticfiles/;
+    }
+    location /media/ {
+        alias /root/var/www/bimod_prod/bimod-app/media/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/root/var/www/bimod_prod/bimod-app/gunicorn.sock;
+    }
+
+    # Redirect HTTP to HTTPS
+    if ($scheme != "https") {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# Configuration for development
+server {
+    listen 80;
+    server_name dev.bimod.io;
+
+    client_max_body_size 500M;  # Apply the limit here
+
+    location = /favicon.ico {
+        alias /src/assets/img/favicon/favicon.ico;
+        access_log off;
+        log_not_found off;
+    }
+
     location /static/ {
         alias /root/var/www/bimod_dev/bimod-app/staticfiles/;
     }
@@ -249,6 +324,33 @@ server {
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     location = /favicon.ico { access_log off; log_not_found off; }
+
+    location /static/ {
+        alias /root/var/www/bimod_prod/bimod-app/staticfiles/;
+    }
+    location /media/ {
+        alias /root/var/www/bimod_prod/bimod-app/media/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/root/var/www/bimod_prod/bimod-app/gunicorn.sock;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name dev.bimod.io;
+
+    client_max_body_size 500M;  # Apply the limit here
+
+    ssl_certificate /etc/letsencrypt/live/bimod.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/bimod.io/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+
     location /static/ {
         alias /root/var/www/bimod_dev/bimod-app/staticfiles/;
     }
@@ -262,6 +364,12 @@ server {
     }
 }
     ```
+
+    Test the syntax
+  
+      ```bash 
+      sudo nginx -t
+      ```
     
     Save and exit the file.
 
@@ -269,20 +377,22 @@ server {
     sudo ln -s /etc/nginx/sites-available/bimod.io /etc/nginx/sites-enabled/
     sudo nginx -t
     sudo systemctl restart nginx
+    sudo systemctl enable nginx
+    sudo systemctl status nginx
     ```
 
     
 14. Setting up Celery.
 
     ```bash
-    sudo nano /etc/systemd/system/celery.service
+    sudo nano /etc/systemd/system/celery_dev.service
     ```
     
     Add the following lines to the file.
 
     ```service
 [Unit]
-Description=Celery Service
+Description=Celery Service for Development
 After=network.target
 
 [Service]
@@ -290,9 +400,39 @@ Type=forking
 User=www-data
 Group=www-data
 WorkingDirectory=/root/var/www/bimod_dev/bimod-app
-ExecStart=/bin/bash -c 'source /root/var/www/bimod_dev/bimod-app/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery.pid'
+ExecStart=/bin/bash -c 'source /root/var/www/bimod_dev/bimod-app/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery-dev.pid -n dev@%h'
 ExecStartPost=/bin/sleep 5
-PIDFile=/run/celery/celery.pid
+PIDFile=/run/celery/celery-dev.pid
+Restart=always
+RestartSec=5
+StartLimitInterval=60
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
+    ```
+
+    For production server:
+
+    ```bash
+    sudo nano /etc/systemd/system/celery_prod.service
+    ```
+
+    Add the following lines to the file.
+
+    ```service
+[Unit]
+Description=Celery Service for Production
+After=network.target
+
+[Service]
+Type=forking
+User=www-data
+Group=www-data
+WorkingDirectory=/root/var/www/bimod_prod/bimod-app
+ExecStart=/bin/bash -c 'source /root/var/www/bimod_prod/bimod-app/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery-prod.pid'
+ExecStartPost=/bin/sleep 5
+PIDFile=/run/celery/celery-prod.pid
 Restart=always
 RestartSec=5
 StartLimitInterval=60
@@ -318,7 +458,7 @@ WantedBy=multi-user.target
 15. Setting up Celery Beat.
 
     ```bash
-    sudo nano /etc/systemd/system/celerybeat.service
+    sudo nano /etc/systemd/system/celerybeat_dev.service
     ```
     
     Add the following lines to the file.
@@ -339,24 +479,67 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
     ```
+
+    For production server:
+
+    ```bash
+    sudo nano /etc/systemd/system/celerybeat_prod.service
+    ```
+
+    Add the following lines to the file.
+
+    ```text
+[Unit]
+Description=Celery Beat Service for Production
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/root/var/www/bimod_prod/bimod-app
+ExecStart=/bin/bash -c 'source /root/var/www/bimod_prod/bimod-app/venv/bin/activate && exec celery -A config beat --loglevel=info'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+    ```
     
 16. Enable and start the Celery services.
 
     ```bash
     sudo systemctl daemon-reload
-    sudo systemctl restart celery
-    sudo systemctl enable celery
-    sudo systemctl start celerybeat
-    sudo systemctl enable celerybeat
     
-    sudo systemctl status celery
-    sudo systemctl status celerybeat
+    sudo mkdir -p /run/celery
+    sudo chown -R www-data:www-data /run/celery
+    sudo chmod -R 755 /run/celery
+    sudo chmod -R 755 /run/celery/celery-dev.pid
+    sudo chmod -R 755 /run/celery/celery-prod.pid
+        
+    sudo systemctl daemon-reload
+    
+    sudo systemctl start celery_dev
+    sudo systemctl enable celery_dev
+    systemctl status celery_dev
+    
+    sudo systemctl start celery_prod
+    sudo systemctl enable celery_prod
+    systemctl status celery_prod
+    
+    sudo systemctl start celerybeat_dev
+    sudo systemctl enable celerybeat_dev
+    systemctl status celerybeat_dev
+    
+    sudo systemctl start celerybeat_prod
+    sudo systemctl enable celerybeat_prod
+    systemctl status celerybeat_prod
+    
     ```
     
 17. Setting up the Flower service.
 
     ```bash
-    sudo nano /etc/systemd/system/flower.service
+    sudo nano /etc/systemd/system/flower_dev.service
     ```
     
     Add the following lines to the file.
@@ -378,24 +561,58 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
     ```
+
+    For production server:
+
+    ```bash
+    sudo nano /etc/systemd/system/flower_prod.service
+    ```
+
+    Add the following lines to the file.
+
+    ```text
+[Unit]
+Description=Flower Service for Production
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/root/var/www/bimod_prod/bimod-app
+ExecStart=/bin/bash -c 'source /root/var/www/bimod_prod/bimod-app/venv/bin/activate && exec celery -A config flower --port=5556 --broker=redis://localhost:6379/0'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+    ```
     
     Enable and start the Flower service.
 
     ```bash
     sudo systemctl daemon-reload
-    sudo systemctl restart flower
-    sudo systemctl start flower
-    sudo systemctl enable flower
+
+    sudo systemctl start flower_dev
+    sudo systemctl enable flower_dev
+    systemctl status flower_dev
     
-    sudo systemctl status flower
+    sudo systemctl start flower_prod
+    sudo systemctl enable flower_prod
+    systemctl status flower_prod
     ```
     
     Update the firewall settings.
 
     ```bash
     sudo ufw allow 5555
+    sudo ufw allow 5556
     sudo ufw reload
     ```
+
+    *Note:*
+    Port: 5555 is for the development server.
+    Port: 5556 is for the production server.
 
     
 18. Setting up the Redis service.

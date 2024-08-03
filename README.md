@@ -54,8 +54,9 @@
       - **E-mail:** edogandursun@gmail.com
       - **PW:** ***
   - SSH Connection for VPS Server:
-    - **Username:** root
-    - **PW:** 7#Ao141j3$sI?k5#aDrR
+      - **IP:** 185.170.198.44
+      - **Username:** root
+      - **PW:** 7#Ao141j3$sI?k5#aDrR
   - Email Accounts:
     - **Provider:** mail.hostiner.com
       - **Username:** admin@bimod.io
@@ -72,7 +73,13 @@
 
 - GitHub Account:
 - **Username:** egedursun
-- **Fine Grained Token:** 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
+- **Classic Token:** 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
+
+
+- Twilio SMTP Account:
+- **Username:** admin@bimod.io
+- **PW:** %)#.b0tgLoTt1xra
+
 
 ---
 
@@ -120,13 +127,12 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 *Important:*
 1. [ ] Split the dev and prod server as different processes and workflows.
-2. [ ] Add the thumbnail and site sharing info (meta) to the website. (Vuexy is a modern...)
-3. [ ] Develop more serious illustrations for the application.
-4. [ ] Implement [PAYMENT GATEWAY] for the application.
-5. [ ] Migrate to [MEDIA STORAGE] for the media files, update all the required places in the code.
-6. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-7. [ ] Implement [SMTP] configuration.
-8. [ ] Implement the [ORCHESTRATION] manager.
+2. [ ] Develop more serious illustrations for the application.
+3. [ ] Implement [SMTP] configuration.
+4. [ ] Migrate to [MEDIA STORAGE] for the media files, update all the required places in the code.
+5. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+6. [ ] Implement [PAYMENT GATEWAY] for the application.
+7. [ ] Implement the [ORCHESTRATION] manager.
 
 *Deploy:*
 1. [ ] Protect the [MAIN BRANCH] for direct merges.
@@ -219,12 +225,12 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
       * Paid: [monthly/yearly]
     - Trade Room Registry and Membership: $?
       * Paid: [monthly/yearly]
-  - Hosting Service: $?
-    * Paid: [monthly/yearly]
-  - Domain Service: $?
-    * Paid: [monthly/yearly]
-  - SSL Certification: $?
-    * Paid: [monthly/yearly]
+  - Hosting Service: $20
+    * Paid: yearly
+  - Domain Service: $1
+    * Paid: yearly
+  - SSL Certification: -- within the Hosting Service
+    * Paid: yearly
   - Organization Emails: $1 per account x 10 = $10
     * Paid: yearly = $12 x 10 = $120
       1. admin@bimod.io / internal operations
@@ -237,11 +243,13 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
       8. selin.canbulut@bimod.io / Selin Ceren Canbulut
       9. emre.oge@bimod.io / Emre Oge
       10. mert.tekin@bimod.io / Mert Tekin
-  - PostgreSQL Database: $?
-    * Paid: [monthly/yearly]
-  - SMTP Cloud Service: $?
-    * Paid: [monthly/yearly]
+  - PostgreSQL Database: -- within the Hosting Service
+    * Paid: yearly
+  - SMTP Cloud Service: $15
+    * Paid: monthly
   - Weaviate Cloud Server: $?
     * Paid: [monthly/yearly]
   - Cloud Translation Service: $?
+    * Paid: [monthly/yearly]
+   - Cloud Media Storage Service: $?
     * Paid: [monthly/yearly]
