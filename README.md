@@ -75,10 +75,10 @@
 - **Username:** egedursun
 - **Classic Token:** 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
 
-
-- Twilio SMTP Account:
+- Twilio Sendgrid SMTP Account:
 - **Username:** admin@bimod.io
 - **PW:** %)#.b0tgLoTt1xra
+- **Recovery Code:** LN9LY19L5W525XB5JSB69XCM
 
 
 ---
