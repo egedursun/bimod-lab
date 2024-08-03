@@ -32,13 +32,18 @@ python manage.py migrate
 # Collect static files
 python manage.py collectstatic --noinput
 
-if ! sudo systemctl is-active --quiet redis-server; then
+if ! sudo systemctl is-active --quiet redis; then
     echo "Redis is not active. Starting Redis..."
-    sudo systemctl start redis-server
+    sudo systemctl start redis
 fi
 
 # Restart services
+sudo mkdir -p /run/celery
+sudo chown www-data:www-data /run/celery
+sudo chmod 755 /run/celery
+
 systemctl daemon-reload
+sudo systemctl restart redis
 sudo systemctl restart gunicorn
 sudo systemctl restart nginx
 sudo systemctl restart celery
