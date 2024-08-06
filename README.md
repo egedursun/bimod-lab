@@ -3,7 +3,7 @@
 
 ---
 
-- [ ] Active Success logging for tracking the success of the application.
+
 - [ ] Integrating the Payment Gateway to get the payment done (for balance) + credit card safety / storage and usage
 - [ ] Privacy Policy and Terms of Service development & integration for the application.
 - [ ] Proper Documentation & tutorial, instructions (FAQ and Support) for the application.
@@ -140,7 +140,6 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 *Important:*
 1. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-2. [ ] Disable DEBUG mode for the application, for increased safety. [VERY IMPORTANT ISSUE / SECURITY]
 3. [ ] Switch to a reliable [SMTP] provider.
 4. [ ] Develop more serious [ILLUSTRATION] for the application.
 5. [ ] Translation of the website [VERY IMPORTANT ISSUE / LOCALIZATION]
