@@ -30,7 +30,7 @@ jobs:
     - name: Deploy to Production Server
       run: |
         ssh -o "StrictHostKeyChecking=no" root@185.170.198.44 << 'EOF'
-        cd /root/var/www/bimod_prod/bimod-app
-        chmod +x deploy-prod.sh
-        bash deploy-prod.sh main
+          cd /root/var/www/bimod_prod/bimod-app
+          chmod +x deploy-prod.sh
+          bash deploy-prod.sh main
         EOF
