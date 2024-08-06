@@ -323,22 +323,25 @@ HTTP_ERROR_PATHS = [
     "/500/", "/501/", "/502/", "/503/", "/504/", "/505/", "/506/", "/507/", "/508/", "/510/", "/511/"
 ]
 
+SUFFIX_ANY = "*"
+
 EXCLUDED_PAGES = [
     ########################################
     # Exclude Authentication pages
     ########################################
     "/",
-    "/app/login/",
-    "/app/logout/",
-    "/app/register/",
-    "/app/verify_email_page/",
-    "/app/verify_email/",
-    "/app/send_verification/",
-    "/app/forgot_password/",
-    "/app/reset_password/",
-    "/contact-form-submit/",
-    "/docs/",
-    "/faq/",
+    "/admin/*",
+    "/app/login/*",
+    "/app/logout/*",
+    "/app/register/*",
+    "/app/verify_email_page/*",
+    "/app/verify_email/*",
+    "/app/send_verification/*",
+    "/app/forgot_password/*",
+    "/app/reset_password/*",
+    "/contact-form-submit/*",
+    "/docs/*",
+    "/faq/*",
     ########################################
     # Exclude (ALL) Exported Assistant pages
     ########################################
