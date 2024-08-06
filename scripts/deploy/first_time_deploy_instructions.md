@@ -81,12 +81,12 @@
     pip3 install -r requirements.txt
     deactivate
     
-    cd /root/var/www/bimod_prod/bimod-app
+    cd /root/var/www/bimod_prod
     python3 -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
     deactivate
-    cd ../..
+    cd ..
     ```
 11. Allow Postgres to listen to your local machine:
 
@@ -125,17 +125,13 @@
 12. Setting up the environment variables.
 
     ```bash
-    cd /root/var/www/bimod_dev/bimod-app
+    cd /var/www/bimod_dev
     touch .env
     nano .env
-    touch .env.prod
-    nano .env.prod
     
-    cd /root/var/www/bimod_prod/bimod-app
+    cd /var/www/bimod_prod
     touch .env
     nano .env
-    touch .env.prod
-    nano .env.prod
     ```
     
     Add the environment variables to the `.env` file.
@@ -147,18 +143,14 @@
     Save and exit the file.
 
     ```bash
-    cd /var/www/bimod_dev/bimod-app
+    cd /var/www/bimod_dev
     source venv/bin/activate
-    python3 manage.py migrate
-    python3 manage.py makemigrations
     python3 manage.py migrate
     python3 manage.py collectstatic
     deactivate
     
-    cd /var/www/bimod_prod/bimod-app
+    cd /var/www/bimod_prod
     source venv/bin/activate
-    python3 manage.py migrate
-    python3 manage.py makemigrations
     python3 manage.py migrate
     python3 manage.py collectstatic
     deactivate
@@ -179,9 +171,9 @@ After=network.target
 [Service]
 User=www-data
 Group=www-data
-WorkingDirectory=/root/var/www/bimod_dev/bimod-app
-Environment="PATH=/root/var/www/bimod_dev/bimod-app/venv/bin"
-ExecStart=/root/var/www/bimod_dev/bimod-app/venv/bin/gunicorn --access-logfile /root/var/www/bimod_dev/bimod-app/gunicorn-access.log --error-logfile /root/var/www/bimod_dev/bimod-app/gunicorn-error.log --log-level debug --workers 3 --bind unix:/run/gunicorn/gunicorn_dev.sock config.wsgi:application
+WorkingDirectory=/var/www/bimod_dev
+Environment="PATH=/var/www/bimod_dev/venv/bin"
+ExecStart=/var/www/bimod_dev/venv/bin/gunicorn --access-logfile /var/www/bimod_dev/gunicorn-access.log --error-logfile /var/www/bimod_dev/gunicorn-error.log --log-level debug --workers 3 --bind unix:/run/gunicorn/gunicorn_dev.sock config.wsgi:application
 Restart=always
 RestartSec=10
 
@@ -205,9 +197,9 @@ After=network.target
 [Service]
 User=www-data
 Group=www-data
-WorkingDirectory=/root/var/www/bimod_prod/bimod-app
-Environment="PATH=/root/var/www/bimod_prod/bimod-app/venv/bin"
-ExecStart=/root/var/www/bimod_prod/bimod-app/venv/bin/gunicorn --access-logfile - --error-logfile - --log-level debug --workers 3 --bind unix:/root/var/www/bimod_prod/bimod-app/gunicorn.sock config.wsgi:application
+WorkingDirectory=/var/www/bimod_prod
+Environment="PATH=/var/www/bimod_prod/venv/bin"
+ExecStart=/var/www/bimod_prod/venv/bin/gunicorn --access-logfile - --error-logfile - --log-level debug --workers 3 --bind unix:/run/gunicorn/gunicorn_prod.sock config.wsgi:application
 Restart=always
 RestartSec=10
 
@@ -218,14 +210,14 @@ WantedBy=multi-user.target
     Enable and start the Gunicorn services.
 
     ```bash
-    sudo mkdir -p /root/var/www/bimod_dev/bimod-app/
-    sudo chown -R www-data:www-data /root/var/www/bimod_dev/bimod-app/
-    sudo chmod -R 755 /root/var/www/bimod_dev/bimod-app/
+    sudo mkdir -p /var/www/bimod_dev/
+    sudo chown -R www-data:www-data /var/www/bimod_dev/
+    sudo chmod -R 755 /var/www/bimod_dev/
     sudo systemctl daemon-reload
 
-    sudo mkdir -p /root/var/www/bimod_prod/bimod-app/
-    sudo chown -R www-data:www-data /root/var/www/bimod_prod/bimod-app/
-    sudo chmod -R 755 /root/var/www/bimod_prod/bimod-app/
+    sudo mkdir -p /var/www/bimod_prod/
+    sudo chown -R www-data:www-data /var/www/bimod_prod/
+    sudo chmod -R 755 /var/www/bimod_prod/
     sudo systemctl daemon-reload
 
     sudo systemctl start gunicorn_dev
@@ -263,15 +255,15 @@ server {
     }
 
     location /static/ {
-        alias /root/var/www/bimod_prod/bimod-app/staticfiles/;
+        alias /var/www/bimod_prod/staticfiles/;
     }
     location /media/ {
-        alias /root/var/www/bimod_prod/bimod-app/media/;
+        alias /var/www/bimod_prod/media/;
     }
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/root/var/www/bimod_prod/bimod-app/gunicorn.sock;
+        proxy_pass http://unix:/var/www/bimod_prod/gunicorn_prod.sock;
     }
 
     # Redirect HTTP to HTTPS
@@ -294,15 +286,15 @@ server {
     }
 
     location /static/ {
-        alias /root/var/www/bimod_dev/bimod-app/staticfiles/;
+        alias /var/www/bimod_dev/staticfiles/;
     }
     location /media/ {
-        alias /root/var/www/bimod_dev/bimod-app/media/;
+        alias /var/www/bimod_dev/media/;
     }
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock;
+        proxy_pass http://unix:/var/www/bimod_dev/gunicorn_dev.sock;
     }
 
     # Redirect HTTP to HTTPS
@@ -325,15 +317,15 @@ server {
     location = /favicon.ico { access_log off; log_not_found off; }
 
     location /static/ {
-        alias /root/var/www/bimod_prod/bimod-app/staticfiles/;
+        alias /var/www/bimod_prod/staticfiles/;
     }
     location /media/ {
-        alias /root/var/www/bimod_prod/bimod-app/media/;
+        alias /var/www/bimod_prod/media/;
     }
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/root/var/www/bimod_prod/bimod-app/gunicorn.sock;
+        proxy_pass http://unix:/var/www/bimod_prod/gunicorn_prod.sock;
     }
 }
 
@@ -351,15 +343,15 @@ server {
     location = /favicon.ico { access_log off; log_not_found off; }
 
     location /static/ {
-        alias /root/var/www/bimod_dev/bimod-app/staticfiles/;
+        alias /var/www/bimod_dev/bstaticfiles/;
     }
     location /media/ {
-        alias /root/var/www/bimod_dev/bimod-app/media/;
+        alias /var/www/bimod_dev/media/;
     }
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock;
+        proxy_pass http://unix:/var/www/bimod_dev/gunicorn_dev.sock;
     }
 }
     ```
@@ -398,8 +390,8 @@ After=network.target
 Type=forking
 User=www-data
 Group=www-data
-WorkingDirectory=/root/var/www/bimod_dev/bimod-app
-ExecStart=/bin/bash -c 'source /root/var/www/bimod_dev/bimod-app/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery-dev.pid -n dev@%h'
+WorkingDirectory=/var/www/bimod_dev
+ExecStart=/bin/bash -c 'source /var/www/bimod_dev/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery-dev.pid -n dev@%h'
 ExecStartPost=/bin/sleep 5
 PIDFile=/run/celery/celery-dev.pid
 Restart=always
@@ -428,8 +420,8 @@ After=network.target
 Type=forking
 User=www-data
 Group=www-data
-WorkingDirectory=/root/var/www/bimod_prod/bimod-app
-ExecStart=/bin/bash -c 'source /root/var/www/bimod_prod/bimod-app/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery-prod.pid'
+WorkingDirectory=/var/www/bimod_prod
+ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery-prod.pid'
 ExecStartPost=/bin/sleep 5
 PIDFile=/run/celery/celery-prod.pid
 Restart=always
@@ -471,8 +463,8 @@ After=network.target
 Type=simple
 User=www-data
 Group=www-data
-WorkingDirectory=/root/var/www/bimod_dev/bimod-app
-ExecStart=/bin/bash -c 'source /root/var/www/bimod_dev/bimod-app/venv/bin/activate && exec celery -A config beat --loglevel=info'
+WorkingDirectory=/var/www/bimod_dev
+ExecStart=/bin/bash -c 'source /var/www/bimod_dev/venv/bin/activate && exec celery -A config beat --loglevel=info'
 Restart=always
 
 [Install]
@@ -496,8 +488,8 @@ After=network.target
 Type=simple
 User=www-data
 Group=www-data
-WorkingDirectory=/root/var/www/bimod_prod/bimod-app
-ExecStart=/bin/bash -c 'source /root/var/www/bimod_prod/bimod-app/venv/bin/activate && exec celery -A config beat --loglevel=info'
+WorkingDirectory=/var/www/bimod_prod
+ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && exec celery -A config beat --loglevel=info'
 Restart=always
 
 [Install]
@@ -552,8 +544,8 @@ After=network.target
 Type=simple
 User=www-data
 Group=www-data
-WorkingDirectory=/root/var/www/bimod_dev/bimod-app
-ExecStart=/bin/bash -c 'source /root/var/www/bimod_dev/bimod-app/venv/bin/activate && exec celery -A config flower --port=5555 --broker=redis://localhost:6379/0'
+WorkingDirectory=/var/www/bimod_dev
+ExecStart=/bin/bash -c 'source /var/www/bimod_dev/venv/bin/activate && exec celery -A config flower --port=5555 --broker=redis://localhost:6379/0'
 Restart=always
 RestartSec=5
 
@@ -578,8 +570,8 @@ After=network.target
 Type=simple
 User=www-data
 Group=www-data
-WorkingDirectory=/root/var/www/bimod_prod/bimod-app
-ExecStart=/bin/bash -c 'source /root/var/www/bimod_prod/bimod-app/venv/bin/activate && exec celery -A config flower --port=5556 --broker=redis://localhost:6379/0'
+WorkingDirectory=/var/www/bimod_prod
+ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && exec celery -A config flower --port=5556 --broker=redis://localhost:6379/0'
 Restart=always
 RestartSec=5
 
@@ -654,7 +646,7 @@ WantedBy=multi-user.target
     Save and exit the file.
 
     ```bash
-    
+    sudo chmod +x /etc/rc.local
     ```
 
 20. Run the server
@@ -675,53 +667,3 @@ WantedBy=multi-user.target
     
     sudo systemctl start nginx
     ```
-
-21. Create the media server
-
-    ```bash
-    sudo mkdir -p /root/var/www/media
-    sudo mkdir -p /root/var/www/media/dev
-    sudo mkdir -p /root/var/www/media/prod
-    
-    sudo chown -R www-data:www-data /root/var/www/media
-    sudo chmod -R 755 /root/var/www/media
-    ```
-    
-    22. Create the nginx configuration for the media server.
-
-        ```bash
-        sudo nano /etc/nginx/sites-available/media_server
-        ```
-        
-        Add the following lines to the file.
-
-        ```text
-server {
-    listen 80;
-    server_name 185.170.198.44;
-
-    location /media/prod/ {
-        alias /root/var/www/media/prod/;
-        autoindex on;
-        access_log /var/log/nginx/media_prod_access.log;
-        error_log /var/log/nginx/media_prod_error.log;
-    }
-
-    location /media/dev/ {
-        alias /root/var/www/media/dev/;
-        autoindex on;
-        access_log /var/log/nginx/media_dev_access.log;
-        error_log /var/log/nginx/media_dev_error.log;
-    }
-}
-        ```
-
-        Save and exit the file.
-
-        ```bash
-        sudo ln -s /etc/nginx/sites-available/media_server /etc/nginx/sites-enabled/
-        sudo nginx -t
-        sudo systemctl reload nginx
-        ```
-
-

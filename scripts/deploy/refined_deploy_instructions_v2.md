@@ -1,0 +1,548 @@
+ssh root@185.170.198.44
+
+---
+
+cd /var/www
+sudo apt update
+sudo apt upgrade
+
+---
+
+sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib nginx curl
+
+---
+
+cd /var/www
+sudo mkdir bimod_dev
+sudo mkdir bimod_prod
+
+sudo chown -R root:www-data bimod_dev
+sudo chown -R root:www-data bimod_prod
+
+---
+
+cd bimod_dev
+git clone -b dev https://egedursun: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@github.com/Bimod-HQ/bimod-app.git .
+cd ..
+
+cd bimod_prod
+git clone -b main https://egedursun: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@github.com/Bimod-HQ/bimod-app.git .
+cd ..
+
+---
+
+cd /var/www/bimod_dev
+sudo apt install python3-venv
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+deactivate
+
+cd /root/var/www/bimod_prod
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+deactivate
+cd ..
+
+---
+
+cd /var/www/bimod_dev
+touch .env
+nano .env
+    
+cd /var/www/bimod_prod
+touch .env
+nano .env
+
+---
+
+cd /var/www/bimod_dev
+source venv/bin/activate
+python3 manage.py migrate
+python3 manage.py collectstatic
+deactivate
+
+cd /var/www/bimod_prod
+source venv/bin/activate
+python3 manage.py migrate
+python3 manage.py collectstatic
+deactivate
+
+---
+
+sudo nano /etc/systemd/system/gunicorn_dev.service
+
+```
+[Unit]
+Description=gunicorn daemon (development)
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_dev
+Environment="PATH=/var/www/bimod_dev/venv/bin"
+ExecStart=/var/www/bimod_dev/venv/bin/gunicorn --access-logfile /var/www/bimod_dev/gunicorn-access.log --error-logfile /var/www/bimod_dev/gunicorn-error.log --log-level debug --workers 3 --bind unix:/run/gunicorn/gunicorn_dev.sock config.wsgi:application
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+sudo mkdir -p /var/www/bimod_dev/
+sudo chown -R www-data:www-data /var/www/bimod_dev/
+sudo chmod -R 755 /var/www/bimod_dev/
+sudo systemctl daemon-reload
+
+sudo systemctl start gunicorn_dev
+sudo systemctl enable gunicorn_dev
+
+systemctl status guinicorn_dev
+journalctl -u gunicorn_dev -f
+
+###
+
+sudo nano /etc/systemd/system/gunicorn_prod.service
+
+```
+[Unit]
+Description=gunicorn daemon for production
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_prod
+Environment="PATH=/var/www/bimod_prod/venv/bin"
+ExecStart=/var/www/bimod_prod/venv/bin/gunicorn --access-logfile - --error-logfile - --log-level debug --workers 3 --bind unix:/run/gunicorn/gunicorn_prod.sock config.wsgi:application
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+sudo mkdir -p /var/www/bimod_prod/
+sudo chown -R www-data:www-data /var/www/bimod_prod/
+sudo chmod -R 755 /var/www/bimod_prod/
+sudo systemctl daemon-reload
+
+sudo systemctl start gunicorn_prod
+sudo systemctl enable gunicorn_prod
+
+systemctl status guinicorn_prod
+journalctl -u gunicorn_prod -f
+
+---
+
+sudo nano /etc/nginx/sites-available/bimod.io
+
+```
+# Configuration for production
+server {
+    listen 80;
+    server_name bimod.io www.bimod.io;
+
+    client_max_body_size 500M;  # Apply the limit here
+
+    location = /favicon.ico {
+        alias /src/assets/img/favicon/favicon.ico;
+        access_log off;
+        log_not_found off;
+    }
+
+    location /static/ {
+        alias /var/www/bimod_prod/staticfiles/;
+    }
+    location /media/ {
+        alias /var/www/bimod_prod/media/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn/gunicorn_prod.sock;
+    }
+
+    # Redirect HTTP to HTTPS
+    if ($scheme != "https") {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# Configuration for development
+server {
+    listen 80;
+    server_name dev.bimod.io;
+
+    client_max_body_size 500M;  # Apply the limit here
+
+    location = /favicon.ico {
+        alias /src/assets/img/favicon/favicon.ico;
+        access_log off;
+        log_not_found off;
+    }
+
+    location /static/ {
+        alias /var/www/bimod_dev/staticfiles/;
+    }
+    location /media/ {
+        alias /var/www/bimod_dev/media/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn/gunicorn_dev.sock;
+    }
+
+    # Redirect HTTP to HTTPS
+    if ($scheme != "https") {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name bimod.io www.bimod.io;
+
+    client_max_body_size 500M;  # Apply the limit here
+
+    ssl_certificate /etc/letsencrypt/live/bimod.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/bimod.io/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+
+    location /static/ {
+        alias /var/www/bimod_prod/staticfiles/;
+    }
+    location /media/ {
+        alias /var/www/bimod_prod/media/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn/gunicorn_prod.sock;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name dev.bimod.io;
+
+    client_max_body_size 500M;  # Apply the limit here
+
+    ssl_certificate /etc/letsencrypt/live/bimod.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/bimod.io/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+
+    location /static/ {
+        alias /var/www/bimod_dev/staticfiles/;
+    }
+    location /media/ {
+        alias /var/www/bimod_dev/media/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn/gunicorn_dev.sock;
+    }
+}
+```
+
+sudo systemctl daemon-reload
+sudo nginx -t
+sudo systemctl restart nginx
+sudo systemctl enable nginx
+sudo systemctl status nginx
+
+sudo tail -f /var/log/nginx/error.log
+
+---
+
+sudo certbot --nginx -d bimod.io -d www.bimod.io -d dev.bimod.io
+
+---
+
+sudo nano /etc/systemd/system/celery_dev.service
+
+```
+[Unit]
+Description=Celery Service for Development
+After=network.target
+
+[Service]
+Type=forking
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_dev
+ExecStart=/bin/bash -c 'source /var/www/bimod_dev/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery-dev.pid -n dev@%h'
+ExecStartPost=/bin/sleep 5
+PIDFile=/run/celery/celery-dev.pid
+Restart=always
+RestartSec=5
+StartLimitInterval=60
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+sudo mkdir -p /run/celery
+sudo chown www-data:www-data /run/celery
+systemctl daemon-reload
+sudo systemctl restart celery_dev
+sudo systemctl start celery_dev
+sudo systemctl enable celery_dev
+
+sudo systemctl status celery_dev
+
+###
+
+sudo nano /etc/systemd/system/celery_prod.service
+
+```
+[Unit]
+Description=Celery Service for Production
+After=network.target
+
+[Service]
+Type=forking
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_prod
+ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery-prod.pid'
+ExecStartPost=/bin/sleep 5
+PIDFile=/run/celery/celery-prod.pid
+Restart=always
+RestartSec=5
+StartLimitInterval=60
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+sudo mkdir -p /run/celery 
+sudo chown www-data:www-data /run/celery
+systemctl daemon-reload
+sudo systemctl restart celery_prod
+sudo systemctl start celery_prod
+sudo systemctl enable celery_prod
+
+sudo systemctl status celery_prod
+
+---
+
+sudo nano /etc/systemd/system/celerybeat_dev.service
+
+```
+[Unit]
+Description=Celery Beat Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_dev
+ExecStart=/bin/bash -c 'source /var/www/bimod_dev/venv/bin/activate && exec celery -A config beat --loglevel=info'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+sudo systemctl daemon-reload
+sudo mkdir -p /run/celery
+sudo chown -R www-data:www-data /run/celery
+sudo chmod -R 755 /run/celery
+sudo chmod -R 755 /run/celery/celery-dev.pid
+sudo chmod -R 755 /run/celery/celery-prod.pid
+
+sudo systemctl restart celery_dev
+sudo systemctl restart celery_prod
+
+sudo systemctl start celerybeat_dev
+sudo systemctl enable celerybeat_dev
+
+###
+
+sudo nano /etc/systemd/system/celerybeat_prod.service
+
+```
+[Unit]
+Description=Celery Beat Service for Production
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_prod
+ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && exec celery -A config beat --loglevel=info'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+sudo systemctl daemon-reload
+sudo mkdir -p /run/celery
+sudo chown -R www-data:www-data /run/celery
+sudo chmod -R 755 /run/celery
+sudo chmod -R 755 /run/celery/celery-dev.pid
+sudo chmod -R 755 /run/celery/celery-prod.pid
+
+sudo systemctl restart celery_dev
+sudo systemctl restart celery_prod
+
+sudo systemctl start celerybeat_prod
+sudo systemctl enable celerybeat_prod
+
+---
+
+sudo nano /etc/systemd/system/flower_dev.service
+
+```
+[Unit]
+Description=Flower Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_dev
+ExecStart=/bin/bash -c 'source /var/www/bimod_dev/venv/bin/activate && exec celery -A config flower --port=5555 --broker=redis://localhost:6379/0'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+sudo systemctl daemon-reload
+sudo systemctl restart flower_dev
+sudo systemctl start flower_dev
+sudo systemctl enable flower_dev
+
+sudo systemctl status flower_dev
+
+###
+
+sudo nano /etc/systemd/system/flower_prod.service
+
+```
+[Unit]
+Description=Flower Service for Production
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_prod
+ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && exec celery -A config flower --port=5556 --broker=redis://localhost:6379/0'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+sudo systemctl daemon-reload
+sudo systemctl restart flower_prod
+sudo systemctl start flower_prod
+sudo systemctl enable flower_prod
+
+sudo systemctl status flower_prod
+
+sudo ufw allow 5555
+sudo ufw allow 5556
+sudo ufw reload
+
+---
+
+sudo apt update
+sudo apt install redis-server
+sudo nano /etc/redis/redis.conf
+
+```
+Find the line that says `supervised no` and change it to `supervised systemd`.
+```
+
+sudo systemctl restart redis
+sudo systemctl enable redis
+sudo systemctl status redis
+
+---
+
+sudo nano /etc/rc.local
+
+sudo systemctl start gunicorn
+sudo systemctl start celery
+sudo systemctl start celerybeat
+sudo systemctl start flower
+sudo systemctl start redis-server
+exit 0
+
+sudo chmod +x /etc/rc.local
+
+---
+
+sudo systemctl start gunicorn_dev
+sudo systemctl start gunicorn_prod
+
+sudo systemctl start celery_dev
+sudo systemctl start celery_prod
+
+sudo systemctl start celerybeat_dev
+sudo systemctl start celerybeat_prod
+
+sudo systemctl start flower_dev
+sudo systemctl start flower_prod
+
+sudo systemctl start redis-server
+sudo systemctl start nginx
+
+---
+
+sudo systemctl status gunicorn_dev
+sudo systemctl status gunicorn_prod
+
+sudo systemctl status celery_dev
+sudo systemctl status celery_prod
+
+sudo systemctl status celerybeat_dev
+sudo systemctl status celerybeat_prod
+
+sudo systemctl status flower_dev
+sudo systemctl status flower_prod
+
+sudo systemctl status redis-server
+sudo systemctl status nginx
+
+---
+
+sudo journalctl -xeu gunicorn_dev
+sudo journalctl -xeu gunicorn_prod
+
+sudo journalctl -xeu celery_dev
+sudo journalctl -xeu celery_prod
+
+sudo journalctl -xeu celerybeat_dev
+sudo journalctl -xeu celerybeat_prod
+
+sudo journalctl -xeu flower_dev
+sudo journalctl -xeu flower_prod
+
+sudo journalctl -xeu redis-server
+sudo journalctl -xeu nginx
+
+

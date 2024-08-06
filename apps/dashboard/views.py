@@ -27,7 +27,6 @@ class DashboardMainView(TemplateView):
         return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        logger.info("DashboardMainView.get_context_data")
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
         organizations = Organization.objects.filter(users__in=[user])
