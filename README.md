@@ -43,15 +43,17 @@
 
 **Active Tools for Testing:**
 
-- Hosting Service (Hostinger).
+- Hosting Service (Hostinger)
   - Login Credentials: 
     - **@Via Google Account** ->
       - **E-mail:** edogandursun@gmail.com
       - **PW:** ***
+
   - SSH Connection for VPS Server:
       - **Connection:** ssh root@185.170.198.44
       - **Username:** root
       - **PW:** 7#Ao141j3$sI?k5#aDrR
+  
   - Email Accounts:
     - **Provider:** mail.hostiner.com
       - **Username:** admin@bimod.io
