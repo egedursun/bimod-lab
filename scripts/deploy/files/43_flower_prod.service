@@ -1,0 +1,15 @@
+[Unit]
+Description=Flower Service for Production
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_prod
+ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && exec celery -A config flower --port=5556 --broker=redis://localhost:6379/0'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

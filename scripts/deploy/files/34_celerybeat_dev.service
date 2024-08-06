@@ -1,0 +1,14 @@
+[Unit]
+Description=Celery Beat Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_dev
+ExecStart=/bin/bash -c 'source /var/www/bimod_dev/venv/bin/activate && exec celery -A config beat --loglevel=info'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

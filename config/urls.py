@@ -29,6 +29,9 @@ def trigger_error(request):
 
 
 urlpatterns = [
+    #################################################################################################################
+    # Core Endpoints
+    #################################################################################################################
     path("", include("apps.landing.urls", namespace="landing")),
     path("admin/", admin.site.urls),
     path("app/", include("auth.urls")),
@@ -58,21 +61,78 @@ urlpatterns = [
     path("app/mm_scripts/", include("apps.mm_scripts.urls", namespace="mm_scripts")),
     path("app/mm_scheduled_jobs/", include("apps.mm_scheduled_jobs.urls", namespace="mm_scheduled_jobs")),
     path("app/mm_triggered_jobs/", include("apps.mm_triggered_jobs.urls", namespace="mm_triggered_jobs")),
+    #################################################################################################################
 
-    #####
+    #################################################################################################################
     # Test Endpoints
-    #####
+    #################################################################################################################
     path('sentry/test/', trigger_error),
+    #################################################################################################################
 ]
 
 
 urlpatterns += static(settings.MEDIA_URL)
 
-handler404 = SystemView.as_view(template_name="pages_misc_error.html", status=404)
-handler403 = SystemView.as_view(template_name="pages_misc_not_authorized.html", status=403)
-handler400 = SystemView.as_view(template_name="pages_misc_error.html", status=400)
-handler500 = SystemView.as_view(template_name="pages_misc_error.html", status=500)
+HANDLED_HTTP_NEGATIVE_RESPONSES = {
+    "client_side": [
+        400, 401, 402, 403, 404, 405, 406, 407, 408, 409,
+        410, 411, 412, 413, 414, 415, 416, 417, 418, 421,
+        422, 423, 424, 425, 426, 428, 429, 431, 451
+    ],
+    "server_side": [
+        500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511
+    ],
+}
 
+#####################################################################################################################
+# CLIENT SIDE ERRORS
+#####################################################################################################################
+
+handler400 = SystemView.as_view(template_name="pages_misc_error.html", status=400)
+handler401 = SystemView.as_view(template_name="pages_misc_error.html", status=401)
+handler402 = SystemView.as_view(template_name="pages_misc_error.html", status=402)
+handler403 = SystemView.as_view(template_name="pages_misc_not_authorized.html", status=403)
+handler404 = SystemView.as_view(template_name="pages_misc_error.html", status=404)
+handler405 = SystemView.as_view(template_name="pages_misc_error.html", status=405)
+handler406 = SystemView.as_view(template_name="pages_misc_error.html", status=406)
+handler407 = SystemView.as_view(template_name="pages_misc_error.html", status=407)
+handler408 = SystemView.as_view(template_name="pages_misc_error.html", status=408)
+handler409 = SystemView.as_view(template_name="pages_misc_error.html", status=409)
+handler410 = SystemView.as_view(template_name="pages_misc_error.html", status=410)
+handler411 = SystemView.as_view(template_name="pages_misc_error.html", status=411)
+handler412 = SystemView.as_view(template_name="pages_misc_error.html", status=412)
+handler413 = SystemView.as_view(template_name="pages_misc_error.html", status=413)
+handler414 = SystemView.as_view(template_name="pages_misc_error.html", status=414)
+handler415 = SystemView.as_view(template_name="pages_misc_error.html", status=415)
+handler416 = SystemView.as_view(template_name="pages_misc_error.html", status=416)
+handler417 = SystemView.as_view(template_name="pages_misc_error.html", status=417)
+handler418 = SystemView.as_view(template_name="pages_misc_error.html", status=418)
+handler421 = SystemView.as_view(template_name="pages_misc_error.html", status=421)
+handler422 = SystemView.as_view(template_name="pages_misc_error.html", status=422)
+handler423 = SystemView.as_view(template_name="pages_misc_error.html", status=423)
+handler424 = SystemView.as_view(template_name="pages_misc_error.html", status=424)
+handler425 = SystemView.as_view(template_name="pages_misc_error.html", status=425)
+handler426 = SystemView.as_view(template_name="pages_misc_error.html", status=426)
+handler428 = SystemView.as_view(template_name="pages_misc_error.html", status=428)
+handler429 = SystemView.as_view(template_name="pages_misc_error.html", status=429)
+handler431 = SystemView.as_view(template_name="pages_misc_error.html", status=431)
+handler451 = SystemView.as_view(template_name="pages_misc_error.html", status=451)
+
+#####################################################################################################################
+# SERVER SIDE ERRORS
+#####################################################################################################################
+
+handler500 = SystemView.as_view(template_name="pages_misc_error.html", status=500)
+handler501 = SystemView.as_view(template_name="pages_misc_error.html", status=501)
+handler502 = SystemView.as_view(template_name="pages_misc_error.html", status=502)
+handler503 = SystemView.as_view(template_name="pages_misc_error.html", status=503)
+handler504 = SystemView.as_view(template_name="pages_misc_error.html", status=504)
+handler505 = SystemView.as_view(template_name="pages_misc_error.html", status=505)
+handler506 = SystemView.as_view(template_name="pages_misc_error.html", status=506)
+handler507 = SystemView.as_view(template_name="pages_misc_error.html", status=507)
+handler508 = SystemView.as_view(template_name="pages_misc_error.html", status=508)
+handler510 = SystemView.as_view(template_name="pages_misc_error.html", status=510)
+handler511 = SystemView.as_view(template_name="pages_misc_error.html", status=511)
 
 #####################################################################################################################
 # THEME PAGES

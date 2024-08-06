@@ -43,6 +43,11 @@
 
 **Active Tools for Testing:**
 
+- Bitvault for Password Protection
+  - **Host:** Bitvault Cloud
+  - **Username:** admin@bimod.io
+  - **PW:** MejA@ZV38E.%fqF
+
 - Hosting Service (Hostinger)
   - Login Credentials: 
     - **@Via Google Account** ->
@@ -55,7 +60,7 @@
       - **PW:** 7#Ao141j3$sI?k5#aDrR
   
   - Email Accounts:
-    - **Provider:** mail.hostiner.com
+    - **Provider:** mail.hostinger.com
       - **Username:** admin@bimod.io
       - **PW:** FXYP9tU5o^
 
@@ -89,15 +94,6 @@
 - GitHub Account:
 - **Username:** egedursun
 - **Classic Token:** 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
-
-- Twilio Sendgrid SMTP Account:
-- **Username:** admin@bimod.io
-- **PW:** %)#.b0tgLoTt1xra
-- **Recovery Code:** LN9LY19L5W525XB5JSB69XCM
-
-- Bitvault for Password Protection:
-... todo ...
-
 
 ---
 
@@ -143,15 +139,13 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 **THINGS TO REMEMBER:**
 
 *Important:*
-1. [ ] Migrate the passwords to bitvault.
-2. [ ] Migrate the script information to their relevant files.
-3. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-4. [ ] Disable DEBUG mode for the application, for increased safety. [VERY IMPORTANT ISSUE / SECURITY]
-5. [ ] Switch to a reliable [SMTP] provider.
-6. [ ] Develop more serious [ILLUSTRATION] for the application.
-7. [ ] Translation of the website [VERY IMPORTANT ISSUE / LOCALIZATION]
-8. [ ] Implement [PAYMENT GATEWAY] for the application.
-9. [ ] Implement the [ORCHESTRATION] manager.
+1. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+2. [ ] Disable DEBUG mode for the application, for increased safety. [VERY IMPORTANT ISSUE / SECURITY]
+3. [ ] Switch to a reliable [SMTP] provider.
+4. [ ] Develop more serious [ILLUSTRATION] for the application.
+5. [ ] Translation of the website [VERY IMPORTANT ISSUE / LOCALIZATION]
+6. [ ] Implement [PAYMENT GATEWAY] for the application.
+7. [ ] Implement the [ORCHESTRATION] manager.
 
 *Deploy:*
 1. [ ] Protect the [MAIN BRANCH] for direct merges.

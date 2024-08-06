@@ -4,7 +4,6 @@ from web_project.template_helpers.theme import TemplateHelper
 
 
 class SystemView(TemplateView):
-    template_name = "pages/system/not-found.html"
     status = ""
 
     def get_context_data(self, **kwargs):

@@ -1,0 +1,19 @@
+[Unit]
+Description=Celery Service for Development
+After=network.target
+
+[Service]
+Type=forking
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bimod_dev
+ExecStart=/bin/bash -c 'source /var/www/bimod_dev/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery-dev.pid -n dev@%h'
+ExecStartPost=/bin/sleep 5
+PIDFile=/run/celery/celery-dev.pid
+Restart=always
+RestartSec=5
+StartLimitInterval=60
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target

@@ -15,10 +15,174 @@
 <!-- Error -->
 <div class="container-xxl container-p-y">
   <div class="misc-wrapper">
-    <h1 class="mb-2 mx-2" style="line-height: 6rem;font-size: 6rem;">404</h1>
-    <h4 class="mb-2 mx-2">Page Not Found️ ⚠️</h4>
-    <p class="mb-6 mx-2">we couldn't find the page you are looking for</p>
-    <a href="{% url 'index' %}" class="btn btn-primary mb-10">Back to home</a>
+    <h1 class="mb-2 mx-2" style="line-height: 6rem;font-size: 6rem;"><strong>{{ status }}</strong></h1>
+    <h4 class="mb-2 mx-2">
+      <strong>
+        <!-- client side errors -->
+        {% if status == 404 %}
+          Page Not Found️. ⚠️
+        {% elif status == 400 %}
+          Bad Request ⚠️
+        {% elif status == 402 %}
+          Payment Required ⚠️
+        {% elif status == 405 %}
+          Method Not Allowed ⚠️
+        {% elif status == 406 %}
+          Not Acceptable ⚠️
+        {% elif status == 407 %}
+          Proxy Authentication Required ⚠️
+        {% elif status == 408 %}
+          Request Timeout ⚠️
+        {% elif status == 409 %}
+          Conflict ⚠️
+        {% elif status == 410 %}
+          Gone ⚠️
+        {% elif status == 411 %}
+          Length Required ⚠️
+        {% elif status == 412 %}
+          Precondition Failed ⚠️
+        {% elif status == 413 %}
+          Payload Too Large ⚠️
+        {% elif status == 414 %}
+          URI Too Long ⚠️
+        {% elif status == 415 %}
+          Unsupported Media Type ⚠️
+        {% elif status == 416 %}
+          Range Not Satisfiable ⚠️
+        {% elif status == 417 %}
+          Expectation Failed ⚠️
+        {% elif status == 418 %}
+          I'm a teapot ⚠️
+        {% elif status == 421 %}
+          Misdirected Request ⚠️
+        {% elif status == 422 %}
+          Unprocessable Entity ⚠️
+        {% elif status == 423 %}
+          Locked ⚠️
+        {% elif status == 424 %}
+          Failed Dependency ⚠️
+        {% elif status == 425 %}
+          Too Early ⚠️
+        {% elif status == 426 %}
+          Upgrade Required ⚠️
+        {% elif status == 428 %}
+          Precondition Required ⚠️
+        {% elif status == 429 %}
+          Too Many Requests ⚠️
+        {% elif status == 431 %}
+          Request Header Fields Too Large ⚠️
+        {% elif status == 451 %}
+          Unavailable For Legal Reasons ⚠️
+        <!-- server side errors -->
+        {% elif status == 500 %}
+          Internal Server Error ⚠️
+        {% elif status == 501 %}
+          Not Implemented ⚠️
+        {% elif status == 502 %}
+          Bad Gateway ⚠️
+        {% elif status == 503 %}
+          Service Unavailable ⚠️
+        {% elif status == 504 %}
+          Gateway Timeout ⚠️
+        {% elif status == 505 %}
+          HTTP Version Not Supported ⚠️
+        {% elif status == 506 %}
+          Variant Also Negotiates ⚠️
+        {% elif status == 507 %}
+          Insufficient Storage ⚠️
+        {% elif status == 508 %}
+          Loop Detected ⚠️
+        {% elif status == 510 %}
+          Not Extended ⚠️
+        {% elif status == 511 %}
+          Network Authentication Required ⚠️
+        {% else %}
+          Error ⚠️
+        {% endif %}
+      </strong>
+    </h4>
+    <p class="mb-6 mx-2">
+      {% if status == 404 %}
+        We couldn't find the page you are looking for. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 400 %}
+        The request was invalid. Please try again later. This may be due to a bad request, a malformed syntax, or a deceptive request routing.
+      {% elif status == 402 %}
+        Payment is required to access this page. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 405 %}
+        The HTTP request method is not allowed. This issue is likely due to a misconfiguration or an error in the request routing.
+      {% elif status == 406 %}
+        The requested resource is not acceptable. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 407 %}
+        Proxy authentication is required to access this page. This issue is likely due to a misconfiguration or an error in the request routing.
+      {% elif status == 408 %}
+        The request timed out. Please try again later. This may be due to a slow internet connection or a server-side issue.
+      {% elif status == 409 %}
+        There was a conflict. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 410 %}
+        The requested resource is no longer available. This may be due to a server-side issue or a misconfiguration, or the resource may have been moved or deleted.
+      {% elif status == 411 %}
+        The request requires a content length. This may be due to a server-side issue or a misconfiguration. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 412 %}
+        The request failed a precondition. This may be due to a server-side issue or a misconfiguration. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 413 %}
+        The request payload is too large. This is generally due to a server-side issue or a misconfiguration. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 414 %}
+        The request URI is too long. This may be due to a server-side issue or a misconfiguration. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 415 %}
+        The media type is not supported. The issue is likely due to a server-side issue or a misconfiguration. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 416 %}
+        The range is not satisfiable. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 417 %}
+        The request expectation failed. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 418 %}
+        I'm a teapot. If you would like to brew some tea, find me at the third rock from the sun. 🌍
+      {% elif status == 421 %}
+        The request was misdirected. This may be due to a server-side issue or a misconfiguration. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 422 %}
+        The request is unprocessable. The cause of this issue is likely a server-side issue or a misconfiguration. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 423 %}
+        The request is locked. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 424 %}
+        The request failed a dependency. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 425 %}
+        The request is too early. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 426 %}
+        The request requires an upgrade. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 428 %}
+        The request requires a precondition. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 429 %}
+        There are too many requests. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 431 %}
+        The request header fields are too large. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 451 %}
+        The request is unavailable for legal reasons. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 500 %}
+        There was an internal server error. Please try again later. This error is likely due to a server-side issue or a misconfiguration.
+      {% elif status == 501 %}
+        The request is not implemented. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 502 %}
+        The gateway is bad. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 503 %}
+        The service is unavailable. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 504 %}
+        The gateway timed out. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 505 %}
+        The HTTP version is not supported. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 506 %}
+        The variant also negotiates. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 507 %}
+        There is insufficient storage. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 508 %}
+        There is a loop detected. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 510 %}
+        The request is not extended. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% elif status == 511 %}
+        Network authentication is required. Please try again later. This may be due to a server-side issue or a misconfiguration.
+      {% else %}
+        Something went wrong. Please try again later. This is an unexpected error, please feel free to contact us if you think this is causing you trouble with your work.
+      {% endif %}
+    </p>
+    <a href="{% url 'landing:index' %}" class="btn btn-primary mb-10"><strong><i class="fa fa-chevron-left me-4"></i> Back</strong></a>
     <div class="mt-4">
       <img src="{% static 'img/illustrations/page-misc-error.png' %}" alt="page-misc-error" width="225" class="img-fluid">
     </div>
