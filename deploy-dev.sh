@@ -4,7 +4,7 @@
 set -e
 
 # Define the directory
-DEPLOY_DIR=/root/var/www/bimod_dev/bimod-app
+DEPLOY_DIR=/var/www/bimod_dev
 REPO_URL=https://github.com/Bimod-HQ/bimod-app.git
 BRANCH=$1
 

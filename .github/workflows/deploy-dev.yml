@@ -30,7 +30,7 @@ jobs:
     - name: Deploy to Development Server
       run: |
         ssh -o "StrictHostKeyChecking=no" root@185.170.198.44 << 'EOF'
-          cd /root/var/www/bimod_dev/bimod-app
+          cd /var/www/bimod_dev
           chmod +x deploy-dev.sh
           bash deploy-dev.sh main
         EOF
