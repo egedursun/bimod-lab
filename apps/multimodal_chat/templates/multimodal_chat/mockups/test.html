@@ -86,6 +86,7 @@
           class="chat-sidebar-left-user sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
           <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
             <img src="
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -97,508 +98,423 @@
     </div>
 
     <!-- Chat & Assistants -->
-    <div class="row g-1">
+    <div class="row g-0">
       <div class="col-3">
         <div class="col w-100 m-6">
-          <img src="https://fundpath.com/wp-content/uploads/2023/10/Fundpath-Header-Logo-New.svg" class="img-fluid w-100" alt="Fundpath Logo" style="max-width: 200px;">
+          <img src="https://fundpath.com/wp-content/uploads/2023/10/Fundpath-Header-Logo-New.svg"
+               class="img-fluid w-100" alt="Fundpath Logo" style="max-width: 200px;">
         </div>
-        <div class="col app-chat-contacts app-sidebar border-end overflow-auto" style="max-height: 420px;" id="app-chat-contacts">
+        <div class="col app-chat-contacts app-sidebar border-end overflow-auto" style="max-height: 400px; min-width: 400px;"
+             id="app-chat-contacts">
           <div class="sidebar-body">
             <!-- Assistants -->
             <ul class="list-unstyled chat-contact-list mb-0 py-2" id="assistant-list">
-            <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
-              <h5 class="text-primary mb-0"><strong>Assistants</strong></h5>
-            </li>
+              <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
+                <h5 class="text-primary mb-0"><strong>Experts</strong></h5>
+              </li>
 
-            <!-- ######## -->
-            <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-              <div class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar">
-                  <img src="https://cdna.artstation.com/p/assets/images/images/054/399/702/large/anastasia-gilevich-staz-shift-addie-5-cyborg-face.jpg?1664449014" alt="Avatar" class="rounded">
+              <!-- ######## -->
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ps-2 fw-normal"><strong>Data Analysis +
+                      Insights</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1"><strong>Fundpath</strong></small>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1 mb-1">GPT-4o / v1.2</small>
+                  </div>
                 </div>
-                <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                  <h6 class="chat-contact-name text-truncate m-0 ps-2 fw-normal"><strong>Data Analysis Assistant</strong></h6>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1"><strong>Fundpath</strong></small>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1 mb-1">GPT-4o / v1.2</small>
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://qph.cf2.poecdn.net/main-thumb-pb-1001649-200-ngjiofgphvrrncvfddprinlsnurnvbhv.jpeg"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ps-2 fw-normal"><strong>LinkedIn</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1"><strong>Fundpath</strong></small>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1 mb-1">GPT-4o / v1.0</small>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-              <div class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar">
-                  <img src="https://masterpiecer-images.s3.yandex.net/6ecea321703c11ee92f03a7ca4cc1bdc:upscaled" alt="Avatar" class="rounded">
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://imageio.forbes.com/specials-images/dam/imageserve/1129869424/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ps-2 fw-normal"><strong>Daily Tiles</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1"><strong>Fundpath</strong></small>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1">GPT-4o / v2.0</small>
+                  </div>
                 </div>
-                <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                  <h6 class="chat-contact-name text-truncate m-0 ps-2 fw-normal"><strong>LinkedIn Assistant</strong></h6>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1"><strong>Fundpath</strong></small>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1 mb-1">GPT-4o / v1.0</small>
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://www.limeleads.com/wp-content/uploads/2023/09/is-email-marketing-still-relevant-1.jpeg"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ps-2 fw-normal"><strong>Email Marketing</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1"><strong>Fundpath</strong></small>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1">GPT-4o</small>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1">v1.0</small>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-              <div class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar">
-                  <img src="https://image.api.playstation.com/cdn/UP2538/CUSA05620_00/JsTm2g15FqolfQ7SJILfMPi2UYn4lEYm.png?w=440&thumb=false" alt="Avatar" class="rounded">
-                </div>
-                <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                  <h6 class="chat-contact-name text-truncate m-0 ps-2 fw-normal"><strong>Sales &amp; Marketing Assistant</strong></h6>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1"><strong>Fundpath</strong></small>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1">GPT-4o / v2.0</small>
-                </div>
-              </div>
-            </li>
-            <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-              <div class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar">
-                  <img src="https://cdna.artstation.com/p/assets/images/images/054/399/702/large/anastasia-gilevich-staz-shift-addie-5-cyborg-face.jpg?1664449014" alt="Avatar" class="rounded">
-                </div>
-                <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                  <h6 class="chat-contact-name text-truncate m-0 ps-2 fw-normal"><strong>Insights Assistant</strong></h6>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1"><strong>Fundpath</strong></small>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1">GPT-4o</small>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 rounded mt-1">v1.0</small>
-                </div>
-              </div>
-            </li>
-            <!-- ######## -->
-          </ul>
+              </li>
+              <!-- ######## -->
+            </ul>
           </div>
         </div>
-        <div class="col app-chat-contacts app-sidebar border-end overflow-auto" style="max-height: 420px;" id="app-chat-contacts">
+        <div class="col app-chat-contacts app-sidebar border-end overflow-auto" style="max-height: 400px; min-width: 400px;"
+             id="app-chat-contacts">
           <div class="sidebar-body">
             <!-- Assistants -->
             <ul class="list-unstyled chat-contact-list mb-0 py-2" id="assistant-list">
-            <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
-              <h5 class="text-primary mb-0"><strong>Plugins</strong></h5>
-            </li>
+              <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
+                <h5 class="text-primary mb-0"><strong>Plugins</strong></h5>
+              </li>
 
-            <!-- ######## -->
-            <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-              <div class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar">
-                  <img src="https://10.apps.zdusercontent.com/10/assets/1721646571-19b7b11fb8bc53ccad3b057bfc8f3d85/logo.png" alt="Avatar" class="rounded">
+              <!-- ######## -->
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://10.apps.zdusercontent.com/10/assets/1721646571-19b7b11fb8bc53ccad3b057bfc8f3d85/logo.png"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 fw-normal"><strong>Salesforce</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mt-1 mb-3"><strong>Cloud CRM
+                      Service</strong></small>
+                    <button class="btn btn-success w-100" style="max-height: 30px;"><i
+                      class="fa fa-star me-3"></i><strong>Integrate</strong></button>
+                  </div>
                 </div>
-                <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                  <h6 class="chat-contact-name text-truncate m-0 ms-2 fw-normal"><strong>Salesforce</strong></h6>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mt-1 mb-3"><strong>Cloud CRM Service</strong></small>
-                  <button class="btn btn-success w-100" style="max-height: 30px;"><i class="fa fa-star me-3"></i><strong>Integrate</strong></button>
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://seeklogo.com/images/S/semrush-logo-8042E9DECE-seeklogo.com.png?v=638342827230000000"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 fw-normal"><strong>Semrush</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mt-1 mb-3"><strong>Digital Marketing
+                      Strategies</strong></small>
+                    <button class="btn btn-success w-100" style="max-height: 30px;"><i
+                      class="fa fa-star me-3"></i><strong>Integrate</strong></button>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-              <div class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar">
-                  <img src="https://seeklogo.com/images/S/semrush-logo-8042E9DECE-seeklogo.com.png?v=638342827230000000" alt="Avatar" class="rounded">
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img src="https://s3.amazonaws.com/www-inside-design/uploads/2018/10/mailchimp-sq-810x810.jpg"
+                         alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 fw-normal"><strong>Mailchimp</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mt-1 mb-3"><strong>Email SMTP
+                      Service</strong></small>
+                    <button class="btn btn-success w-100" style="max-height: 30px;"><i
+                      class="fa fa-star me-3"></i><strong>Integrate</strong></button>
+                  </div>
                 </div>
-                <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                  <h6 class="chat-contact-name text-truncate m-0 ms-2 fw-normal"><strong>Semrush</strong></h6>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mt-1 mb-3"><strong>Digital Marketing Strategies</strong></small>
-                  <button class="btn btn-success w-100" style="max-height: 30px;"><i class="fa fa-star me-3"></i><strong>Integrate</strong></button>
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDfbEE2hkbejshqVUzZrmrQva_tojucyrDA&s"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 fw-normal"><strong>Hubspot</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mt-1 mb-3"><strong>Cloud CRM
+                      Service</strong></small>
+                    <button class="btn btn-success w-100" style="max-height: 30px;"><i
+                      class="fa fa-star me-3"></i><strong>Integrate</strong></button>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-              <div class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar">
-                  <img src="https://s3.amazonaws.com/www-inside-design/uploads/2018/10/mailchimp-sq-810x810.jpg" alt="Avatar" class="rounded">
-                </div>
-                <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                  <h6 class="chat-contact-name text-truncate m-0 ms-2 fw-normal"><strong>Mailchimp</strong></h6>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mt-1 mb-3"><strong>Email SMTP Service</strong></small>
-                  <button class="btn btn-success w-100" style="max-height: 30px;"><i class="fa fa-star me-3"></i><strong>Integrate</strong></button>
-                </div>
-              </div>
-            </li>
-            <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-              <div class="d-flex align-items-center">
-                <div class="flex-shrink-0 avatar">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWDfbEE2hkbejshqVUzZrmrQva_tojucyrDA&s" alt="Avatar" class="rounded">
-                </div>
-                <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                  <h6 class="chat-contact-name text-truncate m-0 ms-2 fw-normal"><strong>Hubspot</strong></h6>
-                  <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mt-1 mb-3"><strong>Cloud CRM Service</strong></small>
-                  <button class="btn btn-success w-100" style="max-height: 30px;"><i class="fa fa-star me-3"></i><strong>Integrate</strong></button>
-                </div>
-              </div>
-            </li>
-            <!-- ######## -->
-          </ul>
+              </li>
+              <!-- ######## -->
+            </ul>
           </div>
         </div>
       </div>
-      <div class="col-6">
-        <div class="app-overlay"></div>
-        <div class="col app-chat-history">
-          <h5 class="text-primary mt-12"><strong></strong></h5>
-          {% if not active_chat %}
-            <!-- inform the user that no active chat is selected at the moment -->
-            <div class="chat-history-wrapper">
-              <div class="chat-history-header border-bottom">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="d-flex overflow-hidden align-items-center">
-                    <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar"
-                       data-overlay data-target="#app-chat-contacts"></i>
-                    <div class="chat-contact-info flex-grow-1 ms-4">
-                      <h6 class="m-0 fw-normal"><strong>No Chat Selected</strong></h6>
-                      <small class="user-status text-body">Select a chat to start chatting with assistants</small>
+      <div class="col-6 ms-0 me-0 ps-0 pe-0">
+        <div class="app-chat-history">
+          <div class="chat-history-wrapper">
+            <div class="chat-history-header border-bottom">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex overflow-hidden align-items-center">
+                  <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block" data-bs-toggle="sidebar"
+                     data-overlay="" data-target="#app-chat-contacts"></i>
+                  <div class="flex-shrink-0 avatar avatar-online">
+                    <img src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg" alt="Avatar"
+                         class="rounded-circle" data-bs-toggle="sidebar" data-overlay=""
+                         data-target="#app-chat-sidebar-right">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4">
+                    <h6 class="m-0 fw-normal">Data Analysis + Insights</h6>
+                    <small class="user-status text-body">GPT4-o</small>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="dropdown">
+                    <button
+                      class="btn  btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow waves-effect waves-light"
+                      data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions"><i
+                      class="ti ti-dots-vertical ti-md"></i></button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
+                      <a class="dropdown-item waves-effect" href="javascript:void(0);">View Contact</a>
+                      <a class="dropdown-item waves-effect" href="javascript:void(0);">Mute Notifications</a>
+                      <a class="dropdown-item waves-effect" href="javascript:void(0);">Block Contact</a>
+                      <a class="dropdown-item waves-effect" href="javascript:void(0);">Clear Chat</a>
+                      <a class="dropdown-item waves-effect" href="javascript:void(0);">Report</a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          {% else %}
-            <div class="chat-history-wrapper">
-              <div class="chat-history-header">
-                <small class="text-muted mt-2"><strong>Active Chat</strong></small>
-                <div class="d-flex justify-content-between align-items-center mt-4">
-                  <div class="d-flex overflow-hidden align-items-center">
-                    <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar"
-                       data-overlay data-target="#app-chat-chats"></i>
-                    <div class="flex-shrink-0 avatar avatar-online">
-                      <img src="
-                        {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                           class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
+            <div class="chat-history-body ps" style="min-height: 730px;">
+              <ul class="list-unstyled chat-history">
+                <li class="chat-message chat-message-right">
+                  <div class="d-flex overflow-hidden">
+                    <div class="chat-message-wrapper flex-grow-0">
+                      <div class="chat-message-text">
+                        <p class="mb-0">Can you find the patterns and notable insights in my dataset?</p>
+                      </div>
+                      <div class="text-end text-muted mt-1">
+                        <i class="ti ti-checks ti-16px text-success me-1"></i>
+                        <small>10:00 AM</small>
+                      </div>
                     </div>
-                    <div class="chat-contact-info flex-grow-1 ms-4">
-                      <form method="post" action=".">
-                        {% csrf_token %}
-                        <div class="d-flex justify-content-between align-items-center mt-1">
-                          <input type="text" class="form-control bg-lightest text-bg-light" name="new_chat_name"
-                                 value="{{ active_chat.chat_name }}" style="font-weight: bold;"/>
-                          <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
-                          <button type="submit" class="btn btn-link p-0 ms-2">
-                            <i class="fa fa-save text-bg-light"></i>
-                          </button>
-                        </div>
-                      </form>
-                      <h6 class="m-0 fw-normal mt-1 ms-1">
-                        <small class="text-muted">
-                          <strong>
-                            {{ active_chat.assistant.organization }} / {{ active_chat.assistant.name }}
-                            / {{ active_chat.assistant.llm_model.nickname }}
-                            / {{ active_chat.assistant.llm_model.model_name }}
-                          </strong>
-                        </small>
-                      </h6>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center">
-                    <div class="dropdown">
-                      <button
-                        class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow"
-                        data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions"><i
-                        class="ti ti-dots-vertical ti-md"></i>
-                      </button>
-                      <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
-                        <a class="dropdown-item bg-label-warning mb-2"
-                           href="{% url 'multimodal_chat:archive' active_chat.id %}">
-                          <strong>
-                            <i class="fa fa-archive me-2"></i>Archive
-                          </strong>
-                        </a>
-                        <a class="dropdown-item bg-label-danger" href="{% url 'multimodal_chat:delete' active_chat.id %}">
-                          <strong>
-                            <i class="fa fa-trash me-2"></i>Delete
-                          </strong></a>
+                    <div class="user-avatar flex-shrink-0 ms-4">
+                      <div class="avatar avatar-sm">
+                        <img src="{% static 'img/avatars/x.png' %}" alt="Avatar"
+                             class="rounded-circle">
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="chat-history-body" style="max-height: 100%;">
-                <ul class="list-unstyled chat-history" style="height: 95%">
-                  {% for message in chat_messages.all %}
-                    <li class="chat-message {% if message.sender_type == 'USER' %}chat-message-right{% endif %}">
-                      <div class="d-flex overflow-hidden">
-                        {% if message.sender_type == 'ASSISTANT' %}
-                          <div class="user-avatar flex-shrink-0 me-4">
-                            <div class="avatar avatar-xl">
-                              <img src="
-
-
-
-
-
-
-
-
-                                {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                                   alt="Avatar" class="rounded">
-                            </div>
-                          </div>
-                        {% elif message.sender_type == 'TOOL' %}
-                          <div class="user-avatar flex-shrink-0 me-4">
-                            <div class="avatar avatar-xl">
-                              <img src="{% static 'img/custom-illustrations/tool-executor.png' %}" alt="Avatar"
-                                   class="rounded">
-                            </div>
-                          </div>
-                        {% endif %}
-                        <div class="chat-message-wrapper flex-grow-1">
-                          <div id="copied-message-{{ message.id }}"
-                               class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-primary-subtle{% endif %} border-primary"
-                               style="{% if message.sender_type == 'TOOL' %}border: 2px solid{% endif %}; max-width:80%;">
-                            {% if message.sender_type != 'TOOL' %}
-                              <p class="mb-0 markdown-content">{{ message.message_text_content|safe }}</p>
-                              <hr>
-                              {% if message.message_image_contents %}
-                                <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image
-                                  Attachments</strong></p>
-                                {% for image in message.message_image_contents %}
-                                  <img src="{{ base_url }}/{{ image }}" class="img-fluid mt-2 rounded"
-                                       style="max-width:35%" alt="Image">
-                                {% endfor %}
-                              {% endif %}
-                              <hr>
-                              {% if message.message_file_contents %}
-                                <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4"><strong>File
-                                  Attachments</strong></p>
-                                {% for file in message.message_file_contents %}
-                                  <div class="label bg-label-secondary p-2 rounded mb-2">
-                                    <i class="fa fa-file me-4 bg-label-secondary p-2 rounded"></i>
-                                    <span class="text mb-2 bg-label-secondary rounded p-2">
-                                      <strong>
-                                        <a href="{{ base_url }}/{{ file|linebreaksbr }}"
-                                           target="_blank">{{ file|linebreaksbr|slice:":100" }}...</a>
-                                      </strong>
-                                    </span>
-                                  </div>
-                                {% endfor %}
-                              {% endif %}
-                            {% else %}
-                              <p class="text-bg-primary card rounded mt-4 ms-4 me-4 ps-4 pe-4 pt-4 pb-4">
-                                <strong>
-                                  <i class="fa fa-gears me-4"></i>
-                                  System Message
-                                </strong>
-                              </p>
-                              <div class="text fw-semibold text-black font-monospace" style="font-size:0.67rem;">
-                              <p
-                                class="mb-0 markdown-content">{{ message.message_text_content|safe|slice:":500"|linebreaks }}
-                                ... {{ message.message_text_content|safe|linebreaks|slice:"-500:"|linebreaks }}</p>
-                              <hr>
-                              {% if message.message_image_contents %}
-                                <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image
-                                  Attachments</strong></p>
-                                {% for image in message.message_image_contents %}
-                                  <img src="{{ base_url }}/{{ image }}" class="img-fluid mt-2 rounded"
-                                       style="max-width:35%" alt="Image">
-                                {% endfor %}
-                              {% endif %}
-                              <hr>
-                              {% if message.message_file_contents %}
-                                <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4"><strong>File
-                                  Attachments</strong></p>
-                                {% for file in message.message_file_contents %}
-                                  <div class="label bg-label-secondary p-2 rounded mb-2">
-                                    <i class="fa fa-file me-4 bg-label-secondary p-2 rounded"></i>
-                                    <span class="text mb-2 bg-label-secondary rounded p-2">
-                                      <strong>
-                                        <a href="{{ base_url }}/{{ file|linebreaksbr }}"
-                                           target="_blank">{{ file|linebreaksbr|slice:":100" }}...</a>
-                                      </strong>
-                                    </span>
-                                  </div>
-                                {% endfor %}
-                              {% endif %}
-                              <div class="bg-label-primary rounded p-2">
-                                <i class="fa fa-circle text-success me-2"></i><small class="fw-bold text-success">Tool
-                                Delivered</small>
-                              </div>
-                              <div class="bg-label-primary rounded p-2 mt-2 mb-4">
-                                <i class="fa fa-circle text-warning me-2"></i><small class="fw-bold text-warning">On
-                                Listening Mode</small>
-                              </div>
-                            {% endif %}
-                            </div>
-                            <div class="text-muted mt-2">
-                              <small>
-                                <form method="post" action=".">
-                                  {% csrf_token %}
-                                  <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
-                                  <input type="hidden" name="message_id" value="{{ message.id }}">
-                                  <input type="hidden" name="starred_message" value="{{ message.starred }}">
-                                  <button type="submit" class="btn btn-link p-0">
-                                    <strong class="text-primary me-2">{% if message.starred %}Starred{% endif %}</strong>
-                                    <i
-                                      class="{% if message.starred %}ti ti-star-filled text-primary {% else %} ti ti-star text-light {% endif %}"></i>
-                                    <strong
-                                      class="ps-2 {% if message.starred %}text-primary{% else %}text-light{% endif %}">{{ message.sent_at|date:"H:i A" }}</strong>
-                                  </button>
-                                  <a href="javascript:void(0);" class="copy-btn-plain ms-12 text-light"
-                                     data-message-id="{{ message.id }}">
-                                    <i class="fa fa-copy"></i><i class="fa fa-file-text ms-1"></i><span
-                                    class="ms-2"><strong>Plain</strong></span>
-                                  </a>
-                                  <a href="javascript:void(0);" class="copy-btn-html ms-12 text-light"
-                                     data-message-id="{{ message.id }}">
-                                    <i class="fa fa-copy"><i class="fa fa-code ms-1"></i></i><span
-                                    class="ms-2"><strong>HTML</strong></span>
-                                  </a>
-                                  <a href="javascript:void(0);" class="copy-btn-markdown ms-12 text-light"
-                                     data-message-id="{{ message.id }}">
-                                    <i class="fa fa-copy"><i class="fa fa-marker ms-1"></i></i><span class="ms-2"><strong>Markdown</strong></span>
-                                  </a>
-                                </form>
-                              </small>
-                            </div>
-                          </div>
-                          {% if message.sender_type == 'USER' %}
-                            <div class="user-avatar flex-shrink-0 ms-4">
-                              <div class="avatar avatar-xl">
-                                <img src="
-
-
-
-
-
-
-
-
-                                  {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
-                                     alt="Avatar" class="rounded">
-                              </div>
-                            </div>
-                          {% endif %}
-                        </div>
-                    </li>
-                  {% endfor %}
-                </ul>
-              </div>
-              <!-- Chat message form -->
-              <div class="chat-history-footer shadow-xs p-4">
-                <div class="row align-items-center justify-content-start mt-2 mb-4" id="image_display_area">
-                  <!-- Dynamic content will be inserted here
-                      ... ... ...
-                      ... ... ...
-                   -->
-                </div>
-                <div class="row align-items-center justify-content-start mt-2 mb-4" id="file_display_area">
-                  <!-- Dynamic content will be inserted here
-                      ... ... ...
-                      ... ... ...
-                   -->
-                </div>
-                <small class="text-muted m-6"><strong>Message Templates</strong></small>
-                <a class="btn btn-sm bg-label-hover-success me-4" style="float: right;"
-                   href="{% url 'message_templates:create' %}">
-                  <i class="fa fa-plus rounded"></i><small></small>
-                </a>
-                <a class="btn btn-sm bg-label-hover-secondary me-4 btn-collapse-templates" style="float: right;">
-                  <i class="fa fa-compress-arrows-alt rounded"></i><small></small>
-                </a>
-                <div class="card m-4 overflow-scroll" style="max-height: 250px; overflow-x: hidden;">
-                  <div class="row" id="message-templates-container">
-                    {% for message_template in message_templates %}
-                      <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
-                            data-full-text="{{ message_template.template_text }}">
-                    <span
-                      class="text-light"><strong>{{ message_template.template_text|truncatechars:50 }}..</strong></span>
-                  </span>
-                    {% empty %}
-                      <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
-                            data-full-text="What are your instructions?">
-                    <span class="text-light"><strong>What are your instructions?</strong></span>
-                  </span>
-                      <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
-                            data-full-text="What can you tell me about myself and my organization?">
-                    <span
-                      class="text-light"><strong>What can you tell me about myself and my organization?</strong></span>
-                  </span>
-                      <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
-                            data-full-text="What are the datasources you have access to?">
-                    <span class="text-light"><strong>What are the datasources you have access to?</strong></span>
-                  </span>
-                      <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
-                            data-full-text="What type of tools are you able to use?">
-                    <span class="text-light"><strong>What type of tools are you able to use?</strong></span>
-                  </span>
-                    {% endfor %}
+                </li>
+                <li class="chat-message">
+                  <div class="d-flex overflow-hidden">
+                    <div class="user-avatar flex-shrink-0 me-4">
+                      <div class="avatar avatar-sm">
+                        <img src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg" alt="Avatar"
+                             class="rounded-circle">
+                      </div>
+                    </div>
+                    <div class="chat-message-wrapper flex-grow-1">
+                      <div class="chat-message-text">
+                        <p class="mb-0">Hi Chris, sure, I can check for the patterns and insights by analyzing your dataset.</p>
+                      </div>
+                      <div class="chat-message-text mt-2">
+                        <p class="mb-0">Is there specific information or topics you would like me to focus on?</p>
+                      </div>
+                      <div class="text-muted mt-1">
+                        <small>10:02 AM</small>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <hr>
-                <!-- loading bar warning -->
-                <div class="alert-container"></div>
-                <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none"
-                     role="alert">
-                <span class="alert-icon rounded">
-                  <i class="ti ti-brain"></i>
-                </span>
-                  <div class="d-flex flex-column ps-1 pt-4">
-                    <p class="alert-heading"><strong>I am thinking to provide the best answer. This might take a while,
-                      please hold on...</strong></p>
+                </li>
+                <li class="chat-message chat-message-right">
+                  <div class="d-flex overflow-hidden">
+                    <div class="chat-message-wrapper flex-grow-1">
+                      <div class="chat-message-text">
+                        <p class="mb-0">We need to understand the statistical nature of the distribution of our customers and the most important products they are demanding.</p>
+                      </div>
+                      <div class="text-end text-muted mt-1">
+                        <i class="ti ti-checks ti-16px text-success me-1"></i>
+                        <small>10:03 AM</small>
+                      </div>
+                    </div>
+                    <div class="user-avatar flex-shrink-0 ms-4">
+                      <div class="avatar avatar-sm">
+                        <img src="{% static 'img/avatars/x.png' %}" alt="Avatar"
+                             class="rounded-circle">
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <!-- Loading bar -->
-                <div id="loadingBar" class="progress d-none mt-3 mb-1">
-                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                       style="width: 100%; height:10px;"></div>
-                </div>
-                <form class="form-send-message d-flex justify-content-between align-items-center mt-4" method="post"
-                      style="margin-bottom: 40px;"
-                      action="." enctype="multipart/form-data">
-                  {% csrf_token %}
-                  <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
-                  <textarea class="form-control message-input border-0 me-4 shadow-none" name="message_content"
-                            placeholder="Type your message here..." rows="1"></textarea>
-                  <div class="message-actions d-flex align-items-center">
-                    <i
-                      class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
-
-                    <label for="sketch-image-label" class="form-label mb-0">
-                      <i
-                        class="ti ti-brush ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"
-                        data-bs-toggle="modal" data-bs-target="#canvasEditModal"></i>
-                    </label>
-                    <input type="hidden" id="sketch-image" name="sketch_image" class="d-none" hidden
-                           accept=".jpeg,.png,.gif,.webp">
-                    <label for="edit-image" class="form-label mb-0">
-                      <i
-                        class="ti ti-photo-edit ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
-                      <input type="file" id="edit-image" name="edit_image" hidden accept=".jpeg,.png,.gif,.webp">
-                    </label>
-                    <input type="hidden" name="edit_image_mask" id="edit-image-mask" value="">
-                    <label for="attach-image" class="form-label mb-0">
-                      <i
-                        class="ti ti-photo ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
-                      <input type="file" id="attach-image" name="attached_images[]" multiple hidden
-                             accept=".jpeg,.png,.gif,.webp">
-                    </label>
-                    <label for="attach-doc" class="form-label mb-0 me-4">
-                      <i
-                        class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
-                      <input type="file" id="attach-doc" name="attached_files[]" multiple hidden>
-                    </label>
-
-                    <button id="send-chat-message-button" class="btn btn-primary d-flex send-msg-btn" type="submit">
-                      <span class="align-middle d-md-inline-block d-none">Send</span>
-                      <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
-                    </button>
-                    <button id="retry-response-button" class="btn btn-danger d-flex retry-msg-btn ms-4 me-4"
-                            style="min-height: 38px;">
-                      <i class="fa fa-redo-alt ti-16px"></i>
-                    </button>
+                </li>
+                <li class="chat-message">
+                  <div class="d-flex overflow-hidden">
+                    <div class="user-avatar flex-shrink-0 me-4">
+                      <div class="avatar avatar-sm">
+                        <img src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg" alt="Avatar"
+                             class="rounded-circle">
+                      </div>
+                    </div>
+                    <div class="chat-message-wrapper flex-grow-1">
+                      <div class="chat-message-text">
+                        <p class="mb-0">I understand, please give me a second to calculate.</p>
+                      </div>
+                      <div class="chat-message-text mt-2">
+                        <p class="mb-0">I'm currently checking your dataset...</p>
+                      </div>
+                      <div class="chat-message-text mt-2">
+                        <p class="mb-0">Analyzing your dataset...</p>
+                      </div>
+                      <div class="text-muted mt-1">
+                        <small>10:05 AM</small>
+                      </div>
+                    </div>
                   </div>
-                </form>
+                </li>
+                <li class="chat-message chat-message-right">
+                  <div class="d-flex overflow-hidden">
+                    <div class="chat-message-wrapper flex-grow-1">
+                      <div class="chat-message-text">
+                        <p class="mb-0">Thanks, I am waiting.</p>
+                      </div>
+                      <div class="text-end text-muted mt-1">
+                        <i class="ti ti-checks ti-16px text-success me-1"></i>
+                        <small>10:06 AM</small>
+                      </div>
+                    </div>
+                    <div class="user-avatar flex-shrink-0 ms-4">
+                      <div class="avatar avatar-sm">
+                        <img src="{% static 'img/avatars/x.png' %}" alt="Avatar"
+                             class="rounded-circle">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="chat-message">
+                  <div class="d-flex overflow-hidden">
+                    <div class="user-avatar flex-shrink-0 me-4">
+                      <div class="avatar avatar-sm">
+                        <img src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg" alt="Avatar"
+                             class="rounded-circle">
+                      </div>
+                    </div>
+                    <div class="chat-message-wrapper flex-grow-1">
+                      <div class="chat-message-text">
+                        <p class="mb-0">I will purchase it for sure. 👍</p>
+                      </div>
+                      <div class="chat-message-text mt-2">
+                        <p class="mb-0">Thanks.</p>
+                      </div>
+                      <div class="text-muted mt-1">
+                        <small>10:08 AM</small>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="chat-message chat-message-right">
+                  <div class="d-flex overflow-hidden">
+                    <div class="chat-message-wrapper flex-grow-1">
+                      <div class="chat-message-text">
+                        <p class="mb-0">Great, Feel free to get in touch.</p>
+                      </div>
+                      <div class="text-end text-muted mt-1">
+                        <i class="ti ti-checks ti-16px text-success me-1"></i>
+                        <small>10:10 AM</small>
+                      </div>
+                    </div>
+                    <div class="user-avatar flex-shrink-0 ms-4">
+                      <div class="avatar avatar-sm">
+                        <img src="{% static 'img/avatars/x.png' %}" alt="Avatar"
+                             class="rounded-circle">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="chat-message">
+                  <div class="d-flex overflow-hidden">
+                    <div class="user-avatar flex-shrink-0 me-4">
+                      <div class="avatar avatar-sm">
+                        <img src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg" alt="Avatar"
+                             class="rounded-circle">
+                      </div>
+                    </div>
+                    <div class="chat-message-wrapper flex-grow-1">
+                      <div class="chat-message-text">
+                        <p class="mb-0">Do you have design files for Vuexy?</p>
+                      </div>
+                      <div class="text-muted mt-1">
+                        <small>10:15 AM</small>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="chat-message chat-message-right">
+                  <div class="d-flex overflow-hidden">
+                    <div class="chat-message-wrapper flex-grow-1 w-50">
+                      <div class="chat-message-text">
+                        <p class="mb-0">Yes that's correct documentation file, Design files are included with the
+                          template.</p>
+                      </div>
+                      <div class="text-end text-muted mt-1">
+                        <i class="ti ti-checks ti-16px me-1"></i>
+                        <small>10:15 AM</small>
+                      </div>
+                    </div>
+                    <div class="user-avatar flex-shrink-0 ms-4">
+                      <div class="avatar avatar-sm">
+                        <img src="{% static 'img/avatars/x.png' %}" alt="Avatar"
+                             class="rounded-circle">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <div class="ps__rail-x" style="left: 0px; bottom: -669px;">
+                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
               </div>
-              <div class="">
-                <span>&nbsp;</span>
+              <div class="ps__rail-y" style="top: 669px; height: 547px; right: 0px;">
+                <div class="ps__thumb-y" tabindex="0" style="top: 301px; height: 246px;"></div>
               </div>
             </div>
-          {% endif %}
+            <!-- Chat message form -->
+            <div class="chat-history-footer shadow-xs">
+              <form class="form-send-message d-flex justify-content-between align-items-center ">
+                <input class="form-control message-input border-0 me-4 shadow-none"
+                       placeholder="Type your message here...">
+                <div class="message-actions d-flex align-items-center">
+                  <i
+                    class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading waves-effect waves-light"></i>
+                  <label for="attach-doc" class="form-label mb-0">
+                    <i
+                      class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading waves-effect waves-light"></i>
+                    <input type="file" id="attach-doc" hidden="">
+                  </label>
+                  <button class="btn btn-primary d-flex send-msg-btn waves-effect waves-light">
+                    <span class="align-middle d-md-inline-block d-none">Send</span>
+                    <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-3">
-        <div class="d-flex align-items-start pt-4 pb-1 ps-4 pe-4 card card-border-shadow-primary" style="min-height: 100px; max-width: 335px;">
+        <div class="d-flex align-items-start pt-4 pb-1 ps-4 pe-4 card card-border-shadow-primary"
+             style="min-height: 100px; max-width: 335px;">
           <div class="flex-shrink-0 avatar">
-            <img src="https://www.songhall.org/images/uploads/exhibits/John_Lennon.jpg" alt="Avatar" class="rounded ms-6">
+            <img src="{% static 'img/avatars/x.png' %}" alt="Avatar" class="rounded ms-6">
           </div>
           <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-            <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>John Lennon</strong></h6>
+            <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>Chris Seymour</strong></h6>
             <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Administrator</strong></small>
           </div>
         </div>
-        <div class="col app-chat-contacts app-sidebar border-end overflow-auto" style="max-height: 420px;" id="app-chat-chats">
+        <div class="col app-chat-contacts app-sidebar border-end overflow-auto" style="max-height: 420px;"
+             id="app-chat-chats">
           <div class="sidebar-body">
             <!-- Chats -->
             <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
@@ -608,55 +524,68 @@
               <li class="chat-contact-list-item chat-list-item-0 d-none">
                 <h6 class="text-muted mb-0"><strong>No Chats Found</strong></h6>
               </li>
-                <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                  <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 avatar">
-                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLW835k3doY9ivP8QaOoKGc3Wur-oAw_3gcQ&s" alt="Avatar" class="rounded">
-                    </div>
-                    <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                      <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>Chat 1</strong></h6>
-                      <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Data Analysis Assistant</strong></small>
-                    </div>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg"
+                      alt="Avatar" class="rounded">
                   </div>
-                </li>
-                <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                  <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 avatar">
-                      <img src="https://as1.ftcdn.net/v2/jpg/05/45/78/68/1000_F_545786842_x96LI20wA4WYN3i4HBco2ABnzalj4reK.jpg" alt="Avatar" class="rounded">
-                    </div>
-                    <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                      <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>Chat 2</strong></h6>
-                      <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Data Analysis Assistant</strong></small>
-                    </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>Chat 1</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Data Analysis +
+                      Insights</strong></small>
                   </div>
-                </li>
-                <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                  <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 avatar">
-                      <img src="https://image.api.playstation.com/cdn/UP2538/CUSA05620_00/cKQCz5nP7YeQo5Wpot7DlvZptrxrhBSe.png?w=440&thumb=false" alt="Avatar" class="rounded">
-                    </div>
-                    <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                      <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>Chat 3</strong></h6>
-                      <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Data Analysis Assistant</strong></small>
-                    </div>
+                </div>
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg"
+                      alt="Avatar" class="rounded">
                   </div>
-                </li>
-                <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                  <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 avatar">
-                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkbZQIeRTxejvaQDKN98xwR8B_UWPk4DOV1A&s" alt="Avatar" class="rounded">
-                    </div>
-                    <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                      <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>Chat 4</strong></h6>
-                      <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Data Analysis Assistant</strong></small>
-                    </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>Chat 2</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Data Analysis +
+                      Insights</strong></small>
                   </div>
-                </li>
+                </div>
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://www.limeleads.com/wp-content/uploads/2023/09/is-email-marketing-still-relevant-1.jpeg"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>Chat 3</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Email
+                      Marketing</strong></small>
+                  </div>
+                </div>
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://imageio.forbes.com/specials-images/dam/imageserve/1129869424/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>Chat 4</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Daily
+                      Tiles</strong></small>
+                  </div>
+                </div>
+              </li>
             </ul>
           </div>
           <hr>
         </div>
-        <div class="col app-chat-contacts app-sidebar border-end overflow-auto" style="max-height: 420px;" id="app-chat-chats">
+        <div class="col app-chat-contacts app-sidebar border-end overflow-auto" style="max-height: 420px;"
+             id="app-chat-chats">
           <div class="sidebar-body">
             <!-- Chats -->
             <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
@@ -666,50 +595,64 @@
               <li class="chat-contact-list-item chat-list-item-0 d-none">
                 <h6 class="text-muted mb-0"><strong>No Chats Found</strong></h6>
               </li>
-                <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                  <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 avatar">
-                      <img src="https://cdn-icons-png.flaticon.com/512/9496/9496460.png" alt="Avatar" class="rounded">
-                    </div>
-                    <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                      <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>sample-data.csv</strong></h6>
-                      <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Sample Dataset Name</strong></small>
-                    </div>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img src="https://cdn-icons-png.flaticon.com/512/9496/9496460.png" alt="Avatar" class="rounded">
                   </div>
-                </li>
-                <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                  <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 avatar">
-                      <img src="https://assets-global.website-files.com/5d0a61f2903f45be8e0ba3b7/64e87576e8cf2659049823e6_png.png" alt="Avatar" class="rounded">
-                    </div>
-                    <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                      <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>sample-image.png</strong></h6>
-                      <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Sample Image Name</strong></small>
-                    </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>sample-data.csv</strong>
+                    </h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Sample Dataset
+                      Name</strong></small>
                   </div>
-                </li>
-                <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                  <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 avatar">
-                      <img src="https://uxwing.com/wp-content/themes/uxwing/download/file-and-folder-type/file-pdf-color-red-icon.png" alt="Avatar" class="rounded">
-                    </div>
-                    <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                      <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>sample-document.pdf</strong></h6>
-                      <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Sample Document Name</strong></small>
-                    </div>
+                </div>
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://assets-global.website-files.com/5d0a61f2903f45be8e0ba3b7/64e87576e8cf2659049823e6_png.png"
+                      alt="Avatar" class="rounded">
                   </div>
-                </li>
-                <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                  <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 avatar">
-                      <img src="https://uxwing.com/wp-content/themes/uxwing/download/file-and-folder-type/file-py-color-green-icon.png" alt="Avatar" class="rounded">
-                    </div>
-                    <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                      <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>sample-code.py</strong></h6>
-                      <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Sample Code File Name</strong></small>
-                    </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal">
+                      <strong>sample-image.png</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Sample Image
+                      Name</strong></small>
                   </div>
-                </li>
+                </div>
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://uxwing.com/wp-content/themes/uxwing/download/file-and-folder-type/file-pdf-color-red-icon.png"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal">
+                      <strong>sample-document.pdf</strong></h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Sample Document
+                      Name</strong></small>
+                  </div>
+                </div>
+              </li>
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar">
+                    <img
+                      src="https://uxwing.com/wp-content/themes/uxwing/download/file-and-folder-type/file-py-color-green-icon.png"
+                      alt="Avatar" class="rounded">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                    <h6 class="chat-contact-name text-truncate m-0 ms-2 mt-2 fw-normal"><strong>sample-code.py</strong>
+                    </h6>
+                    <small class="d-block text-truncate ps-2 pt-1 pe-2 pb-1 rounded mb-3"><strong>Sample Code File
+                      Name</strong></small>
+                  </div>
+                </div>
+              </li>
             </ul>
           </div>
           <hr>
@@ -878,10 +821,6 @@
       </div>
     </div>
   </div>
-
-  <a class="floating-button label bg-label-hover-primary border border-1 border-primary rounded">
-    <i class="fa fa-message me-2 text-dark"></i><span class="text text-dark"><strong>Chat</strong></span>
-  </a>
 
   <style>
     @keyframes border-color-change {

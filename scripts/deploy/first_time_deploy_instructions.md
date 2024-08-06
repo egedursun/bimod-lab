@@ -9,7 +9,7 @@
 2. Update the package list and upgrade the packages.
 
     ```bash
-    cd /root/var/www
+    cd /var/www
     sudo apt update
     sudo apt upgrade
     ```
@@ -64,21 +64,21 @@
 
     ```bash
     cd bimod_dev
-    git clone -b dev https://egedursun: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@github.com/Bimod-HQ/bimod-app.git
+    git clone -b dev https://egedursun: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@github.com/Bimod-HQ/bimod-app.git .
     cd ..
     
     cd bimod_prod
-    git clone -b main https://egedursun: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@github.com/Bimod-HQ/bimod-app.git
+    git clone -b main https://egedursun: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@github.com/Bimod-HQ/bimod-app.git .
     cd ..
     ```
 10. Setting up the virtual environment.
 
     ```bash
-    cd /root/var/www/bimod_dev/bimod-app
+    cd /var/www/bimod_dev
     sudo apt install python3-venv
     python3 -m venv venv
     source venv/bin/activate
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
     deactivate
     
     cd /root/var/www/bimod_prod/bimod-app
@@ -173,7 +173,7 @@
 
     ```text
 [Unit]
-Description=gunicorn daemon
+Description=gunicorn daemon (development)
 After=network.target
 
 [Service]
@@ -181,13 +181,12 @@ User=www-data
 Group=www-data
 WorkingDirectory=/root/var/www/bimod_dev/bimod-app
 Environment="PATH=/root/var/www/bimod_dev/bimod-app/venv/bin"
-ExecStart=/root/var/www/bimod_dev/bimod-app/venv/bin/gunicorn --access-logfile - --error-logfile - --log-level debug --workers 3 --bind unix:/root/var/www/bimod_dev/bimod-app/gunicorn.sock config.wsgi:application
+ExecStart=/root/var/www/bimod_dev/bimod-app/venv/bin/gunicorn --access-logfile /root/var/www/bimod_dev/bimod-app/gunicorn-access.log --error-logfile /root/var/www/bimod_dev/bimod-app/gunicorn-error.log --log-level debug --workers 3 --bind unix:/run/gunicorn/gunicorn_dev.sock config.wsgi:application
 Restart=always
 RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
-
     ```
 
     For production server:
