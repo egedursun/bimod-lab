@@ -106,10 +106,12 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             image_generation_capability=image_generation_capability,
             glossary=glossary
         )
+        print("[CreateAssistantView.post] Assistant created successfully!")
 
         # retrieve the assistants of the organization and add the new assistant
         organization.organization_assistants.add(assistant)
         organization.save()
+        print("[CreateAssistantView.post] Assistant added to the organization successfully!")
 
         messages.success(request, "Assistant created successfully!")
         return redirect('assistants:list')

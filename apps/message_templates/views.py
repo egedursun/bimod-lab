@@ -31,6 +31,7 @@ class CreateMessageTemplateView(TemplateView, LoginRequiredMixin):
             message_template.user = request.user
             message_template.save()
             messages.success(request, "Message Template created successfully!")
+            print('[CreateMessageTemplateView.post] Message Template created successfully.')
             return redirect("message_templates:list")
         else:
             messages.error(request, "Please correct the errors below.")
@@ -89,5 +90,6 @@ class DeleteMessageTemplateView(DeleteView, LoginRequiredMixin):
 
         starred_message.delete()
         success_message = "Message template deleted successfully."
+        print('[DeleteMessageTemplateView.post] Message template deleted successfully.')
         messages.success(request, success_message)
         return redirect(self.success_url)

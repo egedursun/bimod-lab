@@ -9,9 +9,9 @@ def execute_storage_query(connection_id, chat_id, execution_type, file_paths, qu
     chat = None
     if without_chat is False:
         chat = MultimodalChat.objects.get(id=chat_id)
-
     try:
         executor = StorageExecutor(connection=connection, chat=chat)
+        print(f"[storage_query_execution_handler.execute_storage_query] Executing the storage query with the execution type: {execution_type}.")
         response, file_uris, image_uris = "", [], []
         if execution_type == ExecutionTypesNames.FILE_INTERPRETATION:
             response = executor.interpret_file(full_file_paths=file_paths, query_string=query)
@@ -22,4 +22,5 @@ def execute_storage_query(connection_id, chat_id, execution_type, file_paths, qu
     except Exception as e:
         error = f"[storage_query_execution_handler.execute_storage_query] Error occurred while executing the storage query: {str(e)}"
         return error, [], []
+    print(f"[storage_query_execution_handler.execute_storage_query] Storage query executed successfully.")
     return response, file_uris, image_uris

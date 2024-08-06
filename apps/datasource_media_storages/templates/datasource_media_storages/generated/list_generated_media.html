@@ -191,7 +191,7 @@
                         {% for item in assistant_data.messages_with_images %}
                           <tr>
                             <td>
-                              <img src="{{ base_url }}/{{ item.image }}" width="50" height="50" class="rounded">
+                              <img src="{{ item.image }}" width="50" height="50" class="rounded">
                             </td>
                             <td>{{ item.message.multimodal_chat.chat_name }}</td>
                             <td>{{ item.message.multimodal_chat.user }}</td>
@@ -201,7 +201,7 @@
                             </strong></td>
                             <td>{{ item.message.sent_at }}</td>
                             <td>
-                              <a href="{{ base_url }}/{{ item.image }}" target="_blank" class="text-dark">
+                              <a href="{{ item.image }}" target="_blank" class="text-dark">
                                 <i class="fa fa-download"></i>
                               </a>
                             </td>
@@ -249,6 +249,7 @@
                         <tr>
                           <th>Chat Name</th>
                           <th>User</th>
+                          <th>URL</th>
                           <th>Output Prompt</th>
                           <th>Generated At</th>
                           <th>Download</th>
@@ -259,13 +260,19 @@
                           <tr>
                             <td>{{ item.message.multimodal_chat.chat_name }}</td>
                             <td>{{ item.message.multimodal_chat.user }}</td>
+                            <td>
+                              <a href="{{ item.file }}" target="_blank" class="text-dark">
+                                <i class="fa fa-link me-2"></i>
+                                <span>{{ item.file }}</span>
+                              </a>
+                            </td>
                             <td><strong>
                               <pre><code class="json"
                                          style="max-width: 600px;">{{ item.message.message_text_content|safe|linebreaks }}</code></pre>
                             </strong></td>
                             <td>{{ item.message.sent_at }}</td>
                             <td>
-                              <a href="{{ base_url }}/{{ item.file }}" target="_blank" class="text-dark">
+                              <a href="{{ item.file }}" target="_blank" class="text-dark">
                                 <i class="fa fa-download"></i>
                               </a>
                             </td>

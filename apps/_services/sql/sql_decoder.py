@@ -12,6 +12,8 @@ class InternalSQLClient:
     @staticmethod
     def get(connection: SQLDatabaseConnection):
         if connection.dbms_type == InternalSQLClient.SQL_DBMS_PROVIDERS["POSTGRESQL"]["code"]:
+            print(f"[InternalSQLClient.get] PostgreSQL connection detected.")
             return PostgresSQLExecutor(connection)
         elif connection.dbms_type == InternalSQLClient.SQL_DBMS_PROVIDERS["MYSQL"]["code"]:
+            print(f"[InternalSQLClient.get] MySQL connection detected.")
             return MySQLExecutor(connection)

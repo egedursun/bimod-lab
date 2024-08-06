@@ -1,10 +1,17 @@
 import time
 
+import boto3
 from openai import OpenAI
-from openai._legacy_response import HttpxBinaryResponseContent
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
 from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, ONE_SHOT_AFFIRMATION_PROMPT
+from config import settings
+
+"""
+    #################################################################################################################
+    THIS TEST IS OUTDATED AND SHOULD BE UPDATED TO REFLECT THE CURRENT IMPLEMENTATION OF THE FILE INTERPRETATION TOOL.
+    #################################################################################################################
+"""
 
 
 #######################################################################################################################
@@ -50,9 +57,11 @@ def ask_about_file(client, full_file_paths: list, query_string: str):
             return "System Message: The file path is empty."
 
         try:
-            # Read binary file contents
-            with open(path, "rb") as file:
-                file_contents.append(file.read())
+            # read content from s3
+            boto3_client = boto3.client("s3")
+            bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+            file_content = boto3_client.get_object(Bucket=bucket_name, Key=path)["Body"].read()
+            file_contents.append(file_content)
         except FileNotFoundError:
             print(f"System Message: The file at the path '{path}' could not be found, skipping file...")
             continue

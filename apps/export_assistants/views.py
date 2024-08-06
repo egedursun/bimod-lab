@@ -215,6 +215,7 @@ class CreateExportAssistantsView(TemplateView, LoginRequiredMixin):
             # Start the endpoint immediately
             start_endpoint_for_assistant(assistant=new_export_assistant)
             messages.success(request, "Export Assistant API created successfully!")
+            print("[CreateExportAssistantsView.post] Export Assistant API created successfully!")
             return redirect("export_assistants:list")
         except Exception as e:
             messages.error(request, f"Error creating Export Assistant API: {str(e)}")
@@ -246,6 +247,7 @@ class UpdateExportAssistantsView(TemplateView, LoginRequiredMixin):
         if export_assistant.assistant_id and export_assistant.request_limit_per_hour:
             export_assistant.save()
             messages.success(request, "Export Assistant updated successfully.")
+            print("[UpdateExportAssistantsView.post] Export Assistant updated successfully!")
             return redirect('export_assistants:list')
         else:
             messages.error(request, "There was an error updating the Export Assistant.")
@@ -284,6 +286,7 @@ class DeleteExportAssistantsView(LoginRequiredMixin, DeleteView):
         organization = export_assistant.assistant.organization
         organization.exported_assistants.remove(export_assistant)
         organization.save()
+        print("[DeleteExportAssistantsView.post] Export Assistant deleted successfully.")
         messages.success(request, success_message)
         return redirect(self.success_url)
 

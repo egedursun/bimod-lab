@@ -1,8 +1,12 @@
 import os
 import random
 
+import boto3
+import paramiko
 from django.db import models
 from slugify import slugify
+
+from config import settings
 from .tasks import upload_model_to_ml_model_base
 
 
@@ -46,14 +50,17 @@ class DataSourceMLModelConnection(models.Model):
             dir_suffix = self.model_object_category
             full_path = f"{base_dir}{dir_suffix}/"
             self.directory_full_path = full_path
-            os.system(f"mkdir -p {full_path}")
-            os.system(f"touch {full_path}/__init__.py")
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
-        # Remove the directory
         if self.directory_full_path is not None:
-            os.system(f"rm -rf {self.directory_full_path}")
+            try:
+                # remove from s3 storage
+                boto3_client = boto3.client('s3')
+                bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+                boto3_client.delete_object(Bucket=bucket_name, Key=self.directory_full_path)
+            except IOError:
+                pass  # Directory might not exist or might not be empty
         super().delete(using, keep_parents)
 
 

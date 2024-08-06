@@ -52,6 +52,7 @@ class DataSourceFileSystemListCreateView(LoginRequiredMixin, TemplateView):
             )
             data_source.save()
             messages.success(request, 'Data Source File System created successfully.')
+            print('[DataSourceFileSystemListCreateView.post] Data Source File System created successfully.')
             return redirect('datasource_file_systems:list')
         except Assistant.DoesNotExist:
             messages.error(request, 'Invalid assistant selected.')
@@ -115,6 +116,7 @@ class DataSourceFileSystemUpdateView(LoginRequiredMixin, TemplateView):
         try:
             connection.save()
             messages.success(request, 'Data Source File System updated successfully.')
+            print('[DataSourceFileSystemUpdateView.post] Data Source File System updated successfully.')
             return redirect('datasource_file_systems:list')
         except Exception as e:
             messages.error(request, f'Error updating Data Source File System: {e}')
@@ -164,4 +166,5 @@ class DataSourceFileSystemDeleteView(LoginRequiredMixin, TemplateView):
 
         data_source = get_object_or_404(DataSourceFileSystem, pk=kwargs['pk'])
         data_source.delete()
+        print('[DataSourceFileSystemDeleteView.post] Data Source File System deleted successfully.')
         return redirect('datasource_file_systems:list')

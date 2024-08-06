@@ -50,7 +50,7 @@ class TriggeredJobWebhookListenerView(View):
             # the TriggeredJob, and return
             if job.current_run_count > job.maximum_runs:
                 job.delete()
-                print(f"[Triggered Job Executor]: Deleted the Triggered Job {job.name} as it has reached the maximum "
+                print(f"[Triggered Job Executor.delete]: Deleted the Triggered Job {job.name} as it has reached the maximum "
                       f"runs.")
                 return JsonResponse({'status': 'error', 'message': 'Maximum runs reached for the triggered job'}, status=400)
 
@@ -66,6 +66,7 @@ class TriggeredJobWebhookListenerView(View):
             job.save()
             new_instance.execution_index = job.current_run_count
             new_instance.save()
+            print(f"[Triggered Job Executor]: Received a new webhook payload for the Triggered Job {job.name} ")
             # Process the event
             self.handle_triggered_job(job=job, instance=new_instance)
             return JsonResponse({
@@ -213,6 +214,7 @@ class CreateTriggeredJobView(LoginRequiredMixin, TemplateView):
             triggered_job.step_guide = step_guide
             triggered_job.save()
             messages.success(request, "Triggered Job created successfully!")
+            print('[CreateTriggeredJobView.post] Triggered Job created successfully.')
             return redirect('mm_triggered_jobs:list')
         else:
             messages.error(request, "There was an error creating the triggered job.")
@@ -288,5 +290,6 @@ class ConfirmDeleteTriggeredJobView(LoginRequiredMixin, TemplateView):
         triggered_job_id = self.kwargs.get('pk')
         triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)
         triggered_job.delete()
+        print('[ConfirmDeleteTriggeredJobView.post] Triggered Job deleted successfully.')
         messages.success(request, "Triggered Job deleted successfully.")
         return redirect('mm_triggered_jobs:list')

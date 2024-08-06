@@ -12,4 +12,5 @@ class KnowledgeBaseSystemDecoder:
     @staticmethod
     def get(connection):
         if connection.provider == KnowledgeBaseSystemDecoder.KNOWLEDGE_BASE_PROVIDERS["WEAVIATE"]["code"]:
+            print(f"[KnowledgeBaseSystemDecoder.get] Weaviate provider selected.")
             return WeaviateExecutor(connection)

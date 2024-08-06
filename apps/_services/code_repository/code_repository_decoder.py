@@ -12,4 +12,5 @@ class CodeRepositorySystemDecoder:
     @staticmethod
     def get(connection):
         if connection.provider == CodeRepositorySystemDecoder.CODE_REPOSITORY_PROVIDERS["WEAVIATE"]["code"]:
+            print("[CodeRepositorySystemDecoder.get] Weaviate code repository provider selected.")
             return WeaviateExecutor(connection)

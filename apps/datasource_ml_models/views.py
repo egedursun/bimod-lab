@@ -34,6 +34,7 @@ class DataSourceMLModelConnectionCreateView(LoginRequiredMixin, TemplateView):
             ml_model_connection.created_by_user = request.user
             ml_model_connection.save()
             messages.success(request, 'ML Model Connection created successfully.')
+            print('[DataSourceMLModelConnectionCreateView.post] ML Model Connection created successfully.')
             return redirect('datasource_ml_models:list')
         else:
             messages.error(request, 'There was an error creating the ML Model Connection.')
@@ -70,6 +71,7 @@ class DataSourceMLModelConnectionUpdateView(LoginRequiredMixin, TemplateView):
         if form.is_valid():
             form.save()
             messages.success(request, "ML Model Connection updated successfully.")
+            print('[DataSourceMLModelConnectionUpdateView.post] ML Model Connection updated successfully.')
             return redirect('datasource_ml_models:list')
         else:
             messages.error(request, "Error updating ML Model Connection: " + str(form.errors))
@@ -123,6 +125,7 @@ class DataSourceMLModelConnectionDeleteView(LoginRequiredMixin, DeleteView):
 
         ml_model_connection = get_object_or_404(DataSourceMLModelConnection, id=kwargs['pk'])
         ml_model_connection.delete()
+        print('[DataSourceMLModelConnectionDeleteView.post] ML Model Connection deleted successfully.')
         return redirect(self.success_url)
 
     def get_queryset(self):
@@ -164,6 +167,7 @@ class DataSourceMLModelItemCreateView(LoginRequiredMixin, TemplateView):
             ml_model_item.ml_model_size = uploaded_file.size
             ml_model_item.created_by_user = request.user
             ml_model_item.save()
+            print('[DataSourceMLModelItemCreateView.post] ML Model Item uploaded successfully.')
             messages.success(request, 'ML Model Item uploaded successfully.')
             return redirect('datasource_ml_models:item_list')
         else:
@@ -223,6 +227,7 @@ class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
         if 'delete_all' in request.POST:
             DataSourceMLModelItem.objects.filter(ml_model_base__id=storage_id).delete()
             messages.success(request, 'All ML models in the selected connection have been deleted.')
+            print('[DataSourceMLModelItemListView.post] All ML models in the selected connection have been deleted.')
         elif selected_items:
             DataSourceMLModelItem.objects.filter(id__in=selected_items).delete()
             messages.success(request, 'Selected ML models have been deleted.')
@@ -235,4 +240,5 @@ class DataSourceMLModelItemDeleteView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        print('[DataSourceMLModelItemDeleteView.post] Deleting ML Model Item')
         return self.render_to_response(self.get_context_data(**kwargs))

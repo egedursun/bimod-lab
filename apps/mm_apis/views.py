@@ -60,6 +60,7 @@ class CreateCustomAPIView(LoginRequiredMixin, TemplateView):
                 custom_api.api_picture = request.FILES.get('api_picture')
             custom_api.categories = request.POST.getlist('categories')
             custom_api.save()
+            print('[CreateCustomAPIView.post] Custom API created successfully.')
             return redirect('mm_apis:list')
         return render(request, self.template_name, {'form': form, 'assistants': Assistant.objects.filter(
             organization__users__in=[request.user]
@@ -160,6 +161,7 @@ class ManageCustomAPIAssistantConnectionsView(LoginRequiredMixin, TemplateView):
                     reference = CustomAPIReference.objects.get(id=reference_id)
                     reference.delete()
                     messages.success(request, f"API reference removed from assistant '{assistant.name}'.")
+                    print(f"[ManageCustomAPIAssistantConnectionsView.post] API reference removed from assistant '{assistant.name}'.")
         except Assistant.DoesNotExist:
             messages.error(request, "Assistant not found.")
         except CustomAPI.DoesNotExist:
@@ -251,6 +253,7 @@ class APIStoreView(LoginRequiredMixin, TemplateView):
                 CustomAPIReference.objects.create(
                     assistant=assistant, custom_api=custom_api, created_by_user=request.user
                 )
+                print(f"[APIStoreView.post] API '{custom_api.name}' assigned to assistant '{assistant.name}'.")
                 messages.success(request, f"API '{custom_api.name}' assigned to assistant '{assistant.name}'.")
         else:
             messages.error(request, "Invalid input. Please try again.")

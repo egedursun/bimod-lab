@@ -8,6 +8,7 @@ def create_classes_helper(executor):
     output = {"status": True, "error": ""}
     conn = executor.connection_object
     c = executor.connect_c()
+    print(f"[class_creator.create_classes_helper] Creating Weaviate classes...")
 
     try:
         new_document_class = c.collections.create(
@@ -59,6 +60,7 @@ def create_classes_helper(executor):
                 ),
             ]
         )
+        print(f"[class_creator.create_classes_helper] Created Weaviate class: {conn.class_name}")
     except Exception as e:
         print(f"[class_creator.create_classes_helper] Error creating Weaviate class: {e}")
         output["status"] = False
@@ -114,11 +116,13 @@ def create_classes_helper(executor):
                 ),
             ]
         )
+        print(f"[class_creator.create_classes_helper] Created Weaviate class: {conn.class_name}Chunks")
     except Exception as e:
         print(f"Error creating Weaviate class: {e}")
         output["status"] = False
         output["error"] = str(e)
         return output
+    print(f"[class_creator.create_classes_helper] Created Weaviate classes successfully.")
     return output
 
 
@@ -126,6 +130,7 @@ def create_chat_history_classes_helper(executor):
     output = {"status": True, "error": ""}
     conn = executor.connection_object
     c = executor.connect_c()
+    print(f"[class_creator.create_chat_history_classes_helper] Creating Chat History Weaviate classes...")
 
     try:
         new_chat_history_class = c.collections.create(
@@ -157,6 +162,7 @@ def create_chat_history_classes_helper(executor):
                 ),
             ]
         )
+        print(f"[class_creator.create_chat_history_classes_helper] Created Chat History class: {conn.class_name}")
     except Exception as e:
         print(f"Error creating Chat History class: {e}")
         output["status"] = False
@@ -198,9 +204,11 @@ def create_chat_history_classes_helper(executor):
                     tokenization=wvc.config.Tokenization.LOWERCASE
                 ),
         ])
+        print(f"[class_creator.create_chat_history_classes_helper] Created Chat History Chunks class: {conn.class_name}Chunks")
     except Exception as e:
         print(f"[class_creator.create_chat_history_classes_helper] Error creating Chat History Chunks class: {e}")
         output["status"] = False
         output["error"] = str(e)
         return output
+    print(f"[class_creator.create_chat_history_classes_helper] Created Chat History Weaviate classes successfully.")
     return output

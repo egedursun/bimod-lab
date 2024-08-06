@@ -3,15 +3,10 @@
 
 ---
 
-- [ ] Real media management with AWS S3 Storages (e.g. profile pictures, organization images, etc.)
-- [X] Partial page refresh for permission additions, since it is tiring. If it does not work, instead use forms to save and update
+- [ ] Active Success logging for tracking the success of the application.
 - [ ] Integrating the Payment Gateway to get the payment done (for balance) + credit card safety / storage and usage
-- [ ] Real E-mail SMTP integration.
 - [ ] Privacy Policy and Terms of Service development & integration for the application.
 - [ ] Proper Documentation & tutorial, instructions (FAQ and Support) for the application.
-- [ ] Exclude the media from Git versioning (IMPORTANT!!)
-- [ ] Fix the main search bar for having correct redirection links.
-- [ ] Integrate paginations and global searches for the relevant pages.
 - [ ] Development of the unit and integration tests for the application.
 
 
@@ -54,7 +49,7 @@
       - **E-mail:** edogandursun@gmail.com
       - **PW:** ***
   - SSH Connection for VPS Server:
-      - **IP:** 185.170.198.44
+      - **Connection:** ssh root@185.170.198.44
       - **Username:** root
       - **PW:** 7#Ao141j3$sI?k5#aDrR
   - Email Accounts:
@@ -63,13 +58,31 @@
       - **PW:** FXYP9tU5o^
 
 - PostgreSQL DB:
-  - Login Credentials:
-    - bimod_dev
-      - **Username:** admin_dev
-      - **PW:** rOrHWB6VuWODW9O
-    - bimod_prod
-      - **Username:** admin_prod
-      - **PW:** XRUs1Cz3Dxiwb6e
+  - **Host:** Aiven Cloud
+  - **Username:** admin@bimod.io
+  - **Password:** N!67za!evDxAbzJ
+  - User Login Credentials:
+    - bimod-dev
+      - **Username:** admin
+      - **PW:** AVNS_3Ahz2MyWPkiAEdiSV53
+    - bimod-prod
+      - **Username:** admin
+      - **PW:** AVNS_-pRb8XSnQqRJOyyHxKM
+
+- Weaviate Server:
+- **Host:** Weaviate Cloud
+  - **Username:** edogandursun@gmail.com
+  - **PW:** ***
+
+- Storage Buckets
+  - **Host:** AWS S3
+  - **Username:**: admin@bimod.io
+  - **PW:** ,vVzEkn/PVn+8Gc
+
+- Sentry Logging
+  - **Host:** Sentry Cloud
+  - **Username:** admin@bimod.io
+  - **PW:** ***
 
 - GitHub Account:
 - **Username:** egedursun
@@ -79,6 +92,9 @@
 - **Username:** admin@bimod.io
 - **PW:** %)#.b0tgLoTt1xra
 - **Recovery Code:** LN9LY19L5W525XB5JSB69XCM
+
+- Bitvault for Password Protection:
+... todo ...
 
 
 ---
@@ -124,13 +140,12 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 **THINGS TO REMEMBER:**
 
-
 *Important:*
-1. [ ] Split the dev and prod server as different processes and workflows.
-2. [ ] Develop more serious illustrations for the application.
-3. [ ] Implement [SMTP] configuration.
-4. [ ] Migrate to [MEDIA STORAGE] for the media files, update all the required places in the code.
-5. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+1. [ ] Disable DEBUG mode for the application, for increased safety. [VERY IMPORTANT ISSUE / SECURITY]
+2. [ ] Switch to a reliable [SMTP] provider.
+3. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
+4. [ ] Develop more serious [ILLUSTRATION] for the application.
+5. [ ] Translation of the website [VERY IMPORTANT ISSUE / LOCALIZATION]
 6. [ ] Implement [PAYMENT GATEWAY] for the application.
 7. [ ] Implement the [ORCHESTRATION] manager.
 
@@ -138,6 +153,7 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 1. [ ] Protect the [MAIN BRANCH] for direct merges.
 2. [ ] Create the [DEVELOPMENT BRANCH] for the main branch.
 3. [ ] Protect [DIRECT MERGES] to the development branch.
+
 ---
 RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---
@@ -145,35 +161,35 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 *After first deployment:*
 1. [ ] Creation of the [BLOG] page.
 2. [ ] Creation of the [FORUM] page.
-3. [ ] [DOCUMENTATION & API GUIDE] page development.
-4. [ ] [FAQ] page development.
-5. [ ] [TERMS & CONDITIONS] development with the law firms.
-6. [ ] [PRIVACY POLICY & DATA POLICY] development with the law firms.
-7. [ ] [TEXT-TO-SPEECH] and [SPEECH-TO-TEXT] integration for the application.
-8. [ ] Named Entity Recognition [NER] integration.
-9. [ ] [MOBILE APPLICATION FOR ANDROID & IOS] only for connecting endpoints, and being able to chat with them and receive answers. -> requires a mobile application development.
-10. [ ] [DESKTOP COPILOT EXTENSION] development for the application. -> requires a desktop application / applet.
-11. [ ] [DRIVE & DROPBOX] integration for the application.
+3. [ ] [FAQ] page development.
+4. [ ] [DOCUMENTATION] page development.
+5. [ ] [TERMS] development with the law firms.
+6. [ ] [PRIVACY POLICY] development with the law firms.
+7. [ ] [TTS/STT] integration for the application.
+8. [ ] [NER] integration.
+9. [ ] [MOBILE APP] only for connecting endpoints, and being able to chat with them and receive answers. -> requires a mobile application development.
+10. [ ] [DESKTOP COPILOT] development for the application. -> requires a desktop application / applet.
+11. [ ] [DRIVE] integration for the application.
 12. [ ] [WORD PLUGIN] development for the application. -> requires a word/ms office plugin.
 13. [ ] RELEASE v0.2.0 [RELEASE: BETA] version of the application.
 
 ---
 
 *Ongoing Improvements:*
-1. [ ] Bugfixes and Stability improvements [BUGFIX & STABILITY] / RELEASE v0.3.0 [RELEASE: BETA] version of the application.
-2. [ ] Store additions [FUNC STORE, API STORE, SCRIPT STORE] / RELEASE v0.4.0 [RELEASE: BETA] version of the application.
-3. [ ] Boilerplate knowledge bases [BOILERPLATE KNOWLEDGE BASES] / [ ] RELEASE v0.5.0 [RELEASE: BETA] version of the application.
-4. [ ] Integration (Boilerplate assistant) Systems [ASSISTANT - INTEGRATION SYSTEMS] / RELEASE v0.6.0 [RELEASE: BETA] version of the application.
-5. [ ] Meta-Integration (Boilerplate group of assistants) Systems [POLY-ASSISTANT - META-INTEGRATION SYSTEMS] / RELEASE v0.7.0 [RELEASE: BETA] version of the application.
+1. [ ] Bugfixes and Stability improvements [STABILITY] / RELEASE v0.3.0 [RELEASE: BETA] version of the application.
+2. [ ] Store additions [FUNC + API + SCRIPT / STORE] / RELEASE v0.4.0 [RELEASE: BETA] version of the application.
+3. [ ] Boilerplate knowledge bases [BOILERPLATE KB] / [ ] RELEASE v0.5.0 [RELEASE: BETA] version of the application.
+4. [ ] Integration (Boilerplate assistant) Systems [INTEG SYSTEMS] / RELEASE v0.6.0 [RELEASE: BETA] version of the application.
+5. [ ] Meta-Integration (Boilerplate group of assistants) Systems [META-INTEG SYSTEMS] / RELEASE v0.7.0 [RELEASE: BETA] version of the application.
 
 ---
 
 *TO BE DISCUSSED:*
 1. [ ] Implement the [META GUIDE] assistant for manipulating the application as a helper.
 2. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
-3. [ ] Implement [MAP MANAGEMENT] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
+3. [ ] Implement [MAPS] for geolocation purposes. -> requires connection with a PWA (Progressive Web App)
 4. [ ] [BLOCKCHAIN] integration for the application.
-5. [ ] [FACIAL RECOGNITION / OPENCV] technologies integration ?
+5. [ ] [OPENCV FACE-RECOGNITION] technologies integration ?
 
 ---
 
@@ -226,13 +242,13 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
     - Trade Room Registry and Membership: $?
       * Paid: [monthly/yearly]
   - Hosting Service: $20
-    * Paid: yearly
-  - Domain Service: $1
-    * Paid: yearly
+    * Paid: yearly / $20 x 12 = $240
+  - Domain Service: $5
+    * Paid: yearly / $5 x 12 = $60
   - SSL Certification: -- within the Hosting Service
     * Paid: yearly
-  - Organization Emails: ???
-    * Paid: yearly = $12 x 10 = $120
+  - Organization Emails: $10
+    * Paid: yearly / $12 x 10 = $120
       1. admin@bimod.io / internal operations
       2. info@bimod.io / general inquiries
       3. support@bimod.io / support inquiries
@@ -243,15 +259,17 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
       8. selin.canbulut@bimod.io / Selin Ceren Canbulut
       9. emre.oge@bimod.io / Emre Oge
       10. mert.tekin@bimod.io / Mert Tekin
-  - PostgreSQL Database: -- within the Hosting Service
-    * Paid: yearly
-  - SMTP Cloud Service: $15
+  - Aiven Cloud PostgreSQL Database (Dev): $200
     * Paid: monthly
-  - Weaviate Cloud Server: $?
+  - Aiven Cloud PostgreSQL Database (Prod): $200
+  - AWS S3 Storage Service: $X
     * Paid: [monthly/yearly]
-  - Cloud Translation Service: $?
+    * Paid: monthly
+  - SMTP Cloud Service: ???
+    * Paid: monthly
+  - Weaviate Cloud Server: $75 / [for ~10,000 chats]
+    * Paid: monthly / $75 x 12 = $900
+  - Cloud Translation Service: $X
     * Paid: [monthly/yearly]
-   - Cloud Media Storage Service: $?
-    * Paid: [monthly/yearly]
-  - Secrets Manager Service: ???
-    * Paid: [monthly/yearly]
+  - Sentry Logging Tool: $30
+    * Paid: monthly / $30 x 12 = $360

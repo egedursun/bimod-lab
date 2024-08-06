@@ -20,6 +20,7 @@ class CustomAPIExecutor:
             query_values=query_values,
             body_values=body_values)
         response = promise.get()
+        print(f"[CustomAPIExecutor.execute_custom_api] Response has been received.")
 
         transaction = LLMTransaction(
             organization=self.context_organization,
@@ -37,4 +38,5 @@ class CustomAPIExecutor:
             is_tool_cost=True
         )
         transaction.save()
+        print(f"[CustomAPIExecutor.execute_custom_api] Transaction has been saved.")
         return response

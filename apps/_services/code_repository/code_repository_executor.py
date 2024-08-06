@@ -31,6 +31,7 @@ class WeaviateExecutor:
                     timeout=Timeout(init=30, query=60, insert=120)  # Values in seconds
                 )
             )
+            print(f"[WeaviateExecutor.connect_c] Connected to Weaviate successfully.")
             self.client = c
         except Exception as e:
             return self.client
@@ -38,6 +39,7 @@ class WeaviateExecutor:
 
     def close_c(self):
         try:
+            print(f"[WeaviateExecutor.close_c] Closing the Weaviate connection...")
             self.client.close()
         except Exception as e:
             pass
@@ -48,6 +50,7 @@ class WeaviateExecutor:
             c = self.connect_c()
             # retrieve the schema for weaviate
             schema = c.collections.list_all()
+            print(f"[WeaviateExecutor.retrieve_schema] Retrieved the Weaviate schema successfully.")
             self.close_c()
         except Exception as e:
             print(f"Error retrieving Code Repository Weaviate schema: {e}")
@@ -61,10 +64,12 @@ class WeaviateExecutor:
         ##################################################
         # OPENAI VECTORIZER
         if vectorizer_name == VectorizerNames.TEXT2VEC_OPENAI:
+            print(f"[WeaviateExecutor.decode_vectorizer] OpenAI vectorizer selected.")
             return wvc.config.Configure.Vectorizer.text2vec_openai()
         ##################################################
         # DEFAULT VECTORIZER
         else:
+            print(f"[WeaviateExecutor.decode_vectorizer] Default vectorizer selected: text2vec-openai.")
             # Return the default vectorizer (text2vec-openai)
             return wvc.config.Configure.Vectorizer.text2vec_openai()
         ##################################################
@@ -72,12 +77,14 @@ class WeaviateExecutor:
     def create_weaviate_classes(self):
         _ = self.connect_c()
         output = create_classes_helper(executor=self)
+        print(f"[WeaviateExecutor.create_weaviate_classes] Created the Weaviate classes successfully.")
         self.close_c()
         return output
 
     def delete_weaviate_classes(self, class_name: str):
         _ = self.connect_c()
         output = delete_code_repository_class_helper(executor=self, class_name=class_name)
+        print(f"[WeaviateExecutor.delete_weaviate_classes] Deleted the Weaviate classes successfully.")
         self.close_c()
         return output
 
@@ -85,60 +92,13 @@ class WeaviateExecutor:
         ##################################################
         _ = self.connect_c()
         index_repository_helper.delay(connection_id=self.connection_object.id, document_paths=document_paths)
+        print(f"[WeaviateExecutor.index_repository] Indexing the repository...")
         self.close_c()
         return
 
-    def repository_loader(self):
-        # TODO:
-        #    i. Download the repository with git clone
-        #    ii. Save the downloaded files to a temporary folder
-        #    iii. Get the paths of the files
-        #    iv. Return the paths
-        # clone the repository
-        pass
-
-    def document_chunker(self, file_path):
-        # TODO:
-        #   i. Split the document into different chunks
-        #   ii. Return the chunks
-        pass
-
-    def embed_repository(self, document: dict, path: str, number_of_chunks: int = 0):
-        # TODO:
-        #   i. Embed the general repository data to Weaviate
-        #   ii. Return the document id and uuid
-        executor_params = {
-            "client": {
-                "host_url": self.connection_object.host_url,
-                "api_key": self.connection_object.provider_api_key
-            },
-            "connection_id": self.connection_object.id
-        }
-        print(f"[Document Embedder]: Prepare to embed the repository:...")
-        doc_id, doc_uuid, error = embed_repository_data(executor_params=executor_params, document=document, path=path,
-                                                      number_of_chunks=number_of_chunks)
-        print(f"[Document Embedder]: Embedded the repository:...")
-        return doc_id, doc_uuid, error
-
-    def embed_repository_chunks(self, chunks: list, path: str, document_id: int, document_uuid: str):
-        # TODO:
-        #   i. Embed the repository chunks to Weaviate
-        #   ii. Return the errors
-        print(f"[Repository Chunk Embedder]: Prepare to embed the repository chunks: {document_id}")
-        executor_params = {
-            "client": {
-                "host_url": self.connection_object.host_url,
-                "api_key": self.connection_object.provider_api_key
-            },
-            "connection_id": self.connection_object.id
-        }
-        errors = embed_repository_chunks(executor_params=executor_params, chunks=chunks, path=path,
-                                       document_id=document_id, document_uuid=document_uuid)
-        print(f"[Repository Chunk Embedder]: Embedded the repository chunks: {document_id}")
-        return errors
-
     def search_hybrid(self, query: str, alpha: float):
         search_knowledge_base_class_name = f"{self.connection_object.class_name}Chunks"
+        print(f"[WeaviateExecutor.search_hybrid] Searching the Weaviate hybrid...")
         client = self.connect_c()
         documents_collection = client.collections.get(search_knowledge_base_class_name)
         response = documents_collection.query.hybrid(
@@ -147,6 +107,7 @@ class WeaviateExecutor:
             alpha=float(alpha),
             limit=int(self.connection_object.search_instance_retrieval_limit)
         )
+        print(f"[WeaviateExecutor.search_hybrid] Retrieved the Weaviate hybrid search response successfully.")
         # clean the response
         cleaned_documents = []
         for o in response.objects:
@@ -157,7 +118,7 @@ class WeaviateExecutor:
                 if k in ["chunk_document_file_name", "chunk_content", "chunk_number", "created_at"]:
                     cleaned_object[k] = v
             cleaned_documents.append(cleaned_object)
-
+        print(f"[WeaviateExecutor.search_hybrid] Cleaned the Weaviate hybrid search response successfully.")
         transaction = LLMTransaction(
             organization=self.connection_object.assistant.organization,
             model=self.connection_object.assistant.llm_model,
@@ -170,4 +131,5 @@ class WeaviateExecutor:
             is_tool_cost=True
         )
         transaction.save()
+        print(f"[WeaviateExecutor.search_hybrid] Transaction saved successfully.")
         return cleaned_documents

@@ -16,6 +16,8 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
+import sentry_sdk
+
 from .template import TEMPLATE_CONFIG, THEME_LAYOUT_DIR, THEME_VARIABLES
 
 load_dotenv()  # take environment variables from .env.
@@ -229,6 +231,20 @@ STATICFILES_DIRS = [
 # Default URL on which Django application runs for specific environment
 BASE_URL = os.environ.get("BASE_URL", default="http://127.0.0.1:8000")
 
+# AWS S3 settings
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+# Custom storage settings
+DEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'
+
+# Media URL
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+
+
 # Service profit margins and tax rates
 __SERVICE_PROFIT_MARGIN = float(os.environ.get("SERVICE_PROFIT_MARGIN", default="2.00"))
 __SERVICE_TAX_RATE = float(os.environ.get("SERVICE_TAX_RATE", default="0.18"))
@@ -269,6 +285,7 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ['true', '1', 'yes
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
+
 
 # Login your mail
 # ------------------------------------------------------------------------------
@@ -311,12 +328,6 @@ EXCLUDED_PAGES = [
 # ------------------------------------------------------------------------------
 
 DESIGN_DOCS_ROUTE = 'dev/design/'
-
-# Media Settings
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-DEFAULT_FROM_EMAIL = ""
 
 # API version for exporting agents
 EXPORT_API_BASE_URL = "app/export_assistants/api/v1/export"
@@ -424,3 +435,20 @@ COSTS_MAP = {
 
 #####################################################################################################################
 #####################################################################################################################
+
+# Sentry SDK settings
+
+if ENVIRONMENT != "local":
+    sentry_sdk.init(
+        dsn=os.getenv("SENTRY_DSN", default=""),
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        traces_sample_rate=os.getenv("SENTRY_TRACES_SAMPLE_RATE", default=0.1),
+        # Set profiles_sample_rate to 1.0 to profile 100%
+        # of sampled transactions.
+        # We recommend adjusting this value in production.
+        profiles_sample_rate=os.getenv("SENTRY_PROFILES_SAMPLE_RATE", default=0.1),
+    )
+else:
+    print("[settings.py] Sentry SDK is intentionally disabled in local environment, skipping the initialization.")
+    pass

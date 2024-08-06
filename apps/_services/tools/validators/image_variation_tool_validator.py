@@ -21,4 +21,5 @@ def validate_image_variation_tool_json(tool_usage_json: dict):
             for using the Image Variation tool. Please make sure you are defining the 'image_size' field in the parameters
             field of the tool_usage_json.
         """
+    print(f"[image_variation_tool_validator.validate_image_variation_tool_json] Validation is successful.")
     return None

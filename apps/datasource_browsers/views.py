@@ -81,6 +81,7 @@ class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
                 reading_abilities=reading_abilities, created_by_user=created_by_user
             )
             data_source.save()
+            print("[CreateBrowserConnectionView.post] Data Source Browser Connection created successfully.")
             messages.success(request, 'Data Source Browser Connection created successfully.')
             return redirect('datasource_browsers:list')
         except Assistant.DoesNotExist:
@@ -162,6 +163,7 @@ class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
             browser_connection.created_by_user = created_by_user
             browser_connection.save()
             messages.success(request, 'Data Source Browser Connection updated successfully.')
+            print("[UpdateBrowserConnectionView.post] Data Source Browser Connection updated successfully.")
             return redirect('datasource_browsers:list')
         except Assistant.DoesNotExist:
             messages.error(request, 'Invalid assistant selected.')
@@ -190,6 +192,7 @@ class DeleteBrowserConnectionView(LoginRequiredMixin, TemplateView):
         browser_connection = get_object_or_404(DataSourceBrowserConnection, pk=self.kwargs['pk'])
         browser_connection.delete()
         messages.success(request, 'Browser Connection deleted successfully.')
+        print("[DeleteBrowserConnectionView.post] Browser Connection deleted successfully.")
         return redirect('datasource_browsers:list')
 
 
@@ -215,6 +218,7 @@ class ListBrowserConnectionsView(LoginRequiredMixin, TemplateView):
 
         context['connections_by_organization'] = connections_by_organization
         context['user'] = context_user
+        print("[ListBrowserConnectionsView.get_context_data] Browser Connections listed successfully.")
         return context
 
 
@@ -238,6 +242,7 @@ class ListBrowsingLogsView(LoginRequiredMixin, TemplateView):
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         context['search_query'] = search_query
+        print("[ListBrowsingLogsView.get_context_data] Browser Browsing Logs listed successfully.")
         return context
 
 
@@ -247,6 +252,7 @@ class DownloadHtmlContentView(LoginRequiredMixin, View):
         response = HttpResponse(log.html_content, content_type='text/html')
         response[
             'Content-Disposition'] = f'attachment; filename="{log.connection.name}_html_content_{log.created_at.strftime("%Y%m%d%H%M%S")}.html"'
+        print("[DownloadHtmlContentView.get] HTML content downloaded successfully.")
         return response
 
 
@@ -257,4 +263,5 @@ class DownloadContextDataView(LoginRequiredMixin, View):
         response = HttpResponse(context_data, content_type='application/json')
         response[
             'Content-Disposition'] = f'attachment; filename="{log.connection.name}_context_data_{log.created_at.strftime("%Y%m%d%H%M%S")}.json"'
+        print("[DownloadContextDataView.get] Context data downloaded successfully.")
         return response

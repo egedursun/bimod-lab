@@ -8,6 +8,7 @@ def create_classes_helper(executor):
     output = {"status": True, "error": ""}
     conn = executor.connection_object
     c = executor.connect_c()
+    print(f"[class_creator.create_classes_helper] Creating Weaviate classes...")
 
     try:
         new_code_repository_class = c.collections.create(
@@ -119,6 +120,7 @@ def create_classes_helper(executor):
                 ),
             ]
         )
+        print(f"Created Code Repository classes: {new_code_repository_class}, {new_repository_chunks_class}")
     except Exception as e:
         print(f"Error creating Weaviate class: {e}")
         output["status"] = False

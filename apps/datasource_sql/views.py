@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
 from apps.assistants.models import Assistant
@@ -41,6 +41,7 @@ class CreateSQLDatabaseConnectionView(TemplateView, LoginRequiredMixin):
         if form.is_valid():
             form.save()
             messages.success(request, "SQL Data Source created successfully.")
+            print('[CreateSQLDatabaseConnectionView.post] SQL Data Source created successfully.')
             return redirect('datasource_sql:create')
         else:
             messages.error(request, "Error creating SQL Data Source.")
@@ -105,6 +106,7 @@ class UpdateSQLDatabaseConnectionView(TemplateView, LoginRequiredMixin):
         if form.is_valid():
             form.save()
             messages.success(request, "SQL Data Source updated successfully.")
+            print('[UpdateSQLDatabaseConnectionView.post] SQL Data Source updated successfully.')
             return redirect('datasource_sql:list')
         else:
             messages.error(request, "Error updating SQL Data Source: " + str(form.errors))
@@ -136,6 +138,7 @@ class DeleteSQLDatabaseConnectionView(LoginRequiredMixin, DeleteView):
 
         self.object.delete()
         messages.success(request, f'SQL Database Connection {self.object.name} was deleted successfully.')
+        print(f'[DeleteSQLDatabaseConnectionView.post] SQL Database Connection {self.object.name} was deleted successfully.')
         return redirect(self.success_url)
 
 
@@ -168,6 +171,7 @@ class CreateSQLQueryView(TemplateView, LoginRequiredMixin):
         if form.is_valid():
             form.save()
             messages.success(request, "SQL Query created successfully.")
+            print('[CreateSQLQueryView.post] SQL Query created successfully.')
             return redirect('datasource_sql:create_query')
         else:
             messages.error(request, "Error creating SQL Query.")
@@ -209,6 +213,7 @@ class UpdateSQLQueryView(TemplateView, LoginRequiredMixin):
         if form.is_valid():
             form.save()
             messages.success(request, "SQL Query updated successfully.")
+            print('[UpdateSQLQueryView.post] SQL Query updated successfully.')
             return redirect('datasource_sql:list_queries')
         else:
             messages.error(request, "Error updating SQL Query: " + str(form.errors))

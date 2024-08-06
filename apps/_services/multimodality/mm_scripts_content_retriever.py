@@ -13,6 +13,7 @@ class CustomScriptsContentRetriever:
         from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
         script = self.script
         script_content = script.script_content
+        print(f"[CustomScriptsContentRetriever.retrieve_custom_script_content] Script content has been retrieved.")
 
         transaction = LLMTransaction(
             organization=self.context_organization,
@@ -30,6 +31,6 @@ class CustomScriptsContentRetriever:
             is_tool_cost=True
         )
         transaction.save()
-
+        print(f"[CustomScriptsContentRetriever.retrieve_custom_script_content] Transaction has been saved.")
         response = script_content if script_content else "[The script content is empty.]"
         return response

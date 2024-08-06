@@ -89,7 +89,6 @@ class NoSQLDatabaseConnection(models.Model):
                 if sample_document:
                     schema[collection] = get_simplified_mongodb_schema(sample_document)
         except Exception as e:
-            print(f"Error retrieving MongoDB schema: {e}")
             return {}
         return schema
 

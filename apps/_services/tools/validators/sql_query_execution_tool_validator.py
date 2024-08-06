@@ -42,4 +42,5 @@ def validate_sql_query_execution_tool_json(tool_usage_json: dict):
             The SQL Database Connection with the ID: {connection.id} does not exist in the system.
             Please make sure you are passing a valid database connection ID.
         """
+    print(f"[sql_query_execution_tool_validator.validate_sql_query_execution_tool_json] Validation is successful.")
     return None

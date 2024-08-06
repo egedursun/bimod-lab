@@ -28,4 +28,5 @@ def validate_knowledge_base_query_execution_tool_json(tool_usage_json: dict):
             The Knowledge Base Connection with the ID: {connection.id} does not exist in the system.
             Please make sure you are passing a valid knowledge base connection ID.
         """
+    print(f"[knowledge_base_query_execution_tool_validator.validate_knowledge_base_query_execution_tool_json] Validation is successful.")
     return None

@@ -42,4 +42,5 @@ def validate_predict_with_ml_model_execution_tool_json(tool_usage_json: dict):
             using the Prediction with ML Model tool. Please make sure you are defining the 'query' field in the
             parameters field of the tool_usage_json.
         """
+    print(f"[predict_with_ml_model_execution_tool_validator.validate_predict_with_ml_model_execution_tool_json] Validation is successful.")
     return None

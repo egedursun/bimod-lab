@@ -38,7 +38,7 @@ class DocumentKnowledgeBaseConnectionAdmin(admin.ModelAdmin):
         if client is not None:
             result = client.create_weaviate_classes()
             if not result["status"]:
-                print(f"Error creating Weaviate classes: {result['error']}")
+                print(f"[DocumentKnowledgeBaseConnectionAdmin.save_model] Error creating Weaviate classes: {result['error']}")
 
         # Retrieve the schema
         obj.schema_json = client.retrieve_schema()
@@ -49,7 +49,7 @@ class DocumentKnowledgeBaseConnectionAdmin(admin.ModelAdmin):
         if client is not None:
             result = client.delete_weaviate_classes(class_name=obj.class_name)
             if not result["status"]:
-                print(f"Error deleting Weaviate classes: {result['error']}")
+                print(f"[DocumentKnowledgeBaseConnectionAdmin.delete_model] Error deleting Weaviate classes: {result['error']}")
         super().delete_model(request, obj)
 
 

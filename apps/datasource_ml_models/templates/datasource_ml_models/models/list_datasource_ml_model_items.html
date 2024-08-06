@@ -221,11 +221,11 @@
                                 <tr>
                                   <th><input type="checkbox" class="select-all-checkbox"
                                              data-storage-id="{{ storage_data.connection.id }}"></th>
-                                  <th></th>
                                   <th>Model Id</th>
                                   <th>Model Name</th>
                                   <th>Description</th>
                                   <th>Interpretation Temperature</th>
+                                  <th>Download URL</th>
                                   <th>Uploaded At</th>
                                 </tr>
                                 </thead>
@@ -238,13 +238,17 @@
                                              data-storage-id="{{ storage_data.connection.id }}">
                                     </td>
                                     <td>{{ item_data.id }}</td>
-                                    <td></td>
                                     <td>{{ item_data.ml_model_name }}</td>
                                     <td class="w-50">
                                       {{ item_data.description }}
                                     </td>
                                     <td>
                                       {{ item_data.interpretation_temperature }}
+                                    </td>
+                                    <td>
+                                      <a class="text-dark" href="{{ item_data.full_file_path }}" target="_blank">
+                                        <i class="fa fa-chain me-2"></i> <strong>{{ item_data.full_file_path }}</strong>
+                                      </a>
                                     </td>
                                     <td>{{ item_data.created_at }}</td>
                                   </tr>

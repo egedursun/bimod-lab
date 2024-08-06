@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
@@ -94,6 +94,7 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
             else:
                 messages.error(request, "Email settings are not configured. Unable to send verification email.")
             messages.success(request, 'User created successfully!')
+            print('[AddNewUserView.post] User created successfully.')
         except Exception as e:
             messages.error(request, f'Error creating user: {str(e)}')
         return redirect('user_management:list')
@@ -127,15 +128,20 @@ class AddUserToOrganizationView(LoginRequiredMixin, TemplateView):
             user = User.objects.get(id=user)
             organization = Organization.objects.get(id=organization_id)
             if user in organization.users.all():
+                print('[AddUserToOrganizationView.post] User is already a member of this organization.')
                 messages.error(request, 'User is already a member of this organization.')
             else:
                 organization.users.add(user)
+                print('[AddUserToOrganizationView.post] User added to organization successfully!')
                 messages.success(request, 'User added to organization successfully!')
         except User.DoesNotExist:
+            print('[AddUserToOrganizationView.post] User does not exist.')
             messages.error(request, 'User does not exist.')
         except Organization.DoesNotExist:
+            print('[AddUserToOrganizationView.post] Organization does not exist.')
             messages.error(request, 'Organization does not exist.')
         except Exception as e:
+            print(f'[AddUserToOrganizationView.post] Error adding user to organization: {str(e)}')
             messages.error(request, f'Error adding user to organization: {str(e)}')
         return redirect('user_management:add_user_to_organization')
 
@@ -179,6 +185,7 @@ class ListUsersView(LoginRequiredMixin, TemplateView):
             for user_permission in user_permissions:
                 user_permission.is_active = profile.is_active
                 user_permission.save()
+            print('[ListUsersView.post] User status updated successfully.')
             messages.success(request, 'User status updated successfully!')
         else:
             messages.error(request, 'Failed to update user status.')
@@ -208,6 +215,7 @@ class RemoveUserFromOrganizationView(TemplateView, LoginRequiredMixin):
         organization = get_object_or_404(Organization, id=kwargs['org_id'])
         organization.users.remove(user)
         organization.save()
+        print('[RemoveUserFromOrganizationView.post] User removed from organization successfully.')
         messages.success(request, f'User removed from {organization.name} successfully.')
         return redirect('user_management:list')
 
@@ -265,6 +273,7 @@ class RemoveUserView(LoginRequiredMixin, TemplateView):
             organization.save()
         user.delete()
         # remove the user from all organizations
+        print('[RemoveUserView.post] User deleted successfully.')
         messages.success(request, 'User deleted successfully.')
         return redirect('user_management:list')
 
@@ -290,5 +299,6 @@ class UpdateUserStatusView(LoginRequiredMixin, TemplateView):
             user.profile.save()
             return redirect('user_management:list')
         except Exception as e:
+            print(f'[UpdateUserStatusView.post] Error updating user status: {str(e)}')
             messages.error(request, f'Error updating user status')
             return redirect('user_management:list')

@@ -205,6 +205,7 @@ class PromptBuilder:
         chat.transactions.add(transaction)
         chat.save()
 
+        print(f"[PromptBuilder.build] Prompt has been built.")
         return prompt
 
     @staticmethod
@@ -307,4 +308,5 @@ class PromptBuilder:
             "role": "system",
             "content": merged_prompt
         }
+        print(f"[PromptBuilder.build_lean] Prompt has been built.")
         return prompt

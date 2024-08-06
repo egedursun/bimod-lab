@@ -36,6 +36,7 @@ class CreateScheduledJobView(LoginRequiredMixin, TemplateView):
             step_guide = request.POST.getlist('step_guide[]')
             scheduled_job.step_guide = step_guide
             scheduled_job.save()
+            print('[CreateScheduledJobView.post] Scheduled Job created successfully.')
             messages.success(request, "Scheduled Job created successfully!")
             return redirect('mm_scheduled_jobs:list')
         else:
@@ -110,5 +111,6 @@ class ConfirmDeleteScheduledJobView(LoginRequiredMixin, TemplateView):
         scheduled_job_id = self.kwargs.get('pk')
         scheduled_job = get_object_or_404(ScheduledJob, id=scheduled_job_id)
         scheduled_job.delete()
+        print('[ConfirmDeleteScheduledJobView.post] Scheduled Job deleted successfully.')
         messages.success(request, "Scheduled Job deleted successfully.")
         return redirect('mm_scheduled_jobs:list')

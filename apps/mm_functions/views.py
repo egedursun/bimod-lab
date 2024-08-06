@@ -7,11 +7,10 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.mm_functions.forms import CustomFunctionForm, CustomFunctionReferenceForm
+from apps.mm_functions.forms import CustomFunctionForm
 from apps.mm_functions.models import CustomFunction, CustomFunctionReference, CUSTOM_FUNCTION_CATEGORIES
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
-from auth.models import Profile
 from web_project import TemplateLayout
 
 
@@ -105,7 +104,7 @@ class CreateCustomFunctionView(LoginRequiredMixin, TemplateView):
 
             custom_function.categories = categories
             custom_function.save()
-
+            print('[CreateCustomFunctionView.post] Custom Function created successfully.')
             return redirect('mm_functions:list')
         return render(request, self.template_name, {'form': form,
                                                     'assistants': Assistant.objects.filter(
@@ -221,6 +220,7 @@ class ManageCustomFunctionAssistantConnectionsView(LoginRequiredMixin, TemplateV
                     custom_function=custom_function,
                     created_by_user=request.user
                 )
+                print(f"[ManageCustomFunctionAssistantConnectionsView.post] Function '{custom_function.name}' assigned to assistant '{assistant.name}'.")
                 messages.success(request, f"Function '{custom_function.name}' assigned to assistant '{assistant.name}'.")
             elif action == 'remove':
                 reference_id = request.POST.get('reference_id')
@@ -268,6 +268,7 @@ class DeleteCustomFunctionView(LoginRequiredMixin, TemplateView):
         custom_function = CustomFunction.objects.get(id=custom_function_id)
         custom_function.delete()
         messages.success(request, "Custom Function deleted successfully.")
+        print('[DeleteCustomFunctionView.post] Custom Function deleted successfully.')
         return redirect('mm_functions:list')
 
 
@@ -339,6 +340,7 @@ class FunctionStoreView(LoginRequiredMixin, TemplateView):
                     custom_function=custom_function,
                     created_by_user=request.user
                 )
+                print(f"[FunctionStoreView.post] Function '{custom_function.name}' assigned to assistant '{assistant.name}'.")
                 messages.success(request, f"Function '{custom_function.name}' assigned to assistant '{assistant.name}'.")
         else:
             messages.error(request, "Invalid input. Please try again.")

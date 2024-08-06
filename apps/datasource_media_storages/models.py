@@ -1,8 +1,14 @@
 import os
 import random
+import shutil
 
+import boto3
+import paramiko
 from django.db import models
 from slugify import slugify
+
+from config import settings
+from config.settings import MEDIA_URL
 from .tasks import upload_file_to_storage
 
 
@@ -153,7 +159,8 @@ class DataSourceMediaStorageConnection(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name + ' - ' + slugify(self.directory_full_path) + ' - ' + self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        return self.name + ' - ' + slugify(self.directory_full_path) + ' - ' + self.created_at.strftime(
+            '%Y-%m-%d %H:%M:%S')
 
     class Meta:
         verbose_name = 'Data Source Media Storage Connection'
@@ -170,16 +177,22 @@ class DataSourceMediaStorageConnection(models.Model):
         if not self.directory_full_path:
             base_dir = self.assistant.storages_base_directory
             dir_suffix = self.media_category
-            full_path = f"{base_dir}{dir_suffix}/"
+            full_path = os.path.join(base_dir, dir_suffix)
             self.directory_full_path = full_path
-            os.system(f"mkdir -p {full_path}")
-            os.system(f"touch {full_path}/__init__.py")
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
         # Remove the directory
-        if self.directory_full_path is not None:
-            os.system(f"rm -rf {self.directory_full_path}")
+        if self.directory_full_path and os.path.exists(self.directory_full_path):
+            boto3_client = boto3.client('s3')
+            bucket_name = os.getenv('AWS_STORAGE_BUCKET_NAME')
+            s3_path = self.directory_full_path.split(MEDIA_URL)[1]
+            s3_path = s3_path.replace('/', '')
+            s3_path = f"{s3_path}/"
+            try:
+                boto3_client.delete_object(Bucket=bucket_name, Key=s3_path)
+            except Exception as e:
+                print(f"[DataSourceMediaStorageConnection.delete] Error occurred while deleting the directory: {str(e)}")
         super().delete(using, keep_parents)
 
 
@@ -199,7 +212,8 @@ class DataSourceMediaStorageItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.media_file_name + ' - ' + self.media_file_type + ' - ' + self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        return self.media_file_name + ' - ' + self.media_file_type + ' - ' + self.created_at.strftime(
+            '%Y-%m-%d %H:%M:%S')
 
     class Meta:
         verbose_name = 'Data Source Media Storage Item'
@@ -217,17 +231,22 @@ class DataSourceMediaStorageItem(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         self.media_file_name = slugify(self.media_file_name)
         file_type = self.media_file_type
-        if not self.full_file_path:
-            base_dir = self.storage_base.directory_full_path
-            file_name = self.media_file_name
-            full_path = f"{base_dir}{file_name.split('.')[0]}_{str(random.randint(1_000_000, 9_999_999))}.{file_type}"
-            self.full_file_path = full_path
 
         if file_type not in [ft[0] for ft in MEDIA_FILE_TYPES]:
             print(f"[DataSourceMediaStorageItem.save] Invalid file format: {file_type}, skipping file...")
             return False
 
+        if not self.full_file_path:
+            base_dir = self.storage_base.directory_full_path
+            file_name = self.media_file_name
+            unique_suffix = str(random.randint(1_000_000, 9_999_999))
+            relative_path = f"{base_dir.split(MEDIA_URL)[1]}/{file_name.split('.')[0]}_{unique_suffix}.{file_type}"
+            self.full_file_path = f"{MEDIA_URL}{relative_path}"
+
+            # Upload the file to the storage asynchronously
+            upload_file_to_storage.delay(file_bytes=self.file_bytes, full_path=relative_path,
+                                         media_category=self.storage_base.media_category)
+
+        self.file_bytes = None
         super().save(force_insert, force_update, using, update_fields)
-        # Upload the file to the storage
-        upload_file_to_storage.delay(file_bytes=self.file_bytes, full_path=self.full_file_path,
-                                     media_category=self.storage_base.media_category)
+

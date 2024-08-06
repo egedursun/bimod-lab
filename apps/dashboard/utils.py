@@ -201,7 +201,7 @@ class DashboardStatisticsCalculator:
             for transaction in transactions:
                 total_cost += float(transaction.total_billable_cost)
             if total_cost > 0:
-                user_costs[user.profile.username] = total_cost
+                user_costs[user.username] = total_cost
         self.statistics["costs"]['costs_per_users'] = user_costs
 
     def costs_per_sources(self):

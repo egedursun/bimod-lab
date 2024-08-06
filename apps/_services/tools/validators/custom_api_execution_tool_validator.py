@@ -42,5 +42,6 @@ def validate_custom_api_execution_tool_json(tool_usage_json: dict):
             for using the Custom API Execution tool. Please make sure you are defining the 'body_values' field in the
             parameters field of the tool_usage_json.
         """
+    print(f"[custom_api_execution_tool_validator.validate_custom_api_execution_tool_json] Validation is successful.")
     return None
 

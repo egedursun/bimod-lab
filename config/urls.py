@@ -14,12 +14,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+
 from config import settings
 from web_project.views import SystemView
+
+
+# Sentry SDK Test
+def trigger_error(request):
+    division_by_zero = 1 / 0
+    return division_by_zero
 
 
 urlpatterns = [
@@ -52,10 +58,15 @@ urlpatterns = [
     path("app/mm_scripts/", include("apps.mm_scripts.urls", namespace="mm_scripts")),
     path("app/mm_scheduled_jobs/", include("apps.mm_scheduled_jobs.urls", namespace="mm_scheduled_jobs")),
     path("app/mm_triggered_jobs/", include("apps.mm_triggered_jobs.urls", namespace="mm_triggered_jobs")),
+
+    #####
+    # Test Endpoints
+    #####
+    path('sentry/test/', trigger_error),
 ]
 
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL)
 
 handler404 = SystemView.as_view(template_name="pages_misc_error.html", status=404)
 handler403 = SystemView.as_view(template_name="pages_misc_not_authorized.html", status=403)

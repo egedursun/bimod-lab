@@ -31,6 +31,7 @@ def build_chunk_orm_structure(chunk: dict,
             document=chunk_document,
             document_uuid=chunk_document_uuid
         )
+        print(f"[document_chunk_embedder.build_chunk_orm_structure] Chunk ORM object created.")
         id = chunk_orm_object.id
     except Exception as e:
         error = f"[document_chunk_embedder.build_chunk_orm_structure] Error building the chunk ORM structure: {e}"
@@ -56,6 +57,7 @@ def build_memory_chunk_orm_structure(chunk: str, knowledge_base, memory_id: int,
             context_history_base=context_history_base,
         )
         id = chunk_orm_object.id
+        print(f"[document_chunk_embedder.build_memory_chunk_orm_structure] Memory chunk ORM object created.")
     except Exception as e:
         error = f"[document_chunk_embedder.build_memory_chunk_orm_structure] Error building the chunk ORM structure: {e}"
         print(error)
@@ -83,6 +85,7 @@ def build_chunk_weaviate_structure(chunk: dict, path: str,
             "chunk_metadata": weaviate_chunk_metadata,
             "created_at": weaviate_chunk_created_at
         }
+        print(f"[document_chunk_embedder.build_chunk_weaviate_structure] Chunk Weaviate object created.")
     except Exception as e:
         error = f"[document_chunk_embedder.build_chunk_weaviate_structure] Error building the chunk Weaviate structure: {e}"
         print(error)
@@ -103,6 +106,7 @@ def build_memory_chunk_weaviate_structure(memory, chunk: str, chunk_index: int, 
             "chunk_content": weaviate_chunk_content,
             "created_at": weaviate_chunk_created_at
         }
+        print(f"[document_chunk_embedder.build_memory_chunk_weaviate_structure] Memory chunk Weaviate object created.")
     except Exception as e:
         error = f"[document_chunk_embedder.build_memory_chunk_weaviate_structure] Error building the memory chunk Weaviate structure: {e}"
         print(error)
@@ -121,7 +125,8 @@ def embed_document_chunk_sync(executor_params, chunk_id, chunk_weaviate_object: 
     executor = KnowledgeBaseSystemDecoder.get(connection=connection_orm_object)
     c = executor.connect_c()
     if not c:
-        print(f"[Chunk Embedder]: Error while connecting to Weaviate")
+        print(f"[Chunk Embedder.embed_document_chunk_sync]: Error while connecting to Weaviate")
+    print(f"[Chunk Embedder.embed_document_chunk_sync]: Connected to Weaviate successfully.")
 
     error = None
     try:
@@ -129,6 +134,7 @@ def embed_document_chunk_sync(executor_params, chunk_id, chunk_weaviate_object: 
         chunk_class_name = f"{executor.connection_object.class_name}Chunks"
         collection = c.collections.get(chunk_class_name)
         uuid = collection.data.insert(properties=chunk_weaviate_object)
+        print(f"[Chunk Embedder.embed_document_chunk_sync]: Chunk inserted successfully.")
         if not uuid:
             error = "Error inserting the chunk into Weaviate"
 
@@ -136,15 +142,18 @@ def embed_document_chunk_sync(executor_params, chunk_id, chunk_weaviate_object: 
         chunk_orm_object = KnowledgeBaseDocumentChunk.objects.filter(id=chunk_id).first()
         chunk_orm_object.chunk_uuid = str(uuid)
         chunk_orm_object.save()
+        print(f"[Chunk Embedder.embed_document_chunk_sync]: Chunk saved to the ORM successfully.")
 
         # add the chunk to the document chunks
         document = chunk_orm_object.document
         document.document_chunks.add(chunk_orm_object)
         document.save()
+        print(f"[Chunk Embedder.embed_document_chunk_sync]: Chunk saved to the ORM successfully.")
 
     except Exception as e:
         error = f"[document_chunk_embedder.embed_document_chunk_sync] Error embedding the chunk: {e}"
         print(error)
+    print(f"[Chunk Embedder.embed_document_chunk_sync]: Exiting the function.")
     return error
 
 
@@ -156,7 +165,8 @@ def embed_memory_chunk_sync(executor_params, chunk_id, chunk_weaviate_object: di
     executor = MemoryExecutor(connection=connection_orm_object)
     c = executor.connect_c()
     if not c:
-        print(f"[Memory Chunk Embedder]: Error while connecting to Weaviate")
+        print(f"[Memory Chunk Embedder.embed_memory_chunk_sync]: Error while connecting to Weaviate")
+    print(f"[Memory Chunk Embedder.embed_memory_chunk_sync]: Connected to Weaviate successfully.")
 
     error = None
     try:
@@ -164,6 +174,7 @@ def embed_memory_chunk_sync(executor_params, chunk_id, chunk_weaviate_object: di
         chunk_class_name = f"{executor.connection_object.class_name}Chunks"
         collection = c.collections.get(chunk_class_name)
         uuid = collection.data.insert(properties=chunk_weaviate_object)
+        print(f"[Memory Chunk Embedder.embed_memory_chunk_sync]: Memory chunk inserted successfully.")
         if not uuid:
             error = "Error inserting the memory chunk into Weaviate"
 
@@ -171,6 +182,7 @@ def embed_memory_chunk_sync(executor_params, chunk_id, chunk_weaviate_object: di
         chunk_orm_object = ContextHistoryMemoryChunk.objects.filter(id=chunk_id).first()
         chunk_orm_object.chunk_uuid = str(uuid)
         chunk_orm_object.save()
+        print(f"[Memory Chunk Embedder.embed_memory_chunk_sync]: Memory chunk saved to the ORM successfully.")
 
         # add the chunk to the document chunks
         memory_object = chunk_orm_object.memory
@@ -189,6 +201,7 @@ def embed_document_chunks_helper(executor_params, chunks: list, path: str, docum
     errors = []
     connection_id = executor_params["connection_id"]
     connection_orm_object = DocumentKnowledgeBaseConnection.objects.get(id=connection_id)
+    print(f"[document_chunk_embedder.embed_document_chunks_helper] Embedding chunks...")
     try:
         for i, chunk in enumerate(chunks):
             chunk_id, error = build_chunk_orm_structure(
@@ -226,6 +239,7 @@ def embed_document_chunks_helper(executor_params, chunks: list, path: str, docum
         add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.SAVED_CHUNKS)
     except Exception as e:
         errors.append(f"[document_chunk_embedder.embed_document_chunks_helper] Error embedding the chunks: {e}")
+    print(f"[document_chunk_embedder.embed_document_chunks_helper] Exiting the function.")
     return errors
 
 
@@ -268,4 +282,5 @@ def embed_memory_chunks_helper(executor_params, chunks: list, memory_id: int, me
                 continue
     except Exception as e:
         errors.append(f"[document_chunk_embedder.embed_memory_chunks_helper] Error embedding the memory chunks: {e}")
+    print(f"[document_chunk_embedder.embed_memory_chunks_helper] Exiting the function.")
     return errors

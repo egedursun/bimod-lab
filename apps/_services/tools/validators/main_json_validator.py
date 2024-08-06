@@ -12,4 +12,5 @@ def validate_main_tool_json(tool_usage_json: dict):
                     The 'tool' field is missing from the tool_usage_json. Please make sure you are defining the tool
                     name in the tool_usage_json.
                 """
+    print(f"[main_json_validator.validate_main_tool_json] Validation is successful.")
     return None

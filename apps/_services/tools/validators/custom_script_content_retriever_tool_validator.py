@@ -14,4 +14,5 @@ def validate_custom_script_retriever_tool_json(tool_usage_json: dict):
             mandatory for using the Custom Script Content Retriever tool. Please make sure you are defining the 'custom_script_reference_id'
             field in the parameters field of the tool_usage_json.
         """
+    print(f"[custom_script_content_retriever_tool_validator.validate_custom_script_retriever_tool_json] Validation is successful.")
     return None

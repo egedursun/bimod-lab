@@ -23,10 +23,10 @@ class MultimodalChatAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if obj.assistant.context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE:
             if obj.assistant.vectorizer_name is None:
-                print("The assistant does not have a vectorizer name set.")
+                print("[MultimodalChatAdmin.save_model] The assistant does not have a vectorizer name set.")
                 return
             if obj.assistant.vectorizer_api_key is None:
-                print("The assistant does not have a vectorizer API key set.")
+                print("[MultimodalChatAdmin.save_model] The assistant does not have a vectorizer API key set.")
                 return
         super().save_model(request, obj, form, change)
 

@@ -18,7 +18,7 @@ def start_endpoint_for_assistant(assistant):
     urlpatterns += [
         path(endpoint_local, ExportAssistantAPIView.as_view(), name=f'export_assistant_{assistant.id}')
     ]
-    print(f"Started endpoint for assistant {assistant.assistant.name} at {endpoint_local}")
+    print(f"[start_exported_assistants.initialize_endpoints] Started endpoint for assistant {assistant.assistant.name} at {endpoint_local}")
 
 
 def initialize_endpoints():
@@ -26,7 +26,7 @@ def initialize_endpoints():
         if assistant.is_online:
             start_endpoint_for_assistant(assistant)
         else:
-            print(f"Export assistant {assistant.assistant.name} is offline. Skipping...")
+            print(f"[start_exported_assistants.initialize_endpoints] Export assistant {assistant.assistant.name} is offline. Skipping...")
 
 
 class Command(BaseCommand):

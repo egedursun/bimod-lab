@@ -13,6 +13,5 @@ client = MongoClient(connection_string, server_api=ServerApi('1'), tlsCAFile=cer
 # Send a ping to confirm a successful connection
 try:
     col_names = client.get_database('sample_mflix').list_collection_names()
-    print(col_names)
 except Exception as e:
-    print(e)
+    pass

@@ -1,15 +1,21 @@
+import io
+import os
 from uuid import uuid4
+
+import boto3
 import filetype
+from PIL import Image
 
 from apps._services.config.costs_map import ToolCostsMap
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
-
+from config import settings
+from config.settings import MEDIA_URL
 
 UNCLASSIFIED_FILE_EXTENSION = ".bin"
 
 
-GENERATED_FILES_ROOT_PATH = "media/generated/files/"
-GENERATED_IMAGES_ROOT_PATH = "media/generated/images/"
+GENERATED_FILES_ROOT_PATH = "generated/files/"
+GENERATED_IMAGES_ROOT_PATH = "generated/images/"
 
 DEFAULT_PATH_FREEFORM_USER_SKETCH = "free_form__user_sketch__"
 DEFAULT_PATH_EDIT_IMAGE_ORIGINAL = "edit_image__original_version__"
@@ -26,6 +32,7 @@ class StorageExecutor:
     def generate_save_name(extension):
         generated_uuid = str(uuid4())
         additional_uuid = str(uuid4())
+        print(f"[StorageExecutor.generate_save_name] Generated UUID: {generated_uuid}, Additional UUID: {additional_uuid}")
         return f"{generated_uuid}_{additional_uuid}.{extension}"
 
     @staticmethod
@@ -39,10 +46,16 @@ class StorageExecutor:
             extension = remote_name.split(".")[-1]
 
         save_name = StorageExecutor.generate_save_name(extension=extension)
-        full_uri = f"{GENERATED_FILES_ROOT_PATH}{save_name}"
+        s3_uri = f"{GENERATED_FILES_ROOT_PATH}{save_name}"
+        full_uri = f"{MEDIA_URL}{s3_uri}"
+        print(f"[StorageExecutor.save_file_and_provide_full_uri] Full URI: {full_uri}")
+        print(f"[StorageExecutor.save_file_and_provide_full_uri] S3 URI: {s3_uri}")
         try:
-            with open(full_uri, "wb") as file:
-                file.write(file_bytes)
+            # save the file to the s3 bucket
+            boto3_client = boto3.client('s3')
+            bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+            boto3_client.put_object(Bucket=bucket_name, Key=s3_uri, Body=file_bytes)
+            print(f"[StorageExecutor.save_file_and_provide_full_uri] File saved successfully.")
         except Exception as e:
             print(f"[StorageExecutor.save_file_and_provide_full_uri] Error occurred while saving file: {str(e)}")
             return None
@@ -52,15 +65,22 @@ class StorageExecutor:
     def save_sketch_images(sketch_image_dict):
         sketch_image_bytes = sketch_image_dict.get("sketch_image")
 
-        guess_file_type_sketch_image = filetype.guess(sketch_image_bytes)
-        if guess_file_type_sketch_image is None:
-            guess_file_type_sketch_image = UNCLASSIFIED_FILE_EXTENSION
-        extension_sketch_image = guess_file_type_sketch_image.extension
-
-        save_name_sketch_image = DEFAULT_PATH_FREEFORM_USER_SKETCH + str(uuid4()) + "." + extension_sketch_image
-        full_uri_sketch_image = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_sketch_image}"
+        save_name_sketch_image = DEFAULT_PATH_FREEFORM_USER_SKETCH + str(uuid4()) + "." + "jpeg"
+        s3_path = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_sketch_image}"
+        full_uri_sketch_image = f"{MEDIA_URL}{s3_path}"
         try:
-            with open(full_uri_sketch_image, "wb") as image: image.write(sketch_image_bytes)
+            # save the image to the s3 bucket
+            boto3_client = boto3.client('s3')
+            bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+            # compress the image and assign to a new variable
+            image = Image.open(io.BytesIO(sketch_image_bytes))
+            if image.mode == 'RGBA':
+                image = image.convert('RGB')
+            output_io = io.BytesIO()
+            image.save(output_io, format='JPEG', quality=80)
+            compressed_image_bytes = output_io.getvalue()
+            boto3_client.put_object(Bucket=bucket_name, Key=s3_path, Body=compressed_image_bytes)
+            print(f"[StorageExecutor.save_sketch_images] Sketch image saved successfully.")
         except Exception as e:
             print(f"[StorageExecutor.save_sketch_images] Error occurred while saving image: {str(e)}")
             return None, None
@@ -82,14 +102,21 @@ class StorageExecutor:
 
         save_name_edit_image = DEFAULT_PATH_EDIT_IMAGE_ORIGINAL + str(uuid4()) + "." + extension_edit_image
         save_name_edit_image_mask = DEFAULT_PATH_EDIT_IMAGE_MASKED + str(uuid4()) + "." + extension_edit_image_mask
-        full_uri_edit_image = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_edit_image}"
-        full_uri_edit_image_mask = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_edit_image_mask}"
+        boto3_uri_edit_image = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_edit_image}"
+        boto3_uri_edit_image_mask = f"{GENERATED_IMAGES_ROOT_PATH}{save_name_edit_image_mask}"
+        full_uri_edit_image = f"{MEDIA_URL}{boto3_uri_edit_image}"
+        full_uri_edit_image_mask = f"{MEDIA_URL}{boto3_uri_edit_image_mask}"
         try:
-            with open(full_uri_edit_image, "wb") as image: image.write(edit_image_bytes)
-            with open(full_uri_edit_image_mask, "wb") as image_mask: image_mask.write(edit_image_mask_bytes)
+            # save the image to the s3 bucket
+            boto3_client = boto3.client('s3')
+            bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+            boto3_client.put_object(Bucket=bucket_name, Key=boto3_uri_edit_image, Body=edit_image_bytes)
+            boto3_client.put_object(Bucket=bucket_name, Key=boto3_uri_edit_image_mask, Body=edit_image_mask_bytes)
+            print(f"[StorageExecutor.save_edit_images] Edit images saved successfully.")
         except Exception as e:
             print(f"[StorageExecutor.save_edit_images] Error occurred while saving image: {str(e)}")
             return None, None
+        print(f"[StorageExecutor.save_edit_images] Returning full URIs: {full_uri_edit_image}, {full_uri_edit_image_mask}")
         return [full_uri_edit_image, full_uri_edit_image_mask]
 
     @staticmethod
@@ -99,10 +126,16 @@ class StorageExecutor:
             guess_file_type = UNCLASSIFIED_FILE_EXTENSION
         extension = guess_file_type.extension
         save_name = StorageExecutor.generate_save_name(extension=extension)
-        full_uri = f"{GENERATED_IMAGES_ROOT_PATH}{save_name}"
+        s3_uri = f"{GENERATED_IMAGES_ROOT_PATH}{save_name}"
+        full_uri = f"{MEDIA_URL}{s3_uri}"
+        print(f"[StorageExecutor.save_image_and_provide_full_uri] Full URI: {full_uri}")
+        print(f"[StorageExecutor.save_image_and_provide_full_uri] S3 URI: {s3_uri}")
         try:
-            with open(full_uri, "wb") as image:
-                image.write(image_bytes)
+            # save the image to the s3 bucket
+            boto3_client = boto3.client('s3')
+            bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+            boto3_client.put_object(Bucket=bucket_name, Key=s3_uri, Body=image_bytes)
+            print(f"[StorageExecutor.save_image_and_provide_full_uri] Image saved successfully.")
         except Exception as e:
             print(f"[StorageExecutor.save_image_and_provide_full_uri] Error occurred while saving image: {str(e)}")
             return None
@@ -115,6 +148,7 @@ class StorageExecutor:
             full_uri = StorageExecutor.save_file_and_provide_full_uri(file_bytes, remote_name)
             if full_uri is not None:
                 full_uris.append(full_uri)
+        print(f"[StorageExecutor.save_files_and_provide_full_uris] Full URIs: {full_uris}")
         return full_uris
 
     @staticmethod
@@ -124,6 +158,7 @@ class StorageExecutor:
             full_uri = StorageExecutor.save_image_and_provide_full_uri(image_bytes)
             if full_uri is not None:
                 full_uris.append(full_uri)
+        print(f"[StorageExecutor.save_images_and_provide_full_uris] Full URIs: {full_uris}")
         return full_uris
 
     def interpret_file(self, full_file_paths: list, query_string: str):
@@ -132,17 +167,20 @@ class StorageExecutor:
             openai_client = InternalOpenAIClient(
                 assistant=self.connection_object.assistant,
                 multimodal_chat=self.chat)
+            print(f"[StorageExecutor.interpret_file] OpenAI client has been created.")
         except Exception as e:
             print(f"[StorageExecutor.interpret_file] Error occurred while creating the OpenAI client: {str(e)}")
             return None
         texts, files, images = openai_client.ask_about_file(full_file_paths=full_file_paths,
                                                             query_string=query_string,
                                                             interpretation_temperature=self.connection_object.interpretation_temperature)
+        print(f"[StorageExecutor.interpret_file] Texts, Files, and Images are received.")
         # Save the files and files
         full_uris = self.save_files_and_provide_full_uris(files)
         full_image_uris = self.save_images_and_provide_full_uris(images)
         # Prepare the response in the dictionary format
         response = {"response": texts, "file_uris": full_uris, "image_uris": full_image_uris}
+        print(f"[StorageExecutor.interpret_file] Response has been prepared.")
 
         transaction = LLMTransaction(
             organization=self.connection_object.assistant.organization,
@@ -156,6 +194,7 @@ class StorageExecutor:
             is_tool_cost=True
         )
         transaction.save()
+        print(f"[StorageExecutor.interpret_file] Transaction has been saved.")
         return response
 
     def interpret_image(self, full_image_paths: list, query_string: str):
@@ -164,12 +203,14 @@ class StorageExecutor:
         try:
             openai_client = InternalOpenAIClient(assistant=self.connection_object.assistant,
                                                  multimodal_chat=self.chat)
+            print(f"[StorageExecutor.interpret_image] OpenAI client has been created.")
         except Exception as e:
             print(f"[StorageExecutor.interpret_image] Error occurred while creating the OpenAI client: {str(e)}")
             return None
         response = openai_client.ask_about_image(full_image_paths=full_image_paths, query_string=query_string,
                                                  interpretation_temperature=self.connection_object.interpretation_temperature,
                                                  interpretation_maximum_tokens=self.connection_object.interpretation_maximum_tokens)
+        print(f"[StorageExecutor.interpret_image] Response has been received.")
 
         transaction = LLMTransaction(
             organization=self.connection_object.assistant.organization,
@@ -183,4 +224,5 @@ class StorageExecutor:
             is_tool_cost=True
         )
         transaction.save()
+        print(f"[StorageExecutor.interpret_image] Transaction has been saved.")
         return response

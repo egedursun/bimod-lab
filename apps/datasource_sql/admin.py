@@ -61,7 +61,7 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
             cursor.close()
             connection.close()
         except Exception as e:
-            print(f"Error retrieving PostgreSQL schema: {e}")
+            print(f"[SQLDatabaseConnectionAdmin.retrieve_postgresql_schema] Error retrieving PostgreSQL schema: {e}")
             return {}
         return schema
 
@@ -95,7 +95,7 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
             cursor.close()
             connection.close()
         except Exception as e:
-            print(f"Error retrieving MySQL schema: {e}")
+            print(f"[SQLDatabaseConnectionAdmin.retrieve_mysql_schema] Error retrieving MySQL schema: {e}")
             return {}
         return schema
 

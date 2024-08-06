@@ -1,3 +1,4 @@
+import boto3
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
@@ -13,6 +14,8 @@ from apps.datasource_knowledge_base.models import KNOWLEDGE_BASE_SYSTEMS, Docume
 from apps.datasource_knowledge_base.utils import generate_document_uri
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
+from config import settings
+from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
 
@@ -44,6 +47,7 @@ class DocumentKnowledgeBaseCreateView(LoginRequiredMixin, TemplateView):
         if form.is_valid():
             form.save()
             messages.success(request, "Knowledge Base created successfully.")
+            print('[DocumentKnowledgeBaseCreateView.post] Knowledge Base created successfully.')
             return redirect('datasource_knowledge_base:list')
         else:
             messages.error(request, "Error creating Knowledge Base. Please check the form for errors: %s" % form.errors)
@@ -111,6 +115,7 @@ class DocumentKnowledgeBaseUpdateView(LoginRequiredMixin, TemplateView):
         if form.is_valid():
             form.save()
             messages.success(request, "Knowledge Base updated successfully.")
+            print('[DocumentKnowledgeBaseUpdateView.post] Knowledge Base updated successfully.')
             return redirect('datasource_knowledge_base:list')
         else:
             messages.error(request, "Error updating Knowledge Base. Please check the form for errors.")
@@ -138,7 +143,7 @@ class DocumentKnowledgeBaseDeleteView(LoginRequiredMixin, DeleteView):
         if PermissionNames.DELETE_KNOWLEDGE_BASES not in user_permissions:
             messages.error(request, "You do not have permission to delete Knowledge Bases.")
             return redirect('datasource_knowledge_base:list')
-
+        print('[DocumentKnowledgeBaseDeleteView.post] Deleting Knowledge Base')
         return super().post(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -182,14 +187,16 @@ class AddDocumentView(LoginRequiredMixin, TemplateView):
                 document_uri = generate_document_uri(assistant_base_directory, file.name, file_type)
                 file_paths.append(document_uri)
                 add_document_upload_log(document_full_uri=document_uri, log_name=DocumentUploadStatusNames.STAGED)
-                # SAVE the File to the document_uri
-                with open(document_uri, 'wb+') as destination:
-                    file_data = file.read()
-                    destination.write(file_data)
-                    add_document_upload_log(document_full_uri=document_uri, log_name=DocumentUploadStatusNames.UPLOADED)
+                # SAVE the File to s3
+                boto3_client = boto3.client('s3')
+                bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+                s3_path = f"{document_uri.split(MEDIA_URL)[1]}"
+                boto3_client.put_object(Bucket=bucket_name, Key=s3_path, Body=file)
+                add_document_upload_log(document_full_uri=document_uri, log_name=DocumentUploadStatusNames.UPLOADED)
             # handle the task asynchronously inside the knowledge base system
             KnowledgeBaseSystemDecoder.get(knowledge_base).index_documents(document_paths=file_paths)
             messages.success(request, 'Documents uploaded successfully.')
+            print('[AddDocumentView.post] Documents uploaded successfully.')
             return redirect('datasource_knowledge_base:list_documents')
         else:
             messages.error(request, 'Please select a knowledge base and upload documents.')
@@ -238,6 +245,7 @@ class ListDocumentsView(LoginRequiredMixin, TemplateView):
         if document_ids:
             KnowledgeBaseDocument.objects.filter(id__in=document_ids).delete()
             messages.success(request, 'Selected documents deleted successfully.')
+            print('[ListDocumentsView.post] Selected documents deleted successfully.')
         return redirect('datasource_knowledge_base:list_documents')
 
 
@@ -264,4 +272,5 @@ class DeleteAllDocumentsView(LoginRequiredMixin, TemplateView):
 
         KnowledgeBaseDocument.objects.filter(knowledge_base_id=knowledge_base_id).delete()
         messages.success(request, 'All documents in the selected knowledge base have been deleted successfully.')
+        print('[DeleteAllDocumentsView.post] All documents in the selected knowledge base have been deleted successfully.')
         return redirect('datasource_knowledge_base:list_documents')

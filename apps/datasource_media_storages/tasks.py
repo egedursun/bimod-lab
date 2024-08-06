@@ -1,9 +1,12 @@
-import os
+
 import uuid
 
+import boto3
 import filetype
 from celery import shared_task
 
+from config import settings
+from config.settings import MEDIA_URL
 
 MEDIA_CATEGORIES = (
     ('image', 'Image'),
@@ -122,10 +125,12 @@ def upload_file_to_storage(file_bytes: bytes, full_path: str, media_category: st
     else:
         print(f"Invalid media category: {media_category}, skipping file...")
         return False
+
     try:
-        with open(str("./"+full_path), "wb+") as file:
-            # write the file
-            file.write(file_bytes)
+        # here
+        s3_client = boto3.client('s3')
+        bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+        s3_client.put_object(Bucket=bucket_name, Key=full_path, Body=file_bytes)
     except Exception as e:
         print(f"Error uploading file to storage: {e}")
         return False

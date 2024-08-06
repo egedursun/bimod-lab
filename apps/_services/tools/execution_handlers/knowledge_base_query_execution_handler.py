@@ -5,11 +5,12 @@ from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnectio
 def execute_knowledge_base_query(connection_id: int, query: str, alpha: float):
 
     knowledge_base_connection = DocumentKnowledgeBaseConnection.objects.get(id=connection_id)
-
+    print(f"[knowledge_base_query_execution_handler.execute_knowledge_base_query] Executing the knowledge base query: {query}.")
     try:
         client = KnowledgeBaseSystemDecoder().get(connection=knowledge_base_connection)
         knowledge_base_response = client.search_hybrid(query=query, alpha=alpha)
     except Exception as e:
         error = f"[knowledge_base_query_execution_handler.execute_knowledge_base_query] Error occurred while executing the knowledge base query: {str(e)}"
         return error
+    print(f"[knowledge_base_query_execution_handler.execute_knowledge_base_query] Knowledge base query executed successfully.")
     return knowledge_base_response

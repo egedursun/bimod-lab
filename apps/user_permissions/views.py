@@ -243,6 +243,7 @@ class ListPermissionsView(LoginRequiredMixin, TemplateView):
         for permission_id in delete_requests:
             permission = get_object_or_404(UserPermission, id=permission_id)
             permission.delete()
+        print('[ListPermissionsView.post] Permissions updated successfully.')
         messages.success(request, 'Permissions updated successfully!')
         # Update only the relevant part of the page.
         return render(request, self.template_name, self.get_context_data(**kwargs))

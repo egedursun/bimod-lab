@@ -83,27 +83,43 @@ class WeaviateExecutor:
         ##################################################
 
     def create_weaviate_classes(self):
-        _ = self.connect_c()
-        output = create_classes_helper(executor=self)
-        self.close_c()
+        try:
+            _ = self.connect_c()
+            output = create_classes_helper(executor=self)
+            self.close_c()
+        except Exception as e:
+            print(f"[WeaviateExecutor.create_weaviate_classes] Error creating classes: {e}")
+            return None
         return output
 
     def delete_weaviate_classes(self, class_name: str):
-        _ = self.connect_c()
-        output = delete_weaviate_class_helper(executor=self, class_name=class_name)
-        self.close_c()
+        try:
+            _ = self.connect_c()
+            output = delete_weaviate_class_helper(executor=self, class_name=class_name)
+            self.close_c()
+        except Exception as e:
+            print(f"[WeaviateExecutor.delete_weaviate_classes] Error deleting classes: {e}")
+            return None
         return output
 
     def delete_weaviate_document(self, class_name: str, document_uuid: str):
-        _ = self.connect_c()
-        output = delete_document_helper(executor=self, class_name=class_name, document_uuid=document_uuid)
-        self.close_c()
+        try:
+            _ = self.connect_c()
+            output = delete_document_helper(executor=self, class_name=class_name, document_uuid=document_uuid)
+            self.close_c()
+        except Exception as e:
+            print(f"[WeaviateExecutor.delete_weaviate_document] Error deleting document: {e}")
+            return None
         return output
 
     def index_documents(self, document_paths: list | str):
-        _ = self.connect_c()
-        index_document_helper.delay(connection_id=self.connection_object.id, document_paths=document_paths)
-        self.close_c()
+        try:
+            _ = self.connect_c()
+            index_document_helper.delay(connection_id=self.connection_object.id, document_paths=document_paths)
+            self.close_c()
+        except Exception as e:
+            print(f"[WeaviateExecutor.index_documents] Error indexing documents: {e}")
+            return None
         return
 
     def document_loader(self, file_path, file_type):
@@ -140,15 +156,23 @@ class WeaviateExecutor:
         return result
 
     def chunk_document(self, connection_id, document: dict):
-        chunks = split_document_into_chunks(connection_id, document)
+        try:
+            chunks = split_document_into_chunks(connection_id, document)
+        except Exception as e:
+            print(f"[WeaviateExecutor.chunk_document] Error chunking the document: {e}")
+            return None
         return chunks
 
     def embed_document(self, document: dict, path: str, number_of_chunks: int = 0):
         executor_params = {"client": {"host_url": self.connection_object.host_url,
                                       "api_key": self.connection_object.provider_api_key},
                            "connection_id": self.connection_object.id}
-        doc_id, doc_uuid, error = embed_document_data(executor_params=executor_params, document=document, path=path,
-                                                      number_of_chunks=number_of_chunks)
+        try:
+            doc_id, doc_uuid, error = embed_document_data(executor_params=executor_params, document=document, path=path,
+                                                          number_of_chunks=number_of_chunks)
+        except Exception as e:
+            print(f"[WeaviateExecutor.embed_document] Error embedding the document: {e}")
+            return None, None, None
         return doc_id, doc_uuid, error
 
     def embed_document_chunks(self, chunks: list, path: str, document_id: int, document_uuid: str):
@@ -156,8 +180,12 @@ class WeaviateExecutor:
             "client": {"host_url": self.connection_object.host_url,
                        "api_key": self.connection_object.provider_api_key},
             "connection_id": self.connection_object.id}
-        errors = embed_document_chunks(executor_params=executor_params, chunks=chunks, path=path,
-                                       document_id=document_id, document_uuid=document_uuid)
+        try:
+            errors = embed_document_chunks(executor_params=executor_params, chunks=chunks, path=path,
+                                           document_id=document_id, document_uuid=document_uuid)
+        except Exception as e:
+            print(f"[WeaviateExecutor.embed_document_chunks] Error embedding the document chunks: {e}")
+            return
         return errors
 
     def search_hybrid(self, query: str, alpha: float):
@@ -182,16 +210,20 @@ class WeaviateExecutor:
                     cleaned_object[k] = v
             cleaned_documents.append(cleaned_object)
 
-        transaction = LLMTransaction(
-            organization=self.connection_object.assistant.organization,
-            model=self.connection_object.assistant.llm_model,
-            responsible_user=None,
-            responsible_assistant=self.connection_object.assistant,
-            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=ToolCostsMap.KnowledgeBaseExecutor.COST,
-            transaction_type=ChatRoles.SYSTEM,
-            transaction_source=TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH,
-            is_tool_cost=True
-        )
-        transaction.save()
+        try:
+            transaction = LLMTransaction(
+                organization=self.connection_object.assistant.organization,
+                model=self.connection_object.assistant.llm_model,
+                responsible_user=None,
+                responsible_assistant=self.connection_object.assistant,
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                llm_cost=ToolCostsMap.KnowledgeBaseExecutor.COST,
+                transaction_type=ChatRoles.SYSTEM,
+                transaction_source=TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH,
+                is_tool_cost=True
+            )
+            transaction.save()
+        except Exception as e:
+            print(f"[WeaviateExecutor.search_hybrid] Error occurred while saving the transaction: {str(e)}")
+            return None
         return cleaned_documents

@@ -39,6 +39,7 @@ class CreateCustomScriptView(LoginRequiredMixin, TemplateView):
             script_content = request.POST.get('code_text', '')
             custom_script.script_content = script_content
             custom_script.save()
+            print('[CreateCustomScriptView.post] Custom Script created successfully.')
             messages.success(request, "Custom Script created successfully!")
             return redirect('mm_scripts:list')
         else:
@@ -140,6 +141,7 @@ class ManageCustomScriptAssistantConnectionsView(LoginRequiredMixin, TemplateVie
                 if reference_id:
                     reference = CustomScriptReference.objects.get(id=reference_id)
                     reference.delete()
+                    print(f"Script reference removed from assistant '{assistant.name}'.")
                     messages.success(request, f"Script reference removed from assistant '{assistant.name}'.")
         except Assistant.DoesNotExist:
             messages.error(request, "Assistant not found.")
@@ -229,6 +231,7 @@ class ScriptStoreView(LoginRequiredMixin, TemplateView):
                 CustomScriptReference.objects.create(
                     assistant=assistant, custom_script=custom_script, created_by_user=request.user
                 )
+                print(f"Script '{custom_script.name}' assigned to assistant '{assistant.name}'.")
                 messages.success(request, f"Script '{custom_script.name}' assigned to assistant '{assistant.name}'.")
         else:
             messages.error(request, "Invalid input. Please try again.")

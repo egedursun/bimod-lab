@@ -1,5 +1,8 @@
+import boto3
 from celery import shared_task
 
+from config import settings
+from config.settings import MEDIA_URL
 
 MODEL_OBJECT_CATEGORIES = (
     ('pth', 'PyTorch Model'),
@@ -15,8 +18,11 @@ def upload_model_to_ml_model_base(file_bytes: bytes, full_path: str):
         return False
 
     try:
-        with open(str("./"+full_path), "wb+") as file:
-            file.write(file_bytes)
+        # upload to s3
+        boto3_client = boto3.client('s3')
+        bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+        s3_path = full_path.split(MEDIA_URL)[-1]
+        boto3_client.put_object(Bucket=bucket_name, Key=s3_path, Body=file_bytes)
     except Exception as e:
         print(f"[tasks.upload_model_to_ml_model_base] Error uploading file to storage: {e}")
         return False

@@ -70,4 +70,5 @@ def validate_browser_execution_tool_json(tool_usage_json: dict):
             This field is mandatory for using the Browser Execution tool. Please make sure you are defining the 'action' field in
             the parameters field of the tool_usage_json.
         """
+    print("[validate_browser_execution_tool_json] The Browser Execution tool JSON is valid.")
     return None

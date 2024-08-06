@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, DeleteView
 
 from apps.starred_messages.models import StarredMessage
 from apps.user_permissions.models import UserPermission, PermissionNames
-from config.settings import BASE_URL
+from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
 
@@ -26,7 +26,7 @@ class ListStarredMessageView(TemplateView, LoginRequiredMixin):
             if assistant_name not in org_assistants_messages[org_name]:
                 org_assistants_messages[org_name][assistant_name] = []
             org_assistants_messages[org_name][assistant_name].append(message)
-        context.update({'org_assistants_messages': org_assistants_messages, 'base_url': BASE_URL})
+        context.update({'org_assistants_messages': org_assistants_messages, 'base_url': MEDIA_URL})
         return context
 
 
@@ -52,6 +52,7 @@ class DeleteStarredMessageView(LoginRequiredMixin, DeleteView):
             messages.error(request, "You do not have permission to delete starred messages.")
             return redirect('starred_messages:list')
         starred_message.delete()
+        print('[DeleteStarredMessageView.post] Starred message deleted successfully.')
         success_message = "Starred message deleted successfully."
         # assign the relevant message's starred field to False
         starred_message.chat_message.starred = False

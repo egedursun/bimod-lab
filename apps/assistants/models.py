@@ -1,10 +1,12 @@
-import os
+
 import random
 
+import boto3
 from django.db import models
 
 from apps.assistants.utils import generate_random_string
-
+from config import settings
+from config.settings import MEDIA_URL
 
 ASSISTANT_RESPONSE_LANGUAGES = [
     # User's question language
@@ -108,33 +110,67 @@ class Assistant(models.Model):
     def __str__(self):
         return self.name
 
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        s3_client = boto3.client('s3')
+        bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+        base_s3_url = f"https://{bucket_name}.s3.amazonaws.com/"
+        print(f"[Assistant.save] Saving the assistant: {self.name}.")
+
         if self.document_base_directory is None:
-            dir_name = f"media/documents/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{self.generate_random_name_suffix()}/"
-            self.document_base_directory = dir_name
-            os.system(f"mkdir -p {dir_name}")
-            os.system(f"touch {dir_name}/__init__.py")
+            try:
+                dir_name = f"documents/{str(self.organization.id)}/{str(self.llm_model.id)}/{self.generate_random_name_suffix()}/"
+                full_uri = f"{base_s3_url}{dir_name}"
+                s3_client.put_object(Bucket=bucket_name, Key=f"{dir_name}/")
+                self.document_base_directory = full_uri
+            except Exception as e:
+                print(f"[Assistant.save] There has been an error in creating the document directory: {e}")
+
         if self.storages_base_directory is None:
-            dir_name = f"media/storages/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{self.generate_random_name_suffix()}/"
-            self.storages_base_directory = dir_name
-            os.system(f"mkdir -p {dir_name}")
-            os.system(f"touch {dir_name}/__init__.py")
+            try:
+                dir_name = f"storages/{str(self.organization.id)}/{str(self.llm_model.id)}/{self.generate_random_name_suffix()}/"
+                full_uri = f"{base_s3_url}{dir_name}"
+                s3_client.put_object(Bucket=bucket_name, Key=f"{dir_name}/")
+                self.storages_base_directory = full_uri
+            except Exception as e:
+                print(f"[Assistant.save] There has been an error in creating the storages directory: {e}")
+
         if self.ml_models_base_directory is None:
-            dir_name = f"media/ml_models/{str(self.organization.id)}/{str(self.llm_model.id)}/{str(self.id)}_{self.generate_random_name_suffix()}/"
-            self.ml_models_base_directory = dir_name
-            os.system(f"mkdir -p {dir_name}")
-            os.system(f"touch {dir_name}/__init__.py")
+            try:
+                dir_name = f"ml_models/{str(self.organization.id)}/{str(self.llm_model.id)}/{self.generate_random_name_suffix()}/"
+                full_uri = f"{base_s3_url}{dir_name}"
+                s3_client.put_object(Bucket=bucket_name, Key=f"{dir_name}/")
+                self.ml_models_base_directory = full_uri
+            except Exception as e:
+                print(f"[Assistant.save] There has been an error in creating the ml_models directory: {e}")
+
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
-        # Remove the document directory
+        s3_client = boto3.client('s3')
+        bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+        print(f"[Assistant.delete] Deleting the assistant: {self.name}.")
+
+        def delete_s3_directory(full_uri):
+            try:
+                dir_name = full_uri.replace(f"https://{bucket_name}.s3.amazonaws.com/", "")
+                paginator = s3_client.get_paginator('list_objects_v2')
+                pages = paginator.paginate(Bucket=bucket_name, Prefix=dir_name)
+                for page in pages:
+                    if 'Contents' in page:
+                        delete_keys = {'Objects': [{'Key': obj['Key']} for obj in page['Contents']]}
+                        s3_client.delete_objects(Bucket=bucket_name, Delete=delete_keys)
+            except Exception as e:
+                print(f"[Assistant.delete] There has been an error in deleting the directory {full_uri}: {e}")
+
         if self.document_base_directory is not None:
-            os.system(f"rm -rf {self.document_base_directory}")
-        # Remove the storages directory
+            delete_s3_directory(self.document_base_directory)
+
         if self.storages_base_directory is not None:
-            os.system(f"rm -rf {self.storages_base_directory}")
+            delete_s3_directory(self.storages_base_directory)
+
+        if self.ml_models_base_directory is not None:
+            delete_s3_directory(self.ml_models_base_directory)
+
         super().delete(using, keep_parents)
 
     class Meta:
@@ -153,4 +189,5 @@ class Assistant(models.Model):
 
     @staticmethod
     def generate_random_name_suffix():
-        return f"{str(random.randint(1_000_000, 9_999_999))}"
+        print(f"[Assistant.generate_random_name_suffix] Generating a random name suffix.")
+        return f"{str(random.randint(1_000_000_000, 9_999_999_999))}"

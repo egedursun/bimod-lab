@@ -15,7 +15,7 @@ def send_email(subject, email, html_content):
         email.attach_alternative(html_content, "text/html")
         email.send()
     except Exception as e:
-        print(f"Failed to send email: {e}")
+        print(f"[helpers.send_email] Failed to send email: {e}")
 
 
 def get_absolute_url(path):

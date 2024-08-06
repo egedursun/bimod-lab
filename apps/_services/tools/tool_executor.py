@@ -50,6 +50,7 @@ from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.mm_functions.models import CustomFunction
 from apps.multimodal_chat.models import MultimodalChat
+from config.settings import MEDIA_URL
 
 
 class ExecutionTypesNames:
@@ -67,9 +68,12 @@ class ToolExecutor:
 
     def use_tool(self):
         from apps._services.tools.execution_handlers.storage_query_execution_handler import execute_storage_query
-
+        print("[ToolExecutor.use_tool] Tool Usage JSON is being decoded...")
         try:
-            self.tool_usage_json = json.loads(self.tool_usage_json_str)
+            if isinstance(self.tool_usage_json_str, dict):
+                self.tool_usage_json = self.tool_usage_json_str
+            else:
+                self.tool_usage_json = json.loads(self.tool_usage_json_str)
         except Exception as e:
             print("[ToolExecutor.use_tool] Error decoding the JSON: ", e)
             return get_json_decode_error_log(error_logs=str(e)), None, None, None
@@ -78,6 +82,7 @@ class ToolExecutor:
         file_uris, image_uris = [], []
 
         error = validate_main_tool_json(tool_usage_json=self.tool_usage_json)
+        print("[ToolExecutor.use_tool] Tool Usage JSON has been validated.")
         if error: return error, None, None, None
 
         tool_name = self.tool_usage_json.get("tool")
@@ -90,6 +95,7 @@ class ToolExecutor:
         ##################################################
         # SQL Query Execution Tool
         if tool_name == ToolTypeNames.SQL_QUERY_EXECUTION:
+            print("[ToolExecutor.use_tool] SQL Query Execution Tool is being executed...")
             error = validate_sql_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             connection_id = self.tool_usage_json.get("parameters").get("database_connection_id")
@@ -101,6 +107,7 @@ class ToolExecutor:
         ##################################################
         # NoSQL Query Execution Tool
         elif tool_name == ToolTypeNames.NOSQL_QUERY_EXECUTION:
+            print("[ToolExecutor.use_tool] NoSQL Query Execution Tool is being executed...")
             error = validate_nosql_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             connection_id = self.tool_usage_json.get("parameters").get("database_connection_id")
@@ -113,6 +120,7 @@ class ToolExecutor:
         ##################################################
         # Knowledge Base Query Execution Tool
         elif tool_name == ToolTypeNames.KNOWLEDGE_BASE_QUERY_EXECUTION:
+            print("[ToolExecutor.use_tool] Knowledge Base Query Execution Tool is being executed...")
             error = validate_knowledge_base_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             connection_id = self.tool_usage_json.get("parameters").get("knowledge_base_connection_id")
@@ -125,6 +133,7 @@ class ToolExecutor:
         ##################################################
         # Vector Chat History Query Execution Tool
         elif tool_name == ToolTypeNames.VECTOR_CHAT_HISTORY_QUERY_EXECUTION:
+            print("[ToolExecutor.use_tool] Vector Chat History Query Execution Tool is being executed...")
             error = validate_context_history_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             connection = ContextHistoryKnowledgeBaseConnection.objects.filter(chat=self.chat,
@@ -144,6 +153,7 @@ class ToolExecutor:
         ##################################################
         # File System Command Execution Tool
         elif tool_name == ToolTypeNames.FILE_SYSTEM_COMMAND_EXECUTION:
+            print("[ToolExecutor.use_tool] File System Command Execution Tool is being executed...")
             error = validate_file_system_command_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             connection_id = self.tool_usage_json.get("parameters").get("file_system_connection_id")
@@ -154,6 +164,7 @@ class ToolExecutor:
         ##################################################
         # Media Storage Query Execution Tool
         elif tool_name == ToolTypeNames.MEDIA_STORAGE_QUERY_EXECUTION:
+            print("[ToolExecutor.use_tool] Media Storage Query Execution Tool is being executed...")
             error = validate_media_storage_query_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             connection_id = self.tool_usage_json.get("parameters").get("media_storage_connection_id")
@@ -168,6 +179,7 @@ class ToolExecutor:
         ##################################################
         # URL File Downloader Tool
         elif tool_name == ToolTypeNames.URL_FILE_DOWNLOADER:
+            print("[ToolExecutor.use_tool] URL File Downloader Tool is being executed...")
             error = validate_url_file_downloader_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             connection_id = self.tool_usage_json.get("parameters").get("media_storage_connection_id")
@@ -178,6 +190,7 @@ class ToolExecutor:
         ##################################################
         # Prediction with ML Model Tool
         elif tool_name == ToolTypeNames.PREDICTION_WITH_ML_MODEL:
+            print("[ToolExecutor.use_tool] Prediction with ML Model Tool is being executed...")
             error = validate_predict_with_ml_model_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             ml_base_connection_id = self.tool_usage_json.get("parameters").get("ml_base_connection_id")
@@ -192,17 +205,19 @@ class ToolExecutor:
         ##################################################
         # Code Interpretation Tool
         elif tool_name == ToolTypeNames.CODE_INTERPRETER:
+            print("[ToolExecutor.use_tool] Code Interpreter Tool is being executed...")
             error = validate_code_interpreter_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             file_paths = self.tool_usage_json.get("parameters").get("file_paths")
             query_string = self.tool_usage_json.get("parameters").get("query")
-            execute_code_response = execute_code_interpreter(assistant_id=self.assistant.id, chat_id=self.chat.id,
+            execute_code_response, file_uris, image_uris = execute_code_interpreter(assistant_id=self.assistant.id, chat_id=self.chat.id,
                                                              file_paths=file_paths, query=query_string)
             code_interpreter_response_raw_str = json.dumps(execute_code_response, sort_keys=True, default=str)
             tool_response += code_interpreter_response_raw_str
         ##################################################
         # Custom Function Executor Tool
         elif tool_name == ToolTypeNames.CUSTOM_FUNCTION_EXECUTOR:
+            print("[ToolExecutor.use_tool] Custom Function Executor Tool is being executed...")
             error = validate_custom_function_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             custom_function_reference_id = self.tool_usage_json.get("parameters").get("custom_function_reference_id")
@@ -215,6 +230,7 @@ class ToolExecutor:
         ##################################################
         # Custom API Executor Tool
         elif tool_name == ToolTypeNames.CUSTOM_API_EXECUTOR:
+            print("[ToolExecutor.use_tool] Custom API Executor Tool is being executed...")
             error = validate_custom_api_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             custom_api_reference_id = self.tool_usage_json.get("parameters").get("custom_api_reference_id")
@@ -230,6 +246,7 @@ class ToolExecutor:
         ##################################################
         # Custom Script Content Retrieval Tool
         elif tool_name == ToolTypeNames.CUSTOM_SCRIPT_CONTENT_RETRIEVAL:
+            print("[ToolExecutor.use_tool] Custom Script Content Retrieval Tool is being executed...")
             error = validate_custom_script_retriever_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             custom_script_reference_id = self.tool_usage_json.get("parameters").get("custom_script_reference_id")
@@ -241,13 +258,18 @@ class ToolExecutor:
         ##################################################
         # Image Generation Tool
         elif tool_name == ToolTypeNames.IMAGE_GENERATION:
+            print("[ToolExecutor.use_tool] Image Generation Tool is being executed...")
             error = validate_image_generation_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             prompt = self.tool_usage_json.get("parameters").get("prompt")
             size = self.tool_usage_json.get("parameters").get("size")
             quality = self.tool_usage_json.get("parameters").get("quality")
             image_generation_response = execute_image_generation(assistant_id=self.assistant.id, chat_id=self.chat.id,
-                                                                 prompt=prompt, image_size=size, quality=quality)
+                                                                 prompt=prompt + f"""
+                                                                    **Important Note:**
+                                                                    Always include the generated image's URL in your
+                                                                    response's image_uris list or the equivalent.
+                                                                 """, image_size=size, quality=quality)
             image_uri = image_generation_response.get("image_uri")
             image_uris.append(image_uri)
             image_generation_response_raw_str = json.dumps(image_generation_response, sort_keys=True, default=str)
@@ -255,6 +277,7 @@ class ToolExecutor:
         ##################################################
         # Image Modification Tool
         elif tool_name == ToolTypeNames.IMAGE_MODIFICATION:
+            print("[ToolExecutor.use_tool] Image Modification Tool is being executed...")
             error = validate_image_modification_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             prompt = self.tool_usage_json.get("parameters").get("prompt")
@@ -273,6 +296,7 @@ class ToolExecutor:
         ##################################################
         # Image Variation Creation Tool
         elif tool_name == ToolTypeNames.IMAGE_VARIATION:
+            print("[ToolExecutor.use_tool] Image Variation Tool is being executed...")
             error = validate_image_variation_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             image_uri = self.tool_usage_json.get("parameters").get("image_uri")
@@ -286,6 +310,7 @@ class ToolExecutor:
         ##################################################
         # Browsing Tool
         elif tool_name == ToolTypeNames.BROWSING:
+            print("[ToolExecutor.use_tool] Browsing Tool is being executed...")
             error = validate_browser_execution_tool_json(tool_usage_json=self.tool_usage_json)
             if error: return error, None, None, None
             connection_id = self.tool_usage_json.get("parameters").get("browser_connection_id")
@@ -306,6 +331,7 @@ class ToolExecutor:
         ##################################################
         # IF NO TOOL IS FOUND WITH THE GIVEN NAME
         else:
+            print("[ToolExecutor.use_tool] No Tool Found with the given name.")
             return get_no_tool_found_error_log(query_name=tool_name), tool_name, file_uris, image_uris
         ##################################################
         tool_response += f"""
@@ -314,4 +340,15 @@ class ToolExecutor:
         print("-"*50)
         print("[ACTIVE-LOG] [ToolExecutor.use_tool] Tool Response Debugger: \n", tool_response)
         print("-"*50)
+        if file_uris:
+            for i, uri in enumerate(file_uris):
+                if not uri.startswith("http"):
+                    uri = f"{MEDIA_URL}{uri}"
+                file_uris[i] = uri
+        if image_uris:
+            for i, uri in enumerate(image_uris):
+                if not uri.startswith("http"):
+                    uri = f"{MEDIA_URL}{uri}"
+                image_uris[i] = uri
+        print("[ToolExecutor.use_tool] Tool Response has been returned.")
         return tool_response, tool_name, file_uris, image_uris

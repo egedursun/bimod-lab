@@ -32,6 +32,7 @@ class UserProfileListView(LoginRequiredMixin, TemplateView):
             profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
             if profile_form.is_valid():
                 profile_form.save()
+                print('[UserProfileListView.post] Profile updated successfully.')
                 messages.success(request, 'Your profile was successfully updated!')
                 return redirect('user_profile_management:list')
             else:
@@ -44,6 +45,7 @@ class UserProfileListView(LoginRequiredMixin, TemplateView):
                 credit_card = credit_card_form.save(commit=False)
                 credit_card.user = request.user
                 credit_card.save()
+                print('[UserProfileListView.post] Credit card updated successfully.')
                 messages.success(request, 'Your credit card was successfully updated!')
                 return redirect('user_profile_management:list')
             else:
@@ -57,6 +59,7 @@ class RemoveCardView(LoginRequiredMixin, TemplateView):
         try:
             card = request.user.credit_cards.get(id=card_id)
             card.delete()
+            print('[RemoveCardView.post] Credit card removed successfully.')
             messages.success(request, 'Credit card removed successfully.')
         except UserCreditCard.DoesNotExist:
             messages.error(request, 'Credit card not found.')

@@ -4,7 +4,7 @@ from apps.mm_scripts.models import CustomScriptReference
 
 def retrieve_script_content(custom_script_reference_id):
     script_reference = CustomScriptReference.objects.filter(id=custom_script_reference_id).first()
-
+    print(f"[custom_script_content_retrieval_handler.retrieve_script_content] Retrieving the script content: {script_reference.custom_script.name}.")
     try:
         executor = CustomScriptsContentRetriever(script=script_reference.custom_script,
                                                  context_organization=script_reference.assistant.organization,
@@ -13,4 +13,5 @@ def retrieve_script_content(custom_script_reference_id):
     except Exception as e:
         error = f"[custom_script_content_retrieval_handler.retrieve_script_content] Error occurred while retrieving the script content: {str(e)}"
         return error
+    print(f"[custom_script_content_retrieval_handler.retrieve_script_content] Script content retrieved successfully.")
     return response

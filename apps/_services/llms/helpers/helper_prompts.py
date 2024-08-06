@@ -110,6 +110,12 @@ ML_AFFIRMATION_PROMPT = f"""
     - NEVER USE KERAS AND TENSORFLOW. ALWAYS USE PYTORCH. ALWAYS USE THE MODEL THAT IS SHARED WITH YOU, DO NOT DEVELOP MODELS YOURSELF.
     - NEVER USE KERAS AND TENSORFLOW. ALWAYS USE PYTORCH. ALWAYS USE THE MODEL THAT IS SHARED WITH YOU, DO NOT DEVELOP MODELS YOURSELF.
     - NEVER USE KERAS AND TENSORFLOW. ALWAYS USE PYTORCH. ALWAYS USE THE MODEL THAT IS SHARED WITH YOU, DO NOT DEVELOP MODELS YOURSELF.
+
+    - You will receive data and the ".pth" model for prediction. You will use the model to predict the data and provide the results.
+    - You will receive data and the ".pth" model for prediction. You will use the model to predict the data and provide the results.
+    - You will receive data and the ".pth" model for prediction. You will use the model to predict the data and provide the results.
+    - You will receive data and the ".pth" model for prediction. You will use the model to predict the data and provide the results.
+    - You will receive data and the ".pth" model for prediction. You will use the model to predict the data and provide the results.
 """
 
 INSUFFICIENT_BALANCE_PROMPT = f"""

@@ -1,25 +1,42 @@
 import json
+import re
+from json import JSONDecoder
 
 
-def find_json_presence(response: str):
+def find_json_presence(response: str, decoder=JSONDecoder()):
+    response = f"""{response}"""
+    response = response.replace("\n", "").replace("'", '"')
     json_objects = []
-    brace_count = 0
-    json_str = ""
-    in_json = False
+    pos = 0
+    while True:
+        match = response.find('{', pos)
+        if match == -1:
+            break
+        try:
+            result, index = decoder.raw_decode(response[match:])
+            json_objects.append(result)
+            pos = match + index
+        except ValueError:
+            pos = match + 1
+    print("[utils.find_json_presence] Found JSON objects: ", json_objects)
+    return json_objects
 
-    for char in response:
-        if char == '{':
-            if brace_count == 0: in_json = True
-            brace_count += 1
-        if in_json: json_str += char
-        if char == '}':
-            brace_count -= 1
-            if brace_count == 0:
-                in_json = False
-                try:
-                    json.loads(json_str)
-                    json_objects.append(json_str)
-                except json.JSONDecodeError:
-                    print(f"Invalid JSON found in the response: {json_str}")
-                json_str = ""
-    return json_objects if json_objects else None
+
+def extract_image_uri(response_str):
+    # Regular expression pattern to match the image URI
+    pattern = r'"image_uri":\s*"([^"]+)"'
+    # Search for the pattern in the response string
+    match = re.search(pattern, response_str)
+    # Extract and return the URI if found, otherwise return None
+    print("[utils.extract_image_uri] Image URI extracted.")
+    return match.group(1) if match else None
+
+
+def extract_file_uri(response_str):
+    # Regular expression pattern to match the file URI
+    pattern = r'"file_uri":\s*"([^"]+)"'
+    # Search for the pattern in the response string
+    match = re.search(pattern, response_str)
+    # Extract and return the URI if found, otherwise return None
+    print("[utils.extract_file_uri] File URI extracted.")
+    return match.group(1) if match else None

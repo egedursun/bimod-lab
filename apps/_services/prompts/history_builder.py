@@ -1,3 +1,5 @@
+import requests
+
 from apps._services.chat_context.chat_context_manager import ChatContextManager
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat
@@ -32,9 +34,11 @@ class HistoryBuilder:
                     # get the object from local storage
                     full_uri = f"{image_url}"
                     try:
-                        with open(full_uri, "rb") as image_file:
-                            image_bytes = image_file.read()
-                            image_b64 = b64.b64encode(image_bytes).decode("utf-8")
+                        # download image from URL
+                        response = requests.get(full_uri)
+                        # read the file
+                        image_bytes = response.content
+                        image_b64 = b64.b64encode(image_bytes).decode("utf-8")
                     except Exception as e:
                         print(f"[HistoryBuilder.build] Error reading image file: {e}")
                         continue
@@ -72,6 +76,7 @@ class HistoryBuilder:
             chat.transactions.add(transaction)
             chat.save()
             chat_message.save()
+            print(f"[HistoryBuilder.build] Transaction has been saved.")
 
         # use the context manager to handle overflows
         context_history = ChatContextManager.handle_context(
@@ -79,5 +84,5 @@ class HistoryBuilder:
             assistant=chat.assistant,
             chat_object=chat
         )
-
+        print(f"[HistoryBuilder.build] Context history has been built successfully.")
         return context_history

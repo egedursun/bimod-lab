@@ -1,11 +1,12 @@
 import os
 import re
 
+import boto3
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
 from apps._services.llms.helpers.helper_prompts import GENERATE_FILE_DESCRIPTION_QUERY
@@ -17,7 +18,7 @@ from apps.datasource_media_storages.models import MEDIA_CATEGORIES, DataSourceMe
 from apps.datasource_media_storages.utils import decode_xlsx, decode_pptx, decode_docx
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
-from config.settings import BASE_URL
+from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
 from .tasks import download_file_from_url
@@ -62,6 +63,7 @@ class DataSourceMediaStorageConnectionCreateView(LoginRequiredMixin, TemplateVie
                 name=name, description=description, media_category=media_category, assistant=assistant
             )
             data_source.save()
+            print('[DataSourceMediaStorageConnectionCreateView.post] Data Source Media Storage created successfully.')
             messages.success(request, 'Data Source Media Storage created successfully.')
             return redirect('datasource_media_storages:list')
         except Assistant.DoesNotExist:
@@ -134,6 +136,7 @@ class DataSourceMediaStorageConnectionUpdateView(LoginRequiredMixin, TemplateVie
             media_storage.assistant = assistant
             media_storage.save()
             messages.success(request, 'Data Source Media Storage updated successfully.')
+            print('[DataSourceMediaStorageConnectionUpdateView.post] Data Source Media Storage updated successfully.')
             return redirect('datasource_media_storages:list')
         except Assistant.DoesNotExist:
             messages.error(request, 'Invalid assistant selected.')
@@ -163,6 +166,7 @@ class DataSourceMediaStorageConnectionDeleteView(LoginRequiredMixin, TemplateVie
 
         media_storage = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
         media_storage.delete()
+        print('[DataSourceMediaStorageConnectionDeleteView.post] Data Source Media Storage deleted successfully.')
         messages.success(request, 'Media Storage Connection deleted successfully.')
         return redirect('datasource_media_storages:list')
 
@@ -211,6 +215,7 @@ class DataSourceMediaStorageItemCreateView(LoginRequiredMixin, TemplateView):
                     description=description
                 )
                 media_storage_item.save()
+            print('[DataSourceMediaStorageItemCreateView.post] Files uploaded successfully.')
             messages.success(request, 'Files uploaded successfully.')
             return redirect('datasource_media_storages:list_items')
         else:
@@ -223,21 +228,31 @@ class DataSourceMediaStorageItemDetailAndUpdateView(LoginRequiredMixin, Template
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         media_item = DataSourceMediaStorageItem.objects.get(id=kwargs['pk'])
         context['media_item'] = media_item
+        # download file bytes from s3
+        file_bytes = None
+        if media_item.full_file_path is not None:
+            try:
+                boto3_client = boto3.client('s3')
+                bucket_name = os.getenv('AWS_STORAGE_BUCKET_NAME')
+                file_bytes = boto3_client.get_object(Bucket=bucket_name, Key=media_item.full_file_path.split(MEDIA_URL)[1])
+                file_bytes = file_bytes['Body'].read()
+            except Exception as e:
+                print(f"[DataSourceMediaStorageItemDetailAndUpdateView.get_context_data] Error downloading file: {e}")
         # decode binary data to string
         media_item_contents = "File contents could not be decoded."
         try:
             if media_item.media_file_type == 'txt':
-                media_item_contents = media_item.file_bytes.decode('utf-8')
+                media_item_contents = file_bytes.decode('utf-8')
             elif media_item.media_file_type == 'docx':
-                media_item_contents = decode_docx(media_item.file_bytes)
+                media_item_contents = decode_docx(file_bytes)
             elif media_item.media_file_type == 'pptx':
-                media_item_contents = decode_pptx(media_item.file_bytes)
+                media_item_contents = decode_pptx(file_bytes)
             elif media_item.media_file_type == 'xlsx':
-                media_item_contents = decode_xlsx(media_item.file_bytes)
+                media_item_contents = decode_xlsx(file_bytes)
             else:
-                media_item_contents = media_item.file_bytes.decode('utf-8', errors='ignore')
+                media_item_contents = file_bytes.decode('utf-8', errors='ignore')
         except Exception as e:
-            print(f"Error decoding binary data: {e}")
+            print(f"[DataSourceMediaStorageItemDetailAndUpdateView.get_context_data] Error decoding binary data: {e}")
         context['media_item_contents'] = media_item_contents
         context['file_type_highlighting'] = FILE_TYPE_HIGHLIGHTING_DECODER.get(media_item.media_file_type, 'plaintext')
         return context
@@ -256,6 +271,7 @@ class DataSourceMediaStorageItemDetailAndUpdateView(LoginRequiredMixin, Template
         media_item.description = description
         media_item.save()
         messages.success(request, 'Media item updated successfully.')
+        print('[DataSourceMediaStorageItemDetailAndUpdateView.post] Media item updated successfully.')
         return redirect('datasource_media_storages:list_items')
 
 
@@ -283,7 +299,6 @@ class DataSourceMediaStorageItemListView(LoginRequiredMixin, TemplateView):
                 assistant_data_list.append({'assistant': assistant, 'media_storages': storage_data_list, })
             data.append({'organization': org, 'assistants': assistant_data_list, })
         context['data'] = data
-        context['base_url'] = BASE_URL
         return context
 
     def post(self, request, *args, **kwargs):
@@ -301,11 +316,12 @@ class DataSourceMediaStorageItemListView(LoginRequiredMixin, TemplateView):
             for item in items_to_be_deleted:
                 if item.full_file_path is not None:
                     try:
-                        os.system(f"rm -rf {item.full_file_path}")
+                        pass
                     except Exception as e:
                         print(f"Error deleting the file from the media storage path: {item.full_file_path} // {e}")
             DataSourceMediaStorageItem.objects.filter(id__in=item_ids).delete()
             messages.success(request, 'Selected media files deleted successfully.')
+            print('[DataSourceMediaStorageItemListView.post] Selected media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')
 
 
@@ -337,6 +353,7 @@ class DataSourceMediaStorageAllItemsDeleteView(LoginRequiredMixin, TemplateView)
                     print(f"Error deleting the file from the media storage path: {item.full_file_path} // {e}")
         DataSourceMediaStorageItem.objects.filter(storage_base_id=base_id).delete()
         messages.success(request, 'All media files deleted successfully.')
+        print('[DataSourceMediaStorageAllItemsDeleteView.post] All media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')
 
 
@@ -411,7 +428,10 @@ class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, Template
             media_item.save()
         elif execution_type == ExecutionTypesNames.FILE_INTERPRETATION:
             try:
-                generated_description = str(texts["response"].split("---")[0])
+                response = texts["response"]
+                generated_description = ""
+                if response:
+                    generated_description = response[0]
                 # remove everything except a single space
                 generated_description = self.normalize_whitespace(generated_description)
                 media_item.description = generated_description
@@ -448,6 +468,7 @@ class DataSourceMediaStorageItemFetchFileFromUrl(LoginRequiredMixin, TemplateVie
         media_storage_id_int = int(media_storage_id)
         download_file_from_url.delay(storage_id=media_storage_id_int, url=download_url)
         messages.success(request, 'File download from URL initiated.')
+        print('[DataSourceMediaStorageItemFetchFileFromUrl.post] File download from URL initiated.')
         return redirect('datasource_media_storages:list_items')
 
 
@@ -488,7 +509,7 @@ class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateV
             data.append({'organization': org, 'assistants': assistant_data_list, })
         context['data'] = data
         print(data)
-        context['base_url'] = BASE_URL
+        context['base_url'] = MEDIA_URL
         return context
 
     def post(self, request, *args, **kwargs):
@@ -506,10 +527,14 @@ class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateV
             for item in items_to_be_deleted:
                 if item.full_file_path is not None:
                     try:
-                        os.system(f"rm -rf {item.full_file_path}")
+                        # delete from s3
+                        boto3_client = boto3.client('s3')
+                        bucket_name = os.getenv('AWS_STORAGE_BUCKET_NAME')
+                        boto3_client.delete_object(Bucket=bucket_name, Key=item.full_file_path.split(MEDIA_URL)[1])
                     except Exception as e:
                         print(
                             f"Error deleting the generated file from the media storage path: {item.full_file_path} // {e}")
             DataSourceMediaStorageItem.objects.filter(id__in=item_ids).delete()
             messages.success(request, 'Selected generated media files deleted successfully.')
+            print('[DataSourceMediaStorageGeneratedItemsListView.post] Selected generated media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')

@@ -32,6 +32,7 @@ def before_execute_sql_query(connection: SQLDatabaseConnection):
 
 # Checking the read and write permissions
 def can_write_to_database(connection: SQLDatabaseConnection):
+    print(f"[sql_executor.can_write_to_database] Checking the write permission for the connection.")
     return not connection.is_read_only
 
 
@@ -57,6 +58,7 @@ class PostgresSQLExecutor:
                     print(f"[PostgresSQLExecutor.execute_read] Executing Query: {query}")
                     cursor.execute(query, parameters)
                     results = cursor.fetchall()
+            print(f"[PostgresSQLExecutor.execute_read] Read operation is successful.")
         except Exception as e:
             print(f"[PostgresSQLExecutor.execute_read] Error executing PostgreSQL / Read Query: {e}")
             results["status"] = False
@@ -74,7 +76,7 @@ class PostgresSQLExecutor:
             is_tool_cost=True
         )
         new_transaction.save()
-
+        print(f"[PostgresSQLExecutor.execute_read] Transaction has been saved.")
         return results
 
     def execute_write(self, query, parameters=None) -> dict:
@@ -88,6 +90,7 @@ class PostgresSQLExecutor:
                 with conn.cursor() as cursor:
                     cursor.execute(query, parameters)
                     conn.commit()
+            print(f"[PostgresSQLExecutor.execute_write] Write operation is successful.")
         except Exception as e:
             print(f"[PostgresSQLExecutor.execute_write] Error executing PostgreSQL / Write Query: {e}")
             output["status"] = False
@@ -105,6 +108,7 @@ class PostgresSQLExecutor:
             is_tool_cost=True
         )
         new_transaction.save()
+        print(f"[PostgresSQLExecutor.execute_write] Transaction has been saved.")
         return output
 
 
@@ -132,6 +136,7 @@ class MySQLExecutor:
                 with conn.cursor(cursor_class=cursor_cext.CMySQLCursorDict, buffered=True) as cursor:
                     cursor.execute(query, parameters)
                     results = cursor.fetchall()
+            print(f"[MySQLExecutor.execute_read] Read operation is successful.")
         except Exception as e:
             print(f"[PostgresSQLExecutor.execute_read] Error executing MySQL / Read Query: {e}")
             results["status"] = False
@@ -149,7 +154,7 @@ class MySQLExecutor:
             is_tool_cost=True
         )
         new_transaction.save()
-
+        print(f"[MySQLExecutor.execute_read] Transaction has been saved.")
         return results
 
     def execute_write(self, query, parameters=None):
@@ -163,6 +168,7 @@ class MySQLExecutor:
                 with conn.cursor(buffered=True) as cursor:
                     cursor.execute(query, parameters)
                     conn.commit()
+            print(f"[MySQLExecutor.execute_write] Write operation is successful.")
         except Exception as e:
             print(f"[PostgresSQLExecutor.execute_write] Error executing MySQL / Write Query: {e}")
             output["status"] = False
@@ -180,5 +186,5 @@ class MySQLExecutor:
             is_tool_cost=True
         )
         new_transaction.save()
-
+        print(f"[MySQLExecutor.execute_write] Transaction has been saved.")
         return output

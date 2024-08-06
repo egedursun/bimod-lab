@@ -1,10 +1,10 @@
 import base64
 
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from config.settings import BASE_URL
+from config.settings import MEDIA_URL
 from web_project import TemplateLayout, TemplateHelper
 from .models import MultimodalChat, MultimodalChatMessage, ChatSourcesNames
 from .utils import generate_chat_name
@@ -41,7 +41,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
         context.update(
             {
                 "chats": chats, "assistants": assistants, "active_chat": active_chat,
-                "chat_messages": active_chat_messages, "message_templates": message_templates, "base_url": BASE_URL
+                "chat_messages": active_chat_messages, "message_templates": message_templates, "base_url": MEDIA_URL
             }
         )
         return context
@@ -121,7 +121,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 try:
                     image_bytes = image.read()
                 except Exception as e:
-                    print(f"Error reading image file: {e}")
+                    print(f"[ChatView.post] Error reading image file: {e}")
                     continue
                 image_bytes_list.append(image_bytes)
             image_full_uris = StorageExecutor.save_images_and_provide_full_uris(image_bytes_list)
@@ -136,7 +136,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 try:
                     file_bytes = file.read()
                 except Exception as e:
-                    print(f"Error reading file: {e}")
+                    print(f"[ChatView.post] Error reading file: {e}")
                     continue
                 file_bytes_list.append((file_bytes, file_name))
             file_full_uris = StorageExecutor.save_files_and_provide_full_uris(file_bytes_list)
@@ -258,7 +258,20 @@ class ChatArchiveListView(LoginRequiredMixin, TemplateView):
         context.update(
             {
                 "chats": chats, "assistants": assistants, "active_chat": active_chat,
-                "chat_messages": active_chat_messages, "message_templates": message_templates, "base_url": BASE_URL
+                "chat_messages": active_chat_messages, "message_templates": message_templates, "base_url": MEDIA_URL
+            }
+        )
+        return context
+
+
+class TestChatTemplate1View(TemplateView):
+    template_name = 'multimodal_chat/mockups/test.html'
+
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context.update(
+            {
+                "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
             }
         )
         return context

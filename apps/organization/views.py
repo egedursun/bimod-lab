@@ -125,6 +125,7 @@ class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
         transfer_organization.save()
         # Delete the organization
         organization.delete()
+        print(f"[OrganizationDeleteView.post] Organization {organization.name} has been deleted and the balance has been transferred to {transfer_organization.name}.")
         messages.success(request, f'Organization "{organization.name}" has been deleted and the balance has been transferred to "{transfer_organization.name}".')
         return redirect('organization:list')
 

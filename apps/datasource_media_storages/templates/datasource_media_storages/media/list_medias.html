@@ -257,16 +257,16 @@
                                     </td>
                                     <td>
                                       {% if storage_data.storage.media_category == "image" %}
-                                        <img src="{{ base_url }}/{{ item_data.item.full_file_path }}" width="50"
+                                        <img src="{{ item_data.item.full_file_path }}" width="50"
                                              height="50" class="rounded">
                                       {% elif storage_data.storage.media_category == "audio" %}
                                         <audio class="plyr-audio-player pe-2 ps-2" controls>
-                                          <source src="{{ base_url }}/{{ item_data.item.full_file_path }}"
+                                          <source src="{{ item_data.item.full_file_path }}"
                                                   type="audio/mp3"/>
                                         </audio>
                                       {% elif storage_data.storage.media_category == "video" %}
                                         <video class="plyr-video-player rounded" controls style="max-width: 250px;">
-                                          <source src="{{ base_url }}/{{ item_data.item.full_file_path }}"
+                                          <source src="{{ item_data.item.full_file_path }}"
                                                   type="video/mp4"/>
                                         </video>
                                       {% elif storage_data.storage.media_category == "compressed" %}
@@ -292,7 +292,7 @@
                                     <td>{{ item_data.item.created_at }}</td>
                                     <td>
                                       <a
-                                        href="{{ base_url }}/app/datasource_media_storages/item/detail/{{ item_data.item.id }}"
+                                        href="{% url 'datasource_media_storages:item_detail' item_data.item.id %}"
                                         class="text-dark">
                                         <i class="fa fa-edit"></i>
                                       </a>

@@ -12,6 +12,7 @@ def delete_document_helper(executor, class_name: str, document_uuid):
         r = c.collections.get(f"{class_name}Chunks").data.delete_many(
             where=Filter.by_property("document_uuid").equal(document_uuid)
         )
+        print(f"[document_deleter.delete_document_helper] Deleted document: {document_uuid}")
     except Exception as e:
         output["status"] = False
         output["error"] = f"[document_deleter.delete_document_helper] Error deleting document: {e}"
@@ -31,4 +32,5 @@ def delete_chat_history_document_helper(executor, class_name: str, document_uuid
     except Exception as e:
         output["status"] = False
         output["error"] = f"[document_deleter.delete_chat_history_document_helper] Error deleting chat history document: {e}"
+    print(f"[document_deleter.delete_chat_history_document_helper] Deleted chat history document: {document_uuid}")
     return output

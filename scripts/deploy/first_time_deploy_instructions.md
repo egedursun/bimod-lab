@@ -676,3 +676,53 @@ WantedBy=multi-user.target
     
     sudo systemctl start nginx
     ```
+
+21. Create the media server
+
+    ```bash
+    sudo mkdir -p /root/var/www/media
+    sudo mkdir -p /root/var/www/media/dev
+    sudo mkdir -p /root/var/www/media/prod
+    
+    sudo chown -R www-data:www-data /root/var/www/media
+    sudo chmod -R 755 /root/var/www/media
+    ```
+    
+    22. Create the nginx configuration for the media server.
+
+        ```bash
+        sudo nano /etc/nginx/sites-available/media_server
+        ```
+        
+        Add the following lines to the file.
+
+        ```text
+server {
+    listen 80;
+    server_name 185.170.198.44;
+
+    location /media/prod/ {
+        alias /root/var/www/media/prod/;
+        autoindex on;
+        access_log /var/log/nginx/media_prod_access.log;
+        error_log /var/log/nginx/media_prod_error.log;
+    }
+
+    location /media/dev/ {
+        alias /root/var/www/media/dev/;
+        autoindex on;
+        access_log /var/log/nginx/media_dev_access.log;
+        error_log /var/log/nginx/media_dev_error.log;
+    }
+}
+        ```
+
+        Save and exit the file.
+
+        ```bash
+        sudo ln -s /etc/nginx/sites-available/media_server /etc/nginx/sites-enabled/
+        sudo nginx -t
+        sudo systemctl reload nginx
+        ```
+
+

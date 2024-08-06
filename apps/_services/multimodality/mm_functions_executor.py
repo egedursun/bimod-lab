@@ -15,6 +15,7 @@ class CustomFunctionExecutor:
         function_id = self.function.id
         promise = mm_function_execution_task.delay(function_id, input_data)
         response = promise.get()
+        print(f"[CustomFunctionExecutor.execute_custom_function] Response has been received.")
 
         transaction = LLMTransaction(
             organization=self.context_organization,
@@ -32,4 +33,5 @@ class CustomFunctionExecutor:
             is_tool_cost=True
         )
         transaction.save()
+        print(f"[CustomFunctionExecutor.execute_custom_function] Transaction has been saved.")
         return response

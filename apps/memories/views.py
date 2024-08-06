@@ -77,6 +77,7 @@ class CreateAssistantMemoryView(TemplateView, LoginRequiredMixin):
         # Note: the specificity of the memory is handled in prompt management module
         assistant = Assistant.objects.get(id=assistant_id)
         assistant.memories.add(AssistantMemory.objects.last())
+        print('[CreateAssistantMemoryView.post] Memory created successfully.')
         return redirect('memories:list')
 
 
@@ -104,5 +105,6 @@ class DeleteAssistantMemoryView(LoginRequiredMixin, DeleteView):
 
         memory.delete()
         success_message = "Memory deleted successfully!"
+        print('[DeleteAssistantMemoryView.post] Memory deleted successfully.')
         messages.success(request, success_message)
         return redirect(self.success_url)

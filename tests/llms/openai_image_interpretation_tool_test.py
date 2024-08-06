@@ -1,10 +1,17 @@
 import time
 import base64 as b64
 
+import boto3
 from openai import OpenAI
-from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
 from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS
+from config import settings
+
+"""
+    #################################################################################################################
+    THIS TEST IS OUTDATED AND SHOULD BE UPDATED TO REFLECT THE CURRENT IMPLEMENTATION OF THE IMAGE INTERPRETATION TOOL.
+    #################################################################################################################
+"""
 
 
 #######################################################################################################################
@@ -47,9 +54,12 @@ def ask_about_image(client, full_image_paths: list, query_string: str):
             return "System Message: The image path is empty."
 
         try:
-            # Read binary image contents
-            with open(path, "rb") as file:
-                image_contents.append({"binary": file.read(), "extension": path.split(".")[-1]})
+            # Read binary image contents from s3
+            boto3_client = boto3.client('s3')
+            bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+            image_bytes = boto3_client.get_object(Bucket=bucket_name, Key=path)["Body"].read()
+            extension = path.split(".")[-1]
+            image_contents.append({"binary": image_bytes, "extension": extension})
         except FileNotFoundError:
             print(f"System Message: The image at the path '{path}' could not be found, skipping image...")
             continue

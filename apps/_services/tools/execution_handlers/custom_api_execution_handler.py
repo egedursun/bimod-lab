@@ -6,6 +6,7 @@ def execute_api_executor(custom_api_reference_id, endpoint_name: str, path_value
     api_reference = CustomAPIReference.objects.filter(id=custom_api_reference_id).first()
     executor = CustomAPIExecutor(api=api_reference.custom_api, context_organization=api_reference.assistant.organization,
                                 context_assistant=api_reference.assistant)
+    print(f"[custom_api_execution_handler.execute_api_executor] Executing the API: {api_reference.custom_api.name}.")
     try:
         response = executor.execute_custom_api(endpoint_name=endpoint_name,
                                                path_values=path_values,
@@ -14,4 +15,5 @@ def execute_api_executor(custom_api_reference_id, endpoint_name: str, path_value
     except Exception as e:
         error = f"[custom_api_execution_handler.execute_api_executor] Error occurred while executing the API: {str(e)}"
         return error
+    print(f"[custom_api_execution_handler.execute_api_executor] API executed successfully.")
     return response

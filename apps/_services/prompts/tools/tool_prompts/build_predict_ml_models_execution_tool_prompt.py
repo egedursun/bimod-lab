@@ -1,5 +1,5 @@
 from apps._services.tools.const import ToolTypeNames
-from config.settings import BASE_URL
+from config.settings import MEDIA_URL
 
 
 def build_structured_tool_prompt__predict_with_ml_model_execution():
@@ -84,7 +84,7 @@ def build_structured_tool_prompt__predict_with_ml_model_execution():
             **ABOUT YOU PROVIDING LINKS:**
             - If you need to provide a direct link to the user for reaching the file or images, here is the base
                 URL you need to 'DIRECTLY' append the file path to provide an absolute HTTP reference to the file:
-                - {BASE_URL}
+                - {MEDIA_URL}
             - **NEVER, EVER:** provide a 'relative' path to the file or image. Always provide the 'absolute' path by
             appending the file path to the base URL.
 
