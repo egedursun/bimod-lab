@@ -309,11 +309,6 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 EXCLUDED_PAGES = [
-    "/",
-    "/app/exported_assistants/exported/",
-    "/contact-form-submit",
-    "/docs",
-    "/faq",
     "/app/login",
     "/app/logout",
     "/app/register",
@@ -322,6 +317,11 @@ EXCLUDED_PAGES = [
     "/app/send_verification",
     "/app/forgot_password",
     "/app/reset_password",
+    "/contact-form-submit",
+    "/docs",
+    "/faq",
+
+    "/app/exported_assistants/exported/",
 ]
 
 # Your stuff...

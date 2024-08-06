@@ -9,10 +9,7 @@ class SessionTimeoutMiddleware(MiddlewareMixin):
     def process_request(self, request):
         # if the page is among the excluded pages, return None
         for excluded_page in settings.EXCLUDED_PAGES:
-            if excluded_page == "/":
-                if request.path.startswith("/") and request.path.endswith("/"):
-                    return None
-            elif excluded_page == "/app/exported_assistants/exported/":
+            if request.path.startswith("/app/exported_assistants/exported/"):
                 return None
             else:
                 if request.path.startswith(excluded_page):

@@ -143,13 +143,15 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 **THINGS TO REMEMBER:**
 
 *Important:*
-1. [ ] Disable DEBUG mode for the application, for increased safety. [VERY IMPORTANT ISSUE / SECURITY]
-2. [ ] Switch to a reliable [SMTP] provider.
+1. [ ] Migrate the passwords to bitvault.
+2. [ ] Migrate the script information to their relevant files.
 3. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-4. [ ] Develop more serious [ILLUSTRATION] for the application.
-5. [ ] Translation of the website [VERY IMPORTANT ISSUE / LOCALIZATION]
-6. [ ] Implement [PAYMENT GATEWAY] for the application.
-7. [ ] Implement the [ORCHESTRATION] manager.
+4. [ ] Disable DEBUG mode for the application, for increased safety. [VERY IMPORTANT ISSUE / SECURITY]
+5. [ ] Switch to a reliable [SMTP] provider.
+6. [ ] Develop more serious [ILLUSTRATION] for the application.
+7. [ ] Translation of the website [VERY IMPORTANT ISSUE / LOCALIZATION]
+8. [ ] Implement [PAYMENT GATEWAY] for the application.
+9. [ ] Implement the [ORCHESTRATION] manager.
 
 *Deploy:*
 1. [ ] Protect the [MAIN BRANCH] for direct merges.
