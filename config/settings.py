@@ -123,6 +123,7 @@ MIDDLEWARE = [
     "web_project.language_middleware.DefaultLanguageMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "config.middleware.AppendStatusMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -308,21 +309,42 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5050",
 ]
 
-EXCLUDED_PAGES = [
-    "/app/login",
-    "/app/logout",
-    "/app/register",
-    "/app/verify_email_page",
-    "/app/verify_email",
-    "/app/send_verification",
-    "/app/forgot_password",
-    "/app/reset_password",
-    "/contact-form-submit",
-    "/docs",
-    "/faq",
+HTTP_ERROR_PATHS = [
+    ########################################
+    # Client Error 4xx
+    ########################################
+    "/400/", "/401/", "/402", "/403/", "/404/", "/405/", "/406/", "/407/", "/408/", "/409/", "/410/",
+    "/411/", "/412/", "/413/", "/414/", "/415/", "/416/", "/417/", "/418/", "/421/", "/422/", "/423/",
+    "/424/", "/425/", "/426/", "/428/", "/429/", "/431/", "/451/",
 
+    ########################################
+    # Server Error 5xx
+    ########################################
+    "/500/", "/501/", "/502/", "/503/", "/504/", "/505/", "/506/", "/507/", "/508/", "/510/", "/511/"
+]
+
+EXCLUDED_PAGES = [
+    ########################################
+    # Exclude Authentication pages
+    ########################################
+    "/",
+    "/app/login/",
+    "/app/logout/",
+    "/app/register/",
+    "/app/verify_email_page/",
+    "/app/verify_email/",
+    "/app/send_verification/",
+    "/app/forgot_password/",
+    "/app/reset_password/",
+    "/contact-form-submit/",
+    "/docs/",
+    "/faq/",
+    ########################################
+    # Exclude (ALL) Exported Assistant pages
+    ########################################
     "/app/exported_assistants/exported/",
 ]
+EXCLUDED_PAGES.extend(HTTP_ERROR_PATHS)
 
 # Your stuff...
 # ------------------------------------------------------------------------------

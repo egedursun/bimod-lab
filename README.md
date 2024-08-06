@@ -55,7 +55,7 @@
       - **PW:** ***
 
   - SSH Connection for VPS Server:
-      - **Connection:** ssh root@185.170.198.44
+      - **Connection:** ssh -o "StrictHostKeyChecking=no" root@185.170.198.44
       - **Username:** root
       - **PW:** 7#Ao141j3$sI?k5#aDrR
   
