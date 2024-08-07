@@ -52,3 +52,6 @@ sudo systemctl restart celerybeat_dev
 sudo systemctl restart flower_dev
 
 echo "[Deploy / Development] Deployment successful!"
+
+# Run the integration tests
+pytest
