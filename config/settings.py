@@ -9,7 +9,9 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+import logging
 import os
+import sys
 from pathlib import Path
 
 from django.conf import settings
@@ -360,9 +362,6 @@ EXCLUDED_PAGES = [
 ]
 EXCLUDED_PAGES.extend(HTTP_ERROR_PATHS)
 
-# Your stuff...
-# ------------------------------------------------------------------------------
-
 DESIGN_DOCS_ROUTE = 'dev/design/'
 
 # API version for exporting agents
@@ -380,6 +379,10 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CLEAN_DEBUG = True
+
+#####################################################################################################################
+# Logging Configuration
+#####################################################################################################################
 
 LOGGING = {
     'version': 1,
@@ -470,9 +473,8 @@ COSTS_MAP = {
 }
 
 #####################################################################################################################
-#####################################################################################################################
-
 # Sentry SDK settings
+#####################################################################################################################
 
 if ENVIRONMENT != "local":
     sentry_sdk.init(
@@ -489,8 +491,9 @@ else:
     print("[settings.py] Sentry SDK is intentionally disabled in local environment, skipping the initialization.")
     pass
 
-
+#####################################################################################################################
 # Translator Debug Mode
+#####################################################################################################################
 
 ACTIVATE_MANUAL_TRANSLATION = os.environ.get("ACTIVATE_MANUAL_TRANSLATION", 'False').lower() in ['true', 'yes', '1']
 if ACTIVATE_MANUAL_TRANSLATION:
@@ -506,4 +509,18 @@ if TRANSLATOR_DEBUG_MODE:
     pass
 else:
     print("[settings.py] Translator Debug Mode is disabled, skipping language logs...")
+    pass
+
+
+#####################################################################################################################
+# Integration Tests
+#####################################################################################################################
+
+TESTING = sys.argv[0].endswith("pytest")
+print("[settings.py] Testing Mode: ", TESTING)
+if TESTING:
+    print("[settings.py] Integration Testing Mode is activated...")
+    pass
+else:
+    print("[settings.py] Integration Testing Mode is deactive, deploy mode is activated...")
     pass

@@ -34,3 +34,7 @@ jobs:
           chmod +x deploy-dev.sh
           bash deploy-dev.sh main
         EOF
+
+    - name: Run Integration Tests
+      run: |
+        pytest

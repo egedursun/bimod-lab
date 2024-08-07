@@ -146,8 +146,7 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 *Deploy:*
 1. [ ] Protect the [MAIN BRANCH] for direct merges.
-2. [ ] Create the [DEVELOPMENT BRANCH] for the main branch.
-3. [ ] Protect [DIRECT MERGES] to the development branch.
+2. [ ] Protect [DIRECT MERGES] to the development branch.
 
 ---
 RELEASE v0.1.0 [RELEASE: BETA] version of the application.
@@ -171,11 +170,10 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
 ---
 
 *Ongoing Improvements:*
-1. [ ] Bugfixes and Stability improvements [STABILITY] / RELEASE v0.3.0 [RELEASE: BETA] version of the application.
-2. [ ] Store additions [FUNC + API + SCRIPT / STORE] / RELEASE v0.4.0 [RELEASE: BETA] version of the application.
-3. [ ] Boilerplate knowledge bases [BOILERPLATE KB] / [ ] RELEASE v0.5.0 [RELEASE: BETA] version of the application.
-4. [ ] Integration (Boilerplate assistant) Systems [INTEG SYSTEMS] / RELEASE v0.6.0 [RELEASE: BETA] version of the application.
-5. [ ] Meta-Integration (Boilerplate group of assistants) Systems [META-INTEG SYSTEMS] / RELEASE v0.7.0 [RELEASE: BETA] version of the application.
+1. [ ] Store additions [FUNC + API + SCRIPT / STORE] / RELEASE v0.4.0 [RELEASE: BETA] version of the application.
+2. [ ] Boilerplate knowledge bases [BOILERPLATE KB] / [ ] RELEASE v0.5.0 [RELEASE: BETA] version of the application.
+3. [ ] Integration (Boilerplate assistant) Systems [INTEG SYSTEMS] / RELEASE v0.6.0 [RELEASE: BETA] version of the application.
+4. [ ] Meta-Integration (Boilerplate group of assistants) Systems [META-INTEG SYSTEMS] / RELEASE v0.7.0 [RELEASE: BETA] version of the application.
 
 ---
 
