@@ -141,7 +141,6 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 *Important:*
 1. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
 4. [ ] Develop more serious [ILLUSTRATION] for the application.
-5. [ ] Translation of the website [VERY IMPORTANT ISSUE / LOCALIZATION]
 6. [ ] Implement [PAYMENT GATEWAY] for the application.
 7. [ ] Implement the [ORCHESTRATION] manager.
 

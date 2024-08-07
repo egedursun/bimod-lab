@@ -500,7 +500,7 @@ else:
     print("[settings.py] Manual Translation is deactivated, skipping the translation middleware...")
     pass
 
-TRANSLATOR_DEBUG_MODE = os.environ.get("TRANSLATOR_DEBUG_MODE", 'True').lower() in ['true', 'yes', '1']
+TRANSLATOR_DEBUG_MODE = os.environ.get("TRANSLATOR_DEBUG_MODE", 'False').lower() in ['true', 'yes', '1']
 if TRANSLATOR_DEBUG_MODE:
     print("[settings.py] Translator Debug Mode is enabled, printing language logs...")
     pass
