@@ -128,6 +128,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "config.middleware.SessionTimeoutMiddleware",
+    "config.middleware.ManualTranslationMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -201,8 +202,18 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Enable i18n and set the list of supported languages
 LANGUAGES = [
+    # English
     ("en", _("English")),
+    # Turkish
     ("tr", _("Turkish")),
+    # German
+    # ("de", _("German")),  # German is supported yet
+    # French
+    # ("fr", _("French")),  # French is supported yet
+    # Spanish
+    # ("es", _("Spanish")),  # Spanish is supported yet
+    # Italian
+    # ("it", _("Italian")),  # Italian is supported yet
 ]
 
 # Set default language
@@ -476,4 +487,23 @@ if ENVIRONMENT != "local":
     )
 else:
     print("[settings.py] Sentry SDK is intentionally disabled in local environment, skipping the initialization.")
+    pass
+
+
+# Translator Debug Mode
+
+ACTIVATE_MANUAL_TRANSLATION = os.environ.get("ACTIVATE_MANUAL_TRANSLATION", 'False').lower() in ['true', 'yes', '1']
+if ACTIVATE_MANUAL_TRANSLATION:
+    print("[settings.py] Manual Translation is activated, enabling the translation middleware...")
+    pass
+else:
+    print("[settings.py] Manual Translation is deactivated, skipping the translation middleware...")
+    pass
+
+TRANSLATOR_DEBUG_MODE = os.environ.get("TRANSLATOR_DEBUG_MODE", 'True').lower() in ['true', 'yes', '1']
+if TRANSLATOR_DEBUG_MODE:
+    print("[settings.py] Translator Debug Mode is enabled, printing language logs...")
+    pass
+else:
+    print("[settings.py] Translator Debug Mode is disabled, skipping language logs...")
     pass

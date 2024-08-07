@@ -140,7 +140,6 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 *Important:*
 1. [ ] Develop [INTEGRATION TESTS] for all the functionalities of all applications.
-3. [ ] Switch to a reliable [SMTP] provider.
 4. [ ] Develop more serious [ILLUSTRATION] for the application.
 5. [ ] Translation of the website [VERY IMPORTANT ISSUE / LOCALIZATION]
 6. [ ] Implement [PAYMENT GATEWAY] for the application.
@@ -270,3 +269,4 @@ RELEASE v0.1.0 [RELEASE: BETA] version of the application.
     * Paid: [monthly/yearly]
   - Sentry Logging Tool: $30
     * Paid: monthly / $30 x 12 = $360
+
