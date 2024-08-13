@@ -120,6 +120,19 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 *Important:*
 
+- Domain redirection issue is still ongoing. (Hostinger)
+  - Tests:
+    - [ ] www.bimod.io
+    - [ ] bimod.io
+    - [ ] https://bimod.io
+    - [ ] https://www.bimod.io
+    - [ ] http://bimod.io
+    - [ ] http://www.bimod.io
+    ---
+    - [ ] dev.bimod.io
+    - [ ] https://dev.bimod.io
+    - [ ] http://dev.bimod.io
+
 ---
 
 1. ACTIVE chat / current chats        [i-a] [13/08/2024]
