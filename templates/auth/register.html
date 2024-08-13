@@ -3,150 +3,193 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Register - Pages{% endblock %}
+{% block title %}Bimod.io | Registration{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/page-auth.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-auth.css' %}"/>
+  <link rel="stylesheet" href="{% static  'vendor/css/pages/front-page-landing.css' %}">
 {% endblock page_css %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/pages-auth.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/pages-auth.js' %}"></script>
+  <script src="{% static 'js/front-page-landing.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="authentication-wrapper authentication-cover">
-  <!-- Logo -->
-  <a href="{% url 'dashboard:main-dashboard' %}" class="app-brand auth-cover-brand">
-    <span class="app-brand-logo demo">{% include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" %}</span>
-    <span class="app-brand-text demo text-heading fw-bold">{% get_theme_variables 'template_name' %}</span>
-  </a>
-  <!-- /Logo -->
-  <div class="authentication-inner row m-0">
+  <div class="authentication-wrapper authentication-cover">
+    <!-- Logo -->
+    <a href="{% url 'landing:index' %}" class="app-brand auth-cover-brand">
+      <span class="">
+        <!-- { % include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" % } -->
+        <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 60px;" class="ms-0">
+      </span>
+      <span class="app-brand-text demo text-heading fw-bold">{% get_theme_variables 'template_name' %}</span>
+    </a>
+    <!-- /Logo -->
+    <div class="authentication-inner row m-0">
 
-    <!-- /Left Text -->
-    <div class="d-none d-lg-flex col-lg-8 p-0">
-      <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center" style="height:100%;">
-        <img src="{% static 'img/custom-illustrations/boy-red-hq-1.png' %}" class="my-50" width="50%">
-        <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png" alt="auth-register-cover" class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.png">
-      </div>
-    </div>
-    <!-- /Left Text -->
-
-    <!-- Register -->
-    <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
-      <div class="w-px-400 mx-auto mt-12 pt-5">
-        <h4 class="mb-1"><strong>Your greatest adventure begins 🚀</strong></h4>
-        <p class="mb-6">Make your app management easy and fun!</p>
-        <p class="mb-6">Don't worry, it will only take up a few seconds of your time.</p>
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-warning{% endif %}" role="alert">
-          {{ message }}
+      <!-- /Left Text -->
+      <div class="d-none d-lg-flex col-lg-8 p-0">
+        <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center align-content-center">
+          <img src="{% static 'img/custom-illustrations-v2/banners/i2-b2.png' %}" class="my-50" width="80%" style="padding-top: 75%;">
+          <img src="{% static 'img/custom-illustrations-v2/heros/i2-h3.png' %}" class="" width="90%"
+               style="position: absolute; top: 100px; left:0; opacity: 0.20; rotate: 0deg">
+          <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="50%"
+               style="position: absolute; top: 1200px; left:0; opacity: 0.20; rotate: 90deg">
         </div>
-        {% endfor %}
-        {% endif %}
-
-        <form id="formAuthentication" class="mb-6" action="{% url 'register' %}" method="post">
-          {% csrf_token %}
-          <div class="mb-6">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" autofocus>
-          </div>
-          <div class="mb-6">
-            <label for="email" class="form-label">Email</label>
-            <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email">
-          </div>
-          <div class="mb-6 form-password-toggle">
-            <label class="form-label" for="password">Password</label>
-            <div class="input-group input-group-merge">
-              <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
-              <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
-            </div>
-          </div>
-          <!-- confirm the password -->
-          <div class="mb-6 form-password-toggle">
-            <label class="form-label" for="confirm_password">Confirm Password</label>
-            <div class="input-group input-group-merge">
-              <input type="password" id="confirm_password" class="form-control" name="confirm_password" placeholder="&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;" aria-describedby="password2" />
-              <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
-            </div>
-          </div>
-          <div class="mb-6">
-            <label for="first_name" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter your first name">
-          </div>
-          <div class="mb-6">
-            <label for="last_name" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter your last name">
-          </div>
-          <div class="mb-6">
-            <label for="phone_number" class="form-label">Phone Number</label>
-            <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Enter your phone number">
-          </div>
-          <div class="mb-6">
-            <label for="phone_number" class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" id="birthdate" name="birthdate" placeholder="Enter your date of birth">
-          </div>
-          <div class="mb-6">
-            <label for="address" class="form-label">Address</label>
-            <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address">
-          </div>
-          <div class="mb-6">
-            <label for="city" class="form-label">City</label>
-            <input type="text" class="form-control" id="city" name="city" placeholder="Enter your city">
-          </div>
-          <div class="mb-6">
-            <label for="country" class="form-label">Country</label>
-            <select id="country" name="country" class="select2 form-select">
-              <option value="">Select</option>
-              {% for country in countries %}
-              <option value="{{ country }}" {% if request.user.profile.country == country %}selected{% endif %}>{{ country }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-6">
-            <label for="postal_code" class="form-label">Postal Code</label>
-            <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Enter your postal code">
-          </div>
-
-          <div class="mb-6 mt-8">
-            <div class="form-check mb-8 ms-2">
-              <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms">
-              <label class="form-check-label" for="terms-conditions">
-                I agree to
-                <a href="{% url 'landing:faq' %}">privacy policy & terms</a>
-              </label>
-            </div>
-          </div>
-          <button id="btnSubmit" class="btn btn-primary w-100" type="submit">
-            <span id="btnText" class="me-1"><strong>Sign up</strong></span>
-            <span id="btnLoader" class="spinner-border spinner-border-sm visually-hidden" role="status" aria-hidden="true"></span>
-          </button>
-        </form>
-
-        <p class="text-center">
-          <span>Already have an account?</span>
-          <a href="{% url 'login' %}">
-            <span><strong>Sign in instead</strong></span>
-          </a>
-        </p>
       </div>
+      <!-- /Left Text -->
+
+      <!-- Register -->
+      <div class="d-flex col-12 col-lg-4 authentication-bg ps-12 pe-12 pb-0 mt-0 pt-0">
+        <div class="w-px-400 mx-auto mt-0 pt-0">
+          <section id="hero-animation">
+            <div id="landingHero" class="section-py landing-hero position-relative">
+              <img src="{% static 'img/front-pages/backgrounds/hero-bg.png' %}" alt="hero background"
+                   class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100 stick-top"
+                   data-speed="1"/>
+              <div class="container">
+                <div class="hero-text-box text-center position-relative">
+                  <h1 class="text-primary hero-title display-1 fw-extrabold mb-10 pb-4"><strong>Bimod.io</strong></h1>
+                </div>
+              </div>
+            </div>
+          </section>
+          <h5 class="mb-1 mt-12"><strong>Register</strong></h5>
+          <p class="mb-6 mt-4">Join us and start your journey with Bimod.io to automate your business now.</p>
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-warning{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <form id="formAuthentication" class="mb-6" action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username"
+                     autofocus>
+            </div>
+            <div class="mb-6">
+              <label for="email" class="form-label">Email</label>
+              <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email">
+            </div>
+            <div class="mb-6 form-password-toggle">
+              <label class="form-label" for="password">Password</label>
+              <div class="input-group input-group-merge">
+                <input type="password" id="password" class="form-control" name="password"
+                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                       aria-describedby="password"/>
+                <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+              </div>
+            </div>
+            <!-- confirm the password -->
+            <div class="mb-6 form-password-toggle">
+              <label class="form-label" for="confirm_password">Confirm Password</label>
+              <div class="input-group input-group-merge">
+                <input type="password" id="confirm_password" class="form-control" name="confirm_password"
+                       placeholder="&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;"
+                       aria-describedby="password2"/>
+                <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+              </div>
+            </div>
+            <div class="mb-6">
+              <label for="first_name" class="form-label">First Name</label>
+              <input type="text" class="form-control" id="first_name" name="first_name"
+                     placeholder="Enter your first name">
+            </div>
+            <div class="mb-6">
+              <label for="last_name" class="form-label">Last Name</label>
+              <input type="text" class="form-control" id="last_name" name="last_name"
+                     placeholder="Enter your last name">
+            </div>
+            <div class="mb-6">
+              <label for="phone_number" class="form-label">Phone Number</label>
+              <input type="text" class="form-control" id="phone_number" name="phone_number"
+                     placeholder="Enter your phone number">
+            </div>
+            <div class="mb-6">
+              <label for="phone_number" class="form-label">Date of Birth</label>
+              <input type="date" class="form-control" id="birthdate" name="birthdate"
+                     placeholder="Enter your date of birth">
+            </div>
+            <div class="mb-6">
+              <label for="address" class="form-label">Address</label>
+              <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address">
+            </div>
+            <div class="mb-6">
+              <label for="city" class="form-label">City</label>
+              <input type="text" class="form-control" id="city" name="city" placeholder="Enter your city">
+            </div>
+            <div class="mb-6">
+              <label for="country" class="form-label">Country</label>
+              <select id="country" name="country" class="select2 form-select">
+                <option value="">Select</option>
+                {% for country in countries %}
+                  <option value="{{ country }}"
+                          {% if request.user.profile.country == country %}selected{% endif %}>{{ country }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-6">
+              <label for="postal_code" class="form-label">Postal Code</label>
+              <input type="text" class="form-control" id="postal_code" name="postal_code"
+                     placeholder="Enter your postal code">
+            </div>
+
+            <div class="mb-6 mt-8">
+              <div class="form-check mb-8 ms-2">
+                <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms">
+                <label class="form-check-label" for="terms-conditions">
+                  By checking this, I confirm that I have completely read, understood, and agree to the
+                  <a href="{% url 'landing:faq' %}"><strong> privacy policy & terms of service </strong></a> with 
+                  my own free will and consent.
+                </label>
+              </div>
+            </div>
+            <button id="btnSubmit" class="btn btn-primary w-100" type="submit">
+              <span id="btnText" class="me-1"><strong>
+                <i class="fa fa-user-plus me-2"></i>
+                Sign Up
+              </strong></span>
+              <span id="btnLoader" class="spinner-border spinner-border-sm visually-hidden" role="status"
+                    aria-hidden="true"></span>
+            </button>
+          </form>
+
+          <p class="text-center">
+            <span>
+              <i class="fa fa-question-circle me-2"></i>
+              Already have an account?
+            </span>
+            <a href="{% url 'login' %}">
+              <span><strong>
+                <i class="fa fa-sign-in ms-2 me-1"></i>
+                Sign In
+              </strong></span>
+            </a>
+          </p>
+        </div>
+      </div>
+      <!-- /Register -->
     </div>
-    <!-- /Register -->
   </div>
-</div>
 {% endblock content %}

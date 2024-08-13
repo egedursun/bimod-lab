@@ -9,7 +9,7 @@
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h3 class="mb-0">Delete Organization</h3>
+          <h3 class="mb-0"><strong>Delete Organization</strong></h3>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
@@ -24,7 +24,7 @@
                 • This deletion operation is completely irreversible and will entirely remove the organization and all
                 associated data from the system.
               </strong></h6>
-              <p>Select another organization to transfer the balance to:</p>
+              <p>Please select another organization to transfer your existing balance to:</p>
               <select name="transfer_organization_id" class="form-select" required>
                 {% for org in user_organizations %}
                   {% if org.id != organization.id %}
@@ -33,18 +33,18 @@
                 {% endfor %}
               </select>
               <br>
-              <img src="{% static 'img/custom-illustrations/boy-organization-edit.png' %}" width="25%"
-                   class="justify-content-end">
-              <br>
-              <button type="submit" class="btn btn-danger"><strong>DELETE &nbsp;</strong> the organization.</button>
+              <img src="{% static 'img/custom-illustrations-v2/i2-4.png' %}" width="25%" style="border-radius:25px;"
+                   class="justify-content-end me-8 mb-8">
+              <hr>
+              <button type="submit" class="btn btn-danger mt-8"><strong>DELETE &nbsp;</strong> the organization.</button>
               <br><br>
               <a href="{% url 'organization:list' %}" class="btn btn-secondary"><strong>CANCEL &nbsp;</strong> the
                 deletion operation.</a>
             </form>
           {% else %}
-            <div class="alert alert-warning alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-              <img src="{% static 'img/custom-illustrations/boy-core-edit.png' %}" width="25%"
-                   class="justify-content-end">
+            <div class="alert alert-danger alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+              <img src="{% static 'img/custom-illustrations-v2/i2-5.png' %}" width="25%" style="border-radius:25px;"
+                   class="justify-content-end me-8">
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <span class="alert-icon rounded">
               <i class="ti ti-alert-triangle-filled"></i>
@@ -57,11 +57,12 @@
                   If you truly want to delete this organization, please create another organization first. Then, you
                   can delete this one, by choosing to transfer the balance to your new organization.
                 </p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <hr>
+                <button type="button" class="btn-close mt-8" data-bs-dismiss="alert" aria-label="Close">
                 </button>
               </div>
             </div>
-            <a href="{% url 'organization:list' %}" class="btn btn-secondary"><strong>GO BACK</strong></a>
+            <a href="{% url 'organization:list' %}" class="btn btn-secondary"><strong>Turn Back</strong></a>
           {% endif %}
         </div>
       </div>

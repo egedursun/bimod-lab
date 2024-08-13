@@ -106,8 +106,12 @@
         We couldn't find the page you are looking for. If you think this is a mistake, please feel free to contact us.
       {% elif status == 400 %}
         The request was invalid. Please try again later. This may be due to a bad request, a malformed syntax, or a deceptive request routing.
+      {% elif status == 401 %}
+        You are not authorized to access this page. If you think this is a mistake, please feel free to contact us.
       {% elif status == 402 %}
         Payment is required to access this page. If you think this is a mistake, please feel free to contact us.
+      {% elif status == 403 %}
+        You are forbidden to access this page. If you think this is a mistake, please feel free to contact us.
       {% elif status == 405 %}
         The HTTP request method is not allowed. This issue is likely due to a misconfiguration or an error in the request routing.
       {% elif status == 406 %}
@@ -183,8 +187,8 @@
       {% endif %}
     </p>
     <a href="{% url 'landing:index' %}" class="btn btn-primary mb-10"><strong><i class="fa fa-chevron-left me-4"></i> Back</strong></a>
-    <div class="mt-4">
-      <img src="{% static 'img/illustrations/page-misc-error.png' %}" alt="page-misc-error" width="225" class="img-fluid">
+    <div class="mt-12">
+      <img src="{% static 'img/custom-illustrations-v2/i2-100.png' %}" alt="page-misc-error" style="border-radius: 25px;" width="500" class="img-fluid">
     </div>
   </div>
 </div>

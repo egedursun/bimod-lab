@@ -36,12 +36,13 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-4">
-      <h3 class="mb-0">User Management</h3>
+      <h3 class="mb-0"><strong>User Management</strong></h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-user-list.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-33.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -59,10 +60,21 @@
     </div>
   </div>
 
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}"
+           role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
   <!-- Search Form -->
-  <div class="row g-4 mb-4">
+  <div class="row g-4 mt-4 mb-4 card card-border-shadow-primary p-4">
     <div class="col-xl-12">
-      <h6 class="text-muted">Filter Users</h6>
+      <h6 class="text-muted"><strong>Search Users</strong></h6>
       <div class="card text-center mb-4">
         <div class="card-header">
           <div class="nav-align-top">
@@ -85,11 +97,17 @@
       <div class="card-header border-bottom">
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
-          <h4>{{ organization.name }}</h4>
+          <div class="d-flex">
+            <img src="
+
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 class="rounded" width="60" height="60" alt="Organization Image">
+            <h4><strong class="ms-4">{{ organization.name }}</strong></h4>
+          </div>
         </a>
-        <p>
+        <p class="mt-4">
           <i class="fa fa-user-astronaut"></i>
-          <strong>&nbsp; Number of Users: </strong> {{ user_data.page_obj.paginator.count }}
+          <strong>&nbsp;Total Users: </strong> {{ user_data.page_obj.paginator.count }}
         </p>
         <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
         <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false"
@@ -97,7 +115,7 @@
         <strong>&nbsp; See Users of this Organization</strong>
       </span>
       </div>
-      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse">
+      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse p-8">
         <div class="card-datatable table-responsive">
           <a href="{% url 'user_management:add' %}">
             <button class="btn btn-success mt-4 ms-4">
@@ -115,6 +133,7 @@
         <table class="datatables-users-management table">
           <thead class="border-top">
           <tr>
+            <th></th>
             <th>Username</th>
             <th>Added by</th>
             <th>Email</th>
@@ -134,13 +153,20 @@
           <tbody>
           {% for user, profile in user_data.user_profiles %}
             <tr>
-              <td>{{ user.username }}</td>
+              <td>
+                {% if user.profile.profile_picture %}
+                  <img src="{{ user.profile.profile_picture.url }}" class="rounded" width="60" height="60" alt="User Image">
+                {% else %}
+                  <img src="{% static 'img/avatars/user-0.png' %}" class="rounded" width="60" height="60" alt="User Image">
+                {% endif %}
+              </td>
+              <td><strong>{{ user.username }}</strong></td>
               <td>{{ profile.created_by_user.username }}</td>
-              <td>{{ user.email }}</td>
+              <td><strong>{{ user.email }}</strong></td>
               <td>{{ profile.first_name }}</td>
               <td>{{ profile.last_name }}</td>
               <td>{{ profile.phone_number }}</td>
-              <td>{{ profile.address }}</td>
+              <td style="min-width: 400px;">{{ profile.address }}</td>
               <td>{{ profile.city }}</td>
               <td>{{ profile.country }}</td>
               <td>{{ profile.postal_code }}</td>
@@ -155,26 +181,42 @@
                 {% endif %}
               </td>
               <td>{{ profile.is_verified|yesno:"Yes,No" }}</td>
-              <td>
+              <td style="min-width: 200px;">
                 {% if user.id != context_user.id %}
                   <a href="{% url "user_management:remove_user_from_organization" user.id organization.id %}"
                      class="btn btn-sm btn-warning">
-                    <strong>Remove from Organization</strong>
+                    <strong>
+                      <i class="fa fa-building"></i><i class="fa fa-user-minus me-2"></i>
+                      Remove from This
+                    </strong>
                   </a>
+                {% else %}
+                  <div class="alert-warning p-2 rounded">
+                    <strong>
+                      <i class="fa fa-info-circle me-2"></i>
+                      Your Account
+                    </strong>
+                  </div>
                 {% endif %}
               </td>
-              <td>
+              <td style="min-width: 200px;">
                 {% if user.id != context_user.id %}
                   <a href="{% url "user_management:remove_user_from_all_organizations" user.id %}"
                      class="btn btn-sm btn-warning">
-                    <strong>Remove from All Organizations</strong>
+                    <strong>
+                      <i class="fa fa-city"></i><i class="fa fa-user-minus me-2"></i>
+                      Remove from All
+                    </strong>
                   </a>
                 {% endif %}
               </td>
-              <td>
+              <td style="min-width: 200px;">
                 {% if user.id != context_user.id %}
                   <a href="{% url "user_management:remove" user.id %}" class="btn btn-sm btn-danger">
-                    <strong>Delete User Account</strong>
+                    <strong>
+                      <i class="fa fa-trash"></i><i class="fa fa-user-minus me-2"></i>
+                      Delete User Account
+                    </strong>
                   </a>
                 {% endif %}
               </td>
@@ -185,7 +227,7 @@
 
         <!-- Pagination controls -->
         <nav aria-label="Page navigation">
-          <ul class="pagination pagination-rounded justify-content-center p-4 overflow-scroll">
+          <ul class="pagination pagination-rounded overflow-auto justify-content-center p-4">
             {% if user_data.page_obj.has_previous %}
               <li class="page-item">
                 <a class="page-link" href="?page=1&search={{ user_data.search_query }}" aria-label="First">

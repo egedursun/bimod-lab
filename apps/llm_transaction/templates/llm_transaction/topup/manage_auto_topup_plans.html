@@ -35,12 +35,12 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-6">
-      <h3 class="mb-0"><strong>Your Automated Top-Up Plans</strong></h3>
+      <h3 class="mb-0"><strong>Automated Top-Up Plans</strong></h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-16.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end me-8">
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -48,76 +48,119 @@
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
         In this page, you can manage your automated top-up plans for your organization. Simply click on a top-up plan to
-        delete it.
+        delete it. The automated top-up plans will automatically top up the balance of your organizations when the
+        conditions you set are met. There can be two triggers for the automated top-up plans; balance threshold trigger
+        and interval by days trigger. Balance threshold trigger will automatically top up the balance of the organization
+        when the balance is lower than the threshold you set. Interval by days trigger will automatically top-up the
+        balance of the organization at the interval you set. You can create a new automated top-up plan by clicking on
+        the "Create Top-Up Plan" button.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}"
+           role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
 
   <!-- Automated Top-Up Plans Cards -->
   <div class="row g-6 mb-4">
     {% for organization in organizations %}
       <div class="col-xl-6 col-md-6">
         <div class="card h-100">
-          <div class="card-header d-flex justify-content-between">
+          <div class="card-header d-flex justify-content-between align-content-center align-items-center">
             <div class="card-title mb-0">
-              <h4>{{ organization.name }}</h4>
+              <div class="d-flex align-items-center justify-content-center align-content-center">
+                <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   class="rounded" width="60" height="60" alt="Organization Image">
+                <h4><strong class="ms-4">{{ organization.name }}</strong></h4>
+              </div>
             </div>
           </div>
           <div class="card-body">
             <ul class="p-0 m-0">
+              <hr>
               {% if organization.auto_balance_topup %}
                 {% if organization.auto_balance_topup.on_balance_threshold_trigger %}
-                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4">
+                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4 border border-2 border-success">
                     <i class="fa fa-circle text-success me-12 ms-4"></i>
                     <strong>Trigger on Low Balance &nbsp;&nbsp; (Active)</strong>
                   </div>
                 {% else %}
-                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4">
-                    <i class="fa fa-circle text-danger me-12"></i>
+                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4 border border-2 border-danger">
+                    <i class="fa fa-circle text-danger me-12 ms-4"></i>
                     <strong>Trigger on Low Balance &nbsp;&nbsp; (Inactive)</strong>
                   </div>
                 {% endif %}
                 {% if organization.auto_balance_topup.on_interval_by_days_trigger %}
-                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4">
+                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4 border border-2 border-success">
                     <i class="fa fa-circle text-success me-12 ms-4"></i>
                     <strong>Trigger on Interval by Days &nbsp;&nbsp; (Active)</strong>
                   </div>
                 {% else %}
-                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4">
-                    <i class="fa fa-circle text-danger me-12"></i>
+                  <div class="label bg-label-secondary rounded px-2 py-4 mb-4 border border-2 border-danger">
+                    <i class="fa fa-circle text-danger me-12 ms-4"></i>
                     <strong>Trigger on Interval by Days &nbsp;&nbsp; (Inactive)</strong>
                   </div>
                 {% endif %}
+                <hr>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
-                  <span class="text-body me-4"><strong>Balance Lower Threshold Value:</strong></span>
+                  <span class="text-body me-4">
+                    <strong>
+                      <i class="fa fa-bolt-lightning me-2"></i>
+                      Balance Lower Threshold Value
+                    </strong>
+                  </span>
                   <span
-                    class="text-wrap bg-label-warning p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.balance_lower_trigger_threshold_value }}</strong></span>
+                    class="text-wrap bg-label-warning p-2 rounded w-50"><strong> &lt; $ {{ organization.auto_balance_topup.balance_lower_trigger_threshold_value }}</strong></span>
                 </li>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
-                  <span class="text-body"><strong>Addition on Balance Threshold Trigger:</strong></span>
+                  <span class="text-body">
+                    <strong>
+                      <i class="fa fa-plus-circle me-2"></i>
+                      Addition on Balance Threshold Trigger
+                    </strong></span>
                   <span
-                    class="text-wrap bg-label-success p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.addition_on_balance_threshold_trigger }}</strong></span>
+                    class="text-wrap bg-label-success p-2 rounded w-50"><strong>+ $ {{ organization.auto_balance_topup.addition_on_balance_threshold_trigger }}</strong></span>
                 </li>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
-                  <span class="text-body"><strong>Regular by Days Interval:</strong></span>
+                  <span class="text-body"><strong>
+                    <i class="fa fa-calendar-day me-2"></i>
+                    Regular by Days Interval
+                  </strong></span>
                   <span
                     class="text-wrap bg-label-info p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.regular_by_days_interval }}</strong></span>
                 </li>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
-                  <span class="text-body"><strong>Addition on Interval by Days Trigger:</strong></span>
+                  <span class="text-body"><strong>
+                    <i class="fa fa-plus-circle me-2"></i>
+                    Addition on Interval by Days Trigger
+                  </strong></span>
                   <span
-                    class="text-wrap bg-label-success p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.addition_on_interval_by_days_trigger }}</strong></span>
+                    class="text-wrap bg-label-success p-2 rounded w-50"><strong>+ $ {{ organization.auto_balance_topup.addition_on_interval_by_days_trigger }}</strong></span>
                 </li>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
-                  <span class="text-body"><strong>Current Usage of Monthly Hard Limit:</strong></span>
+                  <span class="text-body"><strong>
+                    <i class="fa fa-level-up me-2"></i>
+                    Current Usage of Monthly Hard Limit
+                  </strong></span>
                   <span
-                    class="text-wrap bg-label-danger p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.calendar_month_total_auto_addition_value }}</strong></span>
+                    class="text-wrap bg-label-danger p-2 rounded w-50"><strong>$ {{ organization.auto_balance_topup.calendar_month_total_auto_addition_value }}</strong></span>
                 </li>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
-                  <span class="text-body"><strong>Monthly Hard Limit Auto Addition Amount:</strong></span>
+                  <span class="text-body"><strong>
+                    <i class="fa fa-stop-circle me-2"></i>
+                    Monthly Hard Limit
+                  </strong></span>
                   <span
-                    class="text-wrap bg-label-danger p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount }}</strong></span>
+                    class="text-wrap bg-label-danger p-2 rounded w-50"><strong>$ {{ organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount }}</strong></span>
                 </li>
                 </ul>
                 <hr>
@@ -126,14 +169,19 @@
                     {% csrf_token %}
                     <input type="hidden" name="organization_id" value="{{ organization.id }}">
                     <input type="hidden" name="delete" value="delete">
-                    <button type="submit" class="btn btn-danger"><i class="ti ti-trash"></i><strong> Delete </strong>
+                    <button type="submit" class="btn btn-danger"><i class="ti ti-trash me-2"></i><strong>Delete</strong>
                     </button>
                   </form>
                 </div>
               {% else %}
-                <p>No top-up plan available for this organization.</p>
+                <div class="alert alert-warning p-8" role="alert">
+                  <div class="">
+                    <i class="fa fa-exclamation-triangle me-4"></i>
+                    <strong>No Automated Top-Up plans found for this organization.</strong>
+                  </div>
+                </div>
                 <hr>
-                <a href="{% url 'llm_transaction:auto_top_up_create' %}" class="btn btn-success"><i
+                <a href="{% url 'llm_transaction:auto_top_up_create' %}" class="btn btn-success w-100"><i
                   class="ti ti-plus"></i><strong> Create Top-Up Plan </strong></a>
               {% endif %}
           </div>

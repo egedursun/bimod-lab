@@ -3,7 +3,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}LLM Models{% endblock %}
+{% block title %}Model Configurations{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -36,11 +36,12 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-4">
-      <h3 class="mb-0">LLM Cores</h3>
+      <h3 class="mb-0"><strong>Model Configurations</strong></h3>
     </div>
   </div>
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-core-list.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-8.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
@@ -64,7 +65,11 @@
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
           <h4>
-            {{ organization.name }}
+            <div class="d-flex">
+              <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   class="rounded" width="60" height="60" alt="Organization Image">
+              <strong class="ms-4">{{ organization.name }}</strong>
+            </div>
           </h4>
         </a>
         <p>
@@ -77,7 +82,7 @@
       <strong>&nbsp; See LLM core models</strong>
     </span>
       </div>
-      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse">
+      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse p-8">
         <div class="card-datatable table-responsive">
           <a href="{% url 'llm_core:create' %}">
             <button class="btn btn-success mt-4 ms-4">
@@ -105,22 +110,30 @@
           <tbody>
           {% for llm_core in llm_cores %}
             <tr>
-              <td>{{ llm_core.nickname }}</td>
+              <td><strong>{{ llm_core.nickname }}</strong></td>
               <td>{{ llm_core.description }}</td>
-              <td>{{ llm_core.get_provider_name }}</td>
-              <td>{{ llm_core.model_name }}</td>
+              <td><strong>{{ llm_core.get_provider_name }}</strong></td>
+              <td><strong>{{ llm_core.model_name }}</strong></td>
               <td>{{ llm_core.temperature }}</td>
               <td>{{ llm_core.maximum_tokens }}</td>
               <td>{{ llm_core.top_p }}</td>
               <td>{{ llm_core.frequency_penalty }}</td>
               <td>{{ llm_core.presence_penalty }}</td>
               <td>
-                <a href="{% url 'llm_core:update' llm_core.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{% url 'llm_core:update' llm_core.id %}"
+                   class="btn btn-sm btn-primary"><strong>Edit</strong></a>
               </td>
               <td>
-                <a href="{% url 'llm_core:delete' llm_core.id %}" class="btn btn-sm btn-danger">Delete</a>
+                <a href="{% url 'llm_core:delete' llm_core.id %}" class="btn btn-sm btn-danger"><strong>Delete</strong></a>
               </td>
             </tr>
+          {% empty %}
+            <div class="alert alert-warning p-8 m-4" role="alert">
+              <div class="">
+                <i class="fa fa-exclamation-triangle me-4"></i>
+                <strong>No LLM Model Configurations for this organization have been created yet.</strong>
+              </div>
+            </div>
           {% endfor %}
           </tbody>
         </table>

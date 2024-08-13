@@ -32,13 +32,14 @@
 
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-3">
-      <h3 class="mb-0">Usage &amp; Payment</h3>
+      <h3 class="mb-0"><strong>Transactions &amp; Balance</strong></h3>
     </div>
     <!-- Add more statistics cards if necessary -->
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-transaction-list.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-12.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -55,14 +56,23 @@
       </button>
     </div>
   </div>
-
-  <div class="row mb-6">
+  <hr>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}"
+           role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  <div class="row mb-6 mt-8 card card-border-shadow-primary p-8">
     <div class="col-sm-12 col-xl-12">
-      <h6 class="text-muted">Balance Transfer</h6>
+      <h5 class="text-muted"><strong>Transfer Balance</strong></h5>
+      <hr>
       <form method="post" action="{% url 'organization:balance_transfer' %}">
         {% csrf_token %}
         <div class="mb-3">
-          <label for="source_org" class="form-label">Source Organization</label>
+          <label for="source_org" class="form-label"><i class="fa fa-minus-circle me-2"></i>Source Organization</label>
           <select class="form-select" id="source_org" name="source_org" required>
             {% for org in user_organizations %}
               <option value="{{ org.id }}">
@@ -72,7 +82,8 @@
           </select>
         </div>
         <div class="mb-3">
-          <label for="destination_org" class="form-label">Destination Organization</label>
+          <label for="destination_org" class="form-label"><i class="fa fa-plus-circle me-2"></i>Target
+            Organization</label>
           <select class="form-select" id="destination_org" name="destination_org" required>
             {% for org in user_organizations %}
               <option value="{{ org.id }}">
@@ -82,11 +93,12 @@
           </select>
         </div>
         <div class="mb-3">
-          <label for="transfer_amount" class="form-label">Amount</label>
+          <label for="transfer_amount" class="form-label">Transfer Amount</label>
           <input type="number" class="form-control" id="transfer_amount" name="transfer_amount"
                  placeholder="Enter amount to transfer" required>
         </div>
-        <button type="submit" class="btn btn-primary w-25"><strong>Transfer Balance</strong></button>
+        <hr>
+        <button type="submit" class="btn btn-primary mt-4 w-25"><strong>Transfer Balance</strong></button>
       </form>
     </div>
   </div>
@@ -94,9 +106,9 @@
   <hr>
 
   <!-- Tabs for Filtering -->
-  <div class="row g-4 mb-4">
+  <div class="row g-4 mb-4 card card-border-shadow-primary p-8 mt-8">
     <div class="col-xl-12">
-      <h6 class="text-muted">Filter Transactions</h6>
+      <h5 class="text-muted"><strong>Filter Transactions</strong></h5>
       <div class="card text-center mb-4">
         <div class="card-header">
           <div class="nav-align-top">
@@ -104,12 +116,12 @@
               <li class="nav-item" role="presentation">
                 <form method="post" action="{% url 'llm_transaction:list' %}">
                   {% csrf_token %}
-                  <strong>Last</strong>
-                  <label>
+                  <strong class="me-4">Last</strong>
+                  <label class="me-4">
                     <input type="number" name="delta_specifier" value="{{ delta_specifier }}" class="form-control"
                            id="delta_specifier"/>
                   </label>
-                  <label>
+                  <label class="me-4">
                     <select class="form-select" id="time_specifier" name="time_specifier">
                       {% for key, value in filter_types %}
                         <option value="{{ key }}"
@@ -129,12 +141,13 @@
                   </label>
                   <label>
                     <button type="submit"
-                            class="nav-link waves-effect waves-light {% if filter == 'specific' %}active{% endif %}"
-                            name="filter" value="specific">Update
+                            class="nav-link waves-effect waves-light {% if filter == 'specific' %}active{% endif %} me-4"
+                            name="filter" value="specific"><strong>Update Transactions</strong>
                     </button>
                     <button type="submit" class="nav-link waves-effect waves-light
+
                       {% if filter %}{% if filter == 'all' %}active{% endif %}{% else %}{% if filter != 'specific' %}active{% endif %}{% endif %}"
-                            name="filter" value="all">All Transactions
+                            name="filter" value="all"><strong>Show All Transactions</strong>
                     </button>
                   </label>
                 </form>
@@ -147,7 +160,7 @@
   </div>
 
   <!-- Display overall user total costs -->
-  <div class="row g-4 mb-4">
+  <div class="row g-4 mb-4 card card-border-shadow-primary p-8">
     <div class="col-sm-12 col-xl-12">
       <div class="card">
         <div class="card-body bg-label-success rounded">
@@ -157,7 +170,7 @@
                 <h3 class="mb-0 me-2">${{ cost_sums.total_billable_cost }}</h3>
                 <small class="text-primary"></small>
               </div>
-              <small><strong>Total Cost (User)</strong></small>
+              <small><strong>Total Cost</strong></small>
             </div>
             <span class="badge bg-label-primary rounded p-2">
               <i class="ti ti-arrows-transfer-down ti-sm"></i>
@@ -165,7 +178,7 @@
           </div>
         </div>
       </div>
-      <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
+      <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
         <span class="alert-icon rounded">
           <i class="ti ti-bell"></i>
         </span>
@@ -184,15 +197,20 @@
             <p>
               <a data-bs-toggle="collapse" href="#collapse-{{ organization_data.organization.id }}" role="button"
                  aria-expanded="true" aria-controls="collapse-{{ organization_data.organization.id }}">
-                <h4 class="mb-0">{{ organization_data.organization.name }}</h4>
-                <small class="text-muted">{{ organization_data.organization.email }}</small>
+                <div class="d-flex">
+                  <img src="
+                    {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                       class="rounded" width="60" height="60" alt="Organization Image">
+                    <h4 class="mb-0 mt-4"><strong>{{ organization_data.organization.name }}</strong></h4>
+                </div>
+                <small class="text-muted"><strong>{{ organization_data.organization.email }}</strong></small>
               </a>
             </p>
             <i class="fa fa-arrow-alt-circle-up toggle-icon mt-5"
                data-target="#collapse-{{ organization_data.organization.id }}"></i>
             <span data-bs-toggle="collapse" href="#collapse-{{ organization_data.organization.id }}" role="button"
                   aria-expanded="true" aria-controls="collapse-{{ organization_data.organization.id }}">
-          <strong>&nbsp; See Complete List of Transactions</strong>
+          <strong>&nbsp; See List of Transactions</strong>
         </span>
           </div>
           <div id="collapse-{{ organization_data.organization.id }}" class="card-body collapse show">
@@ -209,7 +227,7 @@
                         </h3>
                         <small class="text-primary"></small>
                       </div>
-                      <small>Balance</small>
+                      <small><strong>Balance</strong></small>
                     </div>
                     <span class="badge bg-label-primary rounded p-2 ms-auto">
                   <i class="ti ti-wallet ti-sm"></i>
@@ -223,24 +241,51 @@
                 <div class="card h-100">
                   <div class="card-header">
                     <a href="{% url 'llm_transaction:auto_top_up_create' %}">
-                      <button class="btn btn-info w-100" type="submit">
-                        <i class="fa fa-refresh me-2"></i><strong>Create an Automated Balance Top-Up Plan</strong>
+                      <button class="btn btn-success w-100" type="submit">
+                        <i class="fa fa-refresh me-2"></i><strong>Create Automated Balance Top-Up Plan</strong>
                       </button>
                     </a>
+                    <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                      <span class="alert-icon rounded">
+                        <i class="ti ti-bell"></i>
+                      </span>
+                      Create an automated balance top-up plan to ensure that your organization's balance is always
+                      sufficient to cover the costs, without needing to manually top up your balance each time.
+                    </div>
                   </div>
+                  <hr>
+                  <h6><strong class="ms-6 mt-2 mb-2">Add Balance to Organization</strong></h6>
                   <div class="card-body d-flex align-items-center">
+                    <br>
                     <form method="post" action="{% url 'organization:add_credits' organization_data.organization.id %}"
                           class="w-100">
                       {% csrf_token %}
+                      <label for="promo_code" class="form-label mb-2"><strong>Do you have a promo code?</strong></label>
                       <input type="text" class="form-control mb-2" name="promo_code" value=""
                              placeholder="You have a referral or promo code?">
+                      <label for="topup_amount" class="form-label mb-2"><strong>Enter amount in USD to add to the
+                        balance.</strong></label>
+                      {% if user.profile.free_credits != 0 %}
+                        <div class="alert alert-solid-success d-flex align-items-center mt-6" role="alert">
+                          <span class="alert-icon rounded">
+                            <i class="ti ti-bell"></i>
+                          </span>
+                          <strong>You have
+                            <span class="p-1 bg-label-primary rounded">${{ user.profile.free_credits }}</span>
+                            'FREE' credits available. Would you want to them to this organization?</strong>
+                          <a class="btn btn-primary ms-4" href="{% url 'organization:add_gift_credits' organization_data.organization.id %}">
+                            <i class="fa fa-exchange me-2"></i>
+                            <strong>Add Free Credits</strong>
+                          </a>
+                        </div>
+                      {% endif %}
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text pt-2 pb-2 me-1"><strong>$ (USD)</strong></span>
+                          <span class="input-group-text pt-2 pb-2 me-2"><strong>$ (USD)</strong></span>
                         </div>
-                        <input type="number" class="form-control rounded me-1" name="topup_amount"
-                               placeholder="Enter amount" required>
-                        <button class="btn btn-primary rounded" type="submit">Add Credits</button>
+                        <input type="number" class="form-control rounded me-2" name="topup_amount"
+                               placeholder="Enter amount to add to the balance" required>
+                        <button class="btn btn-primary rounded" type="submit"><strong>Add Balance</strong></button>
                       </div>
                     </form>
                   </div>
@@ -302,13 +347,13 @@
                       {% for transaction in llm_data.transactions %}
                         <tr>
                           <td>{{ transaction.id }}</td>
-                          <td>{{ transaction.responsible_user.username }}</td>
-                          <td>{{ transaction.responsible_assistant.name }}</td>
+                          <td><strong>{{ transaction.responsible_user.username }}</strong></td>
+                          <td><strong>{{ transaction.responsible_assistant.name }}</strong></td>
                           <td>{{ transaction.transaction_type }}</td>
                           <td>{{ transaction.transaction_source }}</td>
                           <td>{{ transaction.encoding_engine }}</td>
-                          <td>{{ transaction.number_of_tokens }}</td>
-                          <td>$ {{ transaction.total_billable_cost }}</td>
+                          <td><strong>{{ transaction.number_of_tokens }}</strong></td>
+                          <td><strong>$ {{ transaction.total_billable_cost }}</strong></td>
                           <td>{{ transaction.created_at }}</td>
                         </tr>
                       {% endfor %}
@@ -321,7 +366,7 @@
                       </tbody>
                     </table>
                     <nav aria-label="Page navigation">
-                      <ul class="pagination pagination-rounded pt-8 overflow-scroll">
+                      <ul class="pagination pagination-rounded pt-8 overflow-auto pb-4 ps-4">
                         {% if llm_data.transactions.has_previous %}
                           <li class="page-item">
                             <a class="page-link" href="?page=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
@@ -350,6 +395,19 @@
                     </nav>
                   </div>
                 </div>
+              </div>
+            {% empty %}
+              <div class="alert alert-warning p-8" role="alert">
+                <div class="">
+                  <i class="fa fa-exclamation-triangle me-4"></i>
+                  <strong>No LLM Model Configurations for this organization have been created yet.</strong>
+                </div>
+                <a href="{% url 'llm_core:create' %}">
+                  <button class="btn btn-success mt-4"><strong>
+                    <i class="fa fa-plus me-4"></i>
+                    Create Model Configuration
+                  </strong></button>
+                </a>
               </div>
             {% endfor %}
           </div>

@@ -8,6 +8,7 @@
 {% block page_css %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'vendor/css/pages/page-profile.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
   <style>
     /* Ensure images within markdown content fit within their container */
     .markdown-content img {
@@ -17,44 +18,91 @@
   </style>
 {% endblock page_css %}
 
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
 {% block content %}
 
   <div class="row g-6 mb-6">
-    <div class="col-sm-6 col-xl-4 label card card-border-primary rounded mt-8 ms-3 py-4 ps-4 pe-4">
-      <h3 class="mb-0">Starred Responses <i class="ti ti-star-filled text-primary ms-4 pb-1"
-                                            style="font-size: 24px;"></i></h3>
+    <div class="col-sm-6 col-xl-4">
+      <h3 class="mb-0">
+        <strong>Starred Responses</strong>
+      </h3>
     </div>
   </div>
 
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-16.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8">
+    <span class="alert-icon rounded ms-4">
+    <i class="bi bi-info-circle"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        The starred messages are the messages you have starred for quick reference. You can view the starred messages
+        here and copy the message content to the clipboard. The starred messages are used to keep track of the important
+        messages that you want to refer to later. You can also delete the starred messages if you no longer need them.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   <!-- Starred Messages Cards -->
-  <div class="row g-6">
+  <div class="row g-6 mt-4">
     {% for org_name, assistants in org_assistants_messages.items %}
-      <div class="col-12 mb-4">
-        <h4>{{ org_name }}</h4>
+      <div class="col-12 mb-8">
+        <h4>
+          <strong>
+            <i class="fa fa-building me-4"></i>
+            {{ org_name }}
+          </strong>
+        </h4>
         {% for assistant_name, messages in assistants.items %}
-          <div class="mb-3">
-            <h6>{{ assistant_name }}</h6>
-            <div class="row">
+          <div class="mb-4 card card-border-shadow-primary p-8">
+            <div class="d-flex">
+              <img src="{% if messages.0.assistant.assistant_image %}{{ messages.0.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   alt="Avatar" class="rounded me-4" style="width: 80px; height: 80px;"/>
+              <h5>
+                <strong>{{ assistant_name }}</strong>
+              </h5>
+            </div>
+            <div class="row mt-4">
               {% for message in messages %}
                 <div class="col-xl-6 col-lg-6 col-md-6 mb-6 d-flex">
                   <div class="card w-100">
                     <div class="card-header pb-4">
                       <div class="d-flex align-items-start">
                         <div class="d-flex align-items-center">
-                          <div class="avatar me-4">
+                          <div class="me-4">
                             <img src="
                               {% if message.assistant.assistant_image %}{{ message.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                                 alt="Avatar" class="rounded"/>
+                                 alt="Avatar" class="rounded" width="70" height="70"/>
                           </div>
                           <div class="me-2">
-                            <h5 class="mb-0"><strong>{{ assistant_name }}</strong></h5>
                             <div class="label bg-label-primary rounded mt-2 pt-1 pb-1 ps-2 pe-2">
                               <div class="client-info text-body"><strong><span
-                                class="fw-medium"></span><span>{{ message.chat.chat_name }}</span></strong></div>
+                                class="fw-medium me-4"><i class="fa fa-building me-4"></i> Chat Name: </span><span>
+                                {{ message.chat.chat_name }}
+                              </span></strong></div>
                             </div>
                             <div
                               class="label {% if message.sender_type == "USER" %}bg-label-info{% else %}bg-label-danger{% endif %} rounded mt-2 pt-1 pb-1 ps-2 pe-2">
-                              <div class="client-info text-body"><strong><span class="fw-medium"></span><span>Sender: &nbsp;&nbsp; {{ message.sender_type|lower|capfirst }}</span></strong>
+                              <div class="client-info text-body"><strong><span class="fw-medium me-4"><i class="fa fa-building me-4"></i>Sender Role: </span><span>{{ message.sender_type|lower|capfirst }}</span></strong>
                               </div>
                             </div>
                           </div>
@@ -79,6 +127,7 @@
                           {{ message.message_text|linebreaksbr|safe|slice:":400" }}
                             {% if message.message_text|length > 200 %}...{% endif %}</p>
                         <div id="full-text-{{ message.id }}" class="collapse">
+                          <hr>
                           <p class="text-primary mb-2"><strong>Full Text</strong></p>
                           <p class="card-text markdown-content">{{ message.message_text|linebreaksbr|safe }}</p>
                           <hr>
@@ -87,6 +136,13 @@
                             {% for image_url in message.message_image_urls %}
                               <div class="col-6 mt-4">
                                 <img src="{{ base_url }}/{{ image_url }}" alt="Image" class="img-fluid rounded"/>
+                              </div>
+                            {% empty %}
+                              <div class="col-12 mt-4">
+                                <div class="alert alert-info" role="alert">
+                                  <i class="fa fa-info-circle me-2"></i>
+                                  No image content found for this message.
+                                </div>
                               </div>
                             {% endfor %}
                           </div>
@@ -99,10 +155,18 @@
                                 <strong><a href="{{ base_url }}/{{ file_url }}" target="_blank"
                                            class="text-dark">{{ file_url }}</a></strong>
                               </div>
+                            {% empty %}
+                              <div class="col-12 mt-4">
+                                <div class="alert alert-info" role="alert">
+                                  <i class="fa fa-info-circle me-2"></i>
+                                  No file content found for this message.
+                                </div>
+                              </div>
                             {% endfor %}
                           </div>
                           <hr>
                         </div>
+                        <hr>
                         <strong><small>
                           <a href="javascript:void(0);" class="expand-btn" data-bs-toggle="collapse"
                              data-bs-target="#full-text-{{ message.id }}" aria-expanded="false"
@@ -114,14 +178,26 @@
                           </a>
                         </small></strong>
                       </div>
-                      <small class="mt-8"><strong>Starred At: &nbsp;</strong> {{ message.starred_at|date:"d M Y, H:i" }}
+                      <small class="mt-8"><strong>
+                        <i class="fa fa-calendar me-2"></i>
+                        Starred At: &nbsp;</strong> {{ message.starred_at|date:"d M Y, H:i" }}
                       </small>
                       <div class="alert-container"></div>
                     </div>
                   </div>
                 </div>
+              {% empty %}
+                <div class="col-12 ms-8 me-8">
+                  <div class="alert alert-warning" role="alert">
+                    No starred messages found for assistant.
+                  </div>
+                </div>
               {% endfor %}
             </div>
+          </div>
+        {% empty %}
+          <div class="alert alert-warning ms-8 me-8" role="alert">
+            No starred messages found for assistant.
           </div>
         {% endfor %}
       </div>
@@ -175,6 +251,30 @@
             }, 1000);
           }).catch(err => {
             alert('Failed to copy text: ' + err);
+          });
+        });
+      });
+
+      document.querySelectorAll('.text-danger').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('a').getAttribute('href');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
           });
         });
       });

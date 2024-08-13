@@ -27,17 +27,27 @@
 {% endblock page_js %}
 
 {% block content %}
+
+  <a href="{% url 'message_templates:list' %}">
+    <button class="btn btn-secondary my-4 w-25">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to Templates</strong>
+    </button>
+  </a>
+
   <!-- Basic Layout -->
   <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Update Message Template</h5> <small class="text-muted float-end"></small>
+          <h5 class="mb-0">
+            <strong>Update Message Template</strong>
+          </h5> <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-core-edit.png' %}" width="25%"
-                 class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-76.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -62,22 +72,27 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="organization">Organization</label>
-              <select class="form-control" id="organization" name="organization">
-                {% for organization in organizations %}
-                  <option value="{{ organization.id }}"
-                          {% if message_template.organization == organization %}selected{% endif %}>{{ organization.name }}</option>
-                {% endfor %}
-              </select>
+            <div class="row p-8">
+              <div class="mb-6 col-12">
+                <label class="form-label" for="organization">Organization</label>
+                <select class="form-control" id="organization" name="organization">
+                  {% for organization in organizations %}
+                    <option value="{{ organization.id }}"
+                            {% if message_template.organization == organization %}selected{% endif %}>{{ organization.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-12">
+                <label class="form-label" for="template_text">Template Text</label>
+                <textarea class="form-control" id="template_text" name="template_text" rows="3"
+                          placeholder="Enter template text">{{ message_template.template_text }}</textarea>
+                <div class="form-text"></div>
+              </div>
             </div>
-            <div class="mb-6">
-              <label class="form-label" for="template_text">Template Text</label>
-              <textarea class="form-control" id="template_text" name="template_text"
-                        placeholder="Enter template text">{{ message_template.template_text }}</textarea>
-              <div class="form-text"></div>
-            </div>
-            <button type="submit" class="btn btn-primary d-grid w-100">Update Information</button>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid mt-4 w-25">
+              <strong>Update Template</strong>
+            </button>
           </form>
         </div>
       </div>

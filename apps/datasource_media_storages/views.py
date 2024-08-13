@@ -1,3 +1,10 @@
+"""
+This module contains views for managing media storage connections and media items within the Bimod.io platform.
+
+The views include creating, updating, deleting, and listing media storage connections and their associated media items. These views also handle uploading media files, generating file descriptions, and fetching files from URLs. Access to these views is restricted to authenticated users, with additional permission checks for specific actions.
+"""
+
+
 import os
 import re
 
@@ -34,6 +41,15 @@ FILE_TYPE_HIGHLIGHTING_DECODER = {
 
 
 class DataSourceMediaStorageConnectionCreateView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of new media storage connections.
+
+    This view displays a form for creating a new media storage connection. Upon submission, it validates the input, checks user permissions, and saves the new connection to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds additional context to the template, including available assistants, media categories, and user details.
+        post(self, request, *args, **kwargs): Handles form submission and media storage connection creation, including permission checks and validation.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -75,6 +91,16 @@ class DataSourceMediaStorageConnectionCreateView(LoginRequiredMixin, TemplateVie
 
 
 class DataSourceListMediaStorageConnectionsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of media storage connections associated with the user's organizations and assistants.
+
+    This view retrieves all media storage connections organized by organization and assistant, and displays them in a structured list.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the media storage connections organized by organization and assistant, and adds them to the context.
+        post(self, request, *args, **kwargs): Handles the deletion of selected media storage connections.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         organizations = Organization.objects.filter(users__in=[self.request.user])
@@ -101,6 +127,15 @@ class DataSourceListMediaStorageConnectionsView(LoginRequiredMixin, TemplateView
 
 
 class DataSourceMediaStorageConnectionUpdateView(LoginRequiredMixin, TemplateView):
+    """
+    Handles updating an existing media storage connection.
+
+    This view allows users with the appropriate permissions to modify a media storage connection's attributes. It also handles the form submission and validation for updating the connection.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current media storage connection details and adds them to the context, along with other relevant data such as available assistants and media categories.
+        post(self, request, *args, **kwargs): Handles form submission for updating the media storage connection, including permission checks and validation.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -147,6 +182,16 @@ class DataSourceMediaStorageConnectionUpdateView(LoginRequiredMixin, TemplateVie
 
 
 class DataSourceMediaStorageConnectionDeleteView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the deletion of a media storage connection.
+
+    This view allows users with the appropriate permissions to delete a media storage connection. It ensures that the user has the necessary permissions before performing the deletion.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for rendering the confirmation of the deletion.
+        post(self, request, *args, **kwargs): Deletes the media storage connection if the user has the required permissions.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -172,6 +217,16 @@ class DataSourceMediaStorageConnectionDeleteView(LoginRequiredMixin, TemplateVie
 
 
 class DataSourceMediaStorageItemCreateView(LoginRequiredMixin, TemplateView):
+    """
+    Handles uploading media files to a selected media storage connection.
+
+    This view displays a form for selecting a media storage connection and uploading media files to it. Upon form submission, it validates the input, reads the file contents, and saves the media items to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Methods:
+        get(self, request, *args, **kwargs): Prepares the context with the available media storage connections and assistants for media file uploading.
+        post(self, request, *args, **kwargs): Handles the media file upload process, including validation and saving the media items.
+    """
+
     def get(self, request, *args, **kwargs):
         user_assistants = Assistant.objects.filter(organization__users__in=[request.user])
         media_storages = DataSourceMediaStorageConnection.objects.filter(assistant__in=user_assistants)
@@ -224,6 +279,16 @@ class DataSourceMediaStorageItemCreateView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceMediaStorageItemDetailAndUpdateView(LoginRequiredMixin, TemplateView):
+    """
+    Displays and updates the details of a specific media storage item.
+
+    This view allows users with the appropriate permissions to view and update the details of a media storage item. It also retrieves the file contents from the storage (e.g., S3) and decodes them for display.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the media storage item details and decodes the file contents for display.
+        post(self, request, *args, **kwargs): Handles the update of the media storage item's description.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         media_item = DataSourceMediaStorageItem.objects.get(id=kwargs['pk'])
@@ -276,6 +341,16 @@ class DataSourceMediaStorageItemDetailAndUpdateView(LoginRequiredMixin, Template
 
 
 class DataSourceMediaStorageItemListView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of media storage items associated with the user's media storage connections.
+
+    This view retrieves all media items within the user's media storage connections, organized by organization and assistant. It also allows users to delete selected media items.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the media storage items for the user's connections and adds them to the context, including pagination and status information.
+        post(self, request, *args, **kwargs): Handles the deletion of selected media items.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         organizations = Organization.objects.filter(users__in=[self.request.user])
@@ -326,6 +401,16 @@ class DataSourceMediaStorageItemListView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceMediaStorageAllItemsDeleteView(LoginRequiredMixin, TemplateView):
+    """
+    Handles deleting all media items within a specific media storage connection.
+
+    This view allows users with the appropriate permissions to delete all media items in a selected media storage connection. It ensures that the user has the necessary permissions before performing the deletion.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for rendering the confirmation of the deletion.
+        post(self, request, *args, **kwargs): Deletes all media items in the selected media storage connection if the user has the required permissions.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context
@@ -358,6 +443,16 @@ class DataSourceMediaStorageAllItemsDeleteView(LoginRequiredMixin, TemplateView)
 
 
 class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, TemplateView):
+    """
+    Generates a description for a specific media storage item based on its contents.
+
+    This view uses a file type decoder to determine the appropriate execution type for generating the description. The generated description is then saved to the media storage item.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds the generated description to the context for display.
+        post(self, request, *args, **kwargs): Handles the description generation process for the media storage item.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         if 'generated_description' in kwargs:
@@ -442,6 +537,16 @@ class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, Template
 
 
 class DataSourceMediaStorageItemFetchFileFromUrl(LoginRequiredMixin, TemplateView):
+    """
+    Fetches and uploads a file from a given URL to a selected media storage connection.
+
+    This view allows users with the appropriate permissions to fetch and upload a file from a specified URL to a selected media storage connection.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for rendering the confirmation of the file fetch.
+        post(self, request, *args, **kwargs): Handles the file fetch and upload process from the specified URL.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context
@@ -473,6 +578,16 @@ class DataSourceMediaStorageItemFetchFileFromUrl(LoginRequiredMixin, TemplateVie
 
 
 class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of media items generated by the system, such as images and files associated with multimodal chats.
+
+    This view retrieves all generated media items, organized by organization and assistant, and displays them in a structured list. It also allows users to delete selected generated media items.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the generated media items organized by organization and assistant, and adds them to the context, including pagination and status information.
+        post(self, request, *args, **kwargs): Handles the deletion of selected generated media items.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         organizations = Organization.objects.filter(users__in=[self.request.user])

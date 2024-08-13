@@ -3,107 +3,151 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Login - Pages{% endblock %}
+{% block title %}Bimod.io | Login{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/page-auth.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-auth.css' %}"/>
+  <link rel="stylesheet" href="{% static  'vendor/css/pages/front-page-landing.css' %}">
 {% endblock page_css %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/pages-auth.js' %}"></script>
-<script src="{% static 'js/ui-popover.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/pages-auth.js' %}"></script>
+  <script src="{% static 'js/ui-popover.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="authentication-wrapper authentication-cover">
-  <!-- Logo -->
-  <a href="{% url 'dashboard:main-dashboard' %}" class="app-brand auth-cover-brand">
-    <span class="app-brand-logo demo">{% include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" %}</span>
-    <span class="app-brand-text demo text-heading fw-bold">{% get_theme_variables 'template_name' %}</span>
-  </a>
-  <!-- /Logo -->
-  <div class="authentication-inner row m-0">
-    <!-- /Left Text -->
-    <div class="d-none d-lg-flex col-lg-8 p-0">
-      <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
-        <!--
-        <img src="{% static 'img/illustrations/auth-login-illustration-' %}{{ COOKIES.style|default:style }}.png" alt="auth-login-cover" class="my-5 auth-illustration" data-app-light-img="illustrations/auth-login-illustration-light.png" data-app-dark-img="illustrations/auth-login-illustration-dark.png">
-        -->
-        <img src="{% static 'img/custom-illustrations/boy-power.png' %}" class="my-50" width="50%">
-        <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png" alt="auth-login-cover" class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.png">
-      </div>
-    </div>
-    <!-- /Left Text -->
-
-    <!-- Login -->
-    <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
-      <div class="w-px-400 mx-auto mt-12 pt-5">
-        <h4 class="mb-1"><strong>Welcome to {% get_theme_variables 'template_name' %}! 👋</strong></h4>
-        <p class="mb-10">Meet the most powerful Artificial Intelligence as a Service provider for automating your business workflows.</p>
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-warning{% endif %}" role="alert">
-          {{ message }}
+  <div class="authentication-wrapper authentication-cover">
+    <!-- Logo -->
+    <a href="{% url 'landing:index' %}" class="app-brand auth-cover-brand">
+      <span class="">
+        <!-- { % include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" % } -->
+        <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 60px;" class="ms-0">
+      </span>
+      <span class="app-brand-text demo text-heading fw-bold">{% get_theme_variables 'template_name' %}</span>
+    </a>
+    <!-- /Logo -->
+    <div class="authentication-inner row m-0">
+      <!-- /Left Text -->
+      <div class="d-none d-lg-flex col-lg-8 p-0">
+        <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
+          <img src="{% static 'img/custom-illustrations-v2/banners/i2-b1.png' %} " class="my-50" width="80%"
+               style="">
+          <img src="{% static 'img/custom-illustrations-v2/heros/i2-h3.png' %}" class="" width="75%"
+               style="position: absolute; top: 50px; left:0; opacity: 0.20; rotate: 90deg">
+          <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png"
+               alt="auth-login-cover" class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png"
+               data-app-dark-img="illustrations/bg-shape-image-dark.png">
         </div>
-        {% endfor %}
-        {% endif %}
+      </div>
+      <!-- /Left Text -->
 
-        <form id="formAuthentication" class="mb-6" action="{% url 'login' %}" method="post">
-          {% csrf_token %}
-          <div class="mb-6">
-            <label for="email" class="form-label">Email or Username</label>
-            <input type="email" class="form-control" id="email" name="email-username" value="admin@demo.com" placeholder="Email/Username" autofocus />
-          </div>
-          <div class="mb-6 form-password-toggle">
-            <label class="form-label" for="password">Password</label>
-            <div class="input-group input-group-merge">
-              <input type="password" id="password" class="form-control" name="password" value="Pwd_1234" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
-              <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+      <!-- Login -->
+      <div class="d-flex col-12 col-lg-4 authentication-bg ps-6 pb-6 pe-6 pt-0 mt-0">
+        <div class="w-px-400 mx-auto mt-0 pt-0">
+
+          <section id="hero-animation">
+            <div id="landingHero" class="section-py landing-hero position-relative">
+              <img src="{% static 'img/front-pages/backgrounds/hero-bg.png' %}" alt="hero background"
+                   class="position-absolute top-0 start-0 translate-middle-x object-fit-cover w-100 h-100 stick-top"
+                   data-speed="1"/>
+              <div class="container">
+                <div class="hero-text-box text-center position-relative">
+                  <h1 class="text-primary hero-title display-1 fw-extrabold mb-10 pb-4"><strong>Bimod.io</strong></h1>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="my-8">
-            <div class="d-flex justify-content-between">
-              <a href="{% url 'forgot-password' %}">
-                <p class="mb-0"><strong>Forgot Your Password?</strong></p>
-              </a>
-            </div>
-          </div>
-          {% if request.GET.next %}
-          <input type="hidden" name="next" value="{{request.GET.next}}">
+          </section>
+
+          <p class="mb-6 mt-6">
+            Meet <strong>the most powerful Artificial Intelligence as a Service (AIaaS)</strong> for your organization.
+          </p>
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-warning{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
           {% endif %}
-          <button class="btn btn-primary d-grid w-100" type="submit"><strong>Sign in</strong></button>
-        </form>
-      
+
+          <form id="formAuthentication" class="mb-6" action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-6">
+              <label for="email" class="form-label">Email or Username</label>
+              <input type="email" class="form-control" id="email" name="email-username" value=""
+                     placeholder="Email/Username" autofocus/>
+            </div>
+            <div class="mb-6 form-password-toggle">
+              <label class="form-label" for="password">Password</label>
+              <div class="input-group input-group-merge">
+                <input type="password" id="password" class="form-control" name="password" value=""
+                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                       aria-describedby="password"/>
+                <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+              </div>
+            </div>
+            <div class="my-8">
+              <div class="d-flex justify-content-between">
+                <a href="{% url 'forgot-password' %}">
+                  <p class="mb-0">
+                    <strong>
+                      <i class="fa fa-lock me-2"></i>
+                      Forgot Your Password?
+                    </strong>
+                  </p>
+                </a>
+              </div>
+            </div>
+            {% if request.GET.next %}
+              <input type="hidden" name="next" value="{{ request.GET.next }}">
+            {% endif %}
+            <button class="btn btn-primary d-grid w-100" type="submit">
+              <strong>
+                <i class="fa fa-sign-in me-2"></i>
+                Sign in
+              </strong>
+            </button>
+          </form>
+
           <div class="card card-border-shadow bg-lighter">
             <div class="card-header">
               <div class="card-title">
-                <p class="mb-0"><strong>Don't have an account yet?</strong></p>
+                <p class="mb-0"><strong>
+                  <i class="fa fa-question-circle me-2"></i>
+                  Don't have an account yet?
+                </strong></p>
               </div>
             </div>
             <p class="text-center mt-0 ms-5 me-5">
-            <button class="btn btn-primary d-grid w-100" type="submit" onclick="window.location.href='{% url 'register' %}'">
-              <strong>Join us to have your superpowers! 🚀</strong>
-            </button>
-          </p>
+              <button class="btn btn-primary d-grid w-100" type="submit"
+                      onclick="window.location.href='{% url 'register' %}'">
+                <strong>
+                  <i class="fa fa-user-plus me-2"></i>
+                  Register Now
+                </strong>
+              </button>
+            </p>
           </div>
+
         </div>
       </div>
+      <!-- /Login -->
+
     </div>
-    <!-- /Login -->
   </div>
-</div>
 {% endblock content %}

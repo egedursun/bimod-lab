@@ -1,3 +1,9 @@
+"""
+This module provides views for managing multimodal chats within the Bimod.io platform.
+
+The views include functionality for creating, archiving, unarchiving, deleting, and listing chats. The module also provides mockup views for testing chat templates.
+"""
+
 import base64
 
 from django.shortcuts import get_object_or_404, redirect
@@ -16,6 +22,16 @@ from ..user_permissions.models import UserPermission, PermissionNames
 
 
 class ChatView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation, management, and display of multimodal chats.
+
+    This view allows users to create new chats, rename existing chats, star messages, and send messages with various attachments. It also manages the display of chat messages and related templates.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the active chat, messages, assistants, and message templates.
+        post(self, request, *args, **kwargs): Processes the creation and management of chats, including sending messages and attachments.
+    """
+
     template_name = 'multimodal_chat/chats/chat.html'
 
     def get_context_data(self, **kwargs):
@@ -167,6 +183,17 @@ class ChatView(LoginRequiredMixin, TemplateView):
 
 
 class ChatDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    Handles the deletion of multimodal chats.
+
+    This view allows users to delete specific chats after confirming the action. Only chats that belong to the authenticated user can be deleted.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the chat deletion confirmation page.
+        get_queryset(self): Filters the queryset to only include chats that belong to the authenticated user.
+        post(self, request, *args, **kwargs): Processes the deletion of the specified chat.
+    """
+
     template_name = 'multimodal_chat/chats/confirm_delete_chat.html'
     success_url = '/chat/'
 
@@ -186,6 +213,16 @@ class ChatDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class ChatArchiveView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the archiving of multimodal chats.
+
+    This view allows users to archive specific chats, making them no longer visible in the main chat list but accessible in the archived chats list.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the chat archiving operation.
+        get(self, request, *args, **kwargs): Processes the archiving of the specified chat.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context
@@ -208,6 +245,16 @@ class ChatArchiveView(LoginRequiredMixin, TemplateView):
 
 
 class ChatUnarchiveView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the unarchiving of multimodal chats.
+
+    This view allows users to unarchive specific chats, making them visible again in the main chat list.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the chat unarchiving operation.
+        get(self, request, *args, **kwargs): Processes the unarchiving of the specified chat.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context
@@ -231,6 +278,15 @@ class ChatUnarchiveView(LoginRequiredMixin, TemplateView):
 
 
 class ChatArchiveListView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of archived multimodal chats.
+
+    This view retrieves and displays all archived chats for the authenticated user, allowing them to view and interact with archived chat messages.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the list of archived chats, active chat, and related data.
+    """
+
     def get_context_data(self, **kwargs):
         active_chat = None
         context_user = self.request.user

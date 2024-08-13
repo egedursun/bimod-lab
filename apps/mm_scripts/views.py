@@ -1,3 +1,9 @@
+"""
+This module provides views for managing custom scripts within the Bimod.io platform.
+
+The views allow authenticated users to create, list, manage connections, and delete custom scripts, as well as view and interact with the script store. Permissions are checked to ensure that users have the appropriate rights to perform these actions.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -15,6 +21,16 @@ from web_project import TemplateLayout
 
 
 class CreateCustomScriptView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of new custom scripts.
+
+    This view allows users to create custom scripts that can be utilized by their assistants. The view checks user permissions before allowing the creation of a new custom script.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the form for creating a custom script.
+        post(self, request, *args, **kwargs): Processes the form submission to create a new custom script and associates it with the user.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['form'] = CustomScriptForm()
@@ -51,6 +67,15 @@ class CreateCustomScriptView(LoginRequiredMixin, TemplateView):
 
 
 class ListCustomScriptsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of custom scripts associated with the user's organization.
+
+    This view retrieves and displays all custom scripts that are available to the current user, with support for searching and pagination.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the user's accessible custom scripts and adds them to the context.
+    """
+
     paginate_by = 10  # Adjust the number of items per page
 
     def get_context_data(self, **kwargs):
@@ -79,6 +104,15 @@ class ListCustomScriptsView(LoginRequiredMixin, TemplateView):
 
 
 class ManageCustomScriptAssistantConnectionsView(LoginRequiredMixin, TemplateView):
+    """
+    Manages the connections between custom scripts and assistants.
+
+    This view allows users to assign or remove custom scripts from their assistants. The view checks user permissions before allowing these actions.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with data about available custom scripts and assistants.
+        post(self, request, *args, **kwargs): Processes the form submission to add or remove custom script connections for assistants.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -153,6 +187,16 @@ class ManageCustomScriptAssistantConnectionsView(LoginRequiredMixin, TemplateVie
 
 
 class DeleteCustomScriptView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the deletion of custom scripts.
+
+    This view allows users to delete specific custom scripts, provided they have the necessary permissions.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the deletion confirmation page.
+        post(self, request, *args, **kwargs): Processes the deletion of the specified custom script.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         custom_script_id = self.kwargs.get('pk')
@@ -178,6 +222,16 @@ class DeleteCustomScriptView(LoginRequiredMixin, TemplateView):
 
 
 class ScriptStoreView(LoginRequiredMixin, TemplateView):
+    """
+    Displays the script store, where users can browse and add public custom scripts.
+
+    This view allows users to search, filter, and view public custom scripts in the store. Users can add these scripts to their assistants, provided they have the necessary permissions.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with data about the available public custom scripts.
+        post(self, request, *args, **kwargs): Processes the form submission to add selected scripts to the user's assistants.
+    """
+
     paginate_by = 10  # Adjust the number of items per page
 
     def get_context_data(self, **kwargs):

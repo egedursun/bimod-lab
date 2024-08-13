@@ -73,12 +73,13 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-6">
-      <h3 class="mb-0"><strong>Your Custom SQL Queries</strong></h3>
+      <h3 class="mb-0"><strong>Custom SQL Queries</strong></h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-blue-1.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-84.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded ms-4">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -95,29 +96,52 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   <!-- SQL Queries Cards -->
   {% for organization, assistants in queries_by_organization.items %}
     <div class="card mb-6">
       <div class="card-header border-bottom">
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
-          <h4>
-            {{ organization.name }}
-          </h4>
+          <div class="d-flex">
+            <img src="
+
+
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 class="rounded me-4" width="60" height="60">
+            <h4>
+              <strong>{{ organization.name }}</strong>
+            </h4>
+          </div>
         </a>
-        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
-        <span data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false"
-              aria-controls="collapse-org-{{ organization.id }}">
-      <strong>&nbsp; See SQL queries of Assistants</strong>
-    </span>
+        <i class="mt-8 fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
+        <span class="mt-8" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button"
+              aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
+          <strong>&nbsp; See SQL Queries</strong>
+        </span>
       </div>
       <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
         {% for assistant, queries in assistants.items %}
-          <div class="assistant-group m-8">
-            <h5 class="assistant-title"><strong>{{ assistant.name }}</strong></h5>
+          <div class="assistant-group m-8 card card-border-shadow-primary p-4">
+            <div class="d-flex">
+              <img src="{% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   class="rounded me-4" width="60" height="60">
+              <h5 class="assistant-title"><strong>{{ assistant.name }}</strong></h5>
+            </div>
             <div class="card-datatable table-responsive">
               <a href="{% url 'datasource_sql:create_query' %}">
-                <button class="btn btn-info mt-4 mb-8">
+                <button class="btn btn-success mt-4 mb-8">
                   <i class="fa fa-code me-4"></i>
                   <strong> Add Custom SQL Query</strong>
                 </button>
@@ -133,28 +157,36 @@
                           <i class="fa fa-id-badge me-4"></i> Query Name: &nbsp;&nbsp;</strong>
                           {{ query.name }}
                         </p>
-                        <p class="card-subtitle mb-4"><strong>
+                        <p class="card-subtitle mb-2"><strong>
                           <i class="fa fa-database me-4"></i> DB Connection: &nbsp;&nbsp;</strong>
                           {{ query.database_connection.name }}
                         </p>
                       </div>
                     </div>
+                    <hr>
                     <div class="card-body">
                       <ul class="p-0 m-0">
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body me-4"><strong>Description:</strong></span>
-                          <span class="text-wrap">{{ query.description|linebreaksbr }}</span>
+                          <span class="text-body me-4">
+                            <strong>
+                              <i class="fa fa-info-circle me-2"></i>
+                              Description:
+                            </strong></span>
+                          <span class="text-wrap overflow-auto" style="min-width: 70%; max-width: 70%; max-height: 250px;">{{ query.description|linebreaksbr }}</span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body me-4"><strong>Query:</strong></span>
-                          <pre class="text-wrap p-2 rounded"><code
-                            class="language-sql fw-extrabold overflow-auto">{{ query.sql_query|linebreaks }}</code></pre>
+                          <span class="text-body me-4"><strong>
+                            <i class="fa fa-code me-2"></i>
+                            Query:
+                          </strong></span>
+                          <pre class="text-wrap p-2 rounded overflow-auto" style="min-width: 70%; max-width: 70%; max-height: 250px; font-size: 11px;"><code
+                            class="language-sql fw-extrabold overflow-auto">{{ query.sql_query }}</code></pre>
                         </li>
                       </ul>
                       <hr>
                       <div class="d-flex justify-content-center">
                         <a href="{% url 'datasource_sql:update_query' query.id %}" class="btn btn-primary me-3"><i
-                          class="ti ti-edit me-2"></i><strong>Edit Query</strong></a>
+                          class="ti ti-edit me-2"></i><strong>Edit</strong></a>
                         <a href="{% url 'datasource_sql:delete_query' query.id %}" class="btn btn-danger"><i
                           class="ti ti-trash"></i><strong> Delete </strong></a>
                       </div>

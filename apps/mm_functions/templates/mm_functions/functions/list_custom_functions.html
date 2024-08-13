@@ -27,12 +27,15 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-3">
-      <h3 class="mb-0">Custom Functions</h3>
+      <h3 class="mb-0">
+        <strong>Custom Functions</strong>
+      </h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-user-edit.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-23.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded ms-4">
     <i class="bi bi-info-circle"></i>
   </span>
@@ -48,8 +51,20 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   <!-- Search and Filter Form -->
-  <div class="row g-4 mb-4">
+  <div class="row g-4 mb-4 mt-8 card card-border-shadow-primary p-4">
     <div class="col-xl-12">
       <h5 class="text-muted"><strong>Filter Functions</strong></h5>
       <div class="card text-center mb-4">
@@ -72,7 +87,9 @@
   <!-- Custom Functions List Table -->
   <div class="card">
     <div class="card-header">
-      <h5 class="card-title">Internal Function Library</h5>
+      <h5 class="card-title">
+        <strong>Internal Function Library</strong>
+      </h5>
     </div>
     <div class="card-datatable table-responsive">
       <a href="{% url 'mm_functions:create' %}">
@@ -118,47 +135,53 @@
                 {% if function.function_picture %}{{ function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    alt="{{ function.name }}" class="avatar rounded">
             </td>
-            <td style="min-width: 200px;">{{ function.name }}</td>
+            <td style="min-width: 200px;"><strong>{{ function.name }}</strong></td>
             <td><strong>{{ function.created_by_user }}</strong></td>
             <td style="min-width: 300px;">{{ function.description }}</td>
             <td>
-              {% for package in function.packages %}
-                <div class="badge bg-light text-dark m-1">
-                  {{ package.name }}{% if package.version %} ({{ package.version }}){% endif %}
-                </div>
-              {% endfor %}
+              <div class="label bg-label-dark rounded p-2 overflow-scroll" style="min-height: 200px; max-height: 200px;">
+                {% for package in function.packages %}
+                  <div class="badge bg-light text-dark m-1">
+                    {{ package.name }}{% if package.version %} ({{ package.version }}){% endif %}
+                  </div>
+                {% endfor %}
+              </div>
             </td>
             <td>
-              <ul class="list-unstyled">
-                {% for input in function.input_fields %}
-                  <li class="badge bg-label-secondary rounded m-1 w-100">
-                    <p class="label bg-label-light text-dark rounded p-1 m-1">
-                      <strong>{{ input.name }}</strong>: {{ input.description|truncatechars:64 }}</p>
-                    <p class="label bg-label-light text-dark rounded p-1 m-1"><strong>Type:</strong> {{ input.type }}
-                    </p>
-                    <p class="label bg-label-light text-dark rounded p-1 m-1">
-                      <strong>Required:</strong> {{ input.required }}</p>
-                  </li>
-                {% endfor %}
+              <ul class="list-unstyled" style="font-size: 10px;">
+                <div class="label bg-label-dark rounded p-2 overflow-scroll" style="min-height: 200px; max-height: 200px;">
+                  {% for input in function.input_fields %}
+                    <li class="badge bg-label-secondary rounded m-1 w-100">
+                      <p class="label bg-label-light text-dark rounded p-1 m-1">
+                        <strong>{{ input.name }}</strong>: {{ input.description|truncatechars:64 }}</p>
+                      <p class="label bg-label-light text-dark rounded p-1 m-1"><strong>Type:</strong> {{ input.type }}
+                      </p>
+                      <p class="label bg-label-light text-dark rounded p-1 m-1">
+                        <strong>Required:</strong> {{ input.required }}</p>
+                    </li>
+                  {% endfor %}
+                </div>
               </ul>
             </td>
             <td>
-              <ul class="list-unstyled">
-                {% for output in function.output_fields %}
-                  <li class="badge bg-label-secondary rounded m-1 w-100">
-                    <p class="label bg-label-light text-dark rounded p-1 m-1">
-                      <strong>{{ output.name }}</strong>: {{ output.description|truncatechars:64 }}</p>
-                    <p class="label bg-label-light text-dark rounded p-1 m-1"><strong>Type:</strong> {{ output.type }}
-                    </p>
-                  </li>
-                {% endfor %}
+              <ul class="list-unstyled" style="font-size: 10px;">
+                <div class="label bg-label-dark rounded p-2 overflow-scroll" style="min-height: 200px; max-height: 200px;">
+                  {% for output in function.output_fields %}
+                    <li class="badge bg-label-secondary rounded m-1 w-100">
+                      <p class="label bg-label-light text-dark rounded p-1 m-1">
+                        <strong>{{ output.name }}</strong>: {{ output.description|truncatechars:64 }}</p>
+                      <p class="label bg-label-light text-dark rounded p-1 m-1"><strong>Type:</strong> {{ output.type }}
+                      </p>
+                    </li>
+                  {% endfor %}
+                </div>
               </ul>
             </td>
             <td>
               {% if function.is_public %}
-                <span class="badge bg-success py-4 px-4 w-100"><strong>PUBLIC</strong></span>
+                <span class="border border-success rounded py-1 px-1 w-100"><strong>PUBLIC</strong></span>
               {% else %}
-                <span class="badge bg-warning py-4 px-4 w-100"><strong>PRIVATE</strong></span>
+                <span class="border border-danger rounded py-1 px-1 w-100"><strong>PRIVATE</strong></span>
               {% endif %}
             </td>
             <td>
@@ -175,7 +198,7 @@
       </table>
       <!-- Pagination Controls -->
       <nav aria-label="Page navigation">
-        <ul class="pagination pagination-rounded m-4 pb-4 overflow-scroll">
+        <ul class="pagination pagination-rounded overflow-auto m-4 pb-4">
           {% if page_obj.has_previous %}
             <li class="page-item">
               <a class="page-link" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}"><i

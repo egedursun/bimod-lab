@@ -24,15 +24,29 @@
 {% endblock page_js %}
 
 {% block content %}
+
+  <a href="{% url 'mm_scheduled_jobs:list' %}">
+    <button class="btn btn-secondary my-4 w-25">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to Scheduled jobs</strong>
+    </button>
+  </a>
+
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-3">
-      <h3 class="mb-0">Execution Logs</h3>
-      <h5 class="mb-0">{{ scheduled_job.name }}</h5>
+      <h3 class="mb-0">
+        <strong>Execution Logs</strong>
+      </h3>
+      <h5 class="mb-0">
+        <i class="fa fa-user-clock me-2 mt-4"></i>
+        <strong>{{ scheduled_job.name }}</strong>
+      </h5>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-user-edit.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-15.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded ms-4">
     <i class="bi bi-info-circle"></i>
   </span>
@@ -40,15 +54,29 @@
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
         Use the search box to find specific execution logs by status. You can view the details of each log to understand
-        the execution flow and status.
+        the execution flow and status. The execution logs are used to track the status of the executions of the
+        scheduled
+        jobs.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
       </button>
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   <!-- Search and Filter Form -->
-  <div class="row g-4 mb-4">
+  <div class="row g-4 mb-4 mt-4 card card-border-shadow-primary p-4">
     <div class="col-xl-12">
       <h5 class="text-muted"><strong>Filter Execution Logs</strong></h5>
       <div class="card text-center mb-4">
@@ -71,24 +99,28 @@
   <!-- Scheduled Job Instances List Table -->
   <div class="card">
     <div class="card-header">
-      <h5 class="card-title">Execution Logs</h5>
+      <h5 class="card-title">
+        <strong>Execution Logs</strong>
+      </h5>
     </div>
     <div class="card-datatable table-responsive">
       <table class="table datatables-scheduled-job-logs">
         <thead class="border-top">
         <tr>
-          <th><strong>Job</strong></th>
-          <th>Status</th>
-          <th>Execution Logs</th>
-          <th>Execution Index</th>
-          <th>Started At</th>
-          <th>Ended At</th>
+          <th style="min-width: 150px; max-width: 150px;"><strong>Job</strong></th>
+          <th style="min-width: 200px; max-width: 200px;"><strong>Status</strong></th>
+          <th style="min-width: 350px; max-width: 350px;">Execution Logs</th>
+          <th style="min-width: 150px; max-width: 150px;">Execution Index</th>
+          <th style="min-width: 150px; max-width: 150px;">Started At</th>
+          <th style="min-width: 150px; max-width: 150px;">Ended At</th>
         </tr>
         </thead>
         <tbody>
         {% for instance in page_obj %}
           <tr>
-            <td>{{ instance.scheduled_job.name }}</td>
+            <td>
+              <strong>{{ instance.scheduled_job.name }}</strong>
+            </td>
             <td>
               {% if instance.status == "completed" %}
                 <span class="badge bg-success"><strong>{{ instance.status|capfirst }}</strong></span>
@@ -104,7 +136,7 @@
               </p>
             </td>
             <td>
-              <strong class="bg-label-info p-2 m-2 rounded">
+              <strong class="border border-info p-2 m-2 rounded">
                 <i class="fa fa-hashtag"></i>
                 {{ instance.execution_index }} / {{ instance.scheduled_job.maximum_runs }}
               </strong>
@@ -117,7 +149,7 @@
       </table>
       <!-- Pagination Controls -->
       <nav aria-label="Page navigation">
-        <ul class="pagination pagination-rounded m-4 pb-4 overflow-scroll">
+        <ul class="pagination pagination-rounded m-4 pb-4">
           {% if page_obj.has_previous %}
             <li class="page-item">
               <a class="page-link" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}"><i

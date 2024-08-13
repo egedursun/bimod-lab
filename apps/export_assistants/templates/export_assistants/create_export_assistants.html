@@ -40,11 +40,14 @@
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Export an Assistant</h5> <small class="text-muted float-end"></small>
+          <h5 class="mb-0">
+            <strong>Export Assistant</strong>
+          </h5> <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-74.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -68,34 +71,42 @@
               </div>
             {% endfor %}
           {% endif %}
-          <form method="post" enctype="multipart/form-data">
+
+          <hr>
+
+          <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="assistant">Assistant</label>
-              <select class="form-select" id="assistant" name="assistant">
-                <option value="" disabled selected>Select Assistant</option>
-                {% for assistant in assistants %}
-                  <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="request_limit_per_hour">Request Limit Per Hour</label>
-              <input type="number" class="form-control" id="request_limit_per_hour" name="request_limit_per_hour"
-                     placeholder="Enter request limit per hour"/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="is_public">Public</label>
-              <br>
-              <label class="switch switch-square switch-lg mt-2">
-                <input type="checkbox" class="switch-input" id="is_public" name="is_public">
-                <span class="switch-toggle-slider">
+            <div class="row p-8">
+              <div class="mb-6 col-5">
+                <label class="form-label" for="assistant">Assistant</label>
+                <select class="form-select" id="assistant" name="assistant">
+                  <option value="" disabled selected>Select Assistant</option>
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-5">
+                <label class="form-label" for="request_limit_per_hour">Request Limit Per Hour</label>
+                <input type="number" class="form-control" id="request_limit_per_hour" name="request_limit_per_hour"
+                       placeholder="Enter request limit per hour"/>
+              </div>
+              <div class="mb-6 col-2">
+                <label class="form-label" for="is_public">Public</label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="is_public" name="is_public">
+                  <span class="switch-toggle-slider">
                 <span class="switch-on"><i class="ti ti-check"></i></span>
                 <span class="switch-off"><i class="ti ti-x"></i></span>
               </span>
-              </label>
+                </label>
+              </div>
             </div>
-            <button type="submit" class="btn btn-primary d-grid w-100">Create Export Assistant</button>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid mt-4 w-25">
+              <strong>Export Assistant</strong>
+            </button>
           </form>
         </div>
       </div>

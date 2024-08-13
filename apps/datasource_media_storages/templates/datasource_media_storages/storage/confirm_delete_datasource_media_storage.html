@@ -11,7 +11,9 @@
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h3 class="mb-0">Delete Media Storage Connection</h3>
+          <h3 class="mb-0">
+            <strong>Delete Media Storage</strong>
+          </h3>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
@@ -27,12 +29,11 @@
               and all
               associated data from the system.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations/boy-red-3.png' %}" width="25%" class="justify-content-end">
-            <br>
-            <button type="submit" class="btn btn-danger"><strong>DELETE &nbsp;</strong> the Media Storage Connection.
+            <img src="{% static 'img/custom-illustrations-v2/i2-62.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8">
+            <hr>
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the Media Storage Connection.
             </button>
-            <br><br>
-            <a href="{% url 'datasource_media_storages:list' %}" class="btn btn-secondary"><strong>CANCEL
+            <a href="{% url 'datasource_media_storages:list' %}" class="btn btn-secondary mt-4"><strong>CANCEL
               &nbsp;</strong> the deletion operation.</a>
           </form>
         </div>

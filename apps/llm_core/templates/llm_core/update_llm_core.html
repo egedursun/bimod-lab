@@ -6,7 +6,7 @@
 {% load multiply %}
 {% load divide %}
 
-{% block title %}Update LLM Model{% endblock %}
+{% block title %}Update Model Configuration{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -29,17 +29,25 @@
 {% endblock page_js %}
 
 {% block content %}
+
+  <a href="{% url 'llm_core:list' %}">
+    <button class="btn btn-secondary my-4 w-25">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to LLM Models</strong>
+    </button>
+  </a>
+
   <!-- Basic Layout -->
   <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Update LLM Core Information</h5> <small class="text-muted float-end"></small>
+          <h5 class="mb-0"><strong>Update Model Configuration</strong></h5> <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-core-edit.png' %}" width="25%"
-                 class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-9.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -72,90 +80,94 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="organization">Organization</label>
-              <select class="form-control" id="organization" name="organization">
-                {% for organization in organizations %}
-                  <option value="{{ organization.id }}"
-                          {% if llm_core.organization == organization %}selected{% endif %}>{{ organization.name }}</option>
-                {% endfor %}
-              </select>
+            <div class="row p-8">
+              <div class="col-6 mb-6">
+                <label class="form-label" for="organization">Switch Organization</label>
+                <select class="form-control" id="organization" name="organization">
+                  {% for organization in organizations %}
+                    <option value="{{ organization.id }}"
+                            {% if llm_core.organization == organization %}selected{% endif %}>{{ organization.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="nickname">Edit Model Nickname</label>
+                <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter nickname"
+                       value="{{ llm_core.nickname }}"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="description">Edit Description</label>
+                <textarea class="form-control" id="description" name="description"
+                          placeholder="Enter description">{{ llm_core.description }}</textarea>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="provider">Edit Model Provider</label>
+                <select class="form-control" id="provider" name="provider">
+                  {% for key, value in provider_choices %}
+                    <option value="{{ key }}" {% if llm_core.provider == key %}selected{% endif %}>{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="api_key">Edit Provider API Key</label>
+                <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API Key"
+                       value="{{ llm_core.api_key }}"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="model_name">Edit Model Name</label>
+                <select class="form-control" id="model_name" name="model_name">
+                  {% for key, value in model_name_choices %}
+                    <option value="{{ key }}"
+                            {% if llm_core.model_name == key %}selected{% endif %}>{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="temperature">Edit Temperature</label>
+                <input type="number" class="form-control" id="temperature" name="temperature"
+                       placeholder="Enter temperature"
+                       min="0" max="2" step="0.05" value="{{ llm_core.temperature }}"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="maximum_tokens">Edit Maximum Tokens</label>
+                <input type="number" class="form-control" id="maximum_tokens" name="maximum_tokens"
+                       placeholder="Enter maximum tokens"
+                       min="256" max="4032" step="64" value="{{ llm_core.maximum_tokens }}"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="top_p">Edit Top P</label>
+                <input type="number" class="form-control" id="top_p" name="top_p" placeholder="Enter top P"
+                       step="0.025" min="0" max="1" value="{{ llm_core.top_p }}"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="stop_sequences">Edit Stop Sequences</label>
+                <textarea class="form-control" id="stop_sequences" name="stop_sequences"
+                          placeholder="Enter stop sequences">{{ llm_core.stop_sequences }}</textarea>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="frequency_penalty">Edit Frequency Penalty</label>
+                <input type="number" class="form-control" id="frequency_penalty" name="frequency_penalty"
+                       step="0.025" min="0" max="2" placeholder="Enter frequency penalty"
+                       value="{{ llm_core.frequency_penalty }}"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="presence_penalty">Edit Presence Penalty</label>
+                <input type="number" class="form-control" id="presence_penalty"
+                       step="0.025" min="0" max="2" name="presence_penalty" placeholder="Enter presence penalty"
+                       value="{{ llm_core.presence_penalty }}"/>
+                <div class="form-text"></div>
+              </div>
             </div>
-            <div class="mb-6">
-              <label class="form-label" for="nickname">Nickname</label>
-              <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter nickname"
-                     value="{{ llm_core.nickname }}"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="description">Description</label>
-              <textarea class="form-control" id="description" name="description"
-                        placeholder="Enter description">{{ llm_core.description }}</textarea>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="provider">Provider</label>
-              <select class="form-control" id="provider" name="provider">
-                {% for key, value in provider_choices %}
-                  <option value="{{ key }}" {% if llm_core.provider == key %}selected{% endif %}>{{ value }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="api_key">API Key</label>
-              <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API Key"
-                     value="{{ llm_core.api_key }}"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="model_name">Model Name</label>
-              <select class="form-control" id="model_name" name="model_name">
-                {% for key, value in model_name_choices %}
-                  <option value="{{ key }}" {% if llm_core.model_name == key %}selected{% endif %}>{{ value }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="temperature">Temperature</label>
-              <input type="number" class="form-control" id="temperature" name="temperature"
-                     placeholder="Enter temperature"
-                     min="0" max="2" step="0.05" value="{{ llm_core.temperature }}"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="maximum_tokens">Maximum Tokens</label>
-              <input type="number" class="form-control" id="maximum_tokens" name="maximum_tokens"
-                     placeholder="Enter maximum tokens"
-                     min="256" max="4032" step="64" value="{{ llm_core.maximum_tokens }}"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="stop_sequences">Stop Sequences</label>
-              <textarea class="form-control" id="stop_sequences" name="stop_sequences"
-                        placeholder="Enter stop sequences">{{ llm_core.stop_sequences }}</textarea>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="top_p">Top P</label>
-              <input type="number" class="form-control" id="top_p" name="top_p" placeholder="Enter top P"
-                     step="0.025" min="0" max="1" value="{{ llm_core.top_p }}"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="frequency_penalty">Frequency Penalty</label>
-              <input type="number" class="form-control" id="frequency_penalty" name="frequency_penalty"
-                     step="0.025" min="0" max="2" placeholder="Enter frequency penalty"
-                     value="{{ llm_core.frequency_penalty }}"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="presence_penalty">Presence Penalty</label>
-              <input type="number" class="form-control" id="presence_penalty"
-                     step="0.025" min="0" max="2" name="presence_penalty" placeholder="Enter presence penalty"
-                     value="{{ llm_core.presence_penalty }}"/>
-              <div class="form-text"></div>
-            </div>
-            <button type="submit" class="btn btn-primary d-grid w-100">Update Information</button>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid mt-8 w-25"><strong>Update Information</strong></button>
           </form>
         </div>
       </div>

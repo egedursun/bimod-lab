@@ -2,20 +2,20 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Delete LLM Model{% endblock %}
+{% block title %}Delete Model Configuration{% endblock %}
 
 {% block content %}
   <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h3 class="mb-0">Delete LLM Core</h3>
+          <h3 class="mb-0"><strong>Delete Model Configuration</strong></h3>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
           <form method="post">
             {% csrf_token %}
-            <p>Are you sure you want to delete the LLM Core <strong>"{{ object.nickname }}"</strong>?</p><br>
+            <p>Are you sure you want to delete the Model Configuration <strong>"{{ object.nickname }}"</strong>?</p><br>
             <h6><strong>
               • Please make sure that this operation will result in the complete removal of the LLM Core from the
               system.
@@ -23,10 +23,10 @@
               • This deletion operation is completely irreversible and will entirely remove the LLM Core and all
               associated data from the system.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations/boy-core-edit.png' %}" width="25%"
-                 class="justify-content-end">
-            <br>
-            <button type="submit" class="btn btn-danger"><strong>DELETE &nbsp;</strong> the LLM Core.</button>
+            <img src="{% static 'img/custom-illustrations-v2/i2-10.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8 mb-8">
+            <hr>
+            <button type="submit" class="btn btn-danger mt-8"><strong>DELETE &nbsp;</strong> the LLM Core.</button>
             <br><br>
             <a href="{% url 'llm_core:list' %}" class="btn btn-secondary"><strong>CANCEL &nbsp;</strong> the deletion
               operation.</a>

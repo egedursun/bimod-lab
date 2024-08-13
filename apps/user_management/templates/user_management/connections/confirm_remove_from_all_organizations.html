@@ -10,9 +10,21 @@
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Remove User from All Organizations</h5>
+          <h5 class="mb-0"><strong>Remove User from All Organizations</strong></h5>
           <small class="text-muted float-end"></small>
         </div>
+
+        <hr>
+
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}"
+                 role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+
         <div class="card-body">
           <form method="post">
             {% csrf_token %}
@@ -25,11 +37,11 @@
               • This action will not result in the complete removal of the user from the system. The user will still
               exist in the system, but will not be associated with any organization.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations/boy-organization-edit.png' %}" width="25%"
-                 class="justify-content-end">
-            <br>
-            <button type="submit" class="btn btn-warning"><strong>DISCONNECT User</strong></button>
-            <a href="{% url 'user_management:list' %}" class="btn btn-secondary"><strong>CANCEL</strong></a>
+            <img src="{% static 'img/custom-illustrations-v2/i2-35.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8">
+            <hr>
+            <button type="submit" class="btn btn-warning mt-4 me-2"><strong>DISCONNECT User</strong></button>
+            <a href="{% url 'user_management:list' %}" class="btn btn-secondary mt-4"><strong>CANCEL operation</strong></a>
           </form>
         </div>
       </div>

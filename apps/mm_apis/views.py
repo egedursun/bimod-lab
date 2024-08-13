@@ -1,3 +1,9 @@
+"""
+This module provides views for managing custom APIs within the Bimod.io platform.
+
+The views allow authenticated users to create, list, update, delete, and manage connections of custom APIs to assistants. Permissions are checked to ensure that users have the appropriate rights to perform these actions.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -15,6 +21,16 @@ from web_project import TemplateLayout
 
 
 class CreateCustomAPIView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of new custom APIs.
+
+    This view allows users to create custom APIs that can be integrated into their assistants. The view checks user permissions before allowing the creation of a new API.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the form and API categories.
+        post(self, request, *args, **kwargs): Processes the form submission to create a new custom API and associates it with the user.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['form'] = CustomAPIForm()
@@ -68,6 +84,15 @@ class CreateCustomAPIView(LoginRequiredMixin, TemplateView):
 
 
 class ListCustomAPIsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of custom APIs created by users within the connected organizations.
+
+    This view retrieves and displays all custom APIs that are available to the current user, with support for searching and pagination.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the user's accessible custom APIs and adds them to the context.
+    """
+
     paginate_by = 10  # Adjust the number of items per page
 
     def get_context_data(self, **kwargs):
@@ -96,6 +121,15 @@ class ListCustomAPIsView(LoginRequiredMixin, TemplateView):
 
 
 class ManageCustomAPIAssistantConnectionsView(LoginRequiredMixin, TemplateView):
+    """
+    Manages the connections between custom APIs and assistants.
+
+    This view allows users to assign or remove custom APIs from their assistants, ensuring the correct integrations are in place.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the available assistants, custom APIs, and their connections.
+        post(self, request, *args, **kwargs): Processes the request to either add or remove a custom API connection from an assistant.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -172,6 +206,15 @@ class ManageCustomAPIAssistantConnectionsView(LoginRequiredMixin, TemplateView):
 
 
 class DeleteCustomAPIView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the deletion of custom APIs.
+
+    This view allows users to delete specific custom APIs, provided they have the necessary permissions.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the deletion confirmation page.
+        post(self, request, *args, **kwargs): Processes the deletion of the specified custom API.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -198,6 +241,16 @@ class DeleteCustomAPIView(LoginRequiredMixin, TemplateView):
 
 
 class APIStoreView(LoginRequiredMixin, TemplateView):
+    """
+    Displays the API store where public APIs are listed for users to integrate with their assistants.
+
+    This view allows users to search, filter, and assign public APIs to their assistants.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the available public APIs, search query, and filters.
+        post(self, request, *args, **kwargs): Processes the request to assign a selected API to an assistant.
+    """
+
     paginate_by = 10  # Adjust the number of items per page
 
     def get_context_data(self, **kwargs):

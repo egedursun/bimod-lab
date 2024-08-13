@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
   <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
   <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -23,6 +24,7 @@
   <script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
   <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
   <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
@@ -33,12 +35,15 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-4">
-      <h3 class="mb-0">Assistant Memories</h3>
+      <h3 class="mb-0">
+        <strong>Assistant Memories</strong>
+      </h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-core-list.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-9.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded ms-4">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -61,17 +66,36 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   {% for organization, memories in org_assistants.items %}
     <!-- Organization's Memories List Table -->
     <div class="card mb-6">
       <div class="card-header border-bottom">
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
-          <h4>
-            {{ organization.name }}
-          </h4>
+          <div class="d-flex">
+            <img class="rounded me-4" src="
+
+
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 alt="Organization Image" width="50">
+            <h4>
+              <strong>{{ organization.name }}</strong>
+            </h4>
+          </div>
         </a>
-        <p>
+        <p class="mt-4">
           <i class="fa fa-robot"></i>
           <strong>&nbsp; Number of Memories: </strong> {{ memories|length }}
         </p>
@@ -108,24 +132,33 @@
               <td>
                 <img class="rounded" src="{{ memory.assistant.assistant_image.url }}" alt="Assistant Image" width="50">
               </td>
-              <td>{{ memory.assistant.name }}</td>
-              <td>{{ memory.user.username }}</td>
+              <td><strong>{{ memory.assistant.name }}</strong></td>
+              <td><strong>{{ memory.user.username }}</strong></td>
               <td>
                 {% if memory.get_memory_type_display == "User-Specific" %}
                   <span
-                    class="card p-1 card-border-shadow bg-label-danger"><strong>{{ memory.get_memory_type_display }}</strong></span>
+                    class="card p-1 card-border-shadow border border-warning">
+                    <strong>{{ memory.get_memory_type_display }}</strong>
+                  </span>
                 {% else %}
                   <span
-                    class="card p-1 card-border-shadow bg-label-info"><strong>{{ memory.get_memory_type_display }}</strong></span>
+                    class="card p-1 card-border-shadow border border-info"><strong>{{ memory.get_memory_type_display }}</strong></span>
                 {% endif %}
               </td>
               <td>{{ memory.memory_text_content }}</td>
               <td>{{ memory.created_at }}</td>
               <td>
-                <a href="{% url 'memories:delete' memory.id %}" class="btn btn-sm btn-danger"><strong>Delete
-                  Memory</strong></a>
+                <a href="{% url 'memories:delete' memory.id %}" class="btn btn-sm btn-danger"><strong>
+                  <i class="fa fa-trash me-2"></i>
+                  Delete
+                </strong></a>
               </td>
             </tr>
+          {% empty %}
+            <div class="alert alert-warning ms-4 me-4" role="alert">
+              <i class="fa fa-exclamation-triangle me-4"></i>
+              <strong>No memories found for this organization.</strong>
+            </div>
           {% endfor %}
           </tbody>
         </table>
@@ -164,6 +197,30 @@
             icon.classList.remove('fa-arrow-alt-circle-up');
             icon.classList.add('fa-arrow-alt-circle-down');
           }
+        });
+      });
+
+      document.querySelectorAll('.btn-danger').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('a').getAttribute('href');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
         });
       });
     });

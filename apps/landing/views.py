@@ -88,7 +88,7 @@ class ContactFormSubmitView(TemplateView):
             subject = f"VISITOR QUERY: Message from {fullname}"
 
         send_mail(
-            subject, email_message, settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False,
+            subject, email_message, settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL, email], fail_silently=False,
         )
         return redirect("landing:contact_form_submit", )
 

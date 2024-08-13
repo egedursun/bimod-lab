@@ -31,13 +31,15 @@
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Create a New Triggered Job</h5>
+          <h5 class="mb-0">
+            <strong>Create New Triggered Job</strong>
+          </h5>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-core-edit.png' %}" width="25%"
-                 class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-88.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -61,92 +63,93 @@
               </div>
             {% endfor %}
           {% endif %}
-          <form method="post">
+          <hr>
+          <form method="post" class="mt-4">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="trigger_assistant">Assistant</label>
-              <select class="form-select" id="trigger_assistant" name="trigger_assistant">
-                {% for assistant in form.fields.trigger_assistant.queryset %}
-                  <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-                {% endfor %}
-              </select>
+            <div class="row p-8">
+              <div class="mb-6 col-4">
+                <label class="form-label" for="trigger_assistant">Assistant</label>
+                <select class="form-select" id="trigger_assistant" name="trigger_assistant">
+                  {% for assistant in form.fields.trigger_assistant.queryset %}
+                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-4">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter job name" required/>
+              </div>
+              <div class="mb-6 col-4">
+                <label class="form-label" for="task_description">Description</label>
+                <textarea class="form-control" id="task_description" name="task_description"
+                          placeholder="Enter job description" required></textarea>
+              </div>
+              <div class="mb-6 col-12">
+                <label class="form-label" for="step_guide">Step Guide</label>
+                <table id="stepGuideTable" class="table table-bordered">
+                  <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td><input type="text" name="step_guide[]" placeholder="Enter step description"
+                               class="form-control">
+                    </td>
+                    <td>
+                      <button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i
+                        class="fa fa-remove"></i></button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                <button type="button" onclick="addRow('stepGuideTable')" class="btn btn-secondary d-grid w-20 mt-4">
+                  <strong>Add New Row</strong></button>
+              </div>
+              <div class="mb-6 col-4">
+                <label class="form-label" for="trigger_source">Trigger Source</label>
+                <input type="text" class="form-control" id="trigger_source" name="trigger_source"
+                       placeholder="Enter trigger source" required/>
+                <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <span class="alert-icon rounded">
+                  <i class="ti ti-info-circle"></i>
+                </span>
+                  The trigger source is the source that triggers the job. You can provide this in natural language, for
+                  example, if the source is "GitHub", you can simply type in "GitHub". This field is used to identify
+                  the source of the triggered job to provide context.
+                </div>
+              </div>
+              <div class="mb-6 col-4">
+                <label class="form-label" for="event_type">When does this event get triggered?</label>
+                <input type="text" class="form-control" id="event_type" name="event_type"
+                       placeholder="Enter your response in natural language" required/>
+                <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <span class="alert-icon rounded">
+                  <i class="ti ti-info-circle"></i>
+                </span>
+                  The event type is the type of event that triggers the job. You can provide this in natural language,
+                  for example, "When a new GitHub issue is created" if this event is sent by GitHub when a new issue is
+                  created on your repository.
+                </div>
+              </div>
+              <div class="mb-6 col-4">
+                <label class="form-label" for="maximum_runs">Maximum Runs</label>
+                <input type="number" class="form-control" id="maximum_runs" name="maximum_runs" min="1" max="1000"
+                       value="100" required/>
+                <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
+                <span class="alert-icon rounded">
+                  <i class="ti ti-info-circle"></i>
+                </span>
+                  It can take up to 15 minutes for the triggered job to be processed and integrated into the system to
+                  start getting executed properly. If the triggered job is not integrated even after a long while,
+                  please feel free to contact the support team to get help.
+                </div>
+              </div>
             </div>
-            <div class="mb-6">
-              <label class="form-label" for="name">Name</label>
-              <input type="text" class="form-control" id="name" name="name" placeholder="Enter job name" required/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="task_description">Description</label>
-              <textarea class="form-control" id="task_description" name="task_description"
-                        placeholder="Enter job description" required></textarea>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="step_guide">Step Guide</label>
-              <table id="stepGuideTable" class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>Step</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td><input type="text" name="step_guide[]" placeholder="Enter step description" class="form-control">
-                  </td>
-                  <td>
-                    <button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i
-                      class="fa fa-remove"></i></button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-              <button type="button" onclick="addRow('stepGuideTable')" class="btn btn-secondary d-grid w-20 mt-4">
-                <strong>Add New Row</strong></button>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="trigger_source">Trigger Source</label>
-              <input type="text" class="form-control" id="trigger_source" name="trigger_source"
-                     placeholder="Enter trigger source" required/>
-            </div>
-            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-info-circle"></i>
-            </span>
-              The trigger source is the source that triggers the job. You can provide this in natural language, for
-              example,
-              if the source is "GitHub", you can simply write "GitHub" in this field. This field is used to identify the
-              source of the triggered job and to provide more context to the assistant.
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="event_type">When does this event get triggered?</label>
-              <input type="text" class="form-control" id="event_type" name="event_type"
-                     placeholder="Enter your response in natural language" required/>
-            </div>
-            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-info-circle"></i>
-            </span>
-              The event type is the type of event that triggers the job. You can provide this in natural language, for
-              example,
-              you can write "When a new GitHub issue is created" if this event is sent by GitHub when a new issue is
-              created
-              on your repository. This field is used to identify the type of event that triggers the job and to provide
-              more
-              context to the assistant.
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="maximum_runs">Maximum Runs</label>
-              <input type="number" class="form-control" id="maximum_runs" name="maximum_runs" min="1" max="1000"
-                     value="100" required/>
-            </div>
-            <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-info-circle"></i>
-            </span>
-              It can take up to 15 minutes for the triggered job to be integrated to the system. If the triggered job is
-              not integrated even after a long while, please feel free to contact the support team to get help.
-            </div>
-            <button type="submit" class="btn btn-primary d-grid w-100"><strong>Create Triggered Job</strong></button>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid mt-4 w-25"><strong>Create Triggered Job</strong></button>
           </form>
         </div>
       </div>

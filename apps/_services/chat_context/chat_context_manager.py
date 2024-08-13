@@ -111,14 +111,12 @@ class ChatContextManager:
         if context_overflow_strategy == ContextOverflowStrategyNames.FORGET:
             try:
                 context_messages = ChatContextManager.forget_oldest(chat_history, max_messages)
-                print(f"[ChatContextManager.handle_context] Context has been handled successfully by forgetting the oldest messages.")
             except Exception as e:
                 print(f"[ChatContextManager.handle_context] Error occurred while forgetting the oldest messages: {str(e)}")
                 context_messages = chat_history
         elif context_overflow_strategy == ContextOverflowStrategyNames.STOP:
             try:
                 context_messages = ChatContextManager.stop_conversation(chat_history, max_messages)
-                print(f"[ChatContextManager.handle_context] Context has been handled successfully by stopping the conversation.")
             except Exception as e:
                 print(f"[ChatContextManager.handle_context] Error occurred while stopping the conversation: {str(e)}")
                 context_messages = chat_history
@@ -130,7 +128,6 @@ class ChatContextManager:
                     chat_object=chat_object,
                     max_messages=max_messages
                 )
-                print(f"[ChatContextManager.handle_context] Context has been handled successfully by storing the context as vector.")
             except Exception as e:
                 print(f"[ChatContextManager.handle_context] Error occurred while storing the context as vector: {str(e)}")
                 context_messages = chat_history

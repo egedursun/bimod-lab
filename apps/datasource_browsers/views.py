@@ -1,3 +1,9 @@
+"""
+This module contains views for managing data source browser connections and browsing logs within the Bimod.io platform.
+
+The views include creating, updating, deleting, and listing browser connections, as well as viewing and downloading browsing logs associated with these connections. Access to these views is restricted to authenticated users, with additional permission checks for certain actions.
+"""
+
 import json
 
 from django.contrib import messages
@@ -15,6 +21,15 @@ from web_project import TemplateLayout
 
 
 class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of a new data source browser connection.
+
+    This view displays a form for creating a browser connection. Upon submission, it validates the input, checks user permissions, and saves the new browser connection to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds additional context to the template, including available assistants, browser types, and user details.
+        post(self, request, *args, **kwargs): Handles form submission and browser connection creation, including permission checks and validation.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -47,8 +62,25 @@ class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
         assistant_id = request.POST.get('assistant')
         data_selectivity = request.POST.get('data_selectivity', 0.5)
         minimum_investigation_sites = request.POST.get('minimum_investigation_sites', 2)
+
         whitelisted_extensions = request.POST.getlist('whitelisted_extensions[]')
         blacklisted_extensions = request.POST.getlist('blacklisted_extensions[]')
+
+        # clean white listed extensions
+        cleaned_whitelisted_extensions = []
+        for ext in whitelisted_extensions:
+            ext = ext.strip()
+            if ext != '' and ext is not None and ext != 'None':
+                cleaned_whitelisted_extensions.append(ext)
+        whitelisted_extensions = cleaned_whitelisted_extensions
+
+        # clean black listed extensions
+        cleaned_blacklisted_extensions = []
+        for ext in blacklisted_extensions:
+            ext = ext.strip()
+            if ext != '' and ext is not None and ext != 'None':
+                cleaned_blacklisted_extensions.append(ext)
+        blacklisted_extensions = cleaned_blacklisted_extensions
 
         # reading abilities checkboxes
         ra_javascript = request.POST.get('ra_javascript') == 'on'
@@ -93,6 +125,16 @@ class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
 
 
 class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
+    """
+    Handles updating an existing data source browser connection.
+
+    This view allows users with the appropriate permissions to modify a browser connection's attributes. It also handles the form submission and validation for updating the connection.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current browser connection details and adds them to the context, along with other relevant data such as available assistants and browser types.
+        post(self, request, *args, **kwargs): Handles form submission for updating the browser connection, including permission checks and validation.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -126,6 +168,22 @@ class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
         minimum_investigation_sites = request.POST.get('minimum_investigation_sites', 2)
         whitelisted_extensions = request.POST.getlist('whitelisted_extensions[]')
         blacklisted_extensions = request.POST.getlist('blacklisted_extensions[]')
+
+        # clean white listed extensions
+        cleaned_whitelisted_extensions = []
+        for ext in whitelisted_extensions:
+            ext = ext.strip()
+            if ext != '' and ext is not None and ext != 'None':
+                cleaned_whitelisted_extensions.append(ext)
+        whitelisted_extensions = cleaned_whitelisted_extensions
+
+        # clean black listed extensions
+        cleaned_blacklisted_extensions = []
+        for ext in blacklisted_extensions:
+            ext = ext.strip()
+            if ext != '' and ext is not None and ext != 'None':
+                cleaned_blacklisted_extensions.append(ext)
+        blacklisted_extensions = cleaned_blacklisted_extensions
 
         # reading abilities checkboxes
         ra_javascript = request.POST.get('ra_javascript') == 'on'
@@ -174,6 +232,16 @@ class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
 
 
 class DeleteBrowserConnectionView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the deletion of a data source browser connection.
+
+    This view allows users with the appropriate permissions to delete a browser connection. It ensures that the user has the necessary permissions before performing the deletion.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds the browser connection to be deleted to the context for confirmation.
+        post(self, request, *args, **kwargs): Deletes the browser connection if the user has the required permissions.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['browser_connection'] = get_object_or_404(DataSourceBrowserConnection, pk=self.kwargs['pk'])
@@ -197,6 +265,15 @@ class DeleteBrowserConnectionView(LoginRequiredMixin, TemplateView):
 
 
 class ListBrowserConnectionsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of browser connections associated with the user's assistants and organizations.
+
+    This view retrieves all browser connections organized by organization and assistant, and displays them in a structured list.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the browser connections organized by organization and assistant, and adds them to the context.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -223,6 +300,14 @@ class ListBrowserConnectionsView(LoginRequiredMixin, TemplateView):
 
 
 class ListBrowsingLogsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of browsing logs for a specific browser connection.
+
+    This view allows users to search and paginate through browsing logs associated with a specific browser connection. It supports filtering logs based on a search query.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the browsing logs for the specified browser connection, applies search filters, and adds them to the context.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -247,6 +332,15 @@ class ListBrowsingLogsView(LoginRequiredMixin, TemplateView):
 
 
 class DownloadHtmlContentView(LoginRequiredMixin, View):
+    """
+    Handles downloading the HTML content of a specific browsing log.
+
+    This view allows users to download the HTML content captured during a browsing session. The content is returned as an HTML file.
+
+    Methods:
+        get(self, request, pk, *args, **kwargs): Retrieves the HTML content of the specified browsing log and serves it as a downloadable HTML file.
+    """
+
     def get(self, request, pk, *args, **kwargs):
         log = get_object_or_404(DataSourceBrowserBrowsingLog, pk=pk)
         response = HttpResponse(log.html_content, content_type='text/html')
@@ -257,6 +351,15 @@ class DownloadHtmlContentView(LoginRequiredMixin, View):
 
 
 class DownloadContextDataView(LoginRequiredMixin, View):
+    """
+    Handles downloading the context data of a specific browsing log.
+
+    This view allows users to download the context data captured during a browsing session. The content is returned as a JSON file.
+
+    Methods:
+        get(self, request, pk, *args, **kwargs): Retrieves the context data of the specified browsing log and serves it as a downloadable JSON file.
+    """
+
     def get(self, request, pk, *args, **kwargs):
         log = get_object_or_404(DataSourceBrowserBrowsingLog, pk=pk)
         context_data = json.dumps(log.context_content, indent=4)

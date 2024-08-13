@@ -1,3 +1,10 @@
+"""
+Module Overview: This module defines the `StarredMessage` model within an assistant-based application. The model represents messages that have been starred by users in a multimodal chat. It includes fields for storing the message content, the sender type, and related metadata like the time the message was starred.
+
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+"""
+
 from django.db import models
 
 STARRED_MESSAGE_SENDER_TYPES = [
@@ -7,6 +14,29 @@ STARRED_MESSAGE_SENDER_TYPES = [
 
 
 class StarredMessage(models.Model):
+    """
+    StarredMessage Model:
+    - Purpose: Represents a message that has been starred by a user in a multimodal chat. It stores references to the original message and its content, along with metadata such as the user, organization, assistant, chat, and the time the message was starred.
+    - Key Fields:
+        - `user`: ForeignKey linking to the `User` who starred the message.
+        - `organization`: ForeignKey linking to the `Organization` associated with the starred message.
+        - `assistant`: ForeignKey linking to the `Assistant` associated with the starred message.
+        - `chat`: ForeignKey linking to the `MultimodalChat` in which the message was starred.
+        - `chat_message`: ForeignKey linking to the original `MultimodalChatMessage` that was starred.
+        - `sender_type`: The type of sender who sent the original message (e.g., User, Assistant).
+        - `message_text`: Text content of the starred message, derived from the original chat message.
+        - `message_image_urls`: JSONField for storing image URLs related to the starred message.
+        - `message_file_urls`: JSONField for storing file URLs related to the starred message.
+        - `starred_at`: Timestamp for when the message was starred.
+    - Methods:
+        - `save()`: Overridden to automatically populate the `message_text`, `message_file_urls`, and `message_image_urls` fields from the original chat message when the starred message is saved.
+    - Meta:
+        - `verbose_name`: "Starred Message"
+        - `verbose_name_plural`: "Starred Messages"
+        - `ordering`: Orders starred messages by the time they were starred in descending order.
+        - `indexes`: Indexes on various fields for optimized queries, including combinations of `user`, `organization`, `assistant`, `chat`, `chat_message`, `sender_type`, and `starred_at`.
+    """
+
     # Foreign keys
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE)

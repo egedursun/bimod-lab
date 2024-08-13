@@ -30,12 +30,15 @@
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Create a New Media Storage</h5>
+          <h5 class="mb-0">
+            <strong>Create a New Media Storage</strong>
+          </h5>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-56.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -60,58 +63,52 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="media_category">Media Category</label>
-              <select class="form-select" id="media_category" name="media_category">
-                <option value="" disabled selected>Select Media Category</option>
-                {% for key, value in media_categories %}
-                  <option value="{{ key }}">{{ value }}</option>
-                {% endfor %}
-              </select>
+            <div class="row p-8">
+              <div class="mb-6 col-6">
+                <label class="form-label" for="media_category">Media Category</label>
+                <select class="form-select" id="media_category" name="media_category">
+                  <option value="" disabled selected>Select Media Category</option>
+                  {% for key, value in media_categories %}
+                    <option value="{{ key }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="assistant">Assistant</label>
+                <select class="form-select" id="assistant" name="assistant">
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text"></div>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter storage name"/>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="1"
+                          placeholder="Enter storage description"></textarea>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="interpretation_temperature">Interpretation Temperature</label>
+                <input type="number" class="form-control" id="interpretation_temperature"
+                       name="interpretation_temperature"
+                       step="0.05" min="0" max="2" placeholder="Enter interpretation temperature" value="0.25"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="interpretation_maximum_tokens">Interpretation Maximum Tokens</label>
+                <input type="number" class="form-control" id="interpretation_maximum_tokens"
+                       name="interpretation_maximum_tokens"
+                       min="512" max="4032" step="64" placeholder="Enter maximum tokens" value="2048"/>
+                <div class="form-text"></div>
+              </div>
             </div>
-            <div class="mb-6">
-              <label class="form-label" for="assistant">Assistant</label>
-              <select class="form-select" id="assistant" name="assistant">
-                {% for assistant in assistants %}
-                  <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-                {% endfor %}
-              </select>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="name">Name</label>
-              <input type="text" class="form-control" id="name" name="name" placeholder="Enter storage name"/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="description">Description</label>
-              <textarea class="form-control" id="description" name="description"
-                        placeholder="Enter storage description"></textarea>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="interpretation_temperature">Interpretation Temperature</label>
-              <input type="number" class="form-control" id="interpretation_temperature"
-                     name="interpretation_temperature"
-                     step="0.05" min="0" max="2" placeholder="Enter interpretation temperature" value="0.25"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-info-circle"></i>
-            </span>
-              The interpretation temperature is a hyperparameter that controls the randomness of the model's
-              contextual interpretation for the images. A higher temperature will result in more randomness,
-              while a lower temperature will result in more deterministic outputs, but may also result in
-              repetitive and less creative outputs.
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="interpretation_maximum_tokens">Interpretation Maximum Tokens</label>
-              <input type="number" class="form-control" id="interpretation_maximum_tokens"
-                     name="interpretation_maximum_tokens"
-                     min="512" max="4032" step="64" placeholder="Enter maximum tokens" value="2048"/>
-              <div class="form-text"></div>
-            </div>
+            <hr>
             <input type="hidden" name="created_by_user" value="{{ user.id }}">
-            <button type="submit" class="btn btn-primary d-grid w-100"><strong>Create Data Source Media Storage</strong>
+            <button type="submit" class="btn btn-primary d-grid w-25 mt-4"><strong>Create Media Storage</strong>
             </button>
           </form>
         </div>

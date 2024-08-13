@@ -1,3 +1,9 @@
+"""
+This module contains views for managing data source file systems within the Bimod.io platform.
+
+The views include creating, updating, deleting, and listing file system connections. These connections allow the platform to interact with various file systems. Access to these views is restricted to authenticated users, with additional permission checks for specific actions.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,6 +17,19 @@ from web_project import TemplateLayout
 
 
 class DataSourceFileSystemListCreateView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of new data source file system connections.
+
+    This view displays a form for creating a new file system connection. Upon submission, it validates the input, checks user permissions, and saves the new connection to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Attributes:
+        template_name (str): The template used to render the file system creation form.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds additional context to the template, including available assistants, OS choices, and user details.
+        post(self, request, *args, **kwargs): Handles form submission and file system connection creation, including permission checks and validation.
+    """
+
     template_name = 'datasource_file_systems/create_datasource_file_system.html'
 
     def get_context_data(self, **kwargs):
@@ -63,6 +82,19 @@ class DataSourceFileSystemListCreateView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceFileSystemUpdateView(LoginRequiredMixin, TemplateView):
+    """
+    Handles updating an existing data source file system connection.
+
+    This view allows users with the appropriate permissions to modify a file system connection's attributes. It also handles the form submission and validation for updating the connection.
+
+    Attributes:
+        template_name (str): The template used to render the file system update form.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current file system connection details and adds them to the context, along with other relevant data such as available assistants and OS choices.
+        post(self, request, *args, **kwargs): Handles form submission for updating the file system connection, including permission checks and validation.
+    """
+
     template_name = 'datasource_file_systems/update_datasource_file_system.html'
 
     def get_context_data(self, **kwargs):
@@ -124,6 +156,14 @@ class DataSourceFileSystemUpdateView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceFileSystemsListView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of data source file system connections associated with the user's assistants and organizations.
+
+    This view retrieves all file system connections organized by organization and assistant, and displays them in a structured list.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the file system connections organized by organization and assistant, and adds them to the context.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -148,6 +188,17 @@ class DataSourceFileSystemsListView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceFileSystemDeleteView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the deletion of a data source file system connection.
+
+    This view allows users with the appropriate permissions to delete a file system connection. It ensures that the user has the necessary permissions before performing the deletion.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for rendering the confirmation of the deletion.
+        get(self, request, *args, **kwargs): Redirects the GET request to the POST method.
+        post(self, request, *args, **kwargs): Deletes the file system connection if the user has the required permissions.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context

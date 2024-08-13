@@ -1,3 +1,9 @@
+"""
+This module provides views for managing and executing triggered jobs within the Bimod.io platform.
+
+The views allow authenticated users to create, list, delete, and manage triggered jobs and their logs. Additionally, there is a webhook listener view that processes incoming webhook payloads to trigger specific jobs.
+"""
+
 import json
 
 from django.contrib import messages
@@ -26,6 +32,16 @@ from web_project import TemplateLayout
 
 @method_decorator(csrf_exempt, name='dispatch')
 class TriggeredJobWebhookListenerView(View):
+    """
+    Handles incoming webhook requests for triggered jobs.
+
+    This view listens for incoming webhook POST requests to trigger specific jobs associated with an assistant. It verifies the assistant and job, updates the job run count, processes the event, and manages the lifecycle of the job execution.
+
+    Methods:
+        get(self, request, assistant_id, triggered_job_id): Returns a 405 Method Not Allowed error for GET requests.
+        post(self, request, assistant_id, triggered_job_id): Processes the incoming webhook payload and triggers the job.
+        handle_triggered_job(job, instance): Static method to handle the execution of the triggered job.
+    """
 
     def get(self, request, assistant_id, triggered_job_id):
         _, _ = assistant_id, triggered_job_id
@@ -189,6 +205,15 @@ class TriggeredJobWebhookListenerView(View):
 
 
 class CreateTriggeredJobView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of new triggered jobs.
+
+    This view allows users to create triggered jobs that are associated with an assistant and can be executed based on specific events. The view checks user permissions before allowing the creation of a new triggered job.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the form for creating a triggered job.
+        post(self, request, *args, **kwargs): Processes the form submission to create a new triggered job.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -222,6 +247,15 @@ class CreateTriggeredJobView(LoginRequiredMixin, TemplateView):
 
 
 class ListTriggeredJobsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of triggered jobs associated with the user's assistants.
+
+    This view retrieves and displays all triggered jobs that are available to the current user, with support for searching and pagination.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the user's accessible triggered jobs and adds them to the context.
+    """
+
     paginate_by = 10  # Adjust the number of items per page
 
     def get_context_data(self, **kwargs):
@@ -246,6 +280,15 @@ class ListTriggeredJobsView(LoginRequiredMixin, TemplateView):
 
 
 class ListTriggeredJobLogsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays the logs of a specific triggered job.
+
+    This view retrieves and displays all instances of a triggered job, showing the execution logs and statuses. The view supports searching and pagination.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the logs of the specified triggered job and adds them to the context.
+    """
+
     paginate_by = 10  # Adjust the number of items per page
 
     def get_context_data(self, **kwargs):
@@ -269,6 +312,15 @@ class ListTriggeredJobLogsView(LoginRequiredMixin, TemplateView):
 
 
 class ConfirmDeleteTriggeredJobView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the deletion of triggered jobs.
+
+    This view allows users to delete specific triggered jobs, provided they have the necessary permissions. The view presents a confirmation page before the deletion is processed.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the deletion confirmation page.
+        post(self, request, *args, **kwargs): Processes the deletion of the specified triggered job.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))

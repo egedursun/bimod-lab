@@ -7,8 +7,9 @@
       <div class="row gx-0 gy-6 g-lg-10">
         <div class="col-lg-5">
           <a href="{% url 'landing-page' %}" class="app-brand-link mb-6">
-            <span class="app-brand-logo demo">
-              {% include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" %}
+            <span class="">
+              <!-- { % include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" % } -->
+              <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 60px;" class="ms-0">
             </span>
             <span class="app-brand-text demo footer-link fw-bold ms-2 ps-1">{% get_theme_variables 'template_name' %}</span>
           </a>

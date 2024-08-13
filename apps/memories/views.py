@@ -1,3 +1,10 @@
+"""
+This module provides views for managing assistant memories within the Bimod.io platform.
+
+The views allow authenticated users to list, create, and delete memories associated with their assistants. The memories can be either user-specific or assistant-specific, providing flexibility in how information is stored and retrieved by the assistants.
+"""
+
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
@@ -22,6 +29,14 @@ class MemoryTypeNames:
 
 
 class ListAssistantMemoryView(TemplateView, LoginRequiredMixin):
+    """
+    Displays a list of memories for the user's assistants across their organizations.
+
+    This view aggregates both user-specific and assistant-specific memories, organizing them by organization and assistant.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the memories associated with the user's assistants and adds them to the context, grouped by organization and assistant.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -48,6 +63,16 @@ class ListAssistantMemoryView(TemplateView, LoginRequiredMixin):
 
 
 class CreateAssistantMemoryView(TemplateView, LoginRequiredMixin):
+    """
+    Handles the creation of new memories for an assistant.
+
+    This view allows users to create new memories, which can be either user-specific or assistant-specific, depending on the selected memory type.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the assistants associated with the current user.
+        post(self, request, *args, **kwargs): Processes the form submission to create a new memory and associates it with the selected assistant.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
@@ -82,6 +107,16 @@ class CreateAssistantMemoryView(TemplateView, LoginRequiredMixin):
 
 
 class DeleteAssistantMemoryView(LoginRequiredMixin, DeleteView):
+    """
+    Handles the deletion of an assistant memory.
+
+    This view allows users to delete a specific memory associated with an assistant, provided they have the necessary permissions.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the deletion confirmation page.
+        post(self, request, *args, **kwargs): Processes the deletion of the specified memory.
+    """
+
     model = AssistantMemory
     success_url = 'memories:list'
 

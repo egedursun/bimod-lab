@@ -34,12 +34,17 @@
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Create a New Assistant Memory</h5>
+          <h5 class="mb-0">
+            <strong>
+              Create Assistant Memory
+            </strong>
+          </h5>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-75.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -71,30 +76,35 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="assistant">Assistant</label>
-              <select class="form-select" id="assistant" name="assistant">
-                {% for assistant in assistants %}
-                  <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-                {% endfor %}
-              </select>
-              <div class="form-text"></div>
+            <div class="row p-8">
+              <div class="mb-6 col-6">
+                <label class="form-label" for="assistant">Assistant</label>
+                <select class="form-select" id="assistant" name="assistant">
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text"></div>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="memory_type">Memory Type</label>
+                <select class="form-select" id="memory_type" name="memory_type">
+                  <option value="user-specific">User-Specific</option>
+                  <option value="assistant-specific">Assistant-Specific</option>
+                </select>
+                <div class="form-text"></div>
+              </div>
+              <div class="mb-6 col-12">
+                <label class="form-label" for="memory_text_content">Memory Content</label>
+                <textarea class="form-control" id="memory_text_content" name="memory_text_content"
+                          placeholder="Enter memory content"></textarea>
+                <div class="form-text"></div>
+              </div>
             </div>
-            <div class="mb-6">
-              <label class="form-label" for="memory_type">Memory Type</label>
-              <select class="form-select" id="memory_type" name="memory_type">
-                <option value="user-specific">User-Specific</option>
-                <option value="assistant-specific">Assistant-Specific</option>
-              </select>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="memory_text_content">Memory Content</label>
-              <textarea class="form-control" id="memory_text_content" name="memory_text_content"
-                        placeholder="Enter memory content"></textarea>
-              <div class="form-text"></div>
-            </div>
-            <button type="submit" class="btn btn-primary d-grid w-100">Create</button>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid mt-4 w-25">
+              <strong>Create Memory</strong>
+            </button>
           </form>
         </div>
       </div>

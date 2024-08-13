@@ -40,12 +40,15 @@
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Create a New SQL Database Connection</h5>
+          <h5 class="mb-0">
+            <strong>Create New SQL Database Connection</strong>
+          </h5>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-72.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -72,110 +75,103 @@
               </div>
             {% endfor %}
           {% endif %}
-          <form method="post" enctype="multipart/form-data">
+
+          <hr>
+
+          <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="dbms_type">DBMS Type</label>
-              <select class="form-select" id="dbms_type" name="dbms_type">
-                <option value="" disabled selected>Select DBMS Type</option>
-                {% for key, value in dbms_choices %}
-                  <option value="{{ key }}">{{ value }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="assistant">Assistant</label>
-              <select class="form-select" id="assistant" name="assistant">
-                {% for assistant in assistants %}
-                  <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-                {% endfor %}
-              </select>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="name">Name</label>
-              <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name"/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="description">Description</label>
-              <textarea class="form-control" id="description" name="description"
-                        placeholder="Enter data source description"></textarea>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="host">Host</label>
-              <input type="text" class="form-control" id="host" name="host" placeholder="Enter host"/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="port">Port</label>
-              <input type="number" class="form-control" id="port" name="port" placeholder="Enter port"/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="database_name">Database Name</label>
-              <input type="text" class="form-control" id="database_name" name="database_name"
-                     placeholder="Enter database name"/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="username">Username</label>
-              <input type="text" class="form-control" id="username" name="username" placeholder="Enter username"/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="password">Password</label>
-              <input type="password" class="form-control" id="password" name="password" placeholder="Enter password"/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="is_read_only">Read-Only</label>
-              <br>
-              <label class="switch switch-square switch-lg mt-2">
-                <input type="checkbox" class="switch-input" id="isReadOnlyCheckbox" name="is_read_only" checked>
-                <span class="switch-toggle-slider">
+            <div class="row p-8">
+              <div class="mb-6 col-6">
+                <label class="form-label" for="dbms_type">DBMS Type</label>
+                <select class="form-select" id="dbms_type" name="dbms_type">
+                  <option value="" disabled selected>Select DBMS Type</option>
+                  {% for key, value in dbms_choices %}
+                    <option value="{{ key }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="assistant">Assistant</label>
+                <select class="form-select" id="assistant" name="assistant">
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text"></div>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="1"
+                          placeholder="Enter data source description"></textarea>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="host">Host</label>
+                <input type="text" class="form-control" id="host" name="host" placeholder="Enter host"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="port">Port</label>
+                <input type="number" class="form-control" id="port" name="port" placeholder="Enter port"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="database_name">Database Name</label>
+                <input type="text" class="form-control" id="database_name" name="database_name"
+                       placeholder="Enter database name"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="is_read_only">Read-Only</label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="isReadOnlyCheckbox" name="is_read_only" checked>
+                  <span class="switch-toggle-slider">
                 <span class="switch-on"><i class="ti ti-check"></i></span>
                 <span class="switch-off"><i class="ti ti-x"></i></span>
               </span>
-              </label>
-            </div>
-            <div class="alert alert-solid-danger d-flex align-items-center mt-6" role="alert">
+                </label>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="one_time_sql_retrieval_instance_limit">Maximum Record Retrieval per
+                  Request</label>
+                <!-- slider bar here -->
+                <input type="range" class="form-range" id="one_time_sql_retrieval_instance_limit"
+                       name="one_time_sql_retrieval_instance_limit" min="1" max="100" step="1" value="50"
+                       oninput="this.nextElementSibling.value = this.value">
+                <output>50</output>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="one_time_sql_retrieval_token_limit">Maximum Tokens per Retrieval</label>
+                <!-- slider bar here -->
+                <input type="range" class="form-range" id="one_time_sql_retrieval_token_limit"
+                       name="one_time_sql_retrieval_token_limit" min="100" max="10000" step="100" value="10000"
+                       oninput="this.nextElementSibling.value = this.value">
+                <output>10000</output>
+              </div>
+              <div class="alert alert-solid-danger d-flex align-items-center col-12" role="alert">
               <span class="alert-icon rounded">
                 <i class="ti ti-alert-triangle-filled"></i>
               </span>
-              We recommend that you create a read-only instance for the data source to prevent any accidental data loss
-              or leaks. Do not forget that the users who have access to the chat can ask for deletion or modification
-              of your data which can have unintended consequences.
+                We recommend that you create a read-only instance for the data source to prevent any accidental data
+                loss
+                or leaks. Do not forget that the users who have access to the chat can ask for deletion or modification
+                of your data which can have unintended consequences.
+              </div>
             </div>
-            <div class="mb-6 col-lg-6">
-              <label class="form-label" for="one_time_sql_retrieval_instance_limit">Maximum Record Retrieval per
-                Request</label>
-              <!-- slider bar here -->
-              <input type="range" class="form-range" id="one_time_sql_retrieval_instance_limit"
-                     name="one_time_sql_retrieval_instance_limit" min="1" max="100" step="1" value="50"
-                     oninput="this.nextElementSibling.value = this.value">
-              <output>50</output>
-            </div>
-            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-info-circle"></i>
-            </span>
-              The maximum number of records that can be retrieved in a single request. This is to prevent any accidental
-              data leaks or performance issues. You can change this value later on if you need to. Higher values can
-              result in increased costs while lower values can result in decreased accuracy of the assistants.
-            </div>
-            <div class="mb-6 col-lg-6">
-              <label class="form-label" for="one_time_sql_retrieval_token_limit">Maximum Tokens per Retrieval</label>
-              <!-- slider bar here -->
-              <input type="range" class="form-range" id="one_time_sql_retrieval_token_limit"
-                     name="one_time_sql_retrieval_token_limit" min="100" max="10000" step="100" value="10000"
-                     oninput="this.nextElementSibling.value = this.value">
-              <output>10000</output>
-            </div>
-            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-info-circle"></i>
-            </span>
-              The maximum number of records that can be retrieved in a single request. This is to prevent any accidental
-              data leaks or performance issues. You can change this value later on if you need to. Higher values can
-              result in increased costs while lower values can result in decreased accuracy of the assistants.
-            </div>
+            <hr>
             <input type="hidden" name="created_by_user" value="{{ user.id }}">
-            <button type="submit" class="btn btn-primary d-grid w-100">Create SQL Data Source</button>
+            <button type="submit" class="btn btn-primary d-grid w-25 mt-4">
+              <strong>Create SQL Database Connection</strong>
+            </button>
           </form>
         </div>
       </div>

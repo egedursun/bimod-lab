@@ -1,3 +1,12 @@
+"""
+Module Overview: This module defines models related to transactions, auto-balance top-ups, and balance snapshots for organizations within an assistant-based application. It includes functionality for calculating transaction costs, managing auto-balance top-ups, and recording balance snapshots for organizations.
+
+Dependencies:
+- `decimal`: Python's module for decimal fixed-point and floating-point arithmetic.
+- `django.db.models`: Django's ORM for defining database models.
+- `apps.llm_transaction.utils`: Utility functions for calculating tokens, costs, and other transaction-related values.
+"""
+
 import decimal
 
 from django.db import models
@@ -51,6 +60,7 @@ class TransactionSourcesNames:
     SQL_WRITE = "sql-write"
     STORE_MEMORY = "store-memory"
     INTERPRET_CODE = "interpret-code"
+    UPLOAD_FILE = "upload-file"
     DOWNLOAD_FILE = "download-file"
     FILE_SYSTEM_COMMANDS = "file-system-commands"
     KNOWLEDGE_BASE_SEARCH = "knowledge-base-search"
@@ -82,6 +92,7 @@ class TransactionSourcesNames:
             TransactionSourcesNames.SQL_WRITE,
             TransactionSourcesNames.STORE_MEMORY,
             TransactionSourcesNames.INTERPRET_CODE,
+            TransactionSourcesNames.UPLOAD_FILE,
             TransactionSourcesNames.DOWNLOAD_FILE,
             TransactionSourcesNames.FILE_SYSTEM_COMMANDS,
             TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH,
@@ -106,6 +117,30 @@ class TransactionSourcesNames:
 
 
 class LLMTransaction(models.Model):
+    """
+    LLMTransaction Model:
+    - Purpose: Represents a transaction related to language model operations, storing details such as the number of tokens used, costs associated with the transaction, and the source and type of the transaction.
+    - Key Fields:
+        - `responsible_user`: ForeignKey linking to the `User` who initiated the transaction.
+        - `responsible_assistant`: ForeignKey linking to the `Assistant` involved in the transaction.
+        - `organization`: ForeignKey linking to the `Organization` associated with the transaction.
+        - `model`: ForeignKey linking to the `LLMCore` model used in the transaction.
+        - `encoding_engine`: The encoding engine used for tokenizing the transaction content.
+        - `transaction_context_content`: The content involved in the transaction.
+        - `number_of_tokens`: The number of tokens used in the transaction.
+        - `llm_cost`, `internal_service_cost`, `tax_cost`, `total_cost`, `total_billable_cost`: Fields for storing the calculated costs associated with the transaction.
+        - `transaction_type`, `transaction_source`: Fields for categorizing the transaction.
+        - `created_at`: Timestamp for when the transaction was created.
+        - `is_tool_cost`: Boolean flag to indicate if the transaction is related to a tool.
+    - Methods:
+        - `save()`: Overridden to calculate tokens and costs, update the organization's balance, and handle auto-balance top-ups if needed.
+    - Meta:
+        - `verbose_name`: "Transaction"
+        - `verbose_name_plural`: "Transactions"
+        - `ordering`: Orders transactions by creation date in descending order.
+        - `indexes`: Indexes on various fields for optimized queries.
+    """
+
     responsible_user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, related_name='transactions',
                                          null=True, blank=True)
     responsible_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.SET_NULL,
@@ -203,6 +238,23 @@ class LLMTransaction(models.Model):
 
 
 class AutoBalanceTopUpModel(models.Model):
+    """
+    AutoBalanceTopUpModel:
+    - Purpose: Represents the configuration for automatically topping up an organization's balance, with triggers based on balance thresholds or regular intervals.
+    - Key Fields:
+        - `organization`: ForeignKey linking to the `Organization` that the top-up configuration applies to.
+        - `on_balance_threshold_trigger`: Boolean flag indicating if the top-up is triggered by a balance threshold.
+        - `on_interval_by_days_trigger`: Boolean flag indicating if the top-up is triggered by regular intervals.
+        - `balance_lower_trigger_threshold_value`, `addition_on_balance_threshold_trigger`: Fields related to the balance threshold trigger.
+        - `regular_by_days_interval`, `addition_on_interval_by_days_trigger`, `date_of_last_auto_top_up`: Fields related to the interval trigger.
+        - `calendar_month_total_auto_addition_value`, `monthly_hard_limit_auto_addition_amount`: Fields for tracking and limiting the total auto-addition value within a month.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Meta:
+        - `verbose_name`: "Auto Balance Top Up"
+        - `verbose_name_plural`: "Auto Balance Top Ups"
+        - `ordering`: Orders top-up configurations by creation date in descending order.
+    """
+
     organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL,
                                      related_name='auto_balance_top_ups',
                                      null=True)
@@ -238,6 +290,20 @@ class AutoBalanceTopUpModel(models.Model):
 
 
 class OrganizationBalanceSnapshot(models.Model):
+    """
+    OrganizationBalanceSnapshot:
+    - Purpose: Represents a snapshot of an organization's balance at a specific point in time, used for tracking financial activity and historical records.
+    - Key Fields:
+        - `organization`: ForeignKey linking to the `Organization` associated with the balance snapshot.
+        - `balance`: The balance of the organization at the time of the snapshot.
+        - `created_at`: Timestamp for when the snapshot was created.
+    - Meta:
+        - `verbose_name`: "Organization Balance Snapshot"
+        - `verbose_name_plural`: "Organization Balance Snapshots"
+        - `ordering`: Orders balance snapshots by creation date in descending order.
+        - `indexes`: Indexes on various fields for optimized queries.
+    """
+
     organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL,
                                      related_name='balance_snapshots', null=True)
     balance = models.DecimalField(max_digits=12, decimal_places=6, null=True, blank=True)

@@ -39,6 +39,15 @@ def send_verification_email(email, token):
     send_email(subject, email, html_content)
 
 
+def send_invitation_email(email, token):
+    subject = "Bimod.io | Invitation"
+    set_password_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))
+    context = {'VERIFICATION_LINK': set_password_url}
+    file_path = os.path.join(os.path.dirname(__file__), 'helper_templates', 'invitation_email_template.html')
+    html_content = render_html_template(file_path, context)
+    send_email(subject, email, html_content)
+
+
 def send_password_reset_email(email, token):
     subject = "Bimod.io | Reset Password"
     reset_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))

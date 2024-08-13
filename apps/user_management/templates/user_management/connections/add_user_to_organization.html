@@ -28,12 +28,12 @@
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Connect User to Organization</h5>
+          <h5 class="mb-0"><strong>Connect User to Organization</strong></h5>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-user.png' %}" width="25%" class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-32.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end me-8">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span class="alert-icon rounded">
                   <i class="ti ti-bookmark"></i>
@@ -69,23 +69,32 @@
           {% endif %}
           <form method="post">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="user">Username</label>
-              <select class="form-select" id="user" name="user">
-                {% for user in users %}
-                  <option value="{{ user.id }}">{{ user.username }}</option>
-                {% endfor %}
-              </select>
+            <div class="row p-8">
+              <div class="col-5 mb-6">
+                <label class="form-label" for="user"><i class="fa fa-user me-2"></i>Username</label>
+                <select class="form-select" id="user" name="user">
+                  {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-2 mb-6">
+                <label class="form-label" hidden for="organization">Arrow Convert</label>
+                <span class="d-flex justify-content-center align-items-center fs-2">
+                  <i class="fa fa-arrow-right fs-3 mt-8"></i>
+                </span>
+              </div>
+              <div class="col-5 mb-6">
+                <label class="form-label" for="organization"><i class="fa fa-building me-2"></i>Organization</label>
+                <select class="form-select" id="organization" name="organization">
+                  {% for organization in organizations %}
+                    <option value="{{ organization.id }}">{{ organization.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
-            <div class="mb-6">
-              <label class="form-label" for="organization">Organization</label>
-              <select class="form-select" id="organization" name="organization">
-                {% for organization in organizations %}
-                  <option value="{{ organization.id }}">{{ organization.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <button type="submit" class="btn btn-primary d-grid w-100">Add User to Organization</button>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid mt-8 w-25"><strong>Connect User</strong></button>
           </form>
         </div>
       </div>

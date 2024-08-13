@@ -31,7 +31,9 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-4">
-      <h3 class="mb-0">Manage Assistant Connections</h3>
+      <h3 class="mb-0">
+        <strong>Manage Function Connections</strong>
+      </h3>
     </div>
   </div>
 
@@ -48,8 +50,9 @@
     </button>
   </a>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-user-edit.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-31.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded ms-4">
     <i class="bi bi-info-circle"></i>
   </span>
@@ -67,20 +70,40 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   {% for organization in connected_organizations %}
     <div class="card mb-6">
       <div class="card-header border-bottom">
         <a data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="true"
            aria-controls="collapse-{{ organization.id }}">
-          <h4>{{ organization.name }}</h4>
+          <div class="d-flex">
+            <img src="
+
+
+
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 class="rounded me-4" width="60" height="60" alt="Organization Image">
+            <h4><strong>{{ organization.name }}</strong></h4>
+          </div>
         </a>
-        <i class="fa fa-arrow-alt-circle-up toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
+        <i class="fa fa-arrow-alt-circle-up toggle-icon mt-8" data-target="#collapse-{{ organization.id }}"></i>
         <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="true"
               aria-controls="collapse-{{ organization.id }}">
       <strong>&nbsp; See Connected Functions of the Organization</strong>
     </span>
       </div>
-      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse show overflow-scroll">
+      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse show overflow-auto">
         <div class="card-body">
           <div class="table-responsive">
             <table class="table">
@@ -101,31 +124,57 @@
                       {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
                     </td>
                     <td style="min-width: 300px;">
-                      <strong><i class="fa fa-robot me-4"></i>{{ assistant.name }}</strong>
+                      <strong><i class="fa fa-robot me-4"></i><strong{{ assistant.name }}</strong>
                       <br>
                       <i class="fa fa-info-circle me-5 mt-2"></i><small>{{ assistant.description|linebreaksbr }}</small>
                     </td>
                     <td>
-                      <ul class="list-unstyled">
+                      <ul class="list-unstyled overflow-auto bg-label-secondary rounded p-2" style="max-height: 400px;">
                         {% for reference in assistant_function_map|get_item:assistant.id %}
-                          <li class="m-3 bg-label-secondary p-2 rounded" style="min-width: 400px;">
-                            <img class="avatar avatar-lg rounded me-4" src="
-                              {% if reference.custom_function.function_picture %}{{ reference.custom_function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
-                            <strong class="me-4">{{ reference.custom_function.name }}</strong>
-                            <p
-                              class="w-25 my-2 p-1 text-white {% if reference.custom_function.is_public %}bg-success rounded{% else %}bg-warning rounded{% endif %}">
-                              <i
-                                class="fa fa-globe me-4"></i><strong>{{ reference.custom_function.is_public|yesno:"Public,Private" }}</strong>
-                            </p>
-                            <form method="post" class="d-inline">
-                              {% csrf_token %}
-                              <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
-                              <input type="hidden" name="reference_id" value="{{ reference.id }}">
-                              <input type="hidden" name="action" value="remove">
-                              <button type="submit" class="mt-2 btn btn-danger d-flex ms-auto w-100"><i
-                                class="fa fa-trash me-4"></i><strong>Remove Connection</strong></button>
-                            </form>
+                          <li class="m-3 p-3 bg-label-primary border rounded d-flex align-items-start"
+                              style="min-width: 400px;">
+                            <!-- Function Image -->
+                            <img class="avatar avatar-lg rounded me-4"
+                                 src="
+
+                                   {% if reference.custom_function.function_picture %}{{ reference.custom_function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                                 alt="{{ reference.custom_function.name }}"
+                                 style="width: 60px; height: 60px; object-fit: cover;">
+
+                            <!-- Function Details -->
+                            <div class="flex-grow-1 d-flex flex-column">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <!-- Function Name -->
+                                <strong class="text-dark"><small>{{ reference.custom_function.name }}</small></strong>
+
+                                <!-- Function Visibility Badge -->
+                                <span
+                                  class="badge {% if reference.custom_function.is_public %}bg-success{% else %}bg-warning{% endif %} px-1 py-1">
+                        <i class="fa fa-globe me-1"></i>{{ reference.custom_function.is_public|yesno:"Public,Private" }}
+                    </span>
+                              </div>
+
+                              <!-- Remove Connection Button -->
+                              <div class="d-flex justify-content-end mt-2">
+                                <form method="post">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
+                                  <input type="hidden" name="reference_id" value="{{ reference.id }}">
+                                  <input type="hidden" name="action" value="remove">
+                                  <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center">
+                                    <i class="fa fa-trash me-1"></i><strong>Disconnect</strong>
+                                  </button>
+                                </form>
+                              </div>
+                            </div>
                           </li>
+                        {% empty %}
+                          <div class="alert alert-warning p-2 m-2" role="alert">
+                            <div class="">
+                              <i class="fa fa-exclamation-triangle me-4"></i>
+                              <strong>No internal functions connected to this assistant.</strong>
+                            </div>
+                          </div>
                         {% endfor %}
                       </ul>
                     </td>
@@ -143,34 +192,58 @@
                             {% endif %}
                           {% endfor %}
                         </select>
-                        <button type="submit" class="btn btn-sm btn-primary mt-4 w-100"
-                                style="min-height: 40px; min-width: 180px;">
+                        <button type="submit" class="btn btn-sm btn-primary mt-1 w-100"
+                                style="min-width: 180px;">
                           <i class="fa fa-plus me-4"></i>
                           <strong>Connect</strong>
                         </button>
                       </form>
                     </td>
                     <td>
-                      <ul class="list-unstyled">
+                      <ul class="list-unstyled overflow-auto bg-label-secondary rounded p-2" style="max-height: 400px;">
                         {% for reference in external_function_references_map|get_item:assistant.id %}
-                          <li class="m-3 bg-label-secondary p-2 rounded" style="min-width: 400px;">
-                            <img class="avatar avatar-lg rounded me-4" src="
-                              {% if reference.custom_function.function_picture %}{{ reference.custom_function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
-                            <strong class="me-4">{{ reference.custom_function.name }}</strong>
-                            <p
-                              class="w-25 my-2 p-1 text-white {% if reference.custom_function.is_public %}bg-success rounded{% else %}bg-warning rounded{% endif %}">
-                              <i
-                                class="fa fa-globe me-4"></i><strong>{{ reference.custom_function.is_public|yesno:"Public,Private" }}</strong>
-                            </p>
-                            <form method="post" class="d-inline">
-                              {% csrf_token %}
-                              <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
-                              <input type="hidden" name="reference_id" value="{{ reference.id }}">
-                              <input type="hidden" name="action" value="remove">
-                              <button type="submit" class="mt-2 btn btn-danger d-flex ms-auto w-100"><i
-                                class="fa fa-trash me-4"></i><strong>Remove Connection</strong></button>
-                            </form>
+                          <li class="m-3 p-3 bg-label-primary border rounded d-flex align-items-start"
+                              style="min-width: 400px;">
+                            <!-- Function Image -->
+                            <img class="avatar avatar-lg rounded me-4"
+                                 src="
+                                   {% if reference.custom_function.function_picture %}{{ reference.custom_function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                                 alt="{{ reference.custom_function.name }}"
+                                 style="width: 60px; height: 60px; object-fit: cover;">
+
+                            <!-- Function Details -->
+                            <div class="flex-grow-1 d-flex flex-column">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <!-- Function Name -->
+                                <strong class="text-dark"><small>{{ reference.custom_function.name }}</small></strong>
+
+                                <!-- Function Visibility Badge -->
+                                <span
+                                  class="badge {% if reference.custom_function.is_public %}bg-success{% else %}bg-warning{% endif %} px-1 py-1">
+                        <i class="fa fa-globe me-1"></i>{{ reference.custom_function.is_public|yesno:"Public,Private" }}
+                    </span>
+                              </div>
+                              <!-- Remove Connection Button -->
+                              <div class="d-flex justify-content-end mt-2">
+                                <form method="post">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
+                                  <input type="hidden" name="reference_id" value="{{ reference.id }}">
+                                  <input type="hidden" name="action" value="remove">
+                                  <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center">
+                                    <i class="fa fa-trash me-1"></i><strong>Disconnect</strong>
+                                  </button>
+                                </form>
+                              </div>
+                            </div>
                           </li>
+                        {% empty %}
+                          <div class="alert alert-warning p-2 m-2" role="alert">
+                            <div class="">
+                              <i class="fa fa-exclamation-triangle me-4"></i>
+                              <strong>No external functions connected to this assistant.</strong>
+                            </div>
+                          </div>
                         {% endfor %}
                       </ul>
                     </td>

@@ -1,3 +1,9 @@
+"""
+This module provides views for managing LLM transactions and automated balance top-up plans for organizations within the Bimod.io platform.
+
+The views allow authenticated users to filter and list transactions, create automated top-up plans, and manage these plans, ensuring organizations maintain sufficient balance for LLM operations.
+"""
+
 from datetime import timedelta
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +32,16 @@ MAXIMUM_TOTAL_PAGES = 50
 
 
 class ListTransactionsView(TemplateView, LoginRequiredMixin):
+    """
+    Displays a filtered list of LLM transactions for the user's organizations.
+
+    This view allows users to filter transactions by a specific time range, with pagination support to manage large datasets.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the filtered transactions for the user's organizations and adds them to the context.
+        get_filter_date(self, filter_value, delta_specifier, time_specifier): Calculates the filter date based on the user's selected filter options.
+        post(self, request, *args, **kwargs): Processes the form submission to filter transactions and update the context accordingly.
+    """
 
     def post(self, request, *args, **kwargs):
         filter_value = request.POST.get('filter')
@@ -112,6 +128,16 @@ class ListTransactionsView(TemplateView, LoginRequiredMixin):
 
 
 class CreateAutomatedTopUpPlan(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of an automated balance top-up plan for an organization.
+
+    This view allows users to set up triggers and parameters for automatic balance top-ups, ensuring that organizations maintain a minimum balance.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the organizations associated with the current user.
+        post(self, request, *args, **kwargs): Processes the form submission to create a new automated top-up plan, including setting the triggers and limits.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
@@ -173,6 +199,16 @@ class CreateAutomatedTopUpPlan(LoginRequiredMixin, TemplateView):
 
 
 class ListAutomatedTopUpPlans(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of automated balance top-up plans for the user's organizations.
+
+    This view allows users to manage their automated top-up plans, including deleting existing plans.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the organizations associated with the current user and their respective top-up plans.
+        post(self, request, *args, **kwargs): Processes the form submission to delete an automated top-up plan.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])

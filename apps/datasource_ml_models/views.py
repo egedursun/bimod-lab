@@ -1,3 +1,9 @@
+"""
+This module contains views for managing machine learning model connections and items within the Bimod.io platform.
+
+The views include creating, updating, deleting, and listing ML model connections and their associated items. These views also handle uploading ML models and pagination of listed models. Access to these views is restricted to authenticated users, with additional permission checks for specific actions.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -12,6 +18,16 @@ from web_project import TemplateLayout
 
 
 class DataSourceMLModelConnectionCreateView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of new machine learning model connections.
+
+    This view displays a form for creating a new ML model connection. Upon submission, it validates the input, checks user permissions, and saves the new connection to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds additional context to the template, including the form for creating an ML model connection.
+        post(self, request, *args, **kwargs): Handles form submission and ML model connection creation, including permission checks and validation.
+    """
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context = TemplateLayout.init(self, context)
@@ -44,6 +60,15 @@ class DataSourceMLModelConnectionCreateView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceMLModelConnectionUpdateView(LoginRequiredMixin, TemplateView):
+    """
+    Handles updating an existing machine learning model connection.
+
+    This view allows users with the appropriate permissions to modify an ML model connection's attributes. It also handles the form submission and validation for updating the connection.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current ML model connection details and adds them to the context, along with other relevant data such as available assistants and the form for updating the connection.
+        post(self, request, *args, **kwargs): Handles form submission for updating the ML model connection, including permission checks and validation.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -81,6 +106,18 @@ class DataSourceMLModelConnectionUpdateView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceMLModelConnectionListView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of machine learning model connections associated with the user's organizations and assistants.
+
+    This view retrieves all ML model connections organized by organization and assistant, and displays them in a structured list.
+
+    Attributes:
+        template_name (str): The template used to render the ML model connection list.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the ML model connections organized by organization and assistant, and adds them to the context.
+    """
+
     template_name = 'datasource_ml_models/base/list_datasource_ml_models.html'
 
     def get_context_data(self, **kwargs):
@@ -105,6 +142,17 @@ class DataSourceMLModelConnectionListView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceMLModelConnectionDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    Handles the deletion of a machine learning model connection.
+
+    This view allows users with the appropriate permissions to delete an ML model connection. It ensures that the user has the necessary permissions before performing the deletion.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for rendering the confirmation of the deletion.
+        post(self, request, *args, **kwargs): Deletes the ML model connection if the user has the required permissions.
+        get_queryset(self): Filters the queryset to include only the ML model connections that belong to the user's assistants.
+    """
+
     model = DataSourceMLModelConnection
     success_url = 'datasource_ml_models:list'
 
@@ -134,6 +182,19 @@ class DataSourceMLModelConnectionDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class DataSourceMLModelItemCreateView(LoginRequiredMixin, TemplateView):
+    """
+    Handles uploading machine learning model files to a selected ML model connection.
+
+    This view displays a form for selecting an ML model connection and uploading ML model files to it. Upon form submission, it validates the input, reads the file contents, and saves the ML model items to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Attributes:
+        template_name (str): The template used to render the ML model item creation form.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the available ML model connections and the form for uploading ML model items.
+        post(self, request, *args, **kwargs): Handles the ML model file upload process, including validation and saving the ML model items.
+    """
+
     template_name = 'datasource_ml_models/models/create_datasource_ml_model_item.html'
 
     def get_context_data(self, **kwargs):
@@ -178,6 +239,16 @@ class DataSourceMLModelItemCreateView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceMLModelItemUpdateView(LoginRequiredMixin, TemplateView):
+    """
+    Displays and updates the details of a specific machine learning model item.
+
+    This view allows users with the appropriate permissions to view and update the details of an ML model item.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the ML model item details and adds them to the context.
+        post(self, request, *args, **kwargs): Handles the update of the ML model item's details.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context
@@ -187,6 +258,19 @@ class DataSourceMLModelItemUpdateView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of machine learning model items associated with the user's ML model connections.
+
+    This view retrieves all ML model items within the user's ML model connections, organized by organization and assistant. It also allows users to delete selected ML model items.
+
+    Attributes:
+        template_name (str): The template used to render the ML model item list.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the ML model items for the user's connections and adds them to the context, including pagination and status information.
+        post(self, request, *args, **kwargs): Handles the deletion of selected ML model items or all items in a connection.
+    """
+
     template_name = 'datasource_ml_models/models/list_datasource_ml_model_items.html'
 
     def get_context_data(self, **kwargs):
@@ -235,6 +319,16 @@ class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
 
 
 class DataSourceMLModelItemDeleteView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the deletion of a specific machine learning model item.
+
+    This view allows users with the appropriate permissions to delete an ML model item.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for rendering the confirmation of the deletion.
+        post(self, request, *args, **kwargs): Deletes the ML model item if the user has the required permissions.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context

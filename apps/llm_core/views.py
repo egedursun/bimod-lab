@@ -1,3 +1,8 @@
+"""
+This module provides views for managing LLM Core models within the Bimod.io platform.
+
+The views allow authenticated users to create, list, update, and delete LLM Core models, while enforcing necessary permission checks to ensure that users have the appropriate access rights.
+"""
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,6 +17,16 @@ from web_project import TemplateLayout
 
 
 class CreateLLMCoreView(TemplateView, LoginRequiredMixin):
+    """
+    Handles the creation of a new LLM Core model.
+
+    This view allows users with the appropriate permissions to create a new LLM Core model, associate it with an organization, and set various properties such as the provider and model name.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with available organizations, providers, and model names.
+        post(self, request, *args, **kwargs): Processes the form submission for creating a new LLM Core model, including permission checks and validation.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
@@ -52,6 +67,15 @@ class CreateLLMCoreView(TemplateView, LoginRequiredMixin):
 
 
 class ListLLMCoreView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of all LLM Core models associated with the user's organizations.
+
+    This view retrieves all LLM Core models linked to the organizations that the user belongs to and displays them.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the LLM Core models for the user's organizations and adds them to the context.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
@@ -69,6 +93,16 @@ class ListLLMCoreView(LoginRequiredMixin, TemplateView):
 
 
 class UpdateLLMCoreView(TemplateView, LoginRequiredMixin):
+    """
+    Handles updating an existing LLM Core model.
+
+    This view allows users with the appropriate permissions to modify an existing LLM Core model's attributes, such as the organization it is associated with, provider, and model name.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current LLM Core model details and adds them to the context, along with other relevant data such as available organizations, providers, and model names.
+        post(self, request, *args, **kwargs): Processes the form submission for updating the LLM Core model, including permission checks and validation.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         llm_core = LLMCore.objects.get(id=kwargs['pk'])
@@ -111,6 +145,17 @@ class UpdateLLMCoreView(TemplateView, LoginRequiredMixin):
 
 
 class DeleteLLMCoreView(DeleteView, LoginRequiredMixin):
+    """
+    Handles the deletion of an LLM Core model.
+
+    This view allows users with the appropriate permissions to delete an LLM Core model and remove it from the associated organization.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the current user's details.
+        post(self, request, *args, **kwargs): Deletes the LLM Core model if the user has the required permissions.
+        get_queryset(self): Filters the queryset to include only the LLM Core models associated with the user's organizations.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user

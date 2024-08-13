@@ -1,3 +1,10 @@
+"""
+Module Overview: This module defines the `DataSourceFileSystem` model, which represents a connection to a remote file system via SSH. It includes configurations for the file system's operating system type, SSH connection details, and data retrieval parameters. The model also integrates with the `FileSystemsExecutor` service for handling file system operations.
+
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+- `apps._services.file_systems.file_systems_executor`: Custom service for executing file system-related operations.
+"""
 
 from django.db import models
 from apps._services.file_systems.file_systems_executor import FileSystemsExecutor
@@ -19,6 +26,26 @@ class DataSourceFileSystemsOsTypeNames:
 
 
 class DataSourceFileSystem(models.Model):
+    """
+    DataSourceFileSystem Model:
+    - Purpose: Represents a remote file system connection accessible via SSH, including details such as the OS type, SSH credentials, and data retrieval settings.
+    - Key Fields:
+        - `assistant`: ForeignKey linking to the `Assistant` model, representing the assistant associated with this file system connection.
+        - `os_type`: The operating system type of the remote file system (e.g., Linux, MacOS).
+        - `name`: The name of the file system connection.
+        - `description`: A brief description of the connection.
+        - `host_url`: The URL or IP address of the remote file system.
+        - `port`: The port number for the SSH connection (default is 22).
+        - `username`, `password`: Credentials for SSH login.
+        - `file_directory_tree`: A text representation of the file directory structure.
+        - `os_read_limit_tokens`: Limit for the number of tokens to read from the OS.
+        - `is_read_only`: Boolean flag to indicate if the connection is read-only.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+        - `created_by_user`: ForeignKey linking to the user who created the file system connection.
+    - Methods:
+        - `save()`: Overridden to construct the SSH connection URI and update the file directory tree using `FileSystemsExecutor` before saving the model.
+    """
+
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE,
                                   related_name='data_source_file_systems',
                                   default=None, null=True)

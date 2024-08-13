@@ -1,11 +1,16 @@
-from django.db import models
+"""
+Module Overview: This module defines the `LLMCore` model, which represents a configuration for a Language Model (LLM) core within an assistant-based application. The model includes settings for API keys, model parameters, and metadata such as provider type, model name, and organization association.
 
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+"""
+
+from django.db import models
 
 # Define enumeration for the provider
 LLM_CORE_PROVIDERS = [
     ("OA", "OpenAI-GPT"),
 ]
-
 
 # OPENAI GPT model names
 OPENAI_GPT_MODEL_NAMES = [
@@ -16,6 +21,29 @@ OPENAI_GPT_MODEL_NAMES = [
 
 
 class LLMCore(models.Model):
+    """
+    LLMCore Model:
+    - Purpose: Represents a configuration for a Language Model (LLM) core, storing details such as the provider, API key, model name, and various model-specific parameters.
+    - Key Fields:
+        - `nickname`: A user-defined nickname for the LLM core.
+        - `description`: An optional description of the LLM core.
+        - `provider`: The provider of the LLM core (e.g., OpenAI-GPT).
+        - `api_key`: The API key used to access the LLM core.
+        - `model_name`: The name of the model used within the LLM core (e.g., gpt-4o, gpt-4-turbo).
+        - `temperature`, `maximum_tokens`, `stop_sequences`, `top_p`, `frequency_penalty`, `presence_penalty`: Model-specific parameters that control the behavior of the LLM core.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+        - `created_by_user`, `last_updated_by_user`: ForeignKey fields linking to the user who created or last updated the LLM core.
+        - `organization`: ForeignKey linking to the organization associated with the LLM core.
+    - Methods:
+        - `__str__()`: Returns the nickname of the LLM core.
+        - `get_provider_name()`: Returns the full name of the provider based on the `provider` field.
+    - Meta:
+        - `verbose_name`: "LLM Core"
+        - `verbose_name_plural`: "LLM Cores"
+        - `ordering`: Orders LLM cores by creation date in descending order.
+        - `indexes`: Indexes on various fields such as `nickname`, `provider`, `model_name`, `organization`, and related user fields for optimized queries.
+    """
+
     nickname = models.CharField(max_length=255)
     description = models.TextField(default="", blank=True)
     provider = models.CharField(max_length=2, choices=LLM_CORE_PROVIDERS)
@@ -36,7 +64,7 @@ class LLMCore(models.Model):
                                              related_name="llm_core_last_updated_by_users")
 
     organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE,
-                                        related_name="llm_cores_organization", default=6)
+                                     related_name="llm_cores_organization", default=6)
 
     def __str__(self):
         return self.nickname

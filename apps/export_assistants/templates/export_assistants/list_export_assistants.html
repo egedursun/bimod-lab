@@ -10,6 +10,7 @@
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
   <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
   <style>
     .text-wrap {
       white-space: normal;
@@ -25,6 +26,7 @@
   <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
   <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
   <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
@@ -35,12 +37,13 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-6">
-      <h3 class="mb-0"><strong>Your Exported Assistants</strong></h3>
+      <h3 class="mb-0"><strong>Exported Assistants</strong></h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-7.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -53,6 +56,18 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
 
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-6">
@@ -67,9 +82,19 @@
         <div class="card h-100">
           <div class="card-header d-flex justify-content-between">
             <div class="card-title mb-0">
-              <h5 class="mb-1"><strong>{{ data.organization.name }}</strong></h5>
-              <p class="card-subtitle">{{ data.assistants_percentage }}% of the exportation limit used
-                ({{ data.export_assistants_count }}/{{ data.limit }})</p>
+              <div class="d-flex">
+                <img src="
+
+                  {% if data.organization.organization_image %}{{ data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                     alt="Organization Logo" class="rounded me-4" width="60">
+                <h5 class="mb-1">
+                  <strong>
+                    {{ data.organization.name }}
+                  </strong></h5>
+              </div>
+              <p class="card-subtitle mt-4"><strong>{{ data.assistants_percentage }}%</strong> of the exportation limit
+                used
+                <strong>({{ data.export_assistants_count }}/{{ data.limit }})</strong></p>
             </div>
           </div>
           <div class="card-datatable table-responsive">
@@ -140,8 +165,7 @@
 
   <div class="row g-0">
   {% for export_assistant in export_assistants %}
-    <div class="col-lg-12 col-xl-12 col-xxl-12 col-md-12">
-    <div class="card mb-6">
+    <div class="card col-5 mb-6 ms-6">
       <div class="card-body text-center">
         <div class="mx-auto my-2">
           {% if export_assistant.assistant.assistant_image %}
@@ -154,14 +178,21 @@
         <h5 class="mb-0 card-title"><strong>{{ export_assistant.assistant.name }}</strong></h5>
         <span>{{ export_assistant.assistant.organization.name }}</span>
         <div class="align-items-center justify-content-center my-6 gap-2">
-          <label class="text"><strong>Endpoint URL:</strong></label><br>
-          <div class="me-2">
-            <span class="badge bg-label-secondary text-wrap p-4 m-2 pt-7">
-              <strong class="bg-label-warning p-2 me-4 rounded">POST</strong>
-              <strong>{{ export_assistant.endpoint }}</strong>
+          <label class="text">
+            <strong>
+              <i class="fa fa-link me-2"></i>
+              Endpoint URL:
+            </strong></label><br>
+          <div class="me-2 pt-2">
+            <span class="badge bg-label-secondary text-wrap p-4 mt-2 pt-6">
+              <strong class="border border-warning p-1 rounded text-warning">POST</strong>
+              <div class="mt-4">
+                <strong>
+                  <a href="{{ export_assistant.endpoint }}" class="text-white" target="_blank">{{ export_assistant.endpoint }}</a>
+                </strong></div>
             </span>
             <strong><small>
-              <a href="javascript:void(0);" class="copy-btn-endpoint ms-12"
+              <a href="javascript:void(0);" class="copy-btn-endpoint"
                  data-endpoint="{{ export_assistant.endpoint }}">
                 <i class="fa fa-copy"></i><span class="ms-2">Copy URL</span>
               </a>
@@ -169,20 +200,26 @@
           </div>
           <hr>
           {% if export_assistant.custom_api_key %}
-            <label class="text mt-2"><strong>Authorization:</strong></label><br>
+            <label class="text mt-2"><strong>
+              <i class="fa fa-key me-2"></i>
+              Authorization:
+            </strong></label><br>
             <div class="me-2">
-            <span class="badge bg-label-warning text-wrap p-4 m-2">
-              <strong>{{ export_assistant.custom_api_key }}</strong>
+            <span class="badge bg-label-secondary text-wrap p-4 m-2">
+              <strong class="text-white">{{ export_assistant.custom_api_key }}</strong>
             </span>
               <strong><small>
-                <a href="javascript:void(0);" class="copy-btn-key ms-12"
+                <a href="javascript:void(0);" class="copy-btn-key"
                    data-key="{{ export_assistant.custom_api_key }}">
                   <i class="fa fa-copy"></i><span class="ms-2">Copy API Key</span>
                 </a>
               </small></strong>
             </div>
           {% else %}
-            <label class="text mt-2"><strong>Authorization:</strong></label><br>
+            <label class="text mt-2"><strong>
+              <i class="fa fa-key me-2"></i>
+              Authorization:
+            </strong></label><br>
             <div class="me-2">
             <span class="badge bg-label-success text-wrap p-4 m-2">
               <strong>This assistant is public, no API key required.</strong>
@@ -199,9 +236,9 @@
           <div class="d-flex align-items-center justify-content-center">
             <a href="{% url 'export_assistants:update' export_assistant.id %}"
                class="btn btn-primary d-flex align-items-center me-4 waves-effect waves-light"><i
-              class="ti-xs me-1 ti ti-edit me-2"></i>Edit</a>
+              class="ti ti-edit me-2"></i><strong>Edit</strong></a>
             <a href="{% url 'export_assistants:delete' export_assistant.id %}"
-               class="btn btn-danger btn-icon waves-effect"><i class="ti ti-trash ti-md"></i></a>
+               class="btn btn-danger"><i class="ti ti-trash me-2"></i><strong>Delete</strong></a>
           </div>
           <div class="alert-container"></div>
         </div>
@@ -267,6 +304,29 @@
         });
       });
 
+      document.querySelectorAll('.btn-danger').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('a').getAttribute('href');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
+        });
+      });
     });
   </script>
 

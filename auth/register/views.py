@@ -76,6 +76,10 @@ class RegisterView(AuthView):
         user_profile.country = country
         user_profile.postal_code = postal_code
         user_profile.profile_picture = profile_picture
+
+        # check the free credits status from the settings
+        user_profile.free_credits = settings.NEW_USER_FREE_CREDITS if hasattr(settings, 'NEW_USER_FREE_CREDITS') else 0
+
         # Get the primary admin (1)
         primary_admin = User.objects.filter(username="admin").first()
         user_profile.created_by_user = primary_admin

@@ -139,12 +139,15 @@
   <div class="container-fluid">
     <div class="row mb-4">
       <div class="col-12">
-        <h3 class="mb-0">Documents</h3>
+        <h3 class="mb-0">
+          <strong>Documents</strong>
+        </h3>
       </div>
     </div>
 
     <div class="alert alert-secondary alert-dismissible d-flex align-items-center" role="alert">
-      <img src="{% static 'img/custom-illustrations/boy-core-list.png' %}" width="15%" class="justify-content-end">
+      <img src="{% static 'img/custom-illustrations-v2/i2-103.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8">
       <span class="alert-icon rounded ms-4">
             <i class="ti ti-bookmark"></i>
         </span>
@@ -162,6 +165,18 @@
       </div>
     </div>
 
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+
     {% for organization_data in data %}
       <div class="row mb-4">
         <div class="col-12">
@@ -170,7 +185,16 @@
               <p>
                 <a data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button"
                    aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
-                  <h4 class="mb-0">{{ organization_data.organization.name }}</h4>
+                  <div class="d-flex">
+                    <img src="
+                      {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                         width="60" class="me-4 rounded">
+                  </div>
+                  <h4 class="mb-0 mt-4">
+                    <strong>
+                      {{ organization_data.organization.name }}
+                    </strong>
+                  </h4>
                   <small class="text-muted">{{ organization_data.organization.email }}</small>
                 </a>
               </p>
@@ -185,11 +209,17 @@
               {% for assistant_data in organization_data.assistants %}
                 <div class="card mb-4">
                   <div class="card-header">
-                    <h4 class="mb-0">{{ assistant_data.assistant.name }}</h4>
-                    <small class="text-muted">{{ assistant_data.assistant.description }}</small>
+                    <div class="d-flex card card-border-shadow-primary p-4">
+                      <img src="
+                        {% if assistant_data.assistant.assistant_image %}{{ assistant_data.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/assistant-0.png' %}{% endif %}"
+                           width="80" class="me-4 rounded">
+                      <h4 class="mb-0 mt-4">
+                        <strong>{{ assistant_data.assistant.name }}</strong>
+                      </h4>
+                    </div>
                     <div class="card-datatable table-responsive">
                       <a href="{% url 'datasource_knowledge_base:create_documents' %}">
-                        <button class="btn btn-info mt-4 mb-8">
+                        <button class="btn btn-info mt-4 mb-4">
                           <i class="fa fa-file-upload me-4"></i>
                           <strong> Add New Document</strong>
                         </button>
@@ -200,7 +230,7 @@
                     {% for kb_data in assistant_data.knowledge_bases %}
                       <div class="card mb-4">
                         <div class="card-header">
-                          <h5 class="mb-0">{{ kb_data.knowledge_base.name }}</h5>
+                          <h5 class="mb-0"><strong>{{ kb_data.knowledge_base.name }}</strong></h5>
                           <small class="text-muted">{{ kb_data.knowledge_base.description }}</small>
                         </div>
                         <div id="collapse-kb-{{ kb_data.knowledge_base.id }}" class="card-body collapse show">
@@ -214,12 +244,12 @@
                                   <th><input type="checkbox" class="select-all-checkbox"
                                              data-kb-id="{{ kb_data.knowledge_base.id }}"></th>
                                   <th></th>
-                                  <th>File Id</th>
-                                  <th>Document Name</th>
-                                  <th>File Format</th>
-                                  <th>Status</th>
-                                  <th>Stored Chunks</th>
-                                  <th>Uploaded At</th>
+                                  <th style="min-width: 120px; max-width: 120px;">File Id</th>
+                                  <th style="min-width:200px; max-width: 200px;">Document Name</th>
+                                  <th style="max-width: 200px; min-width: 200px;">File Format</th>
+                                  <th style="min-width: 400px; max-width: 400px;">Status</th>
+                                  <th style="min-width: 200px; max-width: 200px;">Stored Chunks</th>
+                                  <th STYLE="min-width: 250px; max-width: 250px;">Uploaded At</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -236,8 +266,8 @@
                                            alt="{{ document_data.document.document_type }}" width="20">
                                     </td>
                                     <td>{{ document_data.document.id }}</td>
-                                    <td>{{ document_data.document.document_file_name }}</td>
-                                    <td>{{ document_data.document.document_type }}</td>
+                                    <td><strong>{{ document_data.document.document_file_name }}</strong></td>
+                                    <td><strong>{{ document_data.document.document_type }}</strong></td>
                                     <td class="col-lg-4">
                                       {% for status in document_statuses %}
                                         {% if status in document_data.current_statuses %}
@@ -246,77 +276,93 @@
                                                                             <i class="fa fa-warning"></i>
                                                                         </span>
                                           {% elif status in partially_failed_statuses %}
-                                            <span class="badge bg-warning text-white rounded mb-1" style="width: 12%">
+                                            <span class="badge bg-warning text-white rounded mb-1" style="width: 10%">
                                                                             <i class="fa fa-warning"></i>
                                                                         </span>
                                           {% else %}
                                             {% if status == "staged" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-clock"></i>
                                                                           </span>
                                             {% elif status == "uploaded" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-file-upload"></i>
                                                                           </span>
                                             {% elif status == "loaded" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-magnifying-glass"></i>
                                                                           </span>
                                             {% elif status == "chunked" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-scissors"></i>
                                                                           </span>
                                             {% elif status == "embedded_document" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-file-signature"></i>
                                                                           </span>
                                             {% elif status == "saved_document" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-file-archive"></i>
                                                                           </span>
                                             {% elif status == "processed_document" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-file-circle-check"></i>
                                                                           </span>
                                             {% elif status == "embedded_chunks" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-boxes-packing"></i>
                                                                           </span>
                                             {% elif status == "saved_chunks" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-box-archive"></i>
                                                                           </span>
                                             {% elif status == "processed_chunks" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-list-check"></i>
                                                                           </span>
                                             {% elif status == "completed" %}
-                                              <span class="badge bg-success text-white rounded mb-1" style="width: 12%">
+                                              <span class="badge bg-success text-white rounded mb-1" style="width: 10%">
                                                                               <i class="fa fa-check-square"></i>
                                                                           </span>
                                             {% endif %}
                                           {% endif %}
                                         {% endif %}
                                       {% endfor %}
+                                      {% if "completed" not in document_data.current_statuses %}
+                                        <span class="badge bg-warning text-white rounded mb-1" style="width: 10%">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                        </span>
+                                      {% endif %}
                                     </td>
-                                    <td>{{ document_data.document.document_chunks.count }}</td>
+                                    <td>
+                                      <span class="border border-success rounded p-1">
+                                        <strong>
+                                          {{ document_data.document.document_chunks.count }}
+                                        </strong></span>
+                                    </td>
                                     <td>{{ document_data.document.created_at }}</td>
                                   </tr>
                                 {% endfor %}
                                 </tbody>
                               </table>
                               <button type="submit" class="btn btn-warning btn-sm w-25 mt-4 delete-selected-btn">
-                                <strong>Delete Selected Documents</strong></button>
+                                <strong>
+                                  <i class="fa fa-trash me-4"></i>
+                                  Delete Selected
+                                </strong></button>
                             </form>
                             <nav aria-label="Page navigation">
                               <form method="post"
                                     action="{% url 'datasource_knowledge_base:delete_all_documents' kb_data.knowledge_base.id %}"
                                     class="d-inline">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm w-25 mt-2 delete-all-btn"><strong>DELETE
-                                  ALL</strong></button>
+                                <button type="submit" class="btn btn-danger btn-sm w-25 mt-2 delete-all-btn">
+                                  <strong>
+                                    <i class="fa fa-exclamation-triangle me-4"></i>
+                                    Delete ALL
+                                  </strong></button>
                               </form>
-                              <ul class="pagination pagination-rounded pt-8 overflow-scroll">
+                              <ul class="pagination pagination-rounded overflow-auto pt-8">
                                 {% if kb_data.documents.has_previous %}
                                   <li class="page-item">
                                     <a class="page-link" href="?page=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
@@ -370,69 +416,69 @@
         </small>
         <hr>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-info d-flex align-items-center m-2 p-2">
-          <i class="fa fa-clock me-4"></i> &nbsp; <strong>Staged</strong>
+          <i class="fa fa-clock me-2"></i> &nbsp; <strong>Staged</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-info d-flex align-items-center m-2 p-2">
-          <i class="fa fa-file-upload me-4"></i> &nbsp; <strong>Uploaded</strong>
+          <i class="fa fa-file-upload me-2"></i> &nbsp; <strong>Uploaded</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-info d-flex align-items-center m-2 p-2">
-          <i class="fa fa-magnifying-glass me-4"></i> &nbsp; <strong>Loaded</strong>
+          <i class="fa fa-magnifying-glass me-2"></i> &nbsp; <strong>Loaded</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-info d-flex align-items-center m-2 p-2">
-          <i class="fa fa-scissors me-4"></i> &nbsp; <strong>Chunked</strong>
+          <i class="fa fa-scissors me-2"></i> &nbsp; <strong>Chunked</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-info d-flex align-items-center m-2 p-2">
-          <i class="fa fa-file-signature me-4"></i> &nbsp; <strong>Embedded Document</strong>
+          <i class="fa fa-file-signature me-2"></i> &nbsp; <strong>Embedded Document</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-info d-flex align-items-center m-2 p-2">
-          <i class="fa fa-file-archive me-4"></i> &nbsp; <strong>Saved Document</strong>
+          <i class="fa fa-file-archive me-2"></i> &nbsp; <strong>Saved Document</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-info d-flex align-items-center m-2 p-2">
-          <i class="fa fa-file-circle-check me-4"></i> &nbsp; <strong>Processed Document</strong>
+          <i class="fa fa-file-circle-check me-2"></i> &nbsp; <strong>Processed Document</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-info d-flex align-items-center m-2 p-2">
-          <i class="fa fa-boxes-packing me-4"></i> &nbsp; <strong>Embedded Chunks</strong>
+          <i class="fa fa-boxes-packing me-2"></i> &nbsp; <strong>Embedded Chunks</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-info d-flex align-items-center m-2 p-2">
-          <i class="fa fa-box-archive me-4"></i> &nbsp; <strong>Saved Chunks</strong>
+          <i class="fa fa-box-archive me-2"></i> &nbsp; <strong>Saved Chunks</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-info d-flex align-items-center m-2 p-2">
-          <i class="fa fa-list-check me-4"></i> &nbsp; <strong>Processed Chunks</strong>
+          <i class="fa fa-list-check me-2"></i> &nbsp; <strong>Processed Chunks</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-success d-flex align-items-center m-2 p-2">
-          <i class="fa fa-check-square me-4"></i> &nbsp; <strong>Completed</strong>
+          <i class="fa fa-check-square me-2"></i> &nbsp; <strong>Completed</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-danger d-flex align-items-center m-2 p-2">
-          <i class="fa fa-warning me-4"></i> &nbsp; <strong>Failed</strong>
+          <i class="fa fa-warning me-2"></i> &nbsp; <strong>Failed</strong>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="badge bg-warning d-flex align-items-center m-2 p-2">
-          <i class="fa fa-warning me-4"></i> &nbsp; <strong>Partially Failed</strong>
+          <i class="fa fa-warning me-2"></i> &nbsp; <strong>Partially Failed</strong>
         </div>
       </div>
     </div>

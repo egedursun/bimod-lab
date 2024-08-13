@@ -89,6 +89,7 @@ def index_document_helper(connection_id, document_paths):
 
         except Exception as e:
             print(f"[tasks.index_document_helper] Error indexing the document with path: {path} - Error: {e}")
+            add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.FAILED)
             continue
     # make sure that the return statement is outside the loop
     return

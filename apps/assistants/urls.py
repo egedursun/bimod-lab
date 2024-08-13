@@ -2,9 +2,7 @@ from django.urls import path
 
 from apps.assistants.views import CreateAssistantView, ListAssistantView, UpdateAssistantView, DeleteAssistantView
 
-
 app_name = "assistants"
-
 
 urlpatterns = [
     path("create/", CreateAssistantView.as_view(template_name="assistants/create_assistant.html"),

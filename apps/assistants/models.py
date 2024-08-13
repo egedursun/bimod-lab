@@ -1,3 +1,13 @@
+"""
+Module Overview: This module defines the `Assistant` model, which represents a customizable virtual assistant within an organization. It also includes utility classes and functions for managing assistant-related configurations, such as language support, context overflow strategies, and vectorizer options.
+
+Dependencies:
+- `boto3`: Used for interacting with AWS S3 to manage storage directories.
+- `django.db.models`: Django's ORM for defining database models.
+- `random`: Used for generating random name suffixes.
+- `apps.assistants.utils`: Custom utility functions for generating random strings.
+- `config.settings`: Application settings, particularly for accessing AWS configurations.
+"""
 
 import random
 
@@ -21,8 +31,8 @@ ASSISTANT_RESPONSE_LANGUAGES = [
     ("sr", "Serbian"), ("sl", "Slovenian"), ("mk", "Macedonian"), ("sq", "Albanian"), ("bs", "Bosnian"),
     ("is", "Icelandic"), ("cy", "Welsh"), ("ga", "Irish"),
 ]
-ASSISTANT_RESPONSE_LANGUAGES = [ASSISTANT_RESPONSE_LANGUAGES[0]] + sorted(ASSISTANT_RESPONSE_LANGUAGES[1:], key=lambda x: x[1])
-
+ASSISTANT_RESPONSE_LANGUAGES = [ASSISTANT_RESPONSE_LANGUAGES[0]] + sorted(ASSISTANT_RESPONSE_LANGUAGES[1:],
+                                                                          key=lambda x: x[1])
 
 CONTEXT_OVERFLOW_STRATEGY = [
     ("stop", "Stop Conversation"),
@@ -38,7 +48,8 @@ class ContextOverflowStrategyNames:
 
     @staticmethod
     def as_dict():
-        return { "stop": "Stop Conversation", "forget": "Forget Oldest Messages", "vectorize": "Vectorize Oldest Messages" }
+        return {"stop": "Stop Conversation", "forget": "Forget Oldest Messages",
+                "vectorize": "Vectorize Oldest Messages"}
 
 
 VECTORIZERS = [
@@ -51,13 +62,40 @@ class VectorizerNames:
 
     @staticmethod
     def as_dict():
-        return { "text2vec-openai": "Text2Vec (OpenAI)" }
+        return {"text2vec-openai": "Text2Vec (OpenAI)"}
 
 
 # Create your models here.
 
 
 class Assistant(models.Model):
+    """
+    Assistant Model:
+    - Purpose: Represents a virtual assistant with customizable settings, including language, context management, and storage directories.
+    - Key Fields:
+        - `organization`: ForeignKey linking to the `Organization` model.
+        - `llm_model`: ForeignKey linking to the `LLMCore` model.
+        - `name`: The name of the assistant.
+        - `description`, `instructions`, `response_template`: Fields for storing assistant-specific text configurations.
+        - `audience`, `tone`: Characterizes the assistant's communication style.
+        - `response_language`: Defines the assistant's response language.
+        - `max_retry_count`: Number of retry attempts for tools.
+        - `tool_max_attempts_per_instance`, `tool_max_chains`: Limits on tool usage.
+        - `glossary`: JSON field for storing glossary terms.
+        - `time_awareness`, `place_awareness`: Booleans for enabling time and place awareness.
+        - `assistant_image`: Image field for storing the assistant's image.
+        - `memories`: ManyToManyField linking to the `AssistantMemory` model.
+        - `context_overflow_strategy`: Defines how to handle context overflow.
+        - `max_context_messages`: Maximum number of context messages allowed.
+        - `vectorizer_name`: Defines the vectorizer used for the assistant.
+        - `vectorizer_api_key`: API key for the vectorizer.
+        - `document_base_directory`, `storages_base_directory`, `ml_models_base_directory`: S3 directories for storing assistant-related files.
+        - `created_by_user`, `last_updated_by_user`: ForeignKeys linking to the user who created or last updated the assistant.
+        - `image_generation_capability`: Boolean for enabling image generation.
+        - `created_at`, `updated_at`: Timestamps for assistant creation and last update.
+        - `custom_function_references`: ManyToManyField linking to custom functions used by the assistant.
+    """
+
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, related_name='assistants')
     llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE, related_name='assistants')
     name = models.CharField(max_length=255)
@@ -104,7 +142,8 @@ class Assistant(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     # tools and multi modality
-    custom_function_references = models.ManyToManyField("mm_functions.CustomFunctionReference", related_name='assistants',
+    custom_function_references = models.ManyToManyField("mm_functions.CustomFunctionReference",
+                                                        related_name='assistants',
                                                         blank=True)
 
     def __str__(self):

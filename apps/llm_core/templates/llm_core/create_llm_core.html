@@ -5,7 +5,7 @@
 {% load field_to_label %}
 
 
-{% block title %}Create LLM Model{% endblock %}
+{% block title %}Create Model Configuration{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -36,16 +36,18 @@
           <a href="{% url 'llm_core:list' %}">
             <button class="btn btn-secondary ms-4 mt-4 mb-8">
               <i class="fa fa-dashboard me-4"></i>
-              <strong> Manage LLM Models</strong>
+              <strong> Manage Model Configurations</strong>
             </button>
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Create a New LLM Model</h5> <small class="text-muted float-end"></small>
+          <h5 class="mb-0"><strong>Create New Model Configuration</strong></h5> <small
+          class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-core.png' %}" width="25%" class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-6.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -76,108 +78,115 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="organization">Organization</label>
-              <select class="form-select" id="organization" name="organization">
-                {% for organization in organizations %}
-                  <option value="{{ organization.id }}">{{ organization.name }}</option>
-                {% endfor %}
-              </select>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="nickname">Nickname</label>
-              <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter nickname"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="description">Description</label>
-              <textarea class="form-control" id="description" name="description"
-                        placeholder="Enter description"></textarea>
-              <div class="form-text"></div>
-            </div>
-            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+            <div class="row p-8">
+              <div class="col-6 mb-6">
+                <label class="form-label" for="organization">Choose Organization</label>
+                <select class="form-select" id="organization" name="organization">
+                  {% for organization in organizations %}
+                    <option value="{{ organization.id }}">{{ organization.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="nickname">Nickname for the Model</label>
+                <input type="text" class="form-control" id="nickname" name="nickname"
+                       placeholder="Enter a nickname for your new LLM model"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description"
+                          placeholder="Enter a description in natural langauge for this particular model configuration"></textarea>
+                <div class="form-text"></div>
+                <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                  <span class="alert-icon rounded">
+                    <i class="ti ti-info-circle"></i>
+                  </span>
+                  A better nickname and description can help other users understand the purpose of this LLM Core, and
+                  therefore increase the reusability of the models for different assistants.
+                </div>
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label" for="provider">Choose Model Provider</label>
+                <select class="form-select" id="provider" name="provider">
+                  {% for key, value in provider_choices %}
+                    <option value="{{ key }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label" for="api_key">Provider API Key</label>
+                <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API key"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <span class="alert-icon rounded">
+                  <i class="ti ti-info-circle"></i>
+                </span>
+                The API key will be used to connect your {% get_theme_variables 'template_name' %} account and assistant
+                with the LLM providers. For example, if you use OpenAI's GPT, you will need to enter your OpenAI API key
+                here. Similarly, if you use Hugging Face's models, you will need to enter your Hugging Face API key
+                here.
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label" for="model_name">Model Name</label>
+                <select class="form-select" id="model_name" name="model_name">
+                  {% for key, value in model_name_choices %}
+                    <option value="{{ key }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label" for="temperature">Temperature Value</label>
+                <input type="number" class="form-control" id="temperature" name="temperature" step="0.05"
+                       min="0" max="2" placeholder="Enter temperature" value="1.00"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-              A better nickname and description can help other users understand the purpose of this LLM Core, and
-              therefore increase the reusability of the models for different assistants.
+                A lower temperature can lead to more reliable and text that has less likelihood of hallucinations,
+                but it may also result in less creative responses. Conversely, a higher temperature can lead to more
+                creative responses, but it may also result in hallucinations and less reliable text.
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="maximum_tokens">Maximum Response Tokens</label>
+                <input type="number" class="form-control" id="maximum_tokens" name="maximum_tokens"
+                       min="256" max="4032" step="64" placeholder="Enter maximum tokens" value="4032"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="top_p">Top P (Optional)</label>
+                <input type="number" class="form-control" id="top_p" name="top_p" step="0.025"
+                       min="0" max="1" placeholder="Enter a top P value for your model" value="1.0"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="stop_sequences">Stop Sequences (Optional)</label>
+                <textarea class="form-control" id="stop_sequences" name="stop_sequences"
+                          placeholder="Enter the stop sequences for the configuration of your model"></textarea>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="frequency_penalty">Frequency Penalty (Optional)</label>
+                <input type="number" class="form-control" id="frequency_penalty" name="frequency_penalty" step="0.025"
+                       min="0" max="2" placeholder="Enter a frequency penalty value for your model" value="0.0"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="presence_penalty">Presence Penalty (Optional)</label>
+                <input type="number" class="form-control" id="presence_penalty" name="presence_penalty" step="0.025"
+                       min="0" max="2" placeholder="Enter a presence penalty value for your model" value="0.0"/>
+                <div class="form-text"></div>
+              </div>
             </div>
-            <div class="mb-6">
-              <label class="form-label" for="provider">Provider</label>
-              <select class="form-select" id="provider" name="provider">
-                {% for key, value in provider_choices %}
-                  <option value="{{ key }}">{{ value }}</option>
-                {% endfor %}
-              </select>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="api_key">API Key</label>
-              <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API key"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-info-circle"></i>
-            </span>
-              The API key will be used to connect your {% get_theme_variables 'template_name' %} account and assistant
-              with the LLM providers.
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="model_name">Model Name</label>
-              <select class="form-select" id="model_name" name="model_name">
-                {% for key, value in model_name_choices %}
-                  <option value="{{ key }}">{{ value }}</option>
-                {% endfor %}
-              </select>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="temperature">Temperature</label>
-              <input type="number" class="form-control" id="temperature" name="temperature" step="0.05"
-                     min="0" max="2" placeholder="Enter temperature" value="1.00"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-info-circle"></i>
-            </span>
-              A lower temperature can lead to more reliable and text that has less likelihood of hallucinations,
-              but it may also result in less creative responses. Conversely, a higher temperature can lead to more
-              creative responses, but it may also result in hallucinations and less reliable text.
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="maximum_tokens">Maximum Tokens</label>
-              <input type="number" class="form-control" id="maximum_tokens" name="maximum_tokens"
-                     min="256" max="4032" step="64" placeholder="Enter maximum tokens" value="4032"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="stop_sequences">Stop Sequences</label>
-              <textarea class="form-control" id="stop_sequences" name="stop_sequences"
-                        placeholder="Enter stop sequences"></textarea>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="top_p">Top P</label>
-              <input type="number" class="form-control" id="top_p" name="top_p" step="0.025"
-                     min="0" max="1" placeholder="Enter top P" value="1.0"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="frequency_penalty">Frequency Penalty</label>
-              <input type="number" class="form-control" id="frequency_penalty" name="frequency_penalty" step="0.025"
-                     min="0" max="2" placeholder="Enter frequency penalty" value="0.0"/>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="presence_penalty">Presence Penalty</label>
-              <input type="number" class="form-control" id="presence_penalty" name="presence_penalty" step="0.025"
-                     min="0" max="2" placeholder="Enter presence penalty" value="0.0"/>
-              <div class="form-text"></div>
-            </div>
-            <button type="submit" class="btn btn-primary d-grid w-100">Create</button>
+            <hr>
+            <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>Create Model Configuration</strong>
+            </button>
           </form>
         </div>
       </div>

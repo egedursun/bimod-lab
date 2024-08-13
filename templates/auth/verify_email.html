@@ -3,7 +3,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Verify Email - Pages{% endblock %}
+{% block title %}Bimod.io | Verify Email{% endblock %}
 
 {% block page_css %}
 {{ block.super }}
@@ -19,8 +19,11 @@
 {% block content %}
 <div class="authentication-wrapper authentication-cover">
   <!-- Logo -->
-  <a href="{% url 'dashboard:main-dashboard' %}" class="app-brand auth-cover-brand">
-    <span class="app-brand-logo demo">{% include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" %}</span>
+  <a href="{% url 'landing:index' %}" class="app-brand auth-cover-brand">
+    <span class="">
+      <!-- { % include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" % } -->
+      <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 60px;" class="ms-0">
+    </span>
     <span class="app-brand-text demo text-heading fw-bold">{% get_theme_variables 'template_name' %}</span>
   </a>
   <!-- /Logo -->
@@ -29,7 +32,7 @@
     <!-- /Left Text -->
     <div class="d-none d-lg-flex col-lg-8 p-0">
       <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
-        <img src="{% static 'img/custom-illustrations/boy-blue-1.png' %}" class="my-50" width="50%">
+        <img src="{% static 'img/custom-illustrations-v2/i2-62.png' %}" class="my-50" style="border-radius: 25px;" width="50%">
         <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png" alt="auth-verify-email-cover" class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.png">
       </div>
     </div>
@@ -38,13 +41,13 @@
     <!--  Verify email -->
     <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-6 p-sm-12">
       <div class="w-px-400 mx-auto mt-12 mt-5">
-        <h4 class="mb-1">Verify your email for the most flawless experience ✉️</h4>
+        <h4 class="mb-1"><strong>Verify Email Account</strong></h4>
         {% if request.user.is_authenticated %}
         <p class="text-start mb-4">
-          Verification link will be sent to this email: {{request.user.email}}.
+          Verification link will be sent to this email: <strong>{{request.user.email}}</strong>.
         </p>
         {% else %}
-        <p class="text-start">
+        <p class="text-start mt-4 mb-4">
           The verification link has been sent to your email. Please verify your email to continue.
         </p>
         {% endif %}
@@ -60,16 +63,19 @@
           <span id="btnText" class="me-1">Verify Email</span>
           <span id="btnLoader" class="spinner-border spinner-border-sm visually-hidden" role="status" aria-hidden="true"></span>
         </a>
-        <a class="btn btn-primary w-100 my-2" href="{% url 'dashboard:main-dashboard' %}">
+        <a class="btn btn-primary w-100 my-2" href="{% url 'landing:index' %}">
           Back
         </a>
         {% else %}
         <a class="btn btn-primary w-100 my-3" href="{% url 'login' %}">
-          <strong>Skip verification for now</strong>
+          <strong>
+            <i class="fa fa-running me-2"></i>
+            Skip Verification for Now
+          </strong>
         </a>
-        <p class="text-center">Didn't get the mail?
+        <p class="text-center"><i class="fa fa-question-circle me-2 mt-4"></i>Didn't get the mail?
           <a id="btnSubmit" class="text-center" href="{% url 'send-verification' %}">
-            <span id="btnText" class="me-1"><strong>Resend</strong></span>
+            <span id="btnText" class="me-1"><strong>Resend Verification</strong></span>
             <span id="btnLoader" class="spinner-border spinner-border-sm visually-hidden" role="status" aria-hidden="true"></span>
           </a>
         </p>

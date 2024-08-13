@@ -23,13 +23,13 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-12">
-      <h3 class="mb-0">Add Permissions to User</h3>
+      <h3 class="mb-0"><strong>Add Permissions to User</strong></h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-organization-edit.png' %}" width="25%"
-         class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-37.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded">
           <i class="ti ti-bookmark"></i>
         </span>
@@ -58,13 +58,27 @@
       </button>
     </a>
   </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}"
+           role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
   <form method="get" action="{% url 'user_permissions:add_permissions' %}">
-    <div class="card mb-4">
-      <hr>
+    <div class="card mb-4 p-4">
       <div class="card-body">
         <div class="row g-6 mb-6">
-          <div class="col-md-4">
-            <label for="organization" class="form-label">Organization</label>
+          <div class="col-5">
+            <label for="organization" class="form-label">
+              <i class="fa fa-building me-2"></i>
+              Choose Organization
+            </label>
             <select class="form-select" id="organization" name="organization" onchange="this.form.submit()">
               <option value="" disabled selected>Select Organization</option>
               {% for organization in organizations %}
@@ -75,8 +89,19 @@
               {% endfor %}
             </select>
           </div>
-          <div class="col-md-4">
-            <label for="user" class="form-label">User</label>
+          <div class="col-2 mb-6">
+            <label class="form-label" hidden for="organization">
+              Arrow Convert
+            </label>
+            <span class="d-flex justify-content-center align-items-center fs-2">
+              <i class="fa fa-chevron-right fs-3 mt-8"></i>
+            </span>
+          </div>
+          <div class="col-5">
+            <label for="user" class="form-label">
+              <i class="fa fa-user me-2"></i>
+              Choose User to Add Permissions
+            </label>
             <select class="form-select" id="user" name="user" {% if not selected_organization %}disabled{% endif %}
                     onchange="this.form.submit()">
               <option value="" disabled selected>Select User</option>
@@ -99,44 +124,63 @@
       <input type="hidden" name="user" value="{{ selected_user.id }}">
       <div class="row g-6 mb-6">
         <div class="col-12">
-          <label class="form-label">Permissions</label>
+          <label class="form-label">
+          </label>
+          <hr>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="select_all" name="select_all"
+            <input class="form-check-input mt-4" type="checkbox" id="select_all" name="select_all"
                    onclick="toggleAllPermissions(this)">
-            <label class="form-check-label" for="select_all">Select All Permissions</label>
+            <label class="form-check-label mt-4 mb-4 me-12" for="select_all">
+              <strong>
+                <i class="fa fa-globe me-2"></i>
+                Select All Permissions
+              </strong>
+            </label>
+            <button type="submit" class="btn btn-primary w-25 ms-12 mt-2" style="position: absolute; right: 10px;"><strong>
+              <i class="fa fa-plus me-2"></i>
+              Add Selected Permissions
+            </strong></button>
           </div>
-          {% for group, perms in permissions.items %}
-            <div class="card mb-4">
-              <div class="card-header">
-                <h5 class="card-title">{{ group }}</h5>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="select_{{ group|slugify }}"
-                         onclick="toggleGroupPermissions('{{ group|slugify }}', this)">
-                  <label class="form-check-label" for="select_{{ group|slugify }}">Select All {{ group }}</label>
+          <hr>
+          <div class="row p-8">
+            {% for group, perms in permissions.items %}
+              <div class="card col-3 mb-6 ms-12 me-12">
+                <div class="card-header">
+                  <h5 class="card-title"><strong>{{ group }}</strong></h5>
+                  <hr>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="select_{{ group|slugify }}"
+                           onclick="toggleGroupPermissions('{{ group|slugify }}', this)">
+                    <label class="form-check-label" for="select_{{ group|slugify }}">
+                      <i class="fa fa-folder me-2"></i>
+                      <strong>Select All {{ group }}</strong>
+                    </label>
+                  </div>
+                </div>
+                <div class="card-body">
+                  {% for perm in perms %}
+                    {% if perm.0 in existing_permissions %}
+                      <div class="form-check">
+                        <input class="form-check-input permission-checkbox" type="checkbox" id="perm_{{ perm.0 }}"
+                               name="permissions" value="{{ perm.0 }}" data-group="{{ group|slugify }}" checked
+                               disabled>
+                        <label class="form-check-label text-muted" for="perm_{{ perm.0 }}">{{ perm.1 }}</label>
+                      </div>
+                    {% else %}
+                      <div class="form-check">
+                        <input class="form-check-input permission-checkbox" type="checkbox" id="perm_{{ perm.0 }}"
+                               name="permissions" value="{{ perm.0 }}" data-group="{{ group|slugify }}">
+                        <label class="form-check-label" for="perm_{{ perm.0 }}">{{ perm.1 }}</label>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
                 </div>
               </div>
-              <div class="card-body">
-                {% for perm in perms %}
-                  {% if perm.0 in existing_permissions %}
-                    <div class="form-check">
-                      <input class="form-check-input permission-checkbox" type="checkbox" id="perm_{{ perm.0 }}"
-                             name="permissions" value="{{ perm.0 }}" data-group="{{ group|slugify }}" checked disabled>
-                      <label class="form-check-label text-muted" for="perm_{{ perm.0 }}">{{ perm.1 }}</label>
-                    </div>
-                  {% else %}
-                    <div class="form-check">
-                      <input class="form-check-input permission-checkbox" type="checkbox" id="perm_{{ perm.0 }}"
-                             name="permissions" value="{{ perm.0 }}" data-group="{{ group|slugify }}">
-                      <label class="form-check-label" for="perm_{{ perm.0 }}">{{ perm.1 }}</label>
-                    </div>
-                  {% endif %}
-                {% endfor %}
-              </div>
-            </div>
-          {% endfor %}
+            {% endfor %}
+          </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Add Permissions</button>
+      <hr>
     </form>
   {% endif %}
 

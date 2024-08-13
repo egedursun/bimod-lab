@@ -8,40 +8,87 @@
 {% block page_css %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'vendor/css/pages/page-profile.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
 {% endblock page_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
 
 {% block content %}
   <div class="row g-6 mb-6">
-    <div class="col-sm-6 col-xl-4 label card card-border-primary rounded mt-8 ms-3 py-4 ps-4">
-      <h3 class="mb-0">Message Templates <i class="ti ti-template text-primary ms-4 pb-1" style="font-size: 24px;"></i>
+    <div class="col-sm-6 col-xl-4 label4">
+      <h3 class="mb-0">
+        <strong>Message Templates</strong>
       </h3>
-      <div class="card-datatable table-responsive">
-        <a href="{% url 'message_templates:create' %}">
-          <button class="btn btn-success mt-4 w-100">
-            <i class="fa fa-add me-4"></i>
-            <strong> Add Message Template</strong>
-          </button>
-        </a>
-      </div>
     </div>
   </div>
 
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-13.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded ms-4">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view all the message templates of the organizations you have created. You can also
+        update or delete any message template that belongs to you as an administrator. To create a new message
+        template, click on the "Add Message Template" button, which is located in the tab on the left side of your
+        screen. The message templates are user for quick references that you can use in your chats with the
+        assistants.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <div class="card-datatable table-responsive mt-4">
+    <a href="{% url 'message_templates:create' %}">
+      <button class="btn btn-success mt-4 w-25">
+        <i class="fa fa-add me-4"></i>
+        <strong> Add Message Template</strong>
+      </button>
+    </a>
+  </div>
+
   <!-- Message Templates Cards -->
-  <div class="row g-6">
+  <div class="row g-6 mt-4">
     {% for message_template in message_templates %}
       <div class="col-xl-6 col-lg-6 col-md-6 mb-6 d-flex">
         <div class="card w-100">
           <div class="card-header pb-4">
             <div class="d-flex align-items-start">
               <div class="d-flex align-items-center">
-                <div class="avatar me-4">
-                  <img src="{{ message_template.user.profile.profile_picture.url }}" alt="Avatar" class="rounded"/>
+                <div class="me-4">
+                  <img src="{{ message_template.user.profile.profile_picture.url }}" alt="Avatar" class="rounded"
+                       width="80px;"/>
                 </div>
                 <div class="me-2">
-                  <h5 class="mb-0"><strong>{{ message_template.user.username }}</strong></h5>
-                  <div class="label bg-label-primary rounded mt-2 pt-1 pb-1 ps-2 pe-2">
+                  <p class="ms-2 mb-0"><strong>
+                    <i class="fa fa-user me-2"></i>
+                    {{ message_template.user.username }}
+                  </strong></p>
+                  <div class="label border border-info rounded mt-4 p-2">
                     <div class="client-info text-body"><strong><span
-                      class="fw-medium"></span><span>{{ message_template.organization.name }}</span></strong></div>
+                      class="fw-medium"></span><span>
+                      <i class="fa fa-building me-2"></i>
+                      {{ message_template.organization.name }}
+                    </span></strong></div>
                   </div>
                 </div>
               </div>
@@ -67,11 +114,13 @@
             <div class="card card-border-primary p-4 mt-4 mb-4">
               <p class="card-text truncated-text" id="truncated-{{ message_template.id }}">
                 {{ message_template.template_text|linebreaksbr|safe|slice:":400" }}
-                  {% if message_template.template_text|length > 200 %}...{% endif %}</p>
+                {% if message_template.template_text|length > 200 %}...{% endif %}</p>
               <div id="full-text-{{ message_template.id }}" class="collapse">
+                <hr>
                 <p class="text-primary mb-2"><strong>Full Text</strong></p>
                 <p class="card-text markdown-content">{{ message_template.template_text|linebreaksbr|safe }}</p>
               </div>
+              <hr>
               <strong><small>
                 <a href="javascript:void(0);" class="expand-btn me-12" data-bs-toggle="collapse"
                    data-bs-target="#full-text-{{ message_template.id }}" aria-expanded="false"
@@ -83,11 +132,19 @@
                 </a>
               </small></strong>
             </div>
-            <small class="mt-8"><strong>Created At: &nbsp;</strong> {{ message_template.created_at|date:"d M Y, H:i" }}
+            <small class="mt-8"><strong>
+              <i class="fa fa-calendar me-2"></i>
+              Created At: &nbsp;
+            </strong> {{ message_template.created_at|date:"d M Y, H:i" }}
             </small>
             <div class="alert-container"></div>
           </div>
         </div>
+      </div>
+    {% empty %}
+      <div class="alert alert-warning ms-8 me-8" role="alert" style="max-width: 90%">
+        <i class="fa fa-exclamation-triangle me-4"></i>
+        <strong>No message templates found for your organizations.</strong>
       </div>
     {% endfor %}
   </div>
@@ -141,6 +198,30 @@
             }, 1000);
           }).catch(err => {
             alert('Failed to copy text: ' + err);
+          });
+        });
+      });
+
+      document.querySelectorAll('.text-danger').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('a').getAttribute('href');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
           });
         });
       });

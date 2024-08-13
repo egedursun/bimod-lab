@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Assistants App Documentation &#8212; Bimod.io v0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=fa47ad08"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dashboard App Documentation" href="dashboard.html" />
+    <link rel="prev" title="Bimod.io Technical Documentation v0.1.0" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="assistants-app-documentation">
+<h1>Assistants App Documentation<a class="headerlink" href="#assistants-app-documentation" title="Link to this heading">¶</a></h1>
+<p>This section documents the views for the Assistants app.</p>
+<section id="module-assistants.views">
+<span id="views"></span><h2>Views<a class="headerlink" href="#module-assistants.views" title="Link to this heading">¶</a></h2>
+<p>This module contains views for managing assistants within the Bimod.io platform.</p>
+<p>The views include creating, listing, updating, and deleting assistants. Access to these views is restricted to authenticated users, with additional permission checks for certain actions.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="assistants.views.CreateAssistantView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">assistants.views.</span></span><span class="sig-name descname"><span class="pre">CreateAssistantView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.CreateAssistantView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
+<p>Handles the creation of a new assistant within the Bimod.io platform.</p>
+<p>This view displays a form for creating an assistant, and upon submission, it validates the input, checks user permissions, and saves the new assistant to the database. If the user lacks the necessary permissions, an error message is displayed.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assistants.views.CreateAssistantView.template_name">
+<span class="sig-name descname"><span class="pre">template_name</span></span><a class="headerlink" href="#assistants.views.CreateAssistantView.template_name" title="Link to this definition">¶</a></dt>
+<dd><p>The template used to render the assistant creation form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="assistants.views.CreateAssistantView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.CreateAssistantView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Adds additional context to the template, such as available organizations, LLM models, and other necessary data for creating an assistant.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="assistants.views.CreateAssistantView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.CreateAssistantView.post" title="Link to this definition">¶</a></dt>
+<dd><p>Handles form submission and assistant creation, including permission checks and validation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">template_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'assistants/create_assistant.html'</span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="assistants.views.DeleteAssistantView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">assistants.views.</span></span><span class="sig-name descname"><span class="pre">DeleteAssistantView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.DeleteAssistantView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DeleteView</span></code></p>
+<p>Handles the deletion of an assistant.</p>
+<p>This view allows users with the appropriate permissions to delete an assistant. It checks if the user has the necessary permissions before performing the deletion.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="assistants.views.DeleteAssistantView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.DeleteAssistantView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Adds the assistant to be deleted to the context for confirmation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="assistants.views.DeleteAssistantView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.DeleteAssistantView.post" title="Link to this definition">¶</a></dt>
+<dd><p>Deletes the assistant if the user has the required permissions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="assistants.views.DeleteAssistantView.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.DeleteAssistantView.get_queryset" title="Link to this definition">¶</a></dt>
+<dd><p>Filters the queryset to include only the assistants that belong to the user’s organizations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dd><p>Insert the form into the context dict.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dd><p>Return the <cite>QuerySet</cite> that will be used to look up the object.</p>
+<p>This method is called by the default implementation of get_object() and
+may not be called if get_object() is overridden.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="assistants.views.DeleteAssistantView.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#assistants.views.DeleteAssistantView.model" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="index.html#apps.assistants.models.Assistant" title="apps.assistants.models.Assistant"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assistant</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="assistants.views.ListAssistantView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">assistants.views.</span></span><span class="sig-name descname"><span class="pre">ListAssistantView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.ListAssistantView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
+<p>Displays a list of assistants associated with the user’s organizations.</p>
+<p>This view retrieves all assistants that belong to the organizations the user is a part of and displays them in a list. Currently, all authenticated users are allowed to view the list of assistants.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="assistants.views.ListAssistantView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.ListAssistantView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the assistants for the user’s organizations and adds them to the context.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="assistants.views.UpdateAssistantView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">assistants.views.</span></span><span class="sig-name descname"><span class="pre">UpdateAssistantView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.UpdateAssistantView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
+<p>Handles updating an existing assistant’s details.</p>
+<p>This view allows users with the appropriate permissions to modify an assistant’s attributes, including its name, description, instructions, and more. It also handles the logic for updating the assistant’s glossary, context overflow strategy, and other configurations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="assistants.views.UpdateAssistantView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.UpdateAssistantView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the current assistant’s details and adds them to the context, along with other relevant data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="assistants.views.UpdateAssistantView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#assistants.views.UpdateAssistantView.post" title="Link to this definition">¶</a></dt>
+<dd><p>Handles form submission for updating the assistant, including permission checks and validation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-apps.assistants.models">
+<span id="models"></span><h2>Models<a class="headerlink" href="#module-apps.assistants.models" title="Link to this heading">¶</a></h2>
+<p>Module Overview: This module defines the <cite>Assistant</cite> model, which represents a customizable virtual assistant within an organization. It also includes utility classes and functions for managing assistant-related configurations, such as language support, context overflow strategies, and vectorizer options.</p>
+<p>Dependencies:
+- <cite>boto3</cite>: Used for interacting with AWS S3 to manage storage directories.
+- <cite>django.db.models</cite>: Django’s ORM for defining database models.
+- <cite>random</cite>: Used for generating random name suffixes.
+- <cite>apps.assistants.utils</cite>: Custom utility functions for generating random strings.
+- <cite>config.settings</cite>: Application settings, particularly for accessing AWS configurations.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apps.assistants.models.</span></span><span class="sig-name descname"><span class="pre">Assistant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Assistant Model:
+- Purpose: Represents a virtual assistant with customizable settings, including language, context management, and storage directories.
+- Key Fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>organization</cite>: ForeignKey linking to the <cite>Organization</cite> model.</p></li>
+<li><p><cite>llm_model</cite>: ForeignKey linking to the <cite>LLMCore</cite> model.</p></li>
+<li><p><cite>name</cite>: The name of the assistant.</p></li>
+<li><p><cite>description</cite>, <cite>instructions</cite>, <cite>response_template</cite>: Fields for storing assistant-specific text configurations.</p></li>
+<li><p><cite>audience</cite>, <cite>tone</cite>: Characterizes the assistant’s communication style.</p></li>
+<li><p><cite>response_language</cite>: Defines the assistant’s response language.</p></li>
+<li><p><cite>max_retry_count</cite>: Number of retry attempts for tools.</p></li>
+<li><p><cite>tool_max_attempts_per_instance</cite>, <cite>tool_max_chains</cite>: Limits on tool usage.</p></li>
+<li><p><cite>glossary</cite>: JSON field for storing glossary terms.</p></li>
+<li><p><cite>time_awareness</cite>, <cite>place_awareness</cite>: Booleans for enabling time and place awareness.</p></li>
+<li><p><cite>assistant_image</cite>: Image field for storing the assistant’s image.</p></li>
+<li><p><cite>memories</cite>: ManyToManyField linking to the <cite>AssistantMemory</cite> model.</p></li>
+<li><p><cite>context_overflow_strategy</cite>: Defines how to handle context overflow.</p></li>
+<li><p><cite>max_context_messages</cite>: Maximum number of context messages allowed.</p></li>
+<li><p><cite>vectorizer_name</cite>: Defines the vectorizer used for the assistant.</p></li>
+<li><p><cite>vectorizer_api_key</cite>: API key for the vectorizer.</p></li>
+<li><p><cite>document_base_directory</cite>, <cite>storages_base_directory</cite>, <cite>ml_models_base_directory</cite>: S3 directories for storing assistant-related files.</p></li>
+<li><p><cite>created_by_user</cite>, <cite>last_updated_by_user</cite>: ForeignKeys linking to the user who created or last updated the assistant.</p></li>
+<li><p><cite>image_generation_capability</cite>: Boolean for enabling image generation.</p></li>
+<li><p><cite>created_at</cite>, <cite>updated_at</cite>: Timestamps for assistant creation and last update.</p></li>
+<li><p><cite>custom_function_references</cite>: ManyToManyField linking to custom functions used by the assistant.</p></li>
+</ul>
+</div></blockquote>
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.DoesNotExist" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.MultipleObjectsReturned" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.assistant_image">
+<span class="sig-name descname"><span class="pre">assistant_image</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.assistant_image" title="Link to this definition">¶</a></dt>
+<dd><p>Just like the FileDescriptor, but for ImageFields. The only difference is
+assigning the width/height to the width_field/height_field, if appropriate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.assistant_image_save_path">
+<span class="sig-name descname"><span class="pre">assistant_image_save_path</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'assistant_images/%Y/%m/%d/dxaD37RlQZrpdlFI'</span></em><a class="headerlink" href="#apps.assistants.models.Assistant.assistant_image_save_path" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.assistantmemory_set">
+<span class="sig-name descname"><span class="pre">assistantmemory_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.assistantmemory_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.audience">
+<span class="sig-name descname"><span class="pre">audience</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.audience" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.context_overflow_strategy">
+<span class="sig-name descname"><span class="pre">context_overflow_strategy</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.context_overflow_strategy" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.contexthistoryknowledgebaseconnection_set">
+<span class="sig-name descname"><span class="pre">contexthistoryknowledgebaseconnection_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.contexthistoryknowledgebaseconnection_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.created_at" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.created_by_user">
+<span class="sig-name descname"><span class="pre">created_by_user</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.created_by_user" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.created_by_user_id">
+<span class="sig-name descname"><span class="pre">created_by_user_id</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.created_by_user_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.custom_function_references">
+<span class="sig-name descname"><span class="pre">custom_function_references</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.custom_function_references" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.customapireference_set">
+<span class="sig-name descname"><span class="pre">customapireference_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.customapireference_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.customfunctionreference_set">
+<span class="sig-name descname"><span class="pre">customfunctionreference_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.customfunctionreference_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.customscriptreference_set">
+<span class="sig-name descname"><span class="pre">customscriptreference_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.customscriptreference_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.data_source_file_systems">
+<span class="sig-name descname"><span class="pre">data_source_file_systems</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.data_source_file_systems" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.datasourcebrowserconnection_set">
+<span class="sig-name descname"><span class="pre">datasourcebrowserconnection_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.datasourcebrowserconnection_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.datasourcemediastorageconnection_set">
+<span class="sig-name descname"><span class="pre">datasourcemediastorageconnection_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.datasourcemediastorageconnection_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.datasourcemlmodelconnection_set">
+<span class="sig-name descname"><span class="pre">datasourcemlmodelconnection_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.datasourcemlmodelconnection_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_parents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant.delete" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.description">
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.description" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.document_base_directory">
+<span class="sig-name descname"><span class="pre">document_base_directory</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.document_base_directory" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.documentknowledgebaseconnection_set">
+<span class="sig-name descname"><span class="pre">documentknowledgebaseconnection_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.documentknowledgebaseconnection_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.exportassistantapi_set">
+<span class="sig-name descname"><span class="pre">exportassistantapi_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.exportassistantapi_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.generate_random_name_suffix">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_random_name_suffix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant.generate_random_name_suffix" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.get_context_overflow_strategy_display">
+<span class="sig-name descname"><span class="pre">get_context_overflow_strategy_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">context_overflow_strategy&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant.get_context_overflow_strategy_display" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.get_next_by_created_at">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant.get_next_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.get_next_by_updated_at">
+<span class="sig-name descname"><span class="pre">get_next_by_updated_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">updated_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant.get_next_by_updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.get_previous_by_created_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant.get_previous_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.get_previous_by_updated_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_updated_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">updated_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant.get_previous_by_updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.get_response_language_display">
+<span class="sig-name descname"><span class="pre">get_response_language_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">response_language&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant.get_response_language_display" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.get_vectorizer_name_display">
+<span class="sig-name descname"><span class="pre">get_vectorizer_name_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">vectorizer_name&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant.get_vectorizer_name_display" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.glossary">
+<span class="sig-name descname"><span class="pre">glossary</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.glossary" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.id" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.image_generation_capability">
+<span class="sig-name descname"><span class="pre">image_generation_capability</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.image_generation_capability" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.instructions">
+<span class="sig-name descname"><span class="pre">instructions</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.instructions" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.last_updated_by_user">
+<span class="sig-name descname"><span class="pre">last_updated_by_user</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.last_updated_by_user" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.last_updated_by_user_id">
+<span class="sig-name descname"><span class="pre">last_updated_by_user_id</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.last_updated_by_user_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.llm_model">
+<span class="sig-name descname"><span class="pre">llm_model</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.llm_model" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.llm_model_id">
+<span class="sig-name descname"><span class="pre">llm_model_id</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.llm_model_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.max_context_messages">
+<span class="sig-name descname"><span class="pre">max_context_messages</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.max_context_messages" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.max_retry_count">
+<span class="sig-name descname"><span class="pre">max_retry_count</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.max_retry_count" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.memories">
+<span class="sig-name descname"><span class="pre">memories</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.memories" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.ml_models_base_directory">
+<span class="sig-name descname"><span class="pre">ml_models_base_directory</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.ml_models_base_directory" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.multimodal_chats">
+<span class="sig-name descname"><span class="pre">multimodal_chats</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.multimodal_chats" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.name" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.nosql_database_connections">
+<span class="sig-name descname"><span class="pre">nosql_database_connections</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.nosql_database_connections" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#apps.assistants.models.Assistant.objects" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.organization">
+<span class="sig-name descname"><span class="pre">organization</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.organization" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.organization_id">
+<span class="sig-name descname"><span class="pre">organization_id</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.organization_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.organizations">
+<span class="sig-name descname"><span class="pre">organizations</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.organizations" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.place_awareness">
+<span class="sig-name descname"><span class="pre">place_awareness</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.place_awareness" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.response_language">
+<span class="sig-name descname"><span class="pre">response_language</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.response_language" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.response_template">
+<span class="sig-name descname"><span class="pre">response_template</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.response_template" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force_insert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.Assistant.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save the current instance. Override this in a subclass if you want to
+control the saving process.</p>
+<p>The ‘force_insert’ and ‘force_update’ parameters can be used to insist
+that the “save” must be an SQL insert or update (or equivalent for
+non-SQL backends), respectively. Normally, they should not be set.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.scheduled_jobs">
+<span class="sig-name descname"><span class="pre">scheduled_jobs</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.scheduled_jobs" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.sql_database_connections">
+<span class="sig-name descname"><span class="pre">sql_database_connections</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.sql_database_connections" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.starredmessage_set">
+<span class="sig-name descname"><span class="pre">starredmessage_set</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.starredmessage_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.storages_base_directory">
+<span class="sig-name descname"><span class="pre">storages_base_directory</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.storages_base_directory" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.time_awareness">
+<span class="sig-name descname"><span class="pre">time_awareness</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.time_awareness" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.tone">
+<span class="sig-name descname"><span class="pre">tone</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.tone" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.tool_max_attempts_per_instance">
+<span class="sig-name descname"><span class="pre">tool_max_attempts_per_instance</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.tool_max_attempts_per_instance" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.tool_max_chains">
+<span class="sig-name descname"><span class="pre">tool_max_chains</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.tool_max_chains" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.transactions">
+<span class="sig-name descname"><span class="pre">transactions</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.transactions" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.triggered_jobs">
+<span class="sig-name descname"><span class="pre">triggered_jobs</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.triggered_jobs" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.updated_at" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.vectorizer_api_key">
+<span class="sig-name descname"><span class="pre">vectorizer_api_key</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.vectorizer_api_key" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.Assistant.vectorizer_name">
+<span class="sig-name descname"><span class="pre">vectorizer_name</span></span><a class="headerlink" href="#apps.assistants.models.Assistant.vectorizer_name" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apps.assistants.models.ContextOverflowStrategyNames">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apps.assistants.models.</span></span><span class="sig-name descname"><span class="pre">ContextOverflowStrategyNames</span></span><a class="headerlink" href="#apps.assistants.models.ContextOverflowStrategyNames" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.ContextOverflowStrategyNames.FORGET">
+<span class="sig-name descname"><span class="pre">FORGET</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'forget'</span></em><a class="headerlink" href="#apps.assistants.models.ContextOverflowStrategyNames.FORGET" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.ContextOverflowStrategyNames.STOP">
+<span class="sig-name descname"><span class="pre">STOP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'stop'</span></em><a class="headerlink" href="#apps.assistants.models.ContextOverflowStrategyNames.STOP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.ContextOverflowStrategyNames.VECTORIZE">
+<span class="sig-name descname"><span class="pre">VECTORIZE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'vectorize'</span></em><a class="headerlink" href="#apps.assistants.models.ContextOverflowStrategyNames.VECTORIZE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.ContextOverflowStrategyNames.as_dict">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.ContextOverflowStrategyNames.as_dict" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apps.assistants.models.VectorizerNames">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apps.assistants.models.</span></span><span class="sig-name descname"><span class="pre">VectorizerNames</span></span><a class="headerlink" href="#apps.assistants.models.VectorizerNames" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.assistants.models.VectorizerNames.TEXT2VEC_OPENAI">
+<span class="sig-name descname"><span class="pre">TEXT2VEC_OPENAI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'text2vec-openai'</span></em><a class="headerlink" href="#apps.assistants.models.VectorizerNames.TEXT2VEC_OPENAI" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.assistants.models.VectorizerNames.as_dict">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#apps.assistants.models.VectorizerNames.as_dict" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Bimod.io</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Assistants App Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-assistants.views">Views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#assistants.views.CreateAssistantView"><code class="docutils literal notranslate"><span class="pre">CreateAssistantView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assistants.views.CreateAssistantView.template_name"><code class="docutils literal notranslate"><span class="pre">CreateAssistantView.template_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assistants.views.CreateAssistantView.get_context_data"><code class="docutils literal notranslate"><span class="pre">CreateAssistantView.get_context_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assistants.views.CreateAssistantView.post"><code class="docutils literal notranslate"><span class="pre">CreateAssistantView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">CreateAssistantView.get_context_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">CreateAssistantView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">CreateAssistantView.template_name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#assistants.views.DeleteAssistantView"><code class="docutils literal notranslate"><span class="pre">DeleteAssistantView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assistants.views.DeleteAssistantView.get_context_data"><code class="docutils literal notranslate"><span class="pre">DeleteAssistantView.get_context_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assistants.views.DeleteAssistantView.post"><code class="docutils literal notranslate"><span class="pre">DeleteAssistantView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assistants.views.DeleteAssistantView.get_queryset"><code class="docutils literal notranslate"><span class="pre">DeleteAssistantView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">DeleteAssistantView.get_context_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">DeleteAssistantView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assistants.views.DeleteAssistantView.model"><code class="docutils literal notranslate"><span class="pre">DeleteAssistantView.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">DeleteAssistantView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#assistants.views.ListAssistantView"><code class="docutils literal notranslate"><span class="pre">ListAssistantView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assistants.views.ListAssistantView.get_context_data"><code class="docutils literal notranslate"><span class="pre">ListAssistantView.get_context_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">ListAssistantView.get_context_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#assistants.views.UpdateAssistantView"><code class="docutils literal notranslate"><span class="pre">UpdateAssistantView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assistants.views.UpdateAssistantView.get_context_data"><code class="docutils literal notranslate"><span class="pre">UpdateAssistantView.get_context_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assistants.views.UpdateAssistantView.post"><code class="docutils literal notranslate"><span class="pre">UpdateAssistantView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">UpdateAssistantView.get_context_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">UpdateAssistantView.post()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-apps.assistants.models">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#apps.assistants.models.Assistant"><code class="docutils literal notranslate"><span class="pre">Assistant</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Assistant.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Assistant.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.assistant_image"><code class="docutils literal notranslate"><span class="pre">Assistant.assistant_image</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.assistant_image_save_path"><code class="docutils literal notranslate"><span class="pre">Assistant.assistant_image_save_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.assistantmemory_set"><code class="docutils literal notranslate"><span class="pre">Assistant.assistantmemory_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.audience"><code class="docutils literal notranslate"><span class="pre">Assistant.audience</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.context_overflow_strategy"><code class="docutils literal notranslate"><span class="pre">Assistant.context_overflow_strategy</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.contexthistoryknowledgebaseconnection_set"><code class="docutils literal notranslate"><span class="pre">Assistant.contexthistoryknowledgebaseconnection_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.created_at"><code class="docutils literal notranslate"><span class="pre">Assistant.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.created_by_user"><code class="docutils literal notranslate"><span class="pre">Assistant.created_by_user</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.created_by_user_id"><code class="docutils literal notranslate"><span class="pre">Assistant.created_by_user_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.custom_function_references"><code class="docutils literal notranslate"><span class="pre">Assistant.custom_function_references</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.customapireference_set"><code class="docutils literal notranslate"><span class="pre">Assistant.customapireference_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.customfunctionreference_set"><code class="docutils literal notranslate"><span class="pre">Assistant.customfunctionreference_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.customscriptreference_set"><code class="docutils literal notranslate"><span class="pre">Assistant.customscriptreference_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.data_source_file_systems"><code class="docutils literal notranslate"><span class="pre">Assistant.data_source_file_systems</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.datasourcebrowserconnection_set"><code class="docutils literal notranslate"><span class="pre">Assistant.datasourcebrowserconnection_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.datasourcemediastorageconnection_set"><code class="docutils literal notranslate"><span class="pre">Assistant.datasourcemediastorageconnection_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.datasourcemlmodelconnection_set"><code class="docutils literal notranslate"><span class="pre">Assistant.datasourcemlmodelconnection_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.delete"><code class="docutils literal notranslate"><span class="pre">Assistant.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.description"><code class="docutils literal notranslate"><span class="pre">Assistant.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.document_base_directory"><code class="docutils literal notranslate"><span class="pre">Assistant.document_base_directory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.documentknowledgebaseconnection_set"><code class="docutils literal notranslate"><span class="pre">Assistant.documentknowledgebaseconnection_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.exportassistantapi_set"><code class="docutils literal notranslate"><span class="pre">Assistant.exportassistantapi_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.generate_random_name_suffix"><code class="docutils literal notranslate"><span class="pre">Assistant.generate_random_name_suffix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.get_context_overflow_strategy_display"><code class="docutils literal notranslate"><span class="pre">Assistant.get_context_overflow_strategy_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">Assistant.get_next_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.get_next_by_updated_at"><code class="docutils literal notranslate"><span class="pre">Assistant.get_next_by_updated_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">Assistant.get_previous_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.get_previous_by_updated_at"><code class="docutils literal notranslate"><span class="pre">Assistant.get_previous_by_updated_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.get_response_language_display"><code class="docutils literal notranslate"><span class="pre">Assistant.get_response_language_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.get_vectorizer_name_display"><code class="docutils literal notranslate"><span class="pre">Assistant.get_vectorizer_name_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.glossary"><code class="docutils literal notranslate"><span class="pre">Assistant.glossary</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.id"><code class="docutils literal notranslate"><span class="pre">Assistant.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.image_generation_capability"><code class="docutils literal notranslate"><span class="pre">Assistant.image_generation_capability</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.instructions"><code class="docutils literal notranslate"><span class="pre">Assistant.instructions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.last_updated_by_user"><code class="docutils literal notranslate"><span class="pre">Assistant.last_updated_by_user</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.last_updated_by_user_id"><code class="docutils literal notranslate"><span class="pre">Assistant.last_updated_by_user_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.llm_model"><code class="docutils literal notranslate"><span class="pre">Assistant.llm_model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.llm_model_id"><code class="docutils literal notranslate"><span class="pre">Assistant.llm_model_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.max_context_messages"><code class="docutils literal notranslate"><span class="pre">Assistant.max_context_messages</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.max_retry_count"><code class="docutils literal notranslate"><span class="pre">Assistant.max_retry_count</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.memories"><code class="docutils literal notranslate"><span class="pre">Assistant.memories</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.ml_models_base_directory"><code class="docutils literal notranslate"><span class="pre">Assistant.ml_models_base_directory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.multimodal_chats"><code class="docutils literal notranslate"><span class="pre">Assistant.multimodal_chats</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.name"><code class="docutils literal notranslate"><span class="pre">Assistant.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.nosql_database_connections"><code class="docutils literal notranslate"><span class="pre">Assistant.nosql_database_connections</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.objects"><code class="docutils literal notranslate"><span class="pre">Assistant.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.organization"><code class="docutils literal notranslate"><span class="pre">Assistant.organization</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.organization_id"><code class="docutils literal notranslate"><span class="pre">Assistant.organization_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.organizations"><code class="docutils literal notranslate"><span class="pre">Assistant.organizations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.place_awareness"><code class="docutils literal notranslate"><span class="pre">Assistant.place_awareness</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.response_language"><code class="docutils literal notranslate"><span class="pre">Assistant.response_language</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.response_template"><code class="docutils literal notranslate"><span class="pre">Assistant.response_template</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.save"><code class="docutils literal notranslate"><span class="pre">Assistant.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.scheduled_jobs"><code class="docutils literal notranslate"><span class="pre">Assistant.scheduled_jobs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.sql_database_connections"><code class="docutils literal notranslate"><span class="pre">Assistant.sql_database_connections</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.starredmessage_set"><code class="docutils literal notranslate"><span class="pre">Assistant.starredmessage_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.storages_base_directory"><code class="docutils literal notranslate"><span class="pre">Assistant.storages_base_directory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.time_awareness"><code class="docutils literal notranslate"><span class="pre">Assistant.time_awareness</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.tone"><code class="docutils literal notranslate"><span class="pre">Assistant.tone</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.tool_max_attempts_per_instance"><code class="docutils literal notranslate"><span class="pre">Assistant.tool_max_attempts_per_instance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.tool_max_chains"><code class="docutils literal notranslate"><span class="pre">Assistant.tool_max_chains</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.transactions"><code class="docutils literal notranslate"><span class="pre">Assistant.transactions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.triggered_jobs"><code class="docutils literal notranslate"><span class="pre">Assistant.triggered_jobs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.updated_at"><code class="docutils literal notranslate"><span class="pre">Assistant.updated_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.vectorizer_api_key"><code class="docutils literal notranslate"><span class="pre">Assistant.vectorizer_api_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.Assistant.vectorizer_name"><code class="docutils literal notranslate"><span class="pre">Assistant.vectorizer_name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apps.assistants.models.ContextOverflowStrategyNames"><code class="docutils literal notranslate"><span class="pre">ContextOverflowStrategyNames</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.ContextOverflowStrategyNames.FORGET"><code class="docutils literal notranslate"><span class="pre">ContextOverflowStrategyNames.FORGET</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.ContextOverflowStrategyNames.STOP"><code class="docutils literal notranslate"><span class="pre">ContextOverflowStrategyNames.STOP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.ContextOverflowStrategyNames.VECTORIZE"><code class="docutils literal notranslate"><span class="pre">ContextOverflowStrategyNames.VECTORIZE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.ContextOverflowStrategyNames.as_dict"><code class="docutils literal notranslate"><span class="pre">ContextOverflowStrategyNames.as_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apps.assistants.models.VectorizerNames"><code class="docutils literal notranslate"><span class="pre">VectorizerNames</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.VectorizerNames.TEXT2VEC_OPENAI"><code class="docutils literal notranslate"><span class="pre">VectorizerNames.TEXT2VEC_OPENAI</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.assistants.models.VectorizerNames.as_dict"><code class="docutils literal notranslate"><span class="pre">VectorizerNames.as_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_browsers.html">Datasource Browsers App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_file_systems.html">Datasource File Systems App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_knowledge_base.html">Datasource Knowledge Base App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_media_storages.html">Datasource Media Storages App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_ml_models.html">Datasource ML Models App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_sql.html">Datasource SQL App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="export_assistants.html">Datasource Export Assistants App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llm_core.html">Datasource LLM Core App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llm_transaction.html">Datasource LLM Transaction App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memories.html">Datasource Memories App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_templates.html">Datasource Message Templates App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_apis.html">Datasource MM APIs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_functions.html">Datasource MM Functions App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_scheduled_jobs.html">Datasource MM Scheduled Jobs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_scripts.html">Datasource MM Scripts App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_triggered_jobs.html">Datasource MM Triggered Jobs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimodal_chat.html">Datasource Multimodal Chat App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starred_messages.html">Datasource Starred Messages App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_management.html">Datasource User Management App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_permissions.html">Datasource User Permissions App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_profile_management.html">Datasource User Profile Management App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_settings.html">Datasource User Settings App Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Bimod.io Technical Documentation v0.1.0</a></li>
+      <li>Next: <a href="dashboard.html" title="next chapter">Dashboard App Documentation</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Ege Dogan Dursun.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/assistants.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

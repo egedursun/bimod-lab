@@ -1,3 +1,9 @@
+"""
+This module contains views for managing Export Assistant APIs within the Bimod.io platform.
+
+The views handle creating, updating, deleting, and listing Export Assistant APIs, as well as processing requests to these APIs. These views are restricted to authenticated users with the appropriate permissions and involve various checks to ensure security, such as API key validation, request limits, and endpoint availability.
+"""
+
 import importlib
 import json
 
@@ -24,6 +30,17 @@ from web_project import TemplateLayout
 
 
 class StatusCodes:
+    """
+    A simple class containing HTTP status codes used throughout the views.
+
+    Attributes:
+        OK (int): HTTP 200 OK.
+        NOT_FOUND (int): HTTP 404 Not Found.
+        UNAUTHORIZED (int): HTTP 401 Unauthorized.
+        TOO_MANY_REQUESTS (int): HTTP 429 Too Many Requests.
+        SERVICE_OFFLINE (int): HTTP 503 Service Unavailable.
+        INTERNAL_SERVER_ERROR (int): HTTP 500 Internal Server Error.
+    """
     OK = 200
     NOT_FOUND = 404
     UNAUTHORIZED = 401
@@ -34,6 +51,15 @@ class StatusCodes:
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ExportAssistantAPIView(View):
+    """
+    Handles API requests sent to the exported assistant's endpoint.
+
+    This view processes POST requests to an assistant's exported API, validating the request, checking the API key, logging the request, and generating a response from the assistant based on the provided chat history.
+
+    Methods:
+        post(self, request, *args, **kwargs): Processes the POST request, validates it, and returns a response from the assistant.
+    """
+
     def post(self, request, *args, **kwargs):
         endpoint = BASE_URL + request.path
         api_key = request.headers.get('Authorization')
@@ -144,6 +170,15 @@ class ExportAssistantAPIView(View):
 
 
 class ListExportAssistantsView(TemplateView, LoginRequiredMixin):
+    """
+    Displays a list of all Export Assistant APIs created by the user.
+
+    This view retrieves all exported assistants associated with the user's organizations and displays them along with usage statistics.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the exported assistants and usage statistics for the user's organizations and adds them to the context.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user_context = self.request.user
@@ -170,6 +205,16 @@ class ListExportAssistantsView(TemplateView, LoginRequiredMixin):
 
 
 class CreateExportAssistantsView(TemplateView, LoginRequiredMixin):
+    """
+    Handles the creation of a new Export Assistant API.
+
+    This view allows users with the appropriate permissions to create a new Export Assistant API, associate it with an assistant, and set various properties such as request limits and public availability.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with available assistants and other necessary data.
+        post(self, request, *args, **kwargs): Processes the form submission for creating a new Export Assistant API, including permission checks and validation.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user_context = self.request.user
@@ -223,6 +268,16 @@ class CreateExportAssistantsView(TemplateView, LoginRequiredMixin):
 
 
 class UpdateExportAssistantsView(TemplateView, LoginRequiredMixin):
+    """
+    Handles updating an existing Export Assistant API.
+
+    This view allows users with the appropriate permissions to modify an existing Export Assistant API's attributes, such as request limits and public availability.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current Export Assistant API details and adds them to the context, along with other relevant data such as available assistants.
+        post(self, request, *args, **kwargs): Processes the form submission for updating the Export Assistant API, including permission checks and validation.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
@@ -259,6 +314,15 @@ class UpdateExportAssistantsView(TemplateView, LoginRequiredMixin):
 
 
 class DeleteExportAssistantsView(LoginRequiredMixin, DeleteView):
+    """
+    Handles the deletion of an Export Assistant API.
+
+    This view allows users with the appropriate permissions to delete an Export Assistant API and remove it from the associated organization.
+
+    Methods:
+        post(self, request, *args, **kwargs): Deletes the Export Assistant API if the user has the required permissions.
+    """
+
     model = ExportAssistantAPI
     success_url = 'export_assistants:list'
 
@@ -292,6 +356,15 @@ class DeleteExportAssistantsView(LoginRequiredMixin, DeleteView):
 
 
 class ToggleExportAssistantServiceView(LoginRequiredMixin, View):
+    """
+    Toggles the online/offline status of an Export Assistant API.
+
+    This view allows users with the appropriate permissions to toggle an Export Assistant API's availability by either starting or pausing its endpoint.
+
+    Methods:
+        post(self, request, *args, **kwargs): Toggles the assistant's online status and starts or stops the endpoint accordingly.
+    """
+
     def post(self, request, *args, **kwargs):
         export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
         endpoint = EXPORT_API_BASE_URL + export_assistant.endpoint.split(EXPORT_API_BASE_URL)[1]

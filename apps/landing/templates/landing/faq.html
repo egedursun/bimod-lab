@@ -33,12 +33,57 @@
   </div>
 
   <div class="row mt-6">
+
+    <div class="alert alert-secondary alert-dismissible d-flex col-11 ms-12 me-12 align-items-center mb-8"
+         role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-98.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8">
+      <span class="alert-icon rounded">
+                  <i class="ti ti-bookmark"></i>
+                </span>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          In this page, you can find answers to your questions about our products and services. If you can't find what
+          you're looking for, please feel free to reach to us via phone or email. We are here to help you with any
+          questions you may have, and as we are constantly updating our services, we are always looking for ways to
+          improve your experience with us.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+      </div>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+
     <!-- Navigation -->
     <div class="col-lg-3 col-md-4 col-12 mb-md-0 mb-4">
       <div class="d-flex justify-content-between flex-column nav-align-left mb-2 mb-md-0">
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#payment">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#general">
+              <i class="ti ti-info-hexagon me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">General Information</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#account">
+              <i class="ti ti-user me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Account Management</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#payment">
               <i class="ti ti-credit-card me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Payments</span>
             </button>
@@ -61,13 +106,25 @@
               <span class="align-middle fw-medium">Privacy Policy</span>
             </button>
           </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#troubleshooting">
+              <i class="ti ti-settings me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Troubleshooting</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#support">
+              <i class="ti ti-lifebuoy me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Customer Support</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#updates">
+              <i class="ti ti-cloud-up me-1_5 ti-sm"></i>
+              <span class="align-middle fw-medium">Updates &amp; Changes</span>
+            </button>
+          </li>
         </ul>
-        <div class="d-none d-md-block">
-          <div class="mt-12 ms-6">
-            <img src="{% static 'img/illustrations/girl-with-laptop.png' %}" class="img-fluid" width="270"
-                 alt="FAQ Image">
-          </div>
-        </div>
       </div>
     </div>
     <!-- /Navigation -->
@@ -75,7 +132,328 @@
     <!-- FAQ's -->
     <div class="col-lg-9 col-md-8 col-12">
       <div class="tab-content p-0">
-        <div class="tab-pane fade show active" id="payment" role="tabpanel">
+        <div class="tab-pane fade show active" id="general" role="tabpanel">
+          <div class="d-flex mb-4 gap-4">
+            <div class="avatar avatar-md">
+              <div class="avatar-initial bg-label-primary rounded">
+                <i class="ti ti-info-hexagon ti-30px"></i>
+              </div>
+            </div>
+            <div>
+              <h5 class="mb-0">
+                <span class="align-middle">General Information</span>
+              </h5>
+              <span>Find answers regarding general information about our products and services</span>
+            </div>
+          </div>
+          <div id="accordionPayment" class="accordion">
+            <div class="card accordion-item active">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
+                        data-bs-target="#accordionGeneral-1" aria-controls="accordionGeneral-1">
+                  What is the purpose of this web application?
+                </button>
+              </h2>
+              <div id="accordionGeneral-1" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                  Bimod.io allows users to create and manage multiple AI-powered assistants by optimizing various
+                  hyperparameters like temperature and max tokens. These assistants can be customized for specific
+                  tasks, integrated with SQL databases, and connected to file systems via SSH, among other advanced
+                  features.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionGeneral-2" aria-controls="accordionGeneral-2">
+                  Can users create and manage multiple assistants on Bimod.io?
+                </button>
+              </h2>
+              <div id="accordionGeneral-2" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Yes, users can create multiple assistants, each with customizable settings and hyperparameters.
+                  These assistants can perform a wide range of tasks, from connecting to databases to processing
+                  documents and integrating with APIs.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionGeneral-3" aria-controls="accordionGeneral-3">
+                  How does Bimod.io handle organization and user management?
+                </button>
+              </h2>
+              <div id="accordionGeneral-3" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Bimod.io enables users to add and manage multiple organizations. Each organization can have its own
+                  set of users, with specific roles and permissions. Additionally, billing systems can be set up
+                  separately for each assistant within the organization.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionGeneral-4" aria-controls="accordionGeneral-4">
+                  What advanced features do Bimod.io assistants offer?
+                </button>
+              </h2>
+              <div id="accordionGeneral-4" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  In addition to standard GPT functionalities, Bimod.io assistants can directly connect to SQL
+                  databases for I/O operations, execute commands on file systems via SSH, and process documents
+                  of any size using vector databases. They can also integrate pre-built knowledge bases and
+                  perform complex tasks through orchestration of multiple assistants.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionGeneral-5" aria-controls="accordionGeneral-5">
+                  What are the Bimod.io function, API, and Script stores?
+                </button>
+              </h2>
+              <div id="accordionGeneral-5" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  The Bimod.io function, API, and Script stores allow users to browse, purchase, and integrate various
+                  tools and functions into their assistants. We are also planning to create an environment where the
+                  developers can create and sell their own functions and APIs, earning revenue through commissions, in
+                  the near future.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionGeneral-6" aria-controls="accordionGeneral-6">
+                  How does Bimod.io handle task automation?
+                </button>
+              </h2>
+              <div id="accordionGeneral-6" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Bimod.io allows users to schedule tasks using cron jobs or trigger tasks through webhooks.
+                  Additionally, the orchestration feature lets users connect multiple assistants via a master
+                  assistant to perform complex tasks seamlessly.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionGeneral-7" aria-controls="accordionGeneral-7">
+                  What is the integration feature in Bimod.io?
+                </button>
+              </h2>
+              <div id="accordionGeneral-7" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  The integration feature allows organizations to quickly deploy boilerplate assistants with
+                  pre-configured functions, APIs, and data sources. The meta-integration feature further
+                  enables users to integrate systems with multiple optimized assistants for complex task execution.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionGeneral-8" aria-controls="accordionGeneral-8">
+                  How does Bimod.io ensure data security and privacy?
+                </button>
+              </h2>
+              <div id="accordionGeneral-8" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Bimod.io prioritizes data security by implementing robust encryption, secure storage solutions,
+                  and regular audits. Users can also manage the assistant's information access by whitelisting
+                  or blacklisting specific websites and controlling the depth of research conducted by the assistant.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionGeneral-9" aria-controls="accordionGeneral-9">
+                  Can Bimod.io assistants be exported for use on external websites?
+                </button>
+              </h2>
+              <div id="accordionGeneral-9" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Yes, Bimod.io allows users to export their assistants and integrate them into external websites
+                  using a RESTful API.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="account" role="tabpanel">
+          <div class="d-flex mb-4 gap-4">
+            <div class="avatar avatar-md">
+              <div class="avatar-initial bg-label-primary rounded">
+                <i class="ti ti-user ti-30px"></i>
+              </div>
+            </div>
+            <div>
+              <h5 class="mb-0">
+                <span class="align-middle">Account Management</span>
+              </h5>
+              <span>Find answers regarding issues of account management</span>
+            </div>
+          </div>
+          <div id="accordionPayment" class="accordion">
+            <div class="card accordion-item active">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
+                        data-bs-target="#accordionAccount-1" aria-controls="accordionAccount-1">
+                  How do I create an administrator account on Bimod.io?
+                </button>
+              </h2>
+
+              <div id="accordionAccount-1" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                  To create an account, visit the Bimod.io website, click on "Sign Up," and fill in the required
+                  details such as your email address, password, and organization name. If you are not an administrator,
+                  and instead want to join an organization, your organization administrator must send you an invitation
+                  link to join.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionAccount-2" aria-controls="accordionAccount-2">
+                  How do I log in to my Bimod.io account?
+                </button>
+              </h2>
+              <div id="accordionAccount-2" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  You can log in by visiting the Bimod.io homepage, clicking on "Log In," and entering your
+                  registered email and password.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionAccount-3" aria-controls="accordionAccount-3">
+                  Can I change my account email address?
+                </button>
+              </h2>
+              <div id="accordionAccount-3" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  No, you can't change your account email address as it is used as a unique identifier for your
+                  account. If you need to change your email address, you will need to create a new account with the
+                  new email address.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionAccount-4" aria-controls="accordionAccount-4">
+                  How do I update my account information?
+                </button>
+              </h2>
+              <div id="accordionAccount-4" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  To update your account information, navigate to "Account Settings" after logging in. From there,
+                  you can update your personal details, your password, and other preferences.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionAccount-5" aria-controls="accordionAccount-5">
+                  Can I delete my Bimod.io account?
+                </button>
+              </h2>
+              <div id="accordionAccount-5" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Yes, you can delete your account by contacting our support team. Please note that deleting your
+                  account will permanently remove all data associated with it, and this action cannot be undone.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionAccount-6" aria-controls="accordionAccount-6">
+                  How can I manage multiple organizations within my account?
+                </button>
+              </h2>
+              <div id="accordionAccount-6" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  You can manage multiple organizations by going to the "Organizations" section in your account.
+                  Here, you can create new organizations, and then within our system, you can add users, assign permissions,
+                  and manage billing settings for each one of your organizations distinctly.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionAccount-7" aria-controls="accordionAccount-7">
+                  What are roles and permissions in Bimod.io?
+                </button>
+              </h2>
+              <div id="accordionAccount-7" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Roles and permissions allow you to control what different users can do within your organization.
+                  You can set specific permissions for accessing and managing assistants, billing, managing
+                  organizations, database connections, and more.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionAccount-8" aria-controls="accordionAccount-8">
+                  How do I add or remove users from my organization?
+                </button>
+              </h2>
+              <div id="accordionAccount-8" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  To add or remove users, go to the "Users" section, select the organization you wish to manage,
+                  and within this panel, you can temporarily deactivate user accounts, add or remove them from your
+                  organizations, and also delete their accounts permanently if necessary.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionAccount-9" aria-controls="accordionAccount-9">
+                  What should I do if I forget my password?
+                </button>
+              </h2>
+              <div id="accordionAccount-9" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  If you forget your password, click on the "Forgot Password?" link on the login page. Enter your
+                  registered email address, and we’ll send you instructions to reset your password.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="tab-pane fade" id="payment" role="tabpanel">
           <div class="d-flex mb-4 gap-4">
             <div class="avatar avatar-md">
               <div class="avatar-initial bg-label-primary rounded">
@@ -171,6 +549,40 @@
                 </div>
               </div>
             </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionPayment-6" aria-controls="accordionPayment-6">
+                  Can I cancel a task or operation after it has been initiated?
+                </button>
+              </h2>
+              <div id="accordionPayment-6" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Currently, you can cancel some of the tasks or operation (but not all) after it has been initiated,
+                  as long as it hasn't been completed. To do so, go to the tasks main page, find the ongoing task,
+                  and click on "Cancel." Please note that any credits used up to that point may not be refundable.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionPayment-7" aria-controls="accordionPayment-7">
+                  Can I get a refund if I'm not satisfied with the service provided?
+                </button>
+              </h2>
+              <div id="accordionPayment-7" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Refunds are generally not offered, as our services operate on a pay-as-you-go basis. However,
+                  in exceptional circumstances where a service was not delivered as expected, you may contact
+                  our support team to discuss potential resolutions or credit adjustments. In such cases, there
+                  might be a probability to refund your balance or add additional credits to your account.
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
         <div class="tab-pane fade" id="cancellation" role="tabpanel">
@@ -238,13 +650,78 @@
                 </div>
               </div>
             </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionCancellation-4" data-bs-target="#accordionCancellation-4">
+                  What happens if I accidentally top up my balance with more credits than intended?
+                </button>
+              </h2>
+              <div id="accordionCancellation-4" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  If you accidentally top up your balance with a significantly larger amount than intended,
+                  please contact our support team immediately. In such exceptional cases, we may be able to
+                  refund the excess amount after reviewing your request.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionCancellation-5" data-bs-target="#accordionCancellation-5">
+                  How are refunds handled in case of a technical error on your end?
+                </button>
+              </h2>
+              <div id="accordionCancellation-5" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  If a technical error on our end causes an operation to fail, your credits will not be deducted
+                  for that operation. If credits were deducted incorrectly, please contact our support team, and
+                  we will review the case and issue a refund if applicable.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionCancellation-6" data-bs-target="#accordionCancellation-6">
+                  Can I transfer my credits to another account if I decide to stop using Bimod.io?
+                </button>
+              </h2>
+              <div id="accordionCancellation-6" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Currently, credits are non-transferable between accounts. However, since your credits don’t expire,
+                  you can use them at any time if you decide to return to Bimod.io.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionCancellation-7" data-bs-target="#accordionCancellation-7">
+                  What should I do if I believe I was incorrectly charged for a service?
+                </button>
+              </h2>
+              <div id="accordionCancellation-7" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  If you believe you were incorrectly charged, please reach out to our support team through the
+                  support form. We will investigate the issue and, if an error is found, we will issue a
+                  refund or credit adjustment accordingly.
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
+
         <div class="tab-pane fade" id="terms" role="tabpanel">
           <div class="d-flex mb-4 gap-4 align-items-center">
             <div class="avatar avatar-md">
             <span class="avatar-initial bg-label-primary rounded">
-              <i class="ti ti-rotate-clockwise-2 ti-30px"></i>
+              <i class="ti ti-file-text ti-30px"></i>
             </span>
             </div>
             <div>
@@ -417,7 +894,7 @@
           <div class="d-flex mb-4 gap-4 align-items-center">
             <div class="avatar avatar-md">
             <span class="avatar-initial bg-label-primary rounded">
-              <i class="ti ti-rotate-clockwise-2 ti-30px"></i>
+              <i class="ti ti-lock ti-30px"></i>
             </span>
             </div>
             <div>
@@ -787,17 +1264,378 @@
                   <h5>Contact Us</h5>
                   <p>If you have any questions about this Privacy Policy, You can contact us:</p>
                   <ul>
-                    <li>By email: info@bimod.io</li>
+                    <li>By email: admin@bimod.io</li>
                   </ul>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="tab-pane fade" id="troubleshooting" role="tabpanel">
+          <div class="d-flex mb-4 gap-4 align-items-center">
+            <div class="avatar avatar-md">
+            <span class="avatar-initial bg-label-primary rounded">
+              <i class="ti ti-settings ti-30px"></i>
+            </span>
+            </div>
+            <div>
+              <h5 class="mb-0"><span class="align-middle">Troubleshooting</span></h5>
+              <span>Learn more about troubleshooting</span>
+            </div>
+          </div>
+          <div id="accordionCancellation" class="accordion">
+            <div class="card accordion-item active">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
+                        data-bs-target="#accordionTroubleshooting-1" aria-controls="accordionTroubleshooting-1">
+                  Why is my assistant not responding to queries?
+                </button>
+              </h2>
+
+              <div id="accordionTroubleshooting-1" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                  If your assistant is not responding, check your internet connection and ensure that the assistant
+                  is active. If the issue persists, try restarting the assistant or reconfiguring its settings.
+                  Sometimes, the issue might arise from a technical glitch on our end, and if your assistant is still
+                  not responding after trying the above steps, please contact our support team for further assistance.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionTroubleshooting-2" aria-controls="accordionTroubleshooting-2">
+                  What should I do if my assistant's responses are inaccurate or incomplete?
+                </button>
+              </h2>
+              <div id="accordionTroubleshooting-2" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Inaccurate or incomplete responses may result from improperly configured settings. Adjust
+                  the assistant’s hyperparameters like temperature or max tokens, or update the assistant’s
+                  knowledge base to improve accuracy. If the issue persists, please contact our support team
+                  for further assistance and guidance for optimizing your assistant’s performance.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionTroubleshooting-3" data-bs-target="#accordionTroubleshooting-3">
+                  Why can't I connect to my SQL database via the assistant?
+                </button>
+              </h2>
+              <div id="accordionTroubleshooting-3" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Ensure that the SQL database credentials are correctly entered and that the database is
+                  accessible from the network. Check the assistant's permissions and make sure it has the
+                  necessary access rights to perform I/O operations. For instance, if your database connection
+                  is marked as read-only, the assistant will not be able to write to the database. If the issue
+                  persists, please contact our support team for further assistance.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionTroubleshooting-4" data-bs-target="#accordionTroubleshooting-4">
+                  My assistant is unable to execute commands via SSH. What could be wrong?
+                </button>
+              </h2>
+              <div id="accordionTroubleshooting-4" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Verify that the SSH credentials and connection details are correct. Ensure the target server is
+                  accessible, and the assistant has permission to perform operations. Additionally, check if the
+                  SSH keys are properly configured. If the issue persists, please contact our support team for
+                  further assistance.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionTroubleshooting-5" data-bs-target="#accordionTroubleshooting-5">
+                  Why is my assistant not integrating tools or functions from the app store?
+                </button>
+              </h2>
+              <div id="accordionTroubleshooting-5" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Check if the tools or functions are compatible with your assistant and correctly installed and
+                  connected to your assistant. If the problem persists, try reinstalling the tools as this might
+                  sometimes resolve the issue. Sometimes, the issue may arise from a technical glitch on our end, and if
+                  your assistant is still not integrating tools after trying the above steps, please contact our
+                  support team for further assistance.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionTroubleshooting-6" data-bs-target="#accordionTroubleshooting-6">
+                  Why is my assistant taking longer than usual to process tasks?
+                </button>
+              </h2>
+              <div id="accordionTroubleshooting-6" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Task processing times may vary based on the complexity of the task and server load. In fact, there
+                  might be multiple different causes for a delayed response, such as network latency, the performance
+                  of your internal database servers, or the SSH server’s response time. Check the task’s
+                  configuration for any potential inefficiencies. If delays persist, consider optimizing the assistant’s
+                  settings or contact support for help.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionTroubleshooting-7" data-bs-target="#accordionTroubleshooting-7">
+                 What should I do if I encounter an error message while using Bimod.io?
+                </button>
+              </h2>
+              <div id="accordionTroubleshooting-7" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Take note of the error message and any relevant details. Try restarting the assistant or the
+                  application. If the error persists, consult the help documentation or contact our support team
+                  with the error details for further assistance.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="tab-pane fade" id="support" role="tabpanel">
+          <div class="d-flex mb-4 gap-4 align-items-center">
+            <div class="avatar avatar-md">
+            <span class="avatar-initial bg-label-primary rounded">
+              <i class="ti ti-lifebuoy ti-30px"></i>
+            </span>
+            </div>
+            <div>
+              <h5 class="mb-0"><span class="align-middle">Customer Support</span></h5>
+              <span>Learn more about customer support and how to contact us</span>
+            </div>
+          </div>
+          <div id="accordionCancellation" class="accordion">
+            <div class="card accordion-item active">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
+                        data-bs-target="#accordionSupport-1" aria-controls="accordionSupport-1">
+                  What information should I include when contacting support?
+                </button>
+              </h2>
+
+              <div id="accordionSupport-1" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                  When contacting support, please include your account details, a clear description of the issue,
+                  and any relevant screenshots or error messages. This helps us resolve your issue more quickly.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionSupport-2" aria-controls="accordionSupport-2">
+                  What are the support hours for Bimod.io?
+                </button>
+              </h2>
+              <div id="accordionSupport-2" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Our customer support team is available from 9AM to 5PM, UTC+3, Monday through Friday. Support
+                  requests submitted outside these hours will be addressed the next business day. If you have an
+                  urgent issue, you can consider reaching us for the premium support option to get immediate
+                  assistance for your issues.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionSupport-3" data-bs-target="#accordionSupport-3">
+                  How long does it take to receive a response from support?
+                </button>
+              </h2>
+              <div id="accordionSupport-3" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  We strive to respond to all support inquiries within 72 hours. However, response times may vary
+                  depending on the complexity of the issue and current support request volume. If your use cases
+                  are mission-critical, consider reaching out to us for the premium support option to get immediate
+                  assistance for your issues.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionSupport-4" data-bs-target="#accordionSupport-4">
+                  Can I get help with setting up my assistant?
+                </button>
+              </h2>
+              <div id="accordionSupport-4" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Absolutely! Our support team can guide you through the process of setting up and configuring
+                  your assistant. You can also find helpful guides and tutorials in our documentation section.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionSupport-5" data-bs-target="#accordionSupport-5">
+                  What should I do if I need urgent assistance?
+                </button>
+              </h2>
+              <div id="accordionSupport-5" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  For urgent issues, please indicate the urgency in your support request, and we will
+                  prioritize your case. While we do our best to address urgent matters quickly,
+                  response times may still vary. If you need immediate assistance, consider reaching out to us
+                  for the premium support option to get immediate assistance for your issues.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionSupport-6" data-bs-target="#accordionSupport-6">
+                  How do I provide feedback or suggestions for Bimod.io?
+                </button>
+              </h2>
+              <div id="accordionSupport-6" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  We welcome feedback and suggestions! You can submit your ideas through the feedback form on our
+                  website or include them in your support request. Your input helps us improve our services.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="tab-pane fade" id="updates" role="tabpanel">
+          <div class="d-flex mb-4 gap-4 align-items-center">
+            <div class="avatar avatar-md">
+            <span class="avatar-initial bg-label-primary rounded">
+              <i class="ti ti-cloud-up ti-30px"></i>
+            </span>
+            </div>
+            <div>
+              <h5 class="mb-0"><span class="align-middle">Updates</span></h5>
+              <span>Learn more about updates and how they affect your experience</span>
+            </div>
+          </div>
+          <div id="accordionCancellation" class="accordion">
+            <div class="card accordion-item active">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
+                        data-bs-target="#accordionUpdates-1" aria-controls="accordionUpdates-1">
+                  How often does Bimod.io receive updates?
+                </button>
+              </h2>
+
+              <div id="accordionUpdates-1" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                   Bimod.io is regularly updated to improve performance, add new features, and fix any bugs. We typically
+                  release updates every week, though smaller patches may be deployed as needed such as the updates
+                  for critical bug fixes or security patches.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionUpdates-2" aria-controls="accordionUpdates-2">
+                 Will I be notified before any major changes are made to Bimod.io?
+                </button>
+              </h2>
+              <div id="accordionUpdates-2" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Yes, for major or potentially disruptive changes, we notify users in advance through email and
+                  announcements on our platform. This allows you time to prepare for any adjustments needed on your end.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionUpdates-3" data-bs-target="#accordionUpdates-3">
+                 How do updates affect my existing assistants and configurations?
+                </button>
+              </h2>
+              <div id="accordionUpdates-3" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Most updates are designed to be seamless and will not affect your existing assistants or
+                  configurations. However, for updates that may impact your setup, we provide detailed instructions
+                  on how to manage the transition.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionUpdates-4" data-bs-target="#accordionUpdates-4">
+                  Can I opt out of certain updates or features?
+                </button>
+              </h2>
+              <div id="accordionUpdates-4" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  While we strive to make updates beneficial for all users, some features are core to the platform and
+                  cannot be opted out of. However, you can customize your assistant settings to control how new
+                  features are implemented.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionUpdates-5" data-bs-target="#accordionUpdates-5">
+                  How can I provide feedback on a new update?
+                </button>
+              </h2>
+              <div id="accordionUpdates-5" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  If you have feedback on a new update, you can submit it through our feedback form or by contacting
+                  customer support. We value your input and consider it in future development efforts.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionUpdates-6" data-bs-target="#accordionUpdates-6">
+                  What happens if a new update causes an issue with my assistant?
+                </button>
+              </h2>
+              <div id="accordionUpdates-6" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  If a new update causes an issue, please contact our support team immediately. We can assist in
+                  troubleshooting and resolving any problems that arise from the update.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
     </div>
     <!-- /FAQ's -->
   </div>
+
+  <hr>
 
   <!-- Contact -->
   <div class="row my-6">
@@ -815,7 +1653,7 @@
           <i class="ti ti-phone ti-26px"></i>
         </span>
         </div>
-        <h5 class="mt-8 mb-1"><a class="text-heading" href="tel:+90-500-500-50-50">+90-500-500-50-50</a></h5>
+        <h5 class="mt-8 mb-1"><a class="text-heading" href="tel:+90-546-538-70-99"><strong>+90-546-538-70-99</strong></a></h5>
         <p class="mb-0">Available between <strong>9:00 am - 5:00 pm (UTC+3).</strong></p>
       </div>
     </div>
@@ -826,13 +1664,11 @@
           <i class="ti ti-mail ti-26px"></i>
         </span>
         </div>
-        <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:info@bimod.io">info@bimod.io</a></h5>
+        <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:admin@bimod.io"><strong>admin@bimod.io</strong></a></h5>
         <p class="mb-0">Best way to get a quick response, <strong>available 24/7.</strong></p>
       </div>
     </div>
   </div>
   <!-- /Contact -->
-
-  <!-- TODO: fix the documentation page and include content here -->
 
 {% endblock %}

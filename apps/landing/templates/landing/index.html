@@ -20,6 +20,9 @@
 {% block page_css %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static  'vendor/css/pages/front-page-landing.css' %}">
+  <style>
+
+  </style>
 {% endblock page_css %}
 
 {% block page_js %}
@@ -35,24 +38,46 @@
         <img src="{% static 'img/front-pages/backgrounds/hero-bg.png' %}" alt="hero background"
              class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1"/>
         <div class="container">
+          <img src="{% static 'img/custom-illustrations-v2/banners/i2-b1.png' %}" class="" width="25%"
+               style="position: absolute; top: 150px; left:80px;">
+          <img src="{% static 'img/custom-illustrations-v2/banners/i2-b2.png' %}" class="" width="20%"
+               style="position: absolute; top: 150px; right:180px;">
+          <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="35%"
+               style="position: absolute; top: 150px; left:100px; opacity: 0.35;">
+          <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="35%"
+               style="position: absolute; top: 150px; right:100px; opacity: 0.35; rotate: 270deg">
+          <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="35%"
+               style="position: absolute; top: 2000px; left:50px; opacity: 0.20; rotate: 180deg">
+          <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="35%"
+               style="position: absolute; top: 3000px; left:200px; opacity: 0.20; rotate: 180deg">
+          <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="50%"
+               style="position: absolute; top: 2600px; left:100px; opacity: 0.20; rotate: 300deg">
+          <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="50%"
+               style="position: absolute; top: 4000px; right:400px; opacity: 0.20; rotate: 210deg">
+          <img src="{% static 'img/custom-illustrations-v2/heros/i2-h3.png' %}" class="" width="70%"
+               style="position: absolute; top: 1500px; right:100px; opacity: 0.15; rotate: 0deg">
+
           <div class="hero-text-box text-center position-relative">
-            <h1 class="text-primary hero-title display-1 fw-extrabold"><strong>Bimod.io</strong></h1>
-            <h1 class="text-primary hero-title display-6 fw-extrabold">Build your AI workforce with the most flexible
-              multimodal agent platform.</h1>
-            <h2 class="hero-sub-title h6 mb-6">
+            <h1 class="text-primary hero-title display-1 fw-extrabold" style="font-size: 120px;">
+              <strong>Bimod.io</strong></h1>
+            <h1 class="text-primary hero-title display-6 fw-extrabold">
+              Build your AI workforce with the most flexible multimodal assistant platform.
+            </h1>
+            <h2 class="hero-sub-title h6 mb-6 mt-12" style="text-align: justify;">
               We are empowering businesses by providing a highly customizable and flexible <strong>AIaaS (Artificial
-              Intelligence
-              as a Service)</strong> platform for managing multimodal AI assistants. Utilize hundreds of different
-              multimodality
-              tools and tailor-made integrations to automate workflows at every scale.
+              Intelligence as a Service)</strong> platform for managing multimodal AI assistants. Utilize hundreds
+              of different multi-modality tools and tailor-made integrations to automate workflows at every scale.
             </h2>
             <div class="landing-hero-btn d-inline-block position-relative">
             <span class="hero-btn-item position-absolute d-none d-md-flex fw-medium"><strong><span
               class="bg-label-primary rounded p-1 ms-1 me-1">$100</span> FREE CREDITS</strong>
               <img src="{% static 'img/front-pages/icons/Join-community-arrow.png' %}" alt="Join community arrow"
                    class="scaleX-n1-rtl"/></span>
-              <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-8" style="min-width: 250px;"><strong>TRY
-                NOW</strong></a>
+              <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-8" style="min-width: 250px;">
+                <strong>
+                  <i class="fa fa-rocket me-2"></i>
+                  Launch App
+                </strong></a>
             </div>
           </div>
           <div id="heroDashboardAnimation" class="hero-animation-img">
@@ -62,7 +87,7 @@
                   src="{% static 'img/front-pages/landing-page/hero-dashboard-' %}{{ COOKIES.style|default:style }}.png"
                   alt="hero dashboard" data-app-light-img="front-pages/landing-page/hero-dashboard-light.png"
                   data-app-dark-img="front-pages/landing-page/hero-dashboard-dark.png"
-                  class="animation-img" style="border-radius: 25px; margin-top: 80px;"/>
+                  class="animation-img border border-2 border-primary" style="border-radius: 25px; margin-top: 80px;"/>
               </div>
             </a>
           </div>
@@ -90,7 +115,8 @@
         <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="laptop charging"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-53.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="laptop charging"/>
             </div>
             <h5 class="mb-2"><strong>All in One Service You Need</strong></h5>
             <p class="features-icon-description">Access all the tools you need to build and manage AI assistants in one
@@ -98,7 +124,8 @@
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/keyboard.png' %}" alt="transition up"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-86.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="transition up"/>
             </div>
             <h5 class="mb-2"><strong>Tenants, Users, Permissions</strong></h5>
             <p class="features-icon-description">Easily manage multiple organizations and AI assistants from a single
@@ -106,14 +133,16 @@
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/rocket.png' %}" alt="edit"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-66.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="edit"/>
             </div>
             <h5 class="mb-2"><strong>Fully Customizable LLM Models</strong></h5>
             <p class="features-icon-description">Customize LLM models depending on your organization's needs.</p>
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/check.png' %}" alt="lifebelt"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-15.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="lifebelt"/>
             </div>
             <h5 class="mb-2"><strong>Unlimited Assistant Flexibility</strong></h5>
             <p class="features-icon-description">Create multiple AI assistants that can handle a wide range of tasks and
@@ -121,7 +150,8 @@
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/rocket.png' %}" alt="google docs"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-5.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
             </div>
             <h5 class="mb-2"><strong>Make Assistants Remember</strong></h5>
             <p class="features-icon-description">Add a memory to your AI assistants, so they can remember important
@@ -129,7 +159,8 @@
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/paper.png' %}" alt="google docs"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-68.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
             </div>
             <h5 class="mb-2"><strong>Create An AI Workforce</strong></h5>
             <p class="features-icon-description">Build a workforce of AI assistants that can handle a wide range of
@@ -137,7 +168,8 @@
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="google docs"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-4.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
             </div>
             <h5 class="mb-2"><strong>Connect Your Databases</strong></h5>
             <p class="features-icon-description">Connect your database to your AI assistants to make them reach your
@@ -145,7 +177,8 @@
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/rocket.png' %}" alt="google docs"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-61.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
             </div>
             <h5 class="mb-2"><strong>Chat with Your Documents &amp; Files</strong></h5>
             <p class="features-icon-description">Upload documents, files, images, audios, videos and much more to your
@@ -153,7 +186,8 @@
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/keyboard.png' %}" alt="google docs"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-23.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
             </div>
             <h5 class="mb-2"><strong>Functions, APIs, Kernels, Scripts</strong></h5>
             <p class="features-icon-description">Make AI use functions, APIs, and remote servers via SSH to provide
@@ -161,7 +195,8 @@
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/paper.png' %}" alt="google docs"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-44.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
             </div>
             <h5 class="mb-2"><strong>Scheduled Tasks &amp; Custom Triggers</strong></h5>
             <p class="features-icon-description">Schedule timed tasks and custom triggers for your AI assistants to
@@ -169,7 +204,8 @@
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="google docs"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-43.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
             </div>
             <h5 class="mb-2"><strong>Generate Creative Media Materials</strong></h5>
             <p class="features-icon-description">Generate images, presentations, documents, and much
@@ -177,7 +213,8 @@
           </div>
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
-              <img src="{% static 'img/front-pages/icons/laptop.png' %}" alt="google docs"/>
+              <img src="{% static 'img/custom-illustrations-v2/i2-104.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
             </div>
             <h5 class="mb-2"><strong>Tailor-made, Custom Integrations</strong></h5>
             <p class="features-icon-description">With a single click, integrate tools and assistants you need for
@@ -189,7 +226,7 @@
     <!-- Useful features: End -->
 
     <!-- Real customers reviews: Start -->
-    <section id="landingReviews" class="section-py bg-body landing-reviews pb-0">
+    <section id="landingReviews" class="section-py bg-body landing-reviews pb-0 d-none">
       <hr class="m-0 mt-6 mt-md-12"/>
       <!-- Logo slider: Start -->
       <div class="container">
@@ -243,11 +280,11 @@
         <p class="text-center mb-md-11 pb-0 pb-xl-12">Meet the dedicated team behind <strong>Bimod.io</strong></p>
         <div class="row gy-12 mt-2">
           <div class="col-lg-6 col-sm-6 mb-8">
-            <div class="card mt-3 mt-lg-0 shadow-none">
+            <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div
                 class="bg-label-primary border border-bottom-0 border-label-primary position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-ege.png' %}"
-                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 300px;" alt="human image"/>
               </div>
               <div class="card-body border border-top-0 border-label-primary text-center">
                 <h5 class="card-title mb-0"><strong>Ege Doğan DURSUN</strong></h5>
@@ -269,10 +306,10 @@
             </div>
           </div>
           <div class="col-lg-6 col-sm-6 mb-8">
-            <div class="card mt-3 mt-lg-0 shadow-none">
+            <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-info border border-bottom-0 border-label-info position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-huseyin.png' %}"
-                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 280px;" alt="human image"/>
               </div>
               <div class="card-body border border-top-0 border-label-info text-center">
                 <h5 class="card-title mb-0"><strong>Hüseyin ERSAY</strong></h5>
@@ -293,10 +330,10 @@
             </div>
           </div>
           <div class="col-lg-4 col-sm-6 mb-8">
-            <div class="card mt-3 mt-lg-0 shadow-none">
+            <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-danger border border-bottom-0 border-label-danger position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-mert.png' %}"
-                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 240px;" alt="human image"/>
               </div>
               <div class="card-body border border-top-0 border-label-danger text-center">
                 <h5 class="card-title mb-0"><strong>Mert TEKİN</strong></h5>
@@ -317,10 +354,10 @@
             </div>
           </div>
           <div class="col-lg-4 col-sm-6 mb-8">
-            <div class="card mt-3 mt-lg-0 shadow-none">
+            <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-success border border-bottom-0 border-label-danger position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-selin.png' %}"
-                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 280px;" alt="human image"/>
               </div>
               <div class="card-body border border-top-0 border-label-danger text-center">
                 <h5 class="card-title mb-0"><strong>Selin Ceren CANBULUT</strong></h5>
@@ -341,10 +378,10 @@
             </div>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <div class="card mt-3 mt-lg-0 shadow-none">
+            <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-danger border border-bottom-0 border-label-success position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-emre.png' %}"
-                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" alt="human image"/>
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 240px;" alt="human image"/>
               </div>
               <div class="card-body border border-top-0 border-label-success text-center">
                 <h5 class="card-title mb-0"><strong>Emre ÖĞE</strong></h5>
@@ -390,10 +427,11 @@
         <div class="row g-6 pt-lg-5">
           <!-- Basic Plan: Start -->
           <div class="col-xl-3 col-lg-6">
-            <div class="card">
+            <div class="card border border-2 border-primary">
               <div class="card-header">
                 <div class="text-center">
-                  <img src="{% static 'img/front-pages/icons/paper-airplane.png' %}" alt="paper airplane icon"
+                  <img src="{% static 'img/custom-illustrations-v2/subscription/i2-s1.png' %}" style="border-radius: 25px;" width="250px;"
+                       alt="paper airplane icon"
                        class="mb-8 pb-2"/>
                   <h4 class="mb-0"><strong>Starter</strong></h4>
                   <div class="d-flex align-items-center justify-content-center">
@@ -413,10 +451,10 @@
 
           <!-- Favourite Plan: Start -->
           <div class="col-xl-3 col-lg-6">
-            <div class="card border shadow-xl">
+            <div class="card border shadow-xl border border-2 border-primary">
               <div class="card-header">
                 <div class="text-center">
-                  <img src="{% static 'img/front-pages/icons/plane.png' %}" alt="paper airplane icon"
+                  <img src="{% static 'img/custom-illustrations-v2/subscription/i2-s2.png' %}" alt="paper airplane icon" style="border-radius: 25px;" width="250px;"
                        class="mb-8 pb-2"/>
                   <h4 class="mb-0"><strong>Grower</strong></h4>
                   <div class="d-flex align-items-center justify-content-center">
@@ -436,10 +474,10 @@
 
           <!-- Standard Plan: Start -->
           <div class="col-xl-3 col-lg-6">
-            <div class="card">
+            <div class="card border border-2 border-primary">
               <div class="card-header">
                 <div class="text-center">
-                  <img src="{% static 'img/front-pages/icons/shuttle-rocket.png' %}" alt="paper airplane icon"
+                  <img src="{% static 'img/custom-illustrations-v2/subscription/i2-s3.png' %}" style="border-radius: 25px;" width="250px;" alt="paper airplane icon"
                        class="mb-8 pb-2"/>
                   <h4 class="mb-0"><strong>Professional</strong></h4>
                   <div class="d-flex align-items-center justify-content-center">
@@ -458,10 +496,10 @@
 
           <!-- Standard Plan: Start -->
           <div class="col-xl-3 col-lg-6">
-            <div class="card">
+            <div class="card border border-2 border-primary">
               <div class="card-header">
                 <div class="text-center">
-                  <img src="{% static 'img/front-pages/icons/shuttle-rocket.png' %}" alt="paper airplane icon"
+                  <img src="{% static 'img/custom-illustrations-v2/subscription/i2-s4.png' %}" style="border-radius: 25px;" width="250px;" alt="paper airplane icon"
                        class="mb-8 pb-2"/>
                   <h4 class="mb-0"><strong>Enterprise</strong></h4>
                   <div class="d-flex align-items-center justify-content-center">
@@ -496,7 +534,10 @@
             <h5 class="text-body mb-12 mt-12 "><strong>Start and receive your first </strong><span
               class="bg-label-primary rounded p-6 ms-6 me-6"><strong>$100</strong></span><strong> credits for
               free.</strong></h5>
-            <a href="{% url 'register' %}" class="btn btn-lg btn-primary"><strong>Join Our Community Now</strong></a>
+            <a href="{% url 'register' %}" class="btn btn-lg btn-primary"><strong>
+              <i class="ti ti-user-plus me-2"></i>
+              Join Our Community Now
+            </strong></a>
           </div>
           <div class="col-lg-6 pt-lg-12 text-center text-lg-end">
             <img src="{% static 'img/front-pages/landing-page/hero-dashboard-dark.png' %}" alt="cta dashboard"
@@ -527,7 +568,7 @@
             <div class="contact-img-box position-relative border p-2 h-100">
               <img src="{% static 'img/front-pages/icons/contact-border.png' %}" alt="contact border"
                    class="contact-border-img position-absolute d-none d-lg-block scaleX-n1-rtl"/>
-              <img src="{% static 'img/front-pages/landing-page/contact-customer-service.png' %}"
+              <img src="{% static 'img/custom-illustrations-v2/i2-38.png' %}"
                    alt="contact customer service" class="contact-img w-100 scaleX-n1-rtl"/>
               <div class="p-4 pb-2">
                 <div class="row g-4">
@@ -536,7 +577,7 @@
                       <div class="badge bg-label-primary rounded p-1_5 me-3"><i class="ti ti-mail ti-lg"></i></div>
                       <div>
                         <p class="mb-0"><strong>Contact E-mail</strong></p>
-                        <h6 class="mb-0"><a href="mailto:admin@bimod.io" class="text-heading">info@bimod.io</a></h6>
+                        <h6 class="mb-0"><a href="mailto:admin@bimod.io" class="text-heading">admin@bimod.io</a></h6>
                       </div>
                     </div>
                   </div>
@@ -568,9 +609,10 @@
                 <form action="{% url 'landing:contact_form_submit' %}" method="post">
                   {% csrf_token %}
                   <div class="row g-4">
-                    <div class="col-md-12 card card-border-shadow-dark">
+                    <div class="col-md-12">
                       <label class="form-label mt-4" for="contact-form-username"><strong>Customer
                         Username</strong></label>
+                      <br>
                       <small class="text-muted mb-2"><strong>You can leave this field blank if you are currently not an
                         active customer.</strong></small>
                       <input type="text" class="form-control mb-4" id="contact-form-username" name="username"

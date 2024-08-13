@@ -1,0 +1,102 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Create Support Ticket{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Create New Support Ticket</strong></h5>
+        </div>
+
+        <a href="{% url 'support_system:list' %}">
+          <button class="btn btn-secondary ms-6 mb-2">
+            <i class="fa fa-ticket me-4"></i>
+            <strong>Back to My Tickets</strong>
+          </button>
+        </a>
+
+        <div class="card-body">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-48.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8">
+            <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                Fill in the form to create a new support ticket. Select the priority level, provide a detailed
+                description of the issue, and attach any relevant files. Click the "Create Ticket" button to submit
+                the ticket. We will be doing our best to resolve the issue as soon as possible, but please know that
+                it may take some time to get back to you depending on the complexity of the issue.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}"
+                   role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <hr>
+          <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="col-6 mb-6">
+                <label class="form-label" for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Enter ticket title"
+                       required/>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="priority">Priority</label>
+                <select class="form-select select2" id="priority" name="priority" required>
+                  {% for value, label in form.priority.field.choices %}
+                    <option value="{{ value }}"
+                            {% if form.priority.value == value %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="issue_description">Issue Description</label>
+                <textarea class="form-control" id="issue_description" name="issue_description" rows="5"
+                          placeholder="Describe the issue in detail" required></textarea>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="attachment">Attachment (optional)</label>
+                <input type="file" class="form-control" id="attachment" name="attachment"/>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>Create Ticket</strong></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $('.select2').select2();
+    });
+  </script>
+
+{% endblock %}

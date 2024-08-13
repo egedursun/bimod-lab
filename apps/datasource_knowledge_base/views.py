@@ -1,3 +1,9 @@
+"""
+This module contains views for managing document knowledge bases within the Bimod.io platform.
+
+The views include creating, updating, deleting, and listing document knowledge bases and their associated documents. These views also handle uploading documents to the knowledge base and deleting all documents within a specific knowledge base. Access to these views is restricted to authenticated users, with additional permission checks for specific actions.
+"""
+
 import boto3
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,6 +26,15 @@ from web_project import TemplateLayout
 
 
 class DocumentKnowledgeBaseCreateView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of new document knowledge base connections.
+
+    This view displays a form for creating a new knowledge base connection. Upon submission, it validates the input, checks user permissions, and saves the new connection to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds additional context to the template, including available knowledge base systems, vectorizers, and assistants.
+        post(self, request, *args, **kwargs): Handles form submission and knowledge base connection creation, including permission checks and validation.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -57,6 +72,18 @@ class DocumentKnowledgeBaseCreateView(LoginRequiredMixin, TemplateView):
 
 
 class DocumentKnowledgeBaseListView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of document knowledge base connections associated with the user's organizations and assistants.
+
+    This view retrieves all knowledge base connections organized by organization and assistant, and displays them in a structured list.
+
+    Attributes:
+        template_name (str): The template used to render the knowledge base list.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the knowledge base connections organized by organization and assistant, and adds them to the context.
+    """
+
     template_name = "datasource_knowledge_base/base/list_knowledge_bases.html"
 
     def get_context_data(self, **kwargs):
@@ -81,6 +108,15 @@ class DocumentKnowledgeBaseListView(LoginRequiredMixin, TemplateView):
 
 
 class DocumentKnowledgeBaseUpdateView(LoginRequiredMixin, TemplateView):
+    """
+    Handles updating an existing document knowledge base connection.
+
+    This view allows users with the appropriate permissions to modify a knowledge base connection's attributes. It also handles the form submission and validation for updating the connection.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current knowledge base connection details and adds them to the context, along with other relevant data such as available knowledge base systems, vectorizers, and assistants.
+        post(self, request, *args, **kwargs): Handles form submission for updating the knowledge base connection, including permission checks and validation.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -125,6 +161,17 @@ class DocumentKnowledgeBaseUpdateView(LoginRequiredMixin, TemplateView):
 
 
 class DocumentKnowledgeBaseDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    Handles the deletion of a document knowledge base connection.
+
+    This view allows users with the appropriate permissions to delete a knowledge base connection. It ensures that the user has the necessary permissions before performing the deletion.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for rendering the confirmation of the deletion.
+        post(self, request, *args, **kwargs): Deletes the knowledge base connection if the user has the required permissions.
+        get_queryset(self): Filters the queryset to include only the knowledge base connections that belong to the user's assistants.
+    """
+
     model = DocumentKnowledgeBaseConnection
     success_url = '/app/datasource_knowledge_base/list/'
 
@@ -152,6 +199,16 @@ class DocumentKnowledgeBaseDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class AddDocumentView(LoginRequiredMixin, TemplateView):
+    """
+    Handles uploading documents to a selected knowledge base.
+
+    This view displays a form for selecting a knowledge base and uploading documents to it. Upon form submission, it validates the input, uploads the documents to the storage (e.g., S3), and logs the upload process. If the user lacks the necessary permissions, an error message is displayed.
+
+    Methods:
+        get(self, request, *args, **kwargs): Prepares the context with the available knowledge bases and assistants for document uploading.
+        post(self, request, *args, **kwargs): Handles the document upload process, including validation, file storage, and logging.
+    """
+
     def get(self, request, *args, **kwargs):
         user_assistants = Assistant.objects.filter(organization__users__in=[request.user])
         knowledge_bases = DocumentKnowledgeBaseConnection.objects.filter(assistant__in=user_assistants)
@@ -204,6 +261,16 @@ class AddDocumentView(LoginRequiredMixin, TemplateView):
 
 
 class ListDocumentsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of documents associated with the user's knowledge bases.
+
+    This view retrieves all documents within the user's knowledge bases, organized by organization and assistant. It also allows users to delete selected documents.
+
+    Methods:
+        get(self, request, *args, **kwargs): Retrieves the documents for the user's knowledge bases and adds them to the context, including pagination and status information.
+        post(self, request, *args, **kwargs): Handles the deletion of selected documents.
+    """
+
     def get(self, request, *args, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         organizations = Organization.objects.filter(users__in=[request.user])
@@ -250,6 +317,16 @@ class ListDocumentsView(LoginRequiredMixin, TemplateView):
 
 
 class DeleteAllDocumentsView(LoginRequiredMixin, TemplateView):
+    """
+    Handles deleting all documents within a specific knowledge base.
+
+    This view allows users with the appropriate permissions to delete all documents in a selected knowledge base. It ensures that the user has the necessary permissions before performing the deletion.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for rendering the confirmation of the deletion.
+        post(self, request, *args, **kwargs): Deletes all documents in the selected knowledge base if the user has the required permissions.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context

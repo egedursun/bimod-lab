@@ -1,13 +1,23 @@
+"""
+Module Overview: This module defines models for managing media storage connections and items in an assistant-based application. It includes configurations for media categories, file types, and the handling of media storage connections and items, with integration to storage services like AWS S3.
+
+Dependencies:
+- `os`, `random`, `shutil`: Python standard libraries for file and directory operations.
+- `boto3`: Used for interacting with AWS S3 to manage storage directories and files.
+- `paramiko`: Used for SSH-related tasks.
+- `django.db.models`: Django's ORM for defining database models.
+- `slugify`: Used to generate URL-friendly slugs for file and directory names.
+- `config.settings`: Application settings, particularly for accessing media-related configurations.
+- `.tasks.upload_file_to_storage`: Asynchronous task for uploading files to storage.
+"""
+
 import os
 import random
-import shutil
 
 import boto3
-import paramiko
 from django.db import models
 from slugify import slugify
 
-from config import settings
 from config.settings import MEDIA_URL
 from .tasks import upload_file_to_storage
 
@@ -144,6 +154,23 @@ class MediaFileTypesNames:
 
 
 class DataSourceMediaStorageConnection(models.Model):
+    """
+    DataSourceMediaStorageConnection Model:
+    - Purpose: Represents a connection to a media storage system, including configurations for media categories, directory paths, and storage settings.
+    - Key Fields:
+        - `assistant`: ForeignKey linking to the `Assistant` model.
+        - `name`: The name of the media storage connection.
+        - `description`: A description of the connection.
+        - `media_category`: The category of media (e.g., Image, Audio).
+        - `directory_full_path`: The full directory path for storing media files.
+        - `directory_schema`: JSON representation of the directory structure.
+        - `interpretation_temperature`, `interpretation_maximum_tokens`: Parameters for interpreting media content.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Methods:
+        - `save()`: Overridden to ensure the directory path is set if not provided.
+        - `delete()`: Overridden to remove the associated directory from storage, with support for AWS S3.
+    """
+
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -197,6 +224,22 @@ class DataSourceMediaStorageConnection(models.Model):
 
 
 class DataSourceMediaStorageItem(models.Model):
+    """
+    DataSourceMediaStorageItem Model:
+    - Purpose: Represents an individual media file within a media storage connection, including metadata like file name, size, and type.
+    - Key Fields:
+        - `storage_base`: ForeignKey linking to the `DataSourceMediaStorageConnection` model.
+        - `media_file_name`: The name of the media file.
+        - `description`: A description of the media file.
+        - `media_file_size`: The size of the media file.
+        - `media_file_type`: The type of the media file (e.g., JPEG, MP4).
+        - `full_file_path`: The full path to the media file in storage.
+        - `file_bytes`: BinaryField for storing the file's content temporarily before uploading.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Methods:
+        - `save()`: Overridden to slugify the file name, validate the file type, generate a unique file path, and trigger asynchronous file upload.
+    """
+
     storage_base = models.ForeignKey('datasource_media_storages.DataSourceMediaStorageConnection',
                                      on_delete=models.CASCADE, related_name='items')
 

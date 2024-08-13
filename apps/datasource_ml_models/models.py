@@ -1,8 +1,19 @@
-import os
+"""
+Module Overview: This module defines models for managing machine learning (ML) model connections and items within an assistant-based application. It includes configurations for ML model categories, storage paths, and handling the uploading and deletion of ML models in storage systems like AWS S3.
+
+Dependencies:
+- `os`, `random`: Python standard libraries for file path manipulation and generating random numbers.
+- `boto3`: Used for interacting with AWS S3 to manage ML model storage.
+- `paramiko`: Used for SSH-related tasks.
+- `django.db.models`: Django's ORM for defining database models.
+- `slugify`: Used to generate URL-friendly slugs for file and directory names.
+- `config.settings`: Application settings, particularly for accessing storage-related configurations.
+- `.tasks.upload_model_to_ml_model_base`: Asynchronous task for uploading ML models to storage.
+"""
+
 import random
 
 import boto3
-import paramiko
 from django.db import models
 from slugify import slugify
 
@@ -16,6 +27,23 @@ MODEL_OBJECT_CATEGORIES = (
 
 
 class DataSourceMLModelConnection(models.Model):
+    """
+    DataSourceMLModelConnection Model:
+    - Purpose: Represents a connection to an ML model storage system, including configurations for model categories, directory paths, and storage settings.
+    - Key Fields:
+        - `assistant`: ForeignKey linking to the `Assistant` model.
+        - `name`: The name of the ML model storage connection.
+        - `description`: A description of the connection.
+        - `model_object_category`: The category of the ML model (e.g., PyTorch Model).
+        - `directory_full_path`: The full directory path for storing ML model files.
+        - `directory_schema`: JSON representation of the directory structure.
+        - `interpretation_temperature`, `interpretation_maximum_tokens`: Parameters for interpreting model content.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Methods:
+        - `save()`: Overridden to ensure the directory path is set if not provided.
+        - `delete()`: Overridden to remove the associated directory and files from AWS S3 storage.
+    """
+
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -65,6 +93,22 @@ class DataSourceMLModelConnection(models.Model):
 
 
 class DataSourceMLModelItem(models.Model):
+    """
+    DataSourceMLModelItem Model:
+    - Purpose: Represents an individual ML model file within a storage connection, including metadata like file name, size, and storage path.
+    - Key Fields:
+        - `ml_model_base`: ForeignKey linking to the `DataSourceMLModelConnection` model.
+        - `ml_model_name`: The name of the ML model file.
+        - `description`: A description of the ML model.
+        - `ml_model_size`: The size of the ML model file.
+        - `interpretation_temperature`: Parameter for interpreting model content.
+        - `full_file_path`: The full path to the ML model file in storage.
+        - `file_bytes`: BinaryField for storing the file's content temporarily before uploading.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Methods:
+        - `save()`: Overridden to slugify the file name, generate a unique file path, and trigger asynchronous model upload to storage.
+    """
+
     ml_model_base = models.ForeignKey('datasource_ml_models.DataSourceMLModelConnection',
                                      on_delete=models.CASCADE, related_name='items')
 

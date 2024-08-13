@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (CreateOrganizationView, OrganizationListView, OrganizationUpdateView,
-                    OrganizationDeleteView, OrganizationAddCreditsView, OrganizationBalanceTransferView)
+                    OrganizationDeleteView, OrganizationAddCreditsView, OrganizationBalanceTransferView,
+                    OrganizationUserAddGiftCreditsView)
 
 app_name = "organization"
 
@@ -18,4 +19,5 @@ urlpatterns = [
          name="add_credits"),
 
     path('balance_transfer/', OrganizationBalanceTransferView.as_view(), name='balance_transfer'),
+    path('add_gift_credits/<int:pk>/', OrganizationUserAddGiftCreditsView.as_view(), name='add_gift_credits'),
 ]

@@ -1,3 +1,12 @@
+"""
+Displays a list of starred messages for the authenticated user.
+
+This view retrieves and organizes starred messages by organization and assistant, allowing the user to easily browse through their saved messages.
+
+Methods:
+    get_context_data(self, **kwargs): Prepares the context with the list of starred messages grouped by organization and assistant.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -10,6 +19,14 @@ from web_project import TemplateLayout
 
 
 class ListStarredMessageView(TemplateView, LoginRequiredMixin):
+    """
+    Displays a list of starred messages for the authenticated user.
+
+    This view retrieves and organizes starred messages by organization and assistant, allowing the user to easily browse through their saved messages.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the list of starred messages grouped by organization and assistant.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -31,6 +48,17 @@ class ListStarredMessageView(TemplateView, LoginRequiredMixin):
 
 
 class DeleteStarredMessageView(LoginRequiredMixin, DeleteView):
+    """
+    Handles the deletion of starred messages.
+
+    This view allows users to delete specific starred messages after confirming the action. Only starred messages that belong to the authenticated user can be deleted.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the starred message deletion confirmation page.
+        get(self, request, *args, **kwargs): Processes the deletion of the specified starred message (GET request redirects to POST).
+        post(self, request, *args, **kwargs): Processes the deletion of the specified starred message and updates the associated chat message.
+    """
+
     model = StarredMessage
     success_url = 'starred_messages:list'
 

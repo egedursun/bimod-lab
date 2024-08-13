@@ -1,3 +1,15 @@
+"""
+Module Overview: This module defines models related to multimodal chats within an assistant-based application. It includes models for managing chat sessions, messages, and related logs. The module also provides functionality for handling context memory, starred messages, and organization balance checks during chat interactions.
+
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+- `apps._services.knowledge_base.memory.memory_executor.MemoryExecutor`: Used for managing context memory connections.
+- `apps.assistants.models.ContextOverflowStrategyNames`: Contains constants related to context overflow strategies.
+- `apps.datasource_knowledge_base.models.ContextHistoryKnowledgeBaseConnection`: Represents connections to context history knowledge bases.
+- `apps.llm_transaction.models.LLMTransaction`: Model for managing transactions related to language model operations.
+- `apps.starred_messages.models.StarredMessage`: Model for managing starred messages within chats.
+"""
+
 from django.db import models
 
 from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
@@ -21,6 +33,32 @@ class ChatSourcesNames:
 
 
 class MultimodalChat(models.Model):
+    """
+    MultimodalChat Model:
+    - Purpose: Represents a multimodal chat session involving an assistant and a user. It stores chat messages, transactions, context memory connections, and starred messages. It also includes metadata such as the chat source and whether the chat is archived.
+    - Key Fields:
+        - `organization`: ForeignKey linking to the `Organization` model.
+        - `assistant`: ForeignKey linking to the `Assistant` model.
+        - `user`: ForeignKey linking to the `User` model.
+        - `chat_name`: The name of the chat session.
+        - `created_by_user`: ForeignKey linking to the `User` who created the chat.
+        - `chat_messages`: ManyToManyField linking to `MultimodalChatMessage` models representing the chat's messages.
+        - `transactions`: ManyToManyField linking to `LLMTransaction` models associated with the chat.
+        - `context_memory_connection`: OneToOneField linking to a `ContextHistoryKnowledgeBaseConnection` for managing chat context.
+        - `starred_messages`: ManyToManyField linking to `StarredMessage` models representing starred messages in the chat.
+        - `is_archived`: Boolean field indicating whether the chat is archived.
+        - `chat_source`: Field specifying the source of the chat (e.g., app, API).
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Methods:
+        - `save()`: Overridden to handle context memory connection creation and related logic.
+        - `delete()`: Overridden to manage the deletion of context memory connections.
+    - Meta:
+        - `verbose_name`: "Multimodal Chat"
+        - `verbose_name_plural`: "Multimodal Chats"
+        - `ordering`: Orders chats by creation date in descending order.
+        - `indexes`: Indexes on various fields for optimized queries.
+    """
+
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE,
                                   related_name='multimodal_chats', default=1)
@@ -112,6 +150,29 @@ MESSAGE_SENDER_TYPES = [
 
 
 class MultimodalChatMessage(models.Model):
+    """
+    MultimodalChatMessage Model:
+    - Purpose: Represents a message within a multimodal chat session. It stores the message content, sender type, multimedia contents, and whether the message is starred. The model also provides methods for managing related transactions and starred messages.
+    - Key Fields:
+        - `multimodal_chat`: ForeignKey linking to the `MultimodalChat` model that this message belongs to.
+        - `sender_type`: Field specifying the sender type (e.g., User, Assistant).
+        - `message_text_content`: The textual content of the message.
+        - `message_json_content`: JSON field for storing additional message content (not used currently).
+        - `message_image_contents`: JSON field for storing image contents related to the message.
+        - `message_file_contents`: JSON field for storing file contents related to the message.
+        - `starred`: Boolean field indicating whether the message is starred.
+        - `sent_at`: Timestamp for when the message was sent.
+    - Methods:
+        - `get_organization_balance()`: Retrieves the current balance of the organization associated with the chat.
+        - `token_cost_surpasses_the_balance(total_billable_cost)`: Checks if the token cost surpasses the organization's balance.
+        - `save()`: Overridden to handle transactions, starred messages, and related logic when the message is saved.
+    - Meta:
+        - `verbose_name`: "Multimodal Chat Message"
+        - `verbose_name_plural`: "Multimodal Chat Messages"
+        - `ordering`: Orders messages by sent date in descending order.
+        - `indexes`: Indexes on various fields for optimized queries.
+    """
+
     multimodal_chat = models.ForeignKey('multimodal_chat.MultimodalChat', on_delete=models.CASCADE,
                                         related_name='messages_chat')
     sender_type = models.CharField(max_length=10, choices=MESSAGE_SENDER_TYPES)
@@ -169,6 +230,19 @@ class MultimodalChatMessage(models.Model):
 
 
 class ChatCreationLog(models.Model):
+    """
+    ChatCreationLog Model:
+    - Purpose: Represents a log entry for the creation of a multimodal chat. It stores the organization associated with the chat and the timestamp of creation.
+    - Key Fields:
+        - `organization`: ForeignKey linking to the `Organization` model.
+        - `created_at`: Timestamp for when the chat was created.
+    - Meta:
+        - `verbose_name`: "Chat Creation Log"
+        - `verbose_name_plural`: "Chat Creation Logs"
+        - `ordering`: Orders logs by creation date in descending order.
+        - `indexes`: Indexes on the creation date for optimized queries.
+    """
+
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -185,6 +259,19 @@ class ChatCreationLog(models.Model):
 
 
 class ChatMessageCreationLog(models.Model):
+    """
+    ChatMessageCreationLog Model:
+    - Purpose: Represents a log entry for the creation of a message within a multimodal chat. It stores the organization associated with the message and the timestamp of creation.
+    - Key Fields:
+        - `organization`: ForeignKey linking to the `Organization` model.
+        - `created_at`: Timestamp for when the message was created.
+    - Meta:
+        - `verbose_name`: "Chat Message Creation Log"
+        - `verbose_name_plural`: "Chat Message Creation Logs"
+        - `ordering`: Orders logs by creation date in descending order.
+        - `indexes`: Indexes on the creation date for optimized queries.
+    """
+
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

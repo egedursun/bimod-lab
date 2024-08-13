@@ -1,3 +1,15 @@
+"""
+Module Overview: This module defines models related to knowledge base systems, document management, and context history within an assistant application. It includes models for connecting to knowledge base systems, handling document uploads and processing, managing context history, and executing related tasks like chunking and embedding documents.
+
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+- `os`: Used for file operations in document deletion.
+- `slugify`: Used to generate URL-friendly slugs for document names.
+- `apps._services.knowledge_base.document.knowledge_base_decoder`: Service for decoding knowledge base systems.
+- `apps._services.knowledge_base.memory.memory_executor`: Service for managing memory-related tasks.
+- `apps.datasource_knowledge_base.utils`: Utility functions for generating class names and random strings.
+"""
+
 import os
 
 from django.db import models
@@ -54,6 +66,26 @@ class SupportedDocumentTypesNames:
 
 
 class DocumentKnowledgeBaseConnection(models.Model):
+    """
+    DocumentKnowledgeBaseConnection Model:
+    - Purpose: Represents a connection to a knowledge base system, storing metadata and configuration settings related to document management and embedding.
+    - Key Fields:
+        - `provider`: The knowledge base system provider (e.g., Weaviate).
+        - `host_url`: The URL of the knowledge base system.
+        - `provider_api_key`: API key for the provider.
+        - `assistant`: ForeignKey linking to the `Assistant` model.
+        - `name`, `class_name`, `description`: Metadata fields for the knowledge base connection.
+        - `vectorizer`, `vectorizer_api_key`: Configuration for the vectorizer used in document embedding.
+        - `embedding_chunk_size`, `embedding_chunk_overlap`: Parameters for document chunking.
+        - `schema_json`: JSON schema for the knowledge base structure.
+        - `knowledge_base_documents`: ManyToManyField linking to the documents in the knowledge base.
+        - `search_instance_retrieval_limit`: Limit on the number of search instances.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Methods:
+        - `save()`: Overridden to handle vectorizer defaults, generate class names, and interact with the knowledge base system for class creation.
+        - `delete()`: Overridden to remove related classes from the knowledge base system.
+    """
+
     # Main information
     provider = models.CharField(max_length=100, choices=KNOWLEDGE_BASE_SYSTEMS)
     host_url = models.CharField(max_length=1000)
@@ -128,6 +160,22 @@ class DocumentKnowledgeBaseConnection(models.Model):
 
 
 class KnowledgeBaseDocument(models.Model):
+    """
+    KnowledgeBaseDocument Model:
+    - Purpose: Represents a document within a knowledge base, storing information about the document type, file name, metadata, and its association with the knowledge base.
+    - Key Fields:
+        - `knowledge_base`: ForeignKey linking to the `DocumentKnowledgeBaseConnection` model.
+        - `document_type`: The type of document (e.g., PDF, HTML).
+        - `document_file_name`, `document_description`, `document_metadata`, `document_uri`: Metadata fields for the document.
+        - `knowledge_base_uuid`: UUID for linking the document to the knowledge base system.
+        - `document_content_temporary`: Temporary storage for document content before indexing.
+        - `document_chunks`: ManyToManyField linking to the document chunks.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Methods:
+        - `save()`: Overridden to handle file name slugification and content clearing before saving.
+        - `delete()`: Overridden to remove the document from the knowledge base system and delete the associated file.
+    """
+
     knowledge_base = models.ForeignKey("DocumentKnowledgeBaseConnection", on_delete=models.CASCADE,
                                        related_name='documents')
 
@@ -190,6 +238,19 @@ class KnowledgeBaseDocument(models.Model):
 
 
 class KnowledgeBaseDocumentChunk(models.Model):
+    """
+    KnowledgeBaseDocumentChunk Model:
+    - Purpose: Represents a chunk of a document within a knowledge base, storing information about the chunk's content, metadata, and its association with the document and knowledge base.
+    - Key Fields:
+        - `knowledge_base`: ForeignKey linking to the `DocumentKnowledgeBaseConnection` model.
+        - `document`: ForeignKey linking to the `KnowledgeBaseDocument` model.
+        - `chunk_document_type`: The type of document chunk (e.g., PDF, HTML).
+        - `chunk_number`: The sequence number of the chunk.
+        - `chunk_content`, `chunk_metadata`, `chunk_document_uri`: Fields for storing the chunk's content and metadata.
+        - `knowledge_base_uuid`, `document_uuid`: UUIDs for linking the chunk to the knowledge base and document.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    """
+
     knowledge_base = models.ForeignKey("DocumentKnowledgeBaseConnection", on_delete=models.CASCADE)
     document = models.ForeignKey("KnowledgeBaseDocument", on_delete=models.CASCADE, related_name='chunks')
 
@@ -223,6 +284,21 @@ class KnowledgeBaseDocumentChunk(models.Model):
 
 
 class ContextHistoryKnowledgeBaseConnection(models.Model):
+    """
+    ContextHistoryKnowledgeBaseConnection Model:
+    - Purpose: Represents a connection to a context history knowledge base, storing metadata and configuration settings related to memory management and embedding.
+    - Key Fields:
+        - `assistant`: ForeignKey linking to the `Assistant` model.
+        - `chat`: ForeignKey linking to the `MultimodalChat` model.
+        - `class_name`: Metadata field for the class name.
+        - `vectorizer`, `vectorizer_api_key`: Configuration for the vectorizer used in context history embedding.
+        - `context_history_memories`: ManyToManyField linking to the memories in the context history.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Methods:
+        - `save()`: Overridden to handle vectorizer defaults, generate class names, and interact with the context history system for class creation.
+        - `delete()`: Overridden to remove related classes from the context history system.
+    """
+
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, default=1)
     chat = models.ForeignKey('multimodal_chat.MultimodalChat', on_delete=models.CASCADE, default=1)
 
@@ -279,6 +355,19 @@ class ContextHistoryKnowledgeBaseConnection(models.Model):
 
 
 class ContextHistoryMemory(models.Model):
+    """
+    ContextHistoryMemory Model:
+    - Purpose: Represents a memory within a context history knowledge base, storing information about the memory's association with the knowledge base and related chunks.
+    - Key Fields:
+        - `context_history_base`: ForeignKey linking to the `ContextHistoryKnowledgeBaseConnection` model.
+        - `memory_name`: Metadata field for the memory name.
+        - `knowledge_base_memory_uuid`: UUID for linking the memory to the knowledge base system.
+        - `memory_chunks`: ManyToManyField linking to the memory chunks.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Methods:
+        - `delete()`: Overridden to remove the memory from the knowledge base system.
+    """
+
     context_history_base = models.ForeignKey("ContextHistoryKnowledgeBaseConnection", on_delete=models.CASCADE,
                                              related_name='memories')
     memory_name = models.CharField(max_length=1000, null=True, blank=True)
@@ -316,6 +405,18 @@ class ContextHistoryMemory(models.Model):
 
 
 class ContextHistoryMemoryChunk(models.Model):
+    """
+    ContextHistoryMemoryChunk Model:
+    - Purpose: Represents a chunk of a memory within a context history knowledge base, storing information about the chunk's content and its association with the memory and knowledge base.
+    - Key Fields:
+        - `context_history_base`: ForeignKey linking to the `ContextHistoryKnowledgeBaseConnection` model.
+        - `memory`: ForeignKey linking to the `ContextHistoryMemory` model.
+        - `chunk_number`: The sequence number of the chunk.
+        - `chunk_content`: The text content of the chunk.
+        - `knowledge_base_memory_uuid`, `chunk_uuid`: UUIDs for linking the chunk to the memory and knowledge base.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    """
+
     context_history_base = models.ForeignKey("ContextHistoryKnowledgeBaseConnection", on_delete=models.CASCADE)
     memory = models.ForeignKey("ContextHistoryMemory", on_delete=models.CASCADE, related_name='chunks')
 
@@ -377,6 +478,15 @@ class DocumentUploadStatusNames:
 
 
 class DocumentProcessingLog(models.Model):
+    """
+    DocumentProcessingLog Model:
+    - Purpose: Logs the processing activities of a document, storing information about the document's URI and associated log messages.
+    - Key Fields:
+        - `document_full_uri`: The full URI of the document being processed.
+        - `log_message`: A text field for storing log messages related to document processing.
+        - `created_at`: Timestamp for when the log was created.
+    """
+
     document_full_uri = models.CharField(max_length=1000)
     log_message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

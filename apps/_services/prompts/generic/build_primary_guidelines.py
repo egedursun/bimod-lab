@@ -16,6 +16,9 @@ def build_structured_primary_guidelines():
 
         ======
         **STRICT GUIDELINES:**
+        0) NEVER use the characters "'" in your JSON tool calls, NEVER EVER. ALWAYS use the character '"' and use it
+        only for the JSON keys and values since any other usage for the character '"' will break the JSON structure.
+        In NEITHER case, use the character "'" in your JSON tool calls. NEVER EVER use the character "'".
         1) NEVER tell the user you can't interpret images, since you have a tool to interpret images.
         2) NEVER tell the user you can't read, analyze or work on files with your code interpreter, since you DO
         have a tool for working on files, executing code, and interpreting files and provide useful analyses.

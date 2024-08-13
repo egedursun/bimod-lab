@@ -39,8 +39,9 @@
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-102.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -57,26 +58,51 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   <!-- Knowledge Base Connections Cards -->
   {% for organization, assistants in connections_by_organization.items %}
     <div class="card mb-6">
       <div class="card-header border-bottom">
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
-          <h4>
-            {{ organization.name }}
+          <div class="d-flex">
+            <img src="
+
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 width="60" height="60" class="rounded me-4" alt="Organization Image">
+          </div>
+          <h4 class="mt-4">
+            <strong>{{ organization.name }}</strong>
           </h4>
         </a>
         <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
         <span data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false"
               aria-controls="collapse-org-{{ organization.id }}">
-      <strong>&nbsp; See Knowledge Base Connections of Assistants</strong>
+      <strong>&nbsp; See Knowledge Base Connections</strong>
     </span>
       </div>
       <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
         {% for assistant, connections in assistants.items %}
           <div class="assistant-group m-8">
-            <h5 class="assistant-title"><strong>{{ assistant.name }}</strong></h5>
+            <div class="d-flex card card-border-shadow-primary rounded p-4">
+              <img src="
+                {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   width="80" height="80" class="rounded me 4" alt="Assistant Image">
+              <h5 class="assistant-title mt-4">
+                <strong>{{ assistant.name }}</strong>
+              </h5>
+            </div>
             <div class="card-datatable table-responsive">
               <a href="{% url 'datasource_knowledge_base:create' %}">
                 <button class="btn btn-success mt-4 mb-8">
@@ -90,52 +116,94 @@
                 <div class="col-xl-6 col-md-6">
                   <div class="card h-100">
                     <div class="card-header d-flex justify-content-between">
-                      <div class="card-title mb-0">
+                      <div class="card-title mb-0 pt-4">
                         <p class="card-subtitle mb-4"><strong>
                           <i class="fa fa-id-badge me-4"></i> Connection Name: &nbsp;&nbsp;</strong>
                           {{ connection.name }}
                         </p>
-                        <p class="card-subtitle mb-4"><strong>
-                          <i class="fa fa-database me-4"></i> Knowledge Base System: &nbsp;&nbsp;</strong>
+                        <p class="card-subtitle mb-1"><strong>
+                          <i class="fa fa-database me-4"></i> Service Provider: &nbsp;&nbsp;</strong>
                           {{ connection.provider }}
                         </p>
                       </div>
                     </div>
+                    <hr>
                     <div class="card-body">
                       <ul class="p-0 m-0">
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body me-4"><strong>Description:</strong></span>
-                          <span class="text-wrap">{{ connection.description|linebreaksbr }}</span>
+                          <span class="text-body me-4">
+                            <i class="fa fa-info-circle me-4"></i>
+                            <strong>Description:</strong>
+                          </span>
+                          <span class="text-wrap">
+                            {{ connection.description|linebreaksbr }}
+                          </span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Host URL:</strong></span>
+                          <span class="text-body">
+                            <strong>
+                              <i class="fa fa-signal me-4"></i>
+                              Host URL:
+                            </strong>
+                          </span>
                           <span
-                            class="text-wrap bg-label-warning p-2 rounded ms-4"><strong>{{ connection.host_url }}</strong></span>
+                            class="text-wrap">
+                            <strong class="border border-warning p-1 rounded">
+                              {{ connection.host_url }}
+                            </strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Vectorizer:</strong></span>
+                          <span class="text-body">
+                            <strong>
+                              <i class="fa fa-vector-square me-4"></i>
+                              Vectorizer:
+                            </strong></span>
                           <span
-                            class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.vectorizer }}</strong></span>
+                            class="text-wrap">
+                            <strong class="border border-warning p-1 rounded">
+                              {{ connection.vectorizer }}
+                            </strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Read Only:</strong></span>
+                          <span class="text-body"><strong>
+                            <i class="fa fa-search me-4"></i>
+                            Read Only:
+                          </strong></span>
                           <span
-                            class="text-wrap {% if connection.is_read_only %}bg-label-success{% else %}bg-label-danger{% endif %} rounded p-2"><strong>{{ connection.is_read_only|yesno:"Yes,No" }}</strong></span>
+                            class="text-wrap border {% if connection.is_read_only %}border-success{% else %}border-danger{% endif %} rounded p-1"><strong>{{ connection.is_read_only|yesno:"Yes,No" }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Embedding Chunk Size: </strong></span>
-                          <span
-                            class="text-wrap bg-label-info rounded p-2"><strong>{{ connection.embedding_chunk_size }}</strong></span>
+                          <span class="text-body"><strong>
+                            <i class="fa fa-pie-chart me-4"></i>
+                            Chunk Size:
+                          </strong></span>
+                          <span class="text-wrap">
+                            <strong class="border border-info rounded p-1">
+                              {{ connection.embedding_chunk_size }}
+                            </strong>
+                          </span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Embedding Chunk Overlap: </strong></span>
-                          <span
-                            class="text-wrap bg-label-info rounded p-2"><strong>{{ connection.embedding_chunk_overlap }}</strong></span>
+                          <span class="text-body"><strong>
+                            <i class="fa fa-yin-yang me-4"></i>
+                            Chunk Overlap:
+                          </strong></span>
+                          <span class="text-wrap">
+                            <strong class="border border-info rounded p-1">
+                              {{ connection.embedding_chunk_overlap }}
+                            </strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Single Retrieval Limit: </strong></span>
+                          <span class="text-body"><strong>
+                            <i class="fa fa-road-barrier me-4"></i>
+                            Single Retrieval Limit:
+                          </strong></span>
                           <span
-                            class="text-wrap bg-label-warning rounded p-2"><strong>{{ connection.search_instance_retrieval_limit }}</strong></span>
+                            class="text-wrap">
+                            <strong class="border border-warning rounded p-1">
+                              {{ connection.search_instance_retrieval_limit }}
+                            </strong>
+                          </span>
                         </li>
                       </ul>
                       <hr>

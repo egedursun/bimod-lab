@@ -8,6 +8,7 @@ class ToolTypeNames:
     FILE_SYSTEM_COMMAND_EXECUTION = 'File System Command Execution'
     MEDIA_STORAGE_QUERY_EXECUTION = 'Media Storage Query Execution'
     BROWSING = 'Browsing'
+    URL_FILE_UPLOADER = 'URL File Uploader'
     URL_FILE_DOWNLOADER = 'URL File Downloader'
     PREDICTION_WITH_ML_MODEL = 'Prediction with ML Model'
     CODE_INTERPRETER = 'Code Interpreter'

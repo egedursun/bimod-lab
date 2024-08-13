@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import include, path
 
 from config import settings
@@ -26,6 +27,10 @@ from web_project.views import SystemView
 def trigger_error(request):
     division_by_zero = 1 / 0
     return division_by_zero
+
+
+def docs_redirect_view(request):
+    return redirect('/static/docs/index.html')
 
 
 urlpatterns = [
@@ -64,6 +69,12 @@ urlpatterns = [
     #################################################################################################################
 
     #################################################################################################################
+    # Support System Endpoints
+    path('app/docs/', docs_redirect_view, name='technical_docs'),
+    path("app/support_system/", include("apps.support_system.urls", namespace="support_system")),
+    path("app/community_forum/", include("apps.community_forum.urls", namespace="community_forum")),
+    path("app/blog_app/", include("apps.blog_app.urls", namespace="blog_app")),
+    #################################################################################################################
     # Test Endpoints
     #################################################################################################################
     path('sentry/test/', trigger_error),
@@ -89,9 +100,9 @@ HANDLED_HTTP_NEGATIVE_RESPONSES = {
 #####################################################################################################################
 
 handler400 = SystemView.as_view(template_name="pages_misc_error.html", status=400)
-handler401 = SystemView.as_view(template_name="pages_misc_error.html", status=401)
+handler401 = SystemView.as_view(template_name="pages_misc_not_authorized.html", status=401)
 handler402 = SystemView.as_view(template_name="pages_misc_error.html", status=402)
-handler403 = SystemView.as_view(template_name="pages_misc_not_authorized.html", status=403)
+handler403 = SystemView.as_view(template_name="pages_misc_error.html", status=403)
 handler404 = SystemView.as_view(template_name="pages_misc_error.html", status=404)
 handler405 = SystemView.as_view(template_name="pages_misc_error.html", status=405)
 handler406 = SystemView.as_view(template_name="pages_misc_error.html", status=406)

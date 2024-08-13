@@ -138,12 +138,15 @@
   <div class="container-fluid">
     <div class="row mb-4">
       <div class="col-12">
-        <h3 class="mb-0">Media Files</h3>
+        <h3 class="mb-0">
+          <strong>Media Files</strong>
+        </h3>
       </div>
     </div>
 
-    <div class="alert alert-secondary alert-dismissible d-flex align-items-center" role="alert">
-      <img src="{% static 'img/custom-illustrations/boy-core-list.png' %}" width="15%" class="justify-content-end">
+    <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-64.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8">
       <span class="alert-icon rounded ms-4">
             <i class="ti ti-bookmark"></i>
         </span>
@@ -159,6 +162,18 @@
       </div>
     </div>
 
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+
     {% for organization_data in data %}
       <div class="row mb-4">
         <div class="col-12">
@@ -167,18 +182,34 @@
               <p>
                 <a data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button"
                    aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
-                  <h4 class="mb-0">{{ organization_data.organization.name }}</h4>
+                  <div class="d-flex">
+                    <img src="
+
+
+                      {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                         class="rounded me-4" width="80" height="80">
+                    <h4 class="mb-0 mt-4">
+                      <strong>{{ organization_data.organization.name }}</strong>
+                    </h4>
+                  </div>
                   <small class="text-muted">{{ organization_data.organization.email }}</small>
                   <div class="card-datatable table-responsive">
                     <a href="{% url 'datasource_media_storages:create_item' %}">
-                      <button class="btn btn-info mt-4 mb-8">
+                      <button class="btn btn-info mt-4 mb-8 me-4">
                         <i class="fa fa-file-upload me-4"></i>
                         <strong> Add New Media Item</strong>
+                      </button>
+                    </a>
+                    <a href="{% url 'datasource_media_storages:create' %}">
+                      <button class="btn btn-success mt-4 mb-8">
+                        <i class="fa fa-box me-4"></i>
+                        <strong> Add New Storage</strong>
                       </button>
                     </a>
                   </div>
                 </a>
               </p>
+              <hr>
               <i class="fa fa-arrow-alt-circle-up toggle-icon mt-5"
                  data-target="#collapse-org-{{ organization_data.organization.id }}"></i>
               <span data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button"
@@ -190,15 +221,19 @@
               {% for assistant_data in organization_data.assistants %}
                 <div class="card mb-4">
                   <div class="card-header">
-                    <h4 class="mb-0">{{ assistant_data.assistant.name }}</h4>
-                    <small class="text-muted">{{ assistant_data.assistant.description }}</small>
+                    <div class="d-flex">
+                      <img src="{% if assistant_data.assistant.assistant_image %}{{ assistant_data.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                           class="rounded me-4" width="60" height="60">
+                      <h4 class="mb-0 ms-4"><strong>{{ assistant_data.assistant.name }}</strong></h4>
+                      <br>
+                    </div>
                   </div>
                   <div id="collapse-assistant-{{ assistant_data.assistant.id }}" class="card-body collapse show">
                     {% for storage_data in assistant_data.media_storages %}
                       <div class="card mb-4">
                         <div class="card-header">
                           <h5 class="mb-0"><strong>{{ storage_data.storage.name }}</strong></h5>
-                          <p class="bg-label-info rounded p-2 mt-4 mb-4 w-20">
+                          <p class="bg-label-info rounded p-1 mt-4 mb-4 w-20">
                             {% if storage_data.storage.media_category == "image" %}
                               <i class="fa fa-image me-4"></i>
                             {% elif storage_data.storage.media_category == "audio" %}
@@ -214,7 +249,11 @@
                             {% endif %}
                             <strong>{{ storage_data.storage.media_category|capfirst }} Storage</strong>
                           </p>
-                          <small class="text-muted">{{ storage_data.storage.description }}</small>
+                          <small class="text-muted">
+                            <strong>
+                              <i class="fa fa-info-circle me-4"></i>
+                              {{ storage_data.storage.description }}
+                            </strong></small>
                           <form method="post" action="{% url 'datasource_media_storages:fetch_file_from_url' %}"
                                 class="mt-4">
                             {% csrf_token %}
@@ -302,17 +341,22 @@
                                 </tbody>
                               </table>
                               <button type="submit" class="btn btn-warning btn-sm w-25 mt-4 delete-selected-btn">
-                                <strong>Delete Selected Media Files</strong></button>
+                                <strong>
+                                  <i class="fa fa-trash me-4"></i> Delete Selected
+                                </strong></button>
                             </form>
                             <nav aria-label="Page navigation">
                               <form method="post"
                                     action="{% url 'datasource_media_storages:delete_all_items' storage_data.storage.id %}"
                                     class="d-inline">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm w-25 mt-2 delete-all-btn"><strong>DELETE
-                                  ALL</strong></button>
+                                <button type="submit" class="btn btn-danger btn-sm w-25 mt-2 delete-all-btn">
+                                  <strong>
+                                    <i class="fa fa-exclamation-triangle me-4"></i>
+                                    Delete ALL
+                                  </strong></button>
                               </form>
-                              <ul class="pagination pagination-rounded pt-8 overflow-scroll">
+                              <ul class="pagination pagination-rounded pt-8 overflow-auto">
                                 {% if storage_data.items.has_previous %}
                                   <li class="page-item">
                                     <a class="page-link" href="?page=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
@@ -343,7 +387,21 @@
                           </div>
                         </div>
                       </div>
+                    {% empty %}
+                      <div class="card-body">
+                        <div class="alert alert-warning" role="alert">
+                          <i class="fa fa-exclamation-triangle me-4"></i>
+                          <strong>No media files found in this storage.</strong>
+                        </div>
+                      </div>
                     {% endfor %}
+                  </div>
+                </div>
+              {% empty %}
+                <div class="card-body">
+                  <div class="alert alert-warning" role="alert">
+                    <i class="fa fa-exclamation-triangle me-4"></i>
+                    <strong>No media storages found for this assistant.</strong>
                   </div>
                 </div>
               {% endfor %}

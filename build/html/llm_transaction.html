@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Datasource LLM Transaction App Documentation &#8212; Bimod.io v0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=fa47ad08"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Datasource Memories App Documentation" href="memories.html" />
+    <link rel="prev" title="Datasource LLM Core App Documentation" href="llm_core.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="datasource-llm-transaction-app-documentation">
+<h1>Datasource LLM Transaction App Documentation<a class="headerlink" href="#datasource-llm-transaction-app-documentation" title="Link to this heading">¶</a></h1>
+<p>This section describes the LLM Transaction App.</p>
+<p id="module-llm_transaction.views">This module provides views for managing LLM transactions and automated balance top-up plans for organizations within the Bimod.io platform.</p>
+<p>The views allow authenticated users to filter and list transactions, create automated top-up plans, and manage these plans, ensuring organizations maintain sufficient balance for LLM operations.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="llm_transaction.views.CreateAutomatedTopUpPlan">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">llm_transaction.views.</span></span><span class="sig-name descname"><span class="pre">CreateAutomatedTopUpPlan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#llm_transaction.views.CreateAutomatedTopUpPlan" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
+<p>Handles the creation of an automated balance top-up plan for an organization.</p>
+<p>This view allows users to set up triggers and parameters for automatic balance top-ups, ensuring that organizations maintain a minimum balance.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="llm_transaction.views.CreateAutomatedTopUpPlan.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#llm_transaction.views.CreateAutomatedTopUpPlan.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Prepares the context with the organizations associated with the current user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="llm_transaction.views.CreateAutomatedTopUpPlan.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#llm_transaction.views.CreateAutomatedTopUpPlan.post" title="Link to this definition">¶</a></dt>
+<dd><p>Processes the form submission to create a new automated top-up plan, including setting the triggers and limits.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="llm_transaction.views.ListAutomatedTopUpPlans">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">llm_transaction.views.</span></span><span class="sig-name descname"><span class="pre">ListAutomatedTopUpPlans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#llm_transaction.views.ListAutomatedTopUpPlans" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
+<p>Displays a list of automated balance top-up plans for the user’s organizations.</p>
+<p>This view allows users to manage their automated top-up plans, including deleting existing plans.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="llm_transaction.views.ListAutomatedTopUpPlans.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#llm_transaction.views.ListAutomatedTopUpPlans.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Prepares the context with the organizations associated with the current user and their respective top-up plans.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="llm_transaction.views.ListAutomatedTopUpPlans.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#llm_transaction.views.ListAutomatedTopUpPlans.post" title="Link to this definition">¶</a></dt>
+<dd><p>Processes the form submission to delete an automated top-up plan.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="llm_transaction.views.ListTransactionsView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">llm_transaction.views.</span></span><span class="sig-name descname"><span class="pre">ListTransactionsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#llm_transaction.views.ListTransactionsView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code></p>
+<p>Displays a filtered list of LLM transactions for the user’s organizations.</p>
+<p>This view allows users to filter transactions by a specific time range, with pagination support to manage large datasets.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="llm_transaction.views.ListTransactionsView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#llm_transaction.views.ListTransactionsView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the filtered transactions for the user’s organizations and adds them to the context.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="llm_transaction.views.ListTransactionsView.get_filter_date">
+<span class="sig-name descname"><span class="pre">get_filter_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_specifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_specifier</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#llm_transaction.views.ListTransactionsView.get_filter_date" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the filter date based on the user’s selected filter options.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="llm_transaction.views.ListTransactionsView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#llm_transaction.views.ListTransactionsView.post" title="Link to this definition">¶</a></dt>
+<dd><p>Processes the form submission to filter transactions and update the context accordingly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">get_filter_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_specifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_specifier</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<section id="models">
+<h2>Models<a class="headerlink" href="#models" title="Link to this heading">¶</a></h2>
+<p>This section describes the models used in the LLM Transaction App.</p>
+<p id="module-apps.llm_transaction.models">Module Overview: This module defines models related to transactions, auto-balance top-ups, and balance snapshots for organizations within an assistant-based application. It includes functionality for calculating transaction costs, managing auto-balance top-ups, and recording balance snapshots for organizations.</p>
+<p>Dependencies:
+- <cite>decimal</cite>: Python’s module for decimal fixed-point and floating-point arithmetic.
+- <cite>django.db.models</cite>: Django’s ORM for defining database models.
+- <cite>apps.llm_transaction.utils</cite>: Utility functions for calculating tokens, costs, and other transaction-related values.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apps.llm_transaction.models.</span></span><span class="sig-name descname"><span class="pre">AutoBalanceTopUpModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>AutoBalanceTopUpModel:
+- Purpose: Represents the configuration for automatically topping up an organization’s balance, with triggers based on balance thresholds or regular intervals.
+- Key Fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>organization</cite>: ForeignKey linking to the <cite>Organization</cite> that the top-up configuration applies to.</p></li>
+<li><p><cite>on_balance_threshold_trigger</cite>: Boolean flag indicating if the top-up is triggered by a balance threshold.</p></li>
+<li><p><cite>on_interval_by_days_trigger</cite>: Boolean flag indicating if the top-up is triggered by regular intervals.</p></li>
+<li><p><cite>balance_lower_trigger_threshold_value</cite>, <cite>addition_on_balance_threshold_trigger</cite>: Fields related to the balance threshold trigger.</p></li>
+<li><p><cite>regular_by_days_interval</cite>, <cite>addition_on_interval_by_days_trigger</cite>, <cite>date_of_last_auto_top_up</cite>: Fields related to the interval trigger.</p></li>
+<li><p><cite>calendar_month_total_auto_addition_value</cite>, <cite>monthly_hard_limit_auto_addition_amount</cite>: Fields for tracking and limiting the total auto-addition value within a month.</p></li>
+<li><p><cite>created_at</cite>, <cite>updated_at</cite>: Timestamps for creation and last update.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Meta:</dt><dd><ul>
+<li><p><cite>verbose_name</cite>: “Auto Balance Top Up”</p></li>
+<li><p><cite>verbose_name_plural</cite>: “Auto Balance Top Ups”</p></li>
+<li><p><cite>ordering</cite>: Orders top-up configurations by creation date in descending order.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.DoesNotExist" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.MultipleObjectsReturned" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.addition_on_balance_threshold_trigger">
+<span class="sig-name descname"><span class="pre">addition_on_balance_threshold_trigger</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.addition_on_balance_threshold_trigger" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.addition_on_interval_by_days_trigger">
+<span class="sig-name descname"><span class="pre">addition_on_interval_by_days_trigger</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.addition_on_interval_by_days_trigger" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.balance_lower_trigger_threshold_value">
+<span class="sig-name descname"><span class="pre">balance_lower_trigger_threshold_value</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.balance_lower_trigger_threshold_value" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.calendar_month_total_auto_addition_value">
+<span class="sig-name descname"><span class="pre">calendar_month_total_auto_addition_value</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.calendar_month_total_auto_addition_value" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.created_at" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.date_of_last_auto_top_up">
+<span class="sig-name descname"><span class="pre">date_of_last_auto_top_up</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.date_of_last_auto_top_up" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.get_next_by_created_at">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.get_next_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.get_next_by_updated_at">
+<span class="sig-name descname"><span class="pre">get_next_by_updated_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">updated_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.get_next_by_updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.get_previous_by_created_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.get_previous_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.get_previous_by_updated_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_updated_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">updated_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.get_previous_by_updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.id" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.monthly_hard_limit_auto_addition_amount">
+<span class="sig-name descname"><span class="pre">monthly_hard_limit_auto_addition_amount</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.monthly_hard_limit_auto_addition_amount" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.objects" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.on_balance_threshold_trigger">
+<span class="sig-name descname"><span class="pre">on_balance_threshold_trigger</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.on_balance_threshold_trigger" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.on_interval_by_days_trigger">
+<span class="sig-name descname"><span class="pre">on_interval_by_days_trigger</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.on_interval_by_days_trigger" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.organization">
+<span class="sig-name descname"><span class="pre">organization</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.organization" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.organization_auto_balance_topup">
+<span class="sig-name descname"><span class="pre">organization_auto_balance_topup</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.organization_auto_balance_topup" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the reverse side of a one-to-one
+relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">place</span> <span class="o">=</span> <span class="n">OneToOneField</span><span class="p">(</span><span class="n">Place</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;restaurant&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Place.restaurant</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseOneToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.organization_id">
+<span class="sig-name descname"><span class="pre">organization_id</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.organization_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.regular_by_days_interval">
+<span class="sig-name descname"><span class="pre">regular_by_days_interval</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.regular_by_days_interval" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.AutoBalanceTopUpModel.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><a class="headerlink" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.updated_at" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apps.llm_transaction.models.</span></span><span class="sig-name descname"><span class="pre">LLMTransaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>LLMTransaction Model:
+- Purpose: Represents a transaction related to language model operations, storing details such as the number of tokens used, costs associated with the transaction, and the source and type of the transaction.
+- Key Fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>responsible_user</cite>: ForeignKey linking to the <cite>User</cite> who initiated the transaction.</p></li>
+<li><p><cite>responsible_assistant</cite>: ForeignKey linking to the <cite>Assistant</cite> involved in the transaction.</p></li>
+<li><p><cite>organization</cite>: ForeignKey linking to the <cite>Organization</cite> associated with the transaction.</p></li>
+<li><p><cite>model</cite>: ForeignKey linking to the <cite>LLMCore</cite> model used in the transaction.</p></li>
+<li><p><cite>encoding_engine</cite>: The encoding engine used for tokenizing the transaction content.</p></li>
+<li><p><cite>transaction_context_content</cite>: The content involved in the transaction.</p></li>
+<li><p><cite>number_of_tokens</cite>: The number of tokens used in the transaction.</p></li>
+<li><p><cite>llm_cost</cite>, <cite>internal_service_cost</cite>, <cite>tax_cost</cite>, <cite>total_cost</cite>, <cite>total_billable_cost</cite>: Fields for storing the calculated costs associated with the transaction.</p></li>
+<li><p><cite>transaction_type</cite>, <cite>transaction_source</cite>: Fields for categorizing the transaction.</p></li>
+<li><p><cite>created_at</cite>: Timestamp for when the transaction was created.</p></li>
+<li><p><cite>is_tool_cost</cite>: Boolean flag to indicate if the transaction is related to a tool.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Methods:</dt><dd><ul>
+<li><p><cite>save()</cite>: Overridden to calculate tokens and costs, update the organization’s balance, and handle auto-balance top-ups if needed.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Meta:</dt><dd><ul>
+<li><p><cite>verbose_name</cite>: “Transaction”</p></li>
+<li><p><cite>verbose_name_plural</cite>: “Transactions”</p></li>
+<li><p><cite>ordering</cite>: Orders transactions by creation date in descending order.</p></li>
+<li><p><cite>indexes</cite>: Indexes on various fields for optimized queries.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.DoesNotExist" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.MultipleObjectsReturned" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.created_at" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.encoding_engine">
+<span class="sig-name descname"><span class="pre">encoding_engine</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.encoding_engine" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.get_encoding_engine_display">
+<span class="sig-name descname"><span class="pre">get_encoding_engine_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">encoding_engine&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.get_encoding_engine_display" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.get_next_by_created_at">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.get_next_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.get_previous_by_created_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.get_previous_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.get_transaction_source_display">
+<span class="sig-name descname"><span class="pre">get_transaction_source_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">transaction_source&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.get_transaction_source_display" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.get_transaction_type_display">
+<span class="sig-name descname"><span class="pre">get_transaction_type_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">transaction_type&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.get_transaction_type_display" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.id" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.internal_service_cost">
+<span class="sig-name descname"><span class="pre">internal_service_cost</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.internal_service_cost" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.is_tool_cost">
+<span class="sig-name descname"><span class="pre">is_tool_cost</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.is_tool_cost" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.llm_cost">
+<span class="sig-name descname"><span class="pre">llm_cost</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.llm_cost" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.model" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.model_id">
+<span class="sig-name descname"><span class="pre">model_id</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.model_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.multimodal_chats">
+<span class="sig-name descname"><span class="pre">multimodal_chats</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.multimodal_chats" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.number_of_tokens">
+<span class="sig-name descname"><span class="pre">number_of_tokens</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.number_of_tokens" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.objects" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.organization">
+<span class="sig-name descname"><span class="pre">organization</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.organization" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.organization_id">
+<span class="sig-name descname"><span class="pre">organization_id</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.organization_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.responsible_assistant">
+<span class="sig-name descname"><span class="pre">responsible_assistant</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.responsible_assistant" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.responsible_assistant_id">
+<span class="sig-name descname"><span class="pre">responsible_assistant_id</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.responsible_assistant_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.responsible_user">
+<span class="sig-name descname"><span class="pre">responsible_user</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.responsible_user" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.responsible_user_id">
+<span class="sig-name descname"><span class="pre">responsible_user_id</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.responsible_user_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save the current instance. Override this in a subclass if you want to
+control the saving process.</p>
+<p>The ‘force_insert’ and ‘force_update’ parameters can be used to insist
+that the “save” must be an SQL insert or update (or equivalent for
+non-SQL backends), respectively. Normally, they should not be set.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.tax_cost">
+<span class="sig-name descname"><span class="pre">tax_cost</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.tax_cost" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.total_billable_cost">
+<span class="sig-name descname"><span class="pre">total_billable_cost</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.total_billable_cost" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.total_cost">
+<span class="sig-name descname"><span class="pre">total_cost</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.total_cost" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.transaction_context_content">
+<span class="sig-name descname"><span class="pre">transaction_context_content</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.transaction_context_content" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.transaction_source">
+<span class="sig-name descname"><span class="pre">transaction_source</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.transaction_source" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.LLMTransaction.transaction_type">
+<span class="sig-name descname"><span class="pre">transaction_type</span></span><a class="headerlink" href="#apps.llm_transaction.models.LLMTransaction.transaction_type" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apps.llm_transaction.models.</span></span><span class="sig-name descname"><span class="pre">OrganizationBalanceSnapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>OrganizationBalanceSnapshot:
+- Purpose: Represents a snapshot of an organization’s balance at a specific point in time, used for tracking financial activity and historical records.
+- Key Fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>organization</cite>: ForeignKey linking to the <cite>Organization</cite> associated with the balance snapshot.</p></li>
+<li><p><cite>balance</cite>: The balance of the organization at the time of the snapshot.</p></li>
+<li><p><cite>created_at</cite>: Timestamp for when the snapshot was created.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Meta:</dt><dd><ul>
+<li><p><cite>verbose_name</cite>: “Organization Balance Snapshot”</p></li>
+<li><p><cite>verbose_name_plural</cite>: “Organization Balance Snapshots”</p></li>
+<li><p><cite>ordering</cite>: Orders balance snapshots by creation date in descending order.</p></li>
+<li><p><cite>indexes</cite>: Indexes on various fields for optimized queries.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.DoesNotExist" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.MultipleObjectsReturned" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot.balance">
+<span class="sig-name descname"><span class="pre">balance</span></span><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.balance" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.created_at" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot.get_next_by_created_at">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.get_next_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot.get_previous_by_created_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.get_previous_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.id" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.objects" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot.organization">
+<span class="sig-name descname"><span class="pre">organization</span></span><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.organization" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.OrganizationBalanceSnapshot.organization_id">
+<span class="sig-name descname"><span class="pre">organization_id</span></span><a class="headerlink" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.organization_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apps.llm_transaction.models.</span></span><span class="sig-name descname"><span class="pre">TransactionSourcesNames</span></span><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.API">
+<span class="sig-name descname"><span class="pre">API</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'api'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.API" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.APP">
+<span class="sig-name descname"><span class="pre">APP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'app'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.APP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.BROWSING">
+<span class="sig-name descname"><span class="pre">BROWSING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'browsing'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.BROWSING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.CODE_REPOSITORY_SEARCH">
+<span class="sig-name descname"><span class="pre">CODE_REPOSITORY_SEARCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'code-repository-search'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.CODE_REPOSITORY_SEARCH" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.DOWNLOAD_FILE">
+<span class="sig-name descname"><span class="pre">DOWNLOAD_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'download-file'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.DOWNLOAD_FILE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.EXTERNAL_API_EXECUTION">
+<span class="sig-name descname"><span class="pre">EXTERNAL_API_EXECUTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'external-api-execution'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.EXTERNAL_API_EXECUTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.EXTERNAL_FUNCTION_EXECUTION">
+<span class="sig-name descname"><span class="pre">EXTERNAL_FUNCTION_EXECUTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'external-function-execution'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.EXTERNAL_FUNCTION_EXECUTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.EXTERNAL_SCRIPT_RETRIEVAL">
+<span class="sig-name descname"><span class="pre">EXTERNAL_SCRIPT_RETRIEVAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'external-script-retrieval'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.EXTERNAL_SCRIPT_RETRIEVAL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.FILE_SYSTEM_COMMANDS">
+<span class="sig-name descname"><span class="pre">FILE_SYSTEM_COMMANDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'file-system-commands'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.FILE_SYSTEM_COMMANDS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.GENERATE_IMAGE">
+<span class="sig-name descname"><span class="pre">GENERATE_IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'generate-image'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.GENERATE_IMAGE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.GENERATION">
+<span class="sig-name descname"><span class="pre">GENERATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'generation'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.GENERATION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.INTERNAL_API_EXECUTION">
+<span class="sig-name descname"><span class="pre">INTERNAL_API_EXECUTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'internal-api-execution'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERNAL_API_EXECUTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.INTERNAL_FUNCTION_EXECUTION">
+<span class="sig-name descname"><span class="pre">INTERNAL_FUNCTION_EXECUTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'internal-function-execution'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERNAL_FUNCTION_EXECUTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.INTERNAL_SCRIPT_RETRIEVAL">
+<span class="sig-name descname"><span class="pre">INTERNAL_SCRIPT_RETRIEVAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'internal-script-retrieval'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERNAL_SCRIPT_RETRIEVAL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.INTERPRET_CODE">
+<span class="sig-name descname"><span class="pre">INTERPRET_CODE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'interpret-code'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERPRET_CODE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.INTERPRET_FILE">
+<span class="sig-name descname"><span class="pre">INTERPRET_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'interpret-file'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERPRET_FILE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.INTERPRET_IMAGE">
+<span class="sig-name descname"><span class="pre">INTERPRET_IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'interpret-image'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERPRET_IMAGE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH">
+<span class="sig-name descname"><span class="pre">KNOWLEDGE_BASE_SEARCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'knowledge-base-search'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.ML_MODEL_PREDICTION">
+<span class="sig-name descname"><span class="pre">ML_MODEL_PREDICTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ml-model-prediction'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.ML_MODEL_PREDICTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.MODIFY_IMAGE">
+<span class="sig-name descname"><span class="pre">MODIFY_IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'modify-image'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.MODIFY_IMAGE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.RETRIEVE_MEMORY">
+<span class="sig-name descname"><span class="pre">RETRIEVE_MEMORY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'retrieve-memory'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.RETRIEVE_MEMORY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.SCHEDULED_JOB_EXECUTION">
+<span class="sig-name descname"><span class="pre">SCHEDULED_JOB_EXECUTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scheduled-job-execution'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.SCHEDULED_JOB_EXECUTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.SQL_READ">
+<span class="sig-name descname"><span class="pre">SQL_READ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'sql-read'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.SQL_READ" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.SQL_WRITE">
+<span class="sig-name descname"><span class="pre">SQL_WRITE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'sql-write'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.SQL_WRITE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.STORE_MEMORY">
+<span class="sig-name descname"><span class="pre">STORE_MEMORY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'store-memory'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.STORE_MEMORY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.TRIGGER_JOB_EXECUTION">
+<span class="sig-name descname"><span class="pre">TRIGGER_JOB_EXECUTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'trigger-job-execution'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.TRIGGER_JOB_EXECUTION" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.UPLOAD_FILE">
+<span class="sig-name descname"><span class="pre">UPLOAD_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'upload-file'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.UPLOAD_FILE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.VARIATE_IMAGE">
+<span class="sig-name descname"><span class="pre">VARIATE_IMAGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'variate-image'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.VARIATE_IMAGE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionSourcesNames.as_list">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#apps.llm_transaction.models.TransactionSourcesNames.as_list" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionTypeRolesNames">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apps.llm_transaction.models.</span></span><span class="sig-name descname"><span class="pre">TransactionTypeRolesNames</span></span><a class="headerlink" href="#apps.llm_transaction.models.TransactionTypeRolesNames" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionTypeRolesNames.ASSISTANT">
+<span class="sig-name descname"><span class="pre">ASSISTANT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'assistant'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionTypeRolesNames.ASSISTANT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionTypeRolesNames.SYSTEM">
+<span class="sig-name descname"><span class="pre">SYSTEM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'system'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionTypeRolesNames.SYSTEM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.llm_transaction.models.TransactionTypeRolesNames.USER">
+<span class="sig-name descname"><span class="pre">USER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'user'</span></em><a class="headerlink" href="#apps.llm_transaction.models.TransactionTypeRolesNames.USER" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Bimod.io</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="assistants.html">Assistants App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_browsers.html">Datasource Browsers App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_file_systems.html">Datasource File Systems App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_knowledge_base.html">Datasource Knowledge Base App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_media_storages.html">Datasource Media Storages App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_ml_models.html">Datasource ML Models App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_sql.html">Datasource SQL App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="export_assistants.html">Datasource Export Assistants App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llm_core.html">Datasource LLM Core App Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Datasource LLM Transaction App Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#llm_transaction.views.CreateAutomatedTopUpPlan"><code class="docutils literal notranslate"><span class="pre">CreateAutomatedTopUpPlan</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#llm_transaction.views.CreateAutomatedTopUpPlan.get_context_data"><code class="docutils literal notranslate"><span class="pre">CreateAutomatedTopUpPlan.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#llm_transaction.views.CreateAutomatedTopUpPlan.post"><code class="docutils literal notranslate"><span class="pre">CreateAutomatedTopUpPlan.post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">CreateAutomatedTopUpPlan.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">CreateAutomatedTopUpPlan.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#llm_transaction.views.ListAutomatedTopUpPlans"><code class="docutils literal notranslate"><span class="pre">ListAutomatedTopUpPlans</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#llm_transaction.views.ListAutomatedTopUpPlans.get_context_data"><code class="docutils literal notranslate"><span class="pre">ListAutomatedTopUpPlans.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#llm_transaction.views.ListAutomatedTopUpPlans.post"><code class="docutils literal notranslate"><span class="pre">ListAutomatedTopUpPlans.post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">ListAutomatedTopUpPlans.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">ListAutomatedTopUpPlans.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#llm_transaction.views.ListTransactionsView"><code class="docutils literal notranslate"><span class="pre">ListTransactionsView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#llm_transaction.views.ListTransactionsView.get_context_data"><code class="docutils literal notranslate"><span class="pre">ListTransactionsView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#llm_transaction.views.ListTransactionsView.get_filter_date"><code class="docutils literal notranslate"><span class="pre">ListTransactionsView.get_filter_date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#llm_transaction.views.ListTransactionsView.post"><code class="docutils literal notranslate"><span class="pre">ListTransactionsView.post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">ListTransactionsView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">ListTransactionsView.get_filter_date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">ListTransactionsView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#models">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.addition_on_balance_threshold_trigger"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.addition_on_balance_threshold_trigger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.addition_on_interval_by_days_trigger"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.addition_on_interval_by_days_trigger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.balance_lower_trigger_threshold_value"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.balance_lower_trigger_threshold_value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.calendar_month_total_auto_addition_value"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.calendar_month_total_auto_addition_value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.created_at"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.date_of_last_auto_top_up"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.date_of_last_auto_top_up</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.get_next_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.get_next_by_updated_at"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.get_next_by_updated_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.get_previous_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.get_previous_by_updated_at"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.get_previous_by_updated_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.id"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.monthly_hard_limit_auto_addition_amount"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.monthly_hard_limit_auto_addition_amount</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.objects"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.on_balance_threshold_trigger"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.on_balance_threshold_trigger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.on_interval_by_days_trigger"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.on_interval_by_days_trigger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.organization"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.organization</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.organization_auto_balance_topup"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.organization_auto_balance_topup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.organization_id"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.organization_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.regular_by_days_interval"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.regular_by_days_interval</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.AutoBalanceTopUpModel.updated_at"><code class="docutils literal notranslate"><span class="pre">AutoBalanceTopUpModel.updated_at</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction"><code class="docutils literal notranslate"><span class="pre">LLMTransaction</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.created_at"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.encoding_engine"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.encoding_engine</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.get_encoding_engine_display"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.get_encoding_engine_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.get_next_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.get_previous_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.get_transaction_source_display"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.get_transaction_source_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.get_transaction_type_display"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.get_transaction_type_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.id"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.internal_service_cost"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.internal_service_cost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.is_tool_cost"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.is_tool_cost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.llm_cost"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.llm_cost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.model"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.model_id"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.model_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.multimodal_chats"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.multimodal_chats</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.number_of_tokens"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.number_of_tokens</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.objects"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.organization"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.organization</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.organization_id"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.organization_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.responsible_assistant"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.responsible_assistant</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.responsible_assistant_id"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.responsible_assistant_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.responsible_user"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.responsible_user</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.responsible_user_id"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.responsible_user_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.save"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.tax_cost"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.tax_cost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.total_billable_cost"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.total_billable_cost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.total_cost"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.total_cost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.transaction_context_content"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.transaction_context_content</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.transaction_source"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.transaction_source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.LLMTransaction.transaction_type"><code class="docutils literal notranslate"><span class="pre">LLMTransaction.transaction_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.balance"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot.balance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.created_at"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot.get_next_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot.get_previous_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.id"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.objects"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.organization"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot.organization</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.OrganizationBalanceSnapshot.organization_id"><code class="docutils literal notranslate"><span class="pre">OrganizationBalanceSnapshot.organization_id</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.API"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.API</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.APP"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.APP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.BROWSING"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.BROWSING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.CODE_REPOSITORY_SEARCH"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.CODE_REPOSITORY_SEARCH</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.DOWNLOAD_FILE"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.DOWNLOAD_FILE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.EXTERNAL_API_EXECUTION"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.EXTERNAL_API_EXECUTION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.EXTERNAL_FUNCTION_EXECUTION"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.EXTERNAL_FUNCTION_EXECUTION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.EXTERNAL_SCRIPT_RETRIEVAL"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.EXTERNAL_SCRIPT_RETRIEVAL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.FILE_SYSTEM_COMMANDS"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.FILE_SYSTEM_COMMANDS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.GENERATE_IMAGE"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.GENERATE_IMAGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.GENERATION"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.GENERATION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERNAL_API_EXECUTION"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.INTERNAL_API_EXECUTION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERNAL_FUNCTION_EXECUTION"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.INTERNAL_FUNCTION_EXECUTION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERNAL_SCRIPT_RETRIEVAL"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.INTERNAL_SCRIPT_RETRIEVAL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERPRET_CODE"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.INTERPRET_CODE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERPRET_FILE"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.INTERPRET_FILE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.INTERPRET_IMAGE"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.INTERPRET_IMAGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.ML_MODEL_PREDICTION"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.ML_MODEL_PREDICTION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.MODIFY_IMAGE"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.MODIFY_IMAGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.RETRIEVE_MEMORY"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.RETRIEVE_MEMORY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.SCHEDULED_JOB_EXECUTION"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.SCHEDULED_JOB_EXECUTION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.SQL_READ"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.SQL_READ</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.SQL_WRITE"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.SQL_WRITE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.STORE_MEMORY"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.STORE_MEMORY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.TRIGGER_JOB_EXECUTION"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.TRIGGER_JOB_EXECUTION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.UPLOAD_FILE"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.UPLOAD_FILE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.VARIATE_IMAGE"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.VARIATE_IMAGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionSourcesNames.as_list"><code class="docutils literal notranslate"><span class="pre">TransactionSourcesNames.as_list()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apps.llm_transaction.models.TransactionTypeRolesNames"><code class="docutils literal notranslate"><span class="pre">TransactionTypeRolesNames</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionTypeRolesNames.ASSISTANT"><code class="docutils literal notranslate"><span class="pre">TransactionTypeRolesNames.ASSISTANT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionTypeRolesNames.SYSTEM"><code class="docutils literal notranslate"><span class="pre">TransactionTypeRolesNames.SYSTEM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.llm_transaction.models.TransactionTypeRolesNames.USER"><code class="docutils literal notranslate"><span class="pre">TransactionTypeRolesNames.USER</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memories.html">Datasource Memories App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_templates.html">Datasource Message Templates App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_apis.html">Datasource MM APIs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_functions.html">Datasource MM Functions App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_scheduled_jobs.html">Datasource MM Scheduled Jobs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_scripts.html">Datasource MM Scripts App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_triggered_jobs.html">Datasource MM Triggered Jobs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimodal_chat.html">Datasource Multimodal Chat App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starred_messages.html">Datasource Starred Messages App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_management.html">Datasource User Management App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_permissions.html">Datasource User Permissions App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_profile_management.html">Datasource User Profile Management App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_settings.html">Datasource User Settings App Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="llm_core.html" title="previous chapter">Datasource LLM Core App Documentation</a></li>
+      <li>Next: <a href="memories.html" title="next chapter">Datasource Memories App Documentation</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Ege Dogan Dursun.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/llm_transaction.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

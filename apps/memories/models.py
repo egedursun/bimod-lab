@@ -1,3 +1,10 @@
+"""
+Module Overview: This module defines the `AssistantMemory` model, which represents memory records associated with users and assistants. The model stores the type of memory, the content, and metadata about its creation.
+
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+"""
+
 from django.db import models
 
 MEMORY_TYPE = [
@@ -7,6 +14,22 @@ MEMORY_TYPE = [
 
 
 class AssistantMemory(models.Model):
+    """
+    AssistantMemory Model:
+    - Purpose: Represents a memory associated with a specific user and assistant, storing content that can be either user-specific or assistant-specific.
+    - Key Fields:
+        - `user`: ForeignKey linking to the `User` model, representing the user associated with the memory.
+        - `assistant`: ForeignKey linking to the `Assistant` model, representing the assistant associated with the memory.
+        - `memory_type`: The type of memory, indicating whether it's user-specific or assistant-specific.
+        - `memory_text_content`: The textual content of the memory.
+        - `created_at`: Timestamp for when the memory was created.
+    - Meta:
+        - `verbose_name`: "Memory"
+        - `verbose_name_plural`: "Memories"
+        - `ordering`: Orders memories by creation date in descending order.
+        - `indexes`: Indexes on various fields, including combinations of `assistant`, `user`, and `created_at` for optimized queries.
+    """
+
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     memory_type = models.CharField(max_length=50, choices=MEMORY_TYPE, default="user-specific")

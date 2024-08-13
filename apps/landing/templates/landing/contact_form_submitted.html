@@ -3,7 +3,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Email Send - Success{% endblock %}
+{% block title %}Bimod.io | Contact Form Success{% endblock %}
 
 {% block page_css %}
   {{ block.super }}
@@ -14,12 +14,16 @@
   <!-- Coming Soon -->
   <div class="container-xxl container-p-y py-4">
     <div class="misc-wrapper">
-      <h4 class="mb-2 mx-2">"Your message is sent successfully! 🚀</h4>
+      <h4 class="mb-2 mx-2"><strong>Your message is sent successfully.</strong></h4>
       <p class="mb-6 mx-2">We will get back to you as soon as possible.</p>
       <div class="mt-12">
-        <img src="{% static 'img/illustrations/page-misc-launching-soon.png' %}" alt="page-misc-launching-soon"
-             width="263" class="img-fluid">
+        <img src="{% static 'img/custom-illustrations-v2/i2-26.png' %}" style="border-radius: 25px;" alt="page-misc-launching-soon"
+             width="500" class="img-fluid">
       </div>
+      <a href="{% url 'landing:index' %}" class="btn btn-primary mt-6 mx-2">
+        <i class="fa fa-arrow-left me-4"></i>
+        <strong>Back to Home</strong>
+      </a>
     </div>
   </div>
   <div class="container-fluid misc-bg-wrapper">

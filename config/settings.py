@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_celery_beat",
+    'django_extensions',
 
     "apps.theme.dashboards",
     "apps.theme.layouts",
@@ -114,6 +115,13 @@ INSTALLED_APPS = [
     "apps.mm_scripts",
     "apps.mm_scheduled_jobs",
     "apps.mm_triggered_jobs",
+
+    ########################################
+    # SUPPORT
+    ########################################
+    "apps.support_system",
+    "apps.community_forum",
+    "apps.blog_app",
 
 ]
 
@@ -524,3 +532,9 @@ if TESTING:
 else:
     print("[settings.py] Integration Testing Mode is deactive, deploy mode is activated...")
     pass
+
+#####################################################################################################################
+# New User Free Credits
+#####################################################################################################################
+
+NEW_USER_FREE_CREDITS = int(os.environ.get("NEW_USER_FREE_CREDITS", default="0"))

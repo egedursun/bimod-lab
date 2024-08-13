@@ -1,9 +1,45 @@
+"""
+Module Overview: This module defines the `Organization` model within an assistant-based application. The model represents an organization entity, storing its details, associated users, assistants, and related configurations such as balance and image. It also includes relationships with other models like `LLMCore`, `ExportAssistantAPI`, and `AutoBalanceTopUpModel`.
+
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+- `apps.organization.utils.generate_random_string`: Utility function to generate random strings for file paths.
+"""
+
 from django.db import models
 
 from apps.organization.utils import generate_random_string
 
 
 class Organization(models.Model):
+    """
+    Organization Model:
+    - Purpose: Represents an organization within the system, storing key details such as name, contact information, industry, and status. It also manages relationships with users, assistants, language models, and other configurations like auto balance top-ups.
+    - Key Fields:
+        - `name`: The name of the organization.
+        - `email`: Contact email for the organization.
+        - `phone`: Contact phone number for the organization.
+        - `address`: Physical address of the organization.
+        - `city`, `country`, `postal_code`: Fields for storing the organization's location details.
+        - `industry`: The industry in which the organization operates.
+        - `is_active`: Boolean field indicating whether the organization is active.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+        - `created_by_user`: ForeignKey linking to the `User` who created the organization.
+        - `last_updated_by_user`: ForeignKey linking to the `User` who last updated the organization.
+        - `balance`: Decimal field representing the organization's current balance.
+        - `organization_image`: ImageField for storing the organization's profile image, with a dynamically generated save path.
+        - `users`: ManyToManyField linking to the `User` model, representing the users associated with the organization.
+        - `organization_assistants`: ManyToManyField linking to the `Assistant` model, representing the assistants associated with the organization.
+        - `llm_cores`: ManyToManyField linking to the `LLMCore` model, representing the language models associated with the organization.
+        - `exported_assistants`: ManyToManyField linking to the `ExportAssistantAPI` model, representing the exported assistants associated with the organization.
+        - `auto_balance_topup`: OneToOneField linking to the `AutoBalanceTopUpModel` for managing automatic balance top-ups.
+    - Meta:
+        - `verbose_name`: "Organization"
+        - `verbose_name_plural`: "Organizations"
+        - `ordering`: Orders organizations by creation date in descending order.
+        - `indexes`: Indexes on various fields for optimized queries, including `name`, `email`, `phone`, `industry`, `is_active`, `balance`, and timestamps.
+    """
+
     name = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=20)

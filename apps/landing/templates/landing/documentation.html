@@ -30,6 +30,39 @@
     -->
   </div>
 
+  <div class="alert alert-secondary alert-dismissible d-flex col-11 ms-12 me-12 align-items-center mt-8 mb-8"
+       role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-99.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded">
+                  <i class="ti ti-bookmark"></i>
+                </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can access the documentation and tutorials to help you get started with our app. You can
+        access the documentation for each feature by clicking on the corresponding tab on the left. If you need further
+        assistance, feel free to reach out to us via phone or email. We are always happy to help.
+
+        Please note that the documentation page is currently under development and will be available in the next
+        releases. Until then, for any questions or assistance, please feel free to reach out for your questions,
+        problems, recommendations, and feedback.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
   <div class="row mt-6">
     <!-- Navigation -->
     <div class="col-lg-3 col-md-4 col-12 mb-md-0 mb-4">
@@ -50,7 +83,7 @@
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cancellation">
               <i class="ti ti-rotate-clockwise-2 me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Usage &amp; Payment</span>
+              <span class="align-middle fw-medium">Transactions</span>
             </button>
           </li>
           <li class="nav-item">
@@ -86,19 +119,13 @@
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
               <i class="ti ti-server me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Memory</span>
+              <span class="align-middle fw-medium">Memories</span>
             </button>
           </li>
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
               <i class="ti ti-template me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Message Templates</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-              <i class="ti ti-adjustments me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Fine Tuning</span>
             </button>
           </li>
           <li class="nav-item">
@@ -133,12 +160,6 @@
           </li>
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-              <i class="ti ti-database me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">NOSQL Databases</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
               <i class="ti ti-vector me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Knowledge Bases</span>
             </button>
@@ -152,19 +173,7 @@
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
               <i class="ti ti-photo me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Image Storages</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-              <i class="ti ti-music me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Audio Storages</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-              <i class="ti ti-video me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Video Storages</span>
+              <span class="align-middle fw-medium">Media Storages</span>
             </button>
           </li>
           <li class="nav-item">
@@ -182,7 +191,7 @@
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
               <i class="ti ti-code me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Conditionals</span>
+              <span class="align-middle fw-medium">Scripts</span>
             </button>
           </li>
           <li class="nav-item">
@@ -198,42 +207,18 @@
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-              <i class="ti ti-cube me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Blockchain</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-              <i class="ti ti-photo-ai me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Image Generation &amp; Analysis</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
-              <i class="ti ti-music-bolt me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Audio Generation &amp; Analysis</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="disabled nav-link" data-bs-toggle="tab" data-bs-target="#product">
               <i class="ti ti-wand me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Integrations</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="disabled nav-link" data-bs-toggle="tab" data-bs-target="#product">
               <i class="ti ti-wand me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Meta Integrations</span>
             </button>
           </li>
         </ul>
-        <div class="d-none d-md-block">
-          <div class="mt-12 ms-6">
-            <img src="{% static 'img/illustrations/girl-sitting-with-laptop.png' %}" class="img-fluid" width="270"
-                 alt="FAQ Image">
-          </div>
-        </div>
       </div>
     </div>
     <!-- /Navigation -->
@@ -306,28 +291,12 @@
           </div>
         </div>
         -->
-        <div class="alert alert-warning alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-          <img src="{% static 'img/custom-illustrations/boy-blue-1.png' %}" width="25%" class="justify-content-end">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <span class="alert-icon rounded">
-        <i class="ti ti-bookmark"></i>
-      </span>
-          <div class="d-flex flex-column ps-1">
-            <h5 class="alert-heading mb-2"><strong>Coming Soon</strong></h5>
-            <p class="mb-0">
-              We are working hard to provide you with the best documentation. As we are currently in the beta
-              phase, we are constantly updating our documentation, thus we are not able to provide you with
-              the documentation you are looking for. Please check back later. If you have any questions, feel
-              free to contact us at <a href="mailto:info@bimod.io">info@bimod.io</a>.
-            </p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
-          </div>
-        </div>
       </div>
     </div>
     <!-- /FAQ's -->
   </div>
+
+  <hr>
 
   <!-- Contact -->
   <div class="row my-6">
@@ -345,7 +314,7 @@
           <i class="ti ti-phone ti-26px"></i>
         </span>
         </div>
-        <h5 class="mt-4 mb-1"><a class="text-heading" href="tel:+90-500-500-50-50">+90-500-500-50-50</a></h5>
+        <h5 class="mt-4 mb-1"><a class="text-heading" href="tel:+90-546-538-70-99"><strong>+90-546-538-70-99</strong></a></h5>
         <p class="mb-0">Available between <strong>9:00 am - 5:00 pm (UTC+3).</strong></p>
       </div>
     </div>
@@ -356,7 +325,7 @@
           <i class="ti ti-mail ti-26px"></i>
         </span>
         </div>
-        <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:info@bimod.io">info@bimod.io</a></h5>
+        <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:admin@bimod.io"><strong>admin@bimod.io</strong></a></h5>
         <p class="mb-0">Best way to get a quick response, <strong>available 24/7.</strong></p>
       </div>
     </div>

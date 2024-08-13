@@ -27,16 +27,27 @@
 {% endblock page_js %}
 
 {% block content %}
+
+  <a href="{% url 'export_assistants:list' %}">
+    <button class="btn btn-secondary my-4 w-25">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to Exported Assistants</strong>
+    </button>
+  </a>
+
   <!-- Basic Layout -->
   <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Update Export Assistant</h5> <small class="text-muted float-end"></small>
+          <h5 class="mb-0">
+            <strong>Update Exported Assistant</strong>
+          </h5> <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-8.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -44,7 +55,8 @@
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
                 In this page, you can update the Export Assistant. Adjust the fields as necessary and click on the
-                "Update" button to save your changes.
+                "Update" button to save your changes. The assistant exports are used to provide services to the users
+                in your own applications, by using the RESTful API services provided by Bimod.io.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
               </button>
@@ -59,36 +71,42 @@
               </div>
             {% endfor %}
           {% endif %}
-          <form method="post" enctype="multipart/form-data">
+          <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="assistant">Assistant</label>
-              <select class="form-select" id="assistant" name="assistant">
-                <option value="" disabled selected>Select Assistant</option>
-                {% for assistant in assistants %}
-                  <option value="{{ assistant.id }}"
-                          {% if export_assistant.assistant_id == assistant.id %}selected{% endif %}>{{ assistant.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="request_limit_per_hour">Request Limit Per Hour</label>
-              <input type="number" class="form-control" id="request_limit_per_hour" name="request_limit_per_hour"
-                     value="{{ export_assistant.request_limit_per_hour }}" placeholder="Enter request limit per hour"/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="is_public">Public</label>
-              <br>
-              <label class="switch switch-square switch-lg mt-2">
-                <input type="checkbox" class="switch-input" id="is_public" name="is_public"
-                       {% if export_assistant.is_public %}checked{% endif %}>
-                <span class="switch-toggle-slider">
+            <div class="row p-8">
+              <div class="mb-6 col-5">
+                <label class="form-label" for="assistant">Assistant</label>
+                <select class="form-select" id="assistant" name="assistant">
+                  <option value="" disabled selected>Select Assistant</option>
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}"
+                            {% if export_assistant.assistant_id == assistant.id %}selected{% endif %}>{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-5">
+                <label class="form-label" for="request_limit_per_hour">Request Limit Per Hour</label>
+                <input type="number" class="form-control" id="request_limit_per_hour" name="request_limit_per_hour"
+                       value="{{ export_assistant.request_limit_per_hour }}"
+                       placeholder="Enter request limit per hour"/>
+              </div>
+              <div class="mb-6 col-2">
+                <label class="form-label" for="is_public">Public</label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="is_public" name="is_public"
+                         {% if export_assistant.is_public %}checked{% endif %}>
+                  <span class="switch-toggle-slider">
                 <span class="switch-on"><i class="ti ti-check"></i></span>
                 <span class="switch-off"><i class="ti ti-x"></i></span>
               </span>
-              </label>
+                </label>
+              </div>
             </div>
-            <button type="submit" class="btn btn-primary d-grid w-100">Update Export Assistant</button>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid mt-4 w-25">
+              <strong>Update Exported Assistant</strong>
+            </button>
           </form>
         </div>
       </div>

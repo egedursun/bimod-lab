@@ -1,3 +1,9 @@
+"""
+This module provides views for managing custom functions within the Bimod.io platform.
+
+The views allow authenticated users to create, list, update, delete, and manage connections of custom functions to assistants. Permissions are checked to ensure that users have the appropriate rights to perform these actions.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -17,6 +23,16 @@ from web_project import TemplateLayout
 # Create your views here.
 
 class CreateCustomFunctionView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of new custom functions.
+
+    This view allows users to create custom functions that can be integrated into their assistants. The view checks user permissions before allowing the creation of a new function.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the form and function categories.
+        post(self, request, *args, **kwargs): Processes the form submission to create a new custom function and associates it with the user.
+    """
+
     template_name = "mm_functions/functions/create_custom_function.html"
 
     def get_context_data(self, **kwargs):
@@ -113,6 +129,15 @@ class CreateCustomFunctionView(LoginRequiredMixin, TemplateView):
 
 
 class ListCustomFunctionsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of custom functions created by users within the connected organizations.
+
+    This view retrieves and displays all custom functions that are available to the current user, with support for searching and pagination.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the user's accessible custom functions and adds them to the context.
+    """
+
     template_name = "mm_functions/functions/list_custom_functions.html"
     paginate_by = 10  # Adjust the number of items per page
 
@@ -144,6 +169,15 @@ class ListCustomFunctionsView(LoginRequiredMixin, TemplateView):
 
 
 class ManageCustomFunctionAssistantConnectionsView(LoginRequiredMixin, TemplateView):
+    """
+    Manages the connections between custom functions and assistants.
+
+    This view allows users to assign or remove custom functions from their assistants, ensuring the correct integrations are in place.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the available assistants, custom functions, and their connections.
+        post(self, request, *args, **kwargs): Processes the request to either add or remove a custom function connection from an assistant.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -239,6 +273,15 @@ class ManageCustomFunctionAssistantConnectionsView(LoginRequiredMixin, TemplateV
 
 
 class DeleteCustomFunctionView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the deletion of custom functions.
+
+    This view allows users to delete specific custom functions, provided they have the necessary permissions.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the deletion confirmation page.
+        post(self, request, *args, **kwargs): Processes the deletion of the specified custom function.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -273,6 +316,16 @@ class DeleteCustomFunctionView(LoginRequiredMixin, TemplateView):
 
 
 class FunctionStoreView(LoginRequiredMixin, TemplateView):
+    """
+    Displays the function store where public functions are listed for users to integrate with their assistants.
+
+    This view allows users to search, filter, and assign public functions to their assistants.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the available public functions, search query, and filters.
+        post(self, request, *args, **kwargs): Processes the request to assign a selected function to an assistant.
+    """
+
     template_name = "mm_functions/store/function_store.html"
     paginate_by = 10  # Adjust the number of items per page
 

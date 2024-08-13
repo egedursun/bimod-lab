@@ -1,3 +1,9 @@
+"""
+This module provides views for managing scheduled jobs within the Bimod.io platform.
+
+The views allow authenticated users to create, list, view logs, and delete scheduled jobs. Permissions are checked to ensure that users have the appropriate rights to perform these actions.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
@@ -12,6 +18,15 @@ from web_project import TemplateLayout
 
 
 class CreateScheduledJobView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of new scheduled jobs.
+
+    This view allows users to create scheduled jobs that can be executed by their assistants. The view checks user permissions before allowing the creation of a new scheduled job.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the form for creating a scheduled job.
+        post(self, request, *args, **kwargs): Processes the form submission to create a new scheduled job and associates it with the user.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -45,6 +60,15 @@ class CreateScheduledJobView(LoginRequiredMixin, TemplateView):
 
 
 class ListScheduledJobsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of scheduled jobs associated with the user's organization.
+
+    This view retrieves and displays all scheduled jobs that are available to the current user, with support for searching and pagination.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the user's accessible scheduled jobs and adds them to the context.
+    """
+
     paginate_by = 10  # Adjust the number of items per page
 
     def get_context_data(self, **kwargs):
@@ -68,6 +92,15 @@ class ListScheduledJobsView(LoginRequiredMixin, TemplateView):
 
 
 class ListScheduledJobLogsView(LoginRequiredMixin, TemplateView):
+    """
+    Displays logs of scheduled job instances.
+
+    This view retrieves and displays all instances of a specific scheduled job, with support for searching and pagination.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the logs of the scheduled job instances and adds them to the context.
+    """
+
     paginate_by = 10  # Adjust the number of items per page
 
     def get_context_data(self, **kwargs):
@@ -90,6 +123,15 @@ class ListScheduledJobLogsView(LoginRequiredMixin, TemplateView):
 
 
 class ConfirmDeleteScheduledJobView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the deletion of scheduled jobs.
+
+    This view allows users to delete specific scheduled jobs, provided they have the necessary permissions.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the deletion confirmation page.
+        post(self, request, *args, **kwargs): Processes the deletion of the specified scheduled job.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))

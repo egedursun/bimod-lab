@@ -263,3 +263,44 @@ ps auxww | grep '[c]elery worker' | awk '{print $2}' | xargs kill
 ```
 
 ---
+
+#### Refreshing Documentation with Sphinx
+
+- Locate the project's root directory in the terminal window.
+
+*In the terminal window*
+```bash
+make html
+```
+
+- Copy the generated HTML files from the 'build/html' directory to the 'src/assets/docs' directory for the documentation to 
+  be accessible by Django.
+
+*In the terminal window*
+```bash
+cp -r build/html/* src/assets/docs/
+```
+
+---
+
+#### Git Command to Add All Migration Files to the Tracking System
+
+- Go to the project's root directory in the terminal window.
+
+*In the terminal window*
+```bash
+git add */migrations/*.py
+git add */*/migrations/*.py
+```
+
+---
+
+
+#### Command for Collecting the Static Files for Turning Off Debug Mode and Production Deployment
+
+*In the terminal window*
+```bash
+python manage.py collectstatic
+```
+
+---

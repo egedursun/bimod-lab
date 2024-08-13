@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Datasource MM Scripts App Documentation &#8212; Bimod.io v0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=fa47ad08"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Datasource MM Triggered Jobs App Documentation" href="mm_triggered_jobs.html" />
+    <link rel="prev" title="Datasource MM Scheduled Jobs App Documentation" href="mm_scheduled_jobs.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="datasource-mm-scripts-app-documentation">
+<h1>Datasource MM Scripts App Documentation<a class="headerlink" href="#datasource-mm-scripts-app-documentation" title="Link to this heading">¶</a></h1>
+<p>This section describes the MM Scripts App.</p>
+<p id="module-mm_scripts.views">This module provides views for managing custom scripts within the Bimod.io platform.</p>
+<p>The views allow authenticated users to create, list, manage connections, and delete custom scripts, as well as view and interact with the script store. Permissions are checked to ensure that users have the appropriate rights to perform these actions.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mm_scripts.views.CreateCustomScriptView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mm_scripts.views.</span></span><span class="sig-name descname"><span class="pre">CreateCustomScriptView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.CreateCustomScriptView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
+<p>Handles the creation of new custom scripts.</p>
+<p>This view allows users to create custom scripts that can be utilized by their assistants. The view checks user permissions before allowing the creation of a new custom script.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mm_scripts.views.CreateCustomScriptView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.CreateCustomScriptView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Prepares the context with the form for creating a custom script.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mm_scripts.views.CreateCustomScriptView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.CreateCustomScriptView.post" title="Link to this definition">¶</a></dt>
+<dd><p>Processes the form submission to create a new custom script and associates it with the user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mm_scripts.views.DeleteCustomScriptView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mm_scripts.views.</span></span><span class="sig-name descname"><span class="pre">DeleteCustomScriptView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.DeleteCustomScriptView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
+<p>Handles the deletion of custom scripts.</p>
+<p>This view allows users to delete specific custom scripts, provided they have the necessary permissions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mm_scripts.views.DeleteCustomScriptView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.DeleteCustomScriptView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Prepares the context for the deletion confirmation page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mm_scripts.views.DeleteCustomScriptView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.DeleteCustomScriptView.post" title="Link to this definition">¶</a></dt>
+<dd><p>Processes the deletion of the specified custom script.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mm_scripts.views.ListCustomScriptsView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mm_scripts.views.</span></span><span class="sig-name descname"><span class="pre">ListCustomScriptsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.ListCustomScriptsView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
+<p>Displays a list of custom scripts associated with the user’s organization.</p>
+<p>This view retrieves and displays all custom scripts that are available to the current user, with support for searching and pagination.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mm_scripts.views.ListCustomScriptsView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.ListCustomScriptsView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the user’s accessible custom scripts and adds them to the context.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mm_scripts.views.ListCustomScriptsView.paginate_by">
+<span class="sig-name descname"><span class="pre">paginate_by</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#mm_scripts.views.ListCustomScriptsView.paginate_by" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mm_scripts.views.ManageCustomScriptAssistantConnectionsView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mm_scripts.views.</span></span><span class="sig-name descname"><span class="pre">ManageCustomScriptAssistantConnectionsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.ManageCustomScriptAssistantConnectionsView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
+<p>Manages the connections between custom scripts and assistants.</p>
+<p>This view allows users to assign or remove custom scripts from their assistants. The view checks user permissions before allowing these actions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mm_scripts.views.ManageCustomScriptAssistantConnectionsView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.ManageCustomScriptAssistantConnectionsView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Prepares the context with data about available custom scripts and assistants.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mm_scripts.views.ManageCustomScriptAssistantConnectionsView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.ManageCustomScriptAssistantConnectionsView.post" title="Link to this definition">¶</a></dt>
+<dd><p>Processes the form submission to add or remove custom script connections for assistants.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mm_scripts.views.ScriptStoreView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mm_scripts.views.</span></span><span class="sig-name descname"><span class="pre">ScriptStoreView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.ScriptStoreView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
+<p>Displays the script store, where users can browse and add public custom scripts.</p>
+<p>This view allows users to search, filter, and view public custom scripts in the store. Users can add these scripts to their assistants, provided they have the necessary permissions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mm_scripts.views.ScriptStoreView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.ScriptStoreView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>Prepares the context with data about the available public custom scripts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mm_scripts.views.ScriptStoreView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mm_scripts.views.ScriptStoreView.post" title="Link to this definition">¶</a></dt>
+<dd><p>Processes the form submission to add selected scripts to the user’s assistants.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mm_scripts.views.ScriptStoreView.paginate_by">
+<span class="sig-name descname"><span class="pre">paginate_by</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#mm_scripts.views.ScriptStoreView.paginate_by" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<section id="models">
+<h2>Models<a class="headerlink" href="#models" title="Link to this heading">¶</a></h2>
+<p>This section describes the models used in the MM Scripts App.</p>
+<p id="module-apps.mm_scripts.models">Module Overview: This module defines models related to custom scripts within an assistant-based application. It includes models for storing script references, script details, and associated metadata such as categories, content, and step guides.</p>
+<p>Dependencies:
+- <cite>django.db.models</cite>: Django’s ORM for defining database models.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apps.mm_scripts.models.</span></span><span class="sig-name descname"><span class="pre">CustomScript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>CustomScript Model:
+- Purpose: Represents a custom script, storing details such as the name, description, categories, content, and associated metadata like step guides and script references.
+- Key Fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>is_public</cite>: Boolean flag indicating whether the script is publicly accessible.</p></li>
+<li><p><cite>categories</cite>: JSONField for storing categories associated with the script.</p></li>
+<li><p><cite>name</cite>: The name of the custom script.</p></li>
+<li><p><cite>description</cite>: A description of the script.</p></li>
+<li><p><cite>script_content</cite>: TextField for storing the actual content of the script.</p></li>
+<li><p><cite>script_step_guide</cite>: JSONField for storing a step-by-step guide related to the script.</p></li>
+<li><p><cite>custom_script_references</cite>: ManyToManyField linking to <cite>CustomScriptReference</cite> instances associated with the script.</p></li>
+<li><p><cite>script_picture</cite>: ImageField for storing an optional picture associated with the script.</p></li>
+<li><p><cite>created_at</cite>, <cite>updated_at</cite>: Timestamps for creation and last update.</p></li>
+<li><p><cite>created_by_user</cite>: ForeignKey linking to the <cite>User</cite> who created the script.</p></li>
+<li><p><cite>is_featured</cite>: Boolean flag indicating whether the script is featured.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Meta:</dt><dd><ul>
+<li><p><cite>verbose_name</cite>: “Custom Script”</p></li>
+<li><p><cite>verbose_name_plural</cite>: “Custom Scripts”</p></li>
+<li><p><cite>indexes</cite>: Indexes on various fields for optimized queries.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.DoesNotExist" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.MultipleObjectsReturned" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.categories">
+<span class="sig-name descname"><span class="pre">categories</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.categories" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.created_at" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.created_by_user">
+<span class="sig-name descname"><span class="pre">created_by_user</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.created_by_user" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.created_by_user_id">
+<span class="sig-name descname"><span class="pre">created_by_user_id</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.created_by_user_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.custom_script_references">
+<span class="sig-name descname"><span class="pre">custom_script_references</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.custom_script_references" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.customscriptreference_set">
+<span class="sig-name descname"><span class="pre">customscriptreference_set</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.customscriptreference_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.description">
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.description" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.get_next_by_created_at">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.get_next_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.get_next_by_updated_at">
+<span class="sig-name descname"><span class="pre">get_next_by_updated_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">updated_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.get_next_by_updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.get_previous_by_created_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.get_previous_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.get_previous_by_updated_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_updated_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">updated_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.get_previous_by_updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.id" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.is_featured">
+<span class="sig-name descname"><span class="pre">is_featured</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.is_featured" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.is_public">
+<span class="sig-name descname"><span class="pre">is_public</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.is_public" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.name" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.objects" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.script_content">
+<span class="sig-name descname"><span class="pre">script_content</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.script_content" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.script_picture">
+<span class="sig-name descname"><span class="pre">script_picture</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.script_picture" title="Link to this definition">¶</a></dt>
+<dd><p>Just like the FileDescriptor, but for ImageFields. The only difference is
+assigning the width/height to the width_field/height_field, if appropriate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.script_step_guide">
+<span class="sig-name descname"><span class="pre">script_step_guide</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.script_step_guide" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScript.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScript.updated_at" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">apps.mm_scripts.models.</span></span><span class="sig-name descname"><span class="pre">CustomScriptReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>CustomScriptReference Model:
+- Purpose: Represents a reference to a custom script associated with a specific assistant, storing information about the script source and the user who created the reference.
+- Key Fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>custom_script</cite>: ForeignKey linking to the <cite>CustomScript</cite> model.</p></li>
+<li><p><cite>assistant</cite>: ForeignKey linking to the <cite>Assistant</cite> model.</p></li>
+<li><p><cite>script_source</cite>: A field indicating whether the script is internal or external.</p></li>
+<li><p><cite>created_by_user</cite>: ForeignKey linking to the <cite>User</cite> who created the script reference.</p></li>
+<li><p><cite>created_at</cite>, <cite>updated_at</cite>: Timestamps for creation and last update.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Meta:</dt><dd><ul>
+<li><p><cite>verbose_name</cite>: “Custom Script Reference”</p></li>
+<li><p><cite>verbose_name_plural</cite>: “Custom Script References”</p></li>
+<li><p><cite>unique_together</cite>: Ensures that each combination of <cite>custom_script</cite> and <cite>assistant</cite> is unique.</p></li>
+<li><p><cite>indexes</cite>: Indexes on various fields for optimized queries.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.DoesNotExist" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.MultipleObjectsReturned" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.assistant">
+<span class="sig-name descname"><span class="pre">assistant</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.assistant" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.assistant_id">
+<span class="sig-name descname"><span class="pre">assistant_id</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.assistant_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.created_at" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.created_by_user">
+<span class="sig-name descname"><span class="pre">created_by_user</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.created_by_user" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.created_by_user_id">
+<span class="sig-name descname"><span class="pre">created_by_user_id</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.created_by_user_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.custom_script">
+<span class="sig-name descname"><span class="pre">custom_script</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.custom_script" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.custom_script_id">
+<span class="sig-name descname"><span class="pre">custom_script_id</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.custom_script_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.customscript_set">
+<span class="sig-name descname"><span class="pre">customscript_set</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.customscript_set" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.get_next_by_created_at">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.get_next_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.get_next_by_updated_at">
+<span class="sig-name descname"><span class="pre">get_next_by_updated_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">updated_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.get_next_by_updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.get_previous_by_created_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.get_previous_by_created_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.get_previous_by_updated_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_updated_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">updated_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.get_previous_by_updated_at" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.id" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.objects" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.script_source">
+<span class="sig-name descname"><span class="pre">script_source</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.script_source" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="apps.mm_scripts.models.CustomScriptReference.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><a class="headerlink" href="#apps.mm_scripts.models.CustomScriptReference.updated_at" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Bimod.io</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="assistants.html">Assistants App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_browsers.html">Datasource Browsers App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_file_systems.html">Datasource File Systems App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_knowledge_base.html">Datasource Knowledge Base App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_media_storages.html">Datasource Media Storages App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_ml_models.html">Datasource ML Models App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_sql.html">Datasource SQL App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="export_assistants.html">Datasource Export Assistants App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llm_core.html">Datasource LLM Core App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llm_transaction.html">Datasource LLM Transaction App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memories.html">Datasource Memories App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_templates.html">Datasource Message Templates App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_apis.html">Datasource MM APIs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_functions.html">Datasource MM Functions App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_scheduled_jobs.html">Datasource MM Scheduled Jobs App Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Datasource MM Scripts App Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mm_scripts.views.CreateCustomScriptView"><code class="docutils literal notranslate"><span class="pre">CreateCustomScriptView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.CreateCustomScriptView.get_context_data"><code class="docutils literal notranslate"><span class="pre">CreateCustomScriptView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.CreateCustomScriptView.post"><code class="docutils literal notranslate"><span class="pre">CreateCustomScriptView.post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">CreateCustomScriptView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">CreateCustomScriptView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mm_scripts.views.DeleteCustomScriptView"><code class="docutils literal notranslate"><span class="pre">DeleteCustomScriptView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.DeleteCustomScriptView.get_context_data"><code class="docutils literal notranslate"><span class="pre">DeleteCustomScriptView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.DeleteCustomScriptView.post"><code class="docutils literal notranslate"><span class="pre">DeleteCustomScriptView.post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">DeleteCustomScriptView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">DeleteCustomScriptView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mm_scripts.views.ListCustomScriptsView"><code class="docutils literal notranslate"><span class="pre">ListCustomScriptsView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.ListCustomScriptsView.get_context_data"><code class="docutils literal notranslate"><span class="pre">ListCustomScriptsView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">ListCustomScriptsView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.ListCustomScriptsView.paginate_by"><code class="docutils literal notranslate"><span class="pre">ListCustomScriptsView.paginate_by</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mm_scripts.views.ManageCustomScriptAssistantConnectionsView"><code class="docutils literal notranslate"><span class="pre">ManageCustomScriptAssistantConnectionsView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.ManageCustomScriptAssistantConnectionsView.get_context_data"><code class="docutils literal notranslate"><span class="pre">ManageCustomScriptAssistantConnectionsView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.ManageCustomScriptAssistantConnectionsView.post"><code class="docutils literal notranslate"><span class="pre">ManageCustomScriptAssistantConnectionsView.post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">ManageCustomScriptAssistantConnectionsView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">ManageCustomScriptAssistantConnectionsView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mm_scripts.views.ScriptStoreView"><code class="docutils literal notranslate"><span class="pre">ScriptStoreView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.ScriptStoreView.get_context_data"><code class="docutils literal notranslate"><span class="pre">ScriptStoreView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.ScriptStoreView.post"><code class="docutils literal notranslate"><span class="pre">ScriptStoreView.post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">ScriptStoreView.get_context_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mm_scripts.views.ScriptStoreView.paginate_by"><code class="docutils literal notranslate"><span class="pre">ScriptStoreView.paginate_by</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">ScriptStoreView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#models">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript"><code class="docutils literal notranslate"><span class="pre">CustomScript</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">CustomScript.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">CustomScript.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.categories"><code class="docutils literal notranslate"><span class="pre">CustomScript.categories</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.created_at"><code class="docutils literal notranslate"><span class="pre">CustomScript.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.created_by_user"><code class="docutils literal notranslate"><span class="pre">CustomScript.created_by_user</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.created_by_user_id"><code class="docutils literal notranslate"><span class="pre">CustomScript.created_by_user_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.custom_script_references"><code class="docutils literal notranslate"><span class="pre">CustomScript.custom_script_references</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.customscriptreference_set"><code class="docutils literal notranslate"><span class="pre">CustomScript.customscriptreference_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.description"><code class="docutils literal notranslate"><span class="pre">CustomScript.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">CustomScript.get_next_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.get_next_by_updated_at"><code class="docutils literal notranslate"><span class="pre">CustomScript.get_next_by_updated_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">CustomScript.get_previous_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.get_previous_by_updated_at"><code class="docutils literal notranslate"><span class="pre">CustomScript.get_previous_by_updated_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.id"><code class="docutils literal notranslate"><span class="pre">CustomScript.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.is_featured"><code class="docutils literal notranslate"><span class="pre">CustomScript.is_featured</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.is_public"><code class="docutils literal notranslate"><span class="pre">CustomScript.is_public</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.name"><code class="docutils literal notranslate"><span class="pre">CustomScript.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.objects"><code class="docutils literal notranslate"><span class="pre">CustomScript.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.script_content"><code class="docutils literal notranslate"><span class="pre">CustomScript.script_content</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.script_picture"><code class="docutils literal notranslate"><span class="pre">CustomScript.script_picture</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.script_step_guide"><code class="docutils literal notranslate"><span class="pre">CustomScript.script_step_guide</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScript.updated_at"><code class="docutils literal notranslate"><span class="pre">CustomScript.updated_at</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.assistant"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.assistant</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.assistant_id"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.assistant_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.created_at"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.created_by_user"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.created_by_user</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.created_by_user_id"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.created_by_user_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.custom_script"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.custom_script</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.custom_script_id"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.custom_script_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.customscript_set"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.customscript_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.get_next_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.get_next_by_updated_at"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.get_next_by_updated_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.get_previous_by_created_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.get_previous_by_updated_at"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.get_previous_by_updated_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.id"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.objects"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.script_source"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.script_source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apps.mm_scripts.models.CustomScriptReference.updated_at"><code class="docutils literal notranslate"><span class="pre">CustomScriptReference.updated_at</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mm_triggered_jobs.html">Datasource MM Triggered Jobs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimodal_chat.html">Datasource Multimodal Chat App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starred_messages.html">Datasource Starred Messages App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_management.html">Datasource User Management App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_permissions.html">Datasource User Permissions App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_profile_management.html">Datasource User Profile Management App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_settings.html">Datasource User Settings App Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="mm_scheduled_jobs.html" title="previous chapter">Datasource MM Scheduled Jobs App Documentation</a></li>
+      <li>Next: <a href="mm_triggered_jobs.html" title="next chapter">Datasource MM Triggered Jobs App Documentation</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Ege Dogan Dursun.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/mm_scripts.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

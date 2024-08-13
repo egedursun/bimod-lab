@@ -80,12 +80,15 @@
 
   <div class="row g-6 mb-6" id="assistant-chats-title">
     <div class="col-sm-6 col-xl-3">
-      <h3 class="mb-0">Assistant Chats</h3>
+      <h3 class="mb-0">
+        <strong>Assistant Chats</strong>
+      </h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-blue-1.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-85.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
@@ -103,6 +106,18 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   <div class="app-chat card">
     <div class="row g-0">
       <!-- Sidebar Left -->
@@ -111,14 +126,6 @@
           class="chat-sidebar-left-user sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
           <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
             <img src="
-
-
-
-
-
-
-
-
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -167,6 +174,7 @@
                     <div class="d-flex align-items-center">
                       <div class="flex-shrink-0 avatar">
                         <img src="
+
 
                           {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              alt="Avatar" class="rounded">
@@ -249,6 +257,7 @@
                         class="flex-shrink-0 avatar {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded"
                         {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
                         <img src="
+
                           {% if chat.assistant.assistant_image %}{{ chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              class="rounded">
                       </div>
@@ -326,6 +335,7 @@
                      data-overlay data-target="#app-chat-chats"></i>
                   <div class="flex-shrink-0 avatar avatar-online">
                     <img src="
+
                       {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
                   </div>
@@ -384,14 +394,6 @@
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
                             <img src="
-
-
-
-
-
-
-
-
                               {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                                  alt="Avatar" class="rounded">
                           </div>
@@ -517,14 +519,6 @@
                           <div class="user-avatar flex-shrink-0 ms-4">
                             <div class="avatar avatar-xl">
                               <img src="
-
-
-
-
-
-
-
-
                                 {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                                    alt="Avatar" class="rounded">
                             </div>
@@ -641,7 +635,7 @@
                   </label>
 
                   <button id="send-chat-message-button" class="btn btn-primary d-flex send-msg-btn" type="submit">
-                    <span class="align-middle d-md-inline-block d-none">Send</span>
+                    <span class="align-middle d-md-inline-block d-none"><strong>Send</strong></span>
                     <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
                   </button>
                   <button id="retry-response-button" class="btn btn-danger d-flex retry-msg-btn ms-4 me-4"
@@ -667,14 +661,6 @@
           <div class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
             <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
               <img src="
-
-
-
-
-
-
-
-
                 {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    alt="Avatar" class="rounded">
             </div>

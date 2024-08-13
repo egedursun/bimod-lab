@@ -1,3 +1,24 @@
+"""
+Module for managing user permissions within the web application.
+
+This module contains views that handle the assignment, listing, and management of user permissions within the application. It allows administrators to:
+- Assign specific permissions to users.
+- View and update existing permissions for users within different organizations.
+- Remove permissions from users as necessary.
+
+Views:
+    - AddPermissionsView: Facilitates the addition of new permissions to users.
+    - ListPermissionsView: Displays and manages the permissions assigned to users.
+
+Permissions:
+    The views in this module enforce permission checks to ensure that only authorized users can assign, update, or remove permissions.
+
+Models:
+    - Organization: Represents an organization that can have multiple users with various permissions.
+    - UserPermission: Represents the permissions assigned to a user.
+    - User: Django's built-in user model.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -10,6 +31,16 @@ from web_project import TemplateLayout
 
 
 class AddPermissionsView(TemplateView):
+    """
+    View to handle adding permissions to users.
+
+    This view allows administrators to assign specific permissions to users within an organization. The permissions are grouped by categories like 'Organization Permissions', 'LLM Core Permissions', etc.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with organizations, users, and grouped permissions. If an organization and/or user is selected, it filters the context accordingly.
+        post(self, request, *args, **kwargs): Handles the logic to assign selected permissions to a user.
+        get_permissions_grouped(self): Returns a dictionary of permissions grouped by categories.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -204,6 +235,15 @@ class AddPermissionsView(TemplateView):
 
 
 class ListPermissionsView(LoginRequiredMixin, TemplateView):
+    """
+    View to list and manage user permissions within organizations.
+
+    This view displays a list of permissions assigned to users in each organization that the logged-in user is associated with. It also allows for updating and deleting these permissions.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with organizations, users, and their associated permissions.
+        post(self, request, *args, **kwargs): Handles the logic to update or delete permissions for a user.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))

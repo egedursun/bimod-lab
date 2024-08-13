@@ -1,3 +1,13 @@
+"""
+View to handle the creation of new users.
+
+This view allows administrators to create new users by providing details like username, email, password, and more. It also sends a verification and invitation email to the newly created user.
+
+Methods:
+    get_context_data(self, **kwargs): Prepares the context with a list of organizations to which the user can be added.
+    post(self, request, *args, **kwargs): Handles the user creation logic, including sending verification and invitation emails.
+"""
+
 import uuid
 
 from django.contrib import messages
@@ -13,13 +23,23 @@ from django.views.generic import TemplateView
 from apps.organization.models import Organization
 from apps.user_management.forms import UserStatusForm
 from apps.user_permissions.models import PermissionNames, UserPermission
-from auth.helpers import send_verification_email
+from auth.helpers import send_verification_email, send_invitation_email
 from auth.models import Profile
 from config import settings
 from web_project import TemplateLayout
 
 
 class AddNewUserView(LoginRequiredMixin, TemplateView):
+    """
+    View to add an existing user to an organization.
+
+    This view allows administrators to add existing users (sub-users) to an organization that the administrator belongs to.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the list of sub-users and organizations the user can manage.
+        post(self, request, *args, **kwargs): Handles the logic to add a user to the selected organization.
+    """
+
     template_name = "user_management/users/add_new_user.html"
 
     def get_context_data(self, **kwargs):
@@ -94,6 +114,18 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
             else:
                 messages.error(request, "Email settings are not configured. Unable to send verification email.")
             messages.success(request, 'User created successfully!')
+
+            try:
+                email = created_user.email
+                send_invitation_email(email, token)
+                if settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD:
+                    messages.success(request, 'Invitation email sent successfully!')
+                else:
+                    messages.error(request, 'Email settings are not configured. Unable to send invitation email.')
+                messages.success(request, 'Invitation email sent successfully!')
+            except Exception as e:
+                messages.error(request, f'Error sending invitation email: {str(e)}')
+
             print('[AddNewUserView.post] User created successfully.')
         except Exception as e:
             messages.error(request, f'Error creating user: {str(e)}')
@@ -101,6 +133,16 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
 
 
 class AddUserToOrganizationView(LoginRequiredMixin, TemplateView):
+    """
+    View to add an existing user to an organization.
+
+    This view allows administrators to add existing users (sub-users) to an organization that the administrator belongs to.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the list of sub-users and organizations the user can manage.
+        post(self, request, *args, **kwargs): Handles the logic to add a user to the selected organization.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -147,6 +189,16 @@ class AddUserToOrganizationView(LoginRequiredMixin, TemplateView):
 
 
 class ListUsersView(LoginRequiredMixin, TemplateView):
+    """
+    View to list users associated with the logged-in user's organizations.
+
+    This view displays a paginated list of users who are part of the organizations that the logged-in user belongs to. It also allows for updating user statuses.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the list of users grouped by organization.
+        post(self, request, *args, **kwargs): Handles the logic to update the status (active/inactive) of a user.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -193,6 +245,16 @@ class ListUsersView(LoginRequiredMixin, TemplateView):
 
 
 class RemoveUserFromOrganizationView(TemplateView, LoginRequiredMixin):
+    """
+    View to remove a user from a specific organization.
+
+    This view allows administrators to remove a user from a particular organization. The user will no longer be associated with that organization.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with details of the user and organization to confirm the removal.
+        post(self, request, *args, **kwargs): Handles the logic to remove the user from the specified organization.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = get_object_or_404(User, id=kwargs['pk'])
@@ -221,6 +283,16 @@ class RemoveUserFromOrganizationView(TemplateView, LoginRequiredMixin):
 
 
 class RemoveUserFromAllOrganizationsView(TemplateView, LoginRequiredMixin):
+    """
+    View to remove a user from all organizations they belong to.
+
+    This view allows administrators to remove a user from all organizations they are currently a member of, effectively disassociating them from all organizations.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with details of the user to confirm the removal from all organizations.
+        post(self, request, *args, **kwargs): Handles the logic to remove the user from all organizations.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = get_object_or_404(User, id=kwargs['pk'])
@@ -247,6 +319,16 @@ class RemoveUserFromAllOrganizationsView(TemplateView, LoginRequiredMixin):
 
 
 class RemoveUserView(LoginRequiredMixin, TemplateView):
+    """
+    View to delete a user from the system.
+
+    This view allows administrators to permanently delete a user. The user will be removed from all associated organizations before deletion.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with details of the user to confirm the deletion.
+        post(self, request, *args, **kwargs): Handles the logic to delete the user and remove them from all organizations.
+    """
+
     template_name = "user_management/users/confirm_remove_user.html"
 
     def get_context_data(self, **kwargs):
@@ -280,6 +362,15 @@ class RemoveUserView(LoginRequiredMixin, TemplateView):
 
 @method_decorator(require_POST, name='dispatch')
 class UpdateUserStatusView(LoginRequiredMixin, TemplateView):
+    """
+    View to update the active status of a user.
+
+    This view allows administrators to activate or deactivate a user. The user's active status in all associated permissions is also updated accordingly.
+
+    Methods:
+        post(self, request, *args, **kwargs): Handles the logic to update the user's active status.
+    """
+
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
         user_id = request.POST.get('user_id')

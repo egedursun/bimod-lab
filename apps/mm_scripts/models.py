@@ -1,3 +1,10 @@
+"""
+Module Overview: This module defines models related to custom scripts within an assistant-based application. It includes models for storing script references, script details, and associated metadata such as categories, content, and step guides.
+
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+"""
+
 from django.db import models
 
 # not used for now
@@ -7,6 +14,22 @@ SCRIPT_SOURCES = {
 
 
 class CustomScriptReference(models.Model):
+    """
+    CustomScriptReference Model:
+    - Purpose: Represents a reference to a custom script associated with a specific assistant, storing information about the script source and the user who created the reference.
+    - Key Fields:
+        - `custom_script`: ForeignKey linking to the `CustomScript` model.
+        - `assistant`: ForeignKey linking to the `Assistant` model.
+        - `script_source`: A field indicating whether the script is internal or external.
+        - `created_by_user`: ForeignKey linking to the `User` who created the script reference.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Meta:
+        - `verbose_name`: "Custom Script Reference"
+        - `verbose_name_plural`: "Custom Script References"
+        - `unique_together`: Ensures that each combination of `custom_script` and `assistant` is unique.
+        - `indexes`: Indexes on various fields for optimized queries.
+    """
+
     custom_script = models.ForeignKey("CustomScript", on_delete=models.CASCADE)
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     script_source = models.CharField(max_length=255, default="internal", blank=True)
@@ -58,6 +81,27 @@ CUSTOM_SCRIPT_CATEGORIES = [
 
 
 class CustomScript(models.Model):
+    """
+    CustomScript Model:
+    - Purpose: Represents a custom script, storing details such as the name, description, categories, content, and associated metadata like step guides and script references.
+    - Key Fields:
+        - `is_public`: Boolean flag indicating whether the script is publicly accessible.
+        - `categories`: JSONField for storing categories associated with the script.
+        - `name`: The name of the custom script.
+        - `description`: A description of the script.
+        - `script_content`: TextField for storing the actual content of the script.
+        - `script_step_guide`: JSONField for storing a step-by-step guide related to the script.
+        - `custom_script_references`: ManyToManyField linking to `CustomScriptReference` instances associated with the script.
+        - `script_picture`: ImageField for storing an optional picture associated with the script.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+        - `created_by_user`: ForeignKey linking to the `User` who created the script.
+        - `is_featured`: Boolean flag indicating whether the script is featured.
+    - Meta:
+        - `verbose_name`: "Custom Script"
+        - `verbose_name_plural`: "Custom Scripts"
+        - `indexes`: Indexes on various fields for optimized queries.
+    """
+
     is_public = models.BooleanField(default=False)
     categories = models.JSONField(default=list, blank=True)
     name = models.CharField(max_length=255)

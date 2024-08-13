@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load i18n %}
+{% load convert_file_size %}
 
 {% block title %}Media Item Detail{% endblock %}
 
@@ -29,20 +30,68 @@
 {% endblock page_js %}
 
 {% block content %}
-  <div class="row">
+
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-65.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded ms-4">
+            <i class="ti ti-bookmark"></i>
+        </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view the details of the media item. You can also update the description of the media item
+        and generate a description for the media item using AI. The media item can be an audio, video, image, or other
+        file types. Some of these file types can be displayed directly on the page, while others can be downloaded.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+           role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <div class="row mt-4">
     <div class="col-12 mb-6">
       <div class="card">
-        <h5 class="card-header">Metadata</h5>
+        <h5 class="card-header">
+          <strong>File Metadata</strong>
+        </h5>
         <div class="card-body">
-          <p><strong>Storage Base:</strong> &nbsp;&nbsp; {{ media_item.storage_base }}</p>
-          <p><strong>Media Category:</strong> &nbsp;&nbsp; {{ media_item.storage_base.media_category }}</p>
+          <p><strong>
+            <i class="fa fa-server me-4"></i>
+            Storage Base:
+          </strong> &nbsp;&nbsp; {{ media_item.storage_base }}</p>
+          <p><strong>
+            <i class="fa fa-file me-4"></i>
+            Media Category:
+          </strong> &nbsp;&nbsp; {{ media_item.storage_base.media_category }}</p>
           <hr>
-          <p><strong>File Name:</strong> &nbsp;&nbsp; {{ media_item.media_file_name }}.{{ media_item.media_file_type }}
+          <p><strong>
+            <i class="fa fa-signature me-4"></i>
+            File Name:
+          </strong> &nbsp;&nbsp; {{ media_item.media_file_name }}.{{ media_item.media_file_type }}
           </p>
-          <p><strong>File Size:</strong> &nbsp;&nbsp; {{ media_item.media_file_size }} bytes</p>
-          <p><strong>File Type:</strong> &nbsp;&nbsp; {{ media_item.media_file_type }}</p>
-          <p><strong>Full File Path:</strong> &nbsp;&nbsp; <a href="{{ media_item.full_file_path }}"
-                                                              target="_blank">{{ media_item.full_file_path }}</a></p>
+          <p><strong>
+            <i class="fa fa-info-circle me-4"></i>
+            File Size:
+          </strong> &nbsp;&nbsp; {{ media_item.media_file_size|convert_file_size }}</p>
+          <p><strong>
+            <i class="fa fa-file-alt me-4"></i>
+            File Type:
+          </strong> &nbsp;&nbsp; {{ media_item.media_file_type }}</p>
+          <p><strong>
+            <i class="fa fa-route me-4"></i>
+            Path:
+          </strong> &nbsp;&nbsp; <a href="{{ media_item.full_file_path }}" target="_blank">{{ media_item.full_file_path }}</a></p>
         </div>
       </div>
     </div>
@@ -50,7 +99,10 @@
       <!-- Audio Player -->
       <div class="col-12 mb-6">
         <div class="card">
-          <h5 class="card-header">Audio</h5>
+          <h5 class="card-header">
+            <strong>Audio File</strong>
+          </h5>
+          <hr>
           <div class="card-body">
             <audio class="w-100" id="plyr-audio-player" controls>
               <source src="{{ media_item.full_file_path }}" type="audio/mp3"/>
@@ -62,7 +114,10 @@
       <!-- Video Player -->
       <div class="col-12 mb-6">
         <div class="card">
-          <h5 class="card-header">Video</h5>
+          <h5 class="card-header">
+            <strong>Video File</strong>
+          </h5>
+          <hr>
           <div class="card-body">
             <video class="w-100" id="plyr-video-player" playsinline controls>
               <source src="{{ media_item.full_file_path }}" type="video/mp4"/>
@@ -74,7 +129,10 @@
       <!-- Image Display -->
       <div class="col-12 mb-6">
         <div class="card">
-          <h5 class="card-header">Image</h5>
+          <h5 class="card-header">
+            <strong>Image File</strong>
+          </h5>
+          <hr>
           <div class="card-body text-center">
             <img src="{{ media_item.full_file_path }}" alt="Image" class="img-fluid">
           </div>
@@ -84,7 +142,10 @@
       <!-- Other Media Types -->
       <div class="col-12 mb-6">
         <div class="card">
-          <h5 class="card-header">File Contents</h5>
+          <h5 class="card-header">
+            <strong>File Contents</strong>
+          </h5>
+          <hr>
           <pre><code class="{{ file_type_highlighting }} me-12 ms-12 p-12 rounded overflow-scroll"
                      style="max-height: 600px;">{{ media_item_contents|linenumbers }}</code></pre>
           <div class="card-body text-center">
@@ -98,7 +159,10 @@
     <!-- Description and Update Form -->
     <div class="col-12 mb-12">
       <div class="card">
-        <h5 class="card-header">Item Details</h5>
+        <h5 class="card-header">
+          <strong>Item Details</strong>
+        </h5>
+        <hr>
         <div class="card-body">
           <form method="post" action="{% url 'datasource_media_storages:item_detail' media_item.pk %}">
             {% csrf_token %}
@@ -112,7 +176,10 @@
               {% endif %}
             </textarea>
             </div>
-            <button type="submit" class="btn btn-primary w-25"><strong>Update Description</strong></button>
+            <button type="submit" class="btn btn-primary w-25"><strong>
+              <i class="fa fa-save me-4"></i>
+              Save Description
+            </strong></button>
           </form>
           {% if media_item.storage_base.media_category == 'data' or media_item.storage_base.media_category == 'code' or media_item.storage_base.media_category == 'image' %}
             <form method="post" action="{% url 'datasource_media_storages:generate_description' media_item.pk %}"

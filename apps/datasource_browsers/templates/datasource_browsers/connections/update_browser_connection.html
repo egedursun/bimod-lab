@@ -34,25 +34,26 @@
 {% endblock page_js %}
 
 {% block content %}
+
+  <a href="{% url 'datasource_browser:list' %}">
+    <button class="btn btn-secondary my-4 w-25">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to Browsers</strong>
+    </button>
+  </a>
+
   <!-- Basic Layout -->
   <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
-        <div class="card-datatable table-responsive">
-          <a href="{% url 'datasource_browsers:list' %}">
-            <button class="btn btn-secondary ms-4 mt-4 mb-8">
-              <i class="fa fa-dashboard me-4"></i>
-              <strong> Manage Browser Connections</strong>
-            </button>
-          </a>
-        </div>
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Update Browser Connection</h5>
+          <h5 class="mb-0"><strong>Update Browser Connection</strong></h5>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-49.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -61,7 +62,8 @@
               <p class="mb-0">
                 Update the browser connection by modifying the necessary information. Ensure to set appropriate
                 permissions and read-only access where
-                needed to protect your data.
+                needed to protect your data. If you think you need help with configuring your browser connection, please
+                feel free to reach out to our support team.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
               </button>
@@ -78,227 +80,249 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="browser_type">Browser Type</label>
-              <select class="form-select" id="browser_type" name="browser_type">
-                <option value="" disabled>Select Browser Type</option>
-                {% for key, value in browser_types %}
-                  <option value="{{ key }}"
-                          {% if key == browser_connection.browser_type %}selected{% endif %}>{{ value }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="assistant">Assistant</label>
-              <select class="form-select" id="assistant" name="assistant">
-                {% for assistant in assistants %}
-                  <option value="{{ assistant.id }}"
-                          {% if assistant.id == browser_connection.assistant.id %}selected{% endif %}>{{ assistant.name }}</option>
-                {% endfor %}
-              </select>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="name">Name</label>
-              <input type="text" class="form-control" id="name" name="name" value="{{ browser_connection.name }}"
-                     required/>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="description">Description</label>
-              <textarea class="form-control" id="description" name="description"
-                        required>{{ browser_connection.description }}</textarea>
-            </div>
-            <div class="mb-6 col-lg-6">
-              <label class="form-label" for="data_selectivity">Data Selectivity</label>
-              <input type="range" class="form-range" id="data_selectivity" name="data_selectivity" min="0" max="1"
-                     step="0.1" value="{{ browser_connection.data_selectivity }}"
-                     oninput="this.nextElementSibling.value = this.value">
-              <output>{{ browser_connection.data_selectivity }}</output>
-            </div>
-            <div class="mb-6 col-lg-6">
-              <label class="form-label" for="minimum_investigation_sites">Minimum Investigation Sites</label>
-              <input type="range" class="form-range" id="minimum_investigation_sites" name="minimum_investigation_sites"
-                     min="1" max="10" step="1" value="{{ browser_connection.minimum_investigation_sites }}"
-                     oninput="this.nextElementSibling.value = this.value">
-              <output>{{ browser_connection.minimum_investigation_sites }}</output>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="whitelisted_extensions">Whitelisted Extensions</label>
-              <table id="whitelistedExtensionsTable" class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>Extension</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for extension in browser_connection.whitelisted_extensions %}
+            <div class="row p-8">
+              <div class="mb-6 col-6">
+                <label class="form-label" for="browser_type">Browser Type</label>
+                <select class="form-select" id="browser_type" name="browser_type">
+                  <option value="" disabled>Select Browser Type</option>
+                  {% for key, value in browser_types %}
+                    <option value="{{ key }}"
+                            {% if key == browser_connection.browser_type %}selected{% endif %}>{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="assistant">Assistant</label>
+                <select class="form-select" id="assistant" name="assistant">
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}"
+                            {% if assistant.id == browser_connection.assistant.id %}selected{% endif %}>{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text"></div>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ browser_connection.name }}"
+                       required/>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="1"
+                          required>{{ browser_connection.description }}</textarea>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="data_selectivity">Data Selectivity</label>
+                <input type="range" class="form-range" id="data_selectivity" name="data_selectivity" min="0" max="1"
+                       step="0.1" value="{{ browser_connection.data_selectivity }}"
+                       oninput="this.nextElementSibling.value = this.value">
+                <output>{{ browser_connection.data_selectivity }}</output>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="minimum_investigation_sites">Minimum Investigation Sites</label>
+                <input type="range" class="form-range" id="minimum_investigation_sites"
+                       name="minimum_investigation_sites"
+                       min="1" max="10" step="1" value="{{ browser_connection.minimum_investigation_sites }}"
+                       oninput="this.nextElementSibling.value = this.value">
+                <output>{{ browser_connection.minimum_investigation_sites }}</output>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="whitelisted_extensions">Whitelisted Extensions</label>
+                <table id="whitelistedExtensionsTable" class="table table-bordered">
+                  <thead>
                   <tr>
-                    <td><input type="text" name="whitelisted_extensions[]" value="{{ extension }}" class="form-control">
-                    </td>
-                    <td>
-                      <button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i
-                        class="fa fa-remove"></i></button>
-                    </td>
+                    <th>Extension</th>
+                    <th></th>
                   </tr>
-                {% endfor %}
-                </tbody>
-              </table>
-              <button id="addWhitelistRow" type="button" onclick="addRow('whitelistedExtensionsTable')"
-                      class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New Row</strong></button>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="blacklisted_extensions">Blacklisted Extensions</label>
-              <table id="blacklistedExtensionsTable" class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>Extension</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for extension in browser_connection.blacklisted_extensions %}
+                  </thead>
+                  <tbody>
+                  {% for extension in browser_connection.whitelisted_extensions %}
+                    <tr>
+                      <td><input type="text" name="whitelisted_extensions[]" value="{{ extension }}"
+                                 class="form-control">
+                      </td>
+                      <td>
+                        <button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i
+                          class="fa fa-remove"></i></button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                <button id="addWhitelistRow" type="button" onclick="addRow('whitelistedExtensionsTable')"
+                        class="btn btn-secondary d-grid w-50 mt-4">
+                  <strong>
+                    <i class="fa fa-add me-4"></i>
+                    Add New Row
+                  </strong>
+                </button>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="blacklisted_extensions">Blacklisted Extensions</label>
+                <table id="blacklistedExtensionsTable" class="table table-bordered">
+                  <thead>
                   <tr>
-                    <td><input type="text" name="blacklisted_extensions[]" value="{{ extension }}" class="form-control">
-                    </td>
-                    <td>
-                      <button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i
-                        class="fa fa-remove"></i></button>
-                    </td>
+                    <th>Extension</th>
+                    <th></th>
                   </tr>
-                {% endfor %}
-                </tbody>
-              </table>
-              <button id="addBlacklistRow" type="button" onclick="addRow('blacklistedExtensionsTable')"
-                      class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New Row</strong></button>
+                  </thead>
+                  <tbody>
+                  {% for extension in browser_connection.blacklisted_extensions %}
+                    <tr>
+                      <td><input type="text" name="blacklisted_extensions[]" value="{{ extension }}"
+                                 class="form-control">
+                      </td>
+                      <td>
+                        <button class="btn bg-label-danger" type="button" onclick="removeRow(this)"><i
+                          class="fa fa-remove"></i></button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                <button id="addBlacklistRow" type="button" onclick="addRow('blacklistedExtensionsTable')"
+                        class="btn btn-secondary d-grid w-50 mt-4">
+                  <strong>
+                    <i class="fa fa-add me-4"></i>
+                    Add New Row
+                  </strong>
+                </button>
+              </div>
+              <div class="mb-6 col-12">
+                <hr>
+                <label class="form-label mb-4 mt-4" for="html_cleanup_strategies">HTML Cleanup Strategies</label>
+                <hr>
+                <div class="row p-4">
+                  <div class="form-check col-5">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_javascript" name="ra_javascript"
+                           {% if browser_connection.reading_abilities.javascript %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_javascript">
+                      JavaScript
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                      <strong>Remove any Javascript, also remove stylesheets.</strong>
+                    </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_style" name="ra_style"
+                           {% if browser_connection.reading_abilities.style %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_style">
+                      Style
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                      <strong>Remove any style tags and attributes.</strong>
+                    </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_inline_style"
+                           name="ra_inline_style"
+                           {% if browser_connection.reading_abilities.inline_style %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_inline_style">
+                      Inline Style
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                      <strong>Remove any style attributes.</strong>
+                    </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_comments" name="ra_comments"
+                           {% if browser_connection.reading_abilities.comments %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_comments">
+                      Comments
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                      <strong>Remove any comments.</strong>
+                    </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_links" name="ra_links"
+                           {% if browser_connection.reading_abilities.links %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_links">
+                      Links
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                      <strong>Removes any link tags.</strong>
+                    </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_meta" name="ra_meta"
+                           {% if browser_connection.reading_abilities.meta %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_meta">
+                      Meta
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                    <strong>Remove any meta tags.</strong>
+                  </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_page_structure"
+                           name="ra_page_structure"
+                           {% if browser_connection.reading_abilities.page_structure %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_page_structure">
+                      Page Structure
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                    <strong>Remove structure tags like head, html, etc.</strong>
+                  </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_processing_instructions"
+                           name="ra_processing_instructions"
+                           {% if browser_connection.reading_abilities.processing_instructions %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_processing_instructions">
+                      Processing Instructions
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                    <strong>Remove processing instructions.</strong>
+                  </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_embedded" name="ra_embedded"
+                           {% if browser_connection.reading_abilities.embedded %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_embedded">
+                      Embedded
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                    <strong>Remove any embedded objects such as iframes, etc.</strong>
+                  </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_frames" name="ra_frames"
+                           {% if browser_connection.reading_abilities.frames %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_frames">
+                      Frames
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                    <strong>Remove any frame-related tags.</strong>
+                  </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_forms" name="ra_forms"
+                           {% if browser_connection.reading_abilities.forms %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_forms">
+                      Forms
+                    </label>
+                    <span class="form-text bg-label-secondary p-1 m-1 rounded">
+                    <strong>Remove any form tags.</strong>
+                  </span>
+                  </div>
+                  <div class="form-check col-5 mb-4">
+                    <input class="form-check-input" type="checkbox" value="on" id="ra_remove_tags" name="ra_remove_tags"
+                           {% if browser_connection.reading_abilities.remove_tags %}checked{% endif %}>
+                    <label class="form-check-label" for="ra_remove_tags">
+                      Remove Tags
+                    </label>
+                    <span class="form-text bg-label-danger p-1 m-1 rounded">
+                    <strong>Remove tags, but keep the content.</strong>
+                  </span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="mb-6">
-              <label class="form-label mb-8" for="html_cleanup_strategies">HTML Cleanup Strategies</label>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_javascript" name="ra_javascript"
-                       {% if browser_connection.reading_abilities.javascript %}checked{% endif %}>
-                <label class="form-check-label" for="ra_javascript">
-                  JavaScript
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove any Javascript, like an onclick attribute. Also remove stylesheets as they could contain Javascript.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_style" name="ra_style"
-                       {% if browser_connection.reading_abilities.style %}checked{% endif %}>
-                <label class="form-check-label" for="ra_style">
-                  Style
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove any style tags and attributes from the HTML.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_inline_style" name="ra_inline_style"
-                       {% if browser_connection.reading_abilities.inline_style %}checked{% endif %}>
-                <label class="form-check-label" for="ra_inline_style">
-                  Inline Style
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove any style attributes. Defaults to the value of the style option.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_comments" name="ra_comments"
-                       {% if browser_connection.reading_abilities.comments %}checked{% endif %}>
-                <label class="form-check-label" for="ra_comments">
-                  Comments
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove any comments from the HTML.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_links" name="ra_links"
-                       {% if browser_connection.reading_abilities.links %}checked{% endif %}>
-                <label class="form-check-label" for="ra_links">
-                  Links
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Removes any link tags from the HTML.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_meta" name="ra_meta"
-                       {% if browser_connection.reading_abilities.meta %}checked{% endif %}>
-                <label class="form-check-label" for="ra_meta">
-                  Meta
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove any meta tags from the HTML.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_page_structure"
-                       name="ra_page_structure"
-                       {% if browser_connection.reading_abilities.page_structure %}checked{% endif %}>
-                <label class="form-check-label" for="ra_page_structure">
-                  Page Structure
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove any page structure tags like head, html, title, etc.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_processing_instructions"
-                       name="ra_processing_instructions"
-                       {% if browser_connection.reading_abilities.processing_instructions %}checked{% endif %}>
-                <label class="form-check-label" for="ra_processing_instructions">
-                  Processing Instructions
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove any processing instructions from the HTML.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_embedded" name="ra_embedded"
-                       {% if browser_connection.reading_abilities.embedded %}checked{% endif %}>
-                <label class="form-check-label" for="ra_embedded">
-                  Embedded
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove any embedded tags like object and embed such as iframes, videos, etc.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_frames" name="ra_frames"
-                       {% if browser_connection.reading_abilities.frames %}checked{% endif %}>
-                <label class="form-check-label" for="ra_frames">
-                  Frames
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove any frame-related tags from the HTML.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_forms" name="ra_forms"
-                       {% if browser_connection.reading_abilities.forms %}checked{% endif %}>
-                <label class="form-check-label" for="ra_forms">
-                  Forms
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove any form tags from the HTML.</strong>
-              </span>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="on" id="ra_remove_tags" name="ra_remove_tags"
-                       {% if browser_connection.reading_abilities.remove_tags %}checked{% endif %}>
-                <label class="form-check-label" for="ra_remove_tags">
-                  Remove Tags
-                </label>
-                <span class="form-text bg-label-secondary p-1 m-1 rounded">
-                <strong>Remove the tags themselves from the HTML but keep the content.</strong>
-              </span>
-              </div>
-            </div>
+            <hr>
             <input type="hidden" name="created_by_user" value="{{ request.user.id }}">
-            <button type="submit" class="btn btn-primary d-grid w-100">Update Browser Connection</button>
+            <button type="submit" class="btn btn-primary mt-0 d-grid w-25"><strong>Update Browser Connection</strong>
+            </button>
           </form>
         </div>
       </div>

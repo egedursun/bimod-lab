@@ -1,3 +1,9 @@
+"""
+This module provides views for managing message templates within the Bimod.io platform.
+
+The views allow authenticated users to create, list, update, and delete their message templates. Permissions are checked to ensure that users have the appropriate rights to perform these actions.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
@@ -10,6 +16,16 @@ from web_project import TemplateLayout
 
 
 class CreateMessageTemplateView(TemplateView, LoginRequiredMixin):
+    """
+    Handles the creation of new message templates.
+
+    This view allows users to create message templates that they can use in their interactions. The view checks user permissions before allowing the creation of a new template.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the user's organizations.
+        post(self, request, *args, **kwargs): Processes the form submission to create a new message template and associates it with the user.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['organizations'] = self.request.user.organizations.all()
@@ -39,6 +55,15 @@ class CreateMessageTemplateView(TemplateView, LoginRequiredMixin):
 
 
 class ListMessageTemplateView(TemplateView, LoginRequiredMixin):
+    """
+    Displays a list of message templates created by the user.
+
+    This view retrieves and displays all message templates that the current user has created.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the user's message templates and adds them to the context.
+    """
+
     model = MessageTemplate
 
     def get_context_data(self, **kwargs):
@@ -48,6 +73,16 @@ class ListMessageTemplateView(TemplateView, LoginRequiredMixin):
 
 
 class UpdateMessageTemplateView(TemplateView, LoginRequiredMixin):
+    """
+    Handles the updating of an existing message template.
+
+    This view allows users to update the content of their existing message templates. It ensures that the user is authorized to make changes before saving them.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with the user's organizations and the message template to be updated.
+        post(self, request, *args, **kwargs): Processes the form submission to update the message template.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         organizations = self.request.user.organizations.all()
@@ -67,6 +102,16 @@ class UpdateMessageTemplateView(TemplateView, LoginRequiredMixin):
 
 
 class DeleteMessageTemplateView(DeleteView, LoginRequiredMixin):
+    """
+    Handles the deletion of a message template.
+
+    This view allows users to delete a specific message template, provided they have the necessary permissions.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context for the deletion confirmation page.
+        post(self, request, *args, **kwargs): Processes the deletion of the specified message template.
+    """
+
     model = MessageTemplate
     success_url = 'message_templates:list'
 

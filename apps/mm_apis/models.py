@@ -1,3 +1,10 @@
+"""
+Module Overview: This module defines models related to custom APIs within an assistant-based application. It includes models for storing API references, API details, and associated metadata such as authentication types, categories, and endpoints.
+
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+"""
+
 from django.db import models
 
 
@@ -9,6 +16,22 @@ API_SOURCES = {
 
 
 class CustomAPIReference(models.Model):
+    """
+    CustomAPIReference Model:
+    - Purpose: Represents a reference to a custom API associated with a specific assistant, storing information about the API source and the user who created the reference.
+    - Key Fields:
+        - `custom_api`: ForeignKey linking to the `CustomAPI` model.
+        - `assistant`: ForeignKey linking to the `Assistant` model.
+        - `api_source`: A field indicating whether the API is internal or external.
+        - `created_by_user`: ForeignKey linking to the `User` who created the API reference.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Meta:
+        - `verbose_name`: "Custom API Reference"
+        - `verbose_name_plural`: "Custom API References"
+        - `unique_together`: Ensures that each combination of `custom_api` and `assistant` is unique.
+        - `indexes`: Indexes on various fields for optimized queries.
+    """
+
     custom_api = models.ForeignKey("CustomAPI", on_delete=models.CASCADE)
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     api_source = models.CharField(max_length=255, default="internal", blank=True)
@@ -73,6 +96,29 @@ class AcceptedHTTPRequestMethods:
 
 
 class CustomAPI(models.Model):
+    """
+    CustomAPI Model:
+    - Purpose: Represents a custom API, storing details such as the name, description, authentication type, base URL, endpoints, and associated metadata like categories and whether the API is public or featured.
+    - Key Fields:
+        - `is_public`: Boolean flag indicating whether the API is publicly accessible.
+        - `categories`: JSONField for storing categories associated with the API.
+        - `name`: The name of the custom API.
+        - `description`: A description of the API.
+        - `authentication_type`: The type of authentication required (e.g., None, Bearer).
+        - `authentication_token`: The token used for authentication if required.
+        - `base_url`: The base URL for the API.
+        - `endpoints`: JSONField for storing the structure of the API's endpoints.
+        - `custom_api_references`: ManyToManyField linking to `CustomAPIReference` instances associated with the API.
+        - `api_picture`: ImageField for storing an optional picture associated with the API.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+        - `created_by_user`: ForeignKey linking to the `User` who created the API.
+        - `is_featured`: Boolean flag indicating whether the API is featured.
+    - Meta:
+        - `verbose_name`: "Custom API"
+        - `verbose_name_plural`: "Custom APIs"
+        - `indexes`: Indexes on various fields for optimized queries.
+    """
+
     is_public = models.BooleanField(default=False)
     categories = models.JSONField(default=list, blank=True)
 

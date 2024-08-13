@@ -1,3 +1,9 @@
+"""
+This module contains views for managing SQL database connections and custom SQL queries within the Bimod.io platform.
+
+The views include creating, updating, deleting, and listing SQL database connections and SQL queries. These views also handle form submissions, permission checks, and rendering templates for SQL-related operations. Access to these views is restricted to authenticated users, with additional permission checks for specific actions.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
@@ -11,6 +17,19 @@ from web_project import TemplateLayout
 
 
 class CreateSQLDatabaseConnectionView(TemplateView, LoginRequiredMixin):
+    """
+    Handles the creation of new SQL database connections.
+
+    This view displays a form for creating a new SQL database connection. Upon submission, it validates the input, checks user permissions, and saves the new connection to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Attributes:
+        template_name (str): The template used to render the SQL database connection creation form.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds additional context to the template, including the form for creating an SQL database connection and available assistants.
+        post(self, request, *args, **kwargs): Handles form submission and SQL database connection creation, including permission checks and validation.
+    """
+
     template_name = "datasource_sql/connections/create_sql_datasources.html"
 
     def get_context_data(self, **kwargs):
@@ -51,6 +70,14 @@ class CreateSQLDatabaseConnectionView(TemplateView, LoginRequiredMixin):
 
 
 class ListSQLDatabaseConnectionsView(TemplateView, LoginRequiredMixin):
+    """
+    Displays a list of SQL database connections associated with the user's organizations and assistants.
+
+    This view retrieves all SQL database connections organized by organization and assistant and displays them in a structured list.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the SQL database connections organized by organization and assistant, and adds them to the context.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -75,6 +102,15 @@ class ListSQLDatabaseConnectionsView(TemplateView, LoginRequiredMixin):
 
 
 class UpdateSQLDatabaseConnectionView(TemplateView, LoginRequiredMixin):
+    """
+    Handles updating an existing SQL database connection.
+
+    This view allows users with the appropriate permissions to modify an SQL database connection's attributes. It also handles the form submission and validation for updating the connection.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current SQL database connection details and adds them to the context, along with other relevant data such as available assistants and the form for updating the connection.
+        post(self, request, *args, **kwargs): Handles form submission for updating the SQL database connection, including permission checks and validation.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -116,6 +152,15 @@ class UpdateSQLDatabaseConnectionView(TemplateView, LoginRequiredMixin):
 
 
 class DeleteSQLDatabaseConnectionView(LoginRequiredMixin, DeleteView):
+    """
+    Handles the deletion of an SQL database connection.
+
+    This view allows users with the appropriate permissions to delete an SQL database connection. It ensures that the user has the necessary permissions before performing the deletion.
+
+    Methods:
+        post(self, request, *args, **kwargs): Deletes the SQL database connection if the user has the required permissions.
+    """
+
     model = SQLDatabaseConnection
     success_url = 'datasource_sql:list'
 
@@ -143,6 +188,16 @@ class DeleteSQLDatabaseConnectionView(LoginRequiredMixin, DeleteView):
 
 
 class CreateSQLQueryView(TemplateView, LoginRequiredMixin):
+    """
+    Handles the creation of custom SQL queries.
+
+    This view displays a form for creating a new SQL query. Upon submission, it validates the input, checks user permissions, and saves the new query to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Methods:
+        get_context_data(self, **kwargs): Prepares the context with available database connections and the form for creating an SQL query.
+        post(self, request, *args, **kwargs): Handles form submission and SQL query creation, including permission checks and validation.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -181,6 +236,15 @@ class CreateSQLQueryView(TemplateView, LoginRequiredMixin):
 
 
 class UpdateSQLQueryView(TemplateView, LoginRequiredMixin):
+    """
+    Handles updating an existing custom SQL query.
+
+    This view allows users with the appropriate permissions to modify an SQL query's attributes. It also handles the form submission and validation for updating the query.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current SQL query details and adds them to the context, along with other relevant data such as available database connections and the form for updating the query.
+        post(self, request, *args, **kwargs): Handles form submission for updating the SQL query, including permission checks and validation.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -223,6 +287,15 @@ class UpdateSQLQueryView(TemplateView, LoginRequiredMixin):
 
 
 class DeleteSQLQueryView(LoginRequiredMixin, DeleteView):
+    """
+    Handles the deletion of a custom SQL query.
+
+    This view allows users with the appropriate permissions to delete an SQL query. It ensures that the user has the necessary permissions before performing the deletion.
+
+    Methods:
+        post(self, request, *args, **kwargs): Deletes the SQL query if the user has the required permissions.
+    """
+
     model = CustomSQLQuery
     success_url = 'datasource_sql:list_queries'
 
@@ -246,6 +319,15 @@ class DeleteSQLQueryView(LoginRequiredMixin, DeleteView):
 
 
 class ListSQLQueriesView(TemplateView, LoginRequiredMixin):
+    """
+    Displays a list of custom SQL queries associated with the user's SQL database connections.
+
+    This view retrieves all custom SQL queries within the user's SQL database connections, organized by organization and assistant, and displays them in a structured list.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the SQL queries for the user's connections and adds them to the context, including organization and assistant details.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user

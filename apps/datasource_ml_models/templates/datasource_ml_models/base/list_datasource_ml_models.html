@@ -10,6 +10,7 @@
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
   <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
   <style>
     .text-wrap {
       white-space: normal;
@@ -25,6 +26,7 @@
   <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
   <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
   <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
@@ -35,12 +37,15 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-6">
-      <h3 class="mb-0"><strong>Your ML Model Connections</strong></h3>
+      <h3 class="mb-0"><strong>
+        <strong>ML Model Connections</strong>
+      </strong></h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-1.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -54,26 +59,50 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   <!-- ML Model Connections Cards -->
   {% for organization, assistants in connections_by_organization.items %}
     <div class="card mb-6">
       <div class="card-header border-bottom">
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
-          <h4>
-            {{ organization.name }}
-          </h4>
+          <div class="d-flex">
+            <img src="
+
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 class="avatar avatar-lg me-4 rounded" width="60" alt="Avatar">
+            <h4>
+              <strong>{{ organization.name }}</strong>
+            </h4>
+          </div>
         </a>
-        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon mt-8" data-target="#collapse-org-{{ organization.id }}"></i>
         <span data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false"
               aria-controls="collapse-org-{{ organization.id }}">
-      <strong>&nbsp; See ML Model Connections of Assistants</strong>
+      <strong>&nbsp; See ML Model Connections</strong>
     </span>
       </div>
       <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
         {% for assistant, connections in assistants.items %}
-          <div class="assistant-group m-8">
-            <h5 class="assistant-title"><strong>{{ assistant.name }}</strong></h5>
+          <div class="assistant-group m-8 card card-border-shadow-primary rounded p-4">
+            <div class="d-flex">
+              <img src="
+
+                {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   class="me-4 rounded" width="80" height="80" alt="Avatar">
+              <h5 class="assistant-title mt-4"><strong>{{ assistant.name }}</strong></h5>
+            </div>
             <div class="card-datatable table-responsive">
               <a href="{% url 'datasource_ml_models:create' %}">
                 <button class="btn btn-success mt-4 mb-8">
@@ -92,32 +121,48 @@
                           <i class="fa fa-id-badge me-4"></i> Connection Name: &nbsp;&nbsp;</strong>
                           {{ connection.name }}
                         </p>
-                        <p class="card-subtitle mb-4"><strong>
+                        <p class="card-subtitle mb-1"><strong>
                           <i class="fa fa-database me-4"></i> Model Category: &nbsp;&nbsp;</strong>
                           {{ connection.get_model_object_category_display }}
                         </p>
                       </div>
                     </div>
+                    <hr>
                     <div class="card-body">
                       <ul class="p-0 m-0">
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body me-4"><strong>Description:</strong></span>
+                          <span class="text-body" style="min-width: 200px; max-width: 200px;"><strong>
+                            <i class="fa fa-info me-2"></i> Description:
+                          </strong></span>
                           <span class="text-wrap">{{ connection.description|linebreaksbr }}</span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Directory Path:</strong></span>
+                          <span class="text-body" style="min-width: 200px; max-width: 200px;"><strong>
+                            <i class="fa fa-folder me-2"></i> Directory Path:
+                          </strong></span>
                           <span
-                            class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.directory_full_path }}</strong></span>
+                            class="text-wrap bg-label-warning p-1 rounded"><strong>{{ connection.directory_full_path }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Temperature:</strong></span>
+                          <span class="text-body" style="min-width: 200px; max-width: 200px;"><strong>
+                            <i class="fa fa-temperature-2 me-2"></i> Temperature:
+                          </strong></span>
                           <span
-                            class="text-wrap bg-label-info p-2 rounded"><strong>{{ connection.interpretation_temperature }}</strong></span>
+                            class="text-wrap">
+                            <strong class="border border-success p-1 rounded">
+                              {{ connection.interpretation_temperature }}
+                            </strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Max Tokens:</strong></span>
+                          <span class="text-body" style="min-width: 200px; max-width: 200px;"><strong>
+                            <i class="fa fa-puzzle-piece me-2"></i>
+                            Max Tokens:
+                          </strong></span>
                           <span
-                            class="text-wrap bg-label-info p-2 rounded"><strong>{{ connection.interpretation_maximum_tokens }}</strong></span>
+                            class="text-wrap">
+                            <strong class="border border-success p-1 rounded">
+                              {{ connection.interpretation_maximum_tokens }}
+                            </strong></span>
                         </li>
                       </ul>
                       <hr>
@@ -130,10 +175,20 @@
                     </div>
                   </div>
                 </div>
+              {% empty %}
+                <div class="alert alert-warning" role="alert">
+                  <i class="fa fa-exclamation-triangle me-4"></i>
+                  <strong>No ML Model Connections found for this assistant.</strong>
+                </div>
               {% endfor %}
             </div>
           </div>
           <hr>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">
+            <i class="fa fa-exclamation-triangle me-4"></i>
+            <strong>No ML Model Connections found for this organization.</strong>
+          </div>
         {% endfor %}
       </div>
     </div>
@@ -170,6 +225,30 @@
             icon.classList.remove('fa-arrow-alt-circle-up');
             icon.classList.add('fa-arrow-alt-circle-down');
           }
+        });
+      });
+
+      document.querySelectorAll('.btn-danger').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('a').getAttribute('href');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
         });
       });
     });

@@ -1,7 +1,14 @@
+"""
+This module contains views for managing organizations within the Bimod.io platform.
+
+The views include creating, listing, updating, deleting organizations, and handling balance-related operations such as adding credits and transferring balances. Access to these views is restricted to authenticated users, with additional permission checks for certain actions.
+"""
+
 import decimal
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, get_object_or_404
 from django.views import View
@@ -15,6 +22,16 @@ from web_project import TemplateLayout
 
 
 class CreateOrganizationView(TemplateView, LoginRequiredMixin):
+    """
+    Handles the creation of a new organization within the Bimod.io platform.
+
+    This view displays a form for creating an organization. Upon form submission, it validates the input, checks user permissions, and saves the new organization to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds additional context to the template, including the organization creation form.
+        post(self, request, *args, **kwargs): Handles form submission and organization creation, including permission checks and validation.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['form'] = OrganizationForm()
@@ -48,6 +65,14 @@ class CreateOrganizationView(TemplateView, LoginRequiredMixin):
 
 
 class OrganizationListView(TemplateView, LoginRequiredMixin):
+    """
+    Displays a paginated list of organizations associated with the logged-in user.
+
+    This view retrieves all organizations that the user is part of and displays them in a paginated list.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the organizations for the user and adds them to the context with pagination.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -61,6 +86,16 @@ class OrganizationListView(TemplateView, LoginRequiredMixin):
 
 
 class OrganizationUpdateView(TemplateView, LoginRequiredMixin):
+    """
+    Handles updating an existing organization's details.
+
+    This view allows users with the appropriate permissions to modify an organization's attributes. It also handles the form submission and validation for updating the organization.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current organization's details and adds them to the context, along with the organization update form.
+        post(self, request, *args, **kwargs): Handles form submission for updating the organization, including permission checks and validation.
+    """
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         # retrieve the organization from the ID
@@ -97,6 +132,17 @@ class OrganizationUpdateView(TemplateView, LoginRequiredMixin):
 
 
 class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
+    """
+    Handles the deletion of an organization.
+
+    This view allows users with the appropriate permissions to delete an organization. It ensures that the user has the necessary permissions and transfers the organization's balance to another specified organization before deletion.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds the organization to be deleted to the context, along with the user's organizations for balance transfer.
+        post(self, request, *args, **kwargs): Deletes the organization if the user has the required permissions and transfers the balance to another organization.
+        get_queryset(self): Filters the queryset to include only the organizations that belong to the user's organizations.
+    """
+
     model = Organization
     context_object_name = 'organization'
 
@@ -135,6 +181,14 @@ class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
 
 
 class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
+    """
+    Handles adding credits to an organization's balance.
+
+    This view allows users to top up their organization's balance. It validates the top-up amount and applies any promo code discounts. If the promo code is valid, the appropriate bonus is added to both the referrer's and referee's organization balances.
+
+    Methods:
+        post(self, request, *args, **kwargs): Handles the top-up process, including validation, promo code processing, and updating the organization's balance.
+    """
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
@@ -185,6 +239,15 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
 
 
 class OrganizationBalanceTransferView(LoginRequiredMixin, View):
+    """
+    Handles the transfer of balance between two organizations.
+
+    This view allows users to transfer a specified amount of balance from one of their organizations to another. It ensures that the transfer amount is valid and that the user has sufficient balance in the source organization.
+
+    Methods:
+        post(self, request, *args, **kwargs): Handles the balance transfer process, including validation and updating the balances of the source and destination organizations.
+    """
+
     def post(self, request, *args, **kwargs):
         source_org_id = request.POST.get('source_org')
         destination_org_id = request.POST.get('destination_org')
@@ -215,4 +278,71 @@ class OrganizationBalanceTransferView(LoginRequiredMixin, View):
         source_org.save()
         destination_org.save()
         messages.success(request, f"${transfer_amount} successfully transferred from {source_org.name} to {destination_org.name}.")
+        return redirect('llm_transaction:list')
+
+
+class OrganizationUserAddGiftCreditsView(LoginRequiredMixin, View):
+    """
+    View to add gift credits from the logged-in user's profile to a specified organization's balance.
+
+    This view handles the transfer of any available free credits from the user's profile to the
+    specified organization's balance. If the user has free credits, they are deducted from the
+    user's profile and added to the organization's balance. The view handles both success and
+    failure cases, providing appropriate feedback to the user via messages.
+
+    Methods:
+    --------
+    get(request, *args, **kwargs)
+        Handles the GET request to perform the gift credits transfer. If successful, the credits
+        are added to the organization's balance, and a success message is shown. If there are no
+        credits available or an error occurs, an error message is displayed.
+
+    Parameters:
+    -----------
+    request : HttpRequest
+        The HTTP request object.
+
+    args : tuple
+        Additional positional arguments.
+
+    kwargs : dict
+        Additional keyword arguments, including the organization ID under the key 'pk'.
+
+    Returns:
+    --------
+    HttpResponseRedirect
+        Redirects to the organization list view after attempting the transfer.
+
+    Exceptions:
+    -----------
+    Raises an exception if there is an error in the process, and an error message is displayed.
+    """
+
+    def get(self, request, *args, **kwargs):
+        organization_id = kwargs.get('pk')
+        user = request.user
+        print(f"[OrganizationUserAddGiftCreditsView.get] Adding gift credits to organization {organization_id}.")
+
+        org = get_object_or_404(Organization, id=organization_id, users__in=[request.user])
+        user = User.objects.get(id=user.id)
+        print(f"[OrganizationUserAddGiftCreditsView.get] Adding gift credits to {org.name}.")
+        try:
+            if user.profile.free_credits != 0:
+                free_credits = user.profile.free_credits
+                print(f"[OrganizationUserAddGiftCreditsView.get] Available gift credits: {free_credits} for user '{user.username}'.")
+                user.profile.free_credits = 0
+                user.profile.save()
+                user.save()
+                print(f"[OrganizationUserAddGiftCreditsView.get] Updated user profile and user.")
+                org.balance += free_credits
+                org.save()
+                print(f"[OrganizationUserAddGiftCreditsView.get] Updated organization balance.")
+                print(f"[OrganizationUserAddGiftCreditsView.get] Gift credits successfully added to {org.name}.")
+                messages.success(request, f"Gift credits successfully added to {org.name}.")
+            else:
+                print(f"[OrganizationUserAddGiftCreditsView.get] No gift credits available to add.")
+                messages.error(request, "No gift credits available to add.")
+        except Exception as e:
+            print(f"[OrganizationUserAddGiftCreditsView.get] Error adding gift credits: {str(e)}")
+            messages.error(request, f"Error adding gift credits: {str(e)}")
         return redirect('llm_transaction:list')

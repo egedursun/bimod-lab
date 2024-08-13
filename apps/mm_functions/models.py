@@ -1,3 +1,10 @@
+"""
+Module Overview: This module defines models related to custom functions within an assistant-based application. It includes models for storing function references, function details, and associated metadata such as categories, packages, and input/output fields.
+
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+"""
+
 from django.db import models
 
 
@@ -17,6 +24,22 @@ FUNCTION_SOURCES = {
 
 
 class CustomFunctionReference(models.Model):
+    """
+    CustomFunctionReference Model:
+    - Purpose: Represents a reference to a custom function associated with a specific assistant, storing information about the function source and the user who created the reference.
+    - Key Fields:
+        - `custom_function`: ForeignKey linking to the `CustomFunction` model.
+        - `assistant`: ForeignKey linking to the `Assistant` model.
+        - `function_source`: A field indicating whether the function is internal or external.
+        - `created_by_user`: ForeignKey linking to the `User` who created the function reference.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Meta:
+        - `verbose_name`: "Custom Function Reference"
+        - `verbose_name_plural`: "Custom Function References"
+        - `unique_together`: Ensures that each combination of `custom_function` and `assistant` is unique.
+        - `indexes`: Indexes on various fields for optimized queries.
+    """
+
     custom_function = models.ForeignKey("CustomFunction", on_delete=models.CASCADE)
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     function_source = models.CharField(max_length=255, default="internal", blank=True)
@@ -67,6 +90,29 @@ CUSTOM_FUNCTION_CATEGORIES = [
 
 
 class CustomFunction(models.Model):
+    """
+    CustomFunction Model:
+    - Purpose: Represents a custom function, storing details such as the name, description, categories, packages, input/output fields, and associated metadata like code and secrets.
+    - Key Fields:
+        - `is_public`: Boolean flag indicating whether the function is publicly accessible.
+        - `categories`: JSONField for storing categories associated with the function.
+        - `name`: The name of the custom function.
+        - `description`: A description of the function.
+        - `packages`: JSONField for storing the packages required by the function.
+        - `input_fields`, `output_fields`: JSONFields for storing the structure of input and output fields for the function.
+        - `code_text`: TextField for storing the actual code of the function.
+        - `secrets`: JSONField for storing any secrets required by the function.
+        - `custom_function_references`: ManyToManyField linking to `CustomFunctionReference` instances associated with the function.
+        - `function_picture`: ImageField for storing an optional picture associated with the function.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+        - `created_by_user`: ForeignKey linking to the `User` who created the function.
+        - `is_featured`: Boolean flag indicating whether the function is featured.
+    - Meta:
+        - `verbose_name`: "Custom Function"
+        - `verbose_name_plural`: "Custom Functions"
+        - `indexes`: Indexes on various fields for optimized queries.
+    """
+
     is_public = models.BooleanField(default=False)
     categories = models.JSONField(default=list, blank=True)
 

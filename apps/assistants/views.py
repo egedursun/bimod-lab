@@ -1,3 +1,9 @@
+"""
+This module contains views for managing assistants within the Bimod.io platform.
+
+The views include creating, listing, updating, and deleting assistants. Access to these views is restricted to authenticated users, with additional permission checks for certain actions.
+"""
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
@@ -12,6 +18,19 @@ from web_project import TemplateLayout
 
 
 class CreateAssistantView(LoginRequiredMixin, TemplateView):
+    """
+    Handles the creation of a new assistant within the Bimod.io platform.
+
+    This view displays a form for creating an assistant, and upon submission, it validates the input, checks user permissions, and saves the new assistant to the database. If the user lacks the necessary permissions, an error message is displayed.
+
+    Attributes:
+        template_name (str): The template used to render the assistant creation form.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds additional context to the template, such as available organizations, LLM models, and other necessary data for creating an assistant.
+        post(self, request, *args, **kwargs): Handles form submission and assistant creation, including permission checks and validation.
+    """
+
     template_name = "assistants/create_assistant.html"
 
     def get_context_data(self, **kwargs):
@@ -118,6 +137,14 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
 
 
 class ListAssistantView(LoginRequiredMixin, TemplateView):
+    """
+    Displays a list of assistants associated with the user's organizations.
+
+    This view retrieves all assistants that belong to the organizations the user is a part of and displays them in a list. Currently, all authenticated users are allowed to view the list of assistants.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the assistants for the user's organizations and adds them to the context.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -136,6 +163,15 @@ class ListAssistantView(LoginRequiredMixin, TemplateView):
 
 
 class UpdateAssistantView(LoginRequiredMixin, TemplateView):
+    """
+    Handles updating an existing assistant's details.
+
+    This view allows users with the appropriate permissions to modify an assistant's attributes, including its name, description, instructions, and more. It also handles the logic for updating the assistant's glossary, context overflow strategy, and other configurations.
+
+    Methods:
+        get_context_data(self, **kwargs): Retrieves the current assistant's details and adds them to the context, along with other relevant data.
+        post(self, request, *args, **kwargs): Handles form submission for updating the assistant, including permission checks and validation.
+    """
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -216,6 +252,17 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
 
 
 class DeleteAssistantView(LoginRequiredMixin, DeleteView):
+    """
+    Handles the deletion of an assistant.
+
+    This view allows users with the appropriate permissions to delete an assistant. It checks if the user has the necessary permissions before performing the deletion.
+
+    Methods:
+        get_context_data(self, **kwargs): Adds the assistant to be deleted to the context for confirmation.
+        post(self, request, *args, **kwargs): Deletes the assistant if the user has the required permissions.
+        get_queryset(self): Filters the queryset to include only the assistants that belong to the user's organizations.
+    """
+
     model = Assistant
 
     def get_context_data(self, **kwargs):

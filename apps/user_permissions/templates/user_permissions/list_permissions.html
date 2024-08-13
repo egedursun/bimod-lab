@@ -34,12 +34,13 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-4">
-      <h3 class="mb-0">Permission Management</h3>
+      <h3 class="mb-0"><strong>Permission Management</strong></h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-power.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-38.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded">
           <i class="ti ti-bookmark"></i>
         </span>
@@ -57,18 +58,36 @@
     </div>
   </div>
 
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}"
+           role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
   {% for organization, data in org_users_permissions.items %}
     <div class="card mb-6">
       <div class="card-header border-bottom mb-10">
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
-          <h4>
-            {{ organization.name }}
-          </h4>
+          <div class="d-flex">
+            <img src="
+
+
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 width="60" class="rounded me-4">
+            <h4>
+              <strong>{{ organization.name }}</strong>
+            </h4>
+          </div>
         </a>
-        <p>
+        <p class="mt-8">
           <i class="fa fa-user-astronaut"></i>
-          <strong>&nbsp; Number of Users: </strong> {{ data.users|length }}
+          <strong>&nbsp; Users: </strong> {{ data.users|length }}
         </p>
         <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
         <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false"
@@ -81,35 +100,41 @@
           <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
               <h6 class="mb-0">
-                <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ user.id }}" role="button"
-                   aria-expanded="false" aria-controls="collapse-{{ user.id }}">
-                  <strong>{{ user.username }}</strong>
-                </a>
+                <div class="d-flex">
+                  <img src="
+
+                    {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/user-0.png' %}{% endif %}"
+                       width="40" class="rounded me-4">
+                  <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ user.id }}" role="button"
+                     aria-expanded="false" aria-controls="collapse-{{ user.id }}">
+                    <strong>{{ user.username }}</strong>
+                  </a>
+                </div>
                 <br>
                 <a class="collapsed" data-bs-toggle="collapse">
                   <strong>{{ user.profile.first_name }} {{ user.profile.last_name }}</strong>
                 </a>
                 <br>
                 <a class="collapsed" data-bs-toggle="collapse">
-                  <strong>{{ user.email }}</strong>
+                  <small><strong>{{ user.email }}</strong></small>
                 </a>
                 <a class="collapsed" data-bs-toggle="collapse">
                   <div>
                     <p>
                       <br>
-                      <i class="fa fa-key toggle-icon"></i>
-                      <strong>Number of Permissions: {{ permissions|length }}</strong>
+                      <i class="fa fa-key toggle-icon me-2"></i>
+                      <strong>Existing Permissions: {{ permissions|length }}</strong>
                       <br>
                       <span data-bs-toggle="collapse" href="#collapse-{{ user.id }}" role="button" aria-expanded="false"
                             aria-controls="collapse-{{ user.id }}">
                       <strong>See &amp; Manage Permissions</strong>
                     </span>
-                      <i class="fa fa-arrow-alt-circle-down toggle-icon mt-5" data-target="#collapse-{{ user.id }}"></i>
+                      <i class="fa fa-arrow-alt-circle-down toggle-icon mt-5 ms-2"
+                         data-target="#collapse-{{ user.id }}"></i>
                     </p>
                   </div>
                 </a>
               </h6>
-              <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ user.id }}"></i>
             </div>
             <div id="collapse-{{ user.id }}" class="collapse">
               <div class="card-body">
@@ -117,7 +142,7 @@
                   <a href="{% url 'user_permissions:add_permissions' %}">
                     <button class="btn btn-success mt-4">
                       <i class="fa fa-add me-4"></i>
-                      <strong> Add Permission to User</strong>
+                      <strong>Add Permission to User</strong>
                     </button>
                   </a>
                 </div>
@@ -139,10 +164,12 @@
                           <td>{{ permission.get_permission_type_name }}</td>
                           <td>
                             <input type="checkbox" name="permissions" value="{{ permission.id }}"
+                                   class="form-check-input"
                                    {% if permission.is_active %}checked{% endif %}>
                           </td>
                           <td>
-                            <input type="checkbox" name="delete_requests" value="{{ permission.id }}">
+                            <input type="checkbox" name="delete_requests" value="{{ permission.id }}"
+                                   class="form-check-input">
                           </td>
                         </tr>
                       {% endfor %}
@@ -152,10 +179,14 @@
                     <span class="alert-icon rounded">
                       <i class="ti ti-alert-circle"></i>
                     </span>
-                      <strong>IMPORTANT WARNING: </strong> &nbsp; If you don't click the update button, your changes
+                      If you don't click the <strong>'Save Changes'</strong> button, your changes
                       will not be saved when you leave or refresh this page.
                     </div>
-                    <button type="submit" class="btn btn-primary col-lg-4">Update User Permissions</button>
+                    <hr>
+                    <button type="submit" class="btn btn-primary mt-4 w-25">
+                      <i class="fa fa-save me-4"></i>
+                      <strong>Save Changes</strong>
+                    </button>
                   </form>
                 </div>
               </div>

@@ -47,7 +47,9 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-3">
-      <h3 class="mb-0">API Store</h3>
+      <h3 class="mb-0">
+        <strong>API Store</strong>
+      </h3>
     </div>
   </div>
 
@@ -64,8 +66,9 @@
     </button>
   </a>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-user-edit.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-42.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded ms-4">
     <i class="bi bi-info-circle"></i>
   </span>
@@ -81,8 +84,20 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   <!-- Search and Filter Form -->
-  <div class="row g-4 mb-4">
+  <div class="row g-4 mb-4 card card-border-shadow-primary p-4 mt-8">
     <div class="col-xl-12">
       <h5 class="text-muted"><strong>Filter APIs</strong></h5>
       <div class="card text-center mb-4">
@@ -114,9 +129,15 @@
 
   <!-- Featured APIs List Table -->
   <div class="card mb-8">
-    <div class="card-header card card-border card-border-shadow-secondary p-4 m-2 rounded">
+    <div class="card-header p-4 m-2 rounded">
       <h5 class="card-title">
-        <i class="fa fa-star me-4 mt-2 text-warning"></i><strong class="text-warning">Featured</strong>
+        <i class="fa fa-star me-4 mt-2 text-warning"></i><strong class="text-warning">Featured APIs</strong>
+        <hr>
+        <small class="text-muted">
+          <i class="fa fa-info-circle me-2"></i>
+          These APIs are recommended for you to use in your assistants, based on their popularity
+          and usage. This list is frequently updated by the algorithms of our servers.
+        </small>
       </h5>
     </div>
     <div class="card-datatable table-responsive">
@@ -139,7 +160,7 @@
               <td>
                 <img src="
                   {% if api.api_picture %}{{ api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                     alt="{{ api.name }}" class="avatar rounded border border-3 border-warning">
+                     alt="{{ api.name }}" class="avatar rounded border border-2 border-warning">
               </td>
               <td style="max-width: 180px;"><strong>{{ api.name }}</strong></td>
               <td><strong>{{ api.created_by_user }}</strong></td>
@@ -173,7 +194,7 @@
   <!-- Custom APIs List Table -->
   <div class="card">
     <div class="card-header">
-      <h5 class="card-title">API Store</h5>
+      <h5 class="card-title"><strong>API Store</strong></h5>
     </div>
     <div class="card-datatable table-responsive">
       <table class="table datatables-custom-apis">
@@ -196,22 +217,25 @@
             <td>
               <img src="
                 {% if api.api_picture %}{{ api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                   alt="{{ api.name }}" class="avatar-lg rounded">
+                   alt="{{ api.name }}" class="avatar-lg border border-2 border-warning rounded" style="width: 60px; height: 60px; object-fit: cover;">
             </td>
             <td><strong>{{ api.name }}</strong></td>
             <td><strong>{{ api.created_by_user }}</strong></td>
             <td>{{ api.description }}</td>
-            <td>
-              {% for category in api.categories %}
-                <div class="badge bg-warning text m-1">{{ category }}</div>
-              {% endfor %}
+            <td style="max-width: 150px;">
+              <div class="overflow-auto" style="max-height: 400px;">
+                {% for category in api.categories %}
+                  <div class="badge bg-warning text-white m-1"><strong>{{ category }}</strong></div>
+                {% endfor %}
+              </div>
             </td>
             <td>
-              <ul class="list-unstyled">
+              <ul class="list-unstyled overflow-auto bg-label-dark rounded p-1" style="max-height: 400px; font-size: 10px;">
                 {% for name, data in api.endpoints.items %}
-                  <li class="badge bg-label-secondary rounded m-1 w-100">
+                  <li class="m-1 p-2 bg-label-secondary border rounded">
                     <p class="label bg-label-light text-dark rounded p-1 m-1">
-                      <strong>{{ name }}</strong>: {{ data.description|truncatechars:64 }}</p>
+                      <strong>{{ name }}</strong>: {{ data.description|truncatechars:64 }}
+                    </p>
                     <p class="label bg-label-light text-dark rounded p-1 m-1"><strong>Path:</strong> {{ data.path }}</p>
                     <p class="label bg-label-light text-dark rounded p-1 m-1"><strong>Method:</strong> {{ data.method }}
                     </p>
@@ -224,14 +248,13 @@
                 {% csrf_token %}
                 <input type="hidden" name="api_id" value="{{ api.id }}">
                 <input type="hidden" name="action" value="add">
-                <select name="assistant_id" class="form-select" style="min-height: 40px;">
+                <select name="assistant_id" class="form-select form-select-sm">
                   <option value="">Select Assistant to Connect</option>
                   {% for assistant in api_assistant_map|get_item:api.id %}
-                    <!-- put only if not already in the API references -->
                     <option value="{{ assistant.id }}">{{ assistant.name }}</option>
                   {% endfor %}
                 </select>
-                <button type="submit" class="btn btn-primary mt-4 w-100" style="min-height: 40px;">
+                <button type="submit" class="btn btn-sm btn-primary mt-1 w-100">
                   <i class="fa fa-chain me-4"></i>
                   <strong>Connect to Assistant</strong>
                 </button>
@@ -240,10 +263,11 @@
           </tr>
         {% endfor %}
         </tbody>
+
       </table>
       <!-- Pagination Controls -->
       <nav aria-label="Page navigation">
-        <ul class="pagination pagination-rounded m-4 pb-4 overflow-scroll">
+        <ul class="pagination pagination-rounded m-4 pb-4 overflow-auto">
           {% if page_obj.has_previous %}
             <li class="page-item">
               <a class="page-link"
@@ -252,6 +276,8 @@
             </li>
             <li class="page-item">
               <a class="page-link" href="?page=
+
+
                 {{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% for cat in selected_categories %}&categories={{ cat }}{% endfor %}"><i
                 class="bi bi-chevron-left"></i></a>
             </li>
@@ -259,17 +285,23 @@
           {% for page_num in page_obj.paginator.page_range %}
             <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
               <a class="page-link" href="?page=
+
+
                 {{ page_num }}{% if search_query %}&search={{ search_query }}{% endif %}{% for cat in selected_categories %}&categories={{ cat }}{% endfor %}">{{ page_num }}</a>
             </li>
           {% endfor %}
           {% if page_obj.has_next %}
             <li class="page-item">
               <a class="page-link" href="?page=
+
+
                 {{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% for cat in selected_categories %}&categories={{ cat }}{% endfor %}"><i
                 class="bi bi-chevron-right"></i></a>
             </li>
             <li class="page-item">
               <a class="page-link" href="?page=
+
+
                 {{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}{% for cat in selected_categories %}&categories={{ cat }}{% endfor %}"><i
                 class="bi bi-chevron-double-right"></i></a>
             </li>

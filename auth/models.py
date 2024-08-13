@@ -9,6 +9,51 @@ from auth.utils import generate_random_string, generate_referral_code
 
 REFERRAL_DEFAULT_BONUS_PERCENTAGE = 50
 
+USER_FORUM_ROLES = [
+    ('bimod', 'Bimod'),
+    ('client_admin', 'Client Admin'),
+    ('client_user', 'Client User'),
+]
+
+USER_FORUM_RANKS = [
+    ('unranked', 'Unranked'),
+    ('wood', 'Wood'),
+    ('iron', 'Iron'),
+    ('bronze', 'Bronze'),
+    ('silver', 'Silver'),
+    ('gold', 'Gold'),
+    ('platinum', 'Platinum'),
+    ('diamond', 'Diamond'),
+    ('master', 'Master'),
+    ('grandmaster', 'Grandmaster'),
+]
+
+RANK_POINT_REQUIREMENTS = {
+    'wood': 0,
+    'iron': 50,
+    'bronze': 100,
+    'silver': 200,
+    'gold': 500,
+    'platinum': 1_000,
+    'diamond': 2_000,
+    'master': 5_000,
+    'grandmaster': 10_000,
+}
+
+POINT_REWARDS = {
+    'ask_question': 1,
+    'add_comment': 1,
+    'get_like': 2,
+    'get_merit': 5,
+}
+
+
+class ForumRewardActionsNames:
+    ASK_QUESTION = 'ask_question'
+    ADD_COMMENT = 'add_comment'
+    GET_LIKE = 'get_like'
+    GET_MERIT = 'get_merit'
+
 
 class UserCreditCard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='credit_cards')
@@ -61,6 +106,16 @@ class Profile(models.Model):
     country = models.CharField(max_length=100, blank=True, null=True)
     postal_code = models.CharField(max_length=100, blank=True, null=True)
 
+    # free credits for the user
+    free_credits = models.IntegerField(default=0)
+
+    # forum attributes
+    user_forum_role = models.CharField(max_length=100, choices=USER_FORUM_ROLES, default='client_user')
+    user_forum_rank = models.CharField(max_length=100, choices=USER_FORUM_RANKS, default='unranked')
+    user_forum_points = models.IntegerField(default=0)
+    user_last_forum_post_at = models.DateTimeField(null=True, blank=True)
+    user_last_forum_comment_at = models.DateTimeField(null=True, blank=True)
+
     profile_picture_save_path = 'profile_pictures/%Y/%m/%d/' + generate_random_string()
     profile_picture = models.ImageField(upload_to=profile_picture_save_path, max_length=1000, blank=True,
                                         default='/profile_pictures/default.png')
@@ -77,6 +132,27 @@ class Profile(models.Model):
     referral_code = models.ForeignKey('PromoCode', on_delete=models.SET_NULL, related_name='referral_code', blank=True,
                                       null=True)
     sub_users = models.ManyToManyField(User, related_name='sub_users', blank=True)
+
+    def add_points(self, action):
+        points = POINT_REWARDS.get(action, 0)
+        self.user_forum_points += points
+        self.save()
+        self.update_rank()
+
+    def remove_points(self, action):
+        points = POINT_REWARDS.get(action, 0)
+        self.user_forum_points -= points
+        self.save()
+        self.update_rank()
+
+    def update_rank(self):
+        for rank, points in RANK_POINT_REQUIREMENTS.items():
+            if self.user_forum_points >= points:
+                self.user_forum_rank = rank
+                self.save()
+            else:
+                break
+        pass
 
     def __str__(self):
         return self.user.username

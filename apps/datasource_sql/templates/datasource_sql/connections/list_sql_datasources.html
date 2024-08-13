@@ -10,6 +10,7 @@
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
   <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
   <style>
     .text-wrap {
       white-space: normal;
@@ -25,6 +26,7 @@
   <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
   <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
   <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
@@ -35,12 +37,15 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-6">
-      <h3 class="mb-0"><strong>Your SQL Database Connections</strong></h3>
+      <h3 class="mb-0"><strong>
+        SQL Database Connections
+      </strong></h3>
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations/boy-red-2.png' %}" width="25%" class="justify-content-end">
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-5.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -56,14 +61,34 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
   <!-- SQL Database Connections Cards -->
   {% for organization, assistants in connections_by_organization.items %}
     <div class="card mb-6">
       <div class="card-header border-bottom">
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
-          <h4>
-            {{ organization.name }}
+          <div class="d-flex">
+            <img src="
+
+
+
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 class="rounded me-4" width="60">
+          </div>
+          <h4 class="mt-4">
+            <strong>{{ organization.name }}</strong>
           </h4>
         </a>
         <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
@@ -74,11 +99,22 @@
       </div>
       <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
         {% for assistant, connections in assistants.items %}
-          <div class="assistant-group m-8">
-            <h5 class="assistant-title"><strong>{{ assistant.name }}</strong></h5>
+          <div class="assistant-group m-8 card card-border-shadow-primary p-8">
+            <div class="d-flex">
+              <img src="
+
+
+                {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   class="rounded me-4" width="80">
+              <h5 class="assistant-title">
+                <strong>
+                  {{ assistant.name }}
+                </strong>
+              </h5>
+            </div>
             <div class="card-datatable table-responsive">
               <a href="{% url 'datasource_sql:create' %}">
-                <button class="btn btn-success mt-4 mb-8">
+                <button class="btn btn-success mt-6 mb-8">
                   <i class="fa fa-add me-4"></i>
                   <strong> Add SQL Database Connection</strong>
                 </button>
@@ -94,47 +130,73 @@
                           <i class="fa fa-id-badge me-4"></i> Connection Name: &nbsp;&nbsp;</strong>
                           {{ connection.name }}
                         </p>
-                        <p class="card-subtitle mb-4"><strong>
+                        <p class="card-subtitle mb-1"><strong>
                           <i class="fa fa-database me-4"></i> DB Type: &nbsp;&nbsp;</strong>
                           {{ connection.dbms_type }}
                         </p>
                       </div>
                     </div>
+                    <hr>
                     <div class="card-body">
                       <ul class="p-0 m-0">
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body me-4"><strong>Description:</strong></span>
+                          <span class="text-body me-4">
+                            <strong>
+                              <i class="fa fa-info-circle me-4"></i> Description:
+                            </strong>
+                          </span>
                           <span class="text-wrap">{{ connection.description|linebreaksbr }}</span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Host:</strong></span>
+                          <span class="text-body">
+                            <strong>
+                              <i class="fa fa-server me-4"></i> Host:
+                            </strong></span>
                           <span
-                            class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.host }}</strong></span>
+                            class="text-wrap border border-warning rounded p-1"><strong>{{ connection.host }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Port:</strong></span>
+                          <span class="text-body">
+                            <strong>
+                              <i class="fa fa-signal me-4"></i> Port:
+                            </strong></span>
                           <span
-                            class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.port }}</strong></span>
+                            class="text-wrap border border-warning p-1 rounded"><strong>{{ connection.port }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Username:</strong></span>
+                          <span class="text-body">
+                            <strong>
+                              <i class="fa fa-user me-4"></i> Username:
+                            </strong>
+                          </span>
                           <span
-                            class="text-wrap bg-label-warning p-2 rounded"><strong>{{ connection.username }}</strong></span>
+                            class="text-wrap border border-warning p-1 rounded"><strong>{{ connection.username }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Read Only:</strong></span>
+                          <span class="text-body"><strong>
+                            <i class="fa fa-lock me-4"></i>
+                            Read Only:
+                          </strong></span>
                           <span
-                            class="text-wrap {% if connection.is_read_only %}bg-label-success{% else %}bg-label-danger{% endif %} rounded p-2"><strong>{{ connection.is_read_only|yesno:"Yes,No" }}</strong></span>
+                            class="text-wrap border {% if connection.is_read_only %}border-success{% else %}border-danger{% endif %} rounded p-1"><strong>{{ connection.is_read_only|yesno:"Yes,No" }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Max Records per Retrieval: </strong></span>
+                          <span class="text-body">
+                            <strong>
+                              <i class="fa fa-box me-4"></i>
+                              Max Records per Call:
+                            </strong>
+                          </span>
                           <span
-                            class="text-wrap bg-label-info rounded p-2"><strong>{{ connection.one_time_sql_retrieval_instance_limit }}</strong></span>
+                            class="text-wrap border border-info rounded p-1"><strong>{{ connection.one_time_sql_retrieval_instance_limit }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
-                          <span class="text-body"><strong>Max Tokens per Retrieval: </strong></span>
+                          <span class="text-body"><strong>
+                            <i class="fa fa-puzzle-piece me-4"></i>
+                            Max Tokens per Call:
+                          </strong></span>
                           <span
-                            class="text-wrap bg-label-info rounded p-2"><strong>{{ connection.one_time_sql_retrieval_token_limit }}</strong></span>
+                            class="text-wrap border border-info rounded p-1"><strong>{{ connection.one_time_sql_retrieval_token_limit }}</strong></span>
                         </li>
                       </ul>
                       <hr>
@@ -187,6 +249,30 @@
             icon.classList.remove('fa-arrow-alt-circle-up');
             icon.classList.add('fa-arrow-alt-circle-down');
           }
+        });
+      });
+
+      document.querySelectorAll('.btn-danger').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('a').getAttribute('href');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
         });
       });
     });

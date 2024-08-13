@@ -143,12 +143,15 @@
   <div class="container-fluid">
     <div class="row mb-4">
       <div class="col-12">
-        <h3 class="mb-0">ML Models</h3>
+        <h3 class="mb-0">
+          <strong>ML Models</strong>
+        </h3>
       </div>
     </div>
 
     <div class="alert alert-secondary alert-dismissible d-flex align-items-center" role="alert">
-      <img src="{% static 'img/custom-illustrations/boy-core-list.png' %}" width="15%" class="justify-content-end">
+      <img src="{% static 'img/custom-illustrations-v2/i2-2.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8">
       <span class="alert-icon rounded ms-4">
             <i class="ti ti-bookmark"></i>
         </span>
@@ -172,11 +175,18 @@
               <p>
                 <a data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button"
                    aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
-                  <h4 class="mb-0">{{ organization_data.organization.name }}</h4>
+                  <div class="d-flex">
+                    <img src="
+                      {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                         class="avatar avatar-lg me-4 rounded" width="60" alt="Avatar">
+                    <h4 class="mb-0 mt-4">
+                      <strong>{{ organization_data.organization.name }}</strong>
+                    </h4>
+                  </div>
                   <small class="text-muted">{{ organization_data.organization.email }}</small>
                   <div class="card-datatable table-responsive">
                     <a href="{% url 'datasource_ml_models:item_create' %}">
-                      <button class="btn btn-info mt-4 mb-8">
+                      <button class="btn btn-info mt-4 mb-4">
                         <i class="fa fa-file-upload me-4"></i>
                         <strong> Add New ML Model Item</strong>
                       </button>
@@ -195,8 +205,13 @@
               {% for assistant_data in organization_data.assistants %}
                 <div class="card mb-4">
                   <div class="card-header">
-                    <h4 class="mb-0">{{ assistant_data.assistant.name }}</h4>
-                    <small class="text-muted">{{ assistant_data.assistant.description }}</small>
+                    <div class="d-flex">
+                      <img src="{% if assistant_data.assistant.assistant_image %}{{ assistant_data.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                           class="avatar avatar-lg me-4 rounded" width="60" alt="Avatar">
+                      <h4 class="mb-0">
+                        <strong>{{ assistant_data.assistant.name }}</strong>
+                      </h4>
+                    </div>
                   </div>
                   <div id="collapse-assistant-{{ assistant_data.assistant.id }}" class="card-body collapse show">
                     {% for storage_data in assistant_data.ml_model_connections %}
@@ -221,12 +236,12 @@
                                 <tr>
                                   <th><input type="checkbox" class="select-all-checkbox"
                                              data-storage-id="{{ storage_data.connection.id }}"></th>
-                                  <th>Model Id</th>
-                                  <th>Model Name</th>
-                                  <th>Description</th>
-                                  <th>Interpretation Temperature</th>
-                                  <th>Download URL</th>
-                                  <th>Uploaded At</th>
+                                  <th style="min-width: 120px; max-width: 120px;">Model Id</th>
+                                  <th style="min-width: 200px; max-width: 200px;">Model Name</th>
+                                  <th style="min-width: 300px; max-width: 300px;">Description</th>
+                                  <th style="min-width: 150px; max-width: 150px;">Temperature</th>
+                                  <th style="min-width: 400px; max-width: 400px;">Download URL</th>
+                                  <th style="min-width: 250px; max-width: 250px;">Uploaded At</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -238,12 +253,12 @@
                                              data-storage-id="{{ storage_data.connection.id }}">
                                     </td>
                                     <td>{{ item_data.id }}</td>
-                                    <td>{{ item_data.ml_model_name }}</td>
+                                    <td><strong>{{ item_data.ml_model_name }}</strong></td>
                                     <td class="w-50">
                                       {{ item_data.description }}
                                     </td>
                                     <td>
-                                      {{ item_data.interpretation_temperature }}
+                                      <strong class="border border-success rounded p-1">{{ item_data.interpretation_temperature }}</strong>
                                     </td>
                                     <td>
                                       <a class="text-dark" href="{{ item_data.full_file_path }}" target="_blank">
@@ -256,16 +271,21 @@
                                 </tbody>
                               </table>
                               <button type="submit" class="btn btn-warning btn-sm w-25 mt-4 delete-selected-btn">
-                                <strong>Delete Selected ML Models</strong></button>
+                                <strong>
+                                  <i class="fa fa-trash me-4"></i>
+                                  Delete Selected
+                                </strong></button>
                             </form>
                             <form method="post" action="{% url 'datasource_ml_models:item_list' %}" class="mt-4">
                               {% csrf_token %}
                               <input type="hidden" name="storage_id" value="{{ storage_data.connection.id }}">
-                              <button type="submit" class="btn btn-danger btn-sm w-25 delete-all-btn"><strong>DELETE
-                                ALL</strong></button>
+                              <button type="submit" class="btn btn-danger btn-sm w-25 delete-all-btn"><strong>
+                                <i class="fa fa-exclamation-triangle me-4"></i>
+                                Delete ALL
+                              </strong></button>
                             </form>
                             <nav aria-label="Page navigation">
-                              <ul class="pagination pagination-rounded pt-8 overflow-scroll">
+                              <ul class="pagination pagination-rounded overflow-auto pt-8">
                                 {% if storage_data.items.has_previous %}
                                   <li class="page-item">
                                     <a class="page-link" href="?page=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
@@ -296,8 +316,18 @@
                           </div>
                         </div>
                       </div>
+                    {% empty %}
+                      <div class="alert alert-warning" role="alert">
+                        <i class="fa fa-exclamation-triangle me-4"></i>
+                        <strong>No ML model instances found in this connection.</strong>
+                      </div>
                     {% endfor %}
                   </div>
+                </div>
+              {% empty %}
+                <div class="alert alert-warning" role="alert">
+                  <i class="fa fa-exclamation-triangle me-4"></i>
+                  <strong>No ML model connections found for this assistant.</strong>
                 </div>
               {% endfor %}
             </div>

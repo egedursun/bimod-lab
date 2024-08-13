@@ -170,11 +170,14 @@
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Upload Media Files</h5>
+          <h5 class="mb-0">
+            <strong>Upload Media Files</strong>
+          </h5>
           <small class="text-muted float-end"></small>
         </div>
-        <div class="alert alert-secondary alert-dismissible d-flex col-lg-10 align-items-center" role="alert">
-          <img src="{% static 'img/custom-illustrations/boy-red-1.png' %}" width="25%" class="justify-content-end">
+        <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 align-items-center ms-4 me-4" role="alert">
+          <img src="{% static 'img/custom-illustrations-v2/i2-63.png' %}" width="25%" style="border-radius: 25px;"
+               class="justify-content-end me-8">
           <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
@@ -199,44 +202,46 @@
               </div>
             {% endfor %}
           {% endif %}
-          <form method="post" enctype="multipart/form-data">
+          <hr>
+          <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
-            <div class="mb-6">
-              <label class="form-label" for="organization">Organization</label>
-              <select class="form-select" id="organization" name="organization">
-                <option value="" disabled selected>Select Organization</option>
-                {% for org in organizations %}
-                  <option value="{{ org.id }}">{{ org.name }}</option>
-                {% endfor %}
-              </select>
+            <div class="row p-8">
+              <div class="mb-6 col-6">
+                <label class="form-label" for="organization">Organization</label>
+                <select class="form-select" id="organization" name="organization">
+                  <option value="" disabled selected>Select Organization</option>
+                  {% for org in organizations %}
+                    <option value="{{ org.id }}">{{ org.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="assistant">Assistant</label>
+                <select class="form-select" id="assistant" name="assistant">
+                  <option value="" disabled selected>Select Assistant</option>
+                </select>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="media_storage">Media Storage</label>
+                <select class="form-select" id="media_storage" name="media_storage">
+                  <option value="" disabled selected>Select Media Storage</option>
+                </select>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="media_files">Media Files (Multiple Files Allowed)</label>
+                <input type="file" class="form-control" id="media_files" name="media_files" multiple>
+              </div>
+              <div class="row align-items-center justify-content-start mt-2" id="file_display_area">
+                <!-- Dynamic content will be inserted here
+                  ... ... ...
+                  ... ... ...
+                -->
+              </div>
             </div>
-            <div class="mb-6">
-              <label class="form-label" for="assistant">Assistant</label>
-              <select class="form-select" id="assistant" name="assistant">
-                <option value="" disabled selected>Select Assistant</option>
-              </select>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="media_storage">Media Storage</label>
-              <select class="form-select" id="media_storage" name="media_storage">
-                <option value="" disabled selected>Select Media Storage</option>
-              </select>
-            </div>
-            <div class="mb-6">
-              <label class="form-label" for="media_files">Media Files (Multiple Files Allowed)</label>
-              <input type="file" class="form-control" id="media_files" name="media_files" multiple>
-            </div>
-            <small class="text-muted mb-2">If you add a description for the media file, it will be easier for your
-              assistant to understand the media file and utilize it to provide better insights and
-              recommendations.
-            </small>
-            <div class="row align-items-center justify-content-start mt-2" id="file_display_area">
-              <!-- Dynamic content will be inserted here
-                ... ... ...
-                ... ... ...
-              -->
-            </div>
-            <button type="submit" class="btn btn-primary d-grid w-100 mt-8"><strong>Upload Media Files</strong></button>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid w-25 mt-8"><strong>
+              Upload Media Files
+            </strong></button>
           </form>
           <!-- Loading bar warning -->
           <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none"
@@ -254,303 +259,305 @@
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
                  style="width: 100%; height:10px;"></div>
           </div>
-          <h4><strong>Supported File Formats</strong></h4>
-          <small class="text-muted">
-            The following file formats are supported for media files. We are planning to add more file formats in the
-            future. If you have any specific file format that you would like to be supported, please let us know. If
-            you have any issues with uploading media files, please contact our support team.
-          </small>
-          <hr>
-          <div class="row align-items-center justify-content-start">
-            <h5><strong>Image Files</strong></h5>
-            <!-- Supported file formats -->
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/jpg.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.jpg</strong></span>
+          <div class="card card-border-shadow-primary p-8 mt-12">
+            <h4><strong>Supported File Formats</strong></h4>
+            <small class="text-muted">
+              The following file formats are supported for media files. We are planning to add more file formats in the
+              future. If you have any specific file format that you would like to be supported, please let us know. If
+              you have any issues with uploading media files, please contact our support team.
+            </small>
+            <hr>
+            <div class="row align-items-center justify-content-start">
+              <h5><strong>Image Files</strong></h5>
+              <!-- Supported file formats -->
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/jpg.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.jpg</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/png.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.png</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/gif.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.gif</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/svg.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.svg</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/bmp.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.bmp</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/tiff.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.tiff</strong></span>
+                </div>
               </div>
             </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/png.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.png</strong></span>
+            <hr>
+            <div class="row align-items-center justify-content-start">
+              <h5><strong>Audio Files</strong></h5>
+              <!-- Supported file formats -->
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/mp3.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.mp3</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/wav.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.wav</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/flac.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.flac</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/aac.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.aac</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/ogg.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.ogg</strong></span>
+                </div>
               </div>
             </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/gif.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.gif</strong></span>
+            <hr>
+            <div class="row align-items-center justify-content-start">
+              <h5><strong>Video Files</strong></h5>
+              <!-- Supported file formats -->
+              <div class="col-lg-3">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/mp4.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.mp4</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/avi.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.avi</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/mkv.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.mkv</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/mov.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.mov</strong></span>
+                </div>
               </div>
             </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/svg.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.svg</strong></span>
+            <hr>
+            <div class="row align-items-center justify-content-start">
+              <h5><strong>Compressed Files</strong></h5>
+              <!-- Supported file formats -->
+              <div class="col-lg-4">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/zip.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.zip</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/rar.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.rar</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="badge bg-lighter d-flex align-items-center">
+                  <img src="{% static 'img/icons/misc/tar.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.tar</strong></span>
+                </div>
               </div>
             </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/bmp.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.bmp</strong></span>
+            <hr>
+            <div class="row align-items-center justify-content-start">
+              <h5><strong>Code Files</strong></h5>
+              <!-- Supported file formats -->
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/py.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.py</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/js.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.js</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/ts.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.ts</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/php.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.php</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/css.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.css</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/html.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.html</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/java.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.java</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/c.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.c</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/cpp.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.cpp</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/h.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.h</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/sh.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.sh</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/go.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.go</strong></span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/dart.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.dart</strong></span>
+                </div>
               </div>
             </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/tiff.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.tiff</strong></span>
+            <hr>
+            <div class="row align-items-center justify-content-start">
+              <h5><strong>Data Files</strong></h5>
+              <!-- Supported file formats -->
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/yml.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.yml</strong></span>
+                </div>
               </div>
-            </div>
-          </div>
-          <hr>
-          <div class="row align-items-center justify-content-start">
-            <h5><strong>Audio Files</strong></h5>
-            <!-- Supported file formats -->
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/mp3.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.mp3</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/yaml.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.yaml</strong></span>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/wav.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.wav</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/sql.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.sql</strong></span>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/flac.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.flac</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/pkl.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.pkl</strong></span>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/aac.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.aac</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/csv.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.csv</strong></span>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/ogg.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.ogg</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/xlsx.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.xlsx</strong></span>
+                </div>
               </div>
-            </div>
-          </div>
-          <hr>
-          <div class="row align-items-center justify-content-start">
-            <h5><strong>Video Files</strong></h5>
-            <!-- Supported file formats -->
-            <div class="col-lg-3">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/mp4.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.mp4</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/json.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.json</strong></span>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-3">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/avi.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.avi</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/xml.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.xml</strong></span>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-3">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/mkv.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.mkv</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/tsv.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.tsv</strong></span>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-3">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/mov.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.mov</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/docx.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.docx</strong></span>
+                </div>
               </div>
-            </div>
-          </div>
-          <hr>
-          <div class="row align-items-center justify-content-start">
-            <h5><strong>Compressed Files</strong></h5>
-            <!-- Supported file formats -->
-            <div class="col-lg-4">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/zip.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.zip</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/pptx.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.pptx</strong></span>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/rar.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.rar</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/pdf.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.pdf</strong></span>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="badge bg-lighter d-flex align-items-center">
-                <img src="{% static 'img/icons/misc/tar.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.tar</strong></span>
-              </div>
-            </div>
-          </div>
-          <hr>
-          <div class="row align-items-center justify-content-start">
-            <h5><strong>Code Files</strong></h5>
-            <!-- Supported file formats -->
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/py.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.py</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/js.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.js</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/ts.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.ts</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/php.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.php</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/css.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.css</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/html.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.html</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/java.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.java</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/c.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.c</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/cpp.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.cpp</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/h.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.h</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/sh.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.sh</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/go.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.go</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/dart.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.dart</strong></span>
-              </div>
-            </div>
-          </div>
-          <hr>
-          <div class="row align-items-center justify-content-start">
-            <h5><strong>Data Files</strong></h5>
-            <!-- Supported file formats -->
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/yml.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.yml</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/yaml.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.yaml</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/sql.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.sql</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/pkl.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.pkl</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/csv.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.csv</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/xlsx.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.xlsx</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/json.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.json</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/xml.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.xml</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/tsv.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.tsv</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/docx.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.docx</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/pptx.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.pptx</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/pdf.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.pdf</strong></span>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="badge bg-lighter d-flex align-items-center mb-1">
-                <img src="{% static 'img/icons/misc/txt.png' %}" alt="img" width="15" class="me-2">
-                <span class="h6 mb-0 text-body"><strong>.txt</strong></span>
+              <div class="col-lg-2">
+                <div class="badge bg-lighter d-flex align-items-center mb-1">
+                  <img src="{% static 'img/icons/misc/txt.png' %}" alt="img" width="15" class="me-2">
+                  <span class="h6 mb-0 text-body"><strong>.txt</strong></span>
+                </div>
               </div>
             </div>
           </div>

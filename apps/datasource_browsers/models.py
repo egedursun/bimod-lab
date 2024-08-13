@@ -1,3 +1,10 @@
+"""
+Module Overview: This module defines models for managing browser connections as data sources and logging their activities. It includes configurations for browser types and reading abilities, as well as the actual data source browser connections and their corresponding browsing logs.
+
+Dependencies:
+- `django.db.models`: Django's ORM for defining database models.
+"""
+
 from django.db import models
 
 BROWSER_TYPES = [
@@ -39,6 +46,23 @@ class BrowsingReadingAbilitiesNames:
 # Create your models here.
 
 class DataSourceBrowserConnection(models.Model):
+    """
+    DataSourceBrowserConnection Model:
+    - Purpose: Represents a browser connection used as a data source, with configurations for selectivity, allowed and disallowed extensions, and reading abilities.
+    - Key Fields:
+        - `name`: The name of the browser connection.
+        - `description`: A brief description of the connection.
+        - `browser_type`: The type of browser being used (e.g., Google).
+        - `assistant`: ForeignKey linking to the `Assistant` model.
+        - `data_selectivity`: Float field representing the selectivity of data scraping.
+        - `whitelisted_extensions`: JSONField for storing allowed file extensions.
+        - `blacklisted_extensions`: JSONField for storing disallowed file extensions.
+        - `reading_abilities`: JSONField for defining the browser's reading abilities.
+        - `minimum_investigation_sites`: Minimum number of sites to investigate.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+        - `created_by_user`: ForeignKey linking to the user who created the connection.
+    """
+
     name = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)
     browser_type = models.CharField(max_length=100, choices=BROWSER_TYPES)
@@ -64,6 +88,18 @@ class DataSourceBrowserConnection(models.Model):
 
 
 class DataSourceBrowserBrowsingLog(models.Model):
+    """
+    DataSourceBrowserBrowsingLog Model:
+    - Purpose: Logs the activities of a browser connection, including actions, URLs, content, and screenshots.
+    - Key Fields:
+        - `connection`: ForeignKey linking to the `DataSourceBrowserConnection` model.
+        - `action`: The action performed during the browsing session.
+        - `context_url`: URL of the page being browsed, if applicable.
+        - `html_content`, `context_content`, `log_content`: Fields for storing various content types from the browsing session.
+        - `screenshot`: ImageField for storing screenshots of the browsing session.
+        - `created_at`: Timestamp for when the log was created.
+    """
+
     connection = models.ForeignKey(DataSourceBrowserConnection, on_delete=models.CASCADE, related_name="logs")
     action = models.CharField(max_length=1000)
     context_url = models.CharField(max_length=1000, blank=True, null=True)
