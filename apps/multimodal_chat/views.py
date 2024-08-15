@@ -5,8 +5,13 @@ The views include functionality for creating, archiving, unarchiving, deleting, 
 """
 
 import base64
+import time
 
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.http import StreamingHttpResponse
 from django.shortcuts import get_object_or_404, redirect
+from django.views import View
 from django.views.generic import TemplateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -14,11 +19,208 @@ from config.settings import MEDIA_URL
 from web_project import TemplateLayout, TemplateHelper
 from .models import MultimodalChat, MultimodalChatMessage, ChatSourcesNames
 from .utils import generate_chat_name
+from .._services.llms.llm_decoder import InternalLLMClient
+from .._services.llms.openai import BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END
 from .._services.storages.storage_executor import StorageExecutor
 from ..assistants.models import Assistant
 from ..message_templates.models import MessageTemplate
 from ..organization.models import Organization
 from ..user_permissions.models import UserPermission, PermissionNames
+
+STREAM_RESPONSE = True
+
+
+class ChatStreamView(View):
+    def post(self, request, *args, **kwargs):
+        # 1. Permission check
+        context_user_id = request.POST.get('user_id')
+        context_user = get_object_or_404(User, id=context_user_id)
+        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
+            'permission_type', flat=True
+        )
+        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
+            messages.error(request, "You do not have permission to create and use chats.")
+            return redirect('multimodal_chat:chat')
+        print(f"[ChatStreamView.post] User {context_user} has permission to create and use chats.")
+
+        # 2. Content, image, file, and other inputs retrieval
+        chat_id = request.POST.get('chat_id')
+        chat = get_object_or_404(MultimodalChat, id=chat_id, user=request.user)
+        message_content = request.POST.get('message_content')
+        attached_images = request.FILES.getlist('attached_images[]')
+        attached_files = request.FILES.getlist('attached_files[]')
+        print(f"[ChatStreamView.post] The message content has been extracted successfully.")
+
+        sketch_image = {'sketch_image': None}
+        attached_canvas_image = request.POST.get('sketch_image')
+        sketch_image_full_uris_list = []
+        try:
+            sketch_image_bytes = base64.b64decode(attached_canvas_image.split("base64,")[1].encode())
+            sketch_image['sketch_image'] = sketch_image_bytes
+            sketch_image_full_uris_list = StorageExecutor.save_sketch_images(sketch_image_dict=sketch_image)
+        except Exception as e:
+            # No image attached
+            pass
+        print(f"[ChatStreamView.post] The sketch image(s) has been extracted successfully.")
+
+        edit_image_bytes_dict = {'edit_image': None, 'edit_image_mask': None}
+        attached_edit_image = request.FILES.get('edit_image')
+        attached_edit_image_mask = request.POST.get('edit_image_mask')
+        edit_image_full_uris_list = []
+        try:
+            edit_image_bytes = attached_edit_image.read()
+            edit_image_mask_bytes = base64.b64decode(attached_edit_image_mask.split("base64,")[1].encode())
+            edit_image_bytes_dict['edit_image'] = edit_image_bytes
+            edit_image_bytes_dict['edit_image_mask'] = edit_image_mask_bytes
+            edit_image_full_uris_list = StorageExecutor.save_edit_images(edit_image_dict=edit_image_bytes_dict)
+        except Exception as e:
+            # No image attached
+            pass
+        print(f"[ChatStreamView.post] The edit image(s) has been extracted successfully.")
+
+        # 3. Handle the file and image uploads
+        image_bytes_list = []
+        for image in attached_images:
+            try:
+                image_bytes = image.read()
+            except Exception as e:
+                print(f"[ChatView.post] Error reading image file: {e}")
+                continue
+            image_bytes_list.append(image_bytes)
+        image_full_uris = StorageExecutor.save_images_and_provide_full_uris(image_bytes_list)
+        if sketch_image_full_uris_list:
+            image_full_uris.extend(sketch_image_full_uris_list)
+        if edit_image_full_uris_list:
+            image_full_uris.extend(edit_image_full_uris_list)
+        print(f"[ChatStreamView.post] The image(s) has been uploaded successfully.")
+
+        file_bytes_list = []
+        for file in attached_files:
+            file_name = file.name
+            try:
+                file_bytes = file.read()
+            except Exception as e:
+                print(f"[ChatView.post] Error reading file: {e}")
+                continue
+            file_bytes_list.append((file_bytes, file_name))
+        file_full_uris = StorageExecutor.save_files_and_provide_full_uris(file_bytes_list)
+        print(f"[ChatStreamView.post] The file(s) has been uploaded successfully.")
+
+        # 4. Create the user message
+        MultimodalChatMessage.objects.create(
+            multimodal_chat=chat, sender_type='USER', message_text_content=message_content,
+            message_image_contents=image_full_uris, message_file_contents=file_full_uris
+        )
+        user_message = MultimodalChatMessage.objects.filter(multimodal_chat=chat).last()
+        print(f"[ChatStreamView.post] The user message has been created successfully.")
+        print(f"[ChatStreamView.post] User message: {user_message}")
+        print(f"[ChatStreamView.post] User message content: {user_message.message_text_content}")
+
+        internal_llm_client = InternalLLMClient.get(assistant=chat.assistant, multimodal_chat=chat)
+        print(f"[ChatStreamView.post] Calling the 'handle_streaming' function...")
+        final_response = internal_llm_client.respond_stream(latest_message=user_message, image_uris=image_full_uris,
+                                                            file_uris=file_full_uris)
+        MultimodalChatMessage.objects.create(
+            multimodal_chat=chat, sender_type='ASSISTANT', message_text_content=final_response)
+
+        print(f"[ChatStreamView.post] Calling the 'streamer' function of OpenAI to stream the response...")
+        redirect_string = self.request.path_info + '?chat_id=' + str(chat.id)
+        return redirect(redirect_string, *args, **kwargs)
+
+
+class ChatResponseStreamView(View):
+    response_chunks = []
+    response_queue = []
+
+    class MockChunk:
+        def __init__(self, choices):
+           self.choices = choices
+
+    class MockChoice:
+        def __init__(self, delta):
+            self.delta = delta
+
+    class MockDelta:
+        def __init__(self, content):
+            self.content = content
+
+    def event_stream(self):
+        # Initial keep-alive message to avoid SSE error
+        yield ": [Connection established, waiting for data...]\n\n"
+        try:
+            while True:
+                if self.response_queue:
+                    self.response_chunks = self.response_queue.pop(0)
+                    for chunk in self.response_chunks:
+                        ############################
+                        choices = chunk.choices if chunk else None
+                        first_choice = choices[0] if choices else None
+                        delta = first_choice.delta if first_choice else None
+                        content = delta.content if delta else None
+                        ############################
+                        if content == BIMOD_STREAMING_END_TAG:
+                            yield f"data: {BIMOD_STREAMING_END_TAG}\n\n"
+                        elif content == BIMOD_PROCESS_END:
+                            yield f"data: {BIMOD_PROCESS_END}\n\n"
+                        else:
+                            ############################
+                            if content is not None and content != "None":
+                                yield f"data: {content}\n\n"
+                            ############################
+                else:
+                    # Send a keep-alive comment every few seconds to keep the connection open
+                    yield ": keep-alive\n\n"
+                time.sleep(1)
+        except Exception as e:
+            print(f"[ChatResponseStreamView.event_stream] Error on event_stream loop: {e}")
+
+    @staticmethod
+    def mock_stream(plain_text, stop_tag=BIMOD_STREAMING_END_TAG):
+        # split each 5 characters
+        plain_text_list = [plain_text[i:i + 5] for i in range(0, len(plain_text), 5)]
+        mock_response = []
+        for element in plain_text_list:
+            mock_response.append(
+                ChatResponseStreamView.MockChunk(
+                    choices=[
+                        ChatResponseStreamView.MockChoice(
+                            delta=ChatResponseStreamView.MockDelta(content=element)
+                        )
+                    ]
+                )
+            )
+        if stop_tag == BIMOD_STREAMING_END_TAG:
+            mock_response.append(
+                ChatResponseStreamView.MockChunk(
+                    choices=[
+                        ChatResponseStreamView.MockChoice(
+                            delta=ChatResponseStreamView.MockDelta(content=BIMOD_STREAMING_END_TAG)
+                        )
+                    ]
+                )
+            )
+        elif stop_tag == BIMOD_PROCESS_END:
+            mock_response.append(
+                ChatResponseStreamView.MockChunk(
+                    choices=[
+                        ChatResponseStreamView.MockChoice(
+                            delta=ChatResponseStreamView.MockDelta(content=BIMOD_PROCESS_END)
+                        )
+                    ]
+                )
+            )
+        return mock_response
+
+    def get(self, request, *args, **kwargs):
+        return StreamingHttpResponse(self.event_stream(), content_type='text/event-stream')
+
+    def stream_message(self, chunks):
+        time.sleep(1)
+        try:
+            if not self.response_queue:
+                self.response_queue.append(chunks)
+        except Exception as e:
+            print(f"[ChatResponseStreamView.stream_message] Error while streaming the response: {e}")
 
 
 class ChatView(LoginRequiredMixin, TemplateView):
@@ -33,6 +235,19 @@ class ChatView(LoginRequiredMixin, TemplateView):
     """
 
     template_name = 'multimodal_chat/chats/chat.html'
+
+    @staticmethod
+    def refresh_page(chat_id, user_id):
+        print(f"[ChatView.refresh_page] Refreshing page with new response...")
+        print(f"[ChatView.refresh_page] Chat ID: {chat_id}")
+        print(f"[ChatView.refresh_page] User ID: {user_id}")
+        try:
+            print(f"[ChatView.refresh_page] Successfully added new response to chat {chat_id}")
+        except Exception as e:
+            print(f"[ChatView.refresh_page] Error while refreshing page with new response: {e}")
+
+        # refresh the page with the new response
+        return redirect(f'/chat/?chat_id={chat_id}')
 
     def get_context_data(self, **kwargs):
         active_chat = None
@@ -57,6 +272,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
         context.update(
             {
                 "chats": chats, "assistants": assistants, "active_chat": active_chat,
+                "user": context_user,
                 "chat_messages": active_chat_messages, "message_templates": message_templates, "base_url": MEDIA_URL
             }
         )

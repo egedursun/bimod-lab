@@ -126,6 +126,15 @@
           class="chat-sidebar-left-user sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
           <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
             <img src="
+
+
+
+
+
+
+
+
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -172,22 +181,44 @@
                   <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
                   <button type="submit" class="btn btn-link p-0">
                     <div class="d-flex align-items-center">
-                      <div class="flex-shrink-0 avatar">
+                      <div class="flex-shrink-0 avatar avatar-md">
                         <img src="
 
 
+
+
+
+
+
+
+
                           {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                             alt="Avatar" class="rounded">
+                             alt="Avatar" class="rounded-pill">
                       </div>
                       <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                        <h6 class="chat-contact-name text-truncate m-0 fw-normal"><strong>{{ assistant.name }}</strong>
+                        <h6 class="chat-contact-name text-truncate text-sm m-0 fw-normal">
+                          <strong>{{ assistant.name }}</strong>
                         </h6>
+                        <hr>
                         <small
-                          class="d-block text-truncate bg-label-info ps-2 pt-1 pe-2 pb-1 rounded mt-1"><strong>{{ assistant.organization.name }}</strong></small>
+                          class="d-block text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded"><strong>
+                          <i class="fa fa-building me-2"></i>
+                          {{ assistant.organization.name }}
+                        </strong></small>
                         <small
-                          class="d-block text-truncate bg-label-info ps-2 pt-1 pe-2 pb-1 rounded mt-1">{{ assistant.llm_model.nickname }}</small>
+                          class="d-block text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded mt-1">
+                          <strong>
+                            <i class="fa fa-sd-card me-2"></i>
+                            {{ assistant.llm_model.nickname }}
+                          </strong>
+                        </small>
                         <small
-                          class="d-block text-truncate bg-label-info ps-2 pt-1 pe-2 pb-1 rounded mt-1">{{ assistant.llm_model.model_name }}</small>
+                          class="d-block text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded mt-1">
+                          <strong>
+                            <i class="fa fa-bolt-lightning me-2"></i>
+                            {{ assistant.llm_model.model_name }}
+                          </strong>
+                        </small>
                       </div>
                     </div>
                   </button>
@@ -213,7 +244,7 @@
           <!-- Chats -->
           <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
             <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
-              <h5 class="text-primary mb-0"><strong>Your Chats</strong></h5>
+              <h5 class="mb-0"><strong>Your Chats</strong></h5>
             </li>
             <li class="chat-contact-list-item chat-list-item-0 d-none">
               <h6 class="text-muted mb-0"><strong>No Chats Found</strong></h6>
@@ -254,23 +285,44 @@
                     {% csrf_token %}
                     <div class="d-flex align-items-center">
                       <div
-                        class="flex-shrink-0 avatar {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded"
+                        class="flex-shrink-0 avatar avatar-md {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded-pill"
                         {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
                         <img src="
 
+
+
+
+
+
+
+
+
                           {% if chat.assistant.assistant_image %}{{ chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                             class="rounded">
+                             class="rounded-pill">
                       </div>
                       <div class="chat-contact-info flex-grow-1 ms-4 text-start">
                         <h6 class="chat-contact-name text-truncate m-0 fw-normal"><strong>{{ chat.chat_name }}</strong>
                         </h6>
-                        <small class="text-muted"><i
-                          class="fa fa-clock-rotate-left me-1"></i>{{ chat.updated_at|date:"H:i A" }}</small>
-                        <br>
+                        <small class="text-muted">
+                          <strong>
+                            <i class="fa fa-clock-rotate-left me-1"></i>{{ chat.updated_at|date:"H:i A" }}
+                          </strong>
+                        </small>
+                        <hr>
                         <small
-                          class="d-block text-truncate bg-label-primary ps-2 pt-1 pe-2 pb-1 rounded mt-1"><strong>{{ chat.assistant.name }}</strong></small>
+                          class="d-block text-truncate text-dark ps-2 pe-2 pb-1 rounded">
+                          <strong>
+                            <i class="fa fa-message me-1"></i>
+                            {{ chat.assistant.name }}
+                          </strong>
+                        </small>
                         <small
-                          class="d-block text-truncate bg-label-primary ps-2 pt-1 pe-2 pb-1 rounded mt-1">{{ chat.organization.name }}</small>
+                          class="d-block text-truncate text-dark ps-2 pe-2 pb-1 rounded">
+                          <strong>
+                            <i class="fa fa-building me-1"></i>
+                            {{ chat.organization.name }}
+                          </strong>
+                        </small>
                         <small
                           class="d-block text-truncate chat-contact-status mt-1">{{ chat.messages.last.message_text_content }}</small>
                       </div>
@@ -307,9 +359,10 @@
               </div>
             </div>
           </div>
-          <div class="alert alert-solid-primary alert-dismissible d-flex col-lg-10 align-items-center mt-10 ms-10"
+          <div class="alert alert-solid-primary alert-dismissible d-flex col-lg-11 align-items-center mt-10 ms-10"
                role="alert">
-            <img src="{% static 'img/custom-illustrations/boy-power.png' %}" width="25%" class="justify-content-end">
+            <img src="{% static 'img/custom-illustrations-v2/i2-34.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span class="alert-icon rounded">
             <i class="ti ti-alert-circle-filled"></i>
@@ -335,6 +388,14 @@
                      data-overlay data-target="#app-chat-chats"></i>
                   <div class="flex-shrink-0 avatar avatar-online">
                     <img src="
+
+
+
+
+
+
+
+
 
                       {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
@@ -394,6 +455,15 @@
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
                             <img src="
+
+
+
+
+
+
+
+
+
                               {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                                  alt="Avatar" class="rounded">
                           </div>
@@ -401,7 +471,7 @@
                       {% elif message.sender_type == 'TOOL' %}
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
-                            <img src="{% static 'img/custom-illustrations/tool-executor.png' %}" alt="Avatar"
+                            <img src="{% static 'img/custom-illustrations-v2/i2-18.png' %}" alt="Avatar"
                                  class="rounded">
                           </div>
                         </div>
@@ -519,6 +589,8 @@
                           <div class="user-avatar flex-shrink-0 ms-4">
                             <div class="avatar avatar-xl">
                               <img src="
+
+
                                 {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                                    alt="Avatar" class="rounded">
                             </div>
@@ -528,6 +600,26 @@
                   </li>
                 {% endfor %}
               </ul>
+            </div>
+            <div
+              class="card card-border-shadow-primary bg-label-primary p-2 ms-12 me-12 mt-4 mb-0 col-11 overflow-auto border border-1 border-primary rounded"
+              style="max-height: 300px;">
+              <button class="btn d-flex ms-auto p-1 mb-1" style="float: right;"
+                      onclick="if(this.parentElement.style.maxHeight === '300px') {this.parentElement.style.maxHeight = '40px'; this.parentElement.classList.add('overflow-hidden'); this.parentElement.classList.remove('overflow-auto');} else {this.parentElement.style.maxHeight = '300px'; this.parentElement.classList.add('overflow-auto'); this.parentElement.classList.remove('overflow-hidden');}">
+                <i class="fa fa-dot-circle text-white"></i>
+              </button>
+              <small class="text-white p-1 mb-1"><strong>
+                <i class="fa fa-bolt-lightning me-2"></i>
+                Response Streamer
+              </strong></small>
+              <small class="mb-2 text-dark ms-6">
+                <i class="fa fa-info-circle me-2"></i>
+                This is the response streamer. It will show the response from the assistant in real-time so that you
+                can track the progress of the assistant.
+              </small>
+              <div id="non-tool-markdown-content"
+                   class="bg-white text-black p-4 markdown-content border border-primary border-4 rounded">
+              </div>
             </div>
             <!-- Chat message form -->
             <div class="chat-history-footer shadow-xs p-4">
@@ -599,9 +691,10 @@
                      style="width: 100%; height:10px;"></div>
               </div>
               <form class="form-send-message d-flex justify-content-between align-items-center mt-4" method="post"
-                    style="margin-bottom: 40px;"
+                    style="margin-bottom: 15px;"
                     action="." enctype="multipart/form-data">
                 {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
                 <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
                 <textarea class="form-control message-input border-0 me-4 shadow-none" name="message_content"
                           placeholder="Type your message here..." rows="1"></textarea>
@@ -644,6 +737,14 @@
                   </button>
                 </div>
               </form>
+              <!-- stick the button to the right side of the container -->
+              <div class="row me-4 mb-4" style="display: flex; justify-content: flex-end; ">
+                <button id="start-streaming" class="btn btn-primary"
+                        style="float: right; min-width: 177px; max-width: 177px;">
+                  <i class="fa fa-bolt-lightning me-2"></i>
+                  <strong>Send Stream</strong>
+                </button>
+              </div>
             </div>
             <div class="">
               <span>&nbsp;</span>
@@ -656,26 +757,32 @@
 
     <!-- Sidebar Right -->
     {% if active_chat %}
+      <!--
       <div class="row g-0">
         <div class="col app-chat-sidebar-right app-sidebar overflow-hidden h-100" id="app-chat-sidebar-right">
           <div class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
             <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
               <img src="
+
                 {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    alt="Avatar" class="rounded">
             </div>
-            <h5 class="mt-4 mb-0">{{ active_chat.assistant.name }}</h5>
-            <span>{{ active_chat.assistant.organization }}</span>
+            <h5 class="mt-4 mb-0">
+              <strong>{{ active_chat.assistant.name }}</strong>
+            </h5>
+            <span>
+              <strong>{{ active_chat.assistant.organization }}</strong>
+            </span>
             <i class="ti ti-x ti-lg cursor-pointer close-sidebar d-block" data-bs-toggle="sidebar" data-overlay
                data-target="#app-chat-sidebar-right"></i>
           </div>
           <div class="sidebar-body p-6 pt-0">
             <div class="my-6">
-              <p class="text-uppercase mb-1 text-muted">Description</p>
+              <p class="text-uppercase mb-1 text-muted"><strong>Description</strong></p>
               <p class="mb-0">{{ active_chat.assistant.description }}</p>
             </div>
             <div class="my-6">
-              <p class="text-uppercase text-muted mb-1">Details</p>
+              <p class="text-uppercase text-muted mb-1"><strong>Details</strong></p>
               <ul class="list-unstyled d-grid gap-4 mb-0 ms-2 py-2 text-heading">
                 <li class="d-flex align-items-center">
                   <i class='fa fa-robot'></i>
@@ -717,11 +824,17 @@
             <hr>
             <div class="d-flex mt-6">
               <button class="btn btn-danger w-100" data-bs-toggle="sidebar" data-overlay
-                      data-target="#app-chat-sidebar-right">Delete Chat<i class='ti ti-trash ti-16px ms-2'></i></button>
+                      data-target="#app-chat-sidebar-right">
+                <strong>
+                  <i class='ti ti-trash ti-16px ms-2'></i>
+                  Delete Chat
+                </strong>
+              </button>
             </div>
           </div>
         </div>
       </div>
+      -->
     {% endif %}
     <!-- /Sidebar Right -->
   </div>
@@ -1089,6 +1202,7 @@
       const loadingBar = document.getElementById('loadingBar');
       const loadingBarWarning = document.getElementById('loadingBarWarning');
       const submitMessageButton = document.querySelector('#send-chat-message-button');
+      const submitStreamMessageButton = document.querySelector('#start-streaming');
       const retryButton = document.querySelector('#retry-response-button');
 
       // if the button is clicked, set the value of the message to "Your response either failed, or I didn't like it. Please try again."
@@ -1113,6 +1227,13 @@
         // Show the loading bar
         loadingBarCreateChat.classList.remove('d-none');
         loadingBarWarningCreateChat.classList.remove('d-none');
+      });
+
+      submitStreamMessageButton.addEventListener('click', function () {
+        // Show the loading bar
+        loadingBar.classList.remove('d-none');
+        loadingBarWarning.classList.remove('d-none');
+        submitStreamMessageButton.disabled = true;
       });
 
     });
@@ -1528,5 +1649,61 @@
       });
     });
   </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const startStreamingButton = document.getElementById('start-streaming');
+      startStreamingButton.addEventListener('click', function () {
+        const chatForm = document.querySelector('.form-send-message');
+        const formData = new FormData(chatForm);
+
+        fetch(`/app/multimodal_chat/chat/stream/`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+          }
+        });
+      });
+    });
+  </script>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const eventSource = new EventSource('/app/multimodal_chat/chat/response_stream/');
+  const element = document.getElementById('non-tool-markdown-content');
+  let accumulatedContent = ''; // To accumulate chunks for a single stream
+
+  eventSource.onmessage = function (event) {
+    let newChunk = event.data;
+
+    if (newChunk.includes('<[bimod_streaming_end]>')) {
+      console.log("End of streaming detected...");
+
+      // Wrap the accumulated content in a new div with the 'bg-label-primary' class
+      element.innerHTML += `<div class="bg-label-primary rounded m-2 p-4"><strong class="text-white">${accumulatedContent}</strong></div>`;
+
+      // Reset the accumulated content for the next stream
+      accumulatedContent = '';
+    } else if (newChunk.includes('<[bimod_process_end]>')) {
+      // Force refresh the page with the same chat id
+      const chatId = new URLSearchParams(window.location.search).get('chat_id');
+      console.log("End of processing detected...");
+      eventSource.close(); // Close the event stream
+
+      // Automatically refresh the page
+      window.location.href = `/app/multimodal_chat/chat/?chat_id=${chatId}`;
+    } else {
+      // Accumulate chunks for the current stream
+      accumulatedContent += newChunk;
+    }
+  };
+
+  eventSource.onerror = function (event) {
+    console.error("SSE error", event);
+    eventSource.close();
+  };
+});
+</script>
 
 {% endblock %}

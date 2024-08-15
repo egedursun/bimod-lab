@@ -34,17 +34,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", default='')
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", 'True').lower() in ['true', 'yes', '1']
-
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "www.bimod.io", "bimod.io", "dev.bimod.io"]
 
 # Current DJANGO_ENVIRONMENT
 ENVIRONMENT = os.environ.get("DJANGO_ENVIRONMENT", default="local")
-
 
 # Application definition
 INSTALLED_APPS = [
@@ -171,7 +168,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -185,7 +181,6 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT', ''),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -204,7 +199,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -244,7 +238,6 @@ LOCALE_PATHS = [
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-
 STATICFILES_DIRS = [
     BASE_DIR / "src" / "assets",
 ]
@@ -265,15 +258,12 @@ DEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'
 # Media URL
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
-
 # Service profit margins and tax rates
 __SERVICE_PROFIT_MARGIN = float(os.environ.get("SERVICE_PROFIT_MARGIN", default="2.00"))
 __SERVICE_TAX_RATE = float(os.environ.get("SERVICE_TAX_RATE", default="0.18"))
 
-
 # Salt for encryption
 ENCRYPTION_SALT = os.environ.get("ENCRYPTION_SALT", default="")
-
 
 # Max Assistant exports per organization
 MAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ASSISTANT_EXPORTS_ORGANIZATION", default="5"))
@@ -281,7 +271,8 @@ MAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ASSISTANT_EXPORTS_O
 # Weaviate credentials
 WEAVIATE_CLUSTER_URL = os.environ.get("WEAVIATE_CLUSTER_URL", default="")
 WEAVIATE_API_KEY = os.environ.get("WEAVIATE_API_KEY", default="")
-WEAVIATE_SINGLE_TIME_MEMORY_RETRIEVAL_LIMIT = int(os.environ.get("WEAVIATE_SINGLE_TIME_MEMORY_RETRIEVAL_LIMIT", default="10"))
+WEAVIATE_SINGLE_TIME_MEMORY_RETRIEVAL_LIMIT = int(
+    os.environ.get("WEAVIATE_SINGLE_TIME_MEMORY_RETRIEVAL_LIMIT", default="10"))
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -307,12 +298,10 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
-
 # Login your mail
 # ------------------------------------------------------------------------------
 LOGIN_URL = "/app/login/"
 LOGOUT_REDIRECT_URL = "/app/login/"
-
 
 # Session
 # ------------------------------------------------------------------------------
@@ -421,7 +410,6 @@ LOGGING = {
     },
 }
 
-
 #####################################################################################################################
 # CUSTOM ENVIRONMENT VARIABLES
 #####################################################################################################################
@@ -517,7 +505,6 @@ if TRANSLATOR_DEBUG_MODE:
 else:
     print("[settings.py] Translator Debug Mode is disabled, skipping language logs...")
     pass
-
 
 #####################################################################################################################
 # Integration Tests

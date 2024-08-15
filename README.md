@@ -118,39 +118,9 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 ---
 
-*Important:*
-
-- Domain redirection issue is still ongoing. (Hostinger)
-  - Tests:
-    - [ ] www.bimod.io
-    - [ ] bimod.io
-    - [ ] https://bimod.io
-    - [ ] https://www.bimod.io
-    - [ ] http://bimod.io
-    - [ ] http://www.bimod.io
-    ---
-    - [ ] dev.bimod.io
-    - [ ] https://dev.bimod.io
-    - [ ] http://dev.bimod.io
-
----
-
-1. ACTIVE chat / current chats        [i-a] [13/08/2024]
-   - polish the [assistants-pane]
-   - polish the [chats-pane]
-   - polish the [message-templates-pane]
-   - convert the UI to a more user-friendly version (3 columns view // 2-8-2 split)
-2. ACTIVE chat / archived chats       [i-b] [13/08/2024]
-   - polish the [archived-chats-pane]
-   - convert the UI to a more user-friendly version (2 columns view // 3-9 split)
-
----
-
-1. [ ] [TTS / STT] integration for the application [14/08/2024]
-2. [ ] Implement the [ORCHESTRATION] manager. [15...20/08/2024]
+1. [ ] [TTS / STT] integration for the application [15/08/2024] 
+2. [ ] Implement the [ORCHESTRATION] manager. [16...20/08/2024]
 3. [ ] Implement [PAYMENT GATEWAY] for the application. [???]
-
--> THE TOKENS ON [CHAT] MUST BE STREAMED, NOT WAITED. [VERY IMPORTANT FOR PRODUCTION]
 
 ---
 RELEASE v0.1.0 [RELEASE: BETA] version of the application.
@@ -209,9 +179,21 @@ RELEASE v0.5.0 [RELEASE: BETA] version of the application.
 
 *Detected Issues / Bugs:*
 
--  [ ] There is no document_uuid or repository_uuid field in the chunks classes for weaviate, yet they are used in the
+- [ ] There is no document_uuid or repository_uuid field in the chunks classes for weaviate, yet they are used in the
    code
    for deletions, fix this. [INVESTIGATION REQUIRED]
+- [ ] [DOMAIN REDIRECTION] issue is still ongoing. 
+  - Tests:
+    - [V] www.bimod.io
+    - [V] bimod.io
+    - [X] https://bimod.io
+    - [V] https://www.bimod.io
+    - [X] http://bimod.io
+    - [V] http://www.bimod.io
+    ---
+    - [V] dev.bimod.io
+    - [V] https://dev.bimod.io
+    - [V] http://dev.bimod.io
 
 ---
 

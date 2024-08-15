@@ -122,7 +122,7 @@
           <!-- Chats -->
           <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
             <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
-              <h5 class="text-primary mb-0"><strong>Archived Chats</strong></h5>
+              <h5 class="mb-0"><strong>Archived Chats</strong></h5>
             </li>
             <li class="chat-contact-list-item chat-list-item-0 d-none">
               <h6 class="text-muted mb-0"><strong>No Chats Found</strong></h6>
@@ -163,35 +163,40 @@
                     {% csrf_token %}
                     <div class="d-flex align-items-center">
                       <div
-                        class="flex-shrink-0 avatar {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded"
+                        class="flex-shrink-0 avatar avatar-lg {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded"
                         {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
                         <img src="
-
-
-
-
-
-
-
-
-
-
-
                           {% if chat.assistant.assistant_image %}{{ chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                             class="rounded">
+                             class="rounded-pill">
                       </div>
                       <div class="chat-contact-info flex-grow-1 ms-4 text-start">
                         <h6 class="chat-contact-name text-truncate m-0 fw-normal"><strong>{{ chat.chat_name }}</strong>
                         </h6>
                         <small class="text-muted"><i
-                          class="fa fa-clock-rotate-left me-1"></i>{{ chat.updated_at|date:"H:i A" }}</small>
-                        <br>
+                          class="fa fa-clock-rotate-left me-1"></i>
+                          <strong>{{ chat.updated_at|date:"H:i A" }}</strong>
+                        </small>
+                        <hr>
                         <small
-                          class="d-block text-truncate bg-label-primary ps-2 pt-1 pe-2 pb-1 rounded mt-1"><strong>{{ chat.assistant.name }}</strong></small>
+                          class="d-block text-dark text-truncate ps-2 pe-2 pb-1 rounded">
+                          <strong>
+                            <i class="fa fa-message me-2"></i>
+                            {{ chat.assistant.name }}
+                          </strong>
+                        </small>
                         <small
-                          class="d-block text-truncate bg-label-primary ps-2 pt-1 pe-2 pb-1 rounded mt-1">{{ chat.organization.name }}</small>
+                          class="d-block text-dark text-truncate ps-2 pe-2 pb-1 rounded">
+                          <strong>
+                            <i class="fa fa-building me-2"></i>
+                            {{ chat.organization.name }}
+                          </strong>
+                        </small>
+                        <!--
                         <small
-                          class="d-block text-truncate chat-contact-status mt-1">{{ chat.messages.last.message_text_content }}</small>
+                          class="d-block text-truncate chat-contact-status mt-1">
+                          {{ chat.messages.last.message_text_content }}
+                        </small>
+                        -->
                       </div>
                     </div>
                   </form>
@@ -440,7 +445,7 @@
                     ... ... ...
                     ... ... ...
                  -->
-                <small class="text-muted">
+                <small class="text-warning">
                   <i class="fa fa-exclamation-triangle me-2"></i>
                   <strong>This is an archived chat. It is not possible to continue the conversation in archived chats.
                     If you would like to continue having chat with this assistant, please restore the chat.</strong>
