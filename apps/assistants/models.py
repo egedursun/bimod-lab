@@ -217,13 +217,81 @@ class Assistant(models.Model):
         verbose_name_plural = "Assistants"
         ordering = ["-created_at"]
         indexes = [
+            # Single-field indexes
+            models.Index(fields=["organization"]),
+            models.Index(fields=["llm_model"]),
+            models.Index(fields=["name"]),
+            models.Index(fields=["response_language"]),
+            models.Index(fields=["created_by_user"]),
+            models.Index(fields=["last_updated_by_user"]),
+            models.Index(fields=["created_at"]),
+            models.Index(fields=["updated_at"]),
+            models.Index(fields=["context_overflow_strategy"]),
+            models.Index(fields=["vectorizer_name"]),
+
+            # Two-field composite indexes
+            models.Index(fields=["organization", "llm_model"]),
+            models.Index(fields=["organization", "name"]),
+            models.Index(fields=["organization", "created_by_user"]),
+            models.Index(fields=["organization", "last_updated_by_user"]),
+            models.Index(fields=["organization", "created_at"]),
+            models.Index(fields=["organization", "updated_at"]),
+            models.Index(fields=["llm_model", "name"]),
+            models.Index(fields=["llm_model", "created_by_user"]),
+            models.Index(fields=["llm_model", "last_updated_by_user"]),
+            models.Index(fields=["llm_model", "created_at"]),
+            models.Index(fields=["llm_model", "updated_at"]),
+            models.Index(fields=["created_by_user", "created_at"]),
+            models.Index(fields=["created_by_user", "updated_at"]),
+            models.Index(fields=["last_updated_by_user", "created_at"]),
+            models.Index(fields=["last_updated_by_user", "updated_at"]),
+
+            # Three-field composite indexes
             models.Index(fields=["organization", "llm_model", "name"]),
             models.Index(fields=["organization", "llm_model", "created_by_user"]),
             models.Index(fields=["organization", "llm_model", "last_updated_by_user"]),
             models.Index(fields=["organization", "llm_model", "created_at"]),
             models.Index(fields=["organization", "llm_model", "updated_at"]),
+            models.Index(fields=["organization", "name", "created_at"]),
+            models.Index(fields=["organization", "name", "updated_at"]),
+            models.Index(fields=["organization", "created_by_user", "created_at"]),
+            models.Index(fields=["organization", "created_by_user", "updated_at"]),
+            models.Index(fields=["organization", "last_updated_by_user", "created_at"]),
+            models.Index(fields=["organization", "last_updated_by_user", "updated_at"]),
+            models.Index(fields=["llm_model", "name", "created_at"]),
+            models.Index(fields=["llm_model", "name", "updated_at"]),
+            models.Index(fields=["llm_model", "created_by_user", "created_at"]),
+            models.Index(fields=["llm_model", "created_by_user", "updated_at"]),
+            models.Index(fields=["llm_model", "last_updated_by_user", "created_at"]),
+            models.Index(fields=["llm_model", "last_updated_by_user", "updated_at"]),
+            models.Index(fields=["created_by_user", "created_at", "updated_at"]),
+            models.Index(fields=["last_updated_by_user", "created_at", "updated_at"]),
+
+            # Four-field composite indexes
             models.Index(fields=["organization", "llm_model", "name", "created_at"]),
             models.Index(fields=["organization", "llm_model", "name", "updated_at"]),
+            models.Index(fields=["organization", "llm_model", "created_by_user", "created_at"]),
+            models.Index(fields=["organization", "llm_model", "created_by_user", "updated_at"]),
+            models.Index(fields=["organization", "llm_model", "last_updated_by_user", "created_at"]),
+            models.Index(fields=["organization", "llm_model", "last_updated_by_user", "updated_at"]),
+            models.Index(fields=["organization", "name", "created_at", "updated_at"]),
+            models.Index(fields=["organization", "created_by_user", "created_at", "updated_at"]),
+            models.Index(fields=["organization", "last_updated_by_user", "created_at", "updated_at"]),
+            models.Index(fields=["llm_model", "name", "created_at", "updated_at"]),
+            models.Index(fields=["llm_model", "created_by_user", "created_at", "updated_at"]),
+            models.Index(fields=["llm_model", "last_updated_by_user", "created_at", "updated_at"]),
+
+            # Additional useful combinations
+            models.Index(fields=["organization", "context_overflow_strategy"]),
+            models.Index(fields=["organization", "vectorizer_name"]),
+            models.Index(fields=["llm_model", "context_overflow_strategy"]),
+            models.Index(fields=["llm_model", "vectorizer_name"]),
+            models.Index(fields=["organization", "llm_model", "context_overflow_strategy"]),
+            models.Index(fields=["organization", "llm_model", "vectorizer_name"]),
+            models.Index(fields=["created_by_user", "context_overflow_strategy"]),
+            models.Index(fields=["created_by_user", "vectorizer_name"]),
+            models.Index(fields=["last_updated_by_user", "context_overflow_strategy"]),
+            models.Index(fields=["last_updated_by_user", "vectorizer_name"]),
         ]
 
     @staticmethod
