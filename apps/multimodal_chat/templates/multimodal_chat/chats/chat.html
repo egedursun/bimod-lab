@@ -135,6 +135,8 @@
 
 
 
+
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -183,6 +185,8 @@
                     <div class="d-flex align-items-center">
                       <div class="flex-shrink-0 avatar avatar-md">
                         <img src="
+
+
 
 
 
@@ -297,6 +301,8 @@
 
 
 
+
+
                           {% if chat.assistant.assistant_image %}{{ chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              class="rounded-pill">
                       </div>
@@ -397,6 +403,8 @@
 
 
 
+
+
                       {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
                   </div>
@@ -455,6 +463,8 @@
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
                             <img src="
+
+
 
 
 
@@ -591,6 +601,8 @@
                               <img src="
 
 
+
+
                                 {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                                    alt="Avatar" class="rounded">
                             </div>
@@ -615,7 +627,9 @@
               <small class="mb-2 text-dark ms-6">
                 <i class="fa fa-info-circle me-2"></i>
                 This is the response streamer. It will show the response from the assistant in real-time so that you
-                can track the progress of the assistant.
+                can track the progress of the assistant. The streamer is an effective tool for debugging the distinct
+                steps of the response processes; yet please note that it is still in an experimental stage, and it
+                might cause slower response times.
               </small>
               <div id="non-tool-markdown-content"
                    class="bg-white text-black p-4 markdown-content border border-primary border-4 rounded">
@@ -1669,41 +1683,45 @@
   </script>
 
   <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const eventSource = new EventSource('/app/multimodal_chat/chat/response_stream/');
-  const element = document.getElementById('non-tool-markdown-content');
-  let accumulatedContent = ''; // To accumulate chunks for a single stream
+    document.addEventListener('DOMContentLoaded', function () {
+      const eventSource = new EventSource('/app/multimodal_chat/chat/response_stream/');
+      const element = document.getElementById('non-tool-markdown-content');
+      let accumulatedContent = ''; // To accumulate chunks for a single stream
 
-  eventSource.onmessage = function (event) {
-    let newChunk = event.data;
+      eventSource.onmessage = function (event) {
+        let newChunk = event.data;
 
-    if (newChunk.includes('<[bimod_streaming_end]>')) {
-      console.log("End of streaming detected...");
+        if (newChunk.includes('<[bimod_streaming_end]>')) {
+          console.log("End of streaming detected...");
 
-      // Wrap the accumulated content in a new div with the 'bg-label-primary' class
-      element.innerHTML += `<div class="bg-label-primary rounded m-2 p-4"><strong class="text-white">${accumulatedContent}</strong></div>`;
+          // Wrap the accumulated content in a new div with the 'bg-label-primary' class
+          element.innerHTML += `<div class="bg-label-primary rounded m-2 p-4"><strong class="text-white">${accumulatedContent}</strong></div>`;
 
-      // Reset the accumulated content for the next stream
-      accumulatedContent = '';
-    } else if (newChunk.includes('<[bimod_process_end]>')) {
-      // Force refresh the page with the same chat id
-      const chatId = new URLSearchParams(window.location.search).get('chat_id');
-      console.log("End of processing detected...");
-      eventSource.close(); // Close the event stream
+          element.scrollTo({
+            top: element.scrollHeight + 1000,
+            behavior: 'smooth'
+          });
 
-      // Automatically refresh the page
-      window.location.href = `/app/multimodal_chat/chat/?chat_id=${chatId}`;
-    } else {
-      // Accumulate chunks for the current stream
-      accumulatedContent += newChunk;
-    }
-  };
+          // Reset the accumulated content for the next stream
+          accumulatedContent = '';
+        } else if (newChunk.includes('<[bimod_process_end]>')) {
+          // Force refresh the page with the same chat id
+          const chatId = new URLSearchParams(window.location.search).get('chat_id');
+          console.log("End of processing detected...");
+          eventSource.close(); // Close the event stream
+          // Automatically refresh the page
+          window.location.href = `/app/multimodal_chat/chat/?chat_id=${chatId}`;
+        } else {
+          // Accumulate chunks for the current stream
+          accumulatedContent += newChunk;
+        }
+      };
 
-  eventSource.onerror = function (event) {
-    console.error("SSE error", event);
-    eventSource.close();
-  };
-});
-</script>
+      eventSource.onerror = function (event) {
+        console.error("SSE error", event);
+        eventSource.close();
+      };
+    });
+  </script>
 
 {% endblock %}
