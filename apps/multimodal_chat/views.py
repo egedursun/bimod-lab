@@ -9,7 +9,7 @@ import time
 
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.generic import TemplateView, DeleteView
@@ -106,6 +106,17 @@ class ChatStreamView(View):
         file_full_uris = StorageExecutor.save_files_and_provide_full_uris(file_bytes_list)
         print(f"[ChatStreamView.post] The file(s) has been uploaded successfully.")
 
+        record_audio = request.POST.get('record_audio')
+        audio_full_uri = None
+        if record_audio:
+            audio_base_64 = request.POST.get('record_audio')
+            audio_bytes = base64.b64decode(audio_base_64.split("base64,")[1].encode())
+            audio_full_uri = StorageExecutor.save_files_and_provide_full_uris([(audio_bytes, 'audio.webm')])[0]
+            print(f"[ChatStreamView.post] The audio file has been uploaded successfully.")
+        if audio_full_uri:
+            file_full_uris.append(audio_full_uri)
+            print(f"[ChatStreamView.post] The audio file has been added to the file URIs list: {file_full_uris}")
+
         # 4. Create the user message
         MultimodalChatMessage.objects.create(
             multimodal_chat=chat, sender_type='USER', message_text_content=message_content,
@@ -134,7 +145,7 @@ class ChatResponseStreamView(View):
 
     class MockChunk:
         def __init__(self, choices):
-           self.choices = choices
+            self.choices = choices
 
     class MockChoice:
         def __init__(self, delta):
@@ -372,6 +383,18 @@ class ChatView(LoginRequiredMixin, TemplateView):
                     continue
                 file_bytes_list.append((file_bytes, file_name))
             file_full_uris = StorageExecutor.save_files_and_provide_full_uris(file_bytes_list)
+
+            record_audio = request.POST.get('record_audio')
+            audio_full_uri = None
+            if record_audio:
+                audio_base_64 = request.POST.get('record_audio')
+                audio_bytes = base64.b64decode(audio_base_64.split("base64,")[1].encode())
+                audio_full_uri = StorageExecutor.save_files_and_provide_full_uris([(audio_bytes, 'audio.webm')])[0]
+                print(f"[ChatView.post] The audio file has been uploaded successfully.")
+            if audio_full_uri:
+                file_full_uris.append(audio_full_uri)
+                print(f"[ChatView.post] The audio file has been added to the file URIs list: {file_full_uris}")
+
             MultimodalChatMessage.objects.create(
                 multimodal_chat=chat, sender_type='USER', message_text_content=message_content,
                 message_image_contents=image_full_uris, message_file_contents=file_full_uris
@@ -534,6 +557,29 @@ class ChatArchiveListView(LoginRequiredMixin, TemplateView):
             }
         )
         return context
+
+
+class ChatMessageNarrationView(LoginRequiredMixin, View):
+    """
+    Handles the narration of chat messages.
+
+    This view allows users to listen to the narration of chat messages using text-to-speech (TTS) functionality.
+    """
+
+    def get(self, request, *args, **kwargs):
+        message_id = kwargs.get('pk')
+        message = get_object_or_404(MultimodalChatMessage, id=message_id, multimodal_chat__user=request.user)
+
+        if message.message_audio:
+            return JsonResponse({'audio_url': message.message_audio})
+
+        # Assuming 'InternalLLMClient.text_to_audio_message' returns a dict with 'audio_url'
+        response = InternalLLMClient.get(assistant=message.multimodal_chat.assistant,
+                                         multimodal_chat=message.multimodal_chat).text_to_audio_message(message=message)
+
+        message.message_audio = response['audio_url']
+        message.save()
+        return JsonResponse({'audio_url': response['audio_url']})
 
 
 class TestChatTemplate1View(TemplateView):

@@ -1,7 +1,8 @@
-
-
 from openai import OpenAI
-client = OpenAI()
+
+client = OpenAI(
+    api_key=""
+)
 
 audio_file_path = f"some_german_speaking_file.mp3"
 model_name = "whisper-1"
@@ -32,10 +33,10 @@ Vietnamese,
 Welsh.
 """
 
-audio_file= open("/path/to/file/german.mp3", "rb")
+audio_file = open("/path/to/file/german.mp3", "rb")
 translation = client.audio.translations.create(
-  model=model_name,
-  file=audio_file
+    model=model_name,
+    file=audio_file
 )
 
 translated_transcribed_text = translation.text

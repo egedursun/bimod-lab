@@ -1,6 +1,7 @@
 import json
 import re
 from json import JSONDecoder
+import uuid
 
 
 def find_json_presence(response: str, decoder=JSONDecoder()):
@@ -40,3 +41,13 @@ def extract_file_uri(response_str):
     # Extract and return the URI if found, otherwise return None
     print("[utils.extract_file_uri] File URI extracted.")
     return match.group(1) if match else None
+
+
+def generate_random_audio_filename(extension="mp3"):
+    # Generate a random filename
+    uuid1 = str(uuid.uuid4())
+    uuid2 = str(uuid.uuid4())
+
+    filename = f"generated_audio_{uuid1}_{uuid2}.{extension}"
+    print("[utils.generate_random_filename] Random filename generated.")
+    return filename

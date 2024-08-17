@@ -136,7 +136,6 @@
 
 
 
-
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -185,7 +184,6 @@
                     <div class="d-flex align-items-center">
                       <div class="flex-shrink-0 avatar avatar-md">
                         <img src="
-
 
 
 
@@ -302,7 +300,6 @@
 
 
 
-
                           {% if chat.assistant.assistant_image %}{{ chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              class="rounded-pill">
                       </div>
@@ -404,7 +401,6 @@
 
 
 
-
                       {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
                   </div>
@@ -463,7 +459,6 @@
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
                             <img src="
-
 
 
 
@@ -591,6 +586,11 @@
                                    data-message-id="{{ message.id }}">
                                   <i class="fa fa-copy"><i class="fa fa-marker ms-1"></i></i><span class="ms-2"><strong>Markdown</strong></span>
                                 </a>
+                                <a href="javascript:void(0);" class="listen-btn ms-12 text-light"
+                                   data-message-id="{{ message.id }}">
+                                  <i class="fa fa-volume-up ms-1"></i><span
+                                  class="ms-2"><strong>Listen</strong></span>
+                                </a>
                               </form>
                             </small>
                           </div>
@@ -599,6 +599,12 @@
                           <div class="user-avatar flex-shrink-0 ms-4">
                             <div class="avatar avatar-xl">
                               <img src="
+
+
+
+
+
+
 
 
 
@@ -639,14 +645,20 @@
             <div class="chat-history-footer shadow-xs p-4">
               <div class="row align-items-center justify-content-start mt-2 mb-4" id="image_display_area">
                 <!-- Dynamic content will be inserted here
-                    ... ... ...
-                    ... ... ...
+                    ... ... ... ... ...
+                    ... ... ... ... ...
                  -->
               </div>
               <div class="row align-items-center justify-content-start mt-2 mb-4" id="file_display_area">
                 <!-- Dynamic content will be inserted here
-                    ... ... ...
-                    ... ... ...
+                    ... ... ... ... ...
+                    ... ... ... ... ...
+                 -->
+              </div>
+              <div class="row align-items-center justify-content-start mt-2 mb-4" id="audio_display_area">
+                <!-- Dynamic content will be inserted here
+                    ... ... ... ... ...
+                    ... ... ... ... ...
                  -->
               </div>
               <small class="text-muted m-6"><strong>Message Templates</strong></small>
@@ -657,7 +669,7 @@
               <a class="btn btn-sm bg-label-hover-secondary me-4 btn-collapse-templates" style="float: right;">
                 <i class="fa fa-compress-arrows-alt rounded"></i><small></small>
               </a>
-              <div class="card m-4 overflow-scroll" style="max-height: 250px; overflow-x: hidden;">
+              <div class="card m-4 overflow-auto" style="max-height: 100px; overflow-x: hidden;">
                 <div class="row" id="message-templates-container">
                   {% for message_template in message_templates %}
                     <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
@@ -713,9 +725,11 @@
                 <textarea class="form-control message-input border-0 me-4 shadow-none" name="message_content"
                           placeholder="Type your message here..." rows="1"></textarea>
                 <div class="message-actions d-flex align-items-center">
-                  <i
-                    class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
-
+                  <label for="record-audio-label" class="form-label mb-0">
+                    <i id="recordAudioButton"
+                       class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
+                  </label>
+                  <input type="hidden" id="record_audio" name="record_audio" class="d-none" hidden>
                   <label for="sketch-image-label" class="form-label mb-0">
                     <i
                       class="ti ti-brush ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"
@@ -1249,7 +1263,6 @@
         loadingBarWarning.classList.remove('d-none');
         submitStreamMessageButton.disabled = true;
       });
-
     });
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -1667,9 +1680,34 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const startStreamingButton = document.getElementById('start-streaming');
-      startStreamingButton.addEventListener('click', function () {
+      startStreamingButton.addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
         const chatForm = document.querySelector('.form-send-message');
         const formData = new FormData(chatForm);
+
+        // Append all attached image files
+        /*
+        const imageFiles = document.getElementById('attach-image').files;
+        if (imageFiles.length > 0) {
+          for (let i = 0; i < imageFiles.length; i++) {
+            formData.append('attached_images[]', imageFiles[i]);
+          }
+        }
+
+        // Append all attached document files
+        const docFiles = document.getElementById('attach-doc').files;
+        if (docFiles.length > 0) {
+          for (let i = 0; i < docFiles.length; i++) {
+            formData.append('attached_files[]', docFiles[i]);
+          }
+        }
+
+        // Check and append recorded audio if it exists
+        const audioInput = document.getElementById('record_audio');
+        if (audioInput.files && audioInput.files.length > 0) {
+          formData.append('record_audio', audioInput.files[0]);
+        }
+         */
 
         fetch(`/app/multimodal_chat/chat/stream/`, {
           method: 'POST',
@@ -1677,6 +1715,11 @@
           headers: {
             'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
           }
+        }).then(response => response.json())
+          .then(data => {
+            console.log('Stream submitted successfully', data);
+          }).catch(error => {
+          console.error('Error in streaming:', error);
         });
       });
     });
@@ -1721,6 +1764,139 @@
         console.error("SSE error", event);
         eventSource.close();
       };
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const recordButton = document.getElementById('recordAudioButton');
+      const audioDisplayArea = document.getElementById('audio_display_area');
+      const audioDataInput = document.getElementById('record_audio');
+      console.log(audioDataInput);
+      let mediaRecorder;
+      let audioChunks = [];
+      let audioIndex = 0; // Global index for audio elements
+
+      // Function to display recorded audio and handle Base64 encoding
+      function displayAudio(name, size, audioBlob) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+          const base64data = reader.result;
+          console.log('Base64 data:', base64data);
+          audioDataInput.value = base64data; // Store Base64 data in hidden input
+
+          if (audioDisplayArea.childElementCount === 0) {
+            audioDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Audio Recording Staging</strong></small><hr>';
+          }
+
+          const audioElement = document.createElement('div');
+          const audioURL = URL.createObjectURL(audioBlob);
+
+          audioElement.classList.add('badge', 'bg-lighter', 'd-flex', 'align-items-center', 'my-1');
+          audioElement.setAttribute('data-index', audioIndex.toString());
+
+          audioElement.innerHTML = `
+        <audio controls class="ms-4">
+            <source src="${audioURL}" type="audio/webm">
+            Unsupported Browser for Audio Playback
+        </audio>
+        <span class="h6 mb-0 ms-4 text-body"><strong>${name}</strong> (${size} KB)</span>
+        <button id="btn-close-audio-${audioIndex}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${audioIndex}"></button>
+      `;
+
+          audioDisplayArea.appendChild(audioElement);
+
+          audioElement.querySelector(`#btn-close-audio-${audioIndex}`).addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            const elementToRemove = document.querySelector(`.badge[data-index="${index}"]`);
+            if (elementToRemove) {
+              elementToRemove.remove();
+            }
+            if (audioDisplayArea.querySelectorAll('.badge').length === 0) {
+              audioDisplayArea.innerHTML = '';
+            }
+            audioDataInput.value = ""; // Clear the hidden input
+          });
+
+          audioIndex++;
+        };
+        reader.readAsDataURL(audioBlob); // Convert audio blob to Base64
+      }
+
+      recordButton.addEventListener('click', async () => {
+        if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+            startRecording(stream);
+            recordButton.className = 'speech-to-text ti ti-hand-stop ti-md btn btn-sm btn-text-danger btn-icon rounded-pill cursor-pointer text-danger';
+          } catch (err) {
+            console.error('Failed to start recording:', err);
+          }
+        } else if (mediaRecorder.state === 'recording') {
+          mediaRecorder.stop();
+          recordButton.className = 'speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading';
+        }
+      });
+
+      function startRecording(stream) {
+        let options = { mimeType: 'audio/webm' };
+        mediaRecorder = new MediaRecorder(stream, options);
+        mediaRecorder.ondataavailable = event => {
+          audioChunks.push(event.data);
+        };
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+          displayAudio(`recording_${Date.now()}.webm`, (audioBlob.size / 1024).toFixed(2), audioBlob);
+          audioChunks = [];
+        };
+        mediaRecorder.start();
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const listenButtons = document.querySelectorAll('.listen-btn');
+      listenButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const messageId = button.getAttribute('data-message-id');
+          const url = `/app/multimodal_chat/tts/chat/message/${messageId}`;
+
+          // Disable the button and change to loading state
+          button.disabled = true;
+          button.innerHTML = '<i class="fa fa-spinner fa-spin ms-1"></i><span class="ms-2"><strong>Playing...</strong></span>';
+
+          console.log("Sending fetch request to:", url); // Debugging URL
+          fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log("Fetch request successful:", data); // Debugging data
+              if (data.audio_url) {
+                const audio = new Audio(data.audio_url);
+                audio.play();
+                // Listen for the 'ended' event to reset the button
+                audio.onended = () => {
+                  button.disabled = false;
+                  button.innerHTML = '<i class="fa fa-volume-up ms-1"></i><span class="ms-2"><strong>Listen</strong></span>';
+                };
+              } else {
+                console.error('No audio URL provided by the server.');
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-volume-up ms-1"></i><span class="ms-2"><strong>Listen</strong></span>';
+              }
+            })
+            .catch(error => {
+              console.error('Fetch request failed:', error);
+              button.disabled = false;
+              button.innerHTML = '<i class="fa fa-volume-up ms-1"></i><span class="ms-2"><strong>Listen</strong></span>';
+            });
+        });
+      });
     });
   </script>
 

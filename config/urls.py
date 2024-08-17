@@ -66,6 +66,7 @@ urlpatterns = [
     path("app/mm_scripts/", include("apps.mm_scripts.urls", namespace="mm_scripts")),
     path("app/mm_scheduled_jobs/", include("apps.mm_scheduled_jobs.urls", namespace="mm_scheduled_jobs")),
     path("app/mm_triggered_jobs/", include("apps.mm_triggered_jobs.urls", namespace="mm_triggered_jobs")),
+    path("app/orchestrations/", include("apps.orchestrations.urls", namespace="orchestrations")),
     #################################################################################################################
 
     #################################################################################################################

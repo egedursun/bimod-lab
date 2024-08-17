@@ -4,6 +4,8 @@ from apps._services.browsers.browser_executor import BrowserActionsNames
 from apps._services.llms.helpers.helper_prompts import get_json_decode_error_log
 from apps._services.tools.const import ToolTypeNames, get_no_knowledge_base_connection_error_log, \
     get_no_tool_found_error_log
+from apps._services.tools.execution_handlers.audio_processing_execution_tool_handler import \
+    execute_audio_processing_tool
 from apps._services.tools.execution_handlers.browser_execution_tool_handler import execute_browser_action
 from apps._services.tools.execution_handlers.code_interpreter_execution_handler import execute_code_interpreter
 from apps._services.tools.execution_handlers.custom_api_execution_handler import execute_api_executor
@@ -19,6 +21,8 @@ from apps._services.tools.execution_handlers.nosql_query_execution_handler impor
 from apps._services.tools.execution_handlers.predict_with_ml_model_execution_handler import execute_predict_ml_model
 from apps._services.tools.execution_handlers.sql_query_execution_handler import execute_sql_query
 from apps._services.tools.execution_handlers.url_file_downloader_execution_handler import execute_url_file_downloader
+from apps._services.tools.validators.audio_processing_execution_tool_validator import \
+    validate_audio_processing_execution_tool_json
 from apps._services.tools.validators.browser_execution_tool_validator import validate_browser_execution_tool_json
 from apps._services.tools.validators.code_interpreter_execution_tool_validator import \
     validate_code_interpreter_execution_tool_json
@@ -326,6 +330,27 @@ class ToolExecutor:
                                                       page=page, search_results=search_results, click_url=click_url)
             browser_response_raw_str = json.dumps(browser_response, sort_keys=True, default=str)
             tool_response += browser_response_raw_str
+        ##################################################
+        # Audio Processing Tool
+        elif tool_name == ToolTypeNames.AUDIO_PROCESSING:
+            print("[ToolExecutor.use_tool] Audio Processing Tool is being executed...")
+            error = validate_audio_processing_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+            action = self.tool_usage_json.get("parameters").get("action")
+            audio_file_path = self.tool_usage_json.get("parameters").get("audio_file_path")
+            text_content = self.tool_usage_json.get("parameters").get("text_content")
+            voice_selection = self.tool_usage_json.get("parameters").get("voice_selection")
+            print("[ToolExecutor.use_tool] Audio Processing Tool action is: ", action)
+            audio_processor_response = execute_audio_processing_tool(
+                assistant_id=self.assistant.id,
+                chat_id=self.chat.id,
+                action=action,
+                audio_file_path=audio_file_path,
+                text_content=text_content,
+                voice_selection=voice_selection
+            )
+            audio_processing_response_raw_str = json.dumps(audio_processor_response, sort_keys=True, default=str)
+            tool_response += audio_processing_response_raw_str
         ##################################################
         # ...
         ##################################################

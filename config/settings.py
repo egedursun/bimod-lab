@@ -19,6 +19,7 @@ from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
 import sentry_sdk
+from pydub import AudioSegment
 
 from .template import TEMPLATE_CONFIG, THEME_LAYOUT_DIR, THEME_VARIABLES
 
@@ -29,7 +30,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", default='')
@@ -111,6 +111,7 @@ INSTALLED_APPS = [
     "apps.mm_scripts",
     "apps.mm_scheduled_jobs",
     "apps.mm_triggered_jobs",
+    "apps.orchestrations",
 
     ########################################
     # SUPPORT
@@ -439,6 +440,8 @@ TRIGGERED_JOB_EXECUTOR = os.environ.get("TRIGGERED_JOB_EXECUTOR", default="0")
 IMAGE_GENERATOR = os.environ.get("IMAGE_GENERATOR", default="0")
 IMAGE_MODIFICATION = os.environ.get("IMAGE_MODIFICATION", default="0")
 IMAGE_VARIATION = os.environ.get("IMAGE_VARIATION", default="0")
+AUDIO_PROCESSING_STT = os.environ.get("AUDIO_PROCESSING_STT", default="0")
+AUDIO_PROCESSING_TTS = os.environ.get("AUDIO_PROCESSING_TTS", default="0")
 
 COSTS_MAP = {
     "CONTEXT_MEMORY": float(CONTEXT_MEMORY),
@@ -465,6 +468,8 @@ COSTS_MAP = {
     "IMAGE_GENERATOR": float(IMAGE_GENERATOR),
     "IMAGE_MODIFICATION": float(IMAGE_MODIFICATION),
     "IMAGE_VARIATION": float(IMAGE_VARIATION),
+    "AUDIO_PROCESSING_STT": float(AUDIO_PROCESSING_STT),
+    "AUDIO_PROCESSING_TTS": float(AUDIO_PROCESSING_TTS),
 }
 
 #####################################################################################################################

@@ -30,6 +30,8 @@ class ToolCostsMap:
             ToolCostsMap.ImageGenerator.COST,
             ToolCostsMap.ImageModification.COST,
             ToolCostsMap.ImageVariation.COST,
+            ToolCostsMap.AudioProcessingSTT.COST,
+            ToolCostsMap.AudioProcessingTTS.COST
         ]
 
     class ContextMemory:
@@ -103,3 +105,9 @@ class ToolCostsMap:
 
     class ImageVariation:
         COST = COSTS_MAP["IMAGE_VARIATION"]
+
+    class AudioProcessingSTT:
+        COST = COSTS_MAP["AUDIO_PROCESSING_STT"]
+
+    class AudioProcessingTTS:
+        COST = COSTS_MAP["AUDIO_PROCESSING_TTS"]

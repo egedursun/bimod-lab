@@ -18,6 +18,7 @@ class ToolTypeNames:
     IMAGE_GENERATION = 'Image Generation'
     IMAGE_MODIFICATION = 'Image Modification'
     IMAGE_VARIATION = 'Image Variation'
+    AUDIO_PROCESSING = 'Audio Processing'
 
 
 def get_no_knowledge_base_connection_error_log(assistant_name, chat_name):

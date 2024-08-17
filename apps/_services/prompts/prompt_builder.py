@@ -33,6 +33,8 @@ from apps._services.prompts.multimodality.build_scripts_multimodality_prompt imp
     build_lean_scripts_multi_modality_prompt
 from apps._services.prompts.tools.build_tool_usage_instructions_prompt import \
     build_structured_tool_usage_instructions_prompt, build_lean_structured_tool_usage_instructions_prompt
+from apps._services.prompts.tools.tool_prompts.build_audio_processing_executor_tool_prompt import \
+    build_structured_tool_prompt__audio_processing
 from apps._services.prompts.tools.tool_prompts.build_browsing_executor_tool_prompt import \
     build_structured_tool_prompt__browsing_executor
 from apps._services.prompts.tools.tool_prompts.build_code_interpreter_tool_prompt import \
@@ -129,6 +131,7 @@ class PromptBuilder:
         structured_image_generation_tool_prompt = build_structured_tool_prompt__image_generator()
         structured_image_modification_tool_prompt = build_structured_tool_prompt__image_modification()
         structured_image_variation_tool_prompt = build_structured_tool_prompt__image_variation()
+        structured_audio_processing_tool_prompt = build_structured_tool_prompt__audio_processing()
         ##################################################
 
         # Combine the prompts
@@ -177,6 +180,7 @@ class PromptBuilder:
         merged_prompt += structured_image_generation_tool_prompt
         merged_prompt += structured_image_modification_tool_prompt
         merged_prompt += structured_image_variation_tool_prompt
+        merged_prompt += structured_audio_processing_tool_prompt
         ##################################################
 
         # Build the dictionary with the role

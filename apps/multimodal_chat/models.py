@@ -22,6 +22,7 @@ CHAT_SOURCES = [
     ("app", "Application"),
     ("api", "API"),
     ("scheduled", "Scheduled"),
+    ("orchestration", "Orchestration"),
 ]
 
 
@@ -30,6 +31,7 @@ class ChatSourcesNames:
     API = "api"
     SCHEDULED = "scheduled"
     TRIGGERED = "triggered"
+    ORCHESTRATION = "orchestration"
 
 
 class MultimodalChat(models.Model):
@@ -77,7 +79,7 @@ class MultimodalChat(models.Model):
     context_memory_connection = models.OneToOneField(ContextHistoryKnowledgeBaseConnection, on_delete=models.CASCADE,
                                                      related_name='multimodal_chat', null=True, blank=True)
     starred_messages = models.ManyToManyField('starred_messages.StarredMessage', related_name='multimodal_chats',
-                                                blank=True)
+                                              blank=True)
     # For archiving the chats
     is_archived = models.BooleanField(default=False)
     # Management for APIs
@@ -360,7 +362,7 @@ class MultimodalChat(models.Model):
         super().save(*args, **kwargs)
         # Create the knowledge base connection in the ORM
         if (self.assistant.context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE
-                and self.context_memory_connection is None):
+            and self.context_memory_connection is None):
             if self.assistant.vectorizer_name is None:
                 print("[MultimodalChat.save] The assistant does not have a vectorizer name set.")
                 return
@@ -411,6 +413,7 @@ class MultimodalChatMessage(models.Model):
         - `message_json_content`: JSON field for storing additional message content (not used currently).
         - `message_image_contents`: JSON field for storing image contents related to the message.
         - `message_file_contents`: JSON field for storing file contents related to the message.
+        - `message_audio`: URL field for storing audio contents related to the message.
         - `starred`: Boolean field indicating whether the message is starred.
         - `sent_at`: Timestamp for when the message was sent.
     - Methods:
@@ -432,6 +435,9 @@ class MultimodalChatMessage(models.Model):
     # Multimedia Contents
     message_image_contents = models.JSONField(default=list, blank=True, null=True)
     message_file_contents = models.JSONField(default=list, blank=True, null=True)
+    # Narrated audio
+    message_audio = models.URLField(max_length=10000, blank=True, null=True)
+
     starred = models.BooleanField(default=False)
     sent_at = models.DateTimeField(auto_now_add=True)
 

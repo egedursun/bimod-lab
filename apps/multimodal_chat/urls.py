@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import ChatView, ChatDeleteView, ChatArchiveView, ChatArchiveListView, ChatUnarchiveView, \
-    TestChatTemplate1View, ChatStreamView, ChatResponseStreamView
+    TestChatTemplate1View, ChatStreamView, ChatResponseStreamView, ChatMessageNarrationView
 
 app_name = "multimodal_chat"
 
@@ -24,6 +24,8 @@ urlpatterns = [
     path('chat/archive/', ChatArchiveListView.as_view(
         template_name="multimodal_chat/archives/archived_chats.html"
     ), name='archive_list'),
+
+    path('tts/chat/message/<int:pk>/', ChatMessageNarrationView.as_view(), name='tts_chat_message'),
 
     #####
 

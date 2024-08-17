@@ -1,10 +1,16 @@
+import io
 import json
 import base64 as b64
+import mimetypes
+import os
 import time
+from pathlib import Path
 
+import boto3
 import requests
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
+from pydub import AudioSegment
 
 from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, AssistantRunStatuses, \
     ONE_SHOT_AFFIRMATION_PROMPT, ML_AFFIRMATION_PROMPT, INSUFFICIENT_BALANCE_PROMPT, get_technical_error_log, \
@@ -20,15 +26,17 @@ from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS,
     CODE_INTERPRETER_THREAD_CREATION_ERROR_LOG, CODE_INTERPRETER_RESPONSE_RETRIEVAL_ERROR_LOG, \
     get_code_interpreter_status_log, CODE_INTERPRETER_CLEANUP_ERROR_LOG, get_image_generation_error_log, \
     get_image_modification_error_log, get_image_variation_error_log, get_statistics_analysis_error_log, \
-    embed_tool_call_in_prompt
-from apps._services.llms.utils import find_json_presence
+    embed_tool_call_in_prompt, get_audio_reading_error_log, get_audio_transcription_error_log, \
+    get_audio_generation_error_log, get_audio_upload_error_log
+from apps._services.llms.utils import find_json_presence, generate_random_audio_filename
 from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
 from apps._services.prompts.statistics.usage_statistics_prompt import build_usage_statistics_system_prompt
+from apps._services.storages.storage_executor import GENERATED_FILES_ROOT_PATH
 from apps._services.tools.tool_executor import ToolExecutor
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from apps.multimodal_chat.utils import calculate_billable_cost_from_raw
-from config.settings import MEDIA_URL
+from config.settings import MEDIA_URL, AWS_STORAGE_BUCKET_NAME
 
 
 class ChatRoles:
@@ -85,6 +93,15 @@ class DefaultImageQualityChoices:
 class RetryCallersNames:
     RESPOND = "respond"
     RESPOND_STREAM = "respond_stream"
+
+
+class OpenAITTSVoiceNames:
+    ALLOY = "alloy"  # Male Speaker: Baritone
+    ECHO = "echo"  # Male Speaker: Baritone-Bass
+    FABLE = "fable"  # Male Speaker: Tenor
+    ONYX = "onyx"  # Male Speaker: Bass
+    NOVA = "nova"  # Female Speaker: Older and Wiser
+    SHIMMER = "shimmer"  # Female Speaker: Younger and Energetic
 
 
 def retry_mechanism(client, latest_message, caller="respond"):
@@ -179,7 +196,7 @@ class InternalOpenAIClient:
 
                 mocked_response = st.mock_stream(f"""
             🚨 A critical error occurred while preparing the prompts for the process.
-                """)
+                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
                 time.sleep(STREAMING_WAIT_SECONDS)
 
@@ -205,7 +222,7 @@ class InternalOpenAIClient:
 
                 mocked_response = st.mock_stream(f"""
             🚨 A critical error occurred while inspecting the transaction parameters.
-                """)
+                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
                 time.sleep(STREAMING_WAIT_SECONDS)
 
@@ -215,7 +232,7 @@ class InternalOpenAIClient:
 
                 mocked_response = st.mock_stream(f"""
             🚨 Organization has insufficient balance to proceed with the transaction. Cancelling the process.
-                """)
+                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
                 time.sleep(STREAMING_WAIT_SECONDS)
 
@@ -278,7 +295,7 @@ class InternalOpenAIClient:
 
                 mocked_response = st.mock_stream(f"""
             🚨 A critical error occurred while retrieving the response from the language model.
-                """)
+                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
                 time.sleep(STREAMING_WAIT_SECONDS)
 
@@ -333,9 +350,8 @@ class InternalOpenAIClient:
 
                 mocked_response = st.mock_stream(f"""
             🚨 A critical error occurred while processing the response from the language model.
-                """)
+                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
-                st.stream_message(chunks=[BIMOD_PROCESS_END])
                 time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
@@ -376,9 +392,8 @@ class InternalOpenAIClient:
 
                 mocked_response = st.mock_stream(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
-                                """)
+                                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
-                st.stream_message(chunks=[BIMOD_PROCESS_END])
                 time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
@@ -398,7 +413,7 @@ class InternalOpenAIClient:
                                              caller=RetryCallersNames.RESPOND_STREAM)
 
             mocked_response = st.mock_stream(f"""
-            🚨 Error occurred while processing the response. The assistant will attempt to recover...
+            🚨 Error occurred while processing the response. The assistant will attempt to retry...
                 """)
             st.stream_message(chunks=mocked_response)
             time.sleep(STREAMING_WAIT_SECONDS)
@@ -428,7 +443,7 @@ class InternalOpenAIClient:
 
                 mocked_response = st.mock_stream(f"""
             🚨 Maximum tool chain limit has been reached. Cancelling the process.
-                                """)
+                                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
                 time.sleep(STREAMING_WAIT_SECONDS)
 
@@ -456,7 +471,7 @@ class InternalOpenAIClient:
 
                     mocked_response = st.mock_stream(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
-                                """)
+                                """, stop_tag=BIMOD_PROCESS_END)
                     st.stream_message(chunks=mocked_response)
                     time.sleep(STREAMING_WAIT_SECONDS)
 
@@ -471,7 +486,7 @@ class InternalOpenAIClient:
 
                 mocked_response = st.mock_stream(f"""
             🚨 Maximum same tool attempt limit has been reached. Cancelling the process.
-                                """)
+                                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
                 time.sleep(STREAMING_WAIT_SECONDS)
 
@@ -499,7 +514,7 @@ class InternalOpenAIClient:
 
                     mocked_response = st.mock_stream(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
-                                """)
+                                """, stop_tag=BIMOD_PROCESS_END)
                     st.stream_message(chunks=mocked_response)
                     time.sleep(STREAMING_WAIT_SECONDS)
 
@@ -650,10 +665,9 @@ class InternalOpenAIClient:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the tool request: {str(e)}")
 
                 mocked_response = st.mock_stream(f"""
-            🚨 A critical error occurred while recording the tool request. Trying to recover...
-                                """)
+            🚨 A critical error occurred while recording the tool request. Cancelling the process.
+                                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
-                st.stream_message(chunks=[BIMOD_PROCESS_END])
                 time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
@@ -689,10 +703,9 @@ class InternalOpenAIClient:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the tool response: {str(e)}")
 
                 mocked_response = st.mock_stream(f"""
-            🚨 A critical error occurred while recording the tool response. Trying to recover...
-                                """)
+            🚨 A critical error occurred while recording the tool response. Cancelling the process.
+                                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
-                st.stream_message(chunks=[BIMOD_PROCESS_END])
                 time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
@@ -734,7 +747,7 @@ class InternalOpenAIClient:
 
                 mocked_response = st.mock_stream(f"""
             🚨 A critical error occurred while recording the transaction. Cancelling the process.
-                                """)
+                                """, stop_tag=BIMOD_PROCESS_END)
                 st.stream_message(chunks=mocked_response)
                 time.sleep(STREAMING_WAIT_SECONDS)
 
@@ -752,7 +765,6 @@ class InternalOpenAIClient:
             🚀 The assistant is getting prepared for the next level of operations...
                                 """)
             st.stream_message(chunks=mocked_response)
-            st.stream_message(chunks=[BIMOD_PROCESS_END])
             time.sleep(STREAMING_WAIT_SECONDS)
 
             # apply the recursive call to the self function to get another reply from the assistant
@@ -772,7 +784,7 @@ class InternalOpenAIClient:
 
         mocked_response = st.mock_stream(f"""
             ✅ The assistant has successfully processed the query. The response is being delivered to the user...
-        """)
+        """, stop_tag=BIMOD_PROCESS_END)
         st.stream_message(chunks=mocked_response)
         time.sleep(STREAMING_WAIT_SECONDS)
 
@@ -782,8 +794,8 @@ class InternalOpenAIClient:
 
         # Stream the final response to the UI
         try:
-            mocked_response = st.mock_stream(final_response, stop_tag=BIMOD_PROCESS_END)
-            st.stream_message(chunks=mocked_response)
+            # mocked_response = st.mock_stream(final_response, stop_tag=BIMOD_PROCESS_END)
+            # st.stream_message(chunks=mocked_response)
             print(f"[InternalOpenAIClient.respond_stream] Final response streamed to the UI.")
         except Exception as e:
             print(
@@ -1916,4 +1928,160 @@ class InternalOpenAIClient:
             print(f"[InternalOpenAIClient.provide_analysis] Processed the response from the assistant.")
         except Exception as e:
             response = get_statistics_analysis_error_log(error_logs=str(e))
+        return response
+
+    def audio_to_text(self, audio_uri: str):
+        response = {"success": False, "message": "", "text": ""}
+        # download the file from s3 bucket
+        try:
+            downloaded_audio = requests.get(audio_uri)
+
+            mime_type, _ = mimetypes.guess_type(audio_uri)
+            if not mime_type:
+                mime_type = 'audio/mpeg'
+
+            file_like_audio = io.BytesIO(downloaded_audio.content)
+            file_like_audio.name = audio_uri.split('/')[-1]
+            print(file_like_audio.name)
+            print(f"[InternalOpenAIClient.audio_to_text] Audio has been read successfully.")
+        except Exception as e:
+            response["message"] = get_audio_reading_error_log(error_logs=str(e))
+            print(f"[InternalOpenAIClient.audio_to_text] An error occurred while reading the audio.")
+            return response
+
+        try:
+            model_name = "whisper-1"
+            transcription = self.connection.audio.transcriptions.create(
+                model=model_name,
+                file=file_like_audio,
+            )
+            print(f"[InternalOpenAIClient.audio_to_text] Audio has been transcribed successfully.")
+            response["success"] = True
+            response["text"] = transcription.text
+        except Exception as e:
+            response["message"] = get_audio_transcription_error_log(error_logs=str(e))
+            print(f"[InternalOpenAIClient.audio_to_text] An error occurred while transcribing the audio.")
+            return response
+
+        print(f"[InternalOpenAIClient.audio_to_text] Returning the transcribed text.")
+        return response
+
+    def text_to_audio_message(self, message, extension="mp3", voice=OpenAITTSVoiceNames.ONYX):
+        response = {"success": False, "message": "", "audio_url": ""}
+        message_text = message.message_text_content
+
+        try:
+            model_name = "tts-1"
+            output_file_name = generate_random_audio_filename(extension=extension)
+            s3_path = f"{GENERATED_FILES_ROOT_PATH}{output_file_name}"
+            print(f"[InternalOpenAIClient.text_to_audio_message] Determined the S3 path for the audio file: {s3_path}")
+            full_uri = f"{MEDIA_URL}{s3_path}"
+
+            temp_path = os.path.join(str(Path(__file__).parent), "tmp", output_file_name)
+
+            client_content = self.connection.audio.speech.create(
+                model=model_name,
+                voice=voice,
+                input=message_text,
+            )
+            client_content.stream_to_file(temp_path)
+            print(f"[InternalOpenAIClient.text_to_audio_message] Audio has been generated and streamed successfully.")
+
+            # read the file from the temp path
+            try:
+                with open(temp_path, "rb") as f:
+                    audio_bytes = f.read()
+                    print(f"[InternalOpenAIClient.text_to_audio_message] Audio has been read successfully.")
+            except Exception as e:
+                response["message"] = get_audio_reading_error_log(error_logs=str(e))
+                return response
+
+            # Add the file to boto3, s3
+            try:
+                s3 = boto3.client('s3')
+                s3.put_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key=s3_path, Body=audio_bytes)
+                print(f"[InternalOpenAIClient.text_to_audio_message] Audio has been uploaded to the S3 successfully.")
+            except Exception as e:
+                response["message"] = get_audio_upload_error_log(error_logs=str(e))
+                return response
+
+        except Exception as e:
+            response["message"] = get_audio_generation_error_log(error_logs=str(e))
+            print(f"[InternalOpenAIClient.text_to_audio_message] An error occurred while generating the audio.")
+            return response
+
+        # clean the file from the temp directory
+        for i in range(3):
+            try:
+                os.remove(temp_path)
+                print(f"[InternalOpenAIClient.text_to_audio_message] Temp file has been removed successfully.")
+                break
+            except Exception as e:
+                print(f"[InternalOpenAIClient.text_to_audio_message] An error occurred while removing the temp file.")
+                print(f"[InternalOpenAIClient.text_to_audio_message] Error Details: {str(e)}")
+                continue
+
+        response["success"] = True
+        response["audio_url"] = full_uri
+        print(f"[InternalOpenAIClient.text_to_audio_message] Returning the audio URL: {full_uri}")
+        return response
+
+    def text_to_audio_file(self, text_content, extension="mp3", voice=OpenAITTSVoiceNames.ALLOY):
+        response = {"success": False, "message": "", "audio_url": ""}
+
+        try:
+            model_name = "tts-1"
+            output_file_name = generate_random_audio_filename(extension=extension)
+            s3_path = f"{GENERATED_FILES_ROOT_PATH}{output_file_name}"
+            print(f"[InternalOpenAIClient.text_to_audio_file] Determined the S3 path for the audio file: {s3_path}")
+            full_uri = f"{MEDIA_URL}{s3_path}"
+
+            temp_path = os.path.join(str(Path(__file__).parent), "tmp", output_file_name)
+
+            client_content = self.connection.audio.speech.create(
+                model=model_name,
+                voice=voice,
+                input=text_content
+            )
+            client_content.stream_to_file(temp_path)
+            print(f"[InternalOpenAIClient.text_to_audio_file] Audio has been generated and streamed successfully.")
+
+            # read the file from the temp path
+            try:
+                with open(temp_path, "rb") as f:
+                    audio_bytes = f.read()
+                    print(f"[InternalOpenAIClient.text_to_audio_file] Audio has been read successfully.")
+            except Exception as e:
+                response["message"] = get_audio_reading_error_log(error_logs=str(e))
+                return response
+
+            # Add the file to boto3, s3
+            try:
+                s3 = boto3.client('s3')
+                s3.put_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key=s3_path, Body=audio_bytes)
+                print(f"[InternalOpenAIClient.text_to_audio_file] Audio has been uploaded to the S3 successfully.")
+            except Exception as e:
+                response["message"] = get_audio_upload_error_log(error_logs=str(e))
+                return response
+
+        except Exception as e:
+            response["message"] = get_audio_generation_error_log(error_logs=str(e))
+            print(f"[InternalOpenAIClient.text_to_audio_file] An error occurred while generating the audio.")
+            return response
+
+        # clean the file from the temp directory
+        for i in range(3):
+            try:
+                os.remove(temp_path)
+                print(f"[InternalOpenAIClient.text_to_audio_message] Temp file has been removed successfully.")
+                break
+            except Exception as e:
+                print(
+                    f"[InternalOpenAIClient.text_to_audio_message] An error occurred while removing the temp file.")
+                print(f"[InternalOpenAIClient.text_to_audio_message] Error Details: {str(e)}")
+                continue
+
+        response["success"] = True
+        response["audio_url"] = full_uri
+        print(f"[InternalOpenAIClient.text_to_audio_file] Returning the audio URL: {full_uri}")
         return response

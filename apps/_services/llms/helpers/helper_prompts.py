@@ -392,3 +392,51 @@ def get_statistics_analysis_error_log(error_logs: str):
     {str(error_logs)}
     '''
     """
+
+
+def get_audio_reading_error_log(error_logs: str):
+    return f"""
+    **SYSTEM MESSAGE:**
+    - An error occurred while reading the audio file.
+
+    Error Details:
+    '''
+    {str(error_logs)}
+    '''
+    """
+
+
+def get_audio_transcription_error_log(error_logs: str):
+    return f"""
+    **SYSTEM MESSAGE:**
+    - An error occurred while transcribing the audio.
+
+    Error Details:
+    '''
+    {str(error_logs)}
+    '''
+    """
+
+
+def get_audio_generation_error_log(error_logs: str):
+    return f"""
+    **SYSTEM MESSAGE:**
+    - An error occurred while generating the audio.
+
+    Error Details:
+    '''
+    {str(error_logs)}
+    '''
+    """
+
+
+def get_audio_upload_error_log(error_logs: str):
+    return f"""
+    **SYSTEM MESSAGE:**
+    - An error occurred while uploading the audio.
+
+    Error Details:
+    '''
+    {str(error_logs)}
+    '''
+    """

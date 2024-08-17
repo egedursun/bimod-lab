@@ -55,6 +55,7 @@ class TransactionTypeRolesNames:
 class TransactionSourcesNames:
     APP = "app"
     API = "api"
+    ############################
     GENERATION = "generation"
     SQL_READ = "sql-read"
     SQL_WRITE = "sql-write"
