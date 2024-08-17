@@ -9,28 +9,28 @@
 3. [ ] [LEGAL DOCUMENTATION] for the company. (Ege)
 4. [ ] [PAID SERVICE ACCOUNTS] for the company and the app, e.g. Hostinger, Bitvault, AWS, Aiven, Weaviate, Sentry,
    GitHub
-2. [ ] Development of [BUSINESS PLAN] for the application. (Ege)
-2. [ ] Development of [PITCH DECK PRESENTATION] for the application. (Ege)
-3. [ ] Development of [PRODUCT CATALOGUE] for the application. (Ege)
-4. [ ] Development of [FUNDING & GROWTH PLAN] for the application. (Ege)
-5. [ ] Marketing videos: [PROMOTIONAL VIDEO] for the application. (Hüseyin)
-6. [ ] Integrate [BIMOD - SOCIAL MEDIA ACCOUNTS] on: [FACEBOOK, TWITTER, LINKEDIN, INSTAGRAM, YOUTUBE, TIKTOK]. (
-   Hüseyin)
-7. [ ] Ecosystem Marketing via [WEBRAZZI, PRODUCT HUNT, DISCORD, HACKER NEWS, REDDIT], etc. (Hüseyin)
-8. [ ] Company [LEGAL FORMATION] and registration for the company. (Ege)
-9. [ ] [CRUNCHBASE] Profile. (Ege)
-10. [ ] [INCUBATION & ACCELERATION] center
-11. [ ] [INVESTMENT] meetings. (Ege & Hüseyin)
-12. [ ] [SEO OPTIMIZATION] for the application. (Emre?)
-13. [ ] [BLOG] application on the website for better SEO management. (Selin)
-14. [ ] [FORUM] application on the website for better SEO management. (Selin)
-15. [ ] Client [MEETINGS & WEBINARS]. (Ege & Hüseyin)
-16. [ ] Client [TRAININGS]. (Ege & Hüseyin)
-17. [ ] [FAIRS & EXHIBITIONS] for the company. (Ege & Hüseyin)
-18. [ ] [SPONSORSHIPS & ADVERTISEMENTS] for the company. (Ege & Hüseyin)
-19. [ ] [PARTNERSHIPS & COLLABORATIONS] for the company. (Ege & Hüseyin)
-20. [ ] [HEADHUNTING & RECRUITMENT] for the company. (Ege & Hüseyin)
-21. [ ] [UNIVERSITY MEETUPS & SEMINARS] for the company. (Ege & Hüseyin)
+5. [ ] Development of [BUSINESS PLAN] for the application. (Ege)
+6. [ ] Development of [PITCH DECK PRESENTATION] for the application. (Ege)
+7. [ ] Development of [PRODUCT CATALOGUE] for the application. (Ege)
+8. [ ] Development of [FUNDING & GROWTH PLAN] for the application. (Ege)
+9. [ ] Marketing videos: [PROMOTIONAL VIDEO] for the application. (Hüseyin)
+10. [ ] Integrate [BIMOD - SOCIAL MEDIA ACCOUNTS] on: [FACEBOOK, TWITTER, LINKEDIN, INSTAGRAM, YOUTUBE, TIKTOK]. (
+    Hüseyin)
+11. [ ] Ecosystem Marketing via [WEBRAZZI, PRODUCT HUNT, DISCORD, HACKER NEWS, REDDIT], etc. (Hüseyin)
+12. [ ] Company [LEGAL FORMATION] and registration for the company. (Ege)
+13. [ ] [CRUNCHBASE] Profile. (Ege)
+14. [ ] [INCUBATION & ACCELERATION] center
+15. [ ] [INVESTMENT] meetings. (Ege & Hüseyin)
+16. [ ] [SEO OPTIMIZATION] for the application. (Emre?)
+17. [ ] [BLOG] application on the website for better SEO management. (Selin)
+18. [ ] [FORUM] application on the website for better SEO management. (Selin)
+19. [ ] Client [MEETINGS & WEBINARS]. (Ege & Hüseyin)
+20. [ ] Client [TRAININGS]. (Ege & Hüseyin)
+21. [ ] [FAIRS & EXHIBITIONS] for the company. (Ege & Hüseyin)
+22. [ ] [SPONSORSHIPS & ADVERTISEMENTS] for the company. (Ege & Hüseyin)
+23. [ ] [PARTNERSHIPS & COLLABORATIONS] for the company. (Ege & Hüseyin)
+24. [ ] [HEADHUNTING & RECRUITMENT] for the company. (Ege & Hüseyin)
+25. [ ] [UNIVERSITY MEETUPS & SEMINARS] for the company. (Ege & Hüseyin)
 
 ---
 
