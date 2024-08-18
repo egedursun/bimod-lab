@@ -225,7 +225,7 @@ class ChatResponseStreamView(View):
         return StreamingHttpResponse(self.event_stream(), content_type='text/event-stream')
 
     def stream_message(self, chunks):
-        time.sleep(1)
+        time.sleep(5)
         try:
             if not self.response_queue:
                 self.response_queue.append(chunks)
