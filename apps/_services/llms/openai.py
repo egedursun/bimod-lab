@@ -2007,7 +2007,7 @@ class InternalOpenAIClient:
 
         except Exception as e:
             response["message"] = get_audio_generation_error_log(error_logs=str(e))
-            print(f"[InternalOpenAIClient.text_to_audio_message] An error occurred while generating the audio.")
+            print(f"[InternalOpenAIClient.text_to_audio_message] An error occurred while generating the audio: {str(e)}")
             return response
 
         # clean the file from the temp directory
