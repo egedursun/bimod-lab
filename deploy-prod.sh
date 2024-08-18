@@ -77,6 +77,7 @@ echo "          [Deploy / Production] Granting permissions..."
 # Restart services
 sudo mkdir -p /run/celery
 sudo chown www-data:www-data /run/celery
+sudo chown www-data:www-data /var/www/bimod_dev/apps/_services/llms/tmp
 sudo chmod 755 /run/celery
 
 echo "          [Deploy / Production] Restarting services..."
