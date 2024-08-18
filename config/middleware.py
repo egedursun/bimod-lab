@@ -22,31 +22,35 @@ class AppendStatusMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         """
-        This method is called early in the request cycle before Django resolves the URL.
+        This method ensures that URLs without a trailing slash are redirected correctly,
+        and handles appending a status=error tag if the URL cannot be resolved.
         """
         path_info = request.path_info
 
-        # Check if the URL is already resolved with the error tag
+        # First, ensure the URL ends with a slash
+        if not path_info.endswith('/'):
+            # Redirect to the URL with a trailing slash
+            new_path_info = f"{path_info}/"
+            parsed_url = urlparse(request.get_full_path())
+            new_url = parsed_url._replace(path=new_path_info)
+            return HttpResponsePermanentRedirect(urlunparse(new_url))
+
+        # If the URL is already resolved with the error tag, try to resolve it
         if HTTP_STATUS_QUERY_TAG in request.GET:
             try:
-                # Try to resolve the URL
                 resolved = resolve(path_info)
-                print(f"[Middleware] Resolved URL: {resolved}")
-
-                # If resolved and the error tag exists, remove it
+                # If resolved and the error tag exists, remove it and redirect
                 parsed_url = urlparse(request.get_full_path())
                 query_params = parse_qs(parsed_url.query)
                 del query_params[HTTP_STATUS_QUERY_TAG]
                 new_query_string = urlencode(query_params, doseq=True)
                 new_url = urlunparse(parsed_url._replace(query=new_query_string))
-
-                # Redirect to the URL without the error tag
                 return HttpResponsePermanentRedirect(new_url)
             except Resolver404:
                 # If Resolver404 is raised, keep the error tag as it is
-                pass
+                pass  # Continue processing as the URL is not resolvable
 
-        # If the URL is not resolved, add the error tag
+        # If the URL is not resolved, add the error tag and redirect
         try:
             resolve(path_info)
         except Resolver404:
@@ -56,11 +60,9 @@ class AppendStatusMiddleware(MiddlewareMixin):
                 query_params[HTTP_STATUS_QUERY_TAG] = [HTTP_STATUS_ERROR_TAG_VALUE]
                 new_query_string = urlencode(query_params, doseq=True)
                 new_url = urlunparse(parsed_url._replace(query=new_query_string))
-
-                # Redirect to the URL with the error tag
                 return HttpResponsePermanentRedirect(new_url)
 
-        return None
+        return None  # Allow normal processing to continue
 
 
 class SessionTimeoutMiddleware(MiddlewareMixin):
