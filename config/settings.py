@@ -15,6 +15,7 @@ import sys
 from pathlib import Path
 
 from django.conf import settings
+from django.urls import path
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
@@ -529,3 +530,4 @@ else:
 #####################################################################################################################
 
 NEW_USER_FREE_CREDITS = int(os.environ.get("NEW_USER_FREE_CREDITS", default="0"))
+
