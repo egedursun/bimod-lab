@@ -1733,6 +1733,7 @@
 
       eventSource.onmessage = function (event) {
         let newChunk = event.data;
+        console.log("STREAMED=[", newChunk, "]");
 
         if (newChunk.includes('<[bimod_streaming_end]>')) {
           console.log("End of streaming detected...");
