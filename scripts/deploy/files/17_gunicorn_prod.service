@@ -7,7 +7,7 @@ User=www-data
 Group=www-data
 WorkingDirectory=/var/www/bimod_prod
 Environment="PATH=/var/www/bimod_prod/venv/bin"
-ExecStart=/var/www/bimod_prod/venv/bin/gunicorn --access-logfile - --error-logfile - --log-level debug --workers 3 --bind unix:/run/gunicorn/gunicorn_prod.sock config.wsgi:application
+ExecStart=/var/www/bimod_prod/venv/bin/gunicorn --access-logfile - --error-logfile - --log-level debug --workers 3 --bind unix:/run/gunicorn/gunicorn_prod.sock --timeout 300 config.wsgi:application
 Restart=always
 RestartSec=10
 

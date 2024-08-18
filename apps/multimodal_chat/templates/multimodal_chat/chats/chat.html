@@ -136,6 +136,7 @@
 
 
 
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -184,6 +185,7 @@
                     <div class="d-flex align-items-center">
                       <div class="flex-shrink-0 avatar avatar-md">
                         <img src="
+
 
 
 
@@ -300,6 +302,7 @@
 
 
 
+
                           {% if chat.assistant.assistant_image %}{{ chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              class="rounded-pill">
                       </div>
@@ -401,6 +404,7 @@
 
 
 
+
                       {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
                   </div>
@@ -459,6 +463,7 @@
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
                             <img src="
+
 
 
 
@@ -599,6 +604,7 @@
                           <div class="user-avatar flex-shrink-0 ms-4">
                             <div class="avatar avatar-xl">
                               <img src="
+
 
 
 
@@ -1761,8 +1767,12 @@
       };
 
       eventSource.onerror = function (event) {
-        console.error("SSE error", event);
-        eventSource.close();
+        let eventSource = new EventSource('/app/multimodal_chat/chat/response_stream/');
+        console.error('Connection error', e);
+        // Attempt to reconnect after a delay
+        setTimeout(() => {
+          eventSource = new EventSource('/app/multimodal_chat/chat/response_stream/');
+        }, 2000);
       };
     });
   </script>
@@ -1839,7 +1849,7 @@
       });
 
       function startRecording(stream) {
-        let options = { mimeType: 'audio/webm' };
+        let options = {mimeType: 'audio/webm'};
         mediaRecorder = new MediaRecorder(stream, options);
         mediaRecorder.ondataavailable = event => {
           audioChunks.push(event.data);
