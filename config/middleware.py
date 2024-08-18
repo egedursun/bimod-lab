@@ -18,6 +18,14 @@ HTTP_STATUS_QUERY_TAG = 'http_status'
 HTTP_STATUS_ERROR_TAG_VALUE = 'error'
 
 
+from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
+from django.http import HttpResponsePermanentRedirect
+from django.utils.deprecation import MiddlewareMixin
+from django.urls import resolve, Resolver404
+
+HTTP_STATUS_QUERY_TAG = "status"
+HTTP_STATUS_ERROR_TAG_VALUE = "error"
+
 class AppendStatusMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
@@ -39,13 +47,18 @@ class AppendStatusMiddleware(MiddlewareMixin):
         if HTTP_STATUS_QUERY_TAG in request.GET:
             try:
                 resolved = resolve(path_info)
-                # If resolved and the error tag exists, remove it and redirect
-                parsed_url = urlparse(request.get_full_path())
-                query_params = parse_qs(parsed_url.query)
-                del query_params[HTTP_STATUS_QUERY_TAG]
-                new_query_string = urlencode(query_params, doseq=True)
-                new_url = urlunparse(parsed_url._replace(query=new_query_string))
-                return HttpResponsePermanentRedirect(new_url)
+                # If resolved and the error tag exists, remove only the error tag and redirect
+                if resolved:
+                    parsed_url = urlparse(request.get_full_path())
+                    query_params = parse_qs(parsed_url.query)
+                    if HTTP_STATUS_QUERY_TAG in query_params and HTTP_STATUS_ERROR_TAG_VALUE in query_params[HTTP_STATUS_QUERY_TAG]:
+                        query_params[HTTP_STATUS_QUERY_TAG].remove(HTTP_STATUS_ERROR_TAG_VALUE)
+                        # Clean up if the status tag becomes empty
+                        if not query_params[HTTP_STATUS_QUERY_TAG]:
+                            del query_params[HTTP_STATUS_QUERY_TAG]
+                        new_query_string = urlencode(query_params, doseq=True)
+                        new_url = urlunparse(parsed_url._replace(query=new_query_string))
+                        return HttpResponsePermanentRedirect(new_url)
             except Resolver404:
                 # If Resolver404 is raised, keep the error tag as it is
                 pass  # Continue processing as the URL is not resolvable

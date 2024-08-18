@@ -135,12 +135,8 @@ class ChatStreamView(View):
             multimodal_chat=chat, sender_type='ASSISTANT', message_text_content=final_response)
 
         print(f"[ChatStreamView.post] Calling the 'streamer' function of OpenAI to stream the response...")
-        response_data = {
-            'status': 'success',
-            'message': 'Chat stream processed successfully',
-            'chat_id': chat.id
-        }
-        return JsonResponse(response_data)
+        redirect_string = self.request.path_info + '?chat_id=' + str(chat.id)
+        return redirect(redirect_string, *args, **kwargs)
 
 
 class ChatResponseStreamView(View):
@@ -276,8 +272,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
         if active_chat:
             chats = [active_chat] + [chat for chat in chats if chat.id != active_chat.id]
         else:
-            if len(chats) > 0:
-                active_chat = chats[0]
+            # Do NOT put an active chat directly
+            pass
 
         assistants = Assistant.objects.filter(organization__users=self.request.user)
         organizations = Organization.objects.filter(organization_assistants__in=assistants)
