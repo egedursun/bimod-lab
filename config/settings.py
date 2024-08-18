@@ -131,10 +131,10 @@ MIDDLEWARE = [
     "web_project.language_middleware.DefaultLanguageMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "config.middleware.AppendStatusMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "config.middleware.AppendStatusMiddleware",
     "config.middleware.SessionTimeoutMiddleware",
     "config.middleware.ManualTranslationMiddleware",
 ]
