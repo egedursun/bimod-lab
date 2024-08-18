@@ -20,46 +20,46 @@ HTTP_STATUS_ERROR_TAG_VALUE = 'error'
 
 class AppendStatusMiddleware(MiddlewareMixin):
 
-    def process_view(self, request, view_func, view_args, view_kwargs):
+    def process_request(self, request):
         """
-        This method is called just before Django calls the view.
-        At this point, the URL has been resolved.
+        This method is called early in the request cycle before Django resolves the URL.
         """
-        try:
-            # Attempt to resolve the URL
-            resolved = resolve(request.path_info)
-            print(f"[Middleware] Resolved URL: {resolved}")
+        path_info = request.path_info
 
-            # If the URL is resolved and the error query parameter exists, remove it
-            if HTTP_STATUS_QUERY_TAG in request.GET:
-                # Parse the current URL and query parameters
+        # Check if the URL is already resolved with the error tag
+        if HTTP_STATUS_QUERY_TAG in request.GET:
+            try:
+                # Try to resolve the URL
+                resolved = resolve(path_info)
+                print(f"[Middleware] Resolved URL: {resolved}")
+
+                # If resolved and the error tag exists, remove it
                 parsed_url = urlparse(request.get_full_path())
                 query_params = parse_qs(parsed_url.query)
+                del query_params[HTTP_STATUS_QUERY_TAG]
+                new_query_string = urlencode(query_params, doseq=True)
+                new_url = urlunparse(parsed_url._replace(query=new_query_string))
 
-                # Remove the error status tag if it exists
-                if HTTP_STATUS_QUERY_TAG in query_params:
-                    del query_params[HTTP_STATUS_QUERY_TAG]
+                # Redirect to the URL without the error tag
+                return HttpResponsePermanentRedirect(new_url)
+            except Resolver404:
+                # If Resolver404 is raised, keep the error tag as it is
+                pass
 
-                    # Rebuild the URL without the error tag
-                    new_query_string = urlencode(query_params, doseq=True)
-                    new_url = urlunparse(parsed_url._replace(query=new_query_string))
-
-                    # Redirect to the new URL without the error query parameter
-                    return HttpResponsePermanentRedirect(new_url)
-
+        # If the URL is not resolved, add the error tag
+        try:
+            resolve(path_info)
         except Resolver404:
-            # Handle 404 errors by redirecting with a status parameter if it wasn't found.
             if HTTP_STATUS_QUERY_TAG not in request.GET:
                 parsed_url = urlparse(request.get_full_path())
                 query_params = parse_qs(parsed_url.query)
                 query_params[HTTP_STATUS_QUERY_TAG] = [HTTP_STATUS_ERROR_TAG_VALUE]
                 new_query_string = urlencode(query_params, doseq=True)
-
-                # Construct the new URL with the query parameter
                 new_url = urlunparse(parsed_url._replace(query=new_query_string))
+
+                # Redirect to the URL with the error tag
                 return HttpResponsePermanentRedirect(new_url)
 
-        # Proceed normally if the URL is resolved successfully
         return None
 
 
