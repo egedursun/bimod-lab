@@ -1,4 +1,5 @@
 import re
+from urllib.parse import urlparse, urlencode, urlunparse
 
 from bs4 import BeautifulSoup, NavigableString
 from django.http import HttpResponsePermanentRedirect
@@ -25,9 +26,21 @@ class AppendStatusMiddleware(MiddlewareMixin):
             # Try to resolve the URL, if it fails it will raise Resolver404
             resolve(request.path)
         except Resolver404:
-            if HTTP_STATUS_QUERY_TAG not in request.GET:
-                new_url = f"{request.path}?{HTTP_STATUS_QUERY_TAG}={HTTP_STATUS_ERROR_TAG_VALUE}"
+            # Check if the query parameter is already present
+            query_params = request.GET.copy()
+            if HTTP_STATUS_QUERY_TAG not in query_params:
+                # Append the error query parameter
+                query_params[HTTP_STATUS_QUERY_TAG] = HTTP_STATUS_ERROR_TAG_VALUE
+
+                # Construct the new URL
+                parsed_url = urlparse(request.get_full_path())
+                new_query_string = urlencode(query_params, doseq=True)
+                new_url = urlunparse(parsed_url._replace(query=new_query_string))
+
+                # Redirect to the new URL with the query parameter
                 return HttpResponsePermanentRedirect(new_url)
+
+        # If URL is resolved or already redirected, proceed as normal
         return None
 
 
