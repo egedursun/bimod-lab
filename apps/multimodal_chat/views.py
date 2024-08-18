@@ -135,8 +135,12 @@ class ChatStreamView(View):
             multimodal_chat=chat, sender_type='ASSISTANT', message_text_content=final_response)
 
         print(f"[ChatStreamView.post] Calling the 'streamer' function of OpenAI to stream the response...")
-        redirect_string = self.request.path_info + '?chat_id=' + str(chat.id)
-        return redirect(redirect_string, *args, **kwargs)
+        response_data = {
+            'status': 'success',
+            'message': 'Chat stream processed successfully',
+            'chat_id': chat.id
+        }
+        return JsonResponse(response_data)
 
 
 class ChatResponseStreamView(View):
