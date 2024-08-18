@@ -1768,7 +1768,7 @@
 
       eventSource.onerror = function (event) {
         let eventSource = new EventSource('/app/multimodal_chat/chat/response_stream/');
-        console.error('Connection error', e);
+        console.error('Connection error', event);
         // Attempt to reconnect after a delay
         setTimeout(() => {
           eventSource = new EventSource('/app/multimodal_chat/chat/response_stream/');
