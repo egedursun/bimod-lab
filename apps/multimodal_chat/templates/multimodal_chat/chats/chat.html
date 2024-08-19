@@ -1727,7 +1727,9 @@
 
       function connectWebSocket() {
         // Determine the correct WebSocket protocol based on the current page's protocol
-        const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+        let protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+        // TODO: debug SSL
+        protocol = 'ws://';
         socket = new WebSocket(protocol + window.location.host + '/ws/logs/');
         socket.onmessage = function (event) {
           const data = JSON.parse(event.data);
