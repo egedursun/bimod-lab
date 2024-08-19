@@ -27,9 +27,11 @@ class SessionTimeoutMiddleware(MiddlewareMixin):
                     return None
 
         # Skip authentication check for system views
+        """
         system_views = ['handler400', 'handler401', 'handler403', 'handler404', 'handler500']
         if view_func.__name__ in system_views:
             return None
+        """
 
         # If the user is not authenticated and the page is not the login page, redirect to login
         if not request.user.is_authenticated and request.path != settings.LOGIN_URL:
