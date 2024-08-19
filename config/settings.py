@@ -138,7 +138,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "config.middleware.SessionTimeoutMiddleware",
-    "config.middleware.ManualTranslationMiddleware",
+    # "config.middleware.ManualTranslationMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -332,6 +332,10 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5050",
     "http://localhost:8000",
     "http://0.0.0.0:8000",
+    "http://127.0.0.1:8000",
+    "https://bimod.io",
+    "https://dev.bimod.io",
+    "https://www.bimod.io",
 ]
 
 SUFFIX_ANY = "*"
