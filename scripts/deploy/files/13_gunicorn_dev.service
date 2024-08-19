@@ -1,5 +1,5 @@
 [Unit]
-Description=gunicorn daemon (development)
+Description=Uvicorn daemon (development)
 After=network.target
 
 [Service]
@@ -7,9 +7,10 @@ User=www-data
 Group=www-data
 WorkingDirectory=/var/www/bimod_dev
 Environment="PATH=/var/www/bimod_dev/venv/bin"
-ExecStart=/var/www/bimod_dev/venv/bin/gunicorn --access-logfile /var/www/bimod_dev/gunicorn-access.log --error-logfile /var/www/bimod_dev/gunicorn-error.log --log-level debug --workers 3 --bind unix:/run/gunicorn/gunicorn_dev.sock --timeout 300 config.wsgi:application
+ExecStart=/var/www/bimod_dev/venv/bin/uvicorn config.asgi:application --access-log --log-level debug --uds /run/uvicorn/uvicorn_dev.sock --timeout-keep-alive 300
 Restart=always
 RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
+

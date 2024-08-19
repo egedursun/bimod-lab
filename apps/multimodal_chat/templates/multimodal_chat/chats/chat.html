@@ -1699,7 +1699,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       const startStreamingButton = document.getElementById('start-streaming');
       startStreamingButton.addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent default form submission behavior
+        event.preventDefault();
         const chatForm = document.querySelector('.form-send-message');
         const formData = new FormData(chatForm);
 

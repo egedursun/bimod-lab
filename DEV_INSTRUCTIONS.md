@@ -189,14 +189,14 @@ brew install redis
 
 #### 20. Run the Django server to start the application.
 ```bash
-python manage.py runserver
+uvicorn config.asgi:application --host 127.0.0.1 --port 8000 --reload
 ```
 
 ---
 
 #### 21. Open your web browser and navigate to the following URL.
 ```text
-http://localhost:8000
+http://127.0.0.1:8000
 ```
 
 ---

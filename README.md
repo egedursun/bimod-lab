@@ -373,5 +373,5 @@ Expected Growth:
 
 UVICORN RUN COMMAND (migrate this to a proper place later on):
 ```bash
-uvicorn config.asgi:application --host 127.0.0.1 --port 8000 --reload**
+uvicorn config.asgi:application --host 127.0.0.1 --port 8000 --reload
 ```
