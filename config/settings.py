@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_celery_beat",
+    "corsheaders",
     "channels",
 
     "apps.theme.dashboards",
@@ -128,6 +129,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -337,6 +339,19 @@ CSRF_TRUSTED_ORIGINS = [
     "https://dev.bimod.io",
     "https://www.bimod.io",
 ]
+
+CORS_ALLOWED_ORIGINS = [
+
+    "http://localhost:8000",
+    "http://localhost:5050",
+    "http://0.0.0.0:8000",
+    "http://127.0.0.1:8000",
+    "https://bimod.io",
+    "https://dev.bimod.io",
+    "https://www.bimod.io",
+]
+CORS_ALLOW_CREDENTIALS = True
+
 
 SUFFIX_ANY = "*"
 
