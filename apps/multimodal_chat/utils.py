@@ -1,12 +1,57 @@
 import warnings
 
 import tiktoken
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     import wonderwords
 
 from apps.llm_transaction.costs import LLMCostsPerMillionTokens, SERVICE_PROFIT_MARGIN, VAT_TAX_RATE
+
+
+BIMOD_STREAMING_END_TAG = "<[bimod_streaming_end]>"
+BIMOD_PROCESS_END = "<[bimod_process_end]>"
+BIMOD_NO_TAG_PLACEHOLDER = "<[bimod_no_tag]>"
+
+
+def send_log_message(log_message, stop_tag=BIMOD_STREAMING_END_TAG):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        'logs',
+        {
+            'type': 'send_log',
+            'message': log_message,
+        }
+    )
+    if stop_tag == BIMOD_STREAMING_END_TAG:
+        async_to_sync(channel_layer.group_send)(
+            'logs',
+            {
+                'type': 'send_log',
+                'message': BIMOD_STREAMING_END_TAG,
+            }
+        )
+    elif stop_tag == BIMOD_PROCESS_END:
+        async_to_sync(channel_layer.group_send)(
+            'logs',
+            {
+                'type': 'send_log',
+                'message': BIMOD_PROCESS_END,
+            }
+        )
+    else:
+        if stop_tag is None or stop_tag == "" or stop_tag == BIMOD_NO_TAG_PLACEHOLDER:
+            pass
+        else:
+            async_to_sync(channel_layer.group_send)(
+                'logs',
+                {
+                    'type': 'send_log',
+                    'message': stop_tag,
+                }
+            )
 
 
 def calculate_number_of_tokens(encoding_engine, text):

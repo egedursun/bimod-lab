@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import ChatView, ChatDeleteView, ChatArchiveView, ChatArchiveListView, ChatUnarchiveView, \
-    TestChatTemplate1View, ChatStreamView, ChatResponseStreamView, ChatMessageNarrationView
+    TestChatTemplate1View, ChatStreamView, ChatMessageNarrationView
 
 app_name = "multimodal_chat"
 
@@ -11,7 +11,6 @@ urlpatterns = [
         template_name="multimodal_chat/chats/chat.html"
     ), name='chat'),
     path('chat/stream/', ChatStreamView.as_view(), name='chat_stream'),
-    path('chat/response_stream/', ChatResponseStreamView.as_view(), name='response_stream'),
     path('chat/<int:pk>/', ChatDeleteView.as_view(
         template_name="multimodal_chat/chats/confirm_delete_chat.html"
     ), name='delete'),

@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from web_project import TemplateLayout
 from web_project.template_helpers.theme import TemplateHelper
@@ -18,5 +19,4 @@ class SystemView(TemplateView):
                 "status": self.status,
             }
         )
-
         return context

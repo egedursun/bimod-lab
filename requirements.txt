@@ -61,3 +61,5 @@ sphinx~=7.4.7
 sphinx-autobuild~=2024.4.16
 sphinx-rtd-theme~=2.1.0rc1
 pydub~=0.25.1
+channels~=4.1.0
+daphne~=4.1.2

@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_celery_beat",
+    "channels",
 
     "apps.theme.dashboards",
     "apps.theme.layouts",
@@ -133,7 +134,6 @@ MIDDLEWARE = [
     "web_project.language_middleware.DefaultLanguageMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "config.middleware.AppendStatusMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -170,7 +170,14 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "config.asgi.application"
 WSGI_APPLICATION = "config.wsgi.application"
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -311,7 +318,7 @@ LOGOUT_REDIRECT_URL = "/app/login/"
 # ------------------------------------------------------------------------------
 
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
 SESSION_SAVE_EVERY_REQUEST = True
@@ -320,20 +327,8 @@ SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5050",
-]
-
-HTTP_ERROR_PATHS = [
-    ########################################
-    # Client Error 4xx
-    ########################################
-    "/400/", "/401/", "/402", "/403/", "/404/", "/405/", "/406/", "/407/", "/408/", "/409/", "/410/",
-    "/411/", "/412/", "/413/", "/414/", "/415/", "/416/", "/417/", "/418/", "/421/", "/422/", "/423/",
-    "/424/", "/425/", "/426/", "/428/", "/429/", "/431/", "/451/",
-
-    ########################################
-    # Server Error 5xx
-    ########################################
-    "/500/", "/501/", "/502/", "/503/", "/504/", "/505/", "/506/", "/507/", "/508/", "/510/", "/511/"
+    "http://localhost:8000",
+    "http://0.0.0.0:8000",
 ]
 
 SUFFIX_ANY = "*"
@@ -360,7 +355,6 @@ EXCLUDED_PAGES = [
     ########################################
     "/app/exported_assistants/exported/",
 ]
-EXCLUDED_PAGES.extend(HTTP_ERROR_PATHS)
 
 DESIGN_DOCS_ROUTE = 'dev/design/'
 

@@ -3,14 +3,12 @@ import json
 import base64 as b64
 import mimetypes
 import os
-import time
 from pathlib import Path
 
 import boto3
 import requests
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
-from pydub import AudioSegment
 
 from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, AssistantRunStatuses, \
     ONE_SHOT_AFFIRMATION_PROMPT, ML_AFFIRMATION_PROMPT, INSUFFICIENT_BALANCE_PROMPT, get_technical_error_log, \
@@ -35,7 +33,7 @@ from apps._services.prompts.statistics.usage_statistics_prompt import build_usag
 from apps._services.storages.storage_executor import GENERATED_FILES_ROOT_PATH
 from apps._services.tools.tool_executor import ToolExecutor
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
-from apps.multimodal_chat.utils import calculate_billable_cost_from_raw
+from apps.multimodal_chat.utils import calculate_billable_cost_from_raw, send_log_message, BIMOD_NO_TAG_PLACEHOLDER
 from config.settings import MEDIA_URL, AWS_STORAGE_BUCKET_NAME
 
 
@@ -129,37 +127,30 @@ class InternalOpenAIClient:
         return OpenAI(api_key=llm_model.api_key)
 
     def respond_stream(self, latest_message, prev_tool_name=None, with_media=False, file_uris=None, image_uris=None):
-        from apps.multimodal_chat.views import ChatResponseStreamView
         from apps.multimodal_chat.models import MultimodalChatMessage
         from apps.llm_transaction.models import LLMTransaction
 
-        st = ChatResponseStreamView()
-        mocked_response = st.mock_stream(f"""
+        send_log_message(f"""
             🤖 Assistant started processing the query...
         """)
-        st.stream_message(chunks=mocked_response)
-        time.sleep(STREAMING_WAIT_SECONDS)
 
         print(f"[InternalOpenAIClient.respond_stream] Inside the respond_stream function...")
 
         c = self.connection
         user = self.chat.user
 
-        mocked_response = st.mock_stream(f"""
-            🛜 Connection information and metadata extraction completed.
-                """)
-        st.stream_message(chunks=mocked_response)
-        time.sleep(STREAMING_WAIT_SECONDS)
+        send_log_message(
+            f"""
+             🛜 Connection information and metadata extraction completed.
+        """)
 
         print(f"[InternalOpenAIClient.respond_stream] Responding to the user message...")
 
         try:
             # Create the System Prompt
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             🗃️ System prompt is being prepared...
                             """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             try:
                 prompt_messages = [PromptBuilder.build(
@@ -168,47 +159,37 @@ class InternalOpenAIClient:
                     user=user,
                     role=ChatRoles.SYSTEM)]
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             ⚡ System prompt preparation is completed.
                                 """)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 print(f"[InternalOpenAIClient.respond_stream] System prompt created successfully.")
 
                 # Create the Chat History
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             📜 Chat history is being prepared...
                           """)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 prompt_messages.extend(HistoryBuilder.build(chat=self.chat))
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             💥 Chat history preparation is completed.
                                 """)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while building the prompt: {str(e)}")
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 A critical error occurred while preparing the prompts for the process.
                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
 
             try:
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             📈 Transaction parameters are being inspected...
                                 """)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 # Ask question to the GPT if user has enough balance
                 latest_message_billable_cost = calculate_billable_cost_from_raw(
@@ -220,21 +201,17 @@ class InternalOpenAIClient:
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while calculating the billable cost: {str(e)}")
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 A critical error occurred while inspecting the transaction parameters.
                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
 
             if latest_message_billable_cost > self.chat.organization.balance:
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 Organization has insufficient balance to proceed with the transaction. Cancelling the process.
                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 response = INSUFFICIENT_BALANCE_PROMPT
                 # Still add the transactions related to the user message
@@ -259,11 +236,9 @@ class InternalOpenAIClient:
                 final_response = response
                 return final_response
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             ♟️ Transaction parameters inspection is completed.
                                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             #######################################################################################################
             # *************************************************************************************************** #
@@ -271,11 +246,9 @@ class InternalOpenAIClient:
             # RETRIEVE LLM RESPONSE WITH STREAMING
             #######################################################################################################
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             📡 Generating response in cooperation with the language model...
                                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             try:
                 response_chunks = c.chat.completions.create(
@@ -293,28 +266,23 @@ class InternalOpenAIClient:
                 print(
                     f"[InternalOpenAIClient.respond_stream] Error occurred while retrieving the response from the LLM: {str(e)}")
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 A critical error occurred while retrieving the response from the language model.
                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             🧨 Response streamer is ready to process the response.
                                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             #######################################################################################################
             # *************************************************************************************************** #
             #######################################################################################################
             try:
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             ⚓ Response generation is in progress...
                                 """)
-                st.stream_message(chunks=mocked_response)
 
                 # Accumulate the response for backend processing
                 accumulated_response = ""
@@ -327,19 +295,16 @@ class InternalOpenAIClient:
                     ############################
                     if content is not None:
                         accumulated_response += content
-                        # st.stream_message(chunks=[element])
+                        send_log_message(f"""{content}""", stop_tag=BIMOD_NO_TAG_PLACEHOLDER)
+                send_log_message(f"""""", stop_tag=BIMOD_STREAMING_END_TAG)
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🔌 Generation iterations has been successfully accomplished.
                                 """)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             📦 Preparing the response...
                                 """)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 # **NOTE:** now we need to use the "accumulated_response" string for the future steps
                 print(f"[InternalOpenAIClient.respond_stream] Processed the response from the LLM.")
@@ -348,27 +313,21 @@ class InternalOpenAIClient:
                 print(
                     f"[InternalOpenAIClient.respond] Error occurred while processing the response from the LLM: {str(e)}")
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 A critical error occurred while processing the response from the language model.
                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             🕹️ Raw response stream has been successfully delivered.
-                                """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
+            """)
 
             #######################################################################################################
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             🚀 Processing the transactional information...
-                                """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
+            """)
 
             try:
                 LLMTransaction.objects.create(
@@ -390,19 +349,15 @@ class InternalOpenAIClient:
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             🧲 Transactional information has been successfully processed.
-                                """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
+            """)
 
             final_response = accumulated_response
             print(f"[InternalOpenAIClient.respond_stream] Final response: {final_response}")
@@ -412,11 +367,9 @@ class InternalOpenAIClient:
             final_response = retry_mechanism(client=self, latest_message=latest_message,
                                              caller=RetryCallersNames.RESPOND_STREAM)
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             🚨 Error occurred while processing the response. The assistant will attempt to retry...
                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             # Get the error message
             if final_response == DEFAULT_ERROR_MESSAGE:
@@ -430,22 +383,18 @@ class InternalOpenAIClient:
         tool_response_list, json_parts_of_response = [], []
         if find_json_presence(final_response):
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             🛠️ Tool usage call detected in the response. Processing with the tool execution steps...
                                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             # check for the rate limits
             global ACTIVE_CHAIN_SIZE
             if ACTIVE_CHAIN_SIZE > self.assistant.tool_max_chains:
                 idle_overflow_message = get_maximum_tool_chains_reached_log(final_response=final_response)
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 Maximum tool chain limit has been reached. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 try:
                     idle_overflow_transaction = LLMTransaction.objects.create(
@@ -469,11 +418,9 @@ class InternalOpenAIClient:
                 except Exception as e:
                     print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
 
-                    mocked_response = st.mock_stream(f"""
+                    send_log_message(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END)
-                    st.stream_message(chunks=mocked_response)
-                    time.sleep(STREAMING_WAIT_SECONDS)
 
                     return idle_overflow_message
 
@@ -484,11 +431,9 @@ class InternalOpenAIClient:
             if ACTIVE_TOOL_RETRY_COUNT > self.assistant.tool_max_attempts_per_instance:
                 idle_overflow_message = get_maximum_tool_attempts_reached_log(final_response=final_response)
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 Maximum same tool attempt limit has been reached. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 try:
                     idle_overflow_transaction = LLMTransaction.objects.create(
@@ -512,11 +457,9 @@ class InternalOpenAIClient:
                 except Exception as e:
                     print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
 
-                    mocked_response = st.mock_stream(f"""
+                    send_log_message(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END)
-                    st.stream_message(chunks=mocked_response)
-                    time.sleep(STREAMING_WAIT_SECONDS)
 
                     return idle_overflow_message
 
@@ -526,33 +469,26 @@ class InternalOpenAIClient:
             # increase the retry count for tool
             ACTIVE_TOOL_RETRY_COUNT += 1
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             🧰 Identifying the valid tool usage calls...
                                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             json_parts_of_response = find_json_presence(final_response)
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             💡️ Tool usage calls have been identified.
                                 """)
-            st.stream_message(chunks=mocked_response)
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             🧭 Number of tool usage calls that is delivered: {len(json_parts_of_response)}
                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             tool_name = None
             for i, json_part in enumerate(json_parts_of_response):
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
                 🧮 Executing the tool usage call index: {i + 1} out of {len(json_parts_of_response)} ...
                                     """)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 try:
                     tool_executor = ToolExecutor(
@@ -562,21 +498,17 @@ class InternalOpenAIClient:
                     )
                     tool_response, tool_name, file_uris, image_uris = tool_executor.use_tool()
 
-                    mocked_response = st.mock_stream(f"""
+                    send_log_message(f"""
                     🧰 Tool usage call for: '{tool_name}' has been successfully executed. Proceeding with the next actions...
                                         """)
-                    st.stream_message(chunks=mocked_response)
-                    time.sleep(STREAMING_WAIT_SECONDS)
 
                     if tool_name is not None and tool_name != prev_tool_name:
                         ACTIVE_CHAIN_SIZE += 1
                         prev_tool_name = tool_name
 
-                    mocked_response = st.mock_stream(f"""
+                    send_log_message(f"""
                     📦 Tool response from '{tool_name}' is being delivered to the assistant for further actions...
                                         """)
-                    st.stream_message(chunks=mocked_response)
-                    time.sleep(STREAMING_WAIT_SECONDS)
 
                     tool_response_list.append(f"""
                                     [{i}] "tool_name": {tool_name},
@@ -586,19 +518,15 @@ class InternalOpenAIClient:
                                 """)
                     print(f"[InternalOpenAIClient.respond_stream] Tool response received.")
 
-                    mocked_response = st.mock_stream(f"""
+                    send_log_message(f"""
                     🎯 Tool response from '{tool_name}' has been successfully delivered to the assistant.
                                         """)
-                    st.stream_message(chunks=mocked_response)
-                    time.sleep(STREAMING_WAIT_SECONDS)
 
                 except Exception as e:
 
-                    mocked_response = st.mock_stream(f"""
+                    send_log_message(f"""
                     🚨 Error occurred while executing the tool. Attempting to recover...
                                         """)
-                    st.stream_message(chunks=mocked_response)
-                    time.sleep(STREAMING_WAIT_SECONDS)
 
                     if tool_name is not None:
                         tool_response = get_json_decode_error_log(error_logs=str(e))
@@ -621,26 +549,20 @@ class InternalOpenAIClient:
                                 """)
                         print(f"[InternalOpenAIClient.respond_stream] Error occurred while executing the tool: {str(e)}")
 
-                    mocked_response = st.mock_stream(f"""
+                    send_log_message(f"""
                     🚨 Error logs have been delivered to the assistant. Proceeding with the next actions...
                                         """)
-                    st.stream_message(chunks=mocked_response)
-                    time.sleep(STREAMING_WAIT_SECONDS)
 
-        mocked_response = st.mock_stream(f"""
+        send_log_message(f"""
             🧠 The assistant is inspecting the responses of the tools...
                                 """)
-        st.stream_message(chunks=mocked_response)
-        time.sleep(STREAMING_WAIT_SECONDS)
 
         if tool_response_list:
             # Create the request as a multimodal chat message and add it to the chat
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             📦 Communication records for the tool requests are being prepared...
                                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             try:
                 tool_request = MultimodalChatMessage.objects.create(
@@ -655,31 +577,25 @@ class InternalOpenAIClient:
                 print(f"[InternalOpenAIClient.respond_stream] Saved the tool request.")
 
                 # Stream the tool request to the UI
-                mocked_response = ChatResponseStreamView().mock_stream(f"""
+                send_log_message(f"""
                     ⚙️ Tool request records have been prepared. Proceeding with the next actions...
                 """)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the tool request: {str(e)}")
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 A critical error occurred while recording the tool request. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
 
             # if there is response from tool, create new chat message with the tool response and add it to the chat
             try:
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             📦 Communication records for the tool responses are being prepared...
                                 """)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 tool_message = MultimodalChatMessage.objects.create(
                     multimodal_chat=self.chat,
@@ -693,36 +609,28 @@ class InternalOpenAIClient:
                 print(f"[InternalOpenAIClient.respond_stream] Saved the tool response.")
 
                 # Stream the tool response to the UI
-                mocked_response = ChatResponseStreamView().mock_stream(f"""
+                send_log_message(f"""
                     ⚙️ Tool response records have been prepared. Proceeding with the next actions...
                 """)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the tool response: {str(e)}")
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 A critical error occurred while recording the tool response. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             ✨ Communication records for the tool requests and responses have been successfully prepared.
                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             #######################################################################################################
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             📦 Transactions are being prepared for the current level of operations...
                                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             # Create the transaction associated with the tool response
             try:
@@ -745,27 +653,21 @@ class InternalOpenAIClient:
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
 
-                mocked_response = st.mock_stream(f"""
+                send_log_message(f"""
             🚨 A critical error occurred while recording the transaction. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END)
-                st.stream_message(chunks=mocked_response)
-                time.sleep(STREAMING_WAIT_SECONDS)
 
                 return DEFAULT_ERROR_MESSAGE
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             ❇️ Transactions have been successfully prepared for the current level of operations.
                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             #######################################################################################################
 
-            mocked_response = st.mock_stream(f"""
+            send_log_message(f"""
             🚀 The assistant is getting prepared for the next level of operations...
                                 """)
-            st.stream_message(chunks=mocked_response)
-            time.sleep(STREAMING_WAIT_SECONDS)
 
             # apply the recursive call to the self function to get another reply from the assistant
             print(f"[InternalOpenAIClient.respond_stream] Recursive call to the respond function.")
@@ -782,11 +684,9 @@ class InternalOpenAIClient:
             return final_response, file_uris, image_uris
         print(f"[InternalOpenAIClient.respond_stream] Returning the response to the user.")
 
-        mocked_response = st.mock_stream(f"""
+        send_log_message(f"""
             ✅ The assistant has successfully processed the query. The response is being delivered to the user...
         """, stop_tag=BIMOD_PROCESS_END)
-        st.stream_message(chunks=mocked_response)
-        time.sleep(STREAMING_WAIT_SECONDS)
 
         #######################################################################################################
         # Return the final response

@@ -369,3 +369,9 @@ Expected Growth:
 - $80,000,000 volume in the fifth year (start: $150,000,000 investment [15%]) series-d
 - $150,000,000 volume in the sixth year (start: $250,000,000 investment [15%]) series-e
 - $250,000,000 volume in the seventh year (start: IPO: $500,000,000 [20%]) IPO
+
+
+UVICORN RUN COMMAND (migrate this to a proper place later on):
+```bash
+uvicorn config.asgi:application --host 127.0.0.1 --port 8000 --reload**
+```

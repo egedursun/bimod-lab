@@ -5,11 +5,10 @@ The views include functionality for creating, archiving, unarchiving, deleting, 
 """
 
 import base64
-import time
 
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.http import StreamingHttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.generic import TemplateView, DeleteView
@@ -20,7 +19,6 @@ from web_project import TemplateLayout, TemplateHelper
 from .models import MultimodalChat, MultimodalChatMessage, ChatSourcesNames
 from .utils import generate_chat_name
 from .._services.llms.llm_decoder import InternalLLMClient
-from .._services.llms.openai import BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END
 from .._services.storages.storage_executor import StorageExecutor
 from ..assistants.models import Assistant
 from ..message_templates.models import MessageTemplate
@@ -31,6 +29,16 @@ STREAM_RESPONSE = True
 
 
 class ChatStreamView(View):
+    """
+    Handles the streaming of chat messages.
+
+    This view allows users to send messages and attachments to the chat assistant and receive responses in real-time.
+    The view also manages the streaming of chat messages and related data.
+
+    Methods:
+        post(self, request, *args, **kwargs): Processes the user message and attachment inputs, sends them to the
+        chat assistant, and streams the response.
+    """
     def post(self, request, *args, **kwargs):
         # 1. Permission check
         context_user_id = request.POST.get('user_id')
@@ -136,101 +144,6 @@ class ChatStreamView(View):
 
         print(f"[ChatStreamView.post] Calling the 'streamer' function of OpenAI to stream the response...")
         return redirect('multimodal_chat:chat')
-
-
-class ChatResponseStreamView(View):
-    response_chunks = []
-    response_queue = []
-
-    class MockChunk:
-        def __init__(self, choices):
-            self.choices = choices
-
-    class MockChoice:
-        def __init__(self, delta):
-            self.delta = delta
-
-    class MockDelta:
-        def __init__(self, content):
-            self.content = content
-
-    def event_stream(self):
-        # Initial keep-alive message to avoid SSE error
-        yield ": [Connection established, waiting for data...]\n\n"
-        try:
-            while True:
-                if self.response_queue:
-                    self.response_chunks = self.response_queue.pop(0)
-                    for chunk in self.response_chunks:
-                        ############################
-                        choices = chunk.choices if chunk else None
-                        first_choice = choices[0] if choices else None
-                        delta = first_choice.delta if first_choice else None
-                        content = delta.content if delta else None
-                        ############################
-                        if content == BIMOD_STREAMING_END_TAG:
-                            yield f"data: {BIMOD_STREAMING_END_TAG}\n\n"
-                        elif content == BIMOD_PROCESS_END:
-                            yield f"data: {BIMOD_PROCESS_END}\n\n"
-                        else:
-                            ############################
-                            if content is not None and content != "None":
-                                yield f"data: {content}\n\n"
-                            ############################
-                else:
-                    # Send a keep-alive comment every few seconds to keep the connection open
-                    yield ": keep-alive\n\n"
-                time.sleep(1)
-        except Exception as e:
-            print(f"[ChatResponseStreamView.event_stream] Error on event_stream loop: {e}")
-
-    @staticmethod
-    def mock_stream(plain_text, stop_tag=BIMOD_STREAMING_END_TAG):
-        # split each 5 characters
-        plain_text_list = [plain_text[i:i + 5] for i in range(0, len(plain_text), 5)]
-        mock_response = []
-        for element in plain_text_list:
-            mock_response.append(
-                ChatResponseStreamView.MockChunk(
-                    choices=[
-                        ChatResponseStreamView.MockChoice(
-                            delta=ChatResponseStreamView.MockDelta(content=element)
-                        )
-                    ]
-                )
-            )
-        if stop_tag == BIMOD_STREAMING_END_TAG:
-            mock_response.append(
-                ChatResponseStreamView.MockChunk(
-                    choices=[
-                        ChatResponseStreamView.MockChoice(
-                            delta=ChatResponseStreamView.MockDelta(content=BIMOD_STREAMING_END_TAG)
-                        )
-                    ]
-                )
-            )
-        elif stop_tag == BIMOD_PROCESS_END:
-            mock_response.append(
-                ChatResponseStreamView.MockChunk(
-                    choices=[
-                        ChatResponseStreamView.MockChoice(
-                            delta=ChatResponseStreamView.MockDelta(content=BIMOD_PROCESS_END)
-                        )
-                    ]
-                )
-            )
-        return mock_response
-
-    def get(self, request, *args, **kwargs):
-        return StreamingHttpResponse(self.event_stream(), content_type='text/event-stream')
-
-    def stream_message(self, chunks):
-        time.sleep(5)
-        try:
-            if not self.response_queue:
-                self.response_queue.append(chunks)
-        except Exception as e:
-            print(f"[ChatResponseStreamView.stream_message] Error while streaming the response: {e}")
 
 
 class ChatView(LoginRequiredMixin, TemplateView):

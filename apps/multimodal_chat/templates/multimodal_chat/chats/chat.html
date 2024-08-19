@@ -136,6 +136,9 @@
 
 
 
+
+
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -161,7 +164,7 @@
           <!-- Assistants -->
           <ul class="list-unstyled chat-contact-list mb-0 py-2" id="assistant-list">
             <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
-              <h5 class="text-primary mb-0"><strong>Assistants</strong></h5>
+              <h5 class="mb-0"><strong>Assistants</strong></h5>
             </li>
             <div class="alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
             <span class="alert-icon rounded">
@@ -184,6 +187,9 @@
                     <div class="d-flex align-items-center">
                       <div class="flex-shrink-0 avatar avatar-md">
                         <img src="
+
+
+
 
 
 
@@ -300,6 +306,9 @@
 
 
 
+
+
+
                           {% if chat.assistant.assistant_image %}{{ chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              class="rounded-pill">
                       </div>
@@ -401,6 +410,9 @@
 
 
 
+
+
+
                       {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
                   </div>
@@ -459,6 +471,9 @@
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
                             <img src="
+
+
+
 
 
 
@@ -599,6 +614,9 @@
                           <div class="user-avatar flex-shrink-0 ms-4">
                             <div class="avatar avatar-xl">
                               <img src="
+
+
+
 
 
 
@@ -1685,30 +1703,6 @@
         const chatForm = document.querySelector('.form-send-message');
         const formData = new FormData(chatForm);
 
-        // Append all attached image files
-        /*
-        const imageFiles = document.getElementById('attach-image').files;
-        if (imageFiles.length > 0) {
-          for (let i = 0; i < imageFiles.length; i++) {
-            formData.append('attached_images[]', imageFiles[i]);
-          }
-        }
-
-        // Append all attached document files
-        const docFiles = document.getElementById('attach-doc').files;
-        if (docFiles.length > 0) {
-          for (let i = 0; i < docFiles.length; i++) {
-            formData.append('attached_files[]', docFiles[i]);
-          }
-        }
-
-        // Check and append recorded audio if it exists
-        const audioInput = document.getElementById('record_audio');
-        if (audioInput.files && audioInput.files.length > 0) {
-          formData.append('record_audio', audioInput.files[0]);
-        }
-         */
-
         fetch(`/app/multimodal_chat/chat/stream/`, {
           method: 'POST',
           body: formData,
@@ -1725,44 +1719,57 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const eventSource = new EventSource('/app/multimodal_chat/chat/response_stream/');
       const element = document.getElementById('non-tool-markdown-content');
       let accumulatedContent = ''; // To accumulate chunks for a single stream
+      let socket = null;
+      const maxRetries = 1000;
+      let retryCount = 0;
 
-      eventSource.onmessage = function (event) {
-        let newChunk = event.data;
-        console.log("STREAMED=[", newChunk, "]");
+      function connectWebSocket() {
+        // Determine the correct WebSocket protocol based on the current page's protocol
+        const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+        socket = new WebSocket(protocol + window.location.host + '/ws/logs/');
+        socket.onmessage = function (event) {
+          const data = JSON.parse(event.data);
+          let newChunk = data.log;
+          if (newChunk.includes('<[bimod_streaming_end]>')) {
+            // Wrap the accumulated content in a new div with the 'bg-label-primary' class
+            element.innerHTML += `<div class="bg-label-primary rounded m-2 p-4"><strong class="text-white">${accumulatedContent}</strong></div>`;
+            element.scrollTo({
+              top: element.scrollHeight + 1000,
+              behavior: 'smooth'
+            });
+            // Reset the accumulated content for the next stream
+            accumulatedContent = '';
+          } else if (newChunk.includes('<[bimod_process_end]>')) {
+            // Force refresh the page with the same chat id
+            const chatId = new URLSearchParams(window.location.search).get('chat_id');
+            console.log("End of processing detected...");
+            socket.close(); // Close the WebSocket connection
+            // Automatically refresh the page
+            window.location.href = `/app/multimodal_chat/chat/?chat_id=${chatId}`;
+          } else {
+            // Accumulate chunks for the current stream
+            accumulatedContent += newChunk;
+          }
+        };
+        socket.onerror = function (event) {
+          console.error("WebSocket error", event);
+          socket.close();
+        };
+        socket.onclose = function (event) {
+          console.log("WebSocket connection closed", event);
+          if (retryCount < maxRetries) {
+            retryCount++;
+            console.log(`Reconnecting... attempt ${retryCount}`);
+            setTimeout(connectWebSocket, 2000); // Reconnect after 2 seconds
+          } else {
+            console.error("Max reconnection attempts reached. Unable to reconnect.");
+          }
+        };
+      }
 
-        if (newChunk.includes('<[bimod_streaming_end]>')) {
-          console.log("End of streaming detected...");
-
-          // Wrap the accumulated content in a new div with the 'bg-label-primary' class
-          element.innerHTML += `<div class="bg-label-primary rounded m-2 p-4"><strong class="text-white">${accumulatedContent}</strong></div>`;
-
-          element.scrollTo({
-            top: element.scrollHeight + 1000,
-            behavior: 'smooth'
-          });
-
-          // Reset the accumulated content for the next stream
-          accumulatedContent = '';
-        } else if (newChunk.includes('<[bimod_process_end]>')) {
-          // Force refresh the page with the same chat id
-          const chatId = new URLSearchParams(window.location.search).get('chat_id');
-          console.log("End of processing detected...");
-          eventSource.close(); // Close the event stream
-          // Automatically refresh the page
-          window.location.href = `/app/multimodal_chat/chat/?chat_id=${chatId}`;
-        } else {
-          // Accumulate chunks for the current stream
-          accumulatedContent += newChunk;
-        }
-      };
-
-      eventSource.onerror = function (event) {
-        console.error("SSE error", event);
-        eventSource.close();
-      };
+      connectWebSocket(); // Initial connection attempt
     });
   </script>
 
@@ -1838,7 +1845,7 @@
       });
 
       function startRecording(stream) {
-        let options = { mimeType: 'audio/webm' };
+        let options = {mimeType: 'audio/webm'};
         mediaRecorder = new MediaRecorder(stream, options);
         mediaRecorder.ondataavailable = event => {
           audioChunks.push(event.data);
@@ -1898,5 +1905,4 @@
       });
     });
   </script>
-
 {% endblock %}
