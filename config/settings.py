@@ -369,6 +369,7 @@ EXCLUDED_PAGES = [
     "/app/send_verification/*",
     "/app/forgot_password/*",
     "/app/reset_password/*",
+    "/app/multimodal_chat/tts/chat/message/*"
     "/contact-form-submit/*",
     "/docs/*",
     "/faq/*",
