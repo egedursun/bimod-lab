@@ -1,5 +1,6 @@
 import re
 
+from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
@@ -101,3 +102,13 @@ class ManualTranslationMiddleware(MiddlewareMixin):
                 print(f"Unchanged: | {text} |")
             pass
         return translated_text if translated_text != text else text
+
+
+class AppendSlashMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if not request.path.endswith('/') and not request.path.startswith('/api/'):
+            return HttpResponsePermanentRedirect(request.path + '/')
+        return self.get_response(request)
