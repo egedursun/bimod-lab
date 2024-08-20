@@ -1,5 +1,5 @@
 asgiref==3.8.1
-Django==5.0.6
+Django==5.1
 gunicorn==22.0.0
 packaging==24.1
 python-dotenv==1.0.1
@@ -12,6 +12,7 @@ wonderwords~=2.2.0
 country_list~=1.1.0
 openai~=1.35.10
 markdown~=3.6
+psycopg2~=2.9.9
 psycopg2-binary~=2.9.9
 mysql-connector-python~=9.0.0
 pymongo~=4.8.0
@@ -66,3 +67,5 @@ uvicorn[standard]~=0.30.6
 daphne~=4.1.2
 channels-redis~=4.2.0
 django-cors-headers~=4.4.0
+django_postgrespool2~=2.0.5
+django-cacheops~=7.0.2

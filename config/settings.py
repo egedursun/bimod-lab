@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_celery_beat",
     "corsheaders",
+    'cacheops',
     "channels",
 
     "apps.theme.dashboards",
@@ -127,6 +128,111 @@ INSTALLED_APPS = [
 
 ]
 
+#####################################################################################################################
+# CACHING OPERATIONS
+#####################################################################################################################
+
+CACHEOPS_GENERIC_CASH_TIME = 60 * 60  # 1 hour
+
+CACHEOPS_REDIS = {
+    'host': 'localhost',  # Redis server hostname
+    'port': 6379,  # Redis server port
+    'db': 1,  # Redis database number
+    'socket_timeout': 3,
+    'retry_on_timeout': True
+}
+
+CACHEOPS_DEFAULTS = {
+    'timeout': CACHEOPS_GENERIC_CASH_TIME,  # Cache timeout in seconds (60 minutes)
+}
+
+CACHEOPS = {
+    # Assistants
+    'apps.assistants.Assistant': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Blog App
+    'apps.blog_app.BlogPost': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.blog_app.BlogTag': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.blog_app.BlogSEOMeta': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Community Forum
+    'apps.community_forum.ForumCategory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.community_forum.ForumThread': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.community_forum.ForumPost': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.community_forum.ForumComment': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.community_forum.ForumLike': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Data Source Browser
+    'apps.datasource_browsers.DataSourceBrowserConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_browsers.DataSourceBrowserBrowsingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Data Source File Systems
+    'apps.datasource_file_systems.DataSourceFileSystem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Data Source Knowledge Base
+    'apps.datasource_knowledge_base.DocumentKnowledgeBaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.KnowledgeBaseDocument': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.KnowledgeBaseDocumentChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.ContextHistoryKnowledgeBaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.ContextHistoryMemory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.ContextHistoryMemoryChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.DocumentProcessingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Data Source Media Storages
+    'apps.datasource_media_storages.DataSourceMediaStorageConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_media_storages.DataSourceMediaStorageItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Data Source ML Models
+    'apps.datasource_ml_models.DataSourceMLModelConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_ml_models.DataSourceMLModelItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Data Source SQL
+    'apps.datasource_sql.SQLDatabaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_sql.CustomSQLQuery': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Export Assistants
+    'apps.export_assistants.RequestLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.export_assistants.ExportAssistantAPI': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # LLM Core
+    'apps.llm_core.LLMCore': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # LLM Transaction
+    'apps.llm_transaction.LLMTransaction': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.llm_transaction.AutoBalanceTopUpModel': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.llm_transaction.OrganizationBalanceSnapshot': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Memories
+    'apps.memories.AssistantMemory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Message Templates
+    'apps.message_templates.MessageTemplate': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # MM APIs
+    'apps.mm_apis.CustomAPIReference': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.mm_apis.CustomAPI': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # MM Functions
+    'apps.mm_apis.CustomFunctionReference': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.mm_functions.CustomFunction': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # MM Scheduled Jobs
+    'apps.mm_scheduled_jobs.ScheduledJob': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.mm_scheduled_jobs.ScheduledJobInstance': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # MM Scripts
+    'apps.mm_scripts.CustomScriptReference': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.mm_scripts.CustomScript': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # MM Triggered Jobs
+    'apps.mm_triggered_jobs.TriggeredJob': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.mm_triggered_jobs.TriggeredJobInstance': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Multimodal Chat
+    'apps.multimodal_chat.MultiModalChat': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.multimodal_chat.MultiModalChatMessage': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.multimodal_chat.ChatCreationLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Orchestrations
+    'apps.orchestrations.Maestro': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.orchestrations.OrchestrationQuery': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.orchestrations.OrchestrationQueryLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Organization
+    'apps.organization.Organization': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Starred Messages
+    'apps.starred_messages.StarredMessage': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # Support Ticket
+    'apps.support_system.SupportTicket': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.support_system.SupportTicketResponse': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    # User Permissions
+    'apps.user_permissions.UserPermission': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+}
+
+# Optional: Ensure the cache is cleared on start-up or configuration changes
+CACHEOPS_LRU = True  # Enables the LRU (Least Recently Used) cache
+
+#####################################################################################################################
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     'corsheaders.middleware.CorsMiddleware',
@@ -196,6 +302,7 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', ''),
+        'CONN_MAX_AGE': 3600 * 24 * 30,  # 30 days
     }
 }
 
@@ -352,7 +459,6 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.bimod.io",
 ]
 CORS_ALLOW_CREDENTIALS = True
-
 
 SUFFIX_ANY = "*"
 
@@ -550,4 +656,3 @@ else:
 #####################################################################################################################
 
 NEW_USER_FREE_CREDITS = int(os.environ.get("NEW_USER_FREE_CREDITS", default="0"))
-

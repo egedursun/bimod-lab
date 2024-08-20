@@ -118,11 +118,10 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 ---
 
---> Add a stopping tag for streaming stop points (for errors)
+--> IMPLEMENT SQL MODEL CACHING
 
-1. [ ] [TTS / STT] integration for the application [16/08/2024] 
-2. [ ] Implement the [ORCHESTRATION] manager. [17...27/08/2024]
-3. [ ] Implement [PAYMENT GATEWAY] for the application. [XXX]
+1. [ ] Implement the [ORCHESTRATION] manager. [17...27/08/2024]
+2. [ ] Implement [PAYMENT GATEWAY] for the application. [XXX]
 
 ---
 RELEASE v0.1.0 [RELEASE: BETA] version of the application.
