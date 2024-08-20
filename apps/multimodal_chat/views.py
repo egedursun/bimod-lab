@@ -480,17 +480,34 @@ class ChatMessageNarrationView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         message_id = kwargs.get('pk')
-        message = get_object_or_404(MultimodalChatMessage, id=message_id, multimodal_chat__user=request.user)
+        try:
+            message = get_object_or_404(MultimodalChatMessage, id=message_id, multimodal_chat__user=request.user)
+        except Exception as e:
+            print(f"[ChatMessageNarrationView.get] Error while getting the chat message: {e}")
+            return JsonResponse({'audio_url': None})
 
-        if message.message_audio:
-            return JsonResponse({'audio_url': message.message_audio})
+        try:
+            if message.message_audio:
+                return JsonResponse({'audio_url': message.message_audio})
+        except Exception as e:
+            print(f"[ChatMessageNarrationView.get] Error while getting the audio URL: {e}")
+            pass
 
         # Assuming 'InternalLLMClient.text_to_audio_message' returns a dict with 'audio_url'
-        response = InternalLLMClient.get(assistant=message.multimodal_chat.assistant,
-                                         multimodal_chat=message.multimodal_chat).text_to_audio_message(message=message)
+        try:
+            response = InternalLLMClient.get(assistant=message.multimodal_chat.assistant,
+                                             multimodal_chat=message.multimodal_chat).text_to_audio_message(message=message)
+        except Exception as e:
+            print(f"[ChatMessageNarrationView.get] Error while narrating the chat message: {e}")
+            return JsonResponse({'audio_url': None})
 
-        message.message_audio = response['audio_url']
-        message.save()
+        try:
+            message.message_audio = response['audio_url']
+            message.save()
+        except Exception as e:
+            print(f"[ChatMessageNarrationView.get] Error while saving the audio URL: {e}")
+            pass
+
         return JsonResponse({'audio_url': response['audio_url']})
 
 
