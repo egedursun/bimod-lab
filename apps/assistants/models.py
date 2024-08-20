@@ -89,8 +89,10 @@ class Assistant(models.Model):
         - `max_context_messages`: Maximum number of context messages allowed.
         - `vectorizer_name`: Defines the vectorizer used for the assistant.
         - `vectorizer_api_key`: API key for the vectorizer.
-        - `document_base_directory`, `storages_base_directory`, `ml_models_base_directory`: S3 directories for storing assistant-related files.
-        - `created_by_user`, `last_updated_by_user`: ForeignKeys linking to the user who created or last updated the assistant.
+        - `document_base_directory`, `storages_base_directory`, `ml_models_base_directory`: S3 directories for storing
+            assistant-related files.
+        - `created_by_user`, `last_updated_by_user`: ForeignKeys linking to the user who created or last updated the
+            assistant.
         - `image_generation_capability`: Boolean for enabling image generation.
         - `created_at`, `updated_at`: Timestamps for assistant creation and last update.
         - `custom_function_references`: ManyToManyField linking to custom functions used by the assistant.
@@ -118,13 +120,12 @@ class Assistant(models.Model):
     # assistant image
     assistant_image_save_path = 'assistant_images/%Y/%m/%d/' + generate_random_string()
     assistant_image = models.ImageField(upload_to=assistant_image_save_path, blank=True, max_length=1000, null=True)
-    memories = models.ManyToManyField("memories.AssistantMemory", related_name='assistants',
-                                      blank=True)
+    memories = models.ManyToManyField("memories.AssistantMemory", related_name='assistants', blank=True)
 
     context_overflow_strategy = models.CharField(max_length=100, choices=CONTEXT_OVERFLOW_STRATEGY, default="forget")
     max_context_messages = models.IntegerField(default=25)
-    vectorizer_name = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai",
-                                       null=True, blank=True)
+    vectorizer_name = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai", null=True,
+                                       blank=True)
 
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
     document_base_directory = models.CharField(max_length=1000, null=True, blank=True)
@@ -143,8 +144,7 @@ class Assistant(models.Model):
 
     # tools and multi modality
     custom_function_references = models.ManyToManyField("mm_functions.CustomFunctionReference",
-                                                        related_name='assistants',
-                                                        blank=True)
+                                                        related_name='assistants', blank=True)
 
     def __str__(self):
         return self.name

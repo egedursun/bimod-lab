@@ -60,7 +60,7 @@ class Maestro(models.Model):
     workers = models.ManyToManyField('assistants.Assistant', related_name='maestros', blank=True)
 
     def __str__(self):
-        return self.name + " - " + self.organization.name + " - " + self.llm_model.name
+        return self.name + " - " + self.organization.name + " - " + self.llm_model.nickname
 
     class Meta:
         verbose_name = "Maestro"

@@ -118,29 +118,74 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 ---
 
---> IMPLEMENT SQL MODEL CACHING
+1. [ ] Implement [FINE TUNING] for the application.
+  - [ ] User can "ADD" a fine-tuned model from 'OpenAI' files to 'Bimod.io' application.
+  - [ ] User can "SELECT" this fine-tuned model while creating an LLM Core for the application.
+  - [ ] User can "REMOVE" this fine-tuned model from Bimod.io application.
+  - [ ] There won't be an update functionality for the fine-tuned models. (but the LLM Cores are.)
+  - [ ] The users can "LIST" the fine-tuned models in the application.
+  - [ ] The users can "TRAIN" their fine-tuned model in a page, by calling OpenAI API with their file.
+  - [ ] Test the functionality.
 
-1. [ ] Implement the [ORCHESTRATION] manager. [17...27/08/2024]
-2. [ ] Implement [PAYMENT GATEWAY] for the application. [XXX]
+1. [ ] Implement the [ORCHESTRATION] manager.
+  - [ ] Include the "ASSISTANTS" for Orchestration in the "CREATE" page.
+  - [ ] Solve the image not showing up issue in "UPDATE" page.
+  - [ ] Implement the "UPDATE" page for the Orchestration manager.
+  - [ ] Implement the "DELETE" page for the Orchestration manager.
+  - [ ] Implement the "LIST" page for the Orchestration manager.
+  - [ ] Implement the "QUERY" page for the Orchestration manager.
+  - [ ] Implement the "SERVICE" for the Orchestration manager.
+  - [ ] Test the functionality.
+
+1. [ ] Implement [PAYMENT GATEWAY] for the application.
+  - [ ] Integrate the payment in the "TRANSACTIONS" page for adding balance.
+  - [ ] Integrate the "AUTO-SUBSCRIPTION" type payment in the "TRANSACTIONS" page (for automatic balance top-ups)
+  - [ ] Integrate credit card storage in the "PROFILE" page which is necessary for automated payments.
+  - [ ] Integrate the "PAYMENT HISTORY & RECEIPTS" page for the application.
+  - [ ] Test the functionality.
 
 ---
-RELEASE v0.1.0 [RELEASE: BETA] version of the application.
+RELEASE v0.2.0 [RELEASE: BETA] version of the application.
 ---
 
 *After first deployment:*
 
 1. [ ] [NER] integration. [TECHNICAL @EGE]
+    - [ ] Implement the "IDENTIFICATION" system for the Named Entity Recognition.
+    - [ ] Implement the "ENCODING" system for the Named Entity Recognition.
+    - [ ] Implement the "DECODING" system for the Named Entity Recognition.
+    - [ ] Integrate the "KEY-VALUE STORAGE PAIRS" for the Named Entity Recognition management.
+    - [ ] Test the functionality.
+
 2. [ ] [CODE REPOSITORY] integration for the application. [TECHNICAL @EGE]
+    - [ ] Implement the "INDEXING SYSTEM" for the Code Repository.
+    - [ ] Implement the "SEARCHING SYSTEM" for the Code Repository.
+    - [ ] Implement the "PAGES" for the Code Repository.
+    - [ ] Test the functionality.
+
 3. [ ] [DRIVE FILES] integration for the application. [TECHNICAL @EGE]
+    - [ ] Implement the "SERVICE" for file retrieval, listing, downloading, and adding to Bimod system.
+    - [ ] Implement the "PAGES" for adding the drive files to the media storages.
+    - [ ] Test the functionality.
+
 4. [ ] [META GUIDE] assistant for manipulating the application as a helper. [TECHNICAL @EGE]
+    - [ ] Implement an "ASSISTANT" that can automatically create data models (e.g. organizations, models, asisstants, etc.)
+    - [ ] Implement an "PAGES" for the assistant to be able to manipulate the application.
+    - [ ] Test the functionality.
 
 5. [ ] [USER DOCUMENTATION] page development. [TECHNICAL @MERT]
+    - [ ] Implement the "READABLE DOCS" pages for better user experience.
 
 6. [ ] [TERMS & CONDITIONS] development with the law firms. [BUSINESS/LEGAL @HUSEYIN]
+    - [ ] Needs to be designed by legal experts.
+    - [ ] Implement the "TERMS & CONDITIONS" page for the application.
+
 7. [ ] [PRIVACY POLICY] development with the law firms. [BUSINESS/LEGAL @HUSEYIN]
+    - [ ] Needs to be designed by legal experts.
+    - [ ] Implement the "PRIVACY POLICY" page for the application.
 
 ---
-RELEASE v0.2.0 [RELEASE: BETA] version of the application.
+RELEASE v0.3.0 [RELEASE: BETA] version of the application.
 ---
 
 *Ongoing Improvements:*
@@ -149,7 +194,7 @@ RELEASE v0.2.0 [RELEASE: BETA] version of the application.
 2.  [ ] Boilerplate knowledge bases [BOILERPLATE KB]   [ONGOING TECHNICAL: @EGE, @MERT]
 
 ---
-RELEASE v0.3.0 [RELEASE: BETA] version of the application.
+RELEASE v0.4.0 [RELEASE: BETA] version of the application.
 ---
 
 1. [ ] [MOBILE APPLICATION] only for connecting endpoints, and being able to chat with them and receive answers. ---> requires a mobile application development.
@@ -157,14 +202,14 @@ RELEASE v0.3.0 [RELEASE: BETA] version of the application.
 3. [ ] [WORD PLUGIN] development for the application. ---> requires a Word / MS Office plugin.
 
 ---
-RELEASE v0.4.0 [RELEASE: BETA] version of the application.
----
-
-4. [ ] Integration (Boilerplate assistant) Systems [INTEG SYSTEMS]  [TECHNICAL @EGE]
-5. [ ] Meta-Integration (Boilerplate group of assistants) Systems [META-INTEG SYSTEMS]  [TECHNICAL @EGE]
-
----
 RELEASE v0.5.0 [RELEASE: BETA] version of the application.
+---
+
+1. [ ] Integration (Boilerplate assistant) Systems [INTEG SYSTEMS]  [TECHNICAL @EGE]
+2. [ ] Meta-Integration (Boilerplate group of assistants) Systems [META-INTEG SYSTEMS]  [TECHNICAL @EGE]
+
+---
+RELEASE v0.6.0 [RELEASE: BETA] version of the application.
 ---
 
 *TO BE DISCUSSED:*

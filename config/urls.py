@@ -82,8 +82,8 @@ urlpatterns = [
     #################################################################################################################
 ]
 
-
-urlpatterns += static(settings.MEDIA_URL)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.STATIC_ROOT)
 
 HANDLED_HTTP_NEGATIVE_RESPONSES = {
     "client_side": [

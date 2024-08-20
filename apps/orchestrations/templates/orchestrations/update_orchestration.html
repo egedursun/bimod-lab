@@ -1,3 +1,209 @@
+{% extends layout_path %}
 
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
 
-# update orchestration test page
+{% block title %}Update Orchestration{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+
+  <a href="{% url 'orchestrations:list' %}">
+    <button class="btn btn-secondary my-4 w-25">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to Orchestrations</strong>
+    </button>
+  </a>
+
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card">
+          <div class="card-header d-flex justify-content-start align-items-center">
+            {% if orchestration.maestro_image %}
+              <img src="{{ orchestration.maestro_image.url }}" class="rounded" width="170" height="170"
+                   alt="Orchestration Image">
+            {% else %}
+              <img src="{% static 'img/avatars/org-0.png' %}" class="rounded" width="170" height="170"
+                   alt="Orchestration Image">
+            {% endif %}
+            <h3 class="mb-0 ms-4">
+              <strong>
+                {{ orchestration.name }}
+              </strong>
+              <br>
+              <small class="text">
+                <i class="fas fa-building"></i>
+                Organization:
+                <strong>{{ orchestration.organization.name }}</strong>
+              </small>
+              <br>
+              <small class="text">
+                <i class="fas fa-microphone"></i>
+                Audience:
+                <strong>{{ orchestration.audience }}</strong>
+              </small>
+              <br>
+              <small class="text">
+                <i class="fas fa-user-astronaut"></i>
+                Tone:
+                <strong>{{ orchestration.tone }}</strong>
+              </small>
+            </h3>
+            <br><br>
+          </div>
+        </div>
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Update Orchestration</strong></h5> <small class="text-muted float-end"></small>
+        </div>
+
+        <div class="card-body">
+          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-43.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8">
+            <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can update the information of an orchestration. You can change the name, description, instructions, audience, tone, and the image of the orchestration. Once you have updated the information, click on the "Update Information" button to save the changes.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+
+          {% if error_messages %}
+            {% for key, message in error_messages.items %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                <strong>{{ key | field_name_to_label }}:</strong> {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="col-6 mb-6">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter orchestration name"
+                       value="{{ orchestration.name }}"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="description">Description</label>
+                <input type="text" class="form-control" id="description" name="description"
+                       placeholder="Enter orchestration description" value="{{ orchestration.description }}"/>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="instructions">Instructions</label>
+                <textarea class="form-control" id="instructions" name="instructions"
+                          placeholder="Enter orchestration instructions">{{ orchestration.instructions }}</textarea>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="workflow_step_guide">Step by Step Description</label>
+                <textarea class="form-control" id="workflow_step_guide" name="workflow_step_guide"
+                          placeholder="Enter the workflow of the orchestration step by step">{{ orchestration.workflow_step_guide }}</textarea>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="maximum_assistant_limits">Maximum Assistants Limit</label>
+                <input type="number" class="form-control" id="maximum_assistant_limits" name="maximum_assistant_limits"
+                       placeholder="Enter the maximum assistant limits" value="{{ orchestration.maximum_assistant_limits }}"/>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="audience">Audience</label>
+                <input type="text" class="form-control" id="audience" name="audience"
+                       placeholder="Enter the target audience of your orchestration" value="{{ orchestration.audience }}"/>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="tone">Tone</label>
+                <input type="text" class="form-control" id="tone" name="tone"
+                       placeholder="Enter the tone to be used in responses" value="{{ orchestration.tone }}"/>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="response_language">Response Language</label>
+                <select class="form-select select2" id="response_language" name="response_language">
+                  {% for lang_code, lang_name in form.response_language.field.choices %}
+                    <option value="{{ lang_code }}" {% if lang_code == orchestration.response_language %}selected{% endif %}>
+                      {{ lang_name }}
+                    </option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">Select the language for responses.</div>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="maestro_image">Maestro Image</label>
+                <input type="file" class="form-control" id="maestro_image" name="maestro_image"/>
+                <div class="form-text">Upload an image to represent this orchestration.</div>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid mt-8 w-25"><strong>Update Orchestration</strong></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const organizationSelect = document.getElementById('organization');
+      const llmModelSelect = document.getElementById('llm_model');
+      const llmModelOptions = Array.from(llmModelSelect.options);
+
+      organizationSelect.addEventListener('change', function () {
+        const selectedOrgId = this.value;
+
+        // Clear current options
+        llmModelSelect.innerHTML = '<option value="" disabled selected>Select LLM Model</option>';
+
+        // Filter and add options based on selected organization
+        llmModelOptions.forEach(option => {
+          if (option.dataset.orgId === selectedOrgId) {
+            llmModelSelect.appendChild(option);
+          }
+        });
+
+        // Enable the LLM model select box
+        llmModelSelect.disabled = false;
+      });
+    });
+  </script>
+
+{% endblock %}

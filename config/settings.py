@@ -22,6 +22,7 @@ from dotenv import load_dotenv
 import sentry_sdk
 from pydub import AudioSegment
 
+
 from .template import TEMPLATE_CONFIG, THEME_LAYOUT_DIR, THEME_VARIABLES
 
 load_dotenv()  # take environment variables from .env.
