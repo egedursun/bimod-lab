@@ -119,8 +119,6 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 ---
 
 **URGENT:**
--> Research about the authentication of websocket logs, do everyone see the logs or only the person who sends the message?
-    - Fix according to the research.
 -> Integrate Website / User Analytics script to your website to track the metrics and KPIs.
 -> [HOLDINGS / BIMOD.IO ENDEAVORS] as concrete implementations with the assistants. Completely autonomous systems.
     Mostly for creating Business presence and prestige.

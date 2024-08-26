@@ -35,12 +35,24 @@
   <!-- Include the scripts partial (required ) -->
   {% include is_front|yesno:"./partials/scripts_includes_front.html,./partials/scripts_includes.html" %}
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2157MB1H4E"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-2157MB1H4E');
+  </script>
+
 </head>
 
 <body>
 
 <!-- create a bar at the top of the screen, rectangular -->
-<div class="bg-label-danger border border-2 border-danger d-flex justify-content-center align-items-center" id="environment" 
+<div class="bg-label-danger border border-2 border-danger d-flex justify-content-center align-items-center"
+     id="environment"
      style="width: 100%; height: 20px; position:fixed; bottom:0; left:0; z-index: 9999999999999999999999; border-top-left-radius: 10px; border-top-right-radius: 10px;">
   <p class="m-0">
     <strong class="me-6">
