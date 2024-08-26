@@ -143,6 +143,15 @@
                 <input type="file" class="form-control" id="maestro_image" name="maestro_image"/>
                 <div class="form-text">Upload an image to represent this orchestration.</div>
               </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="workers">Select Assistants (Workers)</label>
+                <select class="form-select select2" id="workers" name="workers" multiple>
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">Select the assistants to be connected to this orchestration.</div>
+              </div>
             </div>
             <hr>
             <button type="submit" class="btn btn-primary d-grid mt-8 w-25"><strong>Create Orchestration</strong>
@@ -177,5 +186,4 @@
       });
     });
   </script>
-
 {% endblock %}

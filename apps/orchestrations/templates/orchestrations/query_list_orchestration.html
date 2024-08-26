@@ -1,0 +1,973 @@
+{% extends layout_path %}
+{% load static %}
+{% block title %}Orchestration Queries{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      // Confirmation dialog for buttons
+      document.querySelectorAll('.rerun-process-btn').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const url = button.getAttribute('data-url');
+
+          Swal.fire({
+            title: 'Rerun the Process?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, rerun the process.',
+            customClass: {
+              confirmButton: 'btn btn-warning me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = url;
+            }
+          });
+        });
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block page_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}"/>
+{% endblock page_css %}
+
+{% block content %}
+
+  <div class="row g-6 mb-6" id="orchestration-queries-title">
+    <div class="col-sm-6 col-xl-3">
+      <h3 class="mb-2">
+        <strong>Orchestration Queries</strong>
+      </h3>
+      <h5>
+        <i class="fa fa-robot me-4"></i>
+        <strong>{{ maestro.name }}</strong>
+      </h5>
+    </div>
+  </div>
+
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-87.png' %}" width="25%" class="justify-content-end me-8"
+         style="border-radius: 25px;">
+    <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        On this page, you can create Orchestration processes for complex tasks, and run them. You can also use this
+        page to track the history of your Orchestration processes. Fill in the form with the required information and
+        click "Run Process" to create a new Orchestration process.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <div class="card mb-2 mt-4 border border-primary border-2 rounded">
+    <div class="card-header">
+      <h5>
+        <strong>Create Orchestration Process</strong>
+      </h5>
+      <small class="text-muted">
+        <i class="fa fa-info-circle me-4"></i>
+        <strong>Fill in the form below to create a new Orchestration process. Orchestration processes are used to
+          automate complex tasks, and allow you to consult and automate multiple assistants connected to your
+          organization while allowing them to communicate between each other to get the most of their data sources,
+          assistant-specific capabilities, as well as the different tools they can interact with.</strong>
+      </small>
+    </div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="maestro_id" value="">
+        <div class="mb-3">
+          <label for="maestro-select" class="form-label">Select Maestro</label>
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle w-25" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-bolt-lightning me-2"></i>
+              <strong>Pick Your Orchestration Maestro</strong>
+            </button>
+            <ul class="dropdown-menu w-25" aria-labelledby="dropdownMenuButton">
+              {% for maestro in maestro_list %}
+                <li>
+                  <a class="dropdown-item" href="#" data-value="{{ maestro.id }}">
+                    <img src="
+                      {% if maestro.maestro_image %}{{ maestro.maestro_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                         class="avatar avatar-sm rounded me-4" alt="avatar">
+                    <strong>{{ maestro.name }}</strong>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+            <input type="hidden" id="maestro-select" name="maestro_id" required>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="query-text" class="form-label">Process Definition</label>
+          <textarea id="query-text" name="query_text" class="form-control" rows="3"
+                    placeholder="Please describe your goals for this Orchestration process." required></textarea>
+        </div>
+        <div class="row align-items-center justify-content-start mt-2 mb-2" id="image_display_area">
+          <!-- Dynamic content will be inserted here
+              ... ... ... ... ...
+              ... ... ... ... ...
+           -->
+        </div>
+        <div class="row align-items-center justify-content-start mt-2 mb-2" id="file_display_area">
+          <!-- Dynamic content will be inserted here
+              ... ... ... ... ...
+              ... ... ... ... ...
+           -->
+        </div>
+        <div class="row align-items-center justify-content-start mt-2 mb-2" id="audio_display_area">
+          <!-- Dynamic content will be inserted here
+              ... ... ... ... ...
+              ... ... ... ... ...
+           -->
+        </div>
+        <div class="message-actions d-flex align-items-center mt-2 mb-4">
+          <label for="record-audio-label" class="form-label mb-0">
+            <i id="recordAudioButton"
+               class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
+          </label>
+          <input type="hidden" id="record_audio" name="record_audio" class="d-none" hidden>
+          <label for="sketch-image-label" class="form-label mb-0">
+            <i
+              class="ti ti-brush ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"
+              data-bs-toggle="modal" data-bs-target="#canvasEditModal"></i>
+          </label>
+          <input type="hidden" id="sketch-image" name="sketch_image" class="d-none" hidden
+                 accept=".jpeg,.png,.gif,.webp">
+          <label for="edit-image" class="form-label mb-0">
+            <i
+              class="ti ti-photo-edit ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
+            <input type="file" id="edit-image" name="edit_image" hidden accept=".jpeg,.png,.gif,.webp">
+          </label>
+          <input type="hidden" name="edit_image_mask" id="edit-image-mask" value="">
+          <label for="attach-image" class="form-label mb-0">
+            <i
+              class="ti ti-photo ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
+            <input type="file" id="attach-image" name="attached_images[]" multiple hidden
+                   accept=".jpeg,.png,.gif,.webp">
+          </label>
+          <label for="attach-doc" class="form-label mb-0 me-4">
+            <i
+              class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
+            <input type="file" id="attach-doc" name="attached_files[]" multiple hidden>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-success w-25">
+          <i class="fa fa-play me-4"></i>
+          <strong>Run Process</strong>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <hr>
+
+  <div
+    class="card card-border-shadow-primary bg-label-primary p-2 mt-4 mb-4 border border-1 border-primary rounded"
+    style="max-height: 300px;">
+    <button class="btn d-flex ms-auto p-1 mb-1" style="float: right;"
+            onclick="if(this.parentElement.style.maxHeight === '300px') {this.parentElement.style.maxHeight = '40px'; this.parentElement.classList.add('overflow-hidden'); this.parentElement.classList.remove('overflow-auto');} else {this.parentElement.style.maxHeight = '300px'; this.parentElement.classList.add('overflow-auto'); this.parentElement.classList.remove('overflow-hidden');}">
+      <i class="fa fa-dot-circle text-white"></i>
+    </button>
+    <small class="text-white p-1 mb-1"><strong>
+      <i class="fa fa-bolt-lightning me-2"></i>
+      Process Streamer
+    </strong></small>
+    <small class="mb-2 text-dark ms-6">
+      <i class="fa fa-info-circle me-2"></i>
+      This is the real-time stream viewer for the orchestration processes. You can track the process in real-time by
+      using this feature. The stream viewer will be updated as the process progresses. You can also use the logs
+      feature to view the logs of the process once it is completed. The stream viewer will be refreshed once the
+      process is completed, along with the page.
+    </small>
+    <div id="non-tool-markdown-content" style="max-height: 400px; overflow: auto;"
+         class="bg-white text-black p-4 markdown-content border border-primary border-4 rounded">
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="app-chat card mt-4">
+    <div class="row g-0">
+      <div class="col app-chat-contacts app-sidebar border-end overflow-auto rounded">
+        <div class="sidebar-body">
+          <ul class="list-unstyled chat-contact-list py-2 mb-0">
+            <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
+              <h5 class="mb-0">
+                <i class="fa fa-history me-4"></i>
+                <strong>
+                  Orchestration Process History
+                </strong>
+              </h5>
+            </li>
+            <div class="ms-8 mt-4 me-8 mb-8">
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-4"></i>
+                <strong>
+                  Here you can find the history of all Orchestration processes that have been created for this
+                  Maestro. You can rerun or delete any of the processes by clicking on the buttons below.
+                  Remember that if you choose to rerun a process, the previous history will be permanently
+                  deleted and the new process will replace the old one. If you choose to delete a process,
+                  it will be permanently removed from the system, and there is no way to rerun the deleted
+                  processes.
+                </strong>
+              </small>
+            </div>
+            <hr>
+            {% if query_chats %}
+              {% for query in query_chats %}
+                <li class="card card-border-shadow-dark mb-2 p-6">
+                  <a href="{% url 'orchestrations:query_detail' maestro.id query.id %}"
+                     class="d-flex flex-grow-1 text-decoration-none">
+                    <div class="d-flex align-items-center">
+                      <img src="{% static 'img/custom-illustrations-v2/i2-57.png' %}"
+                           class="avatar avatar-lg rounded me-4 border border-2 border-success rounded"
+                           alt="avatar">
+                      <div class="chat-contact-info flex-grow-1 text-start">
+                        <h6
+                          class="chat-contact-name m-0 fw-normal mb-1 bg-label-secondary p-1 rounded border border-white border-1 rounded">
+                          <strong class="me-4">
+                            <i class="fa fa-bolt-lightning text-warning ms-4 me-4"></i>
+                            {{ query.query_text }}
+                          </strong>
+                        </h6>
+                        <small class="text-muted">
+                          <i class="fa fa-clock ms-5 me-2"></i>
+                          Process initiated on {{ query.created_at|date:"F j, Y, g:i a" }}
+                        </small>
+                      </div>
+                    </div>
+                  </a>
+                  <hr>
+                  <div class="mt-2">
+                    <a class="p-2 me-2"
+                       href="{% url 'orchestrations:query_rerun' pk=query.maestro.id query_id=query.id %}">
+                      <button class="btn btn-warning rerun-process-btn"
+                              data-url="{% url 'orchestrations:query_rerun' pk=query.maestro.id query_id=query.id %}">
+                        <i class="fa fa-play me-4"></i>
+                        <strong>Rerun Process</strong>
+                      </button>
+                    </a>
+                    <a class="p-2 me-2"
+                       href="{% url 'orchestrations:query_delete' pk=query.maestro.id query_id=query.id %}">
+                      <button class="btn btn-danger">
+                        <i class="fa fa-trash me-4"></i>
+                        <strong>Delete</strong>
+                      </button>
+                    </a>
+                  </div>
+                </li>
+              {% endfor %}
+            {% else %}
+              <div class="text-dark mb-2 mt-2">
+                <div class="card-body">
+                  <div class="alert alert-warning p-8" role="alert">
+                    <i class="fa fa-exclamation-triangle me-4"></i>
+                    <strong>No Orchestration Processes have been found yet. You can create a new Orchestration process
+                      by
+                      filling in the form above.</strong>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Freeform Drawing Modal -->
+  <div class="modal fade" id="canvasEditModal" tabindex="-1" aria-labelledby="canvasEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 60%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="canvasEditModalLabel"><strong>Draw on Canvas</strong></h5>
+          <button type="button" class="btn-close bg-danger-subtle" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <hr>
+        <div class="modal-body" style="justify-content: center; display: flex; align-items: center;">
+          <div id="canvasContainer" class="border border-label-primary mb-8"></div>
+        </div>
+        <div class="alert alert-solid-info d-flex align-items-center mt-4 mb-8" role="alert"
+             style="margin-left: 20%; margin-right: 20%;">
+                <span class="alert-icon rounded">
+                    <i class="ti ti-info-circle"></i>
+                </span>
+          Use the drawing tool to draw on the canvas. You can switch to the eraser to remove any drawn sections.
+        </div>
+        <div class="d-flex align-items-center justify-content-center align-content-center mb-12">
+          <i class="fa fa-brush me-1"></i>
+          <i class="fa fa-circle-dot me-12"></i>
+          <input type="range" class="form-range me-12" id="brushSize" min="1" max="100" value="50"
+                 style="max-width: 400px;">
+          <button type="button" class="btn btn-warning m-2" id="brushTool">
+            <i class="fa fa-paint-brush"></i>
+          </button>
+          <button type="button" class="btn btn-warning m-2" id="eraserTool">
+            <i class="fa fa-eraser"></i>
+          </button>
+          <button type="button" class="btn btn-danger m-2" id="resetTool">
+            <i class="fa fa-trash"></i>
+          </button>
+          <button type="button" class="btn btn-primary m-2" id="saveCanvasEdits">
+            <i class="fa fa-save me-2"></i>
+            <strong>Save Canvas</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    #canvasContainer {
+      width: 100%;
+      height: 500px;
+      display: inline-block;
+      background-color: white;
+    }
+  </style>
+
+  <!-- Image Edit Modal -->
+  <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="imageEditModalLabel"><strong>Create an Image Mask</strong></h5>
+          <button type="button" class="btn-close bg-danger-subtle" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <hr>
+        <div class="modal-body" style="justify-content: center; display: flex; align-items: center;">
+          <div id="imageCanvas" class="border border-label-primary border-3 rounded m-2 mb-8" style="min-width: 500px; max-height: 500px; overflow: auto;"></div>
+        </div>
+        <div class="alert alert-solid-info d-flex align-items-center mt-4 mb-8" role="alert"
+             style="margin-left: 20%; margin-right: 20%;">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+          Please mark the places you would like to change within the image. You can use the drawing tool to draw on
+          the image. Please make sure not marking the places you would like to keep as they are, for optimal results.
+        </div>
+        <div class="d-flex align-items-center mb-12">
+          <i class="fa fa-paint-brush me-12" style="margin-left: 20%;"></i>
+          <input type="range" class="form-range me-12" id="brushSize" min="1" max="100" value="50"
+                 style="max-width: 400px;">
+          <button type="button" class="btn btn-secondary m-2" id="eraserTool">
+            <i class="fa fa-eraser me-2"></i>
+            <strong>Reset Image</strong>
+          </button>
+          <button type="button" class="btn btn-primary m-2" id="saveImageEdits">
+            <i class="fa fa-save me-2" style="margin-right: 20%;"></i>
+            <strong>Submit Image</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const dropdownItems = document.querySelectorAll('.dropdown-item');
+      const hiddenInput = document.getElementById('maestro-select');
+      const dropdownButton = document.getElementById('dropdownMenuButton');
+
+      dropdownItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+          e.preventDefault();
+          const value = this.getAttribute('data-value');
+          const text = this.innerText.trim();
+          // Update hidden input with selected value
+          hiddenInput.value = value;
+          // Update the dropdown button text to show selected item in 'bold'
+          dropdownButton.textContent = text;
+          // update maestro_id value
+          document.getElementById('maestro_id').value = value;
+        });
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const element = document.getElementById('non-tool-markdown-content');
+      let accumulatedContent = ''; // To accumulate chunks for a single stream
+      let socket = null;
+      const maxRetries = 1000;
+      let retryCount = 0;
+
+      function connectWebSocket() {
+        // Determine the correct WebSocket protocol based on the current page's protocol
+        let protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+        const maestroId = document.getElementById('maestro-select').value;
+        socket = new WebSocket(protocol + window.location.host + `/ws/orchestration_generic_logs/${maestroId}/`);
+        socket.onmessage = function (event) {
+          const data = JSON.parse(event.data);
+          let newChunk = data.log;
+          if (newChunk.includes('<[bimod_streaming_end]>')) {
+            // Wrap the accumulated content in a new div with the 'bg-label-primary' class
+            element.innerHTML += `<div class="bg-label-primary rounded m-2 p-4"><strong class="text-white">${accumulatedContent}</strong></div>`;
+            element.scrollTo({
+              top: element.scrollHeight + 1000,
+              behavior: 'smooth'
+            });
+            // Reset the accumulated content for the next stream
+            accumulatedContent = '';
+          } else if (newChunk.includes('<[bimod_process_end]>')) {
+            // Force refresh the page with the same chat id
+            console.log("End of processing detected...");
+            socket.close(); // Close the WebSocket connection
+            // Automatically refresh the page
+            window.location.href = `/app/orchestrations/query/{{ query.maestro.id }}/detail/{{ query.id }}/`;
+          } else {
+            // Accumulate chunks for the current stream
+            accumulatedContent += newChunk;
+          }
+        };
+        socket.onerror = function (event) {
+          console.error("WebSocket error", event);
+          socket.close();
+        };
+        socket.onclose = function (event) {
+          console.log("WebSocket connection closed", event);
+          if (retryCount < maxRetries) {
+            retryCount++;
+            console.log(`Reconnecting... attempt ${retryCount}`);
+            setTimeout(connectWebSocket, 2000); // Reconnect after 2 seconds
+          } else {
+            console.error("Max reconnection attempts reached. Unable to reconnect.");
+          }
+        };
+      }
+
+      connectWebSocket(); // Initial connection attempt
+    });
+  </script>
+
+  <script src="https://unpkg.com/konva@9.3.14/konva.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let stage, layer, background;
+      let isDrawing = false;
+      let mode = 'draw';
+      let brushSize = 25;
+
+      function initCanvas() {
+        stage = new Konva.Stage({
+          container: 'canvasContainer',
+          width: document.getElementById('canvasContainer').offsetWidth,
+          height: document.getElementById('canvasContainer').offsetHeight
+        });
+
+        layer = new Konva.Layer();
+        stage.add(layer);
+
+        background = new Konva.Rect({
+          x: 0,
+          y: 0,
+          width: stage.width(),
+          height: stage.height(),
+          fill: 'white'
+        });
+        layer.add(background);
+        layer.draw();
+
+        stage.on('mousedown touchstart', function () {
+          isDrawing = true;
+        });
+
+        stage.on('mouseup touchend', function () {
+          isDrawing = false;
+        });
+
+        stage.on('mousemove touchmove', function (e) {
+          if (!isDrawing) return;
+
+          const pos = stage.getPointerPosition();
+
+          if (mode === 'draw') {
+            layer.add(new Konva.Circle({
+              x: pos.x,
+              y: pos.y,
+              radius: brushSize / 2,
+              fill: 'black'
+            }));
+          } else if (mode === 'erase') {
+            layer.add(new Konva.Circle({
+              x: pos.x,
+              y: pos.y,
+              radius: brushSize / 2,
+              fill: 'white',
+              globalCompositeOperation: 'destination-out'
+            }));
+          }
+          layer.batchDraw();
+        });
+      }
+
+      $('#canvasEditModal').on('shown.bs.modal', function () {
+        initCanvas();
+      });
+
+      document.getElementById('brushSize').addEventListener('input', function () {
+        brushSize = this.value;
+      });
+
+      document.getElementById('brushTool').addEventListener('click', function () {
+        mode = 'draw';
+      });
+
+      document.getElementById('eraserTool').addEventListener('click', function () {
+        mode = 'erase';
+      });
+
+      document.getElementById('resetTool').addEventListener('click', function () {
+        // clear the layer
+        layer.destroyChildren();
+        layer.add(background);
+        layer.draw();
+      });
+
+      document.getElementById('saveCanvasEdits').addEventListener('click', function () {
+        document.getElementById('sketch-image').value = stage.toDataURL({pixelRatio: 1});
+        $('#canvasEditModal').modal('hide');
+        // show the thumbnail in the image staging
+        const stagingElement = document.getElementById('image_display_area');
+        const divElement = stagingElement.appendChild(document.createElement('div'));
+        divElement.innerHTML = `
+          <div class="badge bg-info d-flex align-items-center my-2">
+              <strong>SKETCH <i class="fa fa-lightbulb me-4"></i></strong>
+              <img src="${stage.toDataURL({pixelRatio: 0.5})}" class="img-fluid rounded" style="max-width: 100px;" alt="Image">
+          </div>
+          `;
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const fileInput = document.getElementById('edit-image');
+      const maskInput = document.getElementById('edit-image-mask');
+      let stage, layer, imageNode;
+      let isErasing = false;
+      let brushSize = 50;
+      let originalImage;
+
+      fileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const img = new Image();
+            img.onload = function () {
+              originalImage = img.src;
+              if (stage) {
+                stage.destroy();
+              }
+              stage = new Konva.Stage({
+                container: 'imageCanvas', // Make sure this matches your canvas container ID
+                width: img.width,
+                height: img.height
+              });
+
+              layer = new Konva.Layer();
+              stage.add(layer);
+
+              imageNode = new Konva.Image({
+                image: img,
+                width: img.width,
+                height: img.height
+              });
+
+              layer.add(imageNode);
+              layer.draw();
+
+              stage.on('mousedown touchstart', function () {
+                isErasing = true;
+              });
+
+              stage.on('mouseup touchend', function () {
+                isErasing = false;
+              });
+
+              stage.on('mousemove touchmove', function (e) {
+                if (!isErasing) {
+                  return;
+                }
+
+                const pos = stage.getPointerPosition();
+                layer.add(new Konva.Circle({
+                  x: pos.x,
+                  y: pos.y,
+                  radius: brushSize / 2,
+                  fill: 'black',
+                  globalCompositeOperation: 'destination-out'
+                }));
+                layer.batchDraw();
+              });
+
+              $('#imageEditModal').modal('show');
+            };
+            img.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      document.getElementById('brushSize').addEventListener('input', function () {
+        brushSize = this.value;
+      });
+
+      document.getElementById('eraserTool').addEventListener('click', function () {
+        // clear the layer
+        layer.destroyChildren();
+        layer.add(imageNode);
+        layer.draw();
+      });
+
+      document.getElementById('saveImageEdits').addEventListener('click', function () {
+        maskInput.value = stage.toDataURL({pixelRatio: 1});
+        $('#imageEditModal').modal('hide');
+      });
+    });
+
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('attach-doc').addEventListener('change', function (event) {
+        const fileList = Array.from(event.target.files);
+        const fileDisplayArea = document.getElementById('file_display_area');
+        fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media File Staging</strong></small><hr>';
+        fileList.forEach((file, index) => {
+          const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+          const fileExtension = file.name.split('.').pop().toLowerCase();
+          const iconMap = {
+            'jpg': 'jpg.png',
+            'png': 'png.png',
+            'gif': 'gif.png',
+            'svg': 'svg.png',
+            'bmp': 'bmp.png',
+            'tiff': 'tiff.png',
+            'mp3': 'mp3.png',
+            'wav': 'wav.png',
+            'flac': 'flac.png',
+            'aac': 'aac.png',
+            'ogg': 'ogg.png',
+            'mp4': 'mp4.png',
+            'avi': 'avi.png',
+            'mkv': 'mkv.png',
+            'mov': 'mov.png',
+            'zip': 'zip.png',
+            'rar': 'rar.png',
+            'tar': 'tar.png',
+            'py': 'py.png',
+            'js': 'js.png',
+            'ts': 'ts.png',
+            'php': 'php.png',
+            'css': 'css.png',
+            'html': 'html.png',
+            'java': 'java.png',
+            'c': 'c.png',
+            'cpp': 'cpp.png',
+            'h': 'h.png',
+            'sh': 'sh.png',
+            'go': 'go.png',
+            'dart': 'dart.png',
+            'yml': 'yml.png',
+            'yaml': 'yaml.png',
+            'sql': 'sql.png',
+            'pkl': 'pkl.png',
+            'csv': 'csv.png',
+            'xlsx': 'xlsx.png',
+            'json': 'json.png',
+            'xml': 'xml.png',
+            'tsv': 'tsv.png',
+            'docx': 'docx.png',
+            'pptx': 'pptx.png',
+            'pdf': 'pdf.png',
+            'txt': 'txt.png',
+          };
+          const icon = iconMap[fileExtension] || 'file.png';
+          let filename_root = file.name.split(".")[0];
+          let filename_extension = file.name.split(".")[1];
+          if (filename_root.length > 64) {
+            filename_root = filename_root.substring(0, 64) + '...';
+          }
+          const fileElement = document.createElement('div');
+          fileElement.classList.add('col-lg-12');
+          fileElement.innerHTML = `
+                    <div class="badge bg-lighter d-flex align-items-center my-2">
+                        <img src="{% static 'img/icons/misc/' %}${icon}" alt="${fileExtension}" width="15" class="me-2">
+                        <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                        <button type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                    </div>
+                `;
+          fileDisplayArea.appendChild(fileElement);
+        });
+
+        document.querySelectorAll('.btn-close').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('attach-doc').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+        });
+      });
+
+      document.getElementById('attach-image').addEventListener('change', function (event) {
+        const fileList = Array.from(event.target.files);
+        const fileDisplayArea = document.getElementById('image_display_area');
+        fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media Image Staging</strong></small><hr>';
+        fileList.forEach((file, index) => {
+          const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+          const fileExtension = file.name.split('.').pop().toLowerCase();
+          const image_data = null; // ????
+          let filename_root = file.name.split(".")[0];
+          let filename_extension = file.name.split(".")[1];
+          if (filename_root.length > 64) {
+            filename_root = filename_root.substring(0, 64) + '...';
+          }
+          const fileElement = document.createElement('div');
+          fileElement.classList.add('col-lg-12');
+
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const imageUrl = e.target.result;
+            fileElement.innerHTML = `
+                          <div class="badge bg-lighter d-flex align-items-center my-2">
+                              <img src="${imageUrl}" alt="${fileExtension}" width="50" class="me-2">
+                              <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                              <button id="btn-close-image-${index}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                          </div>
+                      `;
+            fileDisplayArea.appendChild(fileElement);
+
+            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function () {
+              const index = this.getAttribute('data-index');
+              fileList.splice(index, 1);
+              const dataTransfer = new DataTransfer();
+              fileList.forEach(file => dataTransfer.items.add(file));
+              document.getElementById('attach-image').files = dataTransfer.files;
+              this.parentElement.remove();
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+
+        document.querySelectorAll('.btn-close').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('attach-doc').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+        });
+
+        document.getElementById('.btn-close-image').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('attach-image').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+        });
+      });
+
+      document.getElementById('edit-image').addEventListener('change', function (event) {
+        const fileList = Array.from(event.target.files);
+        const fileDisplayArea = document.getElementById('image_display_area');
+        fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Image Modification Staging</strong></small><hr>';
+        fileList.forEach((file, index) => {
+          const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+          const fileExtension = file.name.split('.').pop().toLowerCase();
+          const image_data = null; // ????
+          let filename_root = file.name.split(".")[0];
+          let filename_extension = file.name.split(".")[1];
+          if (filename_root.length > 64) {
+            filename_root = filename_root.substring(0, 64) + '...';
+          }
+          const fileElement = document.createElement('div');
+          fileElement.classList.add('col-lg-12');
+
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const imageUrl = e.target.result;
+            fileElement.innerHTML = `
+                          <div class="badge bg-warning d-flex align-items-center my-2">
+                              <strong>MOD <i class="fa fa-bolt-lightning me-4"></i></strong>
+                              <img src="${imageUrl}" alt="${fileExtension}" width="50" class="me-2">
+                              <span class="h6 mb-0 text-white"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                              <button id="btn-close-image-${index}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                          </div>
+                      `;
+            fileDisplayArea.appendChild(fileElement);
+
+            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function () {
+              const index = this.getAttribute('data-index');
+              fileList.splice(index, 1);
+              const dataTransfer = new DataTransfer();
+              fileList.forEach(file => dataTransfer.items.add(file));
+              document.getElementById('attach-image').files = dataTransfer.files;
+              this.parentElement.remove();
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+
+        document.querySelectorAll('.btn-close').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('attach-doc').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+        });
+
+        document.getElementById('.btn-close-image').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('attach-image').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+        });
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const recordButton = document.getElementById('recordAudioButton');
+      const audioDisplayArea = document.getElementById('audio_display_area');
+      const audioDataInput = document.getElementById('record_audio');
+      console.log(audioDataInput);
+      let mediaRecorder;
+      let audioChunks = [];
+      let audioIndex = 0; // Global index for audio elements
+
+      // Function to display recorded audio and handle Base64 encoding
+      function displayAudio(name, size, audioBlob) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+          const base64data = reader.result;
+          console.log('Base64 data:', base64data);
+          audioDataInput.value = base64data; // Store Base64 data in hidden input
+
+          if (audioDisplayArea.childElementCount === 0) {
+            audioDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Audio Recording Staging</strong></small><hr>';
+          }
+
+          const audioElement = document.createElement('div');
+          const audioURL = URL.createObjectURL(audioBlob);
+
+          audioElement.classList.add('badge', 'bg-lighter', 'd-flex', 'align-items-center', 'my-1');
+          audioElement.setAttribute('data-index', audioIndex.toString());
+
+          audioElement.innerHTML = `
+        <audio controls class="ms-4">
+            <source src="${audioURL}" type="audio/webm">
+            Unsupported Browser for Audio Playback
+        </audio>
+        <span class="h6 mb-0 ms-4 text-body"><strong>${name}</strong> (${size} KB)</span>
+        <button id="btn-close-audio-${audioIndex}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${audioIndex}"></button>
+      `;
+
+          audioDisplayArea.appendChild(audioElement);
+
+          audioElement.querySelector(`#btn-close-audio-${audioIndex}`).addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            const elementToRemove = document.querySelector(`.badge[data-index="${index}"]`);
+            if (elementToRemove) {
+              elementToRemove.remove();
+            }
+            if (audioDisplayArea.querySelectorAll('.badge').length === 0) {
+              audioDisplayArea.innerHTML = '';
+            }
+            audioDataInput.value = ""; // Clear the hidden input
+          });
+
+          audioIndex++;
+        };
+        reader.readAsDataURL(audioBlob); // Convert audio blob to Base64
+      }
+
+      recordButton.addEventListener('click', async () => {
+        if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+            startRecording(stream);
+            recordButton.className = 'speech-to-text ti ti-hand-stop ti-md btn btn-sm btn-text-danger btn-icon rounded-pill cursor-pointer text-danger';
+          } catch (err) {
+            console.error('Failed to start recording:', err);
+          }
+        } else if (mediaRecorder.state === 'recording') {
+          mediaRecorder.stop();
+          recordButton.className = 'speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading';
+        }
+      });
+
+      function startRecording(stream) {
+        let options = {mimeType: 'audio/webm'};
+        mediaRecorder = new MediaRecorder(stream, options);
+        mediaRecorder.ondataavailable = event => {
+          audioChunks.push(event.data);
+        };
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+          displayAudio(`recording_${Date.now()}.webm`, (audioBlob.size / 1024).toFixed(2), audioBlob);
+          audioChunks = [];
+        };
+        mediaRecorder.start();
+      }
+    });
+  </script>
+
+{% endblock %}

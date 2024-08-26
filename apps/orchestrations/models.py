@@ -5,6 +5,7 @@ from apps.assistants.utils import generate_random_string
 
 
 ORCHESTRATION_QUERY_LOG_TYPES = [
+    ("user", "User"),
     ("info", "Info"),
     ("error", "Error"),
     ("worker_request", "Worker Request"),
@@ -14,6 +15,7 @@ ORCHESTRATION_QUERY_LOG_TYPES = [
 
 
 class OrchestrationQueryLogTypesNames:
+    USER = "user"
     INFO = "info"
     ERROR = "error"
     WORKER_REQUEST = "worker_request"
@@ -187,12 +189,14 @@ class OrchestrationQuery(models.Model):
             models.Index(fields=["maestro", "created_by_user", "created_at", "updated_at"]),
             models.Index(fields=["maestro", "last_updated_by_user", "created_at", "updated_at"]),
         ]
-        unique_together = [["maestro", "query_text"]]
 
 
 class OrchestrationQueryLog(models.Model):
     orchestration_query = models.ForeignKey(OrchestrationQuery, on_delete=models.CASCADE, related_name='logs')
     log_type = models.CharField(max_length=100, choices=ORCHESTRATION_QUERY_LOG_TYPES, default="info")
+
+    # Not always populated; only for worker assistant tool requests and responses
+    context_worker = models.ForeignKey('assistants.Assistant', on_delete=models.SET_NULL, blank=True, null=True)
 
     log_text_content = models.TextField()
     log_image_contents = models.JSONField(default=list, blank=True, null=True)

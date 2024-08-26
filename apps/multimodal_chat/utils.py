@@ -16,10 +16,12 @@ BIMOD_PROCESS_END = "<[bimod_process_end]>"
 BIMOD_NO_TAG_PLACEHOLDER = "<[bimod_no_tag]>"
 
 
-def send_log_message(log_message, stop_tag=BIMOD_STREAMING_END_TAG):
+def send_log_message(log_message, chat_id, stop_tag=BIMOD_STREAMING_END_TAG):
     channel_layer = get_channel_layer()
+    group_name = f'logs_{chat_id}'
+
     async_to_sync(channel_layer.group_send)(
-        'logs',
+        group_name,
         {
             'type': 'send_log',
             'message': log_message,
@@ -27,7 +29,7 @@ def send_log_message(log_message, stop_tag=BIMOD_STREAMING_END_TAG):
     )
     if stop_tag == BIMOD_STREAMING_END_TAG:
         async_to_sync(channel_layer.group_send)(
-            'logs',
+            group_name,
             {
                 'type': 'send_log',
                 'message': BIMOD_STREAMING_END_TAG,
@@ -35,7 +37,7 @@ def send_log_message(log_message, stop_tag=BIMOD_STREAMING_END_TAG):
         )
     elif stop_tag == BIMOD_PROCESS_END:
         async_to_sync(channel_layer.group_send)(
-            'logs',
+            group_name,
             {
                 'type': 'send_log',
                 'message': BIMOD_PROCESS_END,
@@ -46,7 +48,7 @@ def send_log_message(log_message, stop_tag=BIMOD_STREAMING_END_TAG):
             pass
         else:
             async_to_sync(channel_layer.group_send)(
-                'logs',
+                group_name,
                 {
                     'type': 'send_log',
                     'message': stop_tag,

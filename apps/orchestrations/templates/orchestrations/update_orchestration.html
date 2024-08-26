@@ -89,7 +89,7 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                In this page, you can update the information of an orchestration. You can change the name, description, instructions, audience, tone, and the image of the orchestration. Once you have updated the information, click on the "Update Information" button to save the changes.
+                On this page, you can update the information of an orchestration. You can change the name, description, instructions, audience, tone, and the image of the orchestration. Once you have updated the information, click on the "Update Information" button to save the changes.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
               </button>
@@ -116,6 +116,8 @@
 
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
+            <input type="hidden" name="organization" value="{{ orchestration.organization.id }}">
+            <input type="hidden" name="llm_model" value="{{ orchestration.llm_model.id }}">
             <div class="row p-8">
               <div class="col-6 mb-6">
                 <label class="form-label" for="name">Name</label>
@@ -172,6 +174,17 @@
                 <input type="file" class="form-control" id="maestro_image" name="maestro_image"/>
                 <div class="form-text">Upload an image to represent this orchestration.</div>
               </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="workers">Select Assistants (Workers)</label>
+                <select class="form-select select2" id="workers" name="workers" multiple>
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}" {% if assistant.id in selected_workers %}selected{% endif %}>
+                      {{ assistant.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">Select the assistants connected to this orchestration.</div>
+              </div>
             </div>
             <hr>
             <button type="submit" class="btn btn-primary d-grid mt-8 w-25"><strong>Update Orchestration</strong></button>
@@ -205,5 +218,4 @@
       });
     });
   </script>
-
 {% endblock %}

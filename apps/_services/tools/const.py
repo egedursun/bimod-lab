@@ -1,6 +1,7 @@
 
 
 class ToolTypeNames:
+    ##############################
     SQL_QUERY_EXECUTION = 'SQL Query Execution'
     NOSQL_QUERY_EXECUTION = 'NoSQL Query Execution'
     KNOWLEDGE_BASE_QUERY_EXECUTION = 'Knowledge Base Query Execution'
@@ -19,6 +20,9 @@ class ToolTypeNames:
     IMAGE_MODIFICATION = 'Image Modification'
     IMAGE_VARIATION = 'Image Variation'
     AUDIO_PROCESSING = 'Audio Processing'
+    ##############################
+    ORCHESTRATION_WORKER_ASSISTANT_CALL = 'Orchestration Worker Assistant Call'
+    ##############################
 
 
 def get_no_knowledge_base_connection_error_log(assistant_name, chat_name):

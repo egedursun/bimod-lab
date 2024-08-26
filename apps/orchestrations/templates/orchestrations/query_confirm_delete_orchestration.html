@@ -2,14 +2,14 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Delete Orchestration{% endblock %}
+{% block title %}Delete Query{% endblock %}
 
 {% block content %}
   <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h3 class="mb-0"><strong>Delete Orchestration</strong></h3>
+          <h3 class="mb-0"><strong>Delete Query</strong></h3>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
@@ -24,17 +24,17 @@
           {% endif %}
           <form method="post">
             {% csrf_token %}
-            <p>Are you sure you want to delete the orchestration <strong>"{{ orchestration.name }}"</strong>?</p><br>
+            <p>Are you sure you want to delete the query <strong>"{{ query.query_text }}"</strong>?</p><br>
             <h6><strong>
-              • This operation will result in the complete removal of the orchestration from the system.
+              • This operation will result in the complete removal of the query from the system.
               <br>
-              • This deletion operation is completely irreversible and will entirely remove the orchestration and all
-              associated data from the system.
+              • This deletion operation is completely irreversible and will entirely remove the query and all
+              associated logs from the system.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations-v2/i2-88.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end">
+            <img src="{% static 'img/custom-illustrations-v2/i2-102.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end">
             <hr>
-            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the orchestration.</button>
-            <a href="{% url 'orchestrations:list' %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the deletion
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the query.</button>
+            <a href="{% url 'orchestrations:query_list' pk=query.maestro.id %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the deletion
               operation.</a>
           </form>
         </div>

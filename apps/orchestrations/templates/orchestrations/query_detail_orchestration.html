@@ -1,0 +1,308 @@
+{% extends layout_path %}
+{% load markdown_extras %}
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Query Detail{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      // Confirmation dialog for buttons
+      document.querySelectorAll('.rerun-process-btn').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const url = button.getAttribute('data-url');
+
+          Swal.fire({
+            title: 'Rerun the Process?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, rerun the process.',
+            customClass: {
+              confirmButton: 'btn btn-warning me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = url;
+            }
+          });
+        });
+      });
+    });
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+
+  <a href="{% url 'orchestrations:query_list' query.maestro.id %}">
+    <button class="btn btn-secondary mt-4 mb-0">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to Orchestration</strong>
+    </button>
+  </a>
+
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mt-4" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-93.png' %}" width="25%" class="justify-content-end me-8"
+         style="border-radius: 25px;">
+    <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        On this page, you can create Orchestration processes for complex tasks, and run them. You can also use this
+        page to track the history of your Orchestration processes. Fill in the form with the required information and
+        click "Run Process" to create a new Orchestration process.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <div class="card border border-success border-2 rounded mt-4">
+    <div class="card-body">
+      <div class="d-flex align-items-center">
+        <div class="flex-shrink-0 avatar avatar-xl">
+          <img src="
+
+
+            {% if query.maestro.maestro_image %}{{ query.maestro.maestro_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+               alt="{{ query.maestro.name }}" class="rounded">
+        </div>
+        <div class="flex-grow-1 ms-4">
+          <h6 class="card-title mb-2">
+            <i class="fa fa-bolt-lightning text-warning me-4"></i>
+            <strong>{{ query.query_text }}</strong>
+          </h6>
+          <small class="text-muted mb-0">
+            <i class="fa fa-clock me-4"></i>
+            <strong>Process initiated on {{ query.created_at|date:"F j, Y, g:i a" }}</strong>
+          </small>
+        </div>
+        <div class="ms-auto">
+          <div class="dropdown">
+            <button class="btn btn-icon dropdown-toggle hide-arrow" type="button" id="queryOptionsMenu"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="ti ti-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="queryOptionsMenu">
+              <li>
+                <a class="dropdown-item text-warning rerun-process-btn"
+                   data-url="{% url 'orchestrations:query_rerun' pk=query.maestro.id query_id=query.id %}"
+                   href="{% url 'orchestrations:query_rerun' pk=query.maestro.id query_id=query.id %}">
+                  <i class="fa fa-play me-4"></i>
+                  <strong>Rerun Process</strong>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item text-danger"
+                   href="{% url 'orchestrations:query_delete' pk=query.maestro.id query_id=query.id %}">
+                  <i class="fa fa-trash me-4"></i>
+                  <strong>Delete</strong>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="card mt-4">
+    <div class="card-header">
+      <h5 class="card-title mb-0">
+        <i class="fa fa-record-vinyl me-4"></i>
+        <strong>Orchestration Process Logs</strong>
+        <div class="mt-4">
+          <small class="text-muted">
+            <i class="fa fa-info-circle me-4"></i>
+            <strong>
+              Here you can find the logs of the orchestration process. Logs are generated by the system to help you
+              understand the process and troubleshoot any issues that may arise during the process. Logs will be
+              refreshed once the process is completed. However, you can track the process in real-time by using the
+              stream viewer feature as well.
+            </strong>
+          </small>
+        </div>
+      </h5>
+    </div>
+
+    <hr>
+
+    <div
+      class="card card-border-shadow-primary bg-label-primary p-2 ms-4 me-4 mt-4 mb-4 border border-1 border-primary rounded"
+      style="max-height: 300px;">
+      <button class="btn d-flex ms-auto p-1 mb-1" style="float: right;"
+              onclick="if(this.parentElement.style.maxHeight === '300px') {this.parentElement.style.maxHeight = '40px'; this.parentElement.classList.add('overflow-hidden'); this.parentElement.classList.remove('overflow-auto');} else {this.parentElement.style.maxHeight = '300px'; this.parentElement.classList.add('overflow-auto'); this.parentElement.classList.remove('overflow-hidden');}">
+        <i class="fa fa-dot-circle text-white"></i>
+      </button>
+      <small class="text-white p-1 mb-1"><strong>
+        <i class="fa fa-bolt-lightning me-2"></i>
+        Process Streamer
+      </strong></small>
+      <small class="mb-2 text-dark ms-6">
+        <i class="fa fa-info-circle me-2"></i>
+        This is the real-time stream viewer for the orchestration process. You can track the process in real-time by
+        using this feature. The stream viewer will be updated as the process progresses. You can also use the logs
+        feature to view the logs of the process once it is completed. The stream viewer will be refreshed once the
+        process is completed, along with the page.
+      </small>
+      <div id="non-tool-markdown-content" style="max-height: 400px; overflow: auto;"
+           class="bg-white text-black p-4 markdown-content border border-primary border-4 rounded">
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="card-body mt-4">
+      {% if logs %}
+        <ul class="list-unstyled">
+          {% for log in logs %}
+            <li class="mb-3 card card-border-shadow-primary border border-3 border-primary p-4">
+              <h6
+                class="w-25 label bg-label-{% if log.log_type == 'user' %}primary{% elif log.log_type == 'worker_request' %}info{% elif log.log_type == 'worker_response' %}info{% elif log.log_type == 'maestro_answer' %}success{% elif log.log_type == 'error' %}danger{% endif %} p-2 rounded">
+                <i
+                  class="fa fa-{% if log.log_type == 'user' %}user{% elif log.log_type == 'worker_request' %}cogs{% elif log.log_type == 'worker_response' %}cogs{% elif log.log_type == 'maestro_answer' %}check{% elif log.log_type == 'error' %}exclamation-triangle{% endif %} me-4"></i>
+                <strong>
+                  {{ log.log_type|field_name_to_label }}
+                </strong>
+              </h6>
+              <p class="markdown-content" style="text-align: justify;">{{ log.log_text_content|markdownify }}</p>
+              <hr>
+              {% if log.log_image_contents %}
+                <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image
+                  Attachments</strong></p>
+                {% for image in log.log_image_contents %}
+                  <img src="{{ image }}" class="img-fluid mt-4 rounded"
+                       style="max-width:20%" alt="Image">
+                {% endfor %}
+              {% endif %}
+              <hr>
+              {% if log.log_file_contents %}
+                <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4"><strong>File
+                  Attachments</strong></p>
+                {% for file in log.log_file_contents %}
+                  <div class="label bg-label-secondary p-2 rounded mt-4">
+                    <i class="fa fa-file me-4 bg-label-secondary p-2 rounded"></i>
+                    <span class="text mb-2 bg-label-secondary rounded p-2">
+                      <strong>
+                        <a href="{{ file|linebreaksbr }}"
+                           target="_blank">{{ file|linebreaksbr|slice:":100" }}...</a>
+                      </strong>
+                    </span>
+                  </div>
+                {% endfor %}
+              {% endif %}
+              <small class="text-muted mt-4">
+                <i class="fa fa-clock me-4"></i>
+                <strong>Logged on {{ log.created_at|date:"F j, Y, g:i a" }}</strong>
+              </small>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="text-dark mb-2 mt-2">
+          <div class="card-body">
+            <div class="alert alert-danger p-8 border border-danger border-2 rounded" role="alert">
+              <i class="fa fa-exclamation-triangle me-4"></i>
+              <strong>No logs have been found for this orchestration process. This is an unexpected type of error,
+                since orchestration processes are expected to run as soon as they are created. It is likely that the
+                Orchestration process have failed silently before startup, since the issues that begin after startup
+                processes generally appear within the process logs unlike showing up as a lack of logs. Please contact
+                your administrator for further assistance, or reach out to the support team to guide you with potential
+                troubleshooting steps.</strong>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const element = document.getElementById('non-tool-markdown-content');
+      let accumulatedContent = ''; // To accumulate chunks for a single stream
+      let socket = null;
+      const maxRetries = 1000;
+      let retryCount = 0;
+
+      function connectWebSocket() {
+        // Determine the correct WebSocket protocol based on the current page's protocol
+        let protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+        const queryId = '{{ query.id }}';
+        socket = new WebSocket(protocol + window.location.host + `/ws/orchestration_logs/${queryId}/`);
+        socket.onmessage = function (event) {
+          const data = JSON.parse(event.data);
+          let newChunk = data.log;
+          if (newChunk.includes('<[bimod_streaming_end]>')) {
+            // Wrap the accumulated content in a new div with the 'bg-label-primary' class
+            element.innerHTML += `<div class="bg-label-primary rounded m-2 p-4"><strong class="text-white">${accumulatedContent}</strong></div>`;
+            element.scrollTo({
+              top: element.scrollHeight + 1000,
+              behavior: 'smooth'
+            });
+            // Reset the accumulated content for the next stream
+            accumulatedContent = '';
+          } else if (newChunk.includes('<[bimod_process_end]>')) {
+            // Force refresh the page with the same chat id
+            console.log("End of processing detected...");
+            socket.close(); // Close the WebSocket connection
+            // Automatically refresh the page
+            window.location.href = `/app/orchestrations/query/{{ query.maestro.id }}/detail/{{ query.id }}/`;
+          } else {
+            // Accumulate chunks for the current stream
+            accumulatedContent += newChunk;
+          }
+        };
+        socket.onerror = function (event) {
+          console.error("WebSocket error", event);
+          socket.close();
+        };
+        socket.onclose = function (event) {
+          console.log("WebSocket connection closed", event);
+          if (retryCount < maxRetries) {
+            retryCount++;
+            console.log(`Reconnecting... attempt ${retryCount}`);
+            setTimeout(connectWebSocket, 2000); // Reconnect after 2 seconds
+          } else {
+            console.error("Max reconnection attempts reached. Unable to reconnect.");
+          }
+        };
+      }
+
+      connectWebSocket(); // Initial connection attempt
+    });
+  </script>
+
+{% endblock %}

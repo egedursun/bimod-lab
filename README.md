@@ -95,8 +95,8 @@
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Total Lines of Code by 2024-08-16: (Day: 49) **130,024,000**
-- Total Code Files by 2024-08-10: (Day: 43) **48,200**
+- Total Lines of Code by 2024-08-23: (Day: 56) **140,024,000**
+- Total Code Files by 2024-08-23: (Day: 56) **50,100**
 
 ---
 
@@ -118,31 +118,63 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 ---
 
-1. [ ] Implement [FINE TUNING] for the application.
-  - [ ] User can "ADD" a fine-tuned model from 'OpenAI' files to 'Bimod.io' application.
-  - [ ] User can "SELECT" this fine-tuned model while creating an LLM Core for the application.
-  - [ ] User can "REMOVE" this fine-tuned model from Bimod.io application.
-  - [ ] There won't be an update functionality for the fine-tuned models. (but the LLM Cores are.)
-  - [ ] The users can "LIST" the fine-tuned models in the application.
-  - [ ] The users can "TRAIN" their fine-tuned model in a page, by calling OpenAI API with their file.
-  - [ ] Test the functionality.
+**URGENT:**
+-> Research about the authentication of websocket logs, do everyone see the logs or only the person who sends the message?
+    - Fix according to the research.
+-> Integrate Website / User Analytics script to your website to track the metrics and KPIs.
+-> [HOLDINGS / BIMOD.IO ENDEAVORS] as concrete implementations with the assistants. Completely autonomous systems.
+    Mostly for creating Business presence and prestige.
 
-1. [ ] Implement the [ORCHESTRATION] manager.
-  - [ ] Include the "ASSISTANTS" for Orchestration in the "CREATE" page.
-  - [ ] Solve the image not showing up issue in "UPDATE" page.
-  - [ ] Implement the "UPDATE" page for the Orchestration manager.
-  - [ ] Implement the "DELETE" page for the Orchestration manager.
-  - [ ] Implement the "LIST" page for the Orchestration manager.
-  - [ ] Implement the "QUERY" page for the Orchestration manager.
-  - [ ] Implement the "SERVICE" for the Orchestration manager.
-  - [ ] Test the functionality.
+---
+
+**PRIMARY FEATURE:**
+
+1. [ ] Implement [FINE TUNING] for the application.
+  - [ ] [DATA MODEL] definition for the fine-tuned models.
+  - [ ] User can [ADD] a fine-tuned model from 'OpenAI' files to 'Bimod.io' application.
+    - [ ] [CREATE / ADD PAGE] for the fine-tuned models.
+    - [ ] [CREATE / ADD VIEW] for the fine-tuned models.
+  - [ ] User can [SELECT & USE] this fine-tuned model while creating an LLM Core for the application.
+    - [ ] Changes in the [LLM CORE DATA MODEL]
+    - [ ] Changes in the [LLM CORE VIEWS]
+    - [ ] Changes in the [LLM CORE CREATION PAGE]
+    - [ ] Changes in teh [LLM CORE UPDATE PAGE]
+  - [ ] User can [REMOVE] this fine-tuned model from Bimod.io application.
+    - [ ] [REMOVE VIEW] for the fine-tuned models.
+    - [ ] [REMOVE PAGE] for the fine-tuned models.
+  - [ ] The users can [LIST] the fine-tuned models in the application.
+    - [ ] [LIST PAGE] for the fine-tuned models.
+    - [ ] [LIST VIEW] for the fine-tuned models.
+  - [ ] The users can [TRAIN] their fine-tuned model in a page, by calling OpenAI API with their file.
+    - [ ] [TRAIN PAGE] for the fine-tuned models.
+    - [ ] [TRAIN VIEW] for the fine-tuned models.
+    - [ ] [TRAIN FUNCTIONALITY], includes the addition of the trained model to the LLM core 
+              choices. connected to ADD functionality.
+  - [ ] [TEST OVERALL] functionality.
+
+
+1. [ ] [FORUM POINTS & GIFT CREDITS] must be given to users to motivate them:
+   - For between [0 to n1X] points, for each [(n1X-0)/m1] incremented points => [$p1] gifted to the user.
+   - For between [n1X to n2X] points, for each [(n2X-n1X)/m2] incremented points => [$p2] gifted to the user.
+   - For between [n2X to n3X] points, for each [(n3X-n2X/m3)] incremented points => [$p3] gifted to the user.
+   - For between [n3X to n4X] points, for each [(n4X-n3X/m4)] incremented points => [$p4] gifted to the user.
+   - For between [n4X to +INF] points, for each [(NX - n4X)/m5] incremented points => [$p5] gifted to the user.
+   - [ ] { 0, n1X, n2X, n3X, n4X, +INF } = { 0, ..., ..., ..., ..., +INF }  # Determine the prize value update intervals.
+     - [ ] { m1, m2, m3, m4, m5 } = { ..., ..., ..., ..., ... }             # Determine the prize grant intervals.
+       - [ ] { p1, p2, p3, p4, p5 } = { ..., ..., ..., ..., ... }           # Determine the prize amounts for grant points.
+
 
 1. [ ] Implement [PAYMENT GATEWAY] for the application.
-  - [ ] Integrate the payment in the "TRANSACTIONS" page for adding balance.
-  - [ ] Integrate the "AUTO-SUBSCRIPTION" type payment in the "TRANSACTIONS" page (for automatic balance top-ups)
-  - [ ] Integrate credit card storage in the "PROFILE" page which is necessary for automated payments.
-  - [ ] Integrate the "PAYMENT HISTORY & RECEIPTS" page for the application.
-  - [ ] Test the functionality.
+  - [ ] Integrate the payment in the [TRANSACTIONS] page for adding balance.
+  - [ ] Integrate the [AUTO-SUBSCRIPTION] type payment in the [TRANSACTIONS] page (for automatic balance top-ups)
+  - [ ] Integrate [CREDIT CARD STORAGE] in the [PROFILE] page which is necessary for automated payments.
+  - [ ] Integrate the [PAYMENT HISTORY & RECEIPTS] page for the application.
+    - [ ] [PAYMENT HISTORY PAGE] for the application.
+    - [ ] [PAYMENT HISTORY VIEW] for the application.
+    - [ ] [PAYMENT RECEIPTS PAGE] for the application.
+    - [ ] [PAYMENT RECEIPT VIEW] for the application.
+    - [ ] [PAYMENT RECEIPT PRINT FUNCTIONALITY VIEW] for the application.
+  - [ ] [TEST OVERALL] functionality.
 
 ---
 RELEASE v0.2.0 [RELEASE: BETA] version of the application.
@@ -150,39 +182,48 @@ RELEASE v0.2.0 [RELEASE: BETA] version of the application.
 
 *After first deployment:*
 
-1. [ ] [NER] integration. [TECHNICAL @EGE]
-    - [ ] Implement the "IDENTIFICATION" system for the Named Entity Recognition.
-    - [ ] Implement the "ENCODING" system for the Named Entity Recognition.
-    - [ ] Implement the "DECODING" system for the Named Entity Recognition.
-    - [ ] Integrate the "KEY-VALUE STORAGE PAIRS" for the Named Entity Recognition management.
-    - [ ] Test the functionality.
+1. [ ] [NER] integration.
+    - [ ] Implement the [IDENTIFICATION] system for the Named Entity Recognition.
+    - [ ] Implement the [ENCODING] system for the Named Entity Recognition.
+    - [ ] Implement the [DECODING] system for the Named Entity Recognition.
+    - [ ] Integrate the [KEY-VALUE STORAGE PAIRS] for the Named Entity Recognition management.
+    - [ ] [TEST OVERALL] functionality.
 
-2. [ ] [CODE REPOSITORY] integration for the application. [TECHNICAL @EGE]
-    - [ ] Implement the "INDEXING SYSTEM" for the Code Repository.
-    - [ ] Implement the "SEARCHING SYSTEM" for the Code Repository.
-    - [ ] Implement the "PAGES" for the Code Repository.
-    - [ ] Test the functionality.
+2. [ ] [CODE REPOSITORY] integration for the application.
+    - [ ] Implement the [INDEXING SYSTEM] for the Code Repository.
+    - [ ] Implement the [SEARCHING SYSTEM] for the Code Repository.
+    - [ ] Implement the [PAGES] for the Code Repository.
+    - [ ] Implement the [SERVICE] for the Code Repository.
+    - [ ] Implement the [VIEWS] for the Code Repository.
+    - [ ] Implement the [MODELS] for the Code Repository.
+    - [ ] Implement the [URLS] for the Code Repository.
+    - [ ] [TEST OVERALL] functionality.
 
-3. [ ] [DRIVE FILES] integration for the application. [TECHNICAL @EGE]
-    - [ ] Implement the "SERVICE" for file retrieval, listing, downloading, and adding to Bimod system.
-    - [ ] Implement the "PAGES" for adding the drive files to the media storages.
-    - [ ] Test the functionality.
+3. [ ] [DRIVE FILES] integration for the application.
+    - [ ] Implement the [SERVICES] for file retrieval, listing, downloading, and adding to Bimod system.
+    - [ ] Update the [PAGES] for adding the drive files to the media storages.
+    - [ ] Update the [VIEWS] for the drive files addition feature.
+    - [ ] [TEST OVERALL] functionality.
 
-4. [ ] [META GUIDE] assistant for manipulating the application as a helper. [TECHNICAL @EGE]
-    - [ ] Implement an "ASSISTANT" that can automatically create data models (e.g. organizations, models, asisstants, etc.)
-    - [ ] Implement an "PAGES" for the assistant to be able to manipulate the application.
-    - [ ] Test the functionality.
+4. [ ] [META GUIDE] assistant for manipulating the application as a helper.
+    - [ ] Implement an [META-ASSISTANT] that can automatically create data models (e.g. organizations, models, asisstants, etc.)
+    - [ ] Implement an [PAGES] for the assistant to be able to manipulate the application.
+    - [ ] Implement an [VIEWS] for the assistant to be able to manipulate the application.
+    - [ ] Implement an [SERVICES] for the assistant to be able to manipulate the application.
+    - [ ] Implement an [MODELS] for the assistant to be able to manipulate the application.
+    - [ ] Implement an [URLS] for the assistant to be able to manipulate the application.
+    - [ ] [TEST OVERALL] functionality.
 
-5. [ ] [USER DOCUMENTATION] page development. [TECHNICAL @MERT]
-    - [ ] Implement the "READABLE DOCS" pages for better user experience.
+5. [ ] [USER DOCUMENTATION] page development.
+    - [ ] Implement the [READABLE DOCUMENTATION] pages for better user experience.
 
-6. [ ] [TERMS & CONDITIONS] development with the law firms. [BUSINESS/LEGAL @HUSEYIN]
-    - [ ] Needs to be designed by legal experts.
-    - [ ] Implement the "TERMS & CONDITIONS" page for the application.
+6. [ ] [TERMS & CONDITIONS] development with the law firms.
+    - [ ] Needs to be [LEGALLY DESIGNED] by legal experts.
+    - [ ] Implement the [TERMS & CONDITIONS] page for the application.
 
-7. [ ] [PRIVACY POLICY] development with the law firms. [BUSINESS/LEGAL @HUSEYIN]
-    - [ ] Needs to be designed by legal experts.
-    - [ ] Implement the "PRIVACY POLICY" page for the application.
+7. [ ] [PRIVACY POLICY] development with the law firms.
+    - [ ] Needs to be [LEGALLY DESIGNED] by legal experts.
+    - [ ] Implement the [PRIVACY POLICY] page for the application.
 
 ---
 RELEASE v0.3.0 [RELEASE: BETA] version of the application.
@@ -190,23 +231,36 @@ RELEASE v0.3.0 [RELEASE: BETA] version of the application.
 
 *Ongoing Improvements:*
 
-1.  [ ] Store additions [FUNC + API + SCRIPT / STORE]  [ONGOING TECHNICAL: @EGE, @MERT]
-2.  [ ] Boilerplate knowledge bases [BOILERPLATE KB]   [ONGOING TECHNICAL: @EGE, @MERT]
+1.  [ ] Store additions [FUNC + API + SCRIPT / STORE] must be added to the application.
+2.  [ ] Boilerplate knowledge bases [BOILERPLATE KB] must be added to the application.
 
 ---
 RELEASE v0.4.0 [RELEASE: BETA] version of the application.
 ---
 
-1. [ ] [MOBILE APPLICATION] only for connecting endpoints, and being able to chat with them and receive answers. ---> requires a mobile application development.
-2. [ ] [DESKTOP COPILOT] development for the application. ---> only for connecting endpoints and receiving answers, etc. requires a desktop application / applet.
-3. [ ] [WORD PLUGIN] development for the application. ---> requires a Word / MS Office plugin.
+1. [ ] [MOBILE APPLICATION] only for connecting endpoints, and being able to chat with them and receive answers. 
+        -> For Maps and Location features. 
+        -> Requires implementation with a PWA (Progressive Web Application, works on Mobile)
+        -> Requires a [MOBILE APPLICATION REPOSITORY].
+2. [ ] [DESKTOP COPILOT] development for the application. 
+        -> Only for connecting endpoints and receiving answers. 
+        -> Requires a [DESKTOP APPLICATION REPOSITORY].
+3. [ ] [WORD PLUGIN] development for the application. 
+        -> For manipulating inside Microsoft Office applications.
+        -> Requires [MS OFFICE PLUGIN REPOSITORIES].
+4. [ ] [PHYSICAL DEVICE] for local integrations without Internet Usage.
+        -> Definite [SOLUTION FOR PRIVACY] concerns.
+        -> Requires a physical device / server node.
+        -> Possible to be patentable (IP value).
 
 ---
 RELEASE v0.5.0 [RELEASE: BETA] version of the application.
 ---
 
-1. [ ] Integration (Boilerplate assistant) Systems [INTEG SYSTEMS]  [TECHNICAL @EGE]
-2. [ ] Meta-Integration (Boilerplate group of assistants) Systems [META-INTEG SYSTEMS]  [TECHNICAL @EGE]
+1. [ ] Integration (Boilerplate assistant) Systems.
+       -> [INTEGRATION SYSTEMS]
+2. [ ] Meta-Integration (Boilerplate group of assistants) Systems.
+       -> [META-INTEGRATION SYSTEMS]
 
 ---
 RELEASE v0.6.0 [RELEASE: BETA] version of the application.
@@ -214,12 +268,25 @@ RELEASE v0.6.0 [RELEASE: BETA] version of the application.
 
 *TO BE DISCUSSED:*
 
-1. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07) [???]
-2. [ ] Implement [MAPS] for geolocation purposes. -> requires connection with a PWA (Progressive Web App) [???]
-3. [ ] [BLOCKCHAIN] integration for the application. [???]
-4. [ ] [OPENCV FACE-RECOGNITION] technologies integration [??]
-5. [ ] [RECENTS & FREQUENTLY USED] for the application. [?]
-6. [ ] [EXPERIENCE NETWORK] for the application. [?]
+1. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
+       -> A higher level programming language by using GPT-4o-mini. 
+       -> Currently does not worth the development effort.
+2. [ ] [BLOCKCHAIN] integration for the application.
+       -> Blockchain multi-modality integration to the application.
+       -> Not very clear what it can be helpful for.
+       -> For building smart contracts [?]
+3. [ ] [OPENCV FACE-RECOGNITION] technologies integration
+       -> Facial recognition integration for security & other application areas.
+       -> Currently does not worth the development effort.
+4. [ ] [RECENTLY & FREQUENTLY USED] for the application.
+       -> Recommendation systems for the general use patterns in the application.
+       -> For the user to be able to see the recently and frequently used items.
+       -> Currently does not worth the development effort.
+5. [ ] [EXPERIENCE NETWORK] for the application.
+       -> For the application users who are freelancers or independent workers.
+       -> They can collaborate and form networks within the application to work together.
+       -> They can share media storages, data sources, and other tools to create synergy.
+       -> Currently does not worth the development effort.
 
 ---
 

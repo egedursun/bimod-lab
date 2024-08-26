@@ -25,8 +25,6 @@ from ..message_templates.models import MessageTemplate
 from ..organization.models import Organization
 from ..user_permissions.models import UserPermission, PermissionNames
 
-STREAM_RESPONSE = True
-
 
 class ChatStreamView(View):
     """
@@ -150,11 +148,14 @@ class ChatView(LoginRequiredMixin, TemplateView):
     """
     Handles the creation, management, and display of multimodal chats.
 
-    This view allows users to create new chats, rename existing chats, star messages, and send messages with various attachments. It also manages the display of chat messages and related templates.
+    This view allows users to create new chats, rename existing chats, star messages, and send messages with various
+    attachments. It also manages the display of chat messages and related templates.
 
     Methods:
-        get_context_data(self, **kwargs): Prepares the context with the active chat, messages, assistants, and message templates.
-        post(self, request, *args, **kwargs): Processes the creation and management of chats, including sending messages and attachments.
+        get_context_data(self, **kwargs): Prepares the context with the active chat, messages, assistants, and message
+        templates.
+        post(self, request, *args, **kwargs): Processes the creation and management of chats, including sending
+        messages and attachments.
     """
 
     template_name = 'multimodal_chat/chats/chat.html'

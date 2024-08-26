@@ -1,3 +1,227 @@
+{% extends layout_path %}
 
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
 
-# list orchestration test page
+{% block title %}Orchestrations{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <style>
+    .text-wrap {
+      white-space: normal;
+      word-break: break-word;
+    }
+    .overflow-hidden {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .badge {
+      font-size: 0.85rem;
+      margin: 2px;
+    }
+  </style>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h3 class="mb-0"><strong>Orchestrations</strong></h3>
+    </div>
+  </div>
+
+  <a href="{% url 'orchestrations:create' %}">
+    <button class="btn btn-success mb-8">
+      <i class="fa fa-add me-4"></i>
+      <strong>Create Orchestration</strong>
+    </button>
+  </a>
+
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-54.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        On this page, you can manage your orchestrations for your assistants. Each orchestration is associated with a
+        specific organization. You can use, edit, or delete orchestrations as needed.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  {% if error_messages %}
+    {% for key, message in error_messages.items %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        <strong>{{ key | field_name_to_label }}:</strong> {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <!-- Orchestrations Cards -->
+  {% for organization, orchestrations in orchestrations_by_organization.items %}
+    <div class="card mb-6">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
+          <div class="d-flex">
+            <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 class="rounded me-4 border border-2 border-primary" width="80" height="80">
+            <h4>
+              <strong class="mb-2">{{ organization.name }}</strong>
+              <p class="mt-0">
+                <small class="mt-0"><i class="fa fa-robot"></i><strong class="mt-0">&nbsp; Total Orchestrations: {{ orchestrations|length }}</strong></small>
+              </p>
+            </h4>
+          </div>
+        </a>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon mt-8" data-target="#collapse-org-{{ organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-org-{{ organization.id }}">
+          <strong class="mt-4">&nbsp; See Orchestrations</strong>
+        </span>
+      </div>
+      <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
+        {% for orchestration in orchestrations %}
+          <div class="assistant-group m-8 card card-border-shadow-primary p-4">
+            <div class="d-flex">
+              <img src="{% if orchestration.maestro_image %}{{ orchestration.maestro_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   class="rounded me-4" width="80" height="80">
+              <h5 class="assistant-title mt-4">
+                <strong>{{ orchestration.name }}</strong>
+              </h5>
+            </div>
+            <div class="card-body mt-4">
+              <ul class="p-0 m-0">
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body me-4"><strong>
+                    <i class="fa fa-info-circle me-4"></i>
+                    Description:
+                  </strong></span>
+                  <span class="text-wrap overflow-hidden p-2" style="max-width: 800px;">{{ orchestration.description|linebreaksbr }}</span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>
+                    <i class="fa fa-server me-4"></i>
+                    Instructions:
+                  </strong></span>
+                  <span class="text-wrap overflow-hidden p-2" style="max-width: 800px;">
+                    <strong class="text-wrap">
+                      {{ orchestration.instructions|linebreaksbr }}
+                    </strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>
+                    <i class="fa fa-plug me-4"></i>
+                    Step by Step Workflow:
+                  </strong></span>
+                  <span class="text-wrap overflow-hidden p-2" style="max-width: 800px;">
+                    <strong class="border border-info rounded p-1">
+                      {{ orchestration.workflow_step_guide|linebreaksbr }}
+                    </strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>
+                    <i class="fa fa-user me-4"></i>
+                    Maximum Assistant Limits:
+                  </strong></span>
+                  <span class="text-wrap overflow-hidden p-2" style="max-width: 800px;">
+                    <strong class="border border-warning rounded p-1">
+                      {{ orchestration.maximum_assistant_limits }}
+                    </strong></span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>
+                    <i class="fa fa-language me-4"></i>
+                    Response Language:
+                  </strong></span>
+                  <span class="text-wrap border border-info rounded p-1 me-2" style="max-width: 800px;">
+                    <strong>
+                      {{ orchestration.get_response_language_display }}
+                    </strong>
+                  </span>
+                </li>
+                <li class="mb-4 d-flex justify-content-between align-items-center">
+                  <span class="text-body"><strong>
+                    <i class="fa fa-users me-4"></i>
+                    Connected Workers:
+                  </strong></span>
+                  <span class="d-flex flex-wrap me-2">
+                    {% for worker in orchestration.workers.all %}
+                      <span class="badge bg-primary p-4 ms-4"><strong>{{ worker.name }}</strong></span>
+                    {% endfor %}
+                    {% if orchestration.workers.count == 0 %}
+                      <span class="text-wrap">No workers connected</span>
+                    {% endif %}
+                  </span>
+                </li>
+              </ul>
+              <hr>
+              <div class="d-flex justify-content-center">
+                <a href="{% url 'orchestrations:query_list' orchestration.id %}" class="btn btn-success me-3"><i
+                  class="ti ti-search me-2"></i><strong>Use Orchestration</strong></a>
+                <a href="{% url 'orchestrations:update' orchestration.id %}" class="btn btn-primary me-3"><i
+                  class="ti ti-edit me-2"></i><strong>Edit Orchestration</strong></a>
+                <a href="{% url 'orchestrations:delete' orchestration.id %}" class="btn btn-danger"><i
+                  class="ti ti-trash"></i><strong> Delete Orchestration</strong></a>
+              </div>
+            </div>
+          </div>
+          <hr>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
+        icon.addEventListener('click', function () {
+          var target = document.querySelector(this.getAttribute('data-target'));
+          var bootstrapCollapse = new bootstrap.Collapse(target, {
+            toggle: false
+          });
+          if (target.classList.contains('show')) {
+            bootstrapCollapse.hide();
+          } else {
+            bootstrapCollapse.show();
+          }
+        });
+      });
+
+      document.querySelectorAll('.collapse').forEach(function (collapse) {
+        collapse.addEventListener('show.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-down');
+            icon.classList.add('fa-arrow-alt-circle-up');
+          }
+        });
+
+        collapse.addEventListener('hide.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-up');
+            icon.classList.add('fa-arrow-alt-circle-down');
+          }
+        });
+      });
+    });
+  </script>
+{% endblock %}

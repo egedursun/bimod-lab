@@ -132,7 +132,7 @@ class InternalOpenAIClient:
 
         send_log_message(f"""
             🤖 Assistant started processing the query...
-        """)
+        """, chat_id=self.chat.id)
 
         print(f"[InternalOpenAIClient.respond_stream] Inside the respond_stream function...")
 
@@ -142,7 +142,7 @@ class InternalOpenAIClient:
         send_log_message(
             f"""
              🛜 Connection information and metadata extraction completed.
-        """)
+        """, chat_id=self.chat.id)
 
         print(f"[InternalOpenAIClient.respond_stream] Responding to the user message...")
 
@@ -150,7 +150,7 @@ class InternalOpenAIClient:
             # Create the System Prompt
             send_log_message(f"""
             🗃️ System prompt is being prepared...
-                            """)
+                            """, chat_id=self.chat.id)
 
             try:
                 prompt_messages = [PromptBuilder.build(
@@ -161,27 +161,27 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             ⚡ System prompt preparation is completed.
-                                """)
+                                """, chat_id=self.chat.id)
 
                 print(f"[InternalOpenAIClient.respond_stream] System prompt created successfully.")
 
                 # Create the Chat History
                 send_log_message(f"""
             📜 Chat history is being prepared...
-                          """)
+                          """, chat_id=self.chat.id)
 
                 prompt_messages.extend(HistoryBuilder.build(chat=self.chat))
 
                 send_log_message(f"""
             💥 Chat history preparation is completed.
-                                """)
+                                """, chat_id=self.chat.id)
 
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while building the prompt: {str(e)}")
 
                 send_log_message(f"""
             🚨 A critical error occurred while preparing the prompts for the process.
-                """, stop_tag=BIMOD_PROCESS_END)
+                """, chat_id=self.chat.id, stop_tag=BIMOD_PROCESS_END)
 
                 return DEFAULT_ERROR_MESSAGE
 
@@ -189,7 +189,7 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             📈 Transaction parameters are being inspected...
-                                """)
+                                """, chat_id=self.chat.id)
 
                 # Ask question to the GPT if user has enough balance
                 latest_message_billable_cost = calculate_billable_cost_from_raw(
@@ -203,7 +203,7 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             🚨 A critical error occurred while inspecting the transaction parameters.
-                """, stop_tag=BIMOD_PROCESS_END)
+                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                 return DEFAULT_ERROR_MESSAGE
 
@@ -211,7 +211,7 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             🚨 Organization has insufficient balance to proceed with the transaction. Cancelling the process.
-                """, stop_tag=BIMOD_PROCESS_END)
+                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                 response = INSUFFICIENT_BALANCE_PROMPT
                 # Still add the transactions related to the user message
@@ -238,7 +238,7 @@ class InternalOpenAIClient:
 
             send_log_message(f"""
             ♟️ Transaction parameters inspection is completed.
-                                """)
+                                """, chat_id=self.chat.id)
 
             #######################################################################################################
             # *************************************************************************************************** #
@@ -248,7 +248,7 @@ class InternalOpenAIClient:
 
             send_log_message(f"""
             📡 Generating response in cooperation with the language model...
-                                """)
+                                """, chat_id=self.chat.id)
 
             try:
                 response_chunks = c.chat.completions.create(
@@ -268,13 +268,13 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             🚨 A critical error occurred while retrieving the response from the language model.
-                """, stop_tag=BIMOD_PROCESS_END)
+                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                 return DEFAULT_ERROR_MESSAGE
 
             send_log_message(f"""
             🧨 Response streamer is ready to process the response.
-                                """)
+                                """, chat_id=self.chat.id)
 
             #######################################################################################################
             # *************************************************************************************************** #
@@ -282,7 +282,7 @@ class InternalOpenAIClient:
             try:
                 send_log_message(f"""
             ⚓ Response generation is in progress...
-                                """)
+                                """, chat_id=self.chat.id)
 
                 # Accumulate the response for backend processing
                 accumulated_response = ""
@@ -295,16 +295,16 @@ class InternalOpenAIClient:
                     ############################
                     if content is not None:
                         accumulated_response += content
-                        send_log_message(f"""{content}""", stop_tag=BIMOD_NO_TAG_PLACEHOLDER)
-                send_log_message(f"""""", stop_tag=BIMOD_STREAMING_END_TAG)
+                        send_log_message(f"""{content}""", stop_tag=BIMOD_NO_TAG_PLACEHOLDER , chat_id=self.chat.id)
+                send_log_message(f"""""", stop_tag=BIMOD_STREAMING_END_TAG , chat_id=self.chat.id)
 
                 send_log_message(f"""
             🔌 Generation iterations has been successfully accomplished.
-                                """)
+                                """, chat_id=self.chat.id)
 
                 send_log_message(f"""
             📦 Preparing the response...
-                                """)
+                                """, chat_id=self.chat.id)
 
                 # **NOTE:** now we need to use the "accumulated_response" string for the future steps
                 print(f"[InternalOpenAIClient.respond_stream] Processed the response from the LLM.")
@@ -315,19 +315,19 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             🚨 A critical error occurred while processing the response from the language model.
-                """, stop_tag=BIMOD_PROCESS_END)
+                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                 return DEFAULT_ERROR_MESSAGE
 
             send_log_message(f"""
             🕹️ Raw response stream has been successfully delivered.
-            """)
+            """, chat_id=self.chat.id)
 
             #######################################################################################################
 
             send_log_message(f"""
             🚀 Processing the transactional information...
-            """)
+            """, chat_id=self.chat.id)
 
             try:
                 LLMTransaction.objects.create(
@@ -351,13 +351,13 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END)
+                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                 return DEFAULT_ERROR_MESSAGE
 
             send_log_message(f"""
             🧲 Transactional information has been successfully processed.
-            """)
+            """, chat_id=self.chat.id)
 
             final_response = accumulated_response
             print(f"[InternalOpenAIClient.respond_stream] Final response: {final_response}")
@@ -369,7 +369,7 @@ class InternalOpenAIClient:
 
             send_log_message(f"""
             🚨 Error occurred while processing the response. The assistant will attempt to retry...
-                """)
+                """, chat_id=self.chat.id)
 
             # Get the error message
             if final_response == DEFAULT_ERROR_MESSAGE:
@@ -385,7 +385,7 @@ class InternalOpenAIClient:
 
             send_log_message(f"""
             🛠️ Tool usage call detected in the response. Processing with the tool execution steps...
-                                """)
+                                """, chat_id=self.chat.id)
 
             # check for the rate limits
             global ACTIVE_CHAIN_SIZE
@@ -394,7 +394,7 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             🚨 Maximum tool chain limit has been reached. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END)
+                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                 try:
                     idle_overflow_transaction = LLMTransaction.objects.create(
@@ -420,7 +420,7 @@ class InternalOpenAIClient:
 
                     send_log_message(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END)
+                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                     return idle_overflow_message
 
@@ -433,7 +433,7 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             🚨 Maximum same tool attempt limit has been reached. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END)
+                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                 try:
                     idle_overflow_transaction = LLMTransaction.objects.create(
@@ -459,7 +459,7 @@ class InternalOpenAIClient:
 
                     send_log_message(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END)
+                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                     return idle_overflow_message
 
@@ -471,24 +471,24 @@ class InternalOpenAIClient:
 
             send_log_message(f"""
             🧰 Identifying the valid tool usage calls...
-                                """)
+                                """, chat_id=self.chat.id)
 
             json_parts_of_response = find_json_presence(final_response)
 
             send_log_message(f"""
             💡️ Tool usage calls have been identified.
-                                """)
+                                """, chat_id=self.chat.id)
 
             send_log_message(f"""
             🧭 Number of tool usage calls that is delivered: {len(json_parts_of_response)}
-                """)
+                """, chat_id=self.chat.id)
 
             tool_name = None
             for i, json_part in enumerate(json_parts_of_response):
 
                 send_log_message(f"""
                 🧮 Executing the tool usage call index: {i + 1} out of {len(json_parts_of_response)} ...
-                                    """)
+                                    """, chat_id=self.chat.id)
 
                 try:
                     tool_executor = ToolExecutor(
@@ -500,7 +500,7 @@ class InternalOpenAIClient:
 
                     send_log_message(f"""
                     🧰 Tool usage call for: '{tool_name}' has been successfully executed. Proceeding with the next actions...
-                                        """)
+                                        """, chat_id=self.chat.id)
 
                     if tool_name is not None and tool_name != prev_tool_name:
                         ACTIVE_CHAIN_SIZE += 1
@@ -508,7 +508,7 @@ class InternalOpenAIClient:
 
                     send_log_message(f"""
                     📦 Tool response from '{tool_name}' is being delivered to the assistant for further actions...
-                                        """)
+                                        """, chat_id=self.chat.id)
 
                     tool_response_list.append(f"""
                                     [{i}] "tool_name": {tool_name},
@@ -520,13 +520,13 @@ class InternalOpenAIClient:
 
                     send_log_message(f"""
                     🎯 Tool response from '{tool_name}' has been successfully delivered to the assistant.
-                                        """)
+                                        """, chat_id=self.chat.id)
 
                 except Exception as e:
 
                     send_log_message(f"""
                     🚨 Error occurred while executing the tool. Attempting to recover...
-                                        """)
+                                        """, chat_id=self.chat.id)
 
                     if tool_name is not None:
                         tool_response = get_json_decode_error_log(error_logs=str(e))
@@ -551,18 +551,18 @@ class InternalOpenAIClient:
 
                     send_log_message(f"""
                     🚨 Error logs have been delivered to the assistant. Proceeding with the next actions...
-                                        """)
+                                        """, chat_id=self.chat.id)
 
         send_log_message(f"""
             🧠 The assistant is inspecting the responses of the tools...
-                                """)
+                                """, chat_id=self.chat.id)
 
         if tool_response_list:
             # Create the request as a multimodal chat message and add it to the chat
 
             send_log_message(f"""
             📦 Communication records for the tool requests are being prepared...
-                                """)
+                                """, chat_id=self.chat.id)
 
             try:
                 tool_request = MultimodalChatMessage.objects.create(
@@ -579,14 +579,14 @@ class InternalOpenAIClient:
                 # Stream the tool request to the UI
                 send_log_message(f"""
                     ⚙️ Tool request records have been prepared. Proceeding with the next actions...
-                """)
+                """, chat_id=self.chat.id)
 
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the tool request: {str(e)}")
 
                 send_log_message(f"""
             🚨 A critical error occurred while recording the tool request. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END)
+                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                 return DEFAULT_ERROR_MESSAGE
 
@@ -595,7 +595,7 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             📦 Communication records for the tool responses are being prepared...
-                                """)
+                                """, chat_id=self.chat.id)
 
                 tool_message = MultimodalChatMessage.objects.create(
                     multimodal_chat=self.chat,
@@ -611,26 +611,26 @@ class InternalOpenAIClient:
                 # Stream the tool response to the UI
                 send_log_message(f"""
                     ⚙️ Tool response records have been prepared. Proceeding with the next actions...
-                """)
+                """, chat_id=self.chat.id)
 
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the tool response: {str(e)}")
 
                 send_log_message(f"""
             🚨 A critical error occurred while recording the tool response. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END)
+                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                 return DEFAULT_ERROR_MESSAGE
 
             send_log_message(f"""
             ✨ Communication records for the tool requests and responses have been successfully prepared.
-                """)
+                """, chat_id=self.chat.id)
 
             #######################################################################################################
 
             send_log_message(f"""
             📦 Transactions are being prepared for the current level of operations...
-                                """)
+                                """, chat_id=self.chat.id)
 
             # Create the transaction associated with the tool response
             try:
@@ -655,19 +655,19 @@ class InternalOpenAIClient:
 
                 send_log_message(f"""
             🚨 A critical error occurred while recording the transaction. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END)
+                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
                 return DEFAULT_ERROR_MESSAGE
 
             send_log_message(f"""
             ❇️ Transactions have been successfully prepared for the current level of operations.
-                """)
+                """, chat_id=self.chat.id)
 
             #######################################################################################################
 
             send_log_message(f"""
             🚀 The assistant is getting prepared for the next level of operations...
-                                """)
+                                """, chat_id=self.chat.id)
 
             # apply the recursive call to the self function to get another reply from the assistant
             print(f"[InternalOpenAIClient.respond_stream] Recursive call to the respond function.")
@@ -686,7 +686,7 @@ class InternalOpenAIClient:
 
         send_log_message(f"""
             ✅ The assistant has successfully processed the query. The response is being delivered to the user...
-        """, stop_tag=BIMOD_PROCESS_END)
+        """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
 
         #######################################################################################################
         # Return the final response
@@ -702,7 +702,6 @@ class InternalOpenAIClient:
                 f"[InternalOpenAIClient.respond_stream] Error occurred while streaming the final response: {str(e)}")
 
         return final_response
-
 
     def respond(self, latest_message, prev_tool_name=None, with_media=False, file_uris=None, image_uris=None):
         from apps.multimodal_chat.models import MultimodalChatMessage
