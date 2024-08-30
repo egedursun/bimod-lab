@@ -119,6 +119,12 @@ INSTALLED_APPS = [
     "apps.mm_scheduled_jobs",
     "apps.mm_triggered_jobs",
     "apps.orchestrations",
+    "apps.finetuning",
+
+    ########################################
+    # META
+    ########################################
+    "apps._meta.voidforger",
 
     ########################################
     # SUPPORT
@@ -248,7 +254,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "config.middleware.SessionTimeoutMiddleware",
     "config.middleware.AppendSlashMiddleware",
-    # "config.middleware.ManualTranslationMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"

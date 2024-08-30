@@ -211,10 +211,10 @@
       ]
     },
     {
-      "url": "dashboard:main-dashboard",
       "name": "Fine Tuning",
       "icon": "menu-icon tf-icons ti ti-settings",
-      "slug": "fine-tuning"
+      "slug": "fine-tuning",
+      "url": "finetuning:list"
     },
     {
       "menu_header": "Data Sources"

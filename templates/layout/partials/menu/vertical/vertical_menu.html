@@ -23,7 +23,7 @@
       {% include './partials/menu_header_template.html' with header_text=item.menu_header %}
     {% else %}
       {% comment %} Menu Item {% endcomment %}
-      {% if item.name == "Billing & Payment" or item.name == "Integrations" or item.name == "Meta Integrations" or item.name == "Fine Tuning" %}
+      {% if item.name == "Billing & Payment" or item.name == "Integrations" or item.name == "Meta Integrations" %}
         <!-- put as grayed out -->
         {% include './partials/menu_item_template_disabled.html' with item=item %}
       {% else %}

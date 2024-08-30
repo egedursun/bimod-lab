@@ -1,0 +1,230 @@
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+
+{% block page_js %}
+  {{ block.super }}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      // Confirmation dialog for delete buttons
+      document.querySelectorAll('.item-delete-btn').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('form');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, remove the fine-tuned model connection.',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              form.submit();
+            }
+          });
+        });
+      });
+    });
+  </script>
+{% endblock page_js %}
+
+
+{% block title %}Fine-Tuned Model Connections{% endblock %}
+
+{% block content %}
+
+  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center me-4" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-63.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view all the fine-tuned models of the organizations you have created. You can also add or
+        remove any fine-tuned model that belongs to you as a user depending on your permissions. To create a new
+        fine-tuned model, click on the "Add Fine-Tuned Model" button, which is located in the tab on the left side of
+        your screen.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <div class="container-fluid mt-4">
+    <div class="card-header">
+      <h5 class="mb-0">
+        <i class="fa fa-chain ms-8 me-4"></i>
+        <strong>Connect Fine-Tuned Model</strong>
+      </h5>
+    </div>
+    <!-- Display the form for adding new connections -->
+    <form method="post" enctype="multipart/form-data" class="mt-4">
+      {% csrf_token %}
+      <div class="row p-8">
+        <div class="mb-6 col-6">
+          <label class="form-label" for="organization">Organization</label>
+          <select class="form-select" id="organization" name="organization">
+            <option value="" disabled selected>Select Organization</option>
+            {% for org in organizations %}
+              <option value="{{ org.id }}">{{ org.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-6 col-6">
+          <label class="form-label" for="provider">Model Provider</label>
+          <select class="form-select" id="provider" name="provider">
+            <option value="" disabled selected>Select Provider</option>
+            {% for provider in providers %}
+              <option value="{{ provider }}">{{ provider|capfirst }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-6 col-6">
+          <label class="form-label" for="model_name">Model Name</label>
+          <input type="text" class="form-control" id="model_name" name="model_name" placeholder="Enter Model Name">
+        </div>
+        <div class="mb-6 col-6">
+          <label class="form-label" for="nickname">Nickname</label>
+          <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter Nickname">
+        </div>
+        <div class="mb-6 col-6">
+          <label class="form-label" for="model_type">Model Type</label>
+          <select class="form-select" id="model_type" name="model_type">
+            <option value="" disabled selected>Select Model Type</option>
+            {% for model_type in model_types %}
+              <option value="{{ model_type }}">{{ model_type }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-6 col-6">
+          <label class="form-label" for="provider_api_key">Provider API Key</label>
+          <input type="text" class="form-control" id="provider_api_key" name="provider_api_key"
+                 placeholder="Enter Provider API Key">
+        </div>
+        <div class="mb-0 col-12">
+          <label class="form-label" for="model_description">Model Description</label>
+          <textarea class="form-control" id="model_description" name="model_description"
+                    placeholder="Enter Model Description"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success d-grid w-25 ms-8 mt-4 mb-8">
+        <strong>
+          <i class="fa fa-add me-4"></i>
+          Add Fine-Tuned Model
+        </strong>
+      </button>
+    </form>
+
+    <!-- Display the list of existing connections -->
+    <hr>
+
+    <div class="mb-12 mt-8 rounded">
+      <h5 class="mb-0">
+        <i class="fa fa-list ms-4 me-4"></i>
+        <strong>Connected Fine-Tuned Models</strong>
+      </h5>
+    </div>
+
+    {% for organization_data in data %}
+      <div class="card card-border-shadow-primary p-4 rounded">
+        <h4>
+          <div class="d-flex">
+            <img src="
+
+              {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 class="rounded" width="80" height="80" alt="Organization Image">
+            <strong class="ms-4">{{ organization_data.organization.name }}</strong>
+          </div>
+        </h4>
+        <hr>
+        <div class="row">
+          {% for connection in organization_data.connections %}
+            <div class="card m-4 col-5 card-border-shadow-primary p-4">
+              <div class="card-header">
+                <strong>
+                  <i class="fa fa-info-circle me-2"></i>
+                  {{ connection.nickname|capfirst }}
+                </strong>
+              </div>
+              <div class="card-body">
+                <p class="bg-label-info p-2 rounded">
+                  <i class="fa fa-chain me-2"></i>
+                  <strong>Remote Model Name:</strong> {{ connection.model_name }}
+                </p>
+                <p>
+                  <i class="fa fa-building me-2"></i>
+                  <strong>Provider:</strong> {{ connection.provider|capfirst }}
+                </p>
+                <p>
+                  <i class="fa fa-cogs me-2"></i>
+                  <strong>Model Type:</strong> {{ connection.model_type }}
+                </p>
+                <p class="mb-4">
+                  <i class="fa fa-key me-2"></i>
+                  <strong>Description:</strong>
+                </p>
+                <p class="overflow-auto" style="max-height: 200px;">
+                  {{ connection.model_description }}
+                </p>
+                <hr>
+                <form method="post" action="{% url 'finetuning:remove' connection.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger item-delete-btn">
+                    <strong>
+                      <i class="fa fa-trash me-4"></i>
+                      Remove Fine-Tuned Model Connection
+                    </strong>
+                  </button>
+                </form>
+              </div>
+            </div>
+          {% empty %}
+            <div class="w-100 ms-4 pe-12">
+              <div class="alert alert-warning p-8" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i>
+                <strong>No fine-tuned models found for this organization.</strong>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

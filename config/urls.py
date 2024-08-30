@@ -67,7 +67,13 @@ urlpatterns = [
     path("app/mm_scheduled_jobs/", include("apps.mm_scheduled_jobs.urls", namespace="mm_scheduled_jobs")),
     path("app/mm_triggered_jobs/", include("apps.mm_triggered_jobs.urls", namespace="mm_triggered_jobs")),
     path("app/orchestrations/", include("apps.orchestrations.urls", namespace="orchestrations")),
+    path("app/finetuning/", include("apps.finetuning.urls", namespace="finetuning")),
     #################################################################################################################
+
+    #################################################################################################################
+    # Meta Endpoints
+    #################################################################################################################
+    path('app/voidforger/', include("apps._meta.voidforger.urls", namespace="voidforger")),
 
     #################################################################################################################
     # Support System Endpoints

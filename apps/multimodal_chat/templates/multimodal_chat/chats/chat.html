@@ -588,19 +588,6 @@
                           <div class="user-avatar flex-shrink-0 ms-4">
                             <div class="avatar avatar-xl">
                               <img src="
-
-
-
-
-
-
-
-
-
-
-
-
-
                                 {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                                    alt="Avatar" class="rounded">
                             </div>
@@ -1225,8 +1212,19 @@
       const submitStreamMessageButton = document.querySelector('#start-streaming');
       const retryButton = document.querySelector('#retry-response-button');
 
+      submitMessageButton.addEventListener('click', function() {
+        // Show the loading bar
+        loadingBar.classList.remove('d-none');
+        loadingBarWarning.classList.remove('d-none');
+        submitMessageButton.disabled = true;
+        chatForm.submit();
+      });
+
       // if the button is clicked, set the value of the message to "Your response either failed, or I didn't like it. Please try again."
       retryButton.addEventListener('click', function () {
+        loadingBar.classList.remove('d-none');
+        loadingBarWarning.classList.remove('d-none');
+        submitMessageButton.disabled = true;
         const chatInput = document.querySelector('.message-input');
         chatInput.value = "Your answer wasn't satisfactory, or you have made an error, or you have failed to provide a valid and comprehensive answer to me. Please try again.";
         // automatically submit
@@ -1235,13 +1233,6 @@
 
       const loadingBarCreateChat = document.getElementById('loadingBarCreateChat');
       const loadingBarWarningCreateChat = document.getElementById('loadingBarWarningCreateChat');
-
-      chatForm.addEventListener('submit', function (event) {
-        // Show the loading bar
-        loadingBar.classList.remove('d-none');
-        loadingBarWarning.classList.remove('d-none');
-        submitMessageButton.disabled = true;
-      });
 
       createChatForm.addEventListener('submit', function (event) {
         // Show the loading bar

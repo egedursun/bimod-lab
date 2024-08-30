@@ -54,6 +54,11 @@
     - **Username:** root
     - **PW:** 7#Ao141j3$sI?k5#aDrR
 
+  - SSH Connection to DB VPS Server:
+    - **Connection:** ssh -o "StrictHostKeyChecking=no" root@92.113.31.31
+    - **Username:** root
+    - **PW:** b6VtNjUvpogj=C:UMsx?
+
   - Email Accounts:
     - **Provider:** mail.hostinger.com
       - **Username:** admin@bimod.io
@@ -65,10 +70,10 @@
   - **Password:** N!67za!evDxAbzJ
   - User Login Credentials:
     - bimod-dev
-      - **Username:** admin
+      - **Username:** admin_dev
       - **PW:** AVNS_3Ahz2MyWPkiAEdiSV53
     - bimod-prod
-      - **Username:** admin
+      - **Username:** admin_prod
       - **PW:** AVNS_-pRb8XSnQqRJOyyHxKM
 
 - Weaviate Server:
@@ -89,6 +94,11 @@
 - GitHub Account:
 - **Username:** egedursun
 - **Classic Token:** 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
+
+- Website Analytics:
+- **Host:** Google Analytics
+  - **Username:** esa.ege@gmail.com
+  - **PW:** ***
 
 ---
 
@@ -119,7 +129,6 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 ---
 
 **URGENT:**
--> Integrate Website / User Analytics script to your website to track the metrics and KPIs.
 -> [HOLDINGS / BIMOD.IO ENDEAVORS] as concrete implementations with the assistants. Completely autonomous systems.
     Mostly for creating Business presence and prestige.
 
@@ -127,28 +136,9 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 **PRIMARY FEATURE:**
 
-1. [ ] Implement [FINE TUNING] for the application.
-  - [ ] [DATA MODEL] definition for the fine-tuned models.
-  - [ ] User can [ADD] a fine-tuned model from 'OpenAI' files to 'Bimod.io' application.
-    - [ ] [CREATE / ADD PAGE] for the fine-tuned models.
-    - [ ] [CREATE / ADD VIEW] for the fine-tuned models.
-  - [ ] User can [SELECT & USE] this fine-tuned model while creating an LLM Core for the application.
-    - [ ] Changes in the [LLM CORE DATA MODEL]
-    - [ ] Changes in the [LLM CORE VIEWS]
-    - [ ] Changes in the [LLM CORE CREATION PAGE]
-    - [ ] Changes in teh [LLM CORE UPDATE PAGE]
-  - [ ] User can [REMOVE] this fine-tuned model from Bimod.io application.
-    - [ ] [REMOVE VIEW] for the fine-tuned models.
-    - [ ] [REMOVE PAGE] for the fine-tuned models.
-  - [ ] The users can [LIST] the fine-tuned models in the application.
-    - [ ] [LIST PAGE] for the fine-tuned models.
-    - [ ] [LIST VIEW] for the fine-tuned models.
-  - [ ] The users can [TRAIN] their fine-tuned model in a page, by calling OpenAI API with their file.
-    - [ ] [TRAIN PAGE] for the fine-tuned models.
-    - [ ] [TRAIN VIEW] for the fine-tuned models.
-    - [ ] [TRAIN FUNCTIONALITY], includes the addition of the trained model to the LLM core 
-              choices. connected to ADD functionality.
-  - [ ] [TEST OVERALL] functionality.
+-> migrate to the new database
+-> ask for 3.500 + 1000 + 3000 = 7500 from Hüseyin
+-> finish testing out the fine tuning functionality.
 
 
 1. [ ] [FORUM POINTS & GIFT CREDITS] must be given to users to motivate them:

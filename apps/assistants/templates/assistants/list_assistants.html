@@ -113,8 +113,8 @@
           <tr>
             <th></th>
             <th>Name</th>
-            <th>Description</th>
-            <th>Instructions</th>
+            <th style="max-height: 250px; overflow: auto;">Description</th>
+            <th style="max-height: 250px; overflow: auto;">Instructions</th>
             <th>Audience</th>
             <th>Tone</th>
             <th>LLM Model</th>
@@ -133,8 +133,12 @@
                 {% endif %}
               </td>
               <td><strong>{{ assistant.name }}</strong></td>
-              <td style="min-width:400px;">{{ assistant.description }}</td>
-              <td style="min-width:400px;">{{ assistant.instructions }}</td>
+              <td style="min-width:400px; max-width: 400px;">
+                <p class="mt-2 mb-2" style="max-height: 250px; overflow: auto;">{{ assistant.description|linebreaksbr }}</p>
+              </td>
+              <td style="min-width:400px; max-width: 400px;">
+                <p class="mt-2 mb-2" style="max-height: 250px; overflow: auto;">{{ assistant.instructions|linebreaksbr }}</p>
+              </td>
               <td style="min-width:200px;"><strong>{{ assistant.audience }}</strong></td>
               <td style="min-width:200px;">{{ assistant.tone }}</td>
               <td style="min-width:200px;"><strong>{{ assistant.llm_model.nickname }}</strong></td>
