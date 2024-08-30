@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Datasource User Settings App Documentation &#8212; Bimod.io v0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=fa47ad08"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Datasource User Profile Management App Documentation" href="user_profile_management.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="datasource-user-settings-app-documentation">
+<h1>Datasource User Settings App Documentation<a class="headerlink" href="#datasource-user-settings-app-documentation" title="Link to this heading">¶</a></h1>
+<p>This section describes the User Settings App.</p>
+<p id="module-user_settings.views">This module contains views related to user profile management and settings within the web project.</p>
+<p>Views:
+- <cite>UserSettingsView</cite>: Renders the user settings page, ensuring the user is authenticated.
+- <cite>UserProfileListView</cite>: Displays the user’s profile details, including personal information and saved credit cards, allowing updates to the profile and credit card information.
+- <cite>UserProfileResetPasswordView</cite>: Handles the process of sending a password reset email to the user.
+- <cite>RemoveCardView</cite>: Allows users to remove a saved credit card from their profile.</p>
+<p>All views in this module require user authentication, enforced by the <cite>LoginRequiredMixin</cite>.</p>
+<p>Note:
+- These views rely on forms and utility functions from <cite>apps.user_profile_management</cite> for handling user-related data.
+- The views make extensive use of the <cite>TemplateLayout</cite> for initializing and rendering templates.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="user_settings.views.UserSettingsView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user_settings.views.</span></span><span class="sig-name descname"><span class="pre">UserSettingsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_settings.views.UserSettingsView" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code></p>
+<p>Displays and manages user settings.</p>
+<p>GET:
+- Renders the user settings page.
+- Provides necessary context data initialized by TemplateLayout.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user_settings.views.UserSettingsView.get_context_data">
+<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_settings.views.UserSettingsView.get_context_data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<section id="models">
+<h2>Models<a class="headerlink" href="#models" title="Link to this heading">¶</a></h2>
+<p>This section describes the models used in the User Settings App.</p>
+<span class="target" id="module-apps.user_settings.models"></span></section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Bimod.io</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="assistants.html">Assistants App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_browsers.html">Datasource Browsers App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_file_systems.html">Datasource File Systems App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_knowledge_base.html">Datasource Knowledge Base App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_media_storages.html">Datasource Media Storages App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_ml_models.html">Datasource ML Models App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasource_sql.html">Datasource SQL App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="export_assistants.html">Datasource Export Assistants App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llm_core.html">Datasource LLM Core App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llm_transaction.html">Datasource LLM Transaction App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memories.html">Datasource Memories App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message_templates.html">Datasource Message Templates App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_apis.html">Datasource MM APIs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_functions.html">Datasource MM Functions App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_scheduled_jobs.html">Datasource MM Scheduled Jobs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_scripts.html">Datasource MM Scripts App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mm_triggered_jobs.html">Datasource MM Triggered Jobs App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimodal_chat.html">Datasource Multimodal Chat App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starred_messages.html">Datasource Starred Messages App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_management.html">Datasource User Management App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_permissions.html">Datasource User Permissions App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_profile_management.html">Datasource User Profile Management App Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Datasource User Settings App Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#user_settings.views.UserSettingsView"><code class="docutils literal notranslate"><span class="pre">UserSettingsView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#user_settings.views.UserSettingsView.get_context_data"><code class="docutils literal notranslate"><span class="pre">UserSettingsView.get_context_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#models">Models</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="user_profile_management.html" title="previous chapter">Datasource User Profile Management App Documentation</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Ege Dogan Dursun.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/user_settings.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

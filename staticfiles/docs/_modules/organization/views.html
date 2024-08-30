@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>organization.views &#8212; Bimod.io v0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for organization.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">decimal</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.mixins</span> <span class="kn">import</span> <span class="n">LoginRequiredMixin</span>
+<span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span><span class="p">,</span> <span class="n">DeleteView</span>
+
+<span class="kn">from</span> <span class="nn">apps.organization.forms</span> <span class="kn">import</span> <span class="n">OrganizationForm</span>
+<span class="kn">from</span> <span class="nn">apps.organization.models</span> <span class="kn">import</span> <span class="n">Organization</span>
+<span class="kn">from</span> <span class="nn">apps.user_permissions.models</span> <span class="kn">import</span> <span class="n">PermissionNames</span><span class="p">,</span> <span class="n">UserPermission</span>
+<span class="kn">from</span> <span class="nn">auth.models</span> <span class="kn">import</span> <span class="n">PromoCode</span>
+<span class="kn">from</span> <span class="nn">web_project</span> <span class="kn">import</span> <span class="n">TemplateLayout</span>
+
+
+<div class="viewcode-block" id="CreateOrganizationView">
+<a class="viewcode-back" href="../../organization.html#organization.views.CreateOrganizationView">[docs]</a>
+<span class="k">class</span> <span class="nc">CreateOrganizationView</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="CreateOrganizationView.get_context_data">
+<a class="viewcode-back" href="../../organization.html#organization.views.CreateOrganizationView.get_context_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">TemplateLayout</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OrganizationForm</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">context</span></div>
+
+
+<div class="viewcode-block" id="CreateOrganizationView.post">
+<a class="viewcode-back" href="../../organization.html#organization.views.CreateOrganizationView.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">OrganizationForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="c1"># PERMISSION CHECK FOR - ORGANIZATION/CREATE</span>
+        <span class="n">user_permissions</span> <span class="o">=</span> <span class="n">UserPermission</span><span class="o">.</span><span class="n">active_permissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span>
+            <span class="s1">&#39;permission_type&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">PermissionNames</span><span class="o">.</span><span class="n">ADD_ORGANIZATIONS</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">user_permissions</span><span class="p">:</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">context</span><span class="p">[</span><span class="s1">&#39;error_messages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Permission Error&quot;</span><span class="p">:</span> <span class="s2">&quot;You do not have permission to create organizations.&quot;</span><span class="p">}</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_to_response</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">organization</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">organization</span><span class="o">.</span><span class="n">created_by_user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+            <span class="n">organization</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">organization</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="n">organization</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;organization:list&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error_messages</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">context</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span>
+            <span class="n">context</span><span class="p">[</span><span class="s1">&#39;error_messages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_messages</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_to_response</span><span class="p">(</span><span class="n">context</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="OrganizationListView">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationListView">[docs]</a>
+<span class="k">class</span> <span class="nc">OrganizationListView</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">):</span>
+
+<div class="viewcode-block" id="OrganizationListView.get_context_data">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationListView.get_context_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">TemplateLayout</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="n">context_user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">organizations</span> <span class="o">=</span> <span class="n">Organization</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">users__in</span><span class="o">=</span><span class="p">[</span><span class="n">context_user</span><span class="p">])</span>
+        <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">organizations</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># Show 10 organizations per page.</span>
+        <span class="n">page_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+        <span class="n">page_obj</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;page_obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_obj</span>
+        <span class="k">return</span> <span class="n">context</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="OrganizationUpdateView">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationUpdateView">[docs]</a>
+<span class="k">class</span> <span class="nc">OrganizationUpdateView</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="OrganizationUpdateView.get_context_data">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationUpdateView.get_context_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">TemplateLayout</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="c1"># retrieve the organization from the ID</span>
+        <span class="n">context_user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">organization</span> <span class="o">=</span> <span class="n">Organization</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">users__in</span><span class="o">=</span><span class="p">[</span><span class="n">context_user</span><span class="p">],</span> <span class="nb">id</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pk&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;organization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">organization</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">context_user</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OrganizationForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">organization</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">context</span></div>
+
+
+<div class="viewcode-block" id="OrganizationUpdateView.post">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationUpdateView.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context_user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="c1"># PERMISSION CHECK FOR - ORGANIZATION/UPDATE</span>
+        <span class="n">user_permissions</span> <span class="o">=</span> <span class="n">UserPermission</span><span class="o">.</span><span class="n">active_permissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">context_user</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span>
+            <span class="s1">&#39;permission_type&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">PermissionNames</span><span class="o">.</span><span class="n">UPDATE_ORGANIZATIONS</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">user_permissions</span><span class="p">:</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">context</span><span class="p">[</span><span class="s1">&#39;error_messages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;Permission Error&quot;</span><span class="p">:</span> <span class="s2">&quot;You do not have permission to update or modify organizations.&quot;</span><span class="p">}</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_to_response</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="n">organization</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Organization</span><span class="p">,</span> <span class="n">users__in</span><span class="o">=</span><span class="p">[</span><span class="n">context_user</span><span class="p">],</span> <span class="nb">id</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pk&#39;</span><span class="p">])</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">OrganizationForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">organization</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;organization:list&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">context</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span>
+            <span class="n">error_messsages</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span>
+            <span class="n">context</span><span class="p">[</span><span class="s1">&#39;error_messages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_messsages</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_to_response</span><span class="p">(</span><span class="n">context</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="OrganizationDeleteView">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationDeleteView">[docs]</a>
+<span class="k">class</span> <span class="nc">OrganizationDeleteView</span><span class="p">(</span><span class="n">DeleteView</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Organization</span>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s1">&#39;organization&#39;</span>
+
+<div class="viewcode-block" id="OrganizationDeleteView.get_context_data">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationDeleteView.get_context_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">TemplateLayout</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="n">user_organizations</span> <span class="o">=</span> <span class="n">Organization</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">users__in</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">])</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;user_organizations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_organizations</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;user_organizations_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_organizations</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">context</span></div>
+
+
+<div class="viewcode-block" id="OrganizationDeleteView.post">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationDeleteView.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context_user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">organization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="n">transfer_organization_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transfer_organization_id&#39;</span><span class="p">)</span>
+        <span class="c1"># Ensure the user has the required permissions</span>
+        <span class="c1"># PERMISSION CHECK FOR - ORGANIZATION/DELETE</span>
+        <span class="n">user_permissions</span> <span class="o">=</span> <span class="n">UserPermission</span><span class="o">.</span><span class="n">active_permissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">context_user</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s1">&#39;permission_type&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">PermissionNames</span><span class="o">.</span><span class="n">DELETE_ORGANIZATIONS</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">user_permissions</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;You do not have permission to delete organizations.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;organization:list&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Ensure the transfer organization is valid and belongs to the user</span>
+        <span class="n">transfer_organization</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Organization</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">transfer_organization_id</span><span class="p">,</span> <span class="n">users__in</span><span class="o">=</span><span class="p">[</span><span class="n">context_user</span><span class="p">])</span>
+        <span class="c1"># Transfer the balance to another organization</span>
+        <span class="n">transfer_organization</span><span class="o">.</span><span class="n">balance</span> <span class="o">+=</span> <span class="n">organization</span><span class="o">.</span><span class="n">balance</span>
+        <span class="n">transfer_organization</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c1"># Delete the organization</span>
+        <span class="n">organization</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[OrganizationDeleteView.post] Organization </span><span class="si">{</span><span class="n">organization</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has been deleted and the balance has been transferred to </span><span class="si">{</span><span class="n">transfer_organization</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Organization &quot;</span><span class="si">{</span><span class="n">organization</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; has been deleted and the balance has been transferred to &quot;</span><span class="si">{</span><span class="n">transfer_organization</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;organization:list&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrganizationDeleteView.get_queryset">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationDeleteView.get_queryset">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">context_user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="k">return</span> <span class="n">Organization</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">users__in</span><span class="o">=</span><span class="p">[</span><span class="n">context_user</span><span class="p">])</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="OrganizationAddCreditsView">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationAddCreditsView">[docs]</a>
+<span class="k">class</span> <span class="nc">OrganizationAddCreditsView</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">):</span>
+
+<div class="viewcode-block" id="OrganizationAddCreditsView.post">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationAddCreditsView.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context_user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">organization_id</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pk&#39;</span><span class="p">)</span>
+        <span class="n">organization</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Organization</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">organization_id</span><span class="p">,</span> <span class="n">users__in</span><span class="o">=</span><span class="p">[</span><span class="n">context_user</span><span class="p">])</span>
+        <span class="n">topup_amount</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;topup_amount&#39;</span><span class="p">)</span>
+        <span class="n">promo_code</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;promo_code&#39;</span><span class="p">)</span>
+        <span class="c1"># top up amount can&#39;t be zero or negative</span>
+        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">topup_amount</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Top up amount must be greater than zero.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;llm_transaction:list&#39;</span><span class="p">)</span>
+
+        <span class="c1"># PERMISSION CHECK FOR - ORGANIZATION/UPDATE</span>
+        <span class="n">user_permissions</span> <span class="o">=</span> <span class="n">UserPermission</span><span class="o">.</span><span class="n">active_permissions</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">context_user</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span>
+            <span class="s1">&#39;permission_type&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">PermissionNames</span><span class="o">.</span><span class="n">UPDATE_ORGANIZATIONS</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">user_permissions</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;You do not have permission to update or modify organizations.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;llm_transaction:list&#39;</span><span class="p">)</span>
+
+        <span class="c1"># try to retrieve the code</span>
+        <span class="n">bonus_percentage_referrer</span><span class="p">,</span> <span class="n">bonus_percentage_referee</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">promo_code</span> <span class="o">=</span> <span class="n">PromoCode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">promo_code</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">promo_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bonus_percentage_referee</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">referrer</span> <span class="o">=</span> <span class="n">promo_code</span><span class="o">.</span><span class="n">user</span>
+            <span class="k">if</span> <span class="n">promo_code</span><span class="o">.</span><span class="n">current_referrals</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">promo_code</span><span class="o">.</span><span class="n">max_referral_limit</span><span class="p">:</span>
+                <span class="n">promo_code</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">promo_code</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">promo_code</span><span class="o">.</span><span class="n">current_referrals</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">bonus_percentage_referrer</span> <span class="o">=</span> <span class="n">promo_code</span><span class="o">.</span><span class="n">bonus_percentage_referrer</span>
+                <span class="n">bonus_percentage_referee</span> <span class="o">=</span> <span class="n">promo_code</span><span class="o">.</span><span class="n">bonus_percentage_referee</span>
+                <span class="n">promo_code</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">referrer_organization</span> <span class="o">=</span> <span class="n">Organization</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">users__in</span><span class="o">=</span><span class="p">[</span><span class="n">referrer</span><span class="p">])</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+                <span class="n">referrer_organization</span><span class="o">.</span><span class="n">balance</span> <span class="o">+=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="o">.</span><span class="n">from_float</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">topup_amount</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">bonus_percentage_referrer</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)))</span>
+                <span class="n">referrer_organization</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">topup_amount</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">topup_amount</span><span class="p">)</span>
+            <span class="n">topup_amount</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">topup_amount</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">bonus_percentage_referee</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="n">organization</span><span class="o">.</span><span class="n">balance</span> <span class="o">+=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="o">.</span><span class="n">from_float</span><span class="p">(</span><span class="n">topup_amount</span><span class="p">)</span>
+            <span class="n">organization</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Credits successfully added. New balance: $</span><span class="si">{</span><span class="n">organization</span><span class="o">.</span><span class="n">balance</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Invalid amount entered. Please enter a valid number.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;llm_transaction:list&#39;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="OrganizationBalanceTransferView">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationBalanceTransferView">[docs]</a>
+<span class="k">class</span> <span class="nc">OrganizationBalanceTransferView</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">View</span><span class="p">):</span>
+<div class="viewcode-block" id="OrganizationBalanceTransferView.post">
+<a class="viewcode-back" href="../../organization.html#organization.views.OrganizationBalanceTransferView.post">[docs]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">source_org_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;source_org&#39;</span><span class="p">)</span>
+        <span class="n">destination_org_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;destination_org&#39;</span><span class="p">)</span>
+        <span class="n">transfer_amount</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transfer_amount&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">transfer_amount</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Invalid transfer amount.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;llm_transaction:list&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">transfer_amount</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="n">transfer_amount</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">decimal</span><span class="o">.</span><span class="n">InvalidOperation</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Invalid transfer amount.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;llm_transaction:list&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">transfer_amount</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Transfer amount must be greater than zero.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;llm_transaction:list&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">source_org_id</span> <span class="o">==</span> <span class="n">destination_org_id</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Source and destination organizations cannot be the same.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;llm_transaction:list&#39;</span><span class="p">)</span>
+
+        <span class="n">source_org</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Organization</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">source_org_id</span><span class="p">,</span> <span class="n">users__in</span><span class="o">=</span><span class="p">[</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">])</span>
+        <span class="n">destination_org</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Organization</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">destination_org_id</span><span class="p">,</span> <span class="n">users__in</span><span class="o">=</span><span class="p">[</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">source_org</span><span class="o">.</span><span class="n">balance</span> <span class="o">&lt;</span> <span class="n">transfer_amount</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Insufficient balance in the source organization.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;llm_transaction:list&#39;</span><span class="p">)</span>
+
+        <span class="n">source_org</span><span class="o">.</span><span class="n">balance</span> <span class="o">-=</span> <span class="n">transfer_amount</span>
+        <span class="n">destination_org</span><span class="o">.</span><span class="n">balance</span> <span class="o">+=</span> <span class="n">transfer_amount</span>
+        <span class="n">source_org</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">destination_org</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">transfer_amount</span><span class="si">}</span><span class="s2"> successfully transferred from </span><span class="si">{</span><span class="n">source_org</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">destination_org</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;llm_transaction:list&#39;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Bimod.io</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../assistants.html">Assistants App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../organization.html">Organization App Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Ege Dogan Dursun.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

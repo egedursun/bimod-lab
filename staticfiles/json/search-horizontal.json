@@ -1,0 +1,202 @@
+{
+  "pages": [
+    {
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "main-dashboard",
+      "url": "/app/dashboard/main_dashboard"
+    },
+    {
+      "name": "Create Organization",
+      "icon": "menu-icon tf-icons ti ti-world",
+      "slug": "organizations",
+      "url": "organization:create"
+    },
+    {
+      "name": "LLM Models",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "llm-cores",
+      "url": "/llm_core/list"
+    },
+    {
+      "name": "Usage & Payment",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "usage",
+      "url": "/llm_transaction/list"
+    },
+    {
+      "name": "Users",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "/user_management/list"
+    },
+    {
+      "name": "Permissions",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "permissions",
+      "url": "/user_permissions/list"
+    },
+    {
+      "name": "Assistants",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "assistants",
+      "url": "/assistants/list"
+    },
+    {
+      "name": "Chats",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "chats",
+      "url": "/multimodal_chat/chat"
+    },
+    {
+      "name": "Starred Responses",
+      "icon": "menu-icon tf-icons ti ti-star",
+      "slug": "starred-responses",
+      "url": "/starred_responses/list"
+    },
+    {
+      "name": "Memory",
+      "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "memory",
+      "url": "/memory/list"
+    },
+    {
+      "name": "Message Templates",
+      "icon": "menu-icon tf-icons ti ti-template",
+      "slug": "message-templates",
+      "url": "/message_templates/list"
+    },
+    {
+      "name": "Fine Tuning",
+      "icon": "menu-icon tf-icons ti ti-ruler",
+      "slug": "fine-tuning",
+      "url": "/fine_tuning/list"
+    },
+    {
+      "name": "Export Assistants",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "file-systems",
+      "url": "/file_systems/list"
+    },
+    {
+      "url": "dashboard:main-dashboard",
+      "name": "Orchestrations",
+      "icon": "menu-icon tf-icons ti ti-bolt",
+      "slug": "/orchestrations/list"
+    },
+    {
+      "name": "File Systems",
+      "icon": "menu-icon tf-icons ti ti-server",
+      "slug": "file-systems",
+      "url": "/file_systems/list"
+    },
+    {
+      "name": "Web Browsers",
+      "icon": "menu-icon tf-icons ti ti-browser",
+      "slug": "web-browsers",
+      "url": "/web_browsers/list"
+    },
+    {
+      "name": "SQL Databases",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/sql_databases/list"
+    },
+    {
+      "name": "NoSQL Databases",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "nosql-databases",
+      "url": "/nosql_databases/list"
+    },
+    {
+      "name": "Knowledge Bases",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/knowledge_bases/list"
+    },
+    {
+      "name": "ML Models",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-models",
+      "url": "/ml_models/list"
+    },
+    {
+      "name": "Image Storages",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "image-storages",
+      "url": "/image_storages/list"
+    },
+    {
+      "name": "Video Storages",
+      "icon": "menu-icon tf-icons ti ti-video",
+      "slug": "video-storages",
+      "url": "/video_storages/list"
+    },
+    {
+      "name": "Audio Storages",
+      "icon": "menu-icon tf-icons ti ti-music",
+      "slug": "audio-storages",
+      "url": "/audio_storages/list"
+    },
+    {
+      "name": "Functions",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "app-invoice",
+      "url": "/functions/list"
+    },
+    {
+      "name": "APIs",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/apis/list"
+    },
+    {
+      "name": "Conditionals",
+      "icon": "menu-icon tf-icons ti ti-code",
+      "slug": "conditionals",
+      "url": "/conditionals/list"
+    },
+    {
+      "name": "Scheduled Jobs",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "scheduled-jobs",
+      "url": "/scheduled_jobs/list"
+    },
+    {
+      "name": "Triggers",
+      "icon": "menu-icon tf-icons ti ti-anchor",
+      "slug": "triggers",
+      "url": "/triggers/list"
+    },
+    {
+      "name": "Blockchain",
+      "icon": "menu-icon tf-icons ti ti-cube",
+      "slug": "blockchain",
+      "url": "/blockchain/list"
+    },
+    {
+      "name": "Image Gen & Analysis",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "triggers",
+      "url": "/image_gen_analysis/list"
+    },
+    {
+      "name": "Audio Gen & Analysis",
+      "icon": "menu-icon tf-icons ti ti-music",
+      "slug": "triggers",
+      "url": "/audio_gen_analysis/list"
+    },
+    {
+      "name": "Integrations",
+      "icon": "menu-icon tf-icons ti ti-dashboard",
+      "slug": "triggers",
+      "url": "/integrations/list"
+    },
+    {
+      "name": "Meta Integrations",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "triggers",
+      "url": "/meta_integrations/list"
+    }
+  ]
+}

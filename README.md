@@ -137,7 +137,6 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 **PRIMARY FEATURE:**
 
 -> ask for 3.500 + 1000 + 3000 = 7500 from Hüseyin
--> finish testing out the fine tuning functionality.
 
 
 1. [ ] [FORUM POINTS & GIFT CREDITS] must be given to users to motivate them:
