@@ -37,15 +37,17 @@ class CreateLLMCoreView(TemplateView, LoginRequiredMixin):
         context['model_name_choices'] = OPENAI_GPT_MODEL_NAMES
 
         ##########################################
-        # TODO-2: Add the custom fine-tuning models to the model name choices
-        # ...
+        # Add the custom fine-tuning models to the model name choices
         ##########################################
         fine_tuned_models = FineTunedModelConnection.objects.filter(
-            organization__in=user.organizations.all()
+            organization__in=context['organizations']
         ).all()
         for model in fine_tuned_models:
             if model.model_name not in [m[0] for m in context['model_name_choices']]:
                 context['model_name_choices'].append((model.model_name, model.nickname))
+        for model in context['model_name_choices']:
+            if model[0] not in [m[0] for m in OPENAI_GPT_MODEL_NAMES] and model[0] not in [m[0] for m in fine_tuned_models]:
+                context['model_name_choices'].remove(model)
 
         return context
 
@@ -124,6 +126,20 @@ class UpdateLLMCoreView(TemplateView, LoginRequiredMixin):
         context['organizations'] = context_user.organizations.all()
         context['provider_choices'] = LLM_CORE_PROVIDERS
         context['model_name_choices'] = OPENAI_GPT_MODEL_NAMES
+
+        ##########################################
+        # Add the custom fine-tuning models to the model name choices
+        ##########################################
+        fine_tuned_models = FineTunedModelConnection.objects.filter(
+            organization__in=context['organizations']
+        ).all()
+        for model in fine_tuned_models:
+            if model.model_name not in [m[0] for m in context['model_name_choices']]:
+                context['model_name_choices'].append((model.model_name, model.nickname))
+        for model in context['model_name_choices']:
+            if model[0] not in [m[0] for m in OPENAI_GPT_MODEL_NAMES] and model[0] not in [m[0] for m in fine_tuned_models]:
+                context['model_name_choices'].remove(model)
+
         return context
 
     def post(self, request, *args, **kwargs):

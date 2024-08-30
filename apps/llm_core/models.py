@@ -7,6 +7,8 @@ Dependencies:
 
 from django.db import models
 
+from apps.finetuning.models import FineTunedModelConnection
+
 # Define enumeration for the provider
 LLM_CORE_PROVIDERS = [
     ("OA", "OpenAI-GPT"),
@@ -48,7 +50,7 @@ class LLMCore(models.Model):
     description = models.TextField(default="", blank=True)
     provider = models.CharField(max_length=2, choices=LLM_CORE_PROVIDERS)
     api_key = models.CharField(max_length=8192)
-    model_name = models.CharField(max_length=255, choices=OPENAI_GPT_MODEL_NAMES)
+    model_name = models.CharField(max_length=1000)
     temperature = models.DecimalField(max_digits=5, decimal_places=2, default=0.50)
     maximum_tokens = models.IntegerField(default=4094)
     stop_sequences = models.TextField(default="", blank=True)
@@ -93,3 +95,17 @@ class LLMCore(models.Model):
 
     def get_provider_name(self):
         return dict(LLM_CORE_PROVIDERS)[self.provider]
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        # add the fine-tuned instances
+        fine_tuned_models = FineTunedModelConnection.objects.filter(
+            organization__in=[self.organization]
+        ).all()
+        for model in fine_tuned_models:
+            if model.model_name not in [m[0] for m in OPENAI_GPT_MODEL_NAMES]:
+                OPENAI_GPT_MODEL_NAMES.append((model.model_name, model.nickname))
+        for model in OPENAI_GPT_MODEL_NAMES:
+            if (model[0] not in [m[0] for m in OPENAI_GPT_MODEL_NAMES] and model[0] not in [m[0] for m in fine_tuned_models]):
+                OPENAI_GPT_MODEL_NAMES.remove(model)
+
+        super().save(force_insert, force_update, using, update_fields)
