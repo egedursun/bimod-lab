@@ -334,7 +334,7 @@ class OrganizationUserAddGiftCreditsView(LoginRequiredMixin, View):
                 user.profile.save()
                 user.save()
                 print(f"[OrganizationUserAddGiftCreditsView.get] Updated user profile and user.")
-                org.balance += free_credits
+                org.balance += decimal.Decimal.from_float(free_credits)
                 org.save()
                 print(f"[OrganizationUserAddGiftCreditsView.get] Updated organization balance.")
                 print(f"[OrganizationUserAddGiftCreditsView.get] Gift credits successfully added to {org.name}.")

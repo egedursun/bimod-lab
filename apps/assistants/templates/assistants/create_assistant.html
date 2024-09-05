@@ -43,12 +43,13 @@
           <h5 class="mb-0"><strong>Create New Assistant</strong></h5> <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-40.png' %}" width="25%" style="border-radius:25px;"
                  class="justify-content-end me-8">
             <span class="alert-icon rounded">
-          <i class="ti ti-bookmark"></i>
-        </span>
+              <i class="ti ti-bookmark"></i>
+            </span>
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
@@ -104,7 +105,7 @@
                 <textarea class="form-control" id="description" name="description"
                           placeholder="Enter assistant description" rows="1"></textarea>
               </div>
-              <div class="alert alert-solid-info d-flex align-items-center" role="alert">
+              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
                 </span>
@@ -116,7 +117,7 @@
                 <textarea class="form-control" id="instructions" name="instructions"
                           placeholder="Enter instructions"></textarea>
               </div>
-              <div class="alert alert-solid-info d-flex align-items-center" role="alert">
+              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
                 </span>
@@ -128,7 +129,7 @@
                 <textarea class="form-control" id="response_template" name="response_template"
                           placeholder="Enter response template"></textarea>
               </div>
-              <div class="alert alert-solid-info d-flex align-items-center" role="alert">
+              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
                 </span>
@@ -139,7 +140,7 @@
               <div class="col-6 mb-6">
                 <label class="form-label" for="audience">Audience</label>
                 <input type="text" class="form-control" id="audience" name="audience" placeholder="Enter audience"/>
-                <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                   <span class="alert-icon rounded">
                     <i class="ti ti-info-circle"></i>
                   </span>
@@ -151,7 +152,7 @@
               <div class="col-6 mb-6">
                 <label class="form-label" for="tone">Tone</label>
                 <input type="text" class="form-control" id="tone" name="tone" placeholder="Enter tone"/>
-                <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                   <span class="alert-icon rounded">
                     <i class="ti ti-info-circle"></i>
                   </span>
@@ -166,7 +167,7 @@
                 <input type="range" class="form-range" id="max_retry_count" name="max_retry_count" min="0" max="10"
                        step="1" value="3" oninput="this.nextElementSibling.value = this.value">
                 <output>3</output>
-                <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                   <span class="alert-icon rounded">
                     <i class="ti ti-info-circle"></i>
                   </span>
@@ -182,7 +183,7 @@
                        name="tool_max_attempts_per_instance" min="0" max="10" step="1" value="3"
                        oninput="this.nextElementSibling.value = this.value">
                 <output>3</output>
-                <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                   <span class="alert-icon rounded">
                     <i class="ti ti-info-circle"></i>
                   </span>
@@ -197,7 +198,7 @@
                 <input type="range" class="form-range" id="tool_max_chains" name="tool_max_chains" min="0" max="20"
                        step="1" value="3" oninput="this.nextElementSibling.value = this.value">
                 <output>3</output>
-                <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                   <span class="alert-icon rounded">
                     <i class="ti ti-info-circle"></i>
                   </span>
@@ -212,7 +213,7 @@
                 <input type="range" class="form-range" id="max_context_messages" name="max_context_messages" min="10"
                        max="100" step=1" value="50" oninput="this.nextElementSibling.value = this.value">
                 <output>50</output>
-                <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                   <span class="alert-icon rounded">
                     <i class="ti ti-info-circle"></i>
                   </span>
@@ -235,7 +236,7 @@
                 <label class="form-label" for="assistant_image">Assistant Image</label>
                 <input type="file" class="form-control" id="assistant_image" name="assistant_image"/>
               </div>
-              <div class="alert alert-solid-info d-flex align-items-center" role="alert">
+              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
                   <span class="alert-icon rounded">
                     <i class="ti ti-info-circle"></i>
                   </span>
@@ -251,7 +252,7 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="alert alert-solid-info d-flex align-items-center" role="alert">
+              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
               <span class="alert-icon rounded">
                 <i class="ti ti-info-circle"></i>
               </span>
@@ -276,7 +277,7 @@
                 <input type="text" class="form-control" id="vectorizer_api_key" name="vectorizer_api_key"
                        placeholder="Enter the API key for your OpenAI account"/>
               </div>
-              <div id="memory-vectorizer-alert-bar" class="alert alert-solid-warning d-flex align-items-center d-none"
+              <div id="memory-vectorizer-alert-bar" class="tips-section alert alert-solid-warning d-flex align-items-center d-none"
                    role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
@@ -347,7 +348,7 @@
                 <label class="form-label" for="csv_file">Import Glossary from CSV</label>
                 <input type="file" class="form-control" id="csv_file" accept=".csv"/>
               </div>
-              <div class="alert alert-solid-info d-flex align-items-center" role="alert">
+              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
                 </span>

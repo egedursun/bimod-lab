@@ -1,6 +1,7 @@
 from django.urls import path
 
-from apps.landing.views import LandingPageView, ContactFormSubmitView, DocumentationView, FAQView
+from apps.landing.views import (LandingPageView, ContactFormSubmitView, DocumentationView, FAQView,
+                                NotAccreditedAdminView)
 
 app_name = "landing"
 
@@ -10,4 +11,6 @@ urlpatterns = [
          name='contact_form_submit'),
     path('docs/', DocumentationView.as_view(template_name="landing/documentation.html"), name="documentation"),
     path('faq/', FAQView.as_view(template_name="landing/faq.html"), name="faq"),
+    path('not_accredited/', NotAccreditedAdminView.as_view(template_name="landing/not_accredited_admin.html"),
+         name='not_accredited'),
 ]

@@ -145,7 +145,7 @@
       </div>
     </div>
 
-    <div class="alert alert-secondary alert-dismissible d-flex align-items-center" role="alert">
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center" role="alert">
       <img src="{% static 'img/custom-illustrations-v2/i2-103.png' %}" width="25%" style="border-radius: 25px;"
            class="justify-content-end me-8">
       <span class="alert-icon rounded ms-4">
@@ -187,6 +187,7 @@
                    aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
                   <div class="d-flex">
                     <img src="
+
                       {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          width="60" class="me-4 rounded">
                   </div>
@@ -211,6 +212,7 @@
                   <div class="card-header">
                     <div class="d-flex card card-border-shadow-primary p-4">
                       <img src="
+
                         {% if assistant_data.assistant.assistant_image %}{{ assistant_data.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/assistant-0.png' %}{% endif %}"
                            width="80" class="me-4 rounded">
                       <h4 class="mb-0 mt-4">
@@ -393,6 +395,13 @@
                           </div>
                         </div>
                       </div>
+                    {% empty %}
+                      <div class="alert alert-warning p-8 m-0" role="alert">
+                        <div class="">
+                          <i class="fa fa-exclamation-triangle me-4"></i>
+                          <strong>No Documents have been uploaded to this Knowledge Base yet.</strong>
+                        </div>
+                      </div>
                     {% endfor %}
                   </div>
                 </div>
@@ -404,7 +413,7 @@
     {% endfor %}
     <div class="mt-8"></div>
     <hr>
-    <div class="row align-items-center justify-content-start mt-2">
+    <div class="tips-section row align-items-center justify-content-start mt-2">
       <div class="card-header">
         <h5><strong>Legend</strong></h5>
         <small class="text-muted">

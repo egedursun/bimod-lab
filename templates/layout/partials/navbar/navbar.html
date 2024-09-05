@@ -77,6 +77,25 @@
       <!-- /Search -->
     {% endif %}
 
+    <!-- Switch Button for Turning off tips -->
+    <li class="nav-item me-2 badge bg-secondary-subtle p-2 rounded">
+      <form action="" method="post">
+        {% csrf_token %}
+        <label class="switch switch-success">
+          <input type="checkbox" class="switch-input" checked="">
+          <span class="switch-toggle-slider">
+                <span class="switch-on">
+                  <i class="ti ti-lifebuoy"></i>
+                </span>
+                <span class="switch-off">
+                  <i class="ti ti-x"></i>
+                </span>
+              </span>
+          <small class="switch-label text-muted"><strong>Tips</strong></small>
+        </label>
+      </form>
+    </li>
+
     <!-- Main Website Link -->
     <li class="nav-item me-2">
       <a class="nav-link btn btn-text-secondary btn-icon rounded-pill" href="{% url 'landing:index' %}" target="_blank">
@@ -228,11 +247,6 @@
         <div class="avatar avatar-online">
           {% if request.user|has_group:"admin" %}
             <img src="
-              
-              
-              
-              
-              
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt class="h-auto rounded-pill border border-primary border-1">
           {% else %}
@@ -269,13 +283,15 @@
                 <small class="text"><strong>
                   <i class="ti ti-scoreboard ms-3 me-1_5 ti-sm"></i>
                   Contribution Score: &nbsp;&nbsp;</strong>
-                  <span class="label bg-label-info p-1 rounded"><strong>{{ request.user.profile.user_forum_points }}</strong></span>
+                  <span
+                    class="label bg-label-info p-1 rounded"><strong>{{ request.user.profile.user_forum_points }}</strong></span>
                 </small>
                 <br>
                 <small class="text"><strong>
                   <i class="ti ti-medal mt-2 ms-3 me-1_5 mb-3 ti-sm"></i>Forum
                   Rank: &nbsp;&nbsp;</strong>
-                  <span class="label bg-label-success p-1 rounded"><strong>{{ request.user.profile.user_forum_rank|field_name_to_label }}</strong></span>
+                  <span
+                    class="label bg-label-success p-1 rounded"><strong>{{ request.user.profile.user_forum_rank|field_name_to_label }}</strong></span>
                 </small>
                 <br>
                 <!--
@@ -365,3 +381,22 @@
 {% if navbar_detached %}
   </nav>
 {% endif %}
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tipsSwitch = document.querySelector('.switch-input');
+
+    // Check localStorage for the tips state on page load
+    const tipsState = localStorage.getItem('show_tips');
+    if (tipsState !== null) {
+      tipsSwitch.checked = JSON.parse(tipsState);
+    }
+
+    // Add event listener to the switch
+    tipsSwitch.addEventListener('change', function () {
+      const isOn = tipsSwitch.checked;
+      localStorage.setItem('show_tips', isOn);
+    });
+  });
+</script>

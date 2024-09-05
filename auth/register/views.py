@@ -54,7 +54,7 @@ class RegisterView(AuthView):
         created_user = User.objects.create_user(username=username, email=email, password=password)
         created_user.set_password(password)
         # grant admin privileges
-        created_user.is_staff = True
+        created_user.is_staff = False
         created_user.is_superuser = True
         created_user.save()
         # Add the user to the 'client' group (or any other group you want to use as default for new users)

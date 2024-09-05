@@ -42,7 +42,7 @@
         <div class="col-md-4 organization_status"></div>
         <div class="col-md-4 organization_country"></div>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-2.png' %}" width="25%" style="border-radius: 25px;"
              class="justify-content-end me-8">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -101,14 +101,14 @@
                 <img class="rounded" src="{% static 'img/avatars/org-0.png' %}" alt="Organization Image" width="60">
               {% endif %}
             </td>
-            <td>{{ organization.name }}</td>
-            <td>{{ organization.email }}</td>
-            <td>{{ organization.phone }}</td>
+            <td style="min-width: 180px;">{{ organization.name }}</td>
+            <td style="min-width: 200px;">{{ organization.email }}</td>
+            <td style="min-width: 150px;">{{ organization.phone }}</td>
             <td style="min-width: 300px;">{{ organization.address }}</td>
-            <td>{{ organization.city }}</td>
-            <td>{{ organization.country }}</td>
-            <td>{{ organization.postal_code }}</td>
-            <td style="min-width: 300px;">{{ organization.industry }}</td>
+            <td style="min-width: 150px;">{{ organization.city }}</td>
+            <td style="min-width: 150px;">{{ organization.country }}</td>
+            <td style="min-width: 150px;">{{ organization.postal_code }}</td>
+            <td style="min-width: 200px;">{{ organization.industry }}</td>
             <td>
               <a href="{% url 'organization:update' organization.id %}" class="btn btn-sm btn-primary"><strong>Edit</strong></a>
             </td>
@@ -131,7 +131,7 @@
 
     <!-- Pagination controls -->
     <nav aria-label="Page navigation">
-      <ul class="pagination pagination-rounded pb-4 justify-content-center overflow-auto">
+      <ul class="pagination pagination-rounded pb-4 justify-content-center overflow-auto pt-4">
         {% if page_obj.has_previous %}
           <li class="page-item">
             <a class="page-link" href="?page=1" aria-label="First">

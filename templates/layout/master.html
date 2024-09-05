@@ -39,11 +39,51 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2157MB1H4E"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
+
     function gtag() {
       dataLayer.push(arguments);
     }
+
     gtag('js', new Date());
     gtag('config', 'G-2157MB1H4E');
+  </script>
+
+  <script>
+    window.onload = function () {
+      const tipsSections = document.querySelectorAll('.tips-section'); // Select all elements with the class 'tips-section'
+      const tipsSwitch = document.querySelector('.switch-input');
+
+      if (!tipsSections.length || !tipsSwitch) {
+        console.error('Tips sections or switch not found');
+        return;
+      }
+
+      // Retrieve the current state of the tips from localStorage
+      const tipsState = localStorage.getItem('show_tips');
+
+      // Apply the correct class based on the stored state to all tips sections
+      tipsSections.forEach(tipsSection => {
+        if (tipsState === 'true' || tipsState === null) {
+          tipsSection.classList.remove('d-none');
+        } else {
+          tipsSection.classList.add('d-none');
+        }
+      });
+
+      // Listen for changes on the switch button
+      tipsSwitch.addEventListener('change', function () {
+        const isOn = tipsSwitch.checked;
+        localStorage.setItem('show_tips', isOn);
+
+        tipsSections.forEach(tipsSection => {
+          if (isOn) {
+            tipsSection.classList.remove('d-none');
+          } else {
+            tipsSection.classList.add('d-none');
+          }
+        });
+      });
+    };
   </script>
 
 </head>

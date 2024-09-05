@@ -45,7 +45,7 @@
           class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-6.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8">
             <span class="alert-icon rounded">
@@ -99,7 +99,7 @@
                 <textarea class="form-control" id="description" name="description"
                           placeholder="Enter a description in natural langauge for this particular model configuration"></textarea>
                 <div class="form-text"></div>
-                <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                   <span class="alert-icon rounded">
                     <i class="ti ti-info-circle"></i>
                   </span>
@@ -121,7 +121,7 @@
                 <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API key"/>
                 <div class="form-text"></div>
               </div>
-              <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
                 </span>
@@ -145,10 +145,10 @@
                        min="0" max="2" placeholder="Enter temperature" value="1.00"/>
                 <div class="form-text"></div>
               </div>
-              <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-            <span class="alert-icon rounded">
-              <i class="ti ti-info-circle"></i>
-            </span>
+              <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                <span class="alert-icon rounded">
+                  <i class="ti ti-info-circle"></i>
+                </span>
                 A lower temperature can lead to more reliable and text that has less likelihood of hallucinations,
                 but it may also result in less creative responses. Conversely, a higher temperature can lead to more
                 creative responses, but it may also result in hallucinations and less reliable text.

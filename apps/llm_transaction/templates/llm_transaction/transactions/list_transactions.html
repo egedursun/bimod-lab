@@ -37,7 +37,7 @@
     <!-- Add more statistics cards if necessary -->
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-12.png' %}" width="25%" style="border-radius:25px;"
          class="justify-content-end me-8">
     <span class="alert-icon rounded">
@@ -178,7 +178,7 @@
           </div>
         </div>
       </div>
-      <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+      <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
         <span class="alert-icon rounded">
           <i class="ti ti-bell"></i>
         </span>
@@ -237,15 +237,19 @@
               </div>
 
               <!-- Top-up Form Card -->
-              <div class="col-6">
-                <div class="card h-100">
+              <div class="col-6 border border-success border-2 rounded">
+                <h6 class="mt-4"><strong class="ms-6 mt-2 mb-2">
+                  <i class="fa fa-plus-circle me-2"></i>
+                  Add Balance to Organization
+                </strong></h6>
+                <div class="card">
                   <div class="card-header">
                     <a href="{% url 'llm_transaction:auto_top_up_create' %}">
                       <button class="btn btn-success w-100" type="submit">
                         <i class="fa fa-refresh me-2"></i><strong>Create Automated Balance Top-Up Plan</strong>
                       </button>
                     </a>
-                    <div class="alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+                    <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                       <span class="alert-icon rounded">
                         <i class="ti ti-bell"></i>
                       </span>
@@ -254,7 +258,6 @@
                     </div>
                   </div>
                   <hr>
-                  <h6><strong class="ms-6 mt-2 mb-2">Add Balance to Organization</strong></h6>
                   <div class="card-body d-flex align-items-center">
                     <br>
                     <form method="post" action="{% url 'organization:add_credits' organization_data.organization.id %}"
@@ -265,7 +268,7 @@
                              placeholder="You have a referral or promo code?">
                       <label for="topup_amount" class="form-label mb-2"><strong>Enter amount in USD to add to the
                         balance.</strong></label>
-                      {% if user.profile.free_credits != 0 %}
+                      {% if user.profile.free_credits > 0 %}
                         <div class="alert alert-solid-success d-flex align-items-center mt-6" role="alert">
                           <span class="alert-icon rounded">
                             <i class="ti ti-bell"></i>

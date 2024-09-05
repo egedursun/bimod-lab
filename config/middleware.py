@@ -1,14 +1,12 @@
-import re
-
+from django.contrib.auth.models import User
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
-from django.utils.translation import gettext as _, activate
-from lxml import html
 import logging
 
-from config.settings import SUFFIX_ANY, TRANSLATOR_DEBUG_MODE, ACTIVATE_MANUAL_TRANSLATION
+from auth.models import Profile
+from config.settings import SUFFIX_ANY
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +16,7 @@ HTTP_STATUS_ERROR_TAG_VALUE = 'error'
 
 class SessionTimeoutMiddleware(MiddlewareMixin):
     def process_view(self, request, view_func, view_args, view_kwargs):
+
         # Skip authentication check for excluded pages
         for excluded_page in settings.EXCLUDED_PAGES:
             if SUFFIX_ANY in excluded_page:
@@ -26,6 +25,16 @@ class SessionTimeoutMiddleware(MiddlewareMixin):
             else:
                 if request.path == excluded_page:
                     return None
+
+        if not request.user.is_anonymous:
+            user_data: User = request.user
+            user_profile: Profile = user_data.profile
+
+            if user_data.is_superuser:
+                if user_data.is_staff:
+                    return None
+                if not user_profile.is_accredited_by_staff:
+                    return redirect('landing:not_accredited')
 
         # If the user is not authenticated and the page is not the login page, redirect to login
         if not request.user.is_authenticated and request.path != settings.LOGIN_URL:

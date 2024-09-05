@@ -136,19 +136,10 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 **PRIMARY FEATURE:**
 
--> ask for 3.500 + 1000 + 3000 = 7500 from Hüseyin
+-> fix the server HOST URL from "localhost" to "bimod.io". (This is causing email sending issues / invalid link in email)
+-> evaluate the health of export assistants app endpoints.
 
-
-1. [ ] [FORUM POINTS & GIFT CREDITS] must be given to users to motivate them:
-   - For between [0 to n1X] points, for each [(n1X-0)/m1] incremented points => [$p1] gifted to the user.
-   - For between [n1X to n2X] points, for each [(n2X-n1X)/m2] incremented points => [$p2] gifted to the user.
-   - For between [n2X to n3X] points, for each [(n3X-n2X/m3)] incremented points => [$p3] gifted to the user.
-   - For between [n3X to n4X] points, for each [(n4X-n3X/m4)] incremented points => [$p4] gifted to the user.
-   - For between [n4X to +INF] points, for each [(NX - n4X)/m5] incremented points => [$p5] gifted to the user.
-   - [ ] { 0, n1X, n2X, n3X, n4X, +INF } = { 0, ..., ..., ..., ..., +INF }  # Determine the prize value update intervals.
-     - [ ] { m1, m2, m3, m4, m5 } = { ..., ..., ..., ..., ... }             # Determine the prize grant intervals.
-       - [ ] { p1, p2, p3, p4, p5 } = { ..., ..., ..., ..., ... }           # Determine the prize amounts for grant points.
-
+0. AI-Agnostic LLMs Analysis
 
 1. [ ] Implement [PAYMENT GATEWAY] for the application.
   - [ ] Integrate the payment in the [TRANSACTIONS] page for adding balance.

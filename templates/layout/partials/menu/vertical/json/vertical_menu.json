@@ -513,6 +513,24 @@
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "meta-integrations",
       "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "VoidForger®",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "voidforger",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Hadron Prime®",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "hadron-prime",
+      "url": "dashboard:main-dashboard"
+    },
+    {
+      "name": "Binexus®",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "binexus",
+      "url": "dashboard:main-dashboard"
     }
   ]
 }

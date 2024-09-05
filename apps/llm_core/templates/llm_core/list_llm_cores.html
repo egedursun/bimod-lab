@@ -39,7 +39,7 @@
       <h3 class="mb-0"><strong>Model Configurations</strong></h3>
     </div>
   </div>
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-8.png' %}" width="25%" style="border-radius:25px;"
          class="justify-content-end me-8">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -94,15 +94,15 @@
         <table class="datatables-llm-cores table">
           <thead class="border-top">
           <tr>
-            <th>Nickname</th>
-            <th>Description</th>
-            <th>Provider</th>
-            <th>Model Name</th>
-            <th>Temperature</th>
-            <th>Max Tokens</th>
-            <th>Top P</th>
-            <th>Frequency Penalty</th>
-            <th>Presence Penalty</th>
+            <th style="min-width: 200px; max-width: 200px;">Nickname</th>
+            <th style="min-width: 400px; max-width: 400px;">Description</th>
+            <th style="min-width: 150px; max-width: 150px;">Provider</th>
+            <th style="min-width: 150px; max-width: 150px;">Model Name</th>
+            <th style="min-width: 100px; max-width: 100px;">Temperature</th>
+            <th style="min-width: 150px; max-width: 150px;">Max Tokens</th>
+            <th style="min-width: 120px; max-width: 120px;">Top P</th>
+            <th style="min-width: 120px; max-width: 120px;">Frequency Penalty</th>
+            <th style="min-width: 120px; max-width: 120px;">Presence Penalty</th>
             <th></th>
             <th></th>
           </tr>
@@ -111,7 +111,9 @@
           {% for llm_core in llm_cores %}
             <tr>
               <td><strong>{{ llm_core.nickname }}</strong></td>
-              <td>{{ llm_core.description }}</td>
+              <td>
+                <p class="overflow-auto" style="max-height: 250px;">{{ llm_core.description }}</p>
+              </td>
               <td><strong>{{ llm_core.get_provider_name }}</strong></td>
               <td><strong>{{ llm_core.model_name }}</strong></td>
               <td>{{ llm_core.temperature }}</td>

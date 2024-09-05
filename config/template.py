@@ -38,7 +38,7 @@ TEMPLATE_CONFIG = {
 # ? Personalize template by changing theme variables (For ex: Name, URL Version etc...)
 THEME_VARIABLES = {
     "creator_name": "Bimod.io",
-    "creator_url": "https://bimod.io/site/",
+    "creator_url": "https://www.bimod.io/",
     "template_name": "Bimod.io",
     "template_suffix": "Bimod.io - Intelligent Assistant as a Service",
     "template_version": "2.0.0",

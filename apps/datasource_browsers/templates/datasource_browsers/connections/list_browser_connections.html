@@ -29,7 +29,7 @@
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-48.png' %}" width="25%" style="border-radius: 25px;"
          class="justify-content-end me-8">
     <span class="alert-icon rounded">
@@ -69,6 +69,7 @@
 
 
 
+
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  width="60" class="rounded me-4">
             <h4>
@@ -87,6 +88,7 @@
           <div class="assistant-group m-8">
             <div class="d-flex card card-border-shadow-primary p-4">
               <img src="
+
                 {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    width="80" class="rounded me-4">
               <h5 class="assistant-title mt-4"><strong>{{ assistant.name }}</strong></h5>
@@ -242,6 +244,13 @@
                           class="ti ti-trash"></i><strong> Delete </strong></a>
                       </div>
                     </div>
+                  </div>
+                </div>
+              {% empty %}
+                <div class="alert alert-warning p-8 m-4" role="alert">
+                  <div class="">
+                    <i class="fa fa-exclamation-triangle me-4"></i>
+                    <strong>No Browser Connections have been created for this assistant yet.</strong>
                   </div>
                 </div>
               {% endfor %}

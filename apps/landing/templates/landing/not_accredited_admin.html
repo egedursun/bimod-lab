@@ -1,0 +1,61 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Coming Soon - Pages{% endblock %}
+
+{% block page_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-misc.css' %}"/>
+{% endblock page_css %}
+
+{% block content %}
+  <!-- Coming Soon -->
+  <div class="container-xxl container-p-y py-4">
+    <div class="misc-wrapper">
+      <h2 class="mb-2 mx-2">
+        <strong>Hang on tight Captain! 🚀</strong>
+      </h2>
+      <hr>
+      <h4 class="mb-2 mx-2">
+        <strong>"Your application as an administrator is currently under review by our team."</strong>
+      </h4>
+      <p class="mb-6 mx-2">
+        We absolutely know that you are very excited to get started with your new account and try the features <strong>Bimod.io</strong>
+        offers, and we would like to share that we are truly sorry for making you wait for the manual approval process.
+      </p>
+      <p class="mb-6 mx-2">
+        Due to the high volume of applications we receive, we need to carefully review each administrator
+        application to ensure the safety and security of our platform, and ensure that the processing resources are
+        distributed fairly within our network of customers.
+      </p>
+      <p class="mb-6 mx-2">
+        Our team will notify you as soon as we carefully review
+        your application and make sure you can start using your account as soon as possible. We appreciate your patience
+        and understanding.
+      </p>
+      <a href="{% url 'landing:index' %}" class="btn btn-primary">
+        <i class="fa fa-home me-7"></i> <strong>Home</strong>
+      </a>
+      <form action="{% url 'logout' %}" method="post" class="mt-4">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger d-flex w-100">
+          <span class="align-middle"></span>
+          <i class="fa fa-sign-out me-4 ti-14px"></i>
+          <strong>Log Out</strong>
+        </button>
+      </form>
+      <div class="mt-12">
+        <img src="{% static 'img/custom-illustrations-v2/i2-34.png' %}" alt="page-misc-launching-soon" width="400"
+             class="img-fluid" style="border-radius: 15px;">
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid misc-bg-wrapper">
+    <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png" height="355"
+         alt="page-misc-coming-soon" data-app-light-img="illustrations/bg-shape-image-light.png"
+         data-app-dark-img="illustrations/bg-shape-image-dark.png">
+  </div>
+  <!-- /Coming Soon -->
+{% endblock %}

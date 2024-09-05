@@ -40,6 +40,18 @@ RANK_POINT_REQUIREMENTS = {
     'grandmaster': 10_000,
 }
 
+UNIT_REWARD_FOR_POINTS = {
+    'wood': 0.030,  # spread: 50, total of $1.50
+    'iron': 0.040,  # spread: 50, total of $2.00
+    'bronze': 0.050,  # spread: 100, total of $5.00
+    'silver': 0.060,  # spread: 300, total of $18.00
+    'gold': 0.070,  # spread: 500, total of $35.00
+    'platinum': 0.080,  # spread: 1_000, total of $80.00
+    'diamond': 0.090,  # spread: 3_000, total of $270.00
+    'master': 0.100,  # spread: 5_000, total of $750.00
+    'grandmaster': 0.100,  # spread: infinite, total of $infinite
+}
+
 POINT_REWARDS = {
     'ask_question': 1,
     'add_comment': 1,
@@ -107,12 +119,15 @@ class Profile(models.Model):
     postal_code = models.CharField(max_length=100, blank=True, null=True)
 
     # free credits for the user
-    free_credits = models.IntegerField(default=0)
+    free_credits = models.FloatField(default=0)
+
+    is_accredited_by_staff = models.BooleanField(default=False)
 
     # forum attributes
     user_forum_role = models.CharField(max_length=100, choices=USER_FORUM_ROLES, default='client_user')
     user_forum_rank = models.CharField(max_length=100, choices=USER_FORUM_RANKS, default='unranked')
     user_forum_points = models.IntegerField(default=0)
+    user_highest_ever_forum_points = models.IntegerField(default=0)
     user_last_forum_post_at = models.DateTimeField(null=True, blank=True)
     user_last_forum_comment_at = models.DateTimeField(null=True, blank=True)
 
@@ -135,7 +150,23 @@ class Profile(models.Model):
 
     def add_points(self, action):
         points = POINT_REWARDS.get(action, 0)
+        old_points = self.user_forum_points
+        old_highest_points = self.user_highest_ever_forum_points
         self.user_forum_points += points
+        if self.user_forum_points > self.user_highest_ever_forum_points:
+            self.user_highest_ever_forum_points = self.user_forum_points
+        self.save()
+
+        try:
+            if (old_points + points) > old_highest_points:
+                user_rank_category = self.user_forum_rank
+                user_rank_prize = UNIT_REWARD_FOR_POINTS.get(user_rank_category, 0)
+                total_prize = (points * user_rank_prize)
+                self.free_credits += total_prize
+                self.save()
+        except Exception as e:
+            print("[Profile.add_points: Error while adding prize credits to the profile: ", e)
+
         self.save()
         self.update_rank()
 

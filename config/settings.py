@@ -93,6 +93,7 @@ INSTALLED_APPS = [
     "apps.landing",
     "apps.user_profile_management",
     "apps.user_settings",
+
     "apps.dashboard",
     "apps.organization",
     "apps.llm_core",
@@ -486,6 +487,7 @@ EXCLUDED_PAGES = [
     "/contact-form-submit/*",
     "/docs/*",
     "/faq/*",
+    "/not_accredited/*",
     ########################################
     # Exclude (ALL) Exported Assistant pages
     ########################################

@@ -41,7 +41,7 @@
     </div>
   </div>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-9.png' %}" width="25%" style="border-radius: 25px;"
          class="justify-content-end me-8">
     <span class="alert-icon rounded ms-4">
@@ -130,7 +130,8 @@
           {% for memory in memories %}
             <tr>
               <td>
-                <img class="rounded" src="{{ memory.assistant.assistant_image.url }}" alt="Assistant Image" width="50">
+                <img class="rounded" src="{% if memory.assistant.assistant_image %}{{ memory.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                     alt="Assistant Image" width="50">
               </td>
               <td><strong>{{ memory.assistant.name }}</strong></td>
               <td><strong>{{ memory.user.username }}</strong></td>

@@ -4059,9 +4059,11 @@
 
 {% block content %}
 
-  <h4 class="m-4"><strong>Last {{ days }}-Day Statistics</strong></h4>
+  <h2 class="m-4"><strong>Main Dashboard</strong></h2>
+  <h6 class="m-4"><strong>Last {{ days }}-Day Statistics</strong></h6>
 
-  <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+       role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-17.png' %}" width="25%" style="border-radius:25px;"
          class="justify-content-end me-8">
     <span class="alert-icon rounded">
@@ -4226,7 +4228,7 @@
         <p class="card-subtitle m-2">Total costs accumulated within the last {{ days }} days, in United States Dollars
           ($).</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-19.png' %}" width="25%" style="border-radius: 25px;"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4333,7 +4335,7 @@
         <h5 class="card-title m-2"><strong>Token Statistics</strong></h5>
         <p class="card-subtitle m-2">Total token usage accumulated within the last {{ days }} days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-20.png' %}" width="25%" style="border-radius:25px;"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4447,7 +4449,7 @@
         <p class="card-subtitle m-2">Total assistant communication operations accumulated within the last {{ days }}
           days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-21.png' %}" width="25%" style="border-radius:25px;"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4523,7 +4525,7 @@
         <h5 class="card-title m-2"><strong>SQL Operation Statistics</strong></h5>
         <p class="card-subtitle m-2">Total SQL database operations accumulated within the last {{ days }} days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-22.png' %}" width="25%" style="border-radius:25px;"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4598,7 +4600,7 @@
         <p class="card-subtitle m-2">Total file system (SSH), browsing, and ML model prediction operations accumulated
           within the last {{ days }} days.
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-23.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4677,7 +4679,7 @@
         <p class="card-subtitle m-2">Total multimedia management operations accumulated within the last {{ days }}
           days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-24.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-4">
         <span class="alert-icon rounded">
@@ -4777,7 +4779,7 @@
         <p class="card-subtitle m-2">Total knowledge base search operations accumulated within the last {{ days }}
           days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-25.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4827,7 +4829,7 @@
         <h5 class="card-title m-2"><strong>Assistant Memory Statistics</strong></h5>
         <p class="card-subtitle m-2">Total memory management operations accumulated within the last {{ days }} days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-26.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4891,7 +4893,7 @@
         <p class="card-subtitle m-2">Total function execution operations accumulated within the last {{ days }}
           days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-27.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4966,7 +4968,7 @@
         <h5 class="card-title m-2"><strong>API Execution Statistics</strong></h5>
         <p class="card-subtitle m-2">Total API execution operations accumulated within the last {{ days }} days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-28.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -5040,7 +5042,7 @@
         <h5 class="card-title m-2"><strong>Script Execution Statistics</strong></h5>
         <p class="card-subtitle m-2">Total script execution operations accumulated within the last {{ days }} days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-30.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -5117,7 +5119,7 @@
         <p class="card-subtitle m-2">Total scheduled and triggered job execution operations accumulated within the
           last {{ days }} days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-31.png' %}" width="25%"
              style="border-radius:25px;" class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -5185,7 +5187,7 @@
         <p class="card-subtitle m-2">Statistics about the users of the connected organizations, within the
           last {{ days }} days.</p>
       </div>
-      <div class="alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-32.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
