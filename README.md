@@ -138,6 +138,7 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 -> fix the server HOST URL from "localhost" to "bimod.io". (This is causing email sending issues / invalid link in email)
 -> evaluate the health of export assistants app endpoints.
+-> fix the email logos
 
 0. AI-Agnostic LLMs Analysis
 
