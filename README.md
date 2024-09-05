@@ -141,9 +141,6 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 **PRIMARY FEATURE:**
 
--> evaluate the health of export assistants app endpoints.
--> fix the email logos
-
 0. AI-Agnostic LLMs Analysis
 
 1. [ ] Implement [PAYMENT GATEWAY] for the application.

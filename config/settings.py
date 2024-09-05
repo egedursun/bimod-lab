@@ -491,7 +491,7 @@ EXCLUDED_PAGES = [
     ########################################
     # Exclude (ALL) Exported Assistant pages
     ########################################
-    "/app/exported_assistants/exported/",
+    "/app/export_assistants/api/v1/export/*",
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'

@@ -47,6 +47,8 @@ class AppendSlashMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if not request.path.endswith('/') and not request.path.startswith('/api/'):
+        if (not request.path.endswith('/')
+            and not request.path.startswith('/api/')
+            and not request.path.startswith('/app/export_assistants/api/v1/export')):
             return HttpResponsePermanentRedirect(request.path + '/')
         return self.get_response(request)
