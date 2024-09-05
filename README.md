@@ -100,6 +100,11 @@
   - **Username:** esa.ege@gmail.com
   - **PW:** ***
 
+- Email Templates:
+- **Host:** Stripo
+  - **Username:** edogandursun@gmail.com
+  - **PW:** ***
+
 ---
 
 ### ENTERTAINING FACTS
@@ -136,7 +141,6 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 **PRIMARY FEATURE:**
 
--> fix the server HOST URL from "localhost" to "bimod.io". (This is causing email sending issues / invalid link in email)
 -> evaluate the health of export assistants app endpoints.
 -> fix the email logos
 
