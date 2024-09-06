@@ -653,3 +653,22 @@ class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateV
             messages.success(request, 'Selected generated media files deleted successfully.')
             print('[DataSourceMediaStorageGeneratedItemsListView.post] Selected generated media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')
+
+
+###########
+
+
+# TODO: Under construction
+class S3BucketConnectionManagerView(LoginRequiredMixin, TemplateView):
+
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        return context
+
+    def post(self, request, *args, **kwargs):
+        # TODO-1: connect to the bucket
+        # TODO-2: iterate through every item in the bucket
+        # TODO-3: Retrieve the URLs of the elements
+        # TODO-4: Create a media item for each of the elements inside the bucket by using the URL specified within
+        #           that bucket (the only difference is we won't be the one to store those media.)
+        pass

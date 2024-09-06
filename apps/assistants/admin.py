@@ -15,16 +15,16 @@ from config import settings
 @admin.register(Assistant)
 class AssistantAdmin(admin.ModelAdmin):
     list_display = (
-        "organization", "response_language", "llm_model", "name", "description", "instructions", "audience", "tone",
+        "organization", "response_language", "llm_model", "name", "instructions", "audience", "tone",
         "time_awareness", "place_awareness", "tool_max_attempts_per_instance", "tool_max_chains",
         "document_base_directory", "max_retry_count", "created_by_user", "last_updated_by_user", "created_at",
         "updated_at")
     list_filter = (
-        "organization", "response_language", "llm_model", "name", "description", "instructions", "audience", "tone",
+        "organization", "response_language", "llm_model", "name", "instructions", "audience", "tone",
         "document_base_directory", "time_awareness", "place_awareness", "tool_max_attempts_per_instance",
         "tool_max_chains", "max_retry_count", "created_by_user", "last_updated_by_user", "created_at", "updated_at")
     search_fields = (
-        "organization", "response_language", "llm_model", "name", "description", "instructions", "audience", "tone",
+        "organization", "response_language", "llm_model", "name", "instructions", "audience", "tone",
         "document_base_directory", "time_awareness", "place_awareness", "tool_max_attempts_per_instance",
         "tool_max_chains", "max_retry_count", "created_by_user", "last_updated_by_user", "created_at", "updated_at")
     date_hierarchy = "created_at"

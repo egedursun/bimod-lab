@@ -10,6 +10,7 @@ import requests
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
+from apps._services.data_security.ner.ner_executor import NERExecutor
 from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, AssistantRunStatuses, \
     ONE_SHOT_AFFIRMATION_PROMPT, ML_AFFIRMATION_PROMPT, INSUFFICIENT_BALANCE_PROMPT, get_technical_error_log, \
     get_maximum_tool_chains_reached_log, get_maximum_tool_attempts_reached_log, get_json_decode_error_log, \
@@ -146,6 +147,7 @@ class InternalOpenAIClient:
 
         print(f"[InternalOpenAIClient.respond_stream] Responding to the user message...")
 
+        ner_executor, encryption_uuid = None, None
         try:
             # Create the System Prompt
             send_log_message(f"""
@@ -170,7 +172,11 @@ class InternalOpenAIClient:
             📜 Chat history is being prepared...
                           """, chat_id=self.chat.id)
 
-                prompt_messages.extend(HistoryBuilder.build(chat=self.chat))
+                if self.assistant.ner_integration is not None:
+                    ner_executor = NERExecutor(ner_id=self.assistant.ner_integration.id)
+
+                extended_messages, encryption_uuid = HistoryBuilder.build(chat=self.chat, ner_executor=ner_executor)
+                prompt_messages.extend(extended_messages)
 
                 send_log_message(f"""
             💥 Chat history preparation is completed.
@@ -301,6 +307,16 @@ class InternalOpenAIClient:
                 send_log_message(f"""
             🔌 Generation iterations has been successfully accomplished.
                                 """, chat_id=self.chat.id)
+
+                ####################################################################################################
+                # NER INTEGRATION - DECRYPTION
+                ####################################################################################################
+                if ner_executor:
+                    decrypted_text = ner_executor.decrypt_text(anonymized_text=accumulated_response, uuid=encryption_uuid)
+                    if decrypted_text:
+                        accumulated_response = decrypted_text
+                ####################################################################################################
+                ####################################################################################################
 
                 send_log_message(f"""
             📦 Preparing the response...
@@ -710,6 +726,7 @@ class InternalOpenAIClient:
         user = self.chat.user
         print(f"[InternalOpenAIClient.respond] Responding to the user message...")
 
+        ner_executor, encryption_uuid = None, None
         try:
             # Create the System Prompt
             try:
@@ -719,8 +736,13 @@ class InternalOpenAIClient:
                     user=user,
                     role=ChatRoles.SYSTEM)]
                 print(f"[InternalOpenAIClient.respond] System prompt created successfully.")
+
                 # Create the Chat History
-                prompt_messages.extend(HistoryBuilder.build(chat=self.chat))
+                if self.assistant.ner_integration is not None:
+                    ner_executor = NERExecutor(ner_id=self.assistant.ner_integration.id)
+
+                extended_messages, encryption_uuid = HistoryBuilder.build(chat=self.chat, ner_executor=ner_executor)
+                prompt_messages.extend(extended_messages)
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond] Error occurred while building the prompt: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
@@ -781,9 +803,7 @@ class InternalOpenAIClient:
                 print(
                     f"[InternalOpenAIClient.respond] Error occurred while retrieving the response from the LLM: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
-            #######################################################################################################
-            # *************************************************************************************************** #
-            #######################################################################################################
+
             try:
                 choices = response.choices
                 first_choice = choices[0]
@@ -794,6 +814,17 @@ class InternalOpenAIClient:
                 print(
                     f"[InternalOpenAIClient.respond] Error occurred while processing the response from the LLM: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
+
+            ####################################################################################################
+            # NER INTEGRATION - DECRYPTION
+            ####################################################################################################
+            if ner_executor:
+                decrypted_text = ner_executor.decrypt_text(anonymized_text=choice_message_content,
+                                                           uuid=encryption_uuid)
+                if decrypted_text:
+                    choice_message_content = decrypted_text
+            ####################################################################################################
+            ####################################################################################################
 
             try:
                 LLMTransaction.objects.create(

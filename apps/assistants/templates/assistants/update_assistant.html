@@ -80,7 +80,8 @@
         </div>
 
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-43.png' %}" width="25%" style="border-radius:25px;"
                  class="justify-content-end me-8">
             <span class="alert-icon rounded">
@@ -123,17 +124,38 @@
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
             <div class="row p-8">
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter assistant name"
                        value="{{ assistant.name }}"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="description">Description</label>
                 <input type="text" class="form-control" id="description" name="description"
                        placeholder="Enter assistant description" value="{{ assistant.description }}"/>
                 <div class="form-text"></div>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="ner_integration">Named Entity Recognition (NER)</label>
+                <select class="form-select" id="ner_integration" name="ner_integration">
+                  {% if assistant.ner_integration %}
+                    <option value="{{ assistant.ner_integration.id }}" class="ner-policy-option"
+                            data-org-id="{{ assistant.ner_integration.organization.id }}"
+                            selected>{{ assistant.ner_integration.name }}</option>
+                  {% endif %}
+                  <option value="" class="ner-policy-option" {% if not assistant.ner_integration %}selected{% endif %}>
+                    No NER Policy
+                  </option>
+                  {% for ner_policy in ner_integrations %}
+                    {% if assistant.ner_integration and ner_policy.id == assistant.ner_integration.id %}
+                      <!-- ... -->
+                    {% else %}
+                      <option value="{{ ner_policy.id }}" class="ner-policy-option"
+                              data-org-id="{{ ner_policy.organization.id }}">{{ ner_policy.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
               </div>
               <div class="col-12 mb-6">
                 <label class="form-label" for="instructions">Instructions</label>

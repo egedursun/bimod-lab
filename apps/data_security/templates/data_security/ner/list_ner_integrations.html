@@ -1,0 +1,126 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}NER Integrations List{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/app-ner-integrations-list.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-4">
+      <h3 class="mb-0"><strong>Manage NER Integrations</strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-43.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        On this page, you can view all the NER integrations you have created. You can also edit or delete any
+        integration. To create a new NER integration, click the "Create NER Integration" button. This feature helps you
+        protect sensitive information in your data by encrypting it before sending it to the servers of your Large
+        Language Model (LLM) provider.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="card mb-6">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0"><strong>NER Integrations List</strong></h5>
+    </div>
+    <a href="{% url 'data_security:create_ner_integration' %}" class="btn btn-success mt-2 mb-4 w-25 ms-4">
+      <i class="fa fa-add me-2"></i><strong>Create New NER Policy</strong>
+    </a>
+    <div class="card-datatable table-responsive p-4">
+      <table class="table datatables-ner-integrations overflow-auto">
+        <thead class="border-top">
+        <tr>
+          <th style="min-width: 200px; max-width: 200px;">Organization</th>
+          <th style="min-width: 200px; max-width: 200px;">Name</th>
+          <th style="min-width: 300px; max-width: 300px;">Description</th>
+          <th style="min-width: 200px; max-width: 200px;">Language</th>
+          <th style="min-width: 150px; max-width: 150px;"></th>
+          <th style="min-width: 150px; max-width: 150px;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ner_integration in ner_integrations %}
+          <tr>
+            <td><strong>{{ ner_integration.organization.name }}</strong></td>
+            <td><strong>{{ ner_integration.name }}</strong></td>
+            <td>
+              <p style="max-height: 250px; overflow: auto;">
+                {{ ner_integration.description|linebreaksbr }}
+              </p>
+            </td>
+            <td><strong>{{ ner_integration.get_language_display }}</strong></td>
+            <td>
+              <a href="{% url 'data_security:update_ner_integration' ner_integration.id %}"
+                 class="btn btn-sm btn-primary">
+                <i class="fa fa-edit me-4"></i>
+                <strong>Edit</strong>
+              </a>
+            </td>
+            <td>
+              <a href="{% url 'data_security:delete_ner_integration' ner_integration.id %}"
+                 class="btn btn-sm btn-danger">
+                <i class="fa fa-trash me-4"></i>
+                <strong>Delete</strong>
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">
+              <div class="alert alert-warning p-8" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i>
+                <strong>No NER Integration has been created yet.</strong>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+{% endblock %}

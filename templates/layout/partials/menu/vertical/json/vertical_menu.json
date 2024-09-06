@@ -128,6 +128,23 @@
       ]
     },
     {
+      "name": "Data Security",
+      "icon": "menu-icon tf-icons ti ti-lock",
+      "slug": "data-security",
+      "submenu": [
+        {
+          "name": "Add NER Policy",
+          "slug": "ner-policy",
+          "url": "data_security:create_ner_integration"
+        },
+        {
+          "name": "NER Policies",
+          "slug": "security-policy",
+          "url": "data_security:list_ner_integrations"
+        }
+      ]
+    },
+    {
       "menu_header": "Interaction"
     },
     {

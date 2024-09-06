@@ -11,6 +11,7 @@ from django.views.generic import TemplateView, DeleteView
 
 from apps.assistants.models import Assistant, ASSISTANT_RESPONSE_LANGUAGES, ContextOverflowStrategyNames, \
     CONTEXT_OVERFLOW_STRATEGY, VECTORIZERS, VectorizerNames
+from apps.data_security.models import NERIntegration
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission, PermissionNames
@@ -40,6 +41,9 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         context['response_languages'] = ASSISTANT_RESPONSE_LANGUAGES
         context['context_overflow_strategies'] = CONTEXT_OVERFLOW_STRATEGY
         context['vectorizers'] = VECTORIZERS
+        context["ner_integrations"] = NERIntegration.objects.filter(
+            organization__in=context['organizations']
+        )
         return context
 
     def post(self, request, *args, **kwargs):
@@ -61,6 +65,14 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
 
         organization_id = request.POST.get('organization')
         llm_model_id = request.POST.get('llm_model')
+
+        # Retrieve the NER integration ID, or leave NULL if not provided
+        ner_integration_id = None
+        if ("ner_integration" in request.POST and request.POST.get('ner_integration')
+            and request.POST.get('ner_integration') != "None"
+            and request.POST.get('ner_integration') != ""):
+            ner_integration_id = request.POST.get('ner_integration')
+
         name = request.POST.get('name')
         description = request.POST.get('description')
         instructions = request.POST.get('instructions')
@@ -100,6 +112,11 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         organization = Organization.objects.get(id=organization_id)
         llm_model = LLMCore.objects.get(id=llm_model_id)
 
+        # Retrieve and assign NER integration, or leave NULL if not provided
+        ner_integration = None
+        if ner_integration_id:
+            ner_integration = NERIntegration.objects.get(id=ner_integration_id)
+
         assistant = Assistant.objects.create(
             organization=organization,
             llm_model=llm_model,
@@ -123,7 +140,8 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             time_awareness=time_awareness,
             place_awareness=place_awareness,
             image_generation_capability=image_generation_capability,
-            glossary=glossary
+            glossary=glossary,
+            ner_integration=ner_integration
         )
         print("[CreateAssistantView.post] Assistant created successfully!")
 
@@ -185,6 +203,9 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         context['vectorizers'] = VECTORIZERS
         context["assistant_current_strategy"] = ContextOverflowStrategyNames.as_dict()[assistant.context_overflow_strategy]
         context["assistant_current_vectorizer"] = VectorizerNames.as_dict()[assistant.vectorizer_name] if assistant.vectorizer_name else None
+        context["ner_integrations"] = NERIntegration.objects.filter(
+            organization__in=context['organizations']
+        )
         return context
 
     def post(self, request, *args, **kwargs):
@@ -213,6 +234,17 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         assistant.max_retry_count = request.POST.get('max_retry_count')
         assistant.tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
         assistant.tool_max_chains = request.POST.get('tool_max_chains')
+
+        ner_integration_id = None
+        if ("ner_integration" in request.POST and request.POST.get('ner_integration')
+            and request.POST.get('ner_integration') != "None"
+            and request.POST.get('ner_integration') != ""):
+            ner_integration_id = request.POST.get('ner_integration')
+
+        if ner_integration_id:
+            assistant.ner_integration = NERIntegration.objects.get(id=ner_integration_id)
+        else:
+            assistant.ner_integration = None
 
         terms = request.POST.getlist('terms[]')
         definitions = request.POST.getlist('definitions[]')

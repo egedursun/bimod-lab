@@ -153,15 +153,15 @@ def load_pdf_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_pdf_helper] Error loading PDF: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_pdf_helper] Error loading PDF: {e}")
+                continue
     return clean_doc
 
 
@@ -170,15 +170,15 @@ def load_html_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_html_helper] Error loading HTML: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_html_helper] Error loading HTML: {e}")
+                continue
     return clean_doc
 
 
@@ -187,16 +187,16 @@ def load_csv_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-            return clean_doc
-        except Exception as e:
-            print(f"[tasks.load_csv_helper] Error loading CSV: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+                return clean_doc
+            except Exception as e:
+                print(f"[tasks.load_csv_helper] Error loading CSV: {e}")
+                continue
     return clean_doc
 
 
@@ -205,15 +205,15 @@ def load_docx_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_docx_helper] Error loading DOCX: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_docx_helper] Error loading DOCX: {e}")
+                continue
     return clean_doc
 
 
@@ -222,15 +222,15 @@ def load_ipynb_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_ipynb_helper] Error loading IPYNB: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_ipynb_helper] Error loading IPYNB: {e}")
+                continue
     return clean_doc
 
 
@@ -239,15 +239,15 @@ def load_json_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = json.dumps(page_content, default=str, sort_keys=True)
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_json_helper] Error loading JSON: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += json.dumps(page_content, default=str, sort_keys=True)
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_json_helper] Error loading JSON: {e}")
+                continue
     return clean_doc
 
 
@@ -256,15 +256,15 @@ def load_xml_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_xml_helper] Error loading XML: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_xml_helper] Error loading XML: {e}")
+                continue
     return clean_doc
 
 
@@ -286,15 +286,15 @@ def load_md_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_md_helper] Error loading MD: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_md_helper] Error loading MD: {e}")
+                continue
     return clean_doc
 
 
@@ -303,15 +303,15 @@ def load_rtf_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_rtf_helper] Error loading RTF: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_rtf_helper] Error loading RTF: {e}")
+                continue
     return clean_doc
 
 
@@ -320,15 +320,15 @@ def load_odt_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_odt_helper] Error loading ODT: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_odt_helper] Error loading ODT: {e}")
+                continue
     return clean_doc
 
 
@@ -337,15 +337,15 @@ def load_pptx_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_pptx_helper] Error loading PPTX: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_pptx_helper] Error loading PPTX: {e}")
+                continue
     return clean_doc
 
 
@@ -354,15 +354,15 @@ def load_xlsx_helper(path: str):
     docs = loader.load()
     clean_doc = {"page_content": "", "metadata": {}}
     if docs:
-        doc = docs[0]
-        try:
-            page_content = doc.page_content
-            metadata = doc.metadata
-            clean_doc["page_content"] = page_content
-            clean_doc["metadata"] = metadata
-        except Exception as e:
-            print(f"[tasks.load_xlsx_helper] Error loading XLSX: {e}")
-            pass
+        for doc in docs:
+            try:
+                page_content = doc.page_content
+                metadata = doc.metadata
+                clean_doc["page_content"] += page_content
+                clean_doc["metadata"] = metadata
+            except Exception as e:
+                print(f"[tasks.load_xlsx_helper] Error loading XLSX: {e}")
+                continue
     return clean_doc
 
 

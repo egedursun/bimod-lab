@@ -1,6 +1,9 @@
+import uuid
+
 import requests
 
 from apps._services.chat_context.chat_context_manager import ChatContextManager
+from apps._services.data_security.ner.ner_executor import NERExecutor
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat
 import base64 as b64
@@ -15,10 +18,11 @@ class HistoryBuilder:
         TOOL = "TOOL"
 
     @staticmethod
-    def build(chat: MultimodalChat):
+    def build(chat: MultimodalChat, ner_executor:  NERExecutor = None):
         from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE
         chat_messages = chat.chat_messages.all().order_by("sent_at")
         context_history = []
+        temporary_uuid = uuid.uuid4()
         for chat_message in chat_messages:
             sender_type = chat_message.sender_type
             if sender_type == HistoryBuilder.ChatRoles.TOOL:
@@ -55,6 +59,18 @@ class HistoryBuilder:
             message_object["content"] = content_wrapper
 
             if sender_type != HistoryBuilder.ChatRoles.SYSTEM:
+                ####################################################################################################
+                # NER INTEGRATION - ENCRYPTION
+                ####################################################################################################
+                if ner_executor:
+                    encrypted_text = ner_executor.encrypt_text(text=message_text_content, uuid_str=temporary_uuid)
+                    if encrypted_text:
+                        # instead of the original text, we will use the encrypted text
+                        content_wrapper = [{"type": "text", "text": encrypted_text}]
+                        message_object["content"] = content_wrapper
+                ####################################################################################################
+                ####################################################################################################
+
                 context_history.append(message_object)
 
             # Create the transactions and add them to the chat
@@ -85,4 +101,4 @@ class HistoryBuilder:
             chat_object=chat
         )
         print(f"[HistoryBuilder.build] Context history has been built successfully.")
-        return context_history
+        return context_history, temporary_uuid

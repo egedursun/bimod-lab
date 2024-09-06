@@ -121,6 +121,7 @@ INSTALLED_APPS = [
     "apps.mm_triggered_jobs",
     "apps.orchestrations",
     "apps.finetuning",
+    "apps.data_security",
 
     ########################################
     # META
@@ -255,6 +256,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "config.middleware.SessionTimeoutMiddleware",
     "config.middleware.AppendSlashMiddleware",
+    "config.middleware.LoadingBarMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"

@@ -146,6 +146,10 @@ class Assistant(models.Model):
     custom_function_references = models.ManyToManyField("mm_functions.CustomFunctionReference",
                                                         related_name='assistants', blank=True)
 
+    # Data Security Integrations
+    ner_integration = models.ForeignKey("data_security.NERIntegration", on_delete=models.SET_NULL,
+                                        related_name='assistants', null=True, blank=True)
+
     def __str__(self):
         return self.name
 

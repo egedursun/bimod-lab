@@ -6,6 +6,7 @@ from django.utils.deprecation import MiddlewareMixin
 import logging
 
 from auth.models import Profile
+from config.consts.loading_bar_content import CONTENT_MIX
 from config.settings import SUFFIX_ANY
 
 logger = logging.getLogger(__name__)
@@ -52,3 +53,19 @@ class AppendSlashMiddleware:
             and not request.path.startswith('/app/export_assistants/api/v1/export')):
             return HttpResponsePermanentRedirect(request.path + '/')
         return self.get_response(request)
+
+
+class LoadingBarMiddleware(MiddlewareMixin):
+    def process_template_response(self, request, response):
+        if 'text/html' in response['Content-Type']:
+            response.render()
+            content = response.content.decode()
+            loading_bar_html = CONTENT_MIX
+            response.content = content.replace('</body>', loading_bar_html + '</body>')
+        return response
+
+
+
+
+
+

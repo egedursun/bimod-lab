@@ -76,7 +76,7 @@
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
             <div class="row p-8">
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="organization">Organization</label>
                 <select class="form-select" id="organization" name="organization">
                   <option value="" disabled selected>Select Organization</option>
@@ -86,13 +86,23 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="llm_model">LLM Model</label>
                 <select class="form-select" id="llm_model" name="llm_model">
                   <option value="" disabled selected>Select LLM Model</option>
                   {% for llm_model in llm_models %}
                     <option value="{{ llm_model.id }}" class="llm-model-option"
                             data-org-id="{{ llm_model.organization.id }}">{{ llm_model.nickname }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="ner_integration">Named Entity Recognition (NER)</label>
+                <select class="form-select" id="ner_integration" name="ner_integration">
+                  <option value="" selected>No NER Policy</option>
+                  {% for ner_policy in ner_integrations %}
+                    <option value="{{ ner_policy.id }}" class="ner-policy-option"
+                            data-org-id="{{ ner_policy.organization.id }}">{{ ner_policy.name }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -277,7 +287,8 @@
                 <input type="text" class="form-control" id="vectorizer_api_key" name="vectorizer_api_key"
                        placeholder="Enter the API key for your OpenAI account"/>
               </div>
-              <div id="memory-vectorizer-alert-bar" class="tips-section alert alert-solid-warning d-flex align-items-center d-none"
+              <div id="memory-vectorizer-alert-bar"
+                   class="tips-section alert alert-solid-warning d-flex align-items-center d-none"
                    role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>

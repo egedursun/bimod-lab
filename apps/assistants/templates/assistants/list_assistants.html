@@ -80,6 +80,8 @@
 
 
 
+
+
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  alt="Organization Image" class="rounded" width="60">
             <h4>
@@ -118,6 +120,7 @@
             <th style="min-width: 150px; max-width: 150px;">Audience</th>
             <th style="min-width: 150px; max-width: 150px;">Tone</th>
             <th style="min-width: 200px; max-width: 200px;">LLM Model</th>
+            <th style="min-width: 150px; max-width: 150px;">Data Security</th>
             <th></th>
             <th></th>
           </tr>
@@ -134,14 +137,29 @@
               </td>
               <td><strong>{{ assistant.name }}</strong></td>
               <td style="min-width:400px; max-width: 400px;">
-                <p class="mt-2 mb-2" style="max-height: 250px; overflow: auto;">{{ assistant.description|linebreaksbr }}</p>
+                <p class="mt-2 mb-2"
+                   style="max-height: 250px; overflow: auto;">{{ assistant.description|linebreaksbr }}</p>
               </td>
               <td style="min-width:400px; max-width: 400px;">
-                <p class="mt-2 mb-2" style="max-height: 250px; overflow: auto;">{{ assistant.instructions|linebreaksbr }}</p>
+                <p class="mt-2 mb-2"
+                   style="max-height: 250px; overflow: auto;">{{ assistant.instructions|linebreaksbr }}</p>
               </td>
               <td style="min-width:200px;"><strong>{{ assistant.audience }}</strong></td>
               <td style="min-width:200px;">{{ assistant.tone }}</td>
               <td style="min-width:200px;"><strong>{{ assistant.llm_model.nickname }}</strong></td>
+              <td style="min-width:200px;">
+                {% if assistant.ner_integration %}
+                  <div class="bg-success text-bg-dark rounded p-2 w-100">
+                    <i class="fa fa-lock me-2"></i>
+                    <strong>NER Enabled</strong>
+                  </div>
+                {% else %}
+                  <di class="bg-warning text-bg-dark rounded p-2 w-100">
+                    <i class="fa fa-lock-open me-2"></i>
+                    <strong>NER Disabled</strong>
+                  </div>
+                {% endif %}
+              </td>
               <td>
                 <a href="{% url 'assistants:update' assistant.id %}" class="btn btn-sm btn-primary">
                   <i class="fa fa-edit me-2"></i>
