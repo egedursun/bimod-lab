@@ -6,9 +6,15 @@
 
 {% block title %}Dashboard{% endblock %}
 
+{% block vendor_css %}
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+{% endblock vendor_css %}
+
 {% block vendor_js %}
   {{ block.super }}
   <script src="{% static 'vendor/libs/chartjs/chartjs.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
@@ -4146,7 +4152,8 @@
         <div class="card-header col-12">
           <h5
             class="text-dark d-flex justify-content-center text-center card card-border-shadow-primary p-4 ms-12 me-12 mt-2 mb-8 rounded">
-            <strong>Statistical Analysis Bot</strong></h5>
+            <strong>Statistical Analysis Bot</strong>
+          </h5>
           <small class="d-flex justify-content-center">
             You can use me to gather insights about your organizations' data and statistics. <br>
             Please click the button below to make me analyze the statistics for you and provide you with the insights.
@@ -4164,7 +4171,6 @@
             <div class="col-12">
               <div class="card-body">
                 <div class="d-flex justify-content-center">
-                  {% csrf_token %}
                   <label for="llm_model" class="form-label"><strong>LLM Model</strong></label>
                   <select class="form-select ms-4 me-4" id="llm_model" name="llm_model">
                     {% for model in llm_models %}
@@ -4192,7 +4198,7 @@
                 </div>
                 <hr class="text-white">
                 <div class="d-flex justify-content-center">
-                  <div class="markdown-content">{{ response|safe|markdownify }}</div>
+                  <div class="markdown-content" id="insight-content">{{ response|safe|markdownify }}</div>
                 </div>
               {% else %}
                 <div class="d-flex justify-content-center">
@@ -4203,13 +4209,36 @@
           </div>
         </div>
       </div>
+
+      <!-- Button to download insights as Markdown -->
+      <div class="d-flex justify-content-center mt-0 mb-2">
+        <button class="btn btn-secondary" id="downloadMarkdownButton" onclick="downloadInsightsAsMarkdown()">
+          <strong>
+            <i class="fa fa-download me-2"></i>
+            Download Report as Markdown (.md)
+          </strong>
+        </button>
+        <button class="btn btn-secondary ms-4" id="downloadMarkdownButton" onclick="downloadInsightsAsPDF()">
+          <strong>
+            <i class="fa fa-download me-2"></i>
+            Download Report as PDF (.pdf)
+          </strong>
+        </button>
+        <button class="btn btn-secondary ms-4" id="downloadMarkdownButton" onclick="downloadInsightsAsTxt()">
+          <strong>
+            <i class="fa fa-download me-2"></i>
+            Download Report as Text (.txt)
+          </strong>
+        </button>
+      </div>
+
+      <hr>
+
       <!-- loading bar warning -->
       <div class="alert-container"></div>
       <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none"
            role="alert">
-      <span class="alert-icon rounded">
-        <i class="ti ti-brain"></i>
-      </span>
+        <span class="alert-icon rounded"><i class="ti ti-brain"></i></span>
         <div class="d-flex flex-column ps-1 pt-4">
           <p class="alert-heading"><strong>Helper Bot is analyzing the statistics...</strong></p>
         </div>
@@ -4221,6 +4250,159 @@
       </div>
     </div>
 
+    <script>
+      function downloadInsightsAsMarkdown() {
+        // Get the insights content
+        var insightContent = "";
+        try {
+          insightContent = document.getElementById('insight-content').innerText;
+        } catch (e) {
+          insightContent = "";
+        }
+        if (!insightContent.trim()) {
+          Swal.fire({
+            title: '🚀 Slow Down Captain!',
+            text: "There are no insights yet to download as Markdown. Please analyze the statistics first.",
+            icon: 'warning',
+            showCancelButton: false,
+            confirmButtonText: 'Got it!',
+            customClass: {
+              confirmButton: 'btn btn-secondary me-2 waves-effect waves-light',
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
+          return;
+        }
+        // Create Markdown content
+        var markdownContent = `
+# Statistical Analysis Insights
+
+${insightContent}
+    `;
+
+        // Create a Blob object with the Markdown content
+        var blob = new Blob([markdownContent], {type: 'text/markdown'});
+        // Create a link element and trigger a download
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'insights.md';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    </script>
+
+    <script>
+      function downloadInsightsAsPDF() {
+        var insightContent = "";
+        try {
+          insightContent = document.getElementById('insight-content').innerText;
+        } catch (e) {
+          insightContent = "";
+        }
+
+        if (!insightContent.trim()) {
+          Swal.fire({
+            title: '🚀 Slow Down Captain!',
+            text: "There are no insights yet to download as PDF. Please analyze the statistics first.",
+            icon: 'warning',
+            showCancelButton: false,
+            confirmButtonText: 'Got it!',
+            customClass: {
+              confirmButton: 'btn btn-secondary me-2 waves-effect waves-light',
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
+          return;
+        }
+
+        // Load jsPDF and generate the PDF
+        const {jsPDF} = window.jspdf;
+        const doc = new jsPDF();
+
+        // Define margins and page width
+        const marginLeft = 10;
+        const marginRight = 10;
+        const pageWidth = doc.internal.pageSize.getWidth() - marginLeft - marginRight;
+        const pageHeight = doc.internal.pageSize.getHeight();
+
+        // Add title
+        doc.setFontSize(16);
+        doc.text('Statistical Analysis Insights', marginLeft, 20);
+
+        // Split the text to fit the page width
+        doc.setFontSize(12);
+        const lines = doc.splitTextToSize(insightContent, pageWidth);
+
+        // Add the content with automatic page breaks if the text overflows
+        let y = 30; // Starting height for the text
+        lines.forEach(line => {
+          if (y > pageHeight - 10) {  // If the text goes beyond the page height, add a new page
+            doc.addPage();
+            y = 20;  // Reset the y position for the new page
+          }
+          doc.text(line, marginLeft, y);
+          y += 10;  // Increment y position for the next line
+        });
+
+        // Save the PDF
+        doc.save('insights.pdf');
+      }
+    </script>
+
+
+    <script>
+      function downloadInsightsAsTxt() {
+        var insightContent = "";
+        try {
+          insightContent = document.getElementById('insight-content').innerText;
+        } catch (e) {
+          insightContent = "";
+        }
+
+        if (!insightContent.trim()) {
+          Swal.fire({
+            title: '🚀 Slow Down Captain!',
+            text: "There are no insights yet to download as Plain Text. Please analyze the statistics first.",
+            icon: 'warning',
+            showCancelButton: false,
+            confirmButtonText: 'Got it!',
+            customClass: {
+              confirmButton: 'btn btn-secondary me-2 waves-effect waves-light',
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
+          return;
+        }
+
+        // Create a plain text content
+        var textContent = `Statistical Analysis Insights\n\n${insightContent}`;
+
+        // Create a Blob object with the plain text content
+        var blob = new Blob([textContent], {type: 'text/plain'});
+
+        // Create a link element and trigger a download
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'insights.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    </script>
+
     <!-- COSTS -->
     <div class="card g-1">
       <div class="card-header pb-3 mb-8">
@@ -4228,7 +4410,8 @@
         <p class="card-subtitle m-2">Total costs accumulated within the last {{ days }} days, in United States Dollars
           ($).</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-19.png' %}" width="25%" style="border-radius: 25px;"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4335,7 +4518,8 @@
         <h5 class="card-title m-2"><strong>Token Statistics</strong></h5>
         <p class="card-subtitle m-2">Total token usage accumulated within the last {{ days }} days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-20.png' %}" width="25%" style="border-radius:25px;"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4449,7 +4633,8 @@
         <p class="card-subtitle m-2">Total assistant communication operations accumulated within the last {{ days }}
           days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-21.png' %}" width="25%" style="border-radius:25px;"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4525,7 +4710,8 @@
         <h5 class="card-title m-2"><strong>SQL Operation Statistics</strong></h5>
         <p class="card-subtitle m-2">Total SQL database operations accumulated within the last {{ days }} days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-22.png' %}" width="25%" style="border-radius:25px;"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4600,7 +4786,8 @@
         <p class="card-subtitle m-2">Total file system (SSH), browsing, and ML model prediction operations accumulated
           within the last {{ days }} days.
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-23.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4679,7 +4866,8 @@
         <p class="card-subtitle m-2">Total multimedia management operations accumulated within the last {{ days }}
           days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-24.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-4">
         <span class="alert-icon rounded">
@@ -4779,7 +4967,8 @@
         <p class="card-subtitle m-2">Total knowledge base search operations accumulated within the last {{ days }}
           days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-25.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4829,7 +5018,8 @@
         <h5 class="card-title m-2"><strong>Assistant Memory Statistics</strong></h5>
         <p class="card-subtitle m-2">Total memory management operations accumulated within the last {{ days }} days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-26.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4893,7 +5083,8 @@
         <p class="card-subtitle m-2">Total function execution operations accumulated within the last {{ days }}
           days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-27.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -4968,7 +5159,8 @@
         <h5 class="card-title m-2"><strong>API Execution Statistics</strong></h5>
         <p class="card-subtitle m-2">Total API execution operations accumulated within the last {{ days }} days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-28.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -5042,7 +5234,8 @@
         <h5 class="card-title m-2"><strong>Script Execution Statistics</strong></h5>
         <p class="card-subtitle m-2">Total script execution operations accumulated within the last {{ days }} days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-30.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -5119,7 +5312,8 @@
         <p class="card-subtitle m-2">Total scheduled and triggered job execution operations accumulated within the
           last {{ days }} days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-31.png' %}" width="25%"
              style="border-radius:25px;" class="justify-content-end me-8">
         <span class="alert-icon rounded">
@@ -5187,7 +5381,8 @@
         <p class="card-subtitle m-2">Statistics about the users of the connected organizations, within the
           last {{ days }} days.</p>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-32.png' %}" style="border-radius:25px;" width="25%"
              class="justify-content-end me-8">
         <span class="alert-icon rounded">

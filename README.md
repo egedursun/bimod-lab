@@ -161,30 +161,13 @@ RELEASE v0.2.0 [RELEASE: BETA] version of the application.
 
 *After first deployment:*
 
-1. [ ] [NER] integration.
-    - [ ] Implement the [IDENTIFICATION] system for the Named Entity Recognition.
-    - [ ] Implement the [ENCODING] system for the Named Entity Recognition.
-    - [ ] Implement the [DECODING] system for the Named Entity Recognition.
-    - [ ] Integrate the [KEY-VALUE STORAGE PAIRS] for the Named Entity Recognition management.
-    - [ ] [TEST OVERALL] functionality.
-
-2. [ ] [CODE REPOSITORY] integration for the application.
-    - [ ] Implement the [INDEXING SYSTEM] for the Code Repository.
-    - [ ] Implement the [SEARCHING SYSTEM] for the Code Repository.
-    - [ ] Implement the [PAGES] for the Code Repository.
-    - [ ] Implement the [SERVICE] for the Code Repository.
-    - [ ] Implement the [VIEWS] for the Code Repository.
-    - [ ] Implement the [MODELS] for the Code Repository.
-    - [ ] Implement the [URLS] for the Code Repository.
-    - [ ] [TEST OVERALL] functionality.
-
-3. [ ] [DRIVE FILES] integration for the application.
+1. [ ] [DRIVE FILES] integration for the application.
     - [ ] Implement the [SERVICES] for file retrieval, listing, downloading, and adding to Bimod system.
     - [ ] Update the [PAGES] for adding the drive files to the media storages.
     - [ ] Update the [VIEWS] for the drive files addition feature.
     - [ ] [TEST OVERALL] functionality.
 
-4. [ ] [META GUIDE] assistant for manipulating the application as a helper.
+2. [ ] [META GUIDE] assistant for manipulating the application as a helper.
     - [ ] Implement an [META-ASSISTANT] that can automatically create data models (e.g. organizations, models, asisstants, etc.)
     - [ ] Implement an [PAGES] for the assistant to be able to manipulate the application.
     - [ ] Implement an [VIEWS] for the assistant to be able to manipulate the application.
@@ -193,14 +176,14 @@ RELEASE v0.2.0 [RELEASE: BETA] version of the application.
     - [ ] Implement an [URLS] for the assistant to be able to manipulate the application.
     - [ ] [TEST OVERALL] functionality.
 
-5. [ ] [USER DOCUMENTATION] page development.
+3. [ ] [USER DOCUMENTATION] page development.
     - [ ] Implement the [READABLE DOCUMENTATION] pages for better user experience.
 
-6. [ ] [TERMS & CONDITIONS] development with the law firms.
+4. [ ] [TERMS & CONDITIONS] development with the law firms.
     - [ ] Needs to be [LEGALLY DESIGNED] by legal experts.
     - [ ] Implement the [TERMS & CONDITIONS] page for the application.
 
-7. [ ] [PRIVACY POLICY] development with the law firms.
+5. [ ] [PRIVACY POLICY] development with the law firms.
     - [ ] Needs to be [LEGALLY DESIGNED] by legal experts.
     - [ ] Implement the [PRIVACY POLICY] page for the application.
 
@@ -271,9 +254,6 @@ RELEASE v0.6.0 [RELEASE: BETA] version of the application.
 
 *Detected Issues / Bugs:*
 
-- [ ] There is no document_uuid or repository_uuid field in the chunks classes for weaviate, yet they are used in the
-   code
-   for deletions, fix this. [INVESTIGATION REQUIRED]
 - [ ] [DOMAIN REDIRECTION] issue is still ongoing. 
   - Tests:
     - [V] www.bimod.io

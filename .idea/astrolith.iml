@@ -29,6 +29,7 @@
     <orderEntry type="library" name="bootstrap.bundle" level="application" />
     <orderEntry type="library" name="apexcharts" level="application" />
     <orderEntry type="library" name="float" level="application" />
+    <orderEntry type="library" name="jspdf" level="application" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="format" value="PLAIN" />
