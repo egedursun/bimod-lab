@@ -1,0 +1,40 @@
+
+
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Delete Code Base Storage Connection{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">
+            <strong>Delete Code Base Storage</strong>
+          </h3>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete the code base storage <strong>"{{ knowledge_base.name }}"</strong>?</p><br>
+            <h6><strong>
+              • This operation will result in the complete removal of the code base storage and the repository links in it
+              from the system.
+              <br>
+              • This deletion operation is completely irreversible and will entirely remove the code base storage and all
+              associated data and repository links from the system.
+            </strong></h6>
+            <img src="{% static 'img/custom-illustrations-v2/i2-77.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8">
+            <hr>
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the Code Base Storage.</button>
+            <a href="{% url 'datasource_codebase:list' %}" class="btn btn-secondary mt-4"><strong>CANCEL
+              &nbsp;</strong> the deletion operation.</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

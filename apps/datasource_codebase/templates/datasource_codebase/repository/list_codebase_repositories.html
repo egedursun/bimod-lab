@@ -1,0 +1,487 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}List Code Repositories{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Function to store the collapsed tab state
+      function storeCollapsedTabState() {
+        const collapsedTabs = [];
+        document.querySelectorAll('.collapse:not(.show)').forEach(collapse => {
+          collapsedTabs.push(collapse.id);
+        });
+        localStorage.setItem('collapsedTabs', JSON.stringify(collapsedTabs));
+      }
+
+      // Function to restore the collapsed tab state
+      function restoreCollapsedTabState() {
+        const collapsedTabs = JSON.parse(localStorage.getItem('collapsedTabs'));
+        if (collapsedTabs && Array.isArray(collapsedTabs)) {
+          collapsedTabs.forEach(tabId => {
+            const collapseElement = document.getElementById(tabId);
+            if (collapseElement) {
+              new bootstrap.Collapse(collapseElement, {
+                toggle: true
+              });
+            }
+          });
+        }
+      }
+
+      // Store the collapsed tab state on collapse and expand events
+      document.querySelectorAll('.collapse').forEach(collapse => {
+        collapse.addEventListener('show.bs.collapse', storeCollapsedTabState);
+        collapse.addEventListener('hide.bs.collapse', storeCollapsedTabState);
+      });
+
+      // Restore the collapsed tab state on page load
+      restoreCollapsedTabState();
+
+      // Toggle icon logic
+      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
+        icon.addEventListener('click', function () {
+          var target = document.querySelector(this.getAttribute('data-target'));
+          var bootstrapCollapse = new bootstrap.Collapse(target, {
+            toggle: true
+          });
+          if (target.classList.contains('show')) {
+            bootstrapCollapse.hide();
+            icon.classList.remove('fa-arrow-alt-circle-up');
+            icon.classList.add('fa-arrow-alt-circle-down');
+          } else {
+            bootstrapCollapse.show();
+            icon.classList.remove('fa-arrow-alt-circle-down');
+            icon.classList.add('fa-arrow-alt-circle-up');
+          }
+        });
+      });
+
+      // Update toggle icons based on collapse state
+      document.querySelectorAll('.collapse').forEach(function (collapse) {
+        collapse.addEventListener('show.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-down');
+            icon.classList.add('fa-arrow-alt-circle-up');
+          }
+        });
+
+        collapse.addEventListener('hide.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-up');
+            icon.classList.add('fa-arrow-alt-circle-down');
+          }
+        });
+      });
+
+      // Select all checkboxes
+      document.querySelectorAll('.select-all-checkbox').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+          const kbId = this.getAttribute('data-kb-id');
+          const checkboxes = document.querySelectorAll(`.select-document-checkbox[data-kb-id="${kbId}"]`);
+          checkboxes.forEach(cb => cb.checked = this.checked);
+        });
+      });
+
+      // Confirmation dialog for delete buttons
+      document.querySelectorAll('.delete-selected-btn, .delete-all-btn').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('form');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete the repositories.',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              form.submit();
+            }
+          });
+        });
+      });
+    });
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+
+  <div class="container-fluid">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h3 class="mb-0">
+          <strong>Code Repositories</strong>
+        </h3>
+      </div>
+    </div>
+
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-39.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8">
+      <span class="alert-icon rounded ms-4">
+            <i class="ti ti-bookmark"></i>
+        </span>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          In this page, you can manage your documents. You can delete code repositories by selecting them and clicking on the
+          "Delete Selected" button. You can also delete all code repositories in a storage by clicking on the "Delete
+          All"
+          button. Please note that the delete actions are irreversible and you will need to connect the repositories again
+          if you delete them.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+
+    {% for organization_data in data %}
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <p>
+                <a data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button"
+                   aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
+                  <div class="d-flex">
+                    <img src="
+
+                      {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                         width="60" class="me-4 rounded">
+                  </div>
+                  <h4 class="mb-0 mt-4">
+                    <strong>
+                      {{ organization_data.organization.name }}
+                    </strong>
+                  </h4>
+                  <small class="text-muted">{{ organization_data.organization.email }}</small>
+                </a>
+              </p>
+              <i class="fa fa-arrow-alt-circle-up toggle-icon mt-5"
+                 data-target="#collapse-org-{{ organization_data.organization.id }}"></i>
+              <span data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.organization.id }}" role="button"
+                    aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
+                        <strong>&nbsp; See Complete List of Assistants</strong>
+                    </span>
+            </div>
+            <div id="collapse-org-{{ organization_data.organization.id }}" class="card-body collapse show">
+              {% for assistant_data in organization_data.assistants %}
+                <div class="card mb-4">
+                  <div class="card-header">
+                    <div class="d-flex card card-border-shadow-primary p-4">
+                      <img src="
+
+                        {% if assistant_data.assistant.assistant_image %}{{ assistant_data.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/assistant-0.png' %}{% endif %}"
+                           width="80" class="me-4 rounded">
+                      <h4 class="mb-0 mt-4">
+                        <strong>{{ assistant_data.assistant.name }}</strong>
+                      </h4>
+                    </div>
+                    <div class="card-datatable table-responsive">
+                      <a href="{% url 'datasource_codebase:create_repositories' %}">
+                        <button class="btn btn-info mt-4 mb-4">
+                          <i class="fa fa-file-upload me-4"></i>
+                          <strong> Connect New Repository</strong>
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                  <div id="collapse-assistant-{{ assistant_data.assistant.id }}" class="card-body collapse show">
+                    {% for kb_data in assistant_data.knowledge_bases %}
+                      <div class="card mb-4">
+                        <div class="card-header">
+                          <h5 class="mb-0"><strong>{{ kb_data.knowledge_base.name }}</strong></h5>
+                          <small class="text-muted">{{ kb_data.knowledge_base.description }}</small>
+                        </div>
+                        <div id="collapse-kb-{{ kb_data.knowledge_base.id }}" class="card-body collapse show">
+                          <div class="table-responsive">
+                            <form method="post"
+                                  action="{% url 'datasource_codebase:delete_selected_repositories' %}">
+                              {% csrf_token %}
+                              <table class="table datatables-document">
+                                <thead>
+                                <tr>
+                                  <th><input type="checkbox" class="select-all-checkbox"
+                                             data-kb-id="{{ kb_data.knowledge_base.id }}"></th>
+                                  <th style="min-width: 120px; max-width: 120px;">File Id</th>
+                                  <th style="min-width:200px; max-width: 200px;">Repository Name</th>
+                                  <th style="min-width: 400px; max-width: 400px;">Status</th>
+                                  <th style="min-width: 200px; max-width: 200px;">Stored Chunks</th>
+                                  <th STYLE="min-width: 250px; max-width: 250px;">Connected At</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for document_data in kb_data.document_data %}
+                                  <tr>
+                                    <td>
+                                      <input type="checkbox" class="select-document-checkbox" name="selected_documents"
+                                             value="{{ document_data.document.id }}"
+                                             data-kb-id="{{ kb_data.knowledge_base.id }}">
+                                    </td>
+                                    <td>{{ document_data.document.id }}</td>
+                                    <td><strong>{{ document_data.document.repository_name }}</strong></td>
+                                    <td class="col-lg-4">
+                                      {% for status in document_statuses %}
+                                        {% if status in document_data.current_statuses %}
+                                          {% if status in failed_statuses %}
+                                            <span class="badge bg-danger text-white rounded">
+                                                                            <i class="fa fa-warning"></i>
+                                                                        </span>
+                                          {% elif status in partially_failed_statuses %}
+                                            <span class="badge bg-warning text-white rounded mb-1" style="width: 10%">
+                                                                            <i class="fa fa-warning"></i>
+                                                                        </span>
+                                          {% else %}
+                                            {% if status == "staged" %}
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-clock"></i>
+                                                                          </span>
+                                            {% elif status == "uploaded" %}
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-file-upload"></i>
+                                                                          </span>
+                                            {% elif status == "loaded" %}
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-magnifying-glass"></i>
+                                                                          </span>
+                                            {% elif status == "chunked" %}
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-scissors"></i>
+                                                                          </span>
+                                            {% elif status == "embedded_document" %}
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-file-signature"></i>
+                                                                          </span>
+                                            {% elif status == "saved_document" %}
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-file-archive"></i>
+                                                                          </span>
+                                            {% elif status == "processed_document" %}
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-file-circle-check"></i>
+                                                                          </span>
+                                            {% elif status == "embedded_chunks" %}
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-boxes-packing"></i>
+                                                                          </span>
+                                            {% elif status == "saved_chunks" %}
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-box-archive"></i>
+                                                                          </span>
+                                            {% elif status == "processed_chunks" %}
+                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-list-check"></i>
+                                                                          </span>
+                                            {% elif status == "completed" %}
+                                              <span class="badge bg-success text-white rounded mb-1" style="width: 10%">
+                                                                              <i class="fa fa-check-square"></i>
+                                                                          </span>
+                                            {% endif %}
+                                          {% endif %}
+                                        {% endif %}
+                                      {% endfor %}
+                                      {% if "completed" not in document_data.current_statuses %}
+                                        <span class="badge bg-warning text-white rounded mb-1" style="width: 10%">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                        </span>
+                                      {% endif %}
+                                    </td>
+                                    <td>
+                                      <span class="border border-success rounded p-1">
+                                        <strong>
+                                          {{ document_data.document.repository_chunks.count }}
+                                        </strong></span>
+                                    </td>
+                                    <td>{{ document_data.document.created_at }}</td>
+                                  </tr>
+                                {% endfor %}
+                                </tbody>
+                              </table>
+                              <button type="submit" class="btn btn-warning btn-sm w-25 mt-4 delete-selected-btn">
+                                <strong>
+                                  <i class="fa fa-trash me-4"></i>
+                                  Delete Selected
+                                </strong></button>
+                            </form>
+                            <nav aria-label="Page navigation">
+                              <form method="post"
+                                    action="{% url 'datasource_codebase:delete_all_repositories' kb_data.knowledge_base.id %}"
+                                    class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm w-25 mt-2 delete-all-btn">
+                                  <strong>
+                                    <i class="fa fa-exclamation-triangle me-4"></i>
+                                    Delete ALL
+                                  </strong></button>
+                              </form>
+                              <ul class="pagination pagination-rounded overflow-auto pt-8">
+                                {% if kb_data.documents.has_previous %}
+                                  <li class="page-item">
+                                    <a class="page-link" href="?page=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
+                                  </li>
+                                  <li class="page-item">
+                                    <a class="page-link" href="?page={{ kb_data.documents.previous_page_number }}"><i
+                                      class="ti ti-chevron-left ti-sm"></i></a>
+                                  </li>
+                                {% endif %}
+                                {% for page_num in kb_data.documents.paginator.page_range %}
+                                  <li
+                                    class="page-item {% if kb_data.documents.number == page_num %}active{% endif %} mb-4">
+                                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                  </li>
+                                {% endfor %}
+                                {% if kb_data.documents.has_next %}
+                                  <li class="page-item">
+                                    <a class="page-link" href="?page={{ kb_data.documents.next_page_number }}"><i
+                                      class="ti ti-chevron-right ti-sm"></i></a>
+                                  </li>
+                                  <li class="page-item">
+                                    <a class="page-link" href="?page={{ kb_data.documents.paginator.num_pages }}"><i
+                                      class="ti ti-chevrons-right ti-sm"></i></a>
+                                  </li>
+                                {% endif %}
+                              </ul>
+                            </nav>
+                          </div>
+                        </div>
+                      </div>
+                    {% empty %}
+                      <div class="alert alert-warning p-8 m-0" role="alert">
+                        <div class="">
+                          <i class="fa fa-exclamation-triangle me-4"></i>
+                          <strong>No Repositories have been connected to this Storage yet.</strong>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    <div class="mt-8"></div>
+    <hr>
+    <div class="tips-section row align-items-center justify-content-start mt-2">
+      <div class="card-header">
+        <h5><strong>Legend</strong></h5>
+        <small class="text-muted">
+          The following badges represent the status of the document while it is being processed in our
+          servers. You can refer to the icons next to the document to understand the current status of the
+          document. If you have any questions, please contact our support team to have more detailed
+          information about how the documents are processed and what is the purpose of each step
+          of processing.
+        </small>
+        <hr>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-info d-flex align-items-center m-2 p-2">
+          <i class="fa fa-clock me-2"></i> &nbsp; <strong>Staged</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-info d-flex align-items-center m-2 p-2">
+          <i class="fa fa-file-upload me-2"></i> &nbsp; <strong>Uploaded</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-info d-flex align-items-center m-2 p-2">
+          <i class="fa fa-magnifying-glass me-2"></i> &nbsp; <strong>Loaded</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-info d-flex align-items-center m-2 p-2">
+          <i class="fa fa-scissors me-2"></i> &nbsp; <strong>Chunked</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-info d-flex align-items-center m-2 p-2">
+          <i class="fa fa-file-signature me-2"></i> &nbsp; <strong>Embedded Document</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-info d-flex align-items-center m-2 p-2">
+          <i class="fa fa-file-archive me-2"></i> &nbsp; <strong>Saved Document</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-info d-flex align-items-center m-2 p-2">
+          <i class="fa fa-file-circle-check me-2"></i> &nbsp; <strong>Processed Document</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-info d-flex align-items-center m-2 p-2">
+          <i class="fa fa-boxes-packing me-2"></i> &nbsp; <strong>Embedded Chunks</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-info d-flex align-items-center m-2 p-2">
+          <i class="fa fa-box-archive me-2"></i> &nbsp; <strong>Saved Chunks</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-info d-flex align-items-center m-2 p-2">
+          <i class="fa fa-list-check me-2"></i> &nbsp; <strong>Processed Chunks</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-success d-flex align-items-center m-2 p-2">
+          <i class="fa fa-check-square me-2"></i> &nbsp; <strong>Completed</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-danger d-flex align-items-center m-2 p-2">
+          <i class="fa fa-warning me-2"></i> &nbsp; <strong>Failed</strong>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="badge bg-warning d-flex align-items-center m-2 p-2">
+          <i class="fa fa-warning me-2"></i> &nbsp; <strong>Partially Failed</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

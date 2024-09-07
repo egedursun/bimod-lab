@@ -12,6 +12,7 @@ Dependencies:
 
 import os
 
+import boto3
 from django.db import models
 from slugify import slugify
 
@@ -20,6 +21,7 @@ from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
 from apps.assistants.models import VECTORIZERS
 from apps.datasource_knowledge_base.utils import generate_class_name, generate_random_alphanumeric, \
     generate_chat_history_class_name
+from config.settings import MEDIA_URL
 
 # Create your models here.
 
@@ -225,14 +227,19 @@ class KnowledgeBaseDocument(models.Model):
                 class_name=self.knowledge_base.class_name,
                 document_uuid=self.knowledge_base_uuid)
             if not result["status"]:
-                print(f"[DocumentKnowledgeBaseConnection.delete] Error deleting Weaviate document: {result['error']}")
-            # remove the document from the directory
+                print(f"[KnowledgeBaseDocument.delete] Error deleting Weaviate document: {result['error']}")
+            # remove the document from the S3 bucket (will give the absolute path)
             document_full_path = self.document_uri
+            boto3_client = boto3.client('s3')
+            bucket_name = os.getenv('AWS_STORAGE_BUCKET_NAME')
+            s3_path = document_full_path.split(MEDIA_URL)[1]
+            s3_path = s3_path.replace('/', '')
+            s3_path = f"{s3_path}/"
             if document_full_path is not None:
                 try:
-                    os.remove(document_full_path)
+                    boto3_client.delete_object(Bucket=bucket_name, Key=s3_path)
                 except Exception as e:
-                    print(f"[DocumentKnowledgeBaseConnection.delete] Error deleting the document file: {e}")
+                    print(f"[KnowledgeBaseDocument.delete] Error deleting S3 object: {str(e)}")
         # delete the object from ORM
         super().delete(using, keep_parents)
 

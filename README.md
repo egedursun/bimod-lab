@@ -465,3 +465,8 @@ UVICORN RUN COMMAND (migrate this to a proper place later on):
 ```bash
 uvicorn config.asgi:application --host 127.0.0.1 --port 8000 --reload
 ```
+
+
+```
+git ls-remote https://github.com/Bimod-HQ/bimod-app.git | awk '{print $1}' | xargs -n 1 git cat-file -s
+```

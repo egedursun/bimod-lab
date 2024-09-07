@@ -65,8 +65,8 @@ class TransactionSourcesNames:
     DOWNLOAD_FILE = "download-file"
     FILE_SYSTEM_COMMANDS = "file-system-commands"
     KNOWLEDGE_BASE_SEARCH = "knowledge-base-search"
+    CODE_BASE_SEARCH = "code-base-search"
     RETRIEVE_MEMORY = "retrieve-memory"
-    CODE_REPOSITORY_SEARCH = "code-repository-search"
     ML_MODEL_PREDICTION = "ml-model-prediction"
     BROWSING = "browsing"
     INTERNAL_FUNCTION_EXECUTION = "internal-function-execution"
@@ -98,7 +98,7 @@ class TransactionSourcesNames:
             TransactionSourcesNames.FILE_SYSTEM_COMMANDS,
             TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH,
             TransactionSourcesNames.RETRIEVE_MEMORY,
-            TransactionSourcesNames.CODE_REPOSITORY_SEARCH,
+            TransactionSourcesNames.CODE_BASE_SEARCH,
             TransactionSourcesNames.ML_MODEL_PREDICTION,
             TransactionSourcesNames.BROWSING,
             TransactionSourcesNames.INTERNAL_FUNCTION_EXECUTION,

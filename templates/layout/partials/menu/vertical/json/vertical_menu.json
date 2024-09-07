@@ -332,6 +332,40 @@
       ]
     },
     {
+      "name": "Code Storages",
+      "icon": "menu-icon tf-icons ti ti-code",
+      "slug": "code-bases",
+      "submenu": [
+        {
+          "name": "Add Repository Storage",
+          "slug": "code-base",
+          "url": "datasource_codebase:create"
+        },
+        {
+          "name": "Repository Storages",
+          "slug": "code-base",
+          "url": "datasource_codebase:list"
+        }
+      ]
+    },
+    {
+      "name": "Repositories",
+      "icon": "menu-icon tf-icons ti ti-box",
+      "slug": "repositories",
+      "submenu": [
+        {
+          "name": "Add Repository",
+          "slug": "repositories",
+          "url": "datasource_codebase:create_repositories"
+        },
+        {
+          "name": "Repositories",
+          "slug": "repositories",
+          "url": "datasource_codebase:list_repositories"
+        }
+      ]
+    },
+    {
       "name": "ML Models",
       "icon": "menu-icon tf-icons ti ti-wand",
       "slug": "machine-learning-models",

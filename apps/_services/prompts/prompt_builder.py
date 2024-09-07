@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 
 from apps._services.prompts.datasource.build_browser_data_source_prompt import build_browsing_data_source_prompt, \
     build_lean_browsing_data_source_prompt
+from apps._services.prompts.datasource.build_code_base_data_source_prompt import build_code_base_data_source_prompt, \
+    build_lean_code_base_data_source_prompt
 from apps._services.prompts.datasource.build_file_system_data_source_prompt import build_file_system_data_source_prompt, \
     build_lean_file_system_data_source_prompt
 from apps._services.prompts.datasource.build_knowledge_base_data_source_prompt import \
@@ -37,6 +39,8 @@ from apps._services.prompts.tools.tool_prompts.build_audio_processing_executor_t
     build_structured_tool_prompt__audio_processing
 from apps._services.prompts.tools.tool_prompts.build_browsing_executor_tool_prompt import \
     build_structured_tool_prompt__browsing_executor
+from apps._services.prompts.tools.tool_prompts.build_code_base_query_execution_tool_prompt import \
+    build_structured_tool_prompt__code_base_query_execution
 from apps._services.prompts.tools.tool_prompts.build_code_interpreter_tool_prompt import \
     build_structured_tool_prompt__code_interpreter
 from apps._services.prompts.tools.tool_prompts.build_custom_api_execution_tool_prompt import \
@@ -103,6 +107,7 @@ class PromptBuilder:
         # DATASOURCE PROMPTS
         structured_sql_datasource_prompt = build_sql_data_source_prompt(assistant)
         structured_knowledge_base_datasource_prompt = build_knowledge_base_data_source_prompt(assistant)
+        structured_code_base_datasource_prompt = build_code_base_data_source_prompt(assistant)
         structured_file_system_prompt = build_file_system_data_source_prompt(assistant)
         structured_media_storage_prompt = build_storage_data_source_prompt(assistant)
         structured_ml_model_prompt = build_ml_models_data_source_prompt(assistant)
@@ -118,6 +123,7 @@ class PromptBuilder:
         structured_sql_query_execution_tool_prompt = (build_structured_tool_prompt__sql_query_execution())
         _ = (build_structured_tool_prompt__nosql_query_execution())
         structured_knowledge_base_query_execution_tool_prompt = build_structured_tool_prompt__knowledge_base_query_execution()
+        structured_code_base_query_execution_tool_prompt = build_structured_tool_prompt__code_base_query_execution()
         structured_vectorized_context_history_query_execution_tool_prompt = build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt()
         structured_file_system_command_execution_tool_prompt = build_structured_tool_prompt__file_system_command_execution()
         structured_storage_query_execution_tool_prompt = build_structured_tool_prompt__media_storage_query_execution()
@@ -151,6 +157,7 @@ class PromptBuilder:
         # DATASOURCE PROMPTS
         merged_prompt += structured_sql_datasource_prompt
         merged_prompt += structured_knowledge_base_datasource_prompt
+        merged_prompt += structured_code_base_datasource_prompt
         merged_prompt += structured_file_system_prompt
         merged_prompt += structured_media_storage_prompt
         merged_prompt += structured_ml_model_prompt
@@ -167,6 +174,7 @@ class PromptBuilder:
         # SPECIALIZED TOOL PROMPTS
         merged_prompt += structured_sql_query_execution_tool_prompt
         merged_prompt += structured_knowledge_base_query_execution_tool_prompt
+        merged_prompt += structured_code_base_query_execution_tool_prompt
         merged_prompt += structured_vectorized_context_history_query_execution_tool_prompt
         merged_prompt += structured_file_system_command_execution_tool_prompt
         merged_prompt += structured_storage_query_execution_tool_prompt
@@ -230,6 +238,7 @@ class PromptBuilder:
         # DATASOURCE PROMPTS
         structured_sql_datasource_prompt = build_lean_sql_data_source_prompt()
         structured_knowledge_base_datasource_prompt = build_lean_knowledge_base_data_source_prompt()
+        structured_code_base_datasource_prompt = build_lean_code_base_data_source_prompt()
         structured_file_system_prompt = build_lean_file_system_data_source_prompt()
         structured_media_storage_prompt = build_lean_storage_data_source_prompt()
         structured_ml_model_prompt = build_lean_ml_models_data_source_prompt()
@@ -251,6 +260,7 @@ class PromptBuilder:
             build_structured_tool_prompt__nosql_query_execution()
         )
         structured_knowledge_base_query_execution_tool_prompt = build_structured_tool_prompt__knowledge_base_query_execution()
+        structured_code_base_query_execution_tool_prompt = build_structured_tool_prompt__code_base_query_execution()
         structured_vectorized_context_history_query_execution_tool_prompt = build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt()
         structured_file_system_command_execution_tool_prompt = build_structured_tool_prompt__file_system_command_execution()
         structured_storage_query_execution_tool_prompt = build_structured_tool_prompt__media_storage_query_execution()
@@ -277,6 +287,7 @@ class PromptBuilder:
         # DATASOURCE PROMPTS
         merged_prompt += structured_sql_datasource_prompt
         merged_prompt += structured_knowledge_base_datasource_prompt
+        merged_prompt += structured_code_base_datasource_prompt
         merged_prompt += structured_file_system_prompt
         merged_prompt += structured_media_storage_prompt
         merged_prompt += structured_ml_model_prompt
@@ -293,6 +304,7 @@ class PromptBuilder:
         # SPECIALIZED TOOL PROMPTS
         merged_prompt += structured_sql_query_execution_tool_prompt
         merged_prompt += structured_knowledge_base_query_execution_tool_prompt
+        merged_prompt += structured_code_base_query_execution_tool_prompt
         merged_prompt += structured_vectorized_context_history_query_execution_tool_prompt
         merged_prompt += structured_file_system_command_execution_tool_prompt
         merged_prompt += structured_storage_query_execution_tool_prompt

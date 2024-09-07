@@ -12,6 +12,7 @@ class ToolCostsMap:
             ToolCostsMap.DownloadExecutor.COST,
             ToolCostsMap.FileSystemsExecutor.COST,
             ToolCostsMap.KnowledgeBaseExecutor.COST,
+            ToolCostsMap.CodeBaseExecutor.COST,
             ToolCostsMap.BrowsingExecutor.COST,
             ToolCostsMap.CodeRepositoryExecutor.COST,
             ToolCostsMap.MLModelExecutor.COST,
@@ -52,11 +53,11 @@ class ToolCostsMap:
     class KnowledgeBaseExecutor:
         COST = COSTS_MAP["KNOWLEDGE_BASE_EXECUTOR"]
 
+    class CodeBaseExecutor:
+        COST = COSTS_MAP["CODE_BASE_EXECUTOR"]
+
     class BrowsingExecutor:
         COST = COSTS_MAP["BROWSING_EXECUTOR"]
-
-    class CodeRepositoryExecutor:
-        COST = COSTS_MAP["CODE_REPOSITORY_EXECUTOR"]
 
     class MLModelExecutor:
         COST = COSTS_MAP["ML_MODEL_EXECUTOR"]

@@ -1,0 +1,178 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Connect Code Repository{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const organizations = {{ organizations|safe }};
+      const assistants = {{ assistants|safe }};
+      const knowledgeBases = {{ knowledge_bases|safe }};
+
+      const organizationSelect = document.getElementById('organization') || null;
+      const assistantSelect = document.getElementById('assistant') || null;
+      const knowledgeBaseSelect = document.getElementById('knowledge_base') || null;
+
+      organizationSelect.addEventListener('change', function () {
+        const selectedOrganization = this.value;
+        assistantSelect.innerHTML = '<option value="" disabled selected>Select Assistant</option>';
+        knowledgeBaseSelect.innerHTML = '<option value="" disabled selected>Select Knowledge Base</option>';
+
+        assistants.forEach(assistant => {
+          if (assistant.organization_id == selectedOrganization) {
+            const option = document.createElement('option');
+            option.value = assistant.id;
+            option.textContent = assistant.name;
+            assistantSelect.appendChild(option);
+          }
+        });
+      });
+
+      assistantSelect.addEventListener('change', function () {
+        const selectedAssistant = this.value;
+        knowledgeBaseSelect.innerHTML = '<option value="" disabled selected>Select Knowledge Base</option>';
+
+        knowledgeBases.forEach(kb => {
+
+          if (kb.assistant_id == selectedAssistant) {
+            const option = document.createElement('option');
+            option.value = kb.id;
+            option.textContent = kb.name;
+            knowledgeBaseSelect.appendChild(option);
+          }
+        });
+      });
+
+      document.querySelector('form').addEventListener('submit', function () {
+        document.getElementById('loadingBarWarning').classList.remove('d-none');
+        document.getElementById('loadingBar').classList.remove('d-none');
+        this.querySelector('button[type="submit"]').disabled = true;
+      });
+    });
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+  <!-- Basic Layout -->
+  <div class="row">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-datatable table-responsive">
+        <a href="{% url 'datasource_codebase:list_repositories' %}">
+          <button class="btn btn-secondary ms-4 mt-4 mb-8">
+            <i class="fa fa-dashboard me-4"></i>
+            <strong> Manage Code Repositories</strong>
+          </button>
+        </a>
+      </div>
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <strong>Connect Code Repository to Storage</strong>
+        </h5>
+        <small class="text-muted float-end"></small>
+      </div>
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+        <img src="{% static 'img/custom-illustrations-v2/i2-34.png' %}" width="25%" style="border-radius: 25px;"
+             class="justify-content-end me-8">
+        <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+        <div class="d-flex flex-column ps-1">
+          <h5 class="alert-heading mb-2">Tip</h5>
+          <p class="mb-0">
+            Connect your code repository to the storage to enable the assistant to access the codebase and
+            provide better assistance. You can connect multiple code repositories to a storage, so you don't have
+            to be very selective about the repositories you connect. The assistant will
+            have access to the codebase of the connected repositories and will be able to provide assistance based
+            on the codebase.
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        {% if messages %}
+          {% for message in messages %}
+            <div
+              class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+              role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <hr>
+
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row p-8">
+            <div class="mb-6 col-6">
+              <label class="form-label" for="organization">Organization</label>
+              <select class="form-select" id="organization" name="organization">
+                <option value="" disabled selected>Select Organization</option>
+                {% for org in organizations %}
+                  <option value="{{ org.id }}">{{ org.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-6 col-6">
+              <label class="form-label" for="assistant">Assistant</label>
+              <select class="form-select" id="assistant" name="assistant">
+                <option value="" disabled selected>Select Assistant</option>
+              </select>
+            </div>
+            <div class="mb-6 col-6">
+              <label class="form-label" for="knowledge_base">Knowledge Base</label>
+              <select class="form-select" id="knowledge_base" name="knowledge_base">
+                <option value="" disabled selected>Select Knowledge Base</option>
+              </select>
+            </div>
+            <div class="mb-6 col-6">
+              <label class="form-label" for="repository_url">Repository URL</label>
+              <input type="text" class="form-control" id="repository_url" name="repository_url"
+                     placeholder="Enter the Git URL of the code repository you want to connect.">
+            </div>
+          </div>
+          <hr>
+          <button type="submit" class="btn btn-primary d-grid w-25 mt-8"><strong>Connect Repository</strong></button>
+        </form>
+        <!-- Loading bar warning -->
+        <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none"
+             role="alert">
+            <span class="alert-icon rounded">
+                <i class="ti ti-brain"></i>
+            </span>
+          <div class="d-flex flex-column ps-1 pt-4">
+            <p class="alert-heading"><strong>Connecting Repository...</strong></p>
+          </div>
+        </div>
+        <!-- Loading bar -->
+        <div id="loadingBar" class="progress d-none mt-3 mb-1">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+               style="width: 100%; height:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

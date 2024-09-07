@@ -4,7 +4,7 @@
 {% load i18n %}
 {% load field_to_label %}
 
-{% block title %}Knowledge Base Connections{% endblock %}
+{% block title %}Code Base Storage Connections{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -35,12 +35,12 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-6">
-      <h3 class="mb-0"><strong>Knowledge Base Connections</strong></h3>
+      <h3 class="mb-0"><strong>Code Base Storage Connections</strong></h3>
     </div>
   </div>
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-102.png' %}" width="25%" style="border-radius: 25px;"
+    <img src="{% static 'img/custom-illustrations-v2/i2-29.png' %}" width="25%" style="border-radius: 25px;"
          class="justify-content-end me-8">
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
@@ -48,11 +48,9 @@
     <div class="d-flex flex-column ps-1">
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
-        In this page, you can manage your knowledge base connections for your assistants. You must be aware of the fact
-        that the knowledge base connections are assistant-based. This means that the assistants will be able to use
-        the knowledge bases that you have created here, and if you want another assistant to use the same knowledge
-        base,
-        you need to create another connection for that assistant.
+        Create a new code base storage connection by providing the necessary information. This will allow your assistant to
+        access and query the code documents stored in the code base storage and utilize them to provide better insights and
+        recommendations.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -70,7 +68,7 @@
 
   <hr>
 
-  <!-- Knowledge Base Connections Cards -->
+  <!-- Code Base Storage Connections Cards -->
   {% for organization, assistants in connections_by_organization.items %}
     <div class="card mb-6">
       <div class="card-header border-bottom">
@@ -78,7 +76,6 @@
            aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
           <div class="d-flex">
             <img src="
-
 
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  width="60" height="60" class="rounded me-4" alt="Organization Image">
@@ -90,7 +87,7 @@
         <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
         <span data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false"
               aria-controls="collapse-org-{{ organization.id }}">
-      <strong>&nbsp; See Knowledge Base Connections</strong>
+      <strong>&nbsp; See Code Base Storage Connections</strong>
     </span>
       </div>
       <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
@@ -98,7 +95,6 @@
           <div class="assistant-group m-8">
             <div class="d-flex card card-border-shadow-primary rounded p-4">
               <img src="
-
                 {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    width="80" height="80" class="rounded me 4" alt="Assistant Image">
               <h5 class="assistant-title mt-4">
@@ -106,16 +102,10 @@
               </h5>
             </div>
             <div class="card-datatable table-responsive">
-              <a href="{% url 'datasource_knowledge_base:create' %}">
+              <a href="{% url 'datasource_codebase:create' %}">
                 <button class="btn btn-success mt-4 mb-8">
                   <i class="fa fa-add me-4"></i>
-                  <strong> Add Knowledge Base Connection</strong>
-                </button>
-              </a>
-              <a href="{% url 'datasource_knowledge_base:create_documents' %}">
-                <button class="btn btn-info ms-4 mt-4 mb-8">
-                  <i class="fa fa-file me-4"></i>
-                  <strong> Upload Documents</strong>
+                  <strong> Add Code Base Connection</strong>
                 </button>
               </a>
             </div>
@@ -216,9 +206,9 @@
                       </ul>
                       <hr>
                       <div class="d-flex justify-content-center">
-                        <a href="{% url 'datasource_knowledge_base:update' connection.id %}"
+                        <a href="{% url 'datasource_codebase:update' connection.id %}"
                            class="btn btn-primary me-3"><i class="ti ti-edit me-2"></i><strong>Edit Connection</strong></a>
-                        <a href="{% url 'datasource_knowledge_base:delete' connection.id %}" class="btn btn-danger"><i
+                        <a href="{% url 'datasource_codebase:delete' connection.id %}" class="btn btn-danger"><i
                           class="ti ti-trash"></i><strong> Delete </strong></a>
                       </div>
                     </div>
