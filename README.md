@@ -139,28 +139,6 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 -> Master Reasoner: GPT-o1 (reasoning agent)
 
--> *ON SETTINGS PAGE*: Put a button to 'PURGE ALL CHATS'. Before the user clicks the button, ask the user to write
-      a randomly generated alphanumeric string to make sure he accepts the deletion of all chats. If the text
-      matches with the generated string, then the chats will be deleted.
-      - Can be under a new tab called 'DANGER ZONE'.
--> Similarly: 
-    - DELETE ALL:
-      - Organizations
-      - LLM Models
-      - Assistants
-      - Browsers
-      - Code Base Storages
-      - Knowledge Base Connections
-      - ML Model Connections
-      - Media Storages
-      - SQL Connections
-      - Assistant Exportations
-      - Fine-Tuning Models
-      - Message Templates
-      - Created Triggered Jobs
-      - Created Scheduled Jobs
-      - Starred Messages
-
 ---
 
 **PRIMARY FEATURE:**
