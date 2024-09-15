@@ -36,7 +36,7 @@ class BlogPost(models.Model):
 
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
-    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField()
     thumbnail_image = models.ImageField(upload_to='blog_post_images/%Y/%m/%d/', blank=True, null=True)
 
@@ -54,7 +54,7 @@ class BlogPost(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.title + ' by ' + self.author.username
+        return self.title + ' by ' + self.author.username if self.author else 'admin'
 
     class Meta:
         ordering = ['-published_at']

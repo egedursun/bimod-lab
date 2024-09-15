@@ -1,6 +1,10 @@
 import json
 
+from django.contrib.auth.models import User
+
+from apps.blog_app.models import BlogTag, BlogPost
 from apps.community_forum.models import ForumCategory, ForumThread
+from auth.models import Profile
 from .path_consts import DataPaths
 
 
@@ -98,11 +102,44 @@ class BoilerplateDataLoader:
     @staticmethod
     def _load_blog_data():
         blogs_data_path = DataPaths.Blog.BLOGS
-        # TODO:
-        #   1. Read the relevant data fixture JSON file
-        #   2. Get or create the data
-        #   3. Save the database
-        #   4. Provide the required logs
+
+        blogs_data_json = None
+        with open(blogs_data_path, "r") as blogs_file:
+            blogs_data_json = json.load(blogs_file)
+            for b in blogs_data_json:
+                b_title = b["title"]
+                b_slug = b["slug"]
+                b_content = b["content"]
+                b_thumbnail_image = b["thumbnail_image"]
+                b_status = b["status"]
+
+                b_author_name = b["author"]
+                b_author_object = User.objects.get(username=b_author_name)
+
+                b_tags_unstructured = b["tags"]
+                b_tag_objects = []
+                for t in b_tags_unstructured:
+                    t_name = t["name"]
+                    t_slug = t["slug"]
+                    t, _ = BlogTag.objects.get_or_create(
+                        name=t_name,
+                        slug=t_slug
+                    )
+                    b_tag_objects.append(t)
+
+                b_new, created_now = BlogPost.objects.get_or_create(
+                    title=b_title,
+                    slug=b_slug,
+                    defaults={
+                        "author": b_author_object,
+                        "content": b_content,
+                        "thumbnail_image": b_thumbnail_image,
+                        "status": b_status
+                    }
+                )
+                if created_now:
+                    b_new.tags.set(b_tag_objects)
+            print(f"[BoilerplateDataLoader._load_blog_data] Pre-loaded {len(blogs_data_json)} blog posts")
         return
 
     @staticmethod
