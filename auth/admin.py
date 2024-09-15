@@ -5,7 +5,7 @@ from .models import Profile, UserCreditCard, PromoCode
 # Register your models here.
 class Member(admin.ModelAdmin):
     list_display = (
-        "user", "email", "is_verified", "created_at",
+        "user", "email", "is_verified", "is_accredited_by_staff", "created_at",
     )
 
 

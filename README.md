@@ -137,6 +137,8 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 -> [HOLDINGS / BIMOD.IO ENDEAVORS] as concrete implementations with the assistants. Completely autonomous systems.
     Mostly for creating Business presence and prestige.
 
+-> Master Reasoner: GPT-o1 (reasoning agent)
+
 -> *ON SETTINGS PAGE*: Put a button to 'PURGE ALL CHATS'. Before the user clicks the button, ask the user to write
       a randomly generated alphanumeric string to make sure he accepts the deletion of all chats. If the text
       matches with the generated string, then the chats will be deleted.

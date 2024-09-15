@@ -436,6 +436,23 @@
       "menu_header": "Tools"
     },
     {
+      "name": "Reasoning",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "reasoning",
+      "submenu": [
+        {
+          "name": "Add Reasoning Tool",
+          "slug": "reasoning",
+          "url": "dashboard:main-dashboard"
+        },
+        {
+          "name": "Reasoning Tools",
+          "slug": "reasoning",
+          "url": "dashboard:main-dashboard"
+        }
+      ]
+    },
+    {
       "name": "Functions",
       "icon": "menu-icon tf-icons ti ti-plug",
       "slug": "functions",

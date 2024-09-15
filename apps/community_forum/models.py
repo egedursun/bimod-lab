@@ -61,7 +61,7 @@ class ForumThread(models.Model):
     category = models.ForeignKey("ForumCategory", related_name='threads', on_delete=models.CASCADE)
 
     title = models.CharField(max_length=255)
-    created_by = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    created_by = models.ForeignKey("auth.User", on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_closed = models.BooleanField(default=False)

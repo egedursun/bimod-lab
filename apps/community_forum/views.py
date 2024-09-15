@@ -40,12 +40,12 @@ class ForumCategoryListView(LoginRequiredMixin, TemplateView):
 
         # Filter categories based on the search query
         if search_query:
-            categories = ForumCategory.objects.filter(threads__title__icontains=search_query)
+            categories = ForumCategory.objects.filter(threads__title__icontains=search_query).order_by("created_at")
         else:
-            categories = ForumCategory.objects.all()
+            categories = ForumCategory.objects.all().order_by("created_at")
 
-        # Paginate categories, 10 per page
-        paginator = Paginator(categories, 5)
+        # Paginate categories, 20 per page
+        paginator = Paginator(categories, 20)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
