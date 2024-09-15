@@ -283,7 +283,7 @@ cp -r build/html/* src/assets/docs/
 
 ---
 
-#### Git Command to Add All Migration Files to the Tracking System
+#### Git Command to Add All Migration Files to the Tracking System & Cleaning Up Migration Files
 
 - Go to the project's root directory in the terminal window.
 
