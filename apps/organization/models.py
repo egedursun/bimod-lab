@@ -63,7 +63,7 @@ class Organization(models.Model):
     balance = models.DecimalField(max_digits=10, decimal_places=6, default=0.000000)
 
     # profile image
-    organization_image_save_path = 'organization_images/%Y/%m/%d/' + generate_random_string()
+    organization_image_save_path = 'organization_images/%Y/%m/%d/'
     organization_image = models.ImageField(upload_to=organization_image_save_path, blank=True, max_length=1000,
                                            null=True)
     # many to many fields

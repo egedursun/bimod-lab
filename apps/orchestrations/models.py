@@ -44,7 +44,7 @@ class Maestro(models.Model):
     tone = models.CharField(max_length=1000)
     response_language = models.CharField(max_length=10, choices=ASSISTANT_RESPONSE_LANGUAGES, default="auto")
 
-    maestro_image_save_path = 'maestro_images/%Y/%m/%d/' + generate_random_string()
+    maestro_image_save_path = 'maestro_images/%Y/%m/%d/'
     maestro_image = models.ImageField(upload_to=maestro_image_save_path, blank=True, max_length=5000, null=True)
 
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,

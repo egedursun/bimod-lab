@@ -131,7 +131,7 @@ class Profile(models.Model):
     user_last_forum_post_at = models.DateTimeField(null=True, blank=True)
     user_last_forum_comment_at = models.DateTimeField(null=True, blank=True)
 
-    profile_picture_save_path = 'profile_pictures/%Y/%m/%d/' + generate_random_string()
+    profile_picture_save_path = 'profile_pictures/%Y/%m/%d/'
     profile_picture = models.ImageField(upload_to=profile_picture_save_path, max_length=1000, blank=True,
                                         default='/profile_pictures/default.png')
     is_active = models.BooleanField(default=True)
