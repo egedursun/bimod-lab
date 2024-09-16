@@ -53,6 +53,7 @@ echo "          [Deploy / Production] Running database migrations..."
 
 # Database migrations
 python3 manage.py makemigrations
+python3 manage.py migrate --fake
 python3 manage.py migrate
 
 echo "          [Deploy / Production] Database migrations completed!"
