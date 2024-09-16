@@ -490,6 +490,8 @@ EXCLUDED_PAGES = [
     "/docs/*",
     "/faq/*",
     "/not_accredited/*",
+    "/bimod_endeavours/*",
+    "/integration_to_organizations/*",
     ########################################
     # Exclude (ALL) Exported Assistant pages
     ########################################

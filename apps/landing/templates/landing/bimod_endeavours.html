@@ -1,0 +1,478 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Bimod.io | Unleash the Power of Autonomous Enterprises{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/nouislider/nouislider.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/swiper/swiper.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/nouislider/nouislider.js' %}"></script>
+  <script src="{% static 'vendor/libs/swiper/swiper.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/front-page-landing.css' %}">
+{% endblock page_css %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/front-page-landing.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <div data-bs-spy="scroll" class="scrollspy-example">
+    <!-- Hero Section: Start -->
+    <section id="hero-animation">
+      <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-banner-1.png' %}" class="rounded" width="30%"
+               style="position: absolute; top: 425px; left:0; z-index: 9999999999;">
+      <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-banner-2.png' %}" class="rounded" width="30%"
+               style="position: absolute; top: 425px; right:0; z-index: 9999999999; transform: scaleX(-1);">
+      <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-banner-3.png' %}" class="rounded" width="40%"
+               style="position: absolute; top: 190px; left:50px; z-index: 1; opacity: 0.5;">
+      <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-banner-4.png' %}" class="rounded" width="35%"
+               style="position: absolute; top: 290px; right:60px; z-index: 1; opacity: 0.5;">
+      <div id="landingHero" class="section-py landing-hero position-relative">
+        <img src="{% static 'img/front-pages/backgrounds/hero-bg.png' %}" alt="hero background"
+             class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1"/>
+        <div class="container">
+          <div class="hero-text-box text-center position-relative">
+            <h1 class="text-primary hero-title display-6 fw-extrabold" style="z-index: 9999999999;"><strong>Bimod.io</strong></h1>
+            <hr>
+            <h1 class="text-primary hero-title display-1 fw-extrabold" style="z-index: 99999999999;">
+              <strong>&nbsp; BMD® Endeavours</strong>
+            </h1>
+            <hr>
+            <h1 class="text-primary hero-title display-6 fw-extrabold" style="z-index: 99999999999;">
+              <strong>100% Autonomous, 7/24 AI-Powered Enterprises*</strong>
+            </h1>
+            <hr>
+            <h2 class="hero-sub-title h6 mb-6 mt-12">
+              <strong>
+                * Our completely autonomous holdings powered by AI assistants and state-of-the-art multi-modalities built
+                with Bimod.io platform.
+              </strong>
+            </h2>
+            <a href="{% url 'landing:index' %}" class="btn btn-primary btn-lg mt-8" style="min-width: 250px;">
+              <strong><i class="fa fa-home me-2"></i>Back to Homepage</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Hero Section: End -->
+
+    <!-- Autonomous Companies Section -->
+    <section id="autonomous-companies" class="section-py landing-features">
+      <div class="container">
+        <div class="text-center mb-4">
+          <span class="badge bg-label-primary"><strong>Holdings</strong></span>
+        </div>
+        <h4 class="text-center mb-1">
+          <span class="position-relative fw-extrabold z-1">Our Enterprises: Pioneering the Future of AI-Powered Workforce</span>
+        </h4>
+        <p class="text-center mb-12">
+          Our autonomous companies are leading the way in their respective industries, powered by AI assistants
+          and multi-modalities built with Bimod.io platform. They are 100% autonomous, 7/24 AI-powered enterprises
+          that are shaping the future of work and showing the world what is possible with AI.
+        </p>
+
+        <!-- Company Grid -->
+        <div class="row gx-0 gy-6 g-sm-12 mt-12">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-finance.png' %}"
+                   class="border border-2 border-primary" style="width: 300px; height: 300px; border-radius: 25px;"
+                   alt="Teserax.io"/>
+              <h4 class="mt-4 mb-2"><strong>Teserax.io</strong></h4>
+              <p style="text-align: justify;">
+                <strong>Teserax.io</strong> is a cutting-edge, fully autonomous asset management and hedge fund powered
+                by advanced AI assistants.
+                Our platform handles all end-to-end processes involved in asset management—from real-time market
+                analysis, automatic portfolio balancing,
+                and intelligent trading to risk management and regulatory compliance. With <strong>Teserax.io</strong>,
+                AI assistants manage buying, selling, and optimization
+                of assets across multiple markets. From stocks, bonds, commodities, and derivatives to cryptocurrencies,
+                our AI ensures seamless transactions
+                at optimal moments, delivering high returns and minimizing risks.
+                <br><br>
+                Every aspect of the business—from strategy formulation to executing complex trades—is fully automated,
+                providing unparalleled efficiency and precision. <strong>Teserax.io</strong> is your gateway to the
+                future of financial
+                management, where AI drives decision-making, ensuring your assets are always in the best hands.
+              </p>
+              <a href="#" class="btn btn-primary mt-2 disabled">
+                <i class="fa fa-building me-2"></i>
+                <strong>Enterprise Profile</strong>
+              </a>
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-2 mt-4"></i>
+                You are unauthorized to access this page.
+              </small>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-hf.png' %}"
+                   class="border border-2 border-primary" style="width: 300px; height: 300px; border-radius: 25px;"
+                   alt="Rubixar.io"/>
+              <h4 class="mt-4 mb-2"><strong>Rubixar.io</strong></h4>
+              <p style="text-align: justify;">
+                <strong>Rubixar.io</strong> is a fully autonomous HR consultancy firm powered by state-of-the-art AI
+                assistants. Our
+                AI-driven platform handles
+                every aspect of HR management, from headhunting top-tier talent to conducting in-depth candidate
+                interviews. <strong>Rubixar.io</strong>
+                understands the specific requirements of any given role and ensures only the most suitable candidates
+                are shortlisted for the job.
+                Beyond recruitment, our AI assistants handle employee onboarding, performance evaluations, and even
+                predictive workforce planning.
+                <br><br>
+                Whether you're a growing startup or a multinational corporation, <strong>Rubixar.io</strong> streamlines
+                your HR
+                operations with unmatched precision
+                and efficiency. Let our AI assistants transform how your organization manages its most valuable asset:
+                its people.
+                <br><br><br>
+              </p>
+              <a href="#" class="btn btn-primary mt-2 disabled">
+                <i class="fa fa-building me-2"></i>
+                <strong>Enterprise Profile</strong>
+              </a>
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-2 mt-4"></i>
+                You are unauthorized to access this page.
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row gx-0 gy-6 g-sm-12 mt-6">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-mis.png' %}"
+                   class="border border-2 border-primary" style="width: 300px; height: 300px; border-radius: 25px;"
+                   alt="Qortex.io"/>
+              <h4 class="mt-4 mb-2"><strong>Qortex.io</strong></h4>
+              <p style="text-align: justify;">
+                <strong>Qortex.io</strong> is an advanced, fully automated business intelligence and management
+                information system
+                powered by cutting-edge AI assistants. Our platform automates all facets of business intelligence, from
+                data aggregation and analytics to reporting and decision-making support. <strong>Qortex.io's</strong> AI
+                assistants
+                process vast amounts of data in real-time, offering insights that are both predictive and prescriptive.
+                They handle everything from monitoring KPIs, generating customized reports, and identifying trends to
+                providing strategic recommendations.
+                <br><br>
+                This automation ensures that decision-makers have access to timely,
+                accurate, and actionable intelligence, empowering them to make informed decisions swiftly.
+                Whether it’s optimizing operations, enhancing customer experiences, or outpacing competitors, <strong>Qortex.io</strong>
+                equips businesses with the intelligence they need to thrive in a dynamic market landscape.
+              </p>
+              <a href="#" class="btn btn-primary mt-2 disabled">
+                <i class="fa fa-building me-2"></i>
+                <strong>Enterprise Profile</strong>
+              </a>
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-2 mt-4"></i>
+                You are unauthorized to access this page.
+              </small>
+            </div>
+          </div>
+
+          <!-- Placeholder for additional company -->
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-property.png' %}"
+                   class="border border-2 border-primary" style="width: 300px; height: 300px; border-radius: 25px;"
+                   alt="Evalex.io"/>
+              <h4 class="mt-4 mb-2"><strong>Evalex.io</strong></h4>
+              <p style="text-align: justify;">
+                <strong>Evalex.io</strong> is an autonomous AI-powered enterprise specializing in the evaluation and
+                analysis of assets,
+                properties, and entire businesses. From real estate appraisals to comprehensive asset evaluations, our
+                AI assistants handle every aspect of the process with precision and speed. <strong>Evalex.io</strong>
+                delivers
+                data-driven insights that help you make informed decisions, whether you're managing property portfolios,
+                assessing business value, or evaluating financial assets.
+                <br><br>
+                By leveraging Bimod.io’s AI platform, <strong>Evalex.io</strong> automates complex evaluation tasks,
+                ensuring accuracy
+                and efficiency across all sectors. Stay ahead in the market with real-time assessments that adjust to
+                dynamic changes, allowing you to act swiftly and strategically.
+              </p>
+              <br><br>
+              <a href="#" class="btn btn-primary mt-2 disabled">
+                <i class="fa fa-building me-2"></i>
+                <strong>Enterprise Profile</strong>
+              </a>
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-2 mt-4"></i>
+                You are unauthorized to access this page.
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row gx-0 gy-6 g-sm-12 mt-6">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-cysec.png' %}"
+                   class="border border-2 border-primary" style="width: 300px; height: 300px; border-radius: 25px;"
+                   alt="Survex.io"/>
+              <h4 class="mt-4 mb-2"><strong>Survex.io</strong></h4>
+              <p style="text-align: justify;">
+                <strong>Survex.io</strong> is a cutting-edge cybersecurity and intelligence firm that leverages
+                multimodal AI assistants
+                to automate all aspects of digital security. From monitoring network vulnerabilities to responding to
+                real-time threats, <strong>Survex.io’s</strong> AI-powered cybersecurity assistants ensure comprehensive
+                protection for
+                your organization. By integrating advanced AI models, the platform provides 24/7 surveillance, threat
+                detection, and proactive defense mechanisms without the need for human intervention.
+                <br><br>
+                Whether it's preventing data breaches, conducting penetration testing, or orchestrating countermeasures,
+                <strong>Survex.io</strong> delivers unparalleled security and intelligence services. Harness the power
+                of AI to safeguard
+                your digital assets and stay ahead of emerging threats in the cybersecurity landscape.
+              </p>
+              <a href="#" class="btn btn-primary mt-2 disabled">
+                <i class="fa fa-building me-2"></i>
+                <strong>Enterprise Profile</strong>
+              </a>
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-2 mt-4"></i>
+                You are unauthorized to access this page.
+              </small>
+            </div>
+          </div>
+
+          <!-- Placeholder for additional company -->
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-investigation.png' %}"
+                   class="border border-2 border-primary" style="width: 300px; height: 300px; border-radius: 25px;"
+                   alt="Inspex.io"/>
+              <h4 class="mt-4 mb-2"><strong>Inspex.io</strong></h4>
+              <p style="text-align: justify;">
+                <strong>Inspex.io</strong> is a fully automated private investigation firm that leverages advanced AI
+                assistants to
+                conduct comprehensive investigations. From researching individuals to analyzing complex cases, <strong>Inspex.io</strong>
+                provides detailed insights with unmatched precision. Whether it’s background checks, surveillance, or
+                investigative research, the AI-powered assistants handle the entire process efficiently, ensuring rapid
+                results with full confidentiality.
+                <br><br>
+                By utilizing multimodal AI capabilities, <strong>Inspex.io</strong> is able to gather and analyze data
+                from multiple
+                sources, providing clients with deep, actionable intelligence. Experience the future of private
+                investigations, driven by cutting-edge AI technology.
+              </p>
+              <br><br>
+              <a href="#" class="btn btn-primary mt-2 disabled">
+                <i class="fa fa-building me-2"></i>
+                <strong>Enterprise Profile</strong>
+              </a>
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-2 mt-4"></i>
+                You are unauthorized to access this page.
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row gx-0 gy-6 g-sm-12 mt-6">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-law.png' %}"
+                   class="border border-2 border-primary" style="width: 300px; height: 300px; border-radius: 25px;"
+                   alt="Legamod.io"/>
+              <h4 class="mt-4 mb-2"><strong>Legamod.io</strong></h4>
+              <p style="text-align: justify;">
+                <strong>Legamod.io</strong> is an advanced, fully autonomous legal consultancy platform designed to
+                handle every aspect
+                of legal work with speed, precision, and efficiency. Powered by state-of-the-art multimodal AI
+                assistants, <strong>Legamod.io</strong> automates tasks that typically require legal expertise. Whether
+                it’s preparing
+                and managing complex legal paperwork, conducting thorough legal investigations, or providing in-depth
+                research on case law, the platform covers it all.
+                <br><br>
+                From filing and querying legal documents to providing real-time updates and compliance checks,
+                <strong>Legamod.io</strong> ensures that your legal processes run smoothly without the need for constant
+                human oversight.
+                The AI-driven system can interpret and manage large volumes of contracts, conduct due diligence, track
+                legal changes, and offer insights tailored to your needs. Additionally, it performs continuous
+                monitoring of legal obligations and delivers timely legal guidance on various issues, from corporate law
+                to intellectual property, employment law, and more. With fully integrated AI assistants that specialize
+                in multiple fields of law,
+                <strong>Legamod.io</strong> is designed to
+                cater to businesses of all sizes, streamlining legal operations and drastically reducing operational
+                costs. This platform allows organizations to focus on growth while their legal needs are handled
+                autonomously and accurately.
+              </p>
+              <a href="#" class="btn btn-primary mt-2 disabled">
+                <i class="fa fa-building me-2"></i>
+                <strong>Enterprise Profile</strong>
+              </a>
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-2 mt-4"></i>
+                You are unauthorized to access this page.
+              </small>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-politics.png' %}"
+                   class="border border-2 border-primary" style="width: 300px; height: 300px; border-radius: 25px;"
+                   alt="Archset.io"/>
+              <h4 class="mt-4 mb-2"><strong>Archset.io</strong></h4>
+              <p style="text-align: justify;">
+                <strong>Archset.io</strong> is a fully autonomous platform specializing in political analytics and
+                governmental insights.
+                Leveraging cutting-edge multimodal AI assistants, <strong>Archset.io</strong> handles a wide array of
+                political tasks,
+                including electoral survey analyses, public opinion monitoring, and policy impact studies. It empowers
+                political parties, governmental bodies, and research organizations by providing real-time analytics,
+                predictive modeling, and comprehensive reports on political trends and societal shifts.
+                <br><br>
+                Whether you’re looking to understand voter behavior, assess the effectiveness of political campaigns, or
+                analyze governmental policies, <strong>Archset.io</strong> delivers insights driven by data from
+                multiple
+                modalities—text, speech, image, and structured data. The platform can track and interpret ongoing
+                political events, predict election outcomes, and provide scenario-based analysis for future political
+                landscapes. Through its AI-powered assistants, <strong>Archset.io</strong> simplifies complex political
+                processes, enabling
+                decision-makers to make informed, strategic choices backed by data-driven intelligence. Its fully
+                automated system is designed to optimize political strategy, streamline research efforts, and deliver
+                high-quality, actionable insights with minimal human intervention.
+              </p>
+              <a href="#" class="btn btn-primary mt-2 disabled">
+                <i class="fa fa-building me-2"></i>
+                <strong>Enterprise Profile</strong>
+              </a>
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-2 mt-4"></i>
+                You are unauthorized to access this page.
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row gx-0 gy-6 g-sm-12 mt-6">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-marketing.png' %}"
+                   class="border border-2 border-primary" style="width: 300px; height: 300px; border-radius: 25px;"
+                   alt="Promex.io"/>
+              <h4 class="mt-4 mb-2"><strong>Promex.io</strong></h4>
+              <p style="text-align: justify;">
+                <strong>Promex.io</strong> is a cutting-edge marketing and sales consultancy firm powered entirely by
+                multimodal large
+                language models. <strong>Promex.io's</strong> AI-driven assistants manage the entire spectrum of
+                marketing and sales
+                processes autonomously. From identifying target audiences, crafting personalized marketing campaigns,
+                and analyzing market trends, to optimizing sales strategies, <strong>Promex.io</strong> leverages
+                advanced AI
+                capabilities to ensure your business thrives in a competitive market.
+                <br><br>
+                By utilizing the power of large language models and multimodal AI, <strong>Promex.io</strong> automates
+                customer
+                segmentation, lead generation, sales funnel optimization, and real-time performance tracking. Its AI
+                assistants seamlessly integrate with your sales and marketing platforms, enabling continuous adaptation
+                and scaling to meet dynamic business needs. Whether you're launching a new product or refining your
+                go-to-market strategy, <strong>Promex.io</strong> provides real-time insights and execution, ensuring
+                maximum impact with
+                minimal human intervention. Through its fully autonomous system, <strong>Promex.io</strong>
+                revolutionizes traditional marketing and sales functions,
+                empowering businesses to achieve superior results with unparalleled efficiency.
+              </p>
+              <br><br>
+              <a href="#" class="btn btn-primary mt-2 disabled">
+                <i class="fa fa-building me-2"></i>
+                <strong>Enterprise Profile</strong>
+              </a>
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-2 mt-4"></i>
+                You are unauthorized to access this page.
+              </small>
+            </div>
+          </div>
+
+          <!-- Placeholder for additional company -->
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/endeavours/endeavour-medical.png' %}"
+                   class="border border-2 border-primary" style="width: 300px; height: 300px; border-radius: 25px;"
+                   alt="Mediximod.io"/>
+              <h4 class="mt-4 mb-2"><strong>Mediximod.io</strong></h4>
+              <p style="text-align: justify;">
+                <strong>Mediximod.io</strong> is a cutting-edge medical consultancy and patient data management platform, powered
+                entirely by Bimod.io’s autonomous AI assistants. Specializing in automating every aspect of healthcare
+                data handling, <strong>Mediximod.io</strong> offers a robust system for diagnostic guidance, patient monitoring,
+                data-driven analysis, and real-time medical analytics. The platform is designed to assist healthcare
+                professionals by managing end-to-end processes, from initial patient data entry to diagnostic
+                recommendations, empowering doctors with faster and more accurate decision-making tools.
+                <br><br>
+                With <strong>Mediximod.io</strong>, hospitals, clinics, and medical practices can leverage the power of AI to handle
+                large volumes of patient data efficiently. The platform autonomously analyzes medical records, providing
+                insights and predictive diagnostics that help in early detection of diseases, managing patient
+                histories, and generating treatment plans. By integrating multimodal AI, <strong>Mediximod.io</strong>
+                is capable of interpreting diverse data formats such as medical imaging, patient notes, lab results, and
+                more, creating an intelligent system that delivers actionable insights. Fully scalable with existing
+                healthcare infrastructures, <strong>Mediximod.io</strong> reduces
+                administrative burdens, improves patient outcomes, and ensures that healthcare professionals can focus
+                more on patient care while relying on AI-driven support for diagnostics.
+              </p>
+              <a href="#" class="btn btn-primary mt-2 disabled">
+                <i class="fa fa-building me-2"></i>
+                <strong>Enterprise Profile</strong>
+              </a>
+              <small class="text-muted">
+                <i class="fa fa-info-circle me-2 mt-4"></i>
+                You are unauthorized to access this page.
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Autonomous Companies: End -->
+
+    <!-- Call to Action: Start -->
+    <section id="landingCTA" class="section-py landing-cta position-relative">
+      <img src="{% static 'img/front-pages/backgrounds/cta-bg-dark.png' %}"
+           class="position-absolute bottom-0 end-0 scaleX-n1-rtl h-100 w-100 z-n1" alt="cta background"/>
+      <div class="container">
+        <div class="row align-items-center gy-12">
+          <div class="col-lg-6 text-start text-lg-start">
+            <h4 class="cta-title text-primary fw-bold mb-0">
+              <strong>Let's Build Your Autonomous Enterprise</strong>
+            </h4>
+            <h6 class="text-body mb-12 mt-12 me-12" style="text-align: justify;">
+              Start your journey to a fully autonomous enterprise with <strong>Bimod.io.</strong> We provide services for organizations
+              from different industries to build their own AI-powered autonomous enterprises and transform their
+              businesses to the next level. Take the advantages of fully autonomous management of your business
+              operations and let your AI assistants handle the rest.
+            </h6>
+            <a href="{% url 'landing:integration_to_organizations' %}" class="btn btn-lg btn-primary">
+              <strong><i class="ti ti-info-circle me-2"></i> Learn More about Custom Integrations</strong>
+            </a>
+          </div>
+          <div class="col-lg-6 text-center text-lg-end">
+            <img src="{% static 'img/custom-illustrations-v2/banners/i2-b1.png' %}" alt="cta dashboard"
+                 class="img-fluid mt-lg-4 mb-12" style="border-radius: 15px;"/>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Call to Action: End -->
+  </div>
+{% endblock %}

@@ -133,3 +133,31 @@ class NotAccreditedAdminView(TemplateView):
         # map_context according to updated context values
         TemplateHelper.map_context(context)
         return context
+
+
+class EndeavoursView(TemplateView):
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context.update(
+            {
+                "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+                "display_customizer": False,
+            }
+        )
+        # map_context according to updated context values
+        TemplateHelper.map_context(context)
+        return context
+
+
+class IntegrationToOrganizationsView(TemplateView):
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context.update(
+            {
+                "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+                "display_customizer": False,
+            }
+        )
+        # map_context according to updated context values
+        TemplateHelper.map_context(context)
+        return context

@@ -1,0 +1,326 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Bimod.io | Custom Integration Solutions{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/nouislider/nouislider.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/swiper/swiper.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/nouislider/nouislider.js' %}"></script>
+  <script src="{% static 'vendor/libs/swiper/swiper.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/front-page-landing.css' %}">
+{% endblock page_css %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/front-page-landing.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <div data-bs-spy="scroll" class="scrollspy-example">
+    <!-- Hero Section: Start -->
+    <section id="hero-animation">
+      <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-banner-5.png' %}" class="rounded" width="25%"
+               style="position: absolute; top: 420px; left:50px; z-index: 9999999999;">
+      <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-banner-6.png' %}" class="rounded" width="25%"
+               style="position: absolute; top: 420px; right:50px; z-index: 9999999999;">
+      <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-banner-7.png' %}" class="rounded" width="17%"
+               style="position: absolute; top: 150px; left:250px; z-index: 9999999999;">
+      <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-banner-8.png' %}" class="rounded" width="17%"
+               style="position: absolute; top: 150px; right:250px; z-index: 9999999999;">
+      <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-banner-9.png' %}" class="rounded" width="15%"
+               style="position: absolute; top: 25px; left:50px; z-index: 9999999999;">
+      <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-banner-10.png' %}" class="rounded" width="15%"
+               style="position: absolute; top: 25px; right:50px; z-index: 9999999999;">
+      <div id="landingHero" class="section-py landing-hero position-relative">
+        <img src="{% static 'img/front-pages/backgrounds/hero-bg.png' %}" alt="hero background"
+             class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1"/>
+        <div class="container">
+          <div class="hero-text-box text-center position-relative">
+            <h1 class="text-primary hero-title display-6 fw-extrabold">
+              <strong>Bimod.io</strong>
+            </h1>
+            <hr>
+            <h1 class="text-primary hero-title display-1 fw-extrabold">
+              <strong>Tailor-Made Integrations</strong>
+            </h1>
+            <hr>
+            <h2 class="hero-sub-title h6 mb-6 mt-12">
+              <strong>Custom AI-Powered Integrations for Your Enterprise. Our services cover end-to-end integration
+                solutions from analyzing your enterprises' requirements to identifying the best assistants, data
+                sources,
+                multi-modality models, and deploying your autonomous strategies with the best practices.</strong>
+            </h2>
+            <a href="{% url 'landing:index' %}" class="btn btn-primary btn-lg mt-8" style="min-width: 250px;">
+              <strong><i class="fa fa-home me-2"></i>Back to Homepage</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Hero Section: End -->
+
+    <!-- Custom Integration Section -->
+    <section id="custom-integrations" class="section-py landing-features">
+      <div class="container">
+        <div class="text-center mb-4">
+          <span class="badge bg-label-primary"><strong>Our Integration Services &amp; Steps</strong></span>
+        </div>
+        <h4 class="text-center mb-1">
+          <span class="position-relative fw-extrabold z-1">End-to-End Solutions Tailored for the Needs of Your Enterprise</span>
+        </h4>
+        <p class="text-center mb-12">
+          Bimod Lab® offers the most flexible AI as a Service and integration solutions for you to automate your
+          processes with the best practices and the most advanced AI technologies. Our services cover end-to-end
+          integration solutions from analyzing your enterprises' requirements to identifying the best assistants,
+          data sources, multi-modality models, and deploying your autonomous strategies with the best practices.
+        </p>
+
+        <!-- Features Grid -->
+        <div class="row gx-0 gy-6 g-sm-12 mt-12">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-requirements-analysis.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Integration Module"/>
+              <h4 class="mt-4 mb-2"><strong>Requirements Analysis</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-user-management.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Workflow Automation"/>
+              <h4 class="mt-4 mb-2"><strong>User &amp; Tenancy Management</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row gx-0 gy-6 g-sm-12 mt-12">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-data-security.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Integration Module"/>
+              <h4 class="mt-4 mb-2"><strong>Data Security Integrations</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-payments.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Workflow Automation"/>
+              <h4 class="mt-4 mb-2"><strong>Payment Plans &amp; Transaction Management</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row gx-0 gy-6 g-sm-12 mt-12">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-data-source-analysis.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Integration Module"/>
+              <h4 class="mt-4 mb-2"><strong>Data Source Analysis &amp; Integrations</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-memory-storage.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Workflow Automation"/>
+              <h4 class="mt-4 mb-2"><strong>Memory &amp; Retrieval Policies Setup</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row gx-0 gy-6 g-sm-12 mt-12">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-code-repositories.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Integration Module"/>
+              <h4 class="mt-4 mb-2"><strong>Repository &amp; Document Storage Setups</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-multi-modality.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Workflow Automation"/>
+              <h4 class="mt-4 mb-2"><strong>Multimodal Tool &amp; Resource Integrations</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row gx-0 gy-6 g-sm-12 mt-12">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-assistants.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Integration Module"/>
+              <h4 class="mt-4 mb-2"><strong>Assistant Setups &amp; Optimizations</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-data-migrations.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Workflow Automation"/>
+              <h4 class="mt-4 mb-2"><strong>Data &amp; Dataset Migration Setups</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row gx-0 gy-6 g-sm-12 mt-12">
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-function-api-script.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Integration Module"/>
+              <h4 class="mt-4 mb-2"><strong>Function, API, and Script Development</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+            <div class="d-flex flex-column align-items-center">
+              <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-schedules-triggers.png' %}"
+                   class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                   alt="Workflow Automation"/>
+              <h4 class="mt-4 mb-2"><strong>Scheduled &amp; Triggered Task Integrations</strong></h4>
+              <p style="text-align: justify;">
+                Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row gx-0 gy-6 g-sm-12 mt-12">
+            <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+              <div class="d-flex flex-column align-items-center">
+                <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-cloud-export-api.png' %}"
+                     class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                     alt="Integration Module"/>
+                <h4 class="mt-4 mb-2"><strong>Exported Assistant API Integrations</strong></h4>
+                <p style="text-align: justify;">
+                  Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                  ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                  mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-6 col-sm-12 text-center features-icon-box">
+              <div class="d-flex flex-column align-items-center">
+                <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-orchestrations.png' %}"
+                     class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
+                     alt="Workflow Automation"/>
+                <h4 class="mt-4 mb-2"><strong>Orchestration Setups</strong></h4>
+                <p style="text-align: justify;">
+                  Lorem ipsum dolor sit amet. Consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                  ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
+                  mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.
+                </p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </section>
+    <!-- Custom Integration Section: End -->
+
+    <!-- Call to Action: Start -->
+    <section id="landingCTA" class="section-py landing-cta position-relative">
+      <img src="{% static 'img/front-pages/backgrounds/cta-bg-dark.png' %}"
+           class="position-absolute bottom-0 end-0 scaleX-n1-rtl h-100 w-100 z-n1" alt="cta background"/>
+      <div class="container">
+        <div class="row align-items-center gy-12">
+          <div class="col-lg-6 text-start text-lg-start">
+            <h4 class="cta-title text-primary fw-bold mb-0">
+              <strong>Take the Step for 100%, 7/24 Automation</strong>
+            </h4>
+            <h6 class="text-body mb-12 mt-12 me-12" style="text-align: justify;">
+              Let's discuss how Bimod.io can help you automate your processes by using state-of-the-art technology
+              stack and powerful assitants and orchestrations. Our team is ready to help you with your integration
+              needs and you can feel free to contact us for more information.
+            </h6>
+            <a href="{% url 'landing:index' %}#landingContact" class="btn btn-lg btn-primary">
+              <strong><i class="ti ti-message-2-pin me-2"></i>Contact Us</strong>
+            </a>
+          </div>
+          <div class="col-lg-6 text-center text-lg-end">
+            <img src="{% static 'img/custom-illustrations-v2/banners/i2-b1.png' %}" alt="cta dashboard"
+                 class="img-fluid mt-lg-4 mb-12" style="border-radius: 15px;"/>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Call to Action: End -->
+  </div>
+{% endblock %}
