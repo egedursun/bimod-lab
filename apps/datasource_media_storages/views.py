@@ -658,17 +658,18 @@ class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateV
 ###########
 
 
-# TODO: Under construction
+# TODO-Pending: Feature under construction
+#   - This feature is for connection media items to the stroages in Bimod services.
+#   - Currently paused due to more important features in ongoing development.
 class S3BucketConnectionManagerView(LoginRequiredMixin, TemplateView):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context
 
     def post(self, request, *args, **kwargs):
-        # TODO-1: connect to the bucket
-        # TODO-2: iterate through every item in the bucket
-        # TODO-3: Retrieve the URLs of the elements
+        # TODO-1: Connect to the bucket.
+        # TODO-2: Iterate through every item in the bucket.
+        # TODO-3: Retrieve the URLs of the elements.
         # TODO-4: Create a media item for each of the elements inside the bucket by using the URL specified within
         #           that bucket (the only difference is we won't be the one to store those media.)
         pass

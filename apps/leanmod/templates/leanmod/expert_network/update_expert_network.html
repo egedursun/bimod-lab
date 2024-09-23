@@ -1,0 +1,207 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Update Expert Network{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  <script>
+    $(document).ready(function () {
+      // Initialize Select2 with a search bar
+      $('.select2').select2({
+        placeholder: 'Update Assistants',
+        allowClear: true,
+        dropdownAutoWidth: true,
+        width: '100%'  // Ensure full width of the dropdown
+      });
+
+      // Pre-load existing assistants with context instructions
+      const existingAssistants = {{ assistant_references|safe }};
+      existingAssistants.forEach(function (assistant) {
+        const assistantId = assistant.id;
+        const assistantName = assistant.name;
+        const contextInstructions = assistant.context_instructions;
+
+        const html = `
+          <div class="assistant-entry mb-4 bg-label-primary p-4 rounded border border-primary rounded" id="assistant-${assistantId}">
+            <h6><strong><i class="fa fa-robot me-2"></i>${assistantName}</strong></h6>
+            <textarea name="context_instructions_${assistantId}" placeholder="Enter contextual instructions for the assistant in the network." class="form-control mb-4">${contextInstructions}</textarea>
+            <button type="button" class="btn btn-danger remove-assistant" data-id="${assistantId}">
+              <i class="fa fa-trash me-2"></i> Remove
+            </button>
+          </div>
+        `;
+        $('#selected-assistants').append(html);
+        $('#assistants').val(function (i, current) {
+          return current.concat(assistantId); // Preselect the assistants in Select2 dropdown
+        }).trigger('change');
+      });
+
+      // Logic for newly selected assistants
+      $('#assistants').on('change', function () {
+        const selectedAssistants = $(this).val() || [];
+
+        // Remove any assistant not in the selection
+        $('.assistant-entry').each(function () {
+          const assistantId = $(this).attr('id').split('-')[1];
+          if (!selectedAssistants.includes(assistantId)) {
+            $(this).remove();
+          }
+        });
+
+        // Add newly selected assistants if they aren't already displayed
+        selectedAssistants.forEach(function (assistantId) {
+          if ($('#assistant-' + assistantId).length === 0) {
+            const assistantName = $('#assistants option[value="' + assistantId + '"]').text();
+            const html = `
+              <div class="assistant-entry mb-4 bg-label-primary p-4 rounded border border-primary rounded" id="assistant-${assistantId}">
+                <h6><strong><i class="fa fa-robot me-2"></i>${assistantName}</strong></h6>
+                <textarea name="context_instructions_${assistantId}" class="form-control mb-4" placeholder="Enter contextual instructions for the assistant in the network.""></textarea>
+                <button type="button" class="btn btn-danger remove-assistant" data-id="${assistantId}">
+                  <i class="fa fa-trash me-2"></i> Remove
+                </button>
+              </div>
+            `;
+            $('#selected-assistants').append(html);
+          }
+        });
+      });
+
+      // Remove assistant when clicking the "Remove" button
+      $(document).on('click', '.remove-assistant', function () {
+        const assistantId = $(this).data('id');
+        $('#assistants option[value="' + assistantId + '"]').prop('selected', false).trigger('change');
+        $('#assistant-' + assistantId).remove();
+      });
+    });
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-12">
+      <h3 class="mb-0"><strong>Update Expert Network</strong></h3>
+    </div>
+  </div>
+
+  <a href="{% url 'leanmod:list_expert_networks' %}">
+    <button class="btn btn-secondary mt-4 mb-4">
+      <i class="fa fa-dashboard me-4"></i>
+      <strong> Manage Expert Networks</strong>
+    </button>
+  </a>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+       role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-100.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        Update the network name and description, and select the assistants who will be part of this network. Within this
+        page, you can update the context instructions for each assistant in the network to allow for better insights
+        during the network utilization as well as fitting your network to the updated requirements. Be careful while
+        updating the network as it may affect the ongoing tasks and the network's performance.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <form method="post" action="{% url 'leanmod:update_expert_network' expert_network.id %}" class="mt-4">
+    {% csrf_token %}
+
+    <div class="card mb-4 p-4">
+      <div class="card-body">
+
+        <div class="row g-6 mb-6">
+          <div class="col-12">
+            <label for="organization" class="form-label">Organization</label>
+            <select class="form-select" id="organization" name="organization" disabled>
+              <option value="{{ expert_network.organization.id }}">{{ expert_network.organization.name }}</option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="row g-6 mb-6">
+          <div class="col-12">
+            <label for="network_name" class="form-label">Network Name</label>
+            <input type="text" class="form-control" id="network_name" name="network_name"
+                   value="{{ expert_network.name }}" required>
+          </div>
+          <div class="col-12">
+            <label for="network_description" class="form-label">Network Description</label>
+            <textarea class="form-control" id="network_description" name="network_description"
+                      rows="3" required>{{ expert_network.meta_description }}</textarea>
+          </div>
+        </div>
+
+        <!-- Assistant Picker -->
+        <div class="row g-6 mb-6">
+          <div class="col-12">
+            <label for="assistants" class="form-label">Update Assistants</label>
+            <select class="form-select select2" id="assistants" name="assistants" multiple="multiple" required>
+              {% for assistant in assistants %}
+                <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Staging Area for Selected Assistants -->
+        <div class="row g-6 mb-6 mt-4">
+          <div class="col-12">
+            <h5><strong>Selected Assistants</strong></h5>
+            <div id="selected-assistants"></div>
+          </div>
+        </div>
+
+        <div class="row d-flex">
+          <div class="col-6">
+            <button type="submit" class="btn btn-primary w-100"><strong>
+              <i class="fa fa-save me-4"></i>
+              Update Expert Network
+            </strong></button>
+          </div>
+          <div class="col-6">
+            <a href="{% url 'leanmod:update_expert_network' expert_network.id %}">
+              <button type="button" class="btn btn-warning w-100"><strong>
+                <i class="fa fa-undo me-4"></i>
+                Reset Back to Original
+              </strong></button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+{% endblock %}

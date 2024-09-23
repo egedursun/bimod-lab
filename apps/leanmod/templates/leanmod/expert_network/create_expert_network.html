@@ -1,0 +1,179 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Create Expert Network{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  <script>
+    $(document).ready(function () {
+      // Initialize Select2 with a search bar
+
+      $('.select2').select2({
+        placeholder: 'Select Assistants',
+        allowClear: true,
+        dropdownAutoWidth: true,
+        width: '100%'  // Ensure full width of the dropdown
+      });
+
+      // Staging logic for selected assistants
+      $('#assistants').on('change', function () {
+        let selectedAssistants = $(this).val() || [];
+
+        $('#selected-assistants').empty(); // Clear existing
+
+        selectedAssistants.forEach(function (assistantId) {
+          let assistantName = $('#assistants option[value="' + assistantId + '"]').text();
+          let html = `
+                    <div class="assistant-entry mb-4 bg-label-primary p-4 rounded border border-primary rounded" id="assistant-${assistantId}">
+                        <h6><strong><i class="fa fa-robot me-2"></i>${assistantName}</strong></h6>
+                        <textarea name="context_instructions_${assistantId}" placeholder="Enter contextual instructions for the assistant in the network." class="form-control mb-4"></textarea>
+                        <button type="button" class="btn btn-danger remove-assistant" data-id="${assistantId}">
+                            <strong>
+                                <i class="fa fa-trash me-2"></i>
+                                Remove
+                            </strong>
+                        </button>
+                    </div>
+                `;
+          $('#selected-assistants').append(html);
+        });
+
+        // Remove assistants from the staging area
+        $(document).on('click', '.remove-assistant', function () {
+          let assistantId = $(this).data('id');
+          $('#assistants option[value="' + assistantId + '"]').prop('selected', false).trigger('change');
+          $(this).closest('.assistant-entry').remove();
+        });
+      });
+    });
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-12">
+      <h3 class="mb-0"><strong>Create Expert Network</strong></h3>
+    </div>
+  </div>
+
+  <a href="{% url 'leanmod:list_expert_networks' %}">
+    <button class="btn btn-secondary mt-4 mb-4">
+      <i class="fa fa-dashboard me-4"></i>
+      <strong> Manage Expert Networks</strong>
+    </button>
+  </a>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+       role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-90.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        Create an expert network to group assistants together for a specific task or project. You can assign
+        context instructions to each assistant in the network for the Lean Assistants to understand when to
+        approach to each of the assistants within a network. In the description of the network, you can
+        provide more information about the network and its purpose in detail and the context of the network.
+        This will also be used by the Lean Assistants to understand the network and in case of multiple network
+        availability, they can choose the right network to approach.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <form method="post" action="{% url 'leanmod:create_expert_network' %}" class="mt-4">
+    {% csrf_token %}
+
+    <div class="card mb-4 p-4">
+      <div class="card-body">
+
+        <div class="row g-6 mb-6">
+          <div class="col-12">
+            <label for="organization" class="form-label">Select Organization</label>
+            <select class="form-select" id="organization" name="organization" required>
+              <option value="" disabled selected>Select an organization</option>
+              {% for organization in organizations %}
+                <option value="{{ organization.id }}">{{ organization.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="row g-6 mb-6">
+          <div class="col-12">
+            <label for="network_name" class="form-label">Network Name</label>
+            <input type="text" class="form-control" id="network_name" name="network_name"
+                   placeholder="Give a name to your expert network. A descriptive name can help your assistants more."
+                   required>
+          </div>
+          <div class="col-12">
+            <label for="network_description" class="form-label">Network Description</label>
+            <textarea class="form-control" id="network_description" name="network_description"
+                      placeholder="Provide a description for the network, by specifying the higher level goals and capabilities of it."
+                      rows="3"
+                      required></textarea>
+          </div>
+        </div>
+
+        <!-- Assistant Picker -->
+        <div class="row g-6 mb-6">
+          <div class="col-12">
+            <label for="assistants" class="form-label">Select Assistants</label>
+            <select class="form-select select2" id="assistants" name="assistants" multiple="multiple" required>
+              {% for assistant in assistants %}
+                <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Staging Area for Selected Assistants -->
+        <div class="row g-6 mb-6 mt-4">
+          <div class="col-12">
+            <h5>
+              <i class="fa fa-bolt-lightning me-4"></i>
+              <strong>Selected Assistants</strong>
+            </h5>
+            <div id="selected-assistants"></div>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary w-25"><strong>Create Expert Network</strong></button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+{% endblock %}

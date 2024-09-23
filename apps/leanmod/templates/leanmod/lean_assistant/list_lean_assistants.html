@@ -1,0 +1,196 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Lean Assistants List{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/app-lean-assistants-list.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-4">
+      <h3 class="mb-0"><strong>Manage Lean Assistants</strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-51.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded">
+        <i class="ti ti-bookmark"></i>
+      </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view all the lean assistants. You can edit or delete any assistant and create new ones. To create a new lean assistant, click on the "Create Lean Assistant" button, which is located on the left side.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% for organization, lean_assistants in org_lean_assistants.items %}
+    <!-- Organization's Lean Assistants List Table -->
+    <div class="card mb-6">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+          <div class="d-flex">
+            <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 alt="Organization Image" class="rounded" width="60">
+            <h4>
+              <strong class="ms-4">{{ organization.name }}</strong>
+            </h4>
+          </div>
+        </a>
+        <p class="mt-8">
+          <i class="fa fa-robot"></i>
+          <strong>&nbsp; Total Lean Assistants: </strong> {{ lean_assistants|length }}
+        </p>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-{{ organization.id }}">
+          <strong>&nbsp; See Lean Assistants of Organization</strong>
+        </span>
+      </div>
+      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse p-8">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'leanmod:create' %}">
+            <button class="btn btn-success mt-4 ms-4">
+              <i class="fa fa-add me-4"></i>
+              <strong> Add Lean Assistant</strong>
+            </button>
+          </a>
+        </div>
+        <table class="datatables-lean-assistants table">
+          <thead class="border-top">
+          <tr>
+            <th></th>
+            <th style="min-width: 200px; max-width: 200px;">Name</th>
+            <th style="max-height: 200px; overflow: auto;">Instructions</th>
+            <th style="min-width: 180px; max-width: 200px;">LLM Model</th>
+            <th style="min-width: 150px; max-width: 150px;">Created By</th>
+            <th style="min-width: 150px; max-width: 150px;">Last Updated By</th>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for lean_assistant in lean_assistants %}
+            <tr>
+              <td>
+                {% if lean_assistant.lean_assistant_image %}
+                  <img class="rounded" src="{{ lean_assistant.lean_assistant_image.url }}" alt="Lean Assistant Image" width="50">
+                {% else %}
+                  <img class="rounded" src="{% static 'img/avatars/org-0.png' %}" alt="Lean Assistant Image" width="50">
+                {% endif %}
+              </td>
+              <td><strong>{{ lean_assistant.name }}</strong></td>
+              <td style="min-width:400px; max-width: 400px;">
+                <p class="mt-2 mb-2" style="max-height: 180px; overflow: auto;">{{ lean_assistant.instructions|linebreaksbr }}</p>
+              </td>
+              <td style="min-width:200px;"><strong>{{ lean_assistant.llm_model.nickname }}</strong></td>
+              <td style="min-width:200px;">{{ lean_assistant.created_by_user }}</td>
+              <td style="min-width:200px;">{{ lean_assistant.last_updated_by_user }}</td>
+              <td>
+                <a href="{% url 'leanmod:update' lean_assistant.id %}" class="btn btn-sm btn-primary">
+                  <i class="fa fa-edit me-2"></i>
+                  <strong>Edit</strong>
+                </a>
+              </td>
+              <td>
+                <a href="{% url 'leanmod:delete' lean_assistant.id %}" class="btn btn-sm btn-danger">
+                  <i class="fa fa-trash me-2"></i>
+                  <strong>Delete</strong>
+                </a>
+              </td>
+            </tr>
+          {% empty %}
+            <div class="alert alert-warning p-8 m-4" role="alert">
+              <div class="">
+                <i class="fa fa-exclamation-triangle me-4"></i>
+                <strong>No Lean Assistant has been created for this organization yet.</strong>
+              </div>
+            </div>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endfor %}
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
+        icon.addEventListener('click', function () {
+          var target = document.querySelector(this.getAttribute('data-target'));
+          var bootstrapCollapse = new bootstrap.Collapse(target, {
+            toggle: false
+          });
+          if (target.classList.contains('show')) {
+            bootstrapCollapse.hide();
+          } else {
+            bootstrapCollapse.show();
+          }
+        });
+      });
+
+      document.querySelectorAll('.collapse').forEach(function (collapse) {
+        collapse.addEventListener('show.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-down');
+            icon.classList.add('fa-arrow-alt-circle-up');
+          }
+        });
+
+        collapse.addEventListener('hide.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-up');
+            icon.classList.add('fa-arrow-alt-circle-down');
+          }
+        });
+      });
+    });
+  </script>
+
+{% endblock content %}

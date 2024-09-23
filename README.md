@@ -2,6 +2,12 @@
 
 ---
 
+[1] ADDITIONAL CHAT PAGE for "LEAN assistants" + ARCHIVE PAGE for LEAN assistants
+[2] LOGIC UPDATES for CHAT background in server + DO NOT FORGET adding PLACE/TIME awareness to the prompt.
+[3] TESTING for the functionality
+
+---
+
 ### BUSINESS SIDE IMPROVEMENTS FOR APPLICATION
 
 1. [ ] [COMPANY FORMATION] for the application. (Ege)
@@ -251,23 +257,6 @@ RELEASE v0.6.0 [RELEASE: BETA] version of the application.
        -> They can collaborate and form networks within the application to work together.
        -> They can share media storages, data sources, and other tools to create synergy.
        -> Currently does not worth the development effort.
-
----
-
-*Detected Issues / Bugs:*
-
-- [ ] [DOMAIN REDIRECTION] issue is still ongoing. 
-  - Tests:
-    - [V] www.bimod.io
-    - [V] bimod.io
-    - [X] https://bimod.io
-    - [V] https://www.bimod.io
-    - [X] http://bimod.io
-    - [V] http://www.bimod.io
-    ---
-    - [V] dev.bimod.io
-    - [V] https://dev.bimod.io
-    - [V] http://dev.bimod.io
 
 ---
 

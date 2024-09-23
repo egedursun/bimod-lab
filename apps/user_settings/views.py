@@ -28,6 +28,7 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSourceMLModelItem
 from apps.datasource_sql.models import SQLDatabaseConnection, CustomSQLQuery
 from apps.export_assistants.models import ExportAssistantAPI
+from apps.leanmod.models import LeanAssistant, ExpertNetwork
 from apps.llm_core.models import LLMCore
 from apps.memories.models import AssistantMemory
 from apps.message_templates.models import MessageTemplate
@@ -36,7 +37,7 @@ from apps.mm_functions.models import CustomFunction
 from apps.mm_scheduled_jobs.models import ScheduledJob
 from apps.mm_scripts.models import CustomScript
 from apps.mm_triggered_jobs.models import TriggeredJob
-from apps.multimodal_chat.models import MultimodalChat
+from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
 from apps.orchestrations.models import Maestro
 from apps.organization.models import Organization
 from apps.starred_messages.models import StarredMessage
@@ -162,6 +163,76 @@ class DeleteAllAssistantsView(View, LoginRequiredMixin):
         return redirect('user_settings:settings')
 
 
+class DeleteAllLeanAssistantsView(View, LoginRequiredMixin):
+    """
+    Handles the deletion of all lean assistants associated with the user account.
+    """
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        user_assistants = LeanAssistant.objects.filter(organization__users__in=[user]).all()
+        confirmation_field = request.POST.get('confirmation', None)
+
+        # [1] Validate deletion request
+        if confirmation_field != 'CONFIRM DELETING ALL LEAN ASSISTANTS':
+            messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
+                                    "exactly 'CONFIRM DELETING ALL LEAN ASSISTANTS'.")
+            return redirect('user_settings:settings')
+
+        # [2] Verify permissions for the bulk deletion operation
+        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
+            'permission_type', flat=True
+        )
+        if PermissionNames.DELETE_ASSISTANTS not in user_permissions:
+            messages.error(request, "You do not have permission to delete lean assistants.")
+            return redirect('user_settings:settings')
+
+        # [3] Delete ALL items in the queryset
+        try:
+            for assistant in user_assistants:
+                assistant.delete()
+            messages.success(request, "All lean assistants associated with your account have been deleted.")
+        except Exception as e:
+            messages.error(request, f"Error deleting lean assistants: {e}")
+
+        # [4] Redirect back to settings page
+        return redirect('user_settings:settings')
+
+
+class DeleteAllExpertNetworksView(View, LoginRequiredMixin):
+    """
+    Handles the deletion of expert networks associated with the user account.
+    """
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        user_assistants = ExpertNetwork.objects.filter(organization__users__in=[user]).all()
+        confirmation_field = request.POST.get('confirmation', None)
+
+        # [1] Validate deletion request
+        if confirmation_field != 'CONFIRM DELETING ALL EXPERT NETWORKS':
+            messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
+                                    "exactly 'CONFIRM DELETING ALL EXPERT NETWORKS'.")
+            return redirect('user_settings:settings')
+
+        # [2] Verify permissions for the bulk deletion operation
+        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
+            'permission_type', flat=True
+        )
+        if PermissionNames.DELETE_ASSISTANTS not in user_permissions:
+            messages.error(request, "You do not have permission to delete expert networks.")
+            return redirect('user_settings:settings')
+
+        # [3] Delete ALL items in the queryset
+        try:
+            for assistant in user_assistants:
+                assistant.delete()
+            messages.success(request, "All expert networks associated with your account have been deleted.")
+        except Exception as e:
+            messages.error(request, f"Error deleting expert networks: {e}")
+
+        # [4] Redirect back to settings page
+        return redirect('user_settings:settings')
+
+
 class DeleteAllChatsView(View, LoginRequiredMixin):
     """
     Handles the deletion of all chat messages associated with the user account.
@@ -192,6 +263,41 @@ class DeleteAllChatsView(View, LoginRequiredMixin):
             messages.success(request, "All chat messages associated with your account have been deleted.")
         except Exception as e:
             messages.error(request, f"Error deleting chat messages: {e}")
+
+        # [4] Redirect back to settings page
+        return redirect('user_settings:settings')
+
+
+class DeleteAllLeanChatsView(View, LoginRequiredMixin):
+    """
+    Handles the deletion of all LeanMod chat messages associated with the user account.
+    """
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        user_chats = MultimodalLeanChat.objects.filter(organization__users__in=[user]).all()
+        confirmation_field = request.POST.get('confirmation', None)
+
+        # [1] Validate deletion request
+        if confirmation_field != 'CONFIRM DELETING ALL LEANMOD CHATS':
+            messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
+                                    "exactly 'CONFIRM DELETING ALL LEANMOD CHATS'.")
+            return redirect('user_settings:settings')
+
+        # [2] Verify permissions for the bulk deletion operation
+        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
+            'permission_type', flat=True
+        )
+        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
+            messages.error(request, "You do not have permission to delete LeanMod® chat messages.")
+            return redirect('user_settings:settings')
+
+        # [3] Delete ALL items in the queryset
+        try:
+            for chat in user_chats:
+                chat.delete()
+            messages.success(request, "All LeanMod® chat messages associated with your account have been deleted.")
+        except Exception as e:
+            messages.error(request, f"Error deleting LeanMod® chat messages: {e}")
 
         # [4] Redirect back to settings page
         return redirect('user_settings:settings')

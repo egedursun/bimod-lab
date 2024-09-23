@@ -69,6 +69,7 @@ urlpatterns = [
     path("app/orchestrations/", include("apps.orchestrations.urls", namespace="orchestrations")),
     path("app/finetuning/", include("apps.finetuning.urls", namespace="finetuning")),
     path("app/data_security/", include("apps.data_security.urls", namespace="data_security")),
+    path("app/leanmod/", include("apps.leanmod.urls", namespace="leanmod")),
     #################################################################################################################
 
     #################################################################################################################

@@ -1,0 +1,122 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Expert Networks{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <style>
+    .scrollable-content {
+      max-height: 150px;
+      overflow-y: auto;
+    }
+  </style>
+{% endblock vendor_css %}
+
+{% block content %}
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h3 class="mb-2"><i class="ti ti-network icon me-2"></i><strong>Expert Networks</strong></h3>
+    </div>
+  </div>
+
+  <a href="{% url 'leanmod:create_expert_network' %}">
+    <button class="btn btn-success mt-0 mb-4">
+      <i class="fa fa-add me-4"></i>
+      <strong> Add Expert Network</strong>
+    </button>
+  </a>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+       role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-17.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view all the expert networks of the organizations you have created. You can also edit or
+        delete any expert network that belongs to you as an administrator. To create a new expert network, click on the
+        "Create Expert Network" button, which is located in the tab on the left side of your screen.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <!-- Expert Networks Cards -->
+  <div class="row">
+    {% for network in expert_networks %}
+      <div class="col-lg-4 col-md-6 mb-4 card-border-shadow-primary">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fa fa-briefcase icon me-2"></i><strong>{{ network.name }}</strong></h5>
+            <span class="badge bg-primary text-white">
+              <i class="fa fa-robot me-2"></i>
+              <strong>{{ network.assistant_references.count }} Assistants</strong></span>
+          </div>
+          <hr>
+          <div class="card-body">
+            <strong>
+              <i class="fa fa-info-circle me-2 mt-4"></i>
+              Meta Description:
+            </strong>
+            <p class="text-muted mt-2 overflow-scroll border border-primary rounded p-2"
+               style="min-height: 150px; max-height: 150px;">{{ network.meta_description }}
+            </p>
+            <hr>
+            <p>
+              <strong>
+                <i class="fa fa-building me-2"></i>
+                Organization:
+              </strong>
+              {{ network.organization.name }}
+            </p>
+            <div class="scrollable-content bg-label-secondary p-4 rounded border border-primary rounded"
+                 style="min-height: 150px; max-height: 150px;">
+              <ul class="list-group list-group-flush">
+                {% for assistant_reference in network.assistant_references.all %}
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-2">
+                    <i
+                      class="fa fa-robot me-2 text-primary"></i><strong>{{ assistant_reference.assistant.name }}</strong>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <hr>
+          <div class="card-footer d-flex justify-content-between bg-light mt-4">
+            <a href="{% url 'leanmod:update_expert_network' network.id %}" class="btn btn-warning w-50 m-2">
+              <i class="ti ti-edit me-2"></i>
+              <strong>Edit</strong>
+            </a>
+            <a href="{% url 'leanmod:delete_expert_network' network.id %}"
+               class="btn btn-danger w-50 m-2">
+              <i class="ti ti-trash me-2"></i>
+              <strong>Delete</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+{% endblock content %}

@@ -1,0 +1,19 @@
+from apps._services.expert_networks.expert_network_executor import ExpertNetworkExecutor
+from apps.leanmod.models import ExpertNetworkAssistantReference
+
+
+def execute_expert_network_query(assistant_id, query, image_urls, file_urls):
+    network_assistant_reference = ExpertNetworkAssistantReference.objects.filter(id=assistant_id).first()
+    if not network_assistant_reference:
+        return ("[leanmod_expert_network_execution_handler.execute_expert_network_query] The assistant-network "
+                "reference with the given ID does not exist.")
+    network_object = network_assistant_reference.network
+    try:
+        executor = ExpertNetworkExecutor(network=network_object)
+        response = executor.consult_by_query(reference=network_assistant_reference, query=query, image_urls=image_urls, file_urls=file_urls)
+    except Exception as e:
+        error = (f"[leanmod_expert_network_execution_handler.execute_expert_network_query] Error occurred while "
+                 f"executing the function: {str(e)}")
+        return error
+    print(f"[leanmod_expert_network_execution_handler.execute_expert_network_query] Query executed successfully.")
+    return response

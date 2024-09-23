@@ -2,7 +2,8 @@ from django.contrib import admin
 
 from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
 from apps.assistants.models import ContextOverflowStrategyNames
-from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage, ChatCreationLog, ChatMessageCreationLog
+from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage, ChatCreationLog, ChatMessageCreationLog, \
+    MultimodalLeanChat, MultimodalLeanChatMessage
 from django.contrib.admin.actions import delete_selected as django_delete_selected
 
 
@@ -40,11 +41,39 @@ class MultimodalChatAdmin(admin.ModelAdmin):
         return django_delete_selected(self, request, queryset)
 
 
+@admin.register(MultimodalLeanChat)
+class MultimodalLeanChatAdmin(admin.ModelAdmin):
+    list_display = ['organization', 'lean_assistant', 'user', 'chat_name', 'created_by_user', 'created_at', 'updated_at']
+    list_filter = ['organization', 'lean_assistant', 'user', 'created_by_user', 'created_at', 'updated_at']
+    search_fields = ['organization', 'lean_assistant', 'user', 'chat_name', 'created_by_user', 'created_at', 'updated_at']
+    readonly_fields = ['created_at', 'updated_at']
+
+    list_per_page = 20
+    list_max_show_all = 100
+    list_editable = []
+    list_display_links = ["organization"]
+    list_select_related = False
+    list_display_links_details = False
+
+
 @admin.register(MultimodalChatMessage)
 class MultimodalChatMessageAdmin(admin.ModelAdmin):
     list_display = ['multimodal_chat', 'sender_type', 'sent_at']
     list_filter = ['multimodal_chat', 'sender_type', 'sent_at']
     search_fields = ['multimodal_chat', 'sender_type', 'sent_at']
+    readonly_fields = ['sent_at']
+    list_per_page = 20
+    list_max_show_all = 100
+    list_editable = []
+    list_select_related = False
+    list_display_links_details = False
+
+
+@admin.register(MultimodalLeanChatMessage)
+class MultimodalLeanChatMessageAdmin(admin.ModelAdmin):
+    list_display = ['multimodal_lean_chat', 'sender_type', 'sent_at']
+    list_filter = ['multimodal_lean_chat', 'sender_type', 'sent_at']
+    search_fields = ['multimodal_lean_chat', 'sender_type', 'sent_at']
     readonly_fields = ['sent_at']
     list_per_page = 20
     list_max_show_all = 100

@@ -256,9 +256,8 @@
               <div class="mb-6 col-12">
                 <label class="form-label" for="context_overflow_strategy">Context Overflow Management Strategy</label>
                 <select class="form-select" id="context_overflow_strategy" name="context_overflow_strategy">
-                  <option value="" disabled selected>Select Strategy</option>
                   {% for strategy in context_overflow_strategies %}
-                    <option value="{{ strategy.0 }}">{{ strategy.1 }}</option>
+                    <option value="{{ strategy.0 }}" {% if forloop.first %}selected{% endif %}>{{ strategy.1 }}</option>
                   {% endfor %}
                 </select>
               </div>

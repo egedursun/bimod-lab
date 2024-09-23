@@ -128,6 +128,40 @@
       ]
     },
     {
+      "name": "Expert Networks",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "expert-networks",
+      "submenu": [
+        {
+          "name": "Add New Network",
+          "slug": "expert-network",
+          "url": "leanmod:create_expert_network"
+        },
+        {
+          "name": "Expert Networks",
+          "slug": "expert-network",
+          "url": "leanmod:list_expert_networks"
+        }
+      ]
+    },
+    {
+      "name": "LeanMod® Assistants",
+      "icon": "menu-icon tf-icons ti ti-radar",
+      "slug": "leanmod-assistants",
+      "submenu": [
+        {
+          "name": "Add Lean Assistant",
+          "slug": "leanmod-assistant",
+          "url": "leanmod:create"
+        },
+        {
+          "name": "Lean Assistants",
+          "slug": "leanmod-assistant",
+          "url": "leanmod:list"
+        }
+      ]
+    },
+    {
       "name": "Data Security",
       "icon": "menu-icon tf-icons ti ti-lock",
       "slug": "data-security",
@@ -152,6 +186,12 @@
       "icon": "menu-icon tf-icons ti ti-messages",
       "slug": "chats",
       "url": "multimodal_chat:chat"
+    },
+    {
+      "name": "Leanmod® Chats",
+      "icon": "menu-icon tf-icons ti ti-note",
+      "slug": "chats",
+      "url": "multimodal_chat:lean_chat"
     },
     {
       "name": "Starred Messages",

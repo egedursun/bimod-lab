@@ -27,6 +27,18 @@ from apps._services.prompts.generic.build_response_language_prompt import build_
 from apps._services.prompts.generic.build_response_template_prompt import build_structured_response_template_prompt
 from apps._services.prompts.generic.build_tone_prompt import build_structured_tone_prompt
 from apps._services.prompts.generic.build_user_information_prompt import build_structured_user_information_prompt
+from apps._services.prompts.leanmod.leanmod_guidelines_prompt import build_structured_primary_guidelines_leanmod
+from apps._services.prompts.leanmod.leanmod_instructions_prompt import build_structured_instructions_prompt_leanmod
+from apps._services.prompts.leanmod.leanmod_name_prompt import build_structured_name_prompt_leanmod
+from apps._services.prompts.leanmod.leanmod_place_and_time_prompt import build_structured_place_and_time_prompt_leanmod
+from apps._services.prompts.leanmod.leanmod_user_information_prompt import \
+    build_structured_user_information_prompt_leanmod
+from apps._services.prompts.leanmod.multimodality.leanmod_multimodality_expert_network_prompt import \
+    build_expert_networks_multi_modality_prompt_leanmod
+from apps._services.prompts.leanmod.tools.leanmod_tools_expert_networks_query_prompt import \
+    build_structured_tool_prompt__expert_network_query_execution_leanmod
+from apps._services.prompts.leanmod.tools.leanmod_tools_instructions_prompt import \
+    build_structured_tool_usage_instructions_prompt_leanmod
 from apps._services.prompts.multimodality.build_apis_multimodality_prompt import build_apis_multi_modality_prompt, \
     build_lean_apis_multi_modality_prompt
 from apps._services.prompts.multimodality.build_functions_multimodality_prompt import \
@@ -72,8 +84,9 @@ from apps._services.prompts.tools.tool_prompts.build_url_file_downloader_tool_pr
 from apps._services.prompts.tools.tool_prompts.build_vectorized_context_history_query_execution_tool_prompt import \
     build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt
 from apps.assistants.models import Assistant
+from apps.leanmod.models import LeanAssistant
 from apps.llm_transaction.models import LLMTransaction
-from apps.multimodal_chat.models import MultimodalChat
+from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
 
 
 class PromptBuilder:
@@ -325,4 +338,71 @@ class PromptBuilder:
             "content": merged_prompt
         }
         print(f"[PromptBuilder.build_lean] Prompt has been built.")
+        return prompt
+
+    @staticmethod
+    def build_leanmod(chat: MultimodalLeanChat, lean_assistant: LeanAssistant, user: User, role: str):
+        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        name = lean_assistant.name
+
+        ##################################################
+        # GENERIC PROMPTS
+        primary_guidelines_prompt = build_structured_primary_guidelines_leanmod()
+        structured_name_prompt = build_structured_name_prompt_leanmod(name, chat.chat_name)
+        structured_instructions_prompt = build_structured_instructions_prompt_leanmod(lean_assistant)
+        structured_user_information_prompt = build_structured_user_information_prompt_leanmod(user)
+        structured_place_and_time_prompt = build_structured_place_and_time_prompt_leanmod(lean_assistant, user)
+        ##################################################
+        # MULTI MODALITY PROMPTS
+        structured_expert_networks_prompt = build_expert_networks_multi_modality_prompt_leanmod(lean_assistant)
+        ##################################################
+        # TOOL PROMPTS
+        structured_tool_usage_instructions_prompt = build_structured_tool_usage_instructions_prompt_leanmod(lean_assistant)
+        structured_expert_network_query_execution_tool_prompt = build_structured_tool_prompt__expert_network_query_execution_leanmod()
+        ##################################################
+
+        # Combine the prompts
+        merged_prompt = primary_guidelines_prompt
+        merged_prompt += structured_name_prompt
+        merged_prompt += structured_instructions_prompt
+        merged_prompt += structured_user_information_prompt
+        merged_prompt += structured_place_and_time_prompt
+        ##################################################
+        # MULTI MODALITY PROMPTS
+        merged_prompt += structured_expert_networks_prompt
+        ##################################################
+        # GENERIC TOOL PROMPT
+        merged_prompt += structured_tool_usage_instructions_prompt
+        ##################################################
+        # SPECIALIZED TOOL PROMPTS
+        merged_prompt += structured_expert_network_query_execution_tool_prompt
+        ##################################################
+
+        # Build the dictionary with the role
+        prompt = {
+            "role": role,
+            "content": merged_prompt
+        }
+
+        # Create the transaction for the system prompt
+        transaction = LLMTransaction.objects.create(
+            organization=lean_assistant.organization,
+            model=lean_assistant.llm_model,
+            responsible_user=user,
+            responsible_assistant=None,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=merged_prompt,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=chat.chat_source
+        )
+        # Add the transaction to the chat
+        chat.transactions.add(transaction)
+        chat.save()
+
+        print(f"[PromptBuilder.build_leanmod] Prompt has been built.")
         return prompt

@@ -122,11 +122,7 @@ INSTALLED_APPS = [
     "apps.orchestrations",
     "apps.finetuning",
     "apps.data_security",
-
-    ########################################
-    # META
-    ########################################
-    "apps._meta.voidforger",
+    "apps.leanmod",
 
     ########################################
     # SUPPORT

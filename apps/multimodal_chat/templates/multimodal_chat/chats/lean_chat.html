@@ -1,0 +1,1831 @@
+{% extends layout_path %}
+{% load markdown_extras %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}LeanMod® Chat{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}"/>
+  <style>
+    .markdown-content {
+      max-width: 80%;
+      overflow-x: auto;
+    }
+
+    /* Ensure images within markdown content fit within their container */
+    .markdown-content img {
+      max-width: 35%;
+      height: auto;
+    }
+
+    .markdown-content table {
+      margin-bottom: 1rem;
+      max-width: 80%;
+    }
+
+    .markdown-content table th, .markdown-content table td {
+      border: 1px solid #aaa;
+      max-width: 80%;
+    }
+
+    .markdown-content pre code {
+      display: block;
+      padding: 1rem;
+      overflow: scroll;
+      background: #000000;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      color: #ffffff;
+      font-weight: bolder;
+      font-size: 10px;
+      font-family: monospace;
+      max-width: 80%;
+    }
+  </style>
+  <style>
+    /* Add this to your CSS block or stylesheet */
+    .floating-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      width: 90px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+  </style>
+
+{% endblock page_css %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/app-chat.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+
+  <div class="row g-6 mb-6" id="assistant-chats-title">
+    <div class="col-sm-6 col-xl-6">
+      <h3 class="mb-0">
+        <strong>LeanMod® Assistant Chats</strong>
+      </h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-85.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        You can reach out to any of the LeanMod® assistants listed on the left side of this screen to start a chat,
+        in the second container named "LeanMod® Assistants". To reach to an existing chat, click on the chat name in
+        the first container named "LeanMod® Chats". You can also delete a chat by clicking on the three dots on top
+        left corner of the chat screen. Enjoy chatting with the LeanMod® assistant and feel free to be creative!
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <div class="app-chat card">
+    <div class="row g-0">
+      <!-- Sidebar Left -->
+      <div class="col app-chat-sidebar-left app-sidebar overflow-hidden" id="app-chat-sidebar-left">
+        <div
+          class="chat-sidebar-left-user sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
+          <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
+            <img src="
+              {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
+                 alt="Avatar" class="rounded">
+          </div>
+          <i class="ti ti-x ti-lg cursor-pointer close-sidebar" data-bs-toggle="sidebar" data-overlay
+             data-target="#app-chat-sidebar-left"></i>
+        </div>
+      </div>
+      <!-- /Sidebar Left-->
+    </div>
+
+    <!-- Chat & Assistants -->
+    <div class="card-datatable table-responsive">
+      <a href="{% url 'multimodal_chat:archive_list_lean' %}">
+        <button class="btn btn-warning ms-4 mt-4 mb-8">
+          <i class="fa fa-box-archive me-4"></i>
+          <strong> Go to Archived LeanMod® Chats</strong>
+        </button>
+      </a>
+    </div>
+    <div class="row g-0">
+      <div class="col app-chat-contacts app-sidebar border-end overflow-auto" id="app-chat-contacts">
+        <div class="sidebar-body">
+          <!-- LeanMod® Assistants -->
+          <ul class="list-unstyled chat-contact-list mb-0 py-2" id="assistant-list">
+            <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
+              <h5 class="mb-0"><strong>LeanMod® Assistants</strong></h5>
+            </li>
+            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-brain"></i>
+            </span>
+              <div class="d-flex flex-column ps-1">
+                <small class="mb-0">
+                  Click on any of the LeanMod® assistants to start a new chat with them.
+                </small>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+              </div>
+            </div>
+            {% for assistant in assistants %}
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <form id="create-chat-form" method="post" action=".">
+                  {% csrf_token %}
+                  <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
+                  <button type="submit" class="btn btn-link p-0">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 avatar avatar-md">
+                        <img src="
+                          {% if assistant.lean_assistant_image %}{{ assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                             alt="Avatar" class="rounded-pill">
+                      </div>
+                      <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                        <h6 class="chat-contact-name text-truncate text-sm m-0 fw-normal">
+                          <strong>{{ assistant.name }}</strong>
+                        </h6>
+                        <hr>
+                        <small
+                          class="d-block text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded"><strong>
+                          <i class="fa fa-building me-2"></i>
+                          {{ assistant.organization.name }}
+                        </strong></small>
+                        <small
+                          class="d-block text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded mt-1">
+                          <strong>
+                            <i class="fa fa-sd-card me-2"></i>
+                            {{ assistant.llm_model.nickname }}
+                          </strong>
+                        </small>
+                        <small
+                          class="d-block text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded mt-1">
+                          <strong>
+                            <i class="fa fa-bolt-lightning me-2"></i>
+                            {{ assistant.llm_model.model_name }}
+                          </strong>
+                        </small>
+                      </div>
+                    </div>
+                  </button>
+                </form>
+              </li>
+            {% empty %}
+              <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
+                <p class="text-dark mb-2 mt-2"><strong>Oops. It seems like you don't have any LeanMod® assistants yet.
+                  Want to create a new one?</strong></p>
+                <a href="{% url 'leanmod:create' %}">
+                  <button class="btn btn-success mb-4 mt-4 w-100" style="min-height: 60px;">
+                    <i class="fa fa-plus me-4"></i><strong>Create a New LeanMod® Assistant</strong>
+                  </button>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <hr>
+      </div>
+      <div class="col app-chat-contacts app-sidebar border-end overflow-auto" id="app-chat-chats">
+        <div class="sidebar-body">
+          <!-- LeanMod® Chats -->
+          <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
+            <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
+              <h5 class="mb-0"><strong>LeanMod® Chats</strong></h5>
+            </li>
+            <li class="chat-contact-list-item chat-list-item-0 d-none">
+              <h6 class="text-muted mb-0"><strong>No LeanMod® Chats Found</strong></h6>
+            </li>
+            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-brain"></i>
+            </span>
+              <div class="d-flex flex-column ps-1">
+                <small class="mb-0">
+                  Click on any of your existing chats to start chatting with the LeanMod® assistants.
+                </small>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+              </div>
+            </div>
+            <!-- loading bar warning -->
+            <div class="alert-container"></div>
+            <div id="loadingBarWarningCreateChat"
+                 class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none ms-4 w-75" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-brain"></i>
+            </span>
+              <div class="d-flex flex-column ps-1 pt-4 ms-4 me-4">
+                <p class="alert-heading"><strong>Creating your LeanMod® chat, please hold on...</strong></p>
+                <!-- Loading bar -->
+                <div id="loadingBarCreateChat" class="progress d-none mt-3 mb-1 w-100">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                       style="width: 100%; height:10px;"></div>
+                </div>
+              </div>
+            </div>
+            {% for chat in chats %}
+              <li
+                class="card card-border-shadow-dark chat-contact-list-item mb-2 {% if chat.id == active_chat.id %} border border-1 rounded border-primary alert-secondary{% endif %}">
+                <a href="?chat_id={{ chat.id }}" class="d-flex flex-grow-1 text-decoration-none">
+                  <form method="post" action=".">
+                    {% csrf_token %}
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="flex-shrink-0 avatar avatar-md {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded-pill"
+                        {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
+                        <img src="
+                          {% if chat.lean_assistant.lean_assistant_image %}{{ chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                             class="rounded-pill">
+                      </div>
+                      <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                        <h6 class="chat-contact-name text-truncate m-0 fw-normal"><strong>{{ chat.chat_name }}</strong>
+                        </h6>
+                        <small class="text-muted">
+                          <strong>
+                            <i class="fa fa-clock-rotate-left me-1"></i>{{ chat.updated_at|date:"H:i A" }}
+                          </strong>
+                        </small>
+                        <hr>
+                        <small
+                          class="d-block text-truncate text-dark ps-2 pe-2 pb-1 rounded">
+                          <strong>
+                            <i class="fa fa-message me-1"></i>
+                            {{ chat.lean_assistant.name }}
+                          </strong>
+                        </small>
+                        <small
+                          class="d-block text-truncate text-dark ps-2 pe-2 pb-1 rounded">
+                          <strong>
+                            <i class="fa fa-building me-1"></i>
+                            {{ chat.organization.name }}
+                          </strong>
+                        </small>
+                        <small
+                          class="d-block text-truncate chat-contact-status mt-1">{{ chat.messages.last.message_text_content }}</small>
+                      </div>
+                    </div>
+                  </form>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <hr>
+      </div>
+    </div>
+    <!-- /Chat & Assistants -->
+
+    <!-- Chat History -->
+    <div class="row g-0">
+      <div class="app-overlay"></div>
+      <div class="col app-chat-history">
+        <h5 class="text-primary mt-12"><strong></strong></h5>
+        {% if not active_chat %}
+          <!-- inform the user that no active chat is selected at the moment -->
+          <div class="chat-history-wrapper">
+            <div class="chat-history-header border-bottom">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex overflow-hidden align-items-center">
+                  <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar"
+                     data-overlay data-target="#app-chat-contacts"></i>
+                  <div class="chat-contact-info flex-grow-1 ms-4">
+                    <h6 class="m-0 fw-normal"><strong>No LeanMod® Chat Selected</strong></h6>
+                    <small class="user-status text-body">Select a chat to start chatting with LeanMod® assistants</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-solid-primary alert-dismissible d-flex col-lg-11 align-items-center mt-10 ms-10"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-34.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="alert-icon rounded">
+            <i class="ti ti-alert-circle-filled"></i>
+          </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                Oops. It looks like you either haven't selected a LeanMod® chat or you don't have any chat at all. Come on,
+                start a new LeanMod® chat to discover how powerful you can become with {% get_theme_variables 'template_name' %}
+                LeanMod® assistants!
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+        {% else %}
+          <div class="chat-history-wrapper">
+            <div class="chat-history-header">
+              <small class="text-muted mt-2"><strong>Active Chat</strong></small>
+              <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="d-flex overflow-hidden align-items-center">
+                  <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar"
+                     data-overlay data-target="#app-chat-chats"></i>
+                  <div class="flex-shrink-0 avatar avatar-online">
+                    <img src="
+                      {% if active_chat.lean_assistant.lean_assistant_image %}{{ active_chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                         class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
+                  </div>
+                  <div class="chat-contact-info flex-grow-1 ms-4">
+                    <form method="post" action=".">
+                      {% csrf_token %}
+                      <div class="d-flex justify-content-between align-items-center mt-1">
+                        <input type="text" class="form-control bg-lightest text-bg-light" name="new_chat_name"
+                               value="{{ active_chat.chat_name }}" style="font-weight: bold;"/>
+                        <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
+                        <button type="submit" class="btn btn-link p-0 ms-2">
+                          <i class="fa fa-save text-bg-light"></i>
+                        </button>
+                      </div>
+                    </form>
+                    <h6 class="m-0 fw-normal mt-1 ms-1">
+                      <small class="text-muted">
+                        <strong>
+                          {{ active_chat.lean_assistant.organization }} / {{ active_chat.lean_assistant.name }}
+                          / {{ active_chat.lean_assistant.llm_model.nickname }}
+                          / {{ active_chat.lean_assistant.llm_model.model_name }}
+                        </strong>
+                      </small>
+                    </h6>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-sm btn-icon btn-text-secondary text-secondary rounded-pill dropdown-toggle hide-arrow"
+                      data-bs-toggle="dropdown" aria-expanded="true" id="chat-header-actions"><i
+                      class="ti ti-dots-vertical ti-md"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
+                      <a class="dropdown-item bg-label-warning mb-2"
+                         href="{% url 'multimodal_chat:archive_lean' active_chat.id %}">
+                        <strong>
+                          <i class="fa fa-archive me-2"></i>Archive
+                        </strong>
+                      </a>
+                      <a class="dropdown-item bg-label-danger" href="{% url 'multimodal_chat:delete_lean' active_chat.id %}">
+                        <strong>
+                          <i class="fa fa-trash me-2"></i>Delete
+                        </strong></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-history-body" style="max-height: 100%;">
+              <ul class="list-unstyled chat-history" style="height: 95%">
+                {% for message in chat_messages.all %}
+                  <li class="chat-message {% if message.sender_type == 'USER' %}chat-message-right{% endif %}">
+                    <div class="d-flex overflow-hidden">
+                      {% if message.sender_type == 'ASSISTANT' %}
+                        <div class="user-avatar flex-shrink-0 me-4">
+                          <div class="avatar avatar-xl">
+                            <img src="
+                              {% if active_chat.lean_assistant.lean_assistant_image %}{{ active_chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                                 alt="Avatar" class="rounded">
+                          </div>
+                        </div>
+                      {% elif message.sender_type == 'TOOL' %}
+                        <div class="user-avatar flex-shrink-0 me-4">
+                          <div class="avatar avatar-xl">
+                            <img src="{% static 'img/custom-illustrations-v2/i2-18.png' %}" alt="Avatar"
+                                 class="rounded">
+                          </div>
+                        </div>
+                      {% endif %}
+                      <div class="chat-message-wrapper flex-grow-1">
+                        <div id="copied-message-{{ message.id }}"
+                             class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-primary-subtle{% endif %} border-primary"
+                             style="{% if message.sender_type == 'TOOL' %}border: 2px solid{% endif %}; max-width:80%;">
+                          {% if message.sender_type != 'TOOL' %}
+                            <p class="mb-0 markdown-content" style="min-width: 600px; max-width: 800px;">{{ message.message_text_content|safe }}</p>
+                            <hr>
+                            {% if message.message_image_contents %}
+                              <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image
+                                Attachments</strong></p>
+                              {% for image in message.message_image_contents %}
+                                <img src="{{ image }}" class="img-fluid mt-2 rounded"
+                                     style="max-width:35%" alt="Image">
+                              {% endfor %}
+                            {% endif %}
+                            <hr>
+                            {% if message.message_file_contents %}
+                              <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4"><strong>File
+                                Attachments</strong></p>
+                              {% for file in message.message_file_contents %}
+                                <div class="label bg-label-secondary p-2 rounded mb-2">
+                                  <i class="fa fa-file me-4 bg-label-secondary p-2 rounded"></i>
+                                  <span class="text mb-2 bg-label-secondary rounded p-2">
+                                    <strong>
+                                      <a href="{{ file|linebreaksbr }}"
+                                         target="_blank">{{ file|linebreaksbr|slice:":100" }}...</a>
+                                    </strong>
+                                  </span>
+                                </div>
+                              {% endfor %}
+                            {% endif %}
+                          {% else %}
+                            <p class="text-bg-primary card rounded mt-4 ms-4 me-4 ps-4 pe-4 pt-4 pb-4">
+                              <strong>
+                                <i class="fa fa-gears me-4"></i>
+                                System Message
+                              </strong>
+                            </p>
+                            <div class="text fw-semibold text-black font-monospace" style="font-size:0.67rem;">
+                            <p
+                              class="mb-0 markdown-content">{{ message.message_text_content|safe|slice:":500"|linebreaks }}
+                              ... {{ message.message_text_content|safe|linebreaks|slice:"-500:"|linebreaks }}</p>
+                            <hr>
+                            {% if message.message_image_contents %}
+                              <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image
+                                Attachments</strong></p>
+                              {% for image in message.message_image_contents %}
+                                <img src="{{ image }}" class="img-fluid mt-2 rounded"
+                                     style="max-width:35%" alt="Image">
+                              {% endfor %}
+                            {% endif %}
+                            <hr>
+                            {% if message.message_file_contents %}
+                              <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4"><strong>File
+                                Attachments</strong></p>
+                              {% for file in message.message_file_contents %}
+                                <div class="label bg-label-secondary p-2 rounded mb-2">
+                                  <i class="fa fa-file me-4 bg-label-secondary p-2 rounded"></i>
+                                  <span class="text mb-2 bg-label-secondary rounded p-2">
+                                    <strong>
+                                      <a href="{{ file|linebreaksbr }}"
+                                         target="_blank">{{ file|linebreaksbr|slice:":100" }}...</a>
+                                    </strong>
+                                  </span>
+                                </div>
+                              {% endfor %}
+                            {% endif %}
+                            <div class="bg-label-primary rounded p-2">
+                              <i class="fa fa-circle text-success me-2"></i><small class="fw-bold text-success">Tool
+                              Delivered</small>
+                            </div>
+                            <div class="bg-label-primary rounded p-2 mt-2 mb-4">
+                              <i class="fa fa-circle text-warning me-2"></i><small class="fw-bold text-warning">On
+                              Listening Mode</small>
+                            </div>
+                          {% endif %}
+                          </div>
+                          <div class="text-muted mt-2">
+                            <small>
+                              <form method="post" action=".">
+                                {% csrf_token %}
+                                <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
+                                <input type="hidden" name="message_id" value="{{ message.id }}">
+                                <a href="javascript:void(0);" class="copy-btn-plain text-light"
+                                   data-message-id="{{ message.id }}">
+                                  <i class="fa fa-copy"></i><i class="fa fa-file-text ms-1"></i><span
+                                  class="ms-2"><strong>Plain</strong></span>
+                                </a>
+                                <a href="javascript:void(0);" class="copy-btn-html ms-12 text-light"
+                                   data-message-id="{{ message.id }}">
+                                  <i class="fa fa-copy"><i class="fa fa-code ms-1"></i></i><span
+                                  class="ms-2"><strong>HTML</strong></span>
+                                </a>
+                                <a href="javascript:void(0);" class="copy-btn-markdown ms-12 text-light"
+                                   data-message-id="{{ message.id }}">
+                                  <i class="fa fa-copy"><i class="fa fa-marker ms-1"></i></i><span class="ms-2"><strong>Markdown</strong></span>
+                                </a>
+                                <a href="javascript:void(0);" class="listen-btn ms-12 text-light"
+                                   data-message-id="{{ message.id }}">
+                                  <i class="fa fa-volume-up ms-1"></i><span
+                                  class="ms-2"><strong>Listen</strong></span>
+                                </a>
+                              </form>
+                            </small>
+                          </div>
+                        </div>
+                        {% if message.sender_type == 'USER' %}
+                          <div class="user-avatar flex-shrink-0 ms-4">
+                            <div class="avatar avatar-xl">
+                              <img src="
+                                {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
+                                   alt="Avatar" class="rounded">
+                            </div>
+                          </div>
+                        {% endif %}
+                      </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div
+              class="card card-border-shadow-primary bg-label-primary p-2 ms-12 me-12 mt-4 mb-0 col-11 overflow-auto border border-1 border-primary rounded"
+              style="max-height: 300px;">
+              <button class="btn d-flex ms-auto p-1 mb-1" style="float: right;"
+                      onclick="if(this.parentElement.style.maxHeight === '300px') {this.parentElement.style.maxHeight = '40px'; this.parentElement.classList.add('overflow-hidden'); this.parentElement.classList.remove('overflow-auto');} else {this.parentElement.style.maxHeight = '300px'; this.parentElement.classList.add('overflow-auto'); this.parentElement.classList.remove('overflow-hidden');}">
+                <i class="fa fa-dot-circle text-white"></i>
+              </button>
+              <small class="text-white p-1 mb-1"><strong>
+                <i class="fa fa-bolt-lightning me-2"></i>
+                Response Streamer
+              </strong></small>
+              <small class="mb-2 text-dark ms-6">
+                <i class="fa fa-info-circle me-2"></i>
+                This is the response streamer. It will show the response from the assistant in real-time so that you
+                can track the progress of the assistant. The streamer is an effective tool for debugging the distinct
+                steps of the response processes; yet please note that it is still in an experimental stage, and it
+                might cause slower response times.
+              </small>
+              <div id="non-tool-markdown-content"
+                   class="bg-white text-black p-4 markdown-content border border-primary border-4 rounded">
+              </div>
+            </div>
+            <!-- Chat message form -->
+            <div class="chat-history-footer shadow-xs p-4">
+              <div class="row align-items-center justify-content-start mt-2 mb-4" id="image_display_area">
+                <!-- Dynamic content will be inserted here
+                    ... ... ... ... ...
+                    ... ... ... ... ...
+                 -->
+              </div>
+              <div class="row align-items-center justify-content-start mt-2 mb-4" id="file_display_area">
+                <!-- Dynamic content will be inserted here
+                    ... ... ... ... ...
+                    ... ... ... ... ...
+                 -->
+              </div>
+              <div class="row align-items-center justify-content-start mt-2 mb-4" id="audio_display_area">
+                <!-- Dynamic content will be inserted here
+                    ... ... ... ... ...
+                    ... ... ... ... ...
+                 -->
+              </div>
+              <small class="text-muted m-6"><strong>Message Templates</strong></small>
+              <a class="btn btn-sm bg-label-hover-success me-4" style="float: right;"
+                 href="{% url 'message_templates:create' %}">
+                <i class="fa fa-plus rounded"></i><small></small>
+              </a>
+              <a class="btn btn-sm bg-label-hover-secondary me-4 btn-collapse-templates" style="float: right;">
+                <i class="fa fa-compress-arrows-alt rounded"></i><small></small>
+              </a>
+              <div class="card m-4 overflow-auto" style="max-height: 100px; overflow-x: hidden;">
+                <div class="row" id="message-templates-container">
+                  {% for message_template in message_templates %}
+                    <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
+                          data-full-text="{{ message_template.template_text }}">
+                  <span
+                    class="text-light"><strong>{{ message_template.template_text|truncatechars:50 }}..</strong></span>
+                </span>
+                  {% empty %}
+                    <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
+                          data-full-text="What are your instructions?">
+                  <span class="text-light"><strong>What are your instructions?</strong></span>
+                </span>
+                    <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
+                          data-full-text="What can you tell me about myself and my organization?">
+                  <span
+                    class="text-light"><strong>What can you tell me about myself and my organization?</strong></span>
+                </span>
+                    <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
+                          data-full-text="What are the datasources you have access to?">
+                  <span class="text-light"><strong>What are the datasources you have access to?</strong></span>
+                </span>
+                    <span class="card bg-label-hover-dark ms-4 ps-8 m-1 p-2 col-lg-5 card-template"
+                          data-full-text="What type of tools are you able to use?">
+                  <span class="text-light"><strong>What type of tools are you able to use?</strong></span>
+                </span>
+                  {% endfor %}
+                </div>
+              </div>
+              <hr>
+              <!-- loading bar warning -->
+              <div class="alert-container"></div>
+              <div id="loadingBarWarning" class="alert alert-solid-info d-flex col-lg-12 align-items-center mt-4 d-none"
+                   role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-brain"></i>
+              </span>
+                <div class="d-flex flex-column ps-1 pt-4">
+                  <p class="alert-heading"><strong>I am thinking to provide the best answer. This might take a while,
+                    please hold on...</strong></p>
+                </div>
+              </div>
+              <!-- Loading bar -->
+              <div id="loadingBar" class="progress d-none mt-3 mb-1">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                     style="width: 100%; height:10px;"></div>
+              </div>
+              <form class="form-send-message d-flex justify-content-between align-items-center mt-4" method="post"
+                    style="margin-bottom: 15px;"
+                    action="." enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
+                <textarea class="form-control message-input border-0 me-4 shadow-none" name="message_content"
+                          placeholder="Type your message here..." rows="1"></textarea>
+                <div class="message-actions d-flex align-items-center">
+                  <label for="record-audio-label" class="form-label mb-0">
+                    <i id="recordAudioButton"
+                       class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
+                  </label>
+                  <input type="hidden" id="record_audio" name="record_audio" class="d-none" hidden>
+                  <label for="sketch-image-label" class="form-label mb-0">
+                    <i
+                      class="ti ti-brush ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"
+                      data-bs-toggle="modal" data-bs-target="#canvasEditModal"></i>
+                  </label>
+                  <input type="hidden" id="sketch-image" name="sketch_image" class="d-none" hidden
+                         accept=".jpeg,.png,.gif,.webp">
+                  <label for="edit-image" class="form-label mb-0">
+                    <i
+                      class="ti ti-photo-edit ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
+                    <input type="file" id="edit-image" name="edit_image" hidden accept=".jpeg,.png,.gif,.webp">
+                  </label>
+                  <input type="hidden" name="edit_image_mask" id="edit-image-mask" value="">
+                  <label for="attach-image" class="form-label mb-0">
+                    <i
+                      class="ti ti-photo ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
+                    <input type="file" id="attach-image" name="attached_images[]" multiple hidden
+                           accept=".jpeg,.png,.gif,.webp">
+                  </label>
+                  <label for="attach-doc" class="form-label mb-0 me-4">
+                    <i
+                      class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
+                    <input type="file" id="attach-doc" name="attached_files[]" multiple hidden>
+                  </label>
+
+                  <button id="send-chat-message-button" class="btn btn-primary d-flex send-msg-btn" type="submit">
+                    <span class="align-middle d-md-inline-block d-none"><strong>Send</strong></span>
+                    <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
+                  </button>
+                  <button id="retry-response-button" class="btn btn-danger d-flex retry-msg-btn ms-4 me-4"
+                          style="min-height: 38px;">
+                    <i class="fa fa-redo-alt ti-16px"></i>
+                  </button>
+                </div>
+              </form>
+              <!-- stick the button to the right side of the container -->
+              <div class="row me-4 mb-4" style="display: flex; justify-content: flex-end; ">
+                <button id="start-streaming" class="btn btn-primary"
+                        style="float: right; min-width: 177px; max-width: 177px;">
+                  <i class="fa fa-bolt-lightning me-2"></i>
+                  <strong>Send Stream</strong>
+                </button>
+              </div>
+            </div>
+            <div class="">
+              <span>&nbsp;</span>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <!-- /Chat History -->
+
+    <!-- Sidebar Right -->
+    {% if active_chat %}
+      <!--
+      <div class="row g-0">
+        <div class="col app-chat-sidebar-right app-sidebar overflow-hidden h-100" id="app-chat-sidebar-right">
+          <div class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
+            <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
+              <img src="
+
+                {% if active_chat.lean_assistant.lean_assistant_image %}{{ active_chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   alt="Avatar" class="rounded">
+            </div>
+            <h5 class="mt-4 mb-0">
+              <strong>{{ active_chat.lean_assistant.name }}</strong>
+            </h5>
+            <span>
+              <strong>{{ active_chat.lean_assistant.organization }}</strong>
+            </span>
+            <i class="ti ti-x ti-lg cursor-pointer close-sidebar d-block" data-bs-toggle="sidebar" data-overlay
+               data-target="#app-chat-sidebar-right"></i>
+          </div>
+          <div class="sidebar-body p-6 pt-0">
+            <div class="my-6">
+              <p class="text-uppercase mb-1 text-muted"><strong>Description</strong></p>
+              <p class="mb-0">{{ active_chat.lean_assistant.description }}</p>
+            </div>
+            <div class="my-6">
+              <p class="text-uppercase text-muted mb-1"><strong>Details</strong></p>
+              <ul class="list-unstyled d-grid gap-4 mb-0 ms-2 py-2 text-heading">
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-robot'></i>
+                  <span
+                    class="align-middle ms-2"><strong>Model Name: </strong>{{ active_chat.lean_assistant.llm_model.model_name|upper }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-temperature-2'></i>
+                  <span
+                    class="align-middle ms-2"><strong>Temperature: </strong>{{ active_chat.lean_assistant.llm_model.temperature }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-chalkboard-teacher'></i>
+                  <span
+                    class="align-middle ms-2"><strong>Audience / Tone: </strong>{{ active_chat.lean_assistant.audience|capfirst }} / {{ active_chat.lean_assistant.tone|capfirst }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-language'></i>
+                  <span
+                    class="align-middle ms-2"><strong>Language: </strong>{{ active_chat.lean_assistant.response_language|upper }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-lightbulb'></i>
+                  <span
+                    class="align-middle ms-2"><strong>Context Strategy: </strong>{{ active_chat.lean_assistant.context_overflow_strategy|capfirst }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-people-group'></i>
+                  <span
+                    class="align-middle ms-2"><strong>Audience: </strong>{{ active_chat.lean_assistant.audience|capfirst }}</span>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class='fa fa-timeline'></i>
+                  <span
+                    class="align-middle ms-2"><strong>Time / Place Awareness: </strong>{{ active_chat.lean_assistant.time_awareness|capfirst }} / {{ active_chat.lean_assistant.place_awareness }}</span>
+                </li>
+              </ul>
+            </div>
+            <hr>
+            <div class="d-flex mt-6">
+              <button class="btn btn-danger w-100" data-bs-toggle="sidebar" data-overlay
+                      data-target="#app-chat-sidebar-right">
+                <strong>
+                  <i class='ti ti-trash ti-16px ms-2'></i>
+                  Delete Chat
+                </strong>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      -->
+    {% endif %}
+    <!-- /Sidebar Right -->
+  </div>
+
+  <!-- Freeform Drawing Modal -->
+  <div class="modal fade" id="canvasEditModal" tabindex="-1" aria-labelledby="canvasEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 60%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="canvasEditModalLabel"><strong>Draw on Canvas</strong></h5>
+          <button type="button" class="btn-close bg-danger-subtle" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <hr>
+        <div class="modal-body" style="justify-content: center; display: flex; align-items: center;">
+          <div id="canvasContainer" class="border border-label-primary mb-8"></div>
+        </div>
+        <div class="alert alert-solid-info d-flex align-items-center mt-4 mb-8" role="alert"
+             style="margin-left: 20%; margin-right: 20%;">
+                <span class="alert-icon rounded">
+                    <i class="ti ti-info-circle"></i>
+                </span>
+          Use the drawing tool to draw on the canvas. You can switch to the eraser to remove any drawn sections.
+        </div>
+        <div class="d-flex align-items-center justify-content-center align-content-center mb-12">
+          <i class="fa fa-brush me-1"></i>
+          <i class="fa fa-circle-dot me-12"></i>
+          <input type="range" class="form-range me-12" id="brushSize" min="1" max="100" value="50"
+                 style="max-width: 400px;">
+          <button type="button" class="btn btn-warning m-2" id="brushTool">
+            <i class="fa fa-paint-brush"></i>
+          </button>
+          <button type="button" class="btn btn-warning m-2" id="eraserTool">
+            <i class="fa fa-eraser"></i>
+          </button>
+          <button type="button" class="btn btn-danger m-2" id="resetTool">
+            <i class="fa fa-trash"></i>
+          </button>
+          <button type="button" class="btn btn-primary m-2" id="saveCanvasEdits">
+            <i class="fa fa-save me-2"></i>
+            <strong>Save Canvas</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    #canvasContainer {
+      width: 100%;
+      height: 500px;
+      display: inline-block;
+      background-color: white;
+    }
+  </style>
+
+  <!-- Image Edit Modal -->
+  <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="imageEditModalLabel"><strong>Create an Image Mask</strong></h5>
+          <button type="button" class="btn-close bg-danger-subtle" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <hr>
+        <div class="modal-body" style="justify-content: center; display: flex; align-items: center;">
+          <div id="imageCanvas" class="border border-label-primary border-3 rounded m-2 mb-8"  style="min-width: 500px; max-height: 500px; overflow: auto;"></div>
+        </div>
+        <div class="alert alert-solid-info d-flex align-items-center mt-4 mb-8" role="alert"
+             style="margin-left: 20%; margin-right: 20%;">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+          Please mark the places you would like to change within the image. You can use the drawing tool to draw on
+          the image. Please make sure not marking the places you would like to keep as they are, for optimal results.
+        </div>
+        <div class="d-flex align-items-center mb-12">
+          <i class="fa fa-paint-brush me-12" style="margin-left: 20%;"></i>
+          <input type="range" class="form-range me-12" id="brushSize" min="1" max="100" value="50"
+                 style="max-width: 400px;">
+          <button type="button" class="btn btn-secondary m-2" id="eraserTool">
+            <i class="fa fa-eraser me-2"></i>
+            <strong>Reset Image</strong>
+          </button>
+          <button type="button" class="btn btn-primary m-2" id="saveImageEdits">
+            <i class="fa fa-save me-2" style="margin-right: 20%;"></i>
+            <strong>Submit Image</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="floating-button label bg-label-hover-primary border border-1 border-primary rounded">
+    <i class="fa fa-message me-2 text-dark"></i><span class="text text-dark"><strong>Chat</strong></span>
+  </a>
+
+  <style>
+    @keyframes border-color-change {
+      0% {
+        border-color: mediumslateblue;
+      }
+      100% {
+        border-color: #ffbf00;
+      }
+    }
+  </style>
+  <style>
+    /* Add hover effect and cursor pointer to template cards */
+    .card-template {
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .card-template:hover {
+      background-color: #f0f0f0;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+
+  <script src="https://unpkg.com/konva@9.3.14/konva.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let stage, layer, background;
+      let isDrawing = false;
+      let mode = 'draw';
+      let brushSize = 25;
+
+      function initCanvas() {
+        stage = new Konva.Stage({
+          container: 'canvasContainer',
+          width: document.getElementById('canvasContainer').offsetWidth,
+          height: document.getElementById('canvasContainer').offsetHeight
+        });
+
+        layer = new Konva.Layer();
+        stage.add(layer);
+
+        background = new Konva.Rect({
+          x: 0,
+          y: 0,
+          width: stage.width(),
+          height: stage.height(),
+          fill: 'white'
+        });
+        layer.add(background);
+        layer.draw();
+
+        stage.on('mousedown touchstart', function () {
+          isDrawing = true;
+        });
+
+        stage.on('mouseup touchend', function () {
+          isDrawing = false;
+        });
+
+        stage.on('mousemove touchmove', function (e) {
+          if (!isDrawing) return;
+
+          const pos = stage.getPointerPosition();
+
+          if (mode === 'draw') {
+            layer.add(new Konva.Circle({
+              x: pos.x,
+              y: pos.y,
+              radius: brushSize / 2,
+              fill: 'black'
+            }));
+          } else if (mode === 'erase') {
+            layer.add(new Konva.Circle({
+              x: pos.x,
+              y: pos.y,
+              radius: brushSize / 2,
+              fill: 'white',
+              globalCompositeOperation: 'destination-out'
+            }));
+          }
+          layer.batchDraw();
+        });
+      }
+
+      $('#canvasEditModal').on('shown.bs.modal', function () {
+        initCanvas();
+      });
+
+      document.getElementById('brushSize').addEventListener('input', function () {
+        brushSize = this.value;
+      });
+
+      document.getElementById('brushTool').addEventListener('click', function () {
+        mode = 'draw';
+      });
+
+      document.getElementById('eraserTool').addEventListener('click', function () {
+        mode = 'erase';
+      });
+
+      document.getElementById('resetTool').addEventListener('click', function () {
+        // clear the layer
+        layer.destroyChildren();
+        layer.add(background);
+        layer.draw();
+      });
+
+      document.getElementById('saveCanvasEdits').addEventListener('click', function () {
+        document.getElementById('sketch-image').value = stage.toDataURL({pixelRatio: 1});
+        $('#canvasEditModal').modal('hide');
+        // show the thumbnail in the image staging
+        const stagingElement = document.getElementById('image_display_area');
+        const divElement = stagingElement.appendChild(document.createElement('div'));
+        divElement.innerHTML = `
+          <div class="badge bg-info d-flex align-items-center my-2">
+              <strong>SKETCH <i class="fa fa-lightbulb me-4"></i></strong>
+              <img src="${stage.toDataURL({pixelRatio: 0.5})}" class="img-fluid rounded" style="max-width: 100px;" alt="Image">
+          </div>
+          `;
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const fileInput = document.getElementById('edit-image');
+      const maskInput = document.getElementById('edit-image-mask');
+      let stage, layer, imageNode;
+      let isErasing = false;
+      let brushSize = 50;
+      let originalImage;
+
+      fileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const img = new Image();
+            img.onload = function () {
+              originalImage = img.src;
+              if (stage) {
+                stage.destroy();
+              }
+              stage = new Konva.Stage({
+                container: 'imageCanvas', // Make sure this matches your canvas container ID
+                width: img.width,
+                height: img.height
+              });
+
+              layer = new Konva.Layer();
+              stage.add(layer);
+
+              imageNode = new Konva.Image({
+                image: img,
+                width: img.width,
+                height: img.height
+              });
+
+              layer.add(imageNode);
+              layer.draw();
+
+              stage.on('mousedown touchstart', function () {
+                isErasing = true;
+              });
+
+              stage.on('mouseup touchend', function () {
+                isErasing = false;
+              });
+
+              stage.on('mousemove touchmove', function (e) {
+                if (!isErasing) {
+                  return;
+                }
+
+                const pos = stage.getPointerPosition();
+                layer.add(new Konva.Circle({
+                  x: pos.x,
+                  y: pos.y,
+                  radius: brushSize / 2,
+                  fill: 'black',
+                  globalCompositeOperation: 'destination-out'
+                }));
+                layer.batchDraw();
+              });
+
+              $('#imageEditModal').modal('show');
+            };
+            img.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      document.getElementById('brushSize').addEventListener('input', function () {
+        brushSize = this.value;
+      });
+
+      document.getElementById('eraserTool').addEventListener('click', function () {
+        // clear the layer
+        layer.destroyChildren();
+        layer.add(imageNode);
+        layer.draw();
+      });
+
+      document.getElementById('saveImageEdits').addEventListener('click', function () {
+        maskInput.value = stage.toDataURL({pixelRatio: 1});
+        $('#imageEditModal').modal('hide');
+      });
+    });
+
+  </script>
+
+
+  <!-- Include a markdown library, for example, Showdown.js -->
+  <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const converter = new showdown.Converter();
+      converter.setOption('tables', true);
+      converter.setOption('ghCodeBlocks', true);
+      document.querySelectorAll('.markdown-content').forEach(function (element) {
+        element.innerHTML = converter.makeHtml(element.innerHTML);
+      });
+
+      document.querySelectorAll('.markdown-content').forEach(function (element) {
+        element.innerHTML = converter.makeHtml(element.innerHTML);
+      });
+
+      // Function to apply syntax highlighting to JSON content
+      function highlightJSON(json) {
+        return json
+          .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:\s*)?)/g, '<span class="string">$1</span>')
+          .replace(/\b(true|false|null)\b/g, '<span class="boolean">$1</span>')
+          .replace(/\b\d+(\.\d+)?\b/g, '<span class="number">$&</span>');
+      }
+
+      document.querySelectorAll('.markdown-content pre code').forEach(function (block) {
+        let text = block.innerText;
+        // Only highlight JSON code blocks
+        if (text.trim().startsWith('{') && text.trim().endsWith('}')) {
+          block.innerHTML = highlightJSON(text);
+        }
+        // add an icon under the code block
+        const activeIcon = document.createElement('i');
+        activeIcon.className = 'fa fa-circle text-success ms-2 mt-6';
+        const iconText = document.createElement('span');
+        iconText.className = 'text text-success fw-bolder';
+        iconText.style.fontFamily = 'monospace';
+        iconText.innerText = ' Systems Active';
+        const logIcon = document.createElement('i');
+        logIcon.className = 'fa fa-circle text-warning ms-12 mt-2';
+        const logText = document.createElement('span');
+        logText.className = 'text text-warning fw-bolder';
+        logText.style.fontFamily = 'monospace';
+        logText.innerText = ' Tools Running';
+        block.parentElement.appendChild(activeIcon);
+        block.parentElement.appendChild(iconText);
+        block.parentElement.appendChild(logIcon);
+        block.parentElement.appendChild(logText);
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const chatForm = document.querySelector('.form-send-message');
+      const createChatForm = document.querySelector('#create-chat-form');
+
+      const loadingBar = document.getElementById('loadingBar');
+      const loadingBarWarning = document.getElementById('loadingBarWarning');
+      const submitMessageButton = document.querySelector('#send-chat-message-button');
+      const submitStreamMessageButton = document.querySelector('#start-streaming');
+      const retryButton = document.querySelector('#retry-response-button');
+
+      submitMessageButton.addEventListener('click', function() {
+        // Show the loading bar
+        loadingBar.classList.remove('d-none');
+        loadingBarWarning.classList.remove('d-none');
+        submitMessageButton.disabled = true;
+        chatForm.submit();
+      });
+
+      // if the button is clicked, set the value of the message to "Your response either failed, or I didn't like it. Please try again."
+      retryButton.addEventListener('click', function () {
+        loadingBar.classList.remove('d-none');
+        loadingBarWarning.classList.remove('d-none');
+        submitMessageButton.disabled = true;
+        const chatInput = document.querySelector('.message-input');
+        chatInput.value = "Your answer wasn't satisfactory, or you have made an error, or you have failed to provide a valid and comprehensive answer to me. Please try again.";
+        // automatically submit
+        chatForm.submit();
+      });
+
+      const loadingBarCreateChat = document.getElementById('loadingBarCreateChat');
+      const loadingBarWarningCreateChat = document.getElementById('loadingBarWarningCreateChat');
+
+      createChatForm.addEventListener('submit', function (event) {
+        // Show the loading bar
+        loadingBarCreateChat.classList.remove('d-none');
+        loadingBarWarningCreateChat.classList.remove('d-none');
+      });
+
+      submitStreamMessageButton.addEventListener('click', function () {
+        // Show the loading bar
+        loadingBar.classList.remove('d-none');
+        loadingBarWarning.classList.remove('d-none');
+        submitStreamMessageButton.disabled = true;
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.card-template').forEach(function (template) {
+        template.addEventListener('click', function () {
+          const fullText = this.getAttribute('data-full-text');
+          console.log(fullText);
+          const chatInput = document.querySelector('.message-input');
+          chatInput.value = fullText;
+
+          navigator.clipboard.writeText(fullText).then(() => {
+            const alertContainer = document.querySelector('.alert-container');
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+            successAlert.role = 'alert';
+            successAlert.innerHTML = `
+          <span class="alert-icon rounded">
+            <i class="ti ti-check"></i>
+          </span>
+          Template text copied to chat input!
+        `;
+            alertContainer.appendChild(successAlert);
+
+            setTimeout(() => {
+              successAlert.remove();
+            }, 1000);
+          }).catch(err => {
+            alert('Failed to copy text: ' + err);
+          });
+        });
+      });
+    });
+
+    document.querySelectorAll('.copy-btn-plain').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const messageId = this.getAttribute('data-message-id');
+        const templateTextElement = document.getElementById(`copied-message-${messageId}`);
+        const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+        const converter = new showdown.Converter();
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
+          const successAlert = document.createElement('div');
+          successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+          successAlert.role = 'alert';
+          successAlert.innerHTML = `
+        <span class="alert-icon rounded">
+          <i class="ti ti-check"></i>
+        </span>
+        Plain Text copied to clipboard!
+      `;
+          alertContainer.appendChild(successAlert);
+
+          setTimeout(() => {
+            successAlert.remove();
+          }, 1000);
+        }).catch(err => {
+          alert('Failed to copy text: ' + err);
+        });
+      });
+    });
+
+    document.querySelectorAll('.copy-btn-html').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const messageId = this.getAttribute('data-message-id');
+        const templateTextElement = document.getElementById(`copied-message-${messageId}`);
+        const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+        const converter = new showdown.Converter();
+        const textToCopyHtml = converter.makeHtml(textToCopy);
+
+        navigator.clipboard.writeText(textToCopyHtml).then(() => {
+          const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
+          const successAlert = document.createElement('div');
+          successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+          successAlert.role = 'alert';
+          successAlert.innerHTML = `
+        <span class="alert-icon rounded">
+          <i class="ti ti-check"></i>
+        </span>
+        Formatted HTML copied to clipboard!
+      `;
+          alertContainer.appendChild(successAlert);
+
+          setTimeout(() => {
+            successAlert.remove();
+          }, 1000);
+        }).catch(err => {
+          alert('Failed to copy text: ' + err);
+        });
+      });
+    });
+
+    document.querySelectorAll('.copy-btn-markdown').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const messageId = this.getAttribute('data-message-id');
+        const templateTextElement = document.getElementById(`copied-message-${messageId}`);
+        const textToCopy = templateTextElement ? templateTextElement.innerText : '';
+        const converter = new showdown.Converter();
+        const textToCopyMarkdown = converter.makeMarkdown(textToCopy);
+
+        navigator.clipboard.writeText(textToCopyMarkdown).then(() => {
+          const alertContainer = this.closest('.chat-history-wrapper').querySelector('.alert-container');
+          const successAlert = document.createElement('div');
+          successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+          successAlert.role = 'alert';
+          successAlert.innerHTML = `
+        <span class="alert-icon rounded">
+          <i class="ti ti-check"></i>
+        </span>
+        Formatted Markdown copied to clipboard!
+      `;
+          alertContainer.appendChild(successAlert);
+
+          setTimeout(() => {
+            successAlert.remove();
+          }, 1000);
+        }).catch(err => {
+          alert('Failed to copy text: ' + err);
+        });
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const chatInput = document.querySelector('.message-input');
+
+      chatInput.addEventListener('input', function () {
+        this.style.height = 'auto'; // Reset the height
+        this.style.height = (this.scrollHeight) + 'px'; // Set the height to match the content
+      });
+
+      document.querySelectorAll('.card-template').forEach(function (template) {
+        template.addEventListener('click', function () {
+          const fullText = this.getAttribute('data-full-text');
+          chatInput.value = fullText;
+          chatInput.style.height = 'auto'; // Reset the height
+          chatInput.style.height = (chatInput.scrollHeight) + 'px'; // Adjust height to match content
+
+          navigator.clipboard.writeText(fullText).then(() => {
+            const alertContainer = document.querySelector('.alert-container');
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+            successAlert.role = 'alert';
+            successAlert.innerHTML = `
+          <span class="alert-icon rounded">
+            <i class="ti ti-check"></i>
+          </span>
+          Template text copied to chat input!
+        `;
+            alertContainer.appendChild(successAlert);
+            setTimeout(() => {
+              successAlert.remove();
+            }, 1000);
+          }).catch(err => {
+            alert('Failed to copy text: ' + err);
+          });
+        });
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const floatingButton = document.querySelector('.floating-button');
+      floatingButton.addEventListener('click', function () {
+        if (floatingButton.innerHTML.includes('Chat')) {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+          });
+          floatingButton.innerHTML = '<i class="fa fa-robot rounded text-dark me-2"></i><span class="text-dark"><strong>List</strong></span>';
+        } else {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+          floatingButton.innerHTML = '<i class="fa fa-message me-2 text-dark"></i><span class="text-dark"><strong>Chat</strong></span>';
+        }
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const btnCollapseTemplates = document.querySelector('.btn-collapse-templates');
+      const cardTemplateContainer = document.querySelector('#message-templates-container');
+      btnCollapseTemplates.addEventListener('click', function () {
+        cardTemplateContainerClasses = cardTemplateContainer.classList;
+        if (cardTemplateContainerClasses.contains('d-none')) {
+          cardTemplateContainer.classList.remove('d-none');
+          // convert the icon to compress
+          btnCollapseTemplates.innerHTML = '<i class="fa fa-compress-arrows-alt rounded"></i><small></small>';
+        } else {
+          cardTemplateContainer.classList.add('d-none');
+          // convert the icon to expand
+          btnCollapseTemplates.innerHTML = '<i class="fa fa-expand-arrows-alt rounded"></i><small></small>';
+        }
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('attach-doc').addEventListener('change', function (event) {
+        const fileList = Array.from(event.target.files);
+        const fileDisplayArea = document.getElementById('file_display_area');
+        fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media File Staging</strong></small><hr>';
+        fileList.forEach((file, index) => {
+          const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+          const fileExtension = file.name.split('.').pop().toLowerCase();
+          const iconMap = {
+            'jpg': 'jpg.png',
+            'png': 'png.png',
+            'gif': 'gif.png',
+            'svg': 'svg.png',
+            'bmp': 'bmp.png',
+            'tiff': 'tiff.png',
+            'mp3': 'mp3.png',
+            'wav': 'wav.png',
+            'flac': 'flac.png',
+            'aac': 'aac.png',
+            'ogg': 'ogg.png',
+            'mp4': 'mp4.png',
+            'avi': 'avi.png',
+            'mkv': 'mkv.png',
+            'mov': 'mov.png',
+            'zip': 'zip.png',
+            'rar': 'rar.png',
+            'tar': 'tar.png',
+            'py': 'py.png',
+            'js': 'js.png',
+            'ts': 'ts.png',
+            'php': 'php.png',
+            'css': 'css.png',
+            'html': 'html.png',
+            'java': 'java.png',
+            'c': 'c.png',
+            'cpp': 'cpp.png',
+            'h': 'h.png',
+            'sh': 'sh.png',
+            'go': 'go.png',
+            'dart': 'dart.png',
+            'yml': 'yml.png',
+            'yaml': 'yaml.png',
+            'sql': 'sql.png',
+            'pkl': 'pkl.png',
+            'csv': 'csv.png',
+            'xlsx': 'xlsx.png',
+            'json': 'json.png',
+            'xml': 'xml.png',
+            'tsv': 'tsv.png',
+            'docx': 'docx.png',
+            'pptx': 'pptx.png',
+            'pdf': 'pdf.png',
+            'txt': 'txt.png',
+          };
+          const icon = iconMap[fileExtension] || 'file.png';
+          let filename_root = file.name.split(".")[0];
+          let filename_extension = file.name.split(".")[1];
+          if (filename_root.length > 64) {
+            filename_root = filename_root.substring(0, 64) + '...';
+          }
+          const fileElement = document.createElement('div');
+          fileElement.classList.add('col-lg-12');
+          fileElement.innerHTML = `
+                    <div class="badge bg-lighter d-flex align-items-center my-2">
+                        <img src="{% static 'img/icons/misc/' %}${icon}" alt="${fileExtension}" width="15" class="me-2">
+                        <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                        <button type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                    </div>
+                `;
+          fileDisplayArea.appendChild(fileElement);
+        });
+
+        document.querySelectorAll('.btn-close').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('attach-doc').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+        });
+      });
+
+      document.getElementById('attach-image').addEventListener('change', function (event) {
+        const fileList = Array.from(event.target.files);
+        const fileDisplayArea = document.getElementById('image_display_area');
+        fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media Image Staging</strong></small><hr>';
+        fileList.forEach((file, index) => {
+          const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+          const fileExtension = file.name.split('.').pop().toLowerCase();
+          const image_data = null; // ????
+          let filename_root = file.name.split(".")[0];
+          let filename_extension = file.name.split(".")[1];
+          if (filename_root.length > 64) {
+            filename_root = filename_root.substring(0, 64) + '...';
+          }
+          const fileElement = document.createElement('div');
+          fileElement.classList.add('col-lg-12');
+
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const imageUrl = e.target.result;
+            fileElement.innerHTML = `
+                          <div class="badge bg-lighter d-flex align-items-center my-2">
+                              <img src="${imageUrl}" alt="${fileExtension}" width="50" class="me-2">
+                              <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                              <button id="btn-close-image-${index}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                          </div>
+                      `;
+            fileDisplayArea.appendChild(fileElement);
+
+            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function () {
+              const index = this.getAttribute('data-index');
+              fileList.splice(index, 1);
+              const dataTransfer = new DataTransfer();
+              fileList.forEach(file => dataTransfer.items.add(file));
+              document.getElementById('attach-image').files = dataTransfer.files;
+              this.parentElement.remove();
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+
+        document.querySelectorAll('.btn-close').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('attach-doc').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+        });
+
+        document.getElementById('.btn-close-image').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('attach-image').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+        });
+      });
+
+      document.getElementById('edit-image').addEventListener('change', function (event) {
+        const fileList = Array.from(event.target.files);
+        const fileDisplayArea = document.getElementById('image_display_area');
+        fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Image Modification Staging</strong></small><hr>';
+        fileList.forEach((file, index) => {
+          const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+          const fileExtension = file.name.split('.').pop().toLowerCase();
+          const image_data = null; // ????
+          let filename_root = file.name.split(".")[0];
+          let filename_extension = file.name.split(".")[1];
+          if (filename_root.length > 64) {
+            filename_root = filename_root.substring(0, 64) + '...';
+          }
+          const fileElement = document.createElement('div');
+          fileElement.classList.add('col-lg-12');
+
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const imageUrl = e.target.result;
+            fileElement.innerHTML = `
+                          <div class="badge bg-warning d-flex align-items-center my-2">
+                              <strong>MOD <i class="fa fa-bolt-lightning me-4"></i></strong>
+                              <img src="${imageUrl}" alt="${fileExtension}" width="50" class="me-2">
+                              <span class="h6 mb-0 text-white"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                              <button id="btn-close-image-${index}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                          </div>
+                      `;
+            fileDisplayArea.appendChild(fileElement);
+
+            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function () {
+              const index = this.getAttribute('data-index');
+              fileList.splice(index, 1);
+              const dataTransfer = new DataTransfer();
+              fileList.forEach(file => dataTransfer.items.add(file));
+              document.getElementById('attach-image').files = dataTransfer.files;
+              this.parentElement.remove();
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+
+        document.querySelectorAll('.btn-close').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('attach-doc').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+        });
+
+        document.getElementById('.btn-close-image').forEach(button => {
+          button.addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('attach-image').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+        });
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const startStreamingButton = document.getElementById('start-streaming');
+      startStreamingButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        const chatForm = document.querySelector('.form-send-message');
+        const formData = new FormData(chatForm);
+
+        fetch(`/app/multimodal_chat/lean_chat/stream/`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+          }
+        }).catch(error => {
+          console.error('Error in streaming:', error);
+          console.log('Response: ', error.response);
+        });
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const element = document.getElementById('non-tool-markdown-content');
+      let accumulatedContent = ''; // To accumulate chunks for a single stream
+      let socket = null;
+      const maxRetries = 1000;
+      let retryCount = 0;
+
+      function connectWebSocket() {
+        // Determine the correct WebSocket protocol based on the current page's protocol
+        let protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+        // Construct the WebSocket URL with the unique group identifier
+        const leanChatId = new URLSearchParams(window.location.search).get('chat_id');
+        socket = new WebSocket(protocol + window.location.host + `/ws/lean_logs/${leanChatId}/`);
+        socket.onmessage = function (event) {
+          const data = JSON.parse(event.data);
+          let newChunk = data.log;
+          if (newChunk.includes('<[bimod_streaming_end]>')) {
+            // Wrap the accumulated content in a new div with the 'bg-label-primary' class
+            element.innerHTML += `<div class="bg-label-primary rounded m-2 p-4"><strong class="text-white">${accumulatedContent}</strong></div>`;
+            element.scrollTo({
+              top: element.scrollHeight + 1000,
+              behavior: 'smooth'
+            });
+            // Reset the accumulated content for the next stream
+            accumulatedContent = '';
+          } else if (newChunk.includes('<[bimod_process_end]>')) {
+            // Force refresh the page with the same chat id
+            const chatId = new URLSearchParams(window.location.search).get('chat_id');
+            console.log("End of processing detected...");
+            socket.close(); // Close the WebSocket connection
+            // Automatically refresh the page
+            window.location.href = `/app/multimodal_chat/lean_chat/?chat_id=${chatId}`;
+          } else {
+            // Accumulate chunks for the current stream
+            accumulatedContent += newChunk;
+          }
+        };
+        socket.onerror = function (event) {
+          console.error("WebSocket error", event);
+          socket.close();
+        };
+        socket.onclose = function (event) {
+          console.log("WebSocket connection closed", event);
+          if (retryCount < maxRetries) {
+            retryCount++;
+            console.log(`Reconnecting... attempt ${retryCount}`);
+            setTimeout(connectWebSocket, 2000); // Reconnect after 2 seconds
+          } else {
+            console.error("Max reconnection attempts reached. Unable to reconnect.");
+          }
+        };
+      }
+
+      connectWebSocket(); // Initial connection attempt
+      console.log("WebSocket connection established successfully.");
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const recordButton = document.getElementById('recordAudioButton');
+      const audioDisplayArea = document.getElementById('audio_display_area');
+      const audioDataInput = document.getElementById('record_audio');
+      console.log(audioDataInput);
+      let mediaRecorder;
+      let audioChunks = [];
+      let audioIndex = 0; // Global index for audio elements
+
+      // Function to display recorded audio and handle Base64 encoding
+      function displayAudio(name, size, audioBlob) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+          const base64data = reader.result;
+          console.log('Base64 data:', base64data);
+          audioDataInput.value = base64data; // Store Base64 data in hidden input
+
+          if (audioDisplayArea.childElementCount === 0) {
+            audioDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Audio Recording Staging</strong></small><hr>';
+          }
+
+          const audioElement = document.createElement('div');
+          const audioURL = URL.createObjectURL(audioBlob);
+
+          audioElement.classList.add('badge', 'bg-lighter', 'd-flex', 'align-items-center', 'my-1');
+          audioElement.setAttribute('data-index', audioIndex.toString());
+
+          audioElement.innerHTML = `
+        <audio controls class="ms-4">
+            <source src="${audioURL}" type="audio/webm">
+            Unsupported Browser for Audio Playback
+        </audio>
+        <span class="h6 mb-0 ms-4 text-body"><strong>${name}</strong> (${size} KB)</span>
+        <button id="btn-close-audio-${audioIndex}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${audioIndex}"></button>
+      `;
+
+          audioDisplayArea.appendChild(audioElement);
+
+          audioElement.querySelector(`#btn-close-audio-${audioIndex}`).addEventListener('click', function () {
+            const index = this.getAttribute('data-index');
+            const elementToRemove = document.querySelector(`.badge[data-index="${index}"]`);
+            if (elementToRemove) {
+              elementToRemove.remove();
+            }
+            if (audioDisplayArea.querySelectorAll('.badge').length === 0) {
+              audioDisplayArea.innerHTML = '';
+            }
+            audioDataInput.value = ""; // Clear the hidden input
+          });
+
+          audioIndex++;
+        };
+        reader.readAsDataURL(audioBlob); // Convert audio blob to Base64
+      }
+
+      recordButton.addEventListener('click', async () => {
+        if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+            startRecording(stream);
+            recordButton.className = 'speech-to-text ti ti-hand-stop ti-md btn btn-sm btn-text-danger btn-icon rounded-pill cursor-pointer text-danger';
+          } catch (err) {
+            console.error('Failed to start recording:', err);
+          }
+        } else if (mediaRecorder.state === 'recording') {
+          mediaRecorder.stop();
+          recordButton.className = 'speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading';
+        }
+      });
+
+      function startRecording(stream) {
+        let options = {mimeType: 'audio/webm'};
+        mediaRecorder = new MediaRecorder(stream, options);
+        mediaRecorder.ondataavailable = event => {
+          audioChunks.push(event.data);
+        };
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+          displayAudio(`recording_${Date.now()}.webm`, (audioBlob.size / 1024).toFixed(2), audioBlob);
+          audioChunks = [];
+        };
+        mediaRecorder.start();
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const listenButtons = document.querySelectorAll('.listen-btn');
+      listenButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const messageId = button.getAttribute('data-message-id');
+          const url = `/app/multimodal_chat/tts/chat/message/${messageId}`;
+
+          // Disable the button and change to loading state
+          button.disabled = true;
+          button.innerHTML = '<i class="fa fa-spinner fa-spin ms-1"></i><span class="ms-2"><strong>Playing...</strong></span>';
+
+          console.log("Sending fetch request to:", url); // Debugging URL
+          fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+              }
+              console.log(response);
+              return response.json();
+            })
+            .then(data => {
+              console.log("Fetch request successful:", data); // Debugging data
+              if (data.audio_url) {
+                const audio = new Audio(data.audio_url);
+                audio.play();
+                // Listen for the 'ended' event to reset the button
+                audio.onended = () => {
+                  button.disabled = false;
+                  button.innerHTML = '<i class="fa fa-volume-up ms-1"></i><span class="ms-2"><strong>Listen</strong></span>';
+                };
+              } else {
+                console.error('No audio URL provided by the server.');
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-volume-up ms-1"></i><span class="ms-2"><strong>Listen</strong></span>';
+              }
+            })
+            .catch(error => {
+              console.error('Fetch request failed:', error);
+              button.disabled = false;
+              button.innerHTML = '<i class="fa fa-volume-up ms-1"></i><span class="ms-2"><strong>Listen</strong></span>';
+            });
+        });
+      });
+    });
+  </script>
+{% endblock %}

@@ -22,6 +22,8 @@ class ToolTypeNames:
     IMAGE_VARIATION = 'Image Variation'
     AUDIO_PROCESSING = 'Audio Processing'
     ##############################
+    EXPERT_NETWORK_QUERY_CALL = 'Expert Network Query Call'
+    ##############################
     ORCHESTRATION_WORKER_ASSISTANT_CALL = 'Orchestration Worker Assistant Call'
     ##############################
 

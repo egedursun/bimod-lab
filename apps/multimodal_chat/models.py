@@ -387,6 +387,145 @@ class MultimodalChat(models.Model):
         super().delete(using, keep_parents)
 
 
+class MultimodalLeanChat(models.Model):
+    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
+    lean_assistant = models.ForeignKey('leanmod.LeanAssistant', on_delete=models.CASCADE,
+                                  related_name='multimodal_lean_chats', default=1)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='multimodal_lean_chats', default=1)
+    chat_name = models.CharField(max_length=255)
+    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE,
+                                        related_name='multimodal_lean_chats_created_by_user')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    # Chat Messages
+    lean_chat_messages = models.ManyToManyField('multimodal_chat.MultimodalLeanChatMessage', related_name='multimodal_lean_chats',
+                                           blank=True)
+    transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_lean_chats',
+                                          blank=True)
+
+    # For archiving the chats
+    is_archived = models.BooleanField(default=False)
+    # Management for APIs
+    chat_source = models.CharField(max_length=100, choices=CHAT_SOURCES, default="app")
+
+    def __str__(self):
+        return self.chat_name + " - " + self.lean_assistant.name + " - " + self.user.username
+
+    class Meta:
+        verbose_name = "Multimodal Lean Chat"
+        verbose_name_plural = "Multimodal Lean Chats"
+        ordering = ["-created_at"]
+        indexes = [
+            # Single-field indexes
+            models.Index(fields=['id']),
+            models.Index(fields=['organization']),
+            models.Index(fields=['lean_assistant']),
+            models.Index(fields=['user']),
+            models.Index(fields=['chat_source']),
+            models.Index(fields=['is_archived']),
+            models.Index(fields=['created_by_user']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['updated_at']),
+
+            # Two-field composite indexes
+            models.Index(fields=['id', 'organization']),
+            models.Index(fields=['id', 'lean_assistant']),
+            models.Index(fields=['id', 'user']),
+            models.Index(fields=['id', 'chat_source']),
+            models.Index(fields=['id', 'is_archived']),
+            models.Index(fields=['id', 'created_by_user']),
+            models.Index(fields=['id', 'created_at']),
+            models.Index(fields=['id', 'updated_at']),
+            models.Index(fields=['organization', 'lean_assistant']),
+            models.Index(fields=['organization', 'user']),
+            models.Index(fields=['organization', 'chat_source']),
+            models.Index(fields=['organization', 'is_archived']),
+            models.Index(fields=['organization', 'created_by_user']),
+            models.Index(fields=['organization', 'created_at']),
+            models.Index(fields=['organization', 'updated_at']),
+            models.Index(fields=['lean_assistant', 'user']),
+            models.Index(fields=['lean_assistant', 'chat_source']),
+            models.Index(fields=['lean_assistant', 'is_archived']),
+            models.Index(fields=['lean_assistant', 'created_by_user']),
+            models.Index(fields=['lean_assistant', 'created_at']),
+            models.Index(fields=['lean_assistant', 'updated_at']),
+            models.Index(fields=['user', 'chat_source']),
+            models.Index(fields=['user', 'is_archived']),
+            models.Index(fields=['user', 'created_by_user']),
+            models.Index(fields=['user', 'created_at']),
+            models.Index(fields=['user', 'updated_at']),
+            models.Index(fields=['chat_source', 'is_archived']),
+            models.Index(fields=['chat_source', 'created_by_user']),
+            models.Index(fields=['chat_source', 'created_at']),
+            models.Index(fields=['chat_source', 'updated_at']),
+            models.Index(fields=['is_archived', 'created_by_user']),
+            models.Index(fields=['is_archived', 'created_at']),
+            models.Index(fields=['is_archived', 'updated_at']),
+            models.Index(fields=['created_by_user', 'created_at']),
+            models.Index(fields=['created_by_user', 'updated_at']),
+            models.Index(fields=['created_at', 'updated_at']),
+            models.Index(fields=['organization', 'lean_assistant', 'user']),
+            models.Index(fields=['organization', 'lean_assistant', 'chat_source']),
+            models.Index(fields=['organization', 'lean_assistant', 'is_archived']),
+            models.Index(fields=['organization', 'lean_assistant', 'created_by_user']),
+            models.Index(fields=['organization', 'lean_assistant', 'created_at']),
+            models.Index(fields=['organization', 'lean_assistant', 'updated_at']),
+            models.Index(fields=['organization', 'user', 'chat_source']),
+            models.Index(fields=['organization', 'user', 'is_archived']),
+            models.Index(fields=['organization', 'user', 'created_by_user']),
+            models.Index(fields=['organization', 'user', 'created_at']),
+            models.Index(fields=['organization', 'user', 'updated_at']),
+            models.Index(fields=['organization', 'chat_source', 'is_archived']),
+            models.Index(fields=['organization', 'chat_source', 'created_by_user']),
+            models.Index(fields=['organization', 'chat_source', 'created_at']),
+            models.Index(fields=['organization', 'chat_source', 'updated_at']),
+            models.Index(fields=['organization', 'is_archived', 'created_by_user']),
+            models.Index(fields=['organization', 'is_archived', 'created_at']),
+            models.Index(fields=['organization', 'is_archived', 'updated_at']),
+            models.Index(fields=['organization', 'created_by_user', 'created_at']),
+            models.Index(fields=['organization', 'created_by_user', 'updated_at']),
+            models.Index(fields=['organization', 'created_at', 'updated_at']),
+            models.Index(fields=['lean_assistant', 'user', 'chat_source']),
+            models.Index(fields=['lean_assistant', 'user', 'is_archived']),
+            models.Index(fields=['lean_assistant', 'user', 'created_by_user']),
+            models.Index(fields=['lean_assistant', 'user', 'created_at']),
+            models.Index(fields=['lean_assistant', 'user', 'updated_at']),
+            models.Index(fields=['lean_assistant', 'chat_source', 'is_archived']),
+            models.Index(fields=['lean_assistant', 'chat_source', 'created_by_user']),
+            models.Index(fields=['lean_assistant', 'chat_source', 'created_at']),
+            models.Index(fields=['lean_assistant', 'chat_source', 'updated_at']),
+            models.Index(fields=['lean_assistant', 'is_archived', 'created_by_user']),
+            models.Index(fields=['lean_assistant', 'is_archived', 'created_at']),
+            models.Index(fields=['lean_assistant', 'is_archived', 'updated_at']),
+            models.Index(fields=['lean_assistant', 'created_by_user', 'created_at']),
+            models.Index(fields=['lean_assistant', 'created_by_user', 'updated_at']),
+            models.Index(fields=['lean_assistant', 'created_at', 'updated_at']),
+            models.Index(fields=['user', 'chat_source', 'is_archived']),
+            models.Index(fields=['user', 'chat_source', 'created_by_user']),
+            models.Index(fields=['user', 'chat_source', 'created_at']),
+            models.Index(fields=['user', 'chat_source', 'updated_at']),
+            models.Index(fields=['user', 'is_archived', 'created_by_user']),
+            models.Index(fields=['user', 'is_archived', 'created_at']),
+            models.Index(fields=['user', 'is_archived', 'updated_at']),
+            models.Index(fields=['user', 'created_by_user', 'created_at']),
+            models.Index(fields=['user', 'created_by_user', 'updated_at']),
+            models.Index(fields=['user', 'created_at', 'updated_at']),
+            models.Index(fields=['chat_source', 'is_archived', 'created_by_user']),
+            models.Index(fields=['chat_source', 'is_archived', 'created_at']),
+            models.Index(fields=['chat_source', 'is_archived', 'updated_at']),
+            models.Index(fields=['chat_source', 'created_by_user', 'created_at']),
+            models.Index(fields=['chat_source', 'created_by_user', 'updated_at']),
+            models.Index(fields=['chat_source', 'created_at', 'updated_at']),
+        ]
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+    def delete(self, using=None, keep_parents=False):
+        # Remove the context memory connection
+        super().delete(using, keep_parents)
+
+
 class MessageSenderTypeNames:
     USER = "USER"
     ASSISTANT = "ASSISTANT"
@@ -502,6 +641,63 @@ class MultimodalChatMessage(models.Model):
                 starred_message.delete()
 
 
+class MultimodalLeanChatMessage(models.Model):
+    multimodal_lean_chat = models.ForeignKey('multimodal_chat.MultimodalLeanChat', on_delete=models.CASCADE,
+                                        related_name='lean_messages_chat')
+    sender_type = models.CharField(max_length=10, choices=MESSAGE_SENDER_TYPES)
+    message_text_content = models.TextField()
+    message_json_content = models.JSONField(default=dict, blank=True, null=True)  # Not used for now
+    # Multimedia Contents
+    message_image_contents = models.JSONField(default=list, blank=True, null=True)
+    message_file_contents = models.JSONField(default=list, blank=True, null=True)
+    # Narrated audio
+    message_audio = models.URLField(max_length=10000, blank=True, null=True)
+
+    starred = models.BooleanField(default=False)
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.multimodal_lean_chat.chat_name} - {self.sender_type} - {self.sent_at}"
+
+    class Meta:
+        verbose_name = "Multimodal Lean Chat Message"
+        verbose_name_plural = "Multimodal Lean Chat Messages"
+        ordering = ["-sent_at"]
+        indexes = [
+            # Single-field indexes
+            models.Index(fields=['multimodal_lean_chat']),
+            models.Index(fields=['sender_type']),
+            models.Index(fields=['starred']),
+            models.Index(fields=['sent_at']),
+            # Two-field composite indexes
+            models.Index(fields=['multimodal_lean_chat', 'sender_type']),
+            models.Index(fields=['multimodal_lean_chat', 'starred']),
+            models.Index(fields=['multimodal_lean_chat', 'sent_at']),
+            models.Index(fields=['sender_type', 'starred']),
+            models.Index(fields=['sender_type', 'sent_at']),
+            models.Index(fields=['starred', 'sent_at']),
+            # Three-field composite indexes
+            models.Index(fields=['multimodal_lean_chat', 'sender_type', 'starred']),
+            models.Index(fields=['multimodal_lean_chat', 'sender_type', 'sent_at']),
+            models.Index(fields=['multimodal_lean_chat', 'starred', 'sent_at']),
+            models.Index(fields=['sender_type', 'starred', 'sent_at']),
+            # Four-field composite indexes
+            models.Index(fields=['multimodal_lean_chat', 'sender_type', 'starred', 'sent_at']),
+        ]
+
+    def get_organization_balance(self):
+        return self.multimodal_lean_chat.organization.balance
+
+    def token_cost_surpasses_the_balance(self, total_billable_cost):
+        return self.multimodal_lean_chat.organization.balance < total_billable_cost
+
+    # create the transaction on save
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        MultimodalLeanChat.objects.get(id=self.multimodal_lean_chat.id).lean_chat_messages.add(self.id)
+
+
+# NOTE: Counts both the Chats and LeanChats
 class ChatCreationLog(models.Model):
     """
     ChatCreationLog Model:
@@ -531,6 +727,7 @@ class ChatCreationLog(models.Model):
         ]
 
 
+# NOTE: Counts both the Normal Chat Messages and Lean Chat Messages
 class ChatMessageCreationLog(models.Model):
     """
     ChatMessageCreationLog Model:

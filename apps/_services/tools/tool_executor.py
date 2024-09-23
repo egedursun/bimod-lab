@@ -21,6 +21,10 @@ from apps._services.tools.execution_handlers.memory_query_execution_handler impo
 from apps._services.tools.execution_handlers.predict_with_ml_model_execution_handler import execute_predict_ml_model
 from apps._services.tools.execution_handlers.sql_query_execution_handler import execute_sql_query
 from apps._services.tools.execution_handlers.url_file_downloader_execution_handler import execute_url_file_downloader
+from apps._services.tools.leanmod.execution_handlers.leanmod_expert_network_execution_handler import \
+    execute_expert_network_query
+from apps._services.tools.leanmod.validators.leanmod_expert_network_query_validator import \
+    validate_expert_network_query_tool_json
 from apps._services.tools.validators.audio_processing_execution_tool_validator import \
     validate_audio_processing_execution_tool_json
 from apps._services.tools.validators.browser_execution_tool_validator import validate_browser_execution_tool_json
@@ -375,4 +379,70 @@ class ToolExecutor:
                     uri = f"{MEDIA_URL}{uri}"
                 image_uris[i] = uri
         print("[ToolExecutor.use_tool] Tool Response has been returned.")
+        return tool_response, tool_name, file_uris, image_uris
+
+    def use_tool_lean(self):
+        print("[ToolExecutor.use_tool_lean] Lean Tool Usage JSON is being decoded...")
+        try:
+            if isinstance(self.tool_usage_json_str, dict):
+                self.tool_usage_json = self.tool_usage_json_str
+            else:
+                self.tool_usage_json = json.loads(self.tool_usage_json_str)
+        except Exception as e:
+            print("[ToolExecutor.use_tool_lean] Error decoding the JSON: ", e)
+            return get_json_decode_error_log(error_logs=str(e)), None, None, None
+
+        # For file and image generation by the tools
+        file_uris, image_uris = [], []
+
+        error = validate_main_tool_json(tool_usage_json=self.tool_usage_json)
+        print("[ToolExecutor.use_tool_lean] Tool Usage JSON has been validated.")
+        if error: return error, None, None, None
+
+        tool_name = self.tool_usage_json.get("tool")
+        tool_response = f"""
+                    Tool Response: {tool_name}
+
+                    '''
+                """
+
+        ##################################################
+        # Expert Network Query Call Tool
+        if tool_name == ToolTypeNames.EXPERT_NETWORK_QUERY_CALL:
+            print("[ToolExecutor.use_tool_lean] Expert Network Query Call Tool is being executed...")
+            error = validate_expert_network_query_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+            assistant_id = self.tool_usage_json.get("parameters").get("assistant_id")
+            query = self.tool_usage_json.get("parameters").get("query")
+            image_urls = self.tool_usage_json.get("parameters").get("image_urls")
+            file_urls = self.tool_usage_json.get("parameters").get("file_urls")
+            expert_network_response = execute_expert_network_query(assistant_id=assistant_id, query=query,
+                                                                   image_urls=image_urls, file_urls=file_urls)
+            expert_network_response_raw_str = json.dumps(expert_network_response, sort_keys=True, default=str)
+            tool_response += expert_network_response_raw_str
+        ##################################################
+        # ...
+        ##################################################
+        # IF NO TOOL IS FOUND WITH THE GIVEN NAME
+        else:
+            print("[ToolExecutor.use_tool_lean] No Tool Found with the given name.")
+            return get_no_tool_found_error_log(query_name=tool_name), tool_name, file_uris, image_uris
+        ##################################################
+        tool_response += f"""
+                    '''
+                """
+        print("-" * 50)
+        print("[ACTIVE-LOG] [ToolExecutor.use_tool_lean] Tool Response Debugger: \n", tool_response)
+        print("-" * 50)
+        if file_uris:
+            for i, uri in enumerate(file_uris):
+                if not uri.startswith("http"):
+                    uri = f"{MEDIA_URL}{uri}"
+                file_uris[i] = uri
+        if image_uris:
+            for i, uri in enumerate(image_uris):
+                if not uri.startswith("http"):
+                    uri = f"{MEDIA_URL}{uri}"
+                image_uris[i] = uri
+        print("[ToolExecutor.use_tool_lean] Tool Response has been returned.")
         return tool_response, tool_name, file_uris, image_uris

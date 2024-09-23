@@ -7,7 +7,8 @@ from apps.user_settings.views import UserSettingsView, DeleteAllOrganizationsVie
     DeleteAllKnowledgeBasesView, DeleteAllKnowledgeBaseDocumentsView, DeleteAllCodeStoragesView, \
     DeleteAllMLModelStoragesView, DeleteAllMLModelsView, DeleteAllMediaStoragesView, DeleteAllMultimediaFilesView, \
     DeleteAllFunctionsView, DeleteAllAPIsView, DeleteAllScriptsView, DeleteAllScheduledJobsView, \
-    DeleteAllTriggeredJobsView, DeleteAllRepositoriesView
+    DeleteAllTriggeredJobsView, DeleteAllRepositoriesView, DeleteAllLeanAssistantsView, DeleteAllExpertNetworksView, \
+    DeleteAllLeanChatsView
 
 app_name = "user_settings"
 
@@ -20,7 +21,10 @@ urlpatterns = [
     # path('delete/all/organizations/', DeleteAllOrganizationsView.as_view(), name='delete_all_organizations'),
     path('delete/all/llm_models/', DeleteAllLLMModelsView.as_view(), name='delete_all_llm_models'),
     path('delete/all/assistants/', DeleteAllAssistantsView.as_view(), name='delete_all_assistants'),
+    path('delete/all/lean_assistants/', DeleteAllLeanAssistantsView.as_view(), name='delete_all_lean_assistants'),
+    path('delete/all/expert_networks/', DeleteAllExpertNetworksView.as_view(), name='delete_all_expert_networks'),
     path('delete/all/chats/', DeleteAllChatsView.as_view(), name='delete_all_chats'),
+    path('delete/all/lean_chats/', DeleteAllLeanChatsView.as_view(), name='delete_all_lean_chats'),
     path('delete/all/starred_messages/', DeleteAllStarredMessagesView.as_view(), name='delete_all_starred_messages'),
     path('delete/all/memories/', DeleteAllMemoriesView.as_view(), name='delete_all_memories'),
     path('delete/all/message_templates/', DeleteAllMessageTemplatesView.as_view(), name='delete_all_message_templates'),

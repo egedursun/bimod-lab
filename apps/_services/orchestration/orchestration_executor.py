@@ -11,7 +11,7 @@ from apps._services.orchestration.prompts.orchestration_history_builder import O
 from apps._services.orchestration.prompts.orchestration_prompt_builder import OrchestrationPromptBuilder
 from apps._services.orchestration.utils import send_orchestration_message, embed_orchestration_tool_call_in_prompt
 from apps.assistants.models import Assistant
-from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames
+from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
 from apps.multimodal_chat.utils import BIMOD_NO_TAG_PLACEHOLDER, BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END
 from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog, OrchestrationQueryLogTypesNames
 
@@ -451,10 +451,37 @@ class OrchestrationExecutor:
             """, query_id=self.query_chat.id)
             return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
 
+        if image_urls is not None:
+            structured_maestro_order += """
+                ---
+                *IMAGE URLS*
+            """
+            for image_url in image_urls:
+                structured_maestro_order += f"""
+                - {image_url}
+            """
+            structured_maestro_order += "---"
+        if file_urls is not None:
+            structured_maestro_order += """
+                *FILE URLS*
+            """
+            for file_url in file_urls:
+                structured_maestro_order += f"""
+                - {file_url}
+            """
+            structured_maestro_order += "---"
+
+        MultimodalChatMessage.objects.create(
+            multimodal_chat=chat, sender_type='USER', message_text_content=structured_maestro_order,
+            message_image_contents=image_urls, message_file_contents=file_urls
+        )
         final_response = internal_llm_client.respond_stream(
             latest_message=structured_maestro_order,
             image_uris=image_urls,
             file_uris=file_urls
+        )
+        MultimodalChatMessage.objects.create(
+            multimodal_chat=chat, sender_type='ASSISTANT', message_text_content=final_response
         )
 
         # v. Stream the responses of the assistant as they come
