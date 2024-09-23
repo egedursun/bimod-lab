@@ -2,9 +2,7 @@
 
 ---
 
-[1] ADDITIONAL CHAT PAGE for "LEAN assistants" + ARCHIVE PAGE for LEAN assistants
-[2] LOGIC UPDATES for CHAT background in server + DO NOT FORGET adding PLACE/TIME awareness to the prompt.
-[3] TESTING for the functionality
+......
 
 ---
 
@@ -138,10 +136,6 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 **THINGS TO REMEMBER:**
 
 ---
-
-**URGENT:**
--> [HOLDINGS / BIMOD.IO ENDEAVORS] as concrete implementations with the assistants. Completely autonomous systems.
-    Mostly for creating Business presence and prestige.
 
 -> Master Reasoner: GPT-o1 (reasoning agent)
 

@@ -198,27 +198,11 @@ media/generated/images/*
 *.priv
 
 # Migration files
-/migrations/*.py
-/migrations/*.pyc
-*/migrations/*.py
-*/migrations/*.pyc
-*/*/migrations/*.py
-*/*/migrations/*.pyc
-*/*/*/migrations/*.py
-*/*/*/migrations/*.pyc
-*/*/*/*/migrations/*.py
-*/*/*/*/migrations/*.pyc
-*/*/*/*/*/migrations/*.py
-*/*/*/*/*/migrations/*.pyc
-*/*/*/*/*/*/migrations/*.py
-*/*/*/*/*/*/migrations/*.pyc
-*/*/*/*/*/*/*/migrations/*.py
-*/*/*/*/*/*/*/migrations/*.pyc
-*/*/*/*/*/*/*/*/migrations/*.py
-*/*/*/*/*/*/*/*/migrations/*.pyc
-*/*/*/*/*/*/*/*/*/migrations/*.py
-*/*/*/*/*/*/*/*/*/migrations/*.pyc
-*/*/*/*/*/*/*/*/*/*/migrations/*.py
-*/*/*/*/*/*/*/*/*/*/migrations/*.pyc
-*/*/*/*/*/*/*/*/*/*/*/migrations/*.py
-*/*/*/*/*/*/*/*/*/*/*/migrations/*.pyc
+# /migrations/*.py
+# /migrations/*.pyc
+# */migrations/*.py
+# */migrations/*.pyc
+# */*/migrations/*.py
+# */*/migrations/*.pyc
+# */*/*/migrations/*.py
+# */*/*/migrations/*.pyc
