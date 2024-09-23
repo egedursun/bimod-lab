@@ -91,29 +91,30 @@ INSTALLED_APPS = [
     "apps.theme.maps",
     "auth.apps.AuthConfig",
     "apps.theme.transactions",
+
     "apps.landing",
     "apps.user_profile_management",
     "apps.user_settings",
-
     "apps.dashboard",
-    "apps.organization",
+    "apps.assistants",
+    "apps.leanmod",
     "apps.llm_core",
     "apps.llm_transaction",
     "apps.user_management",
     "apps.user_permissions",
-    "apps.assistants",
+    "apps.organization",
     "apps.multimodal_chat",
-    "apps.memories",
-    "apps.starred_messages",
-    "apps.message_templates",
     "apps.export_assistants",
     "apps.datasource_sql",
-    "apps.datasource_knowledge_base",
     "apps.datasource_codebase",
     "apps.datasource_file_systems",
     "apps.datasource_media_storages",
     "apps.datasource_ml_models",
     "apps.datasource_browsers",
+    "apps.starred_messages",
+    "apps.memories",
+    "apps.message_templates",
+    "apps.datasource_knowledge_base",
     "apps.mm_functions",
     "apps.mm_apis",
     "apps.mm_scripts",
@@ -122,7 +123,6 @@ INSTALLED_APPS = [
     "apps.orchestrations",
     "apps.finetuning",
     "apps.data_security",
-    "apps.leanmod",
 
     ########################################
     # SUPPORT
@@ -130,7 +130,6 @@ INSTALLED_APPS = [
     "apps.support_system",
     "apps.community_forum",
     "apps.blog_app",
-
 ]
 
 #####################################################################################################################

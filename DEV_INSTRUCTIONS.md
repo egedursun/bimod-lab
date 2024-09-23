@@ -299,6 +299,28 @@ find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
 find . -path "*/*/migrations/*.py" -not -name "__init__.py" -delete
 find . -path "*/migrations/*.pyc"  -delete
 find . -path "*/*/migrations/*.py" -not -name "__init__.py" -delete
+pip uninstall django --yes
+pip install django
+```
+
+*For fucked-up migrations:*
+```
+python3 manage.py dbshell // in local
+    psql -h localhost -U admin_dev -d bimod_dev // in server (dev)
+    psql -h localhost -U admin_prod -d bimod_prod // in server (prod)
+
+DELETE FROM django_migrations;
+exit
+
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+find . -path "*/*/migrations/*.py" -not -name "__init__.py" -delete
+pip uninstall django --yes
+pip install django
+python3 manage.py makemigrations
+python3 manage.py migrate --fake
+python3 manage.py migrate
 ```
 
 ---

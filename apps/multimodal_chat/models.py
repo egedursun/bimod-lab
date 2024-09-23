@@ -71,7 +71,7 @@ class MultimodalChat(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # Chat Messages
-    chat_messages = models.ManyToManyField('multimodal_chat.MultimodalChatMessage', related_name='multimodal_chats',
+    chat_messages = models.ManyToManyField('MultimodalChatMessage', related_name='multimodal_chats',
                                            blank=True)
     transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_chats',
                                           blank=True)
@@ -566,7 +566,7 @@ class MultimodalChatMessage(models.Model):
         - `indexes`: Indexes on various fields for optimized queries.
     """
 
-    multimodal_chat = models.ForeignKey('multimodal_chat.MultimodalChat', on_delete=models.CASCADE,
+    multimodal_chat = models.ForeignKey('MultimodalChat', on_delete=models.CASCADE,
                                         related_name='messages_chat')
     sender_type = models.CharField(max_length=10, choices=MESSAGE_SENDER_TYPES)
     message_text_content = models.TextField()
@@ -642,7 +642,7 @@ class MultimodalChatMessage(models.Model):
 
 
 class MultimodalLeanChatMessage(models.Model):
-    multimodal_lean_chat = models.ForeignKey('multimodal_chat.MultimodalLeanChat', on_delete=models.CASCADE,
+    multimodal_lean_chat = models.ForeignKey('MultimodalLeanChat', on_delete=models.CASCADE,
                                         related_name='lean_messages_chat')
     sender_type = models.CharField(max_length=10, choices=MESSAGE_SENDER_TYPES)
     message_text_content = models.TextField()

@@ -52,6 +52,12 @@ echo "          [Deploy / Development] Requirements installed!"
 echo "          [Deploy / Development] Running database migrations..."
 
 # Database migrations
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+find . -path "*/*/migrations/*.py" -not -name "__init__.py" -delete
+pip uninstall django --yes
+pip install django
 python3 manage.py makemigrations
 python3 manage.py migrate --fake
 python3 manage.py migrate
