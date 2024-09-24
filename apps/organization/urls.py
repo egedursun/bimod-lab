@@ -5,6 +5,7 @@ from .views import (CreateOrganizationView, OrganizationListView, OrganizationUp
 
 app_name = "organization"
 
+
 urlpatterns = [
     path('create/',
          CreateOrganizationView.as_view(template_name="organization/create_organization.html"),

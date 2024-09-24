@@ -17,7 +17,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, DeleteView
 
 from apps._services.llms.llm_decoder import InternalLLMClient
-from apps.export_assistants.management.commands.start_exported_assistants import start_endpoint_for_assistant
 from apps.export_leanmods.management.commands.start_exported_leanmods import start_endpoint_for_leanmod
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI, LeanmodRequestLog
 from apps.leanmod.models import LeanAssistant
@@ -169,7 +168,7 @@ class ListExportLeanmodAssistantsView(TemplateView, LoginRequiredMixin):
         organizations = Organization.objects.filter(users=user_context)
 
         for organization in organizations:
-            export_assistants_count = organization.exported_assistants.count()
+            export_assistants_count = organization.exported_leanmods.count()
             assistants_percentage = round((export_assistants_count / max_export_assistants) * 100, 2)
             export_assistants = organization.exported_leanmods.all()
             for assistant in export_assistants:

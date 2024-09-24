@@ -18,7 +18,7 @@ class LeanmodRequestLogAdmin(admin.ModelAdmin):
 
 
 @admin.register(ExportLeanmodAssistantAPI)
-class ExportAssistantAPIAdmin(admin.ModelAdmin):
+class ExportLeanmodAssistantAPIAdmin(admin.ModelAdmin):
     list_display = (
         "lean_assistant", "is_public", "request_limit_per_hour", "custom_api_key", "created_by_user",
         "is_online", "created_at", "updated_at")

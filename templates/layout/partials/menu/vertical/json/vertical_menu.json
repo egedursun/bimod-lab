@@ -291,13 +291,13 @@
       "submenu": [
         {
           "name": "Export Orchestration",
-          "slug": "export-assistant",
-          "url": "export_assistants:create"
+          "slug": "export-orchestration",
+          "url": "export_orchestrations:create"
         },
         {
           "name": "Exported Orchestrations",
-          "slug": "export-assistant",
-          "url": "export_assistants:list"
+          "slug": "export-orchestration",
+          "url": "export_orchestrations:list"
         }
       ]
     },

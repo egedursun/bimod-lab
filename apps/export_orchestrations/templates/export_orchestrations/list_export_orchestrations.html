@@ -1,0 +1,342 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Exported Orchestration Services{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <style>
+    .text-wrap {
+      white-space: normal;
+      word-break: break-all;
+    }
+  </style>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h3 class="mb-0"><strong>Exported Orchestrations</strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-7.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        On this page, you can view all the exported Orchestrations you have created. You can also edit or delete any
+        export orchestrations. To create a new export orchestration, click on the "Create Export Orchestration" button.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h4 class="mb-0"><strong>Export Limits</strong></h4>
+    </div>
+  </div>
+
+  <!-- Export Orchestrations Cards -->
+  <div class="row g-6 mb-8">
+    {% for data in organization_data %}
+      <div class="col-xl-6 col-md-6">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between">
+            <div class="card-title mb-0">
+              <div class="d-flex">
+                <img src="
+                  {% if data.organization.organization_image %}{{ data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                     alt="Organization Logo" class="rounded me-4" width="60">
+                <h5 class="mb-1">
+                  <strong>
+                    {{ data.organization.name }}
+                  </strong></h5>
+              </div>
+              <p class="card-subtitle mt-4"><strong>{{ data.assistants_percentage }}%</strong> of the exportation limit
+                used
+                <strong>({{ data.export_assistants_count }}/{{ data.limit }})</strong></p>
+            </div>
+          </div>
+          <div class="card-datatable table-responsive">
+            <a href="{% url 'export_orchestrations:create' %}">
+              <button class="btn btn-success ms-6">
+                <i class="fa fa-add me-4"></i>
+                <strong> Add New Orchestration Service</strong>
+              </button>
+            </a>
+          </div>
+          <div class="card-body">
+            <div class="progress mb-4" style="height: 20px;">
+              <div class="progress-bar bg-success" role="progressbar" style="width: {{ data.assistants_percentage }}%;"
+                   aria-valuenow="{{ data.assistants_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                {{ data.assistants_percentage }}%
+              </div>
+            </div>
+            <ul class="p-0 m-0">
+              {% for export_assistant in data.export_assistants %}
+                <li class="mb-4 d-flex">
+                  <div class="d-flex w-50 align-items-center me-4">
+                    <div>
+                      <h6 class="mb-0"><strong>{{ export_assistant.orchestrator.name }}</strong></h6>
+                      <small class="text-body">{{ export_assistant.orchestrator.organization.name }}</small>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-grow-1 align-items-center">
+                    {% if export_assistant.is_online %}
+                      <span class="text-success">
+                    <i class="fa fa-circle me-2"></i>Serving
+                </span>
+                    {% else %}
+                      <span class="text-warning">
+                  <i class="fa fa-circle me-2"></i>Paused
+                </span>
+                    {% endif %}
+                    {% if export_assistant.is_online %}
+                      <a href="{% url 'export_orchestrations:toggle_service' export_assistant.id %}">
+                        <button class="btn btn-warning rounded ms-12"><strong>Pause Service</strong></button>
+                      </a>
+                    {% else %}
+                      <a href="{% url 'export_orchestrations:toggle_service' export_assistant.id %}">
+                        <button class="btn btn-success rounded ms-12"><strong>Resume Service</strong></button>
+                      </a>
+                    {% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <hr>
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h4 class="mb-0"><strong>Active Services</strong></h4>
+    </div>
+  </div>
+
+  <div class="row g-0">
+    {% for export_assistant in export_assistants %}
+      <div class="card col-5 mb-6 ms-6">
+        <div class="card-body text-center">
+          <h5 class="mb-0 card-title"><strong>{{ export_assistant.orchestrator.name }}</strong></h5>
+          <span>{{ export_assistant.orchestrator.organization.name }}</span>
+          <div class="align-items-center justify-content-center my-6 gap-2">
+            <label class="text">
+              <strong>
+                <i class="fa fa-link me-2"></i>
+                Endpoint URL:
+              </strong></label><br>
+            <div class="me-2 pt-2">
+            <span class="badge bg-label-secondary text-wrap p-4 mt-2 pt-6 mb-2">
+              <strong class="border border-warning p-1 rounded text-warning">POST</strong>
+              <div class="mt-4">
+                <strong>
+                  <a href="{{ export_assistant.endpoint }}" class="text-white"
+                     target="_blank">{{ export_assistant.endpoint }}</a>
+                </strong></div>
+            </span>
+              <strong><small>
+                <a href="javascript:void(0);" class="copy-btn-endpoint"
+                   data-endpoint="{{ export_assistant.endpoint }}">
+                  <i class="fa fa-copy"></i><span class="ms-2">Copy URL</span>
+                </a>
+              </small></strong>
+            </div>
+            <hr>
+            {% if not export_assistant.is_public %}
+              <label class="text mt-2"><strong>
+                <i class="fa fa-key me-2"></i>
+                Authorization:
+              </strong></label><br>
+              <div class="me-2">
+                <span class="badge bg-label-secondary text-wrap p-4 m-2">
+                  <strong class="text-white">
+                    <span class="api-key" id="api-key-{{ export_assistant.id }}">************************************</span>
+                  </strong>
+                </span>
+                <strong><small>
+                  <a href="javascript:void(0);" class="toggle-api-key" data-key="{{ export_assistant.custom_api_key }}"
+                     data-id="{{ export_assistant.id }}">
+                    <i class="fa fa-eye"></i><span class="ms-2">Show API Key</span>
+                  </a>
+                  <a href="javascript:void(0);" class="copy-btn-key ms-4"
+                     data-key="{{ export_assistant.custom_api_key }}">
+                    <i class="fa fa-copy"></i><span class="ms-2">Copy API Key</span>
+                  </a>
+                </small></strong>
+              </div>
+            {% else %}
+              <label class="text mt-2"><strong>
+                <i class="fa fa-key me-2"></i>
+                Authorization:
+              </strong></label><br>
+              <div class="me-2">
+              <span class="badge bg-label-success text-wrap p-4 m-2">
+              <strong>This Orchestrator is public, no API key required.</strong>
+            </span>
+            {% endif %}
+            </div>
+            <hr>
+            <div class="d-flex align-items-center justify-content-center my-6 gap-2">
+            <span
+              class="badge bg-label-{% if export_assistant.is_public %}info{% else %}danger{% endif %} me-2 text-wrap"><strong>Public: {{ export_assistant.is_public|yesno:"Yes,No" }}</strong></span>
+              <span
+                class="badge bg-label-info ms-2 text-wrap"><strong>Maximum Requests per Hour: {{ export_assistant.request_limit_per_hour }}</strong></span>
+            </div>
+            <div class="d-flex align-items-center justify-content-center">
+              <a href="{% url 'export_orchestrations:update' export_assistant.id %}"
+                 class="btn btn-primary d-flex align-items-center me-4 waves-effect waves-light"><i
+                class="ti ti-edit me-2"></i><strong>Edit</strong></a>
+              <a href="{% url 'export_orchestrations:delete' export_assistant.id %}"
+                 class="btn btn-danger"><i class="ti ti-trash me-2"></i><strong>Delete</strong></a>
+            </div>
+            <div class="alert-container"></div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+      document.querySelectorAll('.toggle-api-key').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const apiKey = this.getAttribute('data-key');
+          const id = this.getAttribute('data-id');
+          const apiKeySpan = document.querySelector(`#api-key-${id}`);
+
+          // Toggle between showing and hiding the API key
+          if (apiKeySpan.textContent === '************************************') {
+            apiKeySpan.textContent = apiKey; // Show the key
+            this.innerHTML = '<i class="fa fa-eye-slash"></i><span class="ms-2">Hide API Key</span>';
+          } else {
+            apiKeySpan.textContent = '************************************'; // Hide the key
+            this.innerHTML = '<i class="fa fa-eye"></i><span class="ms-2">Show API Key</span>';
+          }
+        });
+      });
+
+      document.querySelectorAll('.copy-btn-endpoint').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const endpoint = this.getAttribute('data-endpoint');
+          const textToCopy = endpoint ? endpoint : '';
+
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            const alertContainer = this.closest('.card-body').querySelector('.alert-container');
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+            successAlert.role = 'alert';
+            successAlert.innerHTML = `
+          <span class="alert-icon rounded">
+            <i class="ti ti-check"></i>
+          </span>
+          Endpoint URL copied to clipboard!
+        `;
+            alertContainer.appendChild(successAlert);
+
+            setTimeout(() => {
+              successAlert.remove();
+            }, 1000);
+          }).catch(err => {
+            alert('Failed to copy text: ' + err);
+          });
+        });
+      });
+
+      document.querySelectorAll('.copy-btn-key').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const apiKey = this.getAttribute('data-key');
+          const textToCopy = apiKey ? apiKey : '';
+
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            const alertContainer = this.closest('.card-body').querySelector('.alert-container');
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
+            successAlert.role = 'alert';
+            successAlert.innerHTML = `
+          <span class="alert-icon rounded">
+            <i class="ti ti-check"></i>
+          </span>
+          API Key copied to clipboard!
+        `;
+            alertContainer.appendChild(successAlert);
+
+            setTimeout(() => {
+              successAlert.remove();
+            }, 1000);
+          }).catch(err => {
+            alert('Failed to copy text: ' + err);
+          });
+        });
+      });
+
+      document.querySelectorAll('.btn-danger').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('a').getAttribute('href');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+{% endblock %}

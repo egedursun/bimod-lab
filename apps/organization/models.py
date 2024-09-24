@@ -76,10 +76,8 @@ class Organization(models.Model):
                                                  related_name="organizations", blank=True)
     exported_leanmods = models.ManyToManyField("export_leanmods.ExportLeanmodAssistantAPI",
                                                   related_name="organizations", blank=True)
-    """
-    exported_orchestrations = models.ManyToManyField("export_orchestrations.OrchestrationAPI",
+    exported_orchestrations = models.ManyToManyField("export_orchestrations.ExportOrchestrationAPI",
                                                         related_name="organizations", blank=True)
-    """
 
     auto_balance_topup = models.OneToOneField("llm_transaction.AutoBalanceTopUpModel",
                                               on_delete=models.SET_NULL, blank=True, null=True,

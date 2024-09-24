@@ -75,9 +75,9 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-5">
-                <label class="form-label" for="assistant">Assistant</label>
+                <label class="form-label" for="assistant">LeanMod® Assistant</label>
                 <select class="form-select" id="assistant" name="assistant">
-                  <option value="" disabled selected>Select Assistant</option>
+                  <option value="" disabled selected>Select LeanMod® Assistant</option>
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}"
                             {% if export_assistant.lean_assistant_id == assistant.id %}selected{% endif %}>{{ assistant.name }}</option>

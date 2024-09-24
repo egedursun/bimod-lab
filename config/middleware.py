@@ -52,7 +52,7 @@ class AppendSlashMiddleware:
             and not request.path.startswith('/api/')
             and not request.path.startswith('/app/export_assistants/api/v1/export')
             and not request.path.startswith('/app/export_leanmods/api/v1/export')
-            and not request.path.startswith('/app/export_orchestrations/api/v1/lean')):
+            and not request.path.startswith('/app/export_orchestrations/api/v1/export')):
             return HttpResponsePermanentRedirect(request.path + '/')
         return self.get_response(request)
 
@@ -65,9 +65,3 @@ class LoadingBarMiddleware(MiddlewareMixin):
             loading_bar_html = CONTENT_MIX
             response.content = content.replace('</body>', loading_bar_html + '</body>')
         return response
-
-
-
-
-
-
