@@ -73,10 +73,10 @@
   - **Username:** N/A
   - **Password:** N/A
   - User Login Credentials:
-    - bimod-dev
+    - bimod_dev
       - **Username:** admin_dev
       - **PW:** AVNS_3Ahz2MyWPkiAEdiSV53
-    - bimod-prod
+    - bimod_prod
       - **Username:** admin_prod
       - **PW:** AVNS_-pRb8XSnQqRJOyyHxKM
 

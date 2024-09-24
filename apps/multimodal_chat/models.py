@@ -518,13 +518,6 @@ class MultimodalLeanChat(models.Model):
             models.Index(fields=['chat_source', 'created_at', 'updated_at']),
         ]
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-    def delete(self, using=None, keep_parents=False):
-        # Remove the context memory connection
-        super().delete(using, keep_parents)
-
 
 class MessageSenderTypeNames:
     USER = "USER"

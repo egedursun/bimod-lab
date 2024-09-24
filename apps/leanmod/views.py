@@ -157,7 +157,9 @@ class ListLeanAssistantsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         org_lean_assistants = {}
-        organizations = Organization.objects.prefetch_related('lean_assistants')
+        organizations = Organization.objects.prefetch_related('lean_assistants').filter(
+            users__in=[self.request.user]
+        ).all()
 
         # Group lean assistants by organization
         for organization in organizations:
@@ -351,6 +353,9 @@ class ListExpertNetworksView(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         # Fetch all expert networks and their related assistants
-        expert_networks = ExpertNetwork.objects.prefetch_related('assistant_references__assistant', 'organization')
+        expert_networks = ExpertNetwork.objects.prefetch_related('assistant_references__assistant', 'organization').filter(
+            organization__users__in=[self.request.user]
+        ).all()
+
         context['expert_networks'] = expert_networks
         return context
