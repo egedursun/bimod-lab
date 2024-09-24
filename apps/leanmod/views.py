@@ -39,6 +39,21 @@ class CreateLeanAssistantView(LoginRequiredMixin, TemplateView):
             messages.error(request, "Please fill in all required fields.")
             return redirect('leanmod:create')
 
+        ##############################
+        # PERMISSION CHECK FOR - ASSISTANT/CREATE
+        ##############################
+        user = self.request.user
+        user_permissions = UserPermission.active_permissions.filter(
+            user=user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.ADD_ASSISTANTS not in user_permissions:
+            messages.error(self.request, "You do not have permission to add new assistants.")
+            return redirect('leanmod:list')
+        ##############################
+
         try:
             # Create new Lean Assistant
             organization = Organization.objects.get(id=organization_id)
@@ -92,6 +107,21 @@ class UpdateLeanAssistantView(LoginRequiredMixin, TemplateView):
         assistant_id = kwargs.get('pk')
         lean_assistant = LeanAssistant.objects.get(id=assistant_id)
 
+        ##############################
+        # PERMISSION CHECK FOR - ASSISTANT/UPDATE
+        ##############################
+        user = self.request.user
+        user_permissions = UserPermission.active_permissions.filter(
+            user=user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.UPDATE_ASSISTANTS not in user_permissions:
+            messages.error(self.request, "You do not have permission to update/modify assistants.")
+            return redirect('leanmod:list')
+        ##############################
+
         # Fetch form data
         organization_id = request.POST.get('organization')
         llm_model_id = request.POST.get('llm_model')
@@ -140,6 +170,22 @@ class DeleteLeanAssistantView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         assistant_id = kwargs.get('pk')
+
+        ##############################
+        # PERMISSION CHECK FOR - ASSISTANT/DELETE
+        ##############################
+        user = self.request.user
+        user_permissions = UserPermission.active_permissions.filter(
+            user=user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.DELETE_ASSISTANTS not in user_permissions:
+            messages.error(self.request, "You do not have permission to delete assistants.")
+            return redirect('leanmod:list')
+        ##############################
+
         try:
             lean_assistant = LeanAssistant.objects.get(id=assistant_id)
             lean_assistant.delete()
@@ -149,7 +195,6 @@ class DeleteLeanAssistantView(LoginRequiredMixin, TemplateView):
         except Exception as e:
             messages.error(request, f"An error occurred while deleting the Lean Assistant: {e}")
         return redirect('leanmod:list')
-
 
 
 class ListLeanAssistantsView(LoginRequiredMixin, TemplateView):
@@ -258,20 +303,6 @@ class UpdateExpertNetworkView(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
 
-        ##############################
-        # PERMISSION CHECK FOR - ASSISTANT/UPDATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.UPDATE_ASSISTANTS not in user_permissions:
-            messages.error(self.request, "You do not have permission to update / modify assistants.")
-            return redirect('leanmod:list_expert_networks')
-        ##############################
-
         expert_network_id = kwargs.get('pk')
         expert_network = ExpertNetwork.objects.get(id=expert_network_id)
         assistants = Assistant.objects.filter(organization__users__in=[user])
@@ -291,8 +322,23 @@ class UpdateExpertNetworkView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        user = self.request.user
         expert_network_id = kwargs.get('pk')
         expert_network = ExpertNetwork.objects.get(id=expert_network_id)
+
+        ##############################
+        # PERMISSION CHECK FOR - ASSISTANT/UPDATE
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.UPDATE_ASSISTANTS not in user_permissions:
+            messages.error(self.request, "You do not have permission to update / modify assistants.")
+            return redirect('leanmod:list_expert_networks')
+        ##############################
 
         # Update basic fields
         expert_network.name = request.POST.get("network_name")
@@ -340,6 +386,21 @@ class DeleteExpertNetworkView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         expert_network_id = kwargs.get('pk')
         expert_network = get_object_or_404(ExpertNetwork, id=expert_network_id)
+        user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - ASSISTANT/DELETE
+        ##############################
+        user_permissions = UserPermission.active_permissions.filter(
+            user=user
+        ).all().values_list(
+            'permission_type',
+            flat=True
+        )
+        if PermissionNames.DELETE_ASSISTANTS not in user_permissions:
+            messages.error(self.request, "You do not have permission to delete assistants.")
+            return redirect('leanmod:list_expert_networks')
+        ##############################
 
         # Perform the deletion
         expert_network.delete()

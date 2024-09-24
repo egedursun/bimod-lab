@@ -234,6 +234,23 @@
       ]
     },
     {
+      "name": "Orchestrations",
+      "icon": "menu-icon tf-icons ti ti-bolt",
+      "slug": "orchestrations",
+      "submenu": [
+        {
+          "name": "Add Orchestration",
+          "slug": "orchestration",
+          "url": "orchestrations:create"
+        },
+        {
+          "name": "Orchestrations",
+          "slug": "orchestration",
+          "url": "orchestrations:list"
+        }
+      ]
+    },
+    {
       "name": "Export Assistants",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "export-assistants",
@@ -251,19 +268,36 @@
       ]
     },
     {
-      "name": "Orchestrations",
-      "icon": "menu-icon tf-icons ti ti-bolt",
-      "slug": "orchestrations",
+      "name": "Export Leanmods®",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "export-leanmods",
       "submenu": [
         {
-          "name": "Add Orchestration",
-          "slug": "orchestration",
-          "url": "orchestrations:create"
+          "name": "Export Leanmod®",
+          "slug": "export-assistant",
+          "url": "export_leanmods:create"
         },
         {
-          "name": "Orchestrations",
-          "slug": "orchestration",
-          "url": "orchestrations:list"
+          "name": "Exported Leanmods®",
+          "slug": "export-assistant",
+          "url": "export_leanmods:list"
+        }
+      ]
+    },
+    {
+      "name": "Export Orchestrations",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "export-orchestrations",
+      "submenu": [
+        {
+          "name": "Export Orchestration",
+          "slug": "export-assistant",
+          "url": "export_assistants:create"
+        },
+        {
+          "name": "Exported Orchestrations",
+          "slug": "export-assistant",
+          "url": "export_assistants:list"
         }
       ]
     },

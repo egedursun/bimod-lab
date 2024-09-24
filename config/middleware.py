@@ -50,7 +50,9 @@ class AppendSlashMiddleware:
     def __call__(self, request):
         if (not request.path.endswith('/')
             and not request.path.startswith('/api/')
-            and not request.path.startswith('/app/export_assistants/api/v1/export')):
+            and not request.path.startswith('/app/export_assistants/api/v1/export')
+            and not request.path.startswith('/app/export_leanmods/api/v1/export')
+            and not request.path.startswith('/app/export_orchestrations/api/v1/lean')):
             return HttpResponsePermanentRedirect(request.path + '/')
         return self.get_response(request)
 

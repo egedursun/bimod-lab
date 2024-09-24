@@ -71,8 +71,16 @@ class Organization(models.Model):
     organization_assistants = models.ManyToManyField("assistants.Assistant", related_name="organizations",
                                                      blank=True)
     llm_cores = models.ManyToManyField("llm_core.LLMCore", related_name="organizations")
+
     exported_assistants = models.ManyToManyField("export_assistants.ExportAssistantAPI",
                                                  related_name="organizations", blank=True)
+    exported_leanmods = models.ManyToManyField("export_leanmods.ExportLeanmodAssistantAPI",
+                                                  related_name="organizations", blank=True)
+    """
+    exported_orchestrations = models.ManyToManyField("export_orchestrations.OrchestrationAPI",
+                                                        related_name="organizations", blank=True)
+    """
+
     auto_balance_topup = models.OneToOneField("llm_transaction.AutoBalanceTopUpModel",
                                               on_delete=models.SET_NULL, blank=True, null=True,
                                               related_name="organization_auto_balance_topup")

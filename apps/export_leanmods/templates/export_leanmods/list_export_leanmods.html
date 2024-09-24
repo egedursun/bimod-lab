@@ -4,7 +4,7 @@
 {% load i18n %}
 {% load field_to_label %}
 
-{% block title %}Exported Assistant Services{% endblock %}
+{% block title %}Exported LeanMod® Assistant Services{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -37,7 +37,7 @@
 {% block content %}
   <div class="row g-6 mb-6">
     <div class="col-sm-6 col-xl-6">
-      <h3 class="mb-0"><strong>Exported Assistants</strong></h3>
+      <h3 class="mb-0"><strong>Exported LeanMod® Assistants</strong></h3>
     </div>
   </div>
 
@@ -50,7 +50,8 @@
     <div class="d-flex flex-column ps-1">
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
-        On this page, you can view all the export assistants you have created. You can also edit or delete any export
+        On this page, you can view all the LeanMod® export assistants you have created. You can also edit or delete any
+        export
         assistant. To create a new export assistant, click on the "Create Export Assistant" button.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -84,8 +85,6 @@
             <div class="card-title mb-0">
               <div class="d-flex">
                 <img src="
-
-
                   {% if data.organization.organization_image %}{{ data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                      alt="Organization Logo" class="rounded me-4" width="60">
                 <h5 class="mb-1">
@@ -99,10 +98,10 @@
             </div>
           </div>
           <div class="card-datatable table-responsive">
-            <a href="{% url 'export_assistants:create' %}">
+            <a href="{% url 'export_leanmods:create' %}">
               <button class="btn btn-success ms-6">
                 <i class="fa fa-add me-4"></i>
-                <strong> Add New Service</strong>
+                <strong> Add New LeanMod® Service</strong>
               </button>
             </a>
           </div>
@@ -117,15 +116,15 @@
               {% for export_assistant in data.export_assistants %}
                 <li class="mb-4 d-flex">
                   <div class="d-flex w-50 align-items-center me-4">
-                    {% if export_assistant.assistant.assistant_image %}
-                      <img src="{{ export_assistant.assistant.assistant_image.url }}" alt="Assistant Image" class="me-4"
+                    {% if export_assistant.lean_assistant.lean_assistant_image %}
+                      <img src="{{ export_assistant.lean_assistant.lean_assistant_image.url }}" alt="Assistant Image" class="me-4"
                            width="35">
                     {% else %}
                       <img src="{% static 'img/avatars/org-0.png' %}" alt="Assistant Image" class="me-4" width="35">
                     {% endif %}
                     <div>
-                      <h6 class="mb-0"><strong>{{ export_assistant.assistant.name }}</strong></h6>
-                      <small class="text-body">{{ export_assistant.assistant.organization.name }}</small>
+                      <h6 class="mb-0"><strong>{{ export_assistant.lean_assistant.name }}</strong></h6>
+                      <small class="text-body">{{ export_assistant.lean_assistant.organization.name }}</small>
                     </div>
                   </div>
                   <div class="d-flex flex-grow-1 align-items-center">
@@ -139,11 +138,11 @@
                 </span>
                     {% endif %}
                     {% if export_assistant.is_online %}
-                      <a href="{% url 'export_assistants:toggle_service' export_assistant.id %}">
+                      <a href="{% url 'export_leanmods:toggle_service' export_assistant.id %}">
                         <button class="btn btn-warning rounded ms-12"><strong>Pause Service</strong></button>
                       </a>
                     {% else %}
-                      <a href="{% url 'export_assistants:toggle_service' export_assistant.id %}">
+                      <a href="{% url 'export_leanmods:toggle_service' export_assistant.id %}">
                         <button class="btn btn-success rounded ms-12"><strong>Resume Service</strong></button>
                       </a>
                     {% endif %}
@@ -169,15 +168,15 @@
       <div class="card col-5 mb-6 ms-6">
         <div class="card-body text-center">
           <div class="mx-auto my-2">
-            {% if export_assistant.assistant.assistant_image %}
-              <img src="{{ export_assistant.assistant.assistant_image.url }}" alt="Assistant Image"
+            {% if export_assistant.lean_assistant.lean_assistant_image %}
+              <img src="{{ export_assistant.lean_assistant.lean_assistant_image.url }}" alt="Assistant Image"
                    class="rounded w-px-100">
             {% else %}
               <img src="{% static 'img/avatars/org-0.png' %}" alt="Assistant Image" class="rounded w-px-100">
             {% endif %}
           </div>
-          <h5 class="mb-0 card-title"><strong>{{ export_assistant.assistant.name }}</strong></h5>
-          <span>{{ export_assistant.assistant.organization.name }}</span>
+          <h5 class="mb-0 card-title"><strong>{{ export_assistant.lean_assistant.name }}</strong></h5>
+          <span>{{ export_assistant.lean_assistant.organization.name }}</span>
           <div class="align-items-center justify-content-center my-6 gap-2">
             <label class="text">
               <strong>
@@ -209,8 +208,7 @@
               <div class="me-2">
                 <span class="badge bg-label-secondary text-wrap p-4 m-2">
                   <strong class="text-white">
-                    <span class="api-key"
-                          id="api-key-{{ export_assistant.id }}">************************************</span>
+                    <span class="api-key" id="api-key-{{ export_assistant.id }}">************************************</span>
                   </strong>
                 </span>
                 <strong><small>
@@ -231,7 +229,7 @@
               </strong></label><br>
               <div class="me-2">
               <span class="badge bg-label-success text-wrap p-4 m-2">
-              <strong>This assistant is public, no API key required.</strong>
+              <strong>This LeanMod® assistant is public, no API key required.</strong>
             </span>
             {% endif %}
             </div>
@@ -243,10 +241,10 @@
                 class="badge bg-label-info ms-2 text-wrap"><strong>Maximum Requests per Hour: {{ export_assistant.request_limit_per_hour }}</strong></span>
             </div>
             <div class="d-flex align-items-center justify-content-center">
-              <a href="{% url 'export_assistants:update' export_assistant.id %}"
+              <a href="{% url 'export_leanmods:update' export_assistant.id %}"
                  class="btn btn-primary d-flex align-items-center me-4 waves-effect waves-light"><i
                 class="ti ti-edit me-2"></i><strong>Edit</strong></a>
-              <a href="{% url 'export_assistants:delete' export_assistant.id %}"
+              <a href="{% url 'export_leanmods:delete' export_assistant.id %}"
                  class="btn btn-danger"><i class="ti ti-trash me-2"></i><strong>Delete</strong></a>
             </div>
             <div class="alert-container"></div>

@@ -54,6 +54,8 @@ urlpatterns = [
     path("app/starred_messages/", include("apps.starred_messages.urls", namespace="starred_messages")),
     path("app/message_templates/", include("apps.message_templates.urls", namespace="message_templates")),
     path("app/export_assistants/", include("apps.export_assistants.urls", namespace="export_assistants")),
+    path("app/export_leanmods/", include("apps.export_leanmods.urls", namespace="export_leanmods")),
+    path("app/export_orchestrations/", include("apps.export_orchestrations.urls", namespace="export_orchestrations")),
     path("app/datasource_sql/", include("apps.datasource_sql.urls", namespace="datasource_sql")),
     path("app/datasource_knowledge_base/", include("apps.datasource_knowledge_base.urls")),
     path("app/datasource_codebase/", include("apps.datasource_codebase.urls", namespace="datasource_codebase")),

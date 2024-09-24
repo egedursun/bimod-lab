@@ -105,6 +105,8 @@ INSTALLED_APPS = [
     "apps.organization",
     "apps.multimodal_chat",
     "apps.export_assistants",
+    "apps.export_leanmods",
+    "apps.export_orchestrations",
     "apps.datasource_sql",
     "apps.datasource_codebase",
     "apps.datasource_file_systems",
@@ -395,6 +397,8 @@ ENCRYPTION_SALT = os.environ.get("ENCRYPTION_SALT", default="")
 
 # Max Assistant exports per organization
 MAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ASSISTANT_EXPORTS_ORGANIZATION", default="5"))
+MAX_LEANMODS_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_LEANMODS_EXPORTS_ORGANIZATION", default="5"))
+MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION", default="5"))
 
 # Weaviate credentials
 WEAVIATE_CLUSTER_URL = os.environ.get("WEAVIATE_CLUSTER_URL", default="")
@@ -491,12 +495,16 @@ EXCLUDED_PAGES = [
     # Exclude (ALL) Exported Assistant pages
     ########################################
     "/app/export_assistants/api/v1/export/*",
+    "/app/export_leanmods/api/v1/export/*",
+    "/app/export_orchestrations/api/v1/export/*",
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'
 
 # API version for exporting agents
 EXPORT_API_BASE_URL = "app/export_assistants/api/v1/export"
+EXPORT_LEANMOD_API_BASE_URL = "app/export_leanmods/api/v1/export"
+EXPORT_ORCHESTRATION_API_BASE_URL = "app/export_orchestrations/api/v1/export"
 
 # Celery task manager
 LEAN_BASE_URL = BASE_URL.split("://")[-1].split(":")[0]
