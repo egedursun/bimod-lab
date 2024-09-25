@@ -99,7 +99,6 @@ class InternalOpenAILeanClient:
 
         print(f"[InternalOpenAILeanClient.respond_stream] Responding to the user message...")
 
-        ner_executor, encryption_uuid = None, None
         try:
             # Create the System Prompt
             send_log_message(f"""
@@ -585,7 +584,6 @@ class InternalOpenAILeanClient:
         user = self.chat.user
         print(f"[InternalOpenAILeanClient.respond] Responding to the user message...")
 
-        ner_executor, encryption_uuid = None, None
         try:
             # Create the System Prompt
             try:

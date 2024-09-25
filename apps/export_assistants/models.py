@@ -66,8 +66,9 @@ class ExportAssistantAPI(models.Model):
         - `ordering`: Orders APIs by creation date in descending order.
         - `indexes`: Indexes on `assistant`, `created_by_user`, `created_at`, `updated_at`, and various combinations for optimized queries.
     """
-
-    assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE)
+    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE, related_name='exported_assistants',
+                                     default=2, null=True, blank=True)
+    assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, related_name='exported_assistants')
     is_public = models.BooleanField(default=False)
     request_limit_per_hour = models.IntegerField(default=1000)
     is_online = models.BooleanField(default=True)

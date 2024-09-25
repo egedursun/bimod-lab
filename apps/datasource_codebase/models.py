@@ -277,9 +277,6 @@ class CodeRepositoryStorageConnection(models.Model):
     # Schema (for defining the overall structure to the assistant)
     schema_json = models.TextField(null=True, blank=True)
 
-    # Knowledge bases have documents
-    code_base_repositories = models.ManyToManyField("CodeBaseRepository", blank=True)
-
     search_instance_retrieval_limit = models.IntegerField(default=10)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -330,7 +327,8 @@ class CodeRepositoryStorageConnection(models.Model):
 
 
 class CodeBaseRepository(models.Model):
-    knowledge_base = models.ForeignKey("CodeRepositoryStorageConnection", on_delete=models.CASCADE)
+    knowledge_base = models.ForeignKey("CodeRepositoryStorageConnection", on_delete=models.CASCADE,
+                                       related_name="code_base_repositories")
     repository_name = models.CharField(max_length=1000)
     repository_description = models.TextField()
     repository_metadata = models.JSONField()  # auto
@@ -341,7 +339,6 @@ class CodeBaseRepository(models.Model):
 
     # Documents have chunks
     repository_content_temporary = models.TextField(blank=True, null=True)  # This will be emptied before indexing
-    repository_chunks = models.ManyToManyField("CodeBaseRepositoryChunk", blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -395,7 +392,7 @@ class CodeBaseRepository(models.Model):
 
 class CodeBaseRepositoryChunk(models.Model):
     knowledge_base = models.ForeignKey("CodeRepositoryStorageConnection", on_delete=models.CASCADE)
-    repository = models.ForeignKey("CodeBaseRepository", on_delete=models.CASCADE)
+    repository = models.ForeignKey("CodeBaseRepository", on_delete=models.CASCADE, related_name="repository_chunks")
 
     chunk_number = models.IntegerField()
     chunk_content = models.TextField()  # This will be the text content of the chunk

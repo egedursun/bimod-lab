@@ -1,5 +1,5 @@
 from django import forms
-from .models import LLMCore, OPENAI_GPT_MODEL_NAMES
+from .models import LLMCore
 
 
 class LLMCoreForm(forms.ModelForm):

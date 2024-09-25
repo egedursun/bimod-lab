@@ -52,7 +52,7 @@
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-30.png' %}" width="25%" style="border-radius: 25px;"
-         class="justify-content-end me-8">
+         class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded ms-4">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -87,7 +87,7 @@
         <a data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="true"
            aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
-            <img class="avatar avatar-lg rounded me-4 mb-8" src="
+            <img class="avatar avatar-lg rounded me-4 mb-8" alt="Organization image" src="
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
             <h4>
               <strong>{{ organization.name }}</strong>
@@ -117,9 +117,7 @@
               {% for assistant in assistants %}
                 {% if assistant.organization == organization %}
                   <tr>
-                    <td><img class="avatar avatar-lg rounded" src="
-
-
+                    <td><img class="avatar avatar-lg rounded" alt="Assistant Image" src="
                       {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
                     </td>
                     <td style="min-width: 300px;">

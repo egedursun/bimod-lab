@@ -1,7 +1,6 @@
 from django.db import models
 
 from apps.assistants.models import ASSISTANT_RESPONSE_LANGUAGES
-from apps.assistants.utils import generate_random_string
 
 
 ORCHESTRATION_QUERY_LOG_TYPES = [

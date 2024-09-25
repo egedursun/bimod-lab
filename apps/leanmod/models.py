@@ -7,7 +7,7 @@ from config import settings
 
 
 class ExpertNetworkAssistantReference(models.Model):
-    network = models.ForeignKey("ExpertNetwork", on_delete=models.CASCADE)
+    network = models.ForeignKey("ExpertNetwork", on_delete=models.CASCADE, related_name='assistant_references', null=True, blank=True)
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     context_instructions = models.TextField(default="", blank=True)
 
@@ -79,8 +79,6 @@ class ExpertNetwork(models.Model):
     name = models.CharField(max_length=255)
     meta_description = models.TextField(default="", blank=True)
 
-    assistant_references = models.ManyToManyField("ExpertNetworkAssistantReference", related_name='networks')
-
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name='expert_networks_created_by_user')
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name='expert_networks_updated_by_user')
 
@@ -145,31 +143,6 @@ class LeanAssistant(models.Model):
 
     def __str__(self):
         return self.name + " - " + self.organization.name + " - " + self.llm_model.nickname
-
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        s3_client = boto3.client('s3')
-        bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-        base_s3_url = f"https://{bucket_name}.s3.amazonaws.com/"
-        print(f"[LeanAssistant.save] Saving the lean assistant: {self.name}.")
-        super().save(force_insert, force_update, using, update_fields)
-
-    def delete(self, using=None, keep_parents=False):
-        s3_client = boto3.client('s3')
-        bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-        print(f"[LeanAssistant.delete] Deleting the lean assistant: {self.name}.")
-
-        def delete_s3_directory(full_uri):
-            try:
-                dir_name = full_uri.replace(f"https://{bucket_name}.s3.amazonaws.com/", "")
-                paginator = s3_client.get_paginator('list_objects_v2')
-                pages = paginator.paginate(Bucket=bucket_name, Prefix=dir_name)
-                for page in pages:
-                    if 'Contents' in page:
-                        delete_keys = {'Objects': [{'Key': obj['Key']} for obj in page['Contents']]}
-                        s3_client.delete_objects(Bucket=bucket_name, Delete=delete_keys)
-            except Exception as e:
-                print(f"[LeanAssistant.delete] There has been an error in deleting the lean assistant directory {full_uri}: {e}")
-        super().delete(using, keep_parents)
 
     class Meta:
         verbose_name = "Lean Assistant"

@@ -114,7 +114,7 @@ class PromptBuilder:
         structured_glossary_prompt = build_structured_glossary_prompt(assistant.glossary)
         structured_place_and_time_prompt = ""
         if assistant.time_awareness and assistant.place_awareness:
-            structured_place_and_time_prompt = build_structured_place_and_time_prompt(assistant, user)
+            structured_place_and_time_prompt = build_structured_place_and_time_prompt(user)
         structured_context_overflow_prompt = build_structured_context_overflow_prompt(assistant)
         ##################################################
         # DATASOURCE PROMPTS
@@ -351,13 +351,13 @@ class PromptBuilder:
         structured_name_prompt = build_structured_name_prompt_leanmod(name, chat.chat_name)
         structured_instructions_prompt = build_structured_instructions_prompt_leanmod(lean_assistant)
         structured_user_information_prompt = build_structured_user_information_prompt_leanmod(user)
-        structured_place_and_time_prompt = build_structured_place_and_time_prompt_leanmod(lean_assistant, user)
+        structured_place_and_time_prompt = build_structured_place_and_time_prompt_leanmod(user)
         ##################################################
         # MULTI MODALITY PROMPTS
         structured_expert_networks_prompt = build_expert_networks_multi_modality_prompt_leanmod(lean_assistant)
         ##################################################
         # TOOL PROMPTS
-        structured_tool_usage_instructions_prompt = build_structured_tool_usage_instructions_prompt_leanmod(lean_assistant)
+        structured_tool_usage_instructions_prompt = build_structured_tool_usage_instructions_prompt_leanmod()
         structured_expert_network_query_execution_tool_prompt = build_structured_tool_prompt__expert_network_query_execution_leanmod()
         ##################################################
 

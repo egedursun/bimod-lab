@@ -22,7 +22,9 @@ class LeanmodRequestLog(models.Model):
 
 
 class ExportLeanmodAssistantAPI(models.Model):
-    lean_assistant = models.ForeignKey('leanmod.LeanAssistant', on_delete=models.CASCADE)
+    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE,
+                                     related_name='exported_leanmods', null=True, blank=True)
+    lean_assistant = models.ForeignKey('leanmod.LeanAssistant', on_delete=models.CASCADE, related_name='exported_leanmods')
     is_public = models.BooleanField(default=False)
     request_limit_per_hour = models.IntegerField(default=1000)
     is_online = models.BooleanField(default=True)

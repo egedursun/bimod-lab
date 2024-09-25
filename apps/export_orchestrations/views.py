@@ -116,9 +116,13 @@ class ExportOrchestrationAPIView(View):
         try:
             for message in chat_history:
                 role = message["role"]
+                if not role:
+                    print("[ExportOrchestrationAPIView.post] Role is not provided in the chat history.")
                 content = message["content"]
                 file_uris = message.get("file_uris") or []
                 image_uris = message.get("image_uris") or []
+                if not file_uris or not image_uris:
+                    print("[ExportOrchestrationAPIView.post] File or image URIs are not provided in the chat history.")
                 user_message = content
                 # Create a chat that's associated with the user
                 api_chat: OrchestrationQuery = OrchestrationQuery.objects.create(
@@ -146,7 +150,7 @@ class ExportOrchestrationAPIView(View):
                 maestro=export_assistant.orchestrator,
                 query_chat=api_chat
             )
-            final_response = orchestration_executor.execute_for_query(user_query=user_message)
+            final_response = orchestration_executor.execute_for_query()
         except Exception as e:
             return JsonResponse({
                 "message": "Internal server error: " + str(e), "data": {}, "status": StatusCodes.INTERNAL_SERVER_ERROR

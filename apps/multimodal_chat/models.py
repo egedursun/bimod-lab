@@ -63,23 +63,20 @@ class MultimodalChat(models.Model):
 
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE,
-                                  related_name='multimodal_chats', default=1)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='multimodal_chats', default=1)
+                                  related_name='multimodal_chats', null=True)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='multimodal_chats', null=True)
     chat_name = models.CharField(max_length=255)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE,
                                         related_name='multimodal_chats_created_by_user')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # Chat Messages
-    chat_messages = models.ManyToManyField('MultimodalChatMessage', related_name='multimodal_chats',
-                                           blank=True)
-    transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_chats',
-                                          blank=True)
+
     # Context Memory
     context_memory_connection = models.OneToOneField(ContextHistoryKnowledgeBaseConnection, on_delete=models.CASCADE,
                                                      related_name='multimodal_chat', null=True, blank=True)
-    starred_messages = models.ManyToManyField('starred_messages.StarredMessage', related_name='multimodal_chats',
-                                              blank=True)
+    transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_chats',
+                                          blank=True)
+
     # For archiving the chats
     is_archived = models.BooleanField(default=False)
     # Management for APIs
@@ -390,16 +387,14 @@ class MultimodalChat(models.Model):
 class MultimodalLeanChat(models.Model):
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
     lean_assistant = models.ForeignKey('leanmod.LeanAssistant', on_delete=models.CASCADE,
-                                  related_name='multimodal_lean_chats', default=1)
+                                  related_name='multimodal_lean_chats', null=True)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='multimodal_lean_chats', default=1)
     chat_name = models.CharField(max_length=255)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE,
                                         related_name='multimodal_lean_chats_created_by_user')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # Chat Messages
-    lean_chat_messages = models.ManyToManyField('multimodal_chat.MultimodalLeanChatMessage', related_name='multimodal_lean_chats',
-                                           blank=True)
+
     transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_lean_chats',
                                           blank=True)
 
@@ -559,8 +554,7 @@ class MultimodalChatMessage(models.Model):
         - `indexes`: Indexes on various fields for optimized queries.
     """
 
-    multimodal_chat = models.ForeignKey('MultimodalChat', on_delete=models.CASCADE,
-                                        related_name='messages_chat')
+    multimodal_chat = models.ForeignKey('MultimodalChat', on_delete=models.CASCADE, related_name='chat_messages')
     sender_type = models.CharField(max_length=10, choices=MESSAGE_SENDER_TYPES)
     message_text_content = models.TextField()
     message_json_content = models.JSONField(default=dict, blank=True, null=True)  # Not used for now
@@ -636,7 +630,7 @@ class MultimodalChatMessage(models.Model):
 
 class MultimodalLeanChatMessage(models.Model):
     multimodal_lean_chat = models.ForeignKey('MultimodalLeanChat', on_delete=models.CASCADE,
-                                        related_name='lean_messages_chat')
+                                        related_name='lean_chat_messages')
     sender_type = models.CharField(max_length=10, choices=MESSAGE_SENDER_TYPES)
     message_text_content = models.TextField()
     message_json_content = models.JSONField(default=dict, blank=True, null=True)  # Not used for now

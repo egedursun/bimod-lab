@@ -69,6 +69,7 @@ class ChatStreamView(View):
             sketch_image_full_uris_list = StorageExecutor.save_sketch_images(sketch_image_dict=sketch_image)
         except Exception as e:
             # No image attached
+            print(f"[ChatStreamView.post] Error while extracting the sketch image: {e}")
             pass
         print(f"[ChatStreamView.post] The sketch image(s) has been extracted successfully.")
 
@@ -84,6 +85,7 @@ class ChatStreamView(View):
             edit_image_full_uris_list = StorageExecutor.save_edit_images(edit_image_dict=edit_image_bytes_dict)
         except Exception as e:
             # No image attached
+            print(f"[ChatStreamView.post] Error while extracting the edit image: {e}")
             pass
         print(f"[ChatStreamView.post] The edit image(s) has been extracted successfully.")
 
@@ -192,7 +194,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
             pass
 
         assistants = Assistant.objects.filter(organization__users=self.request.user)
-        organizations = Organization.objects.filter(organization_assistants__in=assistants)
+        organizations = Organization.objects.filter(assistants__in=assistants)
         message_templates = MessageTemplate.objects.filter(user=context_user, organization__in=organizations)
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         active_chat_messages = active_chat.chat_messages.all().order_by('sent_at') if active_chat else None
@@ -256,6 +258,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 sketch_image['sketch_image'] = sketch_image_bytes
                 sketch_image_full_uris_list = StorageExecutor.save_sketch_images(sketch_image_dict=sketch_image)
             except Exception as e:
+                print(f"[ChatView.post] Error while extracting the sketch image: {e}")
                 # No image attached
                 pass
 
@@ -272,6 +275,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 edit_image_full_uris_list = StorageExecutor.save_edit_images(edit_image_dict=edit_image_bytes_dict)
             except Exception as e:
                 # No image attached
+                print(f"[ChatView.post] Error while extracting the edit image mask: {e}")
                 pass
 
             # Upload the attached images
@@ -462,7 +466,7 @@ class ChatArchiveListView(LoginRequiredMixin, TemplateView):
                 active_chat = chats[0]
 
         assistants = Assistant.objects.filter(organization__users=self.request.user)
-        organizations = Organization.objects.filter(organization_assistants__in=assistants)
+        organizations = Organization.objects.filter(assistants__in=assistants)
         message_templates = MessageTemplate.objects.filter(user=context_user, organization__in=organizations)
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         active_chat_messages = active_chat.chat_messages.all().order_by('sent_at') if active_chat else None
@@ -573,6 +577,7 @@ class LeanChatStreamView(View):
             sketch_image_full_uris_list = StorageExecutor.save_sketch_images(sketch_image_dict=sketch_image)
         except Exception as e:
             # No image attached
+            print(f"[LeanChatStreamView.post] Error while extracting the sketch image: {e}")
             pass
         print(f"[LeanChatStreamView.post] The sketch image(s) has been extracted successfully.")
 
@@ -588,6 +593,7 @@ class LeanChatStreamView(View):
             edit_image_full_uris_list = StorageExecutor.save_edit_images(edit_image_dict=edit_image_bytes_dict)
         except Exception as e:
             # No image attached
+            print(f"[LeanChatStreamView.post] Error while extracting the edit image: {e}")
             pass
 
         # 3. Handle the file and image uploads
@@ -742,6 +748,7 @@ class LeanChatView(TemplateView, LoginRequiredMixin):
                 sketch_image_full_uris_list = StorageExecutor.save_sketch_images(sketch_image_dict=sketch_image)
             except Exception as e:
                 # No image attached
+                print(f"[LeanChatView.post] Error while extracting the sketch image: {e}")
                 pass
 
             # image modification
@@ -757,6 +764,7 @@ class LeanChatView(TemplateView, LoginRequiredMixin):
                 edit_image_full_uris_list = StorageExecutor.save_edit_images(edit_image_dict=edit_image_bytes_dict)
             except Exception as e:
                 # No image attached
+                print(f"[LeanChatView.post] Error while extracting the edit image mask: {e}")
                 pass
 
             # Upload the attached images

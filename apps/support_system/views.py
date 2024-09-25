@@ -10,7 +10,7 @@ Views included:
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
 from apps.support_system.forms import SupportTicketForm

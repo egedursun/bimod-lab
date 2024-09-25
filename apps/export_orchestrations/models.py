@@ -22,7 +22,9 @@ class OrchestratorRequestLog(models.Model):
 
 
 class ExportOrchestrationAPI(models.Model):
-    orchestrator = models.ForeignKey('orchestrations.Maestro', on_delete=models.CASCADE)
+    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE,
+                                        related_name='exported_orchestrations', null=True, blank=True)
+    orchestrator = models.ForeignKey('orchestrations.Maestro', on_delete=models.CASCADE, related_name='exported_orchestrations')
     is_public = models.BooleanField(default=False)
     request_limit_per_hour = models.IntegerField(default=1000)
     is_online = models.BooleanField(default=True)

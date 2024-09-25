@@ -16,7 +16,8 @@ class ChatContextManager:
         try:
             instructions = build_context_memory_instructions_prompt()
         except Exception as e:
-            instructions = "[ChatContextManager.forget_oldest] Error occurred while building the instructions prompt."
+            instructions = ("[ChatContextManager.forget_oldest] Error occurred while building the instructions "
+                            "prompt: {str(e)}")
         message = {
             "role": ChatRoles.SYSTEM,
             "content": instructions
@@ -32,7 +33,8 @@ class ChatContextManager:
         try:
             instructions = build_context_memory_stop_conversation_prompt()
         except Exception as e:
-            instructions = "[ChatContextManager.stop_conversation] Error occurred while building the instructions prompt."
+            instructions = ("[ChatContextManager.stop_conversation] Error occurred while building the instructions "
+                            "prompt: {str(e)}")
         if len(chat_history) > max_messages:
             message = {
                 "role": ChatRoles.SYSTEM,

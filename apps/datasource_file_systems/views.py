@@ -6,12 +6,11 @@ The views include creating, updating, deleting, and listing file system connecti
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.datasource_file_systems.models import DataSourceFileSystem, DataSourceFileSystemsOsTypeNames, \
-    DATASOURCE_FILE_SYSTEMS_OS_TYPES
+from apps.datasource_file_systems.models import DataSourceFileSystem, DATASOURCE_FILE_SYSTEMS_OS_TYPES
 from apps.user_permissions.models import UserPermission, PermissionNames
 from web_project import TemplateLayout
 

@@ -1,9 +1,7 @@
 from pprint import pprint
 
 import weaviate
-from weaviate.collections.classes.grpc import MetadataQuery
 from weaviate.config import AdditionalConfig, Timeout
-import weaviate.classes as wvc
 
 kb_id = 16  # change this based on the test knowledge base
 

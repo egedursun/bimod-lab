@@ -32,7 +32,7 @@ class CustomAPIReference(models.Model):
         - `indexes`: Indexes on various fields for optimized queries.
     """
 
-    custom_api = models.ForeignKey("CustomAPI", on_delete=models.CASCADE)
+    custom_api = models.ForeignKey("CustomAPI", on_delete=models.CASCADE, related_name="custom_api_references")
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     api_source = models.CharField(max_length=255, default="internal", blank=True)
     created_by_user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
@@ -130,9 +130,7 @@ class CustomAPI(models.Model):
     base_url = models.CharField(max_length=5000, default="")
 
     endpoints = models.JSONField(default=dict, blank=True)
-    """Structure definition above."""
 
-    custom_api_references = models.ManyToManyField("CustomAPIReference", blank=True)
     api_picture = models.ImageField(upload_to="custom_apis/%YYYY/%mm/%dd/", blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

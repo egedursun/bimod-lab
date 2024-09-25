@@ -3,10 +3,9 @@ import importlib
 from django.core.management.base import BaseCommand
 from django.urls import path
 
-from apps.export_assistants.models import ExportAssistantAPI
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI
 from config import settings
-from config.settings import EXPORT_API_BASE_URL, EXPORT_LEANMOD_API_BASE_URL
+from config.settings import EXPORT_LEANMOD_API_BASE_URL
 
 
 def start_endpoint_for_leanmod(assistant: ExportLeanmodAssistantAPI):
