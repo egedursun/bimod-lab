@@ -146,7 +146,7 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         print("[CreateAssistantView.post] Assistant created successfully!")
 
         # retrieve the assistants of the organization and add the new assistant
-        organization.organization_assistants.add(assistant)
+        organization.assistants.add(assistant)
         organization.save()
         print("[CreateAssistantView.post] Assistant added to the organization successfully!")
 

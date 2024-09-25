@@ -19,7 +19,7 @@ MEMORY_DEFAULT_CHUNK_OVERLAP = 200
 
 # INDEX
 def add_document_upload_log(document_full_uri, log_name):
-    from apps.datasource_knowledge_base.models import DocumentProcessingLog, DocumentUploadStatusNames
+    from apps.datasource_knowledge_base.models import DocumentProcessingLog
     DocumentProcessingLog.objects.create(
         document_full_uri=document_full_uri,
         log_message=log_name
@@ -30,7 +30,7 @@ def add_document_upload_log(document_full_uri, log_name):
 def index_document_helper(connection_id, document_paths):
     from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
     from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
-    from apps.datasource_knowledge_base.models import DocumentProcessingLog, DocumentUploadStatusNames
+    from apps.datasource_knowledge_base.models import DocumentUploadStatusNames
 
     connection = DocumentKnowledgeBaseConnection.objects.get(id=connection_id)
     executor = KnowledgeBaseSystemDecoder.get(connection=connection)

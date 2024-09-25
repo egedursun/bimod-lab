@@ -1,11 +1,10 @@
 import decimal
-import uuid
 
 from django.contrib import admin
 
 from .models import LLMTransaction, AutoBalanceTopUpModel, OrganizationBalanceSnapshot, TransactionInvoice
 from .utils import calculate_number_of_tokens, calculate_llm_cost, calculate_internal_service_cost, calculate_tax_cost, \
-    calculate_total_cost, calculate_billable_cost, barcode_generator
+    calculate_total_cost, calculate_billable_cost
 
 
 @admin.register(LLMTransaction)

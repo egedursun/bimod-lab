@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from apps.leanmod.models import LeanAssistant
 
 
-def build_structured_place_and_time_prompt_leanmod(assistant: LeanAssistant, user: User):
+def build_structured_place_and_time_prompt_leanmod(user: User):
     # Build the prompt
     response_prompt = """
             *PLACE AND TIME*

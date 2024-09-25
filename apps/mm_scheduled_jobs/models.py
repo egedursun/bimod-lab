@@ -37,7 +37,6 @@ class ScheduledJob(models.Model):
     step_guide = models.JSONField(default=list)
 
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, related_name='scheduled_jobs')
-    scheduled_job_instances = models.ManyToManyField('ScheduledJobInstance', related_name='scheduled_jobs')
 
     # TYPE: Cron fields
     minute = models.CharField(max_length=600, blank=True, null=True)
@@ -113,7 +112,7 @@ class ScheduledJobInstance(models.Model):
         - `indexes`: Indexes on various fields, including combinations of `scheduled_job`, `status`, `started_at`, and `ended_at` for optimized queries.
     """
 
-    scheduled_job = models.ForeignKey(ScheduledJob, on_delete=models.CASCADE, related_name='instances', null=True)
+    scheduled_job = models.ForeignKey(ScheduledJob, on_delete=models.CASCADE, related_name='scheduled_job_instances', null=True)
     status = models.CharField(max_length=255, choices=SCHEDULED_JOB_INSTANCE_STATUSES, default='pending')
     logs = models.JSONField(default=list)
     execution_index = models.IntegerField(default=0, null=True)

@@ -89,7 +89,7 @@
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-85.png' %}" width="25%" style="border-radius: 25px;"
-         class="justify-content-end me-8">
+         class="justify-content-end me-8" alt="Illustration for tip">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
@@ -272,7 +272,7 @@
                         {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
                         <img src="
                           {% if chat.lean_assistant.lean_assistant_image %}{{ chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                             class="rounded-pill">
+                             class="rounded-pill" alt="Lean Assistant Image">
                       </div>
                       <div class="chat-contact-info flex-grow-1 ms-4 text-start">
                         <h6 class="chat-contact-name text-truncate m-0 fw-normal"><strong>{{ chat.chat_name }}</strong>
@@ -336,7 +336,7 @@
           <div class="alert alert-solid-primary alert-dismissible d-flex col-lg-11 align-items-center mt-10 ms-10"
                role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-34.png' %}" width="25%" style="border-radius: 25px;"
-                 class="justify-content-end me-8">
+                 class="justify-content-end me-8" alt="Illustration for tip">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span class="alert-icon rounded">
             <i class="ti ti-alert-circle-filled"></i>
@@ -363,7 +363,7 @@
                   <div class="flex-shrink-0 avatar avatar-online">
                     <img src="
                       {% if active_chat.lean_assistant.lean_assistant_image %}{{ active_chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                         class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
+                         class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right" alt="Lean Assistant Image">
                   </div>
                   <div class="chat-contact-info flex-grow-1 ms-4">
                     <form method="post" action=".">

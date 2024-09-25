@@ -2,8 +2,7 @@ from apps._services.expert_networks.prompts.build_expert_network_to_assistant_in
     build_leanmod_to_expert_assistant_instructions_prompt
 from apps.assistants.models import Assistant
 from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
-from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage, \
-    MultimodalLeanChatMessage
+from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
 
 DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE = "The Expert Assistant is not available at the moment. Please try again later."
 

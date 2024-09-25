@@ -4,7 +4,6 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 
 
 def build_storage_data_source_prompt(assistant: Assistant):
-    response_prompt = ""
     # Gather the File System datasource connections of the assistant
     media_storage_data_sources = DataSourceMediaStorageConnection.objects.filter(assistant=assistant)
     # Build the prompt

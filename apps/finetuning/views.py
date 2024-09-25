@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
-from apps.assistants.models import Assistant
 from apps.finetuning.forms import FineTunedModelConnectionForm
 from apps.finetuning.models import FineTunedModelConnection, FineTuningModelProvidersNames, FineTunedModelTypesNames
 from apps.organization.models import Organization

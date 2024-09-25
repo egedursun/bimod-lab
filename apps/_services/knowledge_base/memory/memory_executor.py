@@ -36,6 +36,7 @@ class MemoryExecutor:
             print(f"[MemoryExecutor.connect_c] Connected to Weaviate successfully.")
             self.client = c
         except Exception as e:
+            print(f"[MemoryExecutor.connect_c] Error while connecting to Weaviate: {str(e)}")
             return self.client
         return self.client
 
@@ -44,6 +45,7 @@ class MemoryExecutor:
             self.client.close()
             print(f"[MemoryExecutor.close_c] Closed the Weaviate connection successfully.")
         except Exception as e:
+            print(f"[MemoryExecutor.close_c] Error while closing the Weaviate connection: {str(e)}")
             pass
         return
 

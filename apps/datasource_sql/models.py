@@ -73,8 +73,6 @@ class SQLDatabaseConnection(models.Model):
                                         related_name='sql_database_connections',
                                         default=None, null=True)
 
-    custom_queries = models.ManyToManyField('CustomSQLQuery', blank=True)
-
     class Meta:
         ordering = ['-created_at']
         verbose_name_plural = 'SQL Database Connections'
@@ -186,7 +184,7 @@ class CustomSQLQuery(models.Model):
         - `save()`: Overridden to automatically add the query to the associated database connection's custom queries.
     """
 
-    database_connection = models.ForeignKey(SQLDatabaseConnection, on_delete=models.CASCADE, related_name='queries')
+    database_connection = models.ForeignKey(SQLDatabaseConnection, on_delete=models.CASCADE, related_name='custom_queries')
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
 

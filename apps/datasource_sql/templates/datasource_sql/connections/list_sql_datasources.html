@@ -45,7 +45,7 @@
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-5.png' %}" width="25%" style="border-radius: 25px;"
-         class="justify-content-end me-8">
+         class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -81,11 +81,8 @@
            aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
           <div class="d-flex">
             <img src="
-
-
-
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                 class="rounded me-4" width="60">
+                 class="rounded me-4" width="60" alt="Organization image">
           </div>
           <h4 class="mt-4">
             <strong>{{ organization.name }}</strong>
@@ -102,10 +99,8 @@
           <div class="assistant-group m-8 card card-border-shadow-primary p-8">
             <div class="d-flex">
               <img src="
-
-
                 {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                   class="rounded me-4" width="80">
+                   class="rounded me-4" width="80" alt="Assistant image">
               <h5 class="assistant-title">
                 <strong>
                   {{ assistant.name }}

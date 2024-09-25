@@ -326,7 +326,7 @@ class UserPermission(models.Model):
         - `indexes`: Indexes on various fields for optimized queries, including combinations of `user`, `permission_type`, `is_active`, and `created_at`.
     """
 
-    user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="permissions", default=1)
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="permissions", null=True)
     permission_type = models.CharField(max_length=255, choices=PERMISSION_TYPES)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8"/>
   <title>Invoice #{{ invoice.invoice_number }}</title>
@@ -117,7 +117,7 @@
             <td class="title">
               <img
                 src="https://bimod-static.s3.amazonaws.com/bmd.png"
-                style="width: 100%; max-width: 200px; border-radius: 20px;"
+                style="width: 100%; max-width: 200px; border-radius: 20px;" alt="BMD Logo"
               />
             </td>
             <td class="title">
@@ -125,6 +125,7 @@
               <img
                 src="data:image/png;base64,{{ barcode_data }}"
                 style="width: 100%; max-width: 200px;"
+                alt="Barcode Image"
               />
             </td>
           </tr>

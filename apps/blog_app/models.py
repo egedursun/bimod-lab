@@ -31,7 +31,6 @@ class BlogPost(models.Model):
         updated_at (datetime): The timestamp when the blog post was last updated.
         published_at (datetime): The timestamp when the blog post was published.
         status (str): The publication status of the blog post (draft or published).
-        tags (ManyToManyField): The tags associated with the blog post.
     """
 
     title = models.CharField(max_length=255)
@@ -45,8 +44,6 @@ class BlogPost(models.Model):
     published_at = models.DateTimeField(default=timezone.now)
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
-
-    tags = models.ManyToManyField('BlogTag', related_name='posts', blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -84,7 +81,7 @@ class BlogTag(models.Model):
         created_at (datetime): The timestamp when the tag was created.
         updated_at (datetime): The timestamp when the tag was last updated.
     """
-
+    blog_posts = models.ManyToManyField('BlogPost', related_name='tags', blank=True)
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
 

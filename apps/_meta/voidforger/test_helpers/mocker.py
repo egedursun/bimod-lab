@@ -1,7 +1,6 @@
 import random as r
 
-from apps._meta.voidforger.test_helpers.mock_stream_text import MOCK_STREAM_STRATEGIST, MOCK_STREAM_BACKTESTING, \
-    MOCK_STREAM_TRADER, MOCK_STREAM_RISK_MANAGER, MOCK_STREAM_PORTFOLIO_MANAGER, MOCK_TRADING_ACTIVITY, \
+from apps._meta.voidforger.test_helpers.mock_stream_text import MOCK_TRADING_ACTIVITY, \
     MOCK_TRADING_SYMBOL, MOCK_LEVERAGE
 
 
@@ -43,7 +42,6 @@ def mock_operation_node_status():
     likelihood_st0 = 0.50
     likelihood_sta = 0.30
     likelihood_stb = 0.15
-    likelihood_stc = 0.05
 
     val_operation_node = r.random()
     if val_operation_node < likelihood_st0:
@@ -70,14 +68,10 @@ def generate_stream_data(picklist):
 
 
 def mock_trading():
-    final_trade_text = ""
-
     prob_buy = 0.04
     prob_sell = 0.04
     prob_close = 0.08
-    prob_hold = 0.84
     activity_num = r.random()
-    activity_text = ""
     if activity_num < prob_buy:
         activity_text = MOCK_TRADING_ACTIVITY[0]
     elif activity_num < prob_buy + prob_sell:
@@ -99,7 +93,6 @@ def mock_trading():
         prob_x8 = 0.008
         prob_x10 = 0.004
         prob_x20 = 0.002
-        prob_x50 = 0.002
         leverage_num = r.random()
         if leverage_num < prob_x1:
             leverage_text = MOCK_LEVERAGE[0]

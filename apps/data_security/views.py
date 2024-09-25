@@ -3,7 +3,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import TemplateView
 
-from apps.assistants.models import Assistant
 from apps.data_security.forms import NERIntegrationForm
 from apps.data_security.models import NERIntegration
 from apps.organization.models import Organization

@@ -185,6 +185,7 @@ class OrchestrationQueryListView(LoginRequiredMixin, TemplateView):
             sketch_image_full_uris_list = StorageExecutor.save_sketch_images(sketch_image_dict=sketch_image)
         except Exception as e:
             # No image attached
+            print(f"[OrchestrationQueryListView.post] Error reading sketch image file: {e}")
             pass
         print(f"[OrchestrationQueryListView.post] The sketch image(s) has been extracted successfully.")
 
@@ -200,6 +201,7 @@ class OrchestrationQueryListView(LoginRequiredMixin, TemplateView):
             edit_image_full_uris_list = StorageExecutor.save_edit_images(edit_image_dict=edit_image_bytes_dict)
         except Exception as e:
             # No image attached
+            print(f"[OrchestrationQueryListView.post] Error reading edit image file: {e}")
             pass
         print(f"[OrchestrationQueryListView.post] The edit image(s) has been extracted successfully.")
 
@@ -267,7 +269,7 @@ class OrchestrationQueryListView(LoginRequiredMixin, TemplateView):
             maestro=maestro,
             query_chat=query_chat
         )
-        final_response = orchestration_executor.execute_for_query(query_text)
+        final_response = orchestration_executor.execute_for_query()
         print("[OrchestrationQueryListView.post] Final response retrieved: ", final_response)
 
         # Redirect to the newly created query's detail page
@@ -336,7 +338,7 @@ class OrchestrationQueryRerunView(LoginRequiredMixin, TemplateView):
             maestro=query.maestro,
             query_chat=query
         )
-        final_response = orchestration_executor.execute_for_query(query.query_text)
+        final_response = orchestration_executor.execute_for_query()
         print("[OrchestrationQueryRerunView.get_context_data] Final response retrieved: ", final_response)
 
         return redirect('orchestrations:query_detail', pk=query.maestro.id, query_id=query.id)

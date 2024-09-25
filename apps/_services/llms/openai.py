@@ -1159,6 +1159,7 @@ class InternalOpenAIClient:
             else:
                 print(f"[InternalOpenAIClient.ask_about_file] The file interpretation status is unknown.")
                 messages = get_file_interpreter_status_log(status="unknown")
+            print(f"[InternalOpenAIClient.ask_about_file] [ERROR] The file interpretation has failed: {messages}")
         # END IF
 
         # Download the generated images and files (if any)

@@ -1,13 +1,7 @@
-import os
-import random
 
-import paramiko
 from django.contrib import admin
 
 from apps.assistants.models import Assistant
-from django.contrib.admin.actions import delete_selected as django_delete_selected
-
-from config import settings
 
 
 # Register your models here.
