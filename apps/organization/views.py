@@ -14,6 +14,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView, DeleteView
 
+from apps.llm_transaction.models import TransactionInvoice, InvoiceTypesNames, PaymentMethodsNames
 from apps.organization.forms import OrganizationForm
 from apps.organization.models import Organization
 from apps.user_permissions.models import PermissionNames, UserPermission
@@ -167,8 +168,21 @@ class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
         # Ensure the transfer organization is valid and belongs to the user
         transfer_organization = get_object_or_404(Organization, id=transfer_organization_id, users__in=[context_user])
         # Transfer the balance to another organization
+        source_organization_balance = organization.balance
         transfer_organization.balance += organization.balance
         transfer_organization.save()
+
+        ############################################
+        # Create the invoice for the transaction
+        TransactionInvoice.objects.create(
+            organization=organization,
+            responsible_user=context_user,
+            transaction_type=InvoiceTypesNames.TRANSFERRED_CREDITS,
+            amount_added=source_organization_balance,
+            payment_method=PaymentMethodsNames.INTERNAL_TRANSFER,
+        )
+        ############################################
+
         # Delete the organization
         organization.delete()
         print(f"[OrganizationDeleteView.post] Organization {organization.name} has been deleted and the balance has been transferred to {transfer_organization.name}.")
@@ -227,11 +241,47 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
                 referrer_organization = Organization.objects.filter(users__in=[referrer]).first()
                 referrer_organization.balance += decimal.Decimal.from_float(float(float(topup_amount) * ((bonus_percentage_referrer) / 100)))
                 referrer_organization.save()
+
+                ############################################
+                # Create the invoice for the transaction
+                TransactionInvoice.objects.create(
+                    organization=referrer_organization,
+                    responsible_user=bonus_percentage_referrer,
+                    transaction_type=InvoiceTypesNames.GIFT_CREDITS,
+                    amount_added=decimal.Decimal.from_float(float(float(topup_amount) * ((bonus_percentage_referrer) / 100))),
+                    payment_method=PaymentMethodsNames.INTERNAL_TRANSFER,
+                )
+                ############################################
         try:
             topup_amount = float(topup_amount)
+            topup_amount_without_bonus = topup_amount
             topup_amount += float(float(topup_amount) * (bonus_percentage_referee) / 100)
             organization.balance += decimal.Decimal.from_float(topup_amount)
             organization.save()
+
+            ############################################
+            # Create the invoice for the transaction
+            TransactionInvoice.objects.create(
+                organization=organization,
+                responsible_user=context_user,
+                transaction_type=InvoiceTypesNames.TOP_UP,
+                amount_added=topup_amount_without_bonus,
+                payment_method=PaymentMethodsNames.CREDIT_CARD,
+            )
+            ############################################
+
+            if topup_amount_without_bonus != topup_amount:
+                ############################################
+                # Create the invoice for the transaction
+                TransactionInvoice.objects.create(
+                    organization=organization,
+                    responsible_user=context_user,
+                    transaction_type=InvoiceTypesNames.GIFT_CREDITS,
+                    amount_added=decimal.Decimal.from_float(float(float(topup_amount) * ((bonus_percentage_referee) / 100)) - topup_amount_without_bonus),
+                    payment_method=PaymentMethodsNames.INTERNAL_TRANSFER,
+                )
+                ############################################
+
             messages.success(request, f'Credits successfully added. New balance: ${organization.balance}')
         except ValueError:
             messages.error(request, 'Invalid amount entered. Please enter a valid number.')
@@ -277,6 +327,18 @@ class OrganizationBalanceTransferView(LoginRequiredMixin, View):
         destination_org.balance += transfer_amount
         source_org.save()
         destination_org.save()
+
+        ############################################
+        # Create the invoice for the transaction
+        TransactionInvoice.objects.create(
+            organization=destination_org,
+            responsible_user=request.user,
+            transaction_type=InvoiceTypesNames.TRANSFERRED_CREDITS,
+            amount_added=transfer_amount,
+            payment_method=PaymentMethodsNames.INTERNAL_TRANSFER,
+        )
+        ############################################
+
         messages.success(request, f"${transfer_amount} successfully transferred from {source_org.name} to {destination_org.name}.")
         return redirect('llm_transaction:list')
 
@@ -336,6 +398,18 @@ class OrganizationUserAddGiftCreditsView(LoginRequiredMixin, View):
                 print(f"[OrganizationUserAddGiftCreditsView.get] Updated user profile and user.")
                 org.balance += decimal.Decimal.from_float(free_credits)
                 org.save()
+
+                ############################################
+                # Create the invoice for the transaction
+                TransactionInvoice.objects.create(
+                    organization=org,
+                    responsible_user=request.user,
+                    transaction_type=InvoiceTypesNames.GIFT_CREDITS,
+                    amount_added=decimal.Decimal.from_float(free_credits),
+                    payment_method=PaymentMethodsNames.INTERNAL_TRANSFER,
+                )
+                ############################################
+
                 print(f"[OrganizationUserAddGiftCreditsView.get] Updated organization balance.")
                 print(f"[OrganizationUserAddGiftCreditsView.get] Gift credits successfully added to {org.name}.")
                 messages.success(request, f"Gift credits successfully added to {org.name}.")

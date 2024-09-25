@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Invoice #{{ invoice.invoice_number }}</title>
+
+  <style>
+    .invoice-box {
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      border: 5px solid #838383;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      font-size: 16px;
+      line-height: 24px;
+      font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+      color: #555;
+    }
+
+    .invoice-box table {
+      width: 100%;
+      line-height: inherit;
+      text-align: left;
+    }
+
+    .invoice-box table td {
+      padding: 5px;
+      vertical-align: top;
+    }
+
+    .invoice-box table tr td:nth-child(2) {
+      text-align: right;
+    }
+
+    .invoice-box table tr.top table td {
+      padding-bottom: 20px;
+    }
+
+    .invoice-box table tr.top table td.title {
+      font-size: 45px;
+      line-height: 45px;
+      color: #333;
+    }
+
+    .invoice-box table tr.information table td {
+      padding-bottom: 40px;
+    }
+
+    .invoice-box table tr.heading td {
+      background: #eee;
+      border-bottom: 1px solid #ddd;
+      font-weight: bold;
+    }
+
+    .invoice-box table tr.details td {
+      padding-bottom: 20px;
+    }
+
+    .invoice-box table tr.item td {
+      border-bottom: 1px solid #eee;
+    }
+
+    .invoice-box table tr.item.last td {
+      border-bottom: none;
+    }
+
+    .invoice-box table tr.total td:nth-child(2) {
+      border-top: 2px solid #eee;
+      font-weight: bold;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .invoice-box table tr.top table td {
+        width: 100%;
+        display: block;
+        text-align: center;
+      }
+
+      .invoice-box table tr.information table td {
+        width: 100%;
+        display: block;
+        text-align: center;
+      }
+    }
+
+    /** RTL **/
+    .invoice-box.rtl {
+      direction: rtl;
+      font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+
+    .invoice-box.rtl table {
+      text-align: right;
+    }
+
+    .invoice-box.rtl table tr td:nth-child(2) {
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+<div class="invoice-box" style="border-radius: 20px;">
+  <hr>
+  <small style="font-size: 10px;">
+    <strong>Invoice #:</strong> {{ invoice.invoice_number }}
+  </small> <br/>
+  <small style="font-size: 10px;">
+    <strong>Transaction Date:</strong> {{ invoice.transaction_date }}<br/>
+  </small>
+  <hr>
+  <table cellpadding="0" cellspacing="0" style="margin-top: 32px;">
+    <tr class="top">
+      <td colspan="2">
+        <table>
+          <tr>
+            <td class="title">
+              <img
+                src="https://bimod-static.s3.amazonaws.com/bmd.png"
+                style="width: 100%; max-width: 200px; border-radius: 20px;"
+              />
+            </td>
+            <td class="title">
+              <!-- barcode_data as bytes -->
+              <img
+                src="data:image/png;base64,{{ barcode_data }}"
+                style="width: 100%; max-width: 200px;"
+              />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr class="information">
+      <td colspan="2">
+        <table>
+          <tr>
+            <td>
+              <strong>{{ organization.name }}</strong> <br/>
+              {{ organization.email }} <br/>
+              {{ organization.address|linebreaksbr }} <br/>
+              {{ organization.city }} / {{ organization.country }} | {{ organization.postal_code }} <br/>
+              {{ organization.phone }} <br/>
+            </td>
+
+            <td>
+              <strong>Date:</strong> {{ invoice.transaction_date }} <br/>
+              {{ user.profile.first_name }} {{ user.profile.last_name }} <br/>
+              {{ user.profile.email }} <br/>
+              {{ user.profile.phone_number }} <br/>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr class="heading">
+      <td>Transaction Type</td>
+      <td></td>
+    </tr>
+    <tr class="item" style="margin-bottom: 32px;">
+      <td>
+        {% if invoice.transaction_type == 'auto-top-up' %}
+          Automated Top-Up Job
+        {% elif invoice.transaction_type == 'top-up' %}
+          Manual Top-Up
+        {% elif invoice.transaction_type == 'gift-credits' %}
+          Gift Credits
+        {% elif invoice.transaction_type == 'transferred-credits' %}
+          Transferred Credits
+        {% else %}
+          Unspecified
+        {% endif %}
+      </td>
+      <td></td>
+    </tr>
+    <tr class="heading" style="margin-top: 16px;">
+      <td style="margin-top: 16px;">Payment Method</td>
+      <td>
+        {% if invoice.payment_method == 'credit-card' %}
+          Credit Card #
+        {% elif invoice.payment_method == 'internal-transfer' %}
+          Internal Transfer #
+        {% else %}
+          Credit Card #
+        {% endif %}
+      </td>
+    </tr>
+    <tr class="details">
+      <td>
+        {% if invoice.payment_method == 'credit-card' %}
+          Credit Card
+        {% elif invoice.payment_method == 'internal-transfer' %}
+          Internal Transfer
+        {% else %}
+          Credit Card
+        {% endif %}
+      </td>
+      <td>{{ invoice.amount_added|floatformat:2 }}</td>
+    </tr>
+    <tr class="heading">
+      <td>Item</td>
+      <td>Price</td>
+    </tr>
+    <tr class="item">
+      <td>Bimod.io Credits (Standard)</td>
+      <td>${{ invoice.amount_added|floatformat:2 }}</td>
+    </tr>
+    <tr class="total">
+      <td></td>
+      <td>Total: ${{ invoice.amount_added|floatformat:2 }}</td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

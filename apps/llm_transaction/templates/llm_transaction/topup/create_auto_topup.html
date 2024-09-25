@@ -74,7 +74,8 @@
                 </div>
               {% endfor %}
             {% endif %}
-            <form method="post" enctype="multipart/form-data">
+            <hr>
+            <form class="mt-4" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="mb-6 card card-border-shadow-primary p-12">
                 <label class="form-label" for="organization_id"><strong>Choose Organization</strong></label>

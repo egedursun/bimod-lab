@@ -1,0 +1,175 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Update Automated Top-Up Plan{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'llm_transaction:auto_top_up_list' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong> Manage Top-Up Plans</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Update Top-Up Plan</strong></h5>
+          <small class="text-muted float-end"></small>
+        </div>
+
+        <div class="card-body mt-4">
+
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-66.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8">
+            <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can update your automated top-up plan for your organization. The automated top-up plan
+                will
+                automatically top up the balance of your organization when the conditions you set are met. There can be
+                two
+                triggers for the automated top-up plan; balance threshold trigger and interval by days trigger. Balance
+                threshold
+                trigger will automatically top up the balance of the organization when the balance is lower than the
+                threshold you
+                set. Interval by days trigger will automatically top-up the balance of the organization at the interval
+                you set.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <hr>
+
+          <form class="mt-4" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-6 card card-border-shadow-primary p-12">
+              <label class="form-label" for="organization_id"><strong>Choose Organization</strong></label>
+              <select class="form-select" id="organization_id" name="organization_id">
+                {% for organization in organizations %}
+                  <option value="{{ organization.id }}"
+                          {% if organization.id == plan.organization_id %}selected{% endif %}>
+                    {{ organization.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="row p-4">
+              <div class="col-6 mb-6 card card-border-shadow-primary p-12">
+                <label class="form-label" for="on_balance_threshold_trigger">
+                  <strong>
+                    <i class="ti ti-alert-triangle-filled me-2"></i>
+                    Enable Balance Threshold Trigger
+                  </strong>
+                </label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="on_balance_threshold_trigger"
+                         name="on_balance_threshold_trigger"
+                         {% if plan.on_balance_threshold_trigger %}checked{% endif %}>
+                  <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                  </span>
+                </label>
+                <div class="mt-4">
+                  <label class="form-label" for="balance_lower_trigger_threshold_value">Balance Lower Trigger Threshold
+                    Value</label>
+                  <input type="number" class="form-control" id="balance_lower_trigger_threshold_value"
+                         name="balance_lower_trigger_threshold_value"
+                         value="{{ plan.balance_lower_trigger_threshold_value }}"/>
+                </div>
+                <div class="mt-4">
+                  <label class="form-label" for="addition_on_balance_threshold_trigger">Addition on Balance Threshold
+                    Trigger</label>
+                  <input type="number" class="form-control" id="addition_on_balance_threshold_trigger"
+                         name="addition_on_balance_threshold_trigger"
+                         value="{{ plan.addition_on_balance_threshold_trigger }}"/>
+                </div>
+              </div>
+              <div class="col-6 mb-6 card card-border-shadow-primary p-12">
+                <label class="form-label" for="on_interval_by_days_trigger">
+                  <strong>
+                    <i class="ti ti-clock-bolt me-2"></i>
+                    Enable Interval by Days Trigger
+                  </strong>
+                </label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="on_interval_by_days_trigger"
+                         name="on_interval_by_days_trigger" {% if plan.on_interval_by_days_trigger %}checked{% endif %}>
+                  <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                  </span>
+                </label>
+                <div class="mt-4">
+                  <label class="form-label" for="regular_by_days_interval">Regular by Days Interval</label>
+                  <input type="number" class="form-control" id="regular_by_days_interval"
+                         name="regular_by_days_interval" value="{{ plan.regular_by_days_interval }}"/>
+                </div>
+                <div class="mt-4">
+                  <label class="form-label" for="addition_on_interval_by_days_trigger">Addition on Interval by Days
+                    Trigger</label>
+                  <input type="number" class="form-control" id="addition_on_interval_by_days_trigger"
+                         name="addition_on_interval_by_days_trigger"
+                         value="{{ plan.addition_on_interval_by_days_trigger }}"/>
+                </div>
+              </div>
+              <div class="col-12 mb-6 card card-border-shadow-primary p-12">
+                <label class="form-label" for="monthly_hard_limit_auto_addition_amount">Monthly Auto Top-Up Hard
+                  Limit</label>
+                <input type="number" class="form-control" id="monthly_hard_limit_auto_addition_amount"
+                       name="monthly_hard_limit_auto_addition_amount"
+                       value="{{ plan.monthly_hard_limit_auto_addition_amount }}"/>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid mt-8 w-25"><strong>Update Plan</strong></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

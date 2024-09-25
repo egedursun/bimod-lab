@@ -1,0 +1,111 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Transaction Invoices{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+{% endblock %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/js/datatables.bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.all.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        <h3>Invoices</h3>
+      </div>
+      <div class="card-body overflow-auto">
+
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+             role="alert">
+          <img src="{% static 'img/custom-illustrations-v2/i2-77.png' %}" width="25%" style="border-radius:25px;"
+               class="justify-content-end me-8">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              In this page, you can view all the transaction invoices you have created. You can track the updates in the
+              invoice status and amount. As there will be updates in the invoice status, you can view the invoice details
+              and download the transaction paper.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div
+              class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+              role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <hr>
+
+        <table class="table table-striped mt-4">
+          <thead>
+          <tr>
+            <th>Barcode</th>
+            <th style="min-width: 250px; max-width: 250px;">Invoice Number</th>
+            <th style="min-width: 150px; max-width: 150px;">Organization</th>
+            <th style="min-width: 100px; max-width: 100px;">Responsible User</th>
+            <th style="min-width: 120px; max-width: 120px;">Transaction Type</th>
+            <th style="min-width: 100px; max-width: 100px;">Amount (USD)</th>
+            <th style="min-width: 120px; max-width: 120px;">Payment Method</th>
+            <th style="min-width: 100px; max-width: 100px;">Date</th>
+            <th style="min-width: 200px; max-width: 200px;">Download</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for invoice in invoices %}
+            <tr>
+              <td>
+                <a href="{{ invoice.barcode_image.url }}" target="_blank">
+                  <img src="{{ invoice.barcode_image.url }}" class="img avatar avatar-lg rounded" alt="barcode">
+                </a>
+              </td>
+              <td>
+                <small style="font-size: 10px;">{{ invoice.invoice_number }}</small>
+              </td>
+              <td><strong>{{ invoice.organization.name }}</strong></td>
+              <td><strong>{{ invoice.responsible_user.username }}</strong></td>
+              <td>{{ invoice.transaction_type }}</td>
+              <td><strong>${{ invoice.amount_added }}</strong></td>
+              <td>{{ invoice.payment_method }}</td>
+              <td>{{ invoice.transaction_date|date:"Y-m-d H:i" }}</td>
+              <td>
+                <a href="{{ invoice.transaction_paper.url }}" download class="btn btn-primary">
+                  <i class="fa fa-download me-2"></i>
+                  <strong>Download</strong>
+                </a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="8">
+                <div class="alert alert-info" role="alert">
+                  <i class="fa fa-info-circle me-2"></i>
+                    No invoices that can be associated with you has been found yet.
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
