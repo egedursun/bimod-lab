@@ -4,7 +4,6 @@ from apps.assistants.models import Assistant
 
 
 def build_structured_memory_prompt(assistant: Assistant, user: User):
-    response_prompt = ""
     # Gather assistant-specific queries
     assistant_memories = assistant.memories.filter(memory_type="assistant-specific")
     # Gather user-specific queries

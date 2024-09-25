@@ -41,7 +41,7 @@ class StarredMessage(models.Model):
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE)
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
-    chat = models.ForeignKey("multimodal_chat.MultimodalChat", on_delete=models.CASCADE)
+    chat = models.ForeignKey("multimodal_chat.MultimodalChat", on_delete=models.CASCADE, related_name="starred_messages")
     chat_message = models.ForeignKey("multimodal_chat.MultimodalChatMessage", on_delete=models.CASCADE)
     sender_type = models.CharField(max_length=10, choices=STARRED_MESSAGE_SENDER_TYPES, default="USER")
 

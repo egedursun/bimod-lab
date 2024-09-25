@@ -8,8 +8,6 @@ Dependencies:
 
 from django.db import models
 
-from apps.organization.utils import generate_random_string
-
 
 class Organization(models.Model):
     """
@@ -29,7 +27,6 @@ class Organization(models.Model):
         - `balance`: Decimal field representing the organization's current balance.
         - `organization_image`: ImageField for storing the organization's profile image, with a dynamically generated save path.
         - `users`: ManyToManyField linking to the `User` model, representing the users associated with the organization.
-        - `organization_assistants`: ManyToManyField linking to the `Assistant` model, representing the assistants associated with the organization.
         - `llm_cores`: ManyToManyField linking to the `LLMCore` model, representing the language models associated with the organization.
         - `exported_assistants`: ManyToManyField linking to the `ExportAssistantAPI` model, representing the exported assistants associated with the organization.
         - `auto_balance_topup`: OneToOneField linking to the `AutoBalanceTopUpModel` for managing automatic balance top-ups.
@@ -53,11 +50,9 @@ class Organization(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                        related_name="organization_created_by_users", default=1, blank=True,
-                                        null=False)
+                                        related_name="organization_created_by_users", blank=True, null=True)
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                             related_name="organization_last_updated_by_users", default=1, blank=True,
-                                             null=False)
+                                             related_name="organization_last_updated_by_users", blank=True, null=True)
 
     # additional fields
     balance = models.DecimalField(max_digits=10, decimal_places=6, default=0.000000)
@@ -68,16 +63,6 @@ class Organization(models.Model):
                                            null=True)
     # many to many fields
     users = models.ManyToManyField("auth.User", related_name="organizations")
-    organization_assistants = models.ManyToManyField("assistants.Assistant", related_name="organizations",
-                                                     blank=True)
-    llm_cores = models.ManyToManyField("llm_core.LLMCore", related_name="organizations")
-
-    exported_assistants = models.ManyToManyField("export_assistants.ExportAssistantAPI",
-                                                 related_name="organizations", blank=True)
-    exported_leanmods = models.ManyToManyField("export_leanmods.ExportLeanmodAssistantAPI",
-                                                  related_name="organizations", blank=True)
-    exported_orchestrations = models.ManyToManyField("export_orchestrations.ExportOrchestrationAPI",
-                                                        related_name="organizations", blank=True)
 
     auto_balance_topup = models.OneToOneField("llm_transaction.AutoBalanceTopUpModel",
                                               on_delete=models.SET_NULL, blank=True, null=True,

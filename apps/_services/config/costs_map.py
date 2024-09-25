@@ -14,7 +14,6 @@ class ToolCostsMap:
             ToolCostsMap.KnowledgeBaseExecutor.COST,
             ToolCostsMap.CodeBaseExecutor.COST,
             ToolCostsMap.BrowsingExecutor.COST,
-            ToolCostsMap.CodeRepositoryExecutor.COST,
             ToolCostsMap.MLModelExecutor.COST,
             ToolCostsMap.InternalCustomFunctionExecutor.COST,
             ToolCostsMap.ExternalCustomFunctionExecutor.COST,

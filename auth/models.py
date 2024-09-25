@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.utils import timezone
 
 from apps.user_permissions.models import UserPermission, PERMISSION_TYPES
-from auth.utils import generate_random_string, generate_referral_code
+from auth.utils import generate_referral_code
 
 REFERRAL_DEFAULT_BONUS_PERCENTAGE = 50
 
@@ -68,7 +68,8 @@ class ForumRewardActionsNames:
 
 
 class UserCreditCard(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='credit_cards')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='credit_cards', blank=True, null=True)
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='credit_cards', blank=True, null=True)
     name_on_card = models.CharField(max_length=255, null=False, blank=False)
     card_number = models.CharField(max_length=16, null=False, blank=False)
     card_expiration_month = models.CharField(max_length=2, null=False, blank=False)
@@ -99,7 +100,7 @@ class UserCreditCard(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', blank=True, null=True)
     email = models.EmailField(max_length=100, unique=True)
     email_token = models.CharField(max_length=100, blank=True, null=True)
     forget_password_token = models.CharField(max_length=100, blank=True, null=True)
@@ -137,12 +138,8 @@ class Profile(models.Model):
     is_active = models.BooleanField(default=True)
 
     created_by_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile_created_by_users",
-                                        default=1, blank=True, null=True)
+                                        blank=True, null=True)
 
-    # Add permissions for users
-    permissions = models.ManyToManyField(UserPermission, related_name='user_permissions', blank=True)
-    # Credit card information for the subscription.
-    credit_cards = models.ManyToManyField(UserCreditCard, related_name='user_credit_cards', blank=True)
     # user referral code
     referral_code = models.ForeignKey('PromoCode', on_delete=models.SET_NULL, related_name='referral_code', blank=True,
                                       null=True)
@@ -204,7 +201,7 @@ class Profile(models.Model):
             for permission in PERMISSION_TYPES:
                 UserPermission.objects.get_or_create(user=instance, permission_type=permission[0])
             permissions_of_user = UserPermission.objects.filter(user=instance)
-            instance.profile.permissions.add(*permissions_of_user)
+            instance.permissions.add(*permissions_of_user)
         # if no profile image assign the default in the media folder
         if not instance.profile.profile_picture:
             instance.profile.profile_picture = 'profile_pictures/default.png'

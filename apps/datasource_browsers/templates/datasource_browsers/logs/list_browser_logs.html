@@ -45,7 +45,7 @@
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-52.png' %}" width="25%" style="border-radius: 25px;"
-         class="justify-content-end me-8">
+         class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded ms-4">
       <i class="bi bi-info-circle"></i>
     </span>
@@ -131,7 +131,7 @@
               {% if log.screenshot %}
                 <a href="{{ log.screenshot.url }}" target="_blank">
                   <img src="{{ log.screenshot.url }}" class="img-fluid rounded border border-2 border-primary rounded"
-                       style="max-height: 200px;">
+                       style="max-height: 200px;" alt="Log Screenshot Image">
                 </a>
               {% else %}
                 <p class="bg-label-warning p-4 m-2 rounded">

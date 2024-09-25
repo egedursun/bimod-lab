@@ -7,9 +7,9 @@ def delete_repository_helper(executor, class_name: str, document_uuid):
     output = {"status": True, "error": ""}
     try:
         # Delete the repository
-        r = c.collections.get(class_name).data.delete_by_id(document_uuid)
+        _ = c.collections.get(class_name).data.delete_by_id(document_uuid)
         # Delete the chunks of repository
-        r = c.collections.get(f"{class_name}Chunks").data.delete_many(
+        _ = c.collections.get(f"{class_name}Chunks").data.delete_many(
             where=Filter.by_property("repository_uuid").equal(document_uuid)
         )
         print(f"[repository_deleter.delete_repository_helper] Deleted repository: {document_uuid}")

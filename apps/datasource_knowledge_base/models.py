@@ -19,7 +19,7 @@ from slugify import slugify
 from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
 from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
 from apps.assistants.models import VECTORIZERS
-from apps.datasource_knowledge_base.utils import generate_class_name, generate_random_alphanumeric, \
+from apps.datasource_knowledge_base.utils import generate_class_name, \
     generate_chat_history_class_name
 from config.settings import MEDIA_URL
 
@@ -108,10 +108,6 @@ class DocumentKnowledgeBaseConnection(models.Model):
     # Schema (for defining the overall structure to the assistant)
     schema_json = models.TextField(null=True, blank=True)
 
-    # Knowledge bases have documents
-    knowledge_base_documents = models.ManyToManyField("KnowledgeBaseDocument", related_name='knowledge_bases',
-                                                      blank=True)
-
     search_instance_retrieval_limit = models.IntegerField(default=10)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -179,7 +175,7 @@ class KnowledgeBaseDocument(models.Model):
     """
 
     knowledge_base = models.ForeignKey("DocumentKnowledgeBaseConnection", on_delete=models.CASCADE,
-                                       related_name='documents')
+                                       related_name='knowledge_base_documents')
 
     document_type = models.CharField(max_length=100, choices=SUPPORTED_DOCUMENT_TYPES)  # auto
     document_file_name = models.CharField(max_length=1000)
@@ -192,7 +188,6 @@ class KnowledgeBaseDocument(models.Model):
 
     # Documents have chunks
     document_content_temporary = models.TextField(blank=True, null=True)  # This will be emptied before indexing
-    document_chunks = models.ManyToManyField("KnowledgeBaseDocumentChunk", related_name='documents', blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -259,7 +254,8 @@ class KnowledgeBaseDocumentChunk(models.Model):
     """
 
     knowledge_base = models.ForeignKey("DocumentKnowledgeBaseConnection", on_delete=models.CASCADE)
-    document = models.ForeignKey("KnowledgeBaseDocument", on_delete=models.CASCADE, related_name='chunks')
+    document = models.ForeignKey("KnowledgeBaseDocument", on_delete=models.CASCADE,
+                                 related_name='document_chunks')
 
     chunk_document_type = models.CharField(max_length=100, choices=SUPPORTED_DOCUMENT_TYPES, blank=True, null=True)
     chunk_number = models.IntegerField()
@@ -312,10 +308,6 @@ class ContextHistoryKnowledgeBaseConnection(models.Model):
     class_name = models.CharField(max_length=1000, null=True, blank=True)
     vectorizer = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai")
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
-
-    # Knowledge bases have memories
-    context_history_memories = models.ManyToManyField("ContextHistoryMemory", related_name='knowledge_bases',
-                                                      blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -376,14 +368,13 @@ class ContextHistoryMemory(models.Model):
     """
 
     context_history_base = models.ForeignKey("ContextHistoryKnowledgeBaseConnection", on_delete=models.CASCADE,
-                                             related_name='memories')
+                                             related_name='context_history_memories')
     memory_name = models.CharField(max_length=1000, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     # to associate the element with the Weaviate object
     knowledge_base_memory_uuid = models.CharField(max_length=1000, null=True, blank=True)
-    memory_chunks = models.ManyToManyField("ContextHistoryMemoryChunk", related_name='memories', blank=True)
 
     def __str__(self):
         return self.context_history_base.assistant.name + " - " + self.created_at.strftime("%Y%m%d%H%M%S")
@@ -425,7 +416,7 @@ class ContextHistoryMemoryChunk(models.Model):
     """
 
     context_history_base = models.ForeignKey("ContextHistoryKnowledgeBaseConnection", on_delete=models.CASCADE)
-    memory = models.ForeignKey("ContextHistoryMemory", on_delete=models.CASCADE, related_name='chunks')
+    memory = models.ForeignKey("ContextHistoryMemory", on_delete=models.CASCADE, related_name='memory_chunks')
 
     chunk_number = models.IntegerField()
     chunk_content = models.TextField()  # This will be the text content of the chunk

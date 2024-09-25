@@ -11,7 +11,7 @@ def create_classes_helper(executor):
     print(f"[class_creator.create_classes_helper] Creating Weaviate classes...")
 
     try:
-        new_document_class = c.collections.create(
+        _ = c.collections.create(
             name=conn.class_name,
             vectorizer_config=executor.decode_vectorizer(
                 conn.vectorizer
@@ -68,7 +68,7 @@ def create_classes_helper(executor):
         return output
 
     try:
-        document_chunk_class = c.collections.create(
+        _ = c.collections.create(
             name=f"{conn.class_name}Chunks",
             vectorizer_config=executor.decode_vectorizer(
                 conn.vectorizer
@@ -133,7 +133,7 @@ def create_chat_history_classes_helper(executor):
     print(f"[class_creator.create_chat_history_classes_helper] Creating Chat History Weaviate classes...")
 
     try:
-        new_chat_history_class = c.collections.create(
+        _ = c.collections.create(
             name=conn.class_name,
             vectorizer_config=executor.decode_vectorizer(
                 conn.vectorizer
@@ -170,7 +170,7 @@ def create_chat_history_classes_helper(executor):
         return output
 
     try:
-        chat_history_chunk_class = c.collections.create(
+        _ = c.collections.create(
             name=f"{conn.class_name}Chunks",
             vectorizer_config=executor.decode_vectorizer(
                 conn.vectorizer

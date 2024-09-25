@@ -6,7 +6,6 @@ import filetype
 from celery import shared_task
 
 from config import settings
-from config.settings import MEDIA_URL
 
 MEDIA_CATEGORIES = (
     ('image', 'Image'),

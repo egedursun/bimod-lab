@@ -39,8 +39,8 @@ class CustomFunctionReference(models.Model):
         - `unique_together`: Ensures that each combination of `custom_function` and `assistant` is unique.
         - `indexes`: Indexes on various fields for optimized queries.
     """
-
-    custom_function = models.ForeignKey("CustomFunction", on_delete=models.CASCADE)
+    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE, null=True, blank=True, related_name="custom_function_references")
+    custom_function = models.ForeignKey("CustomFunction", on_delete=models.CASCADE, related_name="custom_function_references")
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     function_source = models.CharField(max_length=255, default="internal", blank=True)
     created_by_user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
@@ -102,7 +102,6 @@ class CustomFunction(models.Model):
         - `input_fields`, `output_fields`: JSONFields for storing the structure of input and output fields for the function.
         - `code_text`: TextField for storing the actual code of the function.
         - `secrets`: JSONField for storing any secrets required by the function.
-        - `custom_function_references`: ManyToManyField linking to `CustomFunctionReference` instances associated with the function.
         - `function_picture`: ImageField for storing an optional picture associated with the function.
         - `created_at`, `updated_at`: Timestamps for creation and last update.
         - `created_by_user`: ForeignKey linking to the `User` who created the function.
@@ -125,7 +124,6 @@ class CustomFunction(models.Model):
     code_text = models.TextField(default="", blank=True)
     secrets = models.JSONField(default=dict, blank=True)
 
-    custom_function_references = models.ManyToManyField("CustomFunctionReference", blank=True)
     function_picture = models.ImageField(upload_to="custom_functions/%YYYY/%mm/%dd/", blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

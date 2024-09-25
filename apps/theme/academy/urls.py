@@ -1,6 +1,5 @@
 from django.urls import path
 
-from config.settings import DESIGN_DOCS_ROUTE
 from .views import AcademyView
 from django.contrib.auth.decorators import login_required
 

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from apps.user_settings.views import UserSettingsView, DeleteAllOrganizationsView, DeleteAllLLMModelsView, \
+from apps.user_settings.views import UserSettingsView, DeleteAllLLMModelsView, \
     DeleteAllAssistantsView, DeleteAllChatsView, DeleteAllStarredMessagesView, DeleteAllMemoriesView, \
     DeleteAllMessageTemplatesView, DeleteAllExportAssistantsView, DeleteAllOrchestrationsView, \
     DeleteAllFileSystemsView, DeleteAllWebBrowsersView, DeleteAllSQLDatabasesView, DeleteAllCustomSQLQueriesView, \

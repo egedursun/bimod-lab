@@ -53,6 +53,7 @@ class WeaviateExecutor:
                                     insert=WEAVIATE_INSERT_TIMEOUT)))
             self.client = c
         except Exception as e:
+            print(f"[WeaviateExecutor.connect_c] Error connecting to Weaviate: {e}")
             return self.client
         return self.client
 
@@ -60,6 +61,7 @@ class WeaviateExecutor:
         try:
             self.client.close()
         except Exception as e:
+            print(f"[WeaviateExecutor.close_c] Error closing the Weaviate connection: {e}")
             pass
         return
 

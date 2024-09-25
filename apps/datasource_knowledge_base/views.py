@@ -14,7 +14,7 @@ from django.views.generic import TemplateView, DeleteView
 from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
 from apps.assistants.models import VECTORIZERS, Assistant
 from apps.datasource_knowledge_base.forms import DocumentKnowledgeBaseForm
-from apps.datasource_knowledge_base.tasks import index_document_helper, add_document_upload_log
+from apps.datasource_knowledge_base.tasks import add_document_upload_log
 from apps.datasource_knowledge_base.models import KNOWLEDGE_BASE_SYSTEMS, DocumentKnowledgeBaseConnection, \
     KnowledgeBaseDocument, DocumentUploadStatusNames, DocumentProcessingLog
 from apps.datasource_knowledge_base.utils import generate_document_uri

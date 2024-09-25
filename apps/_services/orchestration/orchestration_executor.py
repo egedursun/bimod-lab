@@ -38,7 +38,7 @@ class OrchestrationExecutor:
             ############################################
         }
 
-    def execute_for_query(self, user_query, file_urls=None, image_urls=None):
+    def execute_for_query(self, file_urls=None, image_urls=None):
 
         send_orchestration_message(f"""
         🤖 Orchestrator has started processing the query.
@@ -350,7 +350,6 @@ class OrchestrationExecutor:
             print(f"[IOrchestrationExecutor.execute_for_query] Worker Assistant Tool message: {tool_message}")
 
             return self.execute_for_query(
-                user_query=tool_message,
                 file_urls=file_urls,
                 image_urls=image_urls
             )
@@ -360,7 +359,7 @@ class OrchestrationExecutor:
         """, query_id=self.query_chat.id)
 
         # save the final response to the chat
-        final_response_log = OrchestrationQueryLog.objects.create(
+        _ = OrchestrationQueryLog.objects.create(
             orchestration_query=self.query_chat,
             log_type=OrchestrationQueryLogTypesNames.MAESTRO_ANSWER,
             log_text_content=final_response,
@@ -378,6 +377,7 @@ class OrchestrationExecutor:
                 while True:
                     message = await websocket.recv()
                     # send_orchestration_message(f"🧑‍🚀📡 >> Update @ Worker Assistant: {message}")
+                    print(f"[OrchestrationExecutor.listen_to_websocket] Update @ Worker Assistant: {message}")
         except Exception as e:
             print(f"[OrchestrationExecutor.listen_to_websocket] Error while listening to the websocket: {e}")
             pass
@@ -399,7 +399,6 @@ class OrchestrationExecutor:
         🧑‍🚀✅ >> Worker Assistant has successfully prepared the instructions for the order.
         """, query_id=self.query_chat.id)
 
-        assistant, chat = None, None
         if assistant_id in self.worker_chats:
             send_orchestration_message(f"""
         🧑‍🚀🔍 >> Worker Assistant already has a chat object. Connecting to the chat object...

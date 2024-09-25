@@ -14,9 +14,7 @@ import random
 import boto3
 from django.db import models
 
-from apps.assistants.utils import generate_random_string
 from config import settings
-from config.settings import MEDIA_URL
 
 ASSISTANT_RESPONSE_LANGUAGES = [
     # User's question language
@@ -95,7 +93,6 @@ class Assistant(models.Model):
             assistant.
         - `image_generation_capability`: Boolean for enabling image generation.
         - `created_at`, `updated_at`: Timestamps for assistant creation and last update.
-        - `custom_function_references`: ManyToManyField linking to custom functions used by the assistant.
     """
 
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, related_name='assistants')
@@ -141,10 +138,6 @@ class Assistant(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # tools and multi modality
-    custom_function_references = models.ManyToManyField("mm_functions.CustomFunctionReference",
-                                                        related_name='assistants', blank=True)
 
     # Data Security Integrations
     ner_integration = models.ForeignKey("data_security.NERIntegration", on_delete=models.SET_NULL,

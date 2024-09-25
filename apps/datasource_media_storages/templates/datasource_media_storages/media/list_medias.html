@@ -146,7 +146,7 @@
 
     <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
       <img src="{% static 'img/custom-illustrations-v2/i2-64.png' %}" width="25%" style="border-radius: 25px;"
-           class="justify-content-end me-8">
+           class="justify-content-end me-8" alt="Illustration for tip">
       <span class="alert-icon rounded ms-4">
             <i class="ti ti-bookmark"></i>
         </span>
@@ -184,10 +184,8 @@
                    aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
                   <div class="d-flex">
                     <img src="
-
-
                       {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                         class="rounded me-4" width="80" height="80">
+                         class="rounded me-4" width="80" height="80" alt="Organization image">
                     <h4 class="mb-0 mt-4">
                       <strong>{{ organization_data.organization.name }}</strong>
                     </h4>
@@ -223,7 +221,7 @@
                   <div class="card-header">
                     <div class="d-flex">
                       <img src="{% if assistant_data.assistant.assistant_image %}{{ assistant_data.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                           class="rounded me-4" width="60" height="60">
+                           class="rounded me-4" width="60" height="60" alt="Assistant image">
                       <h4 class="mb-0 ms-4"><strong>{{ assistant_data.assistant.name }}</strong></h4>
                       <br>
                     </div>
@@ -297,7 +295,7 @@
                                     <td>
                                       {% if storage_data.storage.media_category == "image" %}
                                         <img src="{{ item_data.item.full_file_path }}" width="50"
-                                             height="50" class="rounded">
+                                             height="50" class="rounded" alt="Image content">
                                       {% elif storage_data.storage.media_category == "audio" %}
                                         <audio class="plyr-audio-player pe-2 ps-2" controls>
                                           <source src="{{ item_data.item.full_file_path }}"
@@ -311,15 +309,15 @@
                                       {% elif storage_data.storage.media_category == "compressed" %}
                                         <img
                                           src="{% static 'img/icons/misc/' %}{{ item_data.item.media_file_type }}.png"
-                                          width="30" height="30" class="rounded">
+                                          width="30" height="30" class="rounded" alt="File type content (compressed)">
                                       {% elif storage_data.storage.media_category == "code" %}
                                         <img
                                           src="{% static 'img/icons/misc/' %}{{ item_data.item.media_file_type }}.png"
-                                          width="30" height="30" class="rounded">
+                                          width="30" height="30" class="rounded" alt="File type content (code)">
                                       {% elif storage_data.storage.media_category == "data" %}
                                         <img
                                           src="{% static 'img/icons/misc/' %}{{ item_data.item.media_file_type }}.png"
-                                          width="30" height="30" class="rounded">
+                                          width="30" height="30" class="rounded" alt="File type content (data)">
                                       {% endif %}
                                     </td>
                                     <td>{{ item_data.item.id }}</td>

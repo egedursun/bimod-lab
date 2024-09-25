@@ -42,7 +42,6 @@ class TriggeredJob(models.Model):
     step_guide = models.JSONField(default=list)
 
     trigger_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, related_name='triggered_jobs')
-    triggered_job_instances = models.ManyToManyField('TriggeredJobInstance', related_name='scheduled_jobs', blank=True)
 
     # TYPE: Trigger related fields
     trigger_source = models.CharField(max_length=2000, blank=True, null=True)
@@ -124,7 +123,7 @@ class TriggeredJobInstance(models.Model):
         - `indexes`: Indexes on various fields, including combinations of `triggered_job`, `status`, `started_at`, `ended_at`, and `logs` for optimized queries.
     """
 
-    triggered_job = models.ForeignKey(TriggeredJob, on_delete=models.CASCADE, related_name='instances', null=True)
+    triggered_job = models.ForeignKey(TriggeredJob, on_delete=models.CASCADE, related_name='triggered_job_instances', null=True)
     status = models.CharField(max_length=255, choices=TRIGGERED_JOB_INSTANCE_STATUSES, default='pending')
 
     webhook_payload = models.JSONField(default=dict)

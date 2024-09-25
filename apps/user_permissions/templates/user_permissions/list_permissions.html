@@ -40,7 +40,7 @@
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-38.png' %}" width="25%" style="border-radius:25px;"
-         class="justify-content-end me-8">
+         class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded">
           <i class="ti ti-bookmark"></i>
         </span>
@@ -76,10 +76,8 @@
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
             <img src="
-
-
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                 width="60" class="rounded me-4">
+                 width="60" class="rounded me-4" alt="Organization image">
             <h4>
               <strong>{{ organization.name }}</strong>
             </h4>
@@ -102,9 +100,8 @@
               <h6 class="mb-0">
                 <div class="d-flex">
                   <img src="
-
                     {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/user-0.png' %}{% endif %}"
-                       width="40" class="rounded me-4">
+                       width="40" class="rounded me-4" alt="User image">
                   <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ user.id }}" role="button"
                      aria-expanded="false" aria-controls="collapse-{{ user.id }}">
                     <strong>{{ user.username }}</strong>

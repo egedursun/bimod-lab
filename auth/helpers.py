@@ -1,7 +1,6 @@
 import os
 
-from django.core.mail import EmailMessage, EmailMultiAlternatives
-from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse
 from django.conf import settings
 from django.utils.html import strip_tags
