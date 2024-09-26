@@ -608,7 +608,7 @@ class MultimodalChatMessage(models.Model):
     # create the transaction on save
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        MultimodalChat.objects.get(id=self.multimodal_chat.id).chat_messages.add(self.id)
+        MultimodalChat.objects.get(id=self.multimodal_chat.id).chat_messages.add(self)
         # if the message is starred, create the starred item
         if self.starred:
             if not self.multimodal_chat.starred_messages.filter(chat_message=self.id).exists():
@@ -681,7 +681,7 @@ class MultimodalLeanChatMessage(models.Model):
     # create the transaction on save
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        MultimodalLeanChat.objects.get(id=self.multimodal_lean_chat.id).lean_chat_messages.add(self.id)
+        MultimodalLeanChat.objects.get(id=self.multimodal_lean_chat.id).lean_chat_messages.add(self)
 
 
 # NOTE: Counts both the Chats and LeanChats
