@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from lxml.html.clean import Cleaner
 
 from apps._services.config.costs_map import ToolCostsMap
-from apps.datasource_browsers.models import BrowsingReadingAbilitiesNames
+from apps.datasource_browsers.utils import BrowsingReadingAbilitiesNames
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 
