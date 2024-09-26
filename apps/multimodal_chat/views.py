@@ -21,6 +21,7 @@ from .models import MultimodalChat, MultimodalChatMessage, ChatSourcesNames, Mul
 from .utils import generate_chat_name
 from .._services.llms.llm_decoder import InternalLLMClient
 from .._services.storages.storage_executor import StorageExecutor
+from .._services.user_permissions.permission_manager import UserPermissionManager
 from ..assistants.models import Assistant
 from ..leanmod.models import LeanAssistant
 from ..message_templates.models import MessageTemplate
@@ -44,13 +45,14 @@ class ChatStreamView(View):
         # 1. Permission check
         context_user_id = request.POST.get('user_id')
         context_user = get_object_or_404(User, id=context_user_id)
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
-            messages.error(request, "You do not have permission to create and use chats.")
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_AND_USE_CHATS
+        if not UserPermissionManager.is_authorized(user=context_user,
+                                                   operation=PermissionNames.CREATE_AND_USE_CHATS):
+            messages.error(self.request, "You do not have permission to create and use chats.")
             return redirect('multimodal_chat:chat')
-        print(f"[ChatStreamView.post] User {context_user} has permission to create and use chats.")
+        ##############################
 
         # 2. Content, image, file, and other inputs retrieval
         chat_id = request.POST.get('chat_id')
@@ -211,14 +213,14 @@ class ChatView(LoginRequiredMixin, TemplateView):
         from .._services.llms.llm_decoder import InternalLLMClient
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        # PERMISSION CHECK FOR - CHAT / CREATE AND USE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to create and use chats."}
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_AND_USE_CHATS
+        if not UserPermissionManager.is_authorized(user=context_user,
+                                                   operation=PermissionNames.CREATE_AND_USE_CHATS):
+            messages.error(self.request, "You do not have permission to create and use chats.")
+            return redirect('multimodal_chat:chat')
+        ##############################
 
         if 'assistant_id' in request.POST:
             assistant_id = request.POST.get('assistant_id')
@@ -366,6 +368,15 @@ class ChatDeleteView(LoginRequiredMixin, DeleteView):
         return MultimodalChat.objects.filter(user=self.request.user, chat_source=ChatSourcesNames.APP)
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - REMOVE_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.REMOVE_CHATS):
+            messages.error(self.request, "You do not have permission to remove chats.")
+            return redirect('multimodal_chat:chat')
+        ##############################
+
         chat = get_object_or_404(MultimodalChat, id=self.kwargs['pk'], user=self.request.user)
         chat.delete()
         return redirect('multimodal_chat:chat')
@@ -387,15 +398,16 @@ class ChatArchiveView(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
-        context_user = self.request.user
-        # PERMISSION CHECK FOR - CHAT / ARCHIVE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to archive chats."}
+        context = self.get_context_data(**kwargs)
+
+        ##############################
+        # PERMISSION CHECK FOR - ARCHIVE_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ARCHIVE_CHATS):
+            messages.error(self.request, "You do not have permission to archive chats.")
             return self.render_to_response(context)
+        ##############################
+
         pk = kwargs.get('pk')
         chat = get_object_or_404(MultimodalChat, id=pk, user=self.request.user)
         chat.is_archived = True
@@ -419,15 +431,15 @@ class ChatUnarchiveView(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
-        context_user = self.request.user
-        # PERMISSION CHECK FOR - CHAT / ARCHIVE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to archive chats."}
+        context = self.get_context_data(**kwargs)
+
+        ##############################
+        # PERMISSION CHECK FOR - UNARCHIVE_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UNARCHIVE_CHATS):
+            messages.error(self.request, "You do not have permission to archive chats.")
             return self.render_to_response(context)
+        ##############################
 
         pk = kwargs.get('pk')
         chat = get_object_or_404(MultimodalChat, id=pk, user=self.request.user)
@@ -449,6 +461,15 @@ class ChatArchiveListView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         active_chat = None
         context_user = self.request.user
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_AND_USE_CHATS
+        if not UserPermissionManager.is_authorized(user=context_user,
+                                                   operation=PermissionNames.CREATE_AND_USE_CHATS):
+            messages.error(self.request, "You do not have permission to create and use chats.")
+            return context
+        ##############################
 
         if 'chat_id' in self.request.GET:
             active_chat = get_object_or_404(MultimodalChat, id=self.request.GET['chat_id'], user=self.request.user)
@@ -552,13 +573,14 @@ class LeanChatStreamView(View):
         # 1. Permission check
         context_user_id = request.POST.get('user_id')
         context_user = get_object_or_404(User, id=context_user_id)
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
-            messages.error(request, "You do not have permission to create and use chats.")
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_AND_USE_LEAN_CHATS
+        if not UserPermissionManager.is_authorized(user=context_user,
+                                                   operation=PermissionNames.CREATE_AND_USE_LEAN_CHATS):
+            messages.error(self.request, "You do not have permission to create and use LeanMod chats.")
             return redirect('multimodal_chat:lean_chat')
-        print(f"[LeanChatStreamView.post] User {context_user} has permission to create and use chats.")
+        ##############################
 
         # 2. Content, image, file, and other inputs retrieval
         chat_id = request.POST.get('chat_id')
@@ -705,14 +727,14 @@ class LeanChatView(TemplateView, LoginRequiredMixin):
         from .._services.llms.llm_decoder import InternalLLMClient
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        # PERMISSION CHECK FOR - CHAT / CREATE AND USE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to create and use chats."}
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_AND_USE_LEAN_CHATS
+        if not UserPermissionManager.is_authorized(user=context_user,
+                                                   operation=PermissionNames.CREATE_AND_USE_LEAN_CHATS):
+            messages.error(self.request, "You do not have permission to create and use LeanMod chats.")
+            return redirect('multimodal_chat:lean_chat')
+        ##############################
 
         if 'assistant_id' in request.POST:
             assistant_id = request.POST.get('assistant_id')
@@ -844,6 +866,14 @@ class LeanChatDeleteView(LoginRequiredMixin, DeleteView):
         return MultimodalLeanChat.objects.filter(user=self.request.user, chat_source=ChatSourcesNames.APP)
 
     def post(self, request, *args, **kwargs):
+        ##############################
+        # PERMISSION CHECK FOR - REMOVE_LEAN_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.REMOVE_LEAN_CHATS):
+            messages.error(self.request, "You do not have permission to remove LeanMod chats.")
+            return redirect('multimodal_chat:lean_chat')
+        ##############################
+
         chat = get_object_or_404(MultimodalLeanChat, id=self.kwargs['pk'], user=self.request.user)
         chat.delete()
         return redirect('multimodal_chat:lean_chat')
@@ -855,15 +885,16 @@ class LeanChatArchiveView(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
-        context_user = self.request.user
-        # PERMISSION CHECK FOR - CHAT / ARCHIVE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to archive chats."}
+        context = self.get_context_data(**kwargs)
+
+        ##############################
+        # PERMISSION CHECK FOR - ARCHIVE_LEAN_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ARCHIVE_LEAN_CHATS):
+            messages.error(self.request, "You do not have permission to archive LeanMod chats.")
             return self.render_to_response(context)
+        ##############################
+
         pk = kwargs.get('pk')
         chat = get_object_or_404(MultimodalLeanChat, id=pk, user=self.request.user)
         chat.is_archived = True
@@ -877,15 +908,15 @@ class LeanChatUnarchiveView(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
-        context_user = self.request.user
-        # PERMISSION CHECK FOR - CHAT / ARCHIVE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to archive chats."}
+        context = self.get_context_data(**kwargs)
+
+        ##############################
+        # PERMISSION CHECK FOR - UNARCHIVE_LEAN_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UNARCHIVE_LEAN_CHATS):
+            messages.error(self.request, "You do not have permission to archive LeanMod chats.")
             return self.render_to_response(context)
+        ##############################
 
         pk = kwargs.get('pk')
         chat = get_object_or_404(MultimodalLeanChat, id=pk, user=self.request.user)
@@ -898,6 +929,15 @@ class LeanChatArchiveListView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         active_chat = None
         context_user = self.request.user
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_AND_USE_LEAN_CHATS
+        if not UserPermissionManager.is_authorized(user=context_user,
+                                                   operation=PermissionNames.CREATE_AND_USE_LEAN_CHATS):
+            messages.error(self.request, "You do not have permission to create and use LeanMod chats.")
+            return context
+        ##############################
 
         if 'chat_id' in self.request.GET:
             active_chat = get_object_or_404(MultimodalLeanChat, id=self.request.GET['chat_id'], user=self.request.user)

@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView, DeleteView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.starred_messages.models import StarredMessage
 from apps.user_permissions.models import UserPermission, PermissionNames
 from config.settings import MEDIA_URL
@@ -30,9 +31,18 @@ class ListStarredMessageView(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_STARRED_MESSAGES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_STARRED_MESSAGES):
+            messages.error(self.request, "You do not have permission to view starred messages.")
+            return context
+        ##############################
+
         user = self.request.user
         starred_messages = StarredMessage.objects.filter(user=user).select_related('chat_message', 'assistant',
-                                                                                   'organization', 'chat')
+                                                                               'organization', 'chat')
 
         org_assistants_messages = {}
         for message in starred_messages:
@@ -72,13 +82,15 @@ class DeleteStarredMessageView(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         context_user = request.user
         starred_message = get_object_or_404(StarredMessage, id=self.kwargs['pk'])
-        # PERMISSION CHECK FOR - STARRED_MESSAGES/REMOVE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.REMOVE_STARRED_MESSAGES not in user_permissions:
-            messages.error(request, "You do not have permission to delete starred messages.")
+
+        ##############################
+        # PERMISSION CHECK FOR - REMOVE_STARRED_MESSAGES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.REMOVE_STARRED_MESSAGES):
+            messages.error(self.request, "You do not have permission to remove starred messages.")
             return redirect('starred_messages:list')
+        ##############################
+
         starred_message.delete()
         print('[DeleteStarredMessageView.post] Starred message deleted successfully.')
         success_message = "Starred message deleted successfully."

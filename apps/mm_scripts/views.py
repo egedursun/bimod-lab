@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.mm_scripts.forms import CustomScriptForm
 from apps.mm_scripts.models import CUSTOM_SCRIPT_CATEGORIES, CustomScript, CustomScriptReference
@@ -38,6 +39,15 @@ class CreateCustomScriptView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_SCRIPTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_SCRIPTS):
+            messages.error(self.request, "You do not have permission to add scripts.")
+            return redirect('mm_scripts:list')
+        ##############################
+
         form = CustomScriptForm(request.POST, request.FILES)
         if form.is_valid():
             custom_script = form.save(commit=False)
@@ -80,6 +90,15 @@ class ListCustomScriptsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_SCRIPTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_SCRIPTS):
+            messages.error(self.request, "You do not have permission to list scripts.")
+            return context
+        ##############################
+
         context_user = self.request.user
         connected_organizations = Organization.objects.filter(users__in=[context_user])
         users_of_connected_organizations = User.objects.filter(
@@ -150,14 +169,14 @@ class ManageCustomScriptAssistantConnectionsView(LoginRequiredMixin, TemplateVie
         assistant_id = request.POST.get('assistant_id')
         script_id = request.POST.get('script_id')
         action = request.POST.get('action')
-        # PERMISSION CHECK FOR - ADD_SCRIPTS
-        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_SCRIPTS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add script connections."}
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_SCRIPTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_SCRIPTS):
+            messages.error(self.request, "You do not have permission to update scripts.")
+            return redirect('mm_scripts:list')
+        ##############################
 
         if not assistant_id or not action:
             messages.error(request, "Invalid input. Please try again.")
@@ -205,6 +224,15 @@ class DeleteCustomScriptView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_SCRIPTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_SCRIPTS):
+            messages.error(self.request, "You do not have permission to delete scripts.")
+            return redirect('mm_scripts:list')
+        ##############################
+
         custom_script_id = self.kwargs.get('pk')
         # PERMISSION CHECK FOR - DELETE_SCRIPTS
         user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
@@ -266,17 +294,17 @@ class ScriptStoreView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_SCRIPTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_SCRIPTS):
+            messages.error(self.request, "You do not have permission to update scripts.")
+            return redirect('mm_scripts:list')
+        ##############################
+
         action = request.POST.get('action')
         assistant_id = request.POST.get('assistant_id')
-        # PERMISSION CHECK FOR - ADD_SCRIPTS
-        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_SCRIPTS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add script connections."}
-            return self.render_to_response(context)
-
         if action and action == "add" and assistant_id:
             script_id = request.POST.get('script_id')
             if script_id:

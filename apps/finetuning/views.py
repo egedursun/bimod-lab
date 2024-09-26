@@ -1,7 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.finetuning.forms import FineTunedModelConnectionForm
 from apps.finetuning.models import FineTunedModelConnection, FineTuningModelProvidersNames, FineTunedModelTypesNames
 from apps.organization.models import Organization
@@ -18,14 +20,13 @@ class FineTunedModelConnectionAddView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         context_user = request.user
 
-        # PERMISSION CHECK FOR - LLM CORES
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_LLM_CORES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add LLM Models."}
-            return self.render_to_response(context)
+        ##############################
+        # PERMISSION CHECK FOR - ADD_FINETUNING_MODEL
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_FINETUNING_MODEL):
+            messages.error(self.request, "You do not have permission to add Finetuning Model.")
+            return redirect('finetuning:list')
+        ##############################
 
         form = FineTunedModelConnectionForm(request.POST)
         if form.is_valid():
@@ -45,14 +46,13 @@ class FineTunedModelConnectionRemoveView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         context_user = request.user
 
-        # PERMISSION CHECK FOR - LLM CORES
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_LLM_CORES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to delete LLM Models."}
-            return self.render_to_response(context)
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_FINETUNING_MODEL
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_FINETUNING_MODEL):
+            messages.error(self.request, "You do not have permission to delete Finetuning Model.")
+            return redirect('finetuning:list')
+        ##############################
 
         connection = get_object_or_404(FineTunedModelConnection, id=kwargs['pk'], created_by_user=request.user)
         connection.delete()
@@ -62,6 +62,14 @@ class FineTunedModelConnectionRemoveView(LoginRequiredMixin, TemplateView):
 class FineTunedModelConnectionsListView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_FINETUNING_MODEL
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_FINETUNING_MODEL):
+            messages.error(self.request, "You do not have permission to list Finetuning Model.")
+            return context
+        ##############################
 
         # Fetch organizations associated with the user
         organizations = Organization.objects.filter(users__in=[self.request.user])

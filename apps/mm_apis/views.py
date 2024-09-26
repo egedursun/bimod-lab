@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.mm_apis.forms import CustomAPIForm
 from apps.mm_apis.models import CUSTOM_API_CATEGORIES, CUSTOM_API_AUTHENTICATION_TYPES, CustomAPI, CustomAPIReference
@@ -40,14 +41,14 @@ class CreateCustomAPIView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = CustomAPIForm(request.POST, request.FILES)
+
+        ##############################
         # PERMISSION CHECK FOR - ADD_APIS
-        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_APIS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add APIs."}
-            return self.render_to_response(context)
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_APIS):
+            messages.error(self.request, "You do not have permission to add custom APIs.")
+            return redirect('mm_apis:list')
+        ##############################
 
         if form.is_valid():
             custom_api = form.save(commit=False)
@@ -97,6 +98,15 @@ class ListCustomAPIsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_APIS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_APIS):
+            messages.error(self.request, "You do not have permission to list custom APIs.")
+            return context
+        ##############################
+
         context_user = self.request.user
         connected_organizations = Organization.objects.filter(users__in=[context_user])
         users_of_connected_organizations = User.objects.filter(
@@ -166,6 +176,15 @@ class ManageCustomAPIAssistantConnectionsView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_APIS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_APIS):
+            messages.error(self.request, "You do not have permission to update custom APIs.")
+            return redirect('mm_apis:list')
+        ##############################
+
         assistant_id = request.POST.get('assistant_id')
         api_id = request.POST.get('api_id')
         action = request.POST.get('action')
@@ -224,6 +243,15 @@ class DeleteCustomAPIView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_APIS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_APIS):
+            messages.error(self.request, "You do not have permission to delete custom APIs.")
+            return redirect('mm_apis:list')
+        ##############################
+
         custom_api_id = self.kwargs.get('pk')
         # PERMISSION CHECK FOR - DELETE_APIS
         user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
@@ -287,6 +315,15 @@ class APIStoreView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_APIS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_APIS):
+            messages.error(self.request, "You do not have permission to update custom APIs.")
+            return redirect('mm_apis:store')
+        ##############################
+
         action = request.POST.get('action')
         assistant_id = request.POST.get('assistant_id')
         # PERMISSION CHECK FOR - ADD_APIS

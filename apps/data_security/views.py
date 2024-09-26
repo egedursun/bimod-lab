@@ -3,9 +3,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.data_security.forms import NERIntegrationForm
 from apps.data_security.models import NERIntegration
 from apps.organization.models import Organization
+from apps.user_permissions.models import PermissionNames
 from web_project import TemplateLayout
 
 
@@ -39,6 +41,15 @@ class CreateNERIntegrationView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        context_user = request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_DATA_SECURITY
+        if not UserPermissionManager.is_authorized(user=context_user, operation=PermissionNames.ADD_DATA_SECURITY):
+            messages.error(request, "You do not have permission to add data security layers.")
+            return redirect('data_security:list_ner_integrations')
+        ##############################
+
         form = NERIntegrationForm(request.POST)
         if form.is_valid():
             form.save()
@@ -52,6 +63,14 @@ class ListNERIntegrationsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_DATA_SECURITY
+        if not UserPermissionManager.is_authorized(user=self.request.user, operation=PermissionNames.LIST_DATA_SECURITY):
+            messages.error(self.request, "You do not have permission to list data security layers.")
+            return context
+        ##############################
+
         context['ner_integrations'] = NERIntegration.objects.select_related('organization').all()
         return context
 
@@ -103,6 +122,14 @@ class UpdateNERIntegrationView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_DATA_SECURITY
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_DATA_SECURITY):
+            messages.error(self.request, "You do not have permission to update data security layers.")
+            return redirect('data_security:list_ner_integrations')
+        ##############################
+
         # Fetch the existing NERIntegration object
         ner_integration = NERIntegration.objects.get(id=self.kwargs['pk'])
         # Manually set each checkbox field based on POST data
@@ -148,6 +175,14 @@ class DeleteNERIntegrationView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_DATA_SECURITY
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_DATA_SECURITY):
+            messages.error(self.request, "You do not have permission to delete data security layers.")
+            return redirect('data_security:list_ner_integrations')
+        ##############################
+
         ner_integration = get_object_or_404(NERIntegration, id=self.kwargs['pk'])
         # If you want, you can add more logic here (e.g., checking permissions)
         ner_integration.delete()

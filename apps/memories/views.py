@@ -10,6 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.memories.models import AssistantMemory
 from apps.organization.models import Organization
@@ -40,6 +41,15 @@ class ListAssistantMemoryView(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_ASSISTANT_MEMORIES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_ASSISTANT_MEMORIES):
+            messages.error(self.request, "You do not have permission to list assistant memories.")
+            return context
+        ##############################
+
         org_assistants = {}
         organizations = Organization.objects.filter(users=self.request.user)
         for organization in organizations:
@@ -81,18 +91,18 @@ class CreateAssistantMemoryView(TemplateView, LoginRequiredMixin):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_ASSISTANT_MEMORIES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_ASSISTANT_MEMORIES):
+            messages.error(self.request, "You do not have permission to add assistant memories.")
+            return redirect('memories:list')
+        ##############################
+
         assistant_id = request.POST.get('assistant')
         memory_type = request.POST.get('memory_type')
         memory_text_content = request.POST.get('memory_text_content')
-        context_user = request.user
-        # PERMISSION CHECK FOR - MEMORIES CREATION
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_ASSISTANT_MEMORIES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to create memories."}
-            return self.render_to_response(context)
 
         AssistantMemory.objects.create(
             user=request.user, assistant_id=assistant_id, memory_type=memory_type,
@@ -128,16 +138,16 @@ class DeleteAssistantMemoryView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        context_user = request.user
-        memory = get_object_or_404(AssistantMemory, id=self.kwargs['pk'])
-        # PERMISSION CHECK FOR - MEMORIES DELETION
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_ASSISTANT_MEMORIES not in user_permissions:
-            messages.error(request, "You do not have permission to delete memories.")
-            return redirect('memories:list')
 
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_ASSISTANT_MEMORIES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_ASSISTANT_MEMORIES):
+            messages.error(self.request, "You do not have permission to delete assistant memories.")
+            return redirect('memories:list')
+        ##############################
+
+        memory = get_object_or_404(AssistantMemory, id=self.kwargs['pk'])
         memory.delete()
         success_message = "Memory deleted successfully!"
         print('[DeleteAssistantMemoryView.post] Memory deleted successfully.')

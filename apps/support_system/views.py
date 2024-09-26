@@ -7,14 +7,16 @@ Views included:
 - SupportTicketListView: Displays a paginated list of the user's support tickets.
 - SupportTicketDetailView: Shows detailed information about a specific support ticket, including the ability to add responses.
 """
-
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.support_system.forms import SupportTicketForm
 from apps.support_system.models import SupportTicket, SupportTicketResponse
+from apps.user_permissions.models import PermissionNames
 from web_project import TemplateLayout
 
 
@@ -41,6 +43,15 @@ class CreateSupportTicketView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_SUPPORT_TICKETS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.CREATE_SUPPORT_TICKETS):
+            messages.error(self.request, "You do not have permission to create support tickets.")
+            return redirect('support_system:list')
+        ##############################
+
         form = SupportTicketForm(request.POST, request.FILES)
         if form.is_valid():
             ticket = form.save(commit=False)
@@ -70,6 +81,14 @@ class SupportTicketListView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_SUPPORT_TICKETS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_SUPPORT_TICKETS):
+            messages.error(self.request, "You do not have permission to view support tickets.")
+            return context
+        ##############################
 
         # Fetch the tickets for the user
         queryset = SupportTicket.objects.filter(user=self.request.user)
@@ -120,12 +139,30 @@ class SupportTicketDetailView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_SUPPORT_TICKETS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_SUPPORT_TICKETS):
+            messages.error(self.request, "You do not have permission to view support tickets.")
+            return context
+        ##############################
+
         ticket = get_object_or_404(SupportTicket, pk=self.kwargs['pk'], user=self.request.user)
         context['ticket'] = ticket
         context['responses'] = ticket.responses.all().order_by('created_at')
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_SUPPORT_TICKETS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_SUPPORT_TICKETS):
+            messages.error(self.request, "You do not have permission to update/modify support tickets.")
+            return redirect('support_system:list')
+        ##############################
+
         ticket = get_object_or_404(SupportTicket, pk=self.kwargs['pk'], user=request.user)
         response_text = request.POST.get('response')
 

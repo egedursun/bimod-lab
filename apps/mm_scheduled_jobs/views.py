@@ -11,6 +11,7 @@ from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_scheduled_jobs.forms import ScheduledJobForm
 from apps.mm_scheduled_jobs.models import ScheduledJob, ScheduledJobInstance
 from apps.user_permissions.models import UserPermission, PermissionNames
@@ -34,16 +35,16 @@ class CreateScheduledJobView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = ScheduledJobForm(request.POST)
-        # PERMISSION CHECK FOR - ADD SCHEDULED JOBS
-        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_SCHEDULED_JOBS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add scheduled jobs."}
-            return self.render_to_response(context)
 
+        ##############################
+        # PERMISSION CHECK FOR - ADD_SCHEDULED_JOBS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_SCHEDULED_JOBS):
+            messages.error(self.request, "You do not have permission to add scheduled jobs.")
+            return redirect('mm_scheduled_jobs:list')
+        ##############################
+
+        form = ScheduledJobForm(request.POST)
         if form.is_valid():
             scheduled_job = form.save(commit=False)
             scheduled_job.created_by_user = request.user
@@ -73,6 +74,15 @@ class ListScheduledJobsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_SCHEDULED_JOBS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_SCHEDULED_JOBS):
+            messages.error(self.request, "You do not have permission to list scheduled jobs.")
+            return context
+        ##############################
+
         search_query = self.request.GET.get('search', '')
         user_organizations = self.request.user.organizations.all()
         organization_assistants = user_organizations.values_list('assistants', flat=True)
@@ -105,6 +115,15 @@ class ListScheduledJobLogsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_SCHEDULED_JOBS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_SCHEDULED_JOBS):
+            messages.error(self.request, "You do not have permission to list scheduled jobs.")
+            return context
+        ##############################
+
         scheduled_job_id = self.kwargs.get('pk')
         scheduled_job = get_object_or_404(ScheduledJob, id=scheduled_job_id)
         context['scheduled_job'] = scheduled_job
@@ -141,14 +160,13 @@ class ConfirmDeleteScheduledJobView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - DELETE SCHEDULED JOBS
-        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_SCHEDULED_JOBS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to delete scheduled jobs."}
-            return self.render_to_response(context)
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_SCHEDULED_JOBS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_SCHEDULED_JOBS):
+            messages.error(self.request, "You do not have permission to delete scheduled jobs.")
+            return redirect('mm_scheduled_jobs:list')
+        ##############################
 
         scheduled_job_id = self.kwargs.get('pk')
         scheduled_job = get_object_or_404(ScheduledJob, id=scheduled_job_id)

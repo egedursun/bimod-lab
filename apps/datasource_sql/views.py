@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_sql.forms import SQLDatabaseConnectionForm, CustomSQLQueryForm
 from apps.datasource_sql.models import DBMS_CHOICES, SQLDatabaseConnection, CustomSQLQuery
@@ -46,16 +47,13 @@ class CreateSQLDatabaseConnectionView(TemplateView, LoginRequiredMixin):
         form = SQLDatabaseConnectionForm(request.POST)
         context_user = self.request.user
 
-        # PERMISSION CHECK FOR - SQL DATA SOURCE CREATION
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_SQL_DATABASES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to create SQL Data Sources."
-            }
-            return self.render_to_response(context)
+        ##############################
+        # PERMISSION CHECK FOR - ADD_SQL_DATABASES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_SQL_DATABASES):
+            messages.error(self.request, "You do not have permission to create SQL Data Sources.")
+            return redirect('datasource_sql:list')
+        ##############################
 
         if form.is_valid():
             form.save()
@@ -81,6 +79,15 @@ class ListSQLDatabaseConnectionsView(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_SQL_DATABASES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_SQL_DATABASES):
+            messages.error(self.request, "You do not have permission to list SQL Data Sources.")
+            return context
+        ##############################
+
         context_user = self.request.user
         connections = SQLDatabaseConnection.objects.filter(
             assistant__in=Assistant.objects.filter(organization__in=context_user.organizations.all())
@@ -126,16 +133,14 @@ class UpdateSQLDatabaseConnectionView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
-        # PERMISSION CHECK FOR - SQL DATA SOURCE UPDATE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.UPDATE_SQL_DATABASES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to update SQL Data Sources."
-            }
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_SQL_DATABASES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_SQL_DATABASES):
+            messages.error(self.request, "You do not have permission to update SQL Data Sources.")
+            return redirect('datasource_sql:list')
+        ##############################
 
         connection = SQLDatabaseConnection.objects.get(id=kwargs['pk'], created_by_user=context_user)
         form = SQLDatabaseConnectionForm(request.POST, instance=connection)
@@ -168,19 +173,16 @@ class DeleteSQLDatabaseConnectionView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context_user = request.user
-        # PERMISSION CHECK FOR - SQL DATA SOURCE DELETE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_SQL_DATABASES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to delete SQL Data Sources."
-            }
-            return self.render_to_response(context)
 
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_SQL_DATABASES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_SQL_DATABASES):
+            messages.error(self.request, "You do not have permission to delete SQL Data Sources.")
+            return redirect('datasource_sql:list')
+        ##############################
+
+        self.object = self.get_object()
         self.object.delete()
         messages.success(request, f'SQL Database Connection {self.object.name} was deleted successfully.')
         print(f'[DeleteSQLDatabaseConnectionView.post] SQL Database Connection {self.object.name} was deleted successfully.')
@@ -211,17 +213,14 @@ class CreateSQLQueryView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         form = CustomSQLQueryForm(request.POST)
-        context_user = self.request.user
-        # PERMISSION CHECK FOR - SQL QUERY CREATION
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_SQL_DATABASES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to create SQL Queries."
-            }
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_CUSTOM_SQL_QUERIES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_CUSTOM_SQL_QUERIES):
+            messages.error(self.request, "You do not have permission to create custom SQL queries.")
+            return redirect('datasource_sql:list_queries')
+        ##############################
 
         if form.is_valid():
             form.save()
@@ -260,19 +259,16 @@ class UpdateSQLQueryView(TemplateView, LoginRequiredMixin):
         return context
 
     def post(self, request, *args, **kwargs):
-        context_user = self.request.user
-        query = get_object_or_404(CustomSQLQuery, id=kwargs['pk'])
-        # PERMISSION CHECK FOR - SQL QUERY UPDATE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.UPDATE_SQL_DATABASES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to update SQL Queries."
-            }
-            return self.render_to_response(context)
 
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_CUSTOM_SQL_QUERIES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_CUSTOM_SQL_QUERIES):
+            messages.error(self.request, "You do not have permission to update custom SQL queries.")
+            return redirect('datasource_sql:list_queries')
+        ##############################
+
+        query = get_object_or_404(CustomSQLQuery, id=kwargs['pk'])
         form = CustomSQLQueryForm(request.POST, instance=query)
         if form.is_valid():
             form.save()
@@ -303,16 +299,16 @@ class DeleteSQLQueryView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context_user = request.user
-        # PERMISSION CHECK FOR - SQL QUERY DELETE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_SQL_DATABASES not in user_permissions:
-            messages.error(request, "You do not have permission to delete SQL Queries.")
-            return redirect(self.success_url)
 
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_CUSTOM_SQL_QUERIES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_CUSTOM_SQL_QUERIES):
+            messages.error(self.request, "You do not have permission to delete custom SQL queries.")
+            return redirect('datasource_sql:list_queries')
+        ##############################
+
+        self.object = self.get_object()
         self.object.delete()
         messages.success(request, f'SQL Query {self.object.name} was deleted successfully.')
         return redirect(self.success_url)
@@ -330,6 +326,15 @@ class ListSQLQueriesView(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_CUSTOM_SQL_QUERIES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_CUSTOM_SQL_QUERIES):
+            messages.error(self.request, "You do not have permission to list custom SQL queries.")
+            return context
+        ##############################
+
         context_user = self.request.user
         queries = CustomSQLQuery.objects.filter(
             database_connection__assistant__in=Assistant.objects.filter(organization__in=context_user.organizations.all())

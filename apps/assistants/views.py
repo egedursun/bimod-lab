@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant, ASSISTANT_RESPONSE_LANGUAGES, ContextOverflowStrategyNames, \
     CONTEXT_OVERFLOW_STRATEGY, VECTORIZERS, VectorizerNames
 from apps.data_security.models import NERIntegration
@@ -50,15 +51,8 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         context_user = request.user
 
         ##############################
-        # PERMISSION CHECK FOR - ASSISTANT/CREATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.ADD_ASSISTANTS not in user_permissions:
+        # PERMISSION CHECK FOR - ADD_ASSISTANTS
+        if not UserPermissionManager.is_authorized(user=context_user, operation=PermissionNames.ADD_ASSISTANTS):
             messages.error(request, "You do not have permission to create assistants.")
             return redirect('assistants:list')
         ##############################
@@ -169,9 +163,10 @@ class ListAssistantView(LoginRequiredMixin, TemplateView):
         user = self.request.user
 
         ##############################
-        # PERMISSION CHECK FOR - ASSISTANT/CREATE
-        ##############################
-        # for now, we will allow all users to view the list of assistants...
+        # PERMISSION CHECK FOR - LIST_ASSISTANTS
+        if not UserPermissionManager.is_authorized(user=user, operation=PermissionNames.LIST_ASSISTANTS):
+            messages.error(self.request, "You do not have permission to list assistants.")
+            return context
         ##############################
 
         organizations = Organization.objects.filter(users__in=[user])
@@ -212,16 +207,9 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         context_user = request.user
 
         ##############################
-        # PERMISSION CHECK FOR - ASSISTANT/UPDATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.UPDATE_ASSISTANTS not in user_permissions:
-            messages.error(request, "You do not have permission to update / modify assistants.")
+        # PERMISSION CHECK FOR - UPDATE_ASSISTANTS
+        if not UserPermissionManager.is_authorized(user=context_user, operation=PermissionNames.UPDATE_ASSISTANTS):
+            messages.error(self.request, "You do not have permission to update assistants.")
             return redirect('assistants:list')
         ##############################
 
@@ -307,16 +295,9 @@ class DeleteAssistantView(LoginRequiredMixin, DeleteView):
         context_user = self.request.user
 
         ##############################
-        # PERMISSION CHECK FOR - ASSISTANT/CREATE
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.DELETE_ASSISTANTS not in user_permissions:
-            messages.error(request, "You do not have permission to delete assistants.")
+        # PERMISSION CHECK FOR - DELETE_ASSISTANTS
+        if not UserPermissionManager.is_authorized(user=context_user, operation=PermissionNames.DELETE_ASSISTANTS):
+            messages.error(self.request, "You do not have permission to delete assistants.")
             return redirect('assistants:list')
         ##############################
 

@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.mm_functions.forms import CustomFunctionForm
 from apps.mm_functions.models import CustomFunction, CustomFunctionReference, CUSTOM_FUNCTION_CATEGORIES
@@ -46,17 +47,10 @@ class CreateCustomFunctionView(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_FUNCTIONS
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=request.user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.ADD_FUNCTIONS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add functions."}
-            return self.render_to_response(context)
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_FUNCTIONS):
+            messages.error(self.request, "You do not have permission to add custom functions.")
+            return redirect('mm_functions:list')
         ##############################
 
         if form.is_valid():
@@ -143,6 +137,15 @@ class ListCustomFunctionsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_FUNCTIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_FUNCTIONS):
+            messages.error(self.request, "You do not have permission to list custom functions.")
+            return context
+        ##############################
+
         context_user = self.request.user
         connected_organizations = Organization.objects.filter(users__in=[context_user])
         users_of_connected_organizations = User.objects.filter(
@@ -227,18 +230,11 @@ class ManageCustomFunctionAssistantConnectionsView(LoginRequiredMixin, TemplateV
         action = request.POST.get('action')
 
         ##############################
-        # PERMISSION CHECK FOR - ADD_FUNCTIONS
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=request.user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.ADD_FUNCTIONS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add function connections."}
-            return self.render_to_response(context)
+        # PERMISSION CHECK FOR - UPDATE_FUNCTIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_FUNCTIONS):
+            messages.error(self.request, "You do not have permission to update custom functions.")
+            return redirect('mm_functions:list')
         ##############################
 
         if not assistant_id or not action:
@@ -295,17 +291,10 @@ class DeleteCustomFunctionView(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_FUNCTIONS
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=request.user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.DELETE_FUNCTIONS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to delete functions."}
-            return self.render_to_response(context)
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_FUNCTIONS):
+            messages.error(self.request, "You do not have permission to delete custom functions.")
+            return redirect('mm_functions:list')
         ##############################
 
         custom_function = CustomFunction.objects.get(id=custom_function_id)
@@ -369,18 +358,11 @@ class FunctionStoreView(LoginRequiredMixin, TemplateView):
         assistant_id = request.POST.get('assistant_id')
 
         ##############################
-        # PERMISSION CHECK FOR - ADD_FUNCTIONS
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(
-            user=request.user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.ADD_FUNCTIONS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add function connections."}
-            return self.render_to_response(context)
+        # PERMISSION CHECK FOR - UPDATE_FUNCTIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_FUNCTIONS):
+            messages.error(self.request, "You do not have permission to update custom functions.")
+            return redirect('mm_functions:list')
         ##############################
 
         if action and action == "add" and assistant_id:

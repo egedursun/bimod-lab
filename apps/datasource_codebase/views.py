@@ -1,4 +1,3 @@
-
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
@@ -6,6 +5,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
 from apps._services.codebase.codebase_decoder import CodeBaseDecoder
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_codebase.forms import CodeRepositoryStorageForm
 from apps.datasource_codebase.models import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS, CodeRepositoryStorageConnection, \
@@ -33,12 +33,13 @@ class CodeBaseStorageCreateView(LoginRequiredMixin, TemplateView):
         form = CodeRepositoryStorageForm(request.POST)
         context_user = self.request.user
 
-        # PERMISSION CHECK FOR - KNOWLEDGE BASE / CREATE
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.ADD_KNOWLEDGE_BASES not in user_permissions:
-            messages.error(request, "You do not have permission to create Codebase Storages.")
+        ##############################
+        # PERMISSION CHECK FOR - ADD_CODE_BASE
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_CODE_BASE):
+            messages.error(self.request, "You do not have permission to add code base storages.")
             return redirect('datasource_codebase:list')
+        ##############################
 
         if form.is_valid():
             form.save()
@@ -56,6 +57,15 @@ class CodeBaseStorageListView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_CODE_BASE
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_CODE_BASE):
+            messages.error(self.request, "You do not have permission to list code base storages.")
+            return context
+        ##############################
+
         context_user = self.request.user
         user_organizations = Organization.objects.filter(users__in=[context_user])
 
@@ -95,16 +105,13 @@ class CodeBaseStorageUpdateView(LoginRequiredMixin, TemplateView):
         knowledge_base = get_object_or_404(CodeRepositoryStorageConnection, pk=kwargs['pk'])
         context_user = self.request.user
 
-        # PERMISSION CHECK FOR - KNOWLEDGE BASE / UPDATE
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.UPDATE_KNOWLEDGE_BASES not in user_permissions:
-            messages.error(request, "You do not have permission to update Code Base Storages.")
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_CODE_BASE
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_CODE_BASE):
+            messages.error(self.request, "You do not have permission to update code base storages.")
             return redirect('datasource_codebase:list')
+        ##############################
 
         form = CodeRepositoryStorageForm(request.POST, instance=knowledge_base)
         if form.is_valid():
@@ -132,12 +139,14 @@ class CodeBaseStorageDeleteView(LoginRequiredMixin, DeleteView):
         self.object = self.get_object()
         context_user = self.request.user
 
-        # PERMISSION CHECK FOR - KNOWLEDGE BASE / DELETE
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.DELETE_KNOWLEDGE_BASES not in user_permissions:
-            messages.error(request, "You do not have permission to delete Code Base Storages.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_CODE_BASE
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_CODE_BASE):
+            messages.error(self.request, "You do not have permission to update code base storages.")
             return redirect('datasource_codebase:list')
+        ##############################
+
         print('[CodeBaseStorageDeleteView.post] Code Base Storage deleted successfully.')
         return super().post(request, *args, **kwargs)
 
@@ -161,13 +170,13 @@ class AddRepositoryView(LoginRequiredMixin, TemplateView):
         knowledge_base_id = request.POST.get('knowledge_base') or None
         context_user = request.user
 
-        # PERMISSION CHECK FOR - DOCUMENT / UPLOAD
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.ADD_KNOWLEDGE_BASES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add repositories."}
-            return self.render_to_response(context)
+        ##############################
+        # PERMISSION CHECK FOR - ADD_CODE_REPOSITORY
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_CODE_REPOSITORY):
+            messages.error(self.request, "You do not have permission to add code repositories.")
+            return redirect('datasource_codebase:list_repositories')
+        ##############################
 
         if not knowledge_base_id:
             messages.error(request, 'Please select a knowledge base.')
@@ -190,6 +199,15 @@ class AddRepositoryView(LoginRequiredMixin, TemplateView):
 class ListRepositoriesView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_CODE_REPOSITORY
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_CODE_REPOSITORY):
+            messages.error(self.request, "You do not have permission to list code repositories.")
+            return context
+        ##############################
+
         organizations = Organization.objects.filter(users__in=[request.user])
         data = []
         for org in organizations:
@@ -207,7 +225,8 @@ class ListRepositoriesView(LoginRequiredMixin, TemplateView):
                     document_data_list = []
                     for document in page_obj:
                         document: CodeBaseRepository
-                        log_entries = RepositoryProcessingLog.objects.filter(repository_full_uri=document.repository_uri)
+                        log_entries = RepositoryProcessingLog.objects.filter(
+                            repository_full_uri=document.repository_uri)
                         current_statuses = [log.log_message for log in log_entries]
                         document_data_list.append({'document': document, 'current_statuses': current_statuses})
                     kb_data_list.append({
@@ -226,6 +245,15 @@ class ListRepositoriesView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_CODE_REPOSITORY
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_CODE_REPOSITORY):
+            messages.error(self.request, "You do not have permission to add code repositories.")
+            return redirect('datasource_codebase:list_repositories')
+        ##############################
+
         document_ids = request.POST.getlist('selected_documents')
         if document_ids:
             CodeBaseRepository.objects.filter(id__in=document_ids).delete()
@@ -248,13 +276,13 @@ class DeleteAllRepositoriesView(LoginRequiredMixin, TemplateView):
         knowledge_base_id = kwargs.get('kb_id')
         context_user = request.user
 
-        # PERMISSION CHECK FOR - DOCUMENT / DELETE
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.DELETE_KNOWLEDGE_BASES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to delete documents."}
-            return self.render_to_response(context)
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_CODE_REPOSITORY
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_CODE_REPOSITORY):
+            messages.error(self.request, "You do not have permission to delete code repositories.")
+            return redirect('datasource_codebase:list_repositories')
+        ##############################
 
         CodeBaseRepository.objects.filter(knowledge_base_id=knowledge_base_id).delete()
         messages.success(request, 'All repositories in the selected knowledge base have been deleted successfully.')

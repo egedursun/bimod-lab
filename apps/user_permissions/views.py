@@ -25,6 +25,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.organization.models import Organization
 from apps.user_permissions.models import PermissionNames, UserPermission, PERMISSION_TYPES
 from web_project import TemplateLayout
@@ -63,6 +64,15 @@ class AddPermissionsView(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - MODIFY_USER_PERMISSIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.MODIFY_USER_PERMISSIONS):
+            messages.error(self.request, "You do not have permission to add/modify permissions.")
+            return redirect('user_permissions:list_permissions')
+        ##############################
+
         organization_id = request.POST.get('organization')
         user_id = request.POST.get('user')
         selected_permissions = request.POST.getlist('permissions')
@@ -81,7 +91,9 @@ class AddPermissionsView(TemplateView):
                 ('add_organizations', 'Add Organizations'),
                 ('update_organizations', 'Update Organizations'),
                 ('list_organizations', 'List Organizations'),
-                ('delete_organizations', 'Delete Organizations')
+                ('delete_organizations', 'Delete Organizations'),
+                ('add_balance_to_organization', 'Add Balance to Organization'),
+                ('transfer_balance_between_organizations', 'Transfer Balance Between Organizations'),
             ],
             "LLM Core Permissions": [
                 ('add_llm_cores', 'Add LLM Cores'),
@@ -89,14 +101,28 @@ class AddPermissionsView(TemplateView):
                 ('list_llm_cores', 'List LLM Cores'),
                 ('delete_llm_cores', 'Delete LLM Cores')
             ],
+            "Fine-Tuning Model Permissions": [
+                ('add_finetuning_model', 'Add Finetuning Model'),
+                ('update_finetuning_model', 'Update Finetuning Model'),
+                ('list_finetuning_model', 'List Finetuning Model'),
+                ('delete_finetuning_model', 'Delete Finetuning Model'),
+            ],
             "Transaction Permissions": [
                 ('list_transactions', 'List Transactions')
+            ],
+            "Data Security Permissions": [
+                ('add_data_security', 'Add Data Security'),
+                ('update_data_security', 'Update Data Security'),
+                ('list_data_security', 'List Data Security'),
+                ('delete_data_security', 'Delete Data Security'),
             ],
             "User Permissions": [
                 ('add_users', 'Add Users'),
                 ('update_users', 'Update Users'),
                 ('list_users', 'List Users'),
-                ('delete_users', 'Delete Users')
+                ('delete_users', 'Delete Users'),
+                ('connect_user_to_organization', 'Connect User to Organization'),
+                ('remove_user_from_organization', 'Remove User from Organization'),
             ],
             "User Role Modification and Read Permissions": [
                 ('modify_user_permissions', 'Modify User Permissions'),
@@ -108,26 +134,73 @@ class AddPermissionsView(TemplateView):
                 ('list_assistants', 'List Assistants'),
                 ('delete_assistants', 'Delete Assistants')
             ],
-            "Chat Permissions": [
-                ('create_and_use_chats', 'Create and Use Chats'),
-                ('remove_chats', 'Remove Chats')
-            ],
-            "Memory Permissions": [
-                ('add_assistant_memories', 'Add Assistant Memories'),
-                ('list_assistant_memories', 'List Assistant Memories'),
-                ('delete_assistant_memories', 'Delete Assistant Memories')
-            ],
             "Assistant Exportation Permissions": [
                 ('add_export_assistant', 'Add Export Assistants'),
                 ('update_export_assistant', 'Update Export Assistants'),
                 ('list_export_assistant', 'List Export Assistants'),
                 ('delete_export_assistant', 'Delete Export Assistants')
             ],
+            "LeanMod Assistant Permissions": [
+                ('add_lean_assistant', 'Add Lean Assistant'),
+                ('update_lean_assistant', 'Update Lean Assistant'),
+                ('list_lean_assistant', 'List Lean Assistant'),
+                ('delete_lean_assistant', 'Delete Lean Assistant'),
+            ],
+            "Expert Networks Permissions": [
+                ('add_expert_networks', 'Add Expert Networks'),
+                ('update_expert_networks', 'Update Expert Networks'),
+                ('list_expert_networks', 'List Expert Networks'),
+                ('delete_expert_networks', 'Delete Expert Networks'),
+            ],
+            "LeanMod Assistant Export Permissions": [
+                ('add_export_leanmod', 'Add Export LeanMod'),
+                ('update_export_leanmod', 'Update Export LeanMod'),
+                ('list_export_leanmod', 'List Export LeanMod'),
+                ('delete_export_leanmod', 'Delete Export LeanMod'),
+            ],
+            "Chat Permissions": [
+                ('create_and_use_chats', 'Create and Use Chats'),
+                ('remove_chats', 'Remove Chats'),
+                ('archive_chats', 'Archive Chats'),
+                ('unarchive_chats', 'Unarchive Chats'),
+            ],
+            "LeanMod Chat Permissions": [
+                ('create_and_use_lean_chats', 'Create and Use Lean Chats'),
+                ('remove_lean_chats', 'Remove Lean Chats'),
+                ('archive_lean_chats', 'Archive Lean Chats'),
+                ('unarchive_lean_chats', 'Unarchive Lean Chats'),
+            ],
+            "Starred Messages Permissions": [
+                ('add_starred_messages', 'Add Starred Messages'),
+                ('list_starred_messages', 'List Starred Messages'),
+                ('remove_starred_messages', 'Remove Starred Messages'),
+            ],
+            "Message Templates Permissions": [
+                ('add_template_messages', 'Add Message Templates'),
+                ('update_template_messages', 'Update Message Templates'),
+                ('list_template_messages', 'List Message Templates'),
+                ('remove_template_messages', 'Remove Message Templates'),
+            ],
+            "Memory Permissions": [
+                ('add_assistant_memories', 'Add Assistant Memories'),
+                ('list_assistant_memories', 'List Assistant Memories'),
+                ('delete_assistant_memories', 'Delete Assistant Memories')
+            ],
             "Orchestration Permissions": [
                 ('add_orchestrations', 'Add Orchestrations'),
                 ('update_orchestrations', 'Update Orchestrations'),
                 ('list_orchestrations', 'List Orchestrations'),
                 ('delete_orchestrations', 'Delete Orchestrations')
+            ],
+            "Orchestration Export Permissions": [
+                ('add_export_orchestration', 'Add Export Orchestration'),
+                ('update_export_orchestration', 'Update Export Orchestration'),
+                ('list_export_orchestration', 'List Export Orchestration'),
+                ('delete_export_orchestration', 'Delete Export Orchestration'),
+            ],
+            "Orchestration Chat Permissions": [
+                ('create_and_use_orchestration_chats', 'Create and Use Orchestration Chats'),
+                ('remove_orchestration_chats', 'Remove Orchestration Chats'),
             ],
             "File System Permissions": [
                 ('add_file_systems', 'Add File Systems'),
@@ -147,6 +220,12 @@ class AddPermissionsView(TemplateView):
                 ('list_sql_databases', 'List SQL Databases'),
                 ('delete_sql_databases', 'Delete SQL Databases')
             ],
+            "Custom SQL Queries Permissions": [
+                ('add_custom_sql_queries', 'Add Custom SQL Queries'),
+                ('update_custom_sql_queries', 'Update Custom SQL Queries'),
+                ('list_custom_sql_queries', 'List Custom SQL Queries'),
+                ('delete_custom_sql_queries', 'Delete Custom SQL Queries'),
+            ],
             "NoSQL Database Permissions": [
                 ('add_nosql_databases', 'Add NoSQL Databases'),
                 ('update_nosql_databases', 'Update NoSQL Databases'),
@@ -159,17 +238,47 @@ class AddPermissionsView(TemplateView):
                 ('list_knowledge_bases', 'List Knowledge Bases'),
                 ('delete_knowledge_bases', 'Delete Knowledge Bases')
             ],
+            "Knowledge Base Documents Permissions": [
+                ('add_knowledge_base_docs', 'Add Knowledge Base Docs'),
+                ('update_knowledge_base_docs', 'Update Knowledge Base Docs'),
+                ('list_knowledge_base_docs', 'List Knowledge Base Docs'),
+                ('delete_knowledge_base_docs', 'Delete Knowledge Base Docs'),
+            ],
+            "Code Base Permissions": [
+                ('add_code_base', 'Add Code Base'),
+                ('update_code_base', 'Update Code Base'),
+                ('list_code_base', 'List Code Base'),
+                ('delete_code_base', 'Delete Code Base'),
+            ],
+            "Code Repository Permissions": [
+                ('add_code_repository', 'Add Code Repository'),
+                ('update_code_repository', 'Update Code Repository'),
+                ('list_code_repository', 'List Code Repository'),
+                ('delete_code_repository', 'Delete Code Repository'),
+            ],
             "Media Storage Permissions": [
                 ('add_media_storages', 'Add Media Storages'),
                 ('update_media_storages', 'Update Media Storages'),
                 ('list_media_storages', 'List Media Storages'),
                 ('delete_media_storages', 'Delete Media Storages')
             ],
+            "Media Storage Documents Permissions": [
+                ('add_storage_files', 'Add Storage Files'),
+                ('update_storage_files', 'Update Storage Files'),
+                ('list_storage_files', 'List Storage Files'),
+                ('delete_storage_files', 'Delete Storage Files'),
+            ],
             "ML Model Permissions": [
                 ('add_ml_model_connections', 'Add ML Model Connections'),
                 ('update_ml_model_connections', 'Update ML Model Connections'),
                 ('list_ml_model_connections', 'List ML Model Connections'),
                 ('delete_ml_model_connections', 'Delete ML Model Connections'),
+            ],
+            "ML Model Items Permissions": [
+                ('add_ml_model_files', 'Add ML Model Files'),
+                ('update_ml_model_files', 'Update ML Model Files'),
+                ('list_ml_model_files', 'List ML Model Files'),
+                ('delete_ml_model_files', 'Delete ML Model Files'),
             ],
             "Function Permissions": [
                 ('add_functions', 'Add Functions'),
@@ -219,17 +328,11 @@ class AddPermissionsView(TemplateView):
                 ('list_meta_integrations', 'List Meta Integrations'),
                 ('delete_meta_integrations', 'Delete Meta Integrations')
             ],
-            "Starred Messages": [
-                ('add_starred_messages', 'Add Starred Messages'),
-                ('list_starred_messages', 'List Starred Messages'),
-                ('remove_starred_messages', 'Remove Starred Messages'),
-            ],
-            "Message Templates": [
-                ('add_template_messages', 'Add Message Templates'),
-                ('update_template_messages', 'Update Message Templates'),
-                ('list_template_messages', 'List Message Templates'),
-                ('remove_template_messages', 'Remove Message Templates'),
-            ],
+            "Support Ticket Permissions": [
+                ('create_support_tickets', 'Create Support Tickets'),
+                ('list_support_tickets', 'List Support Tickets'),
+                ('update_support_tickets', 'Update Support Tickets'),
+            ]
         }
         return permissions_grouped
 
@@ -247,6 +350,15 @@ class ListPermissionsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_USER_PERMISSIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_USER_PERMISSIONS):
+            messages.error(self.request, "You do not have permission to view user permissions.")
+            return context
+        ##############################
+
         user = self.request.user
         organizations = Organization.objects.filter(users__in=[user])
         org_users_permissions = {
@@ -258,15 +370,14 @@ class ListPermissionsView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         user_id = request.POST.get('user_id')
         context_user = self.request.user
-        # PERMISSION CHECK FOR - PERMISSIONS/UPDATE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.MODIFY_USER_PERMISSIONS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to update or modify user permissions."}
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - MODIFY_USER_PERMISSIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.MODIFY_USER_PERMISSIONS):
+            messages.error(self.request, "You do not have permission to add/modify permissions.")
+            return redirect('user_permissions:list_permissions')
+        ##############################
 
         user = get_object_or_404(User, id=user_id)
         permissions_data = request.POST.getlist('permissions')
@@ -280,10 +391,35 @@ class ListPermissionsView(LoginRequiredMixin, TemplateView):
                 permission.is_active = False
                 permission.save()
         # Process delete requests
+        deletion_names = []
         for permission_id in delete_requests:
             permission = get_object_or_404(UserPermission, id=permission_id)
+            deletion_names.append(permission.get_permission_type_code())
             permission.delete()
         print('[ListPermissionsView.post] Permissions updated successfully.')
         messages.success(request, 'Permissions updated successfully!')
+
+        # if the user is superuser, add back the permissions to modify and list permissions
+        modify_permissions = PermissionNames.MODIFY_USER_PERMISSIONS
+        list_permissions = PermissionNames.LIST_USER_PERMISSIONS
+
+        if user.is_superuser:
+            UserPermission.objects.get_or_create(user=user, permission_type=modify_permissions)
+            UserPermission.objects.get_or_create(user=user, permission_type=list_permissions)
+            # set the permissions to be active
+            modify_object = UserPermission.objects.get(user=user, permission_type=modify_permissions)
+            list_object = UserPermission.objects.get(user=user, permission_type=list_permissions)
+
+            if not modify_object.is_active or not list_object.is_active or modify_permissions in deletion_names or list_permissions in deletion_names:
+                # provide information to the user
+                messages.warning(request, 'You have removed your permission rights as an administrator, '
+                                          'which would have prevented you from granting them back to yourself. '
+                                          'We have automatically granted these permissions back to your account.')
+
+            modify_object.is_active = True
+            list_object.is_active = True
+            modify_object.save()
+            list_object.save()
+
         # Update only the relevant part of the page.
         return render(request, self.template_name, self.get_context_data(**kwargs))

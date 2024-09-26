@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 
 from apps._services.orchestration.orchestration_executor import OrchestrationExecutor
 from apps._services.storages.storage_executor import StorageExecutor
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.llm_core.models import LLMCore
 from apps.orchestrations.forms import MaestroForm
@@ -33,15 +34,14 @@ class CreateOrchestrationView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = MaestroForm(request.POST, request.FILES)
-        user = self.request.user
-        # PERMISSION CHECK FOR - ORCHESTRATION/CREATE
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_ORCHESTRATIONS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to create orchestrations."}
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_ORCHESTRATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_ORCHESTRATIONS):
+            messages.error(self.request, "You do not have permission to create orchestrations.")
+            return redirect('orchestrations:list')
+        ##############################
 
         if form.is_valid():
             maestro = form.save(commit=False)
@@ -73,6 +73,15 @@ class OrchestrationListView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_ORCHESTRATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_ORCHESTRATIONS):
+            messages.error(self.request, "You do not have permission to list orchestrations.")
+            return context
+        ##############################
+
         user_organizations = Organization.objects.filter(users__in=[self.request.user])
         orchestrations = Maestro.objects.filter(organization__in=user_organizations)
 
@@ -106,6 +115,15 @@ class OrchestrationUpdateView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_ORCHESTRATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_ORCHESTRATIONS):
+            messages.error(self.request, "You do not have permission to update orchestrations.")
+            return redirect('orchestrations:list')
+        ##############################
+
         orchestration = get_object_or_404(Maestro, pk=kwargs['pk'])
         form = MaestroForm(request.POST, request.FILES, instance=orchestration)
 
@@ -141,6 +159,15 @@ class OrchestrationDeleteView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_ORCHESTRATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_ORCHESTRATIONS):
+            messages.error(self.request, "You do not have permission to delete orchestrations.")
+            return redirect('orchestrations:list')
+        ##############################
+
         orchestration = get_object_or_404(Maestro, pk=kwargs['pk'])
         orchestration_name = orchestration.name
         orchestration.delete()
@@ -167,6 +194,14 @@ class OrchestrationQueryListView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         # INFO: This is the dedicated method to create a new query for the orchestration.
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_AND_USE_ORCHESTRATION_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.CREATE_AND_USE_ORCHESTRATION_CHATS):
+            messages.error(self.request, "You do not have permission to create and use orchestration queries.")
+            return redirect('orchestrations:list')
+        ##############################
 
         maestro_id = request.POST.get('maestro_id')
         query_text = request.POST.get('query_text')
@@ -287,6 +322,15 @@ class OrchestrationQueryDeleteView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - REMOVE_ORCHESTRATION_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.REMOVE_ORCHESTRATION_CHATS):
+            messages.error(self.request, "You do not have permission to remove orchestration queries.")
+            return redirect('orchestrations:list')
+        ##############################
+
         query_id = self.kwargs['query_id']
         query = get_object_or_404(OrchestrationQuery, pk=query_id)
         maestro_id = query.maestro.id
@@ -299,6 +343,15 @@ class OrchestrationQueryDetailView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_AND_USE_ORCHESTRATION_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.CREATE_AND_USE_ORCHESTRATION_CHATS):
+            messages.error(self.request, "You do not have permission to create and use orchestration queries.")
+            return context
+        ##############################
+
         query_id = self.kwargs.get('query_id')
         query = get_object_or_404(OrchestrationQuery, id=query_id)
         context['query'] = query
@@ -314,6 +367,15 @@ class OrchestrationQueryRerunView(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
+
+        #############################
+        # PERMISSION CHECK FOR - CREATE_AND_USE_ORCHESTRATION_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.CREATE_AND_USE_ORCHESTRATION_CHATS):
+            messages.error(self.request, "You do not have permission to create and use orchestration queries.")
+            return redirect('orchestrations:list')
+        ##############################
+
         query_id = self.kwargs.get('query_id')
         query = get_object_or_404(OrchestrationQuery, id=query_id)
 

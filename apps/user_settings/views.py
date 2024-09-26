@@ -19,6 +19,7 @@ from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection, CodeBaseRepository
@@ -41,7 +42,7 @@ from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
 from apps.orchestrations.models import Maestro
 from apps.organization.models import Organization
 from apps.starred_messages.models import StarredMessage
-from apps.user_permissions.models import UserPermission, PermissionNames
+from apps.user_permissions.models import PermissionNames
 from web_project import TemplateLayout
 
 
@@ -74,12 +75,13 @@ class DeleteAllOrganizationsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_ORGANIZATIONS not in user_permissions:
-            messages.error(request, "You do not have permission to delete organizations.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_ORGANIZATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_ORGANIZATIONS):
+            messages.error(self.request, "You do not have permission to delete organizations.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -109,12 +111,13 @@ class DeleteAllLLMModelsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_LLM_CORES not in user_permissions:
-            messages.error(request, "You do not have permission to delete LLM models.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_LLM_CORES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_LLM_CORES):
+            messages.error(self.request, "You do not have permission to delete LLM models.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -144,12 +147,13 @@ class DeleteAllAssistantsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_ASSISTANTS not in user_permissions:
-            messages.error(request, "You do not have permission to delete assistants.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_ASSISTANTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_ASSISTANTS):
+            messages.error(self.request, "You do not have permission to delete assistants.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -179,12 +183,13 @@ class DeleteAllLeanAssistantsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_ASSISTANTS not in user_permissions:
-            messages.error(request, "You do not have permission to delete lean assistants.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_LEAN_ASSISTANT
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_LEAN_ASSISTANT):
+            messages.error(self.request, "You do not have permission to delete LeanMod assistants.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -214,12 +219,13 @@ class DeleteAllExpertNetworksView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_ASSISTANTS not in user_permissions:
-            messages.error(request, "You do not have permission to delete expert networks.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_EXPERT_NETWORKS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_EXPERT_NETWORKS):
+            messages.error(self.request, "You do not have permission to delete expert networks.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -249,12 +255,13 @@ class DeleteAllChatsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
-            messages.error(request, "You do not have permission to delete chat messages.")
+        ##############################
+        # PERMISSION CHECK FOR - REMOVE_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.REMOVE_CHATS):
+            messages.error(self.request, "You do not have permission to delete chats.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -284,12 +291,13 @@ class DeleteAllLeanChatsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.CREATE_AND_USE_CHATS not in user_permissions:
-            messages.error(request, "You do not have permission to delete LeanMod® chat messages.")
+        ##############################
+        # PERMISSION CHECK FOR - REMOVE_LEAN_CHATS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.REMOVE_LEAN_CHATS):
+            messages.error(self.request, "You do not have permission to delete LeanMod chats.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -319,7 +327,13 @@ class DeleteAllStarredMessagesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        # PASS THIS CHECK FOR THIS DATA MODEL
+        ##############################
+        # PERMISSION CHECK FOR - REMOVE_STARRED_MESSAGES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.REMOVE_STARRED_MESSAGES):
+            messages.error(self.request, "You do not have permission to remove starred messages.")
+            return redirect('user_settings:settings')
+        ##############################
 
         # [2] Delete ALL items in the queryset
         try:
@@ -349,12 +363,13 @@ class DeleteAllMemoriesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_ASSISTANT_MEMORIES not in user_permissions:
-            messages.error(request, "You do not have permission to delete assistant memories.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_ASSISTANT_MEMORIES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_ASSISTANT_MEMORIES):
+            messages.error(self.request, "You do not have permission to delete assistant memories.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -384,7 +399,13 @@ class DeleteAllMessageTemplatesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        # PASS THIS CHECK FOR THIS DATA MODEL
+        ##############################
+        # PERMISSION CHECK FOR - REMOVE_TEMPLATE_MESSAGES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.REMOVE_TEMPLATE_MESSAGES):
+            messages.error(self.request, "You do not have permission to delete message templates.")
+            return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -414,12 +435,13 @@ class DeleteAllExportAssistantsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_EXPORT_ASSISTANT not in user_permissions:
-            messages.error(request, "You do not have permission to delete exported assistants.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_EXPORT_ASSISTANT
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_EXPORT_ASSISTANT):
+            messages.error(self.request, "You do not have permission to delete exported assistants.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -449,12 +471,13 @@ class DeleteAllOrchestrationsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_ORCHESTRATIONS not in user_permissions:
-            messages.error(request, "You do not have permission to delete orchestrations.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_ORCHESTRATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_ORCHESTRATIONS):
+            messages.error(self.request, "You do not have permission to delete orchestrations.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -484,12 +507,13 @@ class DeleteAllFileSystemsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_FILE_SYSTEMS not in user_permissions:
-            messages.error(request, "You do not have permission to delete file systems.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_FILE_SYSTEMS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_FILE_SYSTEMS):
+            messages.error(self.request, "You do not have permission to delete file systems.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -519,12 +543,13 @@ class DeleteAllWebBrowsersView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_WEB_BROWSERS not in user_permissions:
-            messages.error(request, "You do not have permission to delete web browsers.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_WEB_BROWSERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_WEB_BROWSERS):
+            messages.error(self.request, "You do not have permission to delete web browsers.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -554,12 +579,13 @@ class DeleteAllSQLDatabasesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_SQL_DATABASES not in user_permissions:
-            messages.error(request, "You do not have permission to delete SQL databases.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_SQL_DATABASES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_SQL_DATABASES):
+            messages.error(self.request, "You do not have permission to delete SQL databases.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -591,12 +617,13 @@ class DeleteAllCustomSQLQueriesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_SQL_DATABASES not in user_permissions:
-            messages.error(request, "You do not have permission to delete custom SQL queries.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_CUSTOM_SQL_QUERIES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_CUSTOM_SQL_QUERIES):
+            messages.error(self.request, "You do not have permission to delete custom SQL queries.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -626,12 +653,13 @@ class DeleteAllKnowledgeBasesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_KNOWLEDGE_BASES not in user_permissions:
-            messages.error(request, "You do not have permission to delete knowledge bases.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_KNOWLEDGE_BASES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_KNOWLEDGE_BASES):
+            messages.error(self.request, "You do not have permission to delete knowledge bases.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -663,12 +691,13 @@ class DeleteAllKnowledgeBaseDocumentsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_KNOWLEDGE_BASES not in user_permissions:
-            messages.error(request, "You do not have permission to delete knowledge base documents.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_KNOWLEDGE_BASE_DOCS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_KNOWLEDGE_BASE_DOCS):
+            messages.error(self.request, "You do not have permission to delete knowledge base documents.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -698,12 +727,13 @@ class DeleteAllCodeStoragesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_KNOWLEDGE_BASES not in user_permissions:
-            messages.error(request, "You do not have permission to delete code storages.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_CODE_BASE
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_CODE_BASE):
+            messages.error(self.request, "You do not have permission to delete code base storages.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -735,12 +765,13 @@ class DeleteAllRepositoriesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_KNOWLEDGE_BASES not in user_permissions:
-            messages.error(request, "You do not have permission to delete code repositories.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_CODE_REPOSITORY
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_CODE_REPOSITORY):
+            messages.error(self.request, "You do not have permission to delete code repositories.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -770,12 +801,13 @@ class DeleteAllMLModelStoragesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_ML_MODEL_CONNECTIONS not in user_permissions:
-            messages.error(request, "You do not have permission to delete ML model storages.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_ML_MODEL_CONNECTIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_ML_MODEL_CONNECTIONS):
+            messages.error(self.request, "You do not have permission to delete ML model storages.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -807,12 +839,13 @@ class DeleteAllMLModelsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_ML_MODEL_CONNECTIONS not in user_permissions:
-            messages.error(request, "You do not have permission to delete ML models.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_ML_MODEL_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_ML_MODEL_FILES):
+            messages.error(self.request, "You do not have permission to delete ML model files.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -842,12 +875,13 @@ class DeleteAllMediaStoragesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to delete media storages.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_MEDIA_STORAGES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_MEDIA_STORAGES):
+            messages.error(self.request, "You do not have permission to delete media storages.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -879,12 +913,13 @@ class DeleteAllMultimediaFilesView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to delete multimedia files.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to delete multimedia files.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -914,12 +949,13 @@ class DeleteAllFunctionsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_FUNCTIONS not in user_permissions:
-            messages.error(request, "You do not have permission to delete functions.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_FUNCTIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_FUNCTIONS):
+            messages.error(self.request, "You do not have permission to delete custom functions.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -949,12 +985,13 @@ class DeleteAllAPIsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_APIS not in user_permissions:
-            messages.error(request, "You do not have permission to delete APIs.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_APIS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_APIS):
+            messages.error(self.request, "You do not have permission to delete custom APIs.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -984,12 +1021,13 @@ class DeleteAllScriptsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_SCRIPTS not in user_permissions:
-            messages.error(request, "You do not have permission to delete scripts.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_SCRIPTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_SCRIPTS):
+            messages.error(self.request, "You do not have permission to delete custom Scripts.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -1019,12 +1057,13 @@ class DeleteAllScheduledJobsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_SCHEDULED_JOBS not in user_permissions:
-            messages.error(request, "You do not have permission to delete scheduled jobs.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_SCHEDULED_JOBS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_SCHEDULED_JOBS):
+            messages.error(self.request, "You do not have permission to delete scheduled jobs.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:
@@ -1054,12 +1093,13 @@ class DeleteAllTriggeredJobsView(View, LoginRequiredMixin):
             return redirect('user_settings:settings')
 
         # [2] Verify permissions for the bulk deletion operation
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_TRIGGERS not in user_permissions:
-            messages.error(request, "You do not have permission to delete triggered jobs.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_TRIGGERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_TRIGGERS):
+            messages.error(self.request, "You do not have permission to delete triggered jobs.")
             return redirect('user_settings:settings')
+        ##############################
 
         # [3] Delete ALL items in the queryset
         try:

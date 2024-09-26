@@ -14,6 +14,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView, DeleteView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.llm_transaction.models import TransactionInvoice, InvoiceTypesNames, PaymentMethodsNames
 from apps.organization.forms import OrganizationForm
 from apps.organization.models import Organization
@@ -40,15 +41,14 @@ class CreateOrganizationView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         form = OrganizationForm(request.POST, request.FILES)
-        user = self.request.user
-        # PERMISSION CHECK FOR - ORGANIZATION/CREATE
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_ORGANIZATIONS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to create organizations."}
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_ORGANIZATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_ORGANIZATIONS):
+            messages.error(self.request, "You do not have permission to add organizations.")
+            return redirect('organization:list')
+        ##############################
 
         if form.is_valid():
             organization = form.save(commit=False)
@@ -77,6 +77,15 @@ class OrganizationListView(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_ORGANIZATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_ORGANIZATIONS):
+            messages.error(self.request, "You do not have permission to list organizations.")
+            return context
+        ##############################
+
         context_user = self.request.user
         organizations = Organization.objects.filter(users__in=[context_user])
         paginator = Paginator(organizations, 10)  # Show 10 organizations per page.
@@ -109,15 +118,14 @@ class OrganizationUpdateView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
-        # PERMISSION CHECK FOR - ORGANIZATION/UPDATE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.UPDATE_ORGANIZATIONS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to update or modify organizations."}
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_ORGANIZATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_ORGANIZATIONS):
+            messages.error(self.request, "You do not have permission to update organizations.")
+            return redirect('organization:list')
+        ##############################
 
         organization = get_object_or_404(Organization, users__in=[context_user], id=kwargs['pk'])
         form = OrganizationForm(request.POST, request.FILES, instance=organization)
@@ -156,14 +164,17 @@ class OrganizationDeleteView(DeleteView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_ORGANIZATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_ORGANIZATIONS):
+            messages.error(self.request, "You do not have permission to delete organizations.")
+            return redirect('organization:list')
+        ##############################
+
         organization = self.get_object()
         transfer_organization_id = request.POST.get('transfer_organization_id')
-        # Ensure the user has the required permissions
-        # PERMISSION CHECK FOR - ORGANIZATION/DELETE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).values_list('permission_type', flat=True)
-        if PermissionNames.DELETE_ORGANIZATIONS not in user_permissions:
-            messages.error(request, "You do not have permission to delete organizations.")
-            return redirect('organization:list')
 
         # Ensure the transfer organization is valid and belongs to the user
         transfer_organization = get_object_or_404(Organization, id=transfer_organization_id, users__in=[context_user])
@@ -206,6 +217,15 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_BALANCE_TO_ORGANIZATION
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_BALANCE_TO_ORGANIZATION):
+            messages.error(self.request, "You do not have permission to add balance to organizations.")
+            return redirect('llm_transaction:list')
+        ##############################
+
         organization_id = kwargs.get('pk')
         organization = get_object_or_404(Organization, id=organization_id, users__in=[context_user])
         topup_amount = request.POST.get('topup_amount')
@@ -213,14 +233,6 @@ class OrganizationAddCreditsView(TemplateView, LoginRequiredMixin):
         # top up amount can't be zero or negative
         if float(topup_amount) <= 0:
             messages.error(request, 'Top up amount must be greater than zero.')
-            return redirect('llm_transaction:list')
-
-        # PERMISSION CHECK FOR - ORGANIZATION/UPDATE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.UPDATE_ORGANIZATIONS not in user_permissions:
-            messages.error(request, "You do not have permission to update or modify organizations.")
             return redirect('llm_transaction:list')
 
         # try to retrieve the code
@@ -299,6 +311,15 @@ class OrganizationBalanceTransferView(LoginRequiredMixin, View):
     """
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - TRANSFER_BALANCE_BETWEEN_ORGANIZATIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.TRANSFER_BALANCE_BETWEEN_ORGANIZATIONS):
+            messages.error(self.request, "You do not have permission to transfer balance between organizations.")
+            return redirect('llm_transaction:list')
+        ##############################
+
         source_org_id = request.POST.get('source_org')
         destination_org_id = request.POST.get('destination_org')
         transfer_amount = request.POST.get('transfer_amount')
@@ -381,6 +402,15 @@ class OrganizationUserAddGiftCreditsView(LoginRequiredMixin, View):
     """
 
     def get(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_BALANCE_TO_ORGANIZATION
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_BALANCE_TO_ORGANIZATION):
+            messages.error(self.request, "You do not have permission to add balance to organizations.")
+            return redirect('llm_transaction:list')
+        ##############################
+
         organization_id = kwargs.get('pk')
         user = request.user
         print(f"[OrganizationUserAddGiftCreditsView.get] Adding gift credits to organization {organization_id}.")

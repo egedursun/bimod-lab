@@ -19,6 +19,8 @@ class PermissionNames:
     UPDATE_ORGANIZATIONS = 'update_organizations'
     LIST_ORGANIZATIONS = 'list_organizations'
     DELETE_ORGANIZATIONS = 'delete_organizations'
+    ADD_BALANCE_TO_ORGANIZATION = 'add_balance_to_organization'
+    TRANSFER_BALANCE_BETWEEN_ORGANIZATIONS = 'transfer_balance_between_organizations'
     ######################################################
     LIST_TRANSACTIONS = 'list_transactions'
     ######################################################
@@ -26,6 +28,8 @@ class PermissionNames:
     UPDATE_USERS = 'update_users'
     LIST_USERS = 'list_users'
     DELETE_USERS = 'delete_users'
+    CONNECT_USER_TO_ORGANIZATION = 'connect_user_to_organization'
+    REMOVE_USER_FROM_ORGANIZATION = 'remove_user_from_organization'
     ######################################################
     MODIFY_USER_PERMISSIONS = 'modify_user_permissions'
     LIST_USER_PERMISSIONS = 'list_user_permissions'
@@ -127,8 +131,6 @@ class PermissionNames:
     LIST_META_INTEGRATIONS = 'list_meta_integrations'
     DELETE_META_INTEGRATIONS = 'delete_meta_integrations'
     ######################################################
-    # ...
-    ######################################################
     ADD_STARRED_MESSAGES = 'add_starred_messages'
     LIST_STARRED_MESSAGES = 'list_starred_messages'
     REMOVE_STARRED_MESSAGES = 'remove_starred_messages'
@@ -137,6 +139,84 @@ class PermissionNames:
     LIST_TEMPLATE_MESSAGES = 'list_template_messages'
     UPDATE_TEMPLATE_MESSAGES = 'update_template_messages'
     REMOVE_TEMPLATE_MESSAGES = 'remove_template_messages'
+    ######################################################
+    # new
+    ######################################################
+    ADD_DATA_SECURITY = 'add_data_security'
+    UPDATE_DATA_SECURITY = 'update_data_security'
+    LIST_DATA_SECURITY = 'list_data_security'
+    DELETE_DATA_SECURITY = 'delete_data_security'
+    ######################################################
+    ADD_CODE_BASE = 'add_code_base'
+    UPDATE_CODE_BASE = 'update_code_base'
+    LIST_CODE_BASE = 'list_code_base'
+    DELETE_CODE_BASE = 'delete_code_base'
+    ######################################################
+    ADD_CODE_REPOSITORY = 'add_code_repository'
+    UPDATE_CODE_REPOSITORY = 'update_code_repository'
+    LIST_CODE_REPOSITORY = 'list_code_repository'
+    DELETE_CODE_REPOSITORY = 'delete_code_repository'
+    ######################################################
+    ADD_KNOWLEDGE_BASE_DOCS = 'add_knowledge_base_docs'
+    UPDATE_KNOWLEDGE_BASE_DOCS = 'update_knowledge_base_docs'
+    LIST_KNOWLEDGE_BASE_DOCS = 'list_knowledge_base_docs'
+    DELETE_KNOWLEDGE_BASE_DOCS = 'delete_knowledge_base_docs'
+    ######################################################
+    ADD_STORAGE_FILES = 'add_storage_files'
+    UPDATE_STORAGE_FILES = 'update_storage_files'
+    LIST_STORAGE_FILES = 'list_storage_files'
+    DELETE_STORAGE_FILES = 'delete_storage_files'
+    ######################################################
+    ADD_ML_MODEL_FILES = 'add_ml_model_files'
+    UPDATE_ML_MODEL_FILES = 'update_ml_model_files'
+    LIST_ML_MODEL_FILES = 'list_ml_model_files'
+    DELETE_ML_MODEL_FILES = 'delete_ml_model_files'
+    ######################################################
+    ADD_CUSTOM_SQL_QUERIES = 'add_custom_sql_queries'
+    UPDATE_CUSTOM_SQL_QUERIES = 'update_custom_sql_queries'
+    LIST_CUSTOM_SQL_QUERIES = 'list_custom_sql_queries'
+    DELETE_CUSTOM_SQL_QUERIES = 'delete_custom_sql_queries'
+    ######################################################
+    ADD_EXPORT_LEANMOD = 'add_export_leanmod'
+    UPDATE_EXPORT_LEANMOD = 'update_export_leanmod'
+    LIST_EXPORT_LEANMOD = 'list_export_leanmod'
+    DELETE_EXPORT_LEANMOD = 'delete_export_leanmod'
+    ######################################################
+    ADD_EXPERT_NETWORKS = 'add_expert_networks'
+    UPDATE_EXPERT_NETWORKS = 'update_expert_networks'
+    LIST_EXPERT_NETWORKS = 'list_expert_networks'
+    DELETE_EXPERT_NETWORKS = 'delete_expert_networks'
+    ######################################################
+    ADD_EXPORT_ORCHESTRATION = 'add_export_orchestration'
+    UPDATE_EXPORT_ORCHESTRATION = 'update_export_orchestration'
+    LIST_EXPORT_ORCHESTRATION = 'list_export_orchestration'
+    DELETE_EXPORT_ORCHESTRATION = 'delete_export_orchestration'
+    ######################################################
+    ADD_FINETUNING_MODEL = 'add_finetuning_model'
+    UPDATE_FINETUNING_MODEL = 'update_finetuning_model'
+    LIST_FINETUNING_MODEL = 'list_finetuning_model'
+    DELETE_FINETUNING_MODEL = 'delete_finetuning_model'
+    ######################################################
+    ADD_LEAN_ASSISTANT = 'add_lean_assistant'
+    UPDATE_LEAN_ASSISTANT = 'update_lean_assistant'
+    LIST_LEAN_ASSISTANT = 'list_lean_assistant'
+    DELETE_LEAN_ASSISTANT = 'delete_lean_assistant'
+    ######################################################
+    ARCHIVE_CHATS = 'archive_chats'
+    UNARCHIVE_CHATS = 'unarchive_chats'
+    ######################################################
+    CREATE_AND_USE_LEAN_CHATS = 'create_and_use_lean_chats'
+    REMOVE_LEAN_CHATS = 'remove_lean_chats'
+    ARCHIVE_LEAN_CHATS = 'archive_lean_chats'
+    UNARCHIVE_LEAN_CHATS = 'unarchive_lean_chats'
+    ######################################################
+    CREATE_AND_USE_ORCHESTRATION_CHATS = 'create_and_use_orchestration_chats'
+    REMOVE_ORCHESTRATION_CHATS = 'remove_orchestration_chats'
+    ######################################################
+    CREATE_SUPPORT_TICKETS = 'create_support_tickets'
+    LIST_SUPPORT_TICKETS = 'list_support_tickets'
+    UPDATE_SUPPORT_TICKETS = 'update_support_tickets'
+    ######################################################
 
 
 PERMISSION_TYPES = [
@@ -146,6 +226,8 @@ PERMISSION_TYPES = [
     ('update_organizations', 'Update Organizations'),
     ('list_organizations', 'List Organizations'),
     ('delete_organizations', 'Delete Organizations'),
+    ('add_balance_to_organization', 'Add Balance to Organization'),
+    ('transfer_balance_between_organizations', 'Transfer Balance Between Organizations'),
     ######################################################
     # LLM CORE PERMISSIONS
     ('add_llm_cores', 'Add LLM Cores'),
@@ -161,6 +243,8 @@ PERMISSION_TYPES = [
     ('update_users', 'Update Users'),
     ('list_users', 'List Users'),
     ('delete_users', 'Delete Users'),
+    ('connect_user_to_organization', 'Connect User to Organization'),
+    ('remove_user_from_organization', 'Remove User from Organization'),
     ######################################################
     # USER ROLE MODIFICATION AND READ PERMISSIONS
     ('modify_user_permissions', 'Modify User Permissions'),
@@ -296,6 +380,100 @@ PERMISSION_TYPES = [
     ('list_template_messages', 'List Template Messages'),
     ('update_template_messages', 'Update Template Messages'),
     ('remove_template_messages', 'Remove Template Messages'),
+    ######################################################
+    # new
+    ######################################################
+    # DATA SECURITY
+    ('add_data_security', 'Add Data Security'),
+    ('update_data_security', 'Update Data Security'),
+    ('list_data_security', 'List Data Security'),
+    ('delete_data_security', 'Delete Data Security'),
+    ######################################################
+    # CODE BASE
+    ('add_code_base', 'Add Code Base'),
+    ('update_code_base', 'Update Code Base'),
+    ('list_code_base', 'List Code Base'),
+    ('delete_code_base', 'Delete Code Base'),
+    ######################################################
+    # CODE REPOSITORY
+    ('add_code_repository', 'Add Code Repository'),
+    ('update_code_repository', 'Update Code Repository'),
+    ('list_code_repository', 'List Code Repository'),
+    ('delete_code_repository', 'Delete Code Repository'),
+    ######################################################
+    # KNOWLEDGE BASE DOCS
+    ('add_knowledge_base_docs', 'Add Knowledge Base Docs'),
+    ('update_knowledge_base_docs', 'Update Knowledge Base Docs'),
+    ('list_knowledge_base_docs', 'List Knowledge Base Docs'),
+    ('delete_knowledge_base_docs', 'Delete Knowledge Base Docs'),
+    ######################################################
+    # STORAGE FILES
+    ('add_storage_files', 'Add Storage Files'),
+    ('update_storage_files', 'Update Storage Files'),
+    ('list_storage_files', 'List Storage Files'),
+    ('delete_storage_files', 'Delete Storage Files'),
+    ######################################################
+    # ML MODEL FILES
+    ('add_ml_model_files', 'Add ML Model Files'),
+    ('update_ml_model_files', 'Update ML Model Files'),
+    ('list_ml_model_files', 'List ML Model Files'),
+    ('delete_ml_model_files', 'Delete ML Model Files'),
+    ######################################################
+    # CUSTOM SQL QUERIES
+    ('add_custom_sql_queries', 'Add Custom SQL Queries'),
+    ('update_custom_sql_queries', 'Update Custom SQL Queries'),
+    ('list_custom_sql_queries', 'List Custom SQL Queries'),
+    ('delete_custom_sql_queries', 'Delete Custom SQL Queries'),
+    ######################################################
+    # EXPORT LEANMOD
+    ('add_export_leanmod', 'Add Export LeanMod'),
+    ('update_export_leanmod', 'Update Export LeanMod'),
+    ('list_export_leanmod', 'List Export LeanMod'),
+    ('delete_export_leanmod', 'Delete Export LeanMod'),
+    ######################################################
+    # EXPERT NETWORKS
+    ('add_expert_networks', 'Add Expert Networks'),
+    ('update_expert_networks', 'Update Expert Networks'),
+    ('list_expert_networks', 'List Expert Networks'),
+    ('delete_expert_networks', 'Delete Expert Networks'),
+    ######################################################
+    # EXPORT ORCHESTRATION
+    ('add_export_orchestration', 'Add Export Orchestration'),
+    ('update_export_orchestration', 'Update Export Orchestration'),
+    ('list_export_orchestration', 'List Export Orchestration'),
+    ('delete_export_orchestration', 'Delete Export Orchestration'),
+    ######################################################
+    # FINETUNING MODEL
+    ('add_finetuning_model', 'Add Finetuning Model'),
+    ('update_finetuning_model', 'Update Finetuning Model'),
+    ('list_finetuning_model', 'List Finetuning Model'),
+    ('delete_finetuning_model', 'Delete Finetuning Model'),
+    ################################################
+    # LEAN ASSISTANT
+    ('add_lean_assistant', 'Add Lean Assistant'),
+    ('update_lean_assistant', 'Update Lean Assistant'),
+    ('list_lean_assistant', 'List Lean Assistant'),
+    ('delete_lean_assistant', 'Delete Lean Assistant'),
+    #################################################
+    # CHAT ARCHIVING
+    ('archive_chats', 'Archive Chats'),
+    ('unarchive_chats', 'Unarchive Chats'),
+    #################################################
+    # LEAN CHAT PERMISSIONS
+    ('create_and_use_lean_chats', 'Create and Use Lean Chats'),
+    ('remove_lean_chats', 'Remove Lean Chats'),
+    ('archive_lean_chats', 'Archive Lean Chats'),
+    ('unarchive_lean_chats', 'Unarchive Lean Chats'),
+    #################################################
+    # ORCHESTRATION CHAT PERMISSIONS
+    ('create_and_use_orchestration_chats', 'Create and Use Orchestration Chats'),
+    ('remove_orchestration_chats', 'Remove Orchestration Chats'),
+    #################################################
+    # SUPPORT TICKETS
+    ('create_support_tickets', 'Create Support Tickets'),
+    ('list_support_tickets', 'List Support Tickets'),
+    ('update_support_tickets', 'Update Support Tickets'),
+    #################################################
 ]
 
 

@@ -14,6 +14,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_browsers.models import BROWSER_TYPES, DataSourceBrowserConnection, DataSourceBrowserBrowsingLog
 from apps.user_permissions.models import UserPermission, PermissionNames
@@ -42,16 +43,11 @@ class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         ##############################
-        # PERMISSION CHECK FOR - ADD BROWSER CONNECTIONS
-        ##############################
-        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.ADD_WEB_BROWSERS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add browser connections."}
-            return self.render_to_response(context)
+        # PERMISSION CHECK FOR - ADD_WEB_BROWSERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_WEB_BROWSERS):
+            messages.error(self.request, "You do not have permission to add web browsers.")
+            return redirect('datasource_browsers:list')
         ##############################
 
         name = request.POST.get('name')
@@ -145,14 +141,14 @@ class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - UPDATE BROWSER CONNECTIONS
-        user_permissions = (UserPermission.active_permissions.filter(user=request.user).all()
-                            .values_list('permission_type', flat=True))
-        if PermissionNames.UPDATE_WEB_BROWSERS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to update browser connections."}
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_WEB_BROWSERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_WEB_BROWSERS):
+            messages.error(self.request, "You do not have permission to update web browsers.")
+            return redirect('datasource_browsers:list')
+        ##############################
 
         connection_id = kwargs.get('pk')
         browser_connection = get_object_or_404(DataSourceBrowserConnection, pk=connection_id)
@@ -245,14 +241,13 @@ class DeleteBrowserConnectionView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - DELETE BROWSER CONNECTIONS
-        user_permissions = (UserPermission.active_permissions.filter(user=request.user)
-                            .all().values_list('permission_type',flat=True))
-        if PermissionNames.DELETE_WEB_BROWSERS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to delete browser connections."}
-            return self.render_to_response(context)
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_WEB_BROWSERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_WEB_BROWSERS):
+            messages.error(self.request, "You do not have permission to delete web browsers.")
+            return redirect('datasource_browsers:list')
+        ##############################
 
         browser_connection = get_object_or_404(DataSourceBrowserConnection, pk=self.kwargs['pk'])
         browser_connection.delete()
@@ -274,6 +269,14 @@ class ListBrowserConnectionsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_WEB_BROWSERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_WEB_BROWSERS):
+            messages.error(self.request, "You do not have permission to list web browsers.")
+            return context
+        ##############################
 
         connections_by_organization = {}
         assistants = Assistant.objects.filter(
@@ -308,6 +311,15 @@ class ListBrowsingLogsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_WEB_BROWSERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_WEB_BROWSERS):
+            messages.error(self.request, "You do not have permission to list web browsers.")
+            return context
+        ##############################
+
         connection_id = kwargs.get('pk')
         browser_connection = get_object_or_404(DataSourceBrowserConnection, pk=connection_id)
         context['browser_connection'] = browser_connection

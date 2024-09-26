@@ -17,6 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, DeleteView
 
 from apps._services.llms.llm_decoder import InternalLLMClient
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.export_assistants.management.commands.start_exported_assistants import start_endpoint_for_assistant
 from apps.export_assistants.models import ExportAssistantAPI, RequestLog
@@ -181,6 +182,15 @@ class ListExportAssistantsView(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_EXPORT_ASSISTANT
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_EXPORT_ASSISTANT):
+            messages.error(self.request, "You do not have permission to list Export Assistant APIs.")
+            return context
+        ##############################
+
         user_context = self.request.user
         max_export_assistants = settings.MAX_ASSISTANT_EXPORTS_ORGANIZATION
         organization_data = []
@@ -224,19 +234,19 @@ class CreateExportAssistantsView(TemplateView, LoginRequiredMixin):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_EXPORT_ASSISTANT
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_EXPORT_ASSISTANT):
+            messages.error(self.request, "You do not have permission to add Export Assistant APIs.")
+            return redirect('export_assistants:list')
+        ##############################
+
         assistant_id = request.POST.get('assistant')
         assistant = get_object_or_404(Assistant, pk=assistant_id)
         is_public = request.POST.get('is_public') == 'on'
         request_limit_per_hour = request.POST.get('request_limit_per_hour')
-        context_user = request.user
-
-        # PERMISSION CHECK FOR - EXPORT_ASSISTANTS/CREATE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_EXPORT_ASSISTANT not in user_permissions:
-            messages.error(request, "You do not have permission to create assistant exports.")
-            return redirect('export_assistants:list')
 
         # check if the number of assistants of the organization is higher than the allowed limit
         if ExportAssistantAPI.objects.filter(
@@ -287,16 +297,16 @@ class UpdateExportAssistantsView(TemplateView, LoginRequiredMixin):
         return context
 
     def post(self, request, *args, **kwargs):
-        export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
-        context_user = request.user
-        # PERMISSION CHECK FOR - EXPORT_ASSISTANTS/UPDATE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.UPDATE_EXPORT_ASSIST not in user_permissions:
-            messages.error(request, "You do not have permission to update assistant exports.")
-            return redirect('export_assistants:list')
 
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_EXPORT_ASSISTANT
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_EXPORT_ASSIST):
+            messages.error(self.request, "You do not have permission to update Export Assistant APIs.")
+            return redirect('export_assistants:list')
+        ##############################
+
+        export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
         export_assistant.assistant_id = request.POST.get('assistant')
         export_assistant.request_limit_per_hour = request.POST.get('request_limit_per_hour')
         export_assistant.is_public = request.POST.get('is_public') == 'on'
@@ -337,18 +347,19 @@ class DeleteExportAssistantsView(LoginRequiredMixin, DeleteView):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        context_user = request.user
-        export_assistant = get_object_or_404(ExportAssistantAPI, id=self.kwargs['pk'])
-        # PERMISSION CHECK FOR - EXPORT_ASSISTANTS/DELETE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_EXPORT_ASSISTANT not in user_permissions:
-            messages.error(request, "You do not have permission to delete assistant exports.")
-            return redirect('export_assistants:list')
 
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_EXPORT_ASSISTANT
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_EXPORT_ASSISTANT):
+            messages.error(self.request, "You do not have permission to delete Export Assistant APIs.")
+            return redirect('export_assistants:list')
+        ##############################
+
+        export_assistant = get_object_or_404(ExportAssistantAPI, id=self.kwargs['pk'])
         export_assistant.delete()
         success_message = "Export Assistant deleted successfully."
+
         # remove the exported assistant from the organization
         organization = export_assistant.assistant.organization
         organization.exported_assistants.remove(export_assistant)
@@ -372,13 +383,14 @@ class ToggleExportAssistantServiceView(LoginRequiredMixin, View):
         export_assistant = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
         endpoint = EXPORT_API_BASE_URL + export_assistant.endpoint.split(EXPORT_API_BASE_URL)[1]
         context_user = request.user
-        # PERMISSION CHECK FOR - EXPORT_ASSISTANTS/UPDATE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.UPDATE_EXPORT_ASSIST not in user_permissions:
-            messages.error(request, "You do not have permission to update assistant exports.")
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_EXPORT_ASSISTANT
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_EXPORT_ASSIST):
+            messages.error(self.request, "You do not have permission to update Export Assistant APIs.")
             return redirect('export_assistants:list')
+        ##############################
 
         api_urls = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
         export_assistant.is_online = not export_assistant.is_online

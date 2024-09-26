@@ -29,6 +29,7 @@ from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
 from .tasks import download_file_from_url
+from .._services.user_permissions.permission_manager import UserPermissionManager
 from ..multimodal_chat.models import MultimodalChat
 
 FILE_TYPE_HIGHLIGHTING_DECODER = {
@@ -61,13 +62,14 @@ class DataSourceMediaStorageConnectionCreateView(LoginRequiredMixin, TemplateVie
         return context
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - MEDIA STORAGE / CREATE
-        context_user = self.request.user
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.ADD_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to create media storages.")
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_MEDIA_STORAGES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_MEDIA_STORAGES):
+            messages.error(self.request, "You do not have permission to create media storages.")
             return redirect('datasource_media_storages:list')
+        ##############################
 
         name = request.POST.get('name')
         description = request.POST.get('description')
@@ -103,6 +105,15 @@ class DataSourceListMediaStorageConnectionsView(LoginRequiredMixin, TemplateView
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_MEDIA_STORAGES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_MEDIA_STORAGES):
+            messages.error(self.request, "You do not have permission to list media storages.")
+            return context
+        ##############################
+
         organizations = Organization.objects.filter(users__in=[self.request.user])
         data = []
         for org in organizations:
@@ -119,6 +130,15 @@ class DataSourceListMediaStorageConnectionsView(LoginRequiredMixin, TemplateView
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_MEDIA_STORAGES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_MEDIA_STORAGES):
+            messages.error(self.request, "You do not have permission to delete media storages.")
+            return redirect('datasource_media_storages:list')
+        ##############################
+
         storage_ids = request.POST.getlist('selected_storages')
         if storage_ids:
             DataSourceMediaStorageConnection.objects.filter(id__in=storage_ids).delete()
@@ -149,13 +169,13 @@ class DataSourceMediaStorageConnectionUpdateView(LoginRequiredMixin, TemplateVie
         return context
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - MEDIA STORAGE / UPDATE
-        context_user = self.request.user
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.UPDATE_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to update media storages.")
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_MEDIA_STORAGES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_MEDIA_STORAGES):
+            messages.error(self.request, "You do not have permission to update media storages.")
             return redirect('datasource_media_storages:list')
+        ##############################
 
         media_storage = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
         name = request.POST.get('name')
@@ -201,13 +221,13 @@ class DataSourceMediaStorageConnectionDeleteView(LoginRequiredMixin, TemplateVie
         return context
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - MEDIA STORAGE / CREATE
-        context_user = self.request.user
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to delete media storages.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_MEDIA_STORAGES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_MEDIA_STORAGES):
+            messages.error(self.request, "You do not have permission to delete media storages.")
             return redirect('datasource_media_storages:list')
+        ##############################
 
         media_storage = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
         media_storage.delete()
@@ -239,6 +259,15 @@ class DataSourceMediaStorageItemCreateView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to add media files")
+            return redirect('datasource_media_storages:list_items')
+        ##############################
+
         media_storage_id = request.POST.get('media_storage') or None
         # PERMISSION CHECK FOR - MEDIA ITEM / CREATE
         context_user = self.request.user
@@ -291,6 +320,15 @@ class DataSourceMediaStorageItemDetailAndUpdateView(LoginRequiredMixin, Template
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to see media files.")
+            return context
+        ##############################
+
         media_item = DataSourceMediaStorageItem.objects.get(id=kwargs['pk'])
         context['media_item'] = media_item
         # download file bytes from s3
@@ -323,13 +361,13 @@ class DataSourceMediaStorageItemDetailAndUpdateView(LoginRequiredMixin, Template
         return context
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - MEDIA ITEM / UPDATE
-        context_user = self.request.user
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.UPDATE_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to update media items.")
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to update media files.")
             return redirect('datasource_media_storages:list_items')
+        ##############################
 
         media_item = DataSourceMediaStorageItem.objects.get(id=kwargs['pk'])
         description = request.POST.get('description')
@@ -353,6 +391,15 @@ class DataSourceMediaStorageItemListView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to see media files.")
+            return context
+        ##############################
+
         organizations = Organization.objects.filter(users__in=[self.request.user])
         data = []
         for org in organizations:
@@ -377,13 +424,13 @@ class DataSourceMediaStorageItemListView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - MEDIA ITEM / DELETE
-        context_user = self.request.user
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to delete media items.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to delete media files.")
             return redirect('datasource_media_storages:list_items')
+        ##############################
 
         if 'selected_items' in request.POST:
             item_ids = request.POST.getlist('selected_items')
@@ -420,13 +467,13 @@ class DataSourceMediaStorageAllItemsDeleteView(LoginRequiredMixin, TemplateView)
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - MEDIA ITEM / DELETE
-        context_user = self.request.user
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to delete media items.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to delete media files.")
             return redirect('datasource_media_storages:list_items')
+        ##############################
 
         base_id = kwargs.get('id')
         all_items = DataSourceMediaStorageItem.objects.filter(storage_base_id=base_id)
@@ -496,13 +543,13 @@ class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, Template
         return text
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - MEDIA ITEM / UPDATE
-        context_user = self.request.user
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.UPDATE_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to update media items.")
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to update media files.")
             return redirect('datasource_media_storages:list_items')
+        ##############################
 
         media_item_id = kwargs.get('pk')
         media_item = DataSourceMediaStorageItem.objects.get(id=media_item_id)
@@ -555,13 +602,15 @@ class DataSourceMediaStorageItemFetchFileFromUrl(LoginRequiredMixin, TemplateVie
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - MEDIA ITEM / CREATE
-        context_user = self.request.user
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.ADD_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to create media items.")
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to add media files.")
             return redirect('datasource_media_storages:list_items')
+        ##############################
+
         media_storage_id = request.POST.get('storage_id') or None
         if not media_storage_id:
             messages.error(request, 'Invalid media storage ID.')
@@ -590,6 +639,15 @@ class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateV
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to see media files.")
+            return context
+        ##############################
+
         organizations = Organization.objects.filter(users__in=[self.request.user])
         data = []
         for org in organizations:
@@ -628,13 +686,13 @@ class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateV
         return context
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - MEDIA ITEM / DELETE
-        context_user = self.request.user
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.DELETE_MEDIA_STORAGES not in user_permissions:
-            messages.error(request, "You do not have permission to delete generated media items.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_STORAGE_FILES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_STORAGE_FILES):
+            messages.error(self.request, "You do not have permission to delete media files.")
             return redirect('datasource_media_storages:list_items')
+        ##############################
 
         if 'selected_items' in request.POST:
             item_ids = request.POST.getlist('selected_items')

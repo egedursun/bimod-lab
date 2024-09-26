@@ -12,6 +12,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
 from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import VECTORIZERS, Assistant
 from apps.datasource_knowledge_base.forms import DocumentKnowledgeBaseForm
 from apps.datasource_knowledge_base.tasks import add_document_upload_log
@@ -52,12 +53,13 @@ class DocumentKnowledgeBaseCreateView(LoginRequiredMixin, TemplateView):
         form = DocumentKnowledgeBaseForm(request.POST)
         context_user = self.request.user
 
-        # PERMISSION CHECK FOR - KNOWLEDGE BASE / CREATE
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type',flat=True))
-        if PermissionNames.ADD_KNOWLEDGE_BASES not in user_permissions:
-            messages.error(request, "You do not have permission to create Knowledge Bases.")
+        ##############################
+        # PERMISSION CHECK FOR - ADD_KNOWLEDGE_BASES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_KNOWLEDGE_BASES):
+            messages.error(self.request, "You do not have permission to create Knowledge Bases.")
             return redirect('datasource_knowledge_base:list')
+        ##############################
 
         if form.is_valid():
             form.save()
@@ -88,6 +90,15 @@ class DocumentKnowledgeBaseListView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_KNOWLEDGE_BASES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_KNOWLEDGE_BASES):
+            messages.error(self.request, "You do not have permission to list Knowledge Bases.")
+            return context
+        ##############################
+
         context_user = self.request.user
         user_organizations = Organization.objects.filter(users__in=[context_user])
 
@@ -136,16 +147,13 @@ class DocumentKnowledgeBaseUpdateView(LoginRequiredMixin, TemplateView):
         knowledge_base = get_object_or_404(DocumentKnowledgeBaseConnection, pk=kwargs['pk'])
         context_user = self.request.user
 
-        # PERMISSION CHECK FOR - KNOWLEDGE BASE / UPDATE
-        user_permissions = UserPermission.active_permissions.filter(
-            user=context_user
-        ).all().values_list(
-            'permission_type',
-            flat=True
-        )
-        if PermissionNames.UPDATE_KNOWLEDGE_BASES not in user_permissions:
-            messages.error(request, "You do not have permission to update Knowledge Bases.")
+        ##############################
+        # PERMISSION CHECK FOR - ADD_KNOWLEDGE_BASES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_KNOWLEDGE_BASES):
+            messages.error(self.request, "You do not have permission to update Knowledge Bases.")
             return redirect('datasource_knowledge_base:list')
+        ##############################
 
         form = DocumentKnowledgeBaseForm(request.POST, instance=knowledge_base)
         if form.is_valid():
@@ -184,14 +192,13 @@ class DocumentKnowledgeBaseDeleteView(LoginRequiredMixin, DeleteView):
         self.object = self.get_object()
         context_user = self.request.user
 
-        # PERMISSION CHECK FOR - KNOWLEDGE BASE / DELETE
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type',flat=True))
-        if PermissionNames.DELETE_KNOWLEDGE_BASES not in user_permissions:
-            messages.error(request, "You do not have permission to delete Knowledge Bases.")
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_KNOWLEDGE_BASES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_KNOWLEDGE_BASES):
+            messages.error(self.request, "You do not have permission to delete Knowledge Bases.")
             return redirect('datasource_knowledge_base:list')
-        print('[DocumentKnowledgeBaseDeleteView.post] Deleting Knowledge Base')
-        return super().post(request, *args, **kwargs)
+        ##############################
 
     def get_queryset(self):
         context_user = self.request.user
@@ -223,13 +230,13 @@ class AddDocumentView(LoginRequiredMixin, TemplateView):
         knowledge_base_id = request.POST.get('knowledge_base') or None
         context_user = request.user
 
-        # PERMISSION CHECK FOR - DOCUMENT / UPLOAD
-        user_permissions = (UserPermission.active_permissions.filter(user=context_user)
-                            .all().values_list('permission_type', flat=True))
-        if PermissionNames.ADD_KNOWLEDGE_BASES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to upload documents."}
-            return self.render_to_response(context)
+        ##############################
+        # PERMISSION CHECK FOR - ADD_KNOWLEDGE_BASE_DOCS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_KNOWLEDGE_BASE_DOCS):
+            messages.error(self.request, "You do not have permission to add Knowledge Base documents.")
+            return redirect('datasource_knowledge_base:list_documents')
+        ##############################
 
         if not knowledge_base_id:
             messages.error(request, 'Please select a knowledge base.')
@@ -273,6 +280,15 @@ class ListDocumentsView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_KNOWLEDGE_BASE_DOCS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_KNOWLEDGE_BASE_DOCS):
+            messages.error(self.request, "You do not have permission to list Knowledge Base documents.")
+            return context
+        ##############################
+
         organizations = Organization.objects.filter(users__in=[request.user])
         data = []
         for org in organizations:
@@ -308,6 +324,15 @@ class ListDocumentsView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_KNOWLEDGE_BASE_DOCS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_KNOWLEDGE_BASE_DOCS):
+            messages.error(self.request, "You do not have permission to delete Knowledge Base documents.")
+            return redirect('datasource_knowledge_base:list_documents')
+        ##############################
+
         document_ids = request.POST.getlist('selected_documents')
         if document_ids:
             KnowledgeBaseDocument.objects.filter(id__in=document_ids).delete()
@@ -336,6 +361,15 @@ class DeleteAllDocumentsView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_KNOWLEDGE_BASE_DOCS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_KNOWLEDGE_BASE_DOCS):
+            messages.error(self.request, "You do not have permission to delete Knowledge Base documents.")
+            return redirect('datasource_knowledge_base:list_documents')
+        ##############################
+
         knowledge_base_id = kwargs.get('kb_id')
         context_user = request.user
 

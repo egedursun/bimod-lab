@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, DeleteView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.finetuning.models import FineTunedModelConnection
 from apps.llm_core.forms import LLMCoreForm
 from apps.llm_core.models import LLM_CORE_PROVIDERS, OPENAI_GPT_MODEL_NAMES, LLMCore
@@ -52,16 +53,17 @@ class CreateLLMCoreView(TemplateView, LoginRequiredMixin):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_LLM_CORES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_LLM_CORES):
+            messages.error(self.request, "You do not have permission to add LLM Cores.")
+            return redirect('llm_core:list')
+        ##############################
+
         form = LLMCoreForm(request.POST, request.FILES)
         user = request.user
-        # PERMISSION CHECK FOR - LLM/CREATE
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_LLM_CORES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add LLM Cores."}
-            return self.render_to_response(context)
 
         form.instance.created_by_user = user
         form.instance.last_updated_by_user = user
@@ -93,11 +95,17 @@ class ListLLMCoreView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_LLM_CORES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_LLM_CORES):
+            messages.error(self.request, "You do not have permission to list LLM Cores.")
+            return context
+        ##############################
+
         user = self.request.user
         organizations = user.organizations.all()
-        # PERMISSION CHECK FOR - LLM/LIST
-        # For now, every user is able to see the LLM cores.
-
         # retrieve the llm cores for every organization and store in the dictionary
         llm_cores = {}
         for organization in organizations:
@@ -143,19 +151,18 @@ class UpdateLLMCoreView(TemplateView, LoginRequiredMixin):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_LLM_CORES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_LLM_CORES):
+            messages.error(self.request, "You do not have permission to update LLM Cores.")
+            return redirect('llm_core:list')
+        ##############################
+
         llm_core = LLMCore.objects.get(id=kwargs['pk'])
         prev_organization = llm_core.organization
         form = LLMCoreForm(request.POST, request.FILES, instance=llm_core)
-        context_user = request.user
-        # PERMISSION CHECK FOR - LLM/UPDATE
-        user_permissions = UserPermission.active_permissions.filter(user=context_user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.UPDATE_LLM_CORES not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {
-                "Permission Error": "You do not have permission to update or modify LLM Cores."}
-            return self.render_to_response(context)
 
         if form.is_valid():
             prev_organization.llm_cores.remove(llm_core)
@@ -192,14 +199,14 @@ class DeleteLLMCoreView(DeleteView, LoginRequiredMixin):
         return context
 
     def post(self, request, *args, **kwargs):
-        user = request.user
-        # PERMISSION CHECK FOR - LLM/DELETE
-        user_permissions = UserPermission.active_permissions.filter(user=user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_LLM_CORES not in user_permissions:
-            messages.error(request, "You do not have permission to delete LLM Cores.")
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_LLM_CORES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_LLM_CORES):
+            messages.error(self.request, "You do not have permission to delete LLM Cores.")
             return redirect('llm_core:list')
+        ##############################
 
         llm_core = get_object_or_404(LLMCore, id=kwargs['pk'])
         llm_core.delete()

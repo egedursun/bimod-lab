@@ -20,6 +20,7 @@ from django.views.generic import TemplateView
 
 from apps._services.config.costs_map import ToolCostsMap
 from apps._services.llms.llm_decoder import InternalLLMClient
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from apps.mm_triggered_jobs.forms import TriggeredJobForm
@@ -222,14 +223,14 @@ class CreateTriggeredJobView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = TriggeredJobForm(request.POST)
-        # PERMISSION CHECK FOR - ADD TRIGGERED JOB
-        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.ADD_TRIGGERS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to add triggered jobs."}
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_TRIGGERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_TRIGGERS):
+            messages.error(self.request, "You do not have permission to add triggered jobs.")
+            return redirect('mm_triggered_jobs:list')
+        ##############################
 
         if form.is_valid():
             triggered_job = form.save(commit=False)
@@ -260,6 +261,15 @@ class ListTriggeredJobsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_TRIGGERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_TRIGGERS):
+            messages.error(self.request, "You do not have permission to list triggered jobs.")
+            return context
+        ##############################
+
         search_query = self.request.GET.get('search', '')
         user_organizations = self.request.user.organizations.all()
         organization_assistants = user_organizations.values_list('assistants', flat=True)
@@ -293,6 +303,15 @@ class ListTriggeredJobLogsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_TRIGGERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_TRIGGERS):
+            messages.error(self.request, "You do not have permission to list triggered jobs.")
+            return context
+        ##############################
+
         triggered_job_id = self.kwargs.get('pk')
         triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)
         context['triggered_job'] = triggered_job
@@ -330,14 +349,14 @@ class ConfirmDeleteTriggeredJobView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        # PERMISSION CHECK FOR - ADD TRIGGERED JOB
-        user_permissions = UserPermission.active_permissions.filter(user=request.user).all().values_list(
-            'permission_type', flat=True
-        )
-        if PermissionNames.DELETE_TRIGGERS not in user_permissions:
-            context = self.get_context_data(**kwargs)
-            context['error_messages'] = {"Permission Error": "You do not have permission to delete triggered jobs."}
-            return self.render_to_response(context)
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_TRIGGERS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_TRIGGERS):
+            messages.error(self.request, "You do not have permission to delete triggered jobs.")
+            return redirect('mm_triggered_jobs:list')
+        ##############################
 
         triggered_job_id = self.kwargs.get('pk')
         triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)
