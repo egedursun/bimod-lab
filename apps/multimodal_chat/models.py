@@ -13,7 +13,7 @@ Dependencies:
 from django.db import models
 
 from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
-from apps.assistants.models import ContextOverflowStrategyNames
+from apps.assistants.utils import ContextOverflowStrategyNames
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.llm_transaction.models import LLMTransaction
 from apps.starred_messages.models import StarredMessage

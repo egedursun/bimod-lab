@@ -1,69 +1,10 @@
-"""
-Module Overview: This module defines the `Assistant` model, which represents a customizable virtual assistant within an organization. It also includes utility classes and functions for managing assistant-related configurations, such as language support, context overflow strategies, and vectorizer options.
-
-Dependencies:
-- `boto3`: Used for interacting with AWS S3 to manage storage directories.
-- `django.db.models`: Django's ORM for defining database models.
-- `random`: Used for generating random name suffixes.
-- `apps.assistants.utils`: Custom utility functions for generating random strings.
-- `config.settings`: Application settings, particularly for accessing AWS configurations.
-"""
-
 import random
 
 import boto3
 from django.db import models
 
+from apps.assistants.utils import ASSISTANT_RESPONSE_LANGUAGES, CONTEXT_OVERFLOW_STRATEGY, VECTORIZERS
 from config import settings
-
-ASSISTANT_RESPONSE_LANGUAGES = [
-    # User's question language
-    ("auto", "Auto (Detect)"),
-    ("en", "English"), ("es", "Spanish"), ("fr", "French"), ("de", "German"), ("it", "Italian"),
-    ("pt", "Portuguese"), ("nl", "Dutch"), ("ru", "Russian"), ("ja", "Japanese"), ("ko", "Korean"),
-    ("zh", "Chinese"), ("ar", "Arabic"), ("tr", "Turkish"), ("pl", "Polish"), ("sv", "Swedish"),
-    ("da", "Danish"), ("fi", "Finnish"), ("no", "Norwegian"), ("he", "Hebrew"), ("id", "Indonesian"),
-    ("ms", "Malay"), ("th", "Thai"), ("hi", "Hindi"), ("hu", "Hungarian"), ("cs", "Czech"),
-    ("sk", "Slovak"), ("uk", "Ukrainian"), ("ro", "Romanian"), ("bg", "Bulgarian"), ("el", "Greek"),
-    ("fi", "Finnish"), ("et", "Estonian"), ("lv", "Latvian"), ("lt", "Lithuanian"), ("hr", "Croatian"),
-    ("sr", "Serbian"), ("sl", "Slovenian"), ("mk", "Macedonian"), ("sq", "Albanian"), ("bs", "Bosnian"),
-    ("is", "Icelandic"), ("cy", "Welsh"), ("ga", "Irish"),
-]
-ASSISTANT_RESPONSE_LANGUAGES = [ASSISTANT_RESPONSE_LANGUAGES[0]] + sorted(ASSISTANT_RESPONSE_LANGUAGES[1:],
-                                                                          key=lambda x: x[1])
-
-CONTEXT_OVERFLOW_STRATEGY = [
-    ("stop", "Stop Conversation"),
-    ("forget", "Forget Oldest Messages"),
-    ("vectorize", "Vectorize Oldest Messages"),
-]
-
-
-class ContextOverflowStrategyNames:
-    STOP = "stop"
-    FORGET = "forget"
-    VECTORIZE = "vectorize"
-
-    @staticmethod
-    def as_dict():
-        return {"stop": "Stop Conversation", "forget": "Forget Oldest Messages",
-                "vectorize": "Vectorize Oldest Messages"}
-
-
-VECTORIZERS = [
-    ("text2vec-openai", "Text2Vec (OpenAI)"),
-]
-
-
-class VectorizerNames:
-    TEXT2VEC_OPENAI = "text2vec-openai"
-
-    @staticmethod
-    def as_dict():
-        return {"text2vec-openai": "Text2Vec (OpenAI)"}
-
-
-# Create your models here.
 
 
 class Assistant(models.Model):

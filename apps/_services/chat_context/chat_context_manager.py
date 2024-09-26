@@ -2,7 +2,8 @@ from apps._services.config.costs_map import ToolCostsMap
 from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
 from apps._services.prompts.context_memory.build_context_memory_instruction import \
     build_context_memory_instructions_prompt, build_context_memory_stop_conversation_prompt
-from apps.assistants.models import ContextOverflowStrategyNames, Assistant
+from apps.assistants.models import Assistant
+from apps.assistants.utils import ContextOverflowStrategyNames
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
-from apps.assistants.models import ContextOverflowStrategyNames
+from apps.assistants.utils import ContextOverflowStrategyNames
 from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage, ChatCreationLog, ChatMessageCreationLog, \
     MultimodalLeanChat, MultimodalLeanChatMessage
 from django.contrib.admin.actions import delete_selected as django_delete_selected
