@@ -29,7 +29,6 @@
     </div>
     -->
   </div>
-
   <div class="alert alert-secondary alert-dismissible d-flex col-11 ms-12 me-12 align-items-center mt-8 mb-8"
        role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-99.png' %}" width="25%" style="border-radius: 25px;"
@@ -52,7 +51,6 @@
       </button>
     </div>
   </div>
-
   {% if messages %}
     {% for message in messages %}
       <div
@@ -62,160 +60,149 @@
       </div>
     {% endfor %}
   {% endif %}
+  <hr>
 
-  <div class="row mt-6">
+  <div class="row mt-6 mt-4">
     <!-- Navigation -->
     <div class="col-lg-3 col-md-4 col-12 mb-md-0 mb-4">
       <div class="d-flex justify-content-between flex-column nav-align-left mb-2 mb-md-0">
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#payment">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#organizations">
               <i class="ti ti-building me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Organizations</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#delivery">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#llm_models">
               <i class="ti ti-box-model me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">LLM Models</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cancellation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#transactions">
               <i class="ti ti-rotate-clockwise-2 me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Transactions</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#orders">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#users">
               <i class="ti ti-user me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Users</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#permissions">
               <i class="ti ti-lock-access me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Permissions</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#assistants">
               <i class="ti ti-robot-face me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Assistants</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#chats">
               <i class="ti ti-message me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Chats</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#starred_responses">
               <i class="ti ti-star me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Starred Responses</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#memories">
               <i class="ti ti-server me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Memories</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#message_templates">
               <i class="ti ti-template me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Message Templates</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#exporting_assistants">
               <i class="ti ti-file-export me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Exporting Assistants</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#orchestrations">
               <i class="ti ti-bolt me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Orchestrations</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#file_systems">
               <i class="ti ti-folder me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">File Systems</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#web_browsers">
               <i class="ti ti-browser me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Web Browsers</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#sql_databases">
               <i class="ti ti-database me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">SQL Databases</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#knowledge_bases">
               <i class="ti ti-vector me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Knowledge Bases</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#ml_models">
               <i class="ti ti-ai me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">ML Models</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#media_storages">
               <i class="ti ti-photo me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Media Storages</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#functions">
               <i class="ti ti-function me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Functions</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#apis">
               <i class="ti ti-api me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">APIs</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#scripts">
               <i class="ti ti-code me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Scripts</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#scheduled_jobs">
               <i class="ti ti-clock me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Scheduled Jobs</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#triggers">
               <i class="ti ti-anchor me-1_5 ti-sm"></i>
               <span class="align-middle fw-medium">Triggers</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button class="disabled nav-link" data-bs-toggle="tab" data-bs-target="#product">
-              <i class="ti ti-wand me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Integrations</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button class="disabled nav-link" data-bs-toggle="tab" data-bs-target="#product">
-              <i class="ti ti-wand me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Meta Integrations</span>
             </button>
           </li>
         </ul>
@@ -223,74 +210,82 @@
     </div>
     <!-- /Navigation -->
 
-    <!-- TODO: documentation needs to be properly designed -->
-
     <!-- Documentation -->
     <div class="col-lg-9 col-md-8 col-12">
       <div class="tab-content p-0">
-        <!--
-        <div class="tab-pane fade" id="delivery" role="tabpanel">
+        <div class="tab-pane fade" id="organizations" role="tabpanel">
           <div class="d-flex mb-4 gap-4 align-items-center">
             <div class="avatar avatar-md">
               <span class="avatar-initial bg-label-primary rounded">
-                <i class="ti ti-briefcase ti-30px"></i>
+                <i class="fa fa-building fa-lg"></i>
               </span>
             </div>
             <div>
               <h5 class="mb-0">
-                <span class="align-middle">Delivery</span>
+                <span class="align-middle">
+                  <strong>Organizations</strong>
+                </span>
               </h5>
-              <span>Lorem ipsum, dolor sit amet.</span>
             </div>
           </div>
-          <div id="accordionDelivery" class="accordion">
-            <div class="card accordion-item active">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#accordionDelivery-1" aria-controls="accordionDelivery-1">
-                  How would you ship my order?
-                </button>
-              </h2>
-
-              <div id="accordionDelivery-1" class="accordion-collapse collapse show">
+          <div id="accordionOrganizations" class="accordion">
+            <div class="card m-4">
+              <h4 class="title p-4">
+                <strong>What are Organizations?</strong>
+              </h4>
+              <div id="" class="mt-4">
                 <div class="accordion-body">
-                  For large products, we deliver your product via a third party
-                  logistics company offering you the “room of choice” scheduled
-                  delivery service. For small products, we offer free parcel
-                  delivery.
+                  <!-- TODO-1: content here -->
+                  Lorem ipsum dolor sit amet.
                 </div>
               </div>
             </div>
-
-            <div class="card accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionDelivery-2" aria-controls="accordionDelivery-2">
-                  What is the delivery cost of my order?
-                </button>
-              </h2>
-              <div id="accordionDelivery-2" class="accordion-collapse collapse">
-                <div class="accordion-body">The cost of scheduled delivery is $69 or $99 per order, depending on the destination postal code. The parcel delivery is free.
+            <div class="card m-4">
+              <h4 class="title p-4">
+                <strong>Creating a New Organization</strong>
+              </h4>
+              <div id="" class="mt-4">
+                <div class="accordion-body">
+                  <!-- TODO-2: content here -->
+                  Lorem ipsum dolor sit amet.
                 </div>
               </div>
             </div>
-
-            <div class="card accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionDelivery-4" aria-controls="accordionDelivery-4">
-                  What to do if my product arrives damaged?
-                </button>
-              </h2>
-              <div id="accordionDelivery-4" class="accordion-collapse collapse">
+            <div class="card m-4">
+              <h4 class="title p-4">
+                <strong>Updating an Existing Organization</strong>
+              </h4>
+              <div id="" class="mt-4">
                 <div class="accordion-body">
-                  We will promptly replace any product that is damaged in transit.
-                  Just contact our
-                  <a href="javascript:void(0);">support team</a>, to notify us of the situation
-                  within 48 hours of product arrival.
+                  <!-- TODO-3: content here -->
+                  Lorem ipsum dolor sit amet.
+                </div>
+              </div>
+            </div>
+            <div class="card m-4">
+              <h4 class="title p-4">
+                <strong>Deleting an Organization</strong>
+              </h4>
+              <div id="" class="mt-4">
+                <div class="accordion-body">
+                  <!-- TODO-4: content here -->
+                  Lorem ipsum dolor sit amet.
+                </div>
+              </div>
+            </div>
+            <div class="card m-4">
+              <h4 class="title p-4">
+                <strong>Managing Your Organizations</strong>
+              </h4>
+              <div id="" class="mt-4">
+                <div class="accordion-body">
+                  <!-- TODO-5: content here -->
+                  Lorem ipsum dolor sit amet.
                 </div>
               </div>
             </div>
           </div>
         </div>
-        -->
       </div>
     </div>
     <!-- /FAQ's -->
@@ -314,7 +309,8 @@
           <i class="ti ti-phone ti-26px"></i>
         </span>
         </div>
-        <h5 class="mt-4 mb-1"><a class="text-heading" href="tel:+90-546-538-70-99"><strong>+90-546-538-70-99</strong></a></h5>
+        <h5 class="mt-4 mb-1"><a class="text-heading"
+                                 href="tel:+90-546-538-70-99"><strong>+90-546-538-70-99</strong></a></h5>
         <p class="mb-0">Available between <strong>9:00 am - 5:00 pm (UTC+3).</strong></p>
       </div>
     </div>
@@ -325,7 +321,8 @@
           <i class="ti ti-mail ti-26px"></i>
         </span>
         </div>
-        <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:admin@bimod.io"><strong>admin@bimod.io</strong></a></h5>
+        <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:admin@bimod.io"><strong>admin@bimod.io</strong></a>
+        </h5>
         <p class="mb-0">Best way to get a quick response, <strong>available 24/7.</strong></p>
       </div>
     </div>
