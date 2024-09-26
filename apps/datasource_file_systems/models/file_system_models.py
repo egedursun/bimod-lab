@@ -1,28 +1,7 @@
-"""
-Module Overview: This module defines the `DataSourceFileSystem` model, which represents a connection to a remote file system via SSH. It includes configurations for the file system's operating system type, SSH connection details, and data retrieval parameters. The model also integrates with the `FileSystemsExecutor` service for handling file system operations.
-
-Dependencies:
-- `django.db.models`: Django's ORM for defining database models.
-- `apps._services.file_systems.file_systems_executor`: Custom service for executing file system-related operations.
-"""
-
 from django.db import models
+
 from apps._services.file_systems.file_systems_executor import FileSystemsExecutor
-
-# Create your models here.
-
-
-SSH_CONNECTION_DEFAULT_BANNER_TIMEOUT = 200
-
-DATASOURCE_FILE_SYSTEMS_OS_TYPES = [
-    ('linux', 'Linux'),
-    ('macos', 'MacOS'),
-]
-
-
-class DataSourceFileSystemsOsTypeNames:
-    LINUX = 'linux'
-    MACOS = 'macos'
+from apps.datasource_file_systems.utils import DATASOURCE_FILE_SYSTEMS_OS_TYPES
 
 
 class DataSourceFileSystem(models.Model):
