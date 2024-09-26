@@ -1,12 +1,8 @@
+
 from django.db import models
 
+from apps.data_security.utils.constant_utils import NER_LANGUAGES
 
-NER_LANGUAGES = [
-    ('en', 'English'),
-]
-
-
-# Create your models here.
 
 class NERIntegration(models.Model):
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
@@ -18,6 +14,7 @@ class NERIntegration(models.Model):
     encrypt_orgs = models.BooleanField(default=False)  # ORG
     encrypt_nationality_religion_political = models.BooleanField(default=False)  # NORP
     encrypt_facilities = models.BooleanField(default=False)  # FAC
+
     encrypt_countries_cities_states = models.BooleanField(default=False)  # GPE
     encrypt_locations = models.BooleanField(default=False)  # LOC
     encrypt_products = models.BooleanField(default=False)  # PRODUCT
