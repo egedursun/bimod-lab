@@ -4,8 +4,6 @@ from django.contrib import admin
 from apps.assistants.models import Assistant
 
 
-# Register your models here.
-
 @admin.register(Assistant)
 class AssistantAdmin(admin.ModelAdmin):
     list_display = (
