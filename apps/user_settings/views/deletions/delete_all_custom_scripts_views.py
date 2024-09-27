@@ -1,0 +1,45 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
+from django.views import View
+
+from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.mm_scripts.models import CustomScript
+from apps.user_permissions.models import PermissionNames
+
+
+class DeleteAllScriptsView(View, LoginRequiredMixin):
+    """
+    Handles the deletion of all scripts associated with the user account.
+    """
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        user_scripts = CustomScript.objects.filter(created_by_user=user).all()
+        confirmation_field = request.POST.get('confirmation', None)
+
+        # [1] Validate deletion request
+        if confirmation_field != 'CONFIRM DELETING ALL SCRIPTS':
+            messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
+                                    "exactly 'CONFIRM DELETING ALL SCRIPTS'.")
+            return redirect('user_settings:settings')
+
+        # [2] Verify permissions for the bulk deletion operation
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_SCRIPTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_SCRIPTS):
+            messages.error(self.request, "You do not have permission to delete custom Scripts.")
+            return redirect('user_settings:settings')
+        ##############################
+
+        # [3] Delete ALL items in the queryset
+        try:
+            for script in user_scripts:
+                script.delete()
+            messages.success(request, "All scripts associated with your account have been deleted.")
+        except Exception as e:
+            messages.error(request, f"Error deleting scripts: {e}")
+
+        # [4] Redirect back to settings page
+        return redirect('user_settings:settings')
