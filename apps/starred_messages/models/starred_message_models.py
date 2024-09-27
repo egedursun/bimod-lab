@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.starred_messages.utils import STARRED_MESSAGE_SENDER_TYPES
+
 
 class StarredMessage(models.Model):
     """

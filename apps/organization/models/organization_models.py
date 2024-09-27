@@ -1,11 +1,3 @@
-"""
-Module Overview: This module defines the `Organization` model within an assistant-based application. The model represents an organization entity, storing its details, associated users, assistants, and related configurations such as balance and image. It also includes relationships with other models like `LLMCore`, `ExportAssistantAPI`, and `AutoBalanceTopUpModel`.
-
-Dependencies:
-- `django.db.models`: Django's ORM for defining database models.
-- `apps.organization.utils.generate_random_string`: Utility function to generate random strings for file paths.
-"""
-
 from django.db import models
 
 
@@ -87,6 +79,3 @@ class Organization(models.Model):
             models.Index(fields=["last_updated_by_user"]),
             models.Index(fields=["balance"]),
         ]
-
-
-

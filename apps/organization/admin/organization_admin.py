@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Organization
+
+from apps.organization.models import Organization
 
 
 @admin.register(Organization)
@@ -15,4 +16,3 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_display_links = ["name"]
     list_select_related = False
     list_display_links_details = False
-
