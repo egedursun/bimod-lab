@@ -1,8 +1,7 @@
 from celery import shared_task
 
 from apps.mm_scripts.models import CustomScript
-
-NUMBER_OF_RANDOM_FEATURED_SCRIPTS = 5
+from apps.mm_scripts.utils import NUMBER_OF_RANDOM_FEATURED_SCRIPTS
 
 
 @shared_task
