@@ -1,5 +1,6 @@
 from django import forms
-from .models import SupportTicket
+
+from apps.support_system.models import SupportTicket
 
 
 class SupportTicketForm(forms.ModelForm):
