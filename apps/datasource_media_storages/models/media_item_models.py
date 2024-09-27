@@ -1,0 +1,79 @@
+import random
+
+from django.db import models
+from slugify import slugify
+
+from apps.datasource_media_storages.tasks import upload_file_to_storage
+from apps.datasource_media_storages.utils import MEDIA_FILE_TYPES
+from config.settings import MEDIA_URL
+
+
+class DataSourceMediaStorageItem(models.Model):
+    """
+    DataSourceMediaStorageItem Model:
+    - Purpose: Represents an individual media file within a media storage connection, including metadata like file name, size, and type.
+    - Key Fields:
+        - `storage_base`: ForeignKey linking to the `DataSourceMediaStorageConnection` model.
+        - `media_file_name`: The name of the media file.
+        - `description`: A description of the media file.
+        - `media_file_size`: The size of the media file.
+        - `media_file_type`: The type of the media file (e.g., JPEG, MP4).
+        - `full_file_path`: The full path to the media file in storage.
+        - `file_bytes`: BinaryField for storing the file's content temporarily before uploading.
+        - `created_at`, `updated_at`: Timestamps for creation and last update.
+    - Methods:
+        - `save()`: Overridden to slugify the file name, validate the file type, generate a unique file path, and trigger asynchronous file upload.
+    """
+
+    storage_base = models.ForeignKey('datasource_media_storages.DataSourceMediaStorageConnection',
+                                     on_delete=models.CASCADE, related_name='items')
+
+    media_file_name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    media_file_size = models.BigIntegerField(null=True, blank=True)
+    media_file_type = models.CharField(max_length=10, choices=MEDIA_FILE_TYPES)
+
+    full_file_path = models.CharField(max_length=1000, blank=True, null=True)
+    file_bytes = models.BinaryField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.media_file_name + ' - ' + self.media_file_type + ' - ' + self.created_at.strftime(
+            '%Y-%m-%d %H:%M:%S')
+
+    class Meta:
+        verbose_name = 'Data Source Media Storage Item'
+        verbose_name_plural = 'Data Source Media Storage Items'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['storage_base', 'media_file_name']),
+            models.Index(fields=['storage_base', 'media_file_type']),
+            models.Index(fields=['storage_base', 'media_file_size']),
+            models.Index(fields=['storage_base', 'full_file_path']),
+            models.Index(fields=['storage_base', 'description']),
+            models.Index(fields=['storage_base', 'created_at']),
+        ]
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        self.media_file_name = slugify(self.media_file_name)
+        file_type = self.media_file_type
+
+        if file_type not in [ft[0] for ft in MEDIA_FILE_TYPES]:
+            print(f"[DataSourceMediaStorageItem.save] Invalid file format: {file_type}, skipping file...")
+            return False
+
+        if not self.full_file_path:
+            base_dir = self.storage_base.directory_full_path
+            file_name = self.media_file_name
+            unique_suffix = str(random.randint(1_000_000, 9_999_999))
+            relative_path = f"{base_dir.split(MEDIA_URL)[1]}/{file_name.split('.')[0]}_{unique_suffix}.{file_type}"
+            self.full_file_path = f"{MEDIA_URL}{relative_path}"
+
+            # Upload the file to the storage asynchronously
+            upload_file_to_storage.delay(file_bytes=self.file_bytes, full_path=relative_path,
+                                         media_category=self.storage_base.media_category)
+
+        self.file_bytes = None
+        super().save(force_insert, force_update, using, update_fields)

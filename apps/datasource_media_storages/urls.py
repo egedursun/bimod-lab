@@ -5,7 +5,7 @@ from apps.datasource_media_storages.views import DataSourceMediaStorageConnectio
     DataSourceMediaStorageConnectionDeleteView, DataSourceMediaStorageItemCreateView, \
     DataSourceMediaStorageItemListView, DataSourceMediaStorageAllItemsDeleteView, \
     DataSourceMediaStorageItemDetailAndUpdateView, DataSourceMediaStorageItemGenerateDescription, \
-    DataSourceMediaStorageItemFetchFileFromUrl, DataSourceMediaStorageGeneratedItemsListView, S3BucketConnectionManagerView
+    DataSourceMediaStorageItemFetchFileFromUrl, DataSourceMediaStorageGeneratedItemsListView
 
 app_name = "datasource_media_storages"
 
@@ -45,8 +45,4 @@ urlpatterns = [
     ), name='list_generated_items'),
 
     #####
-
-    path('connect/internal/amazon_s3', S3BucketConnectionManagerView.as_view(
-        template_name="datasource_media_storages/storage/create_datasource_media_storage.html"
-    ), name='connect_amazon_s3'),
 ]
