@@ -1,46 +1,9 @@
-"""
-Module Overview: This module defines models for managing exported assistant APIs and their request logs within an assistant-based application. It includes functionality for generating API keys and endpoints, tracking API requests, and enforcing rate limits.
-
-Dependencies:
-- `django.db.models`: Django's ORM for defining database models.
-- `django.utils.timezone`: Django utility for handling timezone-aware datetime objects.
-- `apps.export_assistants.utils`: Custom utilities for generating API keys and endpoints.
-- `config.settings`: Application settings, particularly for accessing base URLs for the API.
-"""
-
 from django.db import models
 from django.utils import timezone
 
+from apps.export_assistants.models import RequestLog
 from apps.export_assistants.utils import generate_assistant_custom_api_key, generate_endpoint
-from config.settings import EXPORT_API_BASE_URL, BASE_URL
-
-
-class RequestLog(models.Model):
-    """
-    RequestLog Model:
-    - Purpose: Tracks individual API requests made to an exported assistant API, storing the timestamp and linking each request to the corresponding `ExportAssistantAPI`.
-    - Key Fields:
-        - `export_assistant`: ForeignKey linking to the `ExportAssistantAPI` model.
-        - `timestamp`: The timestamp of when the API request was made.
-    - Meta:
-        - `verbose_name`: "Request Log"
-        - `verbose_name_plural`: "Request Logs"
-        - `ordering`: Orders logs by timestamp in descending order.
-        - `indexes`: Indexes on `export_assistant`, `timestamp`, and their combination for optimized queries.
-    """
-
-    export_assistant = models.ForeignKey('ExportAssistantAPI', on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = "Request Log"
-        verbose_name_plural = "Request Logs"
-        ordering = ['-timestamp']
-        indexes = [
-            models.Index(fields=['export_assistant']),
-            models.Index(fields=['timestamp']),
-            models.Index(fields=['export_assistant', 'timestamp']),
-        ]
+from config.settings import BASE_URL, EXPORT_API_BASE_URL
 
 
 class ExportAssistantAPI(models.Model):
@@ -66,7 +29,8 @@ class ExportAssistantAPI(models.Model):
         - `ordering`: Orders APIs by creation date in descending order.
         - `indexes`: Indexes on `assistant`, `created_by_user`, `created_at`, `updated_at`, and various combinations for optimized queries.
     """
-    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE, related_name='exported_assistants',
+    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE,
+                                     related_name='exported_assistants',
                                      default=2, null=True, blank=True)
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, related_name='exported_assistants')
     is_public = models.BooleanField(default=False)

@@ -1,6 +1,5 @@
-
-import random
 import hashlib
+import random
 import string
 
 from apps.assistants.models import Assistant

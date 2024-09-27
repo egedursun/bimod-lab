@@ -4,12 +4,12 @@ from django.core.management.base import BaseCommand
 from django.urls import path
 
 from apps.export_assistants.models import ExportAssistantAPI
+from apps.export_assistants.views.endpoints import ExportAssistantAPIView
 from config import settings
 from config.settings import EXPORT_API_BASE_URL
 
 
 def start_endpoint_for_assistant(assistant):
-    from apps.export_assistants.views import ExportAssistantAPIView
     endpoint_url = assistant.endpoint
     endpoint_local = EXPORT_API_BASE_URL + endpoint_url.split(EXPORT_API_BASE_URL)[1]
 
