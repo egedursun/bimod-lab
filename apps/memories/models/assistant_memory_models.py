@@ -1,16 +1,6 @@
-"""
-Module Overview: This module defines the `AssistantMemory` model, which represents memory records associated with users and assistants. The model stores the type of memory, the content, and metadata about its creation.
-
-Dependencies:
-- `django.db.models`: Django's ORM for defining database models.
-"""
-
 from django.db import models
 
-MEMORY_TYPE = [
-    ("user-specific", "User-Specific"),
-    ("assistant-specific", "Assistant-Specific"),
-]
+from apps.memories.utils import MEMORY_TYPE
 
 
 class AssistantMemory(models.Model):
