@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import FineTunedModelConnection
+
+from apps.finetuning.models import FineTunedModelConnection
 
 
 # Register your models here.

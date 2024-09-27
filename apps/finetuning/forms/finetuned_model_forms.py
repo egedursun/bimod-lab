@@ -1,6 +1,6 @@
-
 from django import forms
-from .models import FineTunedModelConnection
+
+from apps.finetuning.models import FineTunedModelConnection
 
 
 class FineTunedModelConnectionForm(forms.ModelForm):
