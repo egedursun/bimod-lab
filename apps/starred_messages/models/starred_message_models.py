@@ -1,16 +1,4 @@
-"""
-Module Overview: This module defines the `StarredMessage` model within an assistant-based application. The model represents messages that have been starred by users in a multimodal chat. It includes fields for storing the message content, the sender type, and related metadata like the time the message was starred.
-
-Dependencies:
-- `django.db.models`: Django's ORM for defining database models.
-"""
-
 from django.db import models
-
-STARRED_MESSAGE_SENDER_TYPES = [
-    ("USER", "User"),
-    ("ASSISTANT", "Assistant"),
-]
 
 
 class StarredMessage(models.Model):
@@ -41,7 +29,8 @@ class StarredMessage(models.Model):
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE)
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
-    chat = models.ForeignKey("multimodal_chat.MultimodalChat", on_delete=models.CASCADE, related_name="starred_messages")
+    chat = models.ForeignKey("multimodal_chat.MultimodalChat", on_delete=models.CASCADE,
+                             related_name="starred_messages")
     chat_message = models.ForeignKey("multimodal_chat.MultimodalChatMessage", on_delete=models.CASCADE)
     sender_type = models.CharField(max_length=10, choices=STARRED_MESSAGE_SENDER_TYPES, default="USER")
 
