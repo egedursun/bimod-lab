@@ -1,7 +1,8 @@
 import psycopg2
 from django.contrib import admin
 
-from apps.datasource_sql.models import SQLDatabaseConnection, CustomSQLQuery, DBMSChoicesNames
+from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.datasource_sql.utils import DBMSChoicesNames
 import mysql.connector
 
 
@@ -17,7 +18,7 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('assistant', 'dbms_type', 'name', 'description', 'host', 'port', 'database_name', 'username',
-                          'one_time_sql_retrieval_instance_limit', 'one_time_sql_retrieval_token_limit',
+                       'one_time_sql_retrieval_instance_limit', 'one_time_sql_retrieval_token_limit',
                        'is_read_only', 'password', 'schema_data_json', 'created_by_user')
         }),
         ('Dates', {'fields': ('created_at', 'updated_at')}),
@@ -98,18 +99,3 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
             print(f"[SQLDatabaseConnectionAdmin.retrieve_mysql_schema] Error retrieving MySQL schema: {e}")
             return {}
         return schema
-
-
-@admin.register(CustomSQLQuery)
-class CustomSQLQueryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'database_connection', 'name', 'description', 'created_at', 'updated_at')
-    list_filter = ('created_at', 'updated_at')
-    search_fields = ('name', 'description')
-    ordering = ('-created_at',)
-    readonly_fields = ('created_at', 'updated_at')
-    fieldsets = (
-        (None, {
-            'fields': ('database_connection', 'name', 'description', 'sql_query', 'parameters')
-        }),
-        ('Dates', {'fields': ('created_at', 'updated_at')}),
-    )

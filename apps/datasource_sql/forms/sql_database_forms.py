@@ -1,6 +1,5 @@
-
+from apps.datasource_sql.models import SQLDatabaseConnection
 from django import forms
-from apps.datasource_sql.models import SQLDatabaseConnection, CustomSQLQuery
 
 
 class SQLDatabaseConnectionForm(forms.ModelForm):
@@ -13,14 +12,3 @@ class SQLDatabaseConnectionForm(forms.ModelForm):
         ]
         widgets = {'password': forms.PasswordInput()}
         exclude = ['schema_data_json']
-
-
-class CustomSQLQueryForm(forms.ModelForm):
-    class Meta:
-        model = CustomSQLQuery
-        fields = [
-            'database_connection', 'name', 'description', 'sql_query',
-        ]
-        widgets = {
-            'sql_query': forms.Textarea(attrs={'rows': 10}),
-        }
