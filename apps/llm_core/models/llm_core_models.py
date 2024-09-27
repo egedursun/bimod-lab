@@ -1,25 +1,7 @@
-"""
-Module Overview: This module defines the `LLMCore` model, which represents a configuration for a Language Model (LLM) core within an assistant-based application. The model includes settings for API keys, model parameters, and metadata such as provider type, model name, and organization association.
-
-Dependencies:
-- `django.db.models`: Django's ORM for defining database models.
-"""
-
 from django.db import models
 
 from apps.finetuning.models import FineTunedModelConnection
-
-# Define enumeration for the provider
-LLM_CORE_PROVIDERS = [
-    ("OA", "OpenAI-GPT"),
-]
-
-# OPENAI GPT model names
-OPENAI_GPT_MODEL_NAMES = [
-    ("gpt-4o", "gpt-4o"),
-    ("gpt-4-turbo", "gpt-4-turbo"),
-    ("gpt-4", "gpt-4"),
-]
+from apps.llm_core.utils import LLM_CORE_PROVIDERS, OPENAI_GPT_MODEL_NAMES
 
 
 class LLMCore(models.Model):
@@ -105,7 +87,8 @@ class LLMCore(models.Model):
             if model.model_name not in [m[0] for m in OPENAI_GPT_MODEL_NAMES]:
                 OPENAI_GPT_MODEL_NAMES.append((model.model_name, model.nickname))
         for model in OPENAI_GPT_MODEL_NAMES:
-            if (model[0] not in [m[0] for m in OPENAI_GPT_MODEL_NAMES] and model[0] not in [m[0] for m in fine_tuned_models]):
+            if (model[0] not in [m[0] for m in OPENAI_GPT_MODEL_NAMES] and model[0] not in [m[0] for m in
+                                                                                            fine_tuned_models]):
                 OPENAI_GPT_MODEL_NAMES.remove(model)
 
         super().save(force_insert, force_update, using, update_fields)

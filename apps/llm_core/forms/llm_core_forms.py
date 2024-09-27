@@ -1,9 +1,9 @@
 from django import forms
-from .models import LLMCore
+
+from apps.llm_core.models import LLMCore
 
 
 class LLMCoreForm(forms.ModelForm):
-
     class Meta:
         model = LLMCore
         fields = [

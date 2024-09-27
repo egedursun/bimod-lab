@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import LLMCore
+from apps.llm_core.models import LLMCore
 
 
 class OrganizationAdmin(admin.ModelAdmin):
