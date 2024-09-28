@@ -1,6 +1,6 @@
-
 from django import forms
-from .models import MessageTemplate
+
+from apps.message_templates.models import MessageTemplate
 
 
 class MessageTemplateForm(forms.ModelForm):

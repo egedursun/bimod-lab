@@ -1,10 +1,3 @@
-"""
-Module Overview: This module defines the `MessageTemplate` model, which represents message templates created by users within an organization. The model stores the template text, metadata about its creation and update, and links to the associated user and organization.
-
-Dependencies:
-- `django.db.models`: Django's ORM for defining database models.
-"""
-
 from django.db import models
 
 
