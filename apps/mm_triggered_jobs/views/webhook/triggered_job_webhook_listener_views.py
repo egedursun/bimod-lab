@@ -1,36 +1,31 @@
-"""
-This module provides views for managing and executing triggered jobs within the Bimod.io platform.
+#  Copyright Policy & Ownership
+#
+#  Bimod.io is a product of BMD Holdings. All materials, including but not limited to software, code, documentation,
+#  graphics, design elements, and user interfaces provided by Bimod.io are protected by copyright law and international
+#  treaties.
+#  All content within Bimod.io is the exclusive property of BMD Holdings, unless otherwise stated.
+#  Unauthorized use, distribution, or reproduction of any material contained in this software without the express
+#  written consent of BMD Holdings is strictly prohibited.
+#  Users may not copy, modify, distribute, display, perform, or create derivative works of Bimod.io without prior
+#  written permission from BMD Holdings.
 
-The views allow authenticated users to create, list, delete, and manage triggered jobs and their logs. Additionally, there is a webhook listener view that processes incoming webhook payloads to trigger specific jobs.
-"""
 
 import json
 
-from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator
-from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import redirect, get_object_or_404
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView
 
 from apps._services.config.costs_map import ToolCostsMap
 from apps._services.llms.llm_decoder import InternalLLMClient
-from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import TransactionSourcesNames
-from apps.mm_triggered_jobs.forms import TriggeredJobForm
-from apps.mm_triggered_jobs.models import TriggeredJob, TriggeredJobInstance, TriggeredJobInstanceStatusesNames
-from apps.mm_triggered_jobs.utils import generate_triggered_job_chat_name
+from apps.mm_triggered_jobs.models import TriggeredJob, TriggeredJobInstance
+from apps.mm_triggered_jobs.utils import TriggeredJobInstanceStatusesNames, generate_triggered_job_chat_name
 from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
-from apps.user_permissions.models import UserPermission
-from apps.user_permissions.utils import PermissionNames
-from web_project import TemplateLayout
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -69,9 +64,11 @@ class TriggeredJobWebhookListenerView(View):
             # the TriggeredJob, and return
             if job.current_run_count > job.maximum_runs:
                 job.delete()
-                print(f"[Triggered Job Executor.delete]: Deleted the Triggered Job {job.name} as it has reached the maximum "
-                      f"runs.")
-                return JsonResponse({'status': 'error', 'message': 'Maximum runs reached for the triggered job'}, status=400)
+                print(
+                    f"[Triggered Job Executor.delete]: Deleted the Triggered Job {job.name} as it has reached the maximum "
+                    f"runs.")
+                return JsonResponse({'status': 'error', 'message': 'Maximum runs reached for the triggered job'},
+                                    status=400)
 
             # [0] Create a new TriggeredJobInstance for tracking
             new_instance = TriggeredJobInstance.objects.create(
@@ -90,7 +87,7 @@ class TriggeredJobWebhookListenerView(View):
             self.handle_triggered_job(job=job, instance=new_instance)
             return JsonResponse({
                 'status': 'success', 'message': 'Webhook payload received successfully',
-                'data': { 'assistant_id': assistant_id, 'triggered_job_id': triggered_job_id, 'payload': payload }
+                'data': {'assistant_id': assistant_id, 'triggered_job_id': triggered_job_id, 'payload': payload}
             }, status=200)
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON object'}, status=400)
@@ -206,164 +203,3 @@ class TriggeredJobWebhookListenerView(View):
             instance.status = TriggeredJobInstanceStatusesNames.FAILED
             instance.save()
             print(f"[Triggered Job Executor]: Failed to execute the triggered job {job.name} due to an error: {e}")
-
-
-class CreateTriggeredJobView(LoginRequiredMixin, TemplateView):
-    """
-    Handles the creation of new triggered jobs.
-
-    This view allows users to create triggered jobs that are associated with an assistant and can be executed based on specific events. The view checks user permissions before allowing the creation of a new triggered job.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context with the form for creating a triggered job.
-        post(self, request, *args, **kwargs): Processes the form submission to create a new triggered job.
-    """
-
-    def get_context_data(self, **kwargs):
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['form'] = TriggeredJobForm()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form = TriggeredJobForm(request.POST)
-
-        ##############################
-        # PERMISSION CHECK FOR - ADD_TRIGGERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_TRIGGERS):
-            messages.error(self.request, "You do not have permission to add triggered jobs.")
-            return redirect('mm_triggered_jobs:list')
-        ##############################
-
-        if form.is_valid():
-            triggered_job = form.save(commit=False)
-            triggered_job.created_by_user = request.user
-            # Handle dynamic fields
-            step_guide = request.POST.getlist('step_guide[]')
-            triggered_job.step_guide = step_guide
-            triggered_job.save()
-            messages.success(request, "Triggered Job created successfully!")
-            print('[CreateTriggeredJobView.post] Triggered Job created successfully.')
-            return redirect('mm_triggered_jobs:list')
-        else:
-            messages.error(request, "There was an error creating the triggered job.")
-            return self.render_to_response({'form': form})
-
-
-class ListTriggeredJobsView(LoginRequiredMixin, TemplateView):
-    """
-    Displays a list of triggered jobs associated with the user's assistants.
-
-    This view retrieves and displays all triggered jobs that are available to the current user, with support for searching and pagination.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the user's accessible triggered jobs and adds them to the context.
-    """
-
-    paginate_by = 10  # Adjust the number of items per page
-
-    def get_context_data(self, **kwargs):
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        ##############################
-        # PERMISSION CHECK FOR - LIST_TRIGGERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_TRIGGERS):
-            messages.error(self.request, "You do not have permission to list triggered jobs.")
-            return context
-        ##############################
-
-        search_query = self.request.GET.get('search', '')
-        user_organizations = self.request.user.organizations.all()
-        organization_assistants = user_organizations.values_list('assistants', flat=True)
-        triggered_jobs_list = TriggeredJob.objects.filter(trigger_assistant__in=organization_assistants)
-
-        if search_query:
-            triggered_jobs_list = triggered_jobs_list.filter(
-                Q(name__icontains=search_query) | Q(task_description__icontains=search_query)
-            )
-        paginator = Paginator(triggered_jobs_list, self.paginate_by)
-        page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context['page_obj'] = page_obj
-        context['triggered_jobs'] = page_obj.object_list
-        context['total_triggered_jobs'] = TriggeredJob.objects.count()
-        context['search_query'] = search_query
-        return context
-
-
-class ListTriggeredJobLogsView(LoginRequiredMixin, TemplateView):
-    """
-    Displays the logs of a specific triggered job.
-
-    This view retrieves and displays all instances of a triggered job, showing the execution logs and statuses. The view supports searching and pagination.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the logs of the specified triggered job and adds them to the context.
-    """
-
-    paginate_by = 10  # Adjust the number of items per page
-
-    def get_context_data(self, **kwargs):
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        ##############################
-        # PERMISSION CHECK FOR - LIST_TRIGGERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_TRIGGERS):
-            messages.error(self.request, "You do not have permission to list triggered jobs.")
-            return context
-        ##############################
-
-        triggered_job_id = self.kwargs.get('pk')
-        triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)
-        context['triggered_job'] = triggered_job
-        search_query = self.request.GET.get('search', '')
-        job_instances_list = TriggeredJobInstance.objects.filter(triggered_job=triggered_job)
-        if search_query:
-            job_instances_list = job_instances_list.filter(Q(status__icontains=search_query))
-
-        paginator = Paginator(job_instances_list, self.paginate_by)
-        page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context['page_obj'] = page_obj
-        context['triggered_job_instances'] = page_obj.object_list
-        context['total_triggered_job_instances'] = job_instances_list.count()
-        context['search_query'] = search_query
-        return context
-
-
-class ConfirmDeleteTriggeredJobView(LoginRequiredMixin, TemplateView):
-    """
-    Handles the deletion of triggered jobs.
-
-    This view allows users to delete specific triggered jobs, provided they have the necessary permissions. The view presents a confirmation page before the deletion is processed.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context for the deletion confirmation page.
-        post(self, request, *args, **kwargs): Processes the deletion of the specified triggered job.
-    """
-
-    def get_context_data(self, **kwargs):
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        triggered_job_id = self.kwargs.get('pk')
-        triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)
-        context['triggered_job'] = triggered_job
-        return context
-
-    def post(self, request, *args, **kwargs):
-
-        ##############################
-        # PERMISSION CHECK FOR - DELETE_TRIGGERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_TRIGGERS):
-            messages.error(self.request, "You do not have permission to delete triggered jobs.")
-            return redirect('mm_triggered_jobs:list')
-        ##############################
-
-        triggered_job_id = self.kwargs.get('pk')
-        triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)
-        triggered_job.delete()
-        print('[ConfirmDeleteTriggeredJobView.post] Triggered Job deleted successfully.')
-        messages.success(request, "Triggered Job deleted successfully.")
-        return redirect('mm_triggered_jobs:list')
