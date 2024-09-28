@@ -8,7 +8,7 @@ from apps._services.user_permissions.permission_manager import UserPermissionMan
 from apps.orchestrations.models import OrchestrationQueryLog
 from apps.orchestrations.models.query import OrchestrationQuery
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

@@ -5,7 +5,7 @@ from django.views.generic import DeleteView
 
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.starred_messages.models import StarredMessage
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

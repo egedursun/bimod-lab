@@ -8,7 +8,7 @@ from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.forms import DocumentKnowledgeBaseForm
 from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
 from apps.datasource_knowledge_base.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

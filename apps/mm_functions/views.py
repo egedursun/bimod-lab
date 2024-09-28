@@ -17,7 +17,8 @@ from apps.assistants.models import Assistant
 from apps.mm_functions.forms import CustomFunctionForm
 from apps.mm_functions.models import CustomFunction, CustomFunctionReference, CUSTOM_FUNCTION_CATEGORIES
 from apps.organization.models import Organization
-from apps.user_permissions.models import UserPermission, PermissionNames
+from apps.user_permissions.models import UserPermission
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

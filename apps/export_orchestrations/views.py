@@ -24,7 +24,7 @@ from apps.export_orchestrations.models import ExportOrchestrationAPI, Orchestrat
 from apps.orchestrations.models import Maestro, OrchestrationQuery, OrchestrationQueryLog
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from config import settings
 from config.settings import BASE_URL, MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION, EXPORT_ORCHESTRATION_API_BASE_URL
 from web_project import TemplateLayout

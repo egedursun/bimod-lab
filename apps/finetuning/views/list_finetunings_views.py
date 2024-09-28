@@ -8,7 +8,7 @@ from apps.finetuning.forms import FineTunedModelConnectionForm
 from apps.finetuning.models import FineTunedModelConnection
 from apps.finetuning.utils import FineTuningModelProvidersNames, FineTunedModelTypesNames
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

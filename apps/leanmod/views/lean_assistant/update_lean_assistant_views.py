@@ -7,7 +7,7 @@ from apps._services.user_permissions.permission_manager import UserPermissionMan
 from apps.leanmod.models import LeanAssistant, ExpertNetwork
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

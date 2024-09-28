@@ -27,7 +27,8 @@ from apps.mm_triggered_jobs.forms import TriggeredJobForm
 from apps.mm_triggered_jobs.models import TriggeredJob, TriggeredJobInstance, TriggeredJobInstanceStatusesNames
 from apps.mm_triggered_jobs.utils import generate_triggered_job_chat_name
 from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
-from apps.user_permissions.models import UserPermission, PermissionNames
+from apps.user_permissions.models import UserPermission
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

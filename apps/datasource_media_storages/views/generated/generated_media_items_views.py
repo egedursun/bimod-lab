@@ -13,7 +13,7 @@ from apps.assistants.models import Assistant
 from apps.datasource_media_storages.models import DataSourceMediaStorageItem
 from apps.multimodal_chat.models import MultimodalChat
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 

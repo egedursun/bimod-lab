@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from config import settings
 from web_project import TemplateLayout
 

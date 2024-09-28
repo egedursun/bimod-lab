@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
 from apps._services.user_permissions.permission_manager import UserPermissionManager
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 
 
 @method_decorator(require_POST, name='dispatch')

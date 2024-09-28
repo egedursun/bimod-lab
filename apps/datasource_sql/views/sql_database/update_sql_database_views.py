@@ -8,7 +8,7 @@ from apps.assistants.models import Assistant
 from apps.datasource_sql.forms import SQLDatabaseConnectionForm
 from apps.datasource_sql.models import SQLDatabaseConnection
 from apps.datasource_sql.utils import DBMS_CHOICES
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

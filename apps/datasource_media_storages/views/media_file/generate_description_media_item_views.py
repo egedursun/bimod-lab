@@ -10,7 +10,7 @@ from apps._services.tools.execution_handlers.storage_query_execution_handler imp
 from apps._services.tools.utils import ExecutionTypesNames
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_media_storages.models import DataSourceMediaStorageItem
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

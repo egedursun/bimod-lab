@@ -26,7 +26,8 @@ from ..assistants.models import Assistant
 from ..leanmod.models import LeanAssistant
 from ..message_templates.models import MessageTemplate
 from ..organization.models import Organization
-from ..user_permissions.models import UserPermission, PermissionNames
+from ..user_permissions.models import UserPermission
+from ..user_permissions.utils import PermissionNames
 
 
 class ChatStreamView(View):

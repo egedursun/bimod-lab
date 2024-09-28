@@ -10,7 +10,7 @@ from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 from apps.datasource_codebase.tasks import add_repository_upload_log
 from apps.datasource_codebase.utils import RepositoryUploadStatusNames
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

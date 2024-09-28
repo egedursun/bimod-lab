@@ -7,7 +7,7 @@ from apps._services.user_permissions.permission_manager import UserPermissionMan
 from apps.assistants.models import Assistant
 from apps.datasource_ml_models.forms import DataSourceMLModelItemForm
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

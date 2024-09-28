@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_media_storages.tasks import download_file_from_url
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

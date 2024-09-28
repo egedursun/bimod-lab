@@ -5,7 +5,7 @@ from django.views import View
 
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_triggered_jobs.models import TriggeredJob
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 
 
 class DeleteAllTriggeredJobsView(View, LoginRequiredMixin):

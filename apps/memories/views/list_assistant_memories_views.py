@@ -7,7 +7,7 @@ from apps.assistants.models import Assistant
 from apps.memories.models import AssistantMemory
 from apps.memories.utils import MemoryTypeNames
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

@@ -7,7 +7,7 @@ from apps._services.user_permissions.permission_manager import UserPermissionMan
 from apps.assistants.models import Assistant
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.datasource_browsers.utils import BROWSER_TYPES
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

@@ -14,7 +14,8 @@ from django.views.generic import TemplateView
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_scheduled_jobs.forms import ScheduledJobForm
 from apps.mm_scheduled_jobs.models import ScheduledJob, ScheduledJobInstance
-from apps.user_permissions.models import UserPermission, PermissionNames
+from apps.user_permissions.models import UserPermission
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

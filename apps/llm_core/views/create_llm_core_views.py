@@ -9,7 +9,7 @@ from apps.llm_core.forms import LLMCoreForm
 from apps.llm_core.models import LLMCore
 from apps.llm_core.utils import LLM_CORE_PROVIDERS, OPENAI_GPT_MODEL_NAMES
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

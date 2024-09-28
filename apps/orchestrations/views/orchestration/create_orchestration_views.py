@@ -8,7 +8,7 @@ from apps.assistants.models import Assistant
 from apps.llm_core.models import LLMCore
 from apps.orchestrations.forms import MaestroForm
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

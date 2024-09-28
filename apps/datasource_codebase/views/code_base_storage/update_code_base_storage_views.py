@@ -8,7 +8,7 @@ from apps.assistants.models import Assistant
 from apps.datasource_codebase.forms import CodeRepositoryStorageForm
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 from apps.datasource_codebase.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

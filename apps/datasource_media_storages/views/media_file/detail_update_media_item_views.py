@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_media_storages.models import DataSourceMediaStorageItem
 from apps.datasource_media_storages.utils import decode_docx, decode_pptx, decode_xlsx, FILE_TYPE_HIGHLIGHTING_DECODER
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 

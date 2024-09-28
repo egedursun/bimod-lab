@@ -7,7 +7,7 @@ from apps._services.user_permissions.permission_manager import UserPermissionMan
 from apps.assistants.models import Assistant
 from apps.datasource_file_systems.models import DataSourceFileSystem
 from apps.datasource_file_systems.utils import DATASOURCE_FILE_SYSTEMS_OS_TYPES
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

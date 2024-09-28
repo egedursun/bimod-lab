@@ -7,7 +7,7 @@ from apps._services.user_permissions.permission_manager import UserPermissionMan
 from apps.export_leanmods.management.commands.start_exported_leanmods import start_endpoint_for_leanmod
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI
 from apps.leanmod.models import LeanAssistant
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from config.settings import MAX_LEANMODS_EXPORTS_ORGANIZATION
 from web_project import TemplateLayout
 

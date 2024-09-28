@@ -9,7 +9,7 @@ from apps._services.user_permissions.permission_manager import UserPermissionMan
 from apps.assistants.models import Assistant
 from apps.mm_scripts.models import CustomScript, CustomScriptReference
 from apps.mm_scripts.utils import CUSTOM_SCRIPT_CATEGORIES
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

@@ -5,7 +5,7 @@ from django.views.generic import DeleteView
 
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_sql.models import SQLDatabaseConnection
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 
 
 class DeleteSQLDatabaseConnectionView(LoginRequiredMixin, DeleteView):

@@ -11,7 +11,7 @@ from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnectio
 from apps.datasource_knowledge_base.tasks import add_document_upload_log
 from apps.datasource_knowledge_base.utils import generate_document_uri, DocumentUploadStatusNames
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from config import settings
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout

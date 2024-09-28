@@ -4,7 +4,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
-from apps.user_permissions.models import UserPermission, PERMISSION_TYPES
+from apps.user_permissions.models import UserPermission
+from apps.user_permissions.utils import PERMISSION_TYPES
 from auth.utils import generate_referral_code
 
 REFERRAL_DEFAULT_BONUS_PERCENTAGE = 50

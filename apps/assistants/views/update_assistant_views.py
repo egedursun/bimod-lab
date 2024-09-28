@@ -9,7 +9,7 @@ from apps.assistants.utils import ContextOverflowStrategyNames, VectorizerNames
 from apps.data_security.models import NERIntegration
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 

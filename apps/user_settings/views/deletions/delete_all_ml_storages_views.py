@@ -5,7 +5,7 @@ from django.views import View
 
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 
 
 class DeleteAllMLModelStoragesView(View, LoginRequiredMixin):

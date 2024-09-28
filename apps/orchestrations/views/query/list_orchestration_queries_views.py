@@ -10,7 +10,7 @@ from apps._services.storages.storage_executor import StorageExecutor
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.orchestrations.models import Maestro, OrchestrationQuery, OrchestrationQueryLog
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
-from apps.user_permissions.models import PermissionNames
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
