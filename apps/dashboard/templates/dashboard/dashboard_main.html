@@ -4099,31 +4099,31 @@
       </button>
     </a>
     <a href="{% url 'dashboard:adjust-interval' 1 %}">
-      <button class="btn btn-warning ms-4 mt-4 mb-8">
+      <button class="btn btn-dark ms-4 mt-4 mb-8">
         <i class="fa fa-calendar-day me-4"></i>
         <strong> 24-Hour Statistics</strong>
       </button>
     </a>
     <a href="{% url 'dashboard:adjust-interval' 7 %}">
-      <button class="btn btn-warning ms-4 mt-4 mb-8">
+      <button class="btn btn-dark ms-4 mt-4 mb-8">
         <i class="fa fa-calendar-week me-4"></i>
         <strong> 7-Day Statistics</strong>
       </button>
     </a>
     <a href="{% url 'dashboard:adjust-interval' 30 %}">
-      <button class="btn btn-warning ms-4 mt-4 mb-8">
+      <button class="btn btn-dark ms-4 mt-4 mb-8">
         <i class="fa fa-moon me-4"></i>
         <strong> 30-Day Statistics</strong>
       </button>
     </a>
     <a href="{% url 'dashboard:adjust-interval' 360 %}">
-      <button class="btn btn-warning ms-4 mt-4 mb-8">
+      <button class="btn btn-dark ms-4 mt-4 mb-8">
         <i class="fa fa-atom me-4"></i>
         <strong> 360-Day Statistics</strong>
       </button>
     </a>
     <a href="{% url 'dashboard:adjust-interval' 0 %}">
-      <button class="btn btn-warning ms-4 mt-4 mb-8">
+      <button class="btn btn-dark ms-4 mt-4 mb-8">
         <i class="fa fa-globe me-4"></i>
         <strong> All-Time Statistics</strong>
       </button>
@@ -4147,7 +4147,7 @@
 
   <div class="row d-flex align-items-stretch">
     <!-- HELPER BOT -->
-    <div class="card col-lg-12 mt-4 mb-4">
+    <div class="card col-lg-12 mt-4 mb-4 border border-primary rounded border-4">
       <div class="row">
         <div class="card-header col-12">
           <h5
@@ -4183,14 +4183,16 @@
                       </script>
                     {% endfor %}
                   </select>
-                  <button type="submit" class="btn btn-primary w-20" id="helperBotButton"><strong>Analyze
-                    Statistics</strong></button>
+                  <button type="submit" class="btn btn-primary w-20" id="helperBotButton"><strong>
+                    <i class="fa fa-robot me-2"></i>
+                    Analyze Statistics
+                  </strong></button>
                 </div>
               </div>
             </div>
           </form>
           <div class="col-12">
-            <div class="card-body bg-label-secondary p-12 ms-4 me-4 mt-2 mb-6 rounded overflow-scroll"
+            <div class="card-body bg-label-secondary p-12 ms-4 me-4 mt-2 mb-6 rounded overflow-scroll border border-dark border-2 rounded"
                  style="min-height: 100px; max-height: 500px;">
               {% if response %}
                 <div class="d-flex justify-content-center">
