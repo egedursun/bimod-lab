@@ -28,7 +28,6 @@ class DeleteLLMCoreView(DeleteView, LoginRequiredMixin):
         return context
 
     def post(self, request, *args, **kwargs):
-
         ##############################
         # PERMISSION CHECK FOR - UPDATE_LLM_CORES
         if not UserPermissionManager.is_authorized(user=self.request.user,
@@ -43,4 +42,4 @@ class DeleteLLMCoreView(DeleteView, LoginRequiredMixin):
 
     def get_queryset(self):
         user = self.request.user
-        return LLMCore.objects.filter(organizations__in=user.organizations.all())
+        return LLMCore.objects.filter(organization__in=user.organizations.all())

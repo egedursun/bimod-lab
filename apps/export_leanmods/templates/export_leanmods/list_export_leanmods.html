@@ -85,6 +85,9 @@
             <div class="card-title mb-0">
               <div class="d-flex">
                 <img src="
+
+
+
                   {% if data.organization.organization_image %}{{ data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                      alt="Organization Logo" class="rounded me-4" width="60">
                 <h5 class="mb-1">
@@ -117,7 +120,8 @@
                 <li class="mb-4 d-flex">
                   <div class="d-flex w-50 align-items-center me-4">
                     {% if export_assistant.lean_assistant.lean_assistant_image %}
-                      <img src="{{ export_assistant.lean_assistant.lean_assistant_image.url }}" alt="Assistant Image" class="me-4"
+                      <img src="{{ export_assistant.lean_assistant.lean_assistant_image.url }}" alt="Assistant Image"
+                           class="me-4"
                            width="35">
                     {% else %}
                       <img src="{% static 'img/avatars/org-0.png' %}" alt="Assistant Image" class="me-4" width="35">
@@ -184,14 +188,14 @@
                 Endpoint URL:
               </strong></label><br>
             <div class="me-2 pt-2">
-            <span class="badge bg-label-secondary text-wrap p-4 mt-2 pt-6 mb-2">
-              <strong class="border border-warning p-1 rounded text-warning">POST</strong>
-              <div class="mt-4">
-                <strong>
+              <div class="badge bg-label-secondary text-wrap p-4 mt-2 pt-6 mb-2">
+                <strong class="border border-warning p-1 rounded text-warning">POST</strong>
+                <div class="mt-4">
                   <a href="{{ export_assistant.endpoint }}" class="text-white"
-                     target="_blank">{{ export_assistant.endpoint }}</a>
-                </strong></div>
-            </span>
+                     target="_blank">{{ export_assistant.endpoint }}
+                  </a>
+                </div>
+              </div>
               <strong><small>
                 <a href="javascript:void(0);" class="copy-btn-endpoint"
                    data-endpoint="{{ export_assistant.endpoint }}">
@@ -208,7 +212,8 @@
               <div class="me-2">
                 <span class="badge bg-label-secondary text-wrap p-4 m-2">
                   <strong class="text-white">
-                    <span class="api-key" id="api-key-{{ export_assistant.id }}">************************************</span>
+                    <span class="api-key"
+                          id="api-key-{{ export_assistant.id }}">************************************</span>
                   </strong>
                 </span>
                 <strong><small>
@@ -228,11 +233,11 @@
                 Authorization:
               </strong></label><br>
               <div class="me-2">
-              <span class="badge bg-label-success text-wrap p-4 m-2">
-              <strong>This LeanMod® assistant is public, no API key required.</strong>
-            </span>
+                <span class="badge bg-label-success text-wrap p-4 m-2">
+                  <strong>This LeanMod® assistant is public, no API key required.</strong>
+                </span>
+              </div>
             {% endif %}
-            </div>
             <hr>
             <div class="d-flex align-items-center justify-content-center my-6 gap-2">
             <span

@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.finetuning.models import FineTunedModelConnection
 from apps.llm_core.forms import LLMCoreForm
 from apps.llm_core.models import LLMCore
 from apps.llm_core.utils import LLM_CORE_PROVIDERS, OPENAI_GPT_MODEL_NAMES
