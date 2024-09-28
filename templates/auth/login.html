@@ -35,17 +35,17 @@
     <a href="{% url 'landing:index' %}" class="app-brand auth-cover-brand">
       <span class="">
         <!-- { % include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" % } -->
-        <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 60px;" class="ms-0">
+        <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 7vw;" class="ms-0">
       </span>
-      <span class="app-brand-text demo text-heading fw-bold">{% get_theme_variables 'template_name' %}</span>
+      <span class="app-brand-text demo text-heading fw-bold" style="font-size: 1.5vw;">{% get_theme_variables 'template_name' %}</span>
     </a>
     <!-- /Logo -->
     <div class="authentication-inner row m-0">
       <!-- /Left Text -->
       <div class="d-none d-lg-flex col-lg-8 p-0">
         <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
-          <img src="{% static 'img/custom-illustrations-v2/banners/i2-b1.png' %} " class="my-50" width="80%"
-               style="padding-top: 100px;">
+          <img src="{% static 'img/custom-illustrations-v2/banners/i2-b1.png' %} " class="" width="80%"
+               style="padding-top: 100px; margin-top: 22%;">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h3.png' %}" class="" width="75%"
                style="position: absolute; top: 50px; left:0; opacity: 0.20; rotate: 90deg">
         </div>

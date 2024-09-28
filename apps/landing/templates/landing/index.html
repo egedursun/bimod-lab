@@ -39,9 +39,9 @@
              class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1"/>
         <div class="container">
           <img src="{% static 'img/custom-illustrations-v2/banners/i2-b1.png' %}" class="" width="25%"
-               style="position: absolute; top: 150px; left:80px;" alt="Main page illustration 1">
+               style="position: absolute; top: 150px; left:4%;" alt="Main page illustration 1">
           <img src="{% static 'img/custom-illustrations-v2/banners/i2-b2.png' %}" class="" width="20%"
-               style="position: absolute; top: 150px; right:180px;" alt="Main page illustration 2">
+               style="position: absolute; top: 150px; right:4%" alt="Main page illustration 2">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="35%"
                style="position: absolute; top: 150px; left:100px; opacity: 0.35;" alt="Main page illustration 3">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="35%"
@@ -58,37 +58,37 @@
                style="position: absolute; top: 1500px; right:100px; opacity: 0.15; rotate: 0deg" alt="Main page illustration 9">
 
           <div class="hero-text-box text-center position-relative">
-            <h1 class="text-primary hero-title display-1 fw-extrabold" style="font-size: 120px;">
+            <h1 class="text-primary hero-title display-1 fw-extrabold" style="font-size: 7.5vw;">
               <strong>Bimod.io</strong></h1>
-            <h1 class="text-primary hero-title display-6 fw-extrabold">
-              Build your AI workforce with the most flexible multimodal assistant platform.
+            <h1 class="text-primary hero-title display-6 fw-extrabold" style="font-size: 2.5vw;">
+              Build your AI workforce <br> with the most flexible <br> multimodal assistant platform.
             </h1>
-            <h2 class="hero-sub-title h6 mb-6 mt-12" style="text-align: justify;">
-              We are empowering businesses by providing a highly customizable and flexible <strong>AIaaS (Artificial
-              Intelligence as a Service)</strong> platform for managing multimodal AI assistants. Utilize hundreds
-              of different multi-modality tools and tailor-made integrations to automate workflows at every scale.
+            <h2 class="hero-sub-title h6 mb-6 mt-12" style="text-align: justify-all; font-size: 1vw;">
+              We are empowering businesses by providing a highly customizable <br> and flexible <strong>AIaaS (Artificial
+              Intelligence as a Service)</strong> platform for <br> managing multimodal AI assistants. Utilize hundreds
+              of different <br> multi-modality tools and tailor-made integrations to automate workflows at every scale.
             </h2>
             <div class="landing-hero-btn d-inline-block position-relative">
             <span class="hero-btn-item position-absolute d-none d-md-flex fw-medium"><strong><span
               class="bg-label-primary rounded p-1 ms-1 me-1">$100</span> FREE CREDITS</strong>
               <img src="{% static 'img/front-pages/icons/Join-community-arrow.png' %}" alt="Join community arrow"
                    class="scaleX-n1-rtl"/></span>
-              <a href="{% url 'login' %}" class="btn btn-success btn-lg mt-8" style="min-width: 250px;">
+              <a href="{% url 'login' %}" class="btn btn-success btn-lg mt-8" style="min-width: 20vw;">
                 <strong>
                   <i class="fa fa-rocket me-2"></i>
                   Launch Bimod Lab®
                 </strong>
               </a>
             </div>
-            <a href="{% url 'landing:bimod_endeavours' %}" class="btn btn-primary btn-lg mt-8 ms-8"
-               style="min-width: 250px;">
+            <a href="{% url 'landing:bimod_endeavours' %}" class="btn btn-primary btn-lg mt-8"
+               style="min-width: 20vw;">
               <strong>
                 <i class="fa fa-building me-2"></i>
                 BMD® Holdings
               </strong>
             </a>
-            <a href="{% url 'landing:integration_to_organizations' %}" class="btn btn-label-dark btn-lg mt-8 ms-8"
-               style="min-width: 250px;">
+            <a href="{% url 'landing:integration_to_organizations' %}" class="btn btn-label-dark btn-lg mt-8"
+               style="min-width: 20vw;">
               <strong>
                 <i class="fa fa-weight-scale me-2"></i>
                 Tailored Integrations
@@ -596,8 +596,8 @@
           by passion and perseverance.
         </h4>
         <p class="text-center mb-md-11 pb-0 pb-xl-12">Meet the dedicated team behind <strong>Bimod.io</strong></p>
-        <div class="row gy-12 mt-2">
-          <div class="col-lg-6 col-sm-6 mb-8">
+        <div class="row gy-12 mt-12">
+          <div class="col-lg-6 col-sm-12 mb-8">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div
                 class="bg-label-primary border border-bottom-0 border-label-primary position-relative team-image-box">
@@ -625,7 +625,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-sm-6 mb-8">
+          <div class="col-lg-6 col-sm-12 mb-8">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-info border border-bottom-0 border-label-info position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-huseyin.png' %}"
@@ -651,7 +651,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 mb-8">
+          <div class="col-lg-4 col-sm-12 mb-8">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-danger border border-bottom-0 border-label-danger position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-mert.png' %}"
@@ -676,7 +676,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 mb-8">
+          <div class="col-lg-4 col-sm-12 mb-8">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-success border border-bottom-0 border-label-danger position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-selin.png' %}"
@@ -701,7 +701,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6">
+          <div class="col-lg-4 col-sm-12">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-danger border border-bottom-0 border-label-success position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-emre.png' %}"

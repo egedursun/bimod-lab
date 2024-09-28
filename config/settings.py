@@ -482,6 +482,7 @@ EXCLUDED_PAGES = [
     "/app/register/*",
     "/app/verify_email_page/*",
     "/app/verify/email/*",
+    "/app/verify_email/*",
     "/app/send_verification/*",
     "/app/forgot_password/*",
     "/app/reset_password/*",
