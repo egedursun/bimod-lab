@@ -2,21 +2,16 @@ import json
 import os
 import shutil
 import subprocess
-import uuid
 
 from celery import shared_task
 
 from apps.mm_functions.models import CustomFunction
 
-NUMBER_OF_RANDOM_FEATURED_FUNCTIONS = 5
-
-
-def generate_venv_uuid_string():
-    return str(uuid.uuid4())
-
 
 @shared_task
 def mm_function_execution_task(custom_function_id, input_values: dict):
+    from apps.mm_functions.tasks import generate_venv_uuid_string
+
     # Retrieve custom function
     custom_function = CustomFunction.objects.get(id=custom_function_id)
     packages = custom_function.packages
@@ -138,17 +133,3 @@ print("[INFO] Outputs for the Custom Execution:")
     response = {"stdout": stdout, "stderr": stderr}
     print(f"[tasks.mm_function_execution_task] Response: {response}")
     return response
-
-
-@shared_task
-def randomize_featured_functions():
-    # first switch all function's is_featured field to false
-    all_functions = CustomFunction.objects.all()
-    for function in all_functions:
-        function.is_featured = False
-        function.save()
-    # then select 5 random functions and set the is_featured field to true
-    featured_functions = CustomFunction.objects.order_by('?')[:NUMBER_OF_RANDOM_FEATURED_FUNCTIONS]
-    for function in featured_functions:
-        function.is_featured = True
-        function.save()
