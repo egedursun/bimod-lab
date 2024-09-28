@@ -1,31 +1,6 @@
 from django.db import models
 
-from apps.assistants.models import ASSISTANT_RESPONSE_LANGUAGES
-
-
-ORCHESTRATION_QUERY_LOG_TYPES = [
-    ("user", "User"),
-    ("info", "Info"),
-    ("error", "Error"),
-    ("worker_request", "Worker Request"),
-    ("worker_response", "Worker Response"),
-    ("maestro_answer", "Maestro Answer"),
-]
-
-
-class OrchestrationQueryLogTypesNames:
-    USER = "user"
-    INFO = "info"
-    ERROR = "error"
-    WORKER_REQUEST = "worker_request"
-    WORKER_RESPONSE = "worker_response"
-    MAESTRO_ANSWER = "maestro_answer"
-
-    @staticmethod
-    def as_list():
-        return [OrchestrationQueryLogTypesNames.INFO, OrchestrationQueryLogTypesNames.ERROR,
-                OrchestrationQueryLogTypesNames.WORKER_REQUEST, OrchestrationQueryLogTypesNames.WORKER_RESPONSE,
-                OrchestrationQueryLogTypesNames.MAESTRO_ANSWER]
+from apps.orchestrations.utils import ORCHESTRATION_RESPONSE_LANGUAGES
 
 
 class Maestro(models.Model):
@@ -41,7 +16,7 @@ class Maestro(models.Model):
     response_template = models.TextField(default="", blank=True)
     audience = models.CharField(max_length=1000)
     tone = models.CharField(max_length=1000)
-    response_language = models.CharField(max_length=10, choices=ASSISTANT_RESPONSE_LANGUAGES, default="auto")
+    response_language = models.CharField(max_length=10, choices=ORCHESTRATION_RESPONSE_LANGUAGES, default="auto")
 
     maestro_image_save_path = 'maestro_images/%Y/%m/%d/'
     maestro_image = models.ImageField(upload_to=maestro_image_save_path, blank=True, max_length=5000, null=True)
@@ -130,92 +105,3 @@ class Maestro(models.Model):
             models.Index(fields=["llm_model", "last_updated_by_user", "created_at", "updated_at"]),
         ]
         unique_together = [["organization", "llm_model", "name"]]
-
-
-class OrchestrationQuery(models.Model):
-    maestro = models.ForeignKey(Maestro, on_delete=models.CASCADE, related_name='queries')
-    query_text = models.TextField()
-
-    created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                        related_name='orchestration_queries_created_by_user')
-    last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                             related_name='orchestration_queries_last_updated_by_user')
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.query_text + " - " + self.maestro.name + " - " + self.maestro.organization.name
-
-    class Meta:
-        verbose_name = "Orchestration Query"
-        verbose_name_plural = "Orchestration Queries"
-        indexes = [
-            # Single-field indexes
-            models.Index(fields=["maestro"]),
-            models.Index(fields=["query_text"]),
-            models.Index(fields=["created_by_user"]),
-            models.Index(fields=["last_updated_by_user"]),
-            models.Index(fields=["created_at"]),
-            models.Index(fields=["updated_at"]),
-
-            # Two-field composite indexes
-            models.Index(fields=["maestro", "query_text"]),
-            models.Index(fields=["maestro", "created_by_user"]),
-            models.Index(fields=["maestro", "last_updated_by_user"]),
-            models.Index(fields=["maestro", "created_at"]),
-            models.Index(fields=["maestro", "updated_at"]),
-            models.Index(fields=["query_text", "created_at"]),
-            models.Index(fields=["query_text", "updated_at"]),
-            models.Index(fields=["created_by_user", "created_at"]),
-            models.Index(fields=["created_by_user", "updated_at"]),
-            models.Index(fields=["last_updated_by_user", "created_at"]),
-            models.Index(fields=["last_updated_by_user", "updated_at"]),
-
-            # Three-field composite indexes
-            models.Index(fields=["maestro", "query_text", "created_at"]),
-            models.Index(fields=["maestro", "query_text", "updated_at"]),
-            models.Index(fields=["maestro", "created_by_user", "created_at"]),
-            models.Index(fields=["maestro", "created_by_user", "updated_at"]),
-            models.Index(fields=["maestro", "last_updated_by_user", "created_at"]),
-            models.Index(fields=["maestro", "last_updated_by_user", "updated_at"]),
-            models.Index(fields=["query_text", "created_at", "updated_at"]),
-            models.Index(fields=["created_by_user", "created_at", "updated_at"]),
-            models.Index(fields=["last_updated_by_user", "created_at", "updated_at"]),
-
-            # Four-field composite indexes
-            models.Index(fields=["maestro", "query_text", "created_at", "updated_at"]),
-            models.Index(fields=["maestro", "created_by_user", "created_at", "updated_at"]),
-            models.Index(fields=["maestro", "last_updated_by_user", "created_at", "updated_at"]),
-        ]
-
-
-class OrchestrationQueryLog(models.Model):
-    orchestration_query = models.ForeignKey(OrchestrationQuery, on_delete=models.CASCADE, related_name='logs')
-    log_type = models.CharField(max_length=100, choices=ORCHESTRATION_QUERY_LOG_TYPES, default="info")
-
-    # Not always populated; only for worker assistant tool requests and responses
-    context_worker = models.ForeignKey('assistants.Assistant', on_delete=models.SET_NULL, blank=True, null=True)
-
-    log_text_content = models.TextField()
-    log_image_contents = models.JSONField(default=list, blank=True, null=True)
-    log_file_contents = models.JSONField(default=list, blank=True, null=True)
-    log_audio_contents = models.JSONField(default=list, blank=True, null=True)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.orchestration_query.query_text + " - " + self.orchestration_query.maestro.name + " - " + self.orchestration_query.maestro.organization.name
-
-    class Meta:
-        verbose_name = "Orchestration Query Log"
-        verbose_name_plural = "Orchestration Query Logs"
-        indexes = [
-            # Single-field indexes
-            models.Index(fields=["orchestration_query"]),
-            models.Index(fields=["created_at"]),
-
-            # Two-field composite indexes
-            models.Index(fields=["orchestration_query", "created_at"]),
-        ]
-        unique_together = [["orchestration_query", "created_at"]]

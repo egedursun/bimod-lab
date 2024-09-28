@@ -1,8 +1,10 @@
 import requests
 
 from apps._services.prompts.history_builder import HistoryBuilder
-from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog, OrchestrationQueryLogTypesNames
+from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog
 import base64 as b64
+
+from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 
 
 class OrchestrationHistoryBuilder:

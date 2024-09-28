@@ -21,10 +21,10 @@ from apps._services.user_permissions.permission_manager import UserPermissionMan
 from apps.export_orchestrations.management.commands.start_exported_orchestrations import \
     start_endpoint_for_orchestration
 from apps.export_orchestrations.models import ExportOrchestrationAPI, OrchestratorRequestLog
-from apps.orchestrations.models import Maestro, OrchestrationQuery, OrchestrationQueryLog, \
-    OrchestrationQueryLogTypesNames
+from apps.orchestrations.models import Maestro, OrchestrationQuery, OrchestrationQueryLog
+from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 from apps.organization.models import Organization
-from apps.user_permissions.models import UserPermission, PermissionNames
+from apps.user_permissions.models import PermissionNames
 from config import settings
 from config.settings import BASE_URL, MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION, EXPORT_ORCHESTRATION_API_BASE_URL
 from web_project import TemplateLayout

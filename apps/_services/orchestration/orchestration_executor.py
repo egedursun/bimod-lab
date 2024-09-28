@@ -13,7 +13,8 @@ from apps._services.orchestration.utils import send_orchestration_message, embed
 from apps.assistants.models import Assistant
 from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
 from apps.multimodal_chat.utils import BIMOD_NO_TAG_PLACEHOLDER, BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END
-from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog, OrchestrationQueryLogTypesNames
+from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog
+from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 
 DEFAULT_ORCHESTRATION_ERROR_MESSAGE = ("The Orchestration Executor has encountered a fatal error. Please try again "
                                        "later.")
