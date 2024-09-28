@@ -12,7 +12,8 @@ from apps.datasource_knowledge_base.tasks import load_csv_helper, load_pdf_helpe
     load_ipynb_helper, load_json_helper, load_xml_helper, load_txt_helper, load_md_helper, load_rtf_helper, \
     load_odt_helper, load_pptx_helper, load_xlsx_helper, split_document_into_chunks, embed_document_data, \
     embed_document_chunks, index_document_helper
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 
 
 class WeaviateExecutor:

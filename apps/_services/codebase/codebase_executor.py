@@ -13,7 +13,8 @@ from apps._services.codebase.utils import WEAVIATE_INITIALIZATION_TIMEOUT, WEAVI
 from apps._services.config.costs_map import ToolCostsMap
 from apps.datasource_codebase.tasks import embed_repository_chunks, embed_repository_data, \
     split_repository_into_chunks, index_repository_helper
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 
 
 class WeaviateExecutor:

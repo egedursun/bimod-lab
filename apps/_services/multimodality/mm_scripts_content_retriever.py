@@ -1,5 +1,6 @@
 from apps._services.config.costs_map import ToolCostsMap
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 
 
 class CustomScriptsContentRetriever:

@@ -9,7 +9,8 @@ from apps._services.config.costs_map import ToolCostsMap
 from apps._services.storages.utils import UNCLASSIFIED_FILE_EXTENSION, GENERATED_FILES_ROOT_PATH, \
     GENERATED_IMAGES_ROOT_PATH, DEFAULT_PATH_FREEFORM_USER_SKETCH, DEFAULT_PATH_EDIT_IMAGE_ORIGINAL, \
     DEFAULT_PATH_EDIT_IMAGE_MASKED
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 from config import settings
 from config.settings import MEDIA_URL
 

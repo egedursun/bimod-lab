@@ -42,7 +42,8 @@ from apps._services.prompts.prompt_builder import PromptBuilder
 from apps._services.prompts.statistics.usage_statistics_prompt import build_usage_statistics_system_prompt
 from apps._services.storages.utils import GENERATED_FILES_ROOT_PATH
 from apps._services.tools.tool_executor import ToolExecutor
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 from apps.multimodal_chat.utils import calculate_billable_cost_from_raw, send_log_message, BIMOD_NO_TAG_PLACEHOLDER
 from config.settings import MEDIA_URL, AWS_STORAGE_BUCKET_NAME
 

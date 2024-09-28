@@ -6,7 +6,8 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
 from apps._services.user_permissions.permission_manager import UserPermissionManager
-from apps.llm_transaction.models import TransactionInvoice, InvoiceTypesNames, PaymentMethodsNames
+from apps.llm_transaction.models import TransactionInvoice
+from apps.llm_transaction.utils import InvoiceTypesNames, PaymentMethodsNames
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from auth.models import PromoCode

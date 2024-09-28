@@ -2,9 +2,9 @@ import decimal
 
 from django.contrib import admin
 
-from .models import LLMTransaction, AutoBalanceTopUpModel, OrganizationBalanceSnapshot, TransactionInvoice
-from .utils import calculate_number_of_tokens, calculate_llm_cost, calculate_internal_service_cost, calculate_tax_cost, \
-    calculate_total_cost, calculate_billable_cost
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import calculate_number_of_tokens, calculate_llm_cost, calculate_internal_service_cost, \
+    calculate_tax_cost, calculate_billable_cost, calculate_total_cost
 
 
 @admin.register(LLMTransaction)
@@ -44,27 +44,3 @@ class TransactionAdmin(admin.ModelAdmin):
         # Update the transaction's organization
         obj.organization.save()
         super().save_model(request, obj, form, change)
-
-
-@admin.register(AutoBalanceTopUpModel)
-class AutoBalanceTopUpModelAdmin(admin.ModelAdmin):
-    list_display = ["organization", "on_balance_threshold_trigger", "on_interval_by_days_trigger",
-                    "balance_lower_trigger_threshold_value", "addition_on_balance_threshold_trigger"]
-    ordering = ["-created_at"]
-
-
-@admin.register(OrganizationBalanceSnapshot)
-class OrganizationBalanceSnapshotAdmin(admin.ModelAdmin):
-    list_display = ["organization", "balance", "created_at"]
-    ordering = ["-created_at"]
-    date_hierarchy = "created_at"
-
-
-@admin.register(TransactionInvoice)
-class TransactionInvoiceAdmin(admin.ModelAdmin):
-    list_display = ["organization", "responsible_user", "transaction_type", "amount_added", "payment_method",
-                    "transaction_date", "invoice_number", "barcode_image", "transaction_paper"]
-    ordering = ["-transaction_date"]
-    date_hierarchy = "transaction_date"
-    readonly_fields = ["transaction_date"]
-

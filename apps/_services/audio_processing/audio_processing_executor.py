@@ -1,5 +1,5 @@
 from apps._services.config.costs_map import ToolCostsMap
-from apps.dashboard.utils import TransactionSourcesNames
+from apps.llm_transaction.utils import TransactionSourcesNames
 
 
 class AudioProcessingExecutor:

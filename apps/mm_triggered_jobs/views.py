@@ -22,7 +22,8 @@ from apps._services.config.costs_map import ToolCostsMap
 from apps._services.llms.llm_decoder import InternalLLMClient
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 from apps.mm_triggered_jobs.forms import TriggeredJobForm
 from apps.mm_triggered_jobs.models import TriggeredJob, TriggeredJobInstance, TriggeredJobInstanceStatusesNames
 from apps.mm_triggered_jobs.utils import generate_triggered_job_chat_name

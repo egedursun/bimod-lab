@@ -8,7 +8,8 @@ import requests
 from apps._services.config.costs_map import ToolCostsMap
 from apps._services.image_generation.utils.constant_utils import UNCLASSIFIED_FILE_EXTENSION
 from apps._services.storages.utils import GENERATED_IMAGES_ROOT_PATH
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 from config.settings import MEDIA_URL
 
 

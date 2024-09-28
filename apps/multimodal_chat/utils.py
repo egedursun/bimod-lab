@@ -8,8 +8,7 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     import wonderwords
 
-from apps.llm_transaction.costs import LLMCostsPerMillionTokens, SERVICE_PROFIT_MARGIN, VAT_TAX_RATE
-
+from apps.llm_transaction.utils import LLMCostsPerMillionTokens, SERVICE_PROFIT_MARGIN, VAT_TAX_RATE
 
 BIMOD_STREAMING_END_TAG = "<[bimod_streaming_end]>"
 BIMOD_PROCESS_END = "<[bimod_process_end]>"

@@ -7,7 +7,8 @@ from apps._services.config.costs_map import ToolCostsMap
 from apps._services.ml_models.utils import GENERATED_FILES_ROOT_PATH, GENERATED_IMAGES_ROOT_PATH, \
     UNCLASSIFIED_FILE_EXTENSION
 from apps.datasource_ml_models.models import DataSourceMLModelItem
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 from config import settings
 
 

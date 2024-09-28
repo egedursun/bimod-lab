@@ -2,7 +2,8 @@ from django.utils import timezone
 
 from apps.assistants.models import Assistant
 from apps.export_assistants.models import ExportAssistantAPI, RequestLog
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames, OrganizationBalanceSnapshot
+from apps.llm_transaction.models import LLMTransaction, OrganizationBalanceSnapshot
+from apps.llm_transaction.utils import TransactionSourcesNames
 from apps.mm_scheduled_jobs.models import ScheduledJob, ScheduledJobInstance
 from apps.mm_triggered_jobs.models import TriggeredJob, TriggeredJobInstance
 from apps.multimodal_chat.models import ChatCreationLog, ChatMessageCreationLog

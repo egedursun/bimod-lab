@@ -11,7 +11,8 @@ from apps._services.browsers.utils import IMPLICIT_WAIT_SECONDS, SearchEnginesNa
     BrowserActionsNames
 from apps._services.config.costs_map import ToolCostsMap
 from apps.datasource_browsers.utils import BrowsingReadingAbilitiesNames
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 
 
 class BrowsingExecutor:

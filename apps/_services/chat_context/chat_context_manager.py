@@ -4,7 +4,8 @@ from apps._services.prompts.context_memory.build_context_memory_instruction impo
     build_context_memory_instructions_prompt, build_context_memory_stop_conversation_prompt
 from apps.assistants.models import Assistant
 from apps.assistants.utils import ContextOverflowStrategyNames
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 
 
 class ChatContextManager:

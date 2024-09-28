@@ -3,7 +3,8 @@ import paramiko
 from apps._services.config.costs_map import ToolCostsMap
 from apps._services.file_systems.internal_command_sets import INTERNAL_COMMAND_SETS, LIST_DIRECTORY_RECURSIVE
 from paramiko import SSHClient
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 
 
 class FileSystemsExecutor:

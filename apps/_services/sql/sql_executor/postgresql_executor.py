@@ -4,7 +4,8 @@ from psycopg2.extras import RealDictCursor
 from apps._services.config.costs_map import ToolCostsMap
 from apps._services.sql.utils import before_execute_sql_query, can_write_to_database
 from apps.datasource_sql.models import SQLDatabaseConnection
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 
 
 class PostgresSQLExecutor:

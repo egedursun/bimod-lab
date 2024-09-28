@@ -1,10 +1,8 @@
-
 from celery import shared_task
 from django.utils import timezone
 
-from apps.llm_transaction.models import AutoBalanceTopUpModel, OrganizationBalanceSnapshot, TransactionInvoice, \
-    InvoiceTypesNames, PaymentMethodsNames
-from apps.organization.models import Organization
+from apps.llm_transaction.models import AutoBalanceTopUpModel, TransactionInvoice
+from apps.llm_transaction.utils import InvoiceTypesNames, PaymentMethodsNames
 
 
 @shared_task
@@ -43,7 +41,8 @@ def check_and_perform_auto_top_up():
                 plan.save()
             else:
                 # If the hard limit is reached, subtract the excess from the total
-                reduced_addition_amount = (plan.monthly_hard_limit_auto_addition_amount - plan.calendar_month_total_auto_addition_value)
+                reduced_addition_amount = (
+                    plan.monthly_hard_limit_auto_addition_amount - plan.calendar_month_total_auto_addition_value)
                 # Perform the top-up if there is still a balance that can be added
                 if reduced_addition_amount > 0:
                     # Perform the top-up
@@ -72,13 +71,4 @@ def check_and_perform_auto_top_up():
         else:
             print("Days since last top-up is less than the interval for organization: ", plan.organization)
             continue
-    return True
-
-
-@shared_task
-def track_organization_balances():
-    all_organizations = Organization.objects.all()
-    for organization in all_organizations:
-        balance_snapshot = OrganizationBalanceSnapshot(organization=organization, balance=organization.balance)
-        balance_snapshot.save()
     return True

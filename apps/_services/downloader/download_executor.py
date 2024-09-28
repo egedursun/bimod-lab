@@ -5,7 +5,8 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 import requests
 import filetype
 
-from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 
 
 class DownloadExecutor:

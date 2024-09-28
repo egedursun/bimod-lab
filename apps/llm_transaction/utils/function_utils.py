@@ -1,11 +1,9 @@
 from io import BytesIO
 
-import tiktoken
 import qrcode
+import tiktoken
 from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
-
-from apps.llm_transaction.costs import LLMCostsPerMillionTokens, SERVICE_PROFIT_MARGIN, VAT_TAX_RATE
 
 
 def calculate_number_of_tokens(encoding_engine, text):
@@ -16,6 +14,8 @@ def calculate_number_of_tokens(encoding_engine, text):
 
 
 def calculate_llm_cost(model, number_of_tokens):
+    from apps.llm_transaction.utils import LLMCostsPerMillionTokens
+
     costs = LLMCostsPerMillionTokens.OPENAI_GPT_COSTS[model]
     tokens_divided_by_million = number_of_tokens / 1_000_000
     apx_input_cost = (tokens_divided_by_million / 2) * costs["input"]
@@ -25,10 +25,12 @@ def calculate_llm_cost(model, number_of_tokens):
 
 
 def calculate_internal_service_cost(llm_cost):
+    from apps.llm_transaction.utils import SERVICE_PROFIT_MARGIN
     return llm_cost * SERVICE_PROFIT_MARGIN
 
 
 def calculate_tax_cost(internal_service_cost):
+    from apps.llm_transaction.utils import VAT_TAX_RATE
     tax_cost = internal_service_cost * VAT_TAX_RATE
     return tax_cost
 
