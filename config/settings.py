@@ -22,7 +22,6 @@ from dotenv import load_dotenv
 import sentry_sdk
 from pydub import AudioSegment
 
-
 from .template import TEMPLATE_CONFIG, THEME_LAYOUT_DIR, THEME_VARIABLES
 
 load_dotenv()  # take environment variables from .env.
@@ -172,15 +171,18 @@ CACHEOPS = {
     # Data Source File Systems
     'apps.datasource_file_systems.DataSourceFileSystem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     # Data Source Knowledge Base
-    'apps.datasource_knowledge_base.DocumentKnowledgeBaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.DocumentKnowledgeBaseConnection': {'ops': 'all',
+                                                                       'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.KnowledgeBaseDocument': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.KnowledgeBaseDocumentChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.ContextHistoryKnowledgeBaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.ContextHistoryKnowledgeBaseConnection': {'ops': 'all',
+                                                                             'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.ContextHistoryMemory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.ContextHistoryMemoryChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.DocumentProcessingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     # Data Source Media Storages
-    'apps.datasource_media_storages.DataSourceMediaStorageConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_media_storages.DataSourceMediaStorageConnection': {'ops': 'all',
+                                                                        'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_media_storages.DataSourceMediaStorageItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     # Data Source ML Models
     'apps.datasource_ml_models.DataSourceMLModelConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
@@ -673,7 +675,6 @@ else:
 #####################################################################################################################
 
 NEW_USER_FREE_CREDITS = int(os.environ.get("NEW_USER_FREE_CREDITS", default="0"))
-
 
 #####################################################################################################################
 # Default Application Zoom
