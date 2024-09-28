@@ -1,33 +1,20 @@
-import json
-from uuid import uuid4
-
 from celery import shared_task
 from django.utils import timezone
-from django_celery_beat.models import PeriodicTask, CrontabSchedule
-from slugify import slugify
 
 from apps._services.config.costs_map import ToolCostsMap
 from apps._services.llms.llm_decoder import InternalLLMClient
+from apps.dashboard.utils import TransactionSourcesNames
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import TransactionSourcesNames
+
 from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
-
-
-class TriggerTypeChoicesNames:
-    INTERVAL = 'interval'
-    CHRONOLOGICAL = 'chronological'
-
-
-def generate_scheduled_job_chat_name(scheduled_job_name):
-    uuid_1 = str(uuid4())
-    uuid_2 = str(uuid4())
-    return f"{slugify(scheduled_job_name)} - {uuid_1} - {uuid_2}"
 
 
 @shared_task
 def execute_scheduled_job(scheduled_job_id):
+    from apps.mm_scheduled_jobs.tasks import generate_scheduled_job_chat_name
+
     from apps.mm_scheduled_jobs.models import ScheduledJob, ScheduledJobInstance
-    from apps.mm_scheduled_jobs.models import ScheduledJobInstanceStatusesNames
+    from apps.mm_scheduled_jobs.utils import ScheduledJobInstanceStatusesNames
     from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
     from apps._services.llms.utils import ChatRoles
     # Logic to execute the scheduled job
@@ -159,19 +146,3 @@ def execute_scheduled_job(scheduled_job_id):
         new_instance.status = ScheduledJobInstanceStatusesNames.FAILED
         new_instance.save()
         print("[Scheduled Job Executor Error]: ", e)
-
-
-def add_periodic_task(scheduled_job):
-    crontab_schedule, created = CrontabSchedule.objects.get_or_create(
-        minute=scheduled_job.minute or '*',
-        hour=scheduled_job.hour or '*',
-        day_of_week=scheduled_job.day_of_week or '*',
-        day_of_month=scheduled_job.day_of_month or '*',
-        month_of_year=scheduled_job.month_of_year or '*'
-    )
-    PeriodicTask.objects.create(
-        crontab=crontab_schedule,
-        name=f'ScheduledJob-{scheduled_job.id}',
-        task='apps.mm_scheduled_jobs.tasks.execute_scheduled_job',
-        args=json.dumps([scheduled_job.id])
-    )
