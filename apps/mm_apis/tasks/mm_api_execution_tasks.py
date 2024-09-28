@@ -1,18 +1,15 @@
 import requests
 from celery import shared_task
 
-from apps.mm_apis.models import CustomAPI
-
-MAXIMUM_RETRIES = 3
-
-NUMBER_OF_RANDOM_FEATURED_APIS = 5
+from apps.mm_apis.utils import MAXIMUM_RETRIES
 
 
 @shared_task
 def mm_api_execution_task(custom_api_id, endpoint_name: str, path_values=None, query_values=None, body_values=None):
     if path_values is None:
         path_values = {}
-    from apps.mm_apis.models import CustomAPI, AcceptedHTTPRequestMethods
+    from apps.mm_apis.models import CustomAPI
+    from apps.mm_apis.utils import AcceptedHTTPRequestMethods
 
     response = {"stdout": "", "stderr": ""}
     custom_api = CustomAPI.objects.get(id=custom_api_id)
@@ -75,18 +72,3 @@ def mm_api_execution_task(custom_api_id, endpoint_name: str, path_values=None, q
             response["stderr"] = str(e)
             continue
     return response
-
-
-@shared_task
-def randomize_featured_apis():
-    # first switch all API's is_featured field to false
-    all_apis = CustomAPI.objects.all()
-    for api in all_apis:
-        api.is_featured = False
-        api.save()
-
-    # then select 5 random APIs and set the is_featured field to true
-    featured_apis = CustomAPI.objects.order_by('?')[:NUMBER_OF_RANDOM_FEATURED_APIS]
-    for api in featured_apis:
-        api.is_featured = True
-        api.save()
