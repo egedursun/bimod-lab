@@ -1,0 +1,175 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Add Balance{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script>
+    // JavaScript to dynamically update organization details based on selected organization
+    document.addEventListener('DOMContentLoaded', function () {
+      // Get the data for all organizations in the template
+      const organizationsData = {
+        {% for org in organizations %}
+          "{{ org.id }}": {
+            "balance": "{{ org.balance }}",
+            "name": "{{ org.name }}",
+            "id": "{{ org.id }}"
+          },
+        {% endfor %}
+      };
+
+      // Select the relevant elements in the DOM
+      const organizationSelect = document.getElementById('organization');
+      const balanceElement = document.getElementById('balance');
+      const organizationNameElement = document.getElementById('organization-name');
+      const promoCodeForm = document.getElementById('promo_code_form');
+
+      // Listen for changes in the organization dropdown
+      organizationSelect.addEventListener('change', function () {
+        const selectedOrgId = this.value;
+
+        // Find the selected organization from the organizationsData
+        const selectedOrganization = organizationsData[selectedOrgId];
+
+        // Update the balance and organization name dynamically in the DOM
+        if (selectedOrganization) {
+          balanceElement.textContent = `$${selectedOrganization.balance}`;
+          organizationNameElement.textContent = selectedOrganization.name;
+
+          // Dynamically update the form action to match the selected organization
+          promoCodeForm.action = `/organization/add_credits/${selectedOrganization.id}/`;
+        }
+      });
+    });
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-3">
+      <h3 class="mb-0"><strong>Add Balance</strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-25.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+                <i class="ti ti-bookmark"></i>
+              </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        Add balance to your organization's account to pay for services and subscriptions. You can also apply promo
+        codes and free credits to your organization's account. If you don't have a promo code, you can leave the field
+        empty.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  <hr>
+
+  <!-- Form for selecting the organization -->
+  <div class="row mb-6 mt-8 card card-border-shadow-primary p-8">
+    <div class="col-sm-12 col-xl-12">
+      <h5 class="text-muted"><strong>Select Organization</strong></h5>
+      <hr>
+      <div class="mb-3">
+        <label for="organization" class="form-label"><i class="fa fa-building me-2"></i>Organization</label>
+        <select class="form-select" id="organization" name="organization" required>
+          <option value="" disabled selected>Select an organization</option>
+          {% for org in organizations %}
+            <option value="{{ org.id }}">{{ org.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <hr>
+    </div>
+  </div>
+
+  <!-- Organization Details: Dynamically updated based on selected organization -->
+  <div class="row mb-6 mt-8 card card-border-shadow-primary p-8">
+    <div class="col-sm-12 col-xl-12">
+      <div class="card h-100">
+        <div class="card-body d-flex align-items-center bg-label-success rounded">
+          <div class="content-left">
+            <div class="d-flex align-items-end">
+              <h3 class="mb-0 me-2" id="balance">$N/A</h3>
+              <small class="text-primary"></small>
+            </div>
+            <small><strong id="organization-name">No Organization Selected</strong></small>
+          </div>
+          <span class="badge bg-label-primary rounded p-2 ms-auto">
+            <i class="ti ti-wallet ti-sm"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Form for adding balance, promo codes, and free credits -->
+  <div class="row mb-6 mt-8 card card-border-shadow-primary p-8">
+    <div class="col-sm-12 col-xl-12">
+      <h5 class="text-muted"><strong>Add Balance</strong></h5>
+      <hr>
+      <form id="promo_code_form" method="post" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="topup_amount" class="form-label"><i class="fa fa-dollar-sign me-2"></i>Amount (USD)</label>
+          <input type="number" class="form-control" id="topup_amount" name="topup_amount"
+                 placeholder="Enter amount to add" required>
+        </div>
+
+        {% if user.profile.free_credits > 0 %}
+          <div class="alert alert-solid-success d-flex align-items-center mt-6" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-bell"></i>
+            </span>
+            <strong>You have <span class="p-1 bg-label-primary rounded">${{ user.profile.free_credits }}</span> 'FREE'
+              credits available. Would you want to apply them to this organization?</strong>
+            <a class="btn btn-primary ms-4" href="#"><i class="fa fa-exchange me-2"></i><strong>Apply Free
+              Credits</strong></a>
+          </div>
+        {% endif %}
+
+        <div class="mb-3">
+          <label for="promo_code" class="form-label"><i class="fa fa-gift me-2"></i>Promo Code</label>
+          <input type="text" class="form-control" id="promo_code" name="promo_code"
+                 placeholder="Enter promo code (if any)">
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-primary mt-4 w-25">
+          <strong>
+            <i class="fa fa-plus me-2"></i>
+            Add Balance
+          </strong></button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

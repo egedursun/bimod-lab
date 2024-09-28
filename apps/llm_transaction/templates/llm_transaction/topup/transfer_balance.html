@@ -1,0 +1,191 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Transfer Balance{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+
+  <!-- Adding JavaScript for dynamic balance updates -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const organizationsData = {
+        {% for org in organizations %}
+          "{{ org.id }}": {
+            "balance": "{{ org.balance }}",
+            "name": "{{ org.name }}"
+          },
+        {% endfor %}
+      };
+
+      const sourceSelect = document.getElementById('source_org');
+      const targetSelect = document.getElementById('destination_org');
+      const sourceBalanceElement = document.getElementById('source_balance');
+      const targetBalanceElement = document.getElementById('target_balance');
+      const transferForm = document.querySelector('form');
+
+      // Update balance cards dynamically when an organization is selected
+      sourceSelect.addEventListener('change', function () {
+        const selectedOrgId = this.value;
+        const selectedOrg = organizationsData[selectedOrgId];
+        if (selectedOrg) {
+          sourceBalanceElement.textContent = `$${selectedOrg.balance}`;
+        }
+      });
+
+      targetSelect.addEventListener('change', function () {
+        const selectedOrgId = this.value;
+        const selectedOrg = organizationsData[selectedOrgId];
+        if (selectedOrg) {
+          targetBalanceElement.textContent = `$${selectedOrg.balance}`;
+        }
+      });
+
+      // Form validation to prevent the same source and destination
+      transferForm.addEventListener('submit', function (event) {
+        if (sourceSelect.value === targetSelect.value) {
+          event.preventDefault();
+          alert('Source and destination organizations cannot be the same.');
+        }
+      });
+    });
+  </script>
+{% endblock vendor_js %}
+
+{% block content %}
+
+  <div class="row g-6 mb-6">
+    <div class="">
+      <h3 class="mb-0"><strong>Transfer Balance Between Organizations</strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-30.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+                <i class="ti ti-bookmark"></i>
+              </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        Transfer balance between organizations by selecting a source and target organization and specifying the amount
+        to transfer. Ensure that the source and target organizations are different before submitting the form. The
+        balance of the source and target organizations will be updated accordingly.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  <hr>
+
+  <!-- Form for selecting the source and target organizations -->
+  <div class="row mb-6 mt-8 card card-border-shadow-primary p-8">
+    <div class="col-sm-12 col-xl-12">
+      <h5 class="text-muted"><strong>Select Source and Target Organizations</strong></h5>
+      <hr>
+
+      <form method="post" action="{% url 'organization:balance_transfer' %}">
+        {% csrf_token %}
+
+        <!-- Source Organization Selector -->
+        <div class="mb-3">
+          <label for="source_org" class="form-label"><i class="fa fa-minus-circle me-2"></i>Source Organization</label>
+          <select class="form-select" id="source_org" name="source_org" required>
+            <option value="" disabled selected>Select a source organization</option>
+            {% for org in organizations %}
+              <option value="{{ org.id }}">{{ org.name }} [ Balance: ${{ org.balance }} ]</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Source Organization Balance Card -->
+        <div class="col-sm-12 col-xl-6 mb-4">
+          <div class="card h-100">
+            <div class="card-body d-flex align-items-center bg-label-danger rounded">
+              <div class="content-left">
+                <div class="d-flex align-items-end">
+                  <h3 class="mb-0 me-2" id="source_balance">$N/A</h3>
+                </div>
+                <small><strong>Source Organization Balance</strong></small>
+              </div>
+              <span class="badge bg-label-primary rounded p-2 ms-auto">
+                <i class="ti ti-minus ti-sm"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+        <i class="fa fa-arrow-down mb-12 mt-12 bg-label-primary p-8 rounded" style="font-size: 32px;"></i>
+        <hr>
+
+        <!-- Target Organization Selector -->
+        <div class="mb-3">
+          <label for="destination_org" class="form-label"><i class="fa fa-plus-circle me-2"></i>Target
+            Organization</label>
+          <select class="form-select" id="destination_org" name="destination_org" required>
+            <option value="" disabled selected>Select a target organization</option>
+            {% for org in organizations %}
+              <option value="{{ org.id }}">{{ org.name }} [ Balance: ${{ org.balance }} ]</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Target Organization Balance Card -->
+        <div class="col-sm-12 col-xl-6 mb-4">
+          <div class="card h-100">
+            <div class="card-body d-flex align-items-center bg-label-success rounded">
+              <div class="content-left">
+                <div class="d-flex align-items-end">
+                  <h3 class="mb-0 me-2" id="target_balance">$N/A</h3>
+                </div>
+                <small><strong>Target Organization Balance</strong></small>
+              </div>
+              <span class="badge bg-label-primary rounded p-2 ms-auto">
+                <i class="ti ti-plus ti-sm"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transfer Amount -->
+        <div class="mb-3">
+          <label for="transfer_amount" class="form-label">Transfer Amount</label>
+          <input type="number" class="form-control" id="transfer_amount" name="transfer_amount"
+                 placeholder="Enter amount to transfer" required>
+        </div>
+
+        <hr>
+        <button type="submit" class="btn btn-primary mt-4 w-25"><strong>Transfer Balance</strong></button>
+      </form>
+    </div>
+  </div>
+
+  <hr>
+
+{% endblock %}

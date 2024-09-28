@@ -1,5 +1,5 @@
 
-__# Getting Started
+# Getting Started
 
 ---
 
