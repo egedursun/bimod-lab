@@ -1,12 +1,9 @@
 import boto3
 from celery import shared_task
 
+from apps.datasource_ml_models.utils import MODEL_OBJECT_CATEGORIES
 from config import settings
 from config.settings import MEDIA_URL
-
-MODEL_OBJECT_CATEGORIES = (
-    ('pth', 'PyTorch Model'),
-)
 
 
 @shared_task
