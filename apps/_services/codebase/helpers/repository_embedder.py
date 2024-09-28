@@ -1,5 +1,7 @@
 import json
 
+from apps.datasource_codebase.utils import RepositoryUploadStatusNames
+
 
 def build_repository_orm_structure(document: dict, knowledge_base, path: str):
     from apps.datasource_codebase.models import CodeBaseRepository
@@ -53,8 +55,7 @@ def build_repository_weaviate_structure(document: dict, path: str,
 
 def embed_repository_sync(executor_params, document_id, document_weaviate_object: dict, path: str):
     from apps._services.codebase.codebase_decoder import CodeBaseDecoder
-    from apps.datasource_codebase.models import (CodeRepositoryStorageConnection, CodeBaseRepository,
-                                                       RepositoryUploadStatusNames)
+    from apps.datasource_codebase.models import (CodeRepositoryStorageConnection, CodeBaseRepository)
     from apps.datasource_codebase.tasks import add_repository_upload_log
     connection_id = executor_params["connection_id"]
     connection_orm_object = CodeRepositoryStorageConnection.objects.get(id=connection_id)

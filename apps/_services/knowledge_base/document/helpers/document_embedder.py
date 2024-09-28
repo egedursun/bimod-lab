@@ -1,5 +1,7 @@
 import json
 
+from apps.datasource_knowledge_base.utils import DocumentUploadStatusNames
+
 
 def build_document_orm_structure(document: dict, knowledge_base, path: str):
     from apps.datasource_knowledge_base.models import KnowledgeBaseDocument
@@ -90,8 +92,7 @@ def build_memory_weaviate_structure(memory_name: str, number_of_chunks: int):
 
 def embed_document_sync(executor_params, document_id, document_weaviate_object: dict, path: str):
     from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
-    from apps.datasource_knowledge_base.models import (DocumentKnowledgeBaseConnection, KnowledgeBaseDocument,
-                                                       DocumentUploadStatusNames)
+    from apps.datasource_knowledge_base.models import (DocumentKnowledgeBaseConnection, KnowledgeBaseDocument)
     from apps.datasource_knowledge_base.tasks import add_document_upload_log
     connection_id = executor_params["connection_id"]
     connection_orm_object = DocumentKnowledgeBaseConnection.objects.get(id=connection_id)

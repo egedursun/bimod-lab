@@ -51,7 +51,7 @@ class MemoryExecutor:
 
     @staticmethod
     def decode_vectorizer(vectorizer_name):
-        from apps.assistants.models import VectorizerNames
+        from apps.assistants.utils import VectorizerNames
         if vectorizer_name == VectorizerNames.TEXT2VEC_OPENAI:
             print(f"[MemoryExecutor.decode_vectorizer] Using OpenAI vectorizer.")
             return wvc.config.Configure.Vectorizer.text2vec_openai()

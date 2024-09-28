@@ -3,7 +3,8 @@ from apps._services.expert_networks.prompts.build_expert_network_to_assistant_in
 from apps._services.expert_networks.prompts.error_messages import DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE
 from apps.assistants.models import Assistant
 from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
-from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
+from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
+from apps.multimodal_chat.utils import ChatSourcesNames
 
 
 class ExpertNetworkExecutor:

@@ -8,8 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from apps._services.llms.llm_decoder import InternalLLMClient
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI, LeanmodRequestLog
 from apps.export_leanmods.utils import StatusCodes
-from apps.multimodal_chat.models import MultimodalLeanChat, ChatSourcesNames, MultimodalLeanChatMessage
-from apps.multimodal_chat.utils import generate_chat_name
+from apps.multimodal_chat.models import MultimodalLeanChat, MultimodalLeanChatMessage
+from apps.multimodal_chat.utils import generate_chat_name, ChatSourcesNames
 from config.settings import BASE_URL
 
 

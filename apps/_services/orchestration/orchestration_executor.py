@@ -11,8 +11,9 @@ from apps._services.orchestration.utils import send_orchestration_message, embed
     DEFAULT_ORCHESTRATION_ERROR_MESSAGE, DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE, \
     get_orchestration_json_decode_error_log
 from apps.assistants.models import Assistant
-from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
-from apps.multimodal_chat.utils import BIMOD_NO_TAG_PLACEHOLDER, BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END
+from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
+from apps.multimodal_chat.utils import BIMOD_NO_TAG_PLACEHOLDER, BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, \
+    ChatSourcesNames
 from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 

@@ -25,7 +25,8 @@ from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import TransactionSourcesNames
 from apps.mm_triggered_jobs.models import TriggeredJob, TriggeredJobInstance
 from apps.mm_triggered_jobs.utils import TriggeredJobInstanceStatusesNames, generate_triggered_job_chat_name
-from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
+from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
+from apps.multimodal_chat.utils import ChatSourcesNames
 
 
 @method_decorator(csrf_exempt, name='dispatch')

@@ -2,8 +2,6 @@ from datetime import datetime
 
 from django.contrib.auth.models import User
 
-from apps.leanmod.models import LeanAssistant
-
 
 def build_structured_place_and_time_prompt_leanmod(user: User):
     # Build the prompt

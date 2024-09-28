@@ -1,6 +1,8 @@
 import datetime
 import json
 
+from apps.datasource_knowledge_base.utils import DocumentUploadStatusNames
+
 
 def build_chunk_orm_structure(chunk: dict,
                               knowledge_base,
@@ -196,7 +198,7 @@ def embed_memory_chunk_sync(executor_params, chunk_id, chunk_weaviate_object: di
 
 def embed_document_chunks_helper(executor_params, chunks: list, path: str, document_id: int,
                                  document_uuid: str):
-    from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection, DocumentUploadStatusNames
+    from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
     from apps.datasource_knowledge_base.tasks import add_document_upload_log
     errors = []
     connection_id = executor_params["connection_id"]

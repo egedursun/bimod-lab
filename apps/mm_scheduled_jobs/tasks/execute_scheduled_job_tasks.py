@@ -6,7 +6,8 @@ from apps._services.llms.llm_decoder import InternalLLMClient
 from apps.dashboard.utils import TransactionSourcesNames
 from apps.llm_transaction.models import LLMTransaction
 
-from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
+from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
+from apps.multimodal_chat.utils import ChatSourcesNames
 
 
 @shared_task

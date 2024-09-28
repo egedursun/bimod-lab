@@ -1,18 +1,26 @@
-import warnings
+#  Copyright Policy & Ownership
+#
+#  Bimod.io is a product of BMD Holdings. All materials, including but not limited to software, code, documentation,
+#  graphics, design elements, and user interfaces provided by Bimod.io are protected by copyright law and international
+#  treaties.
+#  All content within Bimod.io is the exclusive property of BMD Holdings, unless otherwise stated.
+#  Unauthorized use, distribution, or reproduction of any material contained in this software without the express
+#  written consent of BMD Holdings is strictly prohibited.
+#  Users may not copy, modify, distribute, display, perform, or create derivative works of Bimod.io without prior
+#  written permission from BMD Holdings.
 
 import tiktoken
+import wonderwords
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
+from apps.llm_transaction.utils import LLMCostsPerMillionTokens, SERVICE_PROFIT_MARGIN, VAT_TAX_RATE
+from apps.multimodal_chat.utils import BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, BIMOD_NO_TAG_PLACEHOLDER
+
+import warnings
+
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
-    import wonderwords
-
-from apps.llm_transaction.utils import LLMCostsPerMillionTokens, SERVICE_PROFIT_MARGIN, VAT_TAX_RATE
-
-BIMOD_STREAMING_END_TAG = "<[bimod_streaming_end]>"
-BIMOD_PROCESS_END = "<[bimod_process_end]>"
-BIMOD_NO_TAG_PLACEHOLDER = "<[bimod_no_tag]>"
 
 
 def send_log_message(log_message, chat_id, stop_tag=BIMOD_STREAMING_END_TAG):
@@ -90,28 +98,6 @@ def calculate_billable_cost_from_raw(encoding_engine, model, text):
     internal_service_cost = calculate_internal_service_cost(llm_cost)
     tax_cost = calculate_tax_cost(internal_service_cost)
     return calculate_billable_cost(internal_service_cost, tax_cost)
-
-
-def calculate_total_cost(llm_cost, billable_cost):
-    return llm_cost + billable_cost
-
-
-def sum_costs(transactions):
-    llm_cost = 0
-    internal_service_cost = 0
-    tax_cost = 0
-    total_cost = 0
-    billable_cost = 0
-    for transaction in transactions:
-        llm_cost += transaction.llm_cost
-        internal_service_cost += transaction.internal_service_cost
-        tax_cost += transaction.tax_cost
-        total_cost += transaction.total_cost
-        billable_cost += transaction.total_billable_cost
-    return {
-        "llm_cost": llm_cost, "internal_service_cost": internal_service_cost, "tax_cost": tax_cost,
-        "total_cost": total_cost, "total_billable_cost": billable_cost,
-    }
 
 
 def generate_chat_name():

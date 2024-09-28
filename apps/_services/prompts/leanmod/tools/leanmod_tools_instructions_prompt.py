@@ -1,6 +1,3 @@
-from apps.leanmod.models import LeanAssistant
-
-
 def build_structured_tool_usage_instructions_prompt_leanmod():
     response_prompt = """
             *TOOL USAGE*

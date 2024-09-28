@@ -2,8 +2,6 @@ import datetime
 
 from django.contrib.auth.models import User
 
-from apps.assistants.models import Assistant
-
 
 def build_structured_place_and_time_prompt(user: User):
     # Build the prompt

@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 
 from apps.user_permissions.models import UserPermission
-from apps.user_permissions.utils import PermissionNames
 
 
 class UserPermissionManager:

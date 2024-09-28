@@ -1,6 +1,8 @@
 import datetime
 import json
 
+from apps.datasource_codebase.utils import RepositoryUploadStatusNames
+
 
 def build_chunk_orm_structure(chunk: dict,
                               knowledge_base,
@@ -108,7 +110,7 @@ def embed_repository_chunk_sync(executor_params, chunk_id, chunk_weaviate_object
 
 def embed_repository_chunks_helper(executor_params, chunks: list, path: str, document_id: int,
                                  document_uuid: str):
-    from apps.datasource_codebase.models import CodeRepositoryStorageConnection, RepositoryUploadStatusNames
+    from apps.datasource_codebase.models import CodeRepositoryStorageConnection
     from apps.datasource_codebase.tasks import add_repository_upload_log
     errors = []
     connection_id = executor_params["connection_id"]

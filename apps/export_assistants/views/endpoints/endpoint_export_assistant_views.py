@@ -8,8 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from apps._services.llms.llm_decoder import InternalLLMClient
 from apps.export_assistants.models import ExportAssistantAPI, RequestLog
 from apps.export_assistants.utils import StatusCodes
-from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
-from apps.multimodal_chat.utils import generate_chat_name
+from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
+from apps.multimodal_chat.utils import generate_chat_name, ChatSourcesNames
 from config.settings import BASE_URL
 
 

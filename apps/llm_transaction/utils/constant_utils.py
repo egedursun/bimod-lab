@@ -66,6 +66,8 @@ class TransactionSourcesNames:
     GENERATE_IMAGE = "generate-image"
     MODIFY_IMAGE = "modify-image"
     VARIATE_IMAGE = "variate-image"
+    AUDIO_PROCESSING_STT = "audio-processing-stt"
+    AUDIO_PROCESSING_TTS = "audio-processing-tts"
 
     @staticmethod
     def as_list():
@@ -98,6 +100,8 @@ class TransactionSourcesNames:
             TransactionSourcesNames.GENERATE_IMAGE,
             TransactionSourcesNames.MODIFY_IMAGE,
             TransactionSourcesNames.VARIATE_IMAGE,
+            TransactionSourcesNames.AUDIO_PROCESSING_STT,
+            TransactionSourcesNames.AUDIO_PROCESSING_TTS,
         ]
 
 
