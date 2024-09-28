@@ -1,5 +1,4 @@
-
-from apps._services.tools.const import ToolTypeNames
+from apps._services.tools.utils import ToolTypeNames
 from apps.orchestrations.models import Maestro
 from config.settings import MEDIA_URL
 from apps.assistants.models import Assistant
@@ -105,7 +104,7 @@ def build_orchestration_structured_tool_usage_instructions_prompt(maestro):
 
 def build_orchestration_workers_multi_modality_prompt(maestro):
     maestro: Maestro
-    response_prompt =  f"""
+    response_prompt = f"""
         **WORKER ASSISTANT MULTI-MODALITY USAGE ABILITY:** (Very important! - Make sure to UNDERSTAND this part well)
 
         - As an orchestration assistant, you are able to use worker assistants to provide better and more accurate
@@ -119,7 +118,8 @@ def build_orchestration_workers_multi_modality_prompt(maestro):
     """
 
     worker_assistants = maestro.workers.all()
-    print("[build_assistant_calls_meta_tool_prompt.build_orchestration_workers_multi_modality_prompt] Maestro: ", maestro)
+    print("[build_assistant_calls_meta_tool_prompt.build_orchestration_workers_multi_modality_prompt] Maestro: ",
+          maestro)
     for i, worker in enumerate(worker_assistants):
         worker: Assistant
         response_prompt += f"""

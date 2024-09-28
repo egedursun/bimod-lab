@@ -1,5 +1,3 @@
-
-
 def build_maestro_to_assistant_instructions_prompt(maestro_query_text: str) -> str:
     return f"""
         **WARNING: This is an ORCHESTRATOR-GENERATED user message.**

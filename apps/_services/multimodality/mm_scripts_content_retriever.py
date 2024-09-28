@@ -10,7 +10,8 @@ class CustomScriptsContentRetriever:
         self.context_assistant = context_assistant
 
     def retrieve_custom_script_content(self):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         script = self.script
         script_content = script.script_content
         print(f"[CustomScriptsContentRetriever.retrieve_custom_script_content] Script content has been retrieved.")

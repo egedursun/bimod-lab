@@ -1,19 +1,14 @@
-
 from uuid import uuid4
 
 import boto3
 import filetype
 
 from apps._services.config.costs_map import ToolCostsMap
+from apps._services.ml_models.utils import GENERATED_FILES_ROOT_PATH, GENERATED_IMAGES_ROOT_PATH, \
+    UNCLASSIFIED_FILE_EXTENSION
 from apps.datasource_ml_models.models import DataSourceMLModelItem
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from config import settings
-
-GENERATED_FILES_ROOT_PATH = "generated/files/"
-GENERATED_IMAGES_ROOT_PATH = "generated/images/"
-
-
-UNCLASSIFIED_FILE_EXTENSION = ".bin"
 
 
 class MLModelExecutor:
@@ -26,7 +21,8 @@ class MLModelExecutor:
     def generate_save_name(extension):
         generated_uuid = str(uuid4())
         additional_uuid = str(uuid4())
-        print(f"[MLModelExecutor.generate_save_name] Generated UUID: {generated_uuid}, Additional UUID: {additional_uuid}")
+        print(
+            f"[MLModelExecutor.generate_save_name] Generated UUID: {generated_uuid}, Additional UUID: {additional_uuid}")
         return f"{generated_uuid}_{additional_uuid}.{extension}"
 
     @staticmethod
@@ -79,7 +75,7 @@ class MLModelExecutor:
         return full_uri
 
     @staticmethod
-    def save_files_and_provide_full_uris(file_bytes_list:list[tuple]):
+    def save_files_and_provide_full_uris(file_bytes_list: list[tuple]):
         full_uris = []
         for file_bytes, remote_name in file_bytes_list:
             full_uri = MLModelExecutor.save_file_and_provide_full_uri(file_bytes, remote_name)
@@ -101,7 +97,8 @@ class MLModelExecutor:
     #################################################################################################################
 
     def execute_predict_with_ml_model(self, model_url, file_urls, input_data):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         from apps._services.llms.openai import InternalOpenAIClient
         try:
             openai_client = InternalOpenAIClient(
@@ -109,7 +106,8 @@ class MLModelExecutor:
                 multimodal_chat=self.chat)
             print(f"[MLModelExecutor.execute_predict_with_ml_model] OpenAI client created successfully.")
         except Exception as e:
-            print(f"[MLModelExecutor.execute_predict_with_ml_model] Error occurred while creating the OpenAI client: {str(e)}")
+            print(
+                f"[MLModelExecutor.execute_predict_with_ml_model] Error occurred while creating the OpenAI client: {str(e)}")
             return None
         retrieve_model_object = DataSourceMLModelItem.objects.get(full_file_path=model_url)
         model_temperature = retrieve_model_object.interpretation_temperature

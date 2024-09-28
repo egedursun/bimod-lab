@@ -1,4 +1,4 @@
-from apps._services.tools.const import ToolTypeNames
+from apps._services.tools.utils import ToolTypeNames
 
 
 def build_structured_tool_prompt__code_base_query_execution():

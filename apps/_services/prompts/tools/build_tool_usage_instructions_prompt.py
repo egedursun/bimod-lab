@@ -1,4 +1,3 @@
-
 from apps.assistants.models import Assistant
 
 

@@ -1,10 +1,9 @@
 from apps._services.expert_networks.prompts.build_expert_network_to_assistant_instructions_prompt import \
     build_leanmod_to_expert_assistant_instructions_prompt
+from apps._services.expert_networks.prompts.error_messages import DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE
 from apps.assistants.models import Assistant
 from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
 from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
-
-DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE = "The Expert Assistant is not available at the moment. Please try again later."
 
 
 class ExpertNetworkExecutor:
@@ -12,7 +11,8 @@ class ExpertNetworkExecutor:
         network: ExpertNetwork
         self.network = network
 
-    def consult_by_query(self, reference: ExpertNetworkAssistantReference, query: str, image_urls=None, file_urls=None):
+    def consult_by_query(self, reference: ExpertNetworkAssistantReference, query: str, image_urls=None,
+                         file_urls=None):
         print(f"[ExpertNetworkExecutor.consult_by_query] Executing the query: {query}")
         print(f"[ExpertNetworkExecutor.consult_by_query] Image URLs: {image_urls}")
         print(f"[ExpertNetworkExecutor.consult_by_query] File URLs: {file_urls}")

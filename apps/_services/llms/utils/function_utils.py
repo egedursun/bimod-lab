@@ -1,7 +1,8 @@
-
 import re
-from json import JSONDecoder
 import uuid
+from json import JSONDecoder
+
+import apps._services
 
 
 def find_json_presence(response: str, decoder=JSONDecoder()):
@@ -51,3 +52,18 @@ def generate_random_audio_filename(extension="mp3"):
     filename = f"generated_audio_{uuid1}_{uuid2}.{extension}"
     print("[utils.generate_random_filename] Random filename generated.")
     return filename
+
+
+def retry_mechanism(client, latest_message, caller="respond"):
+    from apps._services.llms.utils import RetryCallersNames, DEFAULT_ERROR_MESSAGE
+
+    if apps._services.llms.utils.constant_utils.ACTIVE_RETRY_COUNT < client.assistant.max_retry_count:
+        apps._services.llms.utils.constant_utils.ACTIVE_RETRY_COUNT += 1
+        if caller == RetryCallersNames.RESPOND:
+            return client.respond(latest_message=latest_message)
+        elif caller == RetryCallersNames.RESPOND_STREAM:
+            return client.respond_stream(latest_message=latest_message)
+        else:
+            return DEFAULT_ERROR_MESSAGE
+    else:
+        return DEFAULT_ERROR_MESSAGE

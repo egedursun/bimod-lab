@@ -1,4 +1,3 @@
-
 def validate_orchestration_worker_assistant_call_execution_tool_json(tool_usage_json: dict):
     if "parameters" not in tool_usage_json:
         return """

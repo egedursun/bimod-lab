@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 
 from apps._services.llms.helpers.helper_prompts import GENERATE_FILE_DESCRIPTION_QUERY
 from apps._services.tools.execution_handlers.storage_query_execution_handler import execute_storage_query
-from apps._services.tools.tool_executor import ExecutionTypesNames
+from apps._services.tools.utils import ExecutionTypesNames
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_media_storages.models import DataSourceMediaStorageItem
 from apps.user_permissions.models import PermissionNames

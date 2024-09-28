@@ -1,5 +1,5 @@
-from apps._services.audio_processing.audio_processing_executor import AudioProcessingExecutor, \
-    AudioProcessingExecutorActionsNames
+from apps._services.audio_processing.audio_processing_executor import AudioProcessingExecutor
+from apps._services.audio_processing.utils import AudioProcessingExecutorActionsNames
 from apps.assistants.models import Assistant
 from apps.multimodal_chat.models import MultimodalChat
 

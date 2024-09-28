@@ -1,5 +1,3 @@
-
-
 def build_structured_primary_guidelines():
     return f"""
         **PRIMARY GUIDELINES:**

@@ -1,5 +1,3 @@
-
-
 def validate_custom_api_execution_tool_json(tool_usage_json: dict):
     if "parameters" not in tool_usage_json:
         return """
@@ -44,4 +42,3 @@ def validate_custom_api_execution_tool_json(tool_usage_json: dict):
         """
     print(f"[custom_api_execution_tool_validator.validate_custom_api_execution_tool_json] Validation is successful.")
     return None
-

@@ -1,4 +1,3 @@
-
 def build_structured_glossary_prompt(glossary: str):
     return f"""
         **YOUR GLOSSARY AND TERMINOLOGY:**

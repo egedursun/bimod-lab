@@ -1,4 +1,3 @@
-
 from apps.assistants.models import Assistant
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
 

@@ -5,15 +5,12 @@ from apps._services.config.costs_map import ToolCostsMap
 from apps._services.knowledge_base.document.helpers.class_creator import create_chat_history_classes_helper
 from apps._services.knowledge_base.document.helpers.class_deleter import delete_chat_history_class_helper
 from apps._services.knowledge_base.document.helpers.document_deleter import delete_chat_history_document_helper
+from apps._services.knowledge_base.memory.utils import WEAVIATE_INITIALIZATION_TIMEOUT, WEAVIATE_QUERY_TIMEOUT, \
+    WEAVIATE_INSERT_TIMEOUT
 from apps.datasource_knowledge_base.tasks import index_memory_helper, embed_memory_data, embed_memory_chunks
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from config.settings import WEAVIATE_CLUSTER_URL, WEAVIATE_API_KEY, WEAVIATE_SINGLE_TIME_MEMORY_RETRIEVAL_LIMIT
 import weaviate.classes as wvc
-
-
-WEAVIATE_INITIALIZATION_TIMEOUT = 30  # 30 seconds for the weaviate initialization
-WEAVIATE_QUERY_TIMEOUT = 60  # 60 seconds for the weaviate query
-WEAVIATE_INSERT_TIMEOUT = 120  # 120 seconds for the weaviate insert
 
 
 class MemoryExecutor:
@@ -139,7 +136,8 @@ class MemoryExecutor:
         return errors
 
     def search_hybrid(self, query: str, alpha: float):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         search_memory_class_name = f"{self.connection_object.class_name}Chunks"
         client = self.connect_c()
         memories_collection = client.collections.get(search_memory_class_name)

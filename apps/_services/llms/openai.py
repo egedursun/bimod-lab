@@ -10,6 +10,7 @@ import requests
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
+import apps._services.llms.utils.constant_utils
 from apps._services.data_security.ner.ner_executor import NERExecutor
 from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS, AssistantRunStatuses, \
     ONE_SHOT_AFFIRMATION_PROMPT, ML_AFFIRMATION_PROMPT, INSUFFICIENT_BALANCE_PROMPT, get_technical_error_log, \
@@ -27,94 +28,23 @@ from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS,
     get_image_modification_error_log, get_image_variation_error_log, get_statistics_analysis_error_log, \
     embed_tool_call_in_prompt, get_audio_reading_error_log, get_audio_transcription_error_log, \
     get_audio_generation_error_log, get_audio_upload_error_log
-from apps._services.llms.utils import find_json_presence, generate_random_audio_filename
+from apps._services.llms.utils import find_json_presence, generate_random_audio_filename, ChatRoles, \
+    DEFAULT_ERROR_MESSAGE, GPT_DEFAULT_ENCODING_ENGINE, CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION, \
+    CONCRETE_LIMIT_ML_MODEL_PREDICTIONS, DEFAULT_IMAGE_GENERATION_MODEL, DEFAULT_IMAGE_MODIFICATION_MODEL, \
+    DEFAULT_IMAGE_VARIATION_MODEL, DEFAULT_IMAGE_GENERATION_N, DEFAULT_IMAGE_MODIFICATION_N, DEFAULT_IMAGE_VARIATION_N, \
+    DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS, DEFAULT_STATISTICS_TEMPERATURE, \
+    DEFAULT_STATISTICS_ASSISTANT_NAME_PLACEHOLDER, DEFAULT_STATISTICS_ASSISTANT_AUDIENCE, \
+    DEFAULT_STATISTICS_ASSISTANT_TONE, DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME, BIMOD_STREAMING_END_TAG, \
+    BIMOD_PROCESS_END, DefaultImageResolutionChoices, DefaultImageQualityChoices, RetryCallersNames, \
+    OpenAITTSVoiceNames, retry_mechanism
 from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
 from apps._services.prompts.statistics.usage_statistics_prompt import build_usage_statistics_system_prompt
-from apps._services.storages.storage_executor import GENERATED_FILES_ROOT_PATH
+from apps._services.storages.utils import GENERATED_FILES_ROOT_PATH
 from apps._services.tools.tool_executor import ToolExecutor
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from apps.multimodal_chat.utils import calculate_billable_cost_from_raw, send_log_message, BIMOD_NO_TAG_PLACEHOLDER
 from config.settings import MEDIA_URL, AWS_STORAGE_BUCKET_NAME
-
-
-class ChatRoles:
-    SYSTEM = "system"
-    USER = "user"
-    ASSISTANT = "assistant"
-    ###
-    # Hidden Types (Internal)
-    # [i] - TOOL
-    ###
-
-
-ACTIVE_RETRY_COUNT = 0
-ACTIVE_TOOL_RETRY_COUNT = 0
-ACTIVE_CHAIN_SIZE = 0
-
-DEFAULT_ERROR_MESSAGE = "Failed to respond at the current moment. Please try again later."
-GPT_DEFAULT_ENCODING_ENGINE = "cl100k_base"
-CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION = 20
-CONCRETE_LIMIT_ML_MODEL_PREDICTIONS = 10
-
-DEFAULT_IMAGE_GENERATION_MODEL = "dall-e-3"
-DEFAULT_IMAGE_MODIFICATION_MODEL = "dall-e-2"
-DEFAULT_IMAGE_VARIATION_MODEL = "dall-e-2"
-DEFAULT_IMAGE_GENERATION_N = 1
-DEFAULT_IMAGE_MODIFICATION_N = 1
-DEFAULT_IMAGE_VARIATION_N = 1
-
-DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS = 4000
-DEFAULT_STATISTICS_TEMPERATURE = 0.50
-DEFAULT_STATISTICS_ASSISTANT_NAME_PLACEHOLDER = "Bimod Platform Usage Statistics Assistant"
-DEFAULT_STATISTICS_ASSISTANT_AUDIENCE = "Standard / Bimod Application Users"
-DEFAULT_STATISTICS_ASSISTANT_TONE = "Formal & Descriptive"
-DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME = "Statistics Analysis & Evaluation"
-
-
-BIMOD_STREAMING_END_TAG = "<[bimod_streaming_end]>"
-BIMOD_PROCESS_END = "<[bimod_process_end]>"
-STREAMING_WAIT_SECONDS = 0
-
-
-class DefaultImageResolutionChoices:
-    class Min1024Max1792:
-        SQUARE = "1024x1024"
-        PORTRAIT = "1024x1792"
-        LANDSCAPE = "1792x1024"
-
-
-class DefaultImageQualityChoices:
-    STANDARD = "standard"
-    HIGH_DEFINITION = "hd"
-
-
-class RetryCallersNames:
-    RESPOND = "respond"
-    RESPOND_STREAM = "respond_stream"
-
-
-class OpenAITTSVoiceNames:
-    ALLOY = "alloy"  # Male Speaker: Baritone
-    ECHO = "echo"  # Male Speaker: Baritone-Bass
-    FABLE = "fable"  # Male Speaker: Tenor
-    ONYX = "onyx"  # Male Speaker: Bass
-    NOVA = "nova"  # Female Speaker: Older and Wiser
-    SHIMMER = "shimmer"  # Female Speaker: Younger and Energetic
-
-
-def retry_mechanism(client, latest_message, caller="respond"):
-    global ACTIVE_RETRY_COUNT
-    if ACTIVE_RETRY_COUNT < client.assistant.max_retry_count:
-        ACTIVE_RETRY_COUNT += 1
-        if caller == RetryCallersNames.RESPOND:
-            return client.respond(latest_message=latest_message)
-        elif caller == RetryCallersNames.RESPOND_STREAM:
-            return client.respond_stream(latest_message=latest_message)
-        else:
-            return DEFAULT_ERROR_MESSAGE
-    else:
-        return DEFAULT_ERROR_MESSAGE
 
 
 class InternalOpenAIClient:
@@ -203,9 +133,11 @@ class InternalOpenAIClient:
                     model=self.chat.assistant.llm_model.model_name,
                     text=latest_message
                 )
-                print(f"[InternalOpenAIClient.respond_stream] Calculated the billable cost: {latest_message_billable_cost}")
+                print(
+                    f"[InternalOpenAIClient.respond_stream] Calculated the billable cost: {latest_message_billable_cost}")
             except Exception as e:
-                print(f"[InternalOpenAIClient.respond_stream] Error occurred while calculating the billable cost: {str(e)}")
+                print(
+                    f"[InternalOpenAIClient.respond_stream] Error occurred while calculating the billable cost: {str(e)}")
 
                 send_log_message(f"""
             🚨 A critical error occurred while inspecting the transaction parameters.
@@ -214,7 +146,6 @@ class InternalOpenAIClient:
                 return DEFAULT_ERROR_MESSAGE
 
             if latest_message_billable_cost > self.chat.organization.balance:
-
                 send_log_message(f"""
             🚨 Organization has insufficient balance to proceed with the transaction. Cancelling the process.
                 """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
@@ -301,8 +232,8 @@ class InternalOpenAIClient:
                     ############################
                     if content is not None:
                         accumulated_response += content
-                        send_log_message(f"""{content}""", stop_tag=BIMOD_NO_TAG_PLACEHOLDER , chat_id=self.chat.id)
-                send_log_message(f"""""", stop_tag=BIMOD_STREAMING_END_TAG , chat_id=self.chat.id)
+                        send_log_message(f"""{content}""", stop_tag=BIMOD_NO_TAG_PLACEHOLDER, chat_id=self.chat.id)
+                send_log_message(f"""""", stop_tag=BIMOD_STREAMING_END_TAG, chat_id=self.chat.id)
 
                 send_log_message(f"""
             🔌 Generation iterations has been successfully accomplished.
@@ -312,7 +243,8 @@ class InternalOpenAIClient:
                 # NER INTEGRATION - DECRYPTION
                 ####################################################################################################
                 if ner_executor:
-                    decrypted_text = ner_executor.decrypt_text(anonymized_text=accumulated_response, uuid=encryption_uuid)
+                    decrypted_text = ner_executor.decrypt_text(anonymized_text=accumulated_response,
+                                                               uuid=encryption_uuid)
                     if decrypted_text:
                         accumulated_response = decrypted_text
                 ####################################################################################################
@@ -391,8 +323,7 @@ class InternalOpenAIClient:
             if final_response == DEFAULT_ERROR_MESSAGE:
                 final_response += get_technical_error_log(error_logs=str(e))
                 # Reset the retry mechanism
-                global ACTIVE_RETRY_COUNT
-                ACTIVE_RETRY_COUNT = 0
+                apps._services.llms.utils.constant_utils.ACTIVE_RETRY_COUNT = 0
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while responding to the user: {str(e)}")
 
         # if the final_response includes a tool usage call, execute the tool
@@ -404,8 +335,7 @@ class InternalOpenAIClient:
                                 """, chat_id=self.chat.id)
 
             # check for the rate limits
-            global ACTIVE_CHAIN_SIZE
-            if ACTIVE_CHAIN_SIZE > self.assistant.tool_max_chains:
+            if apps._services.llms.utils.constant_utils.ACTIVE_CHAIN_SIZE > self.assistant.tool_max_chains:
                 idle_overflow_message = get_maximum_tool_chains_reached_log(final_response=final_response)
 
                 send_log_message(f"""
@@ -430,9 +360,11 @@ class InternalOpenAIClient:
                     )
                     self.chat.transactions.add(idle_overflow_transaction)
                     self.chat.save()
-                    print(f"[InternalOpenAIClient.respond_stream] Saved the transaction associated with the idle overflow.")
+                    print(
+                        f"[InternalOpenAIClient.respond_stream] Saved the transaction associated with the idle overflow.")
                 except Exception as e:
-                    print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
+                    print(
+                        f"[InternalOpenAIClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
 
                     send_log_message(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
@@ -440,11 +372,10 @@ class InternalOpenAIClient:
 
                     return idle_overflow_message
 
-                ACTIVE_CHAIN_SIZE = 0
+                apps._services.llms.utils.constant_utils.ACTIVE_CHAIN_SIZE = 0
                 return idle_overflow_message
 
-            global ACTIVE_TOOL_RETRY_COUNT
-            if ACTIVE_TOOL_RETRY_COUNT > self.assistant.tool_max_attempts_per_instance:
+            if apps._services.llms.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT > self.assistant.tool_max_attempts_per_instance:
                 idle_overflow_message = get_maximum_tool_attempts_reached_log(final_response=final_response)
 
                 send_log_message(f"""
@@ -469,9 +400,11 @@ class InternalOpenAIClient:
                     )
                     self.chat.transactions.add(idle_overflow_transaction)
                     self.chat.save()
-                    print(f"[InternalOpenAIClient.respond_stream] Saved the transaction associated with the idle overflow.")
+                    print(
+                        f"[InternalOpenAIClient.respond_stream] Saved the transaction associated with the idle overflow.")
                 except Exception as e:
-                    print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
+                    print(
+                        f"[InternalOpenAIClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
 
                     send_log_message(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
@@ -479,11 +412,11 @@ class InternalOpenAIClient:
 
                     return idle_overflow_message
 
-                ACTIVE_TOOL_RETRY_COUNT = 0
+                apps._services.llms.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT = 0
                 return idle_overflow_message
 
             # increase the retry count for tool
-            ACTIVE_TOOL_RETRY_COUNT += 1
+            apps._services.llms.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT += 1
 
             send_log_message(f"""
             🧰 Identifying the valid tool usage calls...
@@ -519,7 +452,7 @@ class InternalOpenAIClient:
                                         """, chat_id=self.chat.id)
 
                     if tool_name is not None and tool_name != prev_tool_name:
-                        ACTIVE_CHAIN_SIZE += 1
+                        apps._services.llms.utils.constant_utils.ACTIVE_CHAIN_SIZE += 1
                         prev_tool_name = tool_name
 
                     send_log_message(f"""
@@ -553,7 +486,8 @@ class InternalOpenAIClient:
                                         [{i}c.] "image_uris": []
                                         [{i}d.] "error_logs": {str(e)}
                                 """)
-                        print(f"[InternalOpenAIClient.respond_stream] Error occurred while executing the tool: {str(e)}")
+                        print(
+                            f"[InternalOpenAIClient.respond_stream] Error occurred while executing the tool: {str(e)}")
                     else:
                         tool_response = get_json_decode_error_log(error_logs=str(e))
                         tool_response_list.append(f"""
@@ -563,7 +497,8 @@ class InternalOpenAIClient:
                                         [{i}c.] "image_uris": []
                                         [{i}d.] "error_logs": {str(e)}
                                 """)
-                        print(f"[InternalOpenAIClient.respond_stream] Error occurred while executing the tool: {str(e)}")
+                        print(
+                            f"[InternalOpenAIClient.respond_stream] Error occurred while executing the tool: {str(e)}")
 
                     send_log_message(f"""
                     🚨 Error logs have been delivered to the assistant. Proceeding with the next actions...
@@ -665,7 +600,8 @@ class InternalOpenAIClient:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=self.chat.chat_source
                 )
-                print(f"[InternalOpenAIClient.respond_stream] Created the transaction associated with the tool response.")
+                print(
+                    f"[InternalOpenAIClient.respond_stream] Created the transaction associated with the tool response.")
             except Exception as e:
                 print(f"[InternalOpenAIClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
 
@@ -688,11 +624,12 @@ class InternalOpenAIClient:
             # apply the recursive call to the self function to get another reply from the assistant
             print(f"[InternalOpenAIClient.respond_stream] Recursive call to the respond function.")
             print(f"[InternalOpenAIClient.respond_stream] Tool message: {tool_message}")
-            return self.respond_stream(latest_message=tool_message, prev_tool_name=prev_tool_name, with_media=with_media,
-                                file_uris=file_uris, image_uris=image_uris)
+            return self.respond_stream(latest_message=tool_message, prev_tool_name=prev_tool_name,
+                                       with_media=with_media,
+                                       file_uris=file_uris, image_uris=image_uris)
 
         # reset the active chain size
-        ACTIVE_CHAIN_SIZE = 0
+        apps._services.llms.utils.constant_utils.ACTIVE_CHAIN_SIZE = 0
         # ONLY for export assistants API
         if with_media:
             print(
@@ -859,16 +796,14 @@ class InternalOpenAIClient:
             if final_response == DEFAULT_ERROR_MESSAGE:
                 final_response += get_technical_error_log(error_logs=str(e))
                 # Reset the retry mechanism
-                global ACTIVE_RETRY_COUNT
-                ACTIVE_RETRY_COUNT = 0
+                apps._services.llms.utils.constant_utils.ACTIVE_RETRY_COUNT = 0
                 print(f"[InternalOpenAIClient.respond] Error occurred while responding to the user: {str(e)}")
 
         # if the final_response includes a tool usage call, execute the tool
         tool_response_list, json_parts_of_response = [], []
         if find_json_presence(final_response):
             # check for the rate limits
-            global ACTIVE_CHAIN_SIZE
-            if ACTIVE_CHAIN_SIZE > self.assistant.tool_max_chains:
+            if apps._services.llms.utils.constant_utils.ACTIVE_CHAIN_SIZE > self.assistant.tool_max_chains:
                 idle_overflow_message = get_maximum_tool_chains_reached_log(final_response=final_response)
 
                 try:
@@ -894,11 +829,10 @@ class InternalOpenAIClient:
                     print(f"[InternalOpenAIClient.respond] Error occurred while saving the transaction: {str(e)}")
                     return idle_overflow_message
 
-                ACTIVE_CHAIN_SIZE = 0
+                apps._services.llms.utils.constant_utils.ACTIVE_CHAIN_SIZE = 0
                 return idle_overflow_message
 
-            global ACTIVE_TOOL_RETRY_COUNT
-            if ACTIVE_TOOL_RETRY_COUNT > self.assistant.tool_max_attempts_per_instance:
+            if apps._services.llms.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT > self.assistant.tool_max_attempts_per_instance:
                 idle_overflow_message = get_maximum_tool_attempts_reached_log(final_response=final_response)
 
                 try:
@@ -924,11 +858,11 @@ class InternalOpenAIClient:
                     print(f"[InternalOpenAIClient.respond] Error occurred while saving the transaction: {str(e)}")
                     return idle_overflow_message
 
-                ACTIVE_TOOL_RETRY_COUNT = 0
+                apps._services.llms.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT = 0
                 return idle_overflow_message
 
             # increase the retry count for tool
-            ACTIVE_TOOL_RETRY_COUNT += 1
+            apps._services.llms.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT += 1
 
             json_parts_of_response = find_json_presence(final_response)
             tool_name = None
@@ -941,7 +875,7 @@ class InternalOpenAIClient:
                     )
                     tool_response, tool_name, file_uris, image_uris = tool_executor.use_tool()
                     if tool_name is not None and tool_name != prev_tool_name:
-                        ACTIVE_CHAIN_SIZE += 1
+                        apps._services.llms.utils.constant_utils.ACTIVE_CHAIN_SIZE += 1
                         prev_tool_name = tool_name
 
                     tool_response_list.append(f"""
@@ -1034,7 +968,7 @@ class InternalOpenAIClient:
                                 file_uris=file_uris, image_uris=image_uris)
 
         # reset the active chain size
-        ACTIVE_CHAIN_SIZE = 0
+        apps._services.llms.utils.constant_utils.ACTIVE_CHAIN_SIZE = 0
         # ONLY for export assistants API
         if with_media:
             print(
@@ -1938,7 +1872,8 @@ class InternalOpenAIClient:
 
         except Exception as e:
             response["message"] = get_audio_generation_error_log(error_logs=str(e))
-            print(f"[InternalOpenAIClient.text_to_audio_message] An error occurred while generating the audio: {str(e)}")
+            print(
+                f"[InternalOpenAIClient.text_to_audio_message] An error occurred while generating the audio: {str(e)}")
             return response
 
         # clean the file from the temp directory

@@ -33,7 +33,8 @@ class DownloadExecutor:
         return merged_name
 
     def retrieve(self, url: str):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         # download file from URL
         try:
             response = requests.get(url)

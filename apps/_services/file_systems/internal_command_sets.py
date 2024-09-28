@@ -1,5 +1,3 @@
-
-
 class DataSourceFileSystemsOsTypeNames:
     LINUX = 'linux'
     MACOS = 'macos'

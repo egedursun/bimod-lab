@@ -1,8 +1,8 @@
 import json
 
-from apps._services.browsers.browser_executor import BrowserActionsNames
+from apps._services.browsers.utils import BrowserActionsNames
 from apps._services.llms.helpers.helper_prompts import get_json_decode_error_log
-from apps._services.tools.const import ToolTypeNames, get_no_knowledge_base_connection_error_log, \
+from apps._services.tools.utils import ToolTypeNames, get_no_knowledge_base_connection_error_log, \
     get_no_tool_found_error_log
 from apps._services.tools.execution_handlers.audio_processing_execution_tool_handler import \
     execute_audio_processing_tool
@@ -58,11 +58,6 @@ from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.multimodal_chat.models import MultimodalChat
 from config.settings import MEDIA_URL
-
-
-class ExecutionTypesNames:
-    FILE_INTERPRETATION = "file_interpretation"
-    IMAGE_INTERPRETATION = "image_interpretation"
 
 
 class ToolExecutor:
@@ -134,7 +129,7 @@ class ToolExecutor:
             query = self.tool_usage_json.get("parameters").get("query")
             alpha = self.tool_usage_json.get("parameters").get("alpha")
             code_base_response = execute_code_base_query(connection_id=connection_id, query=query,
-                                                                   alpha=alpha)
+                                                         alpha=alpha)
             code_base_response_raw_str = json.dumps(code_base_response, sort_keys=True, default=str)
             tool_response += code_base_response_raw_str
         ##################################################
@@ -217,8 +212,10 @@ class ToolExecutor:
             if error: return error, None, None, None
             file_paths = self.tool_usage_json.get("parameters").get("file_paths")
             query_string = self.tool_usage_json.get("parameters").get("query")
-            execute_code_response, file_uris, image_uris = execute_code_interpreter(assistant_id=self.assistant.id, chat_id=self.chat.id,
-                                                             file_paths=file_paths, query=query_string)
+            execute_code_response, file_uris, image_uris = execute_code_interpreter(assistant_id=self.assistant.id,
+                                                                                    chat_id=self.chat.id,
+                                                                                    file_paths=file_paths,
+                                                                                    query=query_string)
             code_interpreter_response_raw_str = json.dumps(execute_code_response, sort_keys=True, default=str)
             tool_response += code_interpreter_response_raw_str
         ##################################################
@@ -365,9 +362,9 @@ class ToolExecutor:
         tool_response += f"""
             '''
         """
-        print("-"*50)
+        print("-" * 50)
         print("[ACTIVE-LOG] [ToolExecutor.use_tool] Tool Response Debugger: \n", tool_response)
-        print("-"*50)
+        print("-" * 50)
         if file_uris:
             for i, uri in enumerate(file_uris):
                 if not uri.startswith("http"):

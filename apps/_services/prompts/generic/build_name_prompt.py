@@ -1,5 +1,3 @@
-
-
 def build_structured_name_prompt(name: str, chat_name: str):
     return f"""
         **YOUR NAME:**

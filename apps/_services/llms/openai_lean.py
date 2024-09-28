@@ -1,72 +1,15 @@
-
 from openai import OpenAI
 
 from apps._services.llms.helpers.helper_prompts import INSUFFICIENT_BALANCE_PROMPT, get_technical_error_log, \
     get_json_decode_error_log, embed_tool_call_in_prompt
-from apps._services.llms.utils import find_json_presence
+from apps._services.llms.utils import find_json_presence, ChatRoles, DEFAULT_ERROR_MESSAGE, \
+    GPT_DEFAULT_ENCODING_ENGINE, BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, retry_mechanism, RetryCallersNames
 from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
 from apps._services.tools.tool_executor import ToolExecutor
 from apps.leanmod.models import LeanAssistant
 from apps.multimodal_chat.models import MultimodalLeanChat
 from apps.multimodal_chat.utils import calculate_billable_cost_from_raw, send_log_message, BIMOD_NO_TAG_PLACEHOLDER
-
-
-class ChatRoles:
-    SYSTEM = "system"
-    USER = "user"
-    ASSISTANT = "assistant"
-    ###
-    # Hidden Types (Internal)
-    # [i] - TOOL
-    ###
-
-DEFAULT_ERROR_MESSAGE = "Failed to respond at the current moment. Please try again later."
-GPT_DEFAULT_ENCODING_ENGINE = "cl100k_base"
-
-BIMOD_STREAMING_END_TAG = "<[bimod_streaming_end]>"
-BIMOD_PROCESS_END = "<[bimod_process_end]>"
-STREAMING_WAIT_SECONDS = 0
-
-
-class DefaultImageResolutionChoices:
-    class Min1024Max1792:
-        SQUARE = "1024x1024"
-        PORTRAIT = "1024x1792"
-        LANDSCAPE = "1792x1024"
-
-
-class DefaultImageQualityChoices:
-    STANDARD = "standard"
-    HIGH_DEFINITION = "hd"
-
-
-class RetryCallersNames:
-    RESPOND = "respond"
-    RESPOND_STREAM = "respond_stream"
-
-
-class OpenAITTSVoiceNames:
-    ALLOY = "alloy"  # Male Speaker: Baritone
-    ECHO = "echo"  # Male Speaker: Baritone-Bass
-    FABLE = "fable"  # Male Speaker: Tenor
-    ONYX = "onyx"  # Male Speaker: Bass
-    NOVA = "nova"  # Female Speaker: Older and Wiser
-    SHIMMER = "shimmer"  # Female Speaker: Younger and Energetic
-
-
-def retry_mechanism(client, latest_message, caller="respond"):
-    global ACTIVE_RETRY_COUNT
-    if ACTIVE_RETRY_COUNT < client.assistant.max_retry_count:
-        ACTIVE_RETRY_COUNT += 1
-        if caller == RetryCallersNames.RESPOND:
-            return client.respond(latest_message=latest_message)
-        elif caller == RetryCallersNames.RESPOND_STREAM:
-            return client.respond_stream(latest_message=latest_message)
-        else:
-            return DEFAULT_ERROR_MESSAGE
-    else:
-        return DEFAULT_ERROR_MESSAGE
 
 
 class InternalOpenAILeanClient:
@@ -187,7 +130,8 @@ class InternalOpenAILeanClient:
                 )
                 self.chat.transactions.add(idle_response_transaction)
                 self.chat.save()
-                print(f"[InternalOpenAILeanClient.respond_stream] User has insufficient balance, returning the response.")
+                print(
+                    f"[InternalOpenAILeanClient.respond_stream] User has insufficient balance, returning the response.")
                 final_response = response
                 return final_response
 
@@ -300,9 +244,11 @@ class InternalOpenAILeanClient:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=self.chat.chat_source
                 )
-                print(f"[InternalOpenAILeanClient.respond_stream] Created the transaction associated with the response.")
+                print(
+                    f"[InternalOpenAILeanClient.respond_stream] Created the transaction associated with the response.")
             except Exception as e:
-                print(f"[InternalOpenAILeanClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
+                print(
+                    f"[InternalOpenAILeanClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
 
                 send_log_message(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
@@ -332,7 +278,8 @@ class InternalOpenAILeanClient:
                 # Reset the retry mechanism
                 global ACTIVE_RETRY_COUNT
                 ACTIVE_RETRY_COUNT = 0
-                print(f"[InternalOpenAILeanClient.respond_stream] Error occurred while responding to the user: {str(e)}")
+                print(
+                    f"[InternalOpenAILeanClient.respond_stream] Error occurred while responding to the user: {str(e)}")
 
         # if the final_response includes a tool usage call, execute the tool
         tool_response_list, json_parts_of_response = [], []
@@ -456,7 +403,8 @@ class InternalOpenAILeanClient:
                 """, chat_id=self.chat.id)
 
             except Exception as e:
-                print(f"[InternalOpenAILeanClient.respond_stream] Error occurred while saving the tool request: {str(e)}")
+                print(
+                    f"[InternalOpenAILeanClient.respond_stream] Error occurred while saving the tool request: {str(e)}")
 
                 send_log_message(f"""
             🚨 A critical error occurred while recording the tool request. Cancelling the process.
@@ -488,7 +436,8 @@ class InternalOpenAILeanClient:
                 """, chat_id=self.chat.id)
 
             except Exception as e:
-                print(f"[InternalOpenAILeanClient.respond_stream] Error occurred while saving the tool response: {str(e)}")
+                print(
+                    f"[InternalOpenAILeanClient.respond_stream] Error occurred while saving the tool response: {str(e)}")
 
                 send_log_message(f"""
             🚨 A critical error occurred while recording the tool response. Cancelling the process.
@@ -526,7 +475,8 @@ class InternalOpenAILeanClient:
                 print(
                     f"[InternalOpenAILeanClient.respond_stream] Created the transaction associated with the tool response.")
             except Exception as e:
-                print(f"[InternalOpenAILeanClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
+                print(
+                    f"[InternalOpenAILeanClient.respond_stream] Error occurred while saving the transaction: {str(e)}")
 
                 send_log_message(f"""
             🚨 A critical error occurred while recording the transaction. Cancelling the process.
@@ -607,9 +557,11 @@ class InternalOpenAILeanClient:
                     model=self.chat.lean_assistant.llm_model.model_name,
                     text=latest_message
                 )
-                print(f"[InternalOpenAILeanClient.respond] Calculated the billable cost: {latest_message_billable_cost}")
+                print(
+                    f"[InternalOpenAILeanClient.respond] Calculated the billable cost: {latest_message_billable_cost}")
             except Exception as e:
-                print(f"[InternalOpenAILeanClient.respond] Error occurred while calculating the billable cost: {str(e)}")
+                print(
+                    f"[InternalOpenAILeanClient.respond] Error occurred while calculating the billable cost: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
 
             if latest_message_billable_cost > self.chat.organization.balance:
@@ -807,7 +759,8 @@ class InternalOpenAILeanClient:
 
             # apply the recursive call to the self function to get another reply from the lean assistant
             print(f"[InternalOpenAILeanClient.respond] Recursive call to the respond function.")
-            return self.respond(latest_message=str(tool_response_list), prev_tool_name=prev_tool_name, with_media=with_media,
+            return self.respond(latest_message=str(tool_response_list), prev_tool_name=prev_tool_name,
+                                with_media=with_media,
                                 file_uris=file_uris, image_uris=image_uris)
 
         # ONLY for export lean assistants API

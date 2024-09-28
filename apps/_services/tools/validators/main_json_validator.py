@@ -1,5 +1,3 @@
-
-
 def validate_main_tool_json(tool_usage_json: dict):
     if not tool_usage_json:
         return """

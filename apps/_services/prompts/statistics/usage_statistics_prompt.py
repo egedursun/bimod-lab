@@ -1,5 +1,3 @@
-
-
 def build_usage_statistics_system_prompt(statistics):
     main_instructions = f"""
         **INSTRUCTIONS:**

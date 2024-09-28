@@ -1,13 +1,8 @@
 from collections import defaultdict
 
+from apps._services.data_security.ner.utils import DEFAULT_MODEL, LANGUAGE_TO_MODEL_MAPPING
 from apps.data_security.models import NERIntegration
 import spacy
-
-DEFAULT_MODEL = 'en_core_web_md'
-
-LANGUAGE_TO_MODEL_MAPPING = {
-    'en': 'en_core_web_md'
-}
 
 
 class NERExecutor:
@@ -137,4 +132,3 @@ class NERExecutor:
             print("[NERExecutor.decrypt_text] Error cleaning entity mapping:", e)
 
         return deanonymized_text
-

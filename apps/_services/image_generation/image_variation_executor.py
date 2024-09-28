@@ -5,12 +5,11 @@ import filetype
 import requests
 
 from apps._services.config.costs_map import ToolCostsMap
-from apps._services.ml_models.ml_model_executor import GENERATED_IMAGES_ROOT_PATH
+from apps._services.image_generation.utils import UNCLASSIFIED_FILE_EXTENSION
+from apps._services.ml_models.utils import GENERATED_IMAGES_ROOT_PATH
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from config import settings
 from config.settings import MEDIA_URL
-
-UNCLASSIFIED_FILE_EXTENSION = ".bin"
 
 
 class ImageVariationExecutor:
@@ -20,14 +19,17 @@ class ImageVariationExecutor:
         self.chat = chat
 
     def execute_variate_image(self, image_uri, image_size):
-        from apps._services.llms.openai import InternalOpenAIClient, GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         try:
             openai_client = InternalOpenAIClient(
                 assistant=self.assistant,
                 multimodal_chat=self.chat)
             print(f"[ImageVariationExecutor.execute_variate_image] OpenAI client created successfully.")
         except Exception as e:
-            print(f"[ImageVariationExecutor.execute_variate_image] Error occurred while creating the OpenAI client: {str(e)}")
+            print(
+                f"[ImageVariationExecutor.execute_variate_image] Error occurred while creating the OpenAI client: {str(e)}")
             return None
 
         try:
@@ -36,8 +38,10 @@ class ImageVariationExecutor:
             if response["success"] is False:
                 return response
         except Exception as e:
-            print(f"[ImageVariationExecutor.execute_variate_image] Error occurred while generating the image variation: {str(e)}")
-            return {"success": False, "message": "Error occurred while generating the image variation.", "image_url": None}
+            print(
+                f"[ImageVariationExecutor.execute_variate_image] Error occurred while generating the image variation: {str(e)}")
+            return {"success": False, "message": "Error occurred while generating the image variation.",
+                    "image_url": None}
 
         if response["image_url"]:
             image_openai_url = response["image_url"]
@@ -47,7 +51,8 @@ class ImageVariationExecutor:
                 image_bytes = requests.get(image_openai_url).content
                 print(f"[ImageVariationExecutor.execute_variate_image] Image downloaded successfully.")
             except Exception as e:
-                print(f"[ImageVariationExecutor.execute_variate_image] Error occurred while downloading the image variation resulting file: {str(e)}")
+                print(
+                    f"[ImageVariationExecutor.execute_variate_image] Error occurred while downloading the image variation resulting file: {str(e)}")
                 return {"success": False, "message": "Error occurred while downloading the image variation resulting "
                                                      "file.", "image_url": None}
 
@@ -66,7 +71,8 @@ class ImageVariationExecutor:
                 transaction.save()
                 print(f"[ImageVariationExecutor.execute_variate_image] Transaction saved successfully.")
             except Exception as e:
-                print(f"[ImageVariationExecutor.execute_variate_image] Error occurred while saving the transaction: {str(e)}")
+                print(
+                    f"[ImageVariationExecutor.execute_variate_image] Error occurred while saving the transaction: {str(e)}")
                 return {"success": False, "message": "Error occurred while saving the transaction.", "image_url": None}
 
             if image_bytes:
@@ -85,7 +91,8 @@ class ImageVariationExecutor:
                 if full_uri is not None:
                     full_uris.append(full_uri)
             except Exception as e:
-                print(f"[ImageVariationExecutor.save_images_and_provide_full_uris] Error occurred while saving the image: {str(e)}")
+                print(
+                    f"[ImageVariationExecutor.save_images_and_provide_full_uris] Error occurred while saving the image: {str(e)}")
                 return None
         print(f"[ImageVariationExecutor.save_images_and_provide_full_uris] Full URIs: {full_uris}")
         return full_uris
@@ -104,7 +111,8 @@ class ImageVariationExecutor:
             bucket_name = settings.AWS_STORAGE_BUCKET_NAME
             boto3_client.put_object(Bucket=bucket_name, Key=s3_path, Body=image_bytes)
         except Exception as e:
-            print(f"[ImageVariationExecutor.save_image_and_provide_full_uri] Error occurred while saving variation image: {str(e)}")
+            print(
+                f"[ImageVariationExecutor.save_image_and_provide_full_uri] Error occurred while saving variation image: {str(e)}")
             return None
         print(f"[ImageVariationExecutor.save_image_and_provide_full_uri] Full URI: {full_uri}")
         return full_uri
@@ -115,7 +123,8 @@ class ImageVariationExecutor:
             generated_uuid = str(uuid4())
             additional_uuid = str(uuid4())
         except Exception as e:
-            print(f"[ImageVariationExecutor.generate_save_name] Error occurred while generating the save name: {str(e)}")
+            print(
+                f"[ImageVariationExecutor.generate_save_name] Error occurred while generating the save name: {str(e)}")
             return None
         print(f"[ImageVariationExecutor.generate_save_name] Save name: {generated_uuid}_{additional_uuid}.{extension}")
         return f"{generated_uuid}_{additional_uuid}.{extension}"

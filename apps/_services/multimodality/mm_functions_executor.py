@@ -11,7 +11,8 @@ class CustomFunctionExecutor:
         self.context_assistant = context_assistant
 
     def execute_custom_function(self, input_data):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         function_id = self.function.id
         promise = mm_function_execution_task.delay(function_id, input_data)
         response = promise.get()

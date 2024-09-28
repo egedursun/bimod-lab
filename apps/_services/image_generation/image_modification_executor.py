@@ -6,11 +6,10 @@ import filetype
 import requests
 
 from apps._services.config.costs_map import ToolCostsMap
-from apps._services.ml_models.ml_model_executor import GENERATED_IMAGES_ROOT_PATH
+from apps._services.image_generation.utils import UNCLASSIFIED_FILE_EXTENSION
+from apps._services.ml_models.utils import GENERATED_IMAGES_ROOT_PATH
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from config.settings import MEDIA_URL
-
-UNCLASSIFIED_FILE_EXTENSION = ".bin"
 
 
 class ImageModificationExecutor:
@@ -19,12 +18,15 @@ class ImageModificationExecutor:
         self.chat = chat
 
     def execute_modify_image(self, prompt, edit_image_uri, edit_image_mask_uri, image_size):
-        from apps._services.llms.openai import InternalOpenAIClient, GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         try:
             openai_client = InternalOpenAIClient(assistant=self.assistant, multimodal_chat=self.chat)
             print(f"[ImageModificationExecutor.execute_modify_image] OpenAI client created successfully.")
         except Exception as e:
-            print(f"[ImageModificationExecutor.execute_modify_image] Error occurred while creating the OpenAI client: {str(e)}")
+            print(
+                f"[ImageModificationExecutor.execute_modify_image] Error occurred while creating the OpenAI client: {str(e)}")
             return None
 
         try:
@@ -35,7 +37,8 @@ class ImageModificationExecutor:
             if response["success"] is False:
                 return response
         except Exception as e:
-            print(f"[ImageModificationExecutor.execute_modify_image] Error occurred while generating the edit image: {str(e)}")
+            print(
+                f"[ImageModificationExecutor.execute_modify_image] Error occurred while generating the edit image: {str(e)}")
             return {"success": False, "message": "Error occurred while generating the edit image.", "image_url": None}
 
         if response["image_url"]:
@@ -46,8 +49,10 @@ class ImageModificationExecutor:
                 image_bytes = requests.get(image_openai_url).content
                 print(f"[ImageModificationExecutor.execute_modify_image] Image downloaded successfully.")
             except Exception as e:
-                print(f"[ImageModificationExecutor.execute_modify_image] Error occurred while downloading the edit image resulting file: {str(e)}")
-                return {"success": False, "message": "Error occurred while downloading the edit image resulting file.", "image_url": None}
+                print(
+                    f"[ImageModificationExecutor.execute_modify_image] Error occurred while downloading the edit image resulting file: {str(e)}")
+                return {"success": False, "message": "Error occurred while downloading the edit image resulting file.",
+                        "image_url": None}
 
             try:
                 transaction = LLMTransaction(
@@ -64,7 +69,8 @@ class ImageModificationExecutor:
                 transaction.save()
                 print(f"[ImageModificationExecutor.execute_modify_image] Transaction saved successfully.")
             except Exception as e:
-                print(f"[ImageModificationExecutor.execute_modify_image] Error occurred while saving the transaction: {str(e)}")
+                print(
+                    f"[ImageModificationExecutor.execute_modify_image] Error occurred while saving the transaction: {str(e)}")
                 return {"success": False, "message": "Error occurred while saving the transaction.", "image_url": None}
 
             try:
@@ -73,9 +79,12 @@ class ImageModificationExecutor:
                     print(f"[ImageModificationExecutor.execute_modify_image] Image saved successfully.")
                     return {"success": True, "message": "", "image_uri": image_uri}
             except Exception as e:
-                print(f"[ImageModificationExecutor.execute_modify_image] Error occurred while saving the modified image: {str(e)}")
-                return {"success": False, "message": "Error occurred while saving the modified image.", "image_url": None}
-        return {"success": False, "message": "Error occurred while downloading the edit image resulting file.", "image_url": None}
+                print(
+                    f"[ImageModificationExecutor.execute_modify_image] Error occurred while saving the modified image: {str(e)}")
+                return {"success": False, "message": "Error occurred while saving the modified image.",
+                        "image_url": None}
+        return {"success": False, "message": "Error occurred while downloading the edit image resulting file.",
+                "image_url": None}
 
     @staticmethod
     def save_images_and_provide_full_uris(image_bytes_list):
@@ -86,7 +95,8 @@ class ImageModificationExecutor:
                 if full_uri is not None:
                     full_uris.append(full_uri)
             except Exception as e:
-                print(f"[ImageModificationExecutor.save_images_and_provide_full_uris] Error occurred while saving the images: {str(e)}")
+                print(
+                    f"[ImageModificationExecutor.save_images_and_provide_full_uris] Error occurred while saving the images: {str(e)}")
         print(f"[ImageModificationExecutor.save_images_and_provide_full_uris] Full URIs: {full_uris}")
         return full_uris
 
@@ -105,7 +115,8 @@ class ImageModificationExecutor:
             bucket_name = os.getenv("AWS_STORAGE_BUCKET_NAME")
             boto3_client.put_object(Bucket=bucket_name, Key=s3_uri, Body=image_bytes)
         except Exception as e:
-            print(f"[ImageModificationExecutor.save_image_and_provide_full_uri] Error occurred while saving image: {str(e)}")
+            print(
+                f"[ImageModificationExecutor.save_image_and_provide_full_uri] Error occurred while saving image: {str(e)}")
             return None
         print(f"[ImageModificationExecutor.save_image_and_provide_full_uri] Full URI: {full_uri}")
         return full_uri
@@ -116,7 +127,9 @@ class ImageModificationExecutor:
             generated_uuid = str(uuid4())
             additional_uuid = str(uuid4())
         except Exception as e:
-            print(f"[ImageModificationExecutor.generate_save_name] Error occurred while generating the save name: {str(e)}")
+            print(
+                f"[ImageModificationExecutor.generate_save_name] Error occurred while generating the save name: {str(e)}")
             return None
-        print(f"[ImageModificationExecutor.generate_save_name] Save name: {generated_uuid}_{additional_uuid}.{extension}")
+        print(
+            f"[ImageModificationExecutor.generate_save_name] Save name: {generated_uuid}_{additional_uuid}.{extension}")
         return f"{generated_uuid}_{additional_uuid}.{extension}"

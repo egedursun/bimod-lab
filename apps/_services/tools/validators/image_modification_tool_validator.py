@@ -1,5 +1,3 @@
-
-
 def validate_image_modification_tool_json(tool_usage_json: dict):
     if "parameters" not in tool_usage_json:
         return """

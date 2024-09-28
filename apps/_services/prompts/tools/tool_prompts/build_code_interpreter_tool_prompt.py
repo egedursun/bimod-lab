@@ -1,4 +1,4 @@
-from apps._services.tools.const import ToolTypeNames
+from apps._services.tools.utils import ToolTypeNames
 from config.settings import MEDIA_URL
 
 

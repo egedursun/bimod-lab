@@ -6,11 +6,10 @@ import filetype
 import requests
 
 from apps._services.config.costs_map import ToolCostsMap
-from apps._services.storages.storage_executor import GENERATED_IMAGES_ROOT_PATH
+from apps._services.image_generation.utils.constant_utils import UNCLASSIFIED_FILE_EXTENSION
+from apps._services.storages.utils import GENERATED_IMAGES_ROOT_PATH
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from config.settings import MEDIA_URL
-
-UNCLASSIFIED_FILE_EXTENSION = ".bin"
 
 
 class ImageGeneratorExecutor:
@@ -19,7 +18,9 @@ class ImageGeneratorExecutor:
         self.chat = chat
 
     def execute_generate_image(self, prompt, image_size, quality):
-        from apps._services.llms.openai import InternalOpenAIClient, GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         try:
             openai_client = InternalOpenAIClient(
                 assistant=self.assistant,

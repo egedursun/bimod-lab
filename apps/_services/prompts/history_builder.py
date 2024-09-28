@@ -10,7 +10,6 @@ import base64 as b64
 
 
 class HistoryBuilder:
-
     class ChatRoles:
         SYSTEM = "SYSTEM"
         USER = "USER"
@@ -18,8 +17,8 @@ class HistoryBuilder:
         TOOL = "TOOL"
 
     @staticmethod
-    def build(chat: MultimodalChat, ner_executor:  NERExecutor = None):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE
+    def build(chat: MultimodalChat, ner_executor: NERExecutor = None):
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
         chat_messages = chat.chat_messages.all().order_by("sent_at")
         context_history = []
         temporary_uuid = uuid.uuid4()
@@ -46,7 +45,8 @@ class HistoryBuilder:
                     except Exception as e:
                         print(f"[HistoryBuilder.build] Error reading image file: {e}")
                         continue
-                    image_content_wrapper = {"type": "image_url", "image_url": {"url": f"data:image/{image_url.split('.')[-1]};base64,{image_b64}"}}
+                    image_content_wrapper = {"type": "image_url", "image_url": {
+                        "url": f"data:image/{image_url.split('.')[-1]};base64,{image_b64}"}}
                     image_uri_info_wrapper = {"type": "text", "text": f"Detected Image URLs: {image_url}"}
                     content_wrapper.append(image_content_wrapper)
                     content_wrapper.append(image_uri_info_wrapper)
@@ -105,7 +105,7 @@ class HistoryBuilder:
 
     @staticmethod
     def build_leanmod(lean_chat: MultimodalLeanChat):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
         chat_messages = lean_chat.lean_chat_messages.all().order_by("sent_at")
         context_history = []
         temporary_uuid = uuid.uuid4()

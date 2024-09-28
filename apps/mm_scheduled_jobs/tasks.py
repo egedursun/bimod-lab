@@ -27,7 +27,8 @@ def generate_scheduled_job_chat_name(scheduled_job_name):
 def execute_scheduled_job(scheduled_job_id):
     from apps.mm_scheduled_jobs.models import ScheduledJob, ScheduledJobInstance
     from apps.mm_scheduled_jobs.models import ScheduledJobInstanceStatusesNames
-    from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+    from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+    from apps._services.llms.utils import ChatRoles
     # Logic to execute the scheduled job
     job = ScheduledJob.objects.get(id=scheduled_job_id)
     # [-1] Check if the execution count is more than the maximum runs, if so delete the ScheduledJob, and return

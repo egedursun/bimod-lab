@@ -2,15 +2,6 @@ from apps._services.config.costs_map import ToolCostsMap
 from apps.dashboard.utils import TransactionSourcesNames
 
 
-class AudioProcessingExecutorActionsNames:
-    TTS = "tts"
-    STT = "stt"
-
-    @staticmethod
-    def as_list():
-        return [AudioProcessingExecutorActionsNames.TTS, AudioProcessingExecutorActionsNames.STT]
-
-
 class AudioProcessingExecutor:
 
     def __init__(self, assistant, chat):
@@ -22,7 +13,8 @@ class AudioProcessingExecutor:
 
     def convert_audio_to_text(self, audio_file_path: str):
         from apps.llm_transaction.models import LLMTransaction
-        from apps._services.llms.openai import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
 
         try:
             transaction = LLMTransaction(
@@ -44,7 +36,8 @@ class AudioProcessingExecutor:
         return response
 
     def convert_text_to_audio_message(self, message):
-        from apps._services.llms.openai import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         from apps.llm_transaction.models import LLMTransaction
 
         try:
@@ -67,7 +60,8 @@ class AudioProcessingExecutor:
         return response
 
     def convert_text_to_audio_file(self, text_content: str, voice_selection: str):
-        from apps._services.llms.openai import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         from apps.llm_transaction.models import LLMTransaction
 
         try:

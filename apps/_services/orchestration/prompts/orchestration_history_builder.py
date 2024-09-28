@@ -8,7 +8,6 @@ from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 
 
 class OrchestrationHistoryBuilder:
-
     class ChatRoles:
         SYSTEM = "SYSTEM"
         USER = "USER"
@@ -112,7 +111,8 @@ class OrchestrationHistoryBuilder:
                     except Exception as e:
                         print(f"[HistoryBuilder.build] Error reading image file: {e}")
                         continue
-                    image_content_wrapper = {"type": "image_url", "image_url": {"url": f"data:image/{image_url.split('.')[-1]};base64,{image_b64}"}}
+                    image_content_wrapper = {"type": "image_url", "image_url": {
+                        "url": f"data:image/{image_url.split('.')[-1]};base64,{image_b64}"}}
                     image_uri_info_wrapper = {"type": "text", "text": f"Detected Image URLs: {image_url}"}
                     content_wrapper.append(image_content_wrapper)
                     content_wrapper.append(image_uri_info_wrapper)

@@ -10,7 +10,8 @@ def execute_expert_network_query(assistant_id, query, image_urls, file_urls):
     network_object = network_assistant_reference.network
     try:
         executor = ExpertNetworkExecutor(network=network_object)
-        response = executor.consult_by_query(reference=network_assistant_reference, query=query, image_urls=image_urls, file_urls=file_urls)
+        response = executor.consult_by_query(reference=network_assistant_reference, query=query, image_urls=image_urls,
+                                             file_urls=file_urls)
     except Exception as e:
         error = (f"[leanmod_expert_network_execution_handler.execute_expert_network_query] Error occurred while "
                  f"executing the function: {str(e)}")

@@ -1,5 +1,3 @@
-
-
 def build_structured_orchestrator_primary_guidelines():
     return f"""
     **ORCHESTRATOR - PRIMARY GUIDELINES:**
@@ -163,4 +161,3 @@ def build_structured_orchestrator_instructions_prompt(maestro):
     '''
 
     """
-

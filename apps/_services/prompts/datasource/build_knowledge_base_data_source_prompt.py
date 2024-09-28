@@ -1,4 +1,3 @@
-
 from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
 
@@ -14,7 +13,7 @@ def build_knowledge_base_data_source_prompt(assistant: Assistant):
             """
 
     for i, knowledge_base_data_source in enumerate(knowledge_base_data_sources):
-        kb:DocumentKnowledgeBaseConnection = knowledge_base_data_source
+        kb: DocumentKnowledgeBaseConnection = knowledge_base_data_source
         response_prompt += f"""
                 [Knowledge Base Data Source ID: {kb.id}]
                     System Provider: {kb.provider}

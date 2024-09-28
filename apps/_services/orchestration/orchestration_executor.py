@@ -1,24 +1,20 @@
-
 import websockets
 
-from apps._services.llms.openai import ChatRoles, InternalOpenAIClient
-from apps._services.llms.utils import find_json_presence
-from apps._services.orchestration.const import get_orchestration_json_decode_error_log
+from apps._services.llms.openai import InternalOpenAIClient
+from apps._services.llms.utils import find_json_presence, ChatRoles
 from apps._services.orchestration.orchestration_tool_manager import OrchestrationToolManager
 from apps._services.orchestration.prompts.calls.build_maestro_to_assistant_instructions import \
     build_maestro_to_assistant_instructions_prompt
 from apps._services.orchestration.prompts.orchestration_history_builder import OrchestrationHistoryBuilder
 from apps._services.orchestration.prompts.orchestration_prompt_builder import OrchestrationPromptBuilder
-from apps._services.orchestration.utils import send_orchestration_message, embed_orchestration_tool_call_in_prompt
+from apps._services.orchestration.utils import send_orchestration_message, embed_orchestration_tool_call_in_prompt, \
+    DEFAULT_ORCHESTRATION_ERROR_MESSAGE, DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE, \
+    get_orchestration_json_decode_error_log
 from apps.assistants.models import Assistant
 from apps.multimodal_chat.models import MultimodalChat, ChatSourcesNames, MultimodalChatMessage
 from apps.multimodal_chat.utils import BIMOD_NO_TAG_PLACEHOLDER, BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END
 from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
-
-DEFAULT_ORCHESTRATION_ERROR_MESSAGE = ("The Orchestration Executor has encountered a fatal error. Please try again "
-                                       "later.")
-DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE = "The Worker Assistant has encountered a fatal error. Please try again later."
 
 
 class OrchestrationExecutor:
@@ -153,7 +149,8 @@ class OrchestrationExecutor:
                 ############################
                 if content is not None:
                     accumulated_response += content
-                    send_orchestration_message(f"""{content}""", stop_tag=BIMOD_NO_TAG_PLACEHOLDER, query_id=self.query_chat.id)
+                    send_orchestration_message(f"""{content}""", stop_tag=BIMOD_NO_TAG_PLACEHOLDER,
+                                               query_id=self.query_chat.id)
             send_orchestration_message(f"""""", stop_tag=BIMOD_STREAMING_END_TAG, query_id=self.query_chat.id)
 
             send_orchestration_message(f"""
@@ -165,7 +162,8 @@ class OrchestrationExecutor:
                             """, query_id=self.query_chat.id)
 
             print(f"[OrchestrationExecutor.execute_for_query] Processed the response from the LLM.")
-            print(f"[OrchestrationExecutor.execute_for_query] Accumulated the Orchestrator response: {accumulated_response}")
+            print(
+                f"[OrchestrationExecutor.execute_for_query] Accumulated the Orchestrator response: {accumulated_response}")
         except Exception as e:
             print(
                 f"[OrchestrationExecutor.execute_for_query] Error occurred while processing the response from the LLM: {str(e)}")
@@ -230,7 +228,8 @@ class OrchestrationExecutor:
             📦 Worker Assistant Response from: '{assistant.name}' is being delivered to the Orchestrator for further actions...
                 """, query_id=self.query_chat.id)
 
-                print(f"[OrchestrationExecutor.execute_for_query] Response from the assistant worker is received: {tool_response}")
+                print(
+                    f"[OrchestrationExecutor.execute_for_query] Response from the assistant worker is received: {tool_response}")
 
                 send_orchestration_message(f"""
             🎯 Tool response from: '{assistant.name}' has been successfully delivered to the Orchestrator.
@@ -297,7 +296,8 @@ class OrchestrationExecutor:
                 """, query_id=self.query_chat.id)
 
             except Exception as e:
-                print(f"[OrchestrationExecutor.execute_for_query] Error while saving the Worker Assistant call record: {e}")
+                print(
+                    f"[OrchestrationExecutor.execute_for_query] Error while saving the Worker Assistant call record: {e}")
 
                 send_orchestration_message(f"""
             🚨 A critical error occurred while recording the tool request. Cancelling the process.
@@ -321,7 +321,8 @@ class OrchestrationExecutor:
                 )
                 self.query_chat.logs.add(tool_message)
                 self.query_chat.save()
-                print(f"[OrchestrationExecutor.execute_for_query] Worker Assistant response records have been prepared.")
+                print(
+                    f"[OrchestrationExecutor.execute_for_query] Worker Assistant response records have been prepared.")
 
                 # Stream the tool response to the UI
                 send_orchestration_message(f"""

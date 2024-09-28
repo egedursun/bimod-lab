@@ -8,31 +8,12 @@ from weaviate.config import AdditionalConfig, Timeout
 from apps._services.codebase.helpers.class_creator import create_classes_helper
 from apps._services.codebase.helpers.class_deleter import delete_weaviate_class_helper
 from apps._services.codebase.helpers.repository_deleter import delete_repository_helper
+from apps._services.codebase.utils import WEAVIATE_INITIALIZATION_TIMEOUT, WEAVIATE_QUERY_TIMEOUT, \
+    WEAVIATE_INSERT_TIMEOUT
 from apps._services.config.costs_map import ToolCostsMap
 from apps.datasource_codebase.tasks import embed_repository_chunks, embed_repository_data, \
     split_repository_into_chunks, index_repository_helper
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
-
-TASK_PROCESSING_TIMEOUT_SECONDS = (60 * 60)  # 60 minutes for all the tasks for a pipeline to complete maximum
-WEAVIATE_INITIALIZATION_TIMEOUT = 30  # 30 seconds for the weaviate initialization
-WEAVIATE_QUERY_TIMEOUT = 60  # 60 seconds for the weaviate query
-WEAVIATE_INSERT_TIMEOUT = 120  # 120 seconds for the weaviate insert
-
-
-class SupportedDocumentTypesNames:
-    PDF = 'pdf'
-    HTML = 'html'
-    CSV = 'csv'
-    DOCX = 'docx'
-    IPYNB = 'ipynb'
-    JSON = 'json'
-    XML = 'xml'
-    TXT = 'txt'
-    MD = 'md'
-    RTF = 'rtf'
-    ODT = 'odt'
-    POWERPOINT = 'pptx'
-    XLSX = 'xlsx'
 
 
 class WeaviateExecutor:
@@ -78,7 +59,7 @@ class WeaviateExecutor:
 
     @staticmethod
     def decode_vectorizer(vectorizer_name):
-        from apps.assistants.models import VectorizerNames
+        from apps.assistants.utils import VectorizerNames
         if vectorizer_name == VectorizerNames.TEXT2VEC_OPENAI:
             return wvc.config.Configure.Vectorizer.text2vec_openai()
         else:
@@ -168,7 +149,7 @@ class WeaviateExecutor:
 
     @staticmethod
     def is_supported_file(file_path: str) -> bool:
-        from apps.datasource_codebase.models import SupportedCodeFileTypes
+        from apps.datasource_codebase.utils import SupportedCodeFileTypes
         supported_files = SupportedCodeFileTypes.as_list()
         file_extension = "." + file_path.split(".")[-1]
         if file_extension in supported_files:
@@ -184,7 +165,8 @@ class WeaviateExecutor:
                 content = f.readlines()
         except Exception as e:
             print(f"[WeaviateExecutor.extract_file_content_and_metadata] Error extracting content from file: {e}")
-        print(f"[WeaviateExecutor.extract_file_content_and_metadata] Successfully extracted content from file: {file_path}")
+        print(
+            f"[WeaviateExecutor.extract_file_content_and_metadata] Successfully extracted content from file: {file_path}")
         return content
 
     @staticmethod
@@ -212,8 +194,9 @@ class WeaviateExecutor:
                                       "api_key": self.connection_object.provider_api_key},
                            "connection_id": self.connection_object.id}
         try:
-            doc_id, doc_uuid, error = embed_repository_data(executor_params=executor_params, document=document, path=path,
-                                                          number_of_chunks=number_of_chunks)
+            doc_id, doc_uuid, error = embed_repository_data(executor_params=executor_params, document=document,
+                                                            path=path,
+                                                            number_of_chunks=number_of_chunks)
         except Exception as e:
             print(f"[WeaviateExecutor.embed_document] Error embedding the document: {e}")
             return None, None, None
@@ -226,14 +209,15 @@ class WeaviateExecutor:
             "connection_id": self.connection_object.id}
         try:
             errors = embed_repository_chunks(executor_params=executor_params, chunks=chunks, path=path,
-                                           document_id=document_id, document_uuid=document_uuid)
+                                             document_id=document_id, document_uuid=document_uuid)
         except Exception as e:
             print(f"[WeaviateExecutor.embed_document_chunks] Error embedding the document chunks: {e}")
             return
         return errors
 
     def search_hybrid(self, query: str, alpha: float):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         search_knowledge_base_class_name = f"{self.connection_object.class_name}Chunks"
         client = self.connect_c()
         documents_collection = client.collections.get(search_knowledge_base_class_name)

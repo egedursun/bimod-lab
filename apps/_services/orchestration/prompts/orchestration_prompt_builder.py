@@ -31,18 +31,22 @@ class OrchestrationPromptBuilder:
         # GENERIC PROMPTS
         primary_guidelines_prompt = build_structured_orchestrator_primary_guidelines()
         structured_instructions_prompt = build_structured_orchestrator_instructions_prompt(maestro=maestro)
-        structured_response_template_prompt = build_structured_response_template_prompt(response_template=response_template)
+        structured_response_template_prompt = build_structured_response_template_prompt(
+            response_template=response_template)
         structured_audience_prompt = build_structured_audience_prompt(audience=audience)
         structured_tone_prompt = build_structured_tone_prompt(tone=tone)
-        structured_response_language_prompt = build_structured_response_language_prompt(response_language=response_language)
+        structured_response_language_prompt = build_structured_response_language_prompt(
+            response_language=response_language)
         structured_user_information_prompt = build_structured_user_information_prompt(user=user)
         ##################################################
         # MULTI MODALITY PROMPTS
         structured_workers_multi_modality_prompt = build_orchestration_workers_multi_modality_prompt(maestro=maestro)
         ##################################################
         # TOOL PROMPTS
-        structured_orchestration_tool_usage_instructions_prompt = build_orchestration_structured_tool_usage_instructions_prompt(maestro=maestro)
-        structured_orchestration_worker_assistant_call_execution_tool_prompt = (build_structured_tool_prompt__orchestration_worker_assistant_call_execution())
+        structured_orchestration_tool_usage_instructions_prompt = build_orchestration_structured_tool_usage_instructions_prompt(
+            maestro=maestro)
+        structured_orchestration_worker_assistant_call_execution_tool_prompt = (
+            build_structured_tool_prompt__orchestration_worker_assistant_call_execution())
         ##################################################
 
         # Combine the prompts

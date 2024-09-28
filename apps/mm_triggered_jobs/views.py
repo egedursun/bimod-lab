@@ -95,7 +95,8 @@ class TriggeredJobWebhookListenerView(View):
 
     @staticmethod
     def handle_triggered_job(job, instance):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         try:
             # [2] Create a chat
             chat = MultimodalChat.objects.create(

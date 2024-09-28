@@ -1,5 +1,3 @@
-
-
 def build_context_memory_instructions_prompt():
     context_memory_instructions = f"""
         ---

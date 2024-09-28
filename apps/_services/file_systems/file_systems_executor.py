@@ -6,9 +6,6 @@ from paramiko import SSHClient
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 
 
-MAX_CHARACTERS_RETRIEVAL = 10_000
-
-
 class FileSystemsExecutor:
     def __init__(self, connection):
         self.connection = connection
@@ -96,7 +93,7 @@ class FileSystemsExecutor:
             # convert directory tree to json
             directory_dict = json.dumps(self.parse_ls_r_output(file_directory_tree), default=str)
             directory_dict = directory_dict[:int(self.connection.os_read_limit_tokens)] if (
-                    len(directory_dict) > int(self.connection.os_read_limit_tokens)) else directory_dict
+                len(directory_dict) > int(self.connection.os_read_limit_tokens)) else directory_dict
             print(f"[FileSystemsExecutor.retrieve_file_tree_schema] Directory dict is parsed successfully.")
         except Exception as e:
             print(f"[FileSystemsExecutor.retrieve_file_tree_schema] Error retrieving the file tree schema: {e}")
@@ -106,7 +103,8 @@ class FileSystemsExecutor:
         return directory_dict
 
     def execute_file_system_command_set(self, commands: list[str]):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         client = self.connect_c()
         results = {
             "status": True,

@@ -7,46 +7,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from lxml.html.clean import Cleaner
 
+from apps._services.browsers.utils import IMPLICIT_WAIT_SECONDS, SearchEnginesNames, BrowserURLs, FindByTypes, \
+    BrowserActionsNames
 from apps._services.config.costs_map import ToolCostsMap
 from apps.datasource_browsers.utils import BrowsingReadingAbilitiesNames
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
-
-
-# Browser implicit waiting duration
-IMPLICIT_WAIT_SECONDS = 2
-
-
-class SearchEnginesNames:
-    GOOGLE = "google"
-
-
-class BrowserURLs:
-    GOOGLE = "https://www.google.com"
-
-
-class FindByTypes:
-    ID = By.ID
-    NAME = By.NAME
-    CSS_SELECTOR = By.CSS_SELECTOR
-    XPATH = By.XPATH
-    LINK_TEXT = By.LINK_TEXT
-    PARTIAL_LINK_TEXT = By.PARTIAL_LINK_TEXT
-    TAG_NAME = By.TAG_NAME
-    CLASS_NAME = By.CLASS_NAME
-
-    @staticmethod
-    def as_list():
-        return [FindByTypes.ID, FindByTypes.NAME, FindByTypes.CSS_SELECTOR, FindByTypes.XPATH, FindByTypes.LINK_TEXT,
-                FindByTypes.PARTIAL_LINK_TEXT, FindByTypes.TAG_NAME, FindByTypes.CLASS_NAME]
-
-
-class BrowserActionsNames:
-    BROWSER_SEARCH = "browser_search"
-    CLICK_URL_IN_SEARCH = "click_url_in_search"
-
-    @staticmethod
-    def as_list():
-        return [BrowserActionsNames.BROWSER_SEARCH, BrowserActionsNames.CLICK_URL_IN_SEARCH]
 
 
 class BrowsingExecutor:
@@ -87,7 +52,8 @@ class BrowsingExecutor:
             print(f"[BrowsingExecutor.__init__] Error occurred while connecting to the driver: {str(e)}")
 
     def act(self, action, **kwargs):
-        from apps._services.llms.openai import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         try:
             transaction = LLMTransaction(
                 organization=self.connection.assistant.organization,
@@ -218,7 +184,8 @@ class BrowsingExecutor:
             print(f"[BrowsingExecutor.get_page_content] Got the page content.")
             return clean_content
         except Exception as e:
-            return (f"[BrowsingExecutor.get_page_content] There has been an unexpected error while trying to get the content on browsing: {e}")
+            return (
+                f"[BrowsingExecutor.get_page_content] There has been an unexpected error while trying to get the content on browsing: {e}")
 
     def get_search_results(self):
         try:
@@ -226,7 +193,8 @@ class BrowsingExecutor:
             image_bytes = base64.b64decode(image_b64)
             print(f"[BrowsingExecutor.get_search_results] Got the screenshot.")
         except Exception as e:
-            return (f"[BrowsingExecutor.get_search_results] There has been an unexpected error while trying to get the screenshot on browsing: {e}")
+            return (
+                f"[BrowsingExecutor.get_search_results] There has been an unexpected error while trying to get the screenshot on browsing: {e}")
         try:
             raw_results = self.d.find_elements(By.CSS_SELECTOR, "div.g")
             clean_results = self.get_cleaned_search_results(raw_results)
@@ -240,7 +208,8 @@ class BrowsingExecutor:
                 print(f"[BrowsingExecutor.get_search_results] Filtered on blacklist: {clean_results}")
             return clean_results, image_bytes
         except Exception as e:
-            return (f"[BrowsingExecutor.get_search_results] There has been an unexpected error while trying to get the search results on browsing: {e}")
+            return (
+                f"[BrowsingExecutor.get_search_results] There has been an unexpected error while trying to get the search results on browsing: {e}")
 
     def wait(self):
         try:
@@ -255,7 +224,8 @@ class BrowsingExecutor:
                 return f"[BrowsingExecutor.find] Invalid 'by' type: {by}. Must be one of {FindByTypes.as_list()}."
             return self.d.find_element(by=by, value=query)
         except Exception as e:
-            return (f"[BrowsingExecutor.find] There has been an unexpected error while trying to find the element on browsing: {e}")
+            return (
+                f"[BrowsingExecutor.find] There has been an unexpected error while trying to find the element on browsing: {e}")
 
     def send_keys(self, element, text):
         try:
@@ -277,8 +247,9 @@ class BrowsingExecutor:
                     return content, image_bytes
             return f"[BrowsingExecutor.click_url_in_search] URL not found in search results: {click_url}"
         except Exception as e:
-            return (f"[BrowsingExecutor.click_url_in_search] There has been an unexpected error while trying to click the URL in the "
-                                       f"search results on browsing: {e}")
+            return (
+                f"[BrowsingExecutor.click_url_in_search] There has been an unexpected error while trying to click the URL in the "
+                f"search results on browsing: {e}")
 
     def click(self, element):
         try:
@@ -332,7 +303,8 @@ class BrowsingExecutor:
                 clean["snippet"] = snippet
                 cleaned_results.append(clean)
             except Exception as e:
-                print(f"[BrowsingExecutor.get_cleaned_search_results] Error occurred while cleaning the search results: {str(e)}")
+                print(
+                    f"[BrowsingExecutor.get_cleaned_search_results] Error occurred while cleaning the search results: {str(e)}")
         print(f"[BrowsingExecutor.get_cleaned_search_results] Cleaned results: {cleaned_results}")
         return cleaned_results
 

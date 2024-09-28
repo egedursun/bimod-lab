@@ -1,4 +1,3 @@
-
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 
 
@@ -29,5 +28,6 @@ def validate_code_base_query_execution_tool_json(tool_usage_json: dict):
             The Code Base Storage Connection with the ID: {connection.id} does not exist in the system.
             Please make sure you are passing a valid code base storage connection ID.
         """
-    print(f"[code_base_query_execution_tool_validator.validate_code_base_query_execution_tool_json] Validation is successful.")
+    print(
+        f"[code_base_query_execution_tool_validator.validate_code_base_query_execution_tool_json] Validation is successful.")
     return None

@@ -1,5 +1,3 @@
-
-
 def validate_context_history_query_execution_tool_json(tool_usage_json: dict):
     if "parameters" not in tool_usage_json:
         return """
@@ -20,5 +18,6 @@ def validate_context_history_query_execution_tool_json(tool_usage_json: dict):
             using the Context History Query Execution tool. Please make sure you are defining the 'alpha' field in the
             parameters field of the tool_usage_json.
         """
-    print(f"[context_history_query_execution_tool_validator.validate_context_history_query_execution_tool_json] Validation is successful.")
+    print(
+        f"[context_history_query_execution_tool_validator.validate_context_history_query_execution_tool_json] Validation is successful.")
     return None

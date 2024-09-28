@@ -1,5 +1,3 @@
-
-
 def validate_browser_execution_tool_json(tool_usage_json: dict):
     if "parameters" not in tool_usage_json:
         return """
@@ -23,7 +21,7 @@ def validate_browser_execution_tool_json(tool_usage_json: dict):
         """
 
     if parameters["action"] not in [
-       "browser_search", "click_url_in_search"
+        "browser_search", "click_url_in_search"
     ]:
         return """
             The 'action' field in the 'parameters' field of the tool_usage_json must be one of the following values:

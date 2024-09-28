@@ -1,11 +1,11 @@
-
 from django.contrib.auth.models import User
 
 from apps._services.prompts.datasource.build_browser_data_source_prompt import build_browsing_data_source_prompt, \
     build_lean_browsing_data_source_prompt
 from apps._services.prompts.datasource.build_code_base_data_source_prompt import build_code_base_data_source_prompt, \
     build_lean_code_base_data_source_prompt
-from apps._services.prompts.datasource.build_file_system_data_source_prompt import build_file_system_data_source_prompt, \
+from apps._services.prompts.datasource.build_file_system_data_source_prompt import \
+    build_file_system_data_source_prompt, \
     build_lean_file_system_data_source_prompt
 from apps._services.prompts.datasource.build_knowledge_base_data_source_prompt import \
     build_knowledge_base_data_source_prompt, build_lean_knowledge_base_data_source_prompt
@@ -43,7 +43,8 @@ from apps._services.prompts.multimodality.build_apis_multimodality_prompt import
     build_lean_apis_multi_modality_prompt
 from apps._services.prompts.multimodality.build_functions_multimodality_prompt import \
     build_functions_multi_modality_prompt, build_lean_functions_multi_modality_prompt
-from apps._services.prompts.multimodality.build_scripts_multimodality_prompt import build_scripts_multi_modality_prompt, \
+from apps._services.prompts.multimodality.build_scripts_multimodality_prompt import \
+    build_scripts_multi_modality_prompt, \
     build_lean_scripts_multi_modality_prompt
 from apps._services.prompts.tools.build_tool_usage_instructions_prompt import \
     build_structured_tool_usage_instructions_prompt, build_lean_structured_tool_usage_instructions_prompt
@@ -71,8 +72,6 @@ from apps._services.prompts.tools.tool_prompts.build_image_variation_tool_prompt
     build_structured_tool_prompt__image_variation
 from apps._services.prompts.tools.tool_prompts.build_knowledge_base_query_execution_tool_prompt import \
     build_structured_tool_prompt__knowledge_base_query_execution
-from apps._services.prompts.tools.tool_prompts.build_nosql_query_execution_tool_prompt import \
-    build_structured_tool_prompt__nosql_query_execution
 from apps._services.prompts.tools.tool_prompts.build_predict_ml_models_execution_tool_prompt import \
     build_structured_tool_prompt__predict_with_ml_model_execution
 from apps._services.prompts.tools.tool_prompts.build_sql_query_execution_tool_prompt import \
@@ -93,7 +92,8 @@ class PromptBuilder:
 
     @staticmethod
     def build(chat: MultimodalChat, assistant: Assistant, user: User, role: str):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         name = assistant.name
         response_template = assistant.response_template
         audience = assistant.audience
@@ -134,7 +134,6 @@ class PromptBuilder:
         # TOOL PROMPTS
         structured_tool_usage_instructions_prompt = (build_structured_tool_usage_instructions_prompt(assistant))
         structured_sql_query_execution_tool_prompt = (build_structured_tool_prompt__sql_query_execution())
-        _ = (build_structured_tool_prompt__nosql_query_execution())
         structured_knowledge_base_query_execution_tool_prompt = build_structured_tool_prompt__knowledge_base_query_execution()
         structured_code_base_query_execution_tool_prompt = build_structured_tool_prompt__code_base_query_execution()
         structured_vectorized_context_history_query_execution_tool_prompt = build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt()
@@ -234,7 +233,8 @@ class PromptBuilder:
         return prompt
 
     @staticmethod
-    def build_lean(assistant_name: str, instructions:str, audience:str = "standard", tone:str = "formal", language:str = "en",
+    def build_lean(assistant_name: str, instructions: str, audience: str = "standard", tone: str = "formal",
+                   language: str = "en",
                    chat_name: str = "Default"):
         name = assistant_name
         response_language = language
@@ -268,9 +268,6 @@ class PromptBuilder:
         )
         structured_sql_query_execution_tool_prompt = (
             build_structured_tool_prompt__sql_query_execution()
-        )
-        _ = (
-            build_structured_tool_prompt__nosql_query_execution()
         )
         structured_knowledge_base_query_execution_tool_prompt = build_structured_tool_prompt__knowledge_base_query_execution()
         structured_code_base_query_execution_tool_prompt = build_structured_tool_prompt__code_base_query_execution()
@@ -342,7 +339,8 @@ class PromptBuilder:
 
     @staticmethod
     def build_leanmod(chat: MultimodalLeanChat, lean_assistant: LeanAssistant, user: User, role: str):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         name = lean_assistant.name
 
         ##################################################

@@ -13,7 +13,7 @@ class ChatContextManager:
 
     @staticmethod
     def forget_oldest(chat_history, max_messages):
-        from apps._services.llms.openai import ChatRoles
+        from apps._services.llms.utils import ChatRoles
         try:
             instructions = build_context_memory_instructions_prompt()
         except Exception as e:
@@ -30,7 +30,7 @@ class ChatContextManager:
 
     @staticmethod
     def stop_conversation(chat_history: list, max_messages):
-        from apps._services.llms.openai import ChatRoles
+        from apps._services.llms.utils import ChatRoles
         try:
             instructions = build_context_memory_stop_conversation_prompt()
         except Exception as e:
@@ -49,10 +49,12 @@ class ChatContextManager:
     @staticmethod
     def store_as_vector(assistant, chat_history, max_messages,
                         chat_object):
-        from apps._services.llms.openai import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
         try:
-            connection = ContextHistoryKnowledgeBaseConnection.objects.filter(assistant=assistant, chat=chat_object).first()
+            connection = ContextHistoryKnowledgeBaseConnection.objects.filter(assistant=assistant,
+                                                                              chat=chat_object).first()
             executor = MemoryExecutor(connection=connection)
             print(f"[ChatContextManager.store_as_vector] MemoryExecutor created successfully.")
         except Exception as e:
@@ -115,7 +117,8 @@ class ChatContextManager:
             try:
                 context_messages = ChatContextManager.forget_oldest(chat_history, max_messages)
             except Exception as e:
-                print(f"[ChatContextManager.handle_context] Error occurred while forgetting the oldest messages: {str(e)}")
+                print(
+                    f"[ChatContextManager.handle_context] Error occurred while forgetting the oldest messages: {str(e)}")
                 context_messages = chat_history
         elif context_overflow_strategy == ContextOverflowStrategyNames.STOP:
             try:
@@ -132,15 +135,18 @@ class ChatContextManager:
                     max_messages=max_messages
                 )
             except Exception as e:
-                print(f"[ChatContextManager.handle_context] Error occurred while storing the context as vector: {str(e)}")
+                print(
+                    f"[ChatContextManager.handle_context] Error occurred while storing the context as vector: {str(e)}")
                 context_messages = chat_history
         else:
             # No strategy has been set, default to forget
             try:
                 context_messages = ChatContextManager.forget_oldest(chat_history, max_messages)
-                print(f"[ChatContextManager.handle_context] Context has been handled successfully by forgetting the oldest messages.")
+                print(
+                    f"[ChatContextManager.handle_context] Context has been handled successfully by forgetting the oldest messages.")
             except Exception as e:
-                print(f"[ChatContextManager.handle_context] Error occurred while forgetting the oldest messages: {str(e)}")
+                print(
+                    f"[ChatContextManager.handle_context] Error occurred while forgetting the oldest messages: {str(e)}")
                 context_messages = chat_history
         print(f"[ChatContextManager.handle_context] Returning the context messages.")
         return context_messages

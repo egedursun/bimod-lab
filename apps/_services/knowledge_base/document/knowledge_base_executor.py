@@ -6,32 +6,13 @@ from apps._services.config.costs_map import ToolCostsMap
 from apps._services.knowledge_base.document.helpers.class_creator import create_classes_helper
 from apps._services.knowledge_base.document.helpers.class_deleter import delete_weaviate_class_helper
 from apps._services.knowledge_base.document.helpers.document_deleter import delete_document_helper
+from apps._services.knowledge_base.document.utils import WEAVIATE_INITIALIZATION_TIMEOUT, WEAVIATE_QUERY_TIMEOUT, \
+    WEAVIATE_INSERT_TIMEOUT, SupportedDocumentTypesNames
 from apps.datasource_knowledge_base.tasks import load_csv_helper, load_pdf_helper, load_html_helper, load_docx_helper, \
     load_ipynb_helper, load_json_helper, load_xml_helper, load_txt_helper, load_md_helper, load_rtf_helper, \
     load_odt_helper, load_pptx_helper, load_xlsx_helper, split_document_into_chunks, embed_document_data, \
     embed_document_chunks, index_document_helper
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
-
-TASK_PROCESSING_TIMEOUT_SECONDS = (60 * 60)  # 60 minutes for all the tasks for a pipeline to complete maximum
-WEAVIATE_INITIALIZATION_TIMEOUT = 30  # 30 seconds for the weaviate initialization
-WEAVIATE_QUERY_TIMEOUT = 60  # 60 seconds for the weaviate query
-WEAVIATE_INSERT_TIMEOUT = 120  # 120 seconds for the weaviate insert
-
-
-class SupportedDocumentTypesNames:
-    PDF = 'pdf'
-    HTML = 'html'
-    CSV = 'csv'
-    DOCX = 'docx'
-    IPYNB = 'ipynb'
-    JSON = 'json'
-    XML = 'xml'
-    TXT = 'txt'
-    MD = 'md'
-    RTF = 'rtf'
-    ODT = 'odt'
-    POWERPOINT = 'pptx'
-    XLSX = 'xlsx'
 
 
 class WeaviateExecutor:
@@ -170,7 +151,8 @@ class WeaviateExecutor:
                                       "api_key": self.connection_object.provider_api_key},
                            "connection_id": self.connection_object.id}
         try:
-            doc_id, doc_uuid, error = embed_document_data(executor_params=executor_params, document=document, path=path,
+            doc_id, doc_uuid, error = embed_document_data(executor_params=executor_params, document=document,
+                                                          path=path,
                                                           number_of_chunks=number_of_chunks)
         except Exception as e:
             print(f"[WeaviateExecutor.embed_document] Error embedding the document: {e}")
@@ -191,7 +173,8 @@ class WeaviateExecutor:
         return errors
 
     def search_hybrid(self, query: str, alpha: float):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         search_knowledge_base_class_name = f"{self.connection_object.class_name}Chunks"
         client = self.connect_c()
         documents_collection = client.collections.get(search_knowledge_base_class_name)

@@ -1,5 +1,3 @@
-
-
 def validate_expert_network_query_tool_json(tool_usage_json):
     if "parameters" not in tool_usage_json:
         return """

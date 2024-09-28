@@ -1,5 +1,3 @@
-
-
 from apps.assistants.models import Assistant
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 
@@ -15,7 +13,7 @@ def build_code_base_data_source_prompt(assistant: Assistant):
             """
 
     for i, knowledge_base_data_source in enumerate(knowledge_base_data_sources):
-        kb:CodeRepositoryStorageConnection = knowledge_base_data_source
+        kb: CodeRepositoryStorageConnection = knowledge_base_data_source
         response_prompt += f"""
                 [Code Base Storage ID: {kb.id}]
                     System Provider: {kb.provider}

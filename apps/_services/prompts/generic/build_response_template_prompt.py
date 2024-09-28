@@ -1,5 +1,3 @@
-
-
 def build_structured_response_template_prompt(response_template: str):
     return f"""
         **YOUR RESPONSE TEMPLATE:**

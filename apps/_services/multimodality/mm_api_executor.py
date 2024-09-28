@@ -11,7 +11,8 @@ class CustomAPIExecutor:
         self.context_assistant = context_assistant
 
     def execute_custom_api(self, endpoint_name: str, path_values=None, query_values=None, body_values=None):
-        from apps._services.llms.openai import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         api_id = self.api.id
         promise = mm_api_execution_task.delay(
             custom_api_id=api_id,

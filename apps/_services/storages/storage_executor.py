@@ -6,19 +6,12 @@ import filetype
 from PIL import Image
 
 from apps._services.config.costs_map import ToolCostsMap
+from apps._services.storages.utils import UNCLASSIFIED_FILE_EXTENSION, GENERATED_FILES_ROOT_PATH, \
+    GENERATED_IMAGES_ROOT_PATH, DEFAULT_PATH_FREEFORM_USER_SKETCH, DEFAULT_PATH_EDIT_IMAGE_ORIGINAL, \
+    DEFAULT_PATH_EDIT_IMAGE_MASKED
 from apps.llm_transaction.models import LLMTransaction, TransactionSourcesNames
 from config import settings
 from config.settings import MEDIA_URL
-
-UNCLASSIFIED_FILE_EXTENSION = ".bin"
-
-
-GENERATED_FILES_ROOT_PATH = "generated/files/"
-GENERATED_IMAGES_ROOT_PATH = "generated/images/"
-
-DEFAULT_PATH_FREEFORM_USER_SKETCH = "free_form__user_sketch__"
-DEFAULT_PATH_EDIT_IMAGE_ORIGINAL = "edit_image__original_version__"
-DEFAULT_PATH_EDIT_IMAGE_MASKED = "edit_image__masked_version__"
 
 
 class StorageExecutor:
@@ -31,7 +24,8 @@ class StorageExecutor:
     def generate_save_name(extension):
         generated_uuid = str(uuid4())
         additional_uuid = str(uuid4())
-        print(f"[StorageExecutor.generate_save_name] Generated UUID: {generated_uuid}, Additional UUID: {additional_uuid}")
+        print(
+            f"[StorageExecutor.generate_save_name] Generated UUID: {generated_uuid}, Additional UUID: {additional_uuid}")
         return f"{generated_uuid}_{additional_uuid}.{extension}"
 
     @staticmethod
@@ -115,7 +109,8 @@ class StorageExecutor:
         except Exception as e:
             print(f"[StorageExecutor.save_edit_images] Error occurred while saving image: {str(e)}")
             return None, None
-        print(f"[StorageExecutor.save_edit_images] Returning full URIs: {full_uri_edit_image}, {full_uri_edit_image_mask}")
+        print(
+            f"[StorageExecutor.save_edit_images] Returning full URIs: {full_uri_edit_image}, {full_uri_edit_image_mask}")
         return [full_uri_edit_image, full_uri_edit_image_mask]
 
     @staticmethod
@@ -141,7 +136,7 @@ class StorageExecutor:
         return full_uri
 
     @staticmethod
-    def save_files_and_provide_full_uris(file_bytes_list:list[tuple]):
+    def save_files_and_provide_full_uris(file_bytes_list: list[tuple]):
         full_uris = []
         for file_bytes, remote_name in file_bytes_list:
             full_uri = StorageExecutor.save_file_and_provide_full_uri(file_bytes, remote_name)
@@ -161,7 +156,9 @@ class StorageExecutor:
         return full_uris
 
     def interpret_file(self, full_file_paths: list, query_string: str):
-        from apps._services.llms.openai import InternalOpenAIClient, GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
         try:
             openai_client = InternalOpenAIClient(
                 assistant=self.connection_object.assistant,
@@ -197,7 +194,9 @@ class StorageExecutor:
         return response
 
     def interpret_image(self, full_image_paths: list, query_string: str):
-        from apps._services.llms.openai import InternalOpenAIClient, GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+        from apps._services.llms.openai import InternalOpenAIClient
+        from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps._services.llms.utils import ChatRoles
 
         try:
             openai_client = InternalOpenAIClient(assistant=self.connection_object.assistant,

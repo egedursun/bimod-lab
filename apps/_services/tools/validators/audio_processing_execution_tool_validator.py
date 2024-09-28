@@ -1,4 +1,4 @@
-from apps._services.audio_processing.audio_processing_executor import AudioProcessingExecutorActionsNames
+from apps._services.audio_processing.utils import AudioProcessingExecutorActionsNames
 
 
 def validate_audio_processing_execution_tool_json(tool_usage_json: dict):
@@ -45,5 +45,6 @@ def validate_audio_processing_execution_tool_json(tool_usage_json: dict):
                 the parameters field of the tool_usage_json.
             """
 
-    print(f"[audio_processing_execution_tool_validator.validate_audio_processing_execution_tool_json] Validation is successful.")
+    print(
+        f"[audio_processing_execution_tool_validator.validate_audio_processing_execution_tool_json] Validation is successful.")
     return None

@@ -9,14 +9,17 @@ def execute_image_modification(assistant_id, chat_id, prompt, edit_image_uri, ed
     executor = ImageModificationExecutor(assistant=assistant, chat=chat)
     print(f"[image_modification_execution_handler.execute_image_modification] Executing image modification.")
     if assistant.image_generation_capability is False:
-        error = "[image_modification_execution_handler.execute_image_modification] This assistant is not authorized to modify images. The assistant must first be edited to allow image generation capabilities to be able to use this tool."
+        error = ("[image_modification_execution_handler.execute_image_modification] This assistant is not authorized "
+                 "to modify images. The assistant must first be edited to allow image generation capabilities to be "
+                 "able to use this tool.")
         return error
 
     try:
         response = executor.execute_modify_image(prompt=prompt, edit_image_uri=edit_image_uri,
                                                  edit_image_mask_uri=edit_image_mask_uri, image_size=image_size)
     except Exception as e:
-        error = f"[image_modification_execution_handler.execute_image_modification] Error occurred while modifying the image: {str(e)}"
+        error = (f"[image_modification_execution_handler.execute_image_modification] Error occurred while modifying "
+                 f"the image: {str(e)}")
         return error
     print(f"[image_modification_execution_handler.execute_image_modification] Image modified successfully.")
     return response

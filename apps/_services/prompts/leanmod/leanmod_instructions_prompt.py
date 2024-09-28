@@ -29,4 +29,3 @@ def build_structured_instructions_prompt_leanmod(assistant: LeanAssistant):
                 Temperature: {assistant.llm_model.temperature}
             '''
         """
-
