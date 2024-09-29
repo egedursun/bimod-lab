@@ -1,5 +1,3 @@
-
-
 #  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io
@@ -14,6 +12,7 @@
 #  without the prior express written permission of BMD® Autonomous Holdings.
 #
 #  For permission inquiries, please contact: admin@bimod.io.
+
 
 def test_init_starred_messages_test_models():
     assert True
