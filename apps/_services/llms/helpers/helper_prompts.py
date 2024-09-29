@@ -1,4 +1,17 @@
-
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: helper_prompts.py
+#  Last Modified: 2024-08-17 19:46:50
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 22:07:00
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
 
 class AssistantRunStatuses:
     QUEUED = "queued"
@@ -78,7 +91,6 @@ HELPER_ASSISTANT_PROMPTS = {
     },
 }
 
-
 GENERATE_FILE_DESCRIPTION_QUERY = f"""
     Please interpret the file or image I sent you, and provide a clear and concise description about the contents
     within the image. Do not write an overly long description, and keep it to the point. It would be the best
@@ -90,7 +102,6 @@ GENERATE_FILE_DESCRIPTION_QUERY = f"""
     special formatting, nor lists, multiple paragraphs, or bullet points. Just a single paragraph of plain text
     is what I need.
 """
-
 
 ONE_SHOT_AFFIRMATION_PROMPT = f"""
 
@@ -126,18 +137,15 @@ INSUFFICIENT_BALANCE_PROMPT = f"""
     get guidance.
 """
 
-
 EMPTY_FILE_PATH_LOG = f"""
     **SYSTEM MESSAGE:**
     - The file path is empty.
 """
 
-
 FILE_INTERPRETER_PREPARATION_ERROR_LOG = f"""
     **SYSTEM MESSAGE:**
     - An error occurred while preparing the assistant for the file interpretation.
 """
-
 
 FILE_INTERPRETER_THREAD_CREATION_ERROR_LOG = f"""
     **SYSTEM MESSAGE:**
@@ -148,7 +156,6 @@ FILE_INTERPRETER_RESPONSE_RETRIEVAL_ERROR_LOG = f"""
     **SYSTEM MESSAGE:**
     - An error occurred while retrieving the response from the file interpreter assistant.
 """
-
 
 FILE_STORAGE_CLEANUP_ERROR_LOG = f"""
     **SYSTEM MESSAGE**:
@@ -200,7 +207,6 @@ ML_MODEL_CLEANUP_ERROR_LOG = f"""
     - An error occurred while cleaning up the file storage, assistant, and thread.
 """
 
-
 CODE_INTERPRETER_ASSISTANT_PREPARATION_ERROR_LOG = f"""
     **SYSTEM MESSAGE:**
     - An error occurred while preparing the assistant for the code interpretation.
@@ -222,7 +228,7 @@ CODE_INTERPRETER_CLEANUP_ERROR_LOG = f"""
 """
 
 
-def get_maximum_tool_chains_reached_log(final_response:str):
+def get_maximum_tool_chains_reached_log(final_response: str):
     log = f"""
         {final_response}
 

@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: document_embedder.py
+#  Last Modified: 2024-09-28 20:38:48
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 22:05:43
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 import json
 
 from apps.datasource_knowledge_base.utils import DocumentUploadStatusNames
@@ -192,7 +207,8 @@ def embed_document_helper(executor_params: dict, document: dict, path: str, numb
             path=path
         )
         if error:
-            print(f"[document_embedder.embed_document_helper] Error embedding the document and saving the ORM object: {error}")
+            print(
+                f"[document_embedder.embed_document_helper] Error embedding the document and saving the ORM object: {error}")
             return document_id, document_uuid, error
     except Exception as e:
         return f"[document_embedder.embed_document_helper] Error embedding the document: {e}"
@@ -234,7 +250,8 @@ def embed_memory_helper(executor_params: dict, number_of_chunks: int):
             memory_weaviate_object=memory_weaviate_object
         )
         if error:
-            print(f"[document_embedder.embed_memory_helper] Error embedding the memory and saving the ORM object: {error}")
+            print(
+                f"[document_embedder.embed_memory_helper] Error embedding the memory and saving the ORM object: {error}")
             return memory_id, memory_uuid, error
 
     except Exception as e:

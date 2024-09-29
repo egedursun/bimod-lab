@@ -1,3 +1,17 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: document_deleter.py
+#  Last Modified: 2024-09-25 17:51:06
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 22:05:39
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
 
 from weaviate.classes.query import Filter
 
@@ -31,6 +45,7 @@ def delete_chat_history_document_helper(executor, class_name: str, document_uuid
         )
     except Exception as e:
         output["status"] = False
-        output["error"] = f"[document_deleter.delete_chat_history_document_helper] Error deleting chat history document: {e}"
+        output[
+            "error"] = f"[document_deleter.delete_chat_history_document_helper] Error deleting chat history document: {e}"
     print(f"[document_deleter.delete_chat_history_document_helper] Deleted chat history document: {document_uuid}")
     return output

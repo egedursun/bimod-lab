@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: repository_embedder.py
+#  Last Modified: 2024-09-28 20:38:48
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 22:02:54
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 import json
 
 from apps.datasource_codebase.utils import RepositoryUploadStatusNames
@@ -31,7 +46,7 @@ def build_repository_orm_structure(document: dict, knowledge_base, path: str):
 
 
 def build_repository_weaviate_structure(document: dict, path: str,
-                                      number_of_chunks: int):
+                                        number_of_chunks: int):
     document_weaviate_object, error = None, None
     try:
         weav_document_file_name = path.split("/")[-1]
@@ -47,7 +62,8 @@ def build_repository_weaviate_structure(document: dict, path: str,
             "number_of_chunks": weave_document_number_of_chunks,
             "created_at": weave_document_created_at
         }
-        print(f"[repository_embedder.build_repository_weaviate_structure] Repository Weaviate object created successfully.")
+        print(
+            f"[repository_embedder.build_repository_weaviate_structure] Repository Weaviate object created successfully.")
     except Exception as e:
         error = f"[repository_embedder.build_repository_weaviate_structure] Error building the repository Weaviate structure: {e}"
     return document_weaviate_object, error
@@ -102,7 +118,8 @@ def embed_repository_helper(executor_params: dict, document: dict, path: str, nu
             path=path
         )
         if error:
-            print(f"[repository_embedder.embed_repository_helper] Error building the repository ORM structure: {error}")
+            print(
+                f"[repository_embedder.embed_repository_helper] Error building the repository ORM structure: {error}")
             return document_id, document_uuid, error
         print(f"[repository_embedder.embed_repository_helper] Repository ORM object created successfully.")
 
@@ -112,7 +129,8 @@ def embed_repository_helper(executor_params: dict, document: dict, path: str, nu
             number_of_chunks=number_of_chunks
         )
         if error:
-            print(f"[repository_embedder.embed_repository_helper] Error building the repository Weaviate structure: {error}")
+            print(
+                f"[repository_embedder.embed_repository_helper] Error building the repository Weaviate structure: {error}")
             return document_id, document_uuid, error
         print(f"[repository_embedder.embed_repository_helper] Repository Weaviate object created successfully.")
 
@@ -123,7 +141,8 @@ def embed_repository_helper(executor_params: dict, document: dict, path: str, nu
             path=path
         )
         if error:
-            print(f"[repository_embedder.embed_repository_helper] Error embedding the repository and saving the ORM object: {error}")
+            print(
+                f"[repository_embedder.embed_repository_helper] Error embedding the repository and saving the ORM object: {error}")
             return document_id, document_uuid, error
     except Exception as e:
         return f"[repository_embedder.embed_repository_helper] Error embedding the repository: {e}"
