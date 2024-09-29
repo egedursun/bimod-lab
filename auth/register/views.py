@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: views.py
+#  Last Modified: 2024-09-05 11:16:22
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:13:38
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.shortcuts import redirect
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
@@ -89,6 +104,6 @@ class RegisterView(AuthView):
             messages.success(request, "Verification email sent successfully")
         else:
             messages.error(request, "Email settings are not configured. Unable to send verification email.")
-        request.session['email'] = email ## Save email in session
+        request.session['email'] = email  ## Save email in session
         # Redirect to the verification page after successful registration
         return redirect("verify-email-page")

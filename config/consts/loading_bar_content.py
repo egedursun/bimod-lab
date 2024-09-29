@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: loading_bar_content.py
+#  Last Modified: 2024-09-06 16:36:33
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:14:39
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 CONTENT_MIX = '''
                 <div id="loading-bar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0, 0, 0, 0.5); z-index:9999; pointer-events:none;">
                     <img src="/static/img/loading/spinner-main.gif" alt="Loading..." style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); max-width:30%;" />

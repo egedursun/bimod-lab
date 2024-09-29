@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: template.py
+#  Last Modified: 2024-09-05 11:16:22
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:15:26
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 # Template Settings
 # ------------------------------------------------------------------------------
 
@@ -8,20 +23,23 @@
 # ? Easily change the template configuration from here
 # ? Replace this object with template-config/demo-*.py file's TEMPLATE_CONFIG to change the template configuration as per our demos
 TEMPLATE_CONFIG = {
-    "layout": "vertical",             # Options[String]: vertical(default), horizontal
-    "theme": "theme-default",         # Options[String]: theme-default(default), theme-bordered, theme-semi-dark
-    "style": "dark",                 # Options[String]: light(default), dark, system mode
-    "rtl_support": True,              # options[Boolean]: True(default), False # To provide RTLSupport or not
-    "rtl_mode": False,                # options[Boolean]: False(default), True # To set layout to RTL layout  (myRTLSupport must be True for rtl mode)
-    "has_customizer": True,           # options[Boolean]: True(default), False # Display customizer or not THIS WILL REMOVE INCLUDED JS FILE. SO LOCAL STORAGE WON'T WORK
-    "display_customizer": True,       # options[Boolean]: True(default), False # Display customizer UI or not, THIS WON'T REMOVE INCLUDED JS FILE. SO LOCAL STORAGE WILL WORK
-    "content_layout": "compact",      # options[String]: 'compact', 'wide' (compact=container-xxl, wide=container-fluid)
-    "navbar_type": "fixed",           # options[String]: 'fixed', 'static', 'hidden' (Only for vertical Layout)
-    "header_type": "fixed",           # options[String]: 'static', 'fixed' (for horizontal layout only)
-    "menu_fixed": True,               # options[Boolean]: True(default), False # Layout(menu) Fixed (Only for vertical Layout)
-    "menu_collapsed": False,          # options[Boolean]: False(default), True # Show menu collapsed, Only for vertical Layout
-    "footer_fixed": False,            # options[Boolean]: False(default), True # Footer Fixed
-    "show_dropdown_onhover": True,    # True, False (for horizontal layout only)
+    "layout": "vertical",  # Options[String]: vertical(default), horizontal
+    "theme": "theme-default",  # Options[String]: theme-default(default), theme-bordered, theme-semi-dark
+    "style": "dark",  # Options[String]: light(default), dark, system mode
+    "rtl_support": True,  # options[Boolean]: True(default), False # To provide RTLSupport or not
+    "rtl_mode": False,
+    # options[Boolean]: False(default), True # To set layout to RTL layout  (myRTLSupport must be True for rtl mode)
+    "has_customizer": True,
+    # options[Boolean]: True(default), False # Display customizer or not THIS WILL REMOVE INCLUDED JS FILE. SO LOCAL STORAGE WON'T WORK
+    "display_customizer": True,
+    # options[Boolean]: True(default), False # Display customizer UI or not, THIS WON'T REMOVE INCLUDED JS FILE. SO LOCAL STORAGE WILL WORK
+    "content_layout": "compact",  # options[String]: 'compact', 'wide' (compact=container-xxl, wide=container-fluid)
+    "navbar_type": "fixed",  # options[String]: 'fixed', 'static', 'hidden' (Only for vertical Layout)
+    "header_type": "fixed",  # options[String]: 'static', 'fixed' (for horizontal layout only)
+    "menu_fixed": True,  # options[Boolean]: True(default), False # Layout(menu) Fixed (Only for vertical Layout)
+    "menu_collapsed": False,  # options[Boolean]: False(default), True # Show menu collapsed, Only for vertical Layout
+    "footer_fixed": False,  # options[Boolean]: False(default), True # Footer Fixed
+    "show_dropdown_onhover": True,  # True, False (for horizontal layout only)
     "customizer_controls": [
         "rtl",
         "style",

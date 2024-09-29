@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: list_user_profile_views.py
+#  Last Modified: 2024-09-28 17:14:42
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:11:23
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect

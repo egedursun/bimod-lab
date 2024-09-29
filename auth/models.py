@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: models.py
+#  Last Modified: 2024-09-28 00:53:10
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:14:11
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -70,7 +85,8 @@ class ForumRewardActionsNames:
 
 class UserCreditCard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='credit_cards', blank=True, null=True)
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='credit_cards', blank=True, null=True)
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='credit_cards', blank=True,
+                                null=True)
     name_on_card = models.CharField(max_length=255, null=False, blank=False)
     card_number = models.CharField(max_length=16, null=False, blank=False)
     card_expiration_month = models.CharField(max_length=2, null=False, blank=False)

@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: views.py
+#  Last Modified: 2024-08-03 12:38:53
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:13:53
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.conf import settings
@@ -51,11 +66,13 @@ class SendVerificationView(AuthView):
             if settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD:
                 message = messages.success(request, "Verification email sent successfully")
             else:
-                message = messages.error(request, "Email settings are not properly configured. Unable to send verification email.")
+                message = messages.error(request,
+                                         "Email settings are not properly configured. Unable to send verification email.")
         else:
             email = request.session.get('email')
             if settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD:
                 message = "Resent the verification email successfully" if email else None
             else:
-                 message = messages.error(request, "Email settings are not properly configured. Unable to send verification email.")
+                message = messages.error(request,
+                                         "Email settings are not properly configured. Unable to send verification email.")
         return email, message

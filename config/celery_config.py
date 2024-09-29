@@ -1,3 +1,17 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: celery_config.py
+#  Last Modified: 2024-08-01 14:02:50
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:15:01
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
 
 from __future__ import absolute_import, unicode_literals
 import os
@@ -6,22 +20,17 @@ from celery.schedules import crontab
 
 from config import settings
 
-
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
-
 app = Celery('config')
-
 
 # Using a string here means the worker will not have to
 # pickle the object when using Windows.
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
-
 
 app.conf.beat_schedule = {
     # PERFORM AUTOMATIC BALANCE TOP-UP OPERATIONS (1/24 hours)

@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: update_assistant_views.py
+#  Last Modified: 2024-09-28 00:53:10
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 22:19:04
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -34,8 +49,10 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         context['response_languages'] = ASSISTANT_RESPONSE_LANGUAGES
         context['context_overflow_strategies'] = CONTEXT_OVERFLOW_STRATEGY
         context['vectorizers'] = VECTORIZERS
-        context["assistant_current_strategy"] = ContextOverflowStrategyNames.as_dict()[assistant.context_overflow_strategy]
-        context["assistant_current_vectorizer"] = VectorizerNames.as_dict()[assistant.vectorizer_name] if assistant.vectorizer_name else None
+        context["assistant_current_strategy"] = ContextOverflowStrategyNames.as_dict()[
+            assistant.context_overflow_strategy]
+        context["assistant_current_vectorizer"] = VectorizerNames.as_dict()[
+            assistant.vectorizer_name] if assistant.vectorizer_name else None
         context["ner_integrations"] = NERIntegration.objects.filter(
             organization__in=context['organizations']
         )

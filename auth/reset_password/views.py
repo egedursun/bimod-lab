@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: views.py
+#  Last Modified: 2024-08-03 12:38:48
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:13:42
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from auth.models import Profile
@@ -6,7 +21,7 @@ from django.contrib.auth import authenticate, login
 
 
 class ResetPasswordView(AuthView):
-    def get(self, request,token):
+    def get(self, request, token):
         if request.user.is_authenticated:
             # If the user is already logged in, redirect them to the home page or another appropriate page.
             return redirect("dashboard:main-dashboard")

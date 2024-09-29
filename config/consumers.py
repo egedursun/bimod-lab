@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: consumers.py
+#  Last Modified: 2024-09-23 12:33:07
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:15:05
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 import asyncio
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
@@ -174,4 +189,3 @@ class VoidForgeOperationLogsConsumer(AsyncWebsocketConsumer):
                 'log': BIMOD_STREAMING_END_TAG
             }))
             await asyncio.sleep(sleep_time_random)
-

@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: urls.py
+#  Last Modified: 2024-09-25 17:51:06
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:12:29
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.urls import path
 
 from apps.user_settings.views import UserSettingsView, DeleteAllLLMModelsView, \
@@ -11,7 +26,6 @@ from apps.user_settings.views import UserSettingsView, DeleteAllLLMModelsView, \
     DeleteAllLeanChatsView
 
 app_name = "user_settings"
-
 
 urlpatterns = [
     path('settings/', UserSettingsView.as_view(
@@ -27,15 +41,19 @@ urlpatterns = [
     path('delete/all/lean_chats/', DeleteAllLeanChatsView.as_view(), name='delete_all_lean_chats'),
     path('delete/all/starred_messages/', DeleteAllStarredMessagesView.as_view(), name='delete_all_starred_messages'),
     path('delete/all/memories/', DeleteAllMemoriesView.as_view(), name='delete_all_memories'),
-    path('delete/all/message_templates/', DeleteAllMessageTemplatesView.as_view(), name='delete_all_message_templates'),
-    path('delete/all/export_assistants/', DeleteAllExportAssistantsView.as_view(), name='delete_all_export_assistants'),
+    path('delete/all/message_templates/', DeleteAllMessageTemplatesView.as_view(),
+         name='delete_all_message_templates'),
+    path('delete/all/export_assistants/', DeleteAllExportAssistantsView.as_view(),
+         name='delete_all_export_assistants'),
     path('delete/all/orchestrations/', DeleteAllOrchestrationsView.as_view(), name='delete_all_orchestrations'),
     path('delete/all/file_systems/', DeleteAllFileSystemsView.as_view(), name='delete_all_file_systems'),
     path('delete/all/web_browsers/', DeleteAllWebBrowsersView.as_view(), name='delete_all_web_browsers'),
     path('delete/all/sql_databases/', DeleteAllSQLDatabasesView.as_view(), name='delete_all_sql_databases'),
-    path('delete/all/custom_sql_queries/', DeleteAllCustomSQLQueriesView.as_view(), name='delete_all_custom_sql_queries'),
+    path('delete/all/custom_sql_queries/', DeleteAllCustomSQLQueriesView.as_view(),
+         name='delete_all_custom_sql_queries'),
     path('delete/all/knowledge_bases/', DeleteAllKnowledgeBasesView.as_view(), name='delete_all_knowledge_bases'),
-    path('delete/all/knowledge_base_documents/', DeleteAllKnowledgeBaseDocumentsView.as_view(), name='delete_all_knowledge_base_documents'),
+    path('delete/all/knowledge_base_documents/', DeleteAllKnowledgeBaseDocumentsView.as_view(),
+         name='delete_all_knowledge_base_documents'),
     path('delete/all/code_storages/', DeleteAllCodeStoragesView.as_view(), name='delete_all_code_storages'),
     path('delete/all/repositories/', DeleteAllRepositoriesView.as_view(), name='delete_all_repositories'),
     path('delete/all/ml_model_storages/', DeleteAllMLModelStoragesView.as_view(), name='delete_all_ml_model_storages'),

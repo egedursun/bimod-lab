@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: theme.py
+#  Last Modified: 2024-08-05 21:13:13
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:17:29
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.conf import settings
 from pprint import pprint
 import os
@@ -37,7 +52,7 @@ class TemplateHelper:
 
     # ? Map context variables to template class/value/variables names
     def map_context(context):
-        #! Header Type (horizontal support only)
+        # ! Header Type (horizontal support only)
         if context.get("layout") == "horizontal":
             if context.get("header_type") == "fixed":
                 context["header_type_class"] = "layout-menu-fixed"
@@ -48,7 +63,7 @@ class TemplateHelper:
         else:
             context["header_type_class"] = ""
 
-        #! Navbar Type (vertical/front support only)
+        # ! Navbar Type (vertical/front support only)
         if context.get("layout") != "horizontal":
             if context.get("navbar_type") == "fixed":
                 context["navbar_type_class"] = "layout-navbar-fixed"
@@ -64,7 +79,7 @@ class TemplateHelper:
             "layout-menu-collapsed" if context.get("menu_collapsed") else ""
         )
 
-        #! Menu Fixed (vertical support only)
+        # ! Menu Fixed (vertical support only)
         if context.get("layout") == "vertical":
             if context.get("menu_fixed") is True:
                 context["menu_fixed_class"] = "layout-menu-fixed"
@@ -84,7 +99,7 @@ class TemplateHelper:
             ("rtl", "rtl") if context.get("rtl_mode") else ("ltr", "ltr")
         )
 
-        #!  Show dropdown on hover (Horizontal menu)
+        # !  Show dropdown on hover (Horizontal menu)
         context["show_dropdown_onhover_value"] = (
             "true" if context.get("show_dropdown_onhover") else "false"
         )

@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: theme.py
+#  Last Modified: 2024-06-20 04:48:34
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:17:35
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.utils.safestring import mark_safe
 from django import template
 from web_project.template_helpers.theme import TemplateHelper
@@ -41,6 +56,7 @@ def has_group(user, group):
     if user.groups.filter(name=group).exists():
         return True
 
+
 # Check if the user has the permission
 @register.filter
 def has_permission(user, permission):
@@ -53,6 +69,7 @@ def has_permission(user, permission):
 def is_admin(user):
     return user.groups.filter(name="admin").exists()
 
+
 @register.filter(name="admin_required")
 def admin_required(view_func):
     return user_passes_test(is_admin, login_url='login')(view_func)
@@ -62,6 +79,7 @@ def admin_required(view_func):
 @register.filter(name="is_client")
 def is_client(user):
     return user.groups.filter(name="client").exists()
+
 
 @register.filter(name="client_required")
 def client_required(view_func):
@@ -73,6 +91,7 @@ def client_required(view_func):
 def is_superuser(user):
     return user.is_superuser
 
+
 @register.filter(name="superuser_required")
 def superuser_required(view_func):
     return user_passes_test(is_superuser, login_url='login')(view_func)
@@ -83,9 +102,11 @@ def superuser_required(view_func):
 def is_staff(user):
     return user.is_staff
 
+
 @register.filter(name="staff_required")
 def staff_required(view_func):
     return user_passes_test(is_staff, login_url='login')(view_func)
+
 
 @register.simple_tag
 def current_url(request):

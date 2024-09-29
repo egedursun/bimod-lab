@@ -1,13 +1,17 @@
-#  Copyright Policy & Ownership
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
 #
-#  Bimod.io is a product of BMD Holdings. All materials, including but not limited to software, code, documentation,
-#  graphics, design elements, and user interfaces provided by Bimod.io are protected by copyright law and international
-#  treaties.
-#  All content within Bimod.io is the exclusive property of BMD Holdings, unless otherwise stated.
-#  Unauthorized use, distribution, or reproduction of any material contained in this software without the express
-#  written consent of BMD Holdings is strictly prohibited.
-#  Users may not copy, modify, distribute, display, perform, or create derivative works of Bimod.io without prior
-#  written permission from BMD Holdings.
+#  Project: Bimod.io
+#  File: __init__.py
+#  Last Modified: 2024-09-28 19:42:43
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 22:57:33
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
 
-
+#
 from .transfer_balance_views import *

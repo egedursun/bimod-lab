@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: update_ner_integration_views.py
+#  Last Modified: 2024-09-28 00:53:10
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 22:29:50
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -70,7 +85,8 @@ class UpdateNERIntegrationView(LoginRequiredMixin, TemplateView):
         # Manually set each checkbox field based on POST data
         ner_integration.encrypt_persons = request.POST.get('encrypt_persons') == 'True'
         ner_integration.encrypt_orgs = request.POST.get('encrypt_orgs') == 'True'
-        ner_integration.encrypt_nationality_religion_political = request.POST.get('encrypt_nationality_religion_political') == 'True'
+        ner_integration.encrypt_nationality_religion_political = request.POST.get(
+            'encrypt_nationality_religion_political') == 'True'
         ner_integration.encrypt_facilities = request.POST.get('encrypt_facilities') == 'True'
         ner_integration.encrypt_countries_cities_states = request.POST.get('encrypt_countries_cities_states') == 'True'
         ner_integration.encrypt_locations = request.POST.get('encrypt_locations') == 'True'

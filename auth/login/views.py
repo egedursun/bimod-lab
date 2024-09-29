@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: views.py
+#  Last Modified: 2024-08-03 12:38:40
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:13:32
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -37,7 +52,7 @@ class LoginView(AuthView):
                 # Redirect to the page the user was trying to access before logging in
                 if "next" in request.POST:
                     return redirect(request.POST["next"])
-                else: # Redirect to the home page or another appropriate page
+                else:  # Redirect to the home page or another appropriate page
                     return redirect("dashboard:main-dashboard")
             else:
                 messages.error(request, "Either the username or password is incorrect. Please try again.")

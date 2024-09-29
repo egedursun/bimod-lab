@@ -1,3 +1,18 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: utils.py
+#  Last Modified: 2024-08-02 12:34:42
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-28 23:14:17
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
 import datetime
 import random
 import string
@@ -8,7 +23,7 @@ def generate_random_string(length=16):
 
 
 def generate_referral_code(length=16):
-    alphas = string.ascii_uppercase # 26
+    alphas = string.ascii_uppercase  # 26
     numerics = string.digits  # 10
     year = datetime.datetime.now().year.__str__()
     month = datetime.datetime.now().month.__str__()
