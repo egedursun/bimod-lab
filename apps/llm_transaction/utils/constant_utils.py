@@ -147,18 +147,21 @@ class InvoiceTypesNames:
 PAYMENT_METHODS = [
     ("credit-card", "Credit Card"),
     ("internal-transfer", "Internal Transfer"),
+    ("direct-sales", "Direct Sales"),
 ]
 
 
 class PaymentMethodsNames:
     CREDIT_CARD = "credit-card"
     INTERNAL_TRANSFER = "internal-transfer"
+    DIRECT_SALES = "direct-sales"
 
     @staticmethod
     def as_list():
         return [
             PaymentMethodsNames.CREDIT_CARD,
             PaymentMethodsNames.INTERNAL_TRANSFER,
+            PaymentMethodsNames.DIRECT_SALES,
         ]
 
 
