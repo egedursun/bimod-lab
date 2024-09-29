@@ -37,15 +37,18 @@
         <!-- { % include 'partials/logo.html' with height=20 bgcolor="fill: #fff;" % } -->
         <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 7vw;" class="ms-0">
       </span>
-      <span class="app-brand-text demo text-heading fw-bold" style="font-size: 1.5vw;">{% get_theme_variables 'template_name' %}</span>
+      <span class="app-brand-text demo text-heading fw-bold"
+            style="font-size: 1.5vw;">{% get_theme_variables 'template_name' %}</span>
     </a>
     <!-- /Logo -->
     <div class="authentication-inner row m-0">
 
       <!-- /Left Text -->
       <div class="d-none d-lg-flex col-lg-8 p-0">
-        <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center align-content-center">
-          <img src="{% static 'img/custom-illustrations-v2/banners/i2-b2.png' %}" class="my-50" width="80%" style="padding-top: 75%;">
+        <div
+          class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center align-content-center">
+          <img src="{% static 'img/custom-illustrations-v2/banners/i2-b2.png' %}" class="my-50" width="80%"
+               style="padding-top: 75%;">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h3.png' %}" class="" width="90%"
                style="position: absolute; top: 100px; left:0; opacity: 0.20; rotate: 0deg">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="50%"
@@ -108,6 +111,21 @@
                 <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
               </div>
             </div>
+
+            <div class="alert alert-solid-secondary d-flex align-items-center mt-6 text-small" role="alert">
+                <span class="alert-icon rounded">
+                  <i class="ti ti-info-circle"></i>
+                </span>
+              <small>
+                The password must satisfy the following constraints to be accepted: <br>
+                - Contain at least 8 characters in total. <br>
+                - Contain at least one uppercase letter. (e.g. A, B, ..., Z) <br>
+                - Contain at least one lowercase letter. (e.g. a, b, ..., z) <br>
+                - Contain at least one digit (e.g. 0, 1, 2, ..., 9) <br>
+                - Contain at least one special character. (e.g. !, @, ..., *) <br>
+              </small>
+            </div>
+
             <div class="mb-6">
               <label for="first_name" class="form-label">First Name</label>
               <input type="text" class="form-control" id="first_name" name="first_name"
@@ -157,7 +175,7 @@
                 <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms">
                 <label class="form-check-label" for="terms-conditions">
                   By checking this, I confirm that I have completely read, understood, and agree to the
-                  <a href="{% url 'landing:faq' %}"><strong> privacy policy & terms of service </strong></a> with 
+                  <a href="{% url 'landing:faq' %}"><strong> privacy policy & terms of service </strong></a> with
                   my own free will and consent.
                 </label>
               </div>

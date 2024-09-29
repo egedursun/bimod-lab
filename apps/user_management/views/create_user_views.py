@@ -26,6 +26,7 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from auth.helpers import send_verification_email, send_invitation_email
 from auth.models import Profile
+from auth.utils import is_valid_password
 from config import settings
 from web_project import TemplateLayout
 
@@ -75,6 +76,13 @@ class AddNewUserView(LoginRequiredMixin, TemplateView):
         created_by_user = request.user
 
         try:
+
+            # Check if the password is valid
+            is_valid, message = is_valid_password(password)
+            if not is_valid:
+                messages.error(request, message)
+                return redirect("user_management:add")
+
             # validate the password
             if password != confirm_password:
                 messages.error(request, 'Passwords do not match')

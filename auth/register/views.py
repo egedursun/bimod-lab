@@ -17,6 +17,8 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.conf import settings
+
+from auth.utils import is_valid_password
 from auth.views import AuthView
 from auth.helpers import send_verification_email
 from auth.models import Profile
@@ -38,10 +40,18 @@ class RegisterView(AuthView):
         email = request.POST.get("email")
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
+
+        # Check if the password is valid
+        is_valid, message = is_valid_password(password)
+        if not is_valid:
+            messages.error(request, message)
+            return redirect("register")
+
         # Check if the passwords match
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
             return redirect("register")
+
         ########################################
         # ADDITIONAL INFORMATION
         ########################################

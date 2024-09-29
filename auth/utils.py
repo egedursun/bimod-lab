@@ -32,3 +32,17 @@ def generate_referral_code(length=16):
     generated_numeric = ''.join(random.choice(numerics) for _ in range(length // 2))
     generated_date = f"{year}-{month}{day}"
     return f"{generated_alpha[0:4]}-{generated_alpha[4:]}-{generated_numeric[0:4]}-{generated_numeric[4:]}-{generated_date}0"
+
+
+def is_valid_password(password: str) -> (bool, str):
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long."
+    if not any(char.isdigit() for char in password):
+        return False, "Password must contain at least one digit."
+    if not any(char.isupper() for char in password):
+        return False, "Password must contain at least one uppercase letter."
+    if not any(char.islower() for char in password):
+        return False, "Password must contain at least one lowercase letter."
+    if not any(char in string.punctuation for char in password):
+        return False, "Password must contain at least one special character."
+    return True, None

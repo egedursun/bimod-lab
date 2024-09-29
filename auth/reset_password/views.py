@@ -16,6 +16,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from auth.models import Profile
+from auth.utils import is_valid_password
 from auth.views import AuthView
 from django.contrib.auth import authenticate, login
 
@@ -41,6 +42,13 @@ class ResetPasswordView(AuthView):
             if not (new_password and confirm_password):
                 messages.error(request, "Please fill all fields.")
                 return render(request, "reset-password")
+
+            # Check if the password is valid
+            is_valid, message = is_valid_password(password=new_password)
+            if not is_valid:
+                messages.error(request, message)
+                return render(request, "reset-password")
+
             if new_password != confirm_password:
                 messages.error(request, "Passwords do not match.")
                 return render(request, "reset-password")
