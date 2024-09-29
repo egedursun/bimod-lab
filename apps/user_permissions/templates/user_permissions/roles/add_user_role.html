@@ -1,0 +1,211 @@
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Add User Role{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script>
+    $(document).ready(function () {
+      $('#role_permissions').select2({
+        placeholder: 'Select Permissions',
+        allowClear: true
+      });
+    });
+  </script>
+
+  <script>
+    // Function to add all permissions to the select box
+    function addAllPermissions(event) {
+      event.preventDefault();  // Prevent form submission
+      const select = $('#role_permissions');
+      select.find('option').prop('selected', true);  // Select all options
+      select.trigger('change');  // Trigger change event to update Select2 UI
+    }
+
+    // Function to add semantically related permissions based on fuzzy matching
+    function addRelatedPermissions(event) {
+      event.preventDefault();  // Prevent form submission
+
+      const select = $('#role_permissions');
+      const selectedPermissions = select.val();  // Get currently selected permissions
+      const allPermissions = Array.from(select.find('option'));  // Get all permission options
+
+      if (!selectedPermissions.length) {
+        console.log('No permissions selected.');
+        return;
+      }
+
+      console.log('Selected permissions:', selectedPermissions);
+
+      // Get the threshold value from the slider
+      const threshold = parseFloat(document.getElementById('similarity-score').value);
+
+      console.log('Using threshold for fuzzy matching:', threshold);
+
+      // Convert all permissions to an array of objects for Fuse.js
+      const allPermissionValues = allPermissions.map(option => option.value);
+
+      // Initialize Fuse.js with fuzzy options
+      const fuse = new Fuse(allPermissionValues, {
+        includeScore: true,
+        threshold: threshold // Set a threshold for fuzzy matching (from slider)
+      });
+
+      // Loop through selected permissions to find related ones
+      selectedPermissions.forEach(function (selectedPermission) {
+        // Perform fuzzy search for each selected permission
+        const results = fuse.search(selectedPermission);
+
+        results.forEach(function (result) {
+          const relatedPermission = result.item;
+
+          if (relatedPermission !== selectedPermission) {
+            // Select the related permission
+            select.find('option[value="' + relatedPermission + '"]').prop('selected', true);
+            console.log('Related permission added:', relatedPermission);
+          }
+        });
+      });
+
+      select.trigger('change');  // Trigger change event to update Select2 UI
+    }
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-12">
+      <h3 class="mb-0"><strong>Add User Role</strong></h3>
+    </div>
+  </div>
+
+  <a href="{% url 'user_permissions:list_user_roles' %}">
+    <button class="btn btn-secondary mt-4 mb-4">
+      <i class="fa fa-dashboard me-4"></i>
+      <strong> Manage User Roles</strong>
+    </button>
+  </a>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-37.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tips">
+    <span class="alert-icon rounded">
+          <i class="ti ti-bookmark"></i>
+        </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can create a user role by selecting an organization, defining a role name, and choosing
+        permissions using the Select2 picker. Once you have selected the appropriate permissions, click "Create Role" to
+        assign it to the chosen organization.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post" action="{% url 'user_permissions:add_user_role' %}">
+    {% csrf_token %}
+    <div class="card mb-4 p-4">
+      <div class="card-body">
+        <div class="row g-6 mb-6">
+          <div class="col-6">
+            <label for="organization" class="form-label">
+              <i class="fa fa-building me-2"></i>
+              Choose Organization
+            </label>
+            <select class="form-select" id="organization" name="organization" required>
+              <option value="" disabled selected>Select Organization</option>
+              {% for organization in organizations %}
+                <option value="{{ organization.id }}">{{ organization.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-6">
+            <label for="role_name" class="form-label">
+              <i class="fa fa-id-badge me-2"></i>
+              Role Name
+            </label>
+            <input type="text" class="form-control" id="role_name" name="role_name" placeholder="Enter role name"
+                   required>
+          </div>
+
+          <div class="col-12">
+            <label for="role_permissions" class="form-label">
+              <i class="fa fa-key me-2"></i>
+              Assign Permissions
+            </label>
+            <select class="form-select" id="role_permissions" name="role_permissions" multiple="multiple" required>
+              {% for permission in available_permissions %}
+                <option value="{{ permission.0 }}">{{ permission.1 }}</option>  <!-- Show human-readable names -->
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-25">
+          <strong>
+            <i class="fa fa-plus me-2"></i>
+            Create Role
+          </strong>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="card card-border-shadow-primary m-0 px-8 rounded">
+    <!-- Buttons for Add All and Add Related -->
+    <!-- Slider to control similarity score for fuzzy matching -->
+    <div class="row g-6 mb-6 mt-4">
+      <h5 class="mb-0"><strong>Quickly Add Related Permissions with Fuzzy Search</strong></h5>
+      <hr>
+      <div class="col-5 px-8">
+        <label for="similarity-score" class="form-label">
+          <i class="fa fa-adjust me-2"></i>
+          Adjust Similarity Threshold
+        </label>
+        <input type="range" class="form-range" id="similarity-score" min="0" max="1" step="0.01" value="0.35">
+        <div class="d-flex justify-content-between">
+          <span>0 (Very Strict)</span>
+          <span>1 (Very Loose)</span>
+        </div>
+      </div>
+      <button class="btn col-3 btn-info me-4" onclick="addRelatedPermissions(event)">
+        <strong>
+          <i class="fa fa-magic-wand-sparkles me-2"></i>
+          Add Related Permissions
+        </strong>
+      </button>
+      <button class="btn col-3 btn-warning w-25" onclick="addAllPermissions(event)">
+        <strong>
+          <i class="fa fa-boxes-packing me-2"></i>
+          Add All Permissions
+        </strong>
+      </button>
+    </div>
+    <hr>
+  </div>
+{% endblock %}

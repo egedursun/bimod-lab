@@ -1,0 +1,135 @@
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Manage User Roles{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row mb-5">
+    <div class="col">
+      <h3 class="mb-4"><strong>User Role Management</strong></h3>
+      <a href="{% url 'user_permissions:add_user_role' %}" class="btn btn-success">
+        <i class="bi bi-plus-circle me-2"></i>
+        <strong>Create New Role</strong>
+      </a>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-37.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tips">
+    <span class="alert-icon rounded">
+          <i class="ti ti-bookmark"></i>
+        </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can manage user roles. You can view, edit, and delete user roles. To view the permissions
+        assigned to a role, click on the role card. To edit a role, click on the "Edit" button. To delete a role, click
+        on
+        the "Delete" button. To create a new role, click on the "Create New Role" button.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Roles List -->
+  <div class="row mt-8">
+    {% if page_obj.object_list %}
+      {% for role in page_obj.object_list %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-person me-2"></i>
+                <strong>{{ role.role_name }}</strong>
+              </h5>
+              <small class="text-muted">
+                <i class="bi bi-building me-2"></i>
+                <strong>{{ role.organization.name }}</strong>
+              </small>
+            </div>
+            <div class="card-body">
+              <p><strong>Permissions:</strong></p>
+              <hr>
+              <ul class="list-unstyled overflow-auto" style="max-height: 300px; min-height: 300px;">
+                {% for permission in role.role_permissions %}
+                  <li><i class="bi bi-check-circle text-success me-2"></i>{{ permission }}</li>
+                {% empty %}
+                  <p class="text-muted">No permissions assigned to this role.</p>
+                {% endfor %}
+              </ul>
+            </div>
+            <hr>
+            <div class="card-footer d-flex justify-content-between">
+              <a href="{% url 'user_permissions:update_user_role' pk=role.id %}" class="btn w-25 btn-warning">
+                <i class="bi bi-pencil-square"></i>
+                <strong>Edit</strong>
+              </a>
+              <a href="{% url 'user_permissions:delete_user_role' pk=role.id %}" class="d-inline-block">
+                <button type="submit" class="btn w-100 btn-danger">
+                  <i class="bi bi-trash"></i>
+                  <strong>Delete</strong>
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="card invisible">
+        <div class="alert alert-warning visible ms-8 me-8" role="alert">
+          <i class="fa fa-exclamation-triangle me-4"></i>
+          <strong>No user roles have been defined yet.</strong>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <hr>
+
+  <!-- Pagination controls -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mt-4">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endblock content %}

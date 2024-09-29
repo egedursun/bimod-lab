@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io
-#  File: __init__.py
-#  Last Modified: 2024-09-28 00:53:10
+#  File: user_roles_admin.py
+#  Last Modified: 2024-09-29 16:41:44
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 23:10:28
+#  Created: 2024-09-29 16:41:46
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -13,5 +13,16 @@
 #
 #  For permission inquiries, please contact: admin@bimod.io.
 
-from .user_permission_models import *
-from .user_roles_models import *
+
+from django.contrib import admin
+
+from apps.user_permissions.models import UserRole
+
+
+@admin.register(UserRole)
+class UserRoleAdmin(admin.ModelAdmin):
+    list_display = ('organization', 'role_name', 'created_at', 'updated_at')
+    list_filter = ('organization', 'created_at', 'updated_at')
+    search_fields = ('organization__name', 'role_name', "role_description")
+    date_hierarchy = 'created_at'
+    ordering = ('-created_at',)

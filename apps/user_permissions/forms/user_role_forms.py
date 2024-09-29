@@ -1,0 +1,32 @@
+#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io
+#  File: user_role_forms.py
+#  Last Modified: 2024-09-29 17:05:05
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+#  Created: 2024-09-29 17:05:11
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD® Autonomous Holdings.
+#
+#  For permission inquiries, please contact: admin@bimod.io.
+
+
+from django import forms
+
+from apps.user_permissions.models import UserPermission, UserRole
+from apps.user_permissions.utils import PERMISSION_TYPES
+
+
+class UserRoleForm(forms.ModelForm):
+    role_permissions = forms.MultipleChoiceField(
+        choices=PERMISSION_TYPES,  # Use the static PERMISSION_TYPES as choices
+        widget=forms.SelectMultiple(attrs={'class': 'form-select', 'multiple': 'multiple'}),
+        required=True
+    )
+
+    class Meta:
+        model = UserRole
+        fields = ['organization', 'role_name', 'role_description', 'role_permissions']

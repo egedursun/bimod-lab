@@ -14,3 +14,4 @@
 #  For permission inquiries, please contact: admin@bimod.io.
 
 from .user_permission_admin import *
+from .user_roles_admin import *

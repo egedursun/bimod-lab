@@ -15,13 +15,25 @@
 
 from django.urls import path
 
-from apps.user_permissions.views import AddPermissionsView, ListPermissionsView
+from apps.user_permissions.views import AddPermissionsView, ListPermissionsView, ManageUserRolesView, \
+    ListUserRolesView, AddUserRoleView, UpdateUserRoleView, DeleteUserRoleView
 
 app_name = "user_permissions"
 
 urlpatterns = [
-    path('add/', AddPermissionsView.as_view(template_name="user_permissions/add_permissions.html"),
+    path('add/', AddPermissionsView.as_view(template_name="user_permissions/permissions/add_permissions.html"),
          name="add_permissions"),
-    path('list/', ListPermissionsView.as_view(template_name="user_permissions/list_permissions.html"),
+    path('list/', ListPermissionsView.as_view(template_name="user_permissions/permissions/list_permissions.html"),
          name="list_permissions"),
+    #####
+    path('roles/add/', AddUserRoleView.as_view(template_name="user_permissions/roles/add_user_role.html"),
+            name="add_user_role"),
+    path('roles/list/', ListUserRolesView.as_view(template_name="user_permissions/roles/list_user_roles.html"),
+            name="list_user_roles"),
+    path('roles/manage/', ManageUserRolesView.as_view(template_name="user_permissions/roles/manage_user_roles.html"),
+            name="manage_user_roles"),
+    path('roles/delete/<int:pk>/', DeleteUserRoleView.as_view(template_name="user_permissions/roles/confirm_delete_user_role.html"),
+            name="delete_user_role"),
+    path('roles/update/<int:pk>/', UpdateUserRoleView.as_view(template_name="user_permissions/roles/update_user_role.html"),
+            name="update_user_role"),
 ]

@@ -1,0 +1,38 @@
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Delete User Role{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0"><strong>Delete User Role</strong></h3>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete the user role <strong>"{{ role.role_name }}"</strong>?</p>
+            <br>
+            <h6><strong>
+              • Please note that this operation is irreversible.
+              <br>
+              • The role and its associated permissions will be permanently deleted from the system.
+            </strong></h6>
+            <img src="{% static 'img/custom-illustrations-v2/i2-4.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8 mb-8" alt="Custom illustration for confirming deletion">
+            <hr>
+            <button type="submit" class="btn btn-danger mt-8"><strong>DELETE &nbsp;</strong> the user role.</button>
+            <br><br>
+            <a href="{% url 'user_permissions:list_user_roles' %}" class="btn btn-secondary"><strong>CANCEL
+              &nbsp;</strong> the
+              deletion operation.</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

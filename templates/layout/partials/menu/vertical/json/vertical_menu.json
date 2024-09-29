@@ -111,6 +111,28 @@
       ]
     },
     {
+      "name": "User Roles",
+      "icon": "menu-icon tf-icons ti ti-lock",
+      "slug": "user_roles",
+      "submenu": [
+        {
+          "name": "Add Role Definition",
+          "slug": "permission",
+          "url": "user_permissions:add_user_role"
+        },
+        {
+          "name": "Manage Role Definitions",
+          "slug": "permission",
+          "url": "user_permissions:list_user_roles"
+        },
+        {
+          "name": "Manage Roles of Users",
+          "slug": "permission",
+          "url": "user_permissions:manage_user_roles"
+        }
+      ]
+    },
+    {
       "name": "Assistants",
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "assistants",
