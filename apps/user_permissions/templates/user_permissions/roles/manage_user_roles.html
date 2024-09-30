@@ -1,2 +1,216 @@
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
 
-# TEST PAGE: MANAGE USER ROLES
+{% block title %}Manage Users in Roles{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0"><strong>Manage Users Across Roles</strong></h3>
+        </div>
+
+        <div class="d-flex">
+          <a href="{% url 'user_permissions:add_user_role' %}" class="btn btn-success ms-6 w-25">
+            <i class="fa fa-plus-circle me-4"></i>
+            <strong>
+              Add Role Definition
+            </strong>
+          </a>
+
+          <a href="{% url 'user_permissions:list_user_roles' %}" class="btn btn-secondary w-25 ms-6">
+            <i class="fa fa-dashboard me-4"></i>
+            <strong>
+              Manage Role Definitions
+            </strong>
+          </a>
+        </div>
+
+        <div class="card-body">
+
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-90.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8" alt="Illustration for tips">
+            <span class="alert-icon rounded">
+          <i class="ti ti-bookmark"></i>
+        </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can create a user role by selecting an organization, defining a role name, and
+                choosing
+                permissions using the Select2 picker. Once you have selected the appropriate permissions, click "Create
+                Role" to
+                assign it to the chosen organization.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+
+          <hr>
+
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}"
+                   role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <hr>
+
+          <!-- Add User to Role -->
+          <h5 class="mt-4">
+            <i class="fa fa-boxes-packing me-0"></i>
+            <i class="fa fa-arrow-right me-0"></i>
+            <i class="fa fa-user me-2"></i>
+            <strong>Add User to Role</strong>
+          </h5>
+          <form method="post">
+            {% csrf_token %}
+
+            <!-- Organization Picker -->
+            <label class="mt-4" for="organization">Organization:</label>
+            <select id="organization" name="organization_id" class="form-select" required>
+              <option value="" disabled selected>Select Organization</option>
+              {% for organization in organizations %}
+                <option value="{{ organization.id }}">{{ organization.name }}</option>
+              {% endfor %}
+            </select>
+
+            <!-- User Picker (Initially hidden) -->
+            <label class="mt-4" for="user">User:</label>
+            <select id="user" name="user_id" class="form-select" required>
+              <option value="" disabled selected>Select User</option>
+              {% for organization in organizations %}
+                {% for user in organization.users.all %}
+                  <option value="{{ user.id }}" data-organization="{{ organization.id }}">{{ user.username }}</option>
+                {% endfor %}
+              {% endfor %}
+            </select>
+
+            <!-- Role Picker -->
+            <label class="mt-4" for="role">Role:</label>
+            <select id="role" name="role_id" class="form-select" required>
+              <option value="" disabled selected>Select Role</option>
+              {% for role in roles %}
+                <option value="{{ role.id }}">{{ role.role_name }}</option>
+              {% endfor %}
+            </select>
+
+            <button type="submit" name="add_user_to_role" class="btn btn-primary mt-8">
+              <i class="fa fa-plus-circle me-2"></i>
+              <strong>Add User to Role</strong>
+            </button>
+          </form>
+
+          <hr>
+
+          <h5>
+            <i class="fa fa-users me-2 mt-8"></i>
+            <strong>Users & Roles</strong>
+          </h5>
+          <!-- Table for viewing and removing roles -->
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>User</th>
+              <th>Organization</th>
+              <th>Role(s)</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for organization in organizations %}
+              <tr>
+                <td colspan="4" class="text-center border border-primary rounded border-3">
+                  <strong>
+                    <i class="fa fa-building me-2"></i>
+                    {{ organization.name }}
+                  </strong>
+                </td>
+              </tr>
+              {% for user in organization.users.all %}
+                <tr>
+                  <td>{{ user.username }}</td>
+                  <td>{{ organization.name }}</td>
+                  <td>
+                    {% for role in user.roles.all %}
+                      <span class="badge bg-primary m-1">{{ role.role_name }}</span>
+                    {% empty %}
+                      <span class="text-muted">No Roles Assigned</span>
+                    {% endfor %}
+                  </td>
+                  <td>
+                    <!-- Remove role functionality -->
+                    <form method="post" style="display: inline-block;">
+                      {% csrf_token %}
+                      <input type="hidden" name="user_id" value="{{ user.id }}">
+                      <select name="role_id" class="form-select d-inline-block w-auto" required>
+                        <option value="" disabled selected>Select Role to Remove</option>
+                        {% for role in user.roles.all %}
+                          <option value="{{ role.id }}">{{ role.role_name }}</option>
+                        {% endfor %}
+                      </select>
+                      <button type="submit" name="remove_user_role" class="btn btn-danger btn-sm">
+                        Remove Role
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              {% empty %}
+                <div class="card invisible">
+                  <div class="alert alert-warning visible ms-8 me-8" role="alert">
+                    <i class="fa fa-exclamation-triangle me-4"></i>
+                    <strong>No users have been assigned to this organization yet.</strong>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block page_js %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const organizationSelect = document.getElementById("organization");
+      const userSelect = document.getElementById("user");
+      const userOptions = userSelect.querySelectorAll("option");
+
+      // Hide all user options initially
+      function hideAllUsers() {
+        userOptions.forEach(option => {
+          option.style.display = "none";
+        });
+      }
+
+      // Show users belonging to selected organization
+      organizationSelect.addEventListener("change", function () {
+        const selectedOrgId = this.value;
+        hideAllUsers(); // Hide all users
+
+        // Show users for the selected organization
+        userOptions.forEach(option => {
+          if (option.getAttribute("data-organization") === selectedOrgId) {
+            option.style.display = "block";
+          }
+        });
+
+        // Reset the user select value
+        userSelect.value = "";
+      });
+
+      // Initialize by hiding all users
+      hideAllUsers();
+    });
+  </script>
+{% endblock %}

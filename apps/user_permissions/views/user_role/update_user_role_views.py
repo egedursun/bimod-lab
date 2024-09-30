@@ -12,16 +12,18 @@
 #  without the prior express written permission of BMD® Autonomous Holdings.
 #
 #  For permission inquiries, please contact: admin@bimod.io.
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.organization.models import Organization
 from apps.user_permissions.forms import UserRoleForm
 from apps.user_permissions.models import UserRole
-from apps.user_permissions.utils import PERMISSION_TYPES
+from apps.user_permissions.utils import PERMISSION_TYPES, PermissionNames
 from web_project import TemplateLayout
 
 
@@ -45,6 +47,15 @@ class UpdateUserRoleView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_USER_ROLES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_USER_ROLES):
+            messages.error(self.request, "You do not have permission to update user roles.")
+            return redirect('user_permissions:list_user_roles')
+        ##############################
+
         role_id = kwargs.get('pk')  # Fetch pk from kwargs
         role = get_object_or_404(UserRole, pk=role_id)  # Fetch the role object
         form = UserRoleForm(request.POST, instance=role)

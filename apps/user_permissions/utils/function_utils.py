@@ -52,9 +52,15 @@ def get_permissions_grouped():
             ('connect_user_to_organization', 'Connect User to Organization'),
             ('remove_user_from_organization', 'Remove User from Organization'),
         ],
-        "User Role Modification and Read Permissions": [
+        "Permission Management Permissions": [
             ('modify_user_permissions', 'Modify User Permissions'),
             ('list_user_permissions', 'List User Permissions')
+        ],
+        "User Role Management Permissions": [
+            ('create_user_roles', 'Create User Roles'),
+            ('list_user_roles', 'List User Roles'),
+            ('update_user_roles', 'Update User Roles'),
+            ('delete_user_roles', 'Delete User Roles'),
         ],
         "Assistant Permissions": [
             ('add_assistants', 'Add Assistants'),
@@ -260,6 +266,6 @@ def get_permissions_grouped():
             ('create_support_tickets', 'Create Support Tickets'),
             ('list_support_tickets', 'List Support Tickets'),
             ('update_support_tickets', 'Update Support Tickets'),
-        ]
+        ],
     }
     return permissions_grouped

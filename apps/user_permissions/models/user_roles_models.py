@@ -12,7 +12,7 @@
 #  without the prior express written permission of BMD® Autonomous Holdings.
 #
 #  For permission inquiries, please contact: admin@bimod.io.
-
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -21,6 +21,7 @@ class UserRole(models.Model):
     role_name = models.CharField(max_length=1000)
     role_description = models.TextField(null=True, blank=True)
     role_permissions = models.JSONField(default=list)
+    users = models.ManyToManyField(User, related_name='roles')  # Linking Users to Roles
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

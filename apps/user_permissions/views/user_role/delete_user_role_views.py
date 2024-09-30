@@ -17,7 +17,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.user_permissions.models import UserRole
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
@@ -32,6 +34,15 @@ class DeleteUserRoleView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_USER_ROLES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_USER_ROLES):
+            messages.error(self.request, "You do not have permission to delete a user role.")
+            return redirect('user_permissions:list_user_roles')
+        ##############################
+
         role_id = kwargs.get("pk")
         role = get_object_or_404(UserRole, pk=role_id, created_by_user=request.user)
 

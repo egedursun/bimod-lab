@@ -22,9 +22,15 @@
   <div class="row mb-5">
     <div class="col">
       <h3 class="mb-4"><strong>User Role Management</strong></h3>
-      <a href="{% url 'user_permissions:add_user_role' %}" class="btn btn-success">
+      <a href="{% url 'user_permissions:add_user_role' %}" class="btn btn-success w-25 me-4">
         <i class="bi bi-plus-circle me-2"></i>
         <strong>Create New Role</strong>
+      </a>
+      <a href="{% url 'user_permissions:manage_user_roles' %}">
+        <button class="btn btn-info mt-4 mb-4 w-25">
+          <i class="fa fa-user-astronaut me-4"></i>
+          <strong> Manage User Roles</strong>
+        </button>
       </a>
     </div>
   </div>
@@ -47,6 +53,14 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
   <hr>
 
   <!-- Roles List -->
@@ -57,7 +71,7 @@
           <div class="card shadow-sm">
             <div class="card-header d-flex justify-content-between align-items-center">
               <h5 class="card-title mb-0">
-                <i class="bi bi-person me-2"></i>
+                <i class="ti ti-box t-lg me-2"></i>
                 <strong>{{ role.role_name }}</strong>
               </h5>
               <small class="text-muted">
