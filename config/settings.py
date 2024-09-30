@@ -125,6 +125,7 @@ INSTALLED_APPS = [
     "apps.orchestrations",
     "apps.finetuning",
     "apps.data_security",
+    "apps.data_backups",
 
     ########################################
     # SUPPORT

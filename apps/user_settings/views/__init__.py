@@ -15,3 +15,4 @@
 
 from .settings import *
 from .deletions import *
+from .automated_backups import *

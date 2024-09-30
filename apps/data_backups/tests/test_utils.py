@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io
-#  File: __init__.py
-#  Last Modified: 2024-09-27 17:03:33
+#  File: test_utils.py
+#  Last Modified: 2024-08-12 23:33:43
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 23:07:38
+#  Created: 2024-09-28 22:21:55
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -13,4 +13,5 @@
 #
 #  For permission inquiries, please contact: admin@bimod.io.
 
-from .organization_admin import *
+def test_init_data_backups_test_utils():
+    assert True

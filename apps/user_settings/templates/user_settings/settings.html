@@ -7,7 +7,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -70,7 +70,7 @@
               <tr>
                 <td class="text-nowrap text-heading">
                   <i class="fa fa-database me-4"></i>
-                  <strong>Automated Data Backups</strong>
+                  <strong>Weekly Automated Data Backups</strong>
                 </td>
                 <td style="max-width: 600px; min-width: 600px; text-align: justify;">
                   <i class="fa fa-info-circle me-2"></i>
@@ -79,14 +79,20 @@
                     that it can be restored in case of data loss. This is to protect the privacy and security of your
                     data by ensuring that it is backed up regularly to prevent data loss due to accidental deletion,
                     corruption, or hardware failure. We highly recommend enabling this feature to ensure the safety
-                    and security of your data.
+                    and security of your data. Automated Data Backups are performed weekly on Sundays at 12:00 AM (UTC)
                   </small>
                 </td>
-                <td>
-                  <div class="form-check d-flex justify-content-center">
-                    <input class="form-check-input" type="checkbox" id="feature1Checkbox" disabled/>
-                  </div>
-                </td>
+                <form method="POST" action="{% url 'user_settings:toggle_automated_backups' %}">
+                  {% csrf_token %}
+                  <td>
+                    <div class="form-check d-flex justify-content-center">
+                      <input class="form-check-input" type="checkbox" id="feature1Checkbox"
+                             name="automated_data_backups"
+                        {% if user.profile.automated_data_backups %} checked {% endif %}
+                             onchange="this.form.submit()">
+                    </div>
+                  </td>
+                </form>
               </tr>
               <tr>
                 <td class="text-nowrap text-heading">
@@ -105,7 +111,7 @@
                 </td>
                 <td>
                   <div class="form-check d-flex justify-content-center">
-                    <input class="form-check-input" type="checkbox" id="feature2Checkbox" checked disabled/>
+                    <input class="form-check-input" type="checkbox" id="feature2Checkbox" checked disabled />
                   </div>
                 </td>
               </tr>
@@ -126,7 +132,7 @@
                 </td>
                 <td>
                   <div class="form-check d-flex justify-content-center">
-                    <input class="form-check-input" type="checkbox" id="feature3Checkbox" checked disabled/>
+                    <input class="form-check-input" type="checkbox" id="feature3Checkbox" checked disabled />
                   </div>
                 </td>
               </tr>
@@ -222,13 +228,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL LLM MODELS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-llms-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-llms-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -257,13 +263,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL ASSISTANTS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-assistants-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-assistants-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -292,13 +298,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL LEAN ASSISTANTS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-lean-assistants-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-lean-assistants-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -327,13 +333,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL EXPERT NETWORKS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-expert-networks-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-expert-networks-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -362,13 +368,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL CHATS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-chats-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-chats-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -397,13 +403,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL LEANMOD CHATS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-lean-chats-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-lean-chats-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -433,13 +439,13 @@
                         <strong>Type in 'CONFIRM DELETING ALL STARRED MESSAGES' to confirm the deletion
                           process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-starred-messages-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-starred-messages-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -468,13 +474,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL MEMORIES' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-memories-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-memories-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -504,13 +510,13 @@
                         <strong>Type in 'CONFIRM DELETING ALL MESSAGE TEMPLATES' to confirm the deletion
                           process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-message-templates-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-message-templates-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -540,13 +546,13 @@
                         <strong>Type in 'CONFIRM DELETING ALL EXPORTED ASSISTANTS' to confirm the deletion
                           process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-exported-assistants-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-exported-assistants-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -575,13 +581,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL ORCHESTRATIONS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-orchestrations-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-orchestrations-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -610,13 +616,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL FILE SYSTEMS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-file-systems-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-file-systems-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -645,13 +651,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL WEB BROWSERS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-web-browsers-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-web-browsers-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -680,13 +686,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL SQL DATABASES' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-sql-databases-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-sql-databases-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -716,13 +722,13 @@
                         <strong>Type in 'CONFIRM DELETING ALL CUSTOM SQL QUERIES' to confirm the deletion
                           process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-custom-sql-queries-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-custom-sql-queries-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -751,13 +757,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL KNOWLEDGE BASES' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-knowledge-bases-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-knowledge-bases-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -787,13 +793,13 @@
                         <strong>Type in 'CONFIRM DELETING ALL KNOWLEDGE BASE DOCUMENTS' to confirm the deletion
                           process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-knowledge-base-documents-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-knowledge-base-documents-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -801,7 +807,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-knowledge-base-documents-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-knowledge-base-documents-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Documents</strong>
                     </button>
@@ -822,13 +829,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL CODE STORAGES' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-code-storages-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-code-storages-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -857,13 +864,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL REPOSITORIES' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-repositories-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-repositories-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -893,13 +900,13 @@
                         <strong>Type in 'CONFIRM DELETING ALL ML MODEL STORAGES' to confirm the deletion
                           process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-ml-model-storages-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-ml-model-storages-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -928,13 +935,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL ML MODELS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-ml-models-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-ml-models-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -963,13 +970,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL MEDIA STORAGES' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-media-storages-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-media-storages-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -999,13 +1006,13 @@
                         <strong>Type in 'CONFIRM DELETING ALL MULTIMEDIA FILES' to confirm the deletion
                           process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-multimedia-files-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-multimedia-files-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -1034,13 +1041,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL FUNCTIONS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-functions-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-functions-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -1069,13 +1076,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL APIS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-apis-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-apis-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -1104,13 +1111,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL SCRIPTS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-scripts-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-scripts-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -1139,13 +1146,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL SCHEDULED JOBS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-scheduled-jobs-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-scheduled-jobs-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
@@ -1174,13 +1181,13 @@
                       <small class="text-muted text-danger">
                         <strong>Type in 'CONFIRM DELETING ALL TRIGGERED JOBS' to confirm the deletion process.</strong>
                       </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
                   </td>
                   <td style="max-width: 100px;">
                     <label class="switch switch-square switch-lg mt-2 center">
                       <input type="checkbox" class="switch-input"
-                             onclick="document.getElementById('delete-triggered-jobs-button').disabled = !this.checked;"/>
+                             onclick="document.getElementById('delete-triggered-jobs-button').disabled = !this.checked;" />
                       <span class="switch-toggle-slider">
                         <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
                         <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>

@@ -161,6 +161,7 @@ class Profile(models.Model):
     referral_code = models.ForeignKey('PromoCode', on_delete=models.SET_NULL, related_name='referral_code', blank=True,
                                       null=True)
     sub_users = models.ManyToManyField(User, related_name='sub_users', blank=True)
+    automated_data_backups = models.BooleanField(default=False)
 
     def add_points(self, action):
         points = POINT_REWARDS.get(action, 0)

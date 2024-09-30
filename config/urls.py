@@ -40,7 +40,8 @@ urlpatterns = [
     path("", include("apps.landing.urls", namespace="landing")),
     path("admin/", admin.site.urls),
     path("app/", include("auth.urls")),
-    path("app/user_profile_management/", include("apps.user_profile_management.urls", namespace="user_profile_management")),
+    path("app/user_profile_management/",
+         include("apps.user_profile_management.urls", namespace="user_profile_management")),
     path("app/user_settings/", include("apps.user_settings.urls", namespace="user_settings")),
     path("app/dashboard/", include("apps.dashboard.urls", namespace="dashboard")),
     path("app/organization/", include("apps.organization.urls", namespace="organization")),
@@ -59,8 +60,10 @@ urlpatterns = [
     path("app/datasource_sql/", include("apps.datasource_sql.urls", namespace="datasource_sql")),
     path("app/datasource_knowledge_base/", include("apps.datasource_knowledge_base.urls")),
     path("app/datasource_codebase/", include("apps.datasource_codebase.urls", namespace="datasource_codebase")),
-    path("app/datasource_file_systems/", include("apps.datasource_file_systems.urls", namespace="datasource_file_systems")),
-    path("app/datasource_media_storages/", include("apps.datasource_media_storages.urls", namespace="datasource_media_storages")),
+    path("app/datasource_file_systems/",
+         include("apps.datasource_file_systems.urls", namespace="datasource_file_systems")),
+    path("app/datasource_media_storages/",
+         include("apps.datasource_media_storages.urls", namespace="datasource_media_storages")),
     path("app/datasource_ml_models/", include("apps.datasource_ml_models.urls", namespace="datasource_ml_models")),
     path("app/datasource_browsers/", include("apps.datasource_browsers.urls", namespace="datasource_browser")),
     path("app/mm_functions/", include("apps.mm_functions.urls", namespace="mm_functions")),
@@ -72,6 +75,7 @@ urlpatterns = [
     path("app/finetuning/", include("apps.finetuning.urls", namespace="finetuning")),
     path("app/data_security/", include("apps.data_security.urls", namespace="data_security")),
     path("app/leanmod/", include("apps.leanmod.urls", namespace="leanmod")),
+    path("app/data_backups/", include("apps.data_backups.urls", namespace="data_backups")),
     #################################################################################################################
 
     #################################################################################################################

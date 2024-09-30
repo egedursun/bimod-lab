@@ -1,0 +1,347 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Manage Data Backups{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        <h3><strong>Manage Backups</strong></h3>
+      </div>
+      <div class="card-body">
+
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+             role="alert">
+          <img src="{% static 'img/custom-illustrations-v2/i2-21.png' %}" width="25%" style="border-radius:25px;"
+               class="justify-content-end me-8" alt="Illustration for tip">
+          <span class="alert-icon rounded">
+        <i class="ti ti-bookmark"></i>
+      </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              In this page, you can create backups of your data. You can also restore or delete existing backups. To
+              create a new backup, fill in the form below and click on the "Create Backup" button. To restore or delete
+              a
+              backup, click on the respective buttons in the "Actions" column of the table.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
+
+        <hr>
+
+        {% if messages %}
+          {% for message in messages %}
+            <div
+              class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+              role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <!-- CREATE BACKUP FORM -->
+        <div class="mb-4">
+          <h5><strong>Create Backup</strong></h5>
+          <hr>
+          <form method="post" action="{% url 'data_backups:manage' %}" onsubmit="return validatePassword()">
+            {% csrf_token %}
+            <!-- Organization Selection -->
+            <div class="mb-3">
+              <label for="organization" class="form-label">Select Organization</label>
+              <select class="form-select" id="organization" name="organization" required>
+                {% for organization in organizations %}
+                  <option value="{{ organization.id }}">{{ organization.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Backup Name -->
+            <div class="mb-3">
+              <label for="backup_name" class="form-label">Backup Name</label>
+              <input type="text" class="form-control" id="backup_name" name="backup_name" required>
+            </div>
+
+            <!-- Password and Confirmation -->
+            <div class="mb-3">
+              <label for="backup_password" class="form-label">Password</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="backup_password" name="backup_password" required>
+                <button type="button" class="btn btn-outline-secondary" id="togglePassword" title="Show/Hide Password">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="confirm_password" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            </div>
+
+            <!-- Data Type Selection -->
+            <div class="mb-3">
+              <label for="backup_model" class="form-label">Select Data to Backup</label>
+              <select class="form-select" id="backup_model" name="backup_model" required>
+                {% for value, label in backup_types %}
+                  <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4 w-25">
+              <strong><i class="bi bi-plus"></i> Create Backup</strong>
+            </button>
+          </form>
+        </div>
+
+        <hr>
+
+        <!-- BACKUP LIST -->
+        <div class="table-responsive">
+          <h5><i class="fa fa-refresh me-2 mb-4"></i><strong>Backups</strong></h5>
+          <div class="alert alert-solid-secondary d-flex align-items-center" role="alert">
+            <span class="alert-icon rounded">
+              <i class="ti ti-info-circle"></i>
+            </span>
+            The passwords of automatically generated backups are shared within the name of the backup in the following
+            format: <br><br>
+
+            'PW: 00000000' where '00000000' is the password. <br>
+          </div>
+          <table id="backupTable" class="table table-striped mt-4">
+            <thead>
+            <tr>
+              <th>Organization</th>
+              <th>Backup Name</th>
+              <th>Backup Type</th>
+              <th>Responsible User</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for backup in page_obj %}
+              <tr>
+                <td style="max-width: 100px;"><strong>{{ backup.organization.name }}</strong></td>
+                <td style="max-width: 200px;"><strong>{{ backup.backup_name }}</strong></td>
+                <td style="max-width: 100px;">{{ backup.get_backup_type_display }}</td>
+                <td style="max-width: 100px;"><strong>{{ backup.responsible_user.username }}</strong></td>
+                <td style="max-width: 150px;">{{ backup.created_at|date:"Y-m-d H:i" }}</td>
+                <td>
+                  <!-- RESTORE BUTTON -->
+                  <button type="button" class="btn btn-info btn-sm item-reload-btn me-2"
+                          data-backup-id="{{ backup.id }}">
+                    <i class="bi bi-arrow-clockwise me-2"></i> Restore
+                  </button>
+
+                  <!-- DELETE BUTTON -->
+                  <button type="button" class="btn btn-danger btn-sm item-delete-btn" data-backup-id="{{ backup.id }}">
+                    <i class="bi bi-trash me-2"></i> Delete
+                  </button>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6">
+                  <div class="alert alert-warning p-4 mt-4" role="alert">
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    <strong>No backups have been generated yet.</strong>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+
+          <hr>
+
+          <!-- PAGINATION MANAGER -->
+          {% if page_obj.has_other_pages %}
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center mt-8">
+                {% if page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">&laquo;</span>
+                  </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                  {% if page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">&raquo;</span>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // DELETE BUTTON LOGIC
+      document.querySelectorAll('.item-delete-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          const backupId = button.getAttribute('data-backup-id');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this action.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Create and submit the delete form
+              const form = document.createElement('form');
+              form.method = 'POST';
+              form.action = `{% url 'data_backups:delete' 0 %}`.replace('0', backupId);
+
+              const csrfInput = document.createElement('input');
+              csrfInput.type = 'hidden';
+              csrfInput.name = 'csrfmiddlewaretoken';
+              csrfInput.value = '{{ csrf_token }}';
+              form.appendChild(csrfInput);
+
+              document.body.appendChild(form);
+              form.submit();
+            }
+          });
+        });
+      });
+
+      // RESTORE BUTTON LOGIC
+      document.querySelectorAll('.item-reload-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          const backupId = button.getAttribute('data-backup-id');
+
+          Swal.fire({
+            title: 'Restoring Backup',
+            icon: 'info',
+            input: 'password',
+            inputLabel: 'Encryption Password',
+            inputPlaceholder: 'Enter the encryption password for your backup',
+            showCancelButton: true,
+            confirmButtonText: 'Restore',
+            cancelButtonText: 'Cancel',
+            customClass: {
+              confirmButton: 'btn btn-info me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false,
+            inputValidator: (value) => {
+              if (!value) {
+                return 'You need to enter a password.';
+              }
+            }
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Create and submit the restore form
+              const form = document.createElement('form');
+              form.method = 'POST';
+              form.action = `{% url 'data_backups:reload' 0 %}`.replace('0', backupId);
+
+              const csrfInput = document.createElement('input');
+              csrfInput.type = 'hidden';
+              csrfInput.name = 'csrfmiddlewaretoken';
+              csrfInput.value = '{{ csrf_token }}';
+              form.appendChild(csrfInput);
+
+              const passwordInput = document.createElement('input');
+              passwordInput.type = 'hidden';
+              passwordInput.name = 'backup_password';
+              passwordInput.value = result.value;
+              form.appendChild(passwordInput);
+
+              document.body.appendChild(form);
+              form.submit();
+            }
+          });
+        });
+      });
+
+      // Show/Hide Password Toggle
+      const togglePassword = document.querySelector('#togglePassword');
+      const passwordField = document.querySelector('#backup_password');
+
+      togglePassword.addEventListener('click', function() {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('bi-eye');
+        this.querySelector('i').classList.toggle('bi-eye-slash');
+      });
+    });
+
+    // Client-side password confirmation validation
+    function validatePassword() {
+      const password = document.getElementById('backup_password').value;
+      const confirmPassword = document.getElementById('confirm_password').value;
+
+      if (password !== confirmPassword) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Passwords do not match',
+          text: 'Please ensure that both password fields match.',
+          customClass: {
+            confirmButton: 'btn btn-danger me-2 waves-effect waves-light'
+          },
+          buttonsStyling: false
+        });
+        return false;
+      }
+      return true;
+    }
+  </script>
+{% endblock %}

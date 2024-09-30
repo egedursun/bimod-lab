@@ -248,16 +248,11 @@
           {% if request.user|has_group:"admin" %}
             <img src="
               
-              
-              
-              
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt class="h-auto rounded-pill border border-primary border-1">
           {% else %}
             <img src="
-              
-              
-              
+ 
               
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt class="h-auto rounded-pill border border-primary border-1">
@@ -273,16 +268,10 @@
                   {% if request.user|has_group:"admin" %}
                     <img src="
                       
-                      
-                      
-                      
                       {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                          alt class="w-px-50 h-auto rounded-pill border border-1 border-primary">
                   {% else %}
                     <img src="
-                      
-                      
-                      
                       
                       {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                          alt class="w-px-40 h-auto rounded-pill border border-1 border-primary">
@@ -340,6 +329,11 @@
         <li>
           <a class="dropdown-item" href="{% url "llm_transaction:transaction_invoices_list" %}">
             <i class="ti ti-invoice me-3 ti-md"></i><span class="align-middle">Invoices</span>
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="{% url "data_backups:manage" %}">
+            <i class="ti ti-refresh me-3 ti-md"></i><span class="align-middle">Data Backups</span>
           </a>
         </li>
         <li>
@@ -416,7 +410,7 @@
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function() {
     const tipsSwitch = document.querySelector('.switch-input');
 
     // Check localStorage for the tips state on page load
@@ -426,7 +420,7 @@
     }
 
     // Add event listener to the switch
-    tipsSwitch.addEventListener('change', function () {
+    tipsSwitch.addEventListener('change', function() {
       const isOn = tipsSwitch.checked;
       localStorage.setItem('show_tips', isOn);
     });

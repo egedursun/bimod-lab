@@ -23,7 +23,7 @@ from apps.user_settings.views import UserSettingsView, DeleteAllLLMModelsView, \
     DeleteAllMLModelStoragesView, DeleteAllMLModelsView, DeleteAllMediaStoragesView, DeleteAllMultimediaFilesView, \
     DeleteAllFunctionsView, DeleteAllAPIsView, DeleteAllScriptsView, DeleteAllScheduledJobsView, \
     DeleteAllTriggeredJobsView, DeleteAllRepositoriesView, DeleteAllLeanAssistantsView, DeleteAllExpertNetworksView, \
-    DeleteAllLeanChatsView
+    DeleteAllLeanChatsView, ToggleAutomatedBackupView
 
 app_name = "user_settings"
 
@@ -65,5 +65,6 @@ urlpatterns = [
     path('delete/all/scripts/', DeleteAllScriptsView.as_view(), name='delete_all_scripts'),
     path('delete/all/scheduled_jobs/', DeleteAllScheduledJobsView.as_view(), name='delete_all_scheduled_jobs'),
     path('delete/all/triggered_jobs/', DeleteAllTriggeredJobsView.as_view(), name='delete_all_triggered_jobs'),
-
+    #####
+    path('auto_backups/toggle/', ToggleAutomatedBackupView.as_view(), name='toggle_automated_backups'),
 ]
