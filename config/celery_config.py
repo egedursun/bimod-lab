@@ -61,7 +61,7 @@ app.conf.beat_schedule = {
     # CRON TASK TO HANDLE AUTOMATED BACKUPS
     'initiate_automated_backups-every-1-week': {
         'task': 'apps.user_settings.tasks.automated_backups_tasks.initiate_automated_backups',
-        'schedule': crontab(minute=0, hour=0, day_of_week=0),
+        'schedule': crontab(minute=0, hour=0, day_of_week="sunday"),
     },
 }
 
