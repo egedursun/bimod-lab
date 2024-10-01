@@ -1,0 +1,125 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Manage Brainstorming Sessions{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h3><strong>Manage Brainstorming Sessions</strong></h3>
+    </div>
+    <div class="card-body">
+
+      <a href="{% url 'brainstorms:create_session' %}">
+        <button class="btn btn-success mt-2 mb-8">
+          <i class="fa fa-plus me-4"></i>
+          <strong> Create Brainstorming Session</strong>
+        </button>
+      </a>
+
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+           role="alert">
+        <img src="{% static 'img/custom-illustrations-v2/i2-39.png' %}" width="25%" style="border-radius:25px;"
+             class="justify-content-end me-8" alt="Illustration for tip">
+        <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+        <div class="d-flex flex-column ps-1">
+          <h5 class="alert-heading mb-2">Tip</h5>
+          <p class="mb-0">
+            On this page, you can manage your brainstorming sessions. You can enter a session, update its details, or
+            delete it. Click the "Enter" button to manage the session or view its contents.
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+
+      <hr>
+
+      {% if messages %}
+      {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+
+      <hr>
+
+      <!-- SESSION LIST -->
+      <div class="table-responsive">
+        <h5><i class="fa fa-brain me-2 mb-4"></i><strong>Brainstorming Sessions</strong></h5>
+        <table id="sessionTable" class="table table-striped mt-4">
+          <thead>
+          <tr>
+            <th>Session Name</th>
+            <th>Organization</th>
+            <th>LLM Model</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for session in sessions %}
+          <tr>
+            <td style="max-width: 200px;"><strong>{{ session.session_name }}</strong></td>
+            <td style="max-width: 100px;"><strong>{{ session.organization.name }}</strong></td>
+            <td style="max-width: 100px;">{{ session.llm_model.nickname }}</td>
+            <td style="max-width: 150px;">{{ session.created_at|date:"Y-m-d H:i" }}</td>
+            <td>
+              <!-- ENTER BUTTON -->
+              <a href="{% url 'brainstorms:detail_session' session.id %}" class="btn btn-info btn-sm me-2">
+                <i class="bi bi-eye me-2"></i>
+                <strong>Enter Session</strong>
+              </a>
+
+              <!-- UPDATE BUTTON -->
+              <a href="{% url 'brainstorms:update_session' session.id %}" class="btn btn-warning btn-sm me-2">
+                <i class="bi bi-pencil me-2"></i>
+                <strong>Update Session</strong>
+              </a>
+
+              <!-- DELETE BUTTON -->
+              <a href="{% url 'brainstorms:delete_session' session.id %}" class="btn btn-danger btn-sm me-2">
+                <i class="bi bi-trash me-2"></i>
+                <strong>Delete Session</strong>
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">
+              <div class="alert alert-warning p-4 mt-4" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i>
+                <strong>No brainstorming sessions have been created yet.</strong>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

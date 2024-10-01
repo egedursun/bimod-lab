@@ -12,12 +12,12 @@
 
 - Generating a JPEG file
 ```bash
-python manage.py graph_models -a -g -o bimod_db_dd-MM-YYYY.png
+python manage.py graph_models -a -g -o bimod_db_dd-MM-YY.png
 ```
 
 - Generating a JSON file
 ```bash
-python manage.py graph_models -a -g -o bimod_db_dd-MM-YYYY.json
+python manage.py graph_models -a -g -o bimod_db_dd-MM-YY.json
 ```
 
 - Generating an HTML file

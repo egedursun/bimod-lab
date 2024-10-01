@@ -44,6 +44,12 @@ def get_permissions_grouped():
             ('list_data_security', 'List Data Security'),
             ('delete_data_security', 'Delete Data Security'),
         ],
+        "Data Backups Permissions": [
+            ('create_data_backups', 'Create Data Backups'),
+            ('list_data_backups', 'List Data Backups'),
+            ('delete_data_backups', 'Delete Data Backups'),
+            ('restore_data_backups', 'Restore Data Backups'),
+        ],
         "User Permissions": [
             ('add_users', 'Add Users'),
             ('update_users', 'Update Users'),
@@ -119,6 +125,16 @@ def get_permissions_grouped():
             ('add_assistant_memories', 'Add Assistant Memories'),
             ('list_assistant_memories', 'List Assistant Memories'),
             ('delete_assistant_memories', 'Delete Assistant Memories')
+        ],
+        "Brainstorming Permissions": [
+            ('create_brainstorming_sessions', 'Create Brainstorming Sessions'),
+            ('list_brainstorming_sessions', 'List Brainstorming Sessions'),
+            ('update_brainstorming_sessions', 'Update Brainstorming Sessions'),
+            ('delete_brainstorming_sessions', 'Delete Brainstorming Sessions'),
+            ('create_brainstorming_ideas', 'Create Brainstorming Ideas'),
+            ('delete_brainstorming_ideas', 'Delete Brainstorming Ideas'),
+            ('create_brainstorming_syntheses', 'Create Brainstorming Syntheses'),
+            ('bookmark_brainstorming_ideas', 'Bookmark Brainstorming Ideas'),
         ],
         "Orchestration Permissions": [
             ('add_orchestrations', 'Add Orchestrations'),

@@ -7,7 +7,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -23,8 +23,8 @@
       $('.select2').select2({
         placeholder: 'Select Assistants',
         allowClear: true,
-        dropdownAutoWidth: true,
-        width: '100%'  // Ensure full width of the dropdown
+        dropdownAutoWidth: false,
+        width: '50%'  // Ensure full width of the dropdown
       });
 
       // Staging logic for selected assistants

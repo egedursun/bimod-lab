@@ -20,11 +20,22 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
 from apps._services.data_backups.data_backup_executor import DataBackupExecutor
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.data_backups.models import DataBackup
+from apps.user_permissions.utils import PermissionNames
 
 
 class ReloadBackupView(LoginRequiredMixin, View):
     def post(self, request, backup_id, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - RESTORE_DATA_BACKUPS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.RESTORE_DATA_BACKUPS):
+            messages.error(self.request, "You do not have permission to restore backups.")
+            return redirect('data_backups:manage')
+        ##############################
+
         # Get the backup object by id
         backup = get_object_or_404(DataBackup, id=backup_id)
 

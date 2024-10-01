@@ -126,6 +126,7 @@ INSTALLED_APPS = [
     "apps.finetuning",
     "apps.data_security",
     "apps.data_backups",
+    "apps.brainstorms",
 
     ########################################
     # SUPPORT

@@ -19,11 +19,22 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.data_backups.models import DataBackup
+from apps.user_permissions.utils import PermissionNames
 
 
 class DeleteDataBackupView(LoginRequiredMixin, View):
     def post(self, request, backup_id, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_DATA_BACKUPS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_DATA_BACKUPS):
+            messages.error(request, "You do not have permission to delete backups.")
+            return redirect('data_backups:manage')
+        ##############################
+
         # Get the backup object by id
         backup = get_object_or_404(DataBackup, id=backup_id)
 

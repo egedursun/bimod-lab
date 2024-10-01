@@ -227,6 +227,20 @@ class PermissionNames:
     UPDATE_USER_ROLES = 'update_user_roles'
     DELETE_USER_ROLES = 'delete_user_roles'
     ######################################################
+    CREATE_DATA_BACKUPS = 'create_data_backups'
+    LIST_DATA_BACKUPS = 'list_data_backups'
+    DELETE_DATA_BACKUPS = 'delete_data_backups'
+    RESTORE_DATA_BACKUPS = 'restore_data_backups'
+    ######################################################
+    CREATE_BRAINSTORMING_SESSIONS = 'create_brainstorming_sessions'
+    LIST_BRAINSTORMING_SESSIONS = 'list_brainstorming_sessions'
+    UPDATE_BRAINSTORMING_SESSIONS = 'update_brainstorming_sessions'
+    DELETE_BRAINSTORMING_SESSIONS = 'delete_brainstorming_sessions'
+    CREATE_BRAINSTORMING_IDEAS = 'create_brainstorming_ideas'
+    DELETE_BRAINSTORMING_IDEAS = 'delete_brainstorming_ideas'
+    CREATE_BRAINSTORMING_SYNTHESES = 'create_brainstorming_syntheses'
+    BOOKMARK_BRAINSTORMING_IDEAS = 'bookmark_brainstorming_ideas'
+    ######################################################
 
 
 PERMISSION_TYPES = [
@@ -489,6 +503,22 @@ PERMISSION_TYPES = [
     ('list_user_roles', 'List User Roles'),
     ('update_user_roles', 'Update User Roles'),
     ('delete_user_roles', 'Delete User Roles'),
+    #################################################
+    # DATA BACKUPS
+    ('create_data_backups', 'Create Data Backups'),
+    ('list_data_backups', 'List Data Backups'),
+    ('delete_data_backups', 'Delete Data Backups'),
+    ('restore_data_backups', 'Restore Data Backups'),
+    #################################################
+    # BRAINSTORMING SESSIONS
+    ('create_brainstorming_sessions', 'Create Brainstorming Sessions'),
+    ('list_brainstorming_sessions', 'List Brainstorming Sessions'),
+    ('update_brainstorming_sessions', 'Update Brainstorming Sessions'),
+    ('delete_brainstorming_sessions', 'Delete Brainstorming Sessions'),
+    ('create_brainstorming_ideas', 'Create Brainstorming Ideas'),
+    ('delete_brainstorming_ideas', 'Delete Brainstorming Ideas'),
+    ('create_brainstorming_syntheses', 'Create Brainstorming Syntheses'),
+    ('bookmark_brainstorming_ideas', 'Bookmark Brainstorming Ideas'),
     #################################################
 ]
 

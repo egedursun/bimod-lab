@@ -22,8 +22,10 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps._services.data_backups.data_backup_executor import DataBackupExecutor
+from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.data_backups.models import DataBackup
 from apps.organization.models import Organization
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 from apps.data_backups.utils import BACKUP_TYPES, BackupTypesNames
 
@@ -33,6 +35,15 @@ class ManageDataBackupsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_DATA_BACKUPS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_DATA_BACKUPS):
+            messages.error(self.request, "You do not have permission to list backups.")
+            return context
+        ##############################
+
         user_organizations = Organization.objects.filter(
             users__in=[self.request.user]
         )
@@ -54,6 +65,15 @@ class ManageDataBackupsView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_DATA_BACKUPS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.CREATE_DATA_BACKUPS):
+            messages.error(self.request, "You do not have permission to create backups.")
+            return redirect('data_backups:manage')
+        ##############################
+
         organization_id = request.POST.get('organization')
         organization = Organization.objects.get(id=organization_id)
         backup_name = request.POST.get('backup_name')

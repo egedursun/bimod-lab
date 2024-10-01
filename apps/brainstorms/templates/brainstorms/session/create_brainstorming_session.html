@@ -1,0 +1,134 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Create Brainstorming Session{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+<script>
+  $(document).ready(function() {
+    $('.select2').select2({
+      placeholder: 'Select Model',
+      allowClear: true,
+      width: '50%'
+    });
+  });
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-12">
+    <h3 class="mb-0"><strong>Create Brainstorming Session</strong></h3>
+  </div>
+  <a href="{% url 'brainstorms:list_sessions' %}">
+    <button class="btn btn-secondary mt-2 mb-2">
+      <i class="fa fa-dashboard me-4"></i>
+      <strong> Manage Brainstorming Sessions</strong>
+    </button>
+  </a>
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-63.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="alert-icon rounded">
+        <i class="ti ti-bookmark"></i>
+      </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        This is the brainstorming session creation page where you can create a new brainstorming session. Please select
+        an organization, LLM model, and provide a session name, topic definition, and constraints. Once you have filled
+        out the form, click the "Create Session" button to create the brainstorming session. If you have any questions
+        or
+        concerns, please feel free to contact us.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+  {% if messages %}
+  {% for message in messages %}
+  <div
+    class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+    role="alert">
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+
+<hr>
+
+<form method="post" action="" class="mt-4">
+  {% csrf_token %}
+
+  <div class="card mb-4 p-4">
+    <div class="card-body">
+
+      <div class="row g-6 mb-6">
+        <div class="col-12">
+          <label for="organization" class="form-label">Select Organization</label>
+          <select class="form-select" id="organization" name="organization" required>
+            <option value="" disabled selected>Select an organization</option>
+            {% for organization in organizations %}
+            <option value="{{ organization.id }}">{{ organization.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="row g-6 mb-6">
+        <div class="col-12">
+          <label for="llm_model" class="form-label">Select LLM Model</label>
+          <select class="form-select select2" id="llm_model" name="llm_model" required>
+            <option value="" disabled selected>Select an LLM Model</option>
+            {% for llm_model in llm_models %}
+            <option value="{{ llm_model.id }}">{{ llm_model.nickname }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="row g-6 mb-6">
+        <div class="col-12">
+          <label for="session_name" class="form-label">Session Name</label>
+          <input type="text" class="form-control" id="session_name" name="session_name" placeholder="Enter session name"
+                 required>
+        </div>
+      </div>
+
+      <div class="row g-6 mb-6">
+        <div class="col-12">
+          <label for="topic_definition" class="form-label">Topic Definition</label>
+          <textarea class="form-control" id="topic_definition" name="topic_definition" rows="3" required></textarea>
+        </div>
+      </div>
+
+      <div class="row g-6 mb-6">
+        <div class="col-12">
+          <label for="constraints" class="form-label">Constraints</label>
+          <textarea class="form-control" id="constraints" name="constraints" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary w-25"><strong>Create Session</strong></button>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

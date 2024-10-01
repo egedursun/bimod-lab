@@ -76,6 +76,7 @@ urlpatterns = [
     path("app/data_security/", include("apps.data_security.urls", namespace="data_security")),
     path("app/leanmod/", include("apps.leanmod.urls", namespace="leanmod")),
     path("app/data_backups/", include("apps.data_backups.urls", namespace="data_backups")),
+    path("app/brainstorms/", include("apps.brainstorms.urls", namespace="brainstorms")),
     #################################################################################################################
 
     #################################################################################################################

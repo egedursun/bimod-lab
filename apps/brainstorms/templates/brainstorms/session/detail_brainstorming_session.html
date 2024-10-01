@@ -1,0 +1,282 @@
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Brainstorming Session: {{ session.session_name }}{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+{% endblock %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-xl mb-6">
+
+    <!-- Page Header with Back Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>
+        <i class="fa fa-lightbulb me-4"></i>
+        <strong>Brainstorming Session</strong>
+      </h2>
+    </div>
+
+    <a href="{% url 'brainstorms:list_sessions' %}" class="btn btn-secondary w-25 mb-8">
+      <i class="fa fa-dashboard me-2"></i>
+      <strong>Manage Sessions</strong>
+    </a>
+
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+         role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-80.png' %}" width="25%" style="border-radius:25px;"
+           class="justify-content-end me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          On this page, you can manage your brainstorming sessions. You can enter a session, update its details, or
+          delete it. Click the "Enter" button to manage the session or view its contents.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+
+    <!-- Flash Messages -->
+    {% if messages %}
+    <div class="mt-3">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <!-- Ideas Grouped by Depth Level -->
+    <h4 class="mt-12">
+      <i class="fa fa-brain me-2 mb-8"></i>
+      <strong>Synthesized Insights</strong>
+    </h4>
+
+    <!-- Complete Synthesis Section (Moved to the Top) -->
+    <div class="card mb-4 mt-4 border border-primary border-4 rounded">
+      <div class="card-header">
+        <h5>
+          <i class="fa fa-file-text me-2"></i>
+          <strong>Complete Synthesis</strong>
+        </h5>
+      </div>
+      <div class="card-body">
+        {% if complete_synthesis %}
+        <p>{{ complete_synthesis.synthesis_content }}</p>
+        {% else %}
+        <div class="alert alert-warning p-4 mt-4" role="alert">
+          <i class="fa fa-exclamation-triangle me-2"></i>
+          <strong>No complete synthesis has been generated yet.</strong>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <form method="post" action="{% url 'brainstorms:detail_session' session.id %}">
+      {% csrf_token %}
+      <button type="submit" name="action" value="generate_complete_synthesis" class="btn btn-success w-25 mb-4">
+        <i class="fa fa-lightbulb me-2"></i>
+        <strong>Generate Complete Synthesis</strong>
+      </button>
+    </form>
+
+    <hr>
+
+    <!-- Level Syntheses Section -->
+    <h4 class="mt-5 mb-12">
+      <i class="fa fa-layer-group me-2"></i>
+      <strong>Level Syntheses</strong>
+    </h4>
+    {% if level_syntheses %}
+    {% for synthesis in level_syntheses %}
+    <div class="card mb-4 border border-primary rounded border-2">
+      <div class="card-body">
+        <h5>
+          <i class="fa fa-file-text me-2"></i>
+          <strong>Level {{ synthesis.depth_level }} Synthesis</strong>
+        </h5>
+        <p>{{ synthesis.synthesis_content }}</p>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-warning p-4 mt-4" role="alert">
+      <i class="fa fa-exclamation-triangle me-2"></i>
+      <strong>No level syntheses have been generated yet.</strong>
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <!-- Ideas Grouped by Depth Level -->
+    <h4 class="mt-12">
+      <i class="fa fa-brain me-2 mb-8"></i>
+      <strong>Brainstorming Ideas Hierarchy</strong>
+    </h4>
+
+    {% if ideas_by_depth %}
+    {% for level, ideas in ideas_by_depth.items %}
+    <h5 class="mt-4 bg-primary p-4 rounded text-dark">
+      <i class="fa fa-layer-group me-2"></i>
+      <strong>Level {{ level }}</strong>
+    </h5>
+    <div class="row">
+      {% for idea in ideas %}
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body d-flex flex-column">
+            <h6 class="card-title">{{ idea.idea_title }}</h6>
+            <p class="card-text">{{ idea.idea_description }}</p>
+            <div class="mt-auto">
+              <div class="d-flex justify-content-between">
+                <!-- Bookmark Button (filled/unfilled based on bookmark state) -->
+                <form method="post" action="{% url 'brainstorms:bookmark_idea' idea.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-light">
+                    {% if idea.is_bookmarked %}
+                    <i class="fa fa-battery-full text-success"></i>
+                    <small class="ms-2 text-success">Idea staged for further analysis.</small>
+                    {% else %}
+                    <i class="fa fa-battery-empty"></i>
+                    <small class="ms-2">Load idea to reasoning stage.</small>
+                    {% endif %}
+                  </button>
+                </form>
+
+                <!-- Delete Button with Confirmation -->
+                <form method="post" class="delete-idea-form" data-idea-title="{{ idea.idea_title }}"
+                      action="{% url 'brainstorms:delete_idea' idea.id %}">
+                  {% csrf_token %}
+                  <button type="button" class="btn btn-danger delete-idea-button">
+                    <i class="fa fa-trash me-2"></i>
+                    <strong>Delete</strong>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Deepening Button for Each Level -->
+    <div class="d-flex ms-auto mt-8">
+      {% with next_level=level|add:'1' %}
+      <form method="post" action="{% url 'brainstorms:detail_session' session.id %}" class="mb-4 me-4">
+        {% csrf_token %}
+        <input type="hidden" name="depth_level" value="{{ next_level }}">
+        <button type="submit" name="action" value="create_deeper_layer" class="btn btn-primary">
+          <i class="fa fa-plus-circle me-2"></i>
+          <strong>Generate Ideas for Layer {{ next_level }}</strong>
+        </button>
+      </form>
+      {% endwith %}
+
+      <!-- Generate Level Synthesis Button for Each Level -->
+      <form method="post" action="{% url 'brainstorms:detail_session' session.id %}" class="mb-4">
+        {% csrf_token %}
+        <input type="hidden" name="depth_level" value="{{ level }}">
+        <button type="submit" name="action" value="generate_level_synthesis" class="btn btn-success">
+          <i class="fa fa-lightbulb me-2"></i>
+          <strong>Generate Synthesis for Level {{ level }}</strong>
+        </button>
+      </form>
+    </div>
+    <hr>
+    {% endfor %}
+    {% else %}
+    <!-- No ideas yet, show button to create the first layer -->
+    <div class="text-center mt-4 card card border border-primary border-4 rounded">
+      <div class="alert alert-warning p-4 mt-4 ms-12 me-12" role="alert">
+        <i class="fa fa-exclamation-triangle me-2"></i>
+        <strong>No brainstorming ideas have been generated yet.</strong>
+      </div>
+      <div class="alert alert-solid-secondary d-flex align-items-center mt-2 mb-8 ms-12 me-12 text-small" role="alert">
+        <span class="alert-icon rounded">
+          <i class="ti ti-info-circle"></i>
+        </span>
+        <small>
+          In order to generate useful insights, you need to create the first layer of ideas. Click the button below to
+          start brainstorming. This functionality will generate 9 ideas for you to start with.
+        </small>
+      </div>
+      <form method="post" action="{% url 'brainstorms:detail_session' session.id %}">
+        {% csrf_token %}
+        <button type="submit" name="action" value="create_first_layer" class="btn btn-primary mb-4">
+          <i class="fa fa-plus-circle me-2"></i>
+          <strong>Create First Layer Ideas</strong>
+        </button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if ideas_by_depth %}
+      <div class="alert alert-solid-secondary d-flex align-items-center mt-2 mb-8 ms-2 me-2 text-small" role="alert">
+        <span class="alert-icon rounded">
+          <i class="ti ti-info-circle"></i>
+        </span>
+        <small>
+          Got stuck? Click the button below to generate more ideas for the first layer. This functionality will
+          generate 9 more ideas for you in the first layer.
+        </small>
+      </div>
+    <form method="post" action="{% url 'brainstorms:detail_session' session.id %}">
+      {% csrf_token %}
+      <button type="submit" name="action" value="create_first_layer" class="btn btn-primary mb-8 w-25">
+        <i class="fa fa-plus-circle me-2"></i>
+        <strong>Create More Ideas for Layer 1</strong>
+      </button>
+    </form>
+  {% endif %}
+  <hr>
+</div>
+
+<!-- Delete Idea Confirmation with SweetAlert -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-idea-button');
+    deleteButtons.forEach(function(button) {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const form = button.closest('form');
+        const ideaTitle = form.getAttribute('data-idea-title');
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'You won\'t be able to revert this action.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, cancel!',
+          customClass: {
+            confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+            cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+          },
+          buttonsStyling: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            form.submit();
+          }
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}

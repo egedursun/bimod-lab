@@ -256,6 +256,23 @@
       ]
     },
     {
+      "name": "Brainstorming",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "brainstorming",
+      "submenu": [
+        {
+          "name": "Create Session",
+          "slug": "brainstorming",
+          "url": "brainstorms:create_session"
+        },
+        {
+          "name": "Brainstorming Sessions",
+          "slug": "brainstorming",
+          "url": "brainstorms:list_sessions"
+        }
+      ]
+    },
+    {
       "name": "Orchestrations",
       "icon": "menu-icon tf-icons ti ti-bolt",
       "slug": "orchestrations",
