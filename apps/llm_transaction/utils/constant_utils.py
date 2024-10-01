@@ -33,15 +33,30 @@ TRANSACTION_SOURCES = [
     ("sql-write", "SQL Write"),
     ("store-memory", "Store Memory"),
     ("interpret-code", "Interpret Code"),
+    ("upload-file", "Upload File"),
     ("download-file", "Download File"),
     ("file-system-commands", "File System Commands"),
     ("knowledge-base-search", "Knowledge Base Search"),
+    ("code-base-search", "Code Base Search"),
     ("retrieve-memory", "Retrieve Memory"),
     ("ml-model-prediction", "ML Model Prediction"),
+    ("browsing", "Browsing"),
     ("internal-function-execution", "Internal Function Execution"),
     ("external-function-execution", "External Function Execution"),
+    ("internal-api-execution", "Internal API Execution"),
+    ("external-api-execution", "External API Execution"),
+    ("internal-script-retrieval", "Internal Script Retrieval"),
+    ("external-script-retrieval", "External Script Retrieval"),
     ("interpret-file", "Interpret File"),
     ("interpret-image", "Interpret Image"),
+    ("scheduled-job-execution", "Scheduled Job Execution"),
+    ("trigger-job-execution", "Trigger Job Execution"),
+    ("generate-image", "Generate Image"),
+    ("modify-image", "Modify Image"),
+    ("variate-image", "Variate Image"),
+    ("audio-processing-stt", "Audio Processing STT"),
+    ("audio-processing-tts", "Audio Processing TTS"),
+    ("brainstorming", "Brainstorming"),
 ]
 
 
@@ -83,6 +98,8 @@ class TransactionSourcesNames:
     VARIATE_IMAGE = "variate-image"
     AUDIO_PROCESSING_STT = "audio-processing-stt"
     AUDIO_PROCESSING_TTS = "audio-processing-tts"
+    BRAINSTORMING = "brainstorming"
+
 
     @staticmethod
     def as_list():
@@ -117,6 +134,7 @@ class TransactionSourcesNames:
             TransactionSourcesNames.VARIATE_IMAGE,
             TransactionSourcesNames.AUDIO_PROCESSING_STT,
             TransactionSourcesNames.AUDIO_PROCESSING_TTS,
+            TransactionSourcesNames.BRAINSTORMING,
         ]
 
 

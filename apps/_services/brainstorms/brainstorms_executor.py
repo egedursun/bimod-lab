@@ -20,6 +20,9 @@ from openai import OpenAI
 from apps._services.brainstorms.utils import build_from_scratch_brainstorms_system_prompt, find_json_presence, \
     build_from_previous_level_brainstorms_system_prompt, build_synthesis_from_level_system_prompt, \
     build_synthesis_from_all_levels_system_prompt
+from apps._services.llms.utils import GPT_DEFAULT_ENCODING_ENGINE
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import TransactionSourcesNames
 
 
 class BrainstormsExecutor:
@@ -32,6 +35,23 @@ class BrainstormsExecutor:
     def _generate_llm_response(self, system_prompt: str):
         from apps._services.llms.utils import ChatRoles
         system_message = {"role": ChatRoles.SYSTEM.lower(), "content": system_prompt}
+
+        LLMTransaction.objects.create(
+            organization=self.session.organization,
+            model=self.session.llm_model,
+            responsible_user=self.session.created_by_user,
+            responsible_assistant=None,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=system_prompt,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=TransactionSourcesNames.BRAINSTORMING,
+        )
+
         choice_message_content = None
         try:
             llm_response = self.client.chat.completions.create(
