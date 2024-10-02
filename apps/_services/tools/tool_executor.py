@@ -17,6 +17,7 @@ import json
 
 from apps._services.browsers.utils import BrowserActionsNames
 from apps._services.llms.helpers.helper_prompts import get_json_decode_error_log
+from apps._services.tools.execution_handlers.video_generation_execution_handler import execute_video_generation
 from apps._services.tools.utils import ToolTypeNames, get_no_knowledge_base_connection_error_log, \
     get_no_tool_found_error_log
 from apps._services.tools.execution_handlers.audio_processing_execution_tool_handler import \
@@ -69,9 +70,12 @@ from apps._services.tools.validators.storage_query_execution_tool_validator impo
     validate_media_storage_query_execution_tool_json
 from apps._services.tools.validators.url_file_downloader_execution_tool_validator import \
     validate_url_file_downloader_execution_tool_json
+from apps._services.tools.validators.video_generation_execution_tool_validator import \
+    validate_video_generation_tool_json
 from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.multimodal_chat.models import MultimodalChat
+from apps.video_generations.models import GeneratedVideo, VideoGeneratorConnection
 from config.settings import MEDIA_URL
 
 
@@ -366,6 +370,47 @@ class ToolExecutor:
             )
             audio_processing_response_raw_str = json.dumps(audio_processor_response, sort_keys=True, default=str)
             tool_response += audio_processing_response_raw_str
+        ##################################################
+        # Video Generation Tool
+        elif tool_name == ToolTypeNames.VIDEO_GENERATION:
+            print("[ToolExecutor.use_tool] Video Generation Tool is being executed...")
+            error = validate_video_generation_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+            connection_id = self.tool_usage_json.get("parameters").get("connection_id")
+            action_type = self.tool_usage_json.get("parameters").get("action_type")
+            query = self.tool_usage_json.get("parameters").get("query")
+            aspect_ratio = self.tool_usage_json.get("parameters").get(
+                "aspect_ratio") if "aspect_ratio" in self.tool_usage_json.get("parameters") else None
+            start_frame_url = self.tool_usage_json.get("parameters").get(
+                "start_frame_url") if "start_frame_url" in self.tool_usage_json.get("parameters") else None
+            end_frame_url = self.tool_usage_json.get("parameters").get(
+                "end_frame_url") if "end_frame_url" in self.tool_usage_json.get("parameters") else None
+            video_generation_response = execute_video_generation(
+                connection_id=connection_id,
+                action_type=action_type,
+                query=query,
+                aspect_ratio=aspect_ratio,
+                start_frame_url=start_frame_url,
+                end_frame_url=end_frame_url
+            )
+            if video_generation_response.get("error") is not None:
+                return video_generation_response.get("error"), None, None, None
+            if video_generation_response.get("video_url") is None:
+                return "Video URL is None. A problem might have happened within the generation process.", None, None, None
+
+            # save the video as a GeneratedVideo object
+            video_url = video_generation_response.get("video_url")
+            video_generator_connection = VideoGeneratorConnection.objects.get(id=connection_id)
+            GeneratedVideo.objects.create(
+                organization=video_generator_connection.assistant.organization,
+                assistant=self.assistant,
+                multimodal_chat=self.chat,
+                created_by_user=self.chat.created_by_user,
+                video_url=video_url
+            )
+
+            video_generation_response_raw_str = json.dumps(video_generation_response, sort_keys=True, default=str)
+            tool_response += video_generation_response_raw_str
         ##################################################
         # ...
         ##################################################

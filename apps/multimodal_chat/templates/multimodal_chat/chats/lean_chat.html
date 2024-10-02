@@ -23,7 +23,6 @@
       max-width: 80%;
       overflow-x: auto;
     }
-
     /* Ensure images within markdown content fit within their container */
     .markdown-content img {
       max-width: 35%;
@@ -437,7 +436,7 @@
                              class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-primary-subtle{% endif %} border-primary"
                              style="{% if message.sender_type == 'TOOL' %}border: 2px solid{% endif %}; max-width:80%;">
                           {% if message.sender_type != 'TOOL' %}
-                            <p class="mb-0 markdown-content" style="min-width: 600px; max-width: 800px;">{{ message.message_text_content|safe }}</p>
+                            <p class="mb-0 markdown-content" style="min-width: 90%; max-width: 90%;">{{ message.message_text_content|safe }}</p>
                             <hr>
                             {% if message.message_image_contents %}
                               <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image

@@ -97,6 +97,8 @@ from apps._services.prompts.tools.tool_prompts.build_url_file_downloader_tool_pr
     build_structured_tool_prompt__url_file_downloader
 from apps._services.prompts.tools.tool_prompts.build_vectorized_context_history_query_execution_tool_prompt import \
     build_structured_tool_prompt__vectorized_context_history__query_execution_tool_prompt
+from apps._services.prompts.tools.tool_prompts.build_video_generation_tool_prompt import \
+    build_structured_tool_prompt__video_generator, build_lean_structured_tool_prompt__video_generator
 from apps.assistants.models import Assistant
 from apps.leanmod.models import LeanAssistant
 from apps.llm_transaction.models import LLMTransaction
@@ -165,6 +167,8 @@ class PromptBuilder:
         structured_image_modification_tool_prompt = build_structured_tool_prompt__image_modification()
         structured_image_variation_tool_prompt = build_structured_tool_prompt__image_variation()
         structured_audio_processing_tool_prompt = build_structured_tool_prompt__audio_processing()
+        structured_video_generation_tool_prompt = build_structured_tool_prompt__video_generator(
+            assistant_id=assistant.id)
         ##################################################
 
         # Combine the prompts
@@ -216,6 +220,7 @@ class PromptBuilder:
         merged_prompt += structured_image_modification_tool_prompt
         merged_prompt += structured_image_variation_tool_prompt
         merged_prompt += structured_audio_processing_tool_prompt
+        merged_prompt += structured_video_generation_tool_prompt
         ##################################################
 
         # Build the dictionary with the role
@@ -299,6 +304,8 @@ class PromptBuilder:
         structured_image_generation_tool_prompt = build_structured_tool_prompt__image_generator()
         structured_image_modification_tool_prompt = build_structured_tool_prompt__image_modification()
         structured_image_variation_tool_prompt = build_structured_tool_prompt__image_variation()
+        structured_audio_processing_tool_prompt = build_structured_tool_prompt__audio_processing()
+        structured_video_generation_tool_prompt = build_lean_structured_tool_prompt__video_generator()
         ##################################################
 
         # Combine the prompts
@@ -343,6 +350,8 @@ class PromptBuilder:
         merged_prompt += structured_image_generation_tool_prompt
         merged_prompt += structured_image_modification_tool_prompt
         merged_prompt += structured_image_variation_tool_prompt
+        merged_prompt += structured_audio_processing_tool_prompt
+        merged_prompt += structured_video_generation_tool_prompt
         ##################################################
         # Build the dictionary with the role
         prompt = {

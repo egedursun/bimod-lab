@@ -16,6 +16,7 @@
 UNCLASSIFIED_FILE_EXTENSION = ".bin"
 GENERATED_FILES_ROOT_PATH = "generated/files/"
 GENERATED_IMAGES_ROOT_PATH = "generated/images/"
+GENERATED_VIDEOS_ROOT_PATH = "generated/videos/"
 DEFAULT_PATH_FREEFORM_USER_SKETCH = "free_form__user_sketch__"
 DEFAULT_PATH_EDIT_IMAGE_ORIGINAL = "edit_image__original_version__"
 DEFAULT_PATH_EDIT_IMAGE_MASKED = "edit_image__masked_version__"

@@ -1,0 +1,117 @@
+<!-- create_video_generator_connection.html -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Create Video Generator Connection{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">
+            <strong>
+              <i class="fa fa-video-camera me-4"></i>
+              Create Video Generator Connection
+            </strong>
+          </h4>
+        </div>
+        <a class="ms-4 mb-4" href="{% url 'video_generations:list' %}">
+            <button class="btn btn-secondary mt-4 ms-4">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong> Manage Video Generators</strong>
+            </button>
+          </a>
+        <div>
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex ms-8 col-lg-12 mt-4 align-items-center" style="width: 90%;" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-8.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8" alt="Illustration for tip">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="alert-icon rounded">
+                    <i class="ti ti-bookmark"></i>
+                  </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                On this page, you can create a new Video Generator Connection. This feature allows you to manage your video
+                generation providers and their configurations. To create a new Video Generator Connection, fill out the form
+                below and click the "Connect Video Generator" button.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+        </div>
+          <hr>
+        <div class="card-body">
+          {% if error_messages %}
+            {% for field, error in error_messages.items %}
+              <div class="alert alert-danger" role="alert">
+                <strong>{{ field|field_name_to_label }}:</strong> {{ error }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form method="post">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="col-6 mb-6">
+                <label class="form-label" for="organization">Choose Organization</label>
+                <select class="form-select" id="organization" name="organization">
+                  {% for organization in organizations %}
+                    <option value="{{ organization.id }}">{{ organization.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="assistant">Choose Assistant</label>
+                <select class="form-select" id="assistant" name="assistant">
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter a name for the connection"/>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" placeholder="Enter a description"></textarea>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="provider">Provider</label>
+                <select class="form-select" id="provider" name="provider">
+                  {% for key, value in provider_choices %}
+                    <option value="{{ key }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="provider_api_key">Provider API Key</label>
+                <input type="text" class="form-control" id="provider_api_key" name="provider_api_key" placeholder="Enter the provider API key"/>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary ms-8 mt-8 w-25">
+              <i class="fa fa-plus me-4"></i>
+              <strong>Connect Video Generator</strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

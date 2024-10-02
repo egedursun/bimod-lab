@@ -29,6 +29,7 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageItem
 from apps.multimodal_chat.models import MultimodalChat
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from apps.video_generations.models import GeneratedVideo
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
@@ -76,16 +77,31 @@ class DataSourceMediaStorageGeneratedItemsListView(LoginRequiredMixin, TemplateV
                             for file in m.message_file_contents:
                                 message_data = {'message': m, 'file': file}
                                 messages_with_files.append(message_data)
-                # prepare paginated images
+
+                # Prepare paginated images
                 paginator_images = Paginator(messages_with_images, 5)  # 5 items per page
                 page_number_images = self.request.GET.get('page_images')
                 page_obj_images = paginator_images.get_page(page_number_images)
-                # prepare paginated files
+                # Prepare paginated files
                 paginator_files = Paginator(messages_with_files, 5)
                 page_number_files = self.request.GET.get('page_files')
                 page_obj_files = paginator_files.get_page(page_number_files)
-                assistant_data_list.append({'assistant': assistant, 'messages_with_images': page_obj_images,
-                                            'messages_with_files': page_obj_files})
+
+                # Retrieve GeneratedVideo instances for the assistant
+                generated_videos = GeneratedVideo.objects.filter(assistant=assistant)
+                # Prepare paginated videos
+                paginator_videos = Paginator(generated_videos, 5)
+                page_number_videos = self.request.GET.get('page_videos')
+                page_obj_videos = paginator_videos.get_page(page_number_videos)
+
+                # Combine all data for the assistant
+                assistant_data = {
+                    'assistant': assistant,
+                    'messages_with_images': page_obj_images,
+                    'messages_with_files': page_obj_files,
+                    'generated_videos': page_obj_videos,
+                }
+                assistant_data_list.append(assistant_data)
             data.append({'organization': org, 'assistants': assistant_data_list, })
         context['data'] = data
         print(data)

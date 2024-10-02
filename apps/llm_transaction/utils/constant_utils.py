@@ -57,6 +57,7 @@ TRANSACTION_SOURCES = [
     ("audio-processing-stt", "Audio Processing STT"),
     ("audio-processing-tts", "Audio Processing TTS"),
     ("brainstorming", "Brainstorming"),
+    ("generate-video", "Generate Video"),
 ]
 
 
@@ -99,6 +100,7 @@ class TransactionSourcesNames:
     AUDIO_PROCESSING_STT = "audio-processing-stt"
     AUDIO_PROCESSING_TTS = "audio-processing-tts"
     BRAINSTORMING = "brainstorming"
+    GENERATE_VIDEO = "generate-video"
 
 
     @staticmethod
@@ -135,6 +137,7 @@ class TransactionSourcesNames:
             TransactionSourcesNames.AUDIO_PROCESSING_STT,
             TransactionSourcesNames.AUDIO_PROCESSING_TTS,
             TransactionSourcesNames.BRAINSTORMING,
+            TransactionSourcesNames.GENERATE_VIDEO
         ]
 
 

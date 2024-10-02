@@ -1,0 +1,134 @@
+<!-- list_video_generator_connections.html -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Video Generator Connections List{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/app-video-generator-connections-list.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6">
+      <h3 class="mb-0"><strong>Manage Video Generators</strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-15.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        On this page, you can view all the Video Generator Connections you have created. You can also edit or delete any
+        connection. To create a new Video Generator Connection, click the "Create Video Generator Connection" button.
+        This feature allows you to manage your video generation providers and their configurations.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="card mb-6">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0"><strong>
+        <i class="fa fa-video-camera me-4"></i>
+        Video Generator Connections List
+      </strong></h5>
+    </div>
+    <a href="{% url 'video_generations:create' %}" class="btn btn-success mt-2 mb-4 w-25 ms-4">
+      <i class="fa fa-add me-2"></i><strong>Connect New Video Generator</strong>
+    </a>
+    <div class="card-datatable table-responsive p-4">
+      <table class="table datatables-video-generator-connections overflow-auto">
+        <thead class="border-top">
+        <tr>
+          <th style="min-width: 200px; max-width: 200px;">Organization</th>
+          <th style="min-width: 200px; max-width: 200px;">Assistant</th>
+          <th style="min-width: 200px; max-width: 200px;">Name</th>
+          <th style="min-width: 300px; max-width: 300px;">Description</th>
+          <th style="min-width: 200px; max-width: 200px;">Provider</th>
+          <th style="min-width: 150px; max-width: 150px;">Created At</th>
+          <th style="min-width: 150px; max-width: 150px;"></th>
+          <th style="min-width: 150px; max-width: 150px;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for connection in video_generator_connections %}
+          <tr>
+            <td><strong>{{ connection.organization.name }}</strong></td>
+            <td><strong>{{ connection.assistant.name }}</strong></td>
+            <td><strong>{{ connection.name }}</strong></td>
+            <td>
+              <p style="max-height: 250px; overflow: auto;">
+                {{ connection.description|linebreaksbr }}
+              </p>
+            </td>
+            <td><strong>{{ connection.get_provider_display }}</strong></td>
+            <td>{{ connection.created_at|date:"Y-m-d H:i" }}</td>
+            <td>
+              <a href="{% url 'video_generations:update' connection.id %}"
+                 class="btn btn-sm btn-primary">
+                <i class="fa fa-edit me-2"></i>
+                <strong>Edit</strong>
+              </a>
+            </td>
+            <td>
+              <a href="{% url 'video_generations:delete' connection.id %}"
+                 class="btn btn-sm btn-danger">
+                <i class="fa fa-trash me-2"></i>
+                <strong>Delete</strong>
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="8">
+              <div class="alert alert-warning p-8 mt-2" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i>
+                <strong>No Video Generator Connections have been created yet.</strong>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+{% endblock %}

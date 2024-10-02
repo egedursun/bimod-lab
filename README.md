@@ -4,6 +4,12 @@
 
 ......
 
+- Add the 'VIDEO_GENERATOR=0.0300' cost definition to the .env file of prod and dev servers after you deploy.
+
+- Generate the copyright statements for the HTML templates.
+
+......
+
 ---
 
 ### BUSINESS SIDE IMPROVEMENTS FOR APPLICATION

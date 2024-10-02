@@ -540,6 +540,23 @@
       ]
     },
     {
+      "name": "Video Generators",
+      "icon": "menu-icon tf-icons ti ti-video",
+      "slug": "video-generators",
+      "submenu": [
+        {
+          "name": "Connect Generator",
+          "slug": "video-generators",
+          "url": "video_generations:create"
+        },
+        {
+          "name": "Manage Generators",
+          "slug": "video-generators",
+          "url": "video_generations:list"
+        }
+      ]
+    },
+    {
       "name": "Generated",
       "icon": "menu-icon tf-icons ti ti-checkbox",
       "slug": "generated",

@@ -39,6 +39,7 @@ class ToolTypeNames:
     IMAGE_MODIFICATION = 'Image Modification'
     IMAGE_VARIATION = 'Image Variation'
     AUDIO_PROCESSING = 'Audio Processing'
+    VIDEO_GENERATION = 'Video Generation'
     ##############################
     EXPERT_NETWORK_QUERY_CALL = 'Expert Network Query Call'
     ##############################

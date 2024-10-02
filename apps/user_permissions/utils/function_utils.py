@@ -266,6 +266,12 @@ def get_permissions_grouped():
         "Audio Generation Permissions": [
             ('can_generate_audio', 'Can Generate Audio')
         ],
+        "Video Generator Connections": [
+            ('create_video_generator_connections', 'Create Video Generator Connections'),
+            ('list_video_generator_connections', 'List Video Generator Connections'),
+            ('update_video_generator_connections', 'Update Video Generator Connections'),
+            ('delete_video_generator_connections', 'Delete Video Generator Connections'),
+        ],
         "Integration Permissions": [
             ('add_integrations', 'Add Integrations'),
             ('update_integrations', 'Update Integrations'),

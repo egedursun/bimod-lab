@@ -21,8 +21,37 @@
   <style>
     /* Ensure images within markdown content fit within their container */
     .markdown-content img {
+      max-width: 80%;
+      overflow-x: auto;
+    }
+    /* Ensure images within markdown content fit within their container */
+    .markdown-content img {
       max-width: 35%;
       height: auto;
+    }
+
+    .markdown-content table {
+      margin-bottom: 1rem;
+      max-width: 80%;
+    }
+
+    .markdown-content table th, .markdown-content table td {
+      border: 1px solid #aaa;
+      max-width: 80%;
+    }
+
+    .markdown-content pre code {
+      display: block;
+      padding: 1rem;
+      overflow: auto;
+      overflow: scroll;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      color: #ffffff;
+      font-weight: bolder;
+      font-size: 10px;
+      font-family: monospace;
+      max-width: 80%;
     }
   </style>
   <style>
@@ -321,7 +350,7 @@
                       {% elif message.sender_type == 'TOOL' %}
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
-                            <img src="{% static 'img/custom-illustrations/tool-executor.png' %}" alt="Avatar"
+                            <img src="{% static 'img/custom-illustrations-v2/i2-18.png' %}" alt="Avatar"
                                  class="rounded">
                           </div>
                         </div>
@@ -331,7 +360,7 @@
                              class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-primary-subtle{% endif %} border-primary"
                              style="{% if message.sender_type == 'TOOL' %}border: 2px solid{% endif %};">
                           {% if message.sender_type != 'TOOL' %}
-                            <p class="mb-0 markdown-content">{{ message.message_text_content|safe }}</p>
+                            <p class="mb-0 markdown-content" style="min-width: 90%; max-width: 90%;">{{ message.message_text_content|safe }}</p>
                             <hr>
                             {% if message.message_image_contents %}
                               <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image

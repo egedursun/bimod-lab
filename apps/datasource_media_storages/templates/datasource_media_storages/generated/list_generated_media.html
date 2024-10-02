@@ -380,6 +380,79 @@
                         </ul>
                       </nav>
                     </div>
+                    <!-- New Generated Videos Section -->
+                  <hr>
+                  <h5><strong>Generated Videos</strong></h5>
+                  <div class="table-responsive">
+                    <table class="table datatables-document">
+                      <thead>
+                        <tr>
+                          <th>Preview</th>
+                          <th>Chat Name</th>
+                          <th>User</th>
+                          <th>Created At</th>
+                          <th>Download</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for video in assistant_data.generated_videos %}
+                          <tr>
+                            <td>
+                              <!-- Video preview using Plyr -->
+                              <video class="video-player" controls width="200" height="150">
+                                <source src="{{ video.video_url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                              </video>
+                            </td>
+                            <td><strong>{{ video.multimodal_chat.chat_name }}</strong></td>
+                            <td><strong>{{ video.created_by_user.get_full_name }}</strong></td>
+                            <td>{{ video.created_at|date:"Y-m-d H:i" }}</td>
+                            <td>
+                              <a href="{{ video.video_url }}" target="_blank" class="text-dark">
+                                <i class="fa fa-download"></i>
+                              </a>
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr>
+                            <td colspan="5">
+                              <div class="alert alert-warning" role="alert">
+                                <i class="fa fa-exclamation-triangle me-4"></i>
+                                <strong>No generated videos found for this assistant.</strong>
+                              </div>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    <!-- Pagination for Videos -->
+                    <nav aria-label="Page navigation">
+                      <ul class="pagination pagination-rounded pt-8">
+                        {% if assistant_data.generated_videos.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page_videos=1"><i class="ti ti-chevrons-left ti-sm"></i></a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" href="?page_videos={{ assistant_data.generated_videos.previous_page_number }}"><i class="ti ti-chevron-left ti-sm"></i></a>
+                          </li>
+                        {% endif %}
+                        {% for page_num in assistant_data.generated_videos.paginator.page_range %}
+                          <li class="page-item {% if assistant_data.generated_videos.number == page_num %}active{% endif %} mb-4">
+                            <a class="page-link" href="?page_videos={{ page_num }}">{{ page_num }}</a>
+                          </li>
+                        {% endfor %}
+                        {% if assistant_data.generated_videos.has_next %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page_videos={{ assistant_data.generated_videos.next_page_number }}"><i class="ti ti-chevron-right ti-sm"></i></a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link" href="?page_videos={{ assistant_data.generated_videos.paginator.num_pages }}"><i class="ti ti-chevrons-right ti-sm"></i></a>
+                          </li>
+                        {% endif %}
+                      </ul>
+                    </nav>
+                  </div>
+                  <!-- End of Generated Videos Section -->
                   </div>
                 </div>
               {% empty %}

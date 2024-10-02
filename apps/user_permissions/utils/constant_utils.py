@@ -241,6 +241,10 @@ class PermissionNames:
     CREATE_BRAINSTORMING_SYNTHESES = 'create_brainstorming_syntheses'
     BOOKMARK_BRAINSTORMING_IDEAS = 'bookmark_brainstorming_ideas'
     ######################################################
+    CREATE_VIDEO_GENERATOR_CONNECTIONS = 'create_video_generator_connections'
+    LIST_VIDEO_GENERATOR_CONNECTIONS = 'list_video_generator_connections'
+    UPDATE_VIDEO_GENERATOR_CONNECTIONS = 'update_video_generator_connections'
+    DELETE_VIDEO_GENERATOR_CONNECTIONS = 'delete_video_generator_connections'
 
 
 PERMISSION_TYPES = [
@@ -519,6 +523,12 @@ PERMISSION_TYPES = [
     ('delete_brainstorming_ideas', 'Delete Brainstorming Ideas'),
     ('create_brainstorming_syntheses', 'Create Brainstorming Syntheses'),
     ('bookmark_brainstorming_ideas', 'Bookmark Brainstorming Ideas'),
+    #################################################
+    # VIDEO GENERATOR CONNECTIONS
+    ('create_video_generator_connections', 'Create Video Generator Connections'),
+    ('list_video_generator_connections', 'List Video Generator Connections'),
+    ('update_video_generator_connections', 'Update Video Generator Connections'),
+    ('delete_video_generator_connections', 'Delete Video Generator Connections'),
     #################################################
 ]
 
