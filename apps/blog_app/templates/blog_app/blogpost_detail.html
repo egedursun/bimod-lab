@@ -1,3 +1,22 @@
+    <!--
+  ~ Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io
+  ~ File: blogpost_detail.html
+  ~ Last Modified: 2024-08-12 23:24:38
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
+  ~ Created: 2024-10-01 23:20:14
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD® Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@bimod.io.
+  ~
+  -->
+
 {% extends layout_path %}
 
 {% load static %}
@@ -6,7 +25,7 @@
 {% block title %}
   {{ post.title }} - Blog
   {% if seo_meta %}
-    <meta name="description" content="{{ seo_meta.meta_description }}">
+<meta name="description" content="{{ seo_meta.meta_description }}">
     <meta name="keywords" content="{{ seo_meta.meta_keywords }}">
   {% else %}
     <meta name="description" content="{{ post.content|truncatechars:250 }}">

@@ -52,7 +52,6 @@ echo "          [Deploy / Development] Requirements installed!"
 echo "          [Deploy / Development] Running database migrations..."
 
 # Database migrations
-python3 manage.py migrate --fake
 python3 manage.py migrate
 
 echo "          [Deploy / Development] Database migrations completed!"
