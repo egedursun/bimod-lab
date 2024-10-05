@@ -128,6 +128,7 @@ INSTALLED_APPS = [
     "apps.data_backups",
     "apps.brainstorms",
     "apps.video_generations",
+    "apps.harmoniq",
 
     ########################################
     # SUPPORT

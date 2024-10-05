@@ -78,6 +78,7 @@ urlpatterns = [
     path("app/data_backups/", include("apps.data_backups.urls", namespace="data_backups")),
     path("app/brainstorms/", include("apps.brainstorms.urls", namespace="brainstorms")),
     path("app/video_generations/", include("apps.video_generations.urls", namespace="video_generations")),
+    path("app/harmoniq/", include("apps.harmoniq.urls", namespace="harmoniq")),
     #################################################################################################################
 
     #################################################################################################################

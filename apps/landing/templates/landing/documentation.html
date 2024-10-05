@@ -1,19 +1,19 @@
   <!--
-  ~ Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Bimod.io
+  ~ Project: Jupi.tr™
   ~ File: documentation.html
-  ~ Last Modified: 2024-09-25 23:10:36
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-  ~ Created: 2024-10-01 23:29:50
+  ~ Last Modified: 2024-10-05 01:27:28
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-05 01:36:31
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
   ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD® Autonomous
+  ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@bimod.io.
+  ~  For permission inquiries, please contact: admin@jupi.tr.
   ~
   -->
 
@@ -22,7 +22,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Documentation - Bimod.io{% endblock %}
+{% block title %}Documentation - {% get_theme_variables 'template_name' %}{% endblock %}
 
 {% block page_css %}
   {{ block.super }}
@@ -340,7 +340,7 @@
           <i class="ti ti-mail ti-26px"></i>
         </span>
         </div>
-        <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:admin@bimod.io"><strong>admin@bimod.io</strong></a>
+        <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:admin@{% get_theme_variables 'template_name' %}"><strong>admin@{% get_theme_variables 'template_name' %}</strong></a>
         </h5>
         <p class="mb-0">Best way to get a quick response, <strong>available 24/7.</strong></p>
       </div>

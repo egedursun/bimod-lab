@@ -55,13 +55,13 @@ TEMPLATE_CONFIG = {
 # Theme Variables
 # ? Personalize template by changing theme variables (For ex: Name, URL Version etc...)
 THEME_VARIABLES = {
-    "creator_name": "Bimod.io",
-    "creator_url": "https://www.bimod.io/",
-    "template_name": "Bimod.io",
-    "template_suffix": "Bimod.io - Intelligent Assistant as a Service",
+    "creator_name": "Jupi.tr",
+    "creator_url": "https://www.jupi.tr/",
+    "template_name": "Jupi.tr",
+    "template_suffix": "Jupi.tr - Intelligent Assistant as a Service",
     "template_version": "2.0.0",
     "template_free": False,
-    "template_description": "Bimod is an AI-powered AIaaS provider that helps you to build, train, and deploy your own AI assistant in minutes and automate your business processes.",
+    "template_description": "Ven.is is an AI-powered AIaaS provider that helps you to build, train, and deploy your own AI assistant in minutes and automate your business processes.",
     "template_keyword": "django, django admin, dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5",
     "facebook_url": "https://www.facebook.com/pixinvents/",
     "twitter_url": "https://twitter.com/pixinvents",

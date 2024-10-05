@@ -1,10 +1,27 @@
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+#
+#  Project: Jupi.tr™
+#  File: download_file_and_stt.py
+#  Last Modified: 2024-10-03 12:42:16
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+#  Created: 2024-10-05 01:37:33
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD™ Autonomous
+#  Holdings.
+#
+#   For permission inquiries, please contact: admin@jupi.tr.
+#
+
 import io
 from pydub import AudioSegment
 import requests
 from openai import OpenAI
 
 # Initialize OpenAI client
-openai_api_key = 'sk-bloom-app-CAjHDM4W0FXLZlP5yVvgT3BlbkFJGeSaluzHcPr20animZV0'
+openai_api_key = '...'
 client = OpenAI(api_key=openai_api_key)
 
 # Load and process the audio file

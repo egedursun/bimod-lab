@@ -1,19 +1,19 @@
   <!--
-  ~ Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Bimod.io
+  ~ Project: Jupi.tr™
   ~ File: index.html
-  ~ Last Modified: 2024-09-28 04:02:08
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-  ~ Created: 2024-10-01 23:29:50
+  ~ Last Modified: 2024-10-05 01:19:39
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-05 01:36:30
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
   ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD® Autonomous
+  ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@bimod.io.
+  ~  For permission inquiries, please contact: admin@jupi.tr.
   ~
   -->
 
@@ -22,7 +22,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Bimod.io | Intelligent AI Assistant as a Service{% endblock %}
+{% block title %}{% get_theme_variables 'template_name' %} | Intelligent AI Assistant as a Service{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -78,7 +78,7 @@
 
           <div class="hero-text-box text-center position-relative">
             <h1 class="text-primary hero-title display-1 fw-extrabold" style="font-size: 7.5vw;">
-              <strong>Bimod.io</strong></h1>
+              <strong>{% get_theme_variables 'template_name' %}</strong></h1>
             <h1 class="text-primary hero-title display-6 fw-extrabold" style="font-size: 2.5vw;">
               Build your AI workforce <br> with the most flexible <br> multimodal assistant platform.
             </h1>
@@ -95,7 +95,7 @@
               <a href="{% url 'login' %}" class="btn btn-success btn-lg mt-8" style="min-width: 20vw;">
                 <strong>
                   <i class="fa fa-rocket me-2"></i>
-                  Launch Bimod Lab®
+                  Launch JupitrLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>
                 </strong>
               </a>
             </div>
@@ -103,7 +103,7 @@
                style="min-width: 20vw;">
               <strong>
                 <i class="fa fa-building me-2"></i>
-                BMD® Holdings
+                BMD<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Holdings
               </strong>
             </a>
             <a href="{% url 'landing:integration_to_organizations' %}" class="btn btn-label-dark btn-lg mt-8"
@@ -138,7 +138,7 @@
           <span class="badge bg-label-primary"><strong>Services</strong></span>
         </div>
         <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Bimod Lab®: Everything you need to build
+        <span class="position-relative fw-extrabold z-1">JupitrLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>: Everything you need to build
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -265,7 +265,7 @@
       <span class="badge bg-label-primary"><strong>Meta-Orchestration</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">VoidForger®:
+        <span class="position-relative fw-extrabold z-1">VoidForger<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -335,7 +335,7 @@
       <span class="badge bg-label-primary"><strong>Robotic Control</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Hadron Prime®:
+        <span class="position-relative fw-extrabold z-1">Hadron Prime<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -411,7 +411,7 @@
       <span class="badge bg-label-primary"><strong>Swarm Intelligence</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Binexus®:
+        <span class="position-relative fw-extrabold z-1">Binexus<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -474,14 +474,14 @@
       <span class="badge bg-label-primary"><strong>Lean Assistants &amp; Bulk Assistants</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Leanmod®:
+        <span class="position-relative fw-extrabold z-1">Leanmod<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
       Lean, Cost-Effective Assistants for High-Scale Automations
     </h4>
     <p class="text-center mb-md-11 pb-0 pb-xl-12">
-      Bimod.io allows you to always have cost-effective solutions depending on your needs and prevent you from paying
+      {% get_theme_variables 'template_name' %} allows you to always have cost-effective solutions depending on your needs and prevent you from paying
       more
       than you need for tasks of more simplistic nature.
     </p>
@@ -503,7 +503,7 @@
             <img src="{% static 'img/custom-illustrations-v2/i2-75.png' %}" class="border border-2 border-primary"
                  style="width: 150px; border-radius: 25px;" alt="transition up"/>
           </div>
-          <h5 class="mb-2"><strong>Bimod Lab® Assistants</strong></h5>
+          <h5 class="mb-2"><strong>JupitrLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Assistants</strong></h5>
           <p class="features-icon-description">
             Heavyweight, powerful, customizable AI assistants that can handle a wide range of tasks, enable for managing
             multiple different tools, data sources and integrations, and designed for providing maximum precision and
@@ -515,7 +515,7 @@
             <img src="{% static 'img/custom-illustrations-v2/i2-85.png' %}" class="border border-2 border-primary"
                  style="width: 150px; border-radius: 25px;" alt="edit"/>
           </div>
-          <h5 class="mb-2"><strong>Leanmod® Assistants</strong></h5>
+          <h5 class="mb-2"><strong>Leanmod<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Assistants</strong></h5>
           <p class="features-icon-description">
             Lightweight, cost-effective, and still highly efficient and precise AI assistants that are carefully
             designed for
@@ -535,7 +535,7 @@
       <span class="badge bg-label-primary"><strong>Local Integrations</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Astrolith X1®:
+        <span class="position-relative fw-extrabold z-1">Astrolith X1<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -614,7 +614,7 @@
         </span>
           by passion and perseverance.
         </h4>
-        <p class="text-center mb-md-11 pb-0 pb-xl-12">Meet the dedicated team behind <strong>Bimod.io</strong></p>
+        <p class="text-center mb-md-11 pb-0 pb-xl-12">Meet the dedicated team behind <strong>{% get_theme_variables 'template_name' %}</strong></p>
         <div class="row gy-12 mt-12">
           <div class="col-lg-6 col-sm-12 mb-8">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
@@ -635,7 +635,7 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> ege@bimod.io</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> ege@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/egedogandursun">/in/egedogandursun</a></span>
@@ -661,7 +661,7 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> huseyin@bimod.io</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> huseyin@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/huseyinersay">/in/huseyinersay</a></span>
@@ -686,7 +686,7 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> mert@bimod.io</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> mert@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/merttekin0">/in/merttekin0</a></span>
@@ -711,7 +711,7 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> selin@bimod.io</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> selin@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/selinccanbulut">/in/selinccanbulut</a></span>
@@ -736,7 +736,7 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> emre@bimod.io</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> emre@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/emreoge">/in/emreoge</a></span>
@@ -925,7 +925,7 @@
                       <div class="badge bg-label-primary rounded p-1_5 me-3"><i class="ti ti-mail ti-lg"></i></div>
                       <div>
                         <p class="mb-0"><strong>Contact E-mail</strong></p>
-                        <h6 class="mb-0"><a href="mailto:admin@bimod.io" class="text-heading">admin@bimod.io</a></h6>
+                        <h6 class="mb-0"><a href="mailto:admin@{% get_theme_variables 'template_name' %}" class="text-heading">admin@{% get_theme_variables 'template_name' %}</a></h6>
                       </div>
                     </div>
                   </div>

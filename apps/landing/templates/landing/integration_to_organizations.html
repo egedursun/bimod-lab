@@ -1,19 +1,19 @@
   <!--
-  ~ Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Bimod.io
+  ~ Project: Jupi.tr™
   ~ File: integration_to_organizations.html
-  ~ Last Modified: 2024-09-28 04:02:08
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-  ~ Created: 2024-10-01 23:29:50
+  ~ Last Modified: 2024-10-05 01:27:28
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-05 01:36:31
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
   ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD® Autonomous
+  ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@bimod.io.
+  ~  For permission inquiries, please contact: admin@jupi.tr.
   ~
   -->
 
@@ -22,7 +22,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Bimod.io | Custom Integration Solutions{% endblock %}
+{% block title %}{% get_theme_variables 'template_name' %} | Custom Integration Solutions{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -73,7 +73,7 @@
         <div class="container">
           <div class="hero-text-box text-center position-relative">
             <h1 class="text-primary hero-title display-6 fw-extrabold" style="font-size: 3vw;">
-              <strong>Bimod.io</strong>
+              <strong>{% get_theme_variables 'template_name' %}</strong>
             </h1>
             <hr>
             <h1 class="text-primary hero-title display-1 fw-extrabold" style="font-size: 5vw;">
@@ -104,7 +104,7 @@
           <span class="position-relative fw-extrabold z-1">End-to-End Solutions Tailored for the Needs of Your Enterprise</span>
         </h4>
         <p class="text-center mb-12">
-          Bimod Lab® offers the most flexible AI as a Service and integration solutions for you to automate your <br>
+          JupitrLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> offers the most flexible AI as a Service and integration solutions for you to automate your <br>
           processes with the best practices and the most advanced AI technologies. Our services cover end-to-end <br>
           integration solutions from analyzing your enterprises' requirements to identifying the best assistants,<br>
           data sources, multi-modality models, and deploying your autonomous strategies with the best practices. <br>
@@ -156,7 +156,7 @@
                    alt="Integration Module"/>
               <h4 class="mt-4 mb-2"><strong>Data Security Integrations</strong></h4>
               <p style="text-align: justify;">
-                Our approach to data security at Bimod.io is centered on implementing robust, scalable solutions that
+                Our approach to data security at {% get_theme_variables 'template_name' %} is centered on implementing robust, scalable solutions that
                 protect your enterprise's valuable data assets against unauthorized access, breaches, and other cyber
                 threats. We employ state-of-the-art encryption methods, secure data storage solutions, and comprehensive
                 access controls to ensure that your data remains confidential, intact, and available only to authorized
@@ -193,7 +193,7 @@
                    alt="Integration Module"/>
               <h4 class="mt-4 mb-2"><strong>Data Source Analysis &amp; Integrations</strong></h4>
               <p style="text-align: justify;">
-                Our data source analysis and integration services at Bimod.io are designed to ensure that your
+                Our data source analysis and integration services at {% get_theme_variables 'template_name' %} are designed to ensure that your
                 organization can harness the full potential of its data landscape. By conducting thorough evaluations of
                 both internal and external data sources, we identify the most valuable datasets and determine the
                 optimal ways to integrate them into your existing systems. Our expertise allows us to seamlessly merge
@@ -399,7 +399,7 @@
               <strong>Take the Step for 100%, 7/24 Automation</strong>
             </h4>
             <h6 class="text-body mb-12 mt-12 me-12" style="text-align: justify;">
-              Let's discuss how Bimod.io can help you automate your processes by using state-of-the-art technology
+              Let's discuss how {% get_theme_variables 'template_name' %} can help you automate your processes by using state-of-the-art technology
               stack and powerful assitants and orchestrations. Our team is ready to help you with your integration
               needs and you can feel free to contact us for more information.
             </h6>

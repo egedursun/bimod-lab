@@ -1,19 +1,19 @@
   <!--
-  ~ Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Bimod.io
+  ~ Project: Jupi.tr™
   ~ File: bimod_endeavours.html
-  ~ Last Modified: 2024-09-28 04:02:08
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-  ~ Created: 2024-10-01 23:29:50
+  ~ Last Modified: 2024-10-05 01:34:20
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-05 01:36:31
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
   ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD® Autonomous
+  ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@bimod.io.
+  ~  For permission inquiries, please contact: admin@jupi.tr.
   ~
   -->
 
@@ -22,7 +22,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Bimod.io | Unleash the Power of Autonomous Enterprises{% endblock %}
+{% block title %}{% get_theme_variables 'template_name' %} | Unleash the Power of Autonomous Enterprises{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -63,10 +63,10 @@
              class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1"/>
         <div class="container">
           <div class="hero-text-box text-center position-relative">
-            <h1 class="text-primary hero-title display-6 fw-extrabold" style="z-index: 9999999999; font-size: 3vw;"><strong>Bimod.io</strong></h1>
+            <h1 class="text-primary hero-title display-6 fw-extrabold" style="z-index: 9999999999; font-size: 3vw;"><strong>{% get_theme_variables 'template_name' %}</strong></h1>
             <hr>
             <h1 class="text-primary hero-title display-1 fw-extrabold" style="z-index: 99999999999; font-size: 5vw;">
-              <strong>&nbsp; BMD® <br>Endeavours</strong>
+              <strong>&nbsp; BMD<span style="vertical-align: super; font-size: xxx-large; font-family: Arial, sans-serif;">&#8482;</span> <br>Endeavours</strong>
             </h1>
             <hr>
             <h1 class="text-primary hero-title display-6 fw-extrabold" style="z-index: 99999999999; font-size: 2vw;">
@@ -76,7 +76,7 @@
             <h2 class="hero-sub-title h6 mb-6 mt-12" style="font-size: 1vw; text-align: justify-all;">
               <strong>
                 * Our completely autonomous holdings powered by AI <br> assistants and state-of-the-art multi-modalities built
-                with Bimod.io platform.
+                with {% get_theme_variables 'template_name' %} platform.
               </strong>
             </h2>
             <a href="{% url 'landing:index' %}" class="btn btn-primary btn-lg mt-8" style="min-width: 250px;">
@@ -99,7 +99,7 @@
         </h4>
         <p class="text-center mb-12">
           Our autonomous companies are leading the way in their respective industries, <br>
-          powered by AI assistants and multi-modalities built with Bimod.io platform.  <br>
+          powered by AI assistants and multi-modalities built with {% get_theme_variables 'template_name' %} platform.  <br>
           They are 100% autonomous, 7/24 AI-powered enterprises that are shaping the   <br>
           future of work and showing the world what is possible with AI. <br>
         </p>
@@ -224,7 +224,7 @@
                 data-driven insights that help you make informed decisions, whether you're managing property portfolios,
                 assessing business value, or evaluating financial assets.
                 <br><br>
-                By leveraging Bimod.io’s AI platform, <strong>Evalex.io</strong> automates complex evaluation tasks,
+                By leveraging {% get_theme_variables 'template_name' %}’s AI platform, <strong>Evalex.io</strong> automates complex evaluation tasks,
                 ensuring accuracy
                 and efficiency across all sectors. Stay ahead in the market with real-time assessments that adjust to
                 dynamic changes, allowing you to act swiftly and strategically.
@@ -434,7 +434,7 @@
               <h4 class="mt-4 mb-2"><strong>Mediximod.io</strong></h4>
               <p style="text-align: justify;">
                 <strong>Mediximod.io</strong> is a cutting-edge medical consultancy and patient data management platform, powered
-                entirely by Bimod.io’s autonomous AI assistants. Specializing in automating every aspect of healthcare
+                entirely by {% get_theme_variables 'template_name' %}’s autonomous AI assistants. Specializing in automating every aspect of healthcare
                 data handling, <strong>Mediximod.io</strong> offers a robust system for diagnostic guidance, patient monitoring,
                 data-driven analysis, and real-time medical analytics. The platform is designed to assist healthcare
                 professionals by managing end-to-end processes, from initial patient data entry to diagnostic
@@ -477,7 +477,7 @@
               <strong>Let's Build Your Autonomous Enterprise</strong>
             </h4>
             <h6 class="text-body mb-12 mt-12 me-12" style="text-align: justify;">
-              Start your journey to a fully autonomous enterprise with <strong>Bimod.io.</strong> We provide services for organizations
+              Start your journey to a fully autonomous enterprise with <strong>{% get_theme_variables 'template_name' %}.</strong> We provide services for organizations
               from different industries to build their own AI-powered autonomous enterprises and transform their
               businesses to the next level. Take the advantages of fully autonomous management of your business
               operations and let your AI assistants handle the rest.
