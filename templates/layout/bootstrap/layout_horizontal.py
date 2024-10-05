@@ -1,3 +1,7 @@
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+#
+#
+
 from django.conf import settings
 import json
 

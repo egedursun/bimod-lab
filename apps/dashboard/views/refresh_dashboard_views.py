@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Jupi.tr™
+#  Project: Br6.in™
 #  File: refresh_dashboard_views.py
-#  Last Modified: 2024-09-28 23:19:08
+#  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 01:36:35
+#  Created: 2024-10-05 14:42:37
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -12,21 +12,8 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@jupi.tr.
+#   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#  Project: Bimod.io
-#  File: refresh_dashboard_views.py
-#  Last Modified: 2024-09-26 19:20:31
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 22:27:31
-#
-#  This software is proprietary and confidential. Unauthorized copying,
-#  distribution, modification, or use of this software, whether for
-#  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
-#
-#  For permission inquiries, please contact: admin@bimod.io.
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
@@ -40,7 +27,7 @@ from web_project import TemplateLayout
 
 class RefreshStatisticsView(LoginRequiredMixin, TemplateView):
     """
-    Refreshes and displays the latest dashboard statistics for the Bimod.io platform.
+    Refreshes and displays the latest dashboard statistics for the br6.in platform.
 
     This view retrieves the latest statistics for the user's organizations and LLM models, based on the specified date range. It is designed to be accessed when the user wants to refresh the displayed statistics without changing the overall dashboard view.
 

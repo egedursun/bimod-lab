@@ -1,17 +1,21 @@
-#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+
+
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Bimod.io
+#  Project: Br6.in™
 #  File: utils.py
-#  Last Modified: 2024-08-02 12:34:42
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 23:14:17
+#  Last Modified: 2024-10-05 15:45:58
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+#  Created: 2024-10-05 15:45:58
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
 #  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
+#  without the prior express written permission of BMD™ Autonomous
+#  Holdings.
 #
-#  For permission inquiries, please contact: admin@bimod.io.
+#   For permission inquiries, please contact: admin@br6.in.
+#
 
 import datetime
 import random

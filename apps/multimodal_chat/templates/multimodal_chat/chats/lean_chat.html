@@ -1,11 +1,11 @@
   <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Jupi.tr™
+  ~ Project: Br6.in™
   ~ File: lean_chat.html
-  ~ Last Modified: 2024-10-01 23:45:03
+  ~ Last Modified: 2024-10-05 01:39:48
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 01:36:41
+  ~ Created: 2024-10-05 14:42:43
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -13,7 +13,7 @@
   ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@jupi.tr.
+  ~  For permission inquiries, please contact: admin@br6.in.
   ~
   -->
 
@@ -22,7 +22,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}LeanMod® Chat{% endblock %}
+{% block title %}LeanMod™ Chat{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -100,7 +100,7 @@
   <div class="row g-6 mb-6" id="assistant-chats-title">
     <div class="col-sm-6 col-xl-6">
       <h3 class="mb-0">
-        <strong>LeanMod® Assistant Chats</strong>
+        <strong>LeanMod™ Assistant Chats</strong>
       </h3>
     </div>
   </div>
@@ -115,10 +115,10 @@
     <div class="d-flex flex-column ps-1">
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
-        You can reach out to any of the LeanMod® assistants listed on the left side of this screen to start a chat,
-        in the second container named "LeanMod® Assistants". To reach to an existing chat, click on the chat name in
-        the first container named "LeanMod® Chats". You can also delete a chat by clicking on the three dots on top
-        left corner of the chat screen. Enjoy chatting with the LeanMod® assistant and feel free to be creative!
+        You can reach out to any of the LeanMod™ assistants listed on the left side of this screen to start a chat,
+        in the second container named "LeanMod™ Assistants". To reach to an existing chat, click on the chat name in
+        the first container named "LeanMod™ Chats". You can also delete a chat by clicking on the three dots on top
+        left corner of the chat screen. Enjoy chatting with the LeanMod™ assistant and feel free to be creative!
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
       </button>
@@ -160,17 +160,17 @@
       <a href="{% url 'multimodal_chat:archive_list_lean' %}">
         <button class="btn btn-warning ms-4 mt-4 mb-8">
           <i class="fa fa-box-archive me-4"></i>
-          <strong> Go to Archived LeanMod® Chats</strong>
+          <strong> Go to Archived LeanMod™ Chats</strong>
         </button>
       </a>
     </div>
     <div class="row g-0">
       <div class="col app-chat-contacts app-sidebar border-end overflow-auto" id="app-chat-contacts">
         <div class="sidebar-body">
-          <!-- LeanMod® Assistants -->
+          <!-- LeanMod™ Assistants -->
           <ul class="list-unstyled chat-contact-list mb-0 py-2" id="assistant-list">
             <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
-              <h5 class="mb-0"><strong>LeanMod® Assistants</strong></h5>
+              <h5 class="mb-0"><strong>LeanMod™ Assistants</strong></h5>
             </li>
             <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
             <span class="alert-icon rounded">
@@ -178,7 +178,7 @@
             </span>
               <div class="d-flex flex-column ps-1">
                 <small class="mb-0">
-                  Click on any of the LeanMod® assistants to start a new chat with them.
+                  Click on any of the LeanMod™ assistants to start a new chat with them.
                 </small>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                 </button>
@@ -227,11 +227,11 @@
               </li>
             {% empty %}
               <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                <p class="text-dark mb-2 mt-2"><strong>Oops. It seems like you don't have any LeanMod® assistants yet.
+                <p class="text-dark mb-2 mt-2"><strong>Oops. It seems like you don't have any LeanMod™ assistants yet.
                   Want to create a new one?</strong></p>
                 <a href="{% url 'leanmod:create' %}">
                   <button class="btn btn-success mb-4 mt-4 w-100" style="min-height: 60px;">
-                    <i class="fa fa-plus me-4"></i><strong>Create a New LeanMod® Assistant</strong>
+                    <i class="fa fa-plus me-4"></i><strong>Create a New LeanMod™ Assistant</strong>
                   </button>
                 </a>
               </li>
@@ -242,13 +242,13 @@
       </div>
       <div class="col app-chat-contacts app-sidebar border-end overflow-auto" id="app-chat-chats">
         <div class="sidebar-body">
-          <!-- LeanMod® Chats -->
+          <!-- LeanMod™ Chats -->
           <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
             <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
-              <h5 class="mb-0"><strong>LeanMod® Chats</strong></h5>
+              <h5 class="mb-0"><strong>LeanMod™ Chats</strong></h5>
             </li>
             <li class="chat-contact-list-item chat-list-item-0 d-none">
-              <h6 class="text-muted mb-0"><strong>No LeanMod® Chats Found</strong></h6>
+              <h6 class="text-muted mb-0"><strong>No LeanMod™ Chats Found</strong></h6>
             </li>
             <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
             <span class="alert-icon rounded">
@@ -256,7 +256,7 @@
             </span>
               <div class="d-flex flex-column ps-1">
                 <small class="mb-0">
-                  Click on any of your existing chats to start chatting with the LeanMod® assistants.
+                  Click on any of your existing chats to start chatting with the LeanMod™ assistants.
                 </small>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                 </button>
@@ -270,7 +270,7 @@
               <i class="ti ti-brain"></i>
             </span>
               <div class="d-flex flex-column ps-1 pt-4 ms-4 me-4">
-                <p class="alert-heading"><strong>Creating your LeanMod® chat, please hold on...</strong></p>
+                <p class="alert-heading"><strong>Creating your LeanMod™ chat, please hold on...</strong></p>
                 <!-- Loading bar -->
                 <div id="loadingBarCreateChat" class="progress d-none mt-3 mb-1 w-100">
                   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
@@ -344,8 +344,8 @@
                   <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar"
                      data-overlay data-target="#app-chat-contacts"></i>
                   <div class="chat-contact-info flex-grow-1 ms-4">
-                    <h6 class="m-0 fw-normal"><strong>No LeanMod® Chat Selected</strong></h6>
-                    <small class="user-status text-body">Select a chat to start chatting with LeanMod® assistants</small>
+                    <h6 class="m-0 fw-normal"><strong>No LeanMod™ Chat Selected</strong></h6>
+                    <small class="user-status text-body">Select a chat to start chatting with LeanMod™ assistants</small>
                   </div>
                 </div>
               </div>
@@ -362,9 +362,9 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                Oops. It looks like you either haven't selected a LeanMod® chat or you don't have any chat at all. Come on,
-                start a new LeanMod® chat to discover how powerful you can become with {% get_theme_variables 'template_name' %}
-                LeanMod® assistants!
+                Oops. It looks like you either haven't selected a LeanMod™ chat or you don't have any chat at all. Come on,
+                start a new LeanMod™ chat to discover how powerful you can become with {% get_theme_variables 'template_name' %}
+                LeanMod™ assistants!
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
               </button>

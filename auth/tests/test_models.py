@@ -1,19 +1,22 @@
 
 
-#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Bimod.io
+#  Project: Br6.in™
 #  File: test_models.py
-#  Last Modified: 2024-08-07 16:37:57
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 23:13:48
+#  Last Modified: 2024-10-05 15:31:31
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+#  Created: 2024-10-05 15:45:58
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
 #  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
+#  without the prior express written permission of BMD™ Autonomous
+#  Holdings.
 #
-#  For permission inquiries, please contact: admin@bimod.io.
+#   For permission inquiries, please contact: admin@br6.in.
+#
+#
 
 def test_init_auth_test_models():
     assert True

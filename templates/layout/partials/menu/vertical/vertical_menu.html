@@ -1,3 +1,4 @@
+
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <!-- ! Hide app brand if navbar-full -->
   {% if not navbar_full %}<div class="d-flex p-2 mb-4">
@@ -6,7 +7,7 @@
         <!-- { % include 'partials/logo.html' with logo_size='large' % } -->
         <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 40px;" class="m-1 me-2">
       </span>
-      <span class="app-brand-text demo menu-text text-white fw-extrabold ms-6 mt-4" style="text-shadow: 0px 0px 7px rgba(255, 255, 255, 0.9);">Bimod.io</span>
+      <span class="app-brand-text demo menu-text text-white fw-extrabold ms-6 mt-4" style="text-shadow: 0px 0px 7px rgba(255, 255, 255, 0.9);">{% get_theme_variables 'template_name' %}</span>
       <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" alt="logo" style="position: absolute; top: -62px; left: -30px; opacity: 0.9; rotate: 0deg; width: 340px; height: 170px; z-index: -100000;">
     </a>
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto me-4" style="margin-top: 27px;">
@@ -23,7 +24,7 @@
       {% include './partials/menu_header_template.html' with header_text=item.menu_header %}
     {% else %}
       {% comment %} Menu Item {% endcomment %}
-      {% if item.name == "Billing & Payment" or item.name == "Integrations" or item.name == "Meta Integrations" or item.name == "VoidForger®" or item.name == "Hadron Prime®" or item.name == "Binexus®" %}
+      {% if item.name == "Billing & Payment" or item.name == "Integrations" or item.name == "Meta Integrations" or item.name == "VoidForger™" or item.name == "Hadron Prime™" or item.name == "Binexus™" %}
         <!-- put as grayed out -->
         {% include './partials/menu_item_template_disabled.html' with item=item %}
       {% else %}

@@ -1,3 +1,7 @@
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+#
+#
+
 from web_project.template_helpers.theme import TemplateHelper
 
 

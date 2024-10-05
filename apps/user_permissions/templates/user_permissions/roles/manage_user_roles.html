@@ -1,11 +1,11 @@
   <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Jupi.tr™
+  ~ Project: Br6.in™
   ~ File: manage_user_roles.html
-  ~ Last Modified: 2024-10-01 23:45:03
+  ~ Last Modified: 2024-10-05 01:39:48
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 01:36:42
+  ~ Created: 2024-10-05 14:42:44
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -13,7 +13,7 @@
   ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@jupi.tr.
+  ~  For permission inquiries, please contact: admin@br6.in.
   ~
   -->
 
@@ -155,13 +155,23 @@
               </tr>
               {% for user in organization.users.all %}
                 <tr>
-                  <td>{{ user.username }}</td>
-                  <td>{{ organization.name }}</td>
+                  <td><strong>{{ user.username }}</strong></td>
+                  <td><strong>{{ organization.name }}</strong></td>
                   <td>
                     {% for role in user.roles.all %}
-                      <span class="badge bg-primary m-1">{{ role.role_name }}</span>
+                      <span class="badge bg-primary m-1">
+                        <strong class="p-2">
+                          <i class="fa fa-user-tag me-2"></i>
+                          {{ role.role_name }}
+                        </strong>
+                      </span>
                     {% empty %}
-                      <span class="text-muted">No Roles Assigned</span>
+                    <span class="text-muted">
+                      <strong>
+                        <i class="fa fa-exclamation-triangle me-2"></i>
+                        No Roles Assigned
+                      </strong>
+                    </span>
                     {% endfor %}
                   </td>
                   <td>
@@ -175,8 +185,11 @@
                           <option value="{{ role.id }}">{{ role.role_name }}</option>
                         {% endfor %}
                       </select>
-                      <button type="submit" name="remove_user_role" class="btn btn-danger btn-sm">
-                        Remove Role
+                      <button type="submit" name="remove_user_role" class="ms-4 mt-1 btn btn-danger btn-sm">
+                        <strong>
+                          <i class="fa fa-trash me-2"></i>
+                          Remove Role
+                        </strong>
                       </button>
                     </form>
                   </td>

@@ -1,28 +1,11 @@
-  <!--
-  ~ Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io
-  ~ File: register.html
-  ~ Last Modified: 2024-09-29 16:35:21
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-  ~ Created: 2024-10-01 23:42:53
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD® Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@bimod.io.
-  ~
-  -->
+
 
 {% extends layout_path %}
 
 {% load static %}
 {% load i18n %}
 
-{% block title %}Bimod.io | Registration{% endblock %}
+{% block title %}{% get_theme_variables 'template_name' %} | Registration{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -83,13 +66,13 @@
             <div id="landingHero" class="section-py landing-hero position-relative">
               <div class="container">
                 <div class="hero-text-box text-center position-relative">
-                  <h1 class="text-primary hero-title display-1 fw-extrabold mb-10 pb-4"><strong>Bimod.io</strong></h1>
+                  <h1 class="text-primary hero-title display-1 fw-extrabold mb-10 pb-4"><strong>{% get_theme_variables 'template_name' %}</strong></h1>
                 </div>
               </div>
             </div>
           </section>
           <h5 class="mb-1 mt-12"><strong>Register</strong></h5>
-          <p class="mb-6 mt-4">Join us and start your journey with Bimod.io to automate your business now.</p>
+          <p class="mb-6 mt-4">Join us and start your journey with {% get_theme_variables 'template_name' %} to automate your business now.</p>
           {% if messages %}
             {% for message in messages %}
               <div

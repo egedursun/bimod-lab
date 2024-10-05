@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Jupi.tr™
+#  Project: Br6.in™
 #  File: build_sql_data_source_prompt.py
-#  Last Modified: 2024-09-28 22:17:13
+#  Last Modified: 2024-10-05 02:25:59
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 01:36:34
+#  Created: 2024-10-05 14:42:35
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -12,21 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@jupi.tr.
+#   For permission inquiries, please contact: admin@br6.in.
 #
 #
-#  Project: Bimod.io
-#  File: build_sql_data_source_prompt.py
-#  Last Modified: 2024-09-28 00:42:06
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 22:09:58
 #
-#  This software is proprietary and confidential. Unauthorized copying,
-#  distribution, modification, or use of this software, whether for
-#  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
-#
-#  For permission inquiries, please contact: admin@bimod.io.
 
 from apps.assistants.models import Assistant
 from apps.datasource_sql.models import SQLDatabaseConnection

@@ -4,6 +4,25 @@
 
 ......
 
+TODOS (NAME & STYLE MIGRATION):
+
+0. Domain adını satın al (br6.in)
+1. Copyright'lardaki Bimod'ları kaldır.
+2. Her klasörde adı bimod olan bir şey kalmadığından emin olarak kontrol et.
+3. Bimod Lab'lerin hepsinin adını br6.in olarak değiştir.
+4. (R) copyright sembollerinin hepsini TM ile değiştir.
+5. Kodun içerisinde Bimod ile ilgili bir şey kalmadığından emin ol.
+6. Deployment dökümanlarında bimod ismi geçen yerleri düzenle ve güncelle.
+7. Renk temasını düzenle.
+8. GitHub organizasyonunun adını değiştir ve düzenle.
+9. Yeni GitHub repositorysi oluştur.
+10. Yeni Repository'e projeyi gönder.
+11. Sunucuda proje için yeni dizinler oluştur.
+12. Deploy .sh dosyalarında gerekli düzenlemeleri yap.
+13. Projeyi sunucuya yükle ve ayağa kaldır.
+14. AWS, Hosting, Database, Email ve diğer sunucularda gerekli güncellemeleri yap.
+15. Readme dosyalarını ve environment dosyalarını güncelle.
+
 ......
 
 ---
@@ -20,7 +39,7 @@
 7. [ ] Development of [PRODUCT CATALOGUE] for the application. (Ege)
 8. [ ] Development of [FUNDING & GROWTH PLAN] for the application. (Ege)
 9. [ ] Marketing videos: [PROMOTIONAL VIDEO] for the application. (Hüseyin)
-10. [ ] Integrate [BIMOD - SOCIAL MEDIA ACCOUNTS] on: [FACEBOOK, TWITTER, LINKEDIN, INSTAGRAM, YOUTUBE, TIKTOK]. (
+10. [ ] Integrate [BR6IN - SOCIAL MEDIA ACCOUNTS] on: [FACEBOOK, TWITTER, LINKEDIN, INSTAGRAM, YOUTUBE, TIKTOK]. (
     Hüseyin)
 11. [ ] Ecosystem Marketing via [WEBRAZZI, PRODUCT HUNT, DISCORD, HACKER NEWS, REDDIT], etc. (Hüseyin)
 12. [ ] Company [LEGAL FORMATION] and registration for the company. (Ege)
@@ -166,7 +185,7 @@ RELEASE v0.2.0 [RELEASE: BETA] version of the application.
 *After first deployment:*
 
 1. [ ] [DRIVE FILES] integration for the application.
-    - [ ] Implement the [SERVICES] for file retrieval, listing, downloading, and adding to Bimod system.
+    - [ ] Implement the [SERVICES] for file retrieval, listing, downloading, and adding to Br6.in system.
     - [ ] Update the [PAGES] for adding the drive files to the media storages.
     - [ ] Update the [VIEWS] for the drive files addition feature.
     - [ ] [TEST OVERALL] functionality.
@@ -260,7 +279,7 @@ RELEASE v0.6.0 [RELEASE: BETA] version of the application.
 
 - **Django Mainframe (Server + Web Application)**
   - For the main application and the frontend of the web application.
-  - The flagship application for the Bimod project.
+  - The flagship application for the Br6.in project.
 - **Electron Copilot (Desktop Application)**
   - For image and text-based management and manipulation within the OS and overall system usage.
   - Can also understand the context of the browsers while the user is actively using the browser and OS.

@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Jupi.tr™
+#  Project: Br6.in™
 #  File: create_assistant_views.py
-#  Last Modified: 2024-09-28 23:19:08
+#  Last Modified: 2024-10-05 12:51:58
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 01:36:35
+#  Created: 2024-10-05 14:42:38
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -12,21 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@jupi.tr.
+#   For permission inquiries, please contact: admin@br6.in.
 #
 #
-#  Project: Bimod.io
-#  File: create_assistant_views.py
-#  Last Modified: 2024-09-28 00:53:10
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 22:18:55
 #
-#  This software is proprietary and confidential. Unauthorized copying,
-#  distribution, modification, or use of this software, whether for
-#  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
-#
-#  For permission inquiries, please contact: admin@bimod.io.
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -45,7 +34,7 @@ from web_project import TemplateLayout
 
 class CreateAssistantView(LoginRequiredMixin, TemplateView):
     """
-    Handles the creation of a new assistant within the Bimod.io platform.
+    Handles the creation of a new assistant within the Br6.in platform.
 
     This view displays a form for creating an assistant, and upon submission, it validates the input, checks user permissions, and saves the new assistant to the database. If the user lacks the necessary permissions, an error message is displayed.
 

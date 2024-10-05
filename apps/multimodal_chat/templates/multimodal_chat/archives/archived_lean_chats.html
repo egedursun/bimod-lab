@@ -1,11 +1,11 @@
   <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Jupi.tr™
+  ~ Project: Br6.in™
   ~ File: archived_lean_chats.html
-  ~ Last Modified: 2024-10-01 23:45:03
+  ~ Last Modified: 2024-10-05 01:39:48
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 01:36:42
+  ~ Created: 2024-10-05 14:42:43
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -13,7 +13,7 @@
   ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@jupi.tr.
+  ~  For permission inquiries, please contact: admin@br6.in.
   ~
   -->
 
@@ -22,7 +22,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Archived LeanMod® Chats{% endblock %}
+{% block title %}Archived LeanMod™ Chats{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -100,7 +100,7 @@
   <div class="row g-6 mb-6" id="assistant-chats-title">
     <div class="col-sm-6 col-xl-6">
       <h3 class="mb-0">
-        <strong>Archived LeanMod® Chats</strong>
+        <strong>Archived LeanMod™ Chats</strong>
       </h3>
     </div>
   </div>
@@ -114,10 +114,10 @@
     <div class="d-flex flex-column ps-1">
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
-        The archived LeanMod® chats are the chats that you have had with the AI assistants. You can inspect the history of your
-        conversations with the LeanMod® assistant by clicking on any of the archived chats. You can also restore your chats,
-        however, please note that you cannot continue the conversation in archived LeanMod® chats. If you would like to continue
-        having chat with this LeanMod® assistant, please restore the chat.
+        The archived LeanMod™ chats are the chats that you have had with the AI assistants. You can inspect the history of your
+        conversations with the LeanMod™ assistant by clicking on any of the archived chats. You can also restore your chats,
+        however, please note that you cannot continue the conversation in archived LeanMod™ chats. If you would like to continue
+        having chat with this LeanMod™ assistant, please restore the chat.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
       </button>
@@ -160,7 +160,7 @@
       <a href="{% url 'multimodal_chat:lean_chat' %}">
         <button class="btn btn-success ms-4 mt-4 mb-8">
           <i class="fa fa-bolt-lightning me-4"></i>
-          <strong> Go to Ongoing LeanMod® Chats</strong>
+          <strong> Go to Ongoing LeanMod™ Chats</strong>
         </button>
       </a>
     </div>
@@ -170,10 +170,10 @@
           <!-- Chats -->
           <ul class="list-unstyled chat-contact-list py-2 mb-0" id="chat-list">
             <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
-              <h5 class="mb-0"><strong>Archived LeanMod® Chats</strong></h5>
+              <h5 class="mb-0"><strong>Archived LeanMod™ Chats</strong></h5>
             </li>
             <li class="chat-contact-list-item chat-list-item-0 d-none">
-              <h6 class="text-muted mb-0"><strong>No LeanMod® Chats Found</strong></h6>
+              <h6 class="text-muted mb-0"><strong>No LeanMod™ Chats Found</strong></h6>
             </li>
             <div class="alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
             <span class="alert-icon rounded">
@@ -181,7 +181,7 @@
             </span>
               <div class="d-flex flex-column ps-1">
                 <small class="mb-0">
-                  Click on any of your existing LeanMod® chats to inspect the history of your conversations with the LeanMod® assistant.
+                  Click on any of your existing LeanMod™ chats to inspect the history of your conversations with the LeanMod™ assistant.
                 </small>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                 </button>
@@ -195,7 +195,7 @@
               <i class="ti ti-brain"></i>
             </span>
               <div class="d-flex flex-column ps-1 pt-4 ms-4 me-4 ">
-                <p class="alert-heading"><strong>Loading your LeanMod® chat, please hold on...</strong></p>
+                <p class="alert-heading"><strong>Loading your LeanMod™ chat, please hold on...</strong></p>
                 <!-- Loading bar -->
                 <div id="loadingBarCreateChat" class="progress d-none mt-3 mb-1 w-100">
                   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
@@ -263,7 +263,7 @@
       <div class="col app-chat-history">
         <h5 class="text-primary mt-12"><strong></strong></h5>
         {% if not active_chat %}
-          <!-- inform the user that no active LeanMod® chat is selected at the moment -->
+          <!-- inform the user that no active LeanMod™ chat is selected at the moment -->
           <div class="chat-history-wrapper">
             <div class="chat-history-header border-bottom">
               <div class="d-flex justify-content-between align-items-center">
@@ -273,7 +273,7 @@
                   <div class="chat-contact-info flex-grow-1 ms-4">
                     <h6 class="m-0 fw-normal"><strong>
                       <i class="fa fa-info-circle me-2"></i>
-                      No LeanMod® Chat Selected
+                      No LeanMod™ Chat Selected
                     </strong></h6>
                     <small class="user-status text-body">Select a chat to start inspecting the archived chat
                       history.</small>
@@ -292,8 +292,8 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                Oops. It looks like you either haven't selected a LeanMod® chat or you don't have any chat at all. Come on,
-                click on an archived LeanMod® chat to discover how powerful you can become
+                Oops. It looks like you either haven't selected a LeanMod™ chat or you don't have any chat at all. Come on,
+                click on an archived LeanMod™ chat to discover how powerful you can become
                 with {% get_theme_variables 'template_name' %}
                 AI assistants!
               </p>
@@ -533,7 +533,7 @@
             </div>
             <div class="d-flex mt-6">
               <button class="btn btn-danger w-100" data-bs-toggle="sidebar" data-overlay
-                      data-target="#app-chat-sidebar-right">Delete LeanMod® Chat<i class='ti ti-trash ti-16px ms-2'></i></button>
+                      data-target="#app-chat-sidebar-right">Delete LeanMod™ Chat<i class='ti ti-trash ti-16px ms-2'></i></button>
             </div>
           </div>
         </div>

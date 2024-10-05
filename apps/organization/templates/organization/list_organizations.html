@@ -1,11 +1,11 @@
   <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Jupi.tr™
+  ~ Project: Br6.in™
   ~ File: list_organizations.html
-  ~ Last Modified: 2024-10-01 23:45:03
+  ~ Last Modified: 2024-10-05 01:39:48
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 01:36:37
+  ~ Created: 2024-10-05 14:42:40
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -13,7 +13,7 @@
   ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@jupi.tr.
+  ~  For permission inquiries, please contact: admin@br6.in.
   ~
   -->
 
@@ -120,19 +120,29 @@
                 <img class="rounded" src="{% static 'img/avatars/org-0.png' %}" alt="Organization Image" width="60">
               {% endif %}
             </td>
-            <td style="min-width: 180px;">{{ organization.name }}</td>
-            <td style="min-width: 200px;">{{ organization.email }}</td>
+            <td style="min-width: 180px;"><strong>{{ organization.name }}</strong></td>
+            <td style="min-width: 200px;"><strong>{{ organization.email }}</strong></td>
             <td style="min-width: 150px;">{{ organization.phone }}</td>
             <td style="min-width: 300px;">{{ organization.address }}</td>
-            <td style="min-width: 150px;">{{ organization.city }}</td>
-            <td style="min-width: 150px;">{{ organization.country }}</td>
-            <td style="min-width: 150px;">{{ organization.postal_code }}</td>
-            <td style="min-width: 200px;">{{ organization.industry }}</td>
-            <td>
-              <a href="{% url 'organization:update' organization.id %}" class="btn btn-sm btn-primary"><strong>Edit</strong></a>
+            <td style="min-width: 150px;"><strong>{{ organization.city }}<strong></td>
+            <td style="min-width: 150px;"><strong>{{ organization.country }}</strong></td>
+            <td style="min-width: 150px;"><strong>{{ organization.postal_code }}</strong></td>
+            <td style="min-width: 200px;"><strong>{{ organization.industry }}</strong></td>
+            <td style="min-width: 150px;">
+              <a href="{% url 'organization:update' organization.id %}" class="btn btn-sm btn-primary">
+                <strong>
+                  <i class="fa fa-edit me-2"></i>
+                  Edit
+                </strong>
+              </a>
             </td>
-            <td>
-              <a href="{% url 'organization:delete' organization.id %}" class="btn btn-sm btn-danger"><strong>Delete</strong></a>
+            <td style="min-width: 150px;">
+              <a href="{% url 'organization:delete' organization.id %}" class="btn btn-sm btn-danger">
+                <strong>
+                  <i class="fa fa-trash me-2"></i>
+                  Delete
+                </strong>
+              </a>
             </td>
           </tr>
         {% empty %}

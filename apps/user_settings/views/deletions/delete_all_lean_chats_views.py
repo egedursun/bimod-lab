@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Jupi.tr™
+#  Project: Br6.in™
 #  File: delete_all_lean_chats_views.py
-#  Last Modified: 2024-09-28 23:19:08
+#  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 01:36:38
+#  Created: 2024-10-05 14:42:40
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -12,21 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@jupi.tr.
+#   For permission inquiries, please contact: admin@br6.in.
 #
 #
-#  Project: Bimod.io
-#  File: delete_all_lean_chats_views.py
-#  Last Modified: 2024-09-28 00:53:10
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 23:11:57
 #
-#  This software is proprietary and confidential. Unauthorized copying,
-#  distribution, modification, or use of this software, whether for
-#  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
 #
-#  For permission inquiries, please contact: admin@bimod.io.
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -67,9 +57,9 @@ class DeleteAllLeanChatsView(View, LoginRequiredMixin):
         try:
             for chat in user_chats:
                 chat.delete()
-            messages.success(request, "All LeanMod® chat messages associated with your account have been deleted.")
+            messages.success(request, "All LeanMod™ chat messages associated with your account have been deleted.")
         except Exception as e:
-            messages.error(request, f"Error deleting LeanMod® chat messages: {e}")
+            messages.error(request, f"Error deleting LeanMod™ chat messages: {e}")
 
         # [4] Redirect back to settings page
         return redirect('user_settings:settings')

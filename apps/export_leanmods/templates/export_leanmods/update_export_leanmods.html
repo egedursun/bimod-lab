@@ -1,11 +1,11 @@
   <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Jupi.tr™
+  ~ Project: Br6.in™
   ~ File: update_export_leanmods.html
-  ~ Last Modified: 2024-10-01 23:45:03
+  ~ Last Modified: 2024-10-05 01:39:48
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 01:36:39
+  ~ Created: 2024-10-05 14:42:41
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -13,7 +13,7 @@
   ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@jupi.tr.
+  ~  For permission inquiries, please contact: admin@br6.in.
   ~
   -->
 
@@ -23,7 +23,7 @@
 {% load i18n %}
 {% load field_to_label %}
 
-{% block title %}Update LeanMod® Assistant Service{% endblock %}
+{% block title %}Update LeanMod™ Assistant Service{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -50,7 +50,7 @@
   <a href="{% url 'export_leanmods:list' %}">
     <button class="btn btn-secondary my-4 w-25">
       <i class="fa fa-chevron-left me-4"></i>
-      <strong> Back to Exported LeanMod® Assistants</strong>
+      <strong> Back to Exported LeanMod™ Assistants</strong>
     </button>
   </a>
 
@@ -60,7 +60,7 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">
-            <strong>Update Exported LeanMod® Assistant</strong>
+            <strong>Update Exported LeanMod™ Assistant</strong>
           </h5> <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
@@ -73,8 +73,8 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                In this page, you can update the LeanMod® Export Assistant. Adjust the fields as necessary and click on the
-                "Update" button to save your changes. The LeanMod® assistant exports are used to provide services to the users
+                In this page, you can update the LeanMod™ Export Assistant. Adjust the fields as necessary and click on the
+                "Update" button to save your changes. The LeanMod™ assistant exports are used to provide services to the users
                 in your own applications, by using the RESTful API services provided by Bimod.io.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
@@ -94,9 +94,9 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-5">
-                <label class="form-label" for="assistant">LeanMod® Assistant</label>
+                <label class="form-label" for="assistant">LeanMod™ Assistant</label>
                 <select class="form-select" id="assistant" name="assistant">
-                  <option value="" disabled selected>Select LeanMod® Assistant</option>
+                  <option value="" disabled selected>Select LeanMod™ Assistant</option>
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}"
                             {% if export_assistant.lean_assistant_id == assistant.id %}selected{% endif %}>{{ assistant.name }}</option>
@@ -124,7 +124,7 @@
             </div>
             <hr>
             <button type="submit" class="btn btn-primary d-grid mt-4 w-25">
-              <strong>Update Exported LeanMod® Assistant</strong>
+              <strong>Update Exported LeanMod™ Assistant</strong>
             </button>
           </form>
         </div>

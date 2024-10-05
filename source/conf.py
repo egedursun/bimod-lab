@@ -1,7 +1,7 @@
 # Configuration file for the Sphinx documentation builder.
 
 # -- Project information -----------------------------------------------------
-project = 'Bimod.io'
+project = 'Br6.in'
 copyright = '2024, Ege Dogan Dursun'
 author = 'Ege Dogan Dursun'
 release = 'v0.1.0'

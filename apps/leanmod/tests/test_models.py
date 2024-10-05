@@ -1,12 +1,10 @@
-
-
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Jupi.tr™
+#  Project: Br6.in™
 #  File: test_models.py
-#  Last Modified: 2024-09-28 23:19:08
+#  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 01:36:31
+#  Created: 2024-10-05 14:42:33
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,21 +12,8 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@jupi.tr.
+#   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#  Project: Bimod.io
-#  File: test_models.py
-#  Last Modified: 2024-09-23 12:33:07
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 22:54:47
-#
-#  This software is proprietary and confidential. Unauthorized copying,
-#  distribution, modification, or use of this software, whether for
-#  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
-#
-#  For permission inquiries, please contact: admin@bimod.io.
 
 def test_init_leanmod_test_models():
     assert True

@@ -1,11 +1,11 @@
   <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Jupi.tr™
+  ~ Project: Br6.in™
   ~ File: create_export_leanmods.html
-  ~ Last Modified: 2024-10-01 23:45:03
+  ~ Last Modified: 2024-10-05 01:39:48
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 01:36:39
+  ~ Created: 2024-10-05 14:42:41
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -13,7 +13,7 @@
   ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@jupi.tr.
+  ~  For permission inquiries, please contact: admin@br6.in.
   ~
   -->
 
@@ -23,7 +23,7 @@
 {% load i18n %}
 {% load field_to_label %}
 
-{% block title %}Export LeanMod® Assistant{% endblock %}
+{% block title %}Export LeanMod™ Assistant{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -60,7 +60,7 @@
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">
-            <strong>Export LeanMod® Assistant</strong>
+            <strong>Export LeanMod™ Assistant</strong>
           </h5> <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
@@ -73,9 +73,9 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                In this page, you can create a new Export LeanMod® Assistant. Select an assistant from the dropdown,
+                In this page, you can create a new Export LeanMod™ Assistant. Select an assistant from the dropdown,
                 set the request limit per hour, and choose if it should be public or not.
-                Once you have filled out all the fields, click on the "Create" button to create the Export LeanMod® Assistant.
+                Once you have filled out all the fields, click on the "Create" button to create the Export LeanMod™ Assistant.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
               </button>
@@ -97,9 +97,9 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-5">
-                <label class="form-label" for="assistant">LeanMod® Assistant</label>
+                <label class="form-label" for="assistant">LeanMod™ Assistant</label>
                 <select class="form-select" id="assistant" name="assistant">
-                  <option value="" disabled selected>Select LeanMod® Assistant</option>
+                  <option value="" disabled selected>Select LeanMod™ Assistant</option>
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}">{{ assistant.name }}</option>
                   {% endfor %}
@@ -124,7 +124,7 @@
             </div>
             <hr>
             <button type="submit" class="btn btn-primary d-grid mt-4 w-25">
-              <strong>Export LeanMod® Assistant</strong>
+              <strong>Export LeanMod™ Assistant</strong>
             </button>
           </form>
         </div>

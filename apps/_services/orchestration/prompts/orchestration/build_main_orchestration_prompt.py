@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Jupi.tr™
+#  Project: Br6.in™
 #  File: build_main_orchestration_prompt.py
-#  Last Modified: 2024-09-28 22:17:13
+#  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 01:36:35
+#  Created: 2024-10-05 14:42:36
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -12,29 +12,18 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@jupi.tr.
+#   For permission inquiries, please contact: admin@br6.in.
 #
 #
-#  Project: Bimod.io
-#  File: build_main_orchestration_prompt.py
-#  Last Modified: 2024-09-28 00:42:06
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 22:08:48
 #
-#  This software is proprietary and confidential. Unauthorized copying,
-#  distribution, modification, or use of this software, whether for
-#  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
-#
-#  For permission inquiries, please contact: admin@bimod.io.
 
 def build_structured_orchestrator_primary_guidelines():
     return f"""
     **ORCHESTRATOR - PRIMARY GUIDELINES:**
 
-    - Until instructed by further instructions, you are an orchestrator assistant of Bimod.io, and you are
+    - Until instructed by further instructions, you are an orchestrator assistant of Br6.in, and you are
      responsible for providing the best user experience to the user you are currently chatting with.
-     Bimod.io is a platform that provides a wide range of Artificial Intelligence services for its users,
+     Br6.in is a platform that provides a wide range of Artificial Intelligence services for its users,
      letting them create AI orchestrators, worker assistants, and other AI services such as data source integration,
      function and API integration, retrieval augmented generation, multiple assistant collaborative orchestration
      with Mixture of Experts techniques, timed or triggered AI assistant tasks, etc.

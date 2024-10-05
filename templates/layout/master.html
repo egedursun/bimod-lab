@@ -19,54 +19,39 @@
   <meta name="og:url" content="{% url 'landing:index' %}"/>
   <meta property="og:type" content="website"/>
   <meta name="keywords" content="{% get_theme_variables 'template_keyword' %}"/>
-  <!-- Canonical SEO -->
   <link rel="canonical" href="{% get_theme_variables 'product_page' %}">
   <!-- Favicon -->
   <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon/favicon.ico' %}"/>
 
   <!-- Include the styles partial -->
   {% include is_front|yesno:"./partials/styles_front.html,./partials/styles.html" %}
-
   {% block vendor_css %}{% endblock vendor_css %}
-
   <!--Page CSS-->
   {% block page_css %}{% endblock page_css %}
-
-
   <!-- Include the scripts partial (required ) -->
   {% include is_front|yesno:"./partials/scripts_includes_front.html,./partials/scripts_includes.html" %}
-
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2157MB1H4E"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-
     function gtag() {
       dataLayer.push(arguments);
     }
-
     gtag('js', new Date());
     gtag('config', 'G-2157MB1H4E');
   </script>
 
   <script>
     window.onload = function () {
-
       document.body.style.zoom = "{% default_application_zoom %}";
       console.log("Zoom level set to {% default_application_zoom %}");
-
-      const tipsSections = document.querySelectorAll('.tips-section'); // Select all elements with the class 'tips-section'
+      const tipsSections = document.querySelectorAll('.tips-section');
       const tipsSwitch = document.querySelector('.switch-input');
-
       if (!tipsSections.length || !tipsSwitch) {
         console.error('Tips sections or switch not found');
         return;
       }
-
-      // Retrieve the current state of the tips from localStorage
       const tipsState = localStorage.getItem('show_tips');
-
-      // Apply the correct class based on the stored state to all tips sections
       tipsSections.forEach(tipsSection => {
         if (tipsState === 'true' || tipsState === null) {
           tipsSection.classList.remove('d-none');
@@ -75,11 +60,9 @@
         }
       });
 
-      // Listen for changes on the switch button
       tipsSwitch.addEventListener('change', function () {
         const isOn = tipsSwitch.checked;
         localStorage.setItem('show_tips', isOn);
-
         tipsSections.forEach(tipsSection => {
           if (isOn) {
             tipsSection.classList.remove('d-none');
@@ -90,9 +73,7 @@
       });
     };
   </script>
-
 </head>
-
 <body>
 
 <!-- create a bar at the top of the screen, rectangular -->
@@ -110,12 +91,9 @@
 
 {% block layout %}
 {% endblock layout %}
-
 {% include is_front|yesno:"./partials/scripts_front.html,./partials/scripts.html" %}
-
 <!--Vendors Javascript-->
 {% block vendor_js %} {% endblock vendor_js %}
-
 <!--Page Javascript-->
 {% block page_js %}
   <script>
@@ -142,7 +120,7 @@
       if (environment === 'local') {
         environmentValueElement.innerText = ' Local Development Instance [localhost:8000] ';
       } else if (environment === 'dev') {
-        environmentValueElement.innerText = ' Development Server Instance [dev.bimod.io] ';
+        environmentValueElement.innerText = ' Development Server Instance [dev.br6.in] ';
       } else {
         // hide the environment bar if the environment is production
         document.getElementById('environment').classList.add('d-none');

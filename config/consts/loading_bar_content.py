@@ -1,17 +1,19 @@
-#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Bimod.io
+#  Project: Br6.in™
 #  File: loading_bar_content.py
-#  Last Modified: 2024-09-06 16:36:33
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 23:14:39
+#  Last Modified: 2024-10-05 15:31:31
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+#  Created: 2024-10-05 20:25:38
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
 #  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
+#  without the prior express written permission of BMD™ Autonomous
+#  Holdings.
 #
-#  For permission inquiries, please contact: admin@bimod.io.
+#   For permission inquiries, please contact: admin@br6.in.
+#
 
 CONTENT_MIX = '''
                 <div id="loading-bar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0, 0, 0, 0.5); z-index:9999; pointer-events:none;">

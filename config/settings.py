@@ -41,7 +41,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default='')
 DEBUG = os.environ.get("DEBUG", 'True').lower() in ['true', 'yes', '1']
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "www.bimod.io", "bimod.io", "dev.bimod.io"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "www.br6.in", "br6.in", "dev.br6.in"]
 
 # Current DJANGO_ENVIRONMENT
 ENVIRONMENT = os.environ.get("DJANGO_ENVIRONMENT", default="local")
@@ -458,20 +458,19 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     "http://0.0.0.0:8000",
     "http://127.0.0.1:8000",
-    "https://bimod.io",
-    "https://dev.bimod.io",
-    "https://www.bimod.io",
+    "https://br6.in",
+    "https://dev.br6.in",
+    "https://www.br6.in",
 ]
 
 CORS_ALLOWED_ORIGINS = [
-
     "http://localhost:8000",
     "http://localhost:5050",
     "http://0.0.0.0:8000",
     "http://127.0.0.1:8000",
-    "https://bimod.io",
-    "https://dev.bimod.io",
-    "https://www.bimod.io",
+    "https://br6.in",
+    "https://dev.br6.in",
+    "https://www.br6.in",
 ]
 CORS_ALLOW_CREDENTIALS = True
 

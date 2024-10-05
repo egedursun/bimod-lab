@@ -1,17 +1,19 @@
-#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Bimod.io
+#  Project: Br6.in™
 #  File: helpers.py
-#  Last Modified: 2024-09-25 17:51:06
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 23:14:07
+#  Last Modified: 2024-10-05 15:45:58
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+#  Created: 2024-10-05 15:45:58
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
 #  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
+#  without the prior express written permission of BMD™ Autonomous
+#  Holdings.
 #
-#  For permission inquiries, please contact: admin@bimod.io.
+#   For permission inquiries, please contact: admin@br6.in.
+#
 
 import os
 
@@ -45,7 +47,7 @@ def render_html_template(file_path, context):
 
 
 def send_verification_email(email, token):
-    subject = "Bimod.io | Verify Email"
+    subject = "Br6.in | Verify Email"
     verification_url = get_absolute_url(reverse('verify-email', kwargs={'token': token}))
     context = {'VERIFICATION_LINK': verification_url}
     file_path = os.path.join(os.path.dirname(__file__), 'helper_templates', 'verification_email_template.html')
@@ -54,7 +56,7 @@ def send_verification_email(email, token):
 
 
 def send_invitation_email(email, token):
-    subject = "Bimod.io | Invitation"
+    subject = "Br6.in | Invitation"
     set_password_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))
     context = {'VERIFICATION_LINK': set_password_url}
     file_path = os.path.join(os.path.dirname(__file__), 'helper_templates', 'invitation_email_template.html')
@@ -63,7 +65,7 @@ def send_invitation_email(email, token):
 
 
 def send_password_reset_email(email, token):
-    subject = "Bimod.io | Reset Password"
+    subject = "Br6.in | Reset Password"
     reset_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))
     context = {'VERIFICATION_LINK': reset_url}
     file_path = os.path.join(os.path.dirname(__file__), 'helper_templates', 'reset_password_email_template.html')

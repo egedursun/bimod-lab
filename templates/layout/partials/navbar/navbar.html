@@ -4,7 +4,8 @@
 
 
 {% if navbar_detached %}
-  <nav
+
+<nav
     class="layout-navbar {{ container_class }} navbar navbar-expand-xl {{ navbar_detached_class }} align-items-center bg-navbar-theme"
     id="layout-navbar">
 {% endif %}
@@ -247,13 +248,13 @@
         <div class="avatar avatar-online">
           {% if request.user|has_group:"admin" %}
             <img src="
-              
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt class="h-auto rounded-pill border border-primary border-1">
           {% else %}
             <img src="
- 
-              
+
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt class="h-auto rounded-pill border border-primary border-1">
           {% endif %}
@@ -267,12 +268,12 @@
                 <div class="avatar avatar-online">
                   {% if request.user|has_group:"admin" %}
                     <img src="
-                      
+
                       {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                          alt class="w-px-50 h-auto rounded-pill border border-1 border-primary">
                   {% else %}
                     <img src="
-                      
+
                       {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                          alt class="w-px-40 h-auto rounded-pill border border-1 border-primary">
                   {% endif %}
@@ -312,12 +313,12 @@
         </li>
         <li>
           <a class="dropdown-item bg-label-hover-success" href="{% url "llm_transaction:create_top_up" %}">
-            <i class="ti ti-circle-plus me-3 ti-md"></i><span class="align-middle">Add Balance</span>
+            <i class="ti ti-circle-plus me-3 ti-md"></i><span class="align-middle"><strong>Add Balance</strong></span>
           </a>
         </li>
         <li>
           <a class="dropdown-item bg-label-hover-info" href="{% url "llm_transaction:transfer_balance" %}">
-            <i class="ti ti-transfer me-3 ti-md"></i><span class="align-middle">Transfer Balance</span>
+            <i class="ti ti-transfer me-3 ti-md"></i><span class="align-middle"><strong>Transfer Balance</strong></span>
           </a>
         </li>
         <hr>
@@ -357,7 +358,7 @@
         <li>
           <a class="dropdown-item" href="#" target="_blank">
             <i class="ti ti-file-description me-3 ti-md"></i><span
-            class="align-middle">BimodLab® Cookbook</span>
+            class="align-middle">BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Cookbook</span>
           </a>
         </li>
         <li>

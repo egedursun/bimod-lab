@@ -1,11 +1,11 @@
   <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Jupi.tr™
+  ~ Project: Br6.in™
   ~ File: confirm_delete_lean_chat.html
-  ~ Last Modified: 2024-10-01 23:45:03
+  ~ Last Modified: 2024-10-05 01:39:48
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 01:36:42
+  ~ Created: 2024-10-05 14:42:43
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -13,7 +13,7 @@
   ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@jupi.tr.
+  ~  For permission inquiries, please contact: admin@br6.in.
   ~
   -->
 
@@ -21,7 +21,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Delete LeanMod® Chat{% endblock %}
+{% block title %}Delete LeanMod™ Chat{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -29,7 +29,7 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h3 class="mb-0">
-            <strong>Delete LeanMod® Chat</strong>
+            <strong>Delete LeanMod™ Chat</strong>
           </h3>
           <small class="text-muted float-end"></small>
         </div>
@@ -46,7 +46,7 @@
         <div class="card-body">
           <form method="post">
             {% csrf_token %}
-            <p>Are you sure you want to delete the LeanMod® chat <strong>"{{ chat.chat_name }}"</strong>?</p><br>
+            <p>Are you sure you want to delete the LeanMod™ chat <strong>"{{ chat.chat_name }}"</strong>?</p><br>
             <h6><strong>
               • This operation will result in the complete removal of the chat from the system.
               <br>
@@ -56,7 +56,7 @@
             <img src="{% static 'img/custom-illustrations-v2/i2-71.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8">
             <hr>
-            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the LeanMod® chat.</button>
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the LeanMod™ chat.</button>
             <a href="{% url 'multimodal_chat:lean_chat' %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the
               deletion operation.</a>
           </form>

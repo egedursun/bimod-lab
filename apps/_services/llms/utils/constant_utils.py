@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Jupi.tr™
+#  Project: Br6.in™
 #  File: constant_utils.py
-#  Last Modified: 2024-09-28 22:17:13
+#  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 01:36:33
+#  Created: 2024-10-05 14:42:35
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -12,21 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@jupi.tr.
+#   For permission inquiries, please contact: admin@br6.in.
 #
 #
-#  Project: Bimod.io
-#  File: constant_utils.py
-#  Last Modified: 2024-09-28 00:42:06
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 22:07:29
 #
-#  This software is proprietary and confidential. Unauthorized copying,
-#  distribution, modification, or use of this software, whether for
-#  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
-#
-#  For permission inquiries, please contact: admin@bimod.io.
 
 class ChatRoles:
     SYSTEM = "system"
@@ -53,8 +42,8 @@ DEFAULT_IMAGE_MODIFICATION_N = 1
 DEFAULT_IMAGE_VARIATION_N = 1
 DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS = 4000
 DEFAULT_STATISTICS_TEMPERATURE = 0.50
-DEFAULT_STATISTICS_ASSISTANT_NAME_PLACEHOLDER = "Bimod Platform Usage Statistics Assistant"
-DEFAULT_STATISTICS_ASSISTANT_AUDIENCE = "Standard / Bimod Application Users"
+DEFAULT_STATISTICS_ASSISTANT_NAME_PLACEHOLDER = "BimodLab Platform Usage Statistics Assistant"
+DEFAULT_STATISTICS_ASSISTANT_AUDIENCE = "Standard / BimodLab Application Users"
 DEFAULT_STATISTICS_ASSISTANT_TONE = "Formal & Descriptive"
 DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME = "Statistics Analysis & Evaluation"
 BIMOD_STREAMING_END_TAG = "<[bimod_streaming_end]>"

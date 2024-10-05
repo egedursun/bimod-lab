@@ -1,17 +1,19 @@
-#  Copyright (c) 2024 BMD® Autonomous Holdings. All rights reserved.
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Bimod.io
+#  Project: Br6.in™
 #  File: template.py
-#  Last Modified: 2024-09-05 11:16:22
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD® Autonomous Holdings)
-#  Created: 2024-09-28 23:15:26
+#  Last Modified: 2024-10-05 15:31:31
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+#  Created: 2024-10-05 20:30:57
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
 #  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD® Autonomous Holdings.
+#  without the prior express written permission of BMD™ Autonomous
+#  Holdings.
 #
-#  For permission inquiries, please contact: admin@bimod.io.
+#   For permission inquiries, please contact: admin@br6.in.
+#
 
 # Template Settings
 # ------------------------------------------------------------------------------
@@ -55,13 +57,13 @@ TEMPLATE_CONFIG = {
 # Theme Variables
 # ? Personalize template by changing theme variables (For ex: Name, URL Version etc...)
 THEME_VARIABLES = {
-    "creator_name": "Jupi.tr",
-    "creator_url": "https://www.jupi.tr/",
-    "template_name": "Jupi.tr",
-    "template_suffix": "Jupi.tr - Intelligent Assistant as a Service",
+    "creator_name": "Br6.in",
+    "creator_url": "https://www.br6.in/",
+    "template_name": "Br6.in",
+    "template_suffix": "Br6.in - Intelligent Assistant as a Service (AIaaS)",
     "template_version": "2.0.0",
     "template_free": False,
-    "template_description": "Ven.is is an AI-powered AIaaS provider that helps you to build, train, and deploy your own AI assistant in minutes and automate your business processes.",
+    "template_description": "Br6.in is an AI-powered AIaaS provider that helps you to build, train, and deploy your own AI assistant in minutes and automate your business processes.",
     "template_keyword": "django, django admin, dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5",
     "facebook_url": "https://www.facebook.com/pixinvents/",
     "twitter_url": "https://twitter.com/pixinvents",

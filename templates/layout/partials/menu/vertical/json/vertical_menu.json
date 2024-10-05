@@ -167,7 +167,7 @@
       ]
     },
     {
-      "name": "LeanMod® Assistants",
+      "name": "LeanMod™ Assistants",
       "icon": "menu-icon tf-icons ti ti-radar",
       "slug": "leanmod-assistants",
       "submenu": [
@@ -210,7 +210,7 @@
       "url": "multimodal_chat:chat"
     },
     {
-      "name": "Leanmod® Chats",
+      "name": "Leanmod™ Chats",
       "icon": "menu-icon tf-icons ti ti-note",
       "slug": "chats",
       "url": "multimodal_chat:lean_chat"
@@ -307,17 +307,17 @@
       ]
     },
     {
-      "name": "Export Leanmods®",
+      "name": "Export Leanmods™",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "export-leanmods",
       "submenu": [
         {
-          "name": "Export Leanmod®",
+          "name": "Export Leanmod™",
           "slug": "export-assistant",
           "url": "export_leanmods:create"
         },
         {
-          "name": "Exported Leanmods®",
+          "name": "Exported Leanmods™",
           "slug": "export-assistant",
           "url": "export_leanmods:list"
         }
@@ -713,19 +713,19 @@
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "VoidForger®",
+      "name": "VoidForger™",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "voidforger",
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Hadron Prime®",
+      "name": "Hadron Prime™",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "hadron-prime",
       "url": "dashboard:main-dashboard"
     },
     {
-      "name": "Binexus®",
+      "name": "Binexus™",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "binexus",
       "url": "dashboard:main-dashboard"
