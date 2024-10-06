@@ -6,8 +6,6 @@
 
 TODOS (NAME & STYLE MIGRATION):
 
-1. Soft-Clean PRODUCTION and DEVELOPMENT database.
-2. Renk temasını düzenle.
 3. Renew Google Analytics snippet.
 
 ......
