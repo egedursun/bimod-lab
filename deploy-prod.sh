@@ -9,7 +9,7 @@ echo "          [Deploy / Production] Checking for root privileges..."
 
 # Define the directory
 DEPLOY_DIR=/var/www/bimod_prod
-REPO_URL=https://github.com/Bimod-HQ/bimod-app.git
+REPO_URL=https://github.com/Bimod-HQ/bimod-lab.git
 BRANCH=$1
 
 echo "          [Deploy / Production] Root privileges checked!"

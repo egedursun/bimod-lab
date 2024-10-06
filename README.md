@@ -6,22 +6,17 @@
 
 TODOS (NAME & STYLE MIGRATION):
 
-0. Domain adını satın al (br6.in)
-1. Copyright'lardaki Bimod'ları kaldır.
-2. Her klasörde adı bimod olan bir şey kalmadığından emin olarak kontrol et.
-3. Bimod Lab'lerin hepsinin adını br6.in olarak değiştir.
-4. (R) copyright sembollerinin hepsini TM ile değiştir.
-5. Kodun içerisinde Bimod ile ilgili bir şey kalmadığından emin ol.
-6. Deployment dökümanlarında bimod ismi geçen yerleri düzenle ve güncelle.
-7. Renk temasını düzenle.
-8. GitHub organizasyonunun adını değiştir ve düzenle.
-9. Yeni GitHub repositorysi oluştur.
-10. Yeni Repository'e projeyi gönder.
-11. Sunucuda proje için yeni dizinler oluştur.
-12. Deploy .sh dosyalarında gerekli düzenlemeleri yap.
-13. Projeyi sunucuya yükle ve ayağa kaldır.
-14. AWS, Hosting, Database, Email ve diğer sunucularda gerekli güncellemeleri yap.
-15. Readme dosyalarını ve environment dosyalarını güncelle.
+1. Domain adını satın al (br6.in).
+2. AWS, Hosting, Database, Email ve diğer sunucularda gerekli güncellemeleri yap.
+   1. BitVault: Create a new account with "admin@br6.in". (possible)
+   2. Hostinger SMTP Email Account: Create a new email account with admin@br6.in (possible)
+   3. AWS: Try to change the email from admin@bimod.io to admin@br6.in (possible)
+   4. Sentry: Try to change the email from admin@bimod.io to admin@br6.in (possible)
+3. Sunucu dosyalarını düzenle
+   1. NGINX dosyası. (possible)
+   2. SSL Sertifikaları (?) (i dont know)
+   3. .ENV dosyaları (SMTP güncellemesi için) (possible)
+4. Renk temasını düzenle.
 
 ......
 
@@ -322,16 +317,16 @@ RELEASE v0.6.0 [RELEASE: BETA] version of the application.
     * Paid: yearly
   - Organization Emails: $10
     * Paid: yearly / $12 x 10 = $120
-      1. admin@bimod.io / internal operations
-      2. info@bimod.io / general inquiries
-      3. support@bimod.io / support inquiries
-      4. careers@bimod.io / job applications
-      5. colab@bimod.io / collaborations and partnerships
-      6. ege.dursun@bimod.io / Ege Dursun
-      7. huseyin.ersay@bimod.io / Huseyin Ersay
-      8. selin.canbulut@bimod.io / Selin Ceren Canbulut
-      9. emre.oge@bimod.io / Emre Oge
-      10. mert.tekin@bimod.io / Mert Tekin
+      1. admin@... / internal operations
+      2. info@... / general inquiries
+      3. support@... / support inquiries
+      4. careers@b... / job applications
+      5. colab@... / collaborations and partnerships
+      6. ege.dursun@... / Ege Dursun
+      7. huseyin.ersay@... / Huseyin Ersay
+      8. selin.canbulut@... / Selin Ceren Canbulut
+      9. emre.oge@... / Emre Oge
+      10. mert.tekin@b... / Mert Tekin
   - Aiven Cloud PostgreSQL Database (Dev): $200
     * Paid: monthly
   - Aiven Cloud PostgreSQL Database (Prod): $200
