@@ -6,12 +6,9 @@
 
 TODOS (NAME & STYLE MIGRATION):
 
-1. Sunucu dosyalarını düzenle
-   1. NGINX dosyası. (possible)
-   2. SSL Sertifikaları (?) (i dont know)
-   3. .ENV dosyaları (SMTP güncellemesi için) (possible)
-2. Soft-Clean PRODUCTION and DEVELOPMENT database.
-3. Renk temasını düzenle.
+1. Soft-Clean PRODUCTION and DEVELOPMENT database.
+2. Renk temasını düzenle.
+3. Renew Google Analytics snippet.
 
 ......
 

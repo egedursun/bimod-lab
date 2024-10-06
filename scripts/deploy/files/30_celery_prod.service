@@ -7,9 +7,10 @@ Type=forking
 User=www-data
 Group=www-data
 WorkingDirectory=/var/www/bimod_prod
-ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && celery -A config worker --loglevel=info --detach --pidfile=/run/celery/celery-prod.pid'
+ExecStartPre=/bin/mkdir -p /run/celery
+ExecStartPre=/bin/chown www-data:www-data /run/celery
+ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && celery -A config worker --loglevel=info --detach'
 ExecStartPost=/bin/sleep 5
-PIDFile=/run/celery/celery-prod.pid
 Restart=always
 RestartSec=5
 StartLimitInterval=60

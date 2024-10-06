@@ -7,6 +7,9 @@ User=www-data
 Group=www-data
 WorkingDirectory=/var/www/bimod_dev
 Environment="PATH=/var/www/bimod_dev/venv/bin"
+ExecStartPre=/bin/mkdir -p /run/uvicorn/
+ExecStartPre=/bin/chown www-data:www-data /run/uvicorn/
+ExecStartPre=/bin/chmod 755 /run/uvicorn/
 ExecStart=/var/www/bimod_dev/venv/bin/uvicorn config.asgi:application --access-log --log-level debug --uds /run/uvicorn/uvicorn_dev.sock --timeout-keep-alive 300
 Restart=always
 RestartSec=10
