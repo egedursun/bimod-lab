@@ -6,17 +6,12 @@
 
 TODOS (NAME & STYLE MIGRATION):
 
-1. Domain adını satın al (br6.in).
-2. AWS, Hosting, Database, Email ve diğer sunucularda gerekli güncellemeleri yap.
-   1. BitVault: Create a new account with "admin@br6.in". (possible)
-   2. Hostinger SMTP Email Account: Create a new email account with admin@br6.in (possible)
-   3. AWS: Try to change the email from admin@bimod.io to admin@br6.in (possible)
-   4. Sentry: Try to change the email from admin@bimod.io to admin@br6.in (possible)
-3. Sunucu dosyalarını düzenle
+1. Sunucu dosyalarını düzenle
    1. NGINX dosyası. (possible)
    2. SSL Sertifikaları (?) (i dont know)
    3. .ENV dosyaları (SMTP güncellemesi için) (possible)
-4. Renk temasını düzenle.
+2. Soft-Clean PRODUCTION and DEVELOPMENT database.
+3. Renk temasını düzenle.
 
 ......
 
@@ -27,18 +22,16 @@ TODOS (NAME & STYLE MIGRATION):
 1. [ ] [COMPANY FORMATION] for the application. (Ege)
 2. [ ] [COMPANY ACCOUNT + CREDIT CARD] for the company. (Ege)
 3. [ ] [LEGAL DOCUMENTATION] for the company. (Ege)
-4. [ ] [PAID SERVICE ACCOUNTS] for the company and the app, e.g. Hostinger, Bitvault, AWS, Aiven, Weaviate, Sentry,
-   GitHub
+4. [ ] [PAID SERVICE ACCOUNTS] for the company, e.g. Hostinger, Bitvault, AWS, Aiven, Weaviate, Sentry, GitHub
 5. [ ] Development of [BUSINESS PLAN] for the application. (Ege)
 6. [ ] Development of [PITCH DECK PRESENTATION] for the application. (Ege)
 7. [ ] Development of [PRODUCT CATALOGUE] for the application. (Ege)
 8. [ ] Development of [FUNDING & GROWTH PLAN] for the application. (Ege)
 9. [ ] Marketing videos: [PROMOTIONAL VIDEO] for the application. (Hüseyin)
-10. [ ] Integrate [BR6IN - SOCIAL MEDIA ACCOUNTS] on: [FACEBOOK, TWITTER, LINKEDIN, INSTAGRAM, YOUTUBE, TIKTOK]. (
-    Hüseyin)
+10. [ ] Integrate [SOCIAL MEDIA ACCOUNTS] on: [FACEBOOK, TWITTER, LINKEDIN, INSTAGRAM, YOUTUBE, TIKTOK]. (Hüseyin)
 11. [ ] Ecosystem Marketing via [WEBRAZZI, PRODUCT HUNT, DISCORD, HACKER NEWS, REDDIT], etc. (Hüseyin)
 12. [ ] Company [LEGAL FORMATION] and registration for the company. (Ege)
-13. [ ] [CRUNCHBASE] Profile. (Ege)
+13. [ ] [CRUNCH-BASE] Profile. (Ege)
 14. [ ] [INCUBATION & ACCELERATION] center
 15. [ ] [INVESTMENT] meetings. (Ege & Hüseyin)
 16. [ ] [SEO OPTIMIZATION] for the application. (Emre?)
@@ -58,16 +51,14 @@ TODOS (NAME & STYLE MIGRATION):
 
 **Active Tools for Testing:**
 
-- Bitvault for Password Protection
-  - **Host:** Bitvault Cloud
-  - **Username:** admin@bimod.io
-  - **PW:** MejA@ZV38E.%fqF
+- Bitwarden for Password Protection
+  - **Host:** Birwarden Cloud
+  - **Username:** admin@br6.in
 
 - Hosting Service (Hostinger)
   - Login Credentials:
     - **@Via Google Account** ->
       - **E-mail:** edogandursun@gmail.com
-      - **PW:** ***
 
   - SSH Connection for VPS Server:
     - **Connection:** ssh -o "StrictHostKeyChecking=no" root@185.170.198.44
@@ -81,14 +72,12 @@ TODOS (NAME & STYLE MIGRATION):
 
   - Email Accounts:
     - **Provider:** mail.hostinger.com
-      - **Username:** admin@bimod.io
-      - **PW:** FXYP9tU5o^
+      - **Username:** admin@br6.in
+      - **PW:** V]*aM@y3
 
 - PostgreSQL DB:
   - **Host:** Hostinger VPS Server (SSH)
-  - **Username:** N/A
-  - **Password:** N/A
-  - User Login Credentials:
+  - Login Credentials:
     - bimod_dev
       - **Username:** admin_dev
       - **PW:** AVNS_3Ahz2MyWPkiAEdiSV53
@@ -96,42 +85,40 @@ TODOS (NAME & STYLE MIGRATION):
       - **Username:** admin_prod
       - **PW:** AVNS_-pRb8XSnQqRJOyyHxKM
 
-- Weaviate Server:
-- **Host:** Weaviate Cloud
-  - **Username:** edogandursun@gmail.com
-  - **PW:** ***
-
-- Storage Buckets
+- AWS Buckets
   - **Host:** AWS S3
-  - **Username:**: admin@bimod.io
+  - **Username:**: admin@br6.in
   - **PW:** ,vVzEkn/PVn+8Gc
-
-- Sentry Logging
-  - **Host:** Sentry Cloud
-  - **Username:** admin@bimod.io
-  - **PW:** ***
 
 - GitHub Account:
 - **Username:** egedursun
 - **Classic Token:** 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
 
+- Weaviate Server:
+- **Host:** Weaviate Cloud
+  - **Username:** edogandursun@gmail.com
+
+---
+
+- Sentry Logging
+  - **Host:** Sentry Cloud
+  - **Username:** admin@br6.in
+
 - Website Analytics:
 - **Host:** Google Analytics
   - **Username:** esa.ege@gmail.com
-  - **PW:** ***
 
 - Email Templates:
 - **Host:** Stripo
   - **Username:** edogandursun@gmail.com
-  - **PW:** ***
 
 ---
 
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Total Lines of Code by 2024-08-23: (Day: 56) **140,024,000**
-- Total Code Files by 2024-08-23: (Day: 56) **50,100**
+- Total Lines of Code by 2024-10-05: (Day: 98) **295,000,000**
+- Total Code Files by 2024-08-23: (Day: 98) **54,000**
 
 ---
 
@@ -149,120 +136,9 @@ find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss
 
 ---
 
-**THINGS TO REMEMBER:**
-
----
-
--> Master Reasoner: GPT-o1 (reasoning agent)
-
----
-
-**PRIMARY FEATURE:**
-
-0. AI-Agnostic LLMs Analysis
-
-1. [ ] Implement [PAYMENT GATEWAY] for the application.
-  - [ ] Integrate the payment in the [TRANSACTIONS] page for adding balance.
-  - [ ] Integrate the [AUTO-SUBSCRIPTION] type payment in the [TRANSACTIONS] page (for automatic balance top-ups)
-  - [ ] Integrate [CREDIT CARD STORAGE] in the [PROFILE] page which is necessary for automated payments.
-  - [ ] Integrate the [PAYMENT HISTORY & RECEIPTS] page for the application.
-    - [ ] [PAYMENT HISTORY PAGE] for the application.
-    - [ ] [PAYMENT HISTORY VIEW] for the application.
-    - [ ] [PAYMENT RECEIPTS PAGE] for the application.
-    - [ ] [PAYMENT RECEIPT VIEW] for the application.
-    - [ ] [PAYMENT RECEIPT PRINT FUNCTIONALITY VIEW] for the application.
-  - [ ] [TEST OVERALL] functionality.
-
----
-RELEASE v0.2.0 [RELEASE: BETA] version of the application.
----
-
-*After first deployment:*
-
-1. [ ] [DRIVE FILES] integration for the application.
-    - [ ] Implement the [SERVICES] for file retrieval, listing, downloading, and adding to Br6.in system.
-    - [ ] Update the [PAGES] for adding the drive files to the media storages.
-    - [ ] Update the [VIEWS] for the drive files addition feature.
-    - [ ] [TEST OVERALL] functionality.
-
-2. [ ] [META GUIDE] assistant for manipulating the application as a helper.
-    - [ ] Implement an [META-ASSISTANT] that can automatically create data models (e.g. organizations, models, asisstants, etc.)
-    - [ ] Implement an [PAGES] for the assistant to be able to manipulate the application.
-    - [ ] Implement an [VIEWS] for the assistant to be able to manipulate the application.
-    - [ ] Implement an [SERVICES] for the assistant to be able to manipulate the application.
-    - [ ] Implement an [MODELS] for the assistant to be able to manipulate the application.
-    - [ ] Implement an [URLS] for the assistant to be able to manipulate the application.
-    - [ ] [TEST OVERALL] functionality.
-
-3. [ ] [USER DOCUMENTATION] page development.
-    - [ ] Implement the [READABLE DOCUMENTATION] pages for better user experience.
-
-4. [ ] [TERMS & CONDITIONS] development with the law firms.
-    - [ ] Needs to be [LEGALLY DESIGNED] by legal experts.
-    - [ ] Implement the [TERMS & CONDITIONS] page for the application.
-
-5. [ ] [PRIVACY POLICY] development with the law firms.
-    - [ ] Needs to be [LEGALLY DESIGNED] by legal experts.
-    - [ ] Implement the [PRIVACY POLICY] page for the application.
-
----
-RELEASE v0.3.0 [RELEASE: BETA] version of the application.
----
-
-*Ongoing Improvements:*
-
-1.  [ ] Store additions [FUNC + API + SCRIPT / STORE] must be added to the application.
-2.  [ ] Boilerplate knowledge bases [BOILERPLATE KB] must be added to the application.
-
----
-RELEASE v0.4.0 [RELEASE: BETA] version of the application.
----
-
-1. [ ] [MOBILE APPLICATION] only for connecting endpoints, and being able to chat with them and receive answers. 
-        -> For Maps and Location features. 
-        -> Requires implementation with a PWA (Progressive Web Application, works on Mobile)
-        -> Requires a [MOBILE APPLICATION REPOSITORY].
-2. [ ] [DESKTOP COPILOT] development for the application. 
-        -> Only for connecting endpoints and receiving answers. 
-        -> Requires a [DESKTOP APPLICATION REPOSITORY].
-3. [ ] [WORD PLUGIN] development for the application. 
-        -> For manipulating inside Microsoft Office applications.
-        -> Requires [MS OFFICE PLUGIN REPOSITORIES].
-4. [ ] [PHYSICAL DEVICE] for local integrations without Internet Usage.
-        -> Definite [SOLUTION FOR PRIVACY] concerns.
-        -> Requires a physical device / server node.
-        -> Possible to be patentable (IP value).
-
----
-RELEASE v0.5.0 [RELEASE: BETA] version of the application.
----
-
-1. [ ] Integration (Boilerplate assistant) Systems.
-       -> [INTEGRATION SYSTEMS]
-2. [ ] Meta-Integration (Boilerplate group of assistants) Systems.
-       -> [META-INTEGRATION SYSTEMS]
-
----
-RELEASE v0.6.0 [RELEASE: BETA] version of the application.
----
-
 *TO BE DISCUSSED:*
 
-1. [ ] Integrate [PICONAUT] with GPT-4o. (MONDAY 30/07)
-       -> A higher level programming language by using GPT-4o-mini. 
-       -> Currently does not worth the development effort.
-2. [ ] [BLOCKCHAIN] integration for the application.
-       -> Blockchain multi-modality integration to the application.
-       -> Not very clear what it can be helpful for.
-       -> For building smart contracts [?]
-3. [ ] [OPENCV FACE-RECOGNITION] technologies integration
-       -> Facial recognition integration for security & other application areas.
-       -> Currently does not worth the development effort.
-4. [ ] [RECENTLY & FREQUENTLY USED] for the application.
-       -> Recommendation systems for the general use patterns in the application.
-       -> For the user to be able to see the recently and frequently used items.
-       -> Currently does not worth the development effort.
-5. [ ] [EXPERIENCE NETWORK] for the application.
+1. [ ] [EXPERIENCE NETWORK] for the application.
        -> For the application users who are freelancers or independent workers.
        -> They can collaborate and form networks within the application to work together.
        -> They can share media storages, data sources, and other tools to create synergy.
@@ -273,19 +149,11 @@ RELEASE v0.6.0 [RELEASE: BETA] version of the application.
 *Standalone Applications:*
 
 - **Django Mainframe (Server + Web Application)**
-  - For the main application and the frontend of the web application.
-  - The flagship application for the Br6.in project.
+  - For the main application and the frontend of the web application, the flag-ship.
 - **Electron Copilot (Desktop Application)**
   - For image and text-based management and manipulation within the OS and overall system usage.
-  - Can also understand the context of the browsers while the user is actively using the browser and OS.
 - **Progressive Web App (PWA) (Android & iOS Application)**
   - Connecting an exported assistant and chatting with the assistant.
-  - Communicating with STT and TTS services.
-  - Sending and receiving messages from the assistant.
-  - Sending and receiving files from the assistant.
-  - Sending and receiving images from the assistant.
-  - For the assistant to track location & other data.
-  - For the assistant to be able to send notifications & reminders.
 
 ---
 
@@ -367,12 +235,6 @@ COMPANY COSTS:
 
 TOTAL COSTS: $13,000 / year (~$1,100 / month) ($550 per month per co-founder)
 
----
-
-- Common extensions, common browsing URLs are saved and offered to the user.
-- Experience network / user collaboration for the application.
-
-
 ------------------------------------------------------------------------------------------------------------------------
 
 **Headhunting & Recruitment:**
@@ -440,14 +302,3 @@ Expected Growth:
 - $80,000,000 volume in the fifth year (start: $150,000,000 investment [15%]) series-d
 - $150,000,000 volume in the sixth year (start: $250,000,000 investment [15%]) series-e
 - $250,000,000 volume in the seventh year (start: IPO: $500,000,000 [20%]) IPO
-
-
-UVICORN RUN COMMAND (migrate this to a proper place later on):
-```bash
-uvicorn config.asgi:application --host 127.0.0.1 --port 8000 --reload
-```
-
-
-```
-git ls-remote https://github.com/Bimod-HQ/bimod-app.git | awk '{print $1}' | xargs -n 1 git cat-file -s
-```

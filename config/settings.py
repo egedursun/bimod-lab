@@ -428,14 +428,22 @@ THEME_VARIABLES = THEME_VARIABLES
 # Email Settings
 # ------------------------------------------------------------------------------
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = os.getenv('EMAIL_PORT', 587)
-EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False').lower() in ['true', '1', 'yes']
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ['true', '1', 'yes']
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
+# Change this if you need to send real emails for testing purposes.
+FORCE_SMTP_USE = False
+
+if ENVIRONMENT != "local" or FORCE_SMTP_USE:
+    print("[settings.py] Email backend is set to SMTP for production environment.")
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+    EMAIL_PORT = os.getenv('EMAIL_PORT', 587)
+    EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False').lower() in ['true', '1', 'yes']
+    EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ['true', '1', 'yes']
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+    DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
+else:
+    print("[settings.py] Email backend is set to CONSOLE for local environment.")
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Login your mail
 # ------------------------------------------------------------------------------
