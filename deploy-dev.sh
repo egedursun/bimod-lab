@@ -38,7 +38,6 @@ echo "          [Deploy / Development] Relocated to the directory!"
 echo "          [Deploy / Development] Creating virtual environment..."
 
 # Activate the virtual environment
-deactivate
 source venv/bin/activate
 
 echo "          [Deploy / Development] Virtual environment created!"
