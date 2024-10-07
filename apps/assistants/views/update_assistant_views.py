@@ -24,7 +24,7 @@ from django.views.generic import TemplateView
 
 from apps._services.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant, ASSISTANT_RESPONSE_LANGUAGES, CONTEXT_OVERFLOW_STRATEGY, VECTORIZERS
-from apps.assistants.utils import ContextOverflowStrategyNames, VectorizerNames
+from apps.assistants.utils import ContextOverflowStrategyNames, VectorizerNames, MULTI_STEP_REASONING_CAPABILITY_CHOICE
 from apps.data_security.models import NERIntegration
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
@@ -52,6 +52,7 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         context['assistant'] = assistant
         context['response_languages'] = ASSISTANT_RESPONSE_LANGUAGES
         context['context_overflow_strategies'] = CONTEXT_OVERFLOW_STRATEGY
+        context['reasoning_capability_choices'] = MULTI_STEP_REASONING_CAPABILITY_CHOICE
         context['vectorizers'] = VECTORIZERS
         context["assistant_current_strategy"] = ContextOverflowStrategyNames.as_dict()[
             assistant.context_overflow_strategy]
@@ -122,6 +123,7 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
         assistant.time_awareness = request.POST.get('time_awareness') == 'on'
         assistant.place_awareness = request.POST.get('place_awareness') == 'on'
         assistant.image_generation_capability = request.POST.get('image_generation_capability') == 'on'
+        assistant.multi_step_reasoning_capability_choice = request.POST.get('multi_step_reasoning_capability_choice')
         assistant.last_updated_by_user = request.user
         if 'assistant_image' in request.FILES:
             assistant.assistant_image = request.FILES['assistant_image']

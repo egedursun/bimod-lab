@@ -22,7 +22,8 @@ import random
 import boto3
 from django.db import models
 
-from apps.assistants.utils import ASSISTANT_RESPONSE_LANGUAGES, CONTEXT_OVERFLOW_STRATEGY, VECTORIZERS
+from apps.assistants.utils import (ASSISTANT_RESPONSE_LANGUAGES, CONTEXT_OVERFLOW_STRATEGY, VECTORIZERS,
+                                   MULTI_STEP_REASONING_CAPABILITY_CHOICE)
 from config import settings
 
 
@@ -95,6 +96,8 @@ class Assistant(models.Model):
                                              related_name='assistants_updated_by_user')
 
     image_generation_capability = models.BooleanField(default=True)
+    multi_step_reasoning_capability_choice = models.CharField(max_length=100, choices=MULTI_STEP_REASONING_CAPABILITY_CHOICE,
+                                                                default="none")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

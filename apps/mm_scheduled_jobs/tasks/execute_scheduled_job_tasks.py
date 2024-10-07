@@ -23,7 +23,7 @@ from django.utils import timezone
 
 from apps._services.config.costs_map import ToolCostsMap
 from apps._services.llms.llm_decoder import InternalLLMClient
-from apps.dashboard.utils import TransactionSourcesNames
+from apps.llm_transaction.utils import TransactionSourcesNames
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage

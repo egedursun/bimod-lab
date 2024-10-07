@@ -17,30 +17,7 @@
 #
 #
 
-
-from django.contrib.auth.models import User
-
 from .create_assistant_views import *
 from .delete_assistant_views import *
 from .update_assistant_views import *
 from .list_assistants_views import *
-
-from ..._services.data_backups.data_backup_executor import DataBackupExecutor
-from ...data_backups.models import DataBackup
-
-##############################################################################################################
-##############################################################################################################
-
-# test
-"""
-x = DataBackupExecutor.BackupNERInstance(responsible_user=User.objects.get(username="admin"),
-                                      organization=Organization.objects.get(
-                                          pk=2))
-error_message = x.backup_ner_instances("backup_name", "password")
-# error_message = DataBackupExecutor.restore(DataBackup.objects.get(backup_name="backup_name1"), "password")
-if error_message is not None:
-    print(error_message)
-"""
-
-##############################################################################################################
-##############################################################################################################

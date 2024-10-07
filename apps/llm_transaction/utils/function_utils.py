@@ -44,9 +44,12 @@ def calculate_llm_cost(model, number_of_tokens):
     return llm_cost
 
 
-def calculate_internal_service_cost(llm_cost):
+def calculate_internal_service_cost(llm_cost, tool_service_fee_absolute_rate=0.000000):
     from apps.llm_transaction.utils import SERVICE_PROFIT_MARGIN
-    return llm_cost * SERVICE_PROFIT_MARGIN
+    # add the tool service fee rate
+    bare_amount = llm_cost * SERVICE_PROFIT_MARGIN
+    bare_amount += tool_service_fee_absolute_rate
+    return bare_amount
 
 
 def calculate_tax_cost(internal_service_cost):

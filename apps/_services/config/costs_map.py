@@ -49,7 +49,8 @@ class ToolCostsMap:
             ToolCostsMap.ImageVariation.COST,
             ToolCostsMap.AudioProcessingSTT.COST,
             ToolCostsMap.AudioProcessingTTS.COST,
-            ToolCostsMap.VideoGenerator.COST
+            ToolCostsMap.VideoGenerator.COST,
+            ToolCostsMap.Reasoning.COST,
         ]
 
     class ContextMemory:
@@ -132,3 +133,76 @@ class ToolCostsMap:
 
     class VideoGenerator:
         COST = COSTS_MAP["VIDEO_GENERATOR"]
+
+    class Reasoning:
+        COST = COSTS_MAP["REASONING"]
+
+
+"""
+TRANSACTION_SOURCES = [
+    ("app", "Application"),
+    ("api", "API"),
+    ("generation", "Generation"),
+    ("sql-read", "SQL Read"),
+    ("sql-write", "SQL Write"),
+    ("store-memory", "Store Memory"),
+    ("interpret-code", "Interpret Code"),
+    ("reasoning", "Reasoning"),
+    ("upload-file", "Upload File"),
+    ("download-file", "Download File"),
+    ("file-system-commands", "File System Commands"),
+    ("knowledge-base-search", "Knowledge Base Search"),
+    ("code-base-search", "Code Base Search"),
+    ("retrieve-memory", "Retrieve Memory"),
+    ("ml-model-prediction", "ML Model Prediction"),
+    ("browsing", "Browsing"),
+    ("internal-function-execution", "Internal Function Execution"),
+    ("external-function-execution", "External Function Execution"),
+    ("internal-api-execution", "Internal API Execution"),
+    ("external-api-execution", "External API Execution"),
+    ("internal-script-retrieval", "Internal Script Retrieval"),
+    ("external-script-retrieval", "External Script Retrieval"),
+    ("interpret-file", "Interpret File"),
+    ("interpret-image", "Interpret Image"),
+    ("scheduled-job-execution", "Scheduled Job Execution"),
+    ("trigger-job-execution", "Trigger Job Execution"),
+    ("generate-image", "Generate Image"),
+    ("modify-image", "Modify Image"),
+    ("variate-image", "Variate Image"),
+    ("audio-processing-stt", "Audio Processing STT"),
+    ("audio-processing-tts", "Audio Processing TTS"),
+    ("brainstorming", "Brainstorming"),
+    ("generate-video", "Generate Video"),
+]
+"""
+
+TOOL_NAME_TO_COST_MAP = {
+    "store-memory": ToolCostsMap.ContextMemory.COST,
+    "retrieve-memory": ToolCostsMap.ContextMemoryRetrieval.COST,
+    "interpret-code": ToolCostsMap.CodeInterpreter.COST,
+    "download-file": ToolCostsMap.DownloadExecutor.COST,
+    "file-system-commands": ToolCostsMap.FileSystemsExecutor.COST,
+    "knowledge-base-search": ToolCostsMap.KnowledgeBaseExecutor.COST,
+    "code-base-search": ToolCostsMap.CodeBaseExecutor.COST,
+    "browsing": ToolCostsMap.BrowsingExecutor.COST,
+    "ml-model-prediction": ToolCostsMap.MLModelExecutor.COST,
+    "internal-function-execution": ToolCostsMap.InternalCustomFunctionExecutor.COST,
+    "external-function-execution": ToolCostsMap.ExternalCustomFunctionExecutor.COST,
+    "internal-api-execution": ToolCostsMap.InternalCustomAPIExecutor.COST,
+    "external-api-execution": ToolCostsMap.ExternalCustomAPIExecutor.COST,
+    "internal-script-retrieval": ToolCostsMap.InternalCustomScriptExecutor.COST,
+    "external-script-retrieval": ToolCostsMap.ExternalCustomScriptExecutor.COST,
+    "sql-read": ToolCostsMap.SQLReadExecutor.COST,
+    "sql-write": ToolCostsMap.SQLWriteExecutor.COST,
+    "interpret-file": ToolCostsMap.FileInterpreter.COST,
+    "interpret-image": ToolCostsMap.ImageInterpreter.COST,
+    "scheduled-job-execution": ToolCostsMap.ScheduledJobExecutor.COST,
+    "trigger-job-execution": ToolCostsMap.TriggeredJobExecutor.COST,
+    "generate-image": ToolCostsMap.ImageGenerator.COST,
+    "modify-image": ToolCostsMap.ImageModification.COST,
+    "variate-image": ToolCostsMap.ImageVariation.COST,
+    "audio-processing-stt": ToolCostsMap.AudioProcessingSTT.COST,
+    "audio-processing-tts": ToolCostsMap.AudioProcessingTTS.COST,
+    "generate-video": ToolCostsMap.VideoGenerator.COST,
+    "reasoning": ToolCostsMap.Reasoning.COST,
+}

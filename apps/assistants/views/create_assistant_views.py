@@ -29,6 +29,7 @@ from apps.data_security.models import NERIntegration
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from apps.assistants.utils import MULTI_STEP_REASONING_CAPABILITY_CHOICE
 from web_project import TemplateLayout
 
 
@@ -54,6 +55,7 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
         context['response_languages'] = ASSISTANT_RESPONSE_LANGUAGES
         context['context_overflow_strategies'] = CONTEXT_OVERFLOW_STRATEGY
+        context['reasoning_capability_choices'] = MULTI_STEP_REASONING_CAPABILITY_CHOICE
         context['vectorizers'] = VECTORIZERS
         context["ner_integrations"] = NERIntegration.objects.filter(
             organization__in=context['organizations']
@@ -110,6 +112,7 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
         time_awareness = request.POST.get('time_awareness') == 'on'
         place_awareness = request.POST.get('place_awareness') == 'on'
         image_generation_capability = request.POST.get('image_generation_capability') == 'on'
+        reasoning_capability_choice = request.POST.get('multi_step_reasoning_capability_choice')
         assistant_image = request.FILES.get('assistant_image')
 
         if not (organization_id and llm_model_id and name and description and instructions and audience and tone):
@@ -147,6 +150,7 @@ class CreateAssistantView(LoginRequiredMixin, TemplateView):
             time_awareness=time_awareness,
             place_awareness=place_awareness,
             image_generation_capability=image_generation_capability,
+            multi_step_reasoning_capability_choice=reasoning_capability_choice,
             glossary=glossary,
             ner_integration=ner_integration
         )

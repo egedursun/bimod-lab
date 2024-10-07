@@ -91,6 +91,8 @@ from apps._services.prompts.tools.tool_prompts.build_knowledge_base_query_execut
     build_structured_tool_prompt__knowledge_base_query_execution
 from apps._services.prompts.tools.tool_prompts.build_predict_ml_models_execution_tool_prompt import \
     build_structured_tool_prompt__predict_with_ml_model_execution
+from apps._services.prompts.tools.tool_prompts.build_reasoning_tool_prompt import \
+    build_structured_tool_prompt__reasoning_process
 from apps._services.prompts.tools.tool_prompts.build_sql_query_execution_tool_prompt import \
     build_structured_tool_prompt__sql_query_execution
 from apps._services.prompts.tools.tool_prompts.build_storage_query_execution_tool_prompt import \
@@ -162,6 +164,7 @@ class PromptBuilder:
         structured_predict_with_ml_model_execution_tool_prompt = build_structured_tool_prompt__predict_with_ml_model_execution()
         structured_browsing_execution_tool_prompt = build_structured_tool_prompt__browsing_executor()
         structured_code_interpreter_tool_prompt = build_structured_tool_prompt__code_interpreter()
+        structured_reasoning_process_tool_prompt = build_structured_tool_prompt__reasoning_process()
         structured_custom_function_execution_tool_prompt = build_structured_tool_prompt__custom_code_execution()
         structured_custom_api_execution_tool_prompt = build_structured_tool_prompt__custom_api_execution()
         structured_custom_script_content_retrieval_tool_prompt = build_structured_tool_prompt__custom_script_content_retrieval()
@@ -215,6 +218,7 @@ class PromptBuilder:
         merged_prompt += structured_predict_with_ml_model_execution_tool_prompt
         merged_prompt += structured_browsing_execution_tool_prompt
         merged_prompt += structured_code_interpreter_tool_prompt
+        merged_prompt += structured_reasoning_process_tool_prompt
         merged_prompt += structured_custom_function_execution_tool_prompt
         merged_prompt += structured_custom_api_execution_tool_prompt
         merged_prompt += structured_custom_script_content_retrieval_tool_prompt

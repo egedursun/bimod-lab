@@ -74,3 +74,6 @@ class OpenAITTSVoiceNames:
     ONYX = "onyx"  # Male Speaker: Bass
     NOVA = "nova"  # Female Speaker: Older and Wiser
     SHIMMER = "shimmer"  # Female Speaker: Younger and Energetic
+
+
+DEFAULT_MULTISTEP_REASONING_MAXIMUM_TOKENS = 4000

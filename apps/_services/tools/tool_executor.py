@@ -20,6 +20,7 @@ import json
 
 from apps._services.browsers.utils import BrowserActionsNames
 from apps._services.llms.helpers.helper_prompts import get_json_decode_error_log
+from apps._services.tools.execution_handlers.reasoning_execution_handler import execute_reasoning_process
 from apps._services.tools.execution_handlers.video_generation_execution_handler import execute_video_generation
 from apps._services.tools.utils import ToolTypeNames, get_no_knowledge_base_connection_error_log, \
     get_no_tool_found_error_log
@@ -68,6 +69,7 @@ from apps._services.tools.validators.knowledge_base_query_execution_tool_validat
 from apps._services.tools.validators.main_json_validator import validate_main_tool_json
 from apps._services.tools.validators.predict_with_ml_model_execution_tool_validator import \
     validate_predict_with_ml_model_execution_tool_json
+from apps._services.tools.validators.reasoning_execution_tool_validator import validate_reasoning_execution_tool_json
 from apps._services.tools.validators.sql_query_execution_tool_validator import validate_sql_query_execution_tool_json
 from apps._services.tools.validators.storage_query_execution_tool_validator import \
     validate_media_storage_query_execution_tool_json
@@ -240,6 +242,17 @@ class ToolExecutor:
                                                                                     query=query_string)
             code_interpreter_response_raw_str = json.dumps(execute_code_response, sort_keys=True, default=str)
             tool_response += code_interpreter_response_raw_str
+        ##################################################
+        # Reasoning Process Execution Tool
+        elif tool_name == ToolTypeNames.REASONING:
+            print("[ToolExecutor.use_tool] Reasoning Process Execution Tool is being executed...")
+            error = validate_reasoning_execution_tool_json(tool_usage_json=self.tool_usage_json)
+            if error: return error, None, None, None
+            query_string = self.tool_usage_json.get("parameters").get("query")
+            reasoning_response = execute_reasoning_process(assistant_id=self.assistant.id, chat_id=self.chat.id,
+                                                           query=query_string)
+            reasoning_response_raw_str = json.dumps(reasoning_response, sort_keys=True, default=str)
+            tool_response += reasoning_response_raw_str
         ##################################################
         # Custom Function Executor Tool
         elif tool_name == ToolTypeNames.CUSTOM_FUNCTION_EXECUTOR:

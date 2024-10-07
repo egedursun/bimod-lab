@@ -22,7 +22,7 @@ import decimal
 
 from django.db import models
 
-
+from apps._services.config.costs_map import TOOL_NAME_TO_COST_MAP
 from apps.llm_transaction.utils import ENCODING_ENGINES, TRANSACTION_TYPE_ROLES, TRANSACTION_SOURCES, \
     calculate_number_of_tokens, calculate_llm_cost, calculate_internal_service_cost, calculate_tax_cost, \
     calculate_billable_cost, calculate_total_cost, InvoiceTypesNames, PaymentMethodsNames
@@ -110,7 +110,8 @@ class LLMTransaction(models.Model):
 
         # for tool transactions
         if self.is_tool_cost:
-            self.internal_service_cost = calculate_internal_service_cost(self.llm_cost)
+            tool_cost = float(TOOL_NAME_TO_COST_MAP[self.transaction_source]) or 0.000000
+            self.internal_service_cost = calculate_internal_service_cost(self.llm_cost, tool_service_fee_absolute_rate=tool_cost)
             self.tax_cost = calculate_tax_cost(self.internal_service_cost)
             self.total_billable_cost = calculate_billable_cost(self.internal_service_cost, self.tax_cost)
             self.total_cost = calculate_total_cost(self.llm_cost, self.total_billable_cost)

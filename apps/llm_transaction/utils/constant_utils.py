@@ -38,6 +38,7 @@ TRANSACTION_SOURCES = [
     ("sql-write", "SQL Write"),
     ("store-memory", "Store Memory"),
     ("interpret-code", "Interpret Code"),
+    ("reasoning", "Reasoning"),
     ("upload-file", "Upload File"),
     ("download-file", "Download File"),
     ("file-system-commands", "File System Commands"),
@@ -81,6 +82,7 @@ class TransactionSourcesNames:
     SQL_WRITE = "sql-write"
     STORE_MEMORY = "store-memory"
     INTERPRET_CODE = "interpret-code"
+    REASONING = "reasoning"
     UPLOAD_FILE = "upload-file"
     DOWNLOAD_FILE = "download-file"
     FILE_SYSTEM_COMMANDS = "file-system-commands"
@@ -106,7 +108,6 @@ class TransactionSourcesNames:
     AUDIO_PROCESSING_TTS = "audio-processing-tts"
     BRAINSTORMING = "brainstorming"
     GENERATE_VIDEO = "generate-video"
-
 
     @staticmethod
     def as_list():
@@ -142,7 +143,8 @@ class TransactionSourcesNames:
             TransactionSourcesNames.AUDIO_PROCESSING_STT,
             TransactionSourcesNames.AUDIO_PROCESSING_TTS,
             TransactionSourcesNames.BRAINSTORMING,
-            TransactionSourcesNames.GENERATE_VIDEO
+            TransactionSourcesNames.GENERATE_VIDEO,
+            TransactionSourcesNames.REASONING,
         ]
 
 

@@ -1,13 +1,16 @@
 {
   "menu": [
     {
-      "menu_header": "Admin"
+      "menu_header": "Information"
     },
     {
       "name": "Dashboard",
       "icon": "menu-icon tf-icons ti ti-smart-home",
       "slug": "main-dashboard",
       "url": "dashboard:main-dashboard"
+    },
+    {
+      "menu_header": "Administration"
     },
     {
       "name": "Organizations",
@@ -72,6 +75,9 @@
       ]
     },
     {
+      "menu_header": "Users & Authorization"
+    },
+    {
       "name": "Users",
       "icon": "menu-icon tf-icons ti ti-user",
       "slug": "users",
@@ -133,6 +139,9 @@
       ]
     },
     {
+      "menu_header": "Complex Assistants"
+    },
+    {
       "name": "Assistants",
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "assistants",
@@ -148,6 +157,9 @@
           "url": "assistants:list"
         }
       ]
+    },
+    {
+      "menu_header": "Lightweight Assistants"
     },
     {
       "name": "Expert Networks",
@@ -184,6 +196,9 @@
       ]
     },
     {
+      "menu_header": "Security & Privacy"
+    },
+    {
       "name": "Data Security",
       "icon": "menu-icon tf-icons ti ti-lock",
       "slug": "data-security",
@@ -214,6 +229,9 @@
       "icon": "menu-icon tf-icons ti ti-note",
       "slug": "chats",
       "url": "multimodal_chat:lean_chat"
+    },
+    {
+      "menu_header": "Chat Metadata"
     },
     {
       "name": "Starred Messages",
@@ -256,6 +274,9 @@
       ]
     },
     {
+      "menu_header": "Meta Features"
+    },
+    {
       "name": "Brainstorming",
       "icon": "menu-icon tf-icons ti ti-brain",
       "slug": "brainstorming",
@@ -288,6 +309,9 @@
           "url": "orchestrations:list"
         }
       ]
+    },
+    {
+      "menu_header": "Publishing Resources"
     },
     {
       "name": "Export Assistants",
@@ -339,6 +363,9 @@
           "url": "export_orchestrations:list"
         }
       ]
+    },
+    {
+      "menu_header": "Custom LLM Models"
     },
     {
       "name": "Fine Tuning",
@@ -411,6 +438,9 @@
       ]
     },
     {
+      "menu_header": "Vector Text Storages"
+    },
+    {
       "name": "Knowledge Bases",
       "icon": "menu-icon tf-icons ti ti-vector",
       "slug": "knowledge-bases",
@@ -443,6 +473,9 @@
           "url": "datasource_knowledge_base:list_documents"
         }
       ]
+    },
+    {
+      "menu_header": "Vector Code Storages"
     },
     {
       "name": "Code Storages",
@@ -479,7 +512,10 @@
       ]
     },
     {
-      "name": "ML Models",
+      "menu_header": "ML Multi-Modalities"
+    },
+    {
+      "name": "ML Storages",
       "icon": "menu-icon tf-icons ti ti-wand",
       "slug": "machine-learning-models",
       "submenu": [
@@ -492,7 +528,14 @@
           "name": "ML Storages",
           "slug": "machine-learning-model-version",
           "url": "datasource_ml_models:list"
-        },
+        }
+      ]
+    },
+    {
+      "name": "ML Models",
+      "icon": "menu-icon tf-icons ti ti-box",
+      "slug": "machine-learning-models",
+      "submenu": [
         {
           "name": "Add ML Model",
           "slug": "machine-learning-model-item",
@@ -504,6 +547,9 @@
           "url": "datasource_ml_models:item_list"
         }
       ]
+    },
+    {
+      "menu_header": "Multimedia"
     },
     {
       "name": "Media Storages",
@@ -540,6 +586,9 @@
       ]
     },
     {
+      "menu_header": "Custom Multi-Modalities"
+    },
+    {
       "name": "Video Generators",
       "icon": "menu-icon tf-icons ti ti-video",
       "slug": "video-generators",
@@ -557,30 +606,16 @@
       ]
     },
     {
+      "menu_header": "AI-Generated Content"
+    },
+    {
       "name": "Generated",
       "icon": "menu-icon tf-icons ti ti-checkbox",
       "slug": "generated",
       "url": "datasource_media_storages:list_generated_items"
     },
     {
-      "menu_header": "Tools"
-    },
-    {
-      "name": "Reasoning",
-      "icon": "menu-icon tf-icons ti ti-brain",
-      "slug": "reasoning",
-      "submenu": [
-        {
-          "name": "Add Reasoning Tool",
-          "slug": "reasoning",
-          "url": "dashboard:main-dashboard"
-        },
-        {
-          "name": "Reasoning Tools",
-          "slug": "reasoning",
-          "url": "dashboard:main-dashboard"
-        }
-      ]
+      "menu_header": "Multi-Modal Tools"
     },
     {
       "name": "Functions",
@@ -698,7 +733,7 @@
       ]
     },
     {
-      "menu_header": "Modules"
+      "menu_header": "Meta Modules"
     },
     {
       "name": "Integrations",

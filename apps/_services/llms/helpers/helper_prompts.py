@@ -450,3 +450,23 @@ def get_audio_upload_error_log(error_logs: str):
     {str(error_logs)}
     '''
     """
+
+
+def get_no_reasoning_capability_error_log():
+    return f"""
+    **SYSTEM MESSAGE:**
+    - The assistant does not have the reasoning capability. If you would like to use the reasoning capability,
+    please enable it in the assistant settings.
+    """
+
+
+def get_default_reasoning_error_log(error_logs: str):
+    return f"""
+    **SYSTEM MESSAGE:**
+    - An error occurred while processing the reasoning operation request.
+
+    Error Details:
+    '''
+    {str(error_logs)}
+    '''
+    """

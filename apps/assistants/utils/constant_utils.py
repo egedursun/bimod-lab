@@ -63,3 +63,25 @@ class VectorizerNames:
     @staticmethod
     def as_dict():
         return {"text2vec-openai": "Text2Vec (OpenAI)"}
+
+
+MULTI_STEP_REASONING_CAPABILITY_CHOICE = [
+    ('none', 'None'),
+    ('cost-effective', 'Cost Effective'),
+    ('high-performance', 'High Performance'),
+]
+
+
+class MultiStepReasoningCapabilityChoicesNames:
+    NONE = "none"
+    COST_EFFECTIVE = "cost-effective"
+    HIGH_PERFORMANCE = "high-performance"
+
+    @staticmethod
+    def as_dict():
+        return {"none": "None", "cost-effective": "Cost Effective", "high-performance": "High Performance"}
+
+
+class MultiStepReasoningCapabilityModelNames:
+    O1_PREVIEW = "o1-preview"
+    O1_MINI = "o1-mini"

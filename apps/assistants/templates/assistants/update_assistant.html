@@ -251,7 +251,7 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="mb-6 col-6">
+              <div class="mb-6 col-3">
                 <label class="form-label" for="assistant_image">Assistant Image</label>
                 <input type="file" class="form-control" id="assistant_image" name="assistant_image"/>
                 <div class="form-text"></div>
@@ -274,7 +274,7 @@
                 </label>
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="time_awareness">Image Generation &amp; Manipulation Capability</label>
+                <label class="form-label" for="image_generation_capability">Image Generation &amp; Manipulation Capability</label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">
                   <input type="checkbox" class="switch-input" id="imageGenerationCapabilityCheckbox"
@@ -286,6 +286,16 @@
                 <span class="switch-off"><i class="ti ti-x"></i></span>
               </span>
                 </label>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="multi_step_reasoning_capability_choice">Multi-Step Reasoning <span class="text-warning"><strong>(† increases costs)</strong></span></label>
+                <select class="form-select" id="multi_step_reasoning_capability_choice" name="multi_step_reasoning_capability_choice">
+                  {% for choice in reasoning_capability_choices %}
+                    <option value="{{ choice.0 }}"
+                            {% if choice.0 == assistant.multi_step_reasoning_capability_choice %}selected{% endif %}>{{ choice.1 }}
+                    </option>
+                  {% endfor %}
+                </select>
               </div>
               <div class="mb-6 col-12">
                 <label class="form-label" for="context_overflow_strategy">Context Overflow Management Strategy</label>

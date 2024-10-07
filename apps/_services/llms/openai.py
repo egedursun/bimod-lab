@@ -44,7 +44,8 @@ from apps._services.llms.helpers.helper_prompts import HELPER_ASSISTANT_PROMPTS,
     get_code_interpreter_status_log, CODE_INTERPRETER_CLEANUP_ERROR_LOG, get_image_generation_error_log, \
     get_image_modification_error_log, get_image_variation_error_log, get_statistics_analysis_error_log, \
     embed_tool_call_in_prompt, get_audio_reading_error_log, get_audio_transcription_error_log, \
-    get_audio_generation_error_log, get_audio_upload_error_log
+    get_audio_generation_error_log, get_audio_upload_error_log, get_no_reasoning_capability_error_log, \
+    get_default_reasoning_error_log
 from apps._services.llms.utils import find_json_presence, generate_random_audio_filename, ChatRoles, \
     DEFAULT_ERROR_MESSAGE, GPT_DEFAULT_ENCODING_ENGINE, CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION, \
     CONCRETE_LIMIT_ML_MODEL_PREDICTIONS, DEFAULT_IMAGE_GENERATION_MODEL, DEFAULT_IMAGE_MODIFICATION_MODEL, \
@@ -56,13 +57,16 @@ from apps._services.llms.utils import find_json_presence, generate_random_audio_
     OpenAITTSVoiceNames, retry_mechanism
 from apps._services.prompts.history_builder import HistoryBuilder
 from apps._services.prompts.prompt_builder import PromptBuilder
+from apps._services.prompts.reasoning.reasoning_prompt import build_reasoning_system_prompt
 from apps._services.prompts.statistics.usage_statistics_prompt import build_usage_statistics_system_prompt
 from apps._services.storages.utils import GENERATED_FILES_ROOT_PATH
 from apps._services.tools.tool_executor import ToolExecutor
+from apps.assistants.utils import MultiStepReasoningCapabilityChoicesNames, MultiStepReasoningCapabilityModelNames
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import TransactionSourcesNames
 from apps.multimodal_chat.utils import calculate_billable_cost_from_raw, send_log_message, BIMOD_NO_TAG_PLACEHOLDER
 from config.settings import MEDIA_URL, AWS_STORAGE_BUCKET_NAME
+from apps._services.llms.utils import DEFAULT_MULTISTEP_REASONING_MAXIMUM_TOKENS
 
 
 class InternalOpenAIClient:
@@ -1969,3 +1973,45 @@ class InternalOpenAIClient:
         response["audio_url"] = full_uri
         print(f"[InternalOpenAIClient.text_to_audio_file] Returning the audio URL: {full_uri}")
         return response
+
+    def process_reasoning(self, query: str):
+        model_name = None
+        if self.assistant.multi_step_reasoning_capability_choice == MultiStepReasoningCapabilityChoicesNames.NONE:
+            final_response = get_no_reasoning_capability_error_log()
+            print(f"[InternalOpenAIClient.process_reasoning] The assistant has no reasoning capability.")
+            return final_response
+        if self.assistant.multi_step_reasoning_capability_choice == MultiStepReasoningCapabilityChoicesNames.HIGH_PERFORMANCE:
+            print(f"[InternalOpenAIClient.process_reasoning] The assistant has high-performance reasoning capability.")
+            model_name = MultiStepReasoningCapabilityModelNames.O1_PREVIEW
+        elif self.assistant.multi_step_reasoning_capability_choice == MultiStepReasoningCapabilityChoicesNames.COST_EFFECTIVE:
+            print(f"[InternalOpenAIClient.process_reasoning] The assistant has cost-effective reasoning capability.")
+            model_name = MultiStepReasoningCapabilityModelNames.O1_MINI
+        if model_name is None:
+            final_response = get_no_reasoning_capability_error_log()
+            print(f"[InternalOpenAIClient.process_reasoning] The assistant has no reasoning capability.")
+            return final_response
+
+        try:
+            instructions = build_reasoning_system_prompt()
+            print(f"[InternalOpenAIClient.process_reasoning] Built the reasoning system prompt.")
+            # retrieve the answer from the assistant
+            c = InternalOpenAIClient.get_no_scope_connection(llm_model=self.assistant.llm_model)
+            print(f"[InternalOpenAIClient.process_reasoning] Created the connection to the reasoning assistant.")
+            llm_response = c.chat.completions.create(
+                model=model_name,
+                messages=[
+                    {"role": ChatRoles.ASSISTANT, "content":  instructions},
+                    {"role": ChatRoles.USER, "content": query},
+                ]
+            )
+            print(f"[InternalOpenAIClient.process_reasoning] Retrieved the response from the assistant.")
+            choices = llm_response.choices
+            first_choice = choices[0]
+            choice_message = first_choice.message
+            choice_message_content = choice_message.content
+            final_response = choice_message_content
+            print(f"[InternalOpenAIClient.process_reasoning] Processed the reasoning response from the assistant.")
+        except Exception as e:
+            final_response = get_default_reasoning_error_log(error_logs=str(e))
+            print(f"[InternalOpenAIClient.process_reasoning] An error occurred while processing the reasoning response: ", str(e))
+        return final_response

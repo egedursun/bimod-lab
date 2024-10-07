@@ -320,7 +320,7 @@
                 services
                 as well.
               </div>
-              <div class="mb-6 col-6">
+              <div class="mb-6 col-4">
                 <label class="form-label" for="time_awareness">Time &amp; Location Awareness (Recommended)</label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">
@@ -334,8 +334,8 @@
                   </span>
                 </label>
               </div>
-              <div class="mb-6 col-6">
-                <label class="form-label" for="time_awareness">Image Generation &amp; Manipulation Capability
+              <div class="mb-6 col-4">
+                <label class="form-label" for="image_generation_capability">Image Generation &amp; Manipulation Capability
                   (Recommended)</label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">
@@ -346,6 +346,14 @@
                     <span class="switch-off"><i class="ti ti-x"></i></span>
                   </span>
                 </label>
+              </div>
+              <div class="mb-6 col-4">
+                <label class="form-label" for="multi_step_reasoning_capability_choice">Multi-Step Reasoning Capability <span class="text-warning"><strong>(† increases costs)</strong></span></label>
+                <select class="form-select" id="multi_step_reasoning_capability_choice" name="multi_step_reasoning_capability_choice">
+                  {% for choice in reasoning_capability_choices %}
+                    <option value="{{ strategy.0 }}" {% if forloop.first %}selected{% endif %}>{{ choice.1 }}</option>
+                  {% endfor %}
+                </select>
               </div>
               <div class="mb-6 col-12">
                 <label class="form-label" for="glossary">Glossary</label>
