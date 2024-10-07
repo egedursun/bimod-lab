@@ -100,7 +100,9 @@ sudo systemctl restart nginx
 
 echo "          [Deploy / Production] Restarted Nginx!"
 
-sudo systemctl restart celery_prod || true
+set +e
+sudo systemctl restart celery_prod
+set -e
 
 echo "          [Deploy / Production] Restarted Celery!"
 
