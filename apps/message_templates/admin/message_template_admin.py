@@ -21,21 +21,13 @@
 from django.contrib import admin
 
 from apps.message_templates.models import MessageTemplate
+from apps.message_templates.utils import MESSAGE_TEMPLATE_ADMIN_LIST, MESSAGE_TEMPLATE_ADMIN_FILTER, \
+    MESSAGE_TEMPLATE_ADMIN_SEARCH
 
 
 @admin.register(MessageTemplate)
 class MessageTemplateAdmin(admin.ModelAdmin):
-    list_display = ["user", "organization", "template_text", "created_at", "updated_at"]
-    search_fields = ["user", "organization", "template_text"]
-    list_filter = ["user", "organization", "created_at", "updated_at"]
-    list_per_page = 20
-    list_max_show_all = 200
-    list_editable = ["template_text"]
-    readonly_fields = ["created_at", "updated_at"]
-    fieldsets = (
-        (None, {"fields": ("user", "organization", "template_text")}),
-        ("Date Information", {"fields": ("created_at", "updated_at")})
-    )
-    actions = ["delete_selected"]
-    date_hierarchy = "created_at"
+    list_display = MESSAGE_TEMPLATE_ADMIN_LIST
+    search_fields = MESSAGE_TEMPLATE_ADMIN_SEARCH
+    list_filter = MESSAGE_TEMPLATE_ADMIN_FILTER
     ordering = ["-created_at"]

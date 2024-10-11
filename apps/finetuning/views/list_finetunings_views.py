@@ -23,7 +23,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.finetuning.forms import FineTunedModelConnectionForm
 from apps.finetuning.models import FineTunedModelConnection
 from apps.finetuning.utils import FineTuningModelProvidersNames, FineTunedModelTypesNames
@@ -32,7 +32,7 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class FineTunedModelConnectionsListView(LoginRequiredMixin, TemplateView):
+class FineTuningView_List(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -44,22 +44,15 @@ class FineTunedModelConnectionsListView(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        # Fetch organizations associated with the user
-        organizations = Organization.objects.filter(users__in=[self.request.user])
+        orgs = Organization.objects.filter(users__in=[self.request.user])
         data = []
-
-        for organization in organizations:
-            # Fetch fine-tuned model connections for each organization
-            connections = FineTunedModelConnection.objects.filter(
-                organization=organization,
-                created_by_user=self.request.user
-            )
-            data.append({'organization': organization, 'connections': connections})
+        for organization in orgs:
+            cs = FineTunedModelConnection.objects.filter(organization=organization, created_by_user=self.request.user)
+            data.append({'organization': organization, 'connections': cs})
 
         context['data'] = data
-        # Add form-related context
         context['form'] = FineTunedModelConnectionForm()
-        context['organizations'] = organizations
+        context['organizations'] = orgs
         context['providers'] = FineTuningModelProvidersNames.as_list()
         context['model_types'] = FineTunedModelTypesNames.as_list()
         return context
@@ -67,12 +60,10 @@ class FineTunedModelConnectionsListView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = FineTunedModelConnectionForm(request.POST)
         if form.is_valid():
-            connection = form.save(commit=False)
-            connection.created_by_user = request.user
-            connection.save()
+            c = form.save(commit=False)
+            c.created_by_user = request.user
+            c.save()
             return redirect('finetuning:list')
-
-        # Re-render the page with form errors
         context = self.get_context_data(**kwargs)
         context['form'] = form
         return self.render_to_response(context)

@@ -23,26 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.support_system.forms.support_ticket_forms import SupportTicketForm
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CreateSupportTicketView(LoginRequiredMixin, TemplateView):
-    """
-    View to handle the creation of new support tickets.
-
-    This view renders a form for creating a new support ticket. Upon submission, if the form is valid,
-    the support ticket is saved and the user is redirected to the ticket list page. If the form is invalid,
-    the form is re-rendered with validation errors.
-
-    Methods:
-    - get_context_data: Adds the support ticket form to the context.
-    - post: Handles the form submission and saves the ticket if valid.
-    """
-
-    template_name = 'support_system/create_support_ticket.html'
+class SupportView_TicketCreate(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -64,7 +51,6 @@ class CreateSupportTicketView(LoginRequiredMixin, TemplateView):
             ticket = form.save(commit=False)
             ticket.user = request.user
             ticket.save()
-            # Optionally, you can add a success message here
             return redirect('support_system:list')
         else:
             context = self.get_context_data()

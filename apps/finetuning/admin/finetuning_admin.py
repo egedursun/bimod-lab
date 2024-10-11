@@ -21,9 +21,10 @@
 from django.contrib import admin
 
 from apps.finetuning.models import FineTunedModelConnection
+from apps.finetuning.utils import FINETUNING_ADMIN_LIST, FINETUNING_ADMIN_SEARCH
 
 
 @admin.register(FineTunedModelConnection)
 class FineTunedModelConnectionAdmin(admin.ModelAdmin):
-    list_display = ('organization', 'nickname', 'model_name', "provider", 'model_type', 'created_at')
-    search_fields = ('organization', 'nickname', 'model_name', "provider", 'model_type', 'model_description')
+    list_display = FINETUNING_ADMIN_LIST
+    search_fields = FINETUNING_ADMIN_SEARCH

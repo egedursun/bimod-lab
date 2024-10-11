@@ -20,23 +20,20 @@
 
 from django.urls import path
 
-from apps.export_leanmods.views import ListExportLeanmodAssistantsView, CreateExportLeanmodAssistantsView, \
-    UpdateExportLeanmodAssistantsView, DeleteExportLeanmodAssistantsView, ExportLeanmodAssistantAPIView, \
-    ToggleExportLeanmodAssistantServiceView
+from apps.export_leanmods.views import ExportLeanModView_List, ExportLeanModView_Create, \
+    ExportLeanModView_Update, ExportLeanModView_Delete, ExportLeanmodAssistantAPIView, \
+    ExportLeanModView_ToggleService
 
 app_name = 'export_leanmods'
 
 urlpatterns = [
-    path('list/', ListExportLeanmodAssistantsView.as_view(
-        template_name="export_leanmods/list_export_leanmods.html"
-    ), name='list'),
-    path('create/', CreateExportLeanmodAssistantsView.as_view(
-        template_name="export_leanmods/create_export_leanmods.html"
-    ), name='create'),
-    path('update/<int:pk>/', UpdateExportLeanmodAssistantsView.as_view(
-        template_name="export_leanmods/update_export_leanmods.html"
-    ), name='update'),
-    path('delete/<int:pk>/', DeleteExportLeanmodAssistantsView.as_view(), name='delete'),
+    path('list/', ExportLeanModView_List.as_view(
+        template_name="export_leanmods/list_export_leanmods.html"), name='list'),
+    path('create/', ExportLeanModView_Create.as_view(
+        template_name="export_leanmods/create_export_leanmods.html"), name='create'),
+    path('update/<int:pk>/', ExportLeanModView_Update.as_view(
+        template_name="export_leanmods/update_export_leanmods.html"), name='update'),
+    path('delete/<int:pk>/', ExportLeanModView_Delete.as_view(), name='delete'),
     path('exported/<str:endpoint>/', ExportLeanmodAssistantAPIView.as_view(), name='api'),
-    path('toggle_service/<int:pk>/', ToggleExportLeanmodAssistantServiceView.as_view(), name='toggle_service'),
+    path('toggle_service/<int:pk>/', ExportLeanModView_ToggleService.as_view(), name='toggle_service'),
 ]

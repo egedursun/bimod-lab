@@ -20,17 +20,19 @@
 
 from config import settings
 
-ENCODING_ENGINES = [
+TOKENIZATION_ENCODING_ENGINES = [
     ("cl100k_base", "cl100k_base"),
     ("p50k_base", "p50k_base"),
     ("r50k_base", "r50k_base"),
 ]
-TRANSACTION_TYPE_ROLES = [
+
+LLM_TRANSACTION_ROLES_FOR_TYPE = [
     ("user", "User"),
     ("assistant", "Assistant"),
     ("system", "System"),
 ]
-TRANSACTION_SOURCES = [
+
+SOURCES_OF_LLM_TRANSACTION = [
     ("app", "Application"),
     ("api", "API"),
     ("generation", "Generation"),
@@ -67,13 +69,13 @@ TRANSACTION_SOURCES = [
 ]
 
 
-class TransactionTypeRolesNames:
+class LLMTransactionRolesForTypeNames:
     USER = "user"
     ASSISTANT = "assistant"
     SYSTEM = "system"
 
 
-class TransactionSourcesNames:
+class LLMTransactionSourcesTypesNames:
     APP = "app"
     API = "api"
     ############################
@@ -112,39 +114,39 @@ class TransactionSourcesNames:
     @staticmethod
     def as_list():
         return [
-            TransactionSourcesNames.APP,
-            TransactionSourcesNames.API,
-            TransactionSourcesNames.GENERATION,
-            TransactionSourcesNames.SQL_READ,
-            TransactionSourcesNames.SQL_WRITE,
-            TransactionSourcesNames.STORE_MEMORY,
-            TransactionSourcesNames.INTERPRET_CODE,
-            TransactionSourcesNames.UPLOAD_FILE,
-            TransactionSourcesNames.DOWNLOAD_FILE,
-            TransactionSourcesNames.FILE_SYSTEM_COMMANDS,
-            TransactionSourcesNames.KNOWLEDGE_BASE_SEARCH,
-            TransactionSourcesNames.RETRIEVE_MEMORY,
-            TransactionSourcesNames.CODE_BASE_SEARCH,
-            TransactionSourcesNames.ML_MODEL_PREDICTION,
-            TransactionSourcesNames.BROWSING,
-            TransactionSourcesNames.INTERNAL_FUNCTION_EXECUTION,
-            TransactionSourcesNames.EXTERNAL_FUNCTION_EXECUTION,
-            TransactionSourcesNames.INTERNAL_API_EXECUTION,
-            TransactionSourcesNames.EXTERNAL_API_EXECUTION,
-            TransactionSourcesNames.INTERNAL_SCRIPT_RETRIEVAL,
-            TransactionSourcesNames.EXTERNAL_SCRIPT_RETRIEVAL,
-            TransactionSourcesNames.INTERPRET_FILE,
-            TransactionSourcesNames.INTERPRET_IMAGE,
-            TransactionSourcesNames.SCHEDULED_JOB_EXECUTION,
-            TransactionSourcesNames.TRIGGER_JOB_EXECUTION,
-            TransactionSourcesNames.GENERATE_IMAGE,
-            TransactionSourcesNames.MODIFY_IMAGE,
-            TransactionSourcesNames.VARIATE_IMAGE,
-            TransactionSourcesNames.AUDIO_PROCESSING_STT,
-            TransactionSourcesNames.AUDIO_PROCESSING_TTS,
-            TransactionSourcesNames.BRAINSTORMING,
-            TransactionSourcesNames.GENERATE_VIDEO,
-            TransactionSourcesNames.REASONING,
+            LLMTransactionSourcesTypesNames.APP,
+            LLMTransactionSourcesTypesNames.API,
+            LLMTransactionSourcesTypesNames.GENERATION,
+            LLMTransactionSourcesTypesNames.SQL_READ,
+            LLMTransactionSourcesTypesNames.SQL_WRITE,
+            LLMTransactionSourcesTypesNames.STORE_MEMORY,
+            LLMTransactionSourcesTypesNames.INTERPRET_CODE,
+            LLMTransactionSourcesTypesNames.UPLOAD_FILE,
+            LLMTransactionSourcesTypesNames.DOWNLOAD_FILE,
+            LLMTransactionSourcesTypesNames.FILE_SYSTEM_COMMANDS,
+            LLMTransactionSourcesTypesNames.KNOWLEDGE_BASE_SEARCH,
+            LLMTransactionSourcesTypesNames.RETRIEVE_MEMORY,
+            LLMTransactionSourcesTypesNames.CODE_BASE_SEARCH,
+            LLMTransactionSourcesTypesNames.ML_MODEL_PREDICTION,
+            LLMTransactionSourcesTypesNames.BROWSING,
+            LLMTransactionSourcesTypesNames.INTERNAL_FUNCTION_EXECUTION,
+            LLMTransactionSourcesTypesNames.EXTERNAL_FUNCTION_EXECUTION,
+            LLMTransactionSourcesTypesNames.INTERNAL_API_EXECUTION,
+            LLMTransactionSourcesTypesNames.EXTERNAL_API_EXECUTION,
+            LLMTransactionSourcesTypesNames.INTERNAL_SCRIPT_RETRIEVAL,
+            LLMTransactionSourcesTypesNames.EXTERNAL_SCRIPT_RETRIEVAL,
+            LLMTransactionSourcesTypesNames.INTERPRET_FILE,
+            LLMTransactionSourcesTypesNames.INTERPRET_IMAGE,
+            LLMTransactionSourcesTypesNames.SCHEDULED_JOB_EXECUTION,
+            LLMTransactionSourcesTypesNames.TRIGGER_JOB_EXECUTION,
+            LLMTransactionSourcesTypesNames.GENERATE_IMAGE,
+            LLMTransactionSourcesTypesNames.MODIFY_IMAGE,
+            LLMTransactionSourcesTypesNames.VARIATE_IMAGE,
+            LLMTransactionSourcesTypesNames.AUDIO_PROCESSING_STT,
+            LLMTransactionSourcesTypesNames.AUDIO_PROCESSING_TTS,
+            LLMTransactionSourcesTypesNames.BRAINSTORMING,
+            LLMTransactionSourcesTypesNames.GENERATE_VIDEO,
+            LLMTransactionSourcesTypesNames.REASONING,
         ]
 
 
@@ -172,14 +174,14 @@ class InvoiceTypesNames:
         ]
 
 
-PAYMENT_METHODS = [
+ACCEPTED_METHODS_OF_PAYMENT = [
     ("credit-card", "Credit Card"),
     ("internal-transfer", "Internal Transfer"),
     ("direct-sales", "Direct Sales"),
 ]
 
 
-class PaymentMethodsNames:
+class AcceptedMethodsOfPaymentNames:
     CREDIT_CARD = "credit-card"
     INTERNAL_TRANSFER = "internal-transfer"
     DIRECT_SALES = "direct-sales"
@@ -187,13 +189,13 @@ class PaymentMethodsNames:
     @staticmethod
     def as_list():
         return [
-            PaymentMethodsNames.CREDIT_CARD,
-            PaymentMethodsNames.INTERNAL_TRANSFER,
-            PaymentMethodsNames.DIRECT_SALES,
+            AcceptedMethodsOfPaymentNames.CREDIT_CARD,
+            AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER,
+            AcceptedMethodsOfPaymentNames.DIRECT_SALES,
         ]
 
 
-FILTER_TYPES = [
+INTERNAL_TIME_FILTER_TYPES = [
     ('seconds', 'seconds'),
     ('minutes', 'minutes'),
     ('hours', 'hours'),
@@ -202,8 +204,10 @@ FILTER_TYPES = [
     ('months', 'months'),
     ('years', 'years'),
 ]
-DEFAULT_PAGINATION_SIZE_LIST_TRANSACTIONS = 5
-MAXIMUM_TOTAL_PAGES = 50
+
+
+TXS_PAGINATION_ITEMS_PER_PAGE = 5
+MAXIMUM_PAGES_POSSIBLE_TO_SHOW = 50
 
 
 class LLMCostsPerMillionTokens:
@@ -214,5 +218,35 @@ class LLMCostsPerMillionTokens:
     }
 
 
-SERVICE_PROFIT_MARGIN = settings.__SERVICE_PROFIT_MARGIN
-VAT_TAX_RATE = settings.__SERVICE_TAX_RATE
+INTERNAL_PROFIT_MARGIN_FOR_LLM = settings.__SERVICE_PROFIT_MARGIN
+VALUE_ADDED_TAX_PERCENTAGE = settings.__SERVICE_TAX_RATE
+
+AUTO_TOP_UP_ADMIN_LIST = [
+    "organization",
+    "on_balance_threshold_trigger",
+    "on_interval_by_days_trigger",
+    "balance_lower_trigger_threshold_value",
+    "addition_on_balance_threshold_trigger"
+]
+
+INVOICE_ADMIN_LIST = [
+    "organization",
+    "responsible_user",
+    "transaction_type",
+    "amount_added",
+    "payment_method",
+    "transaction_date",
+    "invoice_number",
+    "barcode_image",
+    "transaction_paper",
+]
+
+TRANSACTION_ADMIN_LIST = [
+    "responsible_user", "responsible_assistant", "organization", "model", "transaction_source", "total_cost",
+    "created_at"
+]
+TRANSACTION_ADMIN_FILTER = ["responsible_user", "responsible_assistant", "transaction_source", "organization", "model",
+                            "created_at"]
+TRANSACTION_ADMIN_SEARCH = ["organization__name", "model__nickname"]
+
+BALANCE_SNAPSHOT_ADMIN_LIST = ["organization", "balance", "created_at"]

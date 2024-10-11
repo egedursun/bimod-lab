@@ -22,14 +22,14 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CodeBaseStorageListView(LoginRequiredMixin, TemplateView):
+class CodeBaseView_StorageList(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -43,19 +43,19 @@ class CodeBaseStorageListView(LoginRequiredMixin, TemplateView):
         ##############################
 
         context_user = self.request.user
-        user_organizations = Organization.objects.filter(users__in=[context_user])
+        user_orgs = Organization.objects.filter(users__in=[context_user])
 
-        connections_by_organization = {}
-        for organization in user_organizations:
-            assistants = organization.assistants.all()
-            assistants_connections = {}
-            for assistant in assistants:
-                connections = CodeRepositoryStorageConnection.objects.filter(assistant=assistant)
-                if connections.exists():
-                    assistants_connections[assistant] = connections
-            if assistants_connections:
-                connections_by_organization[organization] = assistants_connections
+        conns_by_orgs = {}
+        for org in user_orgs:
+            agents = org.assistants.all()
+            agent_conns = {}
+            for agent in agents:
+                conns = CodeRepositoryStorageConnection.objects.filter(assistant=agent)
+                if conns.exists():
+                    agent_conns[agent] = conns
+            if agent_conns:
+                conns_by_orgs[org] = agent_conns
 
-        context['connections_by_organization'] = connections_by_organization
+        context['connections_by_organization'] = conns_by_orgs
         context['user'] = context_user
         return context

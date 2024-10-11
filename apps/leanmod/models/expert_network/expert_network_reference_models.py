@@ -26,12 +26,10 @@ class ExpertNetworkAssistantReference(models.Model):
                                 null=True, blank=True)
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     context_instructions = models.TextField(default="", blank=True)
-
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                         related_name='expert_network_assistant_references_created_by_user')
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                              related_name='expert_network_assistant_references_updated_by_user')
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -43,7 +41,6 @@ class ExpertNetworkAssistantReference(models.Model):
         verbose_name_plural = "Expert Network Assistant References"
         ordering = ["-created_at"]
         indexes = [
-            # Single-field indexes
             models.Index(fields=["network"]),
             models.Index(fields=["assistant"]),
             models.Index(fields=["context_instructions"]),
@@ -51,8 +48,6 @@ class ExpertNetworkAssistantReference(models.Model):
             models.Index(fields=["last_updated_by_user"]),
             models.Index(fields=["created_at"]),
             models.Index(fields=["updated_at"]),
-
-            # Two-field composite indexes
             models.Index(fields=["network", "assistant"]),
             models.Index(fields=["network", "context_instructions"]),
             models.Index(fields=["network", "created_by_user"]),
@@ -68,8 +63,6 @@ class ExpertNetworkAssistantReference(models.Model):
             models.Index(fields=["created_by_user", "updated_at"]),
             models.Index(fields=["last_updated_by_user", "created_at"]),
             models.Index(fields=["last_updated_by_user", "updated_at"]),
-
-            # Three-field composite indexes
             models.Index(fields=["network", "assistant", "context_instructions"]),
             models.Index(fields=["network", "assistant", "created_by_user"]),
             models.Index(fields=["network", "assistant", "last_updated_by_user"]),

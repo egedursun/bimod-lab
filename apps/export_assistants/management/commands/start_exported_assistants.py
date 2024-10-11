@@ -32,13 +32,10 @@ from config.settings import EXPORT_API_BASE_URL
 def start_endpoint_for_assistant(assistant):
     endpoint_url = assistant.endpoint
     endpoint_local = EXPORT_API_BASE_URL + endpoint_url.split(EXPORT_API_BASE_URL)[1]
-
-    # Register the endpoint with Django's URL routing system
     urlpatterns = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
     urlpatterns += [
         path(endpoint_local, ExportAssistantAPIView.as_view(), name=f'export_assistant_{assistant.id}')
     ]
-    print(f"[start_exported_assistants.initialize_endpoints] Started endpoint for assistant {assistant.assistant.name} at {endpoint_local}")
 
 
 def initialize_endpoints():
@@ -46,11 +43,11 @@ def initialize_endpoints():
         if assistant.is_online:
             start_endpoint_for_assistant(assistant)
         else:
-            print(f"[start_exported_assistants.initialize_endpoints] Export assistant {assistant.assistant.name} is offline. Skipping...")
+            # OFFLINE, SKIP
+            pass
 
 
 class Command(BaseCommand):
     help = 'Start all exported assistants'
-
     def handle(self, *args, **kwargs):
         initialize_endpoints()

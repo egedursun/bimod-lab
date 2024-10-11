@@ -23,21 +23,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import DeleteView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_sql.models import CustomSQLQuery
 from apps.user_permissions.utils import PermissionNames
 
 
-class DeleteSQLQueryView(LoginRequiredMixin, DeleteView):
-    """
-    Handles the deletion of a custom SQL query.
-
-    This view allows users with the appropriate permissions to delete an SQL query. It ensures that the user has the necessary permissions before performing the deletion.
-
-    Methods:
-        post(self, request, *args, **kwargs): Deletes the SQL query if the user has the required permissions.
-    """
-
+class SQLDatabaseView_QueryDelete(LoginRequiredMixin, DeleteView):
     model = CustomSQLQuery
     success_url = 'datasource_sql:list_queries'
 

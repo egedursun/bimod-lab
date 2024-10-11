@@ -92,6 +92,7 @@ INSTALLED_APPS = [
     "auth.apps.AuthConfig",
     "apps.theme.transactions",
 
+    "apps.audit_logs",
     "apps.landing",
     "apps.user_profile_management",
     "apps.user_settings",
@@ -157,24 +158,18 @@ CACHEOPS_DEFAULTS = {
 }
 
 CACHEOPS = {
-    # Assistants
     'apps.assistants.Assistant': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Blog App
     'apps.blog_app.BlogPost': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.blog_app.BlogTag': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.blog_app.BlogSEOMeta': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Community Forum
     'apps.community_forum.ForumCategory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.community_forum.ForumThread': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.community_forum.ForumPost': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.community_forum.ForumComment': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.community_forum.ForumLike': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Data Source Browser
     'apps.datasource_browsers.DataSourceBrowserConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_browsers.DataSourceBrowserBrowsingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Data Source File Systems
     'apps.datasource_file_systems.DataSourceFileSystem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Data Source Knowledge Base
     'apps.datasource_knowledge_base.DocumentKnowledgeBaseConnection': {'ops': 'all',
                                                                        'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.KnowledgeBaseDocument': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
@@ -184,67 +179,46 @@ CACHEOPS = {
     'apps.datasource_knowledge_base.ContextHistoryMemory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.ContextHistoryMemoryChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.DocumentProcessingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Data Source Media Storages
     'apps.datasource_media_storages.DataSourceMediaStorageConnection': {'ops': 'all',
                                                                         'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_media_storages.DataSourceMediaStorageItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Data Source ML Models
     'apps.datasource_ml_models.DataSourceMLModelConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_ml_models.DataSourceMLModelItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Data Source SQL
     'apps.datasource_sql.SQLDatabaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_sql.CustomSQLQuery': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Export Assistants
     'apps.export_assistants.RequestLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.export_assistants.ExportAssistantAPI': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # LLM Core
     'apps.llm_core.LLMCore': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # LLM Transaction
     'apps.llm_transaction.LLMTransaction': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.llm_transaction.AutoBalanceTopUpModel': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.llm_transaction.OrganizationBalanceSnapshot': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Memories
     'apps.memories.AssistantMemory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Message Templates
     'apps.message_templates.MessageTemplate': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # MM APIs
     'apps.mm_apis.CustomAPIReference': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.mm_apis.CustomAPI': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # MM Functions
     'apps.mm_apis.CustomFunctionReference': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.mm_functions.CustomFunction': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # MM Scheduled Jobs
     'apps.mm_scheduled_jobs.ScheduledJob': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.mm_scheduled_jobs.ScheduledJobInstance': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # MM Scripts
     'apps.mm_scripts.CustomScriptReference': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.mm_scripts.CustomScript': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # MM Triggered Jobs
     'apps.mm_triggered_jobs.TriggeredJob': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.mm_triggered_jobs.TriggeredJobInstance': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Multimodal Chat
     'apps.multimodal_chat.MultiModalChat': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.multimodal_chat.MultiModalChatMessage': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.multimodal_chat.ChatCreationLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Orchestrations
     'apps.orchestrations.Maestro': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.orchestrations.OrchestrationQuery': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.orchestrations.OrchestrationQueryLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Organization
     'apps.organization.Organization': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Starred Messages
     'apps.starred_messages.StarredMessage': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # Support Ticket
     'apps.support_system.SupportTicket': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.support_system.SupportTicketResponse': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    # User Permissions
     'apps.user_permissions.UserPermission': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
 }
 
-# Optional: Ensure the cache is cleared on start-up or configuration changes
-CACHEOPS_LRU = True  # Enables the LRU (Least Recently Used) cache
+CACHEOPS_LRU = True
 
-#####################################################################################################################
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -346,14 +320,6 @@ LANGUAGES = [
     ("en", _("English")),
     # Turkish
     ("tr", _("Turkish")),
-    # German
-    # ("de", _("German")),  # German is supported yet
-    # French
-    # ("fr", _("French")),  # French is supported yet
-    # Spanish
-    # ("es", _("Spanish")),  # Spanish is supported yet
-    # Italian
-    # ("it", _("Italian")),  # Italian is supported yet
 ]
 
 # Set default language
@@ -369,6 +335,7 @@ USE_TZ = True
 LOCALE_PATHS = [
     BASE_DIR / "locale",
 ]
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -379,35 +346,26 @@ STATICFILES_DIRS = [
     BASE_DIR / "src" / "assets",
 ]
 
-# Default URL on which Django application runs for specific environment
+
 BASE_URL = os.environ.get("BASE_URL", default="http://127.0.0.1:8000")
 
-# AWS S3 settings
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-
-# Custom storage settings
 DEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'
-
-# Media URL
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
-# Service profit margins and tax rates
 __SERVICE_PROFIT_MARGIN = float(os.environ.get("SERVICE_PROFIT_MARGIN", default="2.00"))
 __SERVICE_TAX_RATE = float(os.environ.get("SERVICE_TAX_RATE", default="0.18"))
 
-# Salt for encryption
 ENCRYPTION_SALT = os.environ.get("ENCRYPTION_SALT", default="")
 
-# Max Assistant exports per organization
 MAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ASSISTANT_EXPORTS_ORGANIZATION", default="5"))
 MAX_LEANMODS_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_LEANMODS_EXPORTS_ORGANIZATION", default="5"))
 MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION", default="5"))
 
-# Weaviate credentials
 WEAVIATE_CLUSTER_URL = os.environ.get("WEAVIATE_CLUSTER_URL", default="")
 WEAVIATE_API_KEY = os.environ.get("WEAVIATE_API_KEY", default="")
 WEAVIATE_SINGLE_TIME_MEMORY_RETRIEVAL_LIMIT = int(
@@ -485,9 +443,6 @@ CORS_ALLOW_CREDENTIALS = True
 SUFFIX_ANY = "*"
 
 EXCLUDED_PAGES = [
-    ########################################
-    # Exclude Authentication pages
-    ########################################
     "/",
     "/admin/*",
     "/app/login/*",
@@ -506,9 +461,6 @@ EXCLUDED_PAGES = [
     "/not_accredited/*",
     "/bimod_endeavours/*",
     "/integration_to_organizations/*",
-    ########################################
-    # Exclude (ALL) Exported Assistant pages
-    ########################################
     "/app/export_assistants/api/v1/export/*",
     "/app/export_leanmods/api/v1/export/*",
     "/app/export_orchestrations/api/v1/export/*",
@@ -516,14 +468,11 @@ EXCLUDED_PAGES = [
 
 DESIGN_DOCS_ROUTE = 'dev/design/'
 
-# API version for exporting agents
 EXPORT_API_BASE_URL = "app/export_assistants/api/v1/export"
 EXPORT_LEANMOD_API_BASE_URL = "app/export_leanmods/api/v1/export"
 EXPORT_ORCHESTRATION_API_BASE_URL = "app/export_orchestrations/api/v1/export"
 
-# Celery task manager
 LEAN_BASE_URL = BASE_URL.split("://")[-1].split(":")[0]
-
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
@@ -533,10 +482,6 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CLEAN_DEBUG = True
-
-#####################################################################################################################
-# Logging Configuration
-#####################################################################################################################
 
 LOGGING = {
     'version': 1,
@@ -568,11 +513,6 @@ LOGGING = {
     },
 }
 
-#####################################################################################################################
-# CUSTOM ENVIRONMENT VARIABLES
-#####################################################################################################################
-
-# Load the environment variables from the environments file
 CONTEXT_MEMORY = os.environ.get("CONTEXT_MEMORY", default="0")
 CONTEXT_MEMORY_RETRIEVAL = os.environ.get("CONTEXT_MEMORY_RETRIEVAL", default="0")
 FILE_INTERPRETER = os.environ.get("FILE_INTERPRETER", default="0")
@@ -633,48 +573,15 @@ COSTS_MAP = {
     "REASONING": float(REASONING),
 }
 
-#####################################################################################################################
-# Sentry SDK settings
-#####################################################################################################################
-
 if ENVIRONMENT != "local":
     sentry_sdk.init(
         dsn=os.getenv("SENTRY_DSN", default=""),
-        # Set traces_sample_rate to 1.0 to capture 100%
-        # of transactions for performance monitoring.
         traces_sample_rate=float(os.getenv("SENTRY_TRACES_SAMPLE_RATE", default=0.1)),
-        # Set profiles_sample_rate to 1.0 to profile 100%
-        # of sampled transactions.
-        # We recommend adjusting this value in production.
         profiles_sample_rate=float(os.getenv("SENTRY_PROFILES_SAMPLE_RATE", default=0.1)),
     )
 else:
     print("[settings.py] Sentry SDK is intentionally disabled in local environment, skipping the initialization.")
     pass
-
-#####################################################################################################################
-# Translator Debug Mode
-#####################################################################################################################
-
-ACTIVATE_MANUAL_TRANSLATION = os.environ.get("ACTIVATE_MANUAL_TRANSLATION", 'False').lower() in ['true', 'yes', '1']
-if ACTIVATE_MANUAL_TRANSLATION:
-    print("[settings.py] Manual Translation is activated, enabling the translation middleware...")
-    pass
-else:
-    print("[settings.py] Manual Translation is deactivated, skipping the translation middleware...")
-    pass
-
-TRANSLATOR_DEBUG_MODE = os.environ.get("TRANSLATOR_DEBUG_MODE", 'False').lower() in ['true', 'yes', '1']
-if TRANSLATOR_DEBUG_MODE:
-    print("[settings.py] Translator Debug Mode is enabled, printing language logs...")
-    pass
-else:
-    print("[settings.py] Translator Debug Mode is disabled, skipping language logs...")
-    pass
-
-#####################################################################################################################
-# Integration Tests
-#####################################################################################################################
 
 TESTING = sys.argv[0].endswith("pytest")
 print("[settings.py] Testing Mode: ", TESTING)
@@ -685,14 +592,8 @@ else:
     print("[settings.py] Integration Testing Mode is deactive, deploy mode is activated...")
     pass
 
-#####################################################################################################################
-# New User Free Credits
-#####################################################################################################################
-
 NEW_USER_FREE_CREDITS = int(os.environ.get("NEW_USER_FREE_CREDITS", default="0"))
 
-#####################################################################################################################
-# Default Application Zoom
-#####################################################################################################################
-
 DEFAULT_APPLICATION_ZOOM = int(os.environ.get("DEFAULT_APPLICATION_ZOOM", default="100"))
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000

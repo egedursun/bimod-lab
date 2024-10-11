@@ -22,23 +22,14 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_sql.models import CustomSQLQuery
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListSQLQueriesView(TemplateView, LoginRequiredMixin):
-    """
-    Displays a list of custom SQL queries associated with the user's SQL database connections.
-
-    This view retrieves all custom SQL queries within the user's SQL database connections, organized by organization and assistant, and displays them in a structured list.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the SQL queries for the user's connections and adds them to the context, including organization and assistant details.
-    """
-
+class SQLDatabaseView_QueryList(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -56,15 +47,14 @@ class ListSQLQueriesView(TemplateView, LoginRequiredMixin):
                 organization__in=context_user.organizations.all())
         ).select_related('database_connection__assistant', 'database_connection__assistant__organization')
 
-        queries_by_organization = {}
-        for query in queries:
-            organization = query.database_connection.assistant.organization
-            assistant = query.database_connection.assistant
-
-            if organization not in queries_by_organization:
-                queries_by_organization[organization] = {}
-            if assistant not in queries_by_organization[organization]:
-                queries_by_organization[organization][assistant] = []
-            queries_by_organization[organization][assistant].append(query)
-        context['queries_by_organization'] = queries_by_organization
+        queries_by_orgs = {}
+        for qu in queries:
+            org = qu.database_connection.assistant.organization
+            agent = qu.database_connection.assistant
+            if org not in queries_by_orgs:
+                queries_by_orgs[org] = {}
+            if agent not in queries_by_orgs[org]:
+                queries_by_orgs[org][agent] = []
+            queries_by_orgs[org][agent].append(qu)
+        context['queries_by_organization'] = queries_by_orgs
         return context

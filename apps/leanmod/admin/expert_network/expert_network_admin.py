@@ -21,18 +21,13 @@
 from django.contrib import admin
 
 from apps.leanmod.models import ExpertNetwork
+from apps.leanmod.utils import EXPERT_NETWORK_ADMIN_LIST, EXPERT_NETWORK_ADMIN_FILTER, EXPERT_NETWORK_ADMIN_SEARCH
 
 
 @admin.register(ExpertNetwork)
 class ExpertNetworkAdmin(admin.ModelAdmin):
-    list_display = (
-        "organization", "name", "meta_description", "created_by_user", "last_updated_by_user", "created_at",
-        "updated_at")
-    list_filter = (
-        "organization", "name", "meta_description", "created_by_user", "last_updated_by_user", "created_at",
-        "updated_at")
-    search_fields = (
-        "organization", "name", "meta_description", "created_by_user", "last_updated_by_user", "created_at",
-        "updated_at")
+    list_display = EXPERT_NETWORK_ADMIN_LIST
+    list_filter = EXPERT_NETWORK_ADMIN_FILTER
+    search_fields = EXPERT_NETWORK_ADMIN_SEARCH
     date_hierarchy = "created_at"
     ordering = ["-created_at"]

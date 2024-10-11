@@ -28,3 +28,32 @@ DBMS_CHOICES = [
 class DBMSChoicesNames:
     POSTGRESQL = 'postgresql'
     MYSQL = 'mysql'
+
+
+POSTGRESQL_SCHEMA_RETRIEVAL_QUERY = f"""
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema NOT IN ('information_schema', 'pg_catalog');
+"""
+
+POSTGRESQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY = f"""
+SELECT column_name, data_type FROM information_schema.columns WHERE table_name = %s
+"""
+
+MYSQL_SCHEMA_RETRIEVAL_QUERY = f"""
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema NOT IN ('information_schema', 'mysql', 'performance_schema', 'sys');
+"""
+
+MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY = f"""
+SELECT column_name, data_type FROM information_schema.columns WHERE table_name = %s
+"""
+
+SQL_DATABASE_ADMIN_LIST = ('id', 'assistant', 'dbms_type', 'name', 'database_name', 'is_read_only', 'created_at')
+SQL_DATABASE_ADMIN_FILTER = ('dbms_type', 'created_at')
+SQL_DATABASE_ADMIN_SEARCH = ('name', 'database_name', 'is_read_only')
+
+SQL_QUERY_ADMIN_LIST = ('id', 'database_connection', 'name', 'description', 'created_at', 'updated_at')
+SQL_QUERY_ADMIN_FILTER = ('created_at', 'updated_at')
+SQL_QUERY_ADMIN_SEARCH = ('name', 'description')

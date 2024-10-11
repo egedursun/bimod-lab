@@ -23,16 +23,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.data_security.forms import NERIntegrationForm
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CreateNERIntegrationView(LoginRequiredMixin, TemplateView):
-    template_name = 'data_security/ner/create_ner_integration.html'
-
+class NERView_IntegrationCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['form'] = NERIntegrationForm()
@@ -73,5 +71,4 @@ class CreateNERIntegrationView(LoginRequiredMixin, TemplateView):
         if form.is_valid():
             form.save()
             return redirect('data_security:list_ner_integrations')
-
         return render(request, self.template_name, {'form': form})

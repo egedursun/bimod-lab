@@ -21,18 +21,13 @@
 from django.contrib import admin
 
 from apps.datasource_sql.models import CustomSQLQuery
+from apps.datasource_sql.utils import SQL_QUERY_ADMIN_LIST, SQL_QUERY_ADMIN_FILTER, SQL_QUERY_ADMIN_SEARCH
 
 
 @admin.register(CustomSQLQuery)
 class CustomSQLQueryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'database_connection', 'name', 'description', 'created_at', 'updated_at')
-    list_filter = ('created_at', 'updated_at')
-    search_fields = ('name', 'description')
+    list_display = SQL_QUERY_ADMIN_LIST
+    list_filter = SQL_QUERY_ADMIN_FILTER
+    search_fields = SQL_QUERY_ADMIN_SEARCH
     ordering = ('-created_at',)
     readonly_fields = ('created_at', 'updated_at')
-    fieldsets = (
-        (None, {
-            'fields': ('database_connection', 'name', 'description', 'sql_query', 'parameters')
-        }),
-        ('Dates', {'fields': ('created_at', 'updated_at')}),
-    )

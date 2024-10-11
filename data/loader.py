@@ -21,7 +21,6 @@ from django.contrib.auth.models import User
 
 from apps.blog_app.models import BlogTag, BlogPost
 from apps.community_forum.models import ForumCategory, ForumThread
-from auth.models import Profile
 from .path_consts import DataPaths
 
 
@@ -31,63 +30,63 @@ class BoilerplateDataLoader:
     def load():
         try:
             BoilerplateDataLoader._load_forum_data()
-            print("[BoilerplateDataLoader.load_forum_data] Forum data loaded successfully")
+            # print("[BoilerplateDataLoader.load_forum_data] Forum data loaded successfully")
         except Exception as e:
             print(f"[BoilerplateDataLoader.load_forum_data] Error while loading forum data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_blog_data()
-            print("[BoilerplateDataLoader.load_blog_data] Blog data loaded successfully")
+            # print("[BoilerplateDataLoader.load_blog_data] Blog data loaded successfully")
         except Exception as e:
             print(f"[BoilerplateDataLoader.load_blog_data] Error while loading blog data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_functions_data()
-            print("[BoilerplateDataLoader.load_functions_data] Functions data loaded successfully")
+            # print("[BoilerplateDataLoader.load_functions_data] Functions data loaded successfully")
         except Exception as e:
             print(f"[BoilerplateDataLoader.load_functions_data] Error while loading functions data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_apis_data()
-            print("[BoilerplateDataLoader.load_apis_data] APIs data loaded successfully")
+            # print("[BoilerplateDataLoader.load_apis_data] APIs data loaded successfully")
         except Exception as e:
             print(f"[BoilerplateDataLoader.load_apis_data] Error while loading APIs data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_scripts_data()
-            print("[BoilerplateDataLoader.load_scripts_data] Scripts data loaded successfully")
+            # print("[BoilerplateDataLoader.load_scripts_data] Scripts data loaded successfully")
         except Exception as e:
             print(f"[BoilerplateDataLoader.load_scripts_data] Error while loading scripts data: {e}")
         ####
         try:
             BoilerplateDataLoader._load_knowledge_bases_data()
-            print("[BoilerplateDataLoader.load_knowledge_bases_data] Knowledge bases data loaded successfully")
+            # print("[BoilerplateDataLoader.load_knowledge_bases_data] Knowledge bases data loaded successfully")
         except Exception as e:
             print(f"[BoilerplateDataLoader.load_knowledge_bases_data] Error while loading knowledge bases data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_assistant_integrations_data()
-            print("[BoilerplateDataLoader.load_assistant_integrations_data] Assistant integrations data "
-                  "loaded successfully")
+            # print("[BoilerplateDataLoader.load_assistant_integrations_data] Assistant integrations data "
+            #      "loaded successfully")
         except Exception as e:
             print(f"[BoilerplateDataLoader.load_assistant_integrations_data] Error while loading assistant "
                   f"integrations data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_orchestration_meta_integrations_data()
-            print("[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Orchestration meta integrations "
-                  "data loaded successfully")
+            # print("[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Orchestration meta
+            # integrations " "data loaded successfully")
         except Exception as e:
             print(f"[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Error while loading "
                   f"orchestration meta integrations data: {e}")
         #####
+        print("[BoilerplateDataLoader.load] Pre-Fetched Data loading process is completed successfully.")
 
     @staticmethod
     def _load_forum_data():
         categories_data_path = DataPaths.Forum.CATEGORIES
         threads_data_path = DataPaths.Forum.THREADS
 
-        # Load categories
         categories_data_json = None
         with open(categories_data_path, "r") as categories_file:
             categories_data_json = json.load(categories_file)
@@ -99,7 +98,8 @@ class BoilerplateDataLoader:
                         **c
                     }
                 )
-            print(f"[BoilerplateDataLoader._load_forum_data] Pre-loaded {len(categories_data_json)} categories")
+            # print(f"[BoilerplateDataLoader._load_forum_data] Pre-loaded {len(categories_data_json)} categories")
+            pass
 
         # Load threads
         threads_data_json = None
@@ -113,7 +113,8 @@ class BoilerplateDataLoader:
                     title=t_title,
                     category=t_category_object
                 )
-            print(f"[BoilerplateDataLoader._load_forum_data] Pre-loaded {len(threads_data_json)} threads")
+            # print(f"[BoilerplateDataLoader._load_forum_data] Pre-loaded {len(threads_data_json)} threads")
+            pass
         return
 
     @staticmethod
@@ -156,7 +157,8 @@ class BoilerplateDataLoader:
                 )
                 if created_now:
                     b_new.tags.set(b_tag_objects)
-            print(f"[BoilerplateDataLoader._load_blog_data] Pre-loaded {len(blogs_data_json)} blog posts")
+            # print(f"[BoilerplateDataLoader._load_blog_data] Pre-loaded {len(blogs_data_json)} blog posts")
+            pass
         return
 
     @staticmethod

@@ -22,9 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
-from apps.assistants.models import Assistant, ASSISTANT_RESPONSE_LANGUAGES, CONTEXT_OVERFLOW_STRATEGY, VECTORIZERS
-from apps.assistants.utils import ContextOverflowStrategyNames, VectorizerNames, MULTI_STEP_REASONING_CAPABILITY_CHOICE
+from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.assistants.models import Assistant, AGENT_SPEECH_LANGUAGES, CONTEXT_MANAGEMENT_STRATEGY, EMBEDDING_MANAGERS
+from apps.assistants.utils import ContextManagementStrategyNames, MULTI_STEP_REASONING_CAPABILITY_CHOICE, \
+    EmbeddingManagersNames
 from apps.data_security.models import NERIntegration
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
@@ -32,32 +33,22 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class UpdateAssistantView(LoginRequiredMixin, TemplateView):
-    """
-    Handles updating an existing assistant's details.
-
-    This view allows users with the appropriate permissions to modify an assistant's attributes, including its name, description, instructions, and more. It also handles the logic for updating the assistant's glossary, context overflow strategy, and other configurations.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the current assistant's details and adds them to the context, along with other relevant data.
-        post(self, request, *args, **kwargs): Handles form submission for updating the assistant, including permission checks and validation.
-    """
-
+class AssistantView_Update(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        assistant_id = self.kwargs.get('pk')
-        assistant = get_object_or_404(Assistant, id=assistant_id)
+        agent_id = self.kwargs.get('pk')
+        agent = get_object_or_404(Assistant, id=agent_id)
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
-        context['assistant'] = assistant
-        context['response_languages'] = ASSISTANT_RESPONSE_LANGUAGES
-        context['context_overflow_strategies'] = CONTEXT_OVERFLOW_STRATEGY
+        context['assistant'] = agent
+        context['response_languages'] = AGENT_SPEECH_LANGUAGES
+        context['context_overflow_strategies'] = CONTEXT_MANAGEMENT_STRATEGY
         context['reasoning_capability_choices'] = MULTI_STEP_REASONING_CAPABILITY_CHOICE
-        context['vectorizers'] = VECTORIZERS
-        context["assistant_current_strategy"] = ContextOverflowStrategyNames.as_dict()[
-            assistant.context_overflow_strategy]
-        context["assistant_current_vectorizer"] = VectorizerNames.as_dict()[
-            assistant.vectorizer_name] if assistant.vectorizer_name else None
+        context['vectorizers'] = EMBEDDING_MANAGERS
+        context["assistant_current_strategy"] = ContextManagementStrategyNames.as_dict()[
+            agent.context_overflow_strategy]
+        context["assistant_current_vectorizer"] = EmbeddingManagersNames.as_dict()[
+            agent.vectorizer_name] if agent.vectorizer_name else None
         context["ner_integrations"] = NERIntegration.objects.filter(
             organization__in=context['organizations']
         )
@@ -73,60 +64,57 @@ class UpdateAssistantView(LoginRequiredMixin, TemplateView):
             return redirect('assistants:list')
         ##############################
 
-        assistant_id = self.kwargs.get('pk')
-        assistant = get_object_or_404(Assistant, id=assistant_id)
-        assistant.name = request.POST.get('name')
-        assistant.description = request.POST.get('description')
-        assistant.instructions = request.POST.get('instructions')
-        assistant.audience = request.POST.get('audience')
-        assistant.max_retry_count = request.POST.get('max_retry_count')
-        assistant.tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
-        assistant.tool_max_chains = request.POST.get('tool_max_chains')
+        agent_id = self.kwargs.get('pk')
+        agent = get_object_or_404(Assistant, id=agent_id)
+        agent.name = request.POST.get('name')
+        agent.description = request.POST.get('description')
+        agent.instructions = request.POST.get('instructions')
+        agent.audience = request.POST.get('audience')
+        agent.max_retry_count = request.POST.get('max_retry_count')
+        agent.tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
+        agent.tool_max_chains = request.POST.get('tool_max_chains')
 
-        ner_integration_id = None
+        ner_id = None
         if ("ner_integration" in request.POST and request.POST.get('ner_integration')
             and request.POST.get('ner_integration') != "None"
             and request.POST.get('ner_integration') != ""):
-            ner_integration_id = request.POST.get('ner_integration')
+            ner_id = request.POST.get('ner_integration')
 
-        if ner_integration_id:
-            assistant.ner_integration = NERIntegration.objects.get(id=ner_integration_id)
+        if ner_id:
+            agent.ner_integration = NERIntegration.objects.get(id=ner_id)
         else:
-            assistant.ner_integration = None
+            agent.ner_integration = None
 
         terms = request.POST.getlist('terms[]')
         definitions = request.POST.getlist('definitions[]')
-        updated_glossary = {}
+        updated_technical_dict = {}
         for term, definition in zip(terms, definitions):
-            updated_glossary[term] = definition
-        assistant.glossary = updated_glossary
-
-        assistant.context_overflow_strategy = request.POST.get('context_overflow_strategy')
-        assistant.max_context_messages = request.POST.get('max_context_messages')
+            updated_technical_dict[term] = definition
+        agent.glossary = updated_technical_dict
+        agent.context_overflow_strategy = request.POST.get('context_overflow_strategy')
+        agent.max_context_messages = request.POST.get('max_context_messages')
         vectorizer_name = None
         vectorizer_api_key = None
-        if assistant.context_overflow_strategy == ContextOverflowStrategyNames.FORGET:
+        if agent.context_overflow_strategy == ContextManagementStrategyNames.FORGET:
             pass
-        elif assistant.context_overflow_strategy == ContextOverflowStrategyNames.STOP:
+        elif agent.context_overflow_strategy == ContextManagementStrategyNames.STOP:
             pass
-        elif assistant.context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE:
+        elif agent.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE:
             vectorizer_name = request.POST.get('vectorizer_name')
             vectorizer_api_key = request.POST.get('vectorizer_api_key')
 
-        assistant.vectorizer_name = vectorizer_name
-        assistant.vectorizer_api_key = vectorizer_api_key
-
-        assistant.tone = request.POST.get('tone')
-        assistant.llm_model_id = request.POST.get('llm_model')
-        assistant.response_template = request.POST.get('response_template')
-        assistant.response_language = request.POST.get('response_language')
-        assistant.time_awareness = request.POST.get('time_awareness') == 'on'
-        assistant.place_awareness = request.POST.get('place_awareness') == 'on'
-        assistant.image_generation_capability = request.POST.get('image_generation_capability') == 'on'
-        assistant.multi_step_reasoning_capability_choice = request.POST.get('multi_step_reasoning_capability_choice')
-        assistant.last_updated_by_user = request.user
+        agent.vectorizer_name = vectorizer_name
+        agent.vectorizer_api_key = vectorizer_api_key
+        agent.tone = request.POST.get('tone')
+        agent.llm_model_id = request.POST.get('llm_model')
+        agent.response_template = request.POST.get('response_template')
+        agent.response_language = request.POST.get('response_language')
+        agent.time_awareness = request.POST.get('time_awareness') == 'on'
+        agent.place_awareness = request.POST.get('place_awareness') == 'on'
+        agent.image_generation_capability = request.POST.get('image_generation_capability') == 'on'
+        agent.multi_step_reasoning_capability_choice = request.POST.get('multi_step_reasoning_capability_choice')
+        agent.last_updated_by_user = request.user
         if 'assistant_image' in request.FILES:
-            assistant.assistant_image = request.FILES['assistant_image']
-        assistant.save()
-
-        return redirect('assistants:update', pk=assistant.id)
+            agent.assistant_image = request.FILES['assistant_image']
+        agent.save()
+        return redirect('assistants:update', pk=agent.id)

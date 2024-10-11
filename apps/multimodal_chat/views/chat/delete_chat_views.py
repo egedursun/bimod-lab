@@ -14,35 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DeleteView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.multimodal_chat.models import MultimodalChat
-from apps.multimodal_chat.utils import ChatSourcesNames
+from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ChatDeleteView(LoginRequiredMixin, DeleteView):
-    """
-    Handles the deletion of multimodal chats.
-
-    This view allows users to delete specific chats after confirming the action. Only chats that belong to the authenticated user can be deleted.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context for the chat deletion confirmation page.
-        get_queryset(self): Filters the queryset to only include chats that belong to the authenticated user.
-        post(self, request, *args, **kwargs): Processes the deletion of the specified chat.
-    """
-
+class ChatView_ChatDelete(LoginRequiredMixin, DeleteView):
     template_name = 'multimodal_chat/chats/confirm_delete_chat.html'
     success_url = '/chat/'
 
@@ -53,7 +38,7 @@ class ChatDeleteView(LoginRequiredMixin, DeleteView):
         return context
 
     def get_queryset(self):
-        return MultimodalChat.objects.filter(user=self.request.user, chat_source=ChatSourcesNames.APP)
+        return MultimodalChat.objects.filter(user=self.request.user, chat_source=SourcesForMultimodalChatsNames.APP)
 
     def post(self, request, *args, **kwargs):
         ##############################

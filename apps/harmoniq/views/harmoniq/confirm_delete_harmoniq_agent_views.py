@@ -14,18 +14,35 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-
-
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.harmoniq.models import Harmoniq
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ConfirmDeleteHarmoniqAgentView(LoginRequiredMixin, TemplateView):
+class HarmoniqView_ConfirmDelete(LoginRequiredMixin, TemplateView):
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        return
+        harmoniq_agent = get_object_or_404(Harmoniq, id=self.kwargs['pk'])
+        context['assistant'] = harmoniq_agent
+        return context
 
     def post(self, request, *args, **kwargs):
-        return
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_HARMONIQ_AGENTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_HARMONIQ_AGENTS):
+            messages.error(self.request, "You do not have permission to delete Harmoniq Agents.")
+            return redirect('harmoniq:list')
+        ##############################
+
+        harmoniq_agent = get_object_or_404(Harmoniq, id=self.kwargs['pk'])
+        harmoniq_agent.delete()
+        messages.success(request, f'The Harmoniq agent "{harmoniq_agent.name}" has been successfully deleted.')
+        return redirect('harmoniq:list')

@@ -22,10 +22,7 @@ from django.db import models
 class BrainstormingCompleteSynthesis(models.Model):
     brainstorming_session = models.ForeignKey('BrainstormingSession', on_delete=models.CASCADE)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-
-    # No need for having the field 'ideas', since they can be retrieved directly from 'brainstorming_session' object.
     synthesis_content = models.TextField()
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -37,7 +34,6 @@ class BrainstormingCompleteSynthesis(models.Model):
         verbose_name_plural = 'Brainstorming Complete Syntheses'
         ordering = ['-created_at']
         unique_together = ['brainstorming_session']
-
         indexes = [
             models.Index(fields=['brainstorming_session']),
             models.Index(fields=['created_by_user']),

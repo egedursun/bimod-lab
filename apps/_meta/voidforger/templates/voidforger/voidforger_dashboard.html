@@ -1,12 +1,3 @@
-{% extends layout_path %}
-
-{% load static %}
-{% load i18n %}
-
-{% block title %}{% get_theme_variables 'template_name' %} | Login{% endblock %}
-
-{% block vendor_css %}
-  {{ block.super }}
   <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -26,6 +17,15 @@
   ~
   -->
 
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% get_theme_variables 'template_name' %} | Login{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
 <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}"/>
 {% endblock vendor_css %}
 
@@ -40,7 +40,6 @@
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'vendor/css/pages/page-auth.css' %}"/>
   <link rel="stylesheet" href="{% static  'vendor/css/pages/front-page-landing.css' %}">
-  <!-- Custom styles for the horizontal card at the bottom -->
   <style>
     .bottom-form-card {
       position: absolute;
@@ -62,8 +61,6 @@
       margin-right: 20px;
     }
   </style>
-
-  <!-- forger animation -->
   <style>
     @keyframes forgerAnimation {
       0%, 100% {
@@ -73,7 +70,6 @@
         filter: saturate(0.75) hue-rotate(0deg);
       }
     }
-
     @keyframes bgAnimation {
       0%, 100% {
         filter: contrast(1.0) hue-rotate(-10deg);
@@ -82,8 +78,6 @@
         filter: contrast(1.5) hue-rotate(10deg);
       }
     }
-
-    /* legion node: signal send animation */
     @keyframes legionSignalSend {
       0% {
         filter: saturate(1.0) hue-rotate(0deg);
@@ -95,8 +89,6 @@
         filter: saturate(1.0) hue-rotate(720deg)
       }
     }
-
-    /* legion node: signal receive animation */
     @keyframes legionSignalReceive {
       0% {
         filter: saturate(1.0) hue-rotate(0deg);
@@ -108,8 +100,6 @@
         filter: saturate(1.0) hue-rotate(-540deg)
       }
     }
-
-    /* legion node: signal processing animation */
     @keyframes legionSignalProcessing {
       0% {
         filter: saturate(1.0) hue-rotate(0deg);
@@ -124,8 +114,6 @@
         filter: saturate(1.0) hue-rotate(0deg)
       }
     }
-
-    /* legion node: idle animation */
     @keyframes legionIdle {
       0% {
         filter: saturate(1.0) hue-rotate(-180deg);
@@ -137,41 +125,27 @@
         filter: saturate(1.0) hue-rotate(-180deg)
       }
     }
-
-    /* ############ */
-
     #forger-img {
       animation: forgerAnimation 5s infinite ease-in-out;
     }
-
     #bg-img {
       animation: bgAnimation 15s infinite ease-in-out;
     }
-
-    /* ############ */
-
     #legion-node1 {
       animation: legionSignalSend 1s infinite ease-in-out;
     }
-
     #legion-node2 {
       animation: legionIdle 1s infinite ease-in-out;
     }
-
     #legion-node3 {
       animation: legionSignalReceive 1s infinite ease-in-out;
     }
-
     #legion-node4 {
       animation: legionIdle 1s infinite ease-in-out;
     }
-
     #legion-node5 {
       animation: legionSignalProcessing 1s infinite ease-in-out;
     }
-
-    /* ########### */
-
   </style>
 
 {% endblock page_css %}
@@ -184,9 +158,7 @@
 
 {% block content %}
   <div class="authentication-wrapper authentication-cover">
-    <!-- Logo -->
     <a href="{% url 'landing:index' %}" class="app-brand auth-cover-brand">
-      <!-- we will be redirecting this to the endeavours page -->
       <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 60px;" class="ms-0">
       <span class="app-brand-text demo text-heading fw-bold">{% get_theme_variables 'template_name' %}</span>
     </a>
@@ -194,10 +166,7 @@
          style="position: fixed; top:0; left:0; width: 100vw; height: 100vh; object-fit: cover;" alt="Voidforger with armor image">
     <img id="forger-img" src="{% static 'img/voidforger/voidforger-suited.png' %}" class="rounded"
          style="position: absolute; bottom:0; left:0; height: 950px;" alt="Voidforger with suit image">
-    <!-- /Logo -->
     <div class="authentication-inner row m-0">
-      <!-- Full page content here -->
-
       <div class="card border border-primary border-3 rounded"
            style="position: absolute; left: 50%; top: 15px; width: 49%;">
         <div class="card-body">
@@ -302,94 +271,62 @@
           </div>
         </div>
       </div>
-
-
-      <!-- operation node 1 -->
       <small id="operation-node-0" class="bg-label-primary border border-2 border-primary rounded p-4 mt-2 ms-2"
              style="position: absolute; top: 1%; left: 44%; width: 60px;">
         <strong>
           ST0
         </strong>
       </small>
-
-      <!-- operation node 2 -->
       <small id="operation-node-1" class="bg-label-success border border-2 border-success rounded p-4 mt-2 ms-2"
              style="position: absolute; top: 7%; left: 44%; width: 60px;">
         <strong>
           STA
         </strong>
       </small>
-
-      <!-- operation node 3 -->
       <small id="operation-node-2" class="bg-label-warning border border-2 border-warning rounded p-4 mt-2 ms-2"
              style="position: absolute; top: 13%; left: 44%; width: 60px;">
         <strong>
           STB
         </strong>
       </small>
-
-      <!-- operation node 4 -->
       <small id="operation-node-3" class="bg-label-primary border border-2 border-primary rounded p-4 mt-2 ms-2"
              style="position: absolute; top: 19%; left: 44%; width: 60px;">
         <strong>
           ST0
         </strong>
       </small>
-
-      <!-- operation node 5 -->
       <small id="operation-node-4" class="bg-label-primary border border-2 border-primary rounded p-4 mt-2 ms-2"
              style="position: absolute; top: 25%; left: 44%; width: 60px;">
         <strong>
           ST0
         </strong>
       </small>
-
-      <!-- operation node 6 -->
       <small id="operation-node-5" class="bg-label-primary border border-2 border-primary rounded p-4 mt-2 ms-2"
              style="position: absolute; top: 31%; left: 44%; width: 60px;">
         <strong>
           ST0
         </strong>
       </small>
-
-      <!-- operation node 7 -->
       <small id="operation-node-6" class="bg-label-danger border border-2 border-danger rounded p-4 mt-2 ms-2"
              style="position: absolute; top: 37%; left: 44%; width: 60px;">
         <strong>
           STC
         </strong>
       </small>
-
-      <!-- operation node 8 -->
       <small id="operation-node-7" class="bg-label-primary border border-2 border-primary rounded p-4 mt-2 ms-2"
              style="position: absolute; top: 43%; left: 44%; width: 60px;">
         <strong>
           ST0
         </strong>
       </small>
-
-      <!-- operation node 9 -->
       <small id="operation-node-8" class="bg-label-primary border border-2 border-primary rounded p-4 mt-2 ms-2"
              style="position: absolute; top: 49%; left: 44%; width: 60px;">
         <strong>
           ST0
         </strong>
       </small>
-
-      <!-- Horizontal Form at the bottom as a card -->
-      <!--
-      <div class="col-12 bottom-form-card" style="margin-bottom: 40px;">
-        <div class="card">
-          <div class="card-body">
-
-          </div>
-        </div>
-      </div>
-      -->
-      <!-- /Horizontal Form at the bottom -->
     </div>
   </div>
-
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const element = document.getElementById('non-tool-markdown-content');
@@ -398,9 +335,7 @@
       const maxRetries = 1000;
       let retryCount = 0;
       let accumulatedContent = '';
-
       function connectWebSocket() {
-
         function getAnimationName(status) {
           switch (status) {
             case 'idle':
@@ -415,7 +350,6 @@
               return ''; // No animation for undefined states
           }
         }
-
         function getLogColorClass(type) {
           switch (type) {
             case 'ST0':
@@ -427,43 +361,31 @@
             case 'STC':
               return 'danger';
             default:
-              return 'primary'; // Default if type is unknown
+              return 'primary';
           }
         }
-
         function updateOperationNode(type) {
           const nodeElement = document.getElementById(id);
           if (nodeElement) {
-            // Remove all potential classes
             nodeElement.classList.remove('log-primary', 'log-success', 'log-warning', 'log-danger');
-            // Add the new appropriate class
             nodeElement.classList.add(getLogColorClass(type));
-            // Update the content
             nodeElement.innerText = content;
           }
         }
-
-        // Determine the correct WebSocket protocol based on the current page's protocol
         let protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-        // Construct the WebSocket URL with the unique group identifier
         socket = new WebSocket(protocol + window.location.host + `/ws/voidforge_operation_logs/`);
         socket.onmessage = function (event) {
           let data = JSON.parse(event.data);
           let letter = data.log;
-
           let operationNodesData = letter['operation_nodes'];
           let legionNodesData = letter['legion_nodes'];
           let streamTextData = letter['stream_text'];
           let tradingText = letter['trading_text'];
           console.log(tradingText);
-
           if (streamTextData != null) {
-
-            // check the length of the streamed data, if longer than N characters, clean it
             if (element.innerHTML.toString().length > 10000) {
               element.innerHTML = "";
             }
-
             element.innerHTML += `
                <div class="bg-label-primary rounded m-2 p-4">
                 <strong class="text-white">${streamTextData}</strong>
@@ -474,14 +396,10 @@
               behavior: 'smooth'
             });
           }
-
           if (tradingText != null && tradingText !== ''){
-
-            // check the length of the streamed data, if longer than N characters, clean it
             if (element2.innerHTML.toString().length > 10000) {
               element2.innerHTML = "";
             }
-
             element2.innerHTML += `
                <div class="bg-label-primary rounded m-2 p-4">
                 <strong class="text-white">${tradingText}</strong>
@@ -492,7 +410,6 @@
               behavior: 'smooth'
             });
           }
-
           legionNodesData.forEach((status, index) => {
             const nodeId = `legion-node${index + 1}`;
             const nodeElement = document.getElementById(nodeId);
@@ -500,13 +417,12 @@
               nodeElement.style.animationName = getAnimationName(status);
             }
           });
-
           operationNodesData.forEach((status, index) => {
             let typeColor = getLogColorClass(status);
             let nodeElement = document.getElementById(`operation-node-${index}`);
             if (nodeElement) {
               nodeElement.className = `bg-label-${typeColor} border border-2 border-${typeColor} rounded p-4 mt-2 ms-2`;
-              nodeElement.innerHTML = `<strong>${status}</strong>`; // Update content
+              nodeElement.innerHTML = `<strong>${status}</strong>`;
             }
           });
         };
@@ -519,16 +435,14 @@
           if (retryCount < maxRetries) {
             retryCount++;
             console.log(`Reconnecting... attempt ${retryCount}`);
-            setTimeout(connectWebSocket, 2000); // Reconnect after 2 seconds
+            setTimeout(connectWebSocket, 2000);
           } else {
             console.error("Max reconnection attempts reached. Unable to reconnect.");
           }
         };
       }
-
       connectWebSocket(); // Initial connection attempt
       console.log("WebSocket connection established successfully.");
     });
   </script>
-
 {% endblock content %}

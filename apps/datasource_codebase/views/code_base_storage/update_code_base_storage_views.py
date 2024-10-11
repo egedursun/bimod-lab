@@ -23,7 +23,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_codebase.forms import CodeRepositoryStorageForm
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection
@@ -32,25 +32,24 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CodeBaseStorageUpdateView(LoginRequiredMixin, TemplateView):
+class CodeBaseView_StorageUpdate(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        knowledge_base = get_object_or_404(CodeRepositoryStorageConnection, pk=kwargs['pk'])
+        vector_store = get_object_or_404(CodeRepositoryStorageConnection, pk=kwargs['pk'])
         context['user'] = context_user
         context['knowledge_base_systems'] = KNOWLEDGE_BASE_SYSTEMS
         context['vectorizers'] = VECTORIZERS
-        user_organizations = context_user.organizations.all()
-        assistants_of_organizations = Assistant.objects.filter(organization__in=user_organizations)
-        context['assistants'] = assistants_of_organizations
-        context['connection'] = knowledge_base
-        context['form'] = CodeRepositoryStorageForm(instance=knowledge_base)
+        user_orgs = context_user.organizations.all()
+        agents_of_orgs = Assistant.objects.filter(organization__in=user_orgs)
+        context['assistants'] = agents_of_orgs
+        context['connection'] = vector_store
+        context['form'] = CodeRepositoryStorageForm(instance=vector_store)
         return context
 
     def post(self, request, *args, **kwargs):
-        knowledge_base = get_object_or_404(CodeRepositoryStorageConnection, pk=kwargs['pk'])
-        context_user = self.request.user
+        vector_store = get_object_or_404(CodeRepositoryStorageConnection, pk=kwargs['pk'])
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_CODE_BASE
@@ -60,11 +59,10 @@ class CodeBaseStorageUpdateView(LoginRequiredMixin, TemplateView):
             return redirect('datasource_codebase:list')
         ##############################
 
-        form = CodeRepositoryStorageForm(request.POST, instance=knowledge_base)
+        form = CodeRepositoryStorageForm(request.POST, instance=vector_store)
         if form.is_valid():
             form.save()
             messages.success(request, "Code Base Storage updated successfully.")
-            print('[CodeBaseStorageUpdateView.post] Code Base Storage updated successfully.')
             return redirect('datasource_codebase:list')
         else:
             messages.error(request, "Error updating Code Base Storage. Please check the form for errors.")

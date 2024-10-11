@@ -32,22 +32,20 @@ def start_endpoint_for_orchestration(assistant: ExportOrchestrationAPI):
     from apps.export_orchestrations.views import ExportOrchestrationAPIView
     endpoint_url = assistant.endpoint
     endpoint_local = EXPORT_ORCHESTRATION_API_BASE_URL + endpoint_url.split(EXPORT_ORCHESTRATION_API_BASE_URL)[1]
-
-    # Register the endpoint with Django's URL routing system
     urlpatterns = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
     urlpatterns += [
         path(endpoint_local, ExportOrchestrationAPIView.as_view(), name=f'export_assistant_{assistant.id}')
     ]
-    print(f"[start_exported_orchestrations.start_endpoint_for_orchestration] Started endpoint for orchestrator {assistant.orchestrator.name} at {endpoint_local}")
 
 
 def initialize_orchestration_endpoints():
-    for assistant in ExportOrchestrationAPI.objects.all():
-        assistant: ExportOrchestrationAPI
-        if assistant.is_online:
-            start_endpoint_for_orchestration(assistant)
+    for agent in ExportOrchestrationAPI.objects.all():
+        agent: ExportOrchestrationAPI
+        if agent.is_online:
+            start_endpoint_for_orchestration(agent)
         else:
-            print(f"[start_exported_orchestrations.initialize_orchestration_endpoints] Export orchestrator {assistant.orchestrator.name} is offline. Skipping...")
+            # SKIP: OFFLINE
+            pass
 
 
 class Command(BaseCommand):

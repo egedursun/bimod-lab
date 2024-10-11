@@ -20,12 +20,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingIdea
 from apps.user_permissions.utils import PermissionNames
 
 
-class DeleteIdeaView(LoginRequiredMixin, View):
+class BrainstormingView_IdeaDelete(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         idea_id = self.kwargs.get('idea_id')
         idea = get_object_or_404(BrainstormingIdea, id=idea_id, created_by_user=request.user)
@@ -38,8 +38,7 @@ class DeleteIdeaView(LoginRequiredMixin, View):
             return redirect('brainstorms:detail_session', session_id=idea.brainstorming_session.id)
         ##############################
 
-        session_id = idea.brainstorming_session.id
+        ss_id = idea.brainstorming_session.id
         idea.delete()
-
         messages.success(request, f'Idea "{idea.idea_title}" has been deleted successfully.')
-        return redirect('brainstorms:detail_session', session_id=session_id)
+        return redirect('brainstorms:detail_session', session_id=ss_id)

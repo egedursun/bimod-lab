@@ -26,14 +26,9 @@ from apps.organization.models import Organization
 from web_project import TemplateLayout
 
 
-class TransferBalanceView(LoginRequiredMixin, TemplateView):
-    """
-    TransferBalanceView: This view is used to transfer balance from one organization to another.
-    """
-    template_name = "llm_transaction/topup/transfer_balance.html"
-
+class Transactions_BalanceTransfer(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        organizations = Organization.objects.filter(users__in=[self.request.user]).all()
-        context['organizations'] = organizations
+        orgs = Organization.objects.filter(users__in=[self.request.user]).all()
+        context['organizations'] = orgs
         return context

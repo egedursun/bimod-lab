@@ -20,40 +20,35 @@
 
 from django.contrib import admin
 
-from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
+from apps.core.vector_operations.intra_context_memory.memory_executor import IntraContextMemoryExecutor
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
-from apps.datasource_knowledge_base.utils import generate_chat_history_class_name
+from apps.datasource_knowledge_base.utils import build_weaviate_intra_memory_class_name, INTRA_MEMORY_ADMIN_LIST, \
+    INTRA_MEMORY_ADMIN_FILTER, INTRA_MEMORY_ADMIN_SEARCH
 
 
 @admin.register(ContextHistoryKnowledgeBaseConnection)
 class ContextHistoryKnowledgeBaseConnectionAdmin(admin.ModelAdmin):
-    list_display = ["class_name", "vectorizer", "vectorizer_api_key", "created_at", "updated_at"]
-    list_filter = ["class_name", "vectorizer"]
-    search_fields = ["class_name", "vectorizer"]
+    list_display = INTRA_MEMORY_ADMIN_LIST
+    list_filter = INTRA_MEMORY_ADMIN_FILTER
+    search_fields = INTRA_MEMORY_ADMIN_SEARCH
     readonly_fields = ['created_at', 'updated_at']
 
-    list_per_page = 20
-    list_max_show_all = 100
-
     def save_model(self, request, obj, form, change):
-
         if obj.vectorizer is None:
             obj.vectorizer = "text2vec-openai"
-
         if obj.class_name is None:
-            obj.class_name = generate_chat_history_class_name()
+            obj.class_name = build_weaviate_intra_memory_class_name()
         super().save_model(request, obj, form, change)
-
-        client = MemoryExecutor(connection=obj)
-        if client is not None:
-            result = client.create_chat_history_classes()
+        c = IntraContextMemoryExecutor(connection=obj)
+        if c is not None:
+            result = c.create_chat_history_classes()
             if not result["status"]:
-                print(f"Error creating Weaviate classes: {result['error']}")
+                pass
 
     def delete_model(self, request, obj):
-        client = MemoryExecutor(connection=self)
-        if client is not None:
-            result = client.delete_chat_history_classes(class_name=obj.class_name)
-            if not result["status"]:
-                print(f"Error deleting Chat History class: {result['error']}")
+        c = IntraContextMemoryExecutor(connection=self)
+        if c is not None:
+            o = c.delete_chat_history_classes(class_name=obj.class_name)
+            if not o["status"]:
+                pass
         super().delete_model(request, obj)

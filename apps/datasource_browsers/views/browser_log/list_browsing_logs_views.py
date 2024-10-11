@@ -24,22 +24,13 @@ from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListBrowsingLogsView(LoginRequiredMixin, TemplateView):
-    """
-    Displays a list of browsing logs for a specific browser connection.
-
-    This view allows users to search and paginate through browsing logs associated with a specific browser connection. It supports filtering logs based on a search query.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the browsing logs for the specified browser connection, applies search filters, and adds them to the context.
-    """
-
+class BrowserView_BrowserLogList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -51,21 +42,19 @@ class ListBrowsingLogsView(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        connection_id = kwargs.get('pk')
-        browser_connection = get_object_or_404(DataSourceBrowserConnection, pk=connection_id)
-        context['browser_connection'] = browser_connection
-
-        logs = browser_connection.logs.all()
+        c_id = kwargs.get('pk')
+        browser_c = get_object_or_404(DataSourceBrowserConnection, pk=c_id)
+        context['browser_connection'] = browser_c
+        logs = browser_c.logs.all()
         search_query = self.request.GET.get('search', '')
         if search_query:
             logs = logs.filter(action__icontains=search_query) | logs.filter(
                 html_content__icontains=search_query) | logs.filter(
                 context_content__icontains=search_query) | logs.filter(log_content__icontains=search_query)
 
-        paginator = Paginator(logs, 10)  # Show 10 logs per page
+        paginator = Paginator(logs, 10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         context['search_query'] = search_query
-        print("[ListBrowsingLogsView.get_context_data] Browser Browsing Logs listed successfully.")
         return context

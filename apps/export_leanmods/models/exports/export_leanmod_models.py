@@ -33,13 +33,10 @@ class ExportLeanmodAssistantAPI(models.Model):
     is_public = models.BooleanField(default=False)
     request_limit_per_hour = models.IntegerField(default=1000)
     is_online = models.BooleanField(default=True)
-
     custom_api_key = models.CharField(max_length=1000, blank=True, null=True, unique=True)
     endpoint = models.CharField(max_length=1000, blank=True, null=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                         related_name='export_lean_assistants_created_by_user')
 
@@ -50,14 +47,12 @@ class ExportLeanmodAssistantAPI(models.Model):
         if not self.endpoint:
             self.endpoint = BASE_URL + "/" + EXPORT_LEANMOD_API_BASE_URL + "/" + generate_leanmod_assistant_endpoint(
                 self.lean_assistant)
-        # generate the API key for non-public usage of the exported assistant
         if not self.custom_api_key and (not self.is_public):
             self.custom_api_key = generate_leanmod_assistant_custom_api_key(self.lean_assistant)
         super().save(force_insert, force_update, using, update_fields)
 
     def requests_in_last_hour(self):
         from apps.export_leanmods.models import LeanmodRequestLog
-
         one_hour_ago = timezone.now() - timezone.timedelta(hours=1)
         return LeanmodRequestLog.objects.filter(export_lean_assistant=self, timestamp__gte=one_hour_ago).count()
 

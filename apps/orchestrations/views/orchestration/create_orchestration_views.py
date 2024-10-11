@@ -23,7 +23,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.llm_core.models import LLMCore
 from apps.orchestrations.forms import MaestroForm
@@ -32,12 +32,7 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CreateOrchestrationView(LoginRequiredMixin, TemplateView):
-    """
-    Handles the creation of a new orchestration within the Bimod platform.
-    """
-    template_name = 'orchestrations/create_orchestration.html'
-
+class OrchestrationView_Create(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['form'] = MaestroForm()
@@ -62,15 +57,12 @@ class CreateOrchestrationView(LoginRequiredMixin, TemplateView):
             maestro.created_by_user = request.user
             maestro.last_updated_by_user = request.user
             maestro.save()
-
-            # Save workers
             workers = request.POST.getlist('workers')
             maestro.workers.set(workers)
-
             return redirect('orchestrations:list')
         else:
-            error_messages = form.errors
+            error_msgs = form.errors
             context = self.get_context_data(**kwargs)
             context['form'] = form
-            context['error_messages'] = error_messages
+            context['error_messages'] = error_msgs
             return self.render_to_response(context)

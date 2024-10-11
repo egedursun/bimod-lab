@@ -49,4 +49,13 @@ CUSTOM_FUNCTION_CATEGORIES = [
     ("utilities", "Utilities"),
     ("miscellaneous", "Miscellaneous"),
 ]
+
 NUMBER_OF_RANDOM_FEATURED_FUNCTIONS = 5
+
+CUSTOM_FUNCTION_ADMIN_LIST = ("name", "is_public", "created_at", "updated_at")
+CUSTOM_FUNCTION_ADMIN_FILTER = ("is_public",)
+CUSTOM_FUNCTION_ADMIN_SEARCH = ("name", "description")
+
+CUSTOM_FUNCTION_REF_ADMIN_LIST = ("custom_function", "assistant", "created_by_user", "created_at", "updated_at")
+CUSTOM_FUNCTION_REF_ADMIN_FILTER = ("assistant", "created_by_user")
+CUSTOM_FUNCTION_REF_ADMIN_SEARCH = ("custom_function__name", "assistant__name")

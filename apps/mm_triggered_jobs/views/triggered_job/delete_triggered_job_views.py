@@ -24,24 +24,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_triggered_jobs.models import TriggeredJob
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ConfirmDeleteTriggeredJobView(LoginRequiredMixin, TemplateView):
-    """
-    Handles the deletion of triggered jobs.
-
-    This view allows users to delete specific triggered jobs, provided they have the necessary permissions. The view
-    presents a confirmation page before the deletion is processed.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context for the deletion confirmation page.
-        post(self, request, *args, **kwargs): Processes the deletion of the specified triggered job.
-    """
-
+class TriggeredJobView_Delete(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         triggered_job_id = self.kwargs.get('pk')
@@ -61,6 +50,5 @@ class ConfirmDeleteTriggeredJobView(LoginRequiredMixin, TemplateView):
         triggered_job_id = self.kwargs.get('pk')
         triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)
         triggered_job.delete()
-        print('[ConfirmDeleteTriggeredJobView.post] Triggered Job deleted successfully.')
         messages.success(request, "Triggered Job deleted successfully.")
         return redirect('mm_triggered_jobs:list')

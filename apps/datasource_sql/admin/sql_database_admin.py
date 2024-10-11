@@ -22,27 +22,19 @@ import psycopg2
 from django.contrib import admin
 
 from apps.datasource_sql.models import SQLDatabaseConnection
-from apps.datasource_sql.utils import DBMSChoicesNames
+from apps.datasource_sql.utils import DBMSChoicesNames, POSTGRESQL_SCHEMA_RETRIEVAL_QUERY, \
+    POSTGRESQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY, MYSQL_SCHEMA_RETRIEVAL_QUERY, MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY, \
+    SQL_DATABASE_ADMIN_LIST, SQL_DATABASE_ADMIN_FILTER, SQL_DATABASE_ADMIN_SEARCH
 import mysql.connector
 
 
 @admin.register(SQLDatabaseConnection)
 class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'assistant', 'dbms_type', 'name', 'description', 'host', 'port', 'database_name', 'username',
-                    'one_time_sql_retrieval_instance_limit', 'one_time_sql_retrieval_token_limit',
-                    'is_read_only', 'password', 'created_at', 'updated_at', 'created_by_user')
-    list_filter = ('dbms_type', 'created_at', 'updated_at')
-    search_fields = ('name', 'host', 'database_name', 'username', 'is_read_only')
+    list_display = SQL_DATABASE_ADMIN_LIST
+    list_filter = SQL_DATABASE_ADMIN_FILTER
+    search_fields = SQL_DATABASE_ADMIN_SEARCH
     ordering = ('-created_at',)
     readonly_fields = ('created_at', 'updated_at')
-    fieldsets = (
-        (None, {
-            'fields': ('assistant', 'dbms_type', 'name', 'description', 'host', 'port', 'database_name', 'username',
-                       'one_time_sql_retrieval_instance_limit', 'one_time_sql_retrieval_token_limit',
-                       'is_read_only', 'password', 'schema_data_json', 'created_by_user')
-        }),
-        ('Dates', {'fields': ('created_at', 'updated_at')}),
-    )
 
     def save_model(self, request, obj, form, change):
         obj.schema_data_json = self.retrieve_schema(obj)
@@ -56,66 +48,43 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
             schema = self.retrieve_mysql_schema(obj)
         return schema
 
-    # Retrieve Postgres schema data from the database
     def retrieve_postgresql_schema(self, obj):
         schema = {}
         try:
-            connection = psycopg2.connect(
+            c = psycopg2.connect(
                 dbname=obj.database_name, user=obj.username, password=obj.password, host=obj.host, port=obj.port
             )
-            cursor = connection.cursor()
-            cursor.execute(
-                f"""
-                SELECT table_name
-                FROM information_schema.tables
-                WHERE table_schema NOT IN ('information_schema', 'pg_catalog');
-                """)
-            tables = cursor.fetchall()
+            csr = c.cursor()
+            csr.execute(POSTGRESQL_SCHEMA_RETRIEVAL_QUERY)
+            tables = csr.fetchall()
             for table in tables:
                 table_name = table[0]
-                cursor.execute(
-                    f"""
-                    SELECT column_name, data_type FROM information_schema.columns WHERE table_name = '{table_name}'
-                    """)
-                columns = cursor.fetchall()
+                csr.execute(POSTGRESQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY, (table_name,))
+                columns = csr.fetchall()
                 schema[table_name] = [{'name': col[0], 'type': col[1]} for col in columns]
-            cursor.close()
-            connection.close()
+            csr.close()
+            c.close()
         except Exception as e:
-            print(f"[SQLDatabaseConnectionAdmin.retrieve_postgresql_schema] Error retrieving PostgreSQL schema: {e}")
             return {}
         return schema
 
     def retrieve_mysql_schema(self, obj):
         schema = {}
         try:
-            connection = mysql.connector.connect(
-                user=obj.username,
-                password=obj.password,
-                host=obj.host,
-                database=obj.database_name,
+            c = mysql.connector.connect(
+                user=obj.username, password=obj.password, host=obj.host, database=obj.database_name,
                 port=obj.port
             )
-            cursor = connection.cursor()
-            cursor.execute(
-                f"""
-                SELECT table_name
-                FROM information_schema.tables
-                WHERE table_schema NOT IN ('information_schema', 'mysql', 'performance_schema', 'sys');
-                """)
-            tables = cursor.fetchall()
+            csr = c.cursor()
+            csr.execute(MYSQL_SCHEMA_RETRIEVAL_QUERY)
+            tables = csr.fetchall()
             for table in tables:
                 table_name = table[0]
-                cursor.execute(
-                    f"""
-                    SELECT column_name, data_type FROM information_schema.columns
-                    WHERE table_name = '{table_name}'
-                    """)
-                columns = cursor.fetchall()
+                csr.execute(MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY, (table_name,))
+                columns = csr.fetchall()
                 schema[table_name] = [{'name': col[0], 'type': col[1]} for col in columns]
-            cursor.close()
-            connection.close()
+            csr.close()
+            c.close()
         except Exception as e:
-            print(f"[SQLDatabaseConnectionAdmin.retrieve_mysql_schema] Error retrieving MySQL schema: {e}")
             return {}
         return schema

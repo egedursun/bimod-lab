@@ -25,9 +25,6 @@ FINE_TUNING_MODEL_PROVIDERS = [
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
 class FineTunedModelTypesNames:
     GPT_4O_MINI = 'gpt-4o-mini'
@@ -37,9 +34,7 @@ class FineTunedModelTypesNames:
     @staticmethod
     def as_list():
         return [
-            FineTunedModelTypesNames.GPT_4O_MINI,
-            FineTunedModelTypesNames.GPT_4O,
-            FineTunedModelTypesNames.GPT_4,
+            FineTunedModelTypesNames.GPT_4O_MINI, FineTunedModelTypesNames.GPT_4O, FineTunedModelTypesNames.GPT_4,
         ]
 
 
@@ -51,3 +46,7 @@ class FineTuningModelProvidersNames:
         return [
             FineTuningModelProvidersNames.OPENAI,
         ]
+
+
+FINETUNING_ADMIN_LIST = ('organization', 'nickname', 'model_name', "provider", 'model_type', 'created_at')
+FINETUNING_ADMIN_SEARCH = ('organization', 'nickname', 'model_name', "provider", 'model_type', 'model_description')

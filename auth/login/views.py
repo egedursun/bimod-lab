@@ -14,7 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
+
 
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
@@ -26,9 +26,7 @@ from auth.views import AuthView
 class LoginView(AuthView):
     def get(self, request):
         if request.user.is_authenticated:
-            # If the user is already logged in, redirect them to the home page or another appropriate page.
             return redirect("dashboard:main-dashboard")
-        # Render the login page for users who are not logged in.
         return super().get(request)
 
     def post(self, request):
@@ -50,12 +48,10 @@ class LoginView(AuthView):
                 return redirect("login")
             authenticated_user = authenticate(request, username=username, password=password)
             if authenticated_user is not None:
-                # Login the user if authentication is successful
                 login(request, authenticated_user)
-                # Redirect to the page the user was trying to access before logging in
                 if "next" in request.POST:
                     return redirect(request.POST["next"])
-                else:  # Redirect to the home page or another appropriate page
+                else:
                     return redirect("dashboard:main-dashboard")
             else:
                 messages.error(request, "Either the username or password is incorrect. Please try again.")

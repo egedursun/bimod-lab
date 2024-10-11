@@ -20,32 +20,25 @@
 
 from django.urls import path
 
-from apps.datasource_sql.views import CreateSQLDatabaseConnectionView, ListSQLDatabaseConnectionsView, \
-    CreateSQLQueryView, UpdateSQLDatabaseConnectionView, DeleteSQLDatabaseConnectionView, UpdateSQLQueryView, \
-    DeleteSQLQueryView, ListSQLQueriesView
+from apps.datasource_sql.views import SQLDatabaseView_ManagerCreate, SQLDatabaseView_ManagerList, \
+    SQLDatabaseView_QueryCreate, SQLDatabaseView_ManagerUpdate, SQLDatabaseView_ManagerDelete, SQLDatabaseView_QueryUpdate, \
+    SQLDatabaseView_QueryDelete, SQLDatabaseView_QueryList
 
 app_name = "datasource_sql"
 
 urlpatterns = [
-    path("create/", CreateSQLDatabaseConnectionView.as_view(
-        template_name="datasource_sql/connections/create_sql_datasources.html"
-    ), name="create"),
-    path("list/", ListSQLDatabaseConnectionsView.as_view(
-        template_name="datasource_sql/connections/list_sql_datasources.html"
-    ), name="list"),
-    path("update/<int:pk>/", UpdateSQLDatabaseConnectionView.as_view(
-        template_name="datasource_sql/connections/update_sql_datasources.html"
-    ), name="update"),
-    path("delete/<int:pk>/", DeleteSQLDatabaseConnectionView.as_view(), name="delete"),
-
-    path("create_query/", CreateSQLQueryView.as_view(
-        template_name="datasource_sql/queries/create_sql_query.html"
-    ), name="create_query"),
-    path("list_queries/", ListSQLQueriesView.as_view(
-        template_name="datasource_sql/queries/list_sql_queries.html"
-    ), name="list_queries"),
-    path("update_query/<int:pk>/", UpdateSQLQueryView.as_view(
-        template_name="datasource_sql/queries/update_sql_query.html"
-    ), name="update_query"),
-    path("delete_query/<int:pk>/", DeleteSQLQueryView.as_view(), name="delete_query"),
+    path("create/", SQLDatabaseView_ManagerCreate.as_view(
+        template_name="datasource_sql/connections/create_sql_datasources.html"), name="create"),
+    path("list/", SQLDatabaseView_ManagerList.as_view(
+        template_name="datasource_sql/connections/list_sql_datasources.html"), name="list"),
+    path("update/<int:pk>/", SQLDatabaseView_ManagerUpdate.as_view(
+        template_name="datasource_sql/connections/update_sql_datasources.html"), name="update"),
+    path("delete/<int:pk>/", SQLDatabaseView_ManagerDelete.as_view(), name="delete"),
+    path("create_query/", SQLDatabaseView_QueryCreate.as_view(
+        template_name="datasource_sql/queries/create_sql_query.html"), name="create_query"),
+    path("list_queries/", SQLDatabaseView_QueryList.as_view(
+        template_name="datasource_sql/queries/list_sql_queries.html"), name="list_queries"),
+    path("update_query/<int:pk>/", SQLDatabaseView_QueryUpdate.as_view(
+        template_name="datasource_sql/queries/update_sql_query.html"), name="update_query"),
+    path("delete_query/<int:pk>/", SQLDatabaseView_QueryDelete.as_view(), name="delete_query"),
 ]

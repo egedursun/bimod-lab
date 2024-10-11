@@ -19,21 +19,12 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListLLMCoreView(LoginRequiredMixin, TemplateView):
-    """
-    Displays a list of all LLM Core models associated with the user's organizations.
-
-    This view retrieves all LLM Core models linked to the organizations that the user belongs to and displays them.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the LLM Core models for the user's organizations and adds them to the context.
-    """
-
+class LLMView_List(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -46,11 +37,10 @@ class ListLLMCoreView(LoginRequiredMixin, TemplateView):
         ##############################
 
         user = self.request.user
-        organizations = user.organizations.all()
-        # retrieve the llm cores for every organization and store in the dictionary
-        llm_cores = {}
-        for organization in organizations:
-            llm_cores[organization] = organization.llm_cores.all()
-        context['organizations'] = organizations
-        context['org_llm_cores'] = llm_cores
+        orgs = user.organizations.all()
+        llms = {}
+        for org in orgs:
+            llms[org] = org.llm_cores.all()
+        context['organizations'] = orgs
+        context['org_llm_cores'] = llms
         return context

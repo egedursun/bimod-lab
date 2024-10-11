@@ -14,18 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
 from django.contrib import admin
 
 from apps.mm_triggered_jobs.models import TriggeredJobInstance
+from apps.mm_triggered_jobs.utils import TRIGGERED_JOB_INSTANCE_ADMIN_LIST, TRIGGERED_JOB_INSTANCE_ADMIN_SEARCH, \
+    TRIGGERED_JOB_INSTANCE_ADMIN_FILTER
 
 
 @admin.register(TriggeredJobInstance)
 class ScheduledJobInstanceAdmin(admin.ModelAdmin):
-    list_display = ['triggered_job', 'status', 'started_at', 'ended_at']
-    search_fields = ['triggered_job', 'status', 'started_at', 'ended_at']
-    list_filter = ['triggered_job', 'status', 'started_at', 'ended_at']
+    list_display = TRIGGERED_JOB_INSTANCE_ADMIN_LIST
+    search_fields = TRIGGERED_JOB_INSTANCE_ADMIN_SEARCH
+    list_filter = TRIGGERED_JOB_INSTANCE_ADMIN_FILTER

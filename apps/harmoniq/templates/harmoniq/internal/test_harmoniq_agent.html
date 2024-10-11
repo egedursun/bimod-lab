@@ -1,0 +1,110 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Br6.in™
+  ~ File: test_harmoniq_agent.html
+  ~ Last Modified: 2024-10-07 19:19:50
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-08 03:38:15
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@br6.in.
+  ~
+  -->
+
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harmoniq Agent Test with Cropped Video</title>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .video-container {
+      width: 600px; /* Cropped width */
+      height: 600px; /* Cropped height */
+      overflow: hidden; /* Ensure cropped area is hidden */
+      position: relative;
+      border-radius: 25px;
+    }
+
+    .video-container video {
+      position: absolute;
+      left: -0px; /* Adjust to crop the left part of the video */
+      right: -0px;
+      bottom: -50px;
+      width: 600px; /* Adjust video width for cropping */
+      height: auto; /* Auto adjust height */
+      border-radius: 25px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- Video container to crop the video -->
+  <div class="video-container">
+    <video id="avatarVideo" loop muted>
+      <source src="{% static 'video/harmoniq_speech_A.mp4' %}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <button id="playButton">Play</button>
+</div>
+
+<!-- Audio that will sync with the video -->
+<audio id="speechAudio">
+  <source src="{% static 'audio/harmoniq_test_audio.mp3' %}" type="audio/mpeg">
+  Your browser does not support the audio tag.
+</audio>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var playButton = document.getElementById('playButton');
+    var video = document.getElementById('avatarVideo');
+    var audio = document.getElementById('speechAudio');
+
+    playButton.addEventListener('click', function() {
+      console.log('Play button clicked');
+      if (audio.paused) {
+        // Play both audio and video
+        video.currentTime = 0; // Reset video to start
+        audio.currentTime = 0; // Reset audio to start
+        audio.play();
+        video.play();
+        console.log('Playing audio and video');
+      }
+    });
+
+    // Move the event listener here
+    audio.addEventListener('ended', function() {
+      video.pause();
+      video.currentTime = 0;
+      console.log('Audio ended, stopping video');
+    });
+  });
+</script>
+</body>
+</html>

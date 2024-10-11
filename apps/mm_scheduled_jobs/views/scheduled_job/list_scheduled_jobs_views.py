@@ -24,23 +24,14 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_scheduled_jobs.models import ScheduledJob
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListScheduledJobsView(LoginRequiredMixin, TemplateView):
-    """
-    Displays a list of scheduled jobs associated with the user's organization.
-
-    This view retrieves and displays all scheduled jobs that are available to the current user, with support for searching and pagination.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the user's accessible scheduled jobs and adds them to the context.
-    """
-
-    paginate_by = 10  # Adjust the number of items per page
+class ScheduledJobView_List(LoginRequiredMixin, TemplateView):
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -54,13 +45,12 @@ class ListScheduledJobsView(LoginRequiredMixin, TemplateView):
         ##############################
 
         search_query = self.request.GET.get('search', '')
-        user_organizations = self.request.user.organizations.all()
-        organization_assistants = user_organizations.values_list('assistants', flat=True)
-        scheduled_jobs_list = ScheduledJob.objects.filter(assistant__in=organization_assistants)
+        user_orgs = self.request.user.organizations.all()
+        org_agents = user_orgs.values_list('assistants', flat=True)
+        scheduled_jobs_list = ScheduledJob.objects.filter(assistant__in=org_agents)
         if search_query:
             scheduled_jobs_list = scheduled_jobs_list.filter(
-                Q(name__icontains=search_query) | Q(task_description__icontains=search_query)
-            )
+                Q(name__icontains=search_query) | Q(task_description__icontains=search_query))
         paginator = Paginator(scheduled_jobs_list, self.paginate_by)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)

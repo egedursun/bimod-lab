@@ -24,7 +24,6 @@ from django.db import models
 class CodeBaseRepositoryChunk(models.Model):
     knowledge_base = models.ForeignKey("CodeRepositoryStorageConnection", on_delete=models.CASCADE)
     repository = models.ForeignKey("CodeBaseRepository", on_delete=models.CASCADE, related_name="repository_chunks")
-
     chunk_number = models.IntegerField()
     chunk_content = models.TextField()  # This will be the text content of the chunk
     chunk_metadata = models.TextField()

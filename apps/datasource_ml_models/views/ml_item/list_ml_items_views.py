@@ -24,29 +24,15 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSourceMLModelItem
+from apps.datasource_ml_models.utils import DELETE_ALL_ML_ITEMS_SPECIFIER
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
-    """
-    Displays a list of machine learning model items associated with the user's ML model connections.
-
-    This view retrieves all ML model items within the user's ML model connections, organized by organization and assistant. It also allows users to delete selected ML model items.
-
-    Attributes:
-        template_name (str): The template used to render the ML model item list.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the ML model items for the user's connections and adds them to the context, including pagination and status information.
-        post(self, request, *args, **kwargs): Handles the deletion of selected ML model items or all items in a connection.
-    """
-
-    template_name = 'datasource_ml_models/models/list_datasource_ml_model_items.html'
-
+class MLModelView_ItemList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -59,18 +45,16 @@ class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
         ##############################
 
         context_user = self.request.user
-        connections_by_organization = []
-        organizations = context_user.organizations.all()
-
-        for organization in organizations:
-            assistants_data = []
-            assistants = Assistant.objects.filter(organization=organization)
-            for assistant in assistants:
-                connections_data = []
-                connections = DataSourceMLModelConnection.objects.filter(assistant=assistant)
-                for connection in connections:
-                    items = DataSourceMLModelItem.objects.filter(ml_model_base=connection)
-                    # Pagination
+        conn_by_orgs = []
+        orgs = context_user.organizations.all()
+        for org in orgs:
+            agents_data = []
+            agents = Assistant.objects.filter(organization=org)
+            for agent in agents:
+                conns_data = []
+                conns = DataSourceMLModelConnection.objects.filter(assistant=agent)
+                for conn in conns:
+                    items = DataSourceMLModelItem.objects.filter(ml_model_base=conn)
                     page = self.request.GET.get('page', 1)
                     paginator = Paginator(items, 5)  # Show 5 items per page
                     try:
@@ -79,11 +63,10 @@ class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
                         paginated_items = paginator.page(1)
                     except EmptyPage:
                         paginated_items = paginator.page(paginator.num_pages)
-
-                    connections_data.append({'connection': connection, 'items': paginated_items})
-                assistants_data.append({'assistant': assistant, 'ml_model_connections': connections_data})
-            connections_by_organization.append({'organization': organization, 'assistants': assistants_data})
-        context['connections_by_organization'] = connections_by_organization
+                    conns_data.append({'connection': conn, 'items': paginated_items})
+                agents_data.append({'assistant': agent, 'ml_model_connections': conns_data})
+            conn_by_orgs.append({'organization': org, 'assistants': agents_data})
+        context['connections_by_organization'] = conn_by_orgs
         return context
 
     def post(self, request, *args, **kwargs):
@@ -96,15 +79,13 @@ class DataSourceMLModelItemListView(LoginRequiredMixin, TemplateView):
             return redirect('datasource_ml_models:item_list')
         ##############################
 
-        storage_id = request.POST.get('storage_id')
-        selected_items = request.POST.getlist('selected_items')
-        selected_items = [item for item in selected_items if item]  # Filter out any empty values
-
-        if 'delete_all' in request.POST:
-            DataSourceMLModelItem.objects.filter(ml_model_base__id=storage_id).delete()
+        mgr_id = request.POST.get('storage_id')
+        chosen_insts = request.POST.getlist('selected_items')
+        chosen_insts = [item for item in chosen_insts if item]
+        if DELETE_ALL_ML_ITEMS_SPECIFIER in request.POST:
+            DataSourceMLModelItem.objects.filter(ml_model_base__id=mgr_id).delete()
             messages.success(request, 'All ML models in the selected connection have been deleted.')
-            print('[DataSourceMLModelItemListView.post] All ML models in the selected connection have been deleted.')
-        elif selected_items:
-            DataSourceMLModelItem.objects.filter(id__in=selected_items).delete()
+        elif chosen_insts:
+            DataSourceMLModelItem.objects.filter(id__in=chosen_insts).delete()
             messages.success(request, 'Selected ML models have been deleted.')
         return redirect('datasource_ml_models:item_list')

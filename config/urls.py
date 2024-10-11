@@ -16,32 +16,18 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.shortcuts import redirect
 from django.urls import include, path
 
 from config import settings
+from config.utils.function_utils import trigger_error, docs_redirect_view
 from web_project.views import SystemView
 
-
-# Sentry SDK Test
-def trigger_error(request):
-    division_by_zero = 1 / 0
-    return division_by_zero
-
-
-def docs_redirect_view(request):
-    return redirect('/static/docs/index.html')
-
-
 urlpatterns = [
-    #################################################################################################################
-    # Core Endpoints
-    #################################################################################################################
     path("", include("apps.landing.urls", namespace="landing")),
     path("admin/", admin.site.urls),
     path("app/", include("auth.urls")),
-    path("app/user_profile_management/",
-         include("apps.user_profile_management.urls", namespace="user_profile_management")),
+    path("audit_logs/", include("apps.audit_logs.urls", namespace="audit_logs")),
+    path("app/user_profile_management/", include("apps.user_profile_management.urls", namespace="user_profile_management")),
     path("app/user_settings/", include("apps.user_settings.urls", namespace="user_settings")),
     path("app/dashboard/", include("apps.dashboard.urls", namespace="dashboard")),
     path("app/organization/", include("apps.organization.urls", namespace="organization")),
@@ -60,10 +46,8 @@ urlpatterns = [
     path("app/datasource_sql/", include("apps.datasource_sql.urls", namespace="datasource_sql")),
     path("app/datasource_knowledge_base/", include("apps.datasource_knowledge_base.urls")),
     path("app/datasource_codebase/", include("apps.datasource_codebase.urls", namespace="datasource_codebase")),
-    path("app/datasource_file_systems/",
-         include("apps.datasource_file_systems.urls", namespace="datasource_file_systems")),
-    path("app/datasource_media_storages/",
-         include("apps.datasource_media_storages.urls", namespace="datasource_media_storages")),
+    path("app/datasource_file_systems/", include("apps.datasource_file_systems.urls", namespace="datasource_file_systems")),
+    path("app/datasource_media_storages/", include("apps.datasource_media_storages.urls", namespace="datasource_media_storages")),
     path("app/datasource_ml_models/", include("apps.datasource_ml_models.urls", namespace="datasource_ml_models")),
     path("app/datasource_browsers/", include("apps.datasource_browsers.urls", namespace="datasource_browser")),
     path("app/mm_functions/", include("apps.mm_functions.urls", namespace="mm_functions")),
@@ -79,24 +63,14 @@ urlpatterns = [
     path("app/brainstorms/", include("apps.brainstorms.urls", namespace="brainstorms")),
     path("app/video_generations/", include("apps.video_generations.urls", namespace="video_generations")),
     path("app/harmoniq/", include("apps.harmoniq.urls", namespace="harmoniq")),
-    #################################################################################################################
 
-    #################################################################################################################
-    # Meta Endpoints
-    #################################################################################################################
-    path('app/voidforger/', include("apps._meta.voidforger.urls", namespace="voidforger")),
-
-    #################################################################################################################
-    # Support System Endpoints
     path('app/docs/', docs_redirect_view, name='technical_docs'),
     path("app/support_system/", include("apps.support_system.urls", namespace="support_system")),
     path("app/community_forum/", include("apps.community_forum.urls", namespace="community_forum")),
     path("app/blog_app/", include("apps.blog_app.urls", namespace="blog_app")),
-    #################################################################################################################
-    # Test Endpoints
-    #################################################################################################################
+
+    path('app/voidforger/', include("apps._meta.voidforger.urls", namespace="voidforger")),
     path('sentry/test/', trigger_error),
-    #################################################################################################################
 ]
 
 if settings.DEBUG:
@@ -112,10 +86,6 @@ HANDLED_HTTP_NEGATIVE_RESPONSES = {
         500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511
     ],
 }
-
-#####################################################################################################################
-# CLIENT SIDE ERRORS
-#####################################################################################################################
 
 handler400 = SystemView.as_view(template_name="pages_misc_error.html", status=400)
 handler401 = SystemView.as_view(template_name="pages_misc_not_authorized.html", status=401)
@@ -146,11 +116,6 @@ handler428 = SystemView.as_view(template_name="pages_misc_error.html", status=42
 handler429 = SystemView.as_view(template_name="pages_misc_error.html", status=429)
 handler431 = SystemView.as_view(template_name="pages_misc_error.html", status=431)
 handler451 = SystemView.as_view(template_name="pages_misc_error.html", status=451)
-
-#####################################################################################################################
-# SERVER SIDE ERRORS
-#####################################################################################################################
-
 handler500 = SystemView.as_view(template_name="pages_misc_error.html", status=500)
 handler501 = SystemView.as_view(template_name="pages_misc_error.html", status=501)
 handler502 = SystemView.as_view(template_name="pages_misc_error.html", status=502)
@@ -162,69 +127,3 @@ handler507 = SystemView.as_view(template_name="pages_misc_error.html", status=50
 handler508 = SystemView.as_view(template_name="pages_misc_error.html", status=508)
 handler510 = SystemView.as_view(template_name="pages_misc_error.html", status=510)
 handler511 = SystemView.as_view(template_name="pages_misc_error.html", status=511)
-
-#####################################################################################################################
-# THEME PAGES
-#####################################################################################################################
-
-# path("", include("apps.theme.dashboards.urls")),
-# layouts urls
-# path("", include("apps.theme.layouts.urls")),
-# FrontPages urls
-# path("", include("apps.theme.front_pages.urls")),
-# FrontPages urls
-# path("", include("apps.theme.mail.urls")),
-# Chat urls
-# path("", include("apps.theme.chat.urls")),
-# Calendar urls
-# path("", include("apps.theme.my_calendar.urls")),
-# Kanban urls
-# path("", include("apps.theme.kanban.urls")),
-# eCommerce urls
-# path("", include("apps.theme.ecommerce.urls")),
-# Academy urls
-# path("", include("apps.theme.academy.urls")),
-# Logistics urls
-# path("", include("apps.theme.logistics.urls")),
-# Invoice urls
-# path("", include("apps.theme.invoice.urls")),
-# User urls
-# path("", include("apps.theme.users.urls")),
-# Access urls
-# path("", include("apps.theme.access.urls")),
-# Pages urls
-# path("", include("apps.theme.pages.urls")),
-# Auth urls
-# path("", include("apps.theme.authentication.urls")),
-# Wizard urls
-# path("", include("apps.theme.wizard_examples.urls")),
-# ModalExample urls
-# path("", include("apps.theme.modal_examples.urls")),
-# Card urls
-# path("", include("apps.theme.cards.urls")),
-# UI urls
-# path("", include("apps.theme.ui.urls")),
-# Extended UI urls
-# path("", include("apps.theme.extended_ui.urls")),
-# Icons urls
-# path("", include("apps.theme.icons.urls")),
-# Forms urls
-# path("", include("apps.theme.forms.urls")),
-# FormLayouts urls
-# path("", include("apps.theme.form_layouts.urls")),
-# FormWizard urls
-# path("", include("apps.theme.form_wizard.urls")),
-# FormValidation urls
-# path("", include("apps.theme.form_validation.urls")),
-# Tables urls
-# path("", include("apps.theme.tables.urls")),
-# Chart urls
-# path("", include("apps.theme.charts.urls")),
-# Map urls
-# path("", include("apps.theme.maps.urls")),
-# Auth urls
-# path("", include("auth.urls")),
-# Transaction urls
-# path("", include("apps.theme.llm_transaction.urls")),
-
-#####################################################################################################################

@@ -14,10 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
-
 
 ORCHESTRATION_QUERY_LOG_TYPES = [
     ("user", "User"),
@@ -45,7 +41,6 @@ class OrchestrationQueryLogTypesNames:
 
 
 ORCHESTRATION_RESPONSE_LANGUAGES = [
-    # User's question language
     ("auto", "Auto (Detect)"),
     ("en", "English"), ("es", "Spanish"), ("fr", "French"), ("de", "German"), ("it", "Italian"),
     ("pt", "Portuguese"), ("nl", "Dutch"), ("ru", "Russian"), ("ja", "Japanese"), ("ko", "Korean"),
@@ -59,3 +54,36 @@ ORCHESTRATION_RESPONSE_LANGUAGES = [
 ]
 ORCHESTRATION_RESPONSE_LANGUAGES = [ORCHESTRATION_RESPONSE_LANGUAGES[0]] + sorted(ORCHESTRATION_RESPONSE_LANGUAGES[1:],
                                                                                   key=lambda x: x[1])
+MAESTRO_ADMIN_LIST = [
+    "name",
+    "organization",
+    "llm_model",
+    "created_by_user",
+    "last_updated_by_user",
+    "created_at",
+    "updated_at",
+]
+MAESTRO_ADMIN_SEARCH = [
+    "name",
+    "organization",
+    "llm_model",
+    "created_by_user",
+    "last_updated_by_user",
+]
+MAESTRO_ADMIN_FILTER = [
+    "organization",
+    "llm_model",
+    "created_by_user",
+    "last_updated_by_user",
+    "created_at",
+    "updated_at",
+]
+
+MAESTRO_QUERY_ADMIN_LIST = ['maestro', 'query_text', 'created_by_user', 'last_updated_by_user', 'created_at',
+                            'updated_at']
+MAESTRO_QUERY_ADMIN_SEARCH = ['maestro', 'query_text', 'created_by_user', 'last_updated_by_user']
+MAESTRO_QUERY_ADMIN_FILTER = ['maestro', 'created_by_user', 'last_updated_by_user', 'created_at', 'updated_at']
+
+MAESTRO_QUERY_LOG_ADMIN_LIST = ['orchestration_query', 'log_text_content', 'created_at']
+MAESTRO_QUERY_LOG_ADMIN_SEARCH = ['orchestration_query', 'log_text_content']
+MAESTRO_QUERY_LOG_ADMIN_FILTER = ['orchestration_query', 'created_at']

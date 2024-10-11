@@ -18,3 +18,12 @@
 #
 #
 
+MESSAGE_TEMPLATE_ADMIN_LIST = [
+    "user",
+    "organization",
+    "template_text",
+    "created_at",
+    "updated_at",
+]
+MESSAGE_TEMPLATE_ADMIN_FILTER = ["user", "organization", "created_at", "updated_at"]
+MESSAGE_TEMPLATE_ADMIN_SEARCH = ["user", "organization", "template_text"]

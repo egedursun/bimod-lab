@@ -25,7 +25,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.export_leanmods.management.commands.start_exported_leanmods import start_endpoint_for_leanmod
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI
 from apps.user_permissions.utils import PermissionNames
@@ -33,7 +33,7 @@ from config import settings
 from config.settings import EXPORT_LEANMOD_API_BASE_URL
 
 
-class ToggleExportLeanmodAssistantServiceView(LoginRequiredMixin, View):
+class ExportLeanModView_ToggleService(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
 
         ##############################
@@ -44,17 +44,14 @@ class ToggleExportLeanmodAssistantServiceView(LoginRequiredMixin, View):
             return redirect('export_leanmods:list')
         ##############################
 
-        export_assistant = get_object_or_404(ExportLeanmodAssistantAPI, pk=self.kwargs['pk'])
-        endpoint = EXPORT_LEANMOD_API_BASE_URL + export_assistant.endpoint.split(EXPORT_LEANMOD_API_BASE_URL)[1]
+        exp_agent = get_object_or_404(ExportLeanmodAssistantAPI, pk=self.kwargs['pk'])
+        endpoint = EXPORT_LEANMOD_API_BASE_URL + exp_agent.endpoint.split(EXPORT_LEANMOD_API_BASE_URL)[1]
         api_urls = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
-        export_assistant.is_online = not export_assistant.is_online
-        export_assistant.save()
-
-        # Pause or start the endpoint based on the assistant's new online status
-        if export_assistant.is_online:
-            # check if the endpoint is already in the url patterns
+        exp_agent.is_online = not exp_agent.is_online
+        exp_agent.save()
+        if exp_agent.is_online:
             if not any(endpoint in str(url) for url in api_urls):
-                start_endpoint_for_leanmod(export_assistant)
+                start_endpoint_for_leanmod(exp_agent)
         return redirect('export_leanmods:list')
 
     def get(self, request, *args, **kwargs):

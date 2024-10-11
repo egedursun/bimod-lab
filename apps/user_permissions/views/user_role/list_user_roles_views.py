@@ -14,23 +14,21 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserRole
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListUserRolesView(LoginRequiredMixin, TemplateView):
+class PermissionView_UserRoleList(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -43,15 +41,8 @@ class ListUserRolesView(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        # Fetch user roles from the database (you can filter by organization, etc.)
-        user_organizations = Organization.objects.filter(
-            users__in=[self.request.user]
-        )
-        user_roles = UserRole.objects.filter(
-            organization__in=user_organizations
-        )
-
-        # Set up pagination
+        user_orgs = Organization.objects.filter(users__in=[self.request.user])
+        user_roles = UserRole.objects.filter(organization__in=user_orgs)
         paginator = Paginator(user_roles, 9)  # Show 9 roles per page
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)

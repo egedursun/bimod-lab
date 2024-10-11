@@ -22,8 +22,8 @@ from django.db.models import Q
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.data_backups.data_backup_executor import DataBackupExecutor
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.data_backups.data_backup_executor import DataBackupExecutor
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.data_backups.models import DataBackup
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -31,9 +31,7 @@ from web_project import TemplateLayout
 from apps.data_backups.utils import BACKUP_TYPES, BackupTypesNames
 
 
-class ManageDataBackupsView(LoginRequiredMixin, TemplateView):
-    template_name = 'data_backups/manage_backups.html'
-
+class DataBackupView_BackupManage(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -45,23 +43,15 @@ class ManageDataBackupsView(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        user_organizations = Organization.objects.filter(
-            users__in=[self.request.user]
-        )
+        user_orgs = Organization.objects.filter(users__in=[self.request.user])
         backups_list = DataBackup.objects.filter(
-            Q(responsible_user=self.request.user) | Q(organization__in=user_organizations)
-        ).order_by('-created_at')  # Retrieve backups
-
-        # Initialize the paginator with 10 items per page
+            Q(responsible_user=self.request.user) | Q(organization__in=user_orgs)
+        ).order_by('-created_at')
         paginator = Paginator(backups_list, 10)
-
-        # Get the current page number from the request
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-
-        # Pass the page object to the context
         context['page_obj'] = page_obj
-        context['organizations'] = user_organizations
+        context['organizations'] = user_orgs
         context['backup_types'] = BACKUP_TYPES
         return context
 
@@ -75,24 +65,22 @@ class ManageDataBackupsView(LoginRequiredMixin, TemplateView):
             return redirect('data_backups:manage')
         ##############################
 
-        organization_id = request.POST.get('organization')
-        organization = Organization.objects.get(id=organization_id)
+        org_id = request.POST.get('organization')
+        org = Organization.objects.get(id=org_id)
         backup_name = request.POST.get('backup_name')
         backup_password = request.POST.get('backup_password')
         backup_model = request.POST.get('backup_model')
-
-        if organization and backup_name and backup_password and backup_model:
+        if org and backup_name and backup_password and backup_model:
 
             e = None
             if backup_model == BackupTypesNames.LLM_MODELS:
-                executor = DataBackupExecutor.BackupLLMModel(responsible_user=request.user, organization=organization)
+                executor = DataBackupExecutor.BackupLLMModel(responsible_user=request.user, organization=org)
                 e = executor.backup_llm_models(backup_name=backup_name, password=backup_password)
             elif backup_model == BackupTypesNames.NER_INSTANCES:
-                executor = DataBackupExecutor.BackupNERInstance(responsible_user=request.user,
-                                                                organization=organization)
+                executor = DataBackupExecutor.BackupNERInstance(responsible_user=request.user, organization=org)
                 e = executor.backup_ner_instances(backup_name=backup_name, password=backup_password)
             elif backup_model == BackupTypesNames.ASSISTANTS:
-                executor = DataBackupExecutor.BackupAssistant(responsible_user=request.user, organization=organization)
+                executor = DataBackupExecutor.BackupAssistant(responsible_user=request.user, organization=org)
                 e = executor.backup_assistants(backup_name=backup_name, password=backup_password)
             elif backup_model == BackupTypesNames.CUSTOM_FUNCTIONS:
                 executor = DataBackupExecutor.BackupCustomFunction(responsible_user=request.user, organization=None)
@@ -106,8 +94,6 @@ class ManageDataBackupsView(LoginRequiredMixin, TemplateView):
             else:
                 e = "Invalid backup model selected."
                 messages.error(request, e)
-
-            # Check the result and display appropriate messages
             if e is None:
                 messages.success(request, "Backup created successfully!")
             else:

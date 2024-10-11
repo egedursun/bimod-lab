@@ -22,23 +22,14 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_sql.models import SQLDatabaseConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListSQLDatabaseConnectionsView(TemplateView, LoginRequiredMixin):
-    """
-    Displays a list of SQL database connections associated with the user's organizations and assistants.
-
-    This view retrieves all SQL database connections organized by organization and assistant and displays them in a structured list.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the SQL database connections organized by organization and assistant, and adds them to the context.
-    """
-
+class SQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -51,20 +42,17 @@ class ListSQLDatabaseConnectionsView(TemplateView, LoginRequiredMixin):
         ##############################
 
         context_user = self.request.user
-        connections = SQLDatabaseConnection.objects.filter(
-            assistant__in=Assistant.objects.filter(organization__in=context_user.organizations.all())
-        ).select_related('assistant__organization')
+        c = SQLDatabaseConnection.objects.filter(assistant__in=Assistant.objects.filter(
+            organization__in=context_user.organizations.all())).select_related('assistant__organization')
 
-        connections_by_organization = {}
-        for connection in connections:
-            organization = connection.assistant.organization
-            assistant = connection.assistant
-
-            if organization not in connections_by_organization:
-                connections_by_organization[organization] = {}
-            if assistant not in connections_by_organization[organization]:
-                connections_by_organization[organization][assistant] = []
-            connections_by_organization[organization][assistant].append(connection)
-
-        context['connections_by_organization'] = connections_by_organization
+        c_by_orgs = {}
+        for connection in c:
+            orgs = connection.assistant.organization
+            agent = connection.assistant
+            if orgs not in c_by_orgs:
+                c_by_orgs[orgs] = {}
+            if agent not in c_by_orgs[orgs]:
+                c_by_orgs[orgs][agent] = []
+            c_by_orgs[orgs][agent].append(connection)
+        context['connections_by_organization'] = c_by_orgs
         return context

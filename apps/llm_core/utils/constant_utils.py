@@ -15,14 +15,17 @@
 #   For permission inquiries, please contact: admin@br6.in.
 #
 
-# Define enumeration for the provider
-LLM_CORE_PROVIDERS = [
+
+LARGE_LANGUAGE_MODEL_PROVIDERS = [
     ("OA", "OpenAI-GPT"),
 ]
 
-# OPENAI GPT model names
-OPENAI_GPT_MODEL_NAMES = [
+GPT_MODEL_NAMES = [
     ("gpt-4o", "gpt-4o"),
     ("gpt-4-turbo", "gpt-4-turbo"),
     ("gpt-4", "gpt-4"),
 ]
+
+LLM_CORE_ADMIN_LIST = ("nickname", "provider", "model_name", "temperature", "created_at", "updated_at")
+LLM_CORE_ADMIN_FILTER = ("nickname", "provider", "model_name", "temperature", "created_at", "updated_at")
+LLM_CORE_ADMIN_SEARCH = ("nickname", "provider", "model_name", "temperature", "created_at", "updated_at")

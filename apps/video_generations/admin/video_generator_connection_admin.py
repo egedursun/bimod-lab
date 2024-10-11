@@ -18,10 +18,12 @@
 from django.contrib import admin
 
 from apps.video_generations.models import VideoGeneratorConnection
+from apps.video_generations.utils import VIDEO_GENERATOR_ADMIN_LIST, VIDEO_GENERATOR_ADMIN_FILTER, \
+    VIDEO_GENERATOR_ADMIN_SEARCH
 
 
 @admin.register(VideoGeneratorConnection)
 class VideoGeneratorConnectionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'provider', 'organization', 'assistant')
-    search_fields = ('name', 'provider', 'organization__name', 'assistant__name')
-    list_filter = ('provider', 'organization', 'assistant')
+    list_display = VIDEO_GENERATOR_ADMIN_LIST
+    search_fields = VIDEO_GENERATOR_ADMIN_SEARCH
+    list_filter = VIDEO_GENERATOR_ADMIN_FILTER

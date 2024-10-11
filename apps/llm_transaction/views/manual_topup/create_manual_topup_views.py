@@ -26,12 +26,11 @@ from apps.organization.models import Organization
 from web_project import TemplateLayout
 
 
-class CreateManualTopUpPlan(LoginRequiredMixin, TemplateView):
-
+class Transactions_ManualTopUpCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        selected_organization = Organization.objects.filter(users__in=[self.request.user]).first()
-        context['selected_organization'] = selected_organization
-        organizations = Organization.objects.filter(users__in=[self.request.user]).all()
-        context['organizations'] = organizations
+        selected_org = Organization.objects.filter(users__in=[self.request.user]).first()
+        context['selected_organization'] = selected_org
+        orgs = Organization.objects.filter(users__in=[self.request.user]).all()
+        context['organizations'] = orgs
         return context

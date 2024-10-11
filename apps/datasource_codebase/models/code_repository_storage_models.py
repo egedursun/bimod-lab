@@ -20,32 +20,24 @@
 
 from django.db import models
 
-from apps._services.codebase.codebase_decoder import CodeBaseDecoder
-from apps.datasource_codebase.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS, generate_class_name
+from apps.core.codebase.codebase_decoder import CodeBaseDecoder
+from apps.datasource_codebase.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS, build_weaviate_class_name_with_random
 
 
 class CodeRepositoryStorageConnection(models.Model):
-    # Main information
     provider = models.CharField(max_length=100, choices=KNOWLEDGE_BASE_SYSTEMS)
     host_url = models.CharField(max_length=1000)
     provider_api_key = models.CharField(max_length=1000, null=True, blank=True)
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE)
     name = models.CharField(max_length=1000)
-
-    # Class metadata
     class_name = models.CharField(max_length=1000, null=True, blank=True)
     description = models.TextField()
     vectorizer = models.CharField(max_length=100, choices=VECTORIZERS, default="text2vec-openai", null=True,
                                   blank=True)
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
-
-    # Langchain chunking rules
     embedding_chunk_size = models.IntegerField(default=1024)
     embedding_chunk_overlap = models.IntegerField(default=256)
-
-    # Schema (for defining the overall structure to the assistant)
     schema_json = models.TextField(null=True, blank=True)
-
     search_instance_retrieval_limit = models.IntegerField(default=10)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -71,25 +63,22 @@ class CodeRepositoryStorageConnection(models.Model):
     ):
         if self.vectorizer is None:
             self.vectorizer = "text2vec-openai"
-
         if self.class_name is None:
-            self.class_name = generate_class_name(self)
+            self.class_name = build_weaviate_class_name_with_random(self)
 
         client = CodeBaseDecoder.get(self)
         if client is not None:
             result = client.create_weaviate_classes()
             if not result["status"]:
-                print(f"[CodeRepositoryStorageConnection.save] Error creating Weaviate classes: {result['error']}")
+                pass
 
         self.schema_json = client.retrieve_schema()
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
-        # delete the classes from Weaviate
         client = CodeBaseDecoder.get(self)
         if client is not None:
             result = client.delete_weaviate_classes(class_name=self.class_name)
             if not result["status"]:
-                print(f"[CodeRepositoryStorageConnection.save] Error deleting Weaviate classes: {result['error']}")
-
+                pass
         super().delete(using, keep_parents)

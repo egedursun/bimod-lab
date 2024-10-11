@@ -19,14 +19,14 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingSession
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListBrainstormingSessionsView(LoginRequiredMixin, TemplateView):
+class BrainstormingView_SessionList(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -39,10 +39,6 @@ class ListBrainstormingSessionsView(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        user_organizations = Organization.objects.filter(
-            users__in=[self.request.user]
-        )
-        context['sessions'] = BrainstormingSession.objects.filter(
-            organization__in=user_organizations
-        )
+        user_orgs = Organization.objects.filter(users__in=[self.request.user])
+        context['sessions'] = BrainstormingSession.objects.filter(organization__in=user_orgs)
         return context

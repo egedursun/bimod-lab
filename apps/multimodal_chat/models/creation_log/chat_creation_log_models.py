@@ -14,29 +14,11 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
 from django.db import models
 
 
-# NOTE: Counts both the Chats and LeanChats
 class ChatCreationLog(models.Model):
-    """
-    ChatCreationLog Model:
-    - Purpose: Represents a log entry for the creation of a multimodal chat. It stores the organization associated with the chat and the timestamp of creation.
-    - Key Fields:
-        - `organization`: ForeignKey linking to the `Organization` model.
-        - `created_at`: Timestamp for when the chat was created.
-    - Meta:
-        - `verbose_name`: "Chat Creation Log"
-        - `verbose_name_plural`: "Chat Creation Logs"
-        - `ordering`: Orders logs by creation date in descending order.
-        - `indexes`: Indexes on the creation date for optimized queries.
-    """
-
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

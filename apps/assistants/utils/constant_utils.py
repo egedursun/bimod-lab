@@ -18,8 +18,7 @@
 #
 
 
-ASSISTANT_RESPONSE_LANGUAGES = [
-    # User's question language
+AGENT_SPEECH_LANGUAGES = [
     ("auto", "Auto (Detect)"),
     ("en", "English"), ("es", "Spanish"), ("fr", "French"), ("de", "German"), ("it", "Italian"),
     ("pt", "Portuguese"), ("nl", "Dutch"), ("ru", "Russian"), ("ja", "Japanese"), ("ko", "Korean"),
@@ -31,33 +30,35 @@ ASSISTANT_RESPONSE_LANGUAGES = [
     ("sr", "Serbian"), ("sl", "Slovenian"), ("mk", "Macedonian"), ("sq", "Albanian"), ("bs", "Bosnian"),
     ("is", "Icelandic"), ("cy", "Welsh"), ("ga", "Irish"),
 ]
-ASSISTANT_RESPONSE_LANGUAGES = [ASSISTANT_RESPONSE_LANGUAGES[0]] + sorted(ASSISTANT_RESPONSE_LANGUAGES[1:],
-                                                                          key=lambda x: x[1])
 
-CONTEXT_OVERFLOW_STRATEGY = [
+AGENT_SPEECH_LANGUAGES = [AGENT_SPEECH_LANGUAGES[0]] + sorted(AGENT_SPEECH_LANGUAGES[1:],
+                                                              key=lambda x: x[1])
+
+CONTEXT_MANAGEMENT_STRATEGY = [
     ("stop", "Stop Conversation"),
     ("forget", "Forget Oldest Messages"),
     ("vectorize", "Vectorize Oldest Messages"),
 ]
 
 
-class ContextOverflowStrategyNames:
+class ContextManagementStrategyNames:
     STOP = "stop"
     FORGET = "forget"
     VECTORIZE = "vectorize"
 
     @staticmethod
     def as_dict():
-        return {"stop": "Stop Conversation", "forget": "Forget Oldest Messages",
+        return {"stop": "Stop Conversation",
+                "forget": "Forget Oldest Messages",
                 "vectorize": "Vectorize Oldest Messages"}
 
 
-VECTORIZERS = [
+EMBEDDING_MANAGERS = [
     ("text2vec-openai", "Text2Vec (OpenAI)"),
 ]
 
 
-class VectorizerNames:
+class EmbeddingManagersNames:
     TEXT2VEC_OPENAI = "text2vec-openai"
 
     @staticmethod
@@ -85,3 +86,67 @@ class MultiStepReasoningCapabilityChoicesNames:
 class MultiStepReasoningCapabilityModelNames:
     O1_PREVIEW = "o1-preview"
     O1_MINI = "o1-mini"
+
+
+AGENT_ADMIN_DISPLAY_FIELDS = (
+    "organization",
+    "response_language",
+    "llm_model", "name",
+    "instructions",
+    "audience",
+    "tone",
+    "time_awareness",
+    "place_awareness",
+    "tool_max_attempts_per_instance",
+    "tool_max_chains",
+    "document_base_directory",
+    "max_retry_count",
+    "created_by_user",
+    "last_updated_by_user",
+    "created_at",
+    "updated_at"
+)
+
+AGENT_ADMIN_FILTER_FIELDS = (
+    "organization",
+    "response_language",
+    "llm_model",
+    "name",
+    "instructions",
+    "audience",
+    "tone",
+    "document_base_directory",
+    "time_awareness",
+    "place_awareness",
+    "tool_max_attempts_per_instance",
+    "tool_max_chains",
+    "max_retry_count",
+    "created_by_user",
+    "last_updated_by_user",
+    "created_at",
+    "updated_at"
+)
+
+AGENT_ADMIN_SEARCH_FIELDS = (
+    "organization",
+    "response_language",
+    "llm_model",
+    "name",
+    "instructions",
+    "audience",
+    "tone",
+    "document_base_directory",
+    "time_awareness",
+    "place_awareness",
+    "tool_max_attempts_per_instance",
+    "tool_max_chains",
+    "max_retry_count",
+    "created_by_user",
+    "last_updated_by_user",
+    "created_at",
+    "updated_at"
+)
+
+
+RANDOM_SUFFIX_MINIMUM_VALUE = 1_000_000_000
+RANDOM_SUFFIX_MAXIMUM_VALUE = 9_999_999_999

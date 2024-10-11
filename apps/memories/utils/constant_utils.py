@@ -16,12 +16,24 @@
 #
 
 
-MEMORY_TYPE = [
+AGENT_STANDARD_MEMORY_TYPES = [
     ("user-specific", "User-Specific"),
     ("assistant-specific", "Assistant-Specific"),
 ]
 
 
-class MemoryTypeNames:
+class AgentStandardMemoryTypesNames:
     USER_SPECIFIC = "user-specific"
     ASSISTANT_SPECIFIC = "assistant-specific"
+
+
+MEMORIES_ADMIN_LIST = [
+    "user",
+    "assistant",
+    "memory_type",
+    "created_at",
+    "memory_text_content",
+    "created_at",
+]
+MEMORIES_ADMIN_FILTER = ["memory_type"]
+MEMORIES_ADMIN_SEARCH = ["user__username", "assistant__name"]

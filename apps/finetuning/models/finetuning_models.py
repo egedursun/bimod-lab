@@ -22,22 +22,16 @@ from django.db import models
 
 from apps.finetuning.utils import FINE_TUNING_MODEL_PROVIDERS, FineTuningModelProvidersNames, MODEL_TYPES
 
-
-# Create your models here.
-
 class FineTunedModelConnection(models.Model):
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, blank=True, null=True)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, blank=True, null=True)
-
     provider = models.CharField(max_length=255, choices=FINE_TUNING_MODEL_PROVIDERS,
                                 default=FineTuningModelProvidersNames.OPENAI)
     provider_api_key = models.CharField(max_length=5000, blank=True, null=True)
     model_name = models.CharField(max_length=255)
-
     nickname = models.CharField(max_length=255)
     model_type = models.CharField(max_length=255, choices=MODEL_TYPES)
     model_description = models.TextField()
-
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):

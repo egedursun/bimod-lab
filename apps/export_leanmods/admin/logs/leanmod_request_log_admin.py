@@ -21,16 +21,14 @@
 from django.contrib import admin
 
 from apps.export_leanmods.models import LeanmodRequestLog
+from apps.export_leanmods.utils import EXPORT_LEANMOD_REQUEST_LOG_ADMIN_LIST, EXPORT_LEANMOD_REQUEST_LOG_ADMIN_FILTER, \
+    EXPORT_LEANMOD_REQUEST_LOG_ADMIN_SEARCH
 
 
 @admin.register(LeanmodRequestLog)
 class LeanmodRequestLogAdmin(admin.ModelAdmin):
-    list_display = ("export_lean_assistant", "timestamp")
-    list_filter = ("export_lean_assistant", "timestamp")
-    search_fields = ("export_lean_assistant", "timestamp")
+    list_display = EXPORT_LEANMOD_REQUEST_LOG_ADMIN_LIST
+    list_filter = EXPORT_LEANMOD_REQUEST_LOG_ADMIN_FILTER
+    search_fields = EXPORT_LEANMOD_REQUEST_LOG_ADMIN_SEARCH
     date_hierarchy = "timestamp"
     ordering = ["-timestamp"]
-
-    list_per_page = 20
-    list_max_show_all = 100
-    list_editable = []

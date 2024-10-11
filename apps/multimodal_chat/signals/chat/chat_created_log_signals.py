@@ -14,11 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
@@ -27,6 +24,5 @@ from apps.multimodal_chat.models import MultimodalChat, ChatCreationLog
 
 @receiver(post_save, sender=MultimodalChat)
 def create_chat_created_log(sender, instance, created, **kwargs):
-    # Add a new periodic task for this ScheduledJob
     if created:
         ChatCreationLog.objects.create(organization=instance.assistant.organization)

@@ -19,3 +19,4 @@
 from .delete_idea_views import *
 from .bookmark_idea_views import *
 from .produce_ideas_views import *
+from .deepen_idea_views import *

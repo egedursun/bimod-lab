@@ -20,17 +20,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
-from apps._services.brainstorms.brainstorms_executor import BrainstormsExecutor
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.brainstorms.brainstorms_executor import BrainstormsExecutor
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingSession
 from apps.user_permissions.utils import PermissionNames
 
 
-class CreateLevelSynthesisView(LoginRequiredMixin, View):
+class BrainstormingView_LevelSynthesis(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        session_id = self.kwargs.get('session_id')
+        ss_id = self.kwargs.get('session_id')
         depth_level = request.POST.get('depth_level', 1)
-        session = get_object_or_404(BrainstormingSession, id=session_id, created_by_user=request.user)
+        session = get_object_or_404(BrainstormingSession, id=ss_id, created_by_user=request.user)
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_BRAINSTORMING_SYNTHESES
@@ -40,8 +40,7 @@ class CreateLevelSynthesisView(LoginRequiredMixin, View):
             return redirect('brainstorms:detail_session', session_id=session.id)
         ##############################
 
-        executor = BrainstormsExecutor(session=session)
-        executor.generate_level_synthesis(depth_level=int(depth_level))
-
+        xc = BrainstormsExecutor(session=session)
+        xc.generate_level_synthesis(depth_level=int(depth_level))
         messages.success(request, f'Level synthesis for level {depth_level} generated successfully.')
         return redirect('brainstorms:detail_session', session_id=session.id)

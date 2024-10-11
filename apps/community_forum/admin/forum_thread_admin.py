@@ -21,13 +21,12 @@
 from django.contrib import admin
 
 from apps.community_forum.models import ForumThread
+from apps.community_forum.utils import FORUM_THREAD_ADMIN_LIST, FORUM_THREAD_ADMIN_SEARCH, FORUM_THREAD_ADMIN_FILTER
 
 
 @admin.register(ForumThread)
 class ForumThreadAdmin(admin.ModelAdmin):
-    list_display = (
-        "title", "category", "created_by", "created_at", "updated_at", "is_closed",
-    )
-    search_fields = ("title", "category__name", "created_by__username",)
-    list_filter = ("created_at", "updated_at", "is_closed",)
+    list_display = FORUM_THREAD_ADMIN_LIST
+    search_fields = FORUM_THREAD_ADMIN_SEARCH
+    list_filter = FORUM_THREAD_ADMIN_FILTER
     ordering = ("-created_at",)

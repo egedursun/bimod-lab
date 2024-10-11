@@ -25,7 +25,7 @@ from django.db.models import Q
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.mm_scripts.models import CustomScript, CustomScriptReference
 from apps.mm_scripts.utils import CUSTOM_SCRIPT_CATEGORIES
@@ -33,18 +33,8 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ScriptStoreView(LoginRequiredMixin, TemplateView):
-    """
-    Displays the script store, where users can browse and add public custom scripts.
-
-    This view allows users to search, filter, and view public custom scripts in the store. Users can add these scripts to their assistants, provided they have the necessary permissions.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context with data about the available public custom scripts.
-        post(self, request, *args, **kwargs): Processes the form submission to add selected scripts to the user's assistants.
-    """
-
-    paginate_by = 10  # Adjust the number of items per page
+class CustomScriptView_Store(LoginRequiredMixin, TemplateView):
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -57,12 +47,10 @@ class ScriptStoreView(LoginRequiredMixin, TemplateView):
         if selected_categories:
             scripts_list = scripts_list.filter(
                 *[Q(categories__icontains=category) for category in selected_categories])
-        # for each of the scripts, we must only offer the assistants that currently do not have a script
-        # reference for that script
-        script_assistant_map = {
+
+        script_agent_map = {
             script.id: Assistant.objects.exclude(customscriptreference__custom_script=script)
-            for script in scripts_list
-        }
+            for script in scripts_list}
         paginator = Paginator(scripts_list, self.paginate_by)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -74,7 +62,7 @@ class ScriptStoreView(LoginRequiredMixin, TemplateView):
         context['CUSTOM_SCRIPT_CATEGORIES'] = CUSTOM_SCRIPT_CATEGORIES
         context['search_query'] = search_query
         context['selected_categories'] = selected_categories
-        context['script_assistant_map'] = script_assistant_map
+        context['script_assistant_map'] = script_agent_map
         return context
 
     def post(self, request, *args, **kwargs):
@@ -88,17 +76,15 @@ class ScriptStoreView(LoginRequiredMixin, TemplateView):
         ##############################
 
         action = request.POST.get('action')
-        assistant_id = request.POST.get('assistant_id')
-        if action and action == "add" and assistant_id:
+        agent_id = request.POST.get('assistant_id')
+        if action and action == "add" and agent_id:
             script_id = request.POST.get('script_id')
             if script_id:
                 custom_script = CustomScript.objects.get(id=script_id)
-                assistant = Assistant.objects.get(id=assistant_id)
-                CustomScriptReference.objects.create(
-                    assistant=assistant, custom_script=custom_script, created_by_user=request.user
-                )
-                print(f"Script '{custom_script.name}' assigned to assistant '{assistant.name}'.")
-                messages.success(request, f"Script '{custom_script.name}' assigned to assistant '{assistant.name}'.")
+                agent = Assistant.objects.get(id=agent_id)
+                CustomScriptReference.objects.create(assistant=agent, custom_script=custom_script,
+                                                     created_by_user=request.user)
+                messages.success(request, f"Script '{custom_script.name}' assigned to assistant '{agent.name}'.")
         else:
             messages.error(request, "Invalid input. Please try again.")
         return redirect('mm_scripts:store')

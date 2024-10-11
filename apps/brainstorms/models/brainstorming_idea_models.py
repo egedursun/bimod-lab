@@ -22,12 +22,10 @@ from django.db import models
 class BrainstormingIdea(models.Model):
     brainstorming_session = models.ForeignKey('BrainstormingSession', on_delete=models.CASCADE)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-
     idea_title = models.CharField(max_length=1000)
     idea_description = models.TextField()
     depth_level = models.IntegerField(default=1)
     is_bookmarked = models.BooleanField(default=False)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -39,7 +37,6 @@ class BrainstormingIdea(models.Model):
         verbose_name_plural = 'Brainstorming Ideas'
         ordering = ['-created_at']
         unique_together = ['brainstorming_session', 'idea_description', 'depth_level']
-
         indexes = [
             models.Index(fields=['brainstorming_session']),
             models.Index(fields=['created_by_user']),

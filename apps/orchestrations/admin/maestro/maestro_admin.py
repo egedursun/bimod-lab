@@ -21,11 +21,11 @@
 from django.contrib import admin
 
 from apps.orchestrations.models import Maestro
+from apps.orchestrations.utils import MAESTRO_ADMIN_LIST, MAESTRO_ADMIN_SEARCH
 
 
 @admin.register(Maestro)
 class MaestroAdmin(admin.ModelAdmin):
-    list_display = ['name', 'organization', 'llm_model', 'created_by_user', 'last_updated_by_user', 'created_at',
-                    'updated_at']
-    search_fields = ['name', 'organization', 'llm_model', 'created_by_user', 'last_updated_by_user']
-    list_filter = ['organization', 'llm_model', 'created_by_user', 'last_updated_by_user', 'created_at', 'updated_at']
+    list_display = MAESTRO_ADMIN_LIST
+    search_fields = MAESTRO_ADMIN_SEARCH
+    list_filter = MAESTRO_ADMIN_LIST

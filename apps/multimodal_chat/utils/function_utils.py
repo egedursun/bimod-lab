@@ -14,17 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 import tiktoken
 import wonderwords
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
-from apps.llm_transaction.utils import LLMCostsPerMillionTokens, SERVICE_PROFIT_MARGIN, VAT_TAX_RATE
+from apps.llm_transaction.utils import LLMCostsPerMillionTokens, INTERNAL_PROFIT_MARGIN_FOR_LLM, VALUE_ADDED_TAX_PERCENTAGE
 from apps.multimodal_chat.utils import BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, BIMOD_NO_TAG_PLACEHOLDER
 
 import warnings
@@ -33,48 +30,22 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore")
 
 
-def send_log_message(log_message, chat_id, stop_tag=BIMOD_STREAMING_END_TAG):
+def transmit_websocket_log(log_message, chat_id, stop_tag=BIMOD_STREAMING_END_TAG):
     channel_layer = get_channel_layer()
     group_name = f'logs_{chat_id}'
-
-    async_to_sync(channel_layer.group_send)(
-        group_name,
-        {
-            'type': 'send_log',
-            'message': log_message,
-        }
-    )
+    async_to_sync(channel_layer.group_send)(group_name, {'type': 'send_log', 'message': log_message})
     if stop_tag == BIMOD_STREAMING_END_TAG:
-        async_to_sync(channel_layer.group_send)(
-            group_name,
-            {
-                'type': 'send_log',
-                'message': BIMOD_STREAMING_END_TAG,
-            }
-        )
+        async_to_sync(channel_layer.group_send)(group_name, {'type': 'send_log', 'message': BIMOD_STREAMING_END_TAG})
     elif stop_tag == BIMOD_PROCESS_END:
-        async_to_sync(channel_layer.group_send)(
-            group_name,
-            {
-                'type': 'send_log',
-                'message': BIMOD_PROCESS_END,
-            }
-        )
+        async_to_sync(channel_layer.group_send)(group_name, {'type': 'send_log', 'message': BIMOD_PROCESS_END})
     else:
         if stop_tag is None or stop_tag == "" or stop_tag == BIMOD_NO_TAG_PLACEHOLDER:
             pass
         else:
-            async_to_sync(channel_layer.group_send)(
-                group_name,
-                {
-                    'type': 'send_log',
-                    'message': stop_tag,
-                }
-            )
+            async_to_sync(channel_layer.group_send)(group_name, {'type': 'send_log', 'message': stop_tag})
 
 
 def calculate_number_of_tokens(encoding_engine, text):
-    # Tokenize the text
     encoding = tiktoken.get_encoding(encoding_engine)
     tokens = encoding.encode(str(text))
     return len(tokens)
@@ -90,11 +61,11 @@ def calculate_llm_cost(model, number_of_tokens):
 
 
 def calculate_internal_service_cost(llm_cost):
-    return llm_cost * SERVICE_PROFIT_MARGIN
+    return llm_cost * INTERNAL_PROFIT_MARGIN_FOR_LLM
 
 
 def calculate_tax_cost(internal_service_cost):
-    tax_cost = internal_service_cost * VAT_TAX_RATE
+    tax_cost = internal_service_cost * VALUE_ADDED_TAX_PERCENTAGE
     return tax_cost
 
 
@@ -111,7 +82,6 @@ def calculate_billable_cost_from_raw(encoding_engine, model, text):
 
 
 def generate_chat_name():
-    # use a library to generate a random chat name
     chat_name_1 = wonderwords.RandomWord().word(word_max_length=8, include_categories=["verb"])
     chat_name_2 = wonderwords.RandomWord().word(word_max_length=8, include_categories=["adjective"])
     chat_name_3 = wonderwords.RandomWord().word(word_max_length=8, include_categories=["noun"])

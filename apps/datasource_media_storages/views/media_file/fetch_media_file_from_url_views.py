@@ -23,23 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_media_storages.tasks import download_file_from_url
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DataSourceMediaStorageItemFetchFileFromUrl(LoginRequiredMixin, TemplateView):
-    """
-    Fetches and uploads a file from a given URL to a selected media storage connection.
-
-    This view allows users with the appropriate permissions to fetch and upload a file from a specified URL to a selected media storage connection.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context for rendering the confirmation of the file fetch.
-        post(self, request, *args, **kwargs): Handles the file fetch and upload process from the specified URL.
-    """
-
+class MediaView_ItemHTTPRetrieval(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         return context
@@ -57,16 +47,15 @@ class DataSourceMediaStorageItemFetchFileFromUrl(LoginRequiredMixin, TemplateVie
             return redirect('datasource_media_storages:list_items')
         ##############################
 
-        media_storage_id = request.POST.get('storage_id') or None
-        if not media_storage_id:
+        mm_id = request.POST.get('storage_id') or None
+        if not mm_id:
             messages.error(request, 'Invalid media storage ID.')
             return redirect('datasource_media_storages:create_item')
-        download_url = request.POST.get('download_url') or None
-        if not download_url:
+        retrieval_uri = request.POST.get('download_url') or None
+        if not retrieval_uri:
             messages.error(request, 'Invalid download URL.')
             return redirect('datasource_media_storages:create_item')
-        media_storage_id_int = int(media_storage_id)
-        download_file_from_url.delay(storage_id=media_storage_id_int, url=download_url)
+        mm_id_int = int(mm_id)
+        download_file_from_url.delay(storage_id=mm_id_int, url=retrieval_uri)
         messages.success(request, 'File download from URL initiated.')
-        print('[DataSourceMediaStorageItemFetchFileFromUrl.post] File download from URL initiated.')
         return redirect('datasource_media_storages:list_items')

@@ -14,21 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 from django.contrib import admin
 
 from apps.multimodal_chat.models import MultimodalChatMessage
+from apps.multimodal_chat.utils import MULTIMODAL_MESSAGE_ADMIN_LIST, MULTIMODAL_MESSAGE_ADMIN_FILTER, \
+    MULTIMODAL_MESSAGE_ADMIN_SEARCH
 
 
 @admin.register(MultimodalChatMessage)
 class MultimodalChatMessageAdmin(admin.ModelAdmin):
-    list_display = ['multimodal_chat', 'sender_type', 'sent_at']
-    list_filter = ['multimodal_chat', 'sender_type', 'sent_at']
-    search_fields = ['multimodal_chat', 'sender_type', 'sent_at']
+    list_display = MULTIMODAL_MESSAGE_ADMIN_LIST
+    list_filter = MULTIMODAL_MESSAGE_ADMIN_FILTER
+    search_fields = MULTIMODAL_MESSAGE_ADMIN_SEARCH
     readonly_fields = ['sent_at']
     list_per_page = 20
     list_max_show_all = 100

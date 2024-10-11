@@ -23,7 +23,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.datasource_browsers.utils import BROWSER_TYPES
@@ -31,22 +31,12 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
-    """
-    Handles the creation of a new data source browser connection.
-
-    This view displays a form for creating a browser connection. Upon submission, it validates the input, checks user permissions, and saves the new browser connection to the database. If the user lacks the necessary permissions, an error message is displayed.
-
-    Methods:
-        get_context_data(self, **kwargs): Adds additional context to the template, including available assistants, browser types, and user details.
-        post(self, request, *args, **kwargs): Handles form submission and browser connection creation, including permission checks and validation.
-    """
-
+class BrowserView_BrowserCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        organizations = context_user.organizations.filter(users__in=[context_user])
-        context['assistants'] = Assistant.objects.filter(organization__in=organizations)
+        orgs = context_user.organizations.filter(users__in=[context_user])
+        context['assistants'] = Assistant.objects.filter(organization__in=orgs)
         context['browser_types'] = BROWSER_TYPES
         context['user'] = context_user
         return context
@@ -60,33 +50,29 @@ class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
             return redirect('datasource_browsers:list')
         ##############################
 
-        name = request.POST.get('name')
+        browser_name = request.POST.get('name')
         description = request.POST.get('description')
         browser_type = request.POST.get('browser_type')
-        assistant_id = request.POST.get('assistant')
-        data_selectivity = request.POST.get('data_selectivity', 0.5)
-        minimum_investigation_sites = request.POST.get('minimum_investigation_sites', 2)
+        agent_id = request.POST.get('assistant')
+        browser_selectivity = request.POST.get('data_selectivity', 0.5)
+        min_investigation_websites = request.POST.get('minimum_investigation_sites', 2)
+        whitelisted_exts = request.POST.getlist('whitelisted_extensions[]')
+        blacklisted_exts = request.POST.getlist('blacklisted_extensions[]')
 
-        whitelisted_extensions = request.POST.getlist('whitelisted_extensions[]')
-        blacklisted_extensions = request.POST.getlist('blacklisted_extensions[]')
-
-        # clean white listed extensions
-        cleaned_whitelisted_extensions = []
-        for ext in whitelisted_extensions:
+        whitelisted_exts_cleaned = []
+        for ext in whitelisted_exts:
             ext = ext.strip()
             if ext != '' and ext is not None and ext != 'None':
-                cleaned_whitelisted_extensions.append(ext)
-        whitelisted_extensions = cleaned_whitelisted_extensions
+                whitelisted_exts_cleaned.append(ext)
+        whitelisted_exts = whitelisted_exts_cleaned
 
-        # clean black listed extensions
-        cleaned_blacklisted_extensions = []
-        for ext in blacklisted_extensions:
+        blacklisted_exts_cleaned = []
+        for ext in blacklisted_exts:
             ext = ext.strip()
             if ext != '' and ext is not None and ext != 'None':
-                cleaned_blacklisted_extensions.append(ext)
-        blacklisted_extensions = cleaned_blacklisted_extensions
+                blacklisted_exts_cleaned.append(ext)
+        blacklisted_exts = blacklisted_exts_cleaned
 
-        # reading abilities checkboxes
         ra_javascript = request.POST.get('ra_javascript') == 'on'
         ra_style = request.POST.get('ra_style') == 'on'
         ra_inline_style = request.POST.get('ra_inline_style') == 'on'
@@ -100,24 +86,22 @@ class CreateBrowserConnectionView(LoginRequiredMixin, TemplateView):
         ra_forms = request.POST.get('ra_forms') == 'on'
         ra_remove_tags = request.POST.get('ra_remove_tags') == 'on'
 
-        reading_abilities = {
+        capabilities = {
             "javascript": ra_javascript, "style": ra_style, "inline_style": ra_inline_style, "comments": ra_comments,
             "links": ra_links, "meta": ra_meta, "page_structure": ra_page_structure,
             "processing_instructions": ra_processing_instructions, "embedded": ra_embedded, "frames": ra_frames,
             "forms": ra_forms, "remove_tags": ra_remove_tags
         }
         created_by_user = request.user
-
         try:
-            assistant = Assistant.objects.get(id=assistant_id)
-            data_source = DataSourceBrowserConnection.objects.create(
-                name=name, description=description, browser_type=browser_type, assistant=assistant,
-                data_selectivity=data_selectivity, minimum_investigation_sites=minimum_investigation_sites,
-                whitelisted_extensions=whitelisted_extensions, blacklisted_extensions=blacklisted_extensions,
-                reading_abilities=reading_abilities, created_by_user=created_by_user
+            assistant = Assistant.objects.get(id=agent_id)
+            info_feed = DataSourceBrowserConnection.objects.create(
+                name=browser_name, description=description, browser_type=browser_type, assistant=assistant,
+                data_selectivity=browser_selectivity, minimum_investigation_sites=min_investigation_websites,
+                whitelisted_extensions=whitelisted_exts, blacklisted_extensions=blacklisted_exts,
+                reading_abilities=capabilities, created_by_user=created_by_user
             )
-            data_source.save()
-            print("[CreateBrowserConnectionView.post] Data Source Browser Connection created successfully.")
+            info_feed.save()
             messages.success(request, 'Data Source Browser Connection created successfully.')
             return redirect('datasource_browsers:list')
         except Assistant.DoesNotExist:

@@ -14,11 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
 STARRED_MESSAGE_SENDER_TYPES = [
     ("USER", "User"),
     ("ASSISTANT", "Assistant"),
 ]
+
+STARRED_MESSAGE_ADMIN_LIST = ["user", "organization", "assistant", "chat", "chat_message", "starred_at",
+                              "message_text"]
+STARRED_MESSAGE_ADMIN_FILTER = ["user", "organization", "assistant", "chat", "chat_message", "starred_at",
+                                "message_text"]
+STARRED_MESSAGE_ADMIN_SEARCH = ["user", "organization", "assistant", "chat", "chat_message", "starred_at",
+                                "message_text"]

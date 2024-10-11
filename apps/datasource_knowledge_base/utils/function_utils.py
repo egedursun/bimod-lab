@@ -26,8 +26,7 @@ with warnings.catch_warnings():
     import wonderwords
 
 
-def generate_random_words():
-    # use a library to generate a random chat name
+def build_name_string_for_randomized():
     chat_name_1 = wonderwords.RandomWord().word(
         word_min_length=4, word_max_length=32, include_categories=["noun"], regex=r"^[a-zA-Z]+$"
     )
@@ -55,16 +54,14 @@ def convert_given_name_to_class_name(given_name: str):
     return given_name_alnum_list
 
 
-def generate_class_name(connection):
-    # Generate random words
+def build_weaviate_class_name(connection):
     given_class_name_generation = convert_given_name_to_class_name(connection.name)
-    randoms = generate_random_words()
+    randoms = build_name_string_for_randomized()
     return f"{given_class_name_generation}{randoms}"
 
 
-def generate_chat_history_class_name():
-    # Generate random words
-    randoms = generate_random_alphanumeric()
+def build_weaviate_intra_memory_class_name():
+    randoms = build_random_alphanumeric_string()
     return f"ChatHistory{randoms}"
 
 
@@ -72,7 +69,7 @@ def generate_document_uri(base_dir, document_name, file_type):
     return f"{base_dir}{document_name.split('.')[0]}_{str(random.randint(1_000_000, 9_999_999))}.{file_type}"
 
 
-def generate_random_alphanumeric(numeric_component=True):
+def build_random_alphanumeric_string(numeric_component=True):
     chat_name_1 = wonderwords.RandomWord().word(
         word_min_length=4, word_max_length=32, include_categories=["noun"], regex=r"^[a-zA-Z]+$"
     )

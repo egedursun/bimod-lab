@@ -20,8 +20,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
-from apps._services.video_generation.utils import VIDEO_GENERATOR_PROVIDER_TYPES
+from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.video_generation.utils import VIDEO_GENERATOR_PROVIDER_TYPES
 from apps.assistants.models import Assistant
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -29,17 +29,12 @@ from apps.video_generations.models import VideoGeneratorConnection
 from web_project import TemplateLayout
 
 
-class CreateVideoGeneratorConnectionView(LoginRequiredMixin, TemplateView):
-    template_name = 'video_generations/connection/create_video_generator_connection.html'
+class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['organizations'] = Organization.objects.filter(
-            users__in=[self.request.user]
-        )
-        context['assistants'] = Assistant.objects.filter(
-            organization__in=context['organizations']
-        )
+        context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
+        context['assistants'] = Assistant.objects.filter(organization__in=context['organizations'])
         context['provider_choices'] = VIDEO_GENERATOR_PROVIDER_TYPES
         return context
 
@@ -53,19 +48,16 @@ class CreateVideoGeneratorConnectionView(LoginRequiredMixin, TemplateView):
             return redirect('video_generations:list')
         ##############################
 
-        # Retrieve form data
-        organization_id = request.POST.get('organization')
-        assistant_id = request.POST.get('assistant')
+        org_id = request.POST.get('organization')
+        agent_id = request.POST.get('assistant')
         name = request.POST.get('name')
         description = request.POST.get('description')
         provider = request.POST.get('provider')
         provider_api_key = request.POST.get('provider_api_key')
-
-        # Validate form data
         errors = {}
-        if not organization_id:
+        if not org_id:
             errors['organization'] = 'Organization is required.'
-        if not assistant_id:
+        if not agent_id:
             errors['assistant'] = 'Assistant is required.'
         if not name:
             errors['name'] = 'Name is required.'
@@ -76,21 +68,19 @@ class CreateVideoGeneratorConnectionView(LoginRequiredMixin, TemplateView):
         if not provider_api_key:
             errors['provider_api_key'] = 'Provider API Key is required.'
 
-        # Check for errors
         if errors:
             context = self.get_context_data()
             context['error_messages'] = errors
             return render(request, self.template_name, context)
 
-        # Get organization and assistant instances
-        organization = None
-        assistant = None
+        orgg = None
+        agent = None
         try:
-            organization = Organization.objects.get(id=organization_id)
+            orgg = Organization.objects.get(id=org_id)
         except Organization.DoesNotExist:
             errors['organization'] = 'Selected organization does not exist.'
         try:
-            assistant = Assistant.objects.get(id=assistant_id)
+            agent = Assistant.objects.get(id=agent_id)
         except Assistant.DoesNotExist:
             errors['assistant'] = 'Selected assistant does not exist.'
         if errors:
@@ -98,27 +88,18 @@ class CreateVideoGeneratorConnectionView(LoginRequiredMixin, TemplateView):
             context['error_messages'] = errors
             return render(request, self.template_name, context)
 
-        if organization is None:
+        if orgg is None:
             errors['organization'] = 'Selected organization does not exist.'
-        if assistant is None:
+        if agent is None:
             errors['assistant'] = 'Selected assistant does not exist.'
         if errors:
             context = self.get_context_data()
             context['error_messages'] = errors
             return render(request, self.template_name, context)
 
-        # Create VideoGeneratorConnection instance
         video_generator_connection = VideoGeneratorConnection(
-            organization=organization,
-            assistant=assistant,
-            created_by_user=request.user,
-            name=name,
-            description=description,
-            provider=provider,
-            provider_api_key=provider_api_key
-        )
+            organization=orgg, assistant=agent, created_by_user=request.user, name=name, description=description,
+            provider=provider, provider_api_key=provider_api_key)
         video_generator_connection.save()
-
-        # Success message and redirect
         messages.success(request, 'Video Generator Connection created successfully.')
         return redirect('video_generations:list')

@@ -20,19 +20,19 @@
 
 from django.contrib import admin
 
-from apps._services.codebase.codebase_decoder import CodeBaseDecoder
+from apps.core.codebase.codebase_decoder import CodeBaseDecoder
 from apps.datasource_codebase.models import CodeBaseRepository
 from django.contrib.admin.actions import delete_selected as django_delete_selected
+
+from apps.datasource_codebase.utils import CODEBASE_REPOSITORY_ADMIN_LIST, CODEBASE_REPOSITORY_ADMIN_FILTER, \
+    CODEBASE_REPOSITORY_ADMIN_SEARCH
 
 
 @admin.register(CodeBaseRepository)
 class CodeBaseRepositoryAdmin(admin.ModelAdmin):
-    list_display = ['knowledge_base', 'repository_name', 'repository_description',
-                    'repository_metadata', 'repository_uri', 'created_at', 'updated_at']
-    list_filter = ['knowledge_base', 'repository_name', 'repository_description',
-                   'repository_metadata', 'repository_uri', 'created_at', 'updated_at']
-    search_fields = ['knowledge_base', 'repository_name', 'repository_description',
-                     'repository_metadata', 'repository_uri', 'created_at', 'updated_at']
+    list_display = CODEBASE_REPOSITORY_ADMIN_LIST
+    list_filter = CODEBASE_REPOSITORY_ADMIN_FILTER
+    search_fields = CODEBASE_REPOSITORY_ADMIN_SEARCH
     readonly_fields = ['created_at', 'updated_at']
 
     list_per_page = 20

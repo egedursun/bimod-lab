@@ -21,12 +21,13 @@
 from django.contrib import admin
 
 from apps.mm_functions.models import CustomFunction
+from apps.mm_functions.utils import CUSTOM_FUNCTION_ADMIN_LIST, CUSTOM_FUNCTION_ADMIN_FILTER, \
+    CUSTOM_FUNCTION_ADMIN_SEARCH
 
 
 @admin.register(CustomFunction)
 class CustomFunctionAdmin(admin.ModelAdmin):
-    list_display = ("name", "is_public", "created_at", "updated_at")
-    list_filter = ("is_public",)
-    search_fields = ("name", "description")
-    readonly_fields = ("created_at", "updated_at")
+    list_display = CUSTOM_FUNCTION_ADMIN_LIST
+    list_filter = CUSTOM_FUNCTION_ADMIN_FILTER
+    search_fields = CUSTOM_FUNCTION_ADMIN_SEARCH
     ordering = ("-created_at",)

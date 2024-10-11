@@ -23,43 +23,33 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.forms import DocumentKnowledgeBaseForm
 from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
-from apps.datasource_knowledge_base.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS
+from apps.datasource_knowledge_base.utils import VECTORSTORE_SYSTEMS, EMBEDDING_VECTORIZER_MODELS
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DocumentKnowledgeBaseUpdateView(LoginRequiredMixin, TemplateView):
-    """
-    Handles updating an existing document knowledge base connection.
-
-    This view allows users with the appropriate permissions to modify a knowledge base connection's attributes. It also handles the form submission and validation for updating the connection.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the current knowledge base connection details and adds them to the context, along with other relevant data such as available knowledge base systems, vectorizers, and assistants.
-        post(self, request, *args, **kwargs): Handles form submission for updating the knowledge base connection, including permission checks and validation.
-    """
+class VectorStoreView_Update(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        knowledge_base = get_object_or_404(DocumentKnowledgeBaseConnection, pk=kwargs['pk'])
+        vector_store = get_object_or_404(DocumentKnowledgeBaseConnection, pk=kwargs['pk'])
         context['user'] = context_user
-        context['knowledge_base_systems'] = KNOWLEDGE_BASE_SYSTEMS
-        context['vectorizers'] = VECTORIZERS
-        user_organizations = context_user.organizations.all()
-        assistants_of_organizations = Assistant.objects.filter(organization__in=user_organizations)
-        context['assistants'] = assistants_of_organizations
-        context['connection'] = knowledge_base
-        context['form'] = DocumentKnowledgeBaseForm(instance=knowledge_base)
+        context['knowledge_base_systems'] = VECTORSTORE_SYSTEMS
+        context['vectorizers'] = EMBEDDING_VECTORIZER_MODELS
+        user_orgs = context_user.organizations.all()
+        agents_of_orgs = Assistant.objects.filter(organization__in=user_orgs)
+        context['assistants'] = agents_of_orgs
+        context['connection'] = vector_store
+        context['form'] = DocumentKnowledgeBaseForm(instance=vector_store)
         return context
 
     def post(self, request, *args, **kwargs):
-        knowledge_base = get_object_or_404(DocumentKnowledgeBaseConnection, pk=kwargs['pk'])
-        context_user = self.request.user
+        vector_store = get_object_or_404(DocumentKnowledgeBaseConnection, pk=kwargs['pk'])
 
         ##############################
         # PERMISSION CHECK FOR - ADD_KNOWLEDGE_BASES
@@ -69,11 +59,10 @@ class DocumentKnowledgeBaseUpdateView(LoginRequiredMixin, TemplateView):
             return redirect('datasource_knowledge_base:list')
         ##############################
 
-        form = DocumentKnowledgeBaseForm(request.POST, instance=knowledge_base)
+        form = DocumentKnowledgeBaseForm(request.POST, instance=vector_store)
         if form.is_valid():
             form.save()
             messages.success(request, "Knowledge Base updated successfully.")
-            print('[DocumentKnowledgeBaseUpdateView.post] Knowledge Base updated successfully.')
             return redirect('datasource_knowledge_base:list')
         else:
             messages.error(request, "Error updating Knowledge Base. Please check the form for errors.")

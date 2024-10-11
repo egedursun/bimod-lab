@@ -42,16 +42,8 @@
     <h4 class="text-center mb-2"><strong>Frequently Asked Questions</strong></h4>
     <p class="text-center mb-0 px-4">Answers to your questions about our services. If you can't find what
       you're looking for, you can reach out to us via phone or email.</p>
-    <!-- search feature
-    <div class="input-wrapper mt-4 input-group input-group-merge px-lg-5">
-      <span class="input-group-text" id="basic-addon1"><i class="ti ti-search"></i></span>
-      <input type="text" class="form-control" placeholder="Search articles..." aria-label="Search" aria-describedby="basic-addon1" />
-    </div>
-    -->
   </div>
-
   <div class="row mt-6">
-
     <div class="alert alert-secondary alert-dismissible d-flex col-11 ms-12 me-12 align-items-center mb-8"
          role="alert">
       <img src="{% static 'img/custom-illustrations-v2/i2-87.png' %}" width="25%" style="border-radius: 25px;"
@@ -62,10 +54,11 @@
       <div class="d-flex flex-column ps-1">
         <h5 class="alert-heading mb-2">Tip</h5>
         <p class="mb-0">
-          This page allows you to find answers to frequently asked questions about our products and services. If you
-          can't find the information you're looking for, please feel free to reach out to us via phone or email. There
-          are multiple categories to choose from, so you can easily find the information you need, however, please
-          not that this page is still under development and some information may be missing or incomplete.
+          This page provides answers to frequently asked questions about our products and services.
+          If you can’t find the information you need, feel free to contact us by phone or email.
+          There are various categories available to help you quickly locate the information you're looking for.
+          However, please note that this page is still being developed, so some information may be incomplete
+          or missing.
         </p>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
         </button>
@@ -91,13 +84,13 @@
           <li class="nav-item">
             <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#general">
               <i class="ti ti-info-hexagon me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">General Information</span>
+              <span class="align-middle fw-medium">General</span>
             </button>
           </li>
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#account">
               <i class="ti ti-user me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Account Management</span>
+              <span class="align-middle fw-medium">Accounts</span>
             </button>
           </li>
           <li class="nav-item">
@@ -109,13 +102,13 @@
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cancellation">
               <i class="ti ti-rotate-clockwise-2 me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Cancellation & Returns</span>
+              <span class="align-middle fw-medium">Cancellation</span>
             </button>
           </li>
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#terms">
               <i class="ti ti-file-text me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Terms and Conditions</span>
+              <span class="align-middle fw-medium">Terms &amp; Conditions</span>
             </button>
           </li>
           <li class="nav-item">
@@ -133,13 +126,13 @@
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#support">
               <i class="ti ti-lifebuoy me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Customer Support</span>
+              <span class="align-middle fw-medium">Support</span>
             </button>
           </li>
           <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#updates">
               <i class="ti ti-cloud-up me-1_5 ti-sm"></i>
-              <span class="align-middle fw-medium">Updates &amp; Changes</span>
+              <span class="align-middle fw-medium">Updates</span>
             </button>
           </li>
         </ul>
@@ -161,7 +154,7 @@
               <h5 class="mb-0">
                 <span class="align-middle">General Information</span>
               </h5>
-              <span>Find answers regarding general information about our products and services</span>
+              <span>Find answers to general questions about our products and services.</span>
             </div>
           </div>
           <div id="accordionPayment" class="accordion">
@@ -169,15 +162,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
                         data-bs-target="#accordionGeneral-1" aria-controls="accordionGeneral-1">
-                  What is the purpose of this web application?
+                  What is the goal of this web application?
                 </button>
               </h2>
               <div id="accordionGeneral-1" class="accordion-collapse collapse show">
                 <div class="accordion-body">
-                  {% get_theme_variables 'template_name' %} allows users to create and manage multiple AI-powered assistants by optimizing various
-                  hyperparameters like temperature and max tokens. These assistants can be customized for specific
-                  tasks, integrated with SQL databases, and connected to file systems via SSH, among other advanced
-                  features.
+                  This platform enables users to create and manage multiple AI-powered assistants by fine-tuning
+                  hyperparameters such as temperature and max tokens. These assistants can be tailored for specific
+                  tasks, integrated with SQL databases, and connected to file systems via SSH, along with other
+                  advanced functionalities.
                 </div>
               </div>
             </div>
@@ -186,14 +179,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionGeneral-2" aria-controls="accordionGeneral-2">
-                  Can users create and manage multiple assistants on {% get_theme_variables 'template_name' %}?
+                  Is it possible for users to create and manage multiple AI agents on
+                  {% get_theme_variables 'template_name' %}?
                 </button>
               </h2>
               <div id="accordionGeneral-2" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Yes, users can create multiple assistants, each with customizable settings and hyperparameters.
-                  These assistants can perform a wide range of tasks, from connecting to databases to processing
-                  documents and integrating with APIs.
+                  Yes, users are able to create multiple assistants, each with personalized settings and
+                  hyperparameters. These assistants can handle various tasks, including database connections,
+                  document processing, and API integrations.
                 </div>
               </div>
             </div>
@@ -202,14 +196,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionGeneral-3" aria-controls="accordionGeneral-3">
-                  How does {% get_theme_variables 'template_name' %} handle organization and user management?
+                  How does {% get_theme_variables 'template_name' %} manage organization and users?
                 </button>
               </h2>
               <div id="accordionGeneral-3" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  {% get_theme_variables 'template_name' %} enables users to add and manage multiple organizations. Each organization can have its own
-                  set of users, with specific roles and permissions. Additionally, billing systems can be set up
-                  separately for each assistant within the organization.
+                  {% get_theme_variables 'template_name' %} allows users to create and manage multiple organizations,
+                  each with its own set of users, roles, and permissions. Furthermore, billing systems can be
+                  configured individually for each assistant within an organization.
                 </div>
               </div>
             </div>
@@ -218,15 +212,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionGeneral-4" aria-controls="accordionGeneral-4">
-                  What advanced features do {% get_theme_variables 'template_name' %} assistants offer?
+                  What do {% get_theme_variables 'template_name' %} multi-modal agents propose to your organization?
                 </button>
               </h2>
               <div id="accordionGeneral-4" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  In addition to standard GPT functionalities, {% get_theme_variables 'template_name' %} assistants can directly connect to SQL
-                  databases for I/O operations, execute commands on file systems via SSH, and process documents
-                  of any size using vector databases. They can also integrate pre-built knowledge bases and
-                  perform complex tasks through orchestration of multiple assistants.
+                  In addition to standard GPT features, {% get_theme_variables 'template_name' %} assistants
+                  can connect directly to SQL databases for I/O operations, execute file system commands via SSH,
+                  and process large documents using vector databases. They can also integrate pre-built knowledge
+                  bases and carry out complex tasks by coordinating multiple assistants.
                 </div>
               </div>
             </div>
@@ -240,10 +234,10 @@
               </h2>
               <div id="accordionGeneral-5" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  The {% get_theme_variables 'template_name' %} function, API, and Script stores allow users to browse, purchase, and integrate various
-                  tools and functions into their assistants. We are also planning to create an environment where the
-                  developers can create and sell their own functions and APIs, earning revenue through commissions, in
-                  the near future.
+                  The {% get_theme_variables 'template_name' %} function, API, and Script stores enable users to
+                  explore, buy, and integrate a range of tools and functions into their assistants. Additionally,
+                  we plan to introduce a marketplace where developers can create and sell their own functions and
+                  APIs, earning commissions as revenue, in the near future.
                 </div>
               </div>
             </div>
@@ -257,9 +251,9 @@
               </h2>
               <div id="accordionGeneral-6" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  {% get_theme_variables 'template_name' %} allows users to schedule tasks using cron jobs or trigger tasks through webhooks.
-                  Additionally, the orchestration feature lets users connect multiple assistants via a master
-                  assistant to perform complex tasks seamlessly.
+                 {% get_theme_variables 'template_name' %} enables users to schedule tasks using cron jobs or
+                  trigger them through webhooks. Furthermore, the orchestration feature allows users to link
+                  multiple assistants via a master assistant, enabling the seamless execution of complex tasks.
                 </div>
               </div>
             </div>
@@ -268,14 +262,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionGeneral-7" aria-controls="accordionGeneral-7">
-                  What is the integration feature in {% get_theme_variables 'template_name' %}?
+                  What is the agent integration feature in {% get_theme_variables 'template_name' %}?
                 </button>
               </h2>
               <div id="accordionGeneral-7" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  The integration feature allows organizations to quickly deploy boilerplate assistants with
-                  pre-configured functions, APIs, and data sources. The meta-integration feature further
-                  enables users to integrate systems with multiple optimized assistants for complex task execution.
+                  The agent integration feature allows organizations to rapidly deploy pre-built assistants with pre-configured
+                  functions, APIs, and data sources. The meta-integration feature goes a step further
+                  by enabling users to integrate systems with multiple optimized assistants for executing complex
+                  tasks.
                 </div>
               </div>
             </div>
@@ -284,14 +279,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionGeneral-8" aria-controls="accordionGeneral-8">
-                  How does {% get_theme_variables 'template_name' %} ensure data security and privacy?
+                  How does {% get_theme_variables 'template_name' %} secure and protect your data?
                 </button>
               </h2>
               <div id="accordionGeneral-8" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  {% get_theme_variables 'template_name' %} prioritizes data security by implementing robust encryption, secure storage solutions,
-                  and regular audits. Users can also manage the assistant's information access by whitelisting
-                  or blacklisting specific websites and controlling the depth of research conducted by the assistant.
+                  {% get_theme_variables 'template_name' %} places a strong emphasis on data security through the use of advanced
+                  encryption, secure storage systems, and regular audits. Users can further control the assistant's
+                  access to information by whitelisting or blacklisting specific websites and regulating the depth
+                  of research performed by the assistant.
                 </div>
               </div>
             </div>
@@ -300,13 +296,13 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionGeneral-9" aria-controls="accordionGeneral-9">
-                  Can {% get_theme_variables 'template_name' %} assistants be exported for use on external websites?
+                  Can {% get_theme_variables 'template_name' %} agents be shared with APIs for use on external systems?
                 </button>
               </h2>
               <div id="accordionGeneral-9" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Yes, {% get_theme_variables 'template_name' %} allows users to export their assistants and integrate them into external websites
-                  using a RESTful API.
+                  Yes, {% get_theme_variables 'template_name' %} allows exportation of agents and enable integrations
+                  into external systems and frameworks using a RESTful APIs.
                 </div>
               </div>
             </div>
@@ -321,9 +317,9 @@
             </div>
             <div>
               <h5 class="mb-0">
-                <span class="align-middle">Account Management</span>
+                <span class="align-middle">Accounts</span>
               </h5>
-              <span>Find answers regarding issues of account management</span>
+              <span>Find answers regarding issues of managing your account.</span>
             </div>
           </div>
           <div id="accordionPayment" class="accordion">
@@ -337,10 +333,10 @@
 
               <div id="accordionAccount-1" class="accordion-collapse collapse show">
                 <div class="accordion-body">
-                  To create an account, visit the {% get_theme_variables 'template_name' %} website, click on "Sign Up," and fill in the required
-                  details such as your email address, password, and organization name. If you are not an administrator,
-                  and instead want to join an organization, your organization administrator must send you an invitation
-                  link to join.
+                  To create an account, go to the {% get_theme_variables 'template_name' %} website, click on
+                  "Sign Up," and provide the necessary details, including your email address, password, and
+                  organization name. If you are not an administrator and wish to join an organization, you will
+                  need to receive an invitation link from your organization’s administrator.
                 </div>
               </div>
             </div>
@@ -349,13 +345,13 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionAccount-2" aria-controls="accordionAccount-2">
-                  How do I log in to my {% get_theme_variables 'template_name' %} account?
+                  How do I login to my account on {% get_theme_variables 'template_name' %}?
                 </button>
               </h2>
               <div id="accordionAccount-2" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  You can log in by visiting the {% get_theme_variables 'template_name' %} homepage, clicking on "Log In," and entering your
-                  registered email and password.
+                  You can log in by navigating to the {% get_theme_variables 'template_name' %} homepage,
+                  selecting "Log In," and entering your registered email and password.
                 </div>
               </div>
             </div>
@@ -364,14 +360,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionAccount-3" aria-controls="accordionAccount-3">
-                  Can I change my account email address?
+                  Can I change my email address after I register?
                 </button>
               </h2>
               <div id="accordionAccount-3" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  No, you can't change your account email address as it is used as a unique identifier for your
-                  account. If you need to change your email address, you will need to create a new account with the
-                  new email address.
+                  Currently, you cannot change your account email address, as it serves as the unique identifier
+                  for your account. If you need to update your email, you will need to create a new account with
+                  the new email address.
                 </div>
               </div>
             </div>
@@ -380,13 +376,13 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionAccount-4" aria-controls="accordionAccount-4">
-                  How do I update my account information?
+                  How do I update my personal information?
                 </button>
               </h2>
               <div id="accordionAccount-4" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  To update your account information, navigate to "Account Settings" after logging in. From there,
-                  you can update your personal details, your password, and other preferences.
+                  To update your personal information, log in and go to "Account Settings." From there, you can
+                  modify your personal details, change your password, and adjust other preferences.
                 </div>
               </div>
             </div>
@@ -400,8 +396,8 @@
               </h2>
               <div id="accordionAccount-5" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Yes, you can delete your account by contacting our support team. Please note that deleting your
-                  account will permanently remove all data associated with it, and this action cannot be undone.
+                  Yes, you can delete your account by reaching out to our support team. Please be aware that
+                  deleting your account will permanently erase all associated data, and this action is irreversible.
                 </div>
               </div>
             </div>
@@ -410,14 +406,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionAccount-6" aria-controls="accordionAccount-6">
-                  How can I manage multiple organizations within my account?
+                  How can I manage multiple organizations in the same account?
                 </button>
               </h2>
               <div id="accordionAccount-6" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  You can manage multiple organizations by going to the "Organizations" section in your account.
-                  Here, you can create new organizations, and then within our system, you can add users, assign permissions,
-                  and manage billing settings for each one of your organizations distinctly.
+                  You can manage multiple organizations by accessing the "Organizations" section in your account.
+                  From there, you can create new organizations, add users, assign roles and permissions, and
+                  manage billing settings separately for each organization.
                 </div>
               </div>
             </div>
@@ -426,14 +422,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionAccount-7" aria-controls="accordionAccount-7">
-                  What are roles and permissions in {% get_theme_variables 'template_name' %}?
+                  What are user roles and user permissions?
                 </button>
               </h2>
               <div id="accordionAccount-7" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Roles and permissions allow you to control what different users can do within your organization.
-                  You can set specific permissions for accessing and managing assistants, billing, managing
-                  organizations, database connections, and more.
+                  Roles and permissions enable you to define what different users can do within your organization.
+                  You can assign specific permissions for tasks such as accessing and managing assistants,
+                  handling billing, managing organizations, and configuring database connections, among other
+                  functions.
                 </div>
               </div>
             </div>
@@ -442,14 +439,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionAccount-8" aria-controls="accordionAccount-8">
-                  How do I add or remove users from my organization?
+                  How do I add or remove users from my enterprises?
                 </button>
               </h2>
               <div id="accordionAccount-8" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  To add or remove users, go to the "Users" section, select the organization you wish to manage,
-                  and within this panel, you can temporarily deactivate user accounts, add or remove them from your
-                  organizations, and also delete their accounts permanently if necessary.
+                  To add or remove users, navigate to the "Users" section, choose the organization you want to
+                  manage, and from there, you can temporarily deactivate user accounts, add or remove users
+                  from your organizations, or permanently delete their accounts if needed.
                 </div>
               </div>
             </div>
@@ -458,13 +455,13 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionAccount-9" aria-controls="accordionAccount-9">
-                  What should I do if I forget my password?
+                  What should I do if I forget my account password?
                 </button>
               </h2>
               <div id="accordionAccount-9" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  If you forget your password, click on the "Forgot Password?" link on the login page. Enter your
-                  registered email address, and we’ll send you instructions to reset your password.
+                  If you forget your password, click the "Forgot Password?" link on the login page. Enter your
+                  registered email address, and we will send you instructions on how to reset your password.
                 </div>
               </div>
             </div>
@@ -482,7 +479,7 @@
               <h5 class="mb-0">
                 <span class="align-middle">Payments</span>
               </h5>
-              <span>Find answers regarding issues of payment</span>
+              <span>Find answers regarding issues of payment.</span>
             </div>
           </div>
           <div id="accordionPayment" class="accordion">
@@ -496,11 +493,10 @@
 
               <div id="accordionPayment-1" class="accordion-collapse collapse show">
                 <div class="accordion-body">
-                  Bimod is a pay as you go service. Payment is taken at the time of topping up balance. You can top up
-                  your balance from the <a href="{% url 'llm_transaction:list' %}">Usage &amp; Payments </a> page by
-                  using one of the payment methods you have added to your account. If you don't currently have a payment
-                  method added to your account, you can add one from your
-                  <a href="{% url 'user_profile_management:list' %}">User Profile</a> page.
+                  We operate on a pay-as-you-go model. Payment is required when topping up your balance. You can
+                  add funds through the <a href="{% url 'llm_transaction:list' %}">Usage & Payments</a> page using
+                  one of the payment methods linked to your account. If you haven't added a payment method yet,
+                  you can do so from your <a href="{% url 'user_profile_management:list' %}">User Profile</a> page.
                 </div>
               </div>
             </div>
@@ -509,15 +505,13 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionPayment-2" aria-controls="accordionPayment-2">
-                  How do I pay for my orders?
+                  How do I pay for the services?
                 </button>
               </h2>
               <div id="accordionPayment-2" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  We accept Visa®, MasterCard®, and American Express® as available payment methods. Our servers encrypt
-                  all information submitted to them, so you can be confident that your credit card information will be
-                  kept
-                  safe and secure.
+                  We accept Visa®, MasterCard®, and American Express® as payment options. All information submitted
+                  to our servers is encrypted, ensuring that your credit card details are kept safe and secure.
                 </div>
               </div>
             </div>
@@ -526,14 +520,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionPayment-3" aria-controls="accordionPayment-3">
-                  What should I do if I'm having trouble topping up balance?
+                  What should I do if I'm having trouble adding balance to my organization(s)?
                 </button>
               </h2>
               <div id="accordionPayment-3" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  If you encounter any issues while topping up your balance, please contact our support team at
-                  <a href="{% url "landing:index" %}#landingContact">support form</a>. Please feel free to reach out
-                  if you have any questions or concerns.
+                  If you experience any issues while topping up your balance, please contact our support team via
+                  the <a href="{% url "landing:index" %}#landingContact">support form</a>. Don't hesitate to reach out if you
+                  have any questions or concerns.
                 </div>
               </div>
             </div>
@@ -542,14 +536,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionPayment-4" aria-controls="accordionPayment-4">
-                  Do you pay for our LLM costs as well?
+                  Do you pay for our Large Language Model Provider (e.g. OpenAI) costs as well?
                 </button>
               </h2>
               <div id="accordionPayment-4" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  No, you are responsible for paying for your LLM costs. We will not pay for any costs you incur while
-                  using our service. This is because Bimod is a pay as you go service that is providing a plug and play
-                  solution for your LLM needs, independent from the LLM model you are using.
+                  You are responsible for covering your own LLM costs. We do not cover any expenses incurred while
+                  using our service, as Bimod operates on a pay-as-you-go basis, offering a plug-and-play solution
+                  for your LLM needs, regardless of the specific LLM model you use.
                 </div>
               </div>
             </div>
@@ -558,12 +552,12 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionPayment-5" aria-controls="accordionPayment-5">
-                  Does my balance expire?
+                  Does my balance ever expire?
                 </button>
               </h2>
               <div id="accordionPayment-5" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  No, your balance does not expire. You can use your balance at any time to pay for your LLM costs.
+                  No, your balance does not expire. You can use it at any time to cover your LLM costs.
                 </div>
               </div>
             </div>
@@ -572,14 +566,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionPayment-6" aria-controls="accordionPayment-6">
-                  Can I cancel a task or operation after it has been initiated?
+                  Can I cancel an AI operation or request after it started?
                 </button>
               </h2>
               <div id="accordionPayment-6" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Currently, you can cancel some of the tasks or operation (but not all) after it has been initiated,
-                  as long as it hasn't been completed. To do so, go to the tasks main page, find the ongoing task,
-                  and click on "Cancel." Please note that any credits used up to that point may not be refundable.
+                  Currently, you can cancel certain tasks or operations (but not all) after they've been initiated,
+                  provided they haven't been completed. To do this, go to the tasks main page, locate the ongoing
+                  task, and click "Cancel." Be aware that any credits used up to that point may not be refundable.
                 </div>
               </div>
             </div>
@@ -588,15 +582,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionPayment-7" aria-controls="accordionPayment-7">
-                  Can I get a refund if I'm not satisfied with the service provided?
+                  Can I get a refund if I'm not satisfied?
                 </button>
               </h2>
               <div id="accordionPayment-7" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Refunds are generally not offered, as our services operate on a pay-as-you-go basis. However,
-                  in exceptional circumstances where a service was not delivered as expected, you may contact
-                  our support team to discuss potential resolutions or credit adjustments. In such cases, there
-                  might be a probability to refund your balance or add additional credits to your account.
+                  Refunds are generally not provided, as our services follow a pay-as-you-go model. However, in
+                  exceptional cases where a service was not delivered as expected, you can contact our support
+                  team to explore possible resolutions or credit adjustments. In such situations, there may be a
+                  chance to refund your balance or add extra credits to your account.
                 </div>
               </div>
             </div>
@@ -611,7 +605,7 @@
             </span>
             </div>
             <div>
-              <h5 class="mb-0"><span class="align-middle">Cancellation & Returns</span></h5>
+              <h5 class="mb-0"><span class="align-middle">Cancellation</span></h5>
               <span>Find answers regarding issues of cancellation and returns</span>
             </div>
           </div>
@@ -620,17 +614,16 @@
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
                         data-bs-target="#accordionCancellation-1" aria-controls="accordionCancellation-1">
-                  Can I take my credits back?
+                  Can I take my balance back?
                 </button>
               </h2>
 
               <div id="accordionCancellation-1" class="accordion-collapse collapse show">
                 <div class="accordion-body">
-                  No, you cannot take your credits back. Once you have topped up your balance, you cannot get a refund
-                  for the amount you have topped up. However, you can use your balance at any time since they don't
-                  expire at any time. However, there migth be exceptional cases where we can refund your balance, such
-                  as if you have topped up your balance by a very large amount by mistake. In such cases, please contact
-                  our support team at <a href="{% url "landing:index" %}#landingContact">support form</a>.
+                  No, you cannot withdraw your credits. Once you've topped up your balance, refunds for the topped-up
+                  amount are not available. However, your balance never expires and can be used at any time. In
+                  rare cases, such as accidentally topping up a large amount, we may offer a refund. In such
+                  instances, please contact our support team via the <a href="{% url "landing:index" %}#landingContact">support form</a>.
                 </div>
               </div>
             </div>
@@ -639,15 +632,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionCancellation-2" aria-controls="accordionCancellation-2">
-                  Can I remove my payment method?
+                  Can I delete payment methods?
                 </button>
               </h2>
               <div id="accordionCancellation-2" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Yes, you can remove your payment method at any time. To remove your payment method, go to your
-                  <a href="{% url 'user_profile_management:list' %}">User Profile</a> page and click on the payment
-                  method you want to remove. Then click on the <span class="fw-medium">Remove</span> button to remove
-                  the payment method.
+                  Yes, you can remove your payment method at any time. To do so, go to your
+                  <a href="{% url 'user_profile_management:list' %}">User Profile</a> page, select the payment method
+                  you wish to remove, and click the <span class="fw-medium">Remove</span> button to delete the
+                  payment method.
                 </div>
               </div>
             </div>
@@ -656,15 +649,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionCancellation-3" data-bs-target="#accordionCancellation-3">
-                  Can I use the credit balance of an organization for another organization?
+                  Can I use the balance of an organization for another organization?
                 </button>
               </h2>
               <div id="accordionCancellation-3" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  No, you cannot use the credit balance of an organization for another organization. The credit balance
-                  of an organization is specific to that organization and cannot be used for another organization. This
-                  is primarily because of providing an ease of invoice for tracking the costs of each organization
-                  and manage probable taxation issues with more clarity.
+                  No, you cannot use the credit balance of one organization for another. Each organization's credit
+                  balance is specific to that organization to simplify invoicing and better manage potential taxation
+                  issues. However, you can transfer the balance from one organization to another, and this
+                  transaction will be documented in your invoices.
                 </div>
               </div>
             </div>
@@ -673,14 +666,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionCancellation-4" data-bs-target="#accordionCancellation-4">
-                  What happens if I accidentally top up my balance with more credits than intended?
+                  What happens if I add balance to my organization with more credits than intended?
                 </button>
               </h2>
               <div id="accordionCancellation-4" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  If you accidentally top up your balance with a significantly larger amount than intended,
-                  please contact our support team immediately. In such exceptional cases, we may be able to
-                  refund the excess amount after reviewing your request.
+                  If you accidentally top up your balance with a much larger amount than intended, please contact
+                  our support team immediately. In such exceptional cases, we may be able to refund the excess
+                  amount after reviewing your request.
                 </div>
               </div>
             </div>
@@ -689,14 +682,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionCancellation-5" data-bs-target="#accordionCancellation-5">
-                  How are refunds handled in case of a technical error on your end?
+                  How are refunds handled in case of a technical error?
                 </button>
               </h2>
               <div id="accordionCancellation-5" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  If a technical error on our end causes an operation to fail, your credits will not be deducted
-                  for that operation. If credits were deducted incorrectly, please contact our support team, and
-                  we will review the case and issue a refund if applicable.
+                  If a technical error on our end causes an operation to fail, your credits will not be deducted for
+                  that operation. If credits were mistakenly deducted, please reach out to our support team,
+                  and we will review the situation and issue a refund if applicable.
                 </div>
               </div>
             </div>
@@ -705,13 +698,13 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionCancellation-6" data-bs-target="#accordionCancellation-6">
-                  Can I transfer my credits to another account if I decide to stop using {% get_theme_variables 'template_name' %}?
+                  Can I transfer my balance to another account if I decide to stop using the platform?
                 </button>
               </h2>
               <div id="accordionCancellation-6" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Currently, credits are non-transferable between accounts. However, since your credits don’t expire,
-                  you can use them at any time if you decide to return to {% get_theme_variables 'template_name' %}.
+                  Currently, credits cannot be transferred between accounts. However, since your credits never
+                  expire, you can use them at any time if you decide to return to {% get_theme_variables 'template_name' %}.
                 </div>
               </div>
             </div>
@@ -720,14 +713,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionCancellation-7" data-bs-target="#accordionCancellation-7">
-                  What should I do if I believe I was incorrectly charged for a service?
+                  What should I do if I believe I was incorrectly charged?
                 </button>
               </h2>
               <div id="accordionCancellation-7" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  If you believe you were incorrectly charged, please reach out to our support team through the
-                  support form. We will investigate the issue and, if an error is found, we will issue a
-                  refund or credit adjustment accordingly.
+                  If you believe you were charged incorrectly, please contact our support team via the support
+                  form. We will investigate the issue, and if an error is confirmed, we will provide a refund or
+                  adjust your credits accordingly.
                 </div>
               </div>
             </div>
@@ -744,7 +737,7 @@
             </div>
             <div>
               <h5 class="mb-0"><span class="align-middle">Terms and Conditions</span></h5>
-              <span>Learn more about our terms and conditions</span>
+              <span>Learn more about our terms and conditions.</span>
             </div>
           </div>
           <div id="accordionTerms" class="accordion">
@@ -1307,67 +1300,16 @@
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
                         data-bs-target="#accordionTroubleshooting-1" aria-controls="accordionTroubleshooting-1">
-                  Why is my assistant not responding to queries?
+                  Why is my agent not responding to queries?
                 </button>
               </h2>
 
               <div id="accordionTroubleshooting-1" class="accordion-collapse collapse show">
                 <div class="accordion-body">
-                  If your assistant is not responding, check your internet connection and ensure that the assistant
-                  is active. If the issue persists, try restarting the assistant or reconfiguring its settings.
-                  Sometimes, the issue might arise from a technical glitch on our end, and if your assistant is still
-                  not responding after trying the above steps, please contact our support team for further assistance.
-                </div>
-              </div>
-            </div>
-
-            <div class="card accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#accordionTroubleshooting-2" aria-controls="accordionTroubleshooting-2">
-                  What should I do if my assistant's responses are inaccurate or incomplete?
-                </button>
-              </h2>
-              <div id="accordionTroubleshooting-2" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                  Inaccurate or incomplete responses may result from improperly configured settings. Adjust
-                  the assistant’s hyperparameters like temperature or max tokens, or update the assistant’s
-                  knowledge base to improve accuracy. If the issue persists, please contact our support team
-                  for further assistance and guidance for optimizing your assistant’s performance.
-                </div>
-              </div>
-            </div>
-
-            <div class="card accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        aria-controls="accordionTroubleshooting-3" data-bs-target="#accordionTroubleshooting-3">
-                  Why can't I connect to my SQL database via the assistant?
-                </button>
-              </h2>
-              <div id="accordionTroubleshooting-3" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                  Ensure that the SQL database credentials are correctly entered and that the database is
-                  accessible from the network. Check the assistant's permissions and make sure it has the
-                  necessary access rights to perform I/O operations. For instance, if your database connection
-                  is marked as read-only, the assistant will not be able to write to the database. If the issue
-                  persists, please contact our support team for further assistance.
-                </div>
-              </div>
-            </div>
-
-            <div class="card accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        aria-controls="accordionTroubleshooting-4" data-bs-target="#accordionTroubleshooting-4">
-                  My assistant is unable to execute commands via SSH. What could be wrong?
-                </button>
-              </h2>
-              <div id="accordionTroubleshooting-4" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                  Verify that the SSH credentials and connection details are correct. Ensure the target server is
-                  accessible, and the assistant has permission to perform operations. Additionally, check if the
-                  SSH keys are properly configured. If the issue persists, please contact our support team for
+                  If your assistant is not responding, first check your internet connection and verify that the
+                  assistant is active. If the problem continues, try restarting the assistant or adjusting its
+                  settings. Occasionally, the issue may result from a technical glitch on our side. If your assistant
+                  still isn't responding after following these steps, please reach out to our support team for
                   further assistance.
                 </div>
               </div>
@@ -1376,16 +1318,68 @@
             <div class="card accordion-item">
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#accordionTroubleshooting-2" aria-controls="accordionTroubleshooting-2">
+                  What should I do if my assistant's responses are inaccurate or vague?
+                </button>
+              </h2>
+              <div id="accordionTroubleshooting-2" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Inaccurate or incomplete responses may occur due to improperly configured settings. Try adjusting
+                  the assistant’s hyperparameters, such as temperature or max tokens, or updating its knowledge base
+                  to improve accuracy. If the issue persists, please contact our support team for further assistance
+                  and guidance on optimizing your assistant’s performance.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionTroubleshooting-3" data-bs-target="#accordionTroubleshooting-3">
+                  Why can't I connect to my SQL database?
+                </button>
+              </h2>
+              <div id="accordionTroubleshooting-3" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Ensure that the SQL database credentials are entered correctly and that the database is accessible
+                  over the network. Verify the assistant's permissions to ensure it has the necessary access rights
+                  for performing I/O operations. For example, if the database connection is set to read-only, the
+                  assistant will be unable to write to it. If the problem continues, please contact our support
+                  team for further assistance.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-controls="accordionTroubleshooting-4" data-bs-target="#accordionTroubleshooting-4">
+                  My assistant is unable to execute commands via SSH.
+                </button>
+              </h2>
+              <div id="accordionTroubleshooting-4" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  Verify that the SSH credentials and connection details are accurate, and ensure the target server
+                  is accessible. Make sure the assistant has the necessary permissions to perform operations,
+                  and check that the SSH keys are properly configured. If the problem continues, please contact
+                  our support team for further assistance.
+                </div>
+              </div>
+            </div>
+
+            <div class="card accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionTroubleshooting-5" data-bs-target="#accordionTroubleshooting-5">
-                  Why is my assistant not integrating tools or functions from the app store?
+                  Why is my assistant not integrating tools or functions?
                 </button>
               </h2>
               <div id="accordionTroubleshooting-5" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Check if the tools or functions are compatible with your assistant and correctly installed and
-                  connected to your assistant. If the problem persists, try reinstalling the tools as this might
-                  sometimes resolve the issue. Sometimes, the issue may arise from a technical glitch on our end, and if
-                  your assistant is still not integrating tools after trying the above steps, please contact our
+                  Ensure that the tools or functions are compatible with your assistant and properly installed
+                  and connected. If the issue persists, try reinstalling the tools, as this may sometimes resolve
+                  the problem. Occasionally, the issue might be due to a technical glitch on our end. If your
+                  assistant still isn't integrating the tools after following these steps, please contact our
                   support team for further assistance.
                 </div>
               </div>
@@ -1395,16 +1389,16 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionTroubleshooting-6" data-bs-target="#accordionTroubleshooting-6">
-                  Why is my assistant taking longer than usual to process tasks?
+                  Why is my assistant taking longer than usual to do jobs?
                 </button>
               </h2>
               <div id="accordionTroubleshooting-6" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Task processing times may vary based on the complexity of the task and server load. In fact, there
-                  might be multiple different causes for a delayed response, such as network latency, the performance
-                  of your internal database servers, or the SSH server’s response time. Check the task’s
-                  configuration for any potential inefficiencies. If delays persist, consider optimizing the assistant’s
-                  settings or contact support for help.
+                  Task processing times can vary depending on the complexity of the task and server load. Delayed
+                  responses may be caused by several factors, including network latency, the performance of your
+                  internal database servers, or the SSH server’s response time. Review the task’s configuration
+                  for any potential inefficiencies. If delays continue, consider optimizing the assistant’s
+                  settings or contact support for further assistance.
                 </div>
               </div>
             </div>
@@ -1413,14 +1407,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionTroubleshooting-7" data-bs-target="#accordionTroubleshooting-7">
-                 What should I do if I encounter an error message while using {% get_theme_variables 'template_name' %}?
+                 What should I do if I encounter an error message?
                 </button>
               </h2>
               <div id="accordionTroubleshooting-7" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Take note of the error message and any relevant details. Try restarting the assistant or the
-                  application. If the error persists, consult the help documentation or contact our support team
-                  with the error details for further assistance.
+                  Take note of the error message and any relevant details. Try restarting the assistant or
+                  the application. If the error continues, refer to the help documentation or reach out to our
+                  support team with the error details for further assistance.
                 </div>
               </div>
             </div>
@@ -1450,8 +1444,9 @@
 
               <div id="accordionSupport-1" class="accordion-collapse collapse show">
                 <div class="accordion-body">
-                  When contacting support, please include your account details, a clear description of the issue,
-                  and any relevant screenshots or error messages. This helps us resolve your issue more quickly.
+                  When reaching out to support, please provide your account details, a detailed description of
+                  the issue, and any relevant screenshots or error messages. This will help us address your
+                  issue more efficiently.
                 </div>
               </div>
             </div>
@@ -1460,15 +1455,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionSupport-2" aria-controls="accordionSupport-2">
-                  What are the support hours for {% get_theme_variables 'template_name' %}?
+                  What are your active support hours for {% get_theme_variables 'template_name' %}?
                 </button>
               </h2>
               <div id="accordionSupport-2" class="accordion-collapse collapse">
                 <div class="accordion-body">
                   Our customer support team is available from 9AM to 5PM, UTC+3, Monday through Friday. Support
-                  requests submitted outside these hours will be addressed the next business day. If you have an
-                  urgent issue, you can consider reaching us for the premium support option to get immediate
-                  assistance for your issues.
+                  requests submitted outside these hours will be addressed on the next business day. If you have
+                  an urgent issue, you may consider opting for our premium support option to receive
+                  immediate assistance.
                 </div>
               </div>
             </div>
@@ -1477,15 +1472,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionSupport-3" data-bs-target="#accordionSupport-3">
-                  How long does it take to receive a response from support?
+                  How long does it take to get a response from support?
                 </button>
               </h2>
               <div id="accordionSupport-3" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  We strive to respond to all support inquiries within 72 hours. However, response times may vary
-                  depending on the complexity of the issue and current support request volume. If your use cases
-                  are mission-critical, consider reaching out to us for the premium support option to get immediate
-                  assistance for your issues.
+                  We aim to respond to all support inquiries within 72 hours. However, response times may vary
+                  based on the complexity of the issue and the current volume of support requests. If your use
+                  cases are mission-critical, consider opting for our premium support option for immediate assistance.
                 </div>
               </div>
             </div>
@@ -1499,8 +1493,9 @@
               </h2>
               <div id="accordionSupport-4" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Absolutely! Our support team can guide you through the process of setting up and configuring
-                  your assistant. You can also find helpful guides and tutorials in our documentation section.
+                  Absolutely! Our support team is available to guide you through the process of setting up and
+                  configuring your assistant. Additionally, you can access helpful guides and tutorials in our
+                  documentation section.
                 </div>
               </div>
             </div>
@@ -1509,15 +1504,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionSupport-5" data-bs-target="#accordionSupport-5">
-                  What should I do if I need urgent assistance?
+                  What should I do if I need urgent help?
                 </button>
               </h2>
               <div id="accordionSupport-5" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  For urgent issues, please indicate the urgency in your support request, and we will
-                  prioritize your case. While we do our best to address urgent matters quickly,
-                  response times may still vary. If you need immediate assistance, consider reaching out to us
-                  for the premium support option to get immediate assistance for your issues.
+                  For urgent issues, please specify the urgency in your support request, and we will prioritize your
+                  case. While we strive to handle urgent matters promptly, response times may still vary. For
+                  immediate assistance, consider opting for our premium support option to receive faster help with
+                  your issues.
                 </div>
               </div>
             </div>
@@ -1526,13 +1521,13 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionSupport-6" data-bs-target="#accordionSupport-6">
-                  How do I provide feedback or suggestions for {% get_theme_variables 'template_name' %}?
+                  How do I provide feedback, suggestions, or complaints?
                 </button>
               </h2>
               <div id="accordionSupport-6" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  We welcome feedback and suggestions! You can submit your ideas through the feedback form on our
-                  website or include them in your support request. Your input helps us improve our services.
+                  We welcome feedback and suggestions! You can submit your ideas using the feedback form on our
+                  website or include them in your support request. Your input is valuable and helps us enhance our services.
                 </div>
               </div>
             </div>
@@ -1548,7 +1543,7 @@
             </div>
             <div>
               <h5 class="mb-0"><span class="align-middle">Updates</span></h5>
-              <span>Learn more about updates and how they affect your experience</span>
+              <span>Learn more about updates and how they affect your experience.</span>
             </div>
           </div>
           <div id="accordionCancellation" class="accordion">
@@ -1556,15 +1551,15 @@
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
                         data-bs-target="#accordionUpdates-1" aria-controls="accordionUpdates-1">
-                  How often does {% get_theme_variables 'template_name' %} receive updates?
+                  How often does the platform receive updates?
                 </button>
               </h2>
 
               <div id="accordionUpdates-1" class="accordion-collapse collapse show">
                 <div class="accordion-body">
-                   {% get_theme_variables 'template_name' %} is regularly updated to improve performance, add new features, and fix any bugs. We typically
-                  release updates every week, though smaller patches may be deployed as needed such as the updates
-                  for critical bug fixes or security patches.
+                  {% get_theme_variables 'template_name' %} is regularly updated to enhance performance, introduce
+                  new features, and resolve any bugs. We generally release updates weekly, though smaller patches
+                  may be deployed as necessary, particularly for critical bug fixes or security updates.
                 </div>
               </div>
             </div>
@@ -1573,13 +1568,13 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionUpdates-2" aria-controls="accordionUpdates-2">
-                 Will I be notified before any major changes are made to {% get_theme_variables 'template_name' %}?
+                 Will I be notified before any major changes are made?
                 </button>
               </h2>
               <div id="accordionUpdates-2" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Yes, for major or potentially disruptive changes, we notify users in advance through email and
-                  announcements on our platform. This allows you time to prepare for any adjustments needed on your end.
+                  Yes, for major or potentially disruptive changes, we notify users in advance via email and
+                  platform announcements. This gives you time to prepare for any necessary adjustments on your end.
                 </div>
               </div>
             </div>
@@ -1588,14 +1583,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionUpdates-3" data-bs-target="#accordionUpdates-3">
-                 How do updates affect my existing assistants and configurations?
+                 How do updates affect my existing agents?
                 </button>
               </h2>
               <div id="accordionUpdates-3" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  Most updates are designed to be seamless and will not affect your existing assistants or
-                  configurations. However, for updates that may impact your setup, we provide detailed instructions
-                  on how to manage the transition.
+                  Most updates are designed to be seamless and will not interfere with your existing agents or
+                  configurations. However, for updates that may affect your setup, we provide detailed instructions
+                  to help you manage the transition smoothly.
                 </div>
               </div>
             </div>
@@ -1604,14 +1599,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionUpdates-4" data-bs-target="#accordionUpdates-4">
-                  Can I opt out of certain updates or features?
+                  Can I opt out of certain updates?
                 </button>
               </h2>
               <div id="accordionUpdates-4" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  While we strive to make updates beneficial for all users, some features are core to the platform and
-                  cannot be opted out of. However, you can customize your assistant settings to control how new
-                  features are implemented.
+                  While we aim to ensure that updates are beneficial for all users, some core features of the
+                  platform cannot be opted out of. However, you can customize your assistant's settings to
+                  control how new features are implemented.
                 </div>
               </div>
             </div>
@@ -1620,13 +1615,14 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionUpdates-5" data-bs-target="#accordionUpdates-5">
-                  How can I provide feedback on a new update?
+                  How can I provide feedback on an update?
                 </button>
               </h2>
               <div id="accordionUpdates-5" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  If you have feedback on a new update, you can submit it through our feedback form or by contacting
-                  customer support. We value your input and consider it in future development efforts.
+                  If you have feedback regarding a new update, you can submit it through our feedback form or by
+                  contacting customer support. We appreciate your input and take it into account for future
+                  development efforts.
                 </div>
               </div>
             </div>
@@ -1635,17 +1631,16 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionUpdates-6" data-bs-target="#accordionUpdates-6">
-                  What happens if a new update causes an issue with my assistant?
+                  What happens if a new update causes a breaking change in my agents?
                 </button>
               </h2>
               <div id="accordionUpdates-6" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  If a new update causes an issue, please contact our support team immediately. We can assist in
-                  troubleshooting and resolving any problems that arise from the update.
+                  If a new update causes an issue, please contact our support team immediately. We will assist you
+                  in troubleshooting and resolving any problems resulting from the update.
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -1659,8 +1654,8 @@
   <div class="row my-6">
     <div class="col-12 text-center my-6">
       <div class="badge bg-label-primary"><strong>Help</strong></div>
-      <h4 class="my-2">Couldn't find an answer to your question?</h4>
-      <p class="mb-0">We are always happy to help. Feel free to reach out to us via phone or email.</p>
+      <h4 class="my-2">Couldn't find an answer to your questions?</h4>
+      <p class="mb-0">We are here to help. Feel free to reach out to us via phone or email at any time.</p>
     </div>
   </div>
   <div class="row justify-content-center gap-sm-0 gap-6">
@@ -1688,5 +1683,4 @@
     </div>
   </div>
   <!-- /Contact -->
-
 {% endblock %}

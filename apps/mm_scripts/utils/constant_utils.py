@@ -21,7 +21,6 @@
 
 NUMBER_OF_RANDOM_FEATURED_SCRIPTS = 5
 
-# not used for now
 SCRIPT_SOURCES = {
     "internal": "internal", "external": "external",
 }
@@ -48,3 +47,21 @@ CUSTOM_SCRIPT_CATEGORIES = [
     ("utilities", "Utilities"),
     ("miscellaneous", "Miscellaneous"),
 ]
+
+CUSTOM_SCRIPT_ADMIN_LIST = (
+    "name",
+    "is_public",
+    "created_at",
+    "updated_at",
+)
+CUSTOM_SCRIPT_ADMIN_SEARCH = (
+    "name",
+    "description",
+)
+CUSTOM_SCRIPT_ADMIN_LIST_FILTER = (
+    "is_public",
+)
+
+CUSTOM_SCRIPT_REFERENCE_ADMIN_LIST = ("custom_script", "assistant", "created_by_user", "created_at", "updated_at")
+CUSTOM_SCRIPT_REFERENCE_ADMIN_SEARCH = ("custom_script__name", "assistant__name")
+CUSTOM_SCRIPT_REFERENCE_ADMIN_FILTER = ("assistant", "created_by_user")

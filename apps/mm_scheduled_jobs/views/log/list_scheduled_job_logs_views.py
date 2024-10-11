@@ -25,23 +25,14 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_scheduled_jobs.models import ScheduledJob, ScheduledJobInstance
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListScheduledJobLogsView(LoginRequiredMixin, TemplateView):
-    """
-    Displays logs of scheduled job instances.
-
-    This view retrieves and displays all instances of a specific scheduled job, with support for searching and pagination.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the logs of the scheduled job instances and adds them to the context.
-    """
-
-    paginate_by = 10  # Adjust the number of items per page
+class ScheduledJobView_LogList(LoginRequiredMixin, TemplateView):
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))

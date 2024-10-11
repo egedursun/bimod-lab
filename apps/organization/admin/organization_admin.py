@@ -14,25 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 from django.contrib import admin
 
 from apps.organization.models import Organization
+from apps.organization.utils import ORGANIZATION_ADMIN_LIST, ORGANIZATION_ADMIN_FILTER, ORGANIZATION_ADMIN_SEARCH
 
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "phone", "address", "industry", "is_active", "created_at", "updated_at")
-    list_filter = ("is_active", "industry", "created_at", "updated_at")
-    search_fields = ("name", "email", "phone", "address", "industry")
+    list_display = ORGANIZATION_ADMIN_LIST
+    list_filter = ORGANIZATION_ADMIN_FILTER
+    search_fields = ORGANIZATION_ADMIN_SEARCH
     date_hierarchy = "created_at"
     ordering = ["-created_at"]
-    list_per_page = 20
-    list_max_show_all = 100
-    list_editable = ["is_active"]
-    list_display_links = ["name"]
-    list_select_related = False
-    list_display_links_details = False

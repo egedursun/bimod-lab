@@ -19,13 +19,14 @@
 from django.contrib import admin
 
 from apps.data_backups.models import DataBackup
+from apps.data_backups.utils import DATA_BACKUP_ADMIN_LIST, DATA_BACKUP_ADMIN_SEARCH, DATA_BACKUP_ADMIN_FILTER
 
 
 @admin.register(DataBackup)
 class DataBackupAdmin(admin.ModelAdmin):
-    list_display = ['organization', 'responsible_user', 'backup_name', 'backup_type', 'created_at']
-    list_filter = ['organization', 'responsible_user', 'backup_name', 'backup_type', 'created_at']
-    search_fields = ['organization', 'responsible_user__username', 'backup_name', 'backup_type']
+    list_display = DATA_BACKUP_ADMIN_LIST
+    list_filter = DATA_BACKUP_ADMIN_FILTER
+    search_fields = DATA_BACKUP_ADMIN_SEARCH
     readonly_fields = ['created_at']
     ordering = ['-created_at']
     actions = ['delete_selected']

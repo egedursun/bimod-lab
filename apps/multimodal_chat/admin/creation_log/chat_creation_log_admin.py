@@ -14,18 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 from django.contrib import admin
 
 from apps.multimodal_chat.models import ChatCreationLog
+from apps.multimodal_chat.utils import CHAT_CREATION_LOG_ADMIN_LIST, CHAT_CREATION_LOG_ADMIN_FILTER, \
+    CHAT_CREATION_LOG_ADMIN_SEARCH
 
 
 @admin.register(ChatCreationLog)
 class ChatCreationLogAdmin(admin.ModelAdmin):
-    list_display = ["organization", 'created_at']
-    list_filter = ['created_at']
-    search_fields = ['created_at']
+    list_display = CHAT_CREATION_LOG_ADMIN_LIST
+    list_filter = CHAT_CREATION_LOG_ADMIN_FILTER
+    search_fields = CHAT_CREATION_LOG_ADMIN_SEARCH

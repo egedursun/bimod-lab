@@ -20,15 +20,6 @@ from slugify import slugify
 
 
 class BlogTag(models.Model):
-    """
-    Represents a tag associated with blog posts.
-
-    Attributes:
-        name (str): The name of the tag.
-        slug (str): The URL-friendly version of the tag name.
-        created_at (datetime): The timestamp when the tag was created.
-        updated_at (datetime): The timestamp when the tag was last updated.
-    """
     blog_posts = models.ManyToManyField('BlogPost', related_name='tags', blank=True)
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)

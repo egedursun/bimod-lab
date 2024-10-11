@@ -25,22 +25,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.llm_transaction.models import TransactionInvoice
-from apps.llm_transaction.utils import InvoiceTypesNames, PaymentMethodsNames
+from apps.llm_transaction.utils import InvoiceTypesNames, AcceptedMethodsOfPaymentNames
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 
 
-class OrganizationBalanceTransferView(LoginRequiredMixin, View):
-    """
-    Handles the transfer of balance between two organizations.
-
-    This view allows users to transfer a specified amount of balance from one of their organizations to another. It ensures that the transfer amount is valid and that the user has sufficient balance in the source organization.
-
-    Methods:
-        post(self, request, *args, **kwargs): Handles the balance transfer process, including validation and updating the balances of the source and destination organizations.
-    """
+class OrganizationView_TransferBalance(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
 
@@ -80,18 +72,10 @@ class OrganizationBalanceTransferView(LoginRequiredMixin, View):
         destination_org.balance += transfer_amount
         source_org.save()
         destination_org.save()
-
-        ############################################
-        # Create the invoice for the transaction
         TransactionInvoice.objects.create(
-            organization=destination_org,
-            responsible_user=request.user,
-            transaction_type=InvoiceTypesNames.TRANSFERRED_CREDITS,
-            amount_added=transfer_amount,
-            payment_method=PaymentMethodsNames.INTERNAL_TRANSFER,
-        )
-        ############################################
-
+            organization=destination_org, responsible_user=request.user,
+            transaction_type=InvoiceTypesNames.TRANSFERRED_CREDITS, amount_added=transfer_amount,
+            payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER,)
         messages.success(request,
                          f"${transfer_amount} successfully transferred from {source_org.name} to {destination_org.name}.")
         return redirect('llm_transaction:list')

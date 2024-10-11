@@ -79,7 +79,6 @@ def mock_operation_nodes(n_nodes=9):
 
 
 def generate_stream_data(picklist):
-    # pick status
     status_text = r.choice(picklist)
     return status_text
 

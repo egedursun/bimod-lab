@@ -24,11 +24,8 @@ from apps._meta.voidforger.test_helpers.mocker import mock_legion_nodes, mock_op
 
 
 def generate_for_time_step():
-    # generate legion nodes
     legion_nodes = mock_legion_nodes()
-    # generate operation nodes
     operation_nodes = mock_operation_nodes()
-    # generate stream text
     picklist = [
         MOCK_STREAM_STRATEGIST,
         MOCK_STREAM_BACKTESTING,
@@ -36,12 +33,9 @@ def generate_for_time_step():
         MOCK_STREAM_RISK_MANAGER,
         MOCK_STREAM_PORTFOLIO_MANAGER
     ]
-    # generate trading text
     trading_text = mock_trading()
-
     selected_legion_node = r.choice(picklist)
     stream_text = generate_stream_data(selected_legion_node)
-
     return {
         "legion_nodes": legion_nodes,
         "operation_nodes": operation_nodes,

@@ -27,7 +27,6 @@ class DataBackup(models.Model):
     backup_type = models.CharField(max_length=255, choices=BACKUP_TYPES, null=True, blank=True)
     backup_uuid = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
     serialized_data = models.TextField(null=True, blank=True)
     encryption_password = models.CharField(max_length=255)
 

@@ -25,29 +25,22 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.llms.helpers.helper_prompts import GENERATE_FILE_DESCRIPTION_QUERY
-from apps._services.tools.execution_handlers.storage_query_execution_handler import execute_storage_query
-from apps._services.tools.utils import ExecutionTypesNames
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.generative_ai.auxiliary_methods.tool_helpers.tool_helper_instructions import \
+    FILE_GENERATION_INSTRUCTION_QUERY
+from apps.core.tool_calls.core_services.core_service_query_media_manager import run_query_media_manager
+from apps.core.tool_calls.utils import AnalysisToolCallExecutionTypesNames
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_media_storages.models import DataSourceMediaStorageItem
+from apps.datasource_media_storages.utils import MediaManagerItemFormatTypesNamesLists, \
+    AI_GENERATED_DESCRIPTION_SPECIFIER
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, TemplateView):
-    """
-    Generates a description for a specific media storage item based on its contents.
-
-    This view uses a file type decoder to determine the appropriate execution type for generating the description. The generated description is then saved to the media storage item.
-
-    Methods:
-        get_context_data(self, **kwargs): Adds the generated description to the context for display.
-        post(self, request, *args, **kwargs): Handles the description generation process for the media storage item.
-    """
-
+class MediaView_ItemAIDescription(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        if 'generated_description' in kwargs:
+        if AI_GENERATED_DESCRIPTION_SPECIFIER in kwargs:
             context['generated_description'] = kwargs['generated_description']
             print(f"Generated Description: {kwargs['generated_description']}")
         return context
@@ -55,26 +48,25 @@ class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, Template
     @staticmethod
     def decode_media_item_type(media_item_type):
         class MediaFileTypesNamesLists:
-            IMAGE = ['jpg', 'png', 'gif', 'svg', 'bmp', 'tiff']
-            AUDIO = ['mp3', 'wav', 'flac', 'aac', 'ogg']
-            VIDEO = ['mp4', 'avi', 'mkv', 'mov']
-            COMPRESSED = ['zip', 'rar', 'tar']
-            CODE = ['py', 'js', 'ts', 'php', 'css', 'html', 'java', 'c', 'cpp', 'h', 'sh', 'go', 'dart']
-            DATA = ['yml', 'yaml', 'sql', 'pkl', 'csv', 'xlsx', 'json', 'xml', 'tsv', 'docx', 'pptx', 'pdf', 'txt']
+            IMAGE = MediaManagerItemFormatTypesNamesLists.IMAGE
+            AUDIO = MediaManagerItemFormatTypesNamesLists.AUDIO
+            VIDEO = MediaManagerItemFormatTypesNamesLists.VIDEO
+            COMPRESSED = MediaManagerItemFormatTypesNamesLists.COMPRESSED
+            CODE = MediaManagerItemFormatTypesNamesLists.CODE
+            DATA = MediaManagerItemFormatTypesNamesLists.DATA
 
         if media_item_type in MediaFileTypesNamesLists.IMAGE:
-            return ExecutionTypesNames.IMAGE_INTERPRETATION
-        elif media_item_type in (MediaFileTypesNamesLists.COMPRESSED or
-                                 media_item_type in MediaFileTypesNamesLists.DATA or
-                                 media_item_type in MediaFileTypesNamesLists.CODE):
-            return ExecutionTypesNames.FILE_INTERPRETATION
+            return AnalysisToolCallExecutionTypesNames.IMAGE_INTERPRETATION
+        elif media_item_type in (
+            MediaFileTypesNamesLists.COMPRESSED or
+            media_item_type in MediaFileTypesNamesLists.DATA or
+            media_item_type in MediaFileTypesNamesLists.CODE):
+            return AnalysisToolCallExecutionTypesNames.FILE_INTERPRETATION
         else:
-            # assume file interpretation
-            return ExecutionTypesNames.FILE_INTERPRETATION
+            return AnalysisToolCallExecutionTypesNames.FILE_INTERPRETATION
 
     @staticmethod
     def normalize_whitespace(text):
-        # Remove leading and trailing whitespace
         text = text.strip()
         text = text.replace('\n', ' ')
         text = text.replace('\r', ' ')
@@ -83,7 +75,6 @@ class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, Template
         text = text.replace('\f', ' ')
         text = text.replace('\0', ' ')
         text = text.strip()
-        # Replace all sequences of whitespace (including newlines, tabs, etc.) with a single space
         text = re.sub(r'\s+', ' ', text, flags=re.UNICODE)
         return text
 
@@ -96,33 +87,30 @@ class DataSourceMediaStorageItemGenerateDescription(LoginRequiredMixin, Template
             return redirect('datasource_media_storages:list_items')
         ##############################
 
-        media_item_id = kwargs.get('pk')
-        media_item = DataSourceMediaStorageItem.objects.get(id=media_item_id)
-        execution_type = self.decode_media_item_type(media_item.media_file_type)
-        texts, _, _ = execute_storage_query(chat_id=None,
-                                            connection_id=media_item.storage_base.id,
-                                            execution_type=execution_type,
-                                            file_paths=[media_item.full_file_path],
-                                            query=(GENERATE_FILE_DESCRIPTION_QUERY + f"""
-                                                    File Type Information:
-                                                    - Format: {media_item.media_file_type}
+        item_id = kwargs.get('pk')
+        media_item = DataSourceMediaStorageItem.objects.get(id=item_id)
+        xc_type = self.decode_media_item_type(media_item.media_file_type)
+        txts, _, _ = run_query_media_manager(chat_id=None, c_id=media_item.storage_base.id,
+                                             manager_file_type=xc_type, f_uris=[media_item.full_file_path],
+                                             manager_query=(FILE_GENERATION_INSTRUCTION_QUERY + f"""
+                                                    File Format Information:
+                                                    - Extension/Type: {media_item.media_file_type}
                                                """),
-                                            without_chat=True)
-        kwargs['pk'] = media_item_id
-        if execution_type == ExecutionTypesNames.IMAGE_INTERPRETATION:
-            generated_description = texts
-            media_item.description = generated_description
+                                             no_chat=True)
+        kwargs['pk'] = item_id
+        if xc_type == AnalysisToolCallExecutionTypesNames.IMAGE_INTERPRETATION:
+            gen_desc = txts
+            media_item.description = gen_desc
             media_item.save()
-        elif execution_type == ExecutionTypesNames.FILE_INTERPRETATION:
+        elif xc_type == AnalysisToolCallExecutionTypesNames.FILE_INTERPRETATION:
             try:
-                response = texts["response"]
-                generated_description = ""
-                if response:
-                    generated_description = response[0]
-                # remove everything except a single space
-                generated_description = self.normalize_whitespace(generated_description)
-                media_item.description = generated_description
+                output = txts["response"]
+                gen_desc = ""
+                if output:
+                    gen_desc = output[0]
+                gen_desc = self.normalize_whitespace(gen_desc)
+                media_item.description = gen_desc
                 media_item.save()
             except Exception as e:
-                print(f"Error parsing generated description: {e}")
+                pass
         return redirect('datasource_media_storages:item_detail', **kwargs)

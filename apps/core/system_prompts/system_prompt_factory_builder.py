@@ -1,0 +1,419 @@
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+#
+#  Project: Br6.in™
+#  File: system_prompt_factory_builder.py
+#  Last Modified: 2024-10-05 02:25:59
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+#  Created: 2024-10-05 14:42:35
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD™ Autonomous
+#  Holdings.
+#
+#   For permission inquiries, please contact: admin@br6.in.
+#
+
+from django.contrib.auth.models import User
+
+from apps.core.system_prompts.agent_configuration.target_audience_prompt_manager import build_target_audience_prompt
+from apps.core.system_prompts.agent_configuration.intra_context_memory_prompt_manager import \
+    build_intra_context_memory_prompt
+from apps.core.system_prompts.agent_configuration.technical_dictionary_prompt_manager import \
+    build_technical_dictionary_prompt
+from apps.core.system_prompts.agent_configuration.system_internal_instructions_prompt_manager import \
+    build_system_internal_instructions_prompt
+from apps.core.system_prompts.agent_configuration.standard_memory_prompt_manager import build_standard_memory_prompt
+from apps.core.system_prompts.agent_configuration.agent_nickname_prompt_manager import build_agent_nickname_prompt
+from apps.core.system_prompts.agent_configuration.spatial_awareness_prompt_manager import \
+    build_spatial_awareness_prompt
+from apps.core.system_prompts.agent_configuration.internal_principles_prompt_manager import \
+    build_internal_principles_prompt
+from apps.core.system_prompts.agent_configuration.communication_language_prompt_manager import \
+    build_communication_language_prompt
+from apps.core.system_prompts.agent_configuration.templated_response_prompt_manager import \
+    build_templated_response_prompt
+from apps.core.system_prompts.agent_configuration.agent_personality_prompt_manager import \
+    build_agent_personality_prompt
+from apps.core.system_prompts.agent_configuration.communication_user_tenant_prompt_manager import \
+    build_user_tenant_prompt
+from apps.core.system_prompts.information_feeds.browser.build_browser_data_source_prompt import \
+    build_browsing_data_source_prompt, build_lean_browsing_data_source_prompt
+from apps.core.system_prompts.information_feeds.code_base.build_code_base_data_source_prompt import \
+    build_code_base_data_source_prompt, build_lean_code_base_data_source_prompt
+from apps.core.system_prompts.information_feeds.media_manager.build_media_manager_data_source_prompt import \
+    build_media_manager_data_source_prompt, build_lean_media_manager_data_source_prompt
+from apps.core.system_prompts.information_feeds.ml_manager.build_ml_models_data_source_prompt import \
+    build_ml_models_data_source_prompt, build_lean_ml_models_data_source_prompt
+from apps.core.system_prompts.information_feeds.sql.build_sql_data_source_prompt import build_sql_data_source_prompt, \
+    build_lean_sql_data_source_prompt
+from apps.core.system_prompts.information_feeds.ssh_file_system.build_file_system_data_source_prompt import \
+    build_file_system_data_source_prompt, build_lean_file_system_data_source_prompt
+from apps.core.system_prompts.information_feeds.vector_store.build_vector_store_data_source_prompt import \
+    build_vector_store_data_source_prompt, build_lean_vector_store_data_source_prompt
+from apps.core.system_prompts.leanmod.leanmod_guidelines_prompt import build_structured_primary_guidelines_leanmod
+from apps.core.system_prompts.leanmod.leanmod_instructions_prompt import build_structured_instructions_prompt_leanmod
+from apps.core.system_prompts.leanmod.leanmod_name_prompt import build_structured_name_prompt_leanmod
+from apps.core.system_prompts.leanmod.leanmod_place_and_time_prompt import \
+    build_structured_place_and_time_prompt_leanmod
+from apps.core.system_prompts.leanmod.leanmod_user_information_prompt import \
+    build_structured_user_information_prompt_leanmod
+from apps.core.system_prompts.leanmod.multimodality.leanmod_multimodality_expert_network_prompt import \
+    build_expert_networks_multi_modality_prompt_leanmod
+from apps.core.system_prompts.leanmod.tools.leanmod_tools_expert_networks_query_prompt import \
+    build_structured_tool_prompt__expert_network_query_execution_leanmod
+from apps.core.system_prompts.leanmod.tools.leanmod_tools_instructions_prompt import \
+    build_structured_tool_usage_instructions_prompt_leanmod
+from apps.core.system_prompts.flexible_modalities.restful_api_modality_instructions import \
+    build_apis_multi_modality_prompt, \
+    build_lean_apis_multi_modality_prompt
+from apps.core.system_prompts.flexible_modalities.py_function_modality_instructions import \
+    build_functions_multi_modality_prompt, build_lean_functions_multi_modality_prompt
+from apps.core.system_prompts.flexible_modalities.bash_script_modality_instructions import \
+    build_scripts_multi_modality_prompt, \
+    build_lean_scripts_multi_modality_prompt
+from apps.core.system_prompts.tool_call_prompts.generic_instructions_tool_call import \
+    build_generic_instructions_tool_call_prompt, build_lean_structured_tool_usage_instructions_prompt
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_audio_tool_prompt import \
+    build_tool_prompt__execute_audio
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_browsing_tool_prompt import \
+    build_tool_prompt__browsing
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_codebase_query_tool_prompt import \
+    build_tool_prompt__execute_codebase_query
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_analysis_tool_prompt import \
+    build_tool_prompt__analyze_code
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_restful_api_tool_prompt import \
+    build_tool_prompt__execute_restful_api
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_tool_prompt import \
+    build_tool_prompt__execute_code
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_bash_script_tool_prompt import \
+    build_tool_prompt__execute_bash_script
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_ssh_file_system_command_tool_prompt import \
+    build_tool_prompt__execute_ssh_file_system_command
+from apps.core.system_prompts.tool_call_prompts.per_tool.generate_image_tool_prompt import \
+    build_tool_prompt__generate_image
+from apps.core.system_prompts.tool_call_prompts.per_tool.edit_image_tool_prompt import \
+    build_tool_prompt__edit_image
+from apps.core.system_prompts.tool_call_prompts.per_tool.dream_image_tool_prompt import \
+    build_tool_prompt__dream_image
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_vector_store_query_tool_prompt import \
+    build_tool_prompt__query_vector_store
+from apps.core.system_prompts.tool_call_prompts.per_tool.infer_with_machine_learning_tool_prompt import \
+    build_tool_prompt__infer_with_machine_learning
+from apps.core.system_prompts.tool_call_prompts.per_tool.reasoning_tool_prompt import \
+    build_tool_prompt__reasoning
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_sql_query_tool_prompt import \
+    build_tool_prompt__execute_sql_query
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_media_manager_query_tool_prompt import \
+    build_tool_prompt__media_manager_query
+from apps.core.system_prompts.tool_call_prompts.per_tool.retrieval_via_http_client_tool_prompt import \
+    build_tool_prompt__retrieval_via_http_client
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_query_intra_context_memory_tool_prompt import \
+    build_tool_prompt__intra_context_memory
+from apps.core.system_prompts.tool_call_prompts.per_tool.generate_video_tool_prompt import \
+    build_tool_prompt__generate_video, build_lean_tool_prompt__generate_video
+from apps.assistants.models import Assistant
+from apps.leanmod.models import LeanAssistant
+from apps.llm_transaction.models import LLMTransaction
+from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
+
+
+class SystemPromptFactoryBuilder:
+
+    @staticmethod
+    def build_system_prompts(chat: MultimodalChat, assistant: Assistant, user: User, role: str):
+        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import ChatRoles
+        agent_nickname = assistant.name
+        templated_response = assistant.response_template
+        target_audience = assistant.audience
+        agent_personality_tone = assistant.tone
+        output_language = assistant.response_language
+
+        (base_prompt, target_audience, intra_memory, technical_dict, main_instructions, standard_memory,
+         agent_nickname, spatial_awareness, communication_lang, templated_response, tone, comm_user_info) = (
+            SystemPromptFactoryBuilder._build_foundation_prompts(
+                agent_nickname, agent_personality_tone, assistant, chat, output_language, target_audience,
+                templated_response, user))
+
+        (browsing_feed, codebase_feed, ssh_system_feed, vector_store_feed, media_manager_feed,
+         ml_manager_feed, sql_feed) = (SystemPromptFactoryBuilder._build_information_feeds_prompt(assistant))
+
+        restful_apis, custom_functions, bash_scripts = (
+            SystemPromptFactoryBuilder._build_flexible_modalities_prompts(assistant))
+
+        (process_audio, execute_browsing, execute_codebase, analyze_code, execute_api, execute_function,
+         execute_script, execute_ssh_command, generate_image, edit_image, dream_image, query_vector_store,
+         predict_with_ml, execute_reasoning, execute_sql_query, execute_media_manager, generic_tool_calls,
+         execute_http_retrieval, execute_intra_memory_retrieval, generate_video) = (
+            SystemPromptFactoryBuilder._build_tool_call_instructions_prompts(assistant))
+
+        #
+        # MERGE
+        #
+
+        merged_prompt = SystemPromptFactoryBuilder._merge_system_prompts(
+            base_prompt, restful_apis, target_audience, process_audio, browsing_feed, execute_browsing,
+            codebase_feed, execute_codebase, analyze_code, intra_memory, execute_api, execute_function,
+            execute_script, execute_ssh_command, ssh_system_feed, custom_functions, technical_dict,
+            generate_image, edit_image, dream_image, main_instructions, vector_store_feed, query_vector_store,
+            media_manager_feed, standard_memory, ml_manager_feed,  agent_nickname,  spatial_awareness,
+            predict_with_ml, execute_reasoning, communication_lang, templated_response, bash_scripts,
+            sql_feed, execute_sql_query, execute_media_manager, tone, generic_tool_calls, execute_http_retrieval,
+            comm_user_info, execute_intra_memory_retrieval, generate_video)
+
+        prompt = {"role": role, "content": merged_prompt}
+        tx = LLMTransaction.objects.create(
+            organization=assistant.organization, model=assistant.llm_model, responsible_user=user,
+            responsible_assistant=assistant, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=merged_prompt, llm_cost=0, internal_service_cost=0,
+            tax_cost=0, total_cost=0, total_billable_cost=0, transaction_type=ChatRoles.SYSTEM,
+            transaction_source=chat.chat_source)
+        chat.transactions.add(tx)
+        chat.save()
+        return prompt
+
+    @staticmethod
+    def _merge_system_prompts(foundation, apis_feed, target_audience, do_audio, browsing_feed, do_browsing,
+                              codebase_feed, do_codebase, do_analyze_code, intra_memory, do_api, do_function,
+                              do_script, do_ssh_command, file_systems, functions_feed, technical_dictionary,
+                              do_generate_image, do_edit_image, do_dream_image, generic_instructions,
+                              vector_store_feed, do_vector_store, media_store_feed, standard_memory, ml_model_feed,
+                              agent_nickname, spatial_awareness, do_ml_model, do_reasoning, comm_language,
+                              templated_response, scripts_feed, sql_feed, do_sql_query, do_media_manager, tone,
+                              do_instructions, do_http_retrieval, user_info, do_intra_memory, do_generate_video):
+        combined_system_instructions = foundation
+        combined_system_instructions += agent_nickname
+        combined_system_instructions += generic_instructions
+        combined_system_instructions += templated_response
+        combined_system_instructions += target_audience
+        combined_system_instructions += tone
+        combined_system_instructions += comm_language
+        combined_system_instructions += user_info
+        combined_system_instructions += standard_memory
+        combined_system_instructions += technical_dictionary
+        combined_system_instructions += spatial_awareness
+        combined_system_instructions += intra_memory
+
+        combined_system_instructions += sql_feed
+        combined_system_instructions += vector_store_feed
+        combined_system_instructions += codebase_feed
+        combined_system_instructions += file_systems
+        combined_system_instructions += media_store_feed
+        combined_system_instructions += ml_model_feed
+        combined_system_instructions += browsing_feed
+        combined_system_instructions += functions_feed
+        combined_system_instructions += apis_feed
+        combined_system_instructions += scripts_feed
+
+        combined_system_instructions += do_instructions
+        combined_system_instructions += do_sql_query
+        combined_system_instructions += do_vector_store
+        combined_system_instructions += do_codebase
+        combined_system_instructions += do_intra_memory
+        combined_system_instructions += do_ssh_command
+        combined_system_instructions += do_media_manager
+        combined_system_instructions += do_http_retrieval
+        combined_system_instructions += do_ml_model
+        combined_system_instructions += do_browsing
+        combined_system_instructions += do_analyze_code
+        combined_system_instructions += do_reasoning
+        combined_system_instructions += do_function
+        combined_system_instructions += do_api
+        combined_system_instructions += do_script
+        combined_system_instructions += do_generate_image
+        combined_system_instructions += do_edit_image
+        combined_system_instructions += do_dream_image
+        combined_system_instructions += do_audio
+        combined_system_instructions += do_generate_video
+
+        return combined_system_instructions
+
+    @staticmethod
+    def _build_tool_call_instructions_prompts(assistant):
+        instructions = (build_generic_instructions_tool_call_prompt(assistant))
+        sql = (build_tool_prompt__execute_sql_query())
+        vector_store = build_tool_prompt__query_vector_store()
+        codebase = build_tool_prompt__execute_codebase_query()
+        intra_memory = build_tool_prompt__intra_context_memory()
+        ssh_file_system = build_tool_prompt__execute_ssh_file_system_command()
+        media_manager = build_tool_prompt__media_manager_query()
+        http_retrieval = build_tool_prompt__retrieval_via_http_client()
+        infer_ml = build_tool_prompt__infer_with_machine_learning()
+        browsing = build_tool_prompt__browsing()
+        analyze_code = build_tool_prompt__analyze_code()
+        reasoning = build_tool_prompt__reasoning()
+        functions = build_tool_prompt__execute_code()
+        apis = build_tool_prompt__execute_restful_api()
+        scripts = build_tool_prompt__execute_bash_script()
+        generate_image = build_tool_prompt__generate_image()
+        edit_image = build_tool_prompt__edit_image()
+        dream_image = build_tool_prompt__dream_image()
+        process_audio = build_tool_prompt__execute_audio()
+        generate_video = build_tool_prompt__generate_video(assistant_id=assistant.id)
+        return (process_audio, browsing, codebase, analyze_code, apis, functions, scripts, ssh_file_system,
+                generate_image, edit_image, dream_image, vector_store, infer_ml, reasoning, sql, media_manager,
+                instructions, http_retrieval, intra_memory, generate_video)
+
+    @staticmethod
+    def _build_flexible_modalities_prompts(assistant):
+        functions = build_functions_multi_modality_prompt(assistant)
+        apis = build_apis_multi_modality_prompt(assistant)
+        scripts = build_scripts_multi_modality_prompt(assistant)
+        return apis, functions, scripts
+
+    @staticmethod
+    def _build_information_feeds_prompt(assistant):
+        sql_feed = build_sql_data_source_prompt(assistant)
+        vector_store_feed = build_vector_store_data_source_prompt(assistant)
+        codebase_feed = build_code_base_data_source_prompt(assistant)
+        ssh_system_feed = build_file_system_data_source_prompt(assistant)
+        media_manager_feed = build_media_manager_data_source_prompt(assistant)
+        ml_feed = build_ml_models_data_source_prompt(assistant)
+        browsing_feed = build_browsing_data_source_prompt(assistant)
+        return (browsing_feed, codebase_feed, ssh_system_feed, vector_store_feed, media_manager_feed,
+                ml_feed, sql_feed)
+
+    @staticmethod
+    def _build_foundation_prompts(agent_nickname, agent_personality_tone, assistant, chat, output_language,
+                                  target_audience, templated_response, user):
+        generic = build_internal_principles_prompt()
+        agent_nickname = build_agent_nickname_prompt(agent_nickname, chat.chat_name)
+        main_instructions = build_system_internal_instructions_prompt(assistant)
+        templated_response = build_templated_response_prompt(templated_response)
+        target_audience = build_target_audience_prompt(target_audience)
+        tone = build_agent_personality_prompt(agent_personality_tone)
+        comm_language = build_communication_language_prompt(output_language)
+        user_info = build_user_tenant_prompt(user)
+        standard_memory = build_standard_memory_prompt(assistant, user)
+        technical_dict = build_technical_dictionary_prompt(assistant.glossary)
+        spatial_awareness = ""
+        if assistant.time_awareness and assistant.place_awareness:
+            spatial_awareness = build_spatial_awareness_prompt(user)
+        intra_memory = build_intra_context_memory_prompt(assistant)
+        return (generic, target_audience, intra_memory, technical_dict, main_instructions, standard_memory,
+                agent_nickname, spatial_awareness, comm_language, templated_response, tone, user_info)
+
+    @staticmethod
+    def build_lean(assistant_name: str, instructions: str, audience: str = "standard", tone: str = "formal",
+                   language: str = "en",
+                   chat_name: str = "Default"):
+        agent_nickname = assistant_name
+        comm_language = language
+        generic = build_internal_principles_prompt()
+        agent_nickname_prompt = build_agent_nickname_prompt(agent_nickname, chat_name)
+        main_instructions = instructions
+        audience_prompt = build_target_audience_prompt(audience)
+        tone_prompt = build_agent_personality_prompt(tone)
+        output_language = build_communication_language_prompt(comm_language)
+
+        sql_feed = build_lean_sql_data_source_prompt()
+        vector_store_feed = build_lean_vector_store_data_source_prompt()
+        codebase_feed = build_lean_code_base_data_source_prompt()
+        ssh_feed = build_lean_file_system_data_source_prompt()
+        media_manager_feed = build_lean_media_manager_data_source_prompt()
+        ml_feed = build_lean_ml_models_data_source_prompt()
+        browsing_feed = build_lean_browsing_data_source_prompt()
+
+        function_modality = build_lean_functions_multi_modality_prompt()
+        api_modality = build_lean_apis_multi_modality_prompt()
+        script_modality = build_lean_scripts_multi_modality_prompt()
+
+        do_instructions = (build_lean_structured_tool_usage_instructions_prompt())
+        do_sql_query = (build_tool_prompt__execute_sql_query())
+        do_vector_store = build_tool_prompt__query_vector_store()
+        do_codebase = build_tool_prompt__execute_codebase_query()
+        do_intra_memory = build_tool_prompt__intra_context_memory()
+        do_ssh_system = build_tool_prompt__execute_ssh_file_system_command()
+        do_media_manager = build_tool_prompt__media_manager_query()
+        do_http_retrieval = build_tool_prompt__retrieval_via_http_client()
+        do_ml = build_tool_prompt__infer_with_machine_learning()
+        do_browsing = build_tool_prompt__browsing()
+        do_analyze_code = build_tool_prompt__analyze_code()
+        do_function = build_tool_prompt__execute_code()
+        do_api = build_tool_prompt__execute_restful_api()
+        do_script = build_tool_prompt__execute_bash_script()
+        do_generate_image = build_tool_prompt__generate_image()
+        do_edit_image = build_tool_prompt__edit_image()
+        do_dream_image = build_tool_prompt__dream_image()
+        do_audio = build_tool_prompt__execute_audio()
+        do_generate_video = build_lean_tool_prompt__generate_video()
+
+        merged_prompt = generic
+        merged_prompt += agent_nickname_prompt
+        merged_prompt += main_instructions
+        merged_prompt += audience_prompt
+        merged_prompt += tone_prompt
+        merged_prompt += output_language
+        merged_prompt += sql_feed
+        merged_prompt += vector_store_feed
+        merged_prompt += codebase_feed
+        merged_prompt += ssh_feed
+        merged_prompt += media_manager_feed
+        merged_prompt += ml_feed
+        merged_prompt += browsing_feed
+        merged_prompt += function_modality
+        merged_prompt += api_modality
+        merged_prompt += script_modality
+        merged_prompt += do_instructions
+        merged_prompt += do_sql_query
+        merged_prompt += do_vector_store
+        merged_prompt += do_codebase
+        merged_prompt += do_intra_memory
+        merged_prompt += do_ssh_system
+        merged_prompt += do_media_manager
+        merged_prompt += do_http_retrieval
+        merged_prompt += do_ml
+        merged_prompt += do_browsing
+        merged_prompt += do_analyze_code
+        merged_prompt += do_function
+        merged_prompt += do_api
+        merged_prompt += do_script
+        merged_prompt += do_generate_image
+        merged_prompt += do_edit_image
+        merged_prompt += do_dream_image
+        merged_prompt += do_audio
+        merged_prompt += do_generate_video
+        prompt = {"role": "system", "content": merged_prompt}
+        return prompt
+
+    @staticmethod
+    def build_leanmod_system_prompts(chat: MultimodalLeanChat, lean_assistant: LeanAssistant, user: User, role: str):
+        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import ChatRoles
+
+        combined_system_instructions = SystemPromptFactoryBuilder._prepare_leanmod_system_prompts(
+            chat, lean_assistant, user)
+
+        prompt = {"role": role, "content": combined_system_instructions}
+        tx = LLMTransaction.objects.create(
+            organization=lean_assistant.organization, model=lean_assistant.llm_model,
+            responsible_user=user, responsible_assistant=None, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=combined_system_instructions, llm_cost=0, internal_service_cost=0,
+            tax_cost=0, total_cost=0, total_billable_cost=0, transaction_type=ChatRoles.SYSTEM,
+            transaction_source=chat.chat_source)
+        chat.transactions.add(tx)
+        chat.save()
+        return prompt
+
+    @staticmethod
+    def _prepare_leanmod_system_prompts(chat, lean_assistant, user):
+        agent_nickname = lean_assistant.name
+        generic = build_structured_primary_guidelines_leanmod()
+        agent_nickname = build_structured_name_prompt_leanmod(agent_nickname, chat.chat_name)
+        instructions = build_structured_instructions_prompt_leanmod(lean_assistant)
+        user_info = build_structured_user_information_prompt_leanmod(user)
+        spatial_awareness = build_structured_place_and_time_prompt_leanmod(user)
+        expert_network = build_expert_networks_multi_modality_prompt_leanmod(lean_assistant)
+        tool_instructions = build_structured_tool_usage_instructions_prompt_leanmod()
+        do_expert_network = build_structured_tool_prompt__expert_network_query_execution_leanmod()
+        combined_system_instructions = generic
+        combined_system_instructions += agent_nickname
+        combined_system_instructions += instructions
+        combined_system_instructions += user_info
+        combined_system_instructions += spatial_awareness
+        combined_system_instructions += expert_network
+        combined_system_instructions += tool_instructions
+        combined_system_instructions += do_expert_network
+        return combined_system_instructions

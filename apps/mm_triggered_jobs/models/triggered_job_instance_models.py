@@ -26,32 +26,12 @@ from apps.mm_triggered_jobs.utils import TRIGGERED_JOB_INSTANCE_STATUSES
 
 
 class TriggeredJobInstance(models.Model):
-    """
-    TriggeredJobInstance Model:
-    - Purpose: Represents an instance of a triggered job execution, tracking the status, webhook payload, logs, and execution metadata of the job instance.
-    - Key Fields:
-        - `triggered_job`: ForeignKey linking to the `TriggeredJob` model that this instance belongs to.
-        - `status`: The current status of the job instance (e.g., Pending, Building, Completed).
-        - `webhook_payload`: A JSON field storing the payload received from the webhook that triggered the job.
-        - `logs`: A JSON field storing logs related to the job's execution.
-        - `execution_index`: An integer field representing the execution index or order.
-        - `started_at`, `ended_at`: Timestamps for when the job instance started and ended.
-    - Meta:
-        - `verbose_name`: "Triggered Job Instance"
-        - `verbose_name_plural`: "Triggered Job Instances"
-        - `ordering`: Orders job instances by start date in descending order.
-        - `indexes`: Indexes on various fields, including combinations of `triggered_job`, `status`, `started_at`, `ended_at`, and `logs` for optimized queries.
-    """
-
     triggered_job = models.ForeignKey(TriggeredJob, on_delete=models.CASCADE, related_name='triggered_job_instances',
                                       null=True)
     status = models.CharField(max_length=255, choices=TRIGGERED_JOB_INSTANCE_STATUSES, default='pending')
-
     webhook_payload = models.JSONField(default=dict)
     logs = models.JSONField(default=list)
     execution_index = models.IntegerField(default=0, null=True)
-
-    # Metadata
     started_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField(auto_now=True)
 

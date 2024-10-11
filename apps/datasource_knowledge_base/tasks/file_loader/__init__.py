@@ -19,16 +19,16 @@
 #
 #
 
-from .load_md_helper_tasks import *
-from .load_csv_helper_tasks import *
-from .load_odt_helper_tasks import *
-from .load_pdf_helper_tasks import *
-from .load_rtf_helper_tasks import *
-from .load_ipynb_helper_tasks import *
-from .load_txt_helper_tasks import *
-from .load_xml_helper_tasks import *
-from .load_json_helper_tasks import *
-from .load_xlsx_helper_tasks import *
-from .load_docx_helper_tasks import *
-from .load_html_helper_tasks import *
-from .load_pptx_helper_tasks import *
+from .md_file_loader import *
+from .csv_file_loader import *
+from .odt_file_loader import *
+from .pdf_file_loader import *
+from .rtf_file_loader import *
+from .ipynb_file_loader import *
+from .txt_file_loader import *
+from .xml_file_loader import *
+from .json_file_loader import *
+from .xlsx_file_loader import *
+from .docx_file_loader import *
+from .html_file_loader import *
+from .pptx_file_loader import *

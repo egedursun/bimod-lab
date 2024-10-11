@@ -21,12 +21,12 @@
 from apps.community_forum.models import ForumLike
 from django.contrib import admin
 
+from apps.community_forum.utils import FORUM_LIKE_ADMIN_LIST, FORUM_LIKE_ADMIN_SEARCH, FORUM_LIKE_ADMIN_FILTER
+
 
 @admin.register(ForumLike)
 class ForumLikeAdmin(admin.ModelAdmin):
-    list_display = (
-        "user", "created_at"
-    )
-    search_fields = ("comment",)
-    list_filter = ("created_at",)
+    list_display = FORUM_LIKE_ADMIN_LIST
+    search_fields = FORUM_LIKE_ADMIN_SEARCH
+    list_filter = FORUM_LIKE_ADMIN_FILTER
     ordering = ("-created_at",)

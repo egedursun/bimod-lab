@@ -4,11 +4,8 @@
 
 ......
 
-TODOS (NAME & STYLE MIGRATION):
-
-3. Renew Google Analytics snippet.
-
-......
+1. Integrate the knowledge prompt for the Harmoniq assistants.
+2. Integrate NOSQL + add the functionality to SEARCH BAR.
 
 ---
 
@@ -112,8 +109,8 @@ TODOS (NAME & STYLE MIGRATION):
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Total Lines of Code by 2024-10-05: (Day: 98) **295,000,000**
-- Total Code Files by 2024-08-23: (Day: 98) **54,000**
+- Total Lines of Code by 2024-10-05: (Day: 98) **317,150,000**
+- Total Code Files by 2024-08-23: (Day: 98) **54,250**
 
 ---
 

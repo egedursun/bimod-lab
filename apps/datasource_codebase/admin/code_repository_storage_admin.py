@@ -20,22 +20,17 @@
 
 from django.contrib import admin
 
-from apps._services.codebase.codebase_decoder import CodeBaseDecoder
+from apps.core.codebase.codebase_decoder import CodeBaseDecoder
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection
-from apps.datasource_codebase.utils import generate_class_name
+from apps.datasource_codebase.utils import build_weaviate_class_name_with_random, CODE_REPOSITORY_STORAGE_ADMIN_LIST, \
+    CODE_REPOSITORY_STORAGE_ADMIN_FILTER, CODE_REPOSITORY_STORAGE_ADMIN_SEARCH
 
 
 @admin.register(CodeRepositoryStorageConnection)
 class CodeRepositoryStorageConnectionAdmin(admin.ModelAdmin):
-    list_display = ['provider', 'host_url', 'provider_api_key', 'assistant', 'name', 'class_name', 'description',
-                    'vectorizer', 'vectorizer_api_key', 'embedding_chunk_size', 'embedding_chunk_overlap',
-                    'search_instance_retrieval_limit', 'created_at', 'updated_at']
-    list_filter = ['provider', 'host_url', 'provider_api_key', 'assistant', 'name', 'class_name', 'description',
-                   'vectorizer', 'vectorizer_api_key', 'embedding_chunk_size', 'embedding_chunk_overlap',
-                   'created_at', 'updated_at']
-    search_fields = ['provider', 'host_url', 'provider_api_key', 'assistant', 'name', 'class_name', 'description',
-                     'vectorizer', 'vectorizer_api_key', 'embedding_chunk_size', 'embedding_chunk_overlap',
-                     'search_instance_retrieval_limit', 'created_at', 'updated_at']
+    list_display = CODE_REPOSITORY_STORAGE_ADMIN_LIST
+    list_filter = CODE_REPOSITORY_STORAGE_ADMIN_FILTER
+    search_fields = CODE_REPOSITORY_STORAGE_ADMIN_SEARCH
     readonly_fields = ['created_at', 'updated_at']
 
     list_per_page = 20
@@ -44,18 +39,14 @@ class CodeRepositoryStorageConnectionAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if obj.vectorizer is None:
             obj.vectorizer = "text2vec-openai"
-
         if obj.class_name is None:
-            obj.class_name = generate_class_name(obj)
+            obj.class_name = build_weaviate_class_name_with_random(obj)
 
         client = CodeBaseDecoder.get(obj)
         if client is not None:
             result = client.create_weaviate_classes()
             if not result["status"]:
-                print(
-                    f"[CodeRepositoryStorageConnectionAdmin.save_model] Error creating Weaviate classes: {result['error']}")
-
-        # Retrieve the schema
+                pass
         obj.schema_json = client.retrieve_schema()
         super().save_model(request, obj, form, change)
 
@@ -64,6 +55,5 @@ class CodeRepositoryStorageConnectionAdmin(admin.ModelAdmin):
         if client is not None:
             result = client.delete_weaviate_classes(class_name=obj.class_name)
             if not result["status"]:
-                print(
-                    f"[CodeRepositoryStorageConnectionAdmin.delete_model] Error deleting Weaviate classes: {result['error']}")
+                pass
         super().delete_model(request, obj)

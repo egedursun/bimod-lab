@@ -24,39 +24,19 @@ import boto3
 from django.db import models
 from slugify import slugify
 
-from apps.datasource_media_storages.utils import MEDIA_CATEGORIES
+from apps.datasource_media_storages.utils import MEDIA_MANAGER_ITEM_TYPES
 from config.settings import MEDIA_URL
 
 
 class DataSourceMediaStorageConnection(models.Model):
-    """
-    DataSourceMediaStorageConnection Model:
-    - Purpose: Represents a connection to a media storage system, including configurations for media categories, directory paths, and storage settings.
-    - Key Fields:
-        - `assistant`: ForeignKey linking to the `Assistant` model.
-        - `name`: The name of the media storage connection.
-        - `description`: A description of the connection.
-        - `media_category`: The category of media (e.g., Image, Audio).
-        - `directory_full_path`: The full directory path for storing media files.
-        - `directory_schema`: JSON representation of the directory structure.
-        - `interpretation_temperature`, `interpretation_maximum_tokens`: Parameters for interpreting media content.
-        - `created_at`, `updated_at`: Timestamps for creation and last update.
-    - Methods:
-        - `save()`: Overridden to ensure the directory path is set if not provided.
-        - `delete()`: Overridden to remove the associated directory from storage, with support for AWS S3.
-    """
-
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.TextField()
-    media_category = models.CharField(max_length=20, choices=MEDIA_CATEGORIES)
-
+    media_category = models.CharField(max_length=20, choices=MEDIA_MANAGER_ITEM_TYPES)
     directory_full_path = models.CharField(max_length=255, blank=True, null=True)
     directory_schema = models.TextField(blank=True, null=True)
-
     interpretation_temperature = models.FloatField(default=0.25)
     interpretation_maximum_tokens = models.IntegerField(default=2048)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -84,16 +64,14 @@ class DataSourceMediaStorageConnection(models.Model):
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
-        # Remove the directory
         if self.directory_full_path and os.path.exists(self.directory_full_path):
-            boto3_client = boto3.client('s3')
-            bucket_name = os.getenv('AWS_STORAGE_BUCKET_NAME')
-            s3_path = self.directory_full_path.split(MEDIA_URL)[1]
-            s3_path = s3_path.replace('/', '')
-            s3_path = f"{s3_path}/"
+            s3c = boto3.client('s3')
+            bucket = os.getenv('AWS_STORAGE_BUCKET_NAME')
+            bucket_path = self.directory_full_path.split(MEDIA_URL)[1]
+            bucket_path = bucket_path.replace('/', '')
+            bucket_path = f"{bucket_path}/"
             try:
-                boto3_client.delete_object(Bucket=bucket_name, Key=s3_path)
+                s3c.delete_object(Bucket=bucket, Key=bucket_path)
             except Exception as e:
-                print(
-                    f"[DataSourceMediaStorageConnection.delete] Error occurred while deleting the directory: {str(e)}")
+                pass
         super().delete(using, keep_parents)

@@ -14,28 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 from django.contrib import admin
 
 from apps.starred_messages.models import StarredMessage
+from apps.starred_messages.utils import STARRED_MESSAGE_ADMIN_LIST, STARRED_MESSAGE_ADMIN_FILTER, \
+    STARRED_MESSAGE_ADMIN_SEARCH
 
 
 @admin.register(StarredMessage)
 class StarredMessageAdmin(admin.ModelAdmin):
-    list_display = ["user", "organization", "assistant", "chat", "chat_message", "starred_at", "message_text"]
-    list_filter = ["user", "organization", "assistant", "chat", "chat_message", "starred_at", "message_text"]
-    search_fields = ["user", "organization", "assistant", "chat", "chat_message", "starred_at", "message_text"]
-    list_per_page = 20
+    list_display = STARRED_MESSAGE_ADMIN_LIST
+    list_filter = STARRED_MESSAGE_ADMIN_FILTER
+    search_fields = STARRED_MESSAGE_ADMIN_SEARCH
     ordering = ["-starred_at"]
-    readonly_fields = ["starred_at"]
-    fieldsets = [
-        (
-        None, {"fields": ["user", "organization", "assistant", "chat", "chat_message", "starred_at", "message_text"]}),
-    ]
-    add_fieldsets = [
-        (
-        None, {"fields": ["user", "organization", "assistant", "chat", "chat_message", "starred_at", "message_text"]}),
-    ]

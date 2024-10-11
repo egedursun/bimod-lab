@@ -23,13 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DeleteView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.export_orchestrations.models import ExportOrchestrationAPI
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DeleteExportOrchestrationView(LoginRequiredMixin, DeleteView):
+class ExportOrchestrationView_Delete(LoginRequiredMixin, DeleteView):
     model = ExportOrchestrationAPI
     success_url = 'export_orchestrations:list'
 
@@ -49,14 +49,11 @@ class DeleteExportOrchestrationView(LoginRequiredMixin, DeleteView):
             return redirect('export_orchestrations:list')
         ##############################
 
-        export_assistant = get_object_or_404(ExportOrchestrationAPI, id=self.kwargs['pk'])
-
-        export_assistant.delete()
+        exp_agent = get_object_or_404(ExportOrchestrationAPI, id=self.kwargs['pk'])
+        exp_agent.delete()
         success_message = "Export Orchestration deleted successfully."
-        # remove the exported assistant from the organization
-        organization = export_assistant.orchestrator.organization
-        organization.exported_orchestrations.remove(export_assistant)
-        organization.save()
-        print("[DeleteExportOrchestrationsView.post] Export Orchestration deleted successfully.")
+        org = exp_agent.orchestrator.organization
+        org.exported_orchestrations.remove(exp_agent)
+        org.save()
         messages.success(request, success_message)
         return redirect(self.success_url)

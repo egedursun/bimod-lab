@@ -18,11 +18,12 @@
 from django.contrib import admin
 
 from apps.blog_app.models import BlogPost
+from apps.blog_app.utils import BLOG_POST_ADMIN_LIST, BLOG_POST_ADMIN_FILTER, BLOG_POST_ADMIN_SEARCH
 
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'status', 'published_at', 'created_at', 'updated_at']
-    list_filter = ['status', 'published_at', 'created_at', 'updated_at']
-    search_fields = ['title', 'content']
+    list_display = BLOG_POST_ADMIN_LIST
+    list_filter = BLOG_POST_ADMIN_FILTER
+    search_fields = BLOG_POST_ADMIN_SEARCH
     ordering = ['-created_at']

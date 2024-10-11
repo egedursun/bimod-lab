@@ -18,15 +18,15 @@
 
 from django.urls import path
 
-from apps.blog_app.views import BlogPostListView, BlogPostDetailView
+from apps.blog_app.views import BlogPostView_List, BlogPostView_Detail
 
 app_name = 'blog_app'
 
 urlpatterns = [
-    path('', BlogPostListView.as_view(
+    path('', BlogPostView_List.as_view(
         template_name='blog_app/blogpost_list.html'
     ), name='post_list'),
-    path('post/<slug:slug>/', BlogPostDetailView.as_view(
+    path('post/<slug:slug>/', BlogPostView_Detail.as_view(
         template_name='blog_app/blogpost_detail.html'
     ), name='post_detail'),
 ]

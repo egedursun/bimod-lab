@@ -17,9 +17,6 @@
 #
 #
 #
-from unittest import TestCase
-
-from apps.user_permissions.utils import PermissionNames, PERMISSION_TYPES, get_permissions_grouped
 
 
 def test_init_user_permissions_test_utils():

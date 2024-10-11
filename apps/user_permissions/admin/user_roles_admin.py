@@ -14,20 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
 
 from django.contrib import admin
 
 from apps.user_permissions.models import UserRole
+from apps.user_permissions.utils import USER_ROLES_ADMIN_LIST, USER_ROLES_ADMIN_FILTER, USER_ROLES_ADMIN_SEARCH
 
 
 @admin.register(UserRole)
 class UserRoleAdmin(admin.ModelAdmin):
-    list_display = ('organization', 'role_name', 'created_at', 'updated_at')
-    list_filter = ('organization', 'created_at', 'updated_at')
-    search_fields = ('organization__name', 'role_name', "role_description")
+    list_display = USER_ROLES_ADMIN_LIST
+    list_filter = USER_ROLES_ADMIN_FILTER
+    search_fields = USER_ROLES_ADMIN_SEARCH
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)

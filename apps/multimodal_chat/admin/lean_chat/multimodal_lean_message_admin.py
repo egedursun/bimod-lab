@@ -14,21 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 from django.contrib import admin
 
 from apps.multimodal_chat.models import MultimodalLeanChatMessage
+from apps.multimodal_chat.utils import MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_LIST, \
+    MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_FILTER, MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_SEARCH
 
 
 @admin.register(MultimodalLeanChatMessage)
 class MultimodalLeanChatMessageAdmin(admin.ModelAdmin):
-    list_display = ['multimodal_lean_chat', 'sender_type', 'sent_at']
-    list_filter = ['multimodal_lean_chat', 'sender_type', 'sent_at']
-    search_fields = ['multimodal_lean_chat', 'sender_type', 'sent_at']
+    list_display = MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_LIST
+    list_filter = MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_FILTER
+    search_fields = MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_SEARCH
     readonly_fields = ['sent_at']
     list_per_page = 20
     list_max_show_all = 100

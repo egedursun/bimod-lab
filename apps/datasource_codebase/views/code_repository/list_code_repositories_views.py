@@ -24,7 +24,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection, CodeBaseRepository, \
     RepositoryProcessingLog
@@ -33,7 +33,7 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListRepositoriesView(LoginRequiredMixin, TemplateView):
+class CodeBaseView_RepositoryList(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -45,32 +45,32 @@ class ListRepositoriesView(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        organizations = Organization.objects.filter(users__in=[request.user])
+        orgs = Organization.objects.filter(users__in=[request.user])
         data = []
-        for org in organizations:
-            assistants = Assistant.objects.filter(organization=org)
-            assistant_data_list = []
-            for assistant in assistants:
-                knowledge_bases = CodeRepositoryStorageConnection.objects.filter(assistant=assistant)
+        for org in orgs:
+            agents = Assistant.objects.filter(organization=org)
+            agent_data_list = []
+            for agent in agents:
+                vector_stores = CodeRepositoryStorageConnection.objects.filter(assistant=agent)
                 kb_data_list = []
-                for kb in knowledge_bases:
-                    documents = CodeBaseRepository.objects.filter(knowledge_base=kb).order_by('-created_at')
-                    paginator = Paginator(documents, 5)  # 5 repositories per page
+                for kb in vector_stores:
+                    docs = CodeBaseRepository.objects.filter(knowledge_base=kb).order_by('-created_at')
+                    paginator = Paginator(docs, 5)  # 5 repositories per page
                     page_number = request.GET.get('page')
                     page_obj = paginator.get_page(page_number)
 
-                    document_data_list = []
-                    for document in page_obj:
-                        document: CodeBaseRepository
-                        log_entries = RepositoryProcessingLog.objects.filter(
-                            repository_full_uri=document.repository_uri)
-                        current_statuses = [log.log_message for log in log_entries]
-                        document_data_list.append({'document': document, 'current_statuses': current_statuses})
+                    doc_data_list = []
+                    for doc in page_obj:
+                        doc: CodeBaseRepository
+                        logs = RepositoryProcessingLog.objects.filter(
+                            repository_full_uri=doc.repository_uri)
+                        cur_statuses = [log.log_message for log in logs]
+                        doc_data_list.append({'document': doc, 'current_statuses': cur_statuses})
                     kb_data_list.append({
-                        'knowledge_base': kb, 'documents': page_obj, 'document_data': document_data_list,
+                        'knowledge_base': kb, 'documents': page_obj, 'document_data': doc_data_list,
                     })
-                assistant_data_list.append({'assistant': assistant, 'knowledge_bases': kb_data_list})
-            data.append({'organization': org, 'assistants': assistant_data_list})
+                agent_data_list.append({'assistant': agent, 'knowledge_bases': kb_data_list})
+            data.append({'organization': org, 'assistants': agent_data_list})
 
         context['data'] = data
         context['document_statuses'] = [
@@ -91,9 +91,8 @@ class ListRepositoriesView(LoginRequiredMixin, TemplateView):
             return redirect('datasource_codebase:list_repositories')
         ##############################
 
-        document_ids = request.POST.getlist('selected_documents')
-        if document_ids:
-            CodeBaseRepository.objects.filter(id__in=document_ids).delete()
+        doc_ids = request.POST.getlist('selected_documents')
+        if doc_ids:
+            CodeBaseRepository.objects.filter(id__in=doc_ids).delete()
             messages.success(request, 'Selected repositories deleted successfully.')
-            print('[ListRepositoriesView.post] Selected repositories deleted successfully.')
         return redirect('datasource_codebase:list_repositories')

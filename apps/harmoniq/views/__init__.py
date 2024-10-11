@@ -16,3 +16,4 @@
 #
 
 from .harmoniq import *
+from .internal import *

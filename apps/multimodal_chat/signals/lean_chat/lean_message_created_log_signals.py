@@ -14,11 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
@@ -27,6 +24,5 @@ from apps.multimodal_chat.models import MultimodalLeanChatMessage, ChatMessageCr
 
 @receiver(post_save, sender=MultimodalLeanChatMessage)
 def create_lean_chat_message_created_log(sender, instance, created, **kwargs):
-    # Add a new periodic task for this ScheduledJob
     if created:
         ChatMessageCreationLog.objects.create(organization=instance.multimodal_lean_chat.lean_assistant.organization)

@@ -14,21 +14,40 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-TICKET_STATUSES = [
+STATUSES_FOR_SUPPORT_TICKETS = [
     ('open', 'Open'),
     ('in_progress', 'In Progress'),
     ('closed', 'Closed'),
     ('resolved', 'Resolved'),
 ]
 
-PRIORITY_CHOICES = [
+PRIORITY_CATEGORY_OF_SUPPORT_TICKETS = [
     ('recommendation', 'Recommendation'),
     ('low', 'Low'),
     ('medium', 'Medium'),
     ('high', 'High'),
     ('critical', 'Critical'),
 ]
+
+SUPPORT_TICKET_SYSTEM_ADMIN_LIST = ['title', 'status', 'priority', 'created_at']
+SUPPORT_TICKET_SYSTEM_ADMIN_FILTER = ['status', 'priority']
+SUPPORT_TICKET_SYSTEM_ADMIN_SEARCH = ['title', 'issue_description']
+
+SUPPORT_TICKET_RESPONSE_ADMIN_LIST = ['ticket', 'user', 'created_at']
+SUPPORT_TICKET_RESPONSE_ADMIN_SEARCH = ['ticket__title', 'response']
+
+
+class TicketStatusPriorityMapScoreNames:
+    OPEN = 3
+    IN_PROGRESS = 2
+    RESOLVED = 1
+    CLOSED = 0
+
+
+TICKET_STATUS_PRIORITY_MAP = {
+    'open': TicketStatusPriorityMapScoreNames.OPEN,
+    'in_progress': TicketStatusPriorityMapScoreNames.IN_PROGRESS,
+    'resolved': TicketStatusPriorityMapScoreNames.RESOLVED,
+    'closed': TicketStatusPriorityMapScoreNames.CLOSED
+}

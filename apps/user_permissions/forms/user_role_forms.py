@@ -21,16 +21,14 @@
 
 from django import forms
 
-from apps.user_permissions.models import UserPermission, UserRole
+from apps.user_permissions.models import UserRole
 from apps.user_permissions.utils import PERMISSION_TYPES
 
 
 class UserRoleForm(forms.ModelForm):
     role_permissions = forms.MultipleChoiceField(
-        choices=PERMISSION_TYPES,  # Use the static PERMISSION_TYPES as choices
-        widget=forms.SelectMultiple(attrs={'class': 'form-select', 'multiple': 'multiple'}),
-        required=True
-    )
+        choices=PERMISSION_TYPES, widget=forms.SelectMultiple(attrs={'class': 'form-select', 'multiple': 'multiple'}),
+        required=True)
 
     class Meta:
         model = UserRole

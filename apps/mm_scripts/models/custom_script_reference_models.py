@@ -22,28 +22,11 @@ from django.db import models
 
 
 class CustomScriptReference(models.Model):
-    """
-    CustomScriptReference Model:
-    - Purpose: Represents a reference to a custom script associated with a specific assistant, storing information about the script source and the user who created the reference.
-    - Key Fields:
-        - `custom_script`: ForeignKey linking to the `CustomScript` model.
-        - `assistant`: ForeignKey linking to the `Assistant` model.
-        - `script_source`: A field indicating whether the script is internal or external.
-        - `created_by_user`: ForeignKey linking to the `User` who created the script reference.
-        - `created_at`, `updated_at`: Timestamps for creation and last update.
-    - Meta:
-        - `verbose_name`: "Custom Script Reference"
-        - `verbose_name_plural`: "Custom Script References"
-        - `unique_together`: Ensures that each combination of `custom_script` and `assistant` is unique.
-        - `indexes`: Indexes on various fields for optimized queries.
-    """
-
     custom_script = models.ForeignKey("CustomScript", on_delete=models.CASCADE,
                                       related_name="custom_script_references")
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     script_source = models.CharField(max_length=255, default="internal", blank=True)
     created_by_user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

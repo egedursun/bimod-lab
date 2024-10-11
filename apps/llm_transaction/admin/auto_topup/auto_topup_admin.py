@@ -21,10 +21,10 @@
 from django.contrib import admin
 
 from apps.llm_transaction.models import AutoBalanceTopUpModel
+from apps.llm_transaction.utils import AUTO_TOP_UP_ADMIN_LIST
 
 
 @admin.register(AutoBalanceTopUpModel)
 class AutoBalanceTopUpModelAdmin(admin.ModelAdmin):
-    list_display = ["organization", "on_balance_threshold_trigger", "on_interval_by_days_trigger",
-                    "balance_lower_trigger_threshold_value", "addition_on_balance_threshold_trigger"]
+    list_display = AUTO_TOP_UP_ADMIN_LIST
     ordering = ["-created_at"]

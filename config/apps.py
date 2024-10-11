@@ -16,6 +16,8 @@
 #
 
 from django.apps import AppConfig
+from django.apps import apps
+from django.db.models.signals import pre_save, post_save, post_delete
 
 
 class MainAppConfig(AppConfig):
@@ -24,3 +26,9 @@ class MainAppConfig(AppConfig):
     def ready(self):
         from data.loader import BoilerplateDataLoader
         BoilerplateDataLoader.load()
+
+        from .signals import log_save, log_delete
+        for model in apps.get_models():
+            post_save.connect(log_save, sender=model)
+            post_delete.connect(log_delete, sender=model)
+        print("[MainAppConfig.ready]: The AuditLogs tracking system have been successfully registered.")

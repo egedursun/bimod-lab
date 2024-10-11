@@ -18,21 +18,25 @@
 #
 #
 
-class StatusCodes:
-    """
-    A simple class containing HTTP status codes used throughout the views.
-
-    Attributes:
-        OK (int): HTTP 200 OK.
-        NOT_FOUND (int): HTTP 404 Not Found.
-        UNAUTHORIZED (int): HTTP 401 Unauthorized.
-        TOO_MANY_REQUESTS (int): HTTP 429 Too Many Requests.
-        SERVICE_OFFLINE (int): HTTP 503 Service Unavailable.
-        INTERNAL_SERVER_ERROR (int): HTTP 500 Internal Server Error.
-    """
+class ExportOrchestrationRequestStatusCodes:
     OK = 200
     NOT_FOUND = 404
     UNAUTHORIZED = 401
     TOO_MANY_REQUESTS = 429
     SERVICE_OFFLINE = 503
     INTERNAL_SERVER_ERROR = 500
+
+
+EXPORT_ORCHESTRATION_ADMIN_LIST = (
+    "orchestrator", "is_public", "request_limit_per_hour", "created_by_user", "is_online", "created_at"
+)
+EXPORT_ORCHESTRATION_ADMIN_FILTER = (
+    "orchestrator", "is_public", "request_limit_per_hour", "created_by_user", "is_online", "created_at",
+)
+EXPORT_ORCHESTRATION_ADMIN_SEARCH = (
+    "orchestrator", "is_public", "request_limit_per_hour", "created_by_user", "is_online", "created_at"
+)
+
+EXPORT_ORCHESTRATION_LOG_ADMIN_LIST = ("export_orchestration", "timestamp")
+EXPORT_ORCHESTRATION_LOG_ADMIN_FILTER = ("export_orchestration", "timestamp")
+EXPORT_ORCHESTRATION_LOG_ADMIN_SEARCH = ("export_orchestration", "timestamp")

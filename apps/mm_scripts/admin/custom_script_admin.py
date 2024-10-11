@@ -21,12 +21,12 @@
 from django.contrib import admin
 
 from apps.mm_scripts.models import CustomScript
+from apps.mm_scripts.utils import CUSTOM_SCRIPT_ADMIN_LIST, CUSTOM_SCRIPT_ADMIN_SEARCH, CUSTOM_SCRIPT_ADMIN_LIST_FILTER
 
 
 @admin.register(CustomScript)
 class CustomScriptAdmin(admin.ModelAdmin):
-    list_display = ("name", "is_public", "created_at", "updated_at")
-    list_filter = ("is_public",)
-    search_fields = ("name", "description")
-    readonly_fields = ("created_at", "updated_at")
+    list_display = CUSTOM_SCRIPT_ADMIN_LIST
+    list_filter = CUSTOM_SCRIPT_ADMIN_LIST_FILTER
+    search_fields = CUSTOM_SCRIPT_ADMIN_SEARCH
     ordering = ("-created_at",)

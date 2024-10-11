@@ -23,21 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class OrganizationListView(TemplateView, LoginRequiredMixin):
-    """
-    Displays a paginated list of organizations associated with the logged-in user.
-
-    This view retrieves all organizations that the user is part of and displays them in a paginated list.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the organizations for the user and adds them to the context with pagination.
-    """
+class OrganizationView_OrganizationList(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -51,8 +43,8 @@ class OrganizationListView(TemplateView, LoginRequiredMixin):
         ##############################
 
         context_user = self.request.user
-        organizations = Organization.objects.filter(users__in=[context_user])
-        paginator = Paginator(organizations, 10)  # Show 10 organizations per page.
+        orgs = Organization.objects.filter(users__in=[context_user])
+        paginator = Paginator(orgs, 10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj

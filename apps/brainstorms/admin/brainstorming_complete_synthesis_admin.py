@@ -19,42 +19,12 @@
 from django.contrib import admin
 
 from apps.brainstorms.models import BrainstormingCompleteSynthesis
-
-"""
-class BrainstormingCompleteSynthesis(models.Model):
-    brainstorming_session = models.ForeignKey('BrainstormingSession', on_delete=models.CASCADE)
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-
-    # No need for having the field 'ideas', since they can be retrieved directly from 'brainstorming_session' object.
-    synthesis_content = models.TextField()
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.brainstorming_session.session_name
-
-    class Meta:
-        verbose_name = 'Brainstorming Complete Synthesis'
-        verbose_name_plural = 'Brainstorming Complete Syntheses'
-        ordering = ['-created_at']
-        unique_together = ['brainstorming_session']
-
-        indexes = [
-            models.Index(fields=['brainstorming_session']),
-            models.Index(fields=['created_by_user']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
-            models.Index(fields=['brainstorming_session', 'created_by_user']),
-            models.Index(fields=['brainstorming_session', 'created_at']),
-            models.Index(fields=['brainstorming_session', 'updated_at']),
-        ]
-"""
+from apps.brainstorms.utils import BRAINSTORMING_ADMIN_LIST, BRAINSTORMING_ADMIN_FILTER, BRAINSTORMING_ADMIN_SEARCH
 
 
 @admin.register(BrainstormingCompleteSynthesis)
 class BrainstormingCompleteSynthesisAdmin(admin.ModelAdmin):
-    list_display = ('brainstorming_session', 'created_by_user', 'created_at')
-    list_filter = ('brainstorming_session', 'created_by_user', 'created_at')
-    search_fields = ('brainstorming_session', 'created_by_user', 'created_at')
+    list_display = BRAINSTORMING_ADMIN_LIST
+    list_filter = BRAINSTORMING_ADMIN_FILTER
+    search_fields = BRAINSTORMING_ADMIN_SEARCH
     ordering = ('-created_at',)

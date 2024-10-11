@@ -20,7 +20,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingSession
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
@@ -28,8 +28,7 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CreateBrainstormingSessionView(LoginRequiredMixin, TemplateView):
-
+class BrainstormingView_SessionCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
@@ -51,23 +50,18 @@ class CreateBrainstormingSessionView(LoginRequiredMixin, TemplateView):
             return redirect('brainstorms:list_sessions')
         ##############################
 
-        organization_id = request.POST.get('organization')
-        llm_model_id = request.POST.get('llm_model')
+        org_id = request.POST.get('organization')
+        llm_core_id = request.POST.get('llm_model')
         session_name = request.POST.get('session_name')
         topic_definition = request.POST.get('topic_definition')
         constraints = request.POST.get('constraints')
-
-        if organization_id and llm_model_id and session_name and topic_definition:
+        if org_id and llm_core_id and session_name and topic_definition:
             try:
-                organization = Organization.objects.get(id=organization_id)
-                llm_model = LLMCore.objects.get(id=llm_model_id)
+                organization = Organization.objects.get(id=org_id)
+                llm_model = LLMCore.objects.get(id=llm_core_id)
                 session = BrainstormingSession.objects.create(
-                    organization=organization,
-                    llm_model=llm_model,
-                    created_by_user=request.user,
-                    session_name=session_name,
-                    topic_definition=topic_definition,
-                    constraints=constraints
+                    organization=organization, llm_model=llm_model, created_by_user=request.user,
+                    session_name=session_name, topic_definition=topic_definition, constraints=constraints
                 )
                 messages.success(request, "Brainstorming session created successfully!")
                 return redirect('brainstorms:list_sessions')

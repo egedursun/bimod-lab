@@ -14,24 +14,21 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DeleteView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.multimodal_chat.models import MultimodalLeanChat
-from apps.multimodal_chat.utils import ChatSourcesNames
+from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class LeanChatDeleteView(LoginRequiredMixin, DeleteView):
+class ChatView_LeanChatDelete(LoginRequiredMixin, DeleteView):
     template_name = 'multimodal_chat/chats/confirm_delete_lean_chat.html'
     success_url = '/lean_chat/'
 
@@ -42,7 +39,7 @@ class LeanChatDeleteView(LoginRequiredMixin, DeleteView):
         return context
 
     def get_queryset(self):
-        return MultimodalLeanChat.objects.filter(user=self.request.user, chat_source=ChatSourcesNames.APP)
+        return MultimodalLeanChat.objects.filter(user=self.request.user, chat_source=SourcesForMultimodalChatsNames.APP)
 
     def post(self, request, *args, **kwargs):
         ##############################

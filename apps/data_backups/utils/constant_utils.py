@@ -37,10 +37,11 @@ class BackupTypesNames:
     @staticmethod
     def as_list():
         return [
-            BackupTypesNames.ASSISTANTS,
-            BackupTypesNames.LLM_MODELS,
-            BackupTypesNames.NER_INSTANCES,
-            BackupTypesNames.CUSTOM_FUNCTIONS,
-            BackupTypesNames.CUSTOM_APIS,
-            BackupTypesNames.CUSTOM_SCRIPTS
+            BackupTypesNames.ASSISTANTS, BackupTypesNames.LLM_MODELS, BackupTypesNames.NER_INSTANCES,
+            BackupTypesNames.CUSTOM_FUNCTIONS, BackupTypesNames.CUSTOM_APIS, BackupTypesNames.CUSTOM_SCRIPTS
         ]
+
+
+DATA_BACKUP_ADMIN_LIST = ['organization', 'responsible_user', 'backup_name', 'backup_type', 'created_at']
+DATA_BACKUP_ADMIN_SEARCH = ['organization', 'responsible_user__username', 'backup_name', 'backup_type']
+DATA_BACKUP_ADMIN_FILTER = ['organization', 'responsible_user', 'backup_name', 'backup_type', 'created_at']

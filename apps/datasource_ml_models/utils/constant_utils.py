@@ -18,6 +18,18 @@
 #
 #
 
-MODEL_OBJECT_CATEGORIES = (
+ML_MODEL_ITEM_CATEGORIES = (
     ('pth', 'PyTorch Model'),
 )
+
+ML_MODEL_ITEM_ADMIN_LIST = ('id', 'ml_model_base', 'ml_model_name', 'description', 'ml_model_size', 'full_file_path',
+                            'created_at', 'updated_at')
+ML_MODEL_ITEM_ADMIN_FILTER = ('ml_model_base',)
+ML_MODEL_ITEM_ADMIN_SEARCH = ('ml_model_name', 'full_file_path')
+
+ML_MODEL_MANAGER_ADMIN_LIST = ('id', 'assistant', 'name', 'model_object_category', 'directory_full_path', 'created_at',
+                               'updated_at')
+ML_MODEL_MANAGER_ADMIN_FILTER = ('assistant', 'model_object_category')
+ML_MODEL_MANAGER_ADMIN_SEARCH = ('name', 'directory_full_path')
+
+DELETE_ALL_ML_ITEMS_SPECIFIER = 'delete_all'

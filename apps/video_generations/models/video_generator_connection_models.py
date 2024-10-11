@@ -17,19 +17,17 @@
 
 
 from django.db import models
-from apps._services.video_generation.utils import VIDEO_GENERATOR_PROVIDER_TYPES
+from apps.core.video_generation.utils import VIDEO_GENERATOR_PROVIDER_TYPES
 
 
 class VideoGeneratorConnection(models.Model):
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-
     name = models.CharField(max_length=1000)
     description = models.TextField()
     provider = models.CharField(max_length=255, choices=VIDEO_GENERATOR_PROVIDER_TYPES)
     provider_api_key = models.CharField(max_length=100000)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

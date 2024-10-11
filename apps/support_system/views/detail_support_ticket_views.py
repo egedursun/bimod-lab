@@ -23,26 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.support_system.models import SupportTicket, SupportTicketResponse
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class SupportTicketDetailView(LoginRequiredMixin, TemplateView):
-    """
-    View to display the details of a specific support ticket.
-
-    This view shows the details of a specific support ticket, including the history of responses associated with it.
-    Users can also add new responses to the ticket through this view.
-
-    Methods:
-    - get_context_data: Fetches the ticket and its responses, and adds them to the context.
-    - post: Handles the submission of a new response to the ticket.
-    """
-
-    template_name = 'support_system/support_ticket_detail.html'
-
+class SupportView_TicketDetail(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -70,13 +57,7 @@ class SupportTicketDetailView(LoginRequiredMixin, TemplateView):
         ##############################
 
         ticket = get_object_or_404(SupportTicket, pk=self.kwargs['pk'], user=request.user)
-        response_text = request.POST.get('response')
-
-        if response_text:
-            SupportTicketResponse.objects.create(
-                ticket=ticket,
-                user=request.user,
-                response=response_text
-            )
-
+        output = request.POST.get('response')
+        if output:
+            SupportTicketResponse.objects.create(ticket=ticket, user=request.user, response=output)
         return redirect('support_system:detail', pk=ticket.pk)

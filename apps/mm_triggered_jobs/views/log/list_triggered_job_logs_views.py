@@ -26,23 +26,14 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_triggered_jobs.models import TriggeredJob, TriggeredJobInstance
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListTriggeredJobLogsView(LoginRequiredMixin, TemplateView):
-    """
-    Displays the logs of a specific triggered job.
-
-    This view retrieves and displays all instances of a triggered job, showing the execution logs and statuses. The view supports searching and pagination.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the logs of the specified triggered job and adds them to the context.
-    """
-
-    paginate_by = 10  # Adjust the number of items per page
+class TriggeredJobView_LogList(LoginRequiredMixin, TemplateView):
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -62,7 +53,6 @@ class ListTriggeredJobLogsView(LoginRequiredMixin, TemplateView):
         job_instances_list = TriggeredJobInstance.objects.filter(triggered_job=triggered_job)
         if search_query:
             job_instances_list = job_instances_list.filter(Q(status__icontains=search_query))
-
         paginator = Paginator(job_instances_list, self.paginate_by)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)

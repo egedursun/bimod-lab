@@ -23,15 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.orchestrations.models.query import OrchestrationQuery
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class OrchestrationQueryDeleteView(LoginRequiredMixin, TemplateView):
-    template_name = 'orchestrations/query_confirm_delete_orchestration.html'
-
+class OrchestrationView_QueryDelete(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         query_id = self.kwargs['query_id']

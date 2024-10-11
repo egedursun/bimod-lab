@@ -24,68 +24,59 @@ from celery import shared_task
 @shared_task
 def index_document_helper(connection_id, document_paths):
     from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
-    from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
-    from apps.datasource_knowledge_base.utils import DocumentUploadStatusNames
-    from apps.datasource_knowledge_base.tasks import add_document_upload_log
-
-    connection = DocumentKnowledgeBaseConnection.objects.get(id=connection_id)
-    executor = KnowledgeBaseSystemDecoder.get(connection=connection)
+    from apps.core.vector_operations.vector_document.vector_store_decoder import KnowledgeBaseSystemDecoder
+    from apps.datasource_knowledge_base.utils import VectorStoreDocProcessingStatusNames
+    from apps.datasource_knowledge_base.tasks import add_vector_store_doc_loaded_log
+    conn = DocumentKnowledgeBaseConnection.objects.get(id=connection_id)
+    xc = KnowledgeBaseSystemDecoder.get(connection=conn)
     if isinstance(document_paths, str):
         document_paths = [document_paths]
-    # Iterate through the documents
-    print(f"[tasks.index_document_helper] Indexing {len(document_paths)} document(s)...")
-    print(document_paths)
     for i, path in enumerate(document_paths):
         try:
-            # Get the file extension
-            extension = path.split(".")[-1]
-            # Load the document
-            document = executor.document_loader(file_path=path, file_type=extension)
-            if not document:
-                print(f"[tasks.index_document_helper] Error loading the document with path: {path}")
-                add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.FAILED)
+            docc = _load_doc(path, xc)
+            if not docc:
+                add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.FAILED)
                 continue
-            add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.LOADED)
-
-            # Chunk the document
-            chunks = executor.chunk_document(connection_id=executor.connection_object.id, document=document)
-            if not chunks:
-                print(f"[tasks.index_document_helper] Error chunking the document with path: {path}")
-                add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.FAILED)
+            add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.LOADED)
+            chks = _chunk_doc(docc, xc)
+            if not chks:
+                add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.FAILED)
                 continue
-            add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.CHUNKED)
-
-            number_of_chunks = len(chunks) if chunks else 0
-            print(f"[tasks.index_document_helper] Identified number of chunks: {number_of_chunks}")
-
-            # Embed the document
-            doc_id, doc_uuid, error = executor.embed_document(
-                document=document, path=path, number_of_chunks=number_of_chunks
-            )
-            add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.PROCESSED_DOCUMENT)
-
+            add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.CHUNKED)
+            doc_id, doc_uuid, error = _embed_doc(chks, docc, path, xc)
+            add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.PROCESSED_DOCUMENT)
             if error or not doc_id or not doc_uuid:
-                print(f"[tasks.index_document_helper] Error embedding the document with path: {path} - Error: {error}")
-                add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.FAILED)
+                add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.FAILED)
                 continue
-
-            # Embed the document chunks
-            errors = executor.embed_document_chunks(chunks=chunks, path=path, document_id=doc_id,
-                                                    document_uuid=doc_uuid)
+            errors = _chunk_doc_chks(chks, doc_id, doc_uuid, path, xc)
             if errors:
-                print(
-                    f"[tasks.index_document_helper] Error embedding at least one of the document chunks with the document path: {path} -"
-                    f" Error: {errors}")
-                add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.PARTIALLY_FAILED)
+                add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.PARTIALLY_FAILED)
                 continue
-            add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.PROCESSED_CHUNKS)
-
-            print(f"[tasks.index_document_helper] Document with path: {path} successfully indexed.")
-            add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.COMPLETED)
-
+            add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.PROCESSED_CHUNKS)
+            add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.COMPLETED)
         except Exception as e:
-            print(f"[tasks.index_document_helper] Error indexing the document with path: {path} - Error: {e}")
-            add_document_upload_log(document_full_uri=path, log_name=DocumentUploadStatusNames.FAILED)
+            add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.FAILED)
             continue
-    # make sure that the return statement is outside the loop
     return
+
+
+def _chunk_doc_chks(chks, doc_id, doc_uuid, path, xc):
+    errors = xc.embed_document_chunks(chunks=chks, path=path, document_id=doc_id, document_uuid=doc_uuid)
+    return errors
+
+
+def _chunk_doc(docc, xc):
+    chks = xc.chunk_document(connection_id=xc.connection_object.id, document=docc)
+    return chks
+
+
+def _load_doc(path, xc):
+    file_format = path.split(".")[-1]
+    docc = xc.document_loader(file_path=path, file_type=file_format)
+    return docc
+
+
+def _embed_doc(chks, docc, path, xc):
+    n_chks = len(chks) if chks else 0
+    doc_id, doc_uuid, error = xc.embed_document(document=docc, path=path, number_of_chunks=n_chks)
+    return doc_id, doc_uuid, error

@@ -40,3 +40,18 @@ class TriggeredJobInstanceStatusesNames:
     CLEANING_UP = 'cleaning_up'
     COMPLETED = 'completed'
     FAILED = 'failed'
+
+
+TRIGGERED_JOB_ADMIN_LIST = [
+    'name', 'trigger_assistant', 'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user'
+]
+TRIGGERED_JOB_ADMIN_SEARCH = [
+    'name', 'trigger_assistant', 'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user'
+]
+TRIGGERED_JOB_ADMIN_FILTER = [
+    'name', 'trigger_assistant', 'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user'
+]
+
+TRIGGERED_JOB_INSTANCE_ADMIN_LIST = ['triggered_job', 'status', 'started_at', 'ended_at']
+TRIGGERED_JOB_INSTANCE_ADMIN_SEARCH = ['triggered_job', 'status', 'started_at', 'ended_at']
+TRIGGERED_JOB_INSTANCE_ADMIN_FILTER = ['triggered_job', 'status', 'started_at', 'ended_at']

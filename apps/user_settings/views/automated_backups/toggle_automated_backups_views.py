@@ -21,21 +21,16 @@ from django.shortcuts import redirect
 from django.views import View
 
 
-class ToggleAutomatedBackupView(LoginRequiredMixin, View):
+class SettingsView_ToggleAutoBackups(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         try:
             user = request.user
-
-            # Toggle the automated_data_backups field
             user.profile.automated_data_backups = not user.profile.automated_data_backups
             user.profile.save()
         except Exception as e:
-            # Handle any exceptions that occur during toggling
             messages.error(request, f"An error occurred while trying to toggle automated backups: {str(e)}")
             return redirect('user_settings:settings')
-
-        # Return a success response with the new state
         messages.success(request,
                          f"Automated backups have been {'enabled' if user.profile.automated_data_backups else 'disabled'}.")
         return redirect('user_settings:settings')

@@ -14,21 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+from apps.mm_triggered_jobs.utils import TRIGGERED_JOB_ADMIN_LIST, TRIGGERED_JOB_ADMIN_SEARCH, \
+    TRIGGERED_JOB_ADMIN_FILTER
 from django.contrib import admin
 
 from apps.mm_triggered_jobs.models import TriggeredJob
 
 
 @admin.register(TriggeredJob)
-class ScheduledJobAdmin(admin.ModelAdmin):
-    list_display = ['name', 'trigger_assistant', 'current_run_count', 'maximum_runs', 'created_at',
-                    'updated_at', 'created_by_user']
-    search_fields = ['name', 'trigger_assistant',
-                     'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user']
-    list_filter = ['name', 'trigger_assistant',
-                   'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user']
+class TriggeredJobAdmin(admin.ModelAdmin):
+    list_display = TRIGGERED_JOB_ADMIN_LIST
+    search_fields = TRIGGERED_JOB_ADMIN_SEARCH
+    list_filter = TRIGGERED_JOB_ADMIN_FILTER

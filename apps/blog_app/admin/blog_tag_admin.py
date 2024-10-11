@@ -18,11 +18,12 @@
 from django.contrib import admin
 
 from apps.blog_app.models import BlogTag
+from apps.blog_app.utils import BLOG_TAG_ADMIN_LIST, BLOG_TAG_ADMIN_FILTER, BLOG_TAG_ADMIN_SEARCH
 
 
 @admin.register(BlogTag)
 class BlogTagAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'created_at', 'updated_at']
-    list_filter = ['created_at', 'updated_at']
-    search_fields = ['name']
+    list_display = BLOG_TAG_ADMIN_LIST
+    list_filter = BLOG_TAG_ADMIN_FILTER
+    search_fields = BLOG_TAG_ADMIN_SEARCH
     ordering = ['name']

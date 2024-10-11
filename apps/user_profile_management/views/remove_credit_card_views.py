@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,21 +24,11 @@ from django.views.generic import TemplateView
 from auth.models import UserCreditCard
 
 
-class RemoveCardView(LoginRequiredMixin, TemplateView):
-    """
-    Handles the removal of a user's stored credit card.
-
-    POST:
-    - Deletes the specified credit card from the user's account.
-    - Displays a success message if the card is removed successfully.
-    - Displays an error message if the specified card does not exist.
-    """
-
+class UserProfileView_CreditCardRemove(LoginRequiredMixin, TemplateView):
     def post(self, request, card_id, *args, **kwargs):
         try:
             card = request.user.credit_cards.get(id=card_id)
             card.delete()
-            print('[RemoveCardView.post] Credit card removed successfully.')
             messages.success(request, 'Credit card removed successfully.')
         except UserCreditCard.DoesNotExist:
             messages.error(request, 'Credit card not found.')

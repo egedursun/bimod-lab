@@ -22,13 +22,13 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.leanmod.models import ExpertNetwork
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListExpertNetworksView(LoginRequiredMixin, TemplateView):
+class ExpertNetworkView_List(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -40,11 +40,7 @@ class ListExpertNetworksView(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        # Fetch all expert networks and their related assistants
-        expert_networks = ExpertNetwork.objects.prefetch_related('assistant_references__assistant',
-                                                                 'organization').filter(
-            organization__users__in=[self.request.user]
-        ).all()
-
-        context['expert_networks'] = expert_networks
+        nws = ExpertNetwork.objects.prefetch_related('assistant_references__assistant','organization').filter(
+            organization__users__in=[self.request.user]).all()
+        context['expert_networks'] = nws
         return context

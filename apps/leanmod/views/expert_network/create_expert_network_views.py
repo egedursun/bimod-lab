@@ -23,7 +23,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
 from apps.organization.models import Organization
@@ -31,7 +31,7 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CreateExpertNetworkView(LoginRequiredMixin, TemplateView):
+class ExpertNetworkView_Create(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         user = self.request.user
@@ -51,55 +51,34 @@ class CreateExpertNetworkView(LoginRequiredMixin, TemplateView):
             return redirect('leanmod:list_expert_networks')
         ##############################
 
-        # Get data from form
         name = request.POST.get("network_name")
-        description = request.POST.get("network_description")
-        selected_assistant_ids = request.POST.getlist("assistants")
-        organization_id = request.POST.get("organization")
-
-        print("[CreateExpertNetworkView.post] Selected Assistants: ", selected_assistant_ids)
-        print("[CreateExpertNetworkView.post] Selected Organization: ", organization_id)
-
-        # Get the organization
+        desc = request.POST.get("network_description")
+        selected_agent_ids = request.POST.getlist("assistants")
+        org_id = request.POST.get("organization")
         try:
-            organization = Organization.objects.get(id=organization_id)
+            org = Organization.objects.get(id=org_id)
         except Organization.DoesNotExist:
             messages.error(request, "Selected organization does not exist.")
             return redirect('leanmod:create_expert_network')
-
-        # Create the Expert Network
         try:
             expert_network = ExpertNetwork.objects.create(
-                name=name,
-                meta_description=description,
-                organization=organization,  # Add organization to the new expert network
-                created_by_user=request.user,
-                last_updated_by_user=request.user
-            )
+                name=name, meta_description=desc, organization=org, created_by_user=request.user,
+                last_updated_by_user=request.user)
         except Exception as e:
             messages.error(request, f"Error creating Expert Network: {e}")
-            print("[CreateExpertNetworkView.post] Error creating Expert Network: ", e)
             return redirect('leanmod:create_expert_network')
 
-        # Create the Assistant references with context instructions
-        for assistant_id in selected_assistant_ids:
-            assistant = Assistant.objects.get(id=assistant_id)
-            context_instructions = request.POST.get(f"context_instructions_{assistant_id}")
-
+        for agent_id in selected_agent_ids:
+            agent = Assistant.objects.get(id=agent_id)
+            nw_instructions = request.POST.get(f"context_instructions_{agent_id}")
             try:
                 reference = ExpertNetworkAssistantReference.objects.create(
-                    network=expert_network,
-                    assistant=assistant,
-                    context_instructions=context_instructions,
-                    created_by_user=request.user,
-                    last_updated_by_user=request.user
-                )
+                    network=expert_network, assistant=agent, context_instructions=nw_instructions,
+                    created_by_user=request.user, last_updated_by_user=request.user)
                 expert_network.assistant_references.add(reference)
                 expert_network.save()
             except Exception as e:
                 messages.error(request, f"Error creating Expert Network Assistant Reference: {e}")
-                print("[CreateExpertNetworkView.post] Error creating Expert Network Assistant Reference: ", e)
                 return redirect('leanmod:create_expert_network')
-
         messages.success(request, "Expert Network created successfully with selected assistants.")
         return redirect('leanmod:list_expert_networks')

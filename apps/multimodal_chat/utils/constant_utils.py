@@ -14,17 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
-
-#
 
 
 BIMOD_STREAMING_END_TAG = "<[bimod_streaming_end]>"
 BIMOD_PROCESS_END = "<[bimod_process_end]>"
 BIMOD_NO_TAG_PLACEHOLDER = "<[bimod_no_tag]>"
-CHAT_SOURCES = [
+
+SOURCES_FOR_MULTIMODAL_CHATS = [
     ("app", "Application"),
     ("api", "API"),
     ("scheduled", "Scheduled"),
@@ -32,7 +28,7 @@ CHAT_SOURCES = [
 ]
 
 
-class ChatSourcesNames:
+class SourcesForMultimodalChatsNames:
     APP = "app"
     API = "api"
     SCHEDULED = "scheduled"
@@ -40,16 +36,50 @@ class ChatSourcesNames:
     ORCHESTRATION = "orchestration"
 
 
-class MessageSenderTypeNames:
+class ChatMessageRoleSenderTypes:
     USER = "USER"
     ASSISTANT = "ASSISTANT"
     SYSTEM = "SYSTEM"
     TOOL = "TOOL"
 
 
-MESSAGE_SENDER_TYPES = [
+CHAT_MESSAGE_ROLE_SENDER_TYPES = [
     ("USER", "User"),
     ("ASSISTANT", "Assistant"),
     ("SYSTEM", "System"),
     ("TOOL", "Tool"),
 ]
+
+MULTIMODAL_CHAT_ADMIN_LIST = ['organization', 'assistant', 'user', 'chat_name', 'created_by_user', 'created_at',
+                              'updated_at']
+MULTIMODAL_CHAT_ADMIN_FILTER = ['organization', 'assistant', 'user', 'created_by_user', 'created_at', 'updated_at']
+MULTIMODAL_CHAT_ADMIN_SEARCH = ['organization', 'assistant', 'user', 'chat_name', 'created_by_user', 'created_at',
+                                'updated_at']
+
+MULTIMODAL_MESSAGE_ADMIN_LIST = ['multimodal_chat', 'sender_type', 'sent_at']
+MULTIMODAL_MESSAGE_ADMIN_FILTER = ['multimodal_chat', 'sender_type', 'sent_at']
+MULTIMODAL_MESSAGE_ADMIN_SEARCH = ['multimodal_chat', 'sender_type', 'sent_at']
+
+CHAT_CREATION_LOG_ADMIN_LIST = ["organization", 'created_at']
+CHAT_CREATION_LOG_ADMIN_FILTER = ['created_at']
+CHAT_CREATION_LOG_ADMIN_SEARCH = ['created_at']
+
+CHAT_MESSAGE_CREATION_LOG_ADMIN_LIST = ["organization", 'created_at']
+CHAT_MESSAGE_CREATION_LOG_ADMIN_FILTER = ['created_at']
+CHAT_MESSAGE_CREATION_LOG_ADMIN_SEARCH = ['created_at']
+
+LEAN_CHAT_ADMIN_LIST = ['organization', 'lean_assistant', 'user', 'chat_name', 'created_by_user', 'created_at',
+                        'updated_at']
+LEAN_CHAT_ADMIN_FILTER = ['organization', 'lean_assistant', 'user', 'created_by_user', 'created_at', 'updated_at']
+LEAN_CHAT_ADMIN_SEARCH = ['organization', 'lean_assistant', 'user', 'chat_name', 'created_by_user', 'created_at',
+                          'updated_at']
+
+MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_LIST = ['multimodal_lean_chat', 'sender_type', 'sent_at']
+MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_FILTER = ['multimodal_lean_chat', 'sender_type', 'sent_at']
+MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_SEARCH = ['multimodal_lean_chat', 'sender_type', 'sent_at']
+
+
+class ChatPostActionSpecifiers:
+    NEW_CHAT_WITH_ASSISTANT_SPECIFIER = 'assistant_id'
+    CHANGE_CHAT_NAME_SPECIFIER = 'new_chat_name'
+    STARRING_MESSAGE_SPECIFIER = 'starred_message'

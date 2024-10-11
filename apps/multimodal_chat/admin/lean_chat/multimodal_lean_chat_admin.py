@@ -14,25 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 from django.contrib import admin
 
 from apps.multimodal_chat.models import MultimodalLeanChat
+from apps.multimodal_chat.utils import LEAN_CHAT_ADMIN_LIST, LEAN_CHAT_ADMIN_FILTER, LEAN_CHAT_ADMIN_SEARCH
 
 
 @admin.register(MultimodalLeanChat)
 class MultimodalLeanChatAdmin(admin.ModelAdmin):
-    list_display = ['organization', 'lean_assistant', 'user', 'chat_name', 'created_by_user', 'created_at',
-                    'updated_at']
-    list_filter = ['organization', 'lean_assistant', 'user', 'created_by_user', 'created_at', 'updated_at']
-    search_fields = ['organization', 'lean_assistant', 'user', 'chat_name', 'created_by_user', 'created_at',
-                     'updated_at']
+    list_display = LEAN_CHAT_ADMIN_LIST
+    list_filter = LEAN_CHAT_ADMIN_FILTER
+    search_fields = LEAN_CHAT_ADMIN_SEARCH
     readonly_fields = ['created_at', 'updated_at']
-
     list_per_page = 20
     list_max_show_all = 100
     list_editable = []

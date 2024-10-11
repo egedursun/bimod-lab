@@ -20,13 +20,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
-from apps._services.data_backups.data_backup_executor import DataBackupExecutor
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.data_backups.data_backup_executor import DataBackupExecutor
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.data_backups.models import DataBackup
 from apps.user_permissions.utils import PermissionNames
 
 
-class ReloadBackupView(LoginRequiredMixin, View):
+class DataBackupView_ReloadBackup(LoginRequiredMixin, View):
     def post(self, request, backup_id, *args, **kwargs):
 
         ##############################
@@ -37,25 +37,14 @@ class ReloadBackupView(LoginRequiredMixin, View):
             return redirect('data_backups:manage')
         ##############################
 
-        # Get the backup object by id
         backup = get_object_or_404(DataBackup, id=backup_id)
-
-        # Get the password for restoration (for example, from a form field)
-        password = request.POST.get('backup_password')  # Ensure this field is in your form
-
+        password = request.POST.get('backup_password')
         try:
-            # Use the executor to restore the backup
             result = DataBackupExecutor.restore(backup_object=backup, password=password)
-
             if result is None:
-                # Restoration was successful
                 messages.success(request, f"Backup '{backup.backup_name}' has been successfully reloaded.")
             else:
-                # Handle the case where the restoration failed due to incorrect password or another issue
                 messages.error(request, result)
-
         except Exception as e:
-            # Handle any exceptions that occur during reloading
             messages.error(request, f"An error occurred while trying to reload the backup: {str(e)}")
-
         return redirect('data_backups:manage')

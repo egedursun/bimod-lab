@@ -14,14 +14,11 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 from django.db import models
 
-from apps.multimodal_chat.utils import CHAT_SOURCES
+from apps.multimodal_chat.utils import SOURCES_FOR_MULTIMODAL_CHATS
 
 
 class MultimodalLeanChat(models.Model):
@@ -34,14 +31,10 @@ class MultimodalLeanChat(models.Model):
                                         related_name='multimodal_lean_chats_created_by_user')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_lean_chats',
                                           blank=True)
-
-    # For archiving the chats
     is_archived = models.BooleanField(default=False)
-    # Management for APIs
-    chat_source = models.CharField(max_length=100, choices=CHAT_SOURCES, default="app")
+    chat_source = models.CharField(max_length=100, choices=SOURCES_FOR_MULTIMODAL_CHATS, default="app")
 
     def __str__(self):
         return self.chat_name + " - " + self.lean_assistant.name + " - " + self.user.username
@@ -51,7 +44,6 @@ class MultimodalLeanChat(models.Model):
         verbose_name_plural = "Multimodal Lean Chats"
         ordering = ["-created_at"]
         indexes = [
-            # Single-field indexes
             models.Index(fields=['id']),
             models.Index(fields=['organization']),
             models.Index(fields=['lean_assistant']),
@@ -61,8 +53,6 @@ class MultimodalLeanChat(models.Model):
             models.Index(fields=['created_by_user']),
             models.Index(fields=['created_at']),
             models.Index(fields=['updated_at']),
-
-            # Two-field composite indexes
             models.Index(fields=['id', 'organization']),
             models.Index(fields=['id', 'lean_assistant']),
             models.Index(fields=['id', 'user']),

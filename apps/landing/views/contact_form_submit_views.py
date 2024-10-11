@@ -24,55 +24,46 @@ from config import settings
 from web_project import TemplateLayout, TemplateHelper
 
 
-class ContactFormSubmitView(TemplateView):
+class LandingView_ContactFormSubmit(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context.update(
-            {
-                "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
-                "display_customizer": False,
-            }
-        )
-        # map_context according to updated context values
+        context.update({
+            "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+            "display_customizer": False,})
         TemplateHelper.map_context(context)
         return context
 
     def post(self, request, *args, **kwargs):
-        fullname = request.POST['fullname']
+        full_name = request.POST['fullname']
         email = request.POST['email']
-        message = request.POST['message']
+        msg = request.POST['message']
         username = request.POST['username']
-
-        # take the usernames of all users
         usernames = User.objects.values_list('username', flat=True)
-        email_message = f"""
-        Full Name: {fullname}
+        email_msg = f"""
+        Full Name: {full_name}
         Email: {email}
 
         Message:
 
         ```
-        {message}
+        {msg}
         ```
         """
 
-        # Construct the email message
         if username and username in usernames:
             client = User.objects.get(username=username)
             if client.email == email:
-                subject = f"[IMPORTANT] VERIFIED CLIENT QUERY: Message from {username} ({fullname})"
+                subject = f"[IMPORTANT] VERIFIED CLIENT QUERY: Message from {username} ({full_name})"
             else:
-                subject = f"[IMPORTANT] UNVERIFIED CLIENT QUERY: Message from {username} ({fullname}) - Email Mismatch"
-
-                email_message += f"""
+                subject = f"[IMPORTANT] UNVERIFIED CLIENT QUERY: Message from {username} ({full_name}) - Email Mismatch"
+                email_msg += f"""
                 [WARNING:] The email address provided does not match the email address in the database.
                 Database Email: {client.email}
                 Provided Email: {email}
                 ------------------
                 """
 
-            # Append additional user and user profile information to the email message
-            email_message += f"""
+            email_msg += f"""
 
                 CLIENT SIGNATURE:
                 -----------------
@@ -88,10 +79,9 @@ class ContactFormSubmitView(TemplateView):
                 ------------------
                 """
         else:
-            subject = f"VISITOR QUERY: Message from {fullname}"
-
+            subject = f"VISITOR QUERY: Message from {full_name}"
         send_mail(
-            subject, email_message, settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL, email],
+            subject, email_msg, settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL, email],
             fail_silently=False,
         )
         return redirect("landing:contact_form_submit", )

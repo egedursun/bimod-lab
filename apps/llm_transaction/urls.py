@@ -20,32 +20,24 @@
 
 from django.urls import path
 
-from .views import ListTransactionsView, CreateAutomatedTopUpPlan, ListAutomatedTopUpPlans, \
-    ListTransactionInvoicesView, UpdateAutomatedTopUpPlan, CreateManualTopUpPlan, TransferBalanceView
+from .views import Transactions_TransactionList, Transactions_AutoTopUpCreate, Transactions_AutoTopUpList, \
+    Transactions_InvoiceList, Transactions_AutoTopUp_Update, Transactions_ManualTopUpCreate, Transactions_BalanceTransfer
 
 app_name = "llm_transaction"
 
 urlpatterns = [
-    path('list/', ListTransactionsView.as_view(
-        template_name="llm_transaction/transactions/list_transactions.html"),
-         name='list'),
-    path('auto_top_up/create/', CreateAutomatedTopUpPlan.as_view(
-        template_name="llm_transaction/topup/create_auto_topup.html"),
-         name='auto_top_up_create'),
-    path('auto_top_up/update/<int:plan_id>/', UpdateAutomatedTopUpPlan.as_view(
-        template_name="llm_transaction/topup/update_auto_topup.html"),
-         name='auto_top_up_update'
-         ),
-    path('auto_top_up/list/', ListAutomatedTopUpPlans.as_view(
-        template_name="llm_transaction/topup/manage_auto_topup_plans.html"),
-         name='auto_top_up_list'),
-    path('transaction_invoices/list/', ListTransactionInvoicesView.as_view(
-        template_name="llm_transaction/invoices/list_transaction_invoices.html"),
-         name='transaction_invoices_list'),
-    path('top_up/create/', CreateManualTopUpPlan.as_view(
-        template_name="llm_transaction/topup/create_topup.html"),
-         name='create_top_up'),
-    path('top_up/transfer/', TransferBalanceView.as_view(
-        template_name="llm_transaction/topup/transfer_balance.html"),
-         name='transfer_balance'),
+    path('list/', Transactions_TransactionList.as_view(
+        template_name="llm_transaction/transactions/list_transactions.html"), name='list'),
+    path('auto_top_up/create/', Transactions_AutoTopUpCreate.as_view(
+        template_name="llm_transaction/topup/create_auto_topup.html"), name='auto_top_up_create'),
+    path('auto_top_up/update/<int:plan_id>/', Transactions_AutoTopUp_Update.as_view(
+        template_name="llm_transaction/topup/update_auto_topup.html"), name='auto_top_up_update'),
+    path('auto_top_up/list/', Transactions_AutoTopUpList.as_view(
+        template_name="llm_transaction/topup/manage_auto_topup_plans.html"), name='auto_top_up_list'),
+    path('transaction_invoices/list/', Transactions_InvoiceList.as_view(
+        template_name="llm_transaction/invoices/list_transaction_invoices.html"), name='transaction_invoices_list'),
+    path('top_up/create/', Transactions_ManualTopUpCreate.as_view(
+        template_name="llm_transaction/topup/create_topup.html"), name='create_top_up'),
+    path('top_up/transfer/', Transactions_BalanceTransfer.as_view(
+        template_name="llm_transaction/topup/transfer_balance.html"), name='transfer_balance'),
 ]

@@ -14,32 +14,28 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.organization.models import Organization
 from apps.user_permissions.forms import UserRoleForm
-from apps.user_permissions.models import UserPermission
 from apps.user_permissions.utils import PERMISSION_TYPES, PermissionNames
 from web_project import TemplateLayout
 
 
-class AddUserRoleView(LoginRequiredMixin, TemplateView):
+class PermissionView_UserRoleCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         form = UserRoleForm()
-        organizations = Organization.objects.filter(
-            users__in=[self.request.user]
-        )
+        orgs = Organization.objects.filter(users__in=[self.request.user])
         available_permissions = PERMISSION_TYPES
         context['form'] = form
-        context['organizations'] = organizations
+        context['organizations'] = orgs
         context['available_permissions'] = available_permissions
         return context
 
@@ -54,27 +50,14 @@ class AddUserRoleView(LoginRequiredMixin, TemplateView):
         ##############################
 
         form = UserRoleForm(request.POST)
-        organizations = Organization.objects.filter(
-            users__in=[request.user]
-        )
-        available_permissions = PERMISSION_TYPES
-
         if form.is_valid():
-            # Assign the user creating the role
             role = form.save(commit=False)
             role.created_by_user = request.user
-
-            # Save the Many-to-Many permissions
             selected_permissions = request.POST.getlist('role_permissions')
             role.role_permissions = selected_permissions
             role.save()
-
-            # Add success message and redirect
             messages.success(request, f'Role "{role.role_name}" created successfully.')
             return redirect('user_permissions:list_user_roles')
-
         else:
-            # If the form is invalid, show the form again with error messages
             messages.error(request, 'Error creating the role.')
-            print(form.errors)
             return redirect('user_permissions:add_user_role')

@@ -20,12 +20,13 @@
 
 from django import template
 
+from apps.datasource_media_storages.utils import UNIT_BYTES_THOUSAND
 
 register = template.Library()
 
 
 @register.filter
 def convert_file_size(byte_size):
-    kilobytes = byte_size / 1024
-    stringified_kilobytes = f'{kilobytes:.2f} KB'
-    return stringified_kilobytes
+    k_bytes = (byte_size / UNIT_BYTES_THOUSAND)
+    str_k_bytes = f'{k_bytes:.2f} KB'
+    return str_k_bytes

@@ -15,7 +15,7 @@
 #   For permission inquiries, please contact: admin@br6.in.
 #
 
-MINUTES = 60
-HOURS = 60 * MINUTES
+CONST_MINUTES = 60
+CONST_HOURS = 60 * CONST_MINUTES
 
-DEFAULT_DASHBOARD_DAYS_BACK = 1
+INITIAL_STATISTICS_N_DAYS_BACK = 1

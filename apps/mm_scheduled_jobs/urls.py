@@ -20,22 +20,18 @@
 
 from django.urls import path
 
-from .views import (CreateScheduledJobView, ListScheduledJobsView, ListScheduledJobLogsView,
-                    ConfirmDeleteScheduledJobView)
+from .views import (ScheduledJobView_Create, ScheduledJobView_List, ScheduledJobView_LogList,
+                    ScheduledJobView_Delete)
 
 app_name = "mm_scheduled_jobs"
 
 urlpatterns = [
-    path('create/', CreateScheduledJobView.as_view(
-        template_name='mm_scheduled_jobs/create_scheduled_job.html'
-    ), name='create'),
-    path('list/', ListScheduledJobsView.as_view(
-        template_name='mm_scheduled_jobs/list_scheduled_jobs.html'
-    ), name='list'),
-    path('logs/<int:pk>/', ListScheduledJobLogsView.as_view(
-        template_name='mm_scheduled_jobs/list_scheduled_job_logs.html'
-    ), name='logs'),
-    path('confirm-delete/<int:pk>', ConfirmDeleteScheduledJobView.as_view(
-        template_name='mm_scheduled_jobs/confirm_delete_scheduled_job.html'
-    ), name='delete'),
+    path('create/', ScheduledJobView_Create.as_view(template_name='mm_scheduled_jobs/create_scheduled_job.html'),
+         name='create'),
+    path('list/', ScheduledJobView_List.as_view(template_name='mm_scheduled_jobs/list_scheduled_jobs.html'),
+         name='list'),
+    path('logs/<int:pk>/', ScheduledJobView_LogList.as_view(
+        template_name='mm_scheduled_jobs/list_scheduled_job_logs.html'), name='logs'),
+    path('confirm-delete/<int:pk>', ScheduledJobView_Delete.as_view(
+        template_name='mm_scheduled_jobs/confirm_delete_scheduled_job.html'), name='delete'),
 ]

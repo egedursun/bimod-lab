@@ -14,20 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 from django.contrib import admin
 
 from apps.mm_scheduled_jobs.models import ScheduledJob
+from apps.mm_scheduled_jobs.utils import SCHEDULED_JOB_ADMIN_LIST, SCHEDULED_JOB_ADMIN_SEARCH, \
+    SCHEDULED_JOB_ADMIN_FILTER
 
 
 @admin.register(ScheduledJob)
 class ScheduledJobAdmin(admin.ModelAdmin):
-    list_display = ['name', 'assistant',
-                    'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user']
-    search_fields = ['name', 'assistant',
-                     'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user']
-    list_filter = ['name', 'assistant',
-                   'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user']
+    list_display = SCHEDULED_JOB_ADMIN_LIST
+    search_fields = SCHEDULED_JOB_ADMIN_SEARCH
+    list_filter = SCHEDULED_JOB_ADMIN_FILTER

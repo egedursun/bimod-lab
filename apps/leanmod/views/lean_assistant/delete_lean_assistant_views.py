@@ -23,21 +23,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.leanmod.models import LeanAssistant
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DeleteLeanAssistantView(LoginRequiredMixin, TemplateView):
+class LeanModAssistantView_Delete(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        assistant_id = kwargs.get('pk')
-        context['lean_assistant'] = LeanAssistant.objects.get(id=assistant_id)
+        agent_id = kwargs.get('pk')
+        context['lean_assistant'] = LeanAssistant.objects.get(id=agent_id)
         return context
 
     def post(self, request, *args, **kwargs):
-        assistant_id = kwargs.get('pk')
+        agent_id = kwargs.get('pk')
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_LEAN_ASSISTANT
@@ -48,9 +48,9 @@ class DeleteLeanAssistantView(LoginRequiredMixin, TemplateView):
         ##############################
 
         try:
-            lean_assistant = LeanAssistant.objects.get(id=assistant_id)
-            lean_assistant.delete()
-            messages.success(request, f"Lean Assistant '{lean_assistant.name}' was deleted successfully.")
+            leanmod_agent = LeanAssistant.objects.get(id=agent_id)
+            leanmod_agent.delete()
+            messages.success(request, f"Lean Assistant '{leanmod_agent.name}' was deleted successfully.")
         except LeanAssistant.DoesNotExist:
             messages.error(request, "The Lean Assistant does not exist.")
         except Exception as e:

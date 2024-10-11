@@ -20,12 +20,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.data_backups.models import DataBackup
 from apps.user_permissions.utils import PermissionNames
 
 
-class DeleteDataBackupView(LoginRequiredMixin, View):
+class DataBackupView_BackupDelete(LoginRequiredMixin, View):
     def post(self, request, backup_id, *args, **kwargs):
 
         ##############################
@@ -36,15 +36,10 @@ class DeleteDataBackupView(LoginRequiredMixin, View):
             return redirect('data_backups:manage')
         ##############################
 
-        # Get the backup object by id
         backup = get_object_or_404(DataBackup, id=backup_id)
-
         try:
-            # Attempt to delete the backup
             backup.delete()
             messages.success(request, f"The backup '{backup.backup_name}' was deleted successfully.")
         except Exception as e:
-            # Handle any exceptions that occur during deletion
             messages.error(request, f"An error occurred while trying to delete the backup: {str(e)}")
-
         return redirect('data_backups:manage')

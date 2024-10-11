@@ -19,12 +19,13 @@
 from django.contrib import admin
 
 from apps.brainstorms.models import BrainstormingIdea
+from apps.brainstorms.utils import BRAINSTORMING_IDEA_ADMIN_LIST, BRAINSTORMING_IDEA_ADMIN_FILTER, \
+    BRAINSTORMING_IDEA_ADMIN_SEARCH
 
 
 @admin.register(BrainstormingIdea)
 class BrainstormingIdeaAdmin(admin.ModelAdmin):
-    list_display = (
-        'idea_title', 'brainstorming_session', 'created_by_user', 'depth_level', 'is_bookmarked', 'created_at')
-    list_filter = ('brainstorming_session', 'created_by_user', 'depth_level', 'is_bookmarked', 'created_at')
-    search_fields = ('idea_title', 'idea_description')
+    list_display = BRAINSTORMING_IDEA_ADMIN_LIST
+    list_filter = BRAINSTORMING_IDEA_ADMIN_FILTER
+    search_fields = BRAINSTORMING_IDEA_ADMIN_SEARCH
     ordering = ('-created_at', 'idea_title', 'brainstorming_session')

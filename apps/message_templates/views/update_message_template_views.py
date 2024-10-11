@@ -23,31 +23,22 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.message_templates.forms import MessageTemplateForm
 from apps.message_templates.models import MessageTemplate
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class UpdateMessageTemplateView(TemplateView, LoginRequiredMixin):
-    """
-    Handles the updating of an existing message template.
-
-    This view allows users to update the content of their existing message templates. It ensures that the user is authorized to make changes before saving them.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context with the user's organizations and the message template to be updated.
-        post(self, request, *args, **kwargs): Processes the form submission to update the message template.
-    """
+class MessageTemplateView_Update(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        organizations = self.request.user.organizations.all()
-        message_template = get_object_or_404(MessageTemplate, pk=self.kwargs['pk'])
-        context['form'] = MessageTemplateForm(instance=message_template)
-        context['message_template'] = message_template
-        context['organizations'] = organizations
+        orgs = self.request.user.organizations.all()
+        msg_tmpl = get_object_or_404(MessageTemplate, pk=self.kwargs['pk'])
+        context['form'] = MessageTemplateForm(instance=msg_tmpl)
+        context['message_template'] = msg_tmpl
+        context['organizations'] = orgs
         return context
 
     def post(self, request, *args, **kwargs):
@@ -60,9 +51,9 @@ class UpdateMessageTemplateView(TemplateView, LoginRequiredMixin):
             return redirect('message_templates:list')
         ##############################
 
-        message_template = get_object_or_404(MessageTemplate, pk=self.kwargs['pk'])
-        form = MessageTemplateForm(request.POST, instance=message_template)
+        msg_tmpl = get_object_or_404(MessageTemplate, pk=self.kwargs['pk'])
+        form = MessageTemplateForm(request.POST, instance=msg_tmpl)
         if form.is_valid():
             form.save()
             return redirect('message_templates:list')
-        return render(request, self.template_name, {'form': form, 'message_template': message_template})
+        return render(request, self.template_name, {'form': form, 'message_template': msg_tmpl})

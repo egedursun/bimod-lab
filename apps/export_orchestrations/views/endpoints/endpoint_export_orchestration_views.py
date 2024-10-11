@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 import json
 
@@ -25,9 +23,9 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from apps._services.orchestration.orchestration_executor import OrchestrationExecutor
+from apps.core.orchestration.orchestration_executor import OrchestrationExecutor
 from apps.export_orchestrations.models import ExportOrchestrationAPI, OrchestratorRequestLog
-from apps.export_orchestrations.utils import StatusCodes
+from apps.export_orchestrations.utils import ExportOrchestrationRequestStatusCodes
 from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 from config.settings import BASE_URL
@@ -40,30 +38,24 @@ class ExportOrchestrationAPIView(View):
         api_key = request.headers.get('Authorization')
         try:
             export_assistant: ExportOrchestrationAPI = ExportOrchestrationAPI.objects.get(endpoint=endpoint)
-
-        # Endpoint existence control
         except ExportOrchestrationAPI.DoesNotExist:
             return JsonResponse({
-                "message": "Invalid endpoint", "data": {}, "status": StatusCodes.NOT_FOUND
-            }, status=StatusCodes.NOT_FOUND)
+                "message": "Invalid endpoint", "data": {}, "status": ExportOrchestrationRequestStatusCodes.NOT_FOUND
+            }, status=ExportOrchestrationRequestStatusCodes.NOT_FOUND)
 
-        # Check if the endpoint is active
         if not export_assistant.is_online:
             return JsonResponse({
                 "message": "The endpoint is currently offline. Please try again later.", "data": {},
-                "status": StatusCodes.SERVICE_OFFLINE
-            }, status=StatusCodes.SERVICE_OFFLINE)
+                "status": ExportOrchestrationRequestStatusCodes.SERVICE_OFFLINE
+            }, status=ExportOrchestrationRequestStatusCodes.SERVICE_OFFLINE)
 
-        # API key correctness control
         if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
             return JsonResponse({
                 "message": "The API key provided is invalid, please provide a valid API key.", "data": {},
-                "status": StatusCodes.UNAUTHORIZED
-            }, status=StatusCodes.UNAUTHORIZED)
+                "status": ExportOrchestrationRequestStatusCodes.UNAUTHORIZED
+            }, status=ExportOrchestrationRequestStatusCodes.UNAUTHORIZED)
 
-        # add the RequestLog
         OrchestratorRequestLog.objects.create(export_orchestration=export_assistant)
-        # Request limit control
         if export_assistant.requests_in_last_hour() > export_assistant.request_limit_per_hour:
             return JsonResponse({
                 "error": "The API request limit has been reached. Please try again later.",
@@ -71,7 +63,7 @@ class ExportOrchestrationAPIView(View):
                     "request_limit_per_hour": export_assistant.request_limit_per_hour,
                     "requests_in_last_hour": export_assistant.requests_in_last_hour()
                 },
-            }, status=StatusCodes.TOO_MANY_REQUESTS)
+            }, status=ExportOrchestrationRequestStatusCodes.TOO_MANY_REQUESTS)
 
         body = json.loads(request.body)
         try:
@@ -86,65 +78,56 @@ class ExportOrchestrationAPIView(View):
                                  "'assistant' or 'user'.")
             if "content" not in chat_history[0]:
                 raise ValueError("Each of the chat history elements must contain 'content' key.")
-            # if content is not a string or is empty, raise an error
             if not isinstance(chat_history[0]["content"], str):
                 raise ValueError("The 'content' key in the first element of the chat history must be a string.")
         except Exception as e:
             return JsonResponse({
-                "message": "Internal server error: " + str(e), "data": {}, "status": StatusCodes.INTERNAL_SERVER_ERROR
-            }, status=StatusCodes.INTERNAL_SERVER_ERROR)
+                "message": "Internal server error: " + str(e), "data": {},
+                "status": ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR
+            }, status=ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR)
 
-        # Add the user messages to the chat
-        user_message = None
+        user_msg = None
         api_chat: OrchestrationQuery = None
         try:
-            for message in chat_history:
-                role = message["role"]
+            for msg in chat_history:
+                role = msg["role"]
                 if not role:
-                    print("[ExportOrchestrationAPIView.post] Role is not provided in the chat history.")
-                content = message["content"]
-                file_uris = message.get("file_uris") or []
-                image_uris = message.get("image_uris") or []
-                if not file_uris or not image_uris:
-                    print("[ExportOrchestrationAPIView.post] File or image URIs are not provided in the chat history.")
-                user_message = content
-                # Create a chat that's associated with the user
+                    pass
+                content = msg["content"]
+                f_uris = msg.get("file_uris") or []
+                img_uris = msg.get("image_uris") or []
+                if not f_uris or not img_uris:
+                    pass
+                user_msg = content
                 api_chat: OrchestrationQuery = OrchestrationQuery.objects.create(
-                    maestro=export_assistant.orchestrator,
-                    query_text=user_message,
+                    maestro=export_assistant.orchestrator, query_text=user_msg,
                     created_by_user=export_assistant.created_by_user,
                     last_updated_by_user=export_assistant.created_by_user)
                 query_log = OrchestrationQueryLog.objects.create(
-                    orchestration_query=api_chat,
-                    log_type=OrchestrationQueryLogTypesNames.USER,
-                    log_text_content=content,
-                    log_file_contents=None,
-                    log_image_contents=None,
+                    orchestration_query=api_chat, log_type=OrchestrationQueryLogTypesNames.USER,
+                    log_text_content=content, log_file_contents=None, log_image_contents=None,
                 )
                 api_chat.logs.add(query_log)
                 api_chat.save()
 
         except Exception as e:
             return JsonResponse({
-                "message": "Internal server error: " + str(e), "data": {}, "status": StatusCodes.INTERNAL_SERVER_ERROR
-            }, status=StatusCodes.INTERNAL_SERVER_ERROR)
+                "message": "Internal server error: " + str(e), "data": {},
+                "status": ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR
+            }, status=ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR)
 
         try:
-            orchestration_executor = OrchestrationExecutor(
-                maestro=export_assistant.orchestrator,
-                query_chat=api_chat
-            )
-            final_response = orchestration_executor.execute_for_query()
+            orch_xc = OrchestrationExecutor(maestro=export_assistant.orchestrator, query_chat=api_chat)
+            final_output = orch_xc.execute_for_query()
         except Exception as e:
             return JsonResponse({
-                "message": "Internal server error: " + str(e), "data": {}, "status": StatusCodes.INTERNAL_SERVER_ERROR
-            }, status=StatusCodes.INTERNAL_SERVER_ERROR)
-
-        # Implement the logic for the assistant's response
+                "message": "Internal server error: " + str(e), "data": {},
+                "status": ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR
+            }, status=ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR)
         response_data = {"message": "Success", "data": {
             "metadata": {"organization": {"organization_name": export_assistant.orchestrator.organization.name, },
                          "assistant": {"assistant_name": export_assistant.orchestrator.name}},
-            "message": {"assistant_name": export_assistant.orchestrator.name, "content": final_response,
+            "message": {"assistant_name": export_assistant.orchestrator.name, "content": final_output,
                         "role": "assistant", "media": {"files": [], "images": []}
                         }}}
-        return JsonResponse(response_data, status=StatusCodes.OK)
+        return JsonResponse(response_data, status=ExportOrchestrationRequestStatusCodes.OK)

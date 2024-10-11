@@ -20,12 +20,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingIdea
 from apps.user_permissions.utils import PermissionNames
 
 
-class BookmarkIdeaView(LoginRequiredMixin, View):
+class BrainstormingView_IdeaBookmark(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         idea_id = self.kwargs.get('idea_id')
         idea = get_object_or_404(BrainstormingIdea, id=idea_id, created_by_user=request.user)

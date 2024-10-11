@@ -29,5 +29,4 @@ class LLMCoreForm(forms.ModelForm):
         ]
 
     def clean_model_name(self):
-        # Bypass the choices validation
         return self.cleaned_data.get('model_name')

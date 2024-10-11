@@ -24,9 +24,7 @@ def test_init_user_permissions_test_models():
     assert True
 
 
-from django.test import TestCase
 from django.contrib.auth import get_user_model
-from apps.user_permissions.models import UserPermission, PERMISSION_TYPES
 
 User = get_user_model()
 

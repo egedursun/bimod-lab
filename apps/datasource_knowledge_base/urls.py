@@ -20,33 +20,25 @@
 
 from django.urls import path
 
-from apps.datasource_knowledge_base.views import DocumentKnowledgeBaseCreateView, DocumentKnowledgeBaseListView, \
-    DocumentKnowledgeBaseUpdateView, DocumentKnowledgeBaseDeleteView, AddDocumentView, ListDocumentsView, \
-    DeleteAllDocumentsView
+from apps.datasource_knowledge_base.views import VectorStoreView_Create, VectorStoreView_List, \
+    VectorStoreView_Update, VectorStoreView_Delete, DocumentView_Create, DocumentView_List, \
+    DocumentView_DeleteAll
 
 app_name = "datasource_knowledge_base"
 
 urlpatterns = [
-    path("create/", DocumentKnowledgeBaseCreateView.as_view(
-        template_name="datasource_knowledge_base/base/create_knowledge_base.html"
-    ), name="create"),
-    path("list/", DocumentKnowledgeBaseListView.as_view(
-        template_name="datasource_knowledge_base/base/list_knowledge_bases.html"
-    ), name="list"),
-    path("update/<int:pk>/", DocumentKnowledgeBaseUpdateView.as_view(
-        template_name="datasource_knowledge_base/base/update_knowledge_base.html"
-    ), name="update"),
-    path("delete/<int:pk>/", DocumentKnowledgeBaseDeleteView.as_view(
-        template_name="datasource_knowledge_base/base/confirm_delete_knowledge_base.html"
-    ), name="delete"),
-
-    path('create_documents/', AddDocumentView.as_view(
-        template_name="datasource_knowledge_base/document/add_document.html"
-    ), name="create_documents"),
-    path('list_documents/', ListDocumentsView.as_view(
-        template_name="datasource_knowledge_base/document/list_documents.html"
-    ), name="list_documents"),
-
-    path('documents/delete-selected/', ListDocumentsView.as_view(), name='delete_selected_documents'),
-    path('documents/delete-all/<int:kb_id>/', DeleteAllDocumentsView.as_view(), name='delete_all_documents'),
+    path("create/", VectorStoreView_Create.as_view(
+        template_name="datasource_knowledge_base/base/create_knowledge_base.html"), name="create"),
+    path("list/", VectorStoreView_List.as_view(
+        template_name="datasource_knowledge_base/base/list_knowledge_bases.html"), name="list"),
+    path("update/<int:pk>/", VectorStoreView_Update.as_view(
+        template_name="datasource_knowledge_base/base/update_knowledge_base.html"), name="update"),
+    path("delete/<int:pk>/", VectorStoreView_Delete.as_view(
+        template_name="datasource_knowledge_base/base/confirm_delete_knowledge_base.html"), name="delete"),
+    path('create_documents/', DocumentView_Create.as_view(
+        template_name="datasource_knowledge_base/document/add_document.html"), name="create_documents"),
+    path('list_documents/', DocumentView_List.as_view(
+        template_name="datasource_knowledge_base/document/list_documents.html"), name="list_documents"),
+    path('documents/delete-selected/', DocumentView_List.as_view(), name='delete_selected_documents'),
+    path('documents/delete-all/<int:kb_id>/', DocumentView_DeleteAll.as_view(), name='delete_all_documents'),
 ]

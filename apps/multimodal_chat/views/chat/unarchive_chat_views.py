@@ -14,32 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.multimodal_chat.models import MultimodalChat
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ChatUnarchiveView(LoginRequiredMixin, TemplateView):
-    """
-    Handles the unarchiving of multimodal chats.
-
-    This view allows users to unarchive specific chats, making them visible again in the main chat list.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context for the chat unarchiving operation.
-        get(self, request, *args, **kwargs): Processes the unarchiving of the specified chat.
-    """
+class ChatView_ChatUnarchive(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))

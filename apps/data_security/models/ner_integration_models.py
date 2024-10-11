@@ -28,12 +28,10 @@ class NERIntegration(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     language = models.CharField(max_length=2, choices=NER_LANGUAGES, default='en')
-
     encrypt_persons = models.BooleanField(default=False)  # PERSON
     encrypt_orgs = models.BooleanField(default=False)  # ORG
     encrypt_nationality_religion_political = models.BooleanField(default=False)  # NORP
     encrypt_facilities = models.BooleanField(default=False)  # FAC
-
     encrypt_countries_cities_states = models.BooleanField(default=False)  # GPE
     encrypt_locations = models.BooleanField(default=False)  # LOC
     encrypt_products = models.BooleanField(default=False)  # PRODUCT
@@ -48,7 +46,6 @@ class NERIntegration(models.Model):
     encrypt_quantities = models.BooleanField(default=False)  # QUANTITY
     encrypt_ordinal_numbers = models.BooleanField(default=False)  # ORDINAL
     encrypt_cardinal_numbers = models.BooleanField(default=False)  # CARDINAL
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True,

@@ -19,25 +19,16 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.memories.models import AssistantMemory
-from apps.memories.utils import MemoryTypeNames
+from apps.memories.utils import AgentStandardMemoryTypesNames
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListAssistantMemoryView(TemplateView, LoginRequiredMixin):
-    """
-    Displays a list of memories for the user's assistants across their organizations.
-
-    This view aggregates both user-specific and assistant-specific memories, organizing them by organization and assistant.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the memories associated with the user's assistants and adds them to the context, grouped by organization and assistant.
-    """
-
+class AssistantMemoryView_List(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -50,22 +41,16 @@ class ListAssistantMemoryView(TemplateView, LoginRequiredMixin):
         ##############################
 
         org_assistants = {}
-        organizations = Organization.objects.filter(users=self.request.user)
-        for organization in organizations:
-            assistants = Assistant.objects.filter(organization=organization)
-            org_assistants[organization] = []
-            for assistant in assistants:
-                assistant_specific_memories = AssistantMemory.objects.filter(
-                    assistant=assistant,
-                    memory_type=MemoryTypeNames.ASSISTANT_SPECIFIC
-                )
-                user_specific_memories = AssistantMemory.objects.filter(
-                    assistant=assistant,
-                    memory_type=MemoryTypeNames.USER_SPECIFIC,
-                    user=self.request.user
-                )
-                memories = list(assistant_specific_memories) + list(user_specific_memories)
-                org_assistants[organization].extend(memories)
-
+        orgs = Organization.objects.filter(users=self.request.user)
+        for org in orgs:
+            agents = Assistant.objects.filter(organization=org)
+            org_assistants[org] = []
+            for agent in agents:
+                agent_spec_mems = AssistantMemory.objects.filter(
+                    assistant=agent, memory_type=AgentStandardMemoryTypesNames.ASSISTANT_SPECIFIC)
+                user_spec_mems = AssistantMemory.objects.filter(
+                    assistant=agent, memory_type=AgentStandardMemoryTypesNames.USER_SPECIFIC, user=self.request.user)
+                memories = list(agent_spec_mems) + list(user_spec_mems)
+                org_assistants[org].extend(memories)
         context['org_assistants'] = org_assistants
         return context

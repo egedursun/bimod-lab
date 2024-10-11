@@ -24,12 +24,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.vector_operations.vector_document.vector_store_decoder import KnowledgeBaseSystemDecoder
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
-from apps.datasource_knowledge_base.tasks import add_document_upload_log
-from apps.datasource_knowledge_base.utils import generate_document_uri, DocumentUploadStatusNames
+from apps.datasource_knowledge_base.tasks import add_vector_store_doc_loaded_log
+from apps.datasource_knowledge_base.utils import generate_document_uri, VectorStoreDocProcessingStatusNames
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from config import settings
@@ -37,30 +37,19 @@ from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
 
-class AddDocumentView(LoginRequiredMixin, TemplateView):
-    """
-    Handles uploading documents to a selected knowledge base.
-
-    This view displays a form for selecting a knowledge base and uploading documents to it. Upon form submission, it validates the input, uploads the documents to the storage (e.g., S3), and logs the upload process. If the user lacks the necessary permissions, an error message is displayed.
-
-    Methods:
-        get(self, request, *args, **kwargs): Prepares the context with the available knowledge bases and assistants for document uploading.
-        post(self, request, *args, **kwargs): Handles the document upload process, including validation, file storage, and logging.
-    """
-
+class DocumentView_Create(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
-        user_assistants = Assistant.objects.filter(organization__users__in=[request.user])
-        knowledge_bases = DocumentKnowledgeBaseConnection.objects.filter(assistant__in=user_assistants)
-        organizations = Organization.objects.filter(users__in=[request.user])
+        user_agents = Assistant.objects.filter(organization__users__in=[request.user])
+        vector_stores = DocumentKnowledgeBaseConnection.objects.filter(assistant__in=user_agents)
+        orgs = Organization.objects.filter(users__in=[request.user])
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['organizations'] = list(organizations.values('id', 'name'))
-        context['assistants'] = list(user_assistants.values('id', 'name', 'organization_id'))
-        context['knowledge_bases'] = list(knowledge_bases.values('id', 'name', 'assistant_id'))
+        context['organizations'] = list(orgs.values('id', 'name'))
+        context['assistants'] = list(user_agents.values('id', 'name', 'organization_id'))
+        context['knowledge_bases'] = list(vector_stores.values('id', 'name', 'assistant_id'))
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
-        knowledge_base_id = request.POST.get('knowledge_base') or None
-        context_user = request.user
+        vs_id = request.POST.get('knowledge_base') or None
 
         ##############################
         # PERMISSION CHECK FOR - ADD_KNOWLEDGE_BASE_DOCS
@@ -70,29 +59,28 @@ class AddDocumentView(LoginRequiredMixin, TemplateView):
             return redirect('datasource_knowledge_base:list_documents')
         ##############################
 
-        if not knowledge_base_id:
+        if not vs_id:
             messages.error(request, 'Please select a knowledge base.')
             return redirect('datasource_knowledge_base:create_documents')
-        knowledge_base = DocumentKnowledgeBaseConnection.objects.get(pk=knowledge_base_id)
-        files = request.FILES.getlist('document_files')
-        if knowledge_base_id and files:
-            assistant_base_directory = knowledge_base.assistant.document_base_directory
-            file_paths = []
-            for file in files:
+
+        vector_store = DocumentKnowledgeBaseConnection.objects.get(pk=vs_id)
+        fs = request.FILES.getlist('document_files')
+        if vs_id and fs:
+            agent_base_dir = vector_store.assistant.document_base_directory
+            f_paths = []
+            for file in fs:
                 file_type = file.name.split('.')[-1]
-                document_uri = generate_document_uri(assistant_base_directory, file.name, file_type)
-                file_paths.append(document_uri)
-                add_document_upload_log(document_full_uri=document_uri, log_name=DocumentUploadStatusNames.STAGED)
-                # SAVE the File to s3
-                boto3_client = boto3.client('s3')
-                bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-                s3_path = f"{document_uri.split(MEDIA_URL)[1]}"
-                boto3_client.put_object(Bucket=bucket_name, Key=s3_path, Body=file)
-                add_document_upload_log(document_full_uri=document_uri, log_name=DocumentUploadStatusNames.UPLOADED)
-            # handle the task asynchronously inside the knowledge base system
-            KnowledgeBaseSystemDecoder.get(knowledge_base).index_documents(document_paths=file_paths)
+                doc_uri = generate_document_uri(agent_base_dir, file.name, file_type)
+                f_paths.append(doc_uri)
+                add_vector_store_doc_loaded_log(document_full_uri=doc_uri, log_name=VectorStoreDocProcessingStatusNames.STAGED)
+                s3c = boto3.client('s3')
+                bucket = settings.AWS_STORAGE_BUCKET_NAME
+                bucket_path = f"{doc_uri.split(MEDIA_URL)[1]}"
+                s3c.put_object(Bucket=bucket, Key=bucket_path, Body=file)
+                add_vector_store_doc_loaded_log(document_full_uri=doc_uri, log_name=VectorStoreDocProcessingStatusNames.UPLOADED)
+
+            KnowledgeBaseSystemDecoder.get(vector_store).index_documents(document_paths=f_paths)
             messages.success(request, 'Documents uploaded successfully.')
-            print('[AddDocumentView.post] Documents uploaded successfully.')
             return redirect('datasource_knowledge_base:list_documents')
         else:
             messages.error(request, 'Please select a knowledge base and upload documents.')

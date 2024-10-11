@@ -18,11 +18,11 @@
 from django.contrib import admin
 
 from apps.mm_apis.models import CustomAPI
+from apps.mm_apis.utils import CUSTOM_API_ADMIN_LIST, CUSTOM_API_ADMIN_FILTER, CUSTOM_API_ADMIN_SEARCH
 
 
 @admin.register(CustomAPI)
 class CustomAPIAdmin(admin.ModelAdmin):
-    list_display = ["name", "description", "categories", "created_by_user", "created_at", "updated_at"]
-    search_fields = ["name", "description", "categories", "created_by_user__username"]
-    list_filter = ["categories", "created_at", "updated_at"]
-    list_per_page = 20
+    list_display = CUSTOM_API_ADMIN_LIST
+    search_fields = CUSTOM_API_ADMIN_SEARCH
+    list_filter = CUSTOM_API_ADMIN_FILTER

@@ -21,10 +21,12 @@
 from django.contrib import admin
 
 from apps.mm_scheduled_jobs.models import ScheduledJobInstance
+from apps.mm_scheduled_jobs.utils import SCHEDULED_JOB_INSTANCE_ADMIN_LIST, SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH, \
+    SCHEDULED_JOB_INSTANCE_ADMIN_FILTER
 
 
 @admin.register(ScheduledJobInstance)
 class ScheduledJobInstanceAdmin(admin.ModelAdmin):
-    list_display = ['scheduled_job', 'status', 'started_at', 'ended_at']
-    search_fields = ['scheduled_job', 'status', 'started_at', 'ended_at']
-    list_filter = ['scheduled_job', 'status', 'started_at', 'ended_at']
+    list_display = SCHEDULED_JOB_INSTANCE_ADMIN_LIST
+    search_fields = SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH
+    list_filter = SCHEDULED_JOB_INSTANCE_ADMIN_FILTER

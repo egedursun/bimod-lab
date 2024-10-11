@@ -21,12 +21,13 @@
 from django.contrib import admin
 
 from apps.mm_functions.models import CustomFunctionReference
+from apps.mm_functions.utils import CUSTOM_FUNCTION_REF_ADMIN_LIST, CUSTOM_FUNCTION_REF_ADMIN_FILTER, \
+    CUSTOM_FUNCTION_REF_ADMIN_SEARCH
 
 
 @admin.register(CustomFunctionReference)
 class CustomFunctionReferenceAdmin(admin.ModelAdmin):
-    list_display = ("custom_function", "assistant", "created_by_user", "created_at", "updated_at")
-    list_filter = ("assistant", "created_by_user")
-    search_fields = ("custom_function__name", "assistant__name")
-    readonly_fields = ("created_at", "updated_at")
+    list_display = CUSTOM_FUNCTION_REF_ADMIN_LIST
+    list_filter = CUSTOM_FUNCTION_REF_ADMIN_FILTER
+    search_fields = CUSTOM_FUNCTION_REF_ADMIN_SEARCH
     ordering = ("-created_at",)

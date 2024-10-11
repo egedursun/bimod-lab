@@ -23,7 +23,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_sql.forms import CustomSQLQueryForm
 from apps.datasource_sql.models import SQLDatabaseConnection
@@ -31,25 +31,13 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CreateSQLQueryView(TemplateView, LoginRequiredMixin):
-    """
-    Handles the creation of custom SQL queries.
-
-    This view displays a form for creating a new SQL query. Upon submission, it validates the input, checks user permissions, and saves the new query to the database. If the user lacks the necessary permissions, an error message is displayed.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context with available database connections and the form for creating an SQL query.
-        post(self, request, *args, **kwargs): Handles form submission and SQL query creation, including permission checks and validation.
-    """
-
+class SQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        user_organizations = context_user.organizations.all()
-        database_connections = SQLDatabaseConnection.objects.filter(
-            assistant__in=Assistant.objects.filter(organization__in=user_organizations)
-        )
-        context['database_connections'] = database_connections
+        user_orgs = context_user.organizations.all()
+        db_c = SQLDatabaseConnection.objects.filter(assistant__in=Assistant.objects.filter(organization__in=user_orgs))
+        context['database_connections'] = db_c
         context['form'] = CustomSQLQueryForm()
         return context
 
@@ -67,7 +55,6 @@ class CreateSQLQueryView(TemplateView, LoginRequiredMixin):
         if form.is_valid():
             form.save()
             messages.success(request, "SQL Query created successfully.")
-            print('[CreateSQLQueryView.post] SQL Query created successfully.')
             return redirect('datasource_sql:create_query')
         else:
             messages.error(request, "Error creating SQL Query.")

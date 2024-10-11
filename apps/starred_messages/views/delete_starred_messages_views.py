@@ -23,24 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DeleteView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.starred_messages.models import StarredMessage
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DeleteStarredMessageView(LoginRequiredMixin, DeleteView):
-    """
-    Handles the deletion of starred messages.
-
-    This view allows users to delete specific starred messages after confirming the action. Only starred messages that belong to the authenticated user can be deleted.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context for the starred message deletion confirmation page.
-        get(self, request, *args, **kwargs): Processes the deletion of the specified starred message (GET request redirects to POST).
-        post(self, request, *args, **kwargs): Processes the deletion of the specified starred message and updates the associated chat message.
-    """
-
+class StarredMessageView_Delete(LoginRequiredMixin, DeleteView):
     model = StarredMessage
     success_url = 'starred_messages:list'
 
@@ -64,9 +53,7 @@ class DeleteStarredMessageView(LoginRequiredMixin, DeleteView):
         ##############################
 
         starred_message.delete()
-        print('[DeleteStarredMessageView.post] Starred message deleted successfully.')
         success_message = "Starred message deleted successfully."
-        # assign the relevant message's starred field to False
         starred_message.chat_message.starred = False
         starred_message.chat_message.save()
         messages.success(request, success_message)

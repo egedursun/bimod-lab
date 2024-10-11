@@ -20,31 +20,27 @@
 
 from django.contrib import admin
 
-from apps._services.knowledge_base.document.knowledge_base_decoder import KnowledgeBaseSystemDecoder
+from apps.core.vector_operations.vector_document.vector_store_decoder import KnowledgeBaseSystemDecoder
 from apps.datasource_knowledge_base.models import KnowledgeBaseDocument
 from django.contrib.admin.actions import delete_selected as django_delete_selected
+
+from apps.datasource_knowledge_base.utils import DOCUMENT_ADMIN_LIST, DOCUMENT_ADMIN_FILTER, DOCUMENT_ADMIN_SEARCH
 
 
 @admin.register(KnowledgeBaseDocument)
 class KnowledgeBaseDocumentAdmin(admin.ModelAdmin):
-    list_display = ['knowledge_base', 'document_type', 'document_file_name', 'document_description',
-                    'document_metadata', 'document_uri', 'created_at', 'updated_at']
-    list_filter = ['knowledge_base', 'document_type', 'document_file_name', 'document_description',
-                   'document_metadata', 'document_uri', 'created_at', 'updated_at']
-    search_fields = ['knowledge_base', 'document_type', 'document_file_name', 'document_description',
-                     'document_metadata', 'document_uri', 'created_at', 'updated_at']
+    list_display = DOCUMENT_ADMIN_LIST
+    list_filter = DOCUMENT_ADMIN_FILTER
+    search_fields = DOCUMENT_ADMIN_SEARCH
     readonly_fields = ['created_at', 'updated_at']
-
-    list_per_page = 20
-    list_max_show_all = 100
 
     def delete_selected(self, request, queryset):
         for obj in queryset:
-            client = KnowledgeBaseSystemDecoder.get(obj.knowledge_base)
-            if client is not None:
-                result = client.delete_weaviate_document(
+            c = KnowledgeBaseSystemDecoder.get(obj.knowledge_base)
+            if c is not None:
+                o = c.delete_weaviate_document(
                     class_name=obj.knowledge_base.class_name,
                     document_uuid=obj.document_uuid)
-                if not result["status"]:
-                    print(f"Error deleting Weaviate document: {result['error']}")
+                if not o["status"]:
+                    pass
         return django_delete_selected(self, request, queryset)

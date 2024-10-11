@@ -23,10 +23,8 @@ class BrainstormingLevelSynthesis(models.Model):
     brainstorming_session = models.ForeignKey('BrainstormingSession', on_delete=models.CASCADE)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     depth_level = models.IntegerField()
-
     ideas = models.ManyToManyField('BrainstormingIdea')
     synthesis_content = models.TextField()
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -38,7 +36,6 @@ class BrainstormingLevelSynthesis(models.Model):
         verbose_name_plural = 'Brainstorming Level Syntheses'
         ordering = ['-created_at']
         unique_together = ['brainstorming_session', 'depth_level']
-
         indexes = [
             models.Index(fields=['brainstorming_session']),
             models.Index(fields=['created_by_user']),

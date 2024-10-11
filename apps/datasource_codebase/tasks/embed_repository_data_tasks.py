@@ -18,7 +18,7 @@
 #
 #
 
-from apps._services.codebase.helpers.repository_embedder import embed_repository_helper
+from apps.core.codebase.handler_methods.embedding_handler_repo import embed_repository_helper
 
 
 def embed_repository_data(executor_params, document, path, number_of_chunks):

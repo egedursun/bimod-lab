@@ -14,14 +14,7 @@ from channels.routing import URLRouter, ProtocolTypeRouter
 from django.core.asgi import get_asgi_application
 from config.routing import websocket_urlpatterns
 
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),  # Handles traditional HTTP requests
-    "websocket": AuthMiddlewareStack(  # Handles WebSocket connections
-        URLRouter(
-            websocket_urlpatterns  # Your WebSocket URL routing
-        )
-    ),
-})
+application = ProtocolTypeRouter({"http": get_asgi_application(),
+                                  "websocket": AuthMiddlewareStack(URLRouter(websocket_urlpatterns))})

@@ -23,30 +23,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.mm_apis.forms import CustomAPIForm
-from apps.mm_apis.utils import CUSTOM_API_CATEGORIES, CUSTOM_API_AUTHENTICATION_TYPES
+from apps.mm_apis.utils import CATEGORIES_OF_CUSTOM_APIS, CUSTOM_API_AUTHENTICATION_TYPES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CreateCustomAPIView(LoginRequiredMixin, TemplateView):
-    """
-    Handles the creation of new custom APIs.
-
-    This view allows users to create custom APIs that can be integrated into their assistants. The view checks user
-    permissions before allowing the creation of a new API.
-
-    Methods: get_context_data(self, **kwargs): Prepares the context with the form and API categories. post(self,
-    request, *args, **kwargs): Processes the form submission to create a new custom API and associates it with the
-    user.
-    """
+class CustomAPIView_Create(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['form'] = CustomAPIForm()
-        context['CUSTOM_API_CATEGORIES'] = CUSTOM_API_CATEGORIES
+        context['CUSTOM_API_CATEGORIES'] = CATEGORIES_OF_CUSTOM_APIS
         context['CUSTOM_API_AUTHENTICATION_TYPES'] = CUSTOM_API_AUTHENTICATION_TYPES
         return context
 
@@ -64,13 +54,12 @@ class CreateCustomAPIView(LoginRequiredMixin, TemplateView):
         if form.is_valid():
             custom_api = form.save(commit=False)
             custom_api.created_by_user = request.user
-            # Handle dynamic fields
             endpoints = {}
             endpoint_keys = [key for key in request.POST.keys() if key.startswith('endpoints[')]
             endpoint_indices = set(key.split('[')[1].split(']')[0] for key in endpoint_keys)
             for i in endpoint_indices:
                 name = request.POST.get(f'endpoints[{i}][name]')
-                if name:  # Only add if name is not empty
+                if name:
                     endpoint_data = {
                         'description': request.POST.get(f'endpoints[{i}][description]', ''),
                         'path': request.POST.get(f'endpoints[{i}][path]', ''),
@@ -82,14 +71,10 @@ class CreateCustomAPIView(LoginRequiredMixin, TemplateView):
                     }
                     endpoints[name] = endpoint_data
             custom_api.endpoints = endpoints
-
-            # Save the image
             if request.FILES.get('api_picture'):
                 custom_api.api_picture = request.FILES.get('api_picture')
             custom_api.categories = request.POST.getlist('categories')
             custom_api.save()
-            print('[CreateCustomAPIView.post] Custom API created successfully.')
             return redirect('mm_apis:list')
         return render(request, self.template_name, {'form': form, 'assistants': Assistant.objects.filter(
-            organization__users__in=[request.user]
-        )})
+            organization__users__in=[request.user])})

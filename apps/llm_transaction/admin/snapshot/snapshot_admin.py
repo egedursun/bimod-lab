@@ -21,10 +21,11 @@
 from django.contrib import admin
 
 from apps.llm_transaction.models import OrganizationBalanceSnapshot
+from apps.llm_transaction.utils import BALANCE_SNAPSHOT_ADMIN_LIST
 
 
 @admin.register(OrganizationBalanceSnapshot)
 class OrganizationBalanceSnapshotAdmin(admin.ModelAdmin):
-    list_display = ["organization", "balance", "created_at"]
+    list_display = BALANCE_SNAPSHOT_ADMIN_LIST
     ordering = ["-created_at"]
     date_hierarchy = "created_at"

@@ -14,27 +14,25 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.user_permissions.models import UserRole
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DeleteUserRoleView(LoginRequiredMixin, TemplateView):
+class PermissionView_UserRoleDelete(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         role_id = kwargs.get("pk")
         role = get_object_or_404(UserRole, pk=role_id, organization__users__in=[self.request.user])
-
         context.update({"role": role})
         return context
 
@@ -50,8 +48,6 @@ class DeleteUserRoleView(LoginRequiredMixin, TemplateView):
 
         role_id = kwargs.get("pk")
         role = get_object_or_404(UserRole, pk=role_id, created_by_user=request.user)
-
-        # Delete the role
         role.delete()
         messages.success(request, f'The role "{role.role_name}" has been deleted successfully.')
         return redirect('user_permissions:list_user_roles')

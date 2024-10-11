@@ -21,10 +21,11 @@
 from django.contrib import admin
 
 from apps.orchestrations.models import OrchestrationQuery
+from apps.orchestrations.utils import MAESTRO_QUERY_ADMIN_LIST, MAESTRO_QUERY_ADMIN_SEARCH, MAESTRO_QUERY_ADMIN_FILTER
 
 
 @admin.register(OrchestrationQuery)
 class OrchestrationQueryAdmin(admin.ModelAdmin):
-    list_display = ['maestro', 'query_text', 'created_by_user', 'last_updated_by_user', 'created_at', 'updated_at']
-    search_fields = ['maestro', 'query_text', 'created_by_user', 'last_updated_by_user']
-    list_filter = ['maestro', 'created_by_user', 'last_updated_by_user', 'created_at', 'updated_at']
+    list_display = MAESTRO_QUERY_ADMIN_LIST
+    search_fields = MAESTRO_QUERY_ADMIN_SEARCH
+    list_filter = MAESTRO_QUERY_ADMIN_FILTER

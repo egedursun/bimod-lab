@@ -20,29 +20,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.memories.models import AssistantMemory
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CreateAssistantMemoryView(TemplateView, LoginRequiredMixin):
-    """
-    Handles the creation of new memories for an assistant.
-
-    This view allows users to create new memories, which can be either user-specific or assistant-specific, depending on the selected memory type.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context with the assistants associated with the current user.
-        post(self, request, *args, **kwargs): Processes the form submission to create a new memory and associates it with the selected assistant.
-    """
-
+class AssistantMemoryView_Create(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
-        assistants = Assistant.objects.filter(organization__users=user)
-        context.update({'assistants': assistants})
+        agents = Assistant.objects.filter(organization__users=user)
+        context.update({'assistants': agents})
         return context
 
     def post(self, request, *args, **kwargs):
@@ -54,17 +44,13 @@ class CreateAssistantMemoryView(TemplateView, LoginRequiredMixin):
             return redirect('memories:list')
         ##############################
 
-        assistant_id = request.POST.get('assistant')
+        agent_id = request.POST.get('assistant')
         memory_type = request.POST.get('memory_type')
         memory_text_content = request.POST.get('memory_text_content')
 
-        AssistantMemory.objects.create(
-            user=request.user, assistant_id=assistant_id, memory_type=memory_type,
-            memory_text_content=memory_text_content
-        )
-        # add the memory to the assistant memories
-        # Note: the specificity of the memory is handled in prompt management module
-        assistant = Assistant.objects.get(id=assistant_id)
-        assistant.memories.add(AssistantMemory.objects.last())
-        print('[CreateAssistantMemoryView.post] Memory created successfully.')
+        AssistantMemory.objects.create(user=request.user, assistant_id=agent_id, memory_type=memory_type,
+                                       memory_text_content=memory_text_content)
+
+        agent = Assistant.objects.get(id=agent_id)
+        agent.memories.add(AssistantMemory.objects.last())
         return redirect('memories:list')

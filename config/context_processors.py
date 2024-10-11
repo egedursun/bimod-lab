@@ -30,6 +30,5 @@ def get_cookie(request):
     return {"COOKIES": request.COOKIES}
 
 
-# Add the 'ENVIRONMENT' setting to the template context
 def environment(request):
     return {'ENVIRONMENT': settings.ENVIRONMENT}

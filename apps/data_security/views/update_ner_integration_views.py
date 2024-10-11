@@ -23,23 +23,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.data_security.models import NERIntegration
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class UpdateNERIntegrationView(LoginRequiredMixin, TemplateView):
-    template_name = 'data_security/ner/update_ner_integration.html'
-
+class NERView_IntegrationUpdate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         ner_integration = NERIntegration.objects.get(id=self.kwargs['pk'])
         context['ner_integration'] = ner_integration
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
-
-        # Boolean fields for switches
         context['boolean_fields'] = [
             {'name': 'encrypt_persons', 'label': 'Encrypt Persons (PERSON)',
              'value': ner_integration.encrypt_persons},
@@ -73,7 +69,6 @@ class UpdateNERIntegrationView(LoginRequiredMixin, TemplateView):
             {'name': 'encrypt_cardinal_numbers', 'label': 'Encrypt Cardinal Numbers (CARDINAL)',
              'value': ner_integration.encrypt_cardinal_numbers},
         ]
-
         return context
 
     def post(self, request, *args, **kwargs):
@@ -85,9 +80,7 @@ class UpdateNERIntegrationView(LoginRequiredMixin, TemplateView):
             return redirect('data_security:list_ner_integrations')
         ##############################
 
-        # Fetch the existing NERIntegration object
         ner_integration = NERIntegration.objects.get(id=self.kwargs['pk'])
-        # Manually set each checkbox field based on POST data
         ner_integration.encrypt_persons = request.POST.get('encrypt_persons') == 'True'
         ner_integration.encrypt_orgs = request.POST.get('encrypt_orgs') == 'True'
         ner_integration.encrypt_nationality_religion_political = request.POST.get(
@@ -107,15 +100,12 @@ class UpdateNERIntegrationView(LoginRequiredMixin, TemplateView):
         ner_integration.encrypt_quantities = request.POST.get('encrypt_quantities') == 'True'
         ner_integration.encrypt_ordinal_numbers = request.POST.get('encrypt_ordinal_numbers') == 'True'
         ner_integration.encrypt_cardinal_numbers = request.POST.get('encrypt_cardinal_numbers') == 'True'
-        # Update other fields manually
+
         ner_integration.name = request.POST.get('name')
         ner_integration.description = request.POST.get('description')
         ner_integration.language = request.POST.get('language')
-        # Update organization manually (you'll need to fetch the organization)
         organization_id = request.POST.get('organization')
         if organization_id:
             ner_integration.organization_id = organization_id  # Assign organization directly
-        # Save the updated NERIntegration object
         ner_integration.save()
-        # Redirect to the list page after saving
         return redirect('data_security:update_ner_integration', pk=ner_integration.id)

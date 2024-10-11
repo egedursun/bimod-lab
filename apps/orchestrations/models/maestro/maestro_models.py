@@ -28,31 +28,21 @@ class Maestro(models.Model):
     llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE, related_name='maestros')
     name = models.CharField(max_length=255)
     description = models.TextField(default="", blank=True)
-
     instructions = models.TextField(default="", blank=True)
     workflow_step_guide = models.TextField(default="", blank=True)
     maximum_assistant_limits = models.IntegerField(default=10)
-
     response_template = models.TextField(default="", blank=True)
     audience = models.CharField(max_length=1000)
     tone = models.CharField(max_length=1000)
     response_language = models.CharField(max_length=10, choices=ORCHESTRATION_RESPONSE_LANGUAGES, default="auto")
-
     maestro_image_save_path = 'maestro_images/%Y/%m/%d/'
     maestro_image = models.ImageField(upload_to=maestro_image_save_path, blank=True, max_length=5000, null=True)
-
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                         related_name='maestros_created_by_user')
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                              related_name='maestros_last_updated_by_user')
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    ########################################
-    # ORCHESTRATION WORKERS
-    ########################################
-
     workers = models.ManyToManyField('assistants.Assistant', related_name='maestros', blank=True)
 
     def __str__(self):
@@ -62,7 +52,6 @@ class Maestro(models.Model):
         verbose_name = "Maestro"
         verbose_name_plural = "Maestros"
         indexes = [
-            # Single-field indexes
             models.Index(fields=["organization"]),
             models.Index(fields=["llm_model"]),
             models.Index(fields=["name"]),
@@ -71,8 +60,6 @@ class Maestro(models.Model):
             models.Index(fields=["last_updated_by_user"]),
             models.Index(fields=["created_at"]),
             models.Index(fields=["updated_at"]),
-
-            # Two-field composite indexes
             models.Index(fields=["organization", "llm_model"]),
             models.Index(fields=["organization", "name"]),
             models.Index(fields=["organization", "created_by_user"]),
@@ -88,8 +75,6 @@ class Maestro(models.Model):
             models.Index(fields=["created_by_user", "updated_at"]),
             models.Index(fields=["last_updated_by_user", "created_at"]),
             models.Index(fields=["last_updated_by_user", "updated_at"]),
-
-            # Three-field composite indexes
             models.Index(fields=["organization", "llm_model", "name"]),
             models.Index(fields=["organization", "llm_model", "created_by_user"]),
             models.Index(fields=["organization", "llm_model", "last_updated_by_user"]),
@@ -109,8 +94,6 @@ class Maestro(models.Model):
             models.Index(fields=["llm_model", "last_updated_by_user", "updated_at"]),
             models.Index(fields=["created_by_user", "created_at", "updated_at"]),
             models.Index(fields=["last_updated_by_user", "created_at", "updated_at"]),
-
-            # Four-field composite indexes
             models.Index(fields=["organization", "llm_model", "name", "created_at"]),
             models.Index(fields=["organization", "llm_model", "name", "updated_at"]),
             models.Index(fields=["organization", "llm_model", "created_by_user", "created_at"]),

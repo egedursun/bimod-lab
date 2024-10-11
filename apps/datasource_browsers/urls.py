@@ -20,29 +20,29 @@
 
 from django.urls import path
 
-from apps.datasource_browsers.views import CreateBrowserConnectionView, UpdateBrowserConnectionView, \
-    DeleteBrowserConnectionView, ListBrowserConnectionsView, ListBrowsingLogsView, DownloadHtmlContentView, \
-    DownloadContextDataView
+from apps.datasource_browsers.views import BrowserView_BrowserCreate, BrowserView_BrowserUpdate, \
+    BrowserView_BrowserDelete, BrowserView_BrowserList, BrowserView_BrowserLogList, BrowserView_BrowserLogDownloadHTML, \
+    BrowserView_BrowserLogDownload
 
 app_name = "datasource_browsers"
 
 urlpatterns = [
-    path("create/", CreateBrowserConnectionView.as_view(
+    path("create/", BrowserView_BrowserCreate.as_view(
         template_name="datasource_browsers/connections/create_browser_connection.html"
     ), name="create"),
-    path("update/<int:pk>/", UpdateBrowserConnectionView.as_view(
+    path("update/<int:pk>/", BrowserView_BrowserUpdate.as_view(
         template_name="datasource_browsers/connections/update_browser_connection.html"
     ), name="update"),
-    path("delete/<int:pk>/", DeleteBrowserConnectionView.as_view(
+    path("delete/<int:pk>/", BrowserView_BrowserDelete.as_view(
         template_name="datasource_browsers/connections/confirm_delete_browser_connection.html"
     ), name="delete"),
-    path("list/", ListBrowserConnectionsView.as_view(
+    path("list/", BrowserView_BrowserList.as_view(
         template_name="datasource_browsers/connections/list_browser_connections.html"
     ), name="list"),
-    path("logs/<int:pk>/", ListBrowsingLogsView.as_view(
+    path("logs/<int:pk>/", BrowserView_BrowserLogList.as_view(
         template_name="datasource_browsers/logs/list_browser_logs.html"
     ), name="logs"),
 
-    path('logs/download_html/<int:pk>/', DownloadHtmlContentView.as_view(), name='download_html'),
-    path('logs/download_context/<int:pk>/', DownloadContextDataView.as_view(), name='download_context'),
+    path('logs/download_html/<int:pk>/', BrowserView_BrowserLogDownloadHTML.as_view(), name='download_html'),
+    path('logs/download_context/<int:pk>/', BrowserView_BrowserLogDownload.as_view(), name='download_context'),
 ]

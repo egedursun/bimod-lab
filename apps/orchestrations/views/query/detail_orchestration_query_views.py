@@ -14,24 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.orchestrations.models.query import OrchestrationQuery
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class OrchestrationQueryDetailView(LoginRequiredMixin, TemplateView):
-    template_name = "orchestrations/query_detail_orchestration.html"
-
+class OrchestrationView_QueryDetail(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 

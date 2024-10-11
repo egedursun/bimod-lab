@@ -16,11 +16,12 @@
 #
 
 
-API_SOURCES = {
+SOURCES_OF_CUSTOM_APIS = {
     "internal": "internal",
     "external": "external",
 }
-CUSTOM_API_CATEGORIES = [
+
+CATEGORIES_OF_CUSTOM_APIS = [
     ("data", "Data"),
     ("aiml", "AI/ML"),
     ("media", "Media"),
@@ -42,6 +43,7 @@ CUSTOM_API_CATEGORIES = [
     ("utilities", "Utilities"),
     ("miscellaneous", "Miscellaneous"),
 ]
+
 CUSTOM_API_AUTHENTICATION_TYPES = [
     ("None", "None"),
     ("Bearer", "Bearer")
@@ -58,3 +60,23 @@ class AcceptedHTTPRequestMethods:
 
 MAXIMUM_RETRIES = 3
 NUMBER_OF_RANDOM_FEATURED_APIS = 5
+
+CUSTOM_API_ADMIN_LIST = [
+    "name",
+    "created_by_user",
+    "created_at",
+    "updated_at",
+]
+CUSTOM_API_ADMIN_FILTER = ["categories", "created_at", "updated_at"]
+CUSTOM_API_ADMIN_SEARCH = ["name", "description", "categories", "created_by_user__username"]
+
+CUSTOM_API_REF_ADMIN_LIST = [
+    "custom_api",
+    "assistant",
+    "api_source",
+    "created_by_user",
+    "created_at",
+    "updated_at",
+]
+CUSTOM_API_REF_ADMIN_FILTER = ["api_source", "created_at", "updated_at"]
+CUSTOM_API_REF_ADMIN_SEARCH = ["custom_api__name", "assistant__name", "api_source", "created_by_user__username"]

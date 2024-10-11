@@ -20,35 +20,19 @@
 
 from django.db import models
 
-from apps.datasource_knowledge_base.utils import SUPPORTED_DOCUMENT_TYPES
+from apps.datasource_knowledge_base.utils import UPLOAD_FILES_SUPPORTED_FORMATS
 
 
 class KnowledgeBaseDocumentChunk(models.Model):
-    """
-    KnowledgeBaseDocumentChunk Model:
-    - Purpose: Represents a chunk of a document within a knowledge base, storing information about the chunk's content, metadata, and its association with the document and knowledge base.
-    - Key Fields:
-        - `knowledge_base`: ForeignKey linking to the `DocumentKnowledgeBaseConnection` model.
-        - `document`: ForeignKey linking to the `KnowledgeBaseDocument` model.
-        - `chunk_document_type`: The type of document chunk (e.g., PDF, HTML).
-        - `chunk_number`: The sequence number of the chunk.
-        - `chunk_content`, `chunk_metadata`, `chunk_document_uri`: Fields for storing the chunk's content and metadata.
-        - `knowledge_base_uuid`, `document_uuid`: UUIDs for linking the chunk to the knowledge base and document.
-        - `created_at`, `updated_at`: Timestamps for creation and last update.
-    """
-
     knowledge_base = models.ForeignKey("DocumentKnowledgeBaseConnection", on_delete=models.CASCADE)
-    document = models.ForeignKey("KnowledgeBaseDocument", on_delete=models.CASCADE,
-                                 related_name='document_chunks')
-
-    chunk_document_type = models.CharField(max_length=100, choices=SUPPORTED_DOCUMENT_TYPES, blank=True, null=True)
+    document = models.ForeignKey("KnowledgeBaseDocument", on_delete=models.CASCADE, related_name='document_chunks')
+    chunk_document_type = models.CharField(max_length=100, choices=UPLOAD_FILES_SUPPORTED_FORMATS, blank=True, null=True)
     chunk_number = models.IntegerField()
-    chunk_content = models.TextField()  # This will be the text content of the chunk
+    chunk_content = models.TextField()
     chunk_metadata = models.TextField()
     chunk_document_uri = models.CharField(max_length=1000, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     knowledge_base_uuid = models.CharField(max_length=1000, null=True, blank=True)
     document_uuid = models.CharField(max_length=1000, null=True, blank=True)
 

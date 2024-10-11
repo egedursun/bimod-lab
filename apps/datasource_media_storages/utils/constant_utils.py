@@ -19,7 +19,7 @@
 #
 
 
-MEDIA_CATEGORIES = (
+MEDIA_MANAGER_ITEM_TYPES = (
     ('image', 'Image'),
     ('audio', 'Audio'),
     ('video', 'Video'),
@@ -29,7 +29,7 @@ MEDIA_CATEGORIES = (
 )
 
 
-class MediaCategoriesNames:
+class MediaManagerItemCategoriesNames:
     Image = 'image'
     Audio = 'audio'
     Video = 'video'
@@ -92,7 +92,7 @@ MEDIA_FILE_TYPES = (
 )
 
 
-class MediaFileTypesNames:
+class MediaManagerItemFormatTypesNames:
     class Image:
         JPEG = 'jpg'
         PNG = 'png'
@@ -150,7 +150,7 @@ class MediaFileTypesNames:
         TXT = 'txt'
 
 
-class MediaFileTypesNamesLists:
+class MediaManagerItemFormatTypesNamesLists:
     IMAGE = ['jpg', 'png', 'gif', 'svg', 'bmp', 'tiff']
     AUDIO = ['mp3', 'wav', 'flac', 'aac', 'ogg']
     VIDEO = ['mp4', 'avi', 'mkv', 'mov']
@@ -166,3 +166,17 @@ FILE_TYPE_HIGHLIGHTING_DECODER = {
     "xlsx": "plaintext", "json": "json", "xml": "xml", "tsv": "plaintext", "docx": "plaintext",
     "pptx": "plaintext", "pdf": "plaintext", "txt": "plaintext",
 }
+MEDIA_MANAGER_ITEM_ADMIN_LIST_DISPLAY = ['storage_base', 'media_file_name', 'media_file_size', 'media_file_type',
+                                         'full_file_path', 'created_at', 'updated_at']
+MEDIA_MANAGER_ITEM_ADMIN_LIST_FILTER = ['storage_base', 'media_file_type', 'media_file_type']
+MEDIA_MANAGER_ITEM_ADMIN_SEARCH_FIELDS = ['storage_base', 'media_file_name', 'full_file_path']
+
+MEDIA_STORE_ADMIN_LIST_DISPLAY = ['assistant', 'name', 'media_category', 'directory_full_path', 'directory_schema',
+                                  'created_at', 'updated_at']
+MEDIA_STORE_ADMIN_LIST_FILTER = ['assistant', 'media_category']
+MEDIA_STORE_ADMIN_SEARCH_FIELDS = ['assistant', 'name', 'directory_full_path']
+
+
+UNIT_BYTES_THOUSAND = 1024
+
+AI_GENERATED_DESCRIPTION_SPECIFIER = 'generated_description'

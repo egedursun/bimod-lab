@@ -21,11 +21,13 @@
 from django.contrib import admin
 
 from apps.data_security.models import NERIntegration
+from apps.data_security.utils import NER_INTEGRATION_ADMIN_LIST, NER_INTEGRATION_ADMIN_SEARCH, \
+    NER_INTEGRATION_ADMIN_FILTER
 
 
 @admin.register(NERIntegration)
 class NERIntegrationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'organization', 'language', 'created_by_user', 'created_at', 'updated_at')
-    list_filter = ('organization', 'language', 'created_by_user')
-    search_fields = ('name', 'description')
+    list_display = NER_INTEGRATION_ADMIN_LIST
+    list_filter = NER_INTEGRATION_ADMIN_FILTER
+    search_fields = NER_INTEGRATION_ADMIN_SEARCH
     readonly_fields = ('created_at', 'updated_at')

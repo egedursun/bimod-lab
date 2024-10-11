@@ -23,7 +23,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.datasource_browsers.utils import BROWSER_TYPES
@@ -31,17 +31,7 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
-    """
-    Handles updating an existing data source browser connection.
-
-    This view allows users with the appropriate permissions to modify a browser connection's attributes. It also handles the form submission and validation for updating the connection.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the current browser connection details and adds them to the context, along with other relevant data such as available assistants and browser types.
-        post(self, request, *args, **kwargs): Handles form submission for updating the browser connection, including permission checks and validation.
-    """
-
+class BrowserView_BrowserUpdate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -63,35 +53,32 @@ class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
             return redirect('datasource_browsers:list')
         ##############################
 
-        connection_id = kwargs.get('pk')
-        browser_connection = get_object_or_404(DataSourceBrowserConnection, pk=connection_id)
+        c_id = kwargs.get('pk')
+        browser_c = get_object_or_404(DataSourceBrowserConnection, pk=c_id)
 
-        name = request.POST.get('name')
+        browser_name = request.POST.get('name')
         description = request.POST.get('description')
         browser_type = request.POST.get('browser_type')
-        assistant_id = request.POST.get('assistant')
-        data_selectivity = request.POST.get('data_selectivity', 0.5)
-        minimum_investigation_sites = request.POST.get('minimum_investigation_sites', 2)
-        whitelisted_extensions = request.POST.getlist('whitelisted_extensions[]')
-        blacklisted_extensions = request.POST.getlist('blacklisted_extensions[]')
+        agent_id = request.POST.get('assistant')
+        browser_selecitivity = request.POST.get('data_selectivity', 0.5)
+        min_website_investigations = request.POST.get('minimum_investigation_sites', 2)
+        whitelisted_exts = request.POST.getlist('whitelisted_extensions[]')
+        blacklisted_exts = request.POST.getlist('blacklisted_extensions[]')
 
-        # clean white listed extensions
-        cleaned_whitelisted_extensions = []
-        for ext in whitelisted_extensions:
+        whitelisted_exts_cleaned = []
+        for ext in whitelisted_exts:
             ext = ext.strip()
             if ext != '' and ext is not None and ext != 'None':
-                cleaned_whitelisted_extensions.append(ext)
-        whitelisted_extensions = cleaned_whitelisted_extensions
+                whitelisted_exts_cleaned.append(ext)
+        whitelisted_exts = whitelisted_exts_cleaned
 
-        # clean black listed extensions
-        cleaned_blacklisted_extensions = []
-        for ext in blacklisted_extensions:
+        blacklisted_exts_cleaned = []
+        for ext in blacklisted_exts:
             ext = ext.strip()
             if ext != '' and ext is not None and ext != 'None':
-                cleaned_blacklisted_extensions.append(ext)
-        blacklisted_extensions = cleaned_blacklisted_extensions
+                blacklisted_exts_cleaned.append(ext)
+        blacklisted_exts = blacklisted_exts_cleaned
 
-        # reading abilities checkboxes
         ra_javascript = request.POST.get('ra_javascript') == 'on'
         ra_style = request.POST.get('ra_style') == 'on'
         ra_inline_style = request.POST.get('ra_inline_style') == 'on'
@@ -105,7 +92,7 @@ class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
         ra_forms = request.POST.get('ra_forms') == 'on'
         ra_remove_tags = request.POST.get('ra_remove_tags') == 'on'
 
-        reading_abilities = {
+        capabilities = {
             "javascript": ra_javascript, "style": ra_style, "inline_style": ra_inline_style, "comments": ra_comments,
             "links": ra_links, "meta": ra_meta, "page_structure": ra_page_structure,
             "processing_instructions": ra_processing_instructions, "embedded": ra_embedded, "frames": ra_frames,
@@ -114,24 +101,23 @@ class UpdateBrowserConnectionView(LoginRequiredMixin, TemplateView):
         created_by_user = request.user
 
         try:
-            assistant = Assistant.objects.get(id=assistant_id)
-            browser_connection.name = name
-            browser_connection.description = description
-            browser_connection.browser_type = browser_type
-            browser_connection.assistant = assistant
-            browser_connection.data_selectivity = data_selectivity
-            browser_connection.minimum_investigation_sites = minimum_investigation_sites
-            browser_connection.whitelisted_extensions = whitelisted_extensions
-            browser_connection.blacklisted_extensions = blacklisted_extensions
-            browser_connection.reading_abilities = reading_abilities
-            browser_connection.created_by_user = created_by_user
-            browser_connection.save()
+            assistant = Assistant.objects.get(id=agent_id)
+            browser_c.name = browser_name
+            browser_c.description = description
+            browser_c.browser_type = browser_type
+            browser_c.assistant = assistant
+            browser_c.data_selectivity = browser_selecitivity
+            browser_c.minimum_investigation_sites = min_website_investigations
+            browser_c.whitelisted_extensions = whitelisted_exts
+            browser_c.blacklisted_extensions = blacklisted_exts
+            browser_c.reading_abilities = capabilities
+            browser_c.created_by_user = created_by_user
+            browser_c.save()
             messages.success(request, 'Data Source Browser Connection updated successfully.')
-            print("[UpdateBrowserConnectionView.post] Data Source Browser Connection updated successfully.")
             return redirect('datasource_browsers:list')
         except Assistant.DoesNotExist:
             messages.error(request, 'Invalid assistant selected.')
-            return redirect('datasource_browsers:update', pk=connection_id)
+            return redirect('datasource_browsers:update', pk=c_id)
         except Exception as e:
             messages.error(request, f'Error updating Data Source Browser Connection: {e}')
-            return redirect('datasource_browsers:update', pk=connection_id)
+            return redirect('datasource_browsers:update', pk=c_id)

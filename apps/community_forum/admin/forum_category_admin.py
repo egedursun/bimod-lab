@@ -21,13 +21,14 @@
 from django.contrib import admin
 
 from apps.community_forum.models import ForumCategory
+from apps.community_forum.utils import FORUM_CATEGORY_ADMIN_LIST, FORUM_CATEGORY_ADMIN_SEARCH, \
+    FORUM_CATEGORY_ADMIN_FILTER
 
 
 @admin.register(ForumCategory)
 class ForumCategoryAdmin(admin.ModelAdmin):
-    list_display = (
-        "name", "slug", "created_at", "updated_at",
-    )
-    search_fields = ("name", "description", "slug",)
-    list_filter = ("created_at", "updated_at",)
+    list_display = FORUM_CATEGORY_ADMIN_LIST
+    search_fields = FORUM_CATEGORY_ADMIN_SEARCH
+    list_filter = FORUM_CATEGORY_ADMIN_FILTER
     ordering = ("-created_at",)
+

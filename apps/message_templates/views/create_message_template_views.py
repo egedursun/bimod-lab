@@ -23,23 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.message_templates.forms import MessageTemplateForm
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CreateMessageTemplateView(TemplateView, LoginRequiredMixin):
-    """
-    Handles the creation of new message templates.
-
-    This view allows users to create message templates that they can use in their interactions. The view checks user permissions before allowing the creation of a new template.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context with the user's organizations.
-        post(self, request, *args, **kwargs): Processes the form submission to create a new message template and associates it with the user.
-    """
-
+class MessageTemplateView_Create(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['organizations'] = self.request.user.organizations.all()
@@ -57,11 +47,10 @@ class CreateMessageTemplateView(TemplateView, LoginRequiredMixin):
         ##############################
 
         if form.is_valid():
-            message_template = form.save(commit=False)
-            message_template.user = request.user
-            message_template.save()
+            msg_tmpl = form.save(commit=False)
+            msg_tmpl.user = request.user
+            msg_tmpl.save()
             messages.success(request, "Message Template created successfully!")
-            print('[CreateMessageTemplateView.post] Message Template created successfully.')
             return redirect("message_templates:list")
         else:
             messages.error(request, "Please correct the errors below.")

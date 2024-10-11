@@ -23,13 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import DeleteView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class CodeBaseStorageDeleteView(LoginRequiredMixin, DeleteView):
+class CodeBaseView_StorageDelete(LoginRequiredMixin, DeleteView):
     model = CodeRepositoryStorageConnection
     success_url = '/app/datasource_codebase/list/'
 
@@ -40,7 +40,6 @@ class CodeBaseStorageDeleteView(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        context_user = self.request.user
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_CODE_BASE
@@ -50,7 +49,6 @@ class CodeBaseStorageDeleteView(LoginRequiredMixin, DeleteView):
             return redirect('datasource_codebase:list')
         ##############################
 
-        print('[CodeBaseStorageDeleteView.post] Code Base Storage deleted successfully.')
         return super().post(request, *args, **kwargs)
 
     def get_queryset(self):

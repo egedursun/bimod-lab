@@ -14,20 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-from apps._services.knowledge_base.document.helpers.document_chunk_embedder import embed_memory_chunks_helper
+from apps.core.vector_operations.vector_document.handler_methods.embedding_handler_chunk import factory_embed_memory_chunks_handler
 
 
 def embed_memory_chunks(executor_params, chunks, memory_id, memory_uuid):
     try:
-        error = embed_memory_chunks_helper(
-            executor_params=executor_params,
-            chunks=chunks,
-            memory_id=memory_id,
-            memory_uuid=memory_uuid
+        error = factory_embed_memory_chunks_handler(
+            executor_params=executor_params, chunks=chunks, memory_id=memory_id, memory_uuid=memory_uuid
         )
     except Exception as e:
         error = f"[tasks.embed_memory_chunks] Error embedding the memory chunks: {e}"

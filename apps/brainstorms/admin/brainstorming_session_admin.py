@@ -18,12 +18,14 @@
 from django.contrib import admin
 
 from apps.brainstorms.models import BrainstormingSession
+from apps.brainstorms.utils import BRAINSTORMING_SESSION_ADMIN_LIST, BRAINSTORMING_SESSION_ADMIN_FILTER, \
+    BRAINSTORMING_SESSION_ADMIN_SEARCH
 
 
 @admin.register(BrainstormingSession)
 class BrainstormingSessionAdmin(admin.ModelAdmin):
-    list_display = ['session_name', 'organization', 'llm_model', 'created_by_user', 'created_at']
-    list_filter = ['organization', 'llm_model', 'created_by_user', 'created_at']
-    search_fields = ['session_name', 'organization__name', 'llm_model__nickname', 'created_by_user__username']
+    list_display = BRAINSTORMING_SESSION_ADMIN_LIST
+    list_filter = BRAINSTORMING_SESSION_ADMIN_FILTER
+    search_fields = BRAINSTORMING_SESSION_ADMIN_SEARCH
     readonly_fields = ['created_at', 'updated_at']
     ordering = ['-created_at']

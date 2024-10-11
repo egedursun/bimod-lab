@@ -159,6 +159,23 @@
       ]
     },
     {
+      "name": "Harmoniq™",
+      "icon": "menu-icon tf-icons ti ti-microphone",
+      "slug": "chats",
+      "submenu": [
+        {
+          "name": "Create Harmoniq™",
+          "slug": "harmoniq",
+          "url": "harmoniq:create"
+        },
+        {
+          "name": "Manage Harmoniq™",
+          "slug": "harmoniq",
+          "url": "harmoniq:list"
+        }
+      ]
+    },
+    {
       "menu_header": "Lightweight Assistants"
     },
     {
@@ -219,6 +236,12 @@
       "menu_header": "Interaction"
     },
     {
+      "name": "Harmoniq™ Chat",
+      "icon": "menu-icon tf-icons ti ti-microphone",
+      "slug": "harmoniq-chats",
+      "url": "harmoniq:use"
+    },
+    {
       "name": "Chats",
       "icon": "menu-icon tf-icons ti ti-messages",
       "slug": "chats",
@@ -227,7 +250,7 @@
     {
       "name": "Leanmod™ Chats",
       "icon": "menu-icon tf-icons ti ti-note",
-      "slug": "chats",
+      "slug": "leanmod-chats",
       "url": "multimodal_chat:lean_chat"
     },
     {
@@ -236,7 +259,7 @@
     {
       "name": "Starred Messages",
       "icon": "menu-icon tf-icons ti ti-star",
-      "slug": "chats",
+      "slug": "starred-messages",
       "url": "starred_messages:list"
     },
     {
@@ -246,12 +269,12 @@
       "submenu": [
         {
           "name": "Add New Memory",
-          "slug": "memory",
+          "slug": "add-memory",
           "url": "memories:create"
         },
         {
           "name": "Memories",
-          "slug": "memory",
+          "slug": "memories",
           "url": "memories:list"
         }
       ]
@@ -424,7 +447,14 @@
           "name": "SQL Databases",
           "slug": "sql-database",
           "url": "datasource_sql:list"
-        },
+        }
+      ]
+    },
+    {
+      "name": "Custom SQL Queries",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-queries",
+      "submenu": [
         {
           "name": "Add Custom SQL Query",
           "slug": "sql-query",
@@ -434,6 +464,23 @@
           "name": "Custom SQL Queries",
           "slug": "sql-query",
           "url": "datasource_sql:list_queries"
+        }
+      ]
+    },
+    {
+      "name": "NoSQL Databases",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "submenu": [
+        {
+          "name": "Add NoSQL Database",
+          "slug": "nosql-database",
+          "url": "dashboard:main-dashboard"
+        },
+        {
+          "name": "NoSQL Databases",
+          "slug": "nosql-database",
+          "url": "dashboard:main-dashboard"
         }
       ]
     },
@@ -636,11 +683,6 @@
           "name": "Manage Connections",
           "slug": "function",
           "url": "mm_functions:connect"
-        },
-        {
-          "name": "Function Store",
-          "slug": "function",
-          "url": "mm_functions:store"
         }
       ]
     },
@@ -663,11 +705,6 @@
           "name": "Manage Connections",
           "slug": "api",
           "url": "mm_apis:connect"
-        },
-        {
-          "name": "API Store",
-          "slug": "api",
-          "url": "mm_apis:store"
         }
       ]
     },
@@ -690,11 +727,6 @@
           "name": "Manage Connections",
           "slug": "script",
           "url": "mm_scripts:connect"
-        },
-        {
-          "name": "Script Store",
-          "slug": "script",
-          "url": "mm_scripts:store"
         }
       ]
     },
@@ -731,6 +763,27 @@
           "url": "mm_triggered_jobs:list"
         }
       ]
+    },
+    {
+      "menu_header": "Tool Stores"
+    },
+    {
+      "name": "Function Store",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "function-store",
+      "url": "mm_functions:store"
+    },
+    {
+      "name": "API Store",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "api-store",
+      "url": "mm_apis:store"
+    },
+    {
+      "name": "Script Store",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "script-store",
+      "url": "mm_scripts:store"
     },
     {
       "menu_header": "Meta Modules"

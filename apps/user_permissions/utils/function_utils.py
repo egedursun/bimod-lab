@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 def get_permissions_grouped():
     permissions_grouped = {
@@ -72,6 +70,13 @@ def get_permissions_grouped():
             ('list_user_roles', 'List User Roles'),
             ('update_user_roles', 'Update User Roles'),
             ('delete_user_roles', 'Delete User Roles'),
+        ],
+        "Harmoniq Assistant Permissions": [
+            ('add_harmoniq_agents', 'Add Harmoniq Agents'),
+            ('update_harmoniq_agents', 'Update Harmoniq Agents'),
+            ('list_harmoniq_agents', 'List Harmoniq Agents'),
+            ('delete_harmoniq_agents', 'Delete Harmoniq Agents'),
+            ('chat_with_harmoniq_agents', 'Chat with Harmoniq Agents'),
         ],
         "Assistant Permissions": [
             ('add_assistants', 'Add Assistants'),

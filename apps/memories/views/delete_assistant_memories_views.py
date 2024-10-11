@@ -20,23 +20,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DeleteView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.memories.models import AssistantMemory
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DeleteAssistantMemoryView(LoginRequiredMixin, DeleteView):
-    """
-    Handles the deletion of an assistant memory.
-
-    This view allows users to delete a specific memory associated with an assistant, provided they have the necessary permissions.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context for the deletion confirmation page.
-        post(self, request, *args, **kwargs): Processes the deletion of the specified memory.
-    """
-
+class AssistantMemoryView_Delete(LoginRequiredMixin, DeleteView):
     model = AssistantMemory
     success_url = 'memories:list'
 
@@ -59,6 +49,5 @@ class DeleteAssistantMemoryView(LoginRequiredMixin, DeleteView):
         memory = get_object_or_404(AssistantMemory, id=self.kwargs['pk'])
         memory.delete()
         success_message = "Memory deleted successfully!"
-        print('[DeleteAssistantMemoryView.post] Memory deleted successfully.')
         messages.success(request, success_message)
         return redirect(self.success_url)

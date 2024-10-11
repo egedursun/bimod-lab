@@ -22,23 +22,14 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.starred_messages.models import StarredMessage
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
 
-class ListStarredMessageView(TemplateView, LoginRequiredMixin):
-    """
-    Displays a list of starred messages for the authenticated user.
-
-    This view retrieves and organizes starred messages by organization and assistant, allowing the user to easily browse through their saved messages.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context with the list of starred messages grouped by organization and assistant.
-    """
-
+class StarredMessageView_List(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -51,17 +42,16 @@ class ListStarredMessageView(TemplateView, LoginRequiredMixin):
         ##############################
 
         user = self.request.user
-        starred_messages = StarredMessage.objects.filter(user=user).select_related('chat_message', 'assistant',
+        starred_msgs = StarredMessage.objects.filter(user=user).select_related('chat_message', 'assistant',
                                                                                    'organization', 'chat')
-
-        org_assistants_messages = {}
-        for message in starred_messages:
-            org_name = message.organization.name
-            assistant_name = message.assistant.name
-            if org_name not in org_assistants_messages:
-                org_assistants_messages[org_name] = {}
-            if assistant_name not in org_assistants_messages[org_name]:
-                org_assistants_messages[org_name][assistant_name] = []
-            org_assistants_messages[org_name][assistant_name].append(message)
-        context.update({'org_assistants_messages': org_assistants_messages, 'base_url': MEDIA_URL})
+        org_agents_msgs = {}
+        for msg in starred_msgs:
+            org_name = msg.organization.name
+            agent_name = msg.assistant.name
+            if org_name not in org_agents_msgs:
+                org_agents_msgs[org_name] = {}
+            if agent_name not in org_agents_msgs[org_name]:
+                org_agents_msgs[org_name][agent_name] = []
+            org_agents_msgs[org_name][agent_name].append(msg)
+        context.update({'org_assistants_messages': org_agents_msgs, 'base_url': MEDIA_URL})
         return context

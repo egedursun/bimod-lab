@@ -19,25 +19,26 @@
 #
 
 from django.urls import path
-from .views import (CreateOrganizationView, OrganizationListView, OrganizationUpdateView,
-                    OrganizationDeleteView, OrganizationAddCreditsView, OrganizationBalanceTransferView,
-                    OrganizationUserAddGiftCreditsView)
+from .views import (OrganizationView_OrganizationCreate, OrganizationView_OrganizationList,
+                    OrganizationView_OrganizationUpdate,
+                    OrganizationView_OrganizationDelete, OrganizationView_AddBalanceCredits,
+                    OrganizationView_TransferBalance,
+                    OrganizationView_AddGiftCredits)
 
 app_name = "organization"
 
 urlpatterns = [
     path('create/',
-         CreateOrganizationView.as_view(template_name="organization/create_organization.html"),
+         OrganizationView_OrganizationCreate.as_view(template_name="organization/create_organization.html"),
          name="create"),
-    path('list/', OrganizationListView.as_view(template_name="organization/list_organizations.html"),
+    path('list/', OrganizationView_OrganizationList.as_view(template_name="organization/list_organizations.html"),
          name="list"),
-    path('update/<int:pk>/', OrganizationUpdateView.as_view(template_name="organization/update_organization.html"),
-         name="update"),
-    path('delete/<int:pk>/', OrganizationDeleteView.as_view(),
+    path('update/<int:pk>/', OrganizationView_OrganizationUpdate.as_view(
+        template_name="organization/update_organization.html"), name="update"),
+    path('delete/<int:pk>/', OrganizationView_OrganizationDelete.as_view(),
          name="delete"),
-    path('add_credits/<int:pk>/', OrganizationAddCreditsView.as_view(),
+    path('add_credits/<int:pk>/', OrganizationView_AddBalanceCredits.as_view(),
          name="add_credits"),
-
-    path('balance_transfer/', OrganizationBalanceTransferView.as_view(), name='balance_transfer'),
-    path('add_gift_credits/<int:pk>/', OrganizationUserAddGiftCreditsView.as_view(), name='add_gift_credits'),
+    path('balance_transfer/', OrganizationView_TransferBalance.as_view(), name='balance_transfer'),
+    path('add_gift_credits/<int:pk>/', OrganizationView_AddGiftCredits.as_view(), name='add_gift_credits'),
 ]

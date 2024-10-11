@@ -26,17 +26,7 @@ from apps.organization.models import Organization
 from web_project import TemplateLayout
 
 
-class ListAutomatedTopUpPlans(LoginRequiredMixin, TemplateView):
-    """
-    Displays a list of automated balance top-up plans for the user's organizations.
-
-    This view allows users to manage their automated top-up plans, including deleting existing plans.
-
-    Methods:
-        get_context_data(self, **kwargs): Prepares the context with the organizations associated with the current user and their respective top-up plans.
-        post(self, request, *args, **kwargs): Processes the form submission to delete an automated top-up plan.
-    """
-
+class Transactions_AutoTopUpList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])

@@ -21,13 +21,12 @@
 from django.contrib import admin
 
 from apps.community_forum.models import ForumComment
+from apps.community_forum.utils import FORUM_COMMENT_ADMIN_LIST, FORUM_COMMENT_ADMIN_SEARCH, FORUM_COMMENT_ADMIN_FILTER
 
 
 @admin.register(ForumComment)
 class ForumCommentAdmin(admin.ModelAdmin):
-    list_display = (
-        "post", "content", "created_by", "created_at", "updated_at"
-    )
-    search_fields = ("post__content", "content", "created_by__username",)
-    list_filter = ("created_at", "updated_at",)
+    list_display = FORUM_COMMENT_ADMIN_LIST
+    search_fields = FORUM_COMMENT_ADMIN_SEARCH
+    list_filter = FORUM_COMMENT_ADMIN_FILTER
     ordering = ("-created_at",)

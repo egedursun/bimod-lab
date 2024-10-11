@@ -21,10 +21,12 @@
 from django.contrib import admin
 
 from apps.orchestrations.models import OrchestrationQueryLog
+from apps.orchestrations.utils import MAESTRO_QUERY_LOG_ADMIN_LIST, MAESTRO_QUERY_LOG_ADMIN_SEARCH, \
+    MAESTRO_QUERY_LOG_ADMIN_FILTER
 
 
 @admin.register(OrchestrationQueryLog)
 class OrchestrationQueryLogAdmin(admin.ModelAdmin):
-    list_display = ['orchestration_query', 'log_text_content', 'created_at']
-    search_fields = ['orchestration_query', 'log_text_content']
-    list_filter = ['orchestration_query', 'created_at']
+    list_display = MAESTRO_QUERY_LOG_ADMIN_LIST
+    search_fields = MAESTRO_QUERY_LOG_ADMIN_SEARCH
+    list_filter = MAESTRO_QUERY_LOG_ADMIN_FILTER

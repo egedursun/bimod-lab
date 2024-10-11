@@ -14,17 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 from django.contrib import admin
 
 from apps.support_system.models import SupportTicketResponse
+from apps.support_system.utils import SUPPORT_TICKET_RESPONSE_ADMIN_LIST, SUPPORT_TICKET_RESPONSE_ADMIN_SEARCH
 
 
 @admin.register(SupportTicketResponse)
 class SupportTicketResponseAdmin(admin.ModelAdmin):
-    list_display = ['ticket', 'user', 'created_at']
-    search_fields = ['ticket__title', 'response']
+    list_display = SUPPORT_TICKET_RESPONSE_ADMIN_LIST
+    search_fields = SUPPORT_TICKET_RESPONSE_ADMIN_SEARCH
     date_hierarchy = 'created_at'

@@ -23,13 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DeleteView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DeleteExportLeanmodAssistantsView(LoginRequiredMixin, DeleteView):
+class ExportLeanModView_Delete(LoginRequiredMixin, DeleteView):
     model = ExportLeanmodAssistantAPI
     success_url = 'export_leanmods:list'
 
@@ -49,13 +49,11 @@ class DeleteExportLeanmodAssistantsView(LoginRequiredMixin, DeleteView):
             return redirect('export_leanmods:list')
         ##############################
 
-        export_assistant = get_object_or_404(ExportLeanmodAssistantAPI, id=self.kwargs['pk'])
-        export_assistant.delete()
+        exp_leanmod = get_object_or_404(ExportLeanmodAssistantAPI, id=self.kwargs['pk'])
+        exp_leanmod.delete()
         success_message = "Export LeanMod Assistant deleted successfully."
-        # remove the exported assistant from the organization
-        organization = export_assistant.lean_assistant.organization
-        organization.exported_leanmods.remove(export_assistant)
-        organization.save()
-        print("[DeleteExportLeanmodAssistantsView.post] Export Assistant deleted successfully.")
+        org = exp_leanmod.lean_assistant.organization
+        org.exported_leanmods.remove(exp_leanmod)
+        org.save()
         messages.success(request, success_message)
         return redirect(self.success_url)

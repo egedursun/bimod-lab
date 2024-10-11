@@ -27,50 +27,30 @@ from django.views.generic import TemplateView
 
 from apps.community_forum.forms import ForumPostForm
 from apps.community_forum.models import ForumThread, ForumCategory
-from apps.community_forum.utils import HOURS
-from auth.models import ForumRewardActionsNames
+from apps.community_forum.utils import CONST_HOURS
+from auth.utils import ForumRewardActionsNames
 from web_project import TemplateLayout
 
 
-class ForumPostCreateView(LoginRequiredMixin, TemplateView):
-    """
-    Allows users to create a new post within a thread.
-
-    Ensures that users can only post once per hour and awards points for creating new posts.
-    """
-
+class ForumView_PostCreate(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
-        """
-        Handles the creation of a new post in a specific thread.
-
-        Ensures that users can only post once per hour.
-
-        Returns:
-            HttpResponseRedirect: Redirects to the thread detail view after the post is created.
-        """
         thread_id = self.kwargs.get("thread_id")
         thread = get_object_or_404(ForumThread, id=thread_id)
 
         if request.user.profile.user_last_forum_post_at:
-            # Check if the user has posted in the last hour
-            if (timezone.now() - request.user.profile.user_last_forum_post_at).seconds < (1 * HOURS):
+            if (timezone.now() - request.user.profile.user_last_forum_post_at).seconds < (1 * CONST_HOURS):
                 messages.error(request, "You can only post once per hour.")
                 return redirect('community_forum:thread_detail', thread_id=thread.id)
 
-        # save the last post time to the user's profile
         request.user.profile.user_last_forum_post_at = timezone.now()
         request.user.profile.save()
-
         form = ForumPostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.thread = thread
             post.created_by = request.user
             post.save()
-
-            # Add POINTS for asking a question to the user
             request.user.profile.add_points(ForumRewardActionsNames.ASK_QUESTION)
-
             return redirect('community_forum:thread_detail', thread_id=thread.id)
 
         context = self.get_context_data(**kwargs)
@@ -78,22 +58,13 @@ class ForumPostCreateView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
-        """
-        Retrieves and returns the context data for rendering the post creation template.
-
-        Returns:
-            dict: Context data containing the thread details and the post form.
-        """
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         thread_id = self.kwargs.get("thread_id")
         thread = get_object_or_404(ForumThread, id=thread_id)
-
-        # Prefetch threads for each category
         categories = ForumCategory.objects.prefetch_related(
             Prefetch('threads', queryset=ForumThread.objects.order_by('-created_at'))
         )
         context['categories'] = categories
-
         context['thread'] = thread
         context['form'] = ForumPostForm()
         return context

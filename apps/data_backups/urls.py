@@ -17,14 +17,12 @@
 
 from django.urls import path
 
-from apps.data_backups.views import ManageDataBackupsView, DeleteDataBackupView, ReloadBackupView
+from apps.data_backups.views import DataBackupView_BackupManage, DataBackupView_BackupDelete, DataBackupView_ReloadBackup
 
 app_name = 'data_backups'
 
 urlpatterns = [
-    path('manage/', ManageDataBackupsView.as_view(
-        template_name='data_backups/manage_backups.html'
-    ), name='manage'),
-    path('delete/<int:backup_id>/', DeleteDataBackupView.as_view(), name='delete'),
-    path('reload/<int:backup_id>/', ReloadBackupView.as_view(), name='reload'),
+    path('manage/', DataBackupView_BackupManage.as_view(template_name='data_backups/manage_backups.html'), name='manage'),
+    path('delete/<int:backup_id>/', DataBackupView_BackupDelete.as_view(), name='delete'),
+    path('reload/<int:backup_id>/', DataBackupView_ReloadBackup.as_view(), name='reload'),
 ]

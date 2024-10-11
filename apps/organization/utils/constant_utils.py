@@ -14,7 +14,10 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
+
+ORGANIZATION_ADMIN_LIST = (
+    "name", "email", "phone", "address", "industry", "is_active", "created_at", "updated_at"
+)
+ORGANIZATION_ADMIN_FILTER = ("is_active", "industry", "created_at", "updated_at")
+ORGANIZATION_ADMIN_SEARCH = ("name", "email", "phone", "address", "industry")

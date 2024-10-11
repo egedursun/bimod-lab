@@ -18,16 +18,15 @@
 
 from django.urls import path
 
-from apps.assistants.views import CreateAssistantView, ListAssistantView, UpdateAssistantView, DeleteAssistantView
+from apps.assistants.views import AssistantView_Create, AssistantView_List, AssistantView_Update, AssistantView_Delete
 
 app_name = "assistants"
 
 urlpatterns = [
-    path("create/", CreateAssistantView.as_view(template_name="assistants/create_assistant.html"),
-         name="create"),
-    path("list/", ListAssistantView.as_view(template_name="assistants/list_assistants.html"), name="list"),
-    path("update/<int:pk>/", UpdateAssistantView.as_view(template_name="assistants/update_assistant.html"),
+    path("create/", AssistantView_Create.as_view(template_name="assistants/create_assistant.html"), name="create"),
+    path("list/", AssistantView_List.as_view(template_name="assistants/list_assistants.html"), name="list"),
+    path("update/<int:pk>/", AssistantView_Update.as_view(template_name="assistants/update_assistant.html"),
          name="update"),
-    path("delete/<int:pk>/", DeleteAssistantView.as_view(template_name="assistants/confirm_delete_assistant.html"),
+    path("delete/<int:pk>/", AssistantView_Delete.as_view(template_name="assistants/confirm_delete_assistant.html"),
          name="delete"),
 ]

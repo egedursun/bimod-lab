@@ -14,46 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
-#
+
 from django.db import models
 
-from apps._services.knowledge_base.memory.memory_executor import MemoryExecutor
-from apps.assistants.utils import ContextOverflowStrategyNames
+from apps.core.vector_operations.intra_context_memory.memory_executor import IntraContextMemoryExecutor
+from apps.assistants.utils import ContextManagementStrategyNames
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
-from apps.multimodal_chat.utils import CHAT_SOURCES
+from apps.multimodal_chat.utils import SOURCES_FOR_MULTIMODAL_CHATS
 
 
 class MultimodalChat(models.Model):
-    """
-    MultimodalChat Model:
-    - Purpose: Represents a multimodal chat session involving an assistant and a user. It stores chat messages, transactions, context memory connections, and starred messages. It also includes metadata such as the chat source and whether the chat is archived.
-    - Key Fields:
-        - `organization`: ForeignKey linking to the `Organization` model.
-        - `assistant`: ForeignKey linking to the `Assistant` model.
-        - `user`: ForeignKey linking to the `User` model.
-        - `chat_name`: The name of the chat session.
-        - `created_by_user`: ForeignKey linking to the `User` who created the chat.
-        - `chat_messages`: ManyToManyField linking to `MultimodalChatMessage` models representing the chat's messages.
-        - `transactions`: ManyToManyField linking to `LLMTransaction` models associated with the chat.
-        - `context_memory_connection`: OneToOneField linking to a `ContextHistoryKnowledgeBaseConnection` for managing chat context.
-        - `starred_messages`: ManyToManyField linking to `StarredMessage` models representing starred messages in the chat.
-        - `is_archived`: Boolean field indicating whether the chat is archived.
-        - `chat_source`: Field specifying the source of the chat (e.g., app, API).
-        - `created_at`, `updated_at`: Timestamps for creation and last update.
-    - Methods:
-        - `save()`: Overridden to handle context memory connection creation and related logic.
-        - `delete()`: Overridden to manage the deletion of context memory connections.
-    - Meta:
-        - `verbose_name`: "Multimodal Chat"
-        - `verbose_name_plural`: "Multimodal Chats"
-        - `ordering`: Orders chats by creation date in descending order.
-        - `indexes`: Indexes on various fields for optimized queries.
-    """
-
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
     assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE,
                                   related_name='multimodal_chats', null=True)
@@ -63,17 +34,12 @@ class MultimodalChat(models.Model):
                                         related_name='multimodal_chats_created_by_user')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # Context Memory
     context_memory_connection = models.OneToOneField(ContextHistoryKnowledgeBaseConnection, on_delete=models.CASCADE,
                                                      related_name='multimodal_chat', null=True, blank=True)
     transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_chats',
                                           blank=True)
-
-    # For archiving the chats
     is_archived = models.BooleanField(default=False)
-    # Management for APIs
-    chat_source = models.CharField(max_length=100, choices=CHAT_SOURCES, default="app")
+    chat_source = models.CharField(max_length=100, choices=SOURCES_FOR_MULTIMODAL_CHATS, default="app")
 
     def __str__(self):
         return self.chat_name + " - " + self.assistant.name + " - " + self.user.username
@@ -83,7 +49,6 @@ class MultimodalChat(models.Model):
         verbose_name_plural = "Multimodal Chats"
         ordering = ["-created_at"]
         indexes = [
-            # Single-field indexes
             models.Index(fields=['id']),
             models.Index(fields=['organization']),
             models.Index(fields=['assistant']),
@@ -93,8 +58,6 @@ class MultimodalChat(models.Model):
             models.Index(fields=['created_by_user']),
             models.Index(fields=['created_at']),
             models.Index(fields=['updated_at']),
-
-            # Two-field composite indexes
             models.Index(fields=['id', 'organization']),
             models.Index(fields=['id', 'assistant']),
             models.Index(fields=['id', 'user']),
@@ -131,8 +94,6 @@ class MultimodalChat(models.Model):
             models.Index(fields=['created_by_user', 'created_at']),
             models.Index(fields=['created_by_user', 'updated_at']),
             models.Index(fields=['created_at', 'updated_at']),
-
-            # Three-field composite indexes
             models.Index(fields=['id', 'organization', 'assistant']),
             models.Index(fields=['id', 'organization', 'user']),
             models.Index(fields=['id', 'organization', 'chat_source']),
@@ -217,8 +178,6 @@ class MultimodalChat(models.Model):
             models.Index(fields=['is_archived', 'created_by_user', 'updated_at']),
             models.Index(fields=['is_archived', 'created_at', 'updated_at']),
             models.Index(fields=['created_by_user', 'created_at', 'updated_at']),
-
-            # Four-field composite indexes
             models.Index(fields=['id', 'organization', 'assistant', 'user']),
             models.Index(fields=['id', 'organization', 'assistant', 'chat_source']),
             models.Index(fields=['id', 'organization', 'assistant', 'is_archived']),
@@ -350,28 +309,23 @@ class MultimodalChat(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        # Create the knowledge base connection in the ORM
-        if (self.assistant.context_overflow_strategy == ContextOverflowStrategyNames.VECTORIZE
+        if (self.assistant.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE
             and self.context_memory_connection is None):
             if self.assistant.vectorizer_name is None:
-                print("[MultimodalChat.save] The assistant does not have a vectorizer name set.")
                 return
             if self.assistant.vectorizer_api_key is None:
-                print("[MultimodalChat.save] The assistant does not have a vectorizer API key set.")
                 return
-            context_history = ContextHistoryKnowledgeBaseConnection.objects.create(
+            intra_memory = ContextHistoryKnowledgeBaseConnection.objects.create(
                 assistant=self.assistant, chat=self, vectorizer=self.assistant.vectorizer_name,
                 vectorizer_api_key=self.assistant.vectorizer_api_key
             )
-            # Create the Weaviate classes for the context chat history memory
-            connection = ContextHistoryKnowledgeBaseConnection.objects.get(id=context_history.id)
-            self.context_memory_connection = connection
+            conn = ContextHistoryKnowledgeBaseConnection.objects.get(id=intra_memory.id)
+            self.context_memory_connection = conn
             self.save()
 
     def delete(self, using=None, keep_parents=False):
-        # Remove the context memory connection
         if self.context_memory_connection:
-            executor = MemoryExecutor(connection=self.context_memory_connection)
-            executor.delete_chat_history_classes(class_name=self.context_memory_connection.class_name)
+            xc = IntraContextMemoryExecutor(connection=self.context_memory_connection)
+            xc.delete_chat_history_classes(class_name=self.context_memory_connection.class_name)
             self.context_memory_connection.delete()
         super().delete(using, keep_parents)

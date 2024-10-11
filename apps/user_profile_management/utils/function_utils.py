@@ -14,14 +14,11 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
 import re
 
 
-def get_card_type(card_number):
+def infer_credit_card_type(card_number):
     card_types = {
         'visa': r'^4[0-9]{12}(?:[0-9]{3})?$',
         'mastercard': r'^5[1-5][0-9]{14}$',

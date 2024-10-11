@@ -21,12 +21,13 @@
 from django.contrib import admin
 
 from apps.mm_scripts.models import CustomScriptReference
+from apps.mm_scripts.utils import CUSTOM_SCRIPT_REFERENCE_ADMIN_LIST, CUSTOM_SCRIPT_REFERENCE_ADMIN_SEARCH, \
+    CUSTOM_SCRIPT_REFERENCE_ADMIN_FILTER
 
 
 @admin.register(CustomScriptReference)
 class CustomScriptReferenceAdmin(admin.ModelAdmin):
-    list_display = ("custom_script", "assistant", "created_by_user", "created_at", "updated_at")
-    list_filter = ("assistant", "created_by_user")
-    search_fields = ("custom_script__name", "assistant__name")
-    readonly_fields = ("created_at", "updated_at")
+    list_display = CUSTOM_SCRIPT_REFERENCE_ADMIN_LIST
+    list_filter = CUSTOM_SCRIPT_REFERENCE_ADMIN_FILTER
+    search_fields = CUSTOM_SCRIPT_REFERENCE_ADMIN_SEARCH
     ordering = ("-created_at",)

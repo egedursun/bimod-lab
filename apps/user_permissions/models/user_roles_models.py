@@ -14,9 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -26,11 +25,9 @@ class UserRole(models.Model):
     role_name = models.CharField(max_length=1000)
     role_description = models.TextField(null=True, blank=True)
     role_permissions = models.JSONField(default=list)
-    users = models.ManyToManyField(User, related_name='roles')  # Linking Users to Roles
-
+    users = models.ManyToManyField(User, related_name='roles')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     created_by_user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, related_name='created_roles')
 
     class Meta:

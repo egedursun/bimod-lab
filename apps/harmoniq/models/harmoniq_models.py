@@ -17,19 +17,17 @@
 
 
 from django.db import models
-from apps.harmoniq.utils.constant_utils import HARMONIQ_INPUT_MODES, HarmoniqInputModesTypes
+from apps.harmoniq.utils.constant_utils import HARMONIQ_DEITIES
 
 
 class Harmoniq(models.Model):
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
     llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-
     name = models.CharField(max_length=1000)
     description = models.TextField()
-    optional_instructions = models.TextField()
-    mode = models.CharField(max_length=100, choices=HARMONIQ_INPUT_MODES, default=HarmoniqInputModesTypes.AUDIO)
-
+    harmoniq_deity = models.CharField(max_length=100, choices=HARMONIQ_DEITIES, default=HARMONIQ_DEITIES[0][0])
+    optional_instructions = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -44,5 +42,4 @@ class Harmoniq(models.Model):
             models.Index(fields=['organization']),
             models.Index(fields=['organization', 'llm_model']),
             models.Index(fields=['organization', 'llm_model', 'created_by_user']),
-            models.Index(fields=['organization', 'llm_model', 'created_by_user', 'mode']),
         ]

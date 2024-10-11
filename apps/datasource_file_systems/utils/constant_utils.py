@@ -29,3 +29,8 @@ DATASOURCE_FILE_SYSTEMS_OS_TYPES = [
 class DataSourceFileSystemsOsTypeNames:
     LINUX = 'linux'
     MACOS = 'macos'
+
+
+FILE_SYSTEM_ADMIN_LIST = ('name', 'os_type', 'host_url', 'port', 'username', 'is_read_only')
+FILE_SYSTEM_ADMIN_FILTER = ('os_type', 'is_read_only')
+FILE_SYSTEM_ADMIN_SEARCH = ('name', 'host_url', 'username', 'ssh_connection_uri')

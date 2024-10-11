@@ -14,28 +14,19 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 from django.contrib import admin
 
 from apps.user_permissions.models import UserPermission
+from apps.user_permissions.utils import USER_PERMISSIONS_ADMIN_LIST, USER_PERMISSIONS_ADMIN_FILTER, \
+    USER_PERMISSIONS_ADMIN_SEARCH
 
 
 @admin.register(UserPermission)
 class UserPermissionsAdmin(admin.ModelAdmin):
-    list_display = (
-        "user", "permission_type", "created_at",
-    )
-    list_filter = ("user", "permission_type", "created_at")
-    search_fields = ("user", "permission_type")
+    list_display = USER_PERMISSIONS_ADMIN_LIST
+    list_filter = USER_PERMISSIONS_ADMIN_FILTER
+    search_fields = USER_PERMISSIONS_ADMIN_SEARCH
     date_hierarchy = "created_at"
     ordering = ["-created_at"]
-
-    list_per_page = 20
-    list_max_show_all = 100
-    list_editable = []
-    list_display_links = ["user"]
-    list_select_related = False
-    list_display_links_details = False

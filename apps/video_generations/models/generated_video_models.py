@@ -27,16 +27,13 @@ class GeneratedVideo(models.Model):
                                         related_name='generated_videos')
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE,
                                         related_name='generated_videos')
-
     video_url = models.URLField()
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Generated Video'
         verbose_name_plural = 'Generated Videos'
-
         indexes = [
             models.Index(fields=['organization']),
             models.Index(fields=['organization', 'assistant']),

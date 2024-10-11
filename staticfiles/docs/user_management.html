@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Datasource User Management App Documentation &#8212; Bimod.io v0.1.0 documentation</title>
+    <title>Datasource User Management App Documentation &#8212; Br6.in v0.1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
     <script src="_static/documentation_options.js?v=fa47ad08"></script>
@@ -35,236 +35,8 @@
   <section id="datasource-user-management-app-documentation">
 <h1>Datasource User Management App Documentation<a class="headerlink" href="#datasource-user-management-app-documentation" title="Link to this heading">¶</a></h1>
 <p>This section describes the User Management App.</p>
-<p id="module-user_management.views">View to handle the creation of new users.</p>
-<p>This view allows administrators to create new users by providing details like username, email, password, and more. It also sends a verification and invitation email to the newly created user.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.get_context_data">
-<span class="sig-prename descclassname"><span class="pre">user_management.views.</span></span><span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.get_context_data" title="Link to this definition">¶</a></dt>
-<dd><p>Prepares the context with a list of organizations to which the user can be added.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.post">
-<span class="sig-prename descclassname"><span class="pre">user_management.views.</span></span><span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.post" title="Link to this definition">¶</a></dt>
-<dd><p>Handles the user creation logic, including sending verification and invitation emails.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="user_management.views.AddNewUserView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user_management.views.</span></span><span class="sig-name descname"><span class="pre">AddNewUserView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.AddNewUserView" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
-<p>View to add an existing user to an organization.</p>
-<p>This view allows administrators to add existing users (sub-users) to an organization that the administrator belongs to.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.AddNewUserView.get_context_data">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.AddNewUserView.get_context_data" title="Link to this definition">¶</a></dt>
-<dd><p>Prepares the context with the list of sub-users and organizations the user can manage.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.AddNewUserView.post">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.AddNewUserView.post" title="Link to this definition">¶</a></dt>
-<dd><p>Handles the logic to add a user to the selected organization.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="user_management.views.AddNewUserView.template_name">
-<span class="sig-name descname"><span class="pre">template_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'user_management/users/add_new_user.html'</span></em><a class="headerlink" href="#user_management.views.AddNewUserView.template_name" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="user_management.views.AddUserToOrganizationView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user_management.views.</span></span><span class="sig-name descname"><span class="pre">AddUserToOrganizationView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.AddUserToOrganizationView" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
-<p>View to add an existing user to an organization.</p>
-<p>This view allows administrators to add existing users (sub-users) to an organization that the administrator belongs to.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.AddUserToOrganizationView.get_context_data">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.AddUserToOrganizationView.get_context_data" title="Link to this definition">¶</a></dt>
-<dd><p>Prepares the context with the list of sub-users and organizations the user can manage.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.AddUserToOrganizationView.post">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.AddUserToOrganizationView.post" title="Link to this definition">¶</a></dt>
-<dd><p>Handles the logic to add a user to the selected organization.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="user_management.views.ListUsersView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user_management.views.</span></span><span class="sig-name descname"><span class="pre">ListUsersView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.ListUsersView" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
-<p>View to list users associated with the logged-in user’s organizations.</p>
-<p>This view displays a paginated list of users who are part of the organizations that the logged-in user belongs to. It also allows for updating user statuses.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.ListUsersView.get_context_data">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.ListUsersView.get_context_data" title="Link to this definition">¶</a></dt>
-<dd><p>Prepares the context with the list of users grouped by organization.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.ListUsersView.post">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.ListUsersView.post" title="Link to this definition">¶</a></dt>
-<dd><p>Handles the logic to update the status (active/inactive) of a user.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="user_management.views.RemoveUserFromAllOrganizationsView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user_management.views.</span></span><span class="sig-name descname"><span class="pre">RemoveUserFromAllOrganizationsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.RemoveUserFromAllOrganizationsView" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code></p>
-<p>View to remove a user from all organizations they belong to.</p>
-<p>This view allows administrators to remove a user from all organizations they are currently a member of, effectively disassociating them from all organizations.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.RemoveUserFromAllOrganizationsView.get_context_data">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.RemoveUserFromAllOrganizationsView.get_context_data" title="Link to this definition">¶</a></dt>
-<dd><p>Prepares the context with details of the user to confirm the removal from all organizations.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.RemoveUserFromAllOrganizationsView.post">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.RemoveUserFromAllOrganizationsView.post" title="Link to this definition">¶</a></dt>
-<dd><p>Handles the logic to remove the user from all organizations.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="user_management.views.RemoveUserFromOrganizationView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user_management.views.</span></span><span class="sig-name descname"><span class="pre">RemoveUserFromOrganizationView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.RemoveUserFromOrganizationView" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code></p>
-<p>View to remove a user from a specific organization.</p>
-<p>This view allows administrators to remove a user from a particular organization. The user will no longer be associated with that organization.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.RemoveUserFromOrganizationView.get_context_data">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.RemoveUserFromOrganizationView.get_context_data" title="Link to this definition">¶</a></dt>
-<dd><p>Prepares the context with details of the user and organization to confirm the removal.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.RemoveUserFromOrganizationView.post">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.RemoveUserFromOrganizationView.post" title="Link to this definition">¶</a></dt>
-<dd><p>Handles the logic to remove the user from the specified organization.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id8">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id9">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="user_management.views.RemoveUserView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user_management.views.</span></span><span class="sig-name descname"><span class="pre">RemoveUserView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.RemoveUserView" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
-<p>View to delete a user from the system.</p>
-<p>This view allows administrators to permanently delete a user. The user will be removed from all associated organizations before deletion.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.RemoveUserView.get_context_data">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.RemoveUserView.get_context_data" title="Link to this definition">¶</a></dt>
-<dd><p>Prepares the context with details of the user to confirm the deletion.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.RemoveUserView.post">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.RemoveUserView.post" title="Link to this definition">¶</a></dt>
-<dd><p>Handles the logic to delete the user and remove them from all organizations.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id10">
-<span class="sig-name descname"><span class="pre">get_context_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id10" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id11">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id11" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="user_management.views.RemoveUserView.template_name">
-<span class="sig-name descname"><span class="pre">template_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'user_management/users/confirm_remove_user.html'</span></em><a class="headerlink" href="#user_management.views.RemoveUserView.template_name" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="user_management.views.UpdateUserStatusView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user_management.views.</span></span><span class="sig-name descname"><span class="pre">UpdateUserStatusView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.UpdateUserStatusView" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LoginRequiredMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></p>
-<p>View to update the active status of a user.</p>
-<p>This view allows administrators to activate or deactivate a user. The user’s active status in all associated permissions is also updated accordingly.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.UpdateUserStatusView.post">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.UpdateUserStatusView.post" title="Link to this definition">¶</a></dt>
-<dd><p>Handles the logic to update the user’s active status.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="user_management.views.UpdateUserStatusView.dispatch">
-<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user_management.views.UpdateUserStatusView.dispatch" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id12">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id12" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 <section id="models">
-<h2>Models<a class="headerlink" href="#models" title="Link to this heading">¶</a></h2>
+<span id="module-user_management.views"></span><h2>Models<a class="headerlink" href="#models" title="Link to this heading">¶</a></h2>
 <p>This section describes the models used in the User Management App.</p>
 <span class="target" id="module-apps.user_management.models"></span></section>
 </section>
@@ -276,7 +48,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Bimod.io</a></h1>
+<h1 class="logo"><a href="index.html">Br6.in</a></h1>
 
 
 
@@ -289,6 +61,8 @@
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="assistants.html">Assistants App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blog_app.html">Blog App Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="community_forum.html">Community Forum App Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard App Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datasource_browsers.html">Datasource Browsers App Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datasource_file_systems.html">Datasource File Systems App Documentation</a></li>
@@ -311,58 +85,6 @@
 <li class="toctree-l1"><a class="reference internal" href="starred_messages.html">Datasource Starred Messages App Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support_system.html">Support System App Documentation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Datasource User Management App Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#user_management.views.get_context_data"><code class="docutils literal notranslate"><span class="pre">get_context_data()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#user_management.views.post"><code class="docutils literal notranslate"><span class="pre">post()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#user_management.views.AddNewUserView"><code class="docutils literal notranslate"><span class="pre">AddNewUserView</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.AddNewUserView.get_context_data"><code class="docutils literal notranslate"><span class="pre">AddNewUserView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.AddNewUserView.post"><code class="docutils literal notranslate"><span class="pre">AddNewUserView.post()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">AddNewUserView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">AddNewUserView.post()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.AddNewUserView.template_name"><code class="docutils literal notranslate"><span class="pre">AddNewUserView.template_name</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#user_management.views.AddUserToOrganizationView"><code class="docutils literal notranslate"><span class="pre">AddUserToOrganizationView</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.AddUserToOrganizationView.get_context_data"><code class="docutils literal notranslate"><span class="pre">AddUserToOrganizationView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.AddUserToOrganizationView.post"><code class="docutils literal notranslate"><span class="pre">AddUserToOrganizationView.post()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">AddUserToOrganizationView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">AddUserToOrganizationView.post()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#user_management.views.ListUsersView"><code class="docutils literal notranslate"><span class="pre">ListUsersView</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.ListUsersView.get_context_data"><code class="docutils literal notranslate"><span class="pre">ListUsersView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.ListUsersView.post"><code class="docutils literal notranslate"><span class="pre">ListUsersView.post()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">ListUsersView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">ListUsersView.post()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#user_management.views.RemoveUserFromAllOrganizationsView"><code class="docutils literal notranslate"><span class="pre">RemoveUserFromAllOrganizationsView</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.RemoveUserFromAllOrganizationsView.get_context_data"><code class="docutils literal notranslate"><span class="pre">RemoveUserFromAllOrganizationsView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.RemoveUserFromAllOrganizationsView.post"><code class="docutils literal notranslate"><span class="pre">RemoveUserFromAllOrganizationsView.post()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">RemoveUserFromAllOrganizationsView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">RemoveUserFromAllOrganizationsView.post()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#user_management.views.RemoveUserFromOrganizationView"><code class="docutils literal notranslate"><span class="pre">RemoveUserFromOrganizationView</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.RemoveUserFromOrganizationView.get_context_data"><code class="docutils literal notranslate"><span class="pre">RemoveUserFromOrganizationView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.RemoveUserFromOrganizationView.post"><code class="docutils literal notranslate"><span class="pre">RemoveUserFromOrganizationView.post()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">RemoveUserFromOrganizationView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id9"><code class="docutils literal notranslate"><span class="pre">RemoveUserFromOrganizationView.post()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#user_management.views.RemoveUserView"><code class="docutils literal notranslate"><span class="pre">RemoveUserView</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.RemoveUserView.get_context_data"><code class="docutils literal notranslate"><span class="pre">RemoveUserView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.RemoveUserView.post"><code class="docutils literal notranslate"><span class="pre">RemoveUserView.post()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id10"><code class="docutils literal notranslate"><span class="pre">RemoveUserView.get_context_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11"><code class="docutils literal notranslate"><span class="pre">RemoveUserView.post()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.RemoveUserView.template_name"><code class="docutils literal notranslate"><span class="pre">RemoveUserView.template_name</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#user_management.views.UpdateUserStatusView"><code class="docutils literal notranslate"><span class="pre">UpdateUserStatusView</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.UpdateUserStatusView.post"><code class="docutils literal notranslate"><span class="pre">UpdateUserStatusView.post()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user_management.views.UpdateUserStatusView.dispatch"><code class="docutils literal notranslate"><span class="pre">UpdateUserStatusView.dispatch()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12"><code class="docutils literal notranslate"><span class="pre">UpdateUserStatusView.post()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="#models">Models</a></li>
 </ul>
 </li>

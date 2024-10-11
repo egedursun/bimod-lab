@@ -23,8 +23,7 @@ import random
 import wonderwords
 
 
-def generate_random_words():
-    # use a library to generate a random chat name
+def build_random_word_string():
     chat_name_1 = wonderwords.RandomWord().word(
         word_min_length=4, word_max_length=32, include_categories=["noun"], regex=r"^[a-zA-Z]+$"
     )
@@ -42,21 +41,20 @@ def generate_random_words():
 
 
 def convert_given_name_to_class_name(given_name: str):
-    given_name_alnum = ""
+    o = ""
     for char in given_name:
         if char.isalnum() and char not in [" ", "_", "-", ".", ":", ";", ",", "'", '"', "!", "@", "#", "$", "%", "^",
                                            "&", "*", "(", ")", "+", "=", "{", "}", "[", "]", "<", ">", "?", "/", "\\",
                                            "|", "`", "~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
-            given_name_alnum += char
-    given_name_alnum_list = given_name_alnum.lower().capitalize()
+            o += char
+    given_name_alnum_list = o.lower().capitalize()
     return given_name_alnum_list
 
 
-def generate_class_name(connection):
-    # Generate random words
-    given_class_name_generation = convert_given_name_to_class_name(connection.name)
-    randoms = generate_random_words()
-    return f"{given_class_name_generation}{randoms}"
+def build_weaviate_class_name_with_random(connection):
+    o = convert_given_name_to_class_name(connection.name)
+    randoms = build_random_word_string()
+    return f"{o}{randoms}"
 
 
 def generate_repository_uri(base_dir, document_name, file_type):

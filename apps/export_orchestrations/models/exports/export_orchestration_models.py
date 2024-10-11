@@ -34,13 +34,10 @@ class ExportOrchestrationAPI(models.Model):
     is_public = models.BooleanField(default=False)
     request_limit_per_hour = models.IntegerField(default=1000)
     is_online = models.BooleanField(default=True)
-
     custom_api_key = models.CharField(max_length=1000, blank=True, null=True, unique=True)
     endpoint = models.CharField(max_length=1000, blank=True, null=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                         related_name='export_orchestrations_created_by_user')
 
@@ -51,7 +48,6 @@ class ExportOrchestrationAPI(models.Model):
         if not self.endpoint:
             self.endpoint = BASE_URL + "/" + EXPORT_ORCHESTRATION_API_BASE_URL + "/" + generate_orchestration_endpoint(
                 self.orchestrator)
-        # generate the API key for non-public usage of the exported assistant
         if not self.custom_api_key and (not self.is_public):
             self.custom_api_key = generate_orchestration_custom_api_key(self.orchestrator)
         super().save(force_insert, force_update, using, update_fields)

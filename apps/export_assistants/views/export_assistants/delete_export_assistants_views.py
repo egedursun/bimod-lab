@@ -23,22 +23,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DeleteView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.export_assistants.models import ExportAssistantAPI
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DeleteExportAssistantsView(LoginRequiredMixin, DeleteView):
-    """
-    Handles the deletion of an Export Assistant API.
-
-    This view allows users with the appropriate permissions to delete an Export Assistant API and remove it from the associated organization.
-
-    Methods:
-        post(self, request, *args, **kwargs): Deletes the Export Assistant API if the user has the required permissions.
-    """
-
+class ExportAssistantView_Delete(LoginRequiredMixin, DeleteView):
     model = ExportAssistantAPI
     success_url = 'export_assistants:list'
 
@@ -58,14 +49,11 @@ class DeleteExportAssistantsView(LoginRequiredMixin, DeleteView):
             return redirect('export_assistants:list')
         ##############################
 
-        export_assistant = get_object_or_404(ExportAssistantAPI, id=self.kwargs['pk'])
-        export_assistant.delete()
+        exp_agent = get_object_or_404(ExportAssistantAPI, id=self.kwargs['pk'])
+        exp_agent.delete()
         success_message = "Export Assistant deleted successfully."
-
-        # remove the exported assistant from the organization
-        organization = export_assistant.assistant.organization
-        organization.exported_assistants.remove(export_assistant)
-        organization.save()
-        print("[DeleteExportAssistantsView.post] Export Assistant deleted successfully.")
+        org = exp_agent.assistant.organization
+        org.exported_assistants.remove(exp_agent)
+        org.save()
         messages.success(request, success_message)
         return redirect(self.success_url)

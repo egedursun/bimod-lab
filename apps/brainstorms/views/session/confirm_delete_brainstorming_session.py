@@ -20,25 +20,24 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingSession
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class DeleteBrainstormingSessionView(LoginRequiredMixin, TemplateView):
+class BrainstormingView_SessionConfirmDelete(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
-        session_id = self.kwargs.get('session_id')
-        session = get_object_or_404(BrainstormingSession, id=session_id, created_by_user=self.request.user)
-
+        ss_id = self.kwargs.get('session_id')
+        session = get_object_or_404(BrainstormingSession, id=ss_id, created_by_user=self.request.user)
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['session'] = session
         return context
 
     def post(self, request, *args, **kwargs):
-        session_id = self.kwargs.get('session_id')
-        session = get_object_or_404(BrainstormingSession, id=session_id, created_by_user=request.user)
+        ss_id = self.kwargs.get('session_id')
+        session = get_object_or_404(BrainstormingSession, id=ss_id, created_by_user=request.user)
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_BRAINSTORMING_SESSIONS
@@ -55,5 +54,4 @@ class DeleteBrainstormingSessionView(LoginRequiredMixin, TemplateView):
         except Exception as e:
             messages.error(request, f"Error deleting session: {str(e)}")
             return self.get(request, *args, **kwargs)
-
         return redirect('brainstorms:list_sessions')

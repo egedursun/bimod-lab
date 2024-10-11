@@ -22,23 +22,14 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class ListBrowserConnectionsView(LoginRequiredMixin, TemplateView):
-    """
-    Displays a list of browser connections associated with the user's assistants and organizations.
-
-    This view retrieves all browser connections organized by organization and assistant, and displays them in a structured list.
-
-    Methods:
-        get_context_data(self, **kwargs): Retrieves the browser connections organized by organization and assistant, and adds them to the context.
-    """
-
+class BrowserView_BrowserList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -51,22 +42,18 @@ class ListBrowserConnectionsView(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        connections_by_organization = {}
-        assistants = Assistant.objects.filter(
-            organization__in=context_user.organizations.filter(users__in=[context_user])
-        )
+        cs_by_orgs = {}
+        agents = Assistant.objects.filter(organization__in=context_user.organizations.filter(users__in=[context_user]))
+        for agent in agents:
+            org = agent.organization
+            if org not in cs_by_orgs:
+                cs_by_orgs[org] = {}
+            if agent not in cs_by_orgs[org]:
+                cs_by_orgs[org][agent] = []
 
-        for assistant in assistants:
-            organization = assistant.organization
-            if organization not in connections_by_organization:
-                connections_by_organization[organization] = {}
-            if assistant not in connections_by_organization[organization]:
-                connections_by_organization[organization][assistant] = []
+            cs = DataSourceBrowserConnection.objects.filter(assistant=agent)
+            cs_by_orgs[org][agent].extend(cs)
 
-            connections = DataSourceBrowserConnection.objects.filter(assistant=assistant)
-            connections_by_organization[organization][assistant].extend(connections)
-
-        context['connections_by_organization'] = connections_by_organization
+        context['connections_by_organization'] = cs_by_orgs
         context['user'] = context_user
-        print("[ListBrowserConnectionsView.get_context_data] Browser Connections listed successfully.")
         return context

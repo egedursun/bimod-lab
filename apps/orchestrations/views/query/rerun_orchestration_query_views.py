@@ -23,8 +23,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
-from apps._services.orchestration.orchestration_executor import OrchestrationExecutor
-from apps._services.user_permissions.permission_manager import UserPermissionManager
+from apps.core.orchestration.orchestration_executor import OrchestrationExecutor
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.orchestrations.models import OrchestrationQueryLog
 from apps.orchestrations.models.query import OrchestrationQuery
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
@@ -32,8 +32,7 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class OrchestrationQueryRerunView(LoginRequiredMixin, TemplateView):
-    template_name = "orchestrations/query_detail_orchestration.html"
+class OrchestrationView_QueryRerun(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -50,29 +49,16 @@ class OrchestrationQueryRerunView(LoginRequiredMixin, TemplateView):
 
         query_id = self.kwargs.get('query_id')
         query = get_object_or_404(OrchestrationQuery, id=query_id)
-
         query_text = query.query_text
-
-        # delete all previous logs
         query.logs.all().delete()
-
-        # add a new log for the user query
         query_log = OrchestrationQueryLog.objects.create(
-            orchestration_query=query,
-            log_type=OrchestrationQueryLogTypesNames.USER,
-            log_text_content=query_text,
-            log_file_contents=None,
-            log_image_contents=None,
-        )
+            orchestration_query=query, log_type=OrchestrationQueryLogTypesNames.USER,
+            log_text_content=query_text, log_file_contents=None, log_image_contents=None)
         query.logs.add(query_log)
         query.save()
-
-        # re-run the query
-        orchestration_executor = OrchestrationExecutor(
+        orch_xc = OrchestrationExecutor(
             maestro=query.maestro,
             query_chat=query
         )
-        final_response = orchestration_executor.execute_for_query()
-        print("[OrchestrationQueryRerunView.get_context_data] Final response retrieved: ", final_response)
-
+        final_response = orch_xc.execute_for_query()
         return redirect('orchestrations:query_detail', pk=query.maestro.id, query_id=query.id)

@@ -21,15 +21,15 @@
 from django.contrib import admin
 
 from apps.datasource_codebase.models import CodeBaseRepositoryChunk
+from apps.datasource_codebase.utils import CODE_REPOSITORY_CHUNK_ADMIN_LIST, CODE_REPOSITORY_CHUNK_ADMIN_FILTER, \
+    CODE_REPOSITORY_CHUNK_ADMIN_SEARCH
 
 
 @admin.register(CodeBaseRepositoryChunk)
 class CodeBaseRepositoryChunkAdmin(admin.ModelAdmin):
-    list_display = ['knowledge_base', 'repository', 'chunk_repository_uri', 'knowledge_base_uuid',
-                    'repository_uuid', 'created_at']
-    list_filter = ['repository', 'knowledge_base_uuid', 'repository_uuid', 'created_at']
-    search_fields = ['repository', 'chunk_content', 'chunk_metadata', 'chunk_repository_uri',
-                     'knowledge_base_uuid', 'created_at']
+    list_display = CODE_REPOSITORY_CHUNK_ADMIN_LIST
+    list_filter = CODE_REPOSITORY_CHUNK_ADMIN_FILTER
+    search_fields = CODE_REPOSITORY_CHUNK_ADMIN_SEARCH
     readonly_fields = ['created_at']
 
     list_per_page = 20

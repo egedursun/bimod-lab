@@ -19,11 +19,13 @@
 from django.contrib import admin
 
 from apps.brainstorms.models import BrainstormingLevelSynthesis
+from apps.brainstorms.utils import BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_LIST, \
+    BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_FILTER, BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_SEARCH
 
 
 @admin.register(BrainstormingLevelSynthesis)
 class BrainstormingLevelSynthesisAdmin(admin.ModelAdmin):
-    list_display = ('brainstorming_session', 'depth_level', 'created_at')
-    list_filter = ('brainstorming_session', 'depth_level', 'created_at')
-    search_fields = ('brainstorming_session', 'depth_level', 'created_at')
+    list_display = BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_LIST
+    list_filter = BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_FILTER
+    search_fields = BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_SEARCH
     ordering = ('-created_at',)
