@@ -91,6 +91,18 @@
       "url": "/app/data_security/ner/list"
     },
     {
+      "name": "Harmoniq Agents",
+      "icon": "menu-icon tf-icons ti ti-microphone",
+      "slug": "harmoniq-agents",
+      "url": "/app/harmoniq/create"
+    },
+    {
+      "name": "Harmoniq Chat",
+      "icon": "menu-icon tf-icons ti ti-microphone",
+      "slug": "harmoniq-chat",
+      "url": "/app/harmoniq/use"
+    },
+    {
       "name": "Chats",
       "icon": "menu-icon tf-icons ti ti-messages",
       "slug": "chats",
