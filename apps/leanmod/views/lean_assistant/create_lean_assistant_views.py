@@ -34,15 +34,9 @@ from web_project import TemplateLayout
 class LeanModAssistantView_Create(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['organizations'] = Organization.objects.filter(
-            users__in=[self.request.user]
-        )
-        context['llm_models'] = LLMCore.objects.filter(
-            organization__users__in=[self.request.user]
-        )
-        context['expert_networks'] = ExpertNetwork.objects.filter(
-            organization__in=context['organizations']
-        )
+        context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
+        context['llm_models'] = LLMCore.objects.filter(organization__users__in=[self.request.user])
+        context['expert_networks'] = ExpertNetwork.objects.filter(organization__in=context['organizations'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -66,10 +60,10 @@ class LeanModAssistantView_Create(LoginRequiredMixin, TemplateView):
             return redirect('leanmod:create')
 
         try:
-            organization = Organization.objects.get(id=org_id)
+            org = Organization.objects.get(id=org_id)
             llm_model = LLMCore.objects.get(id=llm_id)
             leanmod_agent = LeanAssistant.objects.create(
-                organization=organization, llm_model=llm_model, name=name, instructions=instructions,
+                organization=org, llm_model=llm_model, name=name, instructions=instructions,
                 lean_assistant_image=agent_img, created_by_user=request.user, last_updated_by_user=request.user)
 
             if nw_ids:

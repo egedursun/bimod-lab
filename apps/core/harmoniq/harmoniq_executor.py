@@ -23,10 +23,10 @@ from io import BytesIO
 
 from asgiref.sync import async_to_sync
 
+from apps.core.harmoniq.harmoniq_prompt_builder import build_harmoniq_system_prompt
 from apps.core.harmoniq.utils import (
     DEFAULT_HARMONIQ_MODEL, DEFAULT_HARMONIQ_VOICE, DEFAULT_PCM_SAMPLING_RATE,
-    DEFAULT_PCM_BITS_PER_SAMPLE, DEFAULT_PCM_NUMBER_OF_CHANNELS, get_tool_usage_instructions_prompt,
-    get_available_tools_prompt)
+    DEFAULT_PCM_BITS_PER_SAMPLE, DEFAULT_PCM_NUMBER_OF_CHANNELS)
 
 import base64
 import websockets
@@ -38,9 +38,13 @@ from apps.llm_core.models import LLMCore
 
 
 class OpenAIRealtimeAPIClient:
-    def __init__(self, harmoniq_agent: Harmoniq, llm_model: LLMCore):
+    def __init__(self, harmoniq_agent: Harmoniq, llm_model: LLMCore, expert_net_and_refs: dict,
+                 org_data: dict, user_data: dict):
         self.harmoniq_agent = harmoniq_agent
         self.llm_model = llm_model
+        self.expert_net_and_refs = expert_net_and_refs
+        self.org_data = org_data
+        self.user_data = user_data
         self.websocket_url = f"wss://api.openai.com/v1/realtime?model={DEFAULT_HARMONIQ_MODEL}"
         self.audio_buffer = b""
         self.transcript = ""
@@ -56,42 +60,50 @@ class OpenAIRealtimeAPIClient:
     async def send_message(self, message):
         harmoniq_deity = self.harmoniq_agent.harmoniq_deity
         harmoniq_deity_instructions = HARMONIQ_DEITIES_INSTRUCTIONS_MAP.get(harmoniq_deity, "")
-        optional_instructions = self.harmoniq_agent.optional_instructions
+        harmoniq_general_instructions = build_harmoniq_system_prompt(
+            harmoniq_agent=self.harmoniq_agent, expert_net_and_refs=self.expert_net_and_refs,
+            org_data=self.org_data, user_data=self.user_data)
 
-        formal_message = f"""
+        formal_message = str(f"""
             ---
-            **Your Identity: {self.harmoniq_agent.name}**
-            **Your Main Instructions:**
+            ### **DEITY INSTRUCTIONS:**
+
             '''
             {harmoniq_deity_instructions}
             '''
-            **Additional Instructions (neglect if no content):**
-            '''
-            {optional_instructions}
-            '''
+
             ---
-            **Tool Usage Instructions:**
+            ### **GENERAL INSTRUCTIONS:**
+
             '''
-            {get_tool_usage_instructions_prompt()}
+            {harmoniq_general_instructions}
             '''
+
             ---
-            **Available Tools:**
-            '''
-            {get_available_tools_prompt(harmoniq_agent=self.harmoniq_agent)}
-            '''
-            ---
+
             **USER'S QUERY / MESSAGE TO YOU:**
             '''
             {message}
             '''
+
             ---
-        """
+
+            ### **TOOL RESPONSES:**
+
+            - Below this section, you might see TOOL responses that come from your previous communications with the user,
+            so you can use the responses here to provide answers to the user's question. If empty, you can either
+            proceed by making a tool call, or neglect this field if you don't need any tool responses and directly
+            answer the user's question.
+
+            ---
+        """)
         event = {"type": "conversation.item.create",
                  "item": {
                      "type": "message",
                      "role": "user",
                      "content": [{"type": "input_text", "text": formal_message}]
                  }}
+
         await self.ws.send(json.dumps(event))
 
     async def create_response(self):

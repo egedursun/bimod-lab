@@ -16,6 +16,9 @@
 #
 
 
+MAX_ATTEMPTS_TOOL_CALL = 1
+
+
 DEFAULT_HARMONIQ_MODEL="gpt-4o-realtime-preview-2024-10-01"
 DEFAULT_HARMONIQ_VOICE="echo"
 

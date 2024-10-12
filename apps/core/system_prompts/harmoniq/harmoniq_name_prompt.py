@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Br6.in™
-#  File: __init__.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: harmoniq_name_prompt.py
+#  Last Modified: 2024-10-05 02:26:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:33
+#  Created: 2024-10-05 14:42:35
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -16,5 +16,16 @@
 #
 
 
-from .expert_network_models import *
-from .expert_network_reference_models import *
+from apps.harmoniq.models import Harmoniq
+
+
+def build_structured_name_prompt_harmoniq(harmoniq: Harmoniq):
+    return f"""
+        ### **YOUR NAME:**
+
+        '''
+        {harmoniq.name}
+        '''
+
+        ---
+    """

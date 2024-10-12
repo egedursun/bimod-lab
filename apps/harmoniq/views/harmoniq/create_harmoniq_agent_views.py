@@ -24,6 +24,7 @@ from django.views.generic import TemplateView
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.harmoniq.models import Harmoniq
 from apps.harmoniq.utils import HARMONIQ_DEITIES
+from apps.leanmod.models import ExpertNetwork
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -37,6 +38,7 @@ class HarmoniqView_Create(LoginRequiredMixin, TemplateView):
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
         context['harmoniq_deities'] = HARMONIQ_DEITIES
+        context['expert_networks'] = ExpertNetwork.objects.filter(organization__in=context['organizations'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -55,12 +57,16 @@ class HarmoniqView_Create(LoginRequiredMixin, TemplateView):
         desc = request.POST.get('description')
         harmoniq_deity = request.POST.get('harmoniq_deity')
         optional_instructions = request.POST.get('optional_instructions')
+        nw_ids = request.POST.getlist('expert_networks')
         if org and llm_model and name and desc and harmoniq_deity:
             harmoniq_agent = Harmoniq.objects.create(
                 organization_id=org, llm_model_id=llm_model, name=name, description=desc,
                 harmoniq_deity=harmoniq_deity, optional_instructions=optional_instructions,
-                created_by_user=request.user
-            )
+                created_by_user=request.user)
+            if nw_ids:
+                for nw_id in nw_ids:
+                    nw = ExpertNetwork.objects.get(id=nw_id)
+                    harmoniq_agent.consultant_expert_networks.add(nw)
             harmoniq_agent.save()
             messages.success(request, "Harmoniq Agent created successfully.")
             return redirect('harmoniq:list')

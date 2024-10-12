@@ -23,6 +23,7 @@ from django.views.generic import TemplateView
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.harmoniq.models import Harmoniq
 from apps.harmoniq.utils import HARMONIQ_DEITIES
+from apps.leanmod.models import ExpertNetwork
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -38,6 +39,7 @@ class HarmoniqView_Update(LoginRequiredMixin, TemplateView):
         context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
         context['harmoniq_deities'] = HARMONIQ_DEITIES
+        context['expert_networks'] = ExpertNetwork.objects.filter(organization__in=context['organizations'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -57,6 +59,7 @@ class HarmoniqView_Update(LoginRequiredMixin, TemplateView):
         desc = request.POST.get('description')
         harmoniq_deity = request.POST.get('harmoniq_deity')
         optional_instructions = request.POST.get('optional_instructions')
+        nw_ids = request.POST.getlist('expert_networks')
         if org and llm_model and name and desc and harmoniq_deity:
             harmoniq_agent.organization_id = org
             harmoniq_agent.llm_model_id = llm_model
@@ -64,6 +67,13 @@ class HarmoniqView_Update(LoginRequiredMixin, TemplateView):
             harmoniq_agent.description = desc
             harmoniq_agent.harmoniq_deity = harmoniq_deity
             harmoniq_agent.optional_instructions = optional_instructions
+
+            harmoniq_agent.consultant_expert_networks.clear()
+            if nw_ids:
+                for expert_network_id in nw_ids:
+                    expert_network = ExpertNetwork.objects.get(id=expert_network_id)
+                    harmoniq_agent.consultant_expert_networks.add(expert_network)
+
             harmoniq_agent.save()
             messages.success(request, "Harmoniq Agent updated successfully.")
             return redirect('harmoniq:list')

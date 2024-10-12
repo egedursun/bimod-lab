@@ -24,6 +24,8 @@ class Harmoniq(models.Model):
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
     llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE)
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    consultant_expert_networks = models.ManyToManyField("leanmod.ExpertNetwork", related_name='harmoniqs',
+                                                        blank=True)
     name = models.CharField(max_length=1000)
     description = models.TextField()
     harmoniq_deity = models.CharField(max_length=100, choices=HARMONIQ_DEITIES, default=HARMONIQ_DEITIES[0][0])

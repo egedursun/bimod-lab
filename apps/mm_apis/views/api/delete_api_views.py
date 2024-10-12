@@ -25,7 +25,6 @@ from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_apis.models import CustomAPI
-from apps.user_permissions.models import UserPermission
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 

@@ -87,7 +87,6 @@ class ToolCallManager:
             else:
                 self.tool_usage_dict = json.loads(self.tool_usage_dict_stringified)
         except Exception as e:
-            print("[ToolExecutor.use_tool] Error decoding the JSON: ", e)
             return get_json_decode_error_log(error_logs=str(e)), None, None, None
 
         f_uris, img_uris = [], []
@@ -210,7 +209,6 @@ class ToolCallManager:
             output_tool_call = self._handle_tool_execute_browsing(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_PROCESS_AUDIO:
-            print("[ToolExecutor.use_tool] Audio Processing Tool is being executed...")
             error = verify_audio_processing_query(content=self.tool_usage_dict)
             if error:
                 return error, None, None, None

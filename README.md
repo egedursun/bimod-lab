@@ -4,8 +4,8 @@
 
 ......
 
-1. Integrate the knowledge prompt for the Harmoniq assistants.
-2. Integrate NOSQL + add the functionality to SEARCH BAR.
+1. Integrate NOSQL + add the functionality to SEARCH BAR.
+2. BUG: The messages cut short in Harmoniq + can't send audio in real time to Harmoniq agent.
 
 ---
 
