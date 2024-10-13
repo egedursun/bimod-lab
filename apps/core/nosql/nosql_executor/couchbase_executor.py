@@ -72,9 +72,15 @@ class CouchbaseNoSQLExecutor:
             cluster = Cluster(f"couchbase://{self.conn_params['host']}", ClusterOptions(
                 PasswordAuthenticator(self.conn_params['user'], self.conn_params['password'])))
             if parameters:
-                cluster.query(query, QueryOptions(named_parameters=parameters))
+                result = cluster.query(query, QueryOptions(named_parameters=parameters))
             else:
-                cluster.query(query)
+                result = cluster.query(query)
+
+            rows = [row for row in result]
+            if len(rows) != 0:
+                output['status'] = False
+                output['error'] = str(rows)
+
         except CouchbaseException as e:
             output["status"] = False
             output["error"] = str(e)
