@@ -1,0 +1,168 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Br6.in™
+  ~ File: create_nosql_query.html
+  ~ Last Modified: 2024-10-12 13:17:59
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-12 13:18:15
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@br6.in.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Create Custom NoSQL Query{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/sql/sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/matchbrackets.min.js"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      $('#database_connection').select2();
+    });
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'datasource_nosql:list_queries' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong> Manage Custom NoSQL Queries</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <strong>Create New NoSQL Query</strong>
+          </h5>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-68.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8" alt="Illustration for tips">
+            <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                Create a new custom NoSQL query by providing the necessary information. You can use this query to
+                connect to a NoSQL database and make your assistants be able to reach the data inside the database.
+                Normally, the assistants are already able to build their own queries, but you can create a query
+                that is frequently used by the assistants to save time and make the process more efficient.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <hr>
+
+          <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="mb-6 col-4">
+                <label class="form-label" for="database_connection">Database Connection</label>
+                <select class="form-select" id="database_connection" name="database_connection">
+                  <option value="" disabled selected>Select Database Connection</option>
+                  {% for connection in database_connections %}
+                    <option value="{{ connection.id }}">{{ connection.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-4">
+                <label class="form-label" for="name">Query Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter query name"/>
+              </div>
+              <div class="mb-6 col-4">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="1"
+                          placeholder="Enter query description"></textarea>
+              </div>
+              <div class="tips-section alert alert-solid-info d-flex align-items-center mt-0" role="alert">
+              <span class="alert-icon rounded">
+                <i class="ti ti-info-circle"></i>
+              </span>
+                It is always great to put a clear and concise description for your NoSQL query. This will help the
+                assistant to figure out what the query is about and when to use it. You can also provide examples
+                scenarios where the query can be used.
+              </div>
+              <div class="mb-6 col-12">
+                <label class="form-label" for="nosql_query">NoSQL Query</label>
+                <textarea class="form-control rounded" id="nosql_query" name="nosql_query"
+                          placeholder="Paste your NoSQL query here"></textarea>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid w-25 mt-4">
+              <strong>Create NoSQL Query</strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var codeTextArea = document.getElementById('nosql_query');
+
+      if (codeTextArea) {
+        var editor = CodeMirror.fromTextArea(codeTextArea, {
+          mode: "sql",
+          theme: "material",
+          lineNumbers: true,
+          matchBrackets: true,
+          autoRefresh: true,
+        });
+
+        document.querySelector('form').addEventListener('submit', function () {
+          codeTextArea.value = editor.getValue();
+        });
+      }
+
+    });
+  </script>
+
+{% endblock %}

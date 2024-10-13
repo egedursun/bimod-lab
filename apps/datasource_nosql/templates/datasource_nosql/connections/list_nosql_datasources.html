@@ -1,0 +1,288 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Br6.in™
+  ~ File: list_nosql_datasources.html
+  ~ Last Modified: 2024-10-12 13:17:35
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-12 13:17:35
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@br6.in.
+  ~
+  -->
+
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}NoSQL Database Connections{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <style>
+    .text-wrap {
+      white-space: normal;
+      word-break: break-all;
+    }
+  </style>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-6">
+      <h3 class="mb-0"><strong>
+        NoSQL Database Connections
+      </strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-25.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can manage your NoSQL database connections for your assistants. You must be aware of the fact
+        that the NoSQL data source connections are assistant-based. This means that the assistants will be able to use
+        the NoSQL data sources that you have created here, and if you want another assistant to use the same NoSQL data
+        source, you need to create another connection for that assistant.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <!-- NoSQL Database Connections Cards -->
+  {% for organization, assistants in connections_by_organization.items %}
+    <div class="card mb-6">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
+          <div class="d-flex">
+            <img src="
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 class="rounded me-4" width="60" alt="Organization image">
+          </div>
+          <h4 class="mt-4">
+            <strong>{{ organization.name }}</strong>
+          </h4>
+        </a>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-org-{{ organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-org-{{ organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-org-{{ organization.id }}">
+      <strong>&nbsp; See NoSQL Connections of Assistants</strong>
+    </span>
+      </div>
+      <div id="collapse-org-{{ organization.id }}" class="card-datatable table-responsive collapse">
+        {% for assistant, connections in assistants.items %}
+          <div class="assistant-group m-8 card card-border-shadow-primary p-8">
+            <div class="d-flex">
+              <img src="
+                {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   class="rounded me-4" width="80" alt="Assistant image">
+              <h5 class="assistant-title">
+                <strong>
+                  {{ assistant.name }}
+                </strong>
+              </h5>
+            </div>
+            <div class="card-datatable table-responsive">
+              <a href="{% url 'datasource_nosql:create' %}">
+                <button class="btn btn-success mt-6 mb-8">
+                  <i class="fa fa-add me-4"></i>
+                  <strong> Add NoSQL Database Connection</strong>
+                </button>
+              </a>
+            </div>
+            <div class="row g-6 mb-4">
+              {% for connection in connections %}
+                <div class="col-xl-6 col-md-6">
+                  <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between">
+                      <div class="card-title mb-0">
+                        <p class="card-subtitle mb-4"><strong>
+                          <i class="fa fa-id-badge me-4"></i> Connection Name: &nbsp;&nbsp;</strong>
+                          {{ connection.name }}
+                        </p>
+                        <p class="card-subtitle mb-1"><strong>
+                          <i class="fa fa-database me-4"></i> DB Type: &nbsp;&nbsp;</strong>
+                          {{ connection.nosql_db_type }}
+                        </p>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                      <ul class="p-0 m-0">
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body me-4">
+                            <strong>
+                              <i class="fa fa-info-circle me-4"></i> Description:
+                            </strong>
+                          </span>
+                          <span class="text-wrap">{{ connection.description|linebreaksbr }}</span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body">
+                            <strong>
+                              <i class="fa fa-server me-4"></i> Host:
+                            </strong></span>
+                          <span
+                            class="text-wrap border border-warning rounded p-1"><strong>{{ connection.host }}</strong></span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body">
+                            <strong>
+                              <i class="fa fa-user me-4"></i> Username:
+                            </strong>
+                          </span>
+                          <span
+                            class="text-wrap border border-warning p-1 rounded"><strong>{{ connection.username }}</strong></span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body"><strong>
+                            <i class="fa fa-lock me-4"></i>
+                            Read Only:
+                          </strong></span>
+                          <span
+                            class="text-wrap border {% if connection.is_read_only %}border-success{% else %}border-danger{% endif %} rounded p-1"><strong>{{ connection.is_read_only|yesno:"Yes,No" }}</strong></span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body">
+                            <strong>
+                              <i class="fa fa-box me-4"></i>
+                              Max Records per Call:
+                            </strong>
+                          </span>
+                          <span
+                            class="text-wrap border border-info rounded p-1"><strong>{{ connection.one_time_retrieval_instance_limit }}</strong></span>
+                        </li>
+                        <li class="mb-4 d-flex justify-content-between align-items-center">
+                          <span class="text-body"><strong>
+                            <i class="fa fa-puzzle-piece me-4"></i>
+                            Max Tokens per Call:
+                          </strong></span>
+                          <span
+                            class="text-wrap border border-info rounded p-1"><strong>{{ connection.one_time_retrieval_token_limit }}</strong></span>
+                        </li>
+                      </ul>
+                      <hr>
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'datasource_nosql:update' connection.id %}" class="btn btn-primary me-3"><i
+                          class="ti ti-edit me-2"></i><strong>Edit Connection</strong></a>
+                        <a href="{% url 'datasource_nosql:delete' connection.id %}" class="btn btn-danger"><i
+                          class="ti ti-trash"></i><strong> Delete </strong></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <hr>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
+        icon.addEventListener('click', function () {
+          var target = document.querySelector(this.getAttribute('data-target'));
+          var bootstrapCollapse = new bootstrap.Collapse(target, {
+            toggle: false
+          });
+          if (target.classList.contains('show')) {
+            bootstrapCollapse.hide();
+          } else {
+            bootstrapCollapse.show();
+          }
+        });
+      });
+
+      document.querySelectorAll('.collapse').forEach(function (collapse) {
+        collapse.addEventListener('show.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-down');
+            icon.classList.add('fa-arrow-alt-circle-up');
+          }
+        });
+
+        collapse.addEventListener('hide.bs.collapse', function () {
+          var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+          if (icon) {
+            icon.classList.remove('fa-arrow-alt-circle-up');
+            icon.classList.add('fa-arrow-alt-circle-down');
+          }
+        });
+      });
+
+      document.querySelectorAll('.btn-danger').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('a').getAttribute('href');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+{% endblock %}

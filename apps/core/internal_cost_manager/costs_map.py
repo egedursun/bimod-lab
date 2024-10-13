@@ -40,6 +40,8 @@ class InternalServiceCosts:
             InternalServiceCosts.ExternalCustomScriptExecutor.COST,
             InternalServiceCosts.SQLReadExecutor.COST,
             InternalServiceCosts.SQLWriteExecutor.COST,
+            InternalServiceCosts.NoSQLReadExecutor.COST,
+            InternalServiceCosts.NoSQLWriteExecutor.COST,
             InternalServiceCosts.FileInterpreter.COST,
             InternalServiceCosts.ImageInterpreter.COST,
             InternalServiceCosts.ScheduledJobExecutor.COST,
@@ -104,6 +106,12 @@ class InternalServiceCosts:
     class SQLWriteExecutor:
         COST = COSTS_MAP["SQL_WRITE_EXECUTOR"]
 
+    class NoSQLReadExecutor:
+        COST = COSTS_MAP["NOSQL_READ_EXECUTOR"]
+
+    class NoSQLWriteExecutor:
+        COST = COSTS_MAP["NOSQL_WRITE_EXECUTOR"]
+
     class FileInterpreter:
         COST = COSTS_MAP["FILE_INTERPRETER"]
 
@@ -138,44 +146,6 @@ class InternalServiceCosts:
         COST = COSTS_MAP["REASONING"]
 
 
-"""
-TRANSACTION_SOURCES = [
-    ("app", "Application"),
-    ("api", "API"),
-    ("generation", "Generation"),
-    ("sql-read", "SQL Read"),
-    ("sql-write", "SQL Write"),
-    ("store-memory", "Store Memory"),
-    ("interpret-code", "Interpret Code"),
-    ("reasoning", "Reasoning"),
-    ("upload-file", "Upload File"),
-    ("download-file", "Download File"),
-    ("file-system-commands", "File System Commands"),
-    ("knowledge-base-search", "Knowledge Base Search"),
-    ("code-base-search", "Code Base Search"),
-    ("retrieve-memory", "Retrieve Memory"),
-    ("ml-model-prediction", "ML Model Prediction"),
-    ("browsing", "Browsing"),
-    ("internal-function-execution", "Internal Function Execution"),
-    ("external-function-execution", "External Function Execution"),
-    ("internal-api-execution", "Internal API Execution"),
-    ("external-api-execution", "External API Execution"),
-    ("internal-script-retrieval", "Internal Script Retrieval"),
-    ("external-script-retrieval", "External Script Retrieval"),
-    ("interpret-file", "Interpret File"),
-    ("interpret-image", "Interpret Image"),
-    ("scheduled-job-execution", "Scheduled Job Execution"),
-    ("trigger-job-execution", "Trigger Job Execution"),
-    ("generate-image", "Generate Image"),
-    ("modify-image", "Modify Image"),
-    ("variate-image", "Variate Image"),
-    ("audio-processing-stt", "Audio Processing STT"),
-    ("audio-processing-tts", "Audio Processing TTS"),
-    ("brainstorming", "Brainstorming"),
-    ("generate-video", "Generate Video"),
-]
-"""
-
 TOOL_NAME_TO_COST_MAP = {
     "store-memory": InternalServiceCosts.ContextMemory.COST,
     "retrieve-memory": InternalServiceCosts.ContextMemoryRetrieval.COST,
@@ -194,6 +164,8 @@ TOOL_NAME_TO_COST_MAP = {
     "external-script-retrieval": InternalServiceCosts.ExternalCustomScriptExecutor.COST,
     "sql-read": InternalServiceCosts.SQLReadExecutor.COST,
     "sql-write": InternalServiceCosts.SQLWriteExecutor.COST,
+    "nosql-read": InternalServiceCosts.NoSQLReadExecutor.COST,
+    "nosql-write": InternalServiceCosts.NoSQLWriteExecutor.COST,
     "interpret-file": InternalServiceCosts.FileInterpreter.COST,
     "interpret-image": InternalServiceCosts.ImageInterpreter.COST,
     "scheduled-job-execution": InternalServiceCosts.ScheduledJobExecutor.COST,

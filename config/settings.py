@@ -109,6 +109,7 @@ INSTALLED_APPS = [
     "apps.export_leanmods",
     "apps.export_orchestrations",
     "apps.datasource_sql",
+    "apps.datasource_nosql",
     "apps.datasource_codebase",
     "apps.datasource_file_systems",
     "apps.datasource_media_storages",
@@ -532,6 +533,8 @@ INTERNAL_CUSTOM_SCRIPT_EXECUTOR = os.environ.get("INTERNAL_CUSTOM_SCRIPT_EXECUTO
 EXTERNAL_CUSTOM_SCRIPT_EXECUTOR = os.environ.get("EXTERNAL_CUSTOM_SCRIPT_EXECUTOR", default="0")
 SQL_READ_EXECUTOR = os.environ.get("SQL_READ_EXECUTOR", default="0")
 SQL_WRITE_EXECUTOR = os.environ.get("SQL_WRITE_EXECUTOR", default="0")
+NOSQL_READ_EXECUTOR = os.environ.get("NOSQL_READ_EXECUTOR", default="0")
+NOSQL_WRITE_EXECUTOR = os.environ.get("NOSQL_WRITE_EXECUTOR", default="0")
 SCHEDULED_JOB_EXECUTOR = os.environ.get("SCHEDULED_JOB_EXECUTOR", default="0")
 TRIGGERED_JOB_EXECUTOR = os.environ.get("TRIGGERED_JOB_EXECUTOR", default="0")
 IMAGE_GENERATOR = os.environ.get("IMAGE_GENERATOR", default="0")
@@ -562,6 +565,8 @@ COSTS_MAP = {
     "EXTERNAL_CUSTOM_SCRIPT_EXECUTOR": float(EXTERNAL_CUSTOM_SCRIPT_EXECUTOR),
     "SQL_READ_EXECUTOR": float(SQL_READ_EXECUTOR),
     "SQL_WRITE_EXECUTOR": float(SQL_WRITE_EXECUTOR),
+    "NOSQL_READ_EXECUTOR": float(NOSQL_READ_EXECUTOR),
+    "NOSQL_WRITE_EXECUTOR": float(NOSQL_WRITE_EXECUTOR),
     "SCHEDULED_JOB_EXECUTOR": float(SCHEDULED_JOB_EXECUTOR),
     "TRIGGERED_JOB_EXECUTOR": float(TRIGGERED_JOB_EXECUTOR),
     "IMAGE_GENERATOR": float(IMAGE_GENERATOR),

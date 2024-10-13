@@ -192,6 +192,12 @@ def get_permissions_grouped():
             ('list_nosql_databases', 'List NoSQL Databases'),
             ('delete_nosql_databases', 'Delete NoSQL Databases')
         ],
+        "Custom NoSQL Queries Permissions": [
+            ('add_custom_nosql_queries', 'Add Custom NoSQL Queries'),
+            ('update_custom_nosql_queries', 'Update Custom NoSQL Queries'),
+            ('list_custom_nosql_queries', 'List Custom NoSQL Queries'),
+            ('delete_custom_nosql_queries', 'Delete Custom NoSQL Queries'),
+        ],
         "Knowledge Base Permissions": [
             ('add_knowledge_bases', 'Add Knowledge Bases'),
             ('update_knowledge_bases', 'Update Knowledge Bases'),

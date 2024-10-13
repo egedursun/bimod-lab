@@ -18,6 +18,7 @@
 
 from apps.core.sql.sql_decoder import InternalSQLClient
 from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.datasource_sql.utils import SQLOperationTypesNames
 
 
 def run_sql_query(c_id: int, sql_query_type: str, query_content: str):
@@ -27,9 +28,9 @@ def run_sql_query(c_id: int, sql_query_type: str, query_content: str):
         client = InternalSQLClient().get(
             connection=sql_connection
         )
-        if sql_query_type == "write":
+        if sql_query_type == SQLOperationTypesNames.WRITE:
             sql_response = client.execute_write(query=query_content)
-        elif sql_query_type == "read":
+        elif sql_query_type == SQLOperationTypesNames.READ:
             sql_response = client.execute_read(query=query_content)
     except Exception as e:
         error_msg = f"Error occurred while executing the SQL query: {str(e)}"

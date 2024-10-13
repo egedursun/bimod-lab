@@ -14,9 +14,11 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
+
+class SQLOperationTypesNames:
+    READ = 'read'
+    WRITE = 'write'
 
 
 DBMS_CHOICES = [

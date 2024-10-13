@@ -89,6 +89,11 @@ class PermissionNames:
     LIST_NOSQL_DATABASES = 'list_nosql_databases'
     DELETE_NOSQL_DATABASES = 'delete_nosql_databases'
 
+    ADD_CUSTOM_NOSQL_QUERIES = 'add_custom_nosql_queries'
+    UPDATE_CUSTOM_NOSQL_QUERIES = 'update_custom_nosql_queries'
+    LIST_CUSTOM_NOSQL_QUERIES = 'list_custom_nosql_queries'
+    DELETE_CUSTOM_NOSQL_QUERIES = 'delete_custom_nosql_queries'
+
     ADD_KNOWLEDGE_BASES = 'add_knowledge_bases'
     UPDATE_KNOWLEDGE_BASES = 'update_knowledge_bases'
     LIST_KNOWLEDGE_BASES = 'list_knowledge_bases'
@@ -325,6 +330,11 @@ PERMISSION_TYPES = [
     ('update_nosql_databases', 'Update NoSQL Databases'),
     ('list_nosql_databases', 'List NoSQL Databases'),
     ('delete_nosql_databases', 'Delete NoSQL Databases'),
+
+    ('add_custom_nosql_queries', 'Add Custom NoSQL Queries'),
+    ('update_custom_nosql_queries', 'Update Custom NoSQL Queries'),
+    ('list_custom_nosql_queries', 'List Custom NoSQL Queries'),
+    ('delete_custom_nosql_queries', 'Delete Custom NoSQL Queries'),
 
     ('add_knowledge_bases', 'Add Knowledge Bases'),
     ('update_knowledge_bases', 'Update Knowledge Bases'),

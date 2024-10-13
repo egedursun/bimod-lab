@@ -39,6 +39,7 @@ from apps.core.tool_calls.input_verifiers.verify_query_intra_memory import verif
 from apps.core.tool_calls.input_verifiers.verify_run_custom_api import verify_run_custom_api_content
 from apps.core.tool_calls.input_verifiers.verify_run_custom_function import verify_run_custom_function_content
 from apps.core.tool_calls.input_verifiers.verify_run_custom_script import verify_run_custom_script_content
+from apps.core.tool_calls.input_verifiers.verify_run_nosql_query import verify_run_nosql_query_content
 from apps.core.tool_calls.input_verifiers.verify_run_sql_query import verify_run_sql_query_content
 from apps.core.tool_calls.input_verifiers.verify_ssh_system_command import verify_ssh_system_command_content
 from apps.core.tool_calls.input_verifiers.verify_vector_store_query import verify_vector_store_query_content
@@ -62,6 +63,7 @@ from apps.core.tool_calls.core_services.core_service_vector_store_query import r
 from apps.core.tool_calls.core_services.core_service_intra_memory_query import run_query_intra_memory
 from apps.core.tool_calls.core_services.core_service_infer_with_ml import run_predict_with_ml
 from apps.core.tool_calls.core_services.core_service_sql_query import run_sql_query
+from apps.core.tool_calls.core_services.core_service_nosql_query import run_nosql_query
 from apps.core.tool_calls.core_services.core_service_http_retrieval import run_http_retrieval
 from apps.core.tool_calls.leanmod.core_services.core_service_query_expert_network import \
     execute_expert_network_query
@@ -106,6 +108,12 @@ class ToolCallManager:
             if error:
                 return error, None, None, None
             output_tool_call = self._handle_tool_sql_query(output_tool_call)
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_NOSQL_QUERY:
+            error = verify_run_nosql_query_content(content=self.tool_usage_dict)
+            if error:
+                return error, None, None, None
+            output_tool_call = self._handle_tool_nosql_query(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VECTOR_STORE_QUERY:
             error = verify_vector_store_query_content(content=self.tool_usage_dict)
@@ -450,6 +458,15 @@ class ToolCallManager:
         query_type = self.tool_usage_dict.get("parameters").get("type")
         sql_query = self.tool_usage_dict.get("parameters").get("sql_query")
         output = run_sql_query(c_id=c_id, sql_query_type=query_type, query_content=sql_query)
+        output_str = json.dumps(output, sort_keys=True, default=str)
+        output_tool_call += output_str
+        return output_tool_call
+
+    def _handle_tool_nosql_query(self, output_tool_call):
+        c_id = self.tool_usage_dict.get("parameters").get("database_connection_id")
+        query_type = self.tool_usage_dict.get("parameters").get("type")
+        nosql_query = self.tool_usage_dict.get("parameters").get("nosql_query")
+        output = run_nosql_query(c_id=c_id, nosql_query_type=query_type, query_content=nosql_query)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
         return output_tool_call

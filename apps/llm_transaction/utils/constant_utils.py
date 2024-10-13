@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 from config import settings
 
@@ -38,6 +36,8 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("generation", "Generation"),
     ("sql-read", "SQL Read"),
     ("sql-write", "SQL Write"),
+    ("nosql-read", "NoSQL Read"),
+    ("nosql-write", "NoSQL Write"),
     ("store-memory", "Store Memory"),
     ("interpret-code", "Interpret Code"),
     ("reasoning", "Reasoning"),
@@ -82,6 +82,8 @@ class LLMTransactionSourcesTypesNames:
     GENERATION = "generation"
     SQL_READ = "sql-read"
     SQL_WRITE = "sql-write"
+    NOSQL_READ = "nosql-read"
+    NOSQL_WRITE = "nosql-write"
     STORE_MEMORY = "store-memory"
     INTERPRET_CODE = "interpret-code"
     REASONING = "reasoning"
@@ -119,6 +121,8 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.GENERATION,
             LLMTransactionSourcesTypesNames.SQL_READ,
             LLMTransactionSourcesTypesNames.SQL_WRITE,
+            LLMTransactionSourcesTypesNames.NOSQL_READ,
+            LLMTransactionSourcesTypesNames.NOSQL_WRITE,
             LLMTransactionSourcesTypesNames.STORE_MEMORY,
             LLMTransactionSourcesTypesNames.INTERPRET_CODE,
             LLMTransactionSourcesTypesNames.UPLOAD_FILE,

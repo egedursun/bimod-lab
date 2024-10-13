@@ -46,6 +46,8 @@ from apps.core.system_prompts.information_feeds.media_manager.build_media_manage
     build_media_manager_data_source_prompt, build_lean_media_manager_data_source_prompt
 from apps.core.system_prompts.information_feeds.ml_manager.build_ml_models_data_source_prompt import \
     build_ml_models_data_source_prompt, build_lean_ml_models_data_source_prompt
+from apps.core.system_prompts.information_feeds.nosql.build_nosql_data_source_prompt import \
+    build_nosql_data_source_prompt, build_lean_nosql_data_source_prompt
 from apps.core.system_prompts.information_feeds.sql.build_sql_data_source_prompt import build_sql_data_source_prompt, \
     build_lean_sql_data_source_prompt
 from apps.core.system_prompts.information_feeds.ssh_file_system.build_file_system_data_source_prompt import \
@@ -83,6 +85,8 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_codebase_query_
     build_tool_prompt__execute_codebase_query
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_analysis_tool_prompt import \
     build_tool_prompt__analyze_code
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_nosql_query_tool_prompt import \
+    build_tool_prompt__execute_nosql_query
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_restful_api_tool_prompt import \
     build_tool_prompt__execute_restful_api
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_tool_prompt import \
@@ -138,15 +142,16 @@ class SystemPromptFactoryBuilder:
                 templated_response, user))
 
         (browsing_feed, codebase_feed, ssh_system_feed, vector_store_feed, media_manager_feed,
-         ml_manager_feed, sql_feed) = (SystemPromptFactoryBuilder._build_information_feeds_prompt(assistant))
+         ml_manager_feed, sql_feed, nosql_feed) = (
+            SystemPromptFactoryBuilder._build_information_feeds_prompt(assistant))
 
         restful_apis, custom_functions, bash_scripts = (
             SystemPromptFactoryBuilder._build_flexible_modalities_prompts(assistant))
 
         (process_audio, execute_browsing, execute_codebase, analyze_code, execute_api, execute_function,
          execute_script, execute_ssh_command, generate_image, edit_image, dream_image, query_vector_store,
-         predict_with_ml, execute_reasoning, execute_sql_query, execute_media_manager, generic_tool_calls,
-         execute_http_retrieval, execute_intra_memory_retrieval, generate_video) = (
+         predict_with_ml, execute_reasoning, execute_sql_query, execute_nosql_query, execute_media_manager,
+         generic_tool_calls, execute_http_retrieval, execute_intra_memory_retrieval, generate_video) = (
             SystemPromptFactoryBuilder._build_tool_call_instructions_prompts(assistant))
 
         #
@@ -160,8 +165,8 @@ class SystemPromptFactoryBuilder:
             generate_image, edit_image, dream_image, main_instructions, vector_store_feed, query_vector_store,
             media_manager_feed, standard_memory, ml_manager_feed,  agent_nickname,  spatial_awareness,
             predict_with_ml, execute_reasoning, communication_lang, templated_response, bash_scripts,
-            sql_feed, execute_sql_query, execute_media_manager, tone, generic_tool_calls, execute_http_retrieval,
-            comm_user_info, execute_intra_memory_retrieval, generate_video)
+            sql_feed, execute_sql_query, nosql_feed, execute_nosql_query, execute_media_manager, tone,
+            generic_tool_calls, execute_http_retrieval, comm_user_info, execute_intra_memory_retrieval, generate_video)
 
         prompt = {"role": role, "content": merged_prompt}
         tx = LLMTransaction.objects.create(
@@ -181,8 +186,9 @@ class SystemPromptFactoryBuilder:
                               do_generate_image, do_edit_image, do_dream_image, generic_instructions,
                               vector_store_feed, do_vector_store, media_store_feed, standard_memory, ml_model_feed,
                               agent_nickname, spatial_awareness, do_ml_model, do_reasoning, comm_language,
-                              templated_response, scripts_feed, sql_feed, do_sql_query, do_media_manager, tone,
-                              do_instructions, do_http_retrieval, user_info, do_intra_memory, do_generate_video):
+                              templated_response, scripts_feed, sql_feed, do_sql_query, nosql_feed, do_nosql_query,
+                              do_media_manager, tone, do_instructions, do_http_retrieval, user_info, do_intra_memory,
+                              do_generate_video):
         combined_system_instructions = foundation
         combined_system_instructions += agent_nickname
         combined_system_instructions += generic_instructions
@@ -197,6 +203,7 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += intra_memory
 
         combined_system_instructions += sql_feed
+        combined_system_instructions += nosql_feed
         combined_system_instructions += vector_store_feed
         combined_system_instructions += codebase_feed
         combined_system_instructions += file_systems
@@ -209,6 +216,7 @@ class SystemPromptFactoryBuilder:
 
         combined_system_instructions += do_instructions
         combined_system_instructions += do_sql_query
+        combined_system_instructions += do_nosql_query
         combined_system_instructions += do_vector_store
         combined_system_instructions += do_codebase
         combined_system_instructions += do_intra_memory
@@ -234,6 +242,7 @@ class SystemPromptFactoryBuilder:
     def _build_tool_call_instructions_prompts(assistant):
         instructions = (build_generic_instructions_tool_call_prompt(assistant))
         sql = (build_tool_prompt__execute_sql_query())
+        nosql = (build_tool_prompt__execute_nosql_query())
         vector_store = build_tool_prompt__query_vector_store()
         codebase = build_tool_prompt__execute_codebase_query()
         intra_memory = build_tool_prompt__intra_context_memory()
@@ -253,7 +262,7 @@ class SystemPromptFactoryBuilder:
         process_audio = build_tool_prompt__execute_audio()
         generate_video = build_tool_prompt__generate_video(assistant_id=assistant.id)
         return (process_audio, browsing, codebase, analyze_code, apis, functions, scripts, ssh_file_system,
-                generate_image, edit_image, dream_image, vector_store, infer_ml, reasoning, sql, media_manager,
+                generate_image, edit_image, dream_image, vector_store, infer_ml, reasoning, sql, nosql, media_manager,
                 instructions, http_retrieval, intra_memory, generate_video)
 
     @staticmethod
@@ -266,6 +275,7 @@ class SystemPromptFactoryBuilder:
     @staticmethod
     def _build_information_feeds_prompt(assistant):
         sql_feed = build_sql_data_source_prompt(assistant)
+        nosql_feed = build_nosql_data_source_prompt(assistant)
         vector_store_feed = build_vector_store_data_source_prompt(assistant)
         codebase_feed = build_code_base_data_source_prompt(assistant)
         ssh_system_feed = build_file_system_data_source_prompt(assistant)
@@ -273,7 +283,7 @@ class SystemPromptFactoryBuilder:
         ml_feed = build_ml_models_data_source_prompt(assistant)
         browsing_feed = build_browsing_data_source_prompt(assistant)
         return (browsing_feed, codebase_feed, ssh_system_feed, vector_store_feed, media_manager_feed,
-                ml_feed, sql_feed)
+                ml_feed, sql_feed, nosql_feed)
 
     @staticmethod
     def _build_foundation_prompts(agent_nickname, agent_personality_tone, assistant, chat, output_language,
@@ -309,6 +319,7 @@ class SystemPromptFactoryBuilder:
         output_language = build_communication_language_prompt(comm_language)
 
         sql_feed = build_lean_sql_data_source_prompt()
+        nosql_feed = build_lean_nosql_data_source_prompt()
         vector_store_feed = build_lean_vector_store_data_source_prompt()
         codebase_feed = build_lean_code_base_data_source_prompt()
         ssh_feed = build_lean_file_system_data_source_prompt()
@@ -347,6 +358,7 @@ class SystemPromptFactoryBuilder:
         merged_prompt += tone_prompt
         merged_prompt += output_language
         merged_prompt += sql_feed
+        merged_prompt += nosql_feed
         merged_prompt += vector_store_feed
         merged_prompt += codebase_feed
         merged_prompt += ssh_feed

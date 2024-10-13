@@ -14,3 +14,10 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
+
+
+NOSQL_DBMS_PROVIDERS = {
+    "COUCHBASE": {
+        "code": "couchbase", "name": "Couchbase"
+    },
+}

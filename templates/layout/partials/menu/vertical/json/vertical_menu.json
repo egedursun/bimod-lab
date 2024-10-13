@@ -397,10 +397,10 @@
       "url": "finetuning:list"
     },
     {
-      "menu_header": "Data Sources"
+      "menu_header": "Remote Sources"
     },
     {
-      "name": "File Systems",
+      "name": "SSH File Systems",
       "icon": "menu-icon tf-icons ti ti-server",
       "slug": "file-systems",
       "submenu": [
@@ -432,6 +432,9 @@
           "url": "datasource_browsers:list"
         }
       ]
+    },
+    {
+      "menu_header": "Relational Databases"
     },
     {
       "name": "SQL Databases",
@@ -468,6 +471,9 @@
       ]
     },
     {
+      "menu_header": "NoSQL Document DBMS"
+    },
+    {
       "name": "NoSQL Databases",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "sql-databases",
@@ -475,12 +481,29 @@
         {
           "name": "Add NoSQL Database",
           "slug": "nosql-database",
-          "url": "dashboard:main-dashboard"
+          "url": "datasource_nosql:create"
         },
         {
           "name": "NoSQL Databases",
           "slug": "nosql-database",
-          "url": "dashboard:main-dashboard"
+          "url": "datasource_nosql:list"
+        }
+      ]
+    },
+    {
+      "name": "NoSQL Queries",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "nosql-queries",
+      "submenu": [
+        {
+          "name": "Add NoSQL Query",
+          "slug": "nosql-query",
+          "url": "datasource_nosql:create_query"
+        },
+        {
+          "name": "Manage NoSQL Queries",
+          "slug": "nosql-query",
+          "url": "datasource_nosql:list_queries"
         }
       ]
     },
@@ -729,6 +752,9 @@
           "url": "mm_scripts:connect"
         }
       ]
+    },
+    {
+      "menu_header": "Automated Tasks"
     },
     {
       "name": "Scheduled Jobs",

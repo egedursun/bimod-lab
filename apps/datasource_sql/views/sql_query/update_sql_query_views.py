@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin

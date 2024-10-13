@@ -14,3 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
+from apps.core.nosql.nosql_executor import CouchbaseNoSQLExecutor
+from apps.core.nosql.utils import NOSQL_DBMS_PROVIDERS
+from apps.datasource_nosql.models import NoSQLDatabaseConnection
+
+
+class InternalNoSQLClient:
+    @staticmethod
+    def get(connection: NoSQLDatabaseConnection):
+        if connection.nosql_db_type == NOSQL_DBMS_PROVIDERS["COUCHBASE"]["code"]:
+            return CouchbaseNoSQLExecutor(connection)

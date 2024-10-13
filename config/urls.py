@@ -44,6 +44,7 @@ urlpatterns = [
     path("app/export_leanmods/", include("apps.export_leanmods.urls", namespace="export_leanmods")),
     path("app/export_orchestrations/", include("apps.export_orchestrations.urls", namespace="export_orchestrations")),
     path("app/datasource_sql/", include("apps.datasource_sql.urls", namespace="datasource_sql")),
+    path("app/datasource_nosql/", include("apps.datasource_nosql.urls", namespace="datasource_nosql")),
     path("app/datasource_knowledge_base/", include("apps.datasource_knowledge_base.urls")),
     path("app/datasource_codebase/", include("apps.datasource_codebase.urls", namespace="datasource_codebase")),
     path("app/datasource_file_systems/", include("apps.datasource_file_systems.urls", namespace="datasource_file_systems")),
