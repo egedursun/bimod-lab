@@ -241,32 +241,19 @@ document.getElementById('deleteButton').addEventListener('click', function (even
 </script>
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 <script>
-  // Function to convert Quill HTML content to Markdown
   function convertHtmlToMarkdown(htmlContent) {
-    // Use a simple library like Turndown.js to convert HTML to Markdown
     const turndownService = new TurndownService();
     const markdown = turndownService.turndown(htmlContent);
     return markdown;
   }
   document.getElementById('downloadMD').addEventListener('click', function () {
-    // Get the Quill content as HTML
     const editorContentHTML = quill.root.innerHTML; // HTML content of the Quill editor
-
-    // Convert HTML to Markdown
     const editorContentMD = convertHtmlToMarkdown(editorContentHTML);
-
-    // Create a Blob with the markdown content
     const blob = new Blob([editorContentMD], { type: 'text/markdown' });
-
-    // Create a temporary download link
     const downloadLink = document.createElement('a');
     downloadLink.href = URL.createObjectURL(blob);
     downloadLink.download = 'document.md';
-
-    // Trigger the download by simulating a click
     downloadLink.click();
-
-    // Clean up the temporary link
     URL.revokeObjectURL(downloadLink.href);
   });
 </script>
