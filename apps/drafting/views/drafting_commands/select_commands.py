@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Br6.in™
-#  File: __init__.py
-#  Last Modified: 2024-10-14 13:52:59
+#  File: select_commands.py
+#  Last Modified: 2024-10-15 23:17:31
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-14 13:53:07
+#  Created: 2024-10-15 23:17:32
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,7 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 
-from .folder import *
-from .document import *
-from .drafting_commands import *
+
+class DraftingView_GenerateViaSelectCommand(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        # TODO-EGE: implement (5)
+        pass

@@ -20,7 +20,11 @@ from django.urls import path
 from apps.drafting.views import (DraftingView_DocumentDetail, DraftingView_DocumentDelete, DraftingView_DocumentCreate,
                                  DraftingView_DocumentList, DraftingView_FolderList, DraftingView_FolderCreate,
                                  DraftingView_FolderUpdate, DraftingView_FolderDelete, DraftingView_DocumentUpdate,
-                                 DraftingView_SaveContent)
+                                 DraftingView_SaveContent, DraftingView_GenerateViaAICommand,
+                                 DraftingView_GenerateViaNoSQLCommand, DraftingView_GenerateViaSQLCommand,
+                                 DraftingView_GenerateViaSSHCommand, DraftingView_GenerateViaSelectCommand,
+                                 DraftingView_GenerateViaVectCommand, DraftingView_GenerateViaAutoCommand,
+                                 DraftingView_GenerateViaImgCommand, DraftingView_GenerateViaWebCommand)
 
 app_name = 'drafting'
 
@@ -45,4 +49,14 @@ urlpatterns = [
     ), name="documents_update"),
     path("documents/save/<int:folder_id>/<int:document_id>/", DraftingView_SaveContent.as_view(),
          name="documents_save"),
+
+    path("generate/commands/ai/", DraftingView_GenerateViaAICommand.as_view(), name="generate_ai"),
+    path("generate/commands/nosql/", DraftingView_GenerateViaNoSQLCommand.as_view(), name="generate_nosql"),
+    path("generate/commands/sql/", DraftingView_GenerateViaSQLCommand.as_view(), name="generate_sql"),
+    path("generate/commands/ssh/", DraftingView_GenerateViaSSHCommand.as_view(), name="generate_ssh"),
+    path("generate/commands/select/", DraftingView_GenerateViaSelectCommand.as_view(), name="generate_select"),
+    path("generate/commands/vect/", DraftingView_GenerateViaVectCommand.as_view(), name="generate_vect"),
+    path("generate/commands/auto/", DraftingView_GenerateViaAutoCommand.as_view(), name="generate_auto"),
+    path("generate/commands/img/", DraftingView_GenerateViaImgCommand.as_view(), name="generate_img"),
+    path("generate/commands/web/", DraftingView_GenerateViaWebCommand.as_view(), name="generate_web"),
 ]

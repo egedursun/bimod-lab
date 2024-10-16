@@ -257,6 +257,224 @@ document.getElementById('deleteButton').addEventListener('click', function (even
     URL.revokeObjectURL(downloadLink.href);
   });
 </script>
+<script>
+  var isModalOpen = false;
+var currentCommand = "";
+var savedRange = null;  // Store the selected range
+
+// Quill text change event to detect commands and show modals
+quill.on('text-change', function(delta, oldDelta, source) {
+  const quillEditor = quill.getText();
+  const cursorPosition = quill.getSelection()?.index;
+  const commands = {
+    "//ai": { title: "Consult AI Assistant", placeholder: "Ask something to the AI assistant...", buttonText: "Consult" },
+    "//web": { title: "Make AI Browse", placeholder: "Write what you want to browse...", buttonText: "Browse" },
+    "//sql": { title: "Check SQL with AI", placeholder: "Query your database files with AI...", buttonText: "Check SQL" },
+    "//nosql": { title: "Check NoSQL with AI", placeholder: "Query your NoSQL database files with AI...", buttonText: "Check NoSQL" },
+    "//img": { title: "Generate Image with AI", placeholder: "Write the details of the image you want...", buttonText: "Generate Image" },
+    "//ssh": { title: "Check SSH Server with AI", placeholder: "Query your SSH servers with AI...", buttonText: "Check SSH" },
+    "//vect": { title: "Check Knowledge with AI", placeholder: "Query knowledge bases with AI...", buttonText: "Check Knowledge" },
+    "//auto": { title: "", placeholder: "", buttonText: "" },  // No modal, just handling.
+  };
+
+  for (const command in commands) {
+    const triggerStart = cursorPosition - command.length;
+    const lastTypedText = quillEditor.slice(triggerStart, cursorPosition);
+
+    if (lastTypedText === command) {
+      currentCommand = command;
+      if (command === "//auto") {
+        handleAutoCommand();  // Handle auto command directly without a modal.
+      } else if (!isModalOpen) {
+        showModal(commands[command]);
+      }
+      break;
+    }
+  }
+
+  // Close modal if the text doesn't include the command anymore
+  if (isModalOpen && !quillEditor.includes(currentCommand)) {
+    closeModal();
+  }
+});
+
+// Function to show the modal with appropriate details based on the command
+function showModal(commandDetails) {
+  isModalOpen = true;
+  const modal = document.getElementById('aiAssistantModal');
+
+  // Save the current selection range before showing the modal
+  savedRange = quill.getSelection();
+
+  document.getElementById('modalTitle').innerText = commandDetails.title;
+  document.getElementById('aiPrompt').placeholder = commandDetails.placeholder;
+  document.getElementById('consultButton').innerHTML = `<i class="fa fa-magic-wand-sparkles me-2"></i><strong>${commandDetails.buttonText}</strong>`;
+  modal.style.position = 'fixed';
+  modal.style.top = '118%';
+  modal.style.left = '72%';
+  modal.style.transform = 'translate(-50%, -50%)';
+  modal.style.display = 'block';
+}
+
+// Function to close the modal
+function closeModal() {
+  isModalOpen = false;
+  document.getElementById('aiAssistantModal').style.display = 'none';
+}
+
+// Function to handle AI consultation
+function consultAI() {
+  const aiPrompt = document.getElementById('aiPrompt').value;
+  if (aiPrompt.trim() !== "") {
+    closeModal();
+
+    // Restore the selection when the user consults AI
+    if (savedRange) {
+      quill.setSelection(savedRange);
+    }
+
+    quill.focus();
+    const selection = quill.getSelection(true);
+    if (!selection) {
+      console.warn("No active selection when consulting AI.");
+      return;
+    }
+    const cursorPosition = selection.index;
+    const triggerPhraseLength = currentCommand.length;
+    if (cursorPosition >= triggerPhraseLength) {
+      quill.deleteText(cursorPosition - triggerPhraseLength, triggerPhraseLength);
+    }
+    console.log(`Consulting AI for ${currentCommand} with prompt:`, aiPrompt);
+
+    // Call the respective function based on the current command
+    if (currentCommand === "//ai") {
+      handleAiConsult();
+    } else if (currentCommand === "//web") {
+      handleWebConsult();
+    } else if (currentCommand === "//sql") {
+      handleSqlConsult();
+    } else if (currentCommand === "//nosql") {
+      handleNoSqlConsult();
+    } else if (currentCommand === "//img") {
+      handleImageConsult();
+    } else if (currentCommand === "//ssh") {
+      handleSshConsult();
+    } else if (currentCommand === "//vect") {
+      handleVectConsult();
+    }
+  }
+}
+
+// Event listener for backspace to close the modal
+quill.root.addEventListener('keydown', function(event) {
+  const cursorPosition = quill.getSelection()?.index;
+  const quillEditor = quill.getText();
+  if (event.key === "Backspace") {
+    const lastTypedText = quillEditor.slice(cursorPosition - currentCommand.length, cursorPosition);
+    if (isModalOpen && lastTypedText !== currentCommand) {
+      closeModal();
+    }
+  }
+});
+
+// Handle selected text to show modal
+quill.on('selection-change', function(range) {
+  if (range && range.length > 0) {
+    // Save the selected range
+    savedRange = range;
+
+    // Show the modal for text manipulation
+    showModal({
+      title: "Manipulate Text with AI",
+      placeholder: "Write how do you want to change the text...",
+      buttonText: "Submit"
+    });
+  }
+});
+
+// Handle the //auto command
+function handleAutoCommand() {
+  console.log("Handling //auto command");
+
+  // Remove the //auto from the text after handling it
+  const selection = quill.getSelection(true);
+  if (!selection) {
+    console.warn("No active selection when handling auto.");
+    return;
+  }
+  const cursorPosition = selection.index;
+  const triggerPhraseLength = "//auto".length;
+  if (cursorPosition >= triggerPhraseLength) {
+    quill.deleteText(cursorPosition - triggerPhraseLength, triggerPhraseLength);
+  }
+}
+
+// Functions for handling each command's submission (empty handlers for now)
+function handleAiConsult() {
+  console.log("Handling AI consultation logic...");
+}
+
+function handleWebConsult() {
+  console.log("Handling web browsing consultation logic...");
+}
+
+function handleSqlConsult() {
+  console.log("Handling SQL consultation logic...");
+}
+
+function handleNoSqlConsult() {
+  console.log("Handling NoSQL consultation logic...");
+}
+
+function handleImageConsult() {
+  console.log("Handling image generation consultation logic...");
+}
+
+function handleSshConsult() {
+  console.log("Handling SSH consultation logic...");
+}
+
+function handleVectConsult() {
+  console.log("Handling vector knowledge consultation logic...");
+}
+
+// Make modal draggable
+function makeDraggable(modal, handle) {
+  let offsetX = 0, offsetY = 0, initialX = 0, initialY = 0;
+  handle.onmousedown = dragMouseDown;
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    initialX = e.clientX;
+    initialY = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    offsetX = initialX - e.clientX;
+    offsetY = initialY - e.clientY;
+    initialX = e.clientX;
+    initialY = e.clientY;
+    modal.style.top = (modal.offsetTop - offsetY) + "px";
+    modal.style.left = (modal.offsetLeft - offsetX) + "px";
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const modal = document.getElementById('aiAssistantModal');
+  const handle = document.getElementById('modalHeader');
+  makeDraggable(modal, handle);
+});
+</script>
 {% endblock page_js %}
 
 {% block content %}
@@ -360,6 +578,128 @@ document.getElementById('deleteButton').addEventListener('click', function (even
   <hr>
   <div id="editor" class="mt-4 overflow-auto" style="border-radius: 10px;">
     <!-- ... -->
+  </div>
+  <div class="tips-section card card-border-shadow-primary p-8 mt-12">
+            <h4>
+              <strong>
+                <i class="fa fa-magic-wand-sparkles me-2"></i>
+                AI Commands
+              </strong>
+            </h4>
+            <small class="text-muted">
+              You can use the following commands to consult your AI assistant for various tasks. This can be
+              really helpful for you to speed up your drafting process and get suggestions from your AI assistant.
+              If you have trouble in using these commands, please contact us for further assistance, and remember
+              that you can always avoid using these commands and draft your documents manually.
+            </small>
+            <hr>
+            <div class="row align-items-center justify-content-start">
+              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+                <div class="">
+                  <i class="fa fa-robot me-2"></i>
+                  <span class="h6 mb-2 text-body"><strong>//ai</strong></span>
+                  <span class="text-dark ms-4">
+                    <strong>Consult AI Assistant</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+                <div class="">
+                  <i class="fa fa-pencil me-2"></i>
+                  <span class="h6 mb-2 text-body"><strong>//auto</strong></span>
+                  <span class="text-dark ms-4">
+                    <strong>Auto-Completion</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+                <div class="">
+                  <i class="fa fa-robot me-2"></i>
+                  <span class="h6 mb-2 text-body"><strong>//img</strong></span>
+                  <span class="text-dark ms-4">
+                    <strong>Generate Image</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+                <div class="">
+                  <i class="fa fa-database me-2"></i>
+                  <span class="h6 mb-2 text-body"><strong>//sql</strong></span>
+                  <span class="text-dark ms-4">
+                    <strong>Search SQL</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+                <div class="">
+                  <i class="fa fa-search me-2"></i>
+                  <span class="h6 mb-2 text-body"><strong>//nosql</strong></span>
+                  <span class="text-dark ms-4">
+                    <strong>Search NoSQL</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+                <div class="">
+                  <i class="fa fa-i-cursor me-2"></i>
+                  <span class="h6 mb-2 text-body"><strong>[Select]</strong></span>
+                  <span class="text-dark ms-4">
+                    <strong>Manipulate Text</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+                <div class="">
+                  <i class="fa fa-server me-2"></i>
+                  <span class="h6 mb-2 text-body"><strong>//ssh</strong></span>
+                  <span class="text-dark ms-4">
+                    <strong>Search SSH</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+                <div class="">
+                  <i class="fa fa-vector-square me-2"></i>
+                  <span class="h6 mb-2 text-body"><strong>//vect</strong></span>
+                  <span class="text-dark ms-4">
+                    <strong>Search Documents</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+                <div class="">
+                  <i class="fa fa-globe me-2"></i>
+                  <span class="h6 mb-2 text-body"><strong>//web</strong></span>
+                  <span class="text-dark ms-4">
+                    <strong>Search Web</strong>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+</div>
+
+<!-- AI Assistant Modal -->
+<div class="modal draggable-modal" tabindex="-1" id="aiAssistantModal" style="display: none; position: absolute;">
+  <div class="modal-dialog border border-primary border-3" style="border-radius: 12px;">
+    <div class="modal-content">
+      <div class="modal-header" id="modalHeader" style="cursor: move;">
+        <h5 class="modal-title" id="modalTitle">
+          <i class="fa fa-magic-wand-sparkles me-2"></i>
+          <strong>Consult AI Assistant</strong>
+        </h5>
+        <button type="button" class="btn-close" onclick="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="aiPrompt" class="form-control" placeholder="Ask something to the AI assistant...">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="consultButton" onclick="consultAI()">
+          <i class="fa fa-magic-wand-sparkles me-2"></i>
+          <strong>Consult</strong>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 

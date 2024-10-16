@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Br6.in™
-#  File: __init__.py
-#  Last Modified: 2024-10-14 13:52:59
+#  File: conftest.py
+#  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-14 13:53:07
+#  Created: 2024-10-05 14:42:36
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,7 +14,12 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
+#
+#
 
-from .folder import *
-from .document import *
-from .drafting_commands import *
+import pytest
+
+
+@pytest.fixture
+def fixture_orchestrations_init():
+    return True

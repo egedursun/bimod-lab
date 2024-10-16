@@ -2,9 +2,9 @@
 #
 #  Project: Br6.in™
 #  File: __init__.py
-#  Last Modified: 2024-10-14 13:52:59
+#  Last Modified: 2024-10-16 01:30:13
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-14 13:53:07
+#  Created: 2024-10-16 01:30:13
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -15,6 +15,5 @@
 #   For permission inquiries, please contact: admin@br6.in.
 #
 
-from .folder import *
-from .document import *
-from .drafting_commands import *
+
+from .generic_ai_prompts import *
