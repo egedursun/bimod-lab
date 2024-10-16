@@ -1,0 +1,137 @@
+
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Br6.in™
+  ~ File: drafting_documents_update.html
+  ~ Last Modified: 2024-10-15 20:06:20
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-15 20:06:21
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@br6.in.
+  ~
+  -->
+
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Update Document{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-17.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        Use this form to update the document's title, folder, assistant, target audience, context instructions, and tone.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <a href="{% url 'drafting:documents_list' folder.id %}">
+    <button class="btn btn-secondary mt-0 mb-4">
+      <i class="fa fa-folder me-4"></i>
+      <strong> Turn Back to Folder</strong>
+    </button>
+  </a>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <!-- Document Update Form -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4>
+            <i class="fa fa-edit me-2"></i>
+            <strong>Update Document</strong>
+          </h4>
+        </div>
+        <div class="card-body">
+          <form method="post" action="{% url 'drafting:documents_update' folder.id document.id %}">
+            {% csrf_token %}
+
+            <!-- Document Title -->
+            <div class="mb-3">
+              <label for="document_title" class="form-label">Document Title</label>
+              <input type="text" class="form-control" id="document_title" name="document_title" value="{{ document.document_title }}" required>
+            </div>
+
+            <!-- Folder Picker -->
+            <div class="mb-3">
+              <label for="document_folder" class="form-label">Document Folder</label>
+              <select id="document_folder" name="document_folder" class="form-control" required>
+                {% for available_folder in available_folders %}
+                  <option value="{{ available_folder.id }}" {% if available_folder.id == document.document_folder.id %}selected{% endif %}>
+                    {{ available_folder.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Assistant Picker -->
+            <div class="mb-3">
+              <label for="copilot_assistant" class="form-label">Co-pilot Assistant</label>
+              <select id="copilot_assistant" name="copilot_assistant" class="form-control" required>
+                {% for assistant in assistants %}
+                  <option value="{{ assistant.id }}" {% if assistant.id == document.copilot_assistant.id %}selected{% endif %}>
+                    {{ assistant.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Context Instructions -->
+            <div class="mb-3">
+              <label for="context_instructions" class="form-label">Context Instructions</label>
+              <textarea class="form-control" id="context_instructions" name="context_instructions" rows="3">{{ document.context_instructions }}</textarea>
+            </div>
+
+            <!-- Target Audience -->
+            <div class="mb-3">
+              <label for="target_audience" class="form-label">Target Audience</label>
+              <input type="text" class="form-control" id="target_audience" name="target_audience" value="{{ document.target_audience }}">
+            </div>
+
+            <!-- Tone -->
+            <div class="mb-3">
+              <label for="tone" class="form-label">Tone</label>
+              <input type="text" class="form-control" id="tone" name="tone" value="{{ document.tone }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4">
+              <i class="fa fa-save me-2"></i>
+              <strong>Update Document</strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

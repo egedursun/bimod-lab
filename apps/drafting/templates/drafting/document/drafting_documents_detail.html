@@ -1,0 +1,379 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Br6.in™
+  ~ File: drafting_documents_detail.html
+  ~ Last Modified: 2024-10-14 18:30:16
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-14 19:10:48
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@br6.in.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Drafting Editor{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+{% endblock vendor_css %}
+
+{% block page_css %}
+{{ block.super }}
+<style>
+  .ql-editor {
+    background-color: whitesmoke !important;
+    color: black !important; /* Text color */
+    min-height: 80vh;
+    max-height: 80vh;
+    overflow: auto;
+  }
+
+  .ql-toolbar {
+    background-color: whitesmoke !important;
+    border-radius: 10px;
+  }
+
+  .ql-editor h1 {
+    color: black;
+    font-weight: bolder;
+  }
+
+  .ql-editor h2 {
+    color: black;
+    font-weight: bolder;
+  }
+
+  .ql-editor h3 {
+    color: black;
+    font-weight: bold;
+  }
+</style>
+{% endblock page_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+
+  <script>
+  var unsavedChanges = false;
+  var quill = new Quill('#editor', {
+    theme: 'snow',
+    placeholder: 'Start drafting your document...',
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+        [{ 'header': 1 }, { 'header': 2 }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'script': 'sub' }, { 'script': 'super' }],
+        [{ 'indent': '-1' }, { 'indent': '+1' }],
+        [{ 'direction': 'rtl' }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        ['link', 'image', 'video', 'formula'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+        ['clean']
+      ],
+      clipboard: true,
+      history: {
+        delay: 2000,
+        maxStack: 500,
+        userOnly: true
+      }
+    }
+  });
+
+
+function saveContent() {
+  let deltaContent = quill.getContents();
+  document.querySelector('input[name="draft_text"]').value = JSON.stringify(deltaContent);
+  localStorage.setItem('unsavedChanges', false);
+  document.querySelector('#saveForm').submit();
+}
+
+// Page load initialization
+document.addEventListener('DOMContentLoaded', function () {
+  let initialDocumentContent;
+  try {
+    initialDocumentContent = JSON.parse('{{ content|escapejs }}');
+  } catch (e) {
+    console.error('Initial content parsing error:', e);
+    initialDocumentContent = '{}';
+  }
+
+  let savedContent = localStorage.getItem('quillContent');
+  if (savedContent) {
+    try {
+      quill.setContents(JSON.parse(savedContent));
+    } catch (e) {
+      console.error('Saved content parsing error:', e);
+      quill.setContents(initialDocumentContent);
+    }
+  } else {
+    quill.setContents(initialDocumentContent);
+    localStorage.setItem('quillContent', initialDocumentContent);
+  }
+  let unsavedChanges = localStorage.getItem('unsavedChanges');
+  document.querySelector('.bg-label-warning').hidden = (unsavedChanges !== 'true');
+});
+
+// Handle text changes in Quill editor
+quill.on('text-change', function() {
+  let currentContent = quill.getContents();
+  let currentContentString = JSON.stringify(currentContent);
+  let initialDocumentContent = localStorage.getItem('quillContent');
+  localStorage.setItem('quillContent', currentContentString);
+  if (currentContentString === initialDocumentContent) {
+    document.querySelector('.bg-label-warning').hidden = true;
+  } else {
+    localStorage.setItem('unsavedChanges', true);
+    document.querySelector('.bg-label-warning').hidden = false;
+  }
+});
+
+// Refresh function for reset button
+function resetChanges() {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This will reset the document to its initial state, and all unsaved changes will be lost.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, reset it!',
+    cancelButtonText: 'No, cancel!',
+    customClass: {
+      confirmButton: 'btn btn-warning me-2',
+      cancelButton: 'btn btn-secondary'
+    },
+    buttonsStyling: false
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let initialDocumentContent;
+      try {
+        initialDocumentContent = JSON.parse('{{ content|escapejs }}');
+      } catch (e) {
+        console.error('Initial content parsing error:', e);
+        initialDocumentContent = '{}';
+      }
+      quill.setContents(initialDocumentContent);
+      localStorage.setItem('quillContent', JSON.stringify(initialDocumentContent));
+      localStorage.setItem('unsavedChanges', false);
+      document.querySelector('.bg-label-warning').hidden = true;
+    }
+  });
+}
+</script>
+<script>
+document.getElementById('deleteButton').addEventListener('click', function (event) {
+    event.preventDefault();
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this action!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        customClass: {
+            confirmButton: 'btn btn-danger me-2',
+            cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('deleteForm').submit();
+        }
+    });
+});
+</script>
+<script>
+  document.getElementById('downloadHTML').addEventListener('click', function () {
+    const editorContent = quill.root.innerHTML;
+    const blob = new Blob([editorContent], { type: 'text/html' });
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = 'document.html';
+    downloadLink.click();
+    URL.revokeObjectURL(downloadLink.href);
+  });
+</script>
+<script>
+  document.getElementById('downloadTXT').addEventListener('click', function () {
+    const editorContent = quill.getText();
+    const blob = new Blob([editorContent], { type: 'text/plain' });
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = 'document.txt';
+    downloadLink.click();
+    URL.revokeObjectURL(downloadLink.href);
+  });
+</script>
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+<script>
+  // Function to convert Quill HTML content to Markdown
+  function convertHtmlToMarkdown(htmlContent) {
+    // Use a simple library like Turndown.js to convert HTML to Markdown
+    const turndownService = new TurndownService();
+    const markdown = turndownService.turndown(htmlContent);
+    return markdown;
+  }
+  document.getElementById('downloadMD').addEventListener('click', function () {
+    // Get the Quill content as HTML
+    const editorContentHTML = quill.root.innerHTML; // HTML content of the Quill editor
+
+    // Convert HTML to Markdown
+    const editorContentMD = convertHtmlToMarkdown(editorContentHTML);
+
+    // Create a Blob with the markdown content
+    const blob = new Blob([editorContentMD], { type: 'text/markdown' });
+
+    // Create a temporary download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = 'document.md';
+
+    // Trigger the download by simulating a click
+    downloadLink.click();
+
+    // Clean up the temporary link
+    URL.revokeObjectURL(downloadLink.href);
+  });
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="container md-4">
+  <h2 class="mb-12">
+    <i class="fa fa-magic-wand-sparkles me-2"></i>
+    <strong>Drafting Editor</strong>
+  </h2>
+
+  <a href="{% url 'drafting:documents_list' folder_id=document.document_folder.id %}">
+    <button class="btn btn-secondary mt-0 mb-4">
+      <i class="fa fa-folder me-4"></i>
+      <strong> Turn Back to Folder</strong>
+    </button>
+  </a>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-16.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can draft documents by using the power of your AI assistants, which enables you to
+        take advantage of your previous documents as well as the general configurations of your assistant, and
+        you can download your drafts as PDF, HTML, or TXT files. AI can help you auto-complete your drafts,
+        suggest you the best possible words, and correct your grammar mistakes.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+  <div class="d-flex justify-content-start align-content-center">
+    <div class="d-flex justify-content-between align-items-center mt-1 me-4">
+      <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 200px; overflow: auto;">
+        {{ document.document_folder.name }}
+      </span>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-1 me-4">
+      <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 200px; overflow: auto;">
+        {{ document.copilot_assistant.name }}
+      </span>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-1">
+      <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 380px; overflow: auto;">
+        {{ document.document_title }}
+      </span>
+      <span class="bg-label-warning rounded p-1 ms-4" role="alert" style="min-width: 150px;">
+        <small>
+          <i class="fa fa-exclamation-triangle me-1 ms-2"></i>
+          <strong>Unsaved Changes</strong>
+        </small>
+      </span>
+    </div>
+    <form id="saveForm" method="post" action="{% url 'drafting:documents_save' folder_id=document.document_folder.id document_id=document.id %}">
+      {% csrf_token %}
+      <div class="d-flex justify-content-between align-items-center mt-1">
+        <input type="hidden" name="draft_text" value="">
+        <button type="button" class="btn btn-link p-0 ms-2" onclick="saveContent()">
+          <i class="fa fa-save ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+        </button>
+      </div>
+    </form>
+    <button type="button" class="btn btn-link p-0 ms-12" id="downloadHTML">
+      <i class="fa fa-code ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+    </button>
+    <button type="button" class="btn btn-link p-0 ms-2" id="downloadMD">
+      <i class="ti ti-markdown ti-xl ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+    </button>
+    <button type="button" class="btn btn-link p-0 ms-2" id="downloadTXT">
+      <i class="fa fa-file-text ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+    </button>
+    <div class="d-flex justify-content-between align-items-center mt-1 ms-12">
+      <button type="button" class="btn btn-link p-0 ms-2" onclick="resetChanges()">
+        <i class="fa fa-refresh ms-2 mt-1_5 text-warning" style="font-size: 24px;"></i>
+      </button>
+    </div>
+    <form id="deleteForm" method="post" action="{% url 'drafting:documents_delete' folder_id=document.document_folder.id document_id=document.id %}">
+        {% csrf_token %}
+        <div class="d-flex justify-content-between align-items-center mt-1 ms-2">
+            <input type="hidden" name="delete_document" value="{{ document.id }}">
+            <button type="button" class="btn btn-link p-0 ms-2" id="deleteButton">
+                <i class="fa fa-trash ms-2 mt-2 text-danger" style="font-size: 24px;"></i>
+            </button>
+        </div>
+    </form>
+  </div>
+  <hr>
+  <div id="editor" class="mt-4 overflow-auto" style="border-radius: 10px;">
+    <!-- ... -->
+  </div>
+</div>
+
+{% endblock content %}

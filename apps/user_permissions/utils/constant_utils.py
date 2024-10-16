@@ -256,6 +256,16 @@ class PermissionNames:
     UPDATE_VIDEO_GENERATOR_CONNECTIONS = 'update_video_generator_connections'
     DELETE_VIDEO_GENERATOR_CONNECTIONS = 'delete_video_generator_connections'
 
+    ADD_DRAFTING_FOLDERS = 'add_drafting_folders'
+    UPDATE_DRAFTING_FOLDERS = 'update_drafting_folders'
+    LIST_DRAFTING_FOLDERS = 'list_drafting_folders'
+    DELETE_DRAFTING_FOLDERS = 'delete_drafting_folders'
+
+    ADD_DRAFTING_DOCUMENTS = 'add_drafting_documents'
+    UPDATE_DRAFTING_DOCUMENTS = 'update_drafting_documents'
+    LIST_DRAFTING_DOCUMENTS = 'list_drafting_documents'
+    DELETE_DRAFTING_DOCUMENTS = 'delete_drafting_documents'
+
 
 PERMISSION_TYPES = [
     ('add_organizations', 'Add Organizations'),
@@ -497,6 +507,16 @@ PERMISSION_TYPES = [
     ('list_video_generator_connections', 'List Video Generator Connections'),
     ('update_video_generator_connections', 'Update Video Generator Connections'),
     ('delete_video_generator_connections', 'Delete Video Generator Connections'),
+
+    ('add_drafting_folders', 'Add Drafting Folders'),
+    ('update_drafting_folders', 'Update Drafting Folders'),
+    ('list_drafting_folders', 'List Drafting Folders'),
+    ('delete_drafting_folders', 'Delete Drafting Folders'),
+
+    ('add_drafting_documents', 'Add Drafting Documents'),
+    ('update_drafting_documents', 'Update Drafting Documents'),
+    ('list_drafting_documents', 'List Drafting Documents'),
+    ('delete_drafting_documents', 'Delete Drafting Documents'),
 ]
 
 

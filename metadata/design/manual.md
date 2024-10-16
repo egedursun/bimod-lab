@@ -39,7 +39,7 @@ python manage.py graph_models -a -g -o bimod_db_dd-MM-YYYY.dot
 
 **Generating the Class and Package Graphs**
 
-- Generating a SVG file
+- Generating an SVG file
 ```bash
-pyreverse -o svg -p bimod_project -a 100 -s 100 -f ALL *
+pyreverse -o svg -p bimod_project -a 1 -s 1 -f ALL *
 ```

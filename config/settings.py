@@ -131,6 +131,7 @@ INSTALLED_APPS = [
     "apps.brainstorms",
     "apps.video_generations",
     "apps.harmoniq",
+    "apps.drafting",
 
     ########################################
     # SUPPORT
@@ -147,15 +148,19 @@ INSTALLED_APPS = [
 CACHEOPS_GENERIC_CASH_TIME = 60 * 60  # 1 hour
 
 CACHEOPS_REDIS = {
-    'host': 'localhost',  # Redis server hostname
-    'port': 6379,  # Redis server port
-    'db': 1,  # Redis database number
+    # Redis server hostname
+    'host': 'localhost',
+    # Redis server port
+    'port': 6379,
+    # Redis database number
+    'db': 1,
     'socket_timeout': 3,
     'retry_on_timeout': True
 }
 
 CACHEOPS_DEFAULTS = {
-    'timeout': CACHEOPS_GENERIC_CASH_TIME,  # Cache timeout in seconds (60 minutes)
+    # Cache timeout in seconds (60 minutes)
+    'timeout': CACHEOPS_GENERIC_CASH_TIME,
 }
 
 CACHEOPS = {
@@ -171,17 +176,14 @@ CACHEOPS = {
     'apps.datasource_browsers.DataSourceBrowserConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_browsers.DataSourceBrowserBrowsingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_file_systems.DataSourceFileSystem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.DocumentKnowledgeBaseConnection': {'ops': 'all',
-                                                                       'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.DocumentKnowledgeBaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.KnowledgeBaseDocument': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.KnowledgeBaseDocumentChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.ContextHistoryKnowledgeBaseConnection': {'ops': 'all',
-                                                                             'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.ContextHistoryKnowledgeBaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.ContextHistoryMemory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.ContextHistoryMemoryChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.DocumentProcessingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_media_storages.DataSourceMediaStorageConnection': {'ops': 'all',
-                                                                        'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_media_storages.DataSourceMediaStorageConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_media_storages.DataSourceMediaStorageItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_ml_models.DataSourceMLModelConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_ml_models.DataSourceMLModelItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
@@ -247,22 +249,13 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-                "config.context_processors.language_code",
-                "config.context_processors.my_setting",
-                "config.context_processors.get_cookie",
-                "config.context_processors.environment",
+                "django.template.context_processors.debug", "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth", "django.contrib.messages.context_processors.messages",
+                "config.context_processors.language_code", "config.context_processors.my_setting",
+                "config.context_processors.get_cookie", "config.context_processors.environment",
             ],
-            "libraries": {
-                "theme": "web_project.template_tags.theme",
-            },
-            "builtins": [
-                "django.templatetags.static",
-                "web_project.template_tags.theme",
-            ],
+            "libraries": {"theme": "web_project.template_tags.theme"},
+            "builtins": ["django.templatetags.static", "web_project.template_tags.theme"],
         },
     },
 ]
@@ -271,13 +264,7 @@ ASGI_APPLICATION = "config.asgi.application"
 WSGI_APPLICATION = "config.wsgi.application"
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
-}
+    'default': {'BACKEND': 'channels_redis.core.RedisChannelLayer', 'CONFIG': {"hosts": [('127.0.0.1', 6379)]}}}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -298,18 +285,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 # Internationalization
@@ -342,13 +321,9 @@ LOCALE_PATHS = [
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
-STATICFILES_DIRS = [
-    BASE_DIR / "src" / "assets",
-]
-
-
+STATICFILES_DIRS = [BASE_DIR / "src" / "assets"]
 BASE_URL = os.environ.get("BASE_URL", default="http://127.0.0.1:8000")
+
 
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
@@ -417,27 +392,20 @@ SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
 SESSION_SAVE_EVERY_REQUEST = True
-
 SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day
+
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5050",
-    "http://localhost:8000",
-    "http://0.0.0.0:8000",
-    "http://127.0.0.1:8000",
-    "https://br6.in",
-    "https://dev.br6.in",
-    "https://www.br6.in",
+    "http://localhost:8000", "http://0.0.0.0:8000", "http://127.0.0.1:8000",
+    "https://br6.in", "https://dev.br6.in", "https://www.br6.in",
 ]
 
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
     "http://localhost:5050",
-    "http://0.0.0.0:8000",
-    "http://127.0.0.1:8000",
-    "https://br6.in",
-    "https://dev.br6.in",
-    "https://www.br6.in",
+    "http://localhost:8000", "http://0.0.0.0:8000", "http://127.0.0.1:8000",
+    "https://br6.in", "https://dev.br6.in", "https://www.br6.in",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
@@ -488,30 +456,15 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
+        'verbose': {'format': '{levelname} {asctime} {module} {message}', 'style': '{'},
+        'simple': {'format': '{levelname} {message}', 'style': '{'},
+    },
+    'handlers': {'file': {
+            'level': 'DEBUG', 'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_debug.log'), 'formatter': 'verbose',
         },
     },
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'django_debug.log'),
-            'formatter': 'verbose',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
+    'loggers': {'django': {'handlers': ['file'], 'level': 'DEBUG', 'propagate': True}},
 }
 
 CONTEXT_MEMORY = os.environ.get("CONTEXT_MEMORY", default="0")

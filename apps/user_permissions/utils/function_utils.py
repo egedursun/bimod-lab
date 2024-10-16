@@ -136,6 +136,18 @@ def get_permissions_grouped():
             ('list_assistant_memories', 'List Assistant Memories'),
             ('delete_assistant_memories', 'Delete Assistant Memories')
         ],
+        "Drafting Folder Permissions": [
+            ('add_drafting_folders', 'Add Drafting Folders'),
+            ('update_drafting_folders', 'Update Drafting Folders'),
+            ('list_drafting_folders', 'List Drafting Folders'),
+            ('delete_drafting_folders', 'Delete Drafting Folders'),
+        ],
+        "Drafting Document Permissions": [
+            ('add_drafting_documents', 'Add Drafting Documents'),
+            ('update_drafting_documents', 'Update Drafting Documents'),
+            ('list_drafting_documents', 'List Drafting Documents'),
+            ('delete_drafting_documents', 'Delete Drafting Documents'),
+        ],
         "Brainstorming Permissions": [
             ('create_brainstorming_sessions', 'Create Brainstorming Sessions'),
             ('list_brainstorming_sessions', 'List Brainstorming Sessions'),

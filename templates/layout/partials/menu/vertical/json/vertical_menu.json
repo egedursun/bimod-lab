@@ -300,6 +300,12 @@
       "menu_header": "Meta Features"
     },
     {
+      "name": "Drafting",
+      "icon": "menu-icon tf-icons ti ti-pencil",
+      "slug": "drafting",
+      "url": "drafting:folders_list"
+    },
+    {
       "name": "Brainstorming",
       "icon": "menu-icon tf-icons ti ti-brain",
       "slug": "brainstorming",

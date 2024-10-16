@@ -64,6 +64,7 @@ urlpatterns = [
     path("app/brainstorms/", include("apps.brainstorms.urls", namespace="brainstorms")),
     path("app/video_generations/", include("apps.video_generations.urls", namespace="video_generations")),
     path("app/harmoniq/", include("apps.harmoniq.urls", namespace="harmoniq")),
+    path("app/drafting/", include("apps.drafting.urls", namespace="drafting")),
 
     path('app/docs/', docs_redirect_view, name='technical_docs'),
     path("app/support_system/", include("apps.support_system.urls", namespace="support_system")),
