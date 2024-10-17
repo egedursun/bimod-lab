@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_browser_connection_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +28,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class BrowserView_BrowserDelete(LoginRequiredMixin, TemplateView):
@@ -46,5 +50,6 @@ class BrowserView_BrowserDelete(LoginRequiredMixin, TemplateView):
 
         browser_c = get_object_or_404(DataSourceBrowserConnection, pk=self.kwargs['pk'])
         browser_c.delete()
+        logger.info(f"User: {request.user} - Browser Connection: {browser_c.name} - Deleted.")
         messages.success(request, 'Browser Connection deleted successfully.')
         return redirect('datasource_browsers:list')

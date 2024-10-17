@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: storage_executor.py
 #  Last Modified: 2024-10-05 02:25:59
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import io
+import logging
 from uuid import uuid4
 
 import boto3
@@ -30,6 +31,9 @@ from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 from config import settings
 from config.settings import MEDIA_URL
+
+
+logger = logging.getLogger(__name__)
 
 
 class MediaManager:
@@ -59,7 +63,9 @@ class MediaManager:
             s3c = boto3.client('s3')
             bucket = settings.AWS_STORAGE_BUCKET_NAME
             s3c.put_object(Bucket=bucket, Key=bucket_path, Body=data)
+            logger.info(f"File saved to the storage with uri: {uri}")
         except Exception as e:
+            logger.error(f"Error occurred while saving the file to the storage: {e}")
             return None
         return uri
 
@@ -79,7 +85,9 @@ class MediaManager:
             img.save(output_io, format=ImageModes.JPEG, quality=DEFAULT_IMAGE_COMPRESSION_JPEG)
             compressed_image_bytes = output_io.getvalue()
             s3c.put_object(Bucket=bucket, Key=bucket_path, Body=compressed_image_bytes)
+            logger.info(f"Sketch saved to the storage with uri: {uri_sketch}")
         except Exception as e:
+            logger.error(f"Error occurred while saving the sketch to the storage: {e}")
             return None, None
         return [uri_sketch]
 
@@ -106,7 +114,9 @@ class MediaManager:
             bucket = settings.AWS_STORAGE_BUCKET_NAME
             s3c.put_object(Bucket=bucket, Key=s3_path_edit, Body=data)
             s3c.put_object(Bucket=bucket, Key=s3_path_edit_mask, Body=data_mask)
+            logger.info(f"Edit image saved to the storage with uri: {uri_edit}")
         except Exception as e:
+            logger.error(f"Error occurred while saving the edit image to the storage: {e}")
             return None, None
         return [uri_edit, uri_edit_mask]
 
@@ -123,7 +133,9 @@ class MediaManager:
             s3c = boto3.client('s3')
             bucket = settings.AWS_STORAGE_BUCKET_NAME
             s3c.put_object(Bucket=bucket, Key=s3_uri, Body=data)
+            logger.info(f"Image saved to the storage with uri: {direct_uri}")
         except Exception as e:
+            logger.error(f"Error occurred while saving the image to the storage: {e}")
             return None
         return direct_uri
 
@@ -134,6 +146,7 @@ class MediaManager:
             uri = MediaManager.save_file_and_return_uri(binary, remote)
             if uri is not None:
                 uris.append(uri)
+        logger.info(f"Files saved to the storage with uris: {uris}")
         return uris
 
     @staticmethod
@@ -143,6 +156,7 @@ class MediaManager:
             uri = MediaManager.save_image_and_return_uri(binary)
             if uri is not None:
                 uris.append(uri)
+        logger.info(f"Images saved to the storage with uris: {uris}")
         return uris
 
     def interpretation_handler_method(self, full_file_paths: list, query_string: str):
@@ -154,7 +168,9 @@ class MediaManager:
                 assistant=self.connection_object.assistant,
                 chat_object=self.chat
             )
+            logger.info("LLM Analyst Client initialized.")
         except Exception as e:
+            logger.error(f"Error occurred while initializing LLM Analyst Client: {e}")
             return None
         txt, fs, imgs = llm_c.interrogate_file(full_file_paths=full_file_paths,
                                                query_string=query_string,
@@ -162,6 +178,7 @@ class MediaManager:
         f_uris = self.save_files_and_return_uris(fs)
         img_uris = self.save_images_and_return_uris(imgs)
         final_output = {"response": txt, "file_uris": f_uris, "image_uris": img_uris}
+        logger.info("Interpretation completed.")
 
         tx = LLMTransaction(
             organization=self.connection_object.assistant.organization,
@@ -170,6 +187,7 @@ class MediaManager:
             llm_cost=InternalServiceCosts.FileInterpreter.COST, transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.INTERPRET_FILE, is_tool_cost=True)
         tx.save()
+        logger.info(f"Transaction saved successfully: {tx.id}")
         return final_output
 
     def interpretation_image_handler_method(self, full_image_paths: list, query_string: str):
@@ -180,7 +198,9 @@ class MediaManager:
         try:
             llm_c = AuxiliaryLLMVisionClient(assistant=self.connection_object.assistant,
                                              chat_object=self.chat)
+            logger.info("LLM Vision Client initialized.")
         except Exception as e:
+            logger.error(f"Error occurred while initializing LLM Vision Client: {e}")
             return None
         response = llm_c.interpret_image_content(full_image_paths=full_image_paths, query_string=query_string,
                                                  interpretation_temperature=self.connection_object.interpretation_temperature,
@@ -192,4 +212,5 @@ class MediaManager:
             llm_cost=InternalServiceCosts.ImageInterpreter.COST, transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.INTERPRET_IMAGE, is_tool_cost=True)
         tx.save()
+        logger.info(f"Transaction saved successfully: {tx.id}")
         return response

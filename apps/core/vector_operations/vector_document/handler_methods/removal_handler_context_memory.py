@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: class_deleter.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,17 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def delete_weaviate_class_handler(executor, class_name):
+    logger.info(f"Deleting class: {class_name}")
     c = executor.connect_c()
     output = {"status": True, "error": ""}
     try:
@@ -30,6 +35,7 @@ def delete_weaviate_class_handler(executor, class_name):
 
 
 def delete_intra_context_history_class_helper(executor, class_name):
+    logger.info(f"Deleting chat history classes: {class_name}")
     c = executor.connect_c()
     output = {"status": True, "error": ""}
     try:

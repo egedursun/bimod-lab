@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: tool_call_manager.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 
 import json
+import logging
 
 from apps.core.browsers.utils import BrowserActionsNames
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_json_decode_error_log
@@ -74,6 +75,9 @@ from apps.video_generations.models import GeneratedVideo, VideoGeneratorConnecti
 from config.settings import MEDIA_URL
 
 
+logger = logging.getLogger(__name__)
+
+
 class ToolCallManager:
 
     def __init__(self, assistant: Assistant, chat: MultimodalChat, tool_usage_json_str: dict):
@@ -85,15 +89,19 @@ class ToolCallManager:
     def call_internal_tool_service(self):
         try:
             if isinstance(self.tool_usage_dict_stringified, dict):
+                logger.info("Tool usage dictionary is already a dictionary.")
                 self.tool_usage_dict = self.tool_usage_dict_stringified
             else:
+                logger.info("Tool usage dictionary is a string. Converting it to a dictionary.")
                 self.tool_usage_dict = json.loads(self.tool_usage_dict_stringified)
         except Exception as e:
+            logger.error(f"Error occurred while converting the tool usage dictionary to a dictionary: {e}")
             return get_json_decode_error_log(error_logs=str(e)), None, None, None
 
         f_uris, img_uris = [], []
         error = verify_main_call_or_query_content(content=self.tool_usage_dict)
         if error:
+            logger.error(f"Error occurred while verifying the main call or query content: {error}")
             return error, None, None, None
 
         defined_tool_descriptor = self.tool_usage_dict.get("tool")
@@ -106,34 +114,40 @@ class ToolCallManager:
         if defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SQL_QUERY:
             error = verify_run_sql_query_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the SQL query content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_sql_query(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_NOSQL_QUERY:
             error = verify_run_nosql_query_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the NoSQL query content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_nosql_query(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VECTOR_STORE_QUERY:
             error = verify_vector_store_query_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the vector store query content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_vector_base_query(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_CODE_BASE_QUERY:
             error = verify_code_base_query_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the code base query content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_code_base_query(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_INTRA_MEMORY_QUERY:
             error = verify_intra_memory_query_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the intra memory query content: {error}")
                 return error, None, None, None
             connection = ContextHistoryKnowledgeBaseConnection.objects.filter(chat=self.chat,
                                                                               assistant=self.assistant).first()
             if not connection:
+                logger.error("No connection found for the intra memory query.")
                 return get_no_connection_vector_store_error_message(assistant_name=self.assistant.name,
                                                                     chat_name=self.chat.chat_name), None, None, None
             output_tool_call = self._handle_tool_intra_memory_query(connection, output_tool_call)
@@ -141,97 +155,116 @@ class ToolCallManager:
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SSH_SYSTEM_QUERY:
             error = verify_ssh_system_command_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the SSH system command content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_ssh_system(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_MEDIA_MANAGER_QUERY:
             error = verify_media_manager_query_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the media manager query content: {error}")
                 return error, None, None, None
             f_uris, img_uris, output_tool_call = self._handle_tool_media_manager_query(f_uris, img_uris, output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_HTTP_RETRIEVAL:
             error = verify_http_retrieval_query_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the HTTP retrieval query content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_http_client_retrieval(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_INFER_WITH_ML:
             error = verify_infer_ml_query_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the infer with ML query content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_infer_with_ml(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_ANALYZE_CODE:
             error = verify_analyze_code_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the analyze code content: {error}")
                 return error, None, None, None
             f_uris, img_uris, output_tool_call = self._handle_tool_analyze_code(f_uris, img_uris, output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_REASONING_PROCESS:
             error = verify_process_reasoning_query_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the reasoning process content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_reasoning(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_CUSTOM_FUNCTION:
             error = verify_run_custom_function_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the custom function content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_execute_function(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_CUSTOM_API:
             error = verify_run_custom_api_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the custom API content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_execute_api(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_CUSTOM_SCRIPT:
             error = verify_run_custom_script_content(content=self.tool_usage_dict)
             if error:
+                logger .error(f"Error occurred while verifying the custom script content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_execute_script(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_GENERATE_IMAGE:
             error = verify_generate_image_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the generate image content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_generate_image(img_uris, output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_EDIT_IMAGE:
             error = verify_edit_image_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the edit image content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_edit_image(img_uris, output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_DREAM_IMAGE:
             error = verify_dream_image_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the dream image content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_dream_image(img_uris, output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_BROWSING:
             error = verify_browser_query_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the browsing content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_execute_browsing(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_PROCESS_AUDIO:
             error = verify_audio_processing_query(content=self.tool_usage_dict)
             if error:
+                logger .error(f"Error occurred while verifying the audio processing content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_execute_audio(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_GENERATE_VIDEO:
             error = verify_generate_video_content(content=self.tool_usage_dict)
             if error:
+                logger.error(f"Error occurred while verifying the generate video content: {error}")
                 return error, None, None, None
+
             c_id, video_generation_response = self._handle_execute_video()
             if video_generation_response.get("error") is not None:
+                logger.error(f"Error occurred while generating the video: {video_generation_response.get('error')}")
                 return video_generation_response.get("error"), None, None, None
             if video_generation_response.get("video_url") is None:
+                logger.error("Video URL is NULL. A problem might have happened within the generation process.")
                 return ("Video URL is NULL. A problem might have happened within the "
                         "generation process."), None, None, None
+
             video_url = video_generation_response.get("video_url")
             video_generator_connection = VideoGeneratorConnection.objects.get(id=c_id)
             GeneratedVideo.objects.create(
@@ -242,6 +275,7 @@ class ToolCallManager:
         ##################################################
         # NO TOOL FOUND
         else:
+            logger.error(f"No tool found with the descriptor: {defined_tool_descriptor}")
             return get_no_tool_found_error_log(query_name=defined_tool_descriptor), defined_tool_descriptor, f_uris, img_uris
         ##################################################
         output_tool_call += f"""
@@ -257,9 +291,11 @@ class ToolCallManager:
                 if not uri.startswith("http"):
                     uri = f"{MEDIA_URL}{uri}"
                 img_uris[i] = uri
+        logger.info(f"Processed the files and images. Returning the output.")
         return output_tool_call, defined_tool_descriptor, f_uris, img_uris
 
     def _handle_execute_video(self):
+        logger.info("Executing the video generation process.")
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         action_type = self.tool_usage_dict.get("parameters").get("action_type")
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -272,9 +308,11 @@ class ToolCallManager:
         output = run_generate_video(
             connection_id=c_id, video_generator_action_type=action_type, video_generator_query=query,
             aspect_ratio=aspect_ratio, start_frame_url=start_frame_url, end_frame_url=end_frame_url)
+        logger.info(f"Video generation response retrieved.")
         return c_id, output
 
     def _handle_tool_execute_audio(self, output_tool_call):
+        logger.info("Executing the audio processing process.")
         action = self.tool_usage_dict.get("parameters").get("action")
         audio_file_path = self.tool_usage_dict.get("parameters").get("audio_file_path")
         text_content = self.tool_usage_dict.get("parameters").get("text_content")
@@ -284,9 +322,11 @@ class ToolCallManager:
             audio_uri=audio_file_path, txt_data=text_content, llm_voice_type=voice_selection)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Audio processing response retrieved.")
         return output_tool_call
 
     def _handle_tool_execute_browsing(self, output_tool_call):
+        logger.info("Executing the browsing process.")
         c_id = self.tool_usage_dict.get("parameters").get("browser_connection_id")
         action = self.tool_usage_dict.get("parameters").get("action")
         query, page, search_results, click_url = None, None, None, None
@@ -301,9 +341,11 @@ class ToolCallManager:
             search_results=search_results, click_url=click_url)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Browsing response retrieved.")
         return output_tool_call
 
     def _handle_tool_dream_image(self, image_uris, output_tool_call):
+        logger.info("Executing the dream image process.")
         image_uri = self.tool_usage_dict.get("parameters").get("image_uri")
         image_size = self.tool_usage_dict.get("parameters").get("image_size")
         image_variation_response = run_dream_image(agent_id=self.assistant.id, chat_id=self.chat.id,
@@ -312,9 +354,11 @@ class ToolCallManager:
         image_uris.append(image_uri)
         output = json.dumps(image_variation_response, sort_keys=True, default=str)
         output_tool_call += output
+        logger.info(f"Dream image response retrieved.")
         return output_tool_call
 
     def _handle_tool_edit_image(self, image_uris, output_tool_call):
+        logger.info("Executing the edit image process.")
         prompt = self.tool_usage_dict.get("parameters").get("prompt")
         edit_image_uri = self.tool_usage_dict.get("parameters").get("edit_image_uri")
         edit_image_mask_uri = self.tool_usage_dict.get("parameters").get("edit_image_mask_uri")
@@ -326,9 +370,11 @@ class ToolCallManager:
         image_uris.append(image_uri)
         output_str = json.dumps(image_modification_response, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Edit image response retrieved.")
         return output_tool_call
 
     def _handle_tool_generate_image(self, image_uris, output_tool_call):
+        logger.info("Executing the generate image process.")
         prompt = self.tool_usage_dict.get("parameters").get("prompt")
         size = self.tool_usage_dict.get("parameters").get("size")
         quality = self.tool_usage_dict.get("parameters").get("quality")
@@ -340,16 +386,20 @@ class ToolCallManager:
         image_uris.append(image_uri)
         output_str = json.dumps(image_generation_response, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Generate image response retrieved.")
         return output_tool_call
 
     def _handle_tool_execute_script(self, output_tool_call):
+        logger.info("Executing the custom script process.")
         custom_script_reference_id = self.tool_usage_dict.get("parameters").get("custom_script_reference_id")
         output = run_execute_custom_script(ref_id=custom_script_reference_id)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Custom script response retrieved.")
         return output_tool_call
 
     def _handle_tool_execute_api(self, output_tool_call):
+        logger.info("Executing the custom API process.")
         custom_api_reference_id = self.tool_usage_dict.get("parameters").get("custom_api_reference_id")
         endpoint_name = self.tool_usage_dict.get("parameters").get("endpoint_name")
         path_values = self.tool_usage_dict.get("parameters").get("path_values")
@@ -360,33 +410,41 @@ class ToolCallManager:
             header_query_vals=query_values, header_body_vals=body_values)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Custom API response retrieved.")
         return output_tool_call
 
     def _handle_tool_execute_function(self, output_tool_call):
+        logger.info("Executing the custom function process.")
         custom_function_reference_id = self.tool_usage_dict.get("parameters").get("custom_function_reference_id")
         input_data = self.tool_usage_dict.get("parameters").get("input_data")
         output = run_execute_custom_code(ref_id=custom_function_reference_id, function_input_values=input_data)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Custom function response retrieved.")
         return output_tool_call
 
     def _handle_tool_reasoning(self, output_tool_call):
+        logger.info("Executing the reasoning process.")
         query_string = self.tool_usage_dict.get("parameters").get("query")
         output = run_process_reasoning(agent_id=self.assistant.id, chat_id=self.chat.id, reasoning_query=query_string)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Reasoning response retrieved.")
         return output_tool_call
 
     def _handle_tool_analyze_code(self, f_uris, img_uris, output_tool_call):
+        logger.info("Executing the analyze code process.")
         file_paths = self.tool_usage_dict.get("parameters").get("file_paths")
         query_string = self.tool_usage_dict.get("parameters").get("query")
         output, f_uris, img_uris = run_analyze_code(
             agent_id=self.assistant.id, chat_id=self.chat.id, f_uris=file_paths, query_content_str=query_string)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Analyze code response retrieved.")
         return f_uris, img_uris, output_tool_call
 
     def _handle_tool_infer_with_ml(self, output_tool_call):
+        logger.info("Executing the infer with ML process.")
         ml_base_connection_id = self.tool_usage_dict.get("parameters").get("ml_base_connection_id")
         model_path = self.tool_usage_dict.get("parameters").get("model_path")
         input_data_paths = self.tool_usage_dict.get("parameters").get("input_data_paths")
@@ -396,18 +454,22 @@ class ToolCallManager:
             input_data_uris=input_data_paths, inference_query=query)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Infer with ML response retrieved.")
         return output_tool_call
 
     def _handle_tool_http_client_retrieval(self, output_tool_call):
+        logger.info("Executing the HTTP client retrieval process.")
         c_id = self.tool_usage_dict.get("parameters").get("media_storage_connection_id")
         download_url = self.tool_usage_dict.get("parameters").get("url")
         output = run_http_retrieval(connection_id=c_id, url=download_url)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"HTTP client retrieval response retrieved.")
         return output_tool_call
 
     def _handle_tool_media_manager_query(self, f_uris, img_uris, output_tool_call):
         from apps.core.tool_calls.core_services.core_service_query_media_manager import run_query_media_manager
+        logger.info("Executing the media manager query process.")
         c_id = self.tool_usage_dict.get("parameters").get("media_storage_connection_id")
         chat_id = self.chat.id
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -417,72 +479,90 @@ class ToolCallManager:
             c_id=c_id, chat_id=chat_id, manager_file_type=type, f_uris=file_paths, manager_query=query)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Media manager query response retrieved.")
         return f_uris, img_uris, output_tool_call
 
     def _handle_tool_ssh_system(self, output_tool_call):
+        logger.info("Executing the SSH system command process.")
         c_id = self.tool_usage_dict.get("parameters").get("file_system_connection_id")
         commands = self.tool_usage_dict.get("parameters").get("commands")
         output = run_execute_ssh_system_commands(c_id=c_id, bash_commands=commands)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"SSH system command response retrieved.")
         return output_tool_call
 
     def _handle_tool_intra_memory_query(self, connection, output_tool_call):
+        logger.info("Executing the intra memory query process.")
         query = self.tool_usage_dict.get("parameters").get("query")
         alpha = self.tool_usage_dict.get("parameters").get("alpha")
         output = run_query_intra_memory(c_id=connection.id, intra_memory_query=query, semantic_alpha=alpha)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Intra memory query response retrieved.")
         return output_tool_call
 
     def _handle_tool_code_base_query(self, output_tool_call):
+        logger.info("Executing the code base query process.")
         c_id = self.tool_usage_dict.get("parameters").get("code_base_storage_connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
         alpha = self.tool_usage_dict.get("parameters").get("alpha")
         output = run_query_code_base(c_id=c_id, query_content_str=query, semantic_alpha=alpha)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Code base query response retrieved.")
         return output_tool_call
 
     def _handle_tool_vector_base_query(self, output_tool_call):
+        logger.info("Executing the vector store query process.")
         c_id = self.tool_usage_dict.get("parameters").get("knowledge_base_connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
         alpha = self.tool_usage_dict.get("parameters").get("alpha")
         output = run_query_vector_store(c_id=c_id, vector_store_query=query, semantic_alpha=alpha)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"Vector store query response retrieved.")
         return output_tool_call
 
     def _handle_tool_sql_query(self, output_tool_call):
+        logger.info("Executing the SQL query process.")
         c_id = self.tool_usage_dict.get("parameters").get("database_connection_id")
         query_type = self.tool_usage_dict.get("parameters").get("type")
         sql_query = self.tool_usage_dict.get("parameters").get("sql_query")
         output = run_sql_query(c_id=c_id, sql_query_type=query_type, query_content=sql_query)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"SQL query response retrieved.")
         return output_tool_call
 
     def _handle_tool_nosql_query(self, output_tool_call):
+        logger.info("Executing the NoSQL query process.")
         c_id = self.tool_usage_dict.get("parameters").get("database_connection_id")
         query_type = self.tool_usage_dict.get("parameters").get("type")
         nosql_query = self.tool_usage_dict.get("parameters").get("nosql_query")
         output = run_nosql_query(c_id=c_id, nosql_query_type=query_type, query_content=nosql_query)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
+        logger.info(f"NoSQL query response retrieved.")
         return output_tool_call
 
     def call_internal_tool_service_lean(self):
+        logger.info("Calling the internal tool service.")
         try:
             if isinstance(self.tool_usage_dict_stringified, dict):
+                logger.info("Tool usage dictionary is already a dictionary.")
                 self.tool_usage_dict = self.tool_usage_dict_stringified
             else:
+                logger.info("Tool usage dictionary is a string. Converting it to a dictionary.")
                 self.tool_usage_dict = json.loads(self.tool_usage_dict_stringified)
         except Exception as e:
+            logger .error(f"Error occurred while converting the tool usage dictionary to a dictionary: {e}")
             return get_json_decode_error_log(error_logs=str(e)), None, None, None
 
         f_uris, img_uris = [], []
         error_msg = verify_main_call_or_query_content(content=self.tool_usage_dict)
         if error_msg:
+            logger.error(f"Error occurred while verifying the main call or query content: {error_msg}")
             return error_msg, None, None, None
 
         defined_tool_descriptor = self.tool_usage_dict.get("tool")
@@ -503,10 +583,12 @@ class ToolCallManager:
                                                                    img_uris=image_urls, f_uris=file_urls)
             expert_network_response_raw_str = json.dumps(expert_network_response, sort_keys=True, default=str)
             output_tool_call += expert_network_response_raw_str
+            logger.info(f"Expert network query response retrieved.")
 
         ##################################################
         # NO TOOL FOUND
         else:
+            logger.error(f"No tool found with the descriptor: {defined_tool_descriptor}")
             return get_no_tool_found_error_log(query_name=defined_tool_descriptor), defined_tool_descriptor, f_uris, img_uris
         ##################################################
         output_tool_call += f"""
@@ -522,4 +604,5 @@ class ToolCallManager:
                 if not uri.startswith("http"):
                     uri = f"{MEDIA_URL}{uri}"
                 img_uris[i] = uri
+        logger.info(f"Processed the files and images. Returning the output.")
         return output_tool_call, defined_tool_descriptor, f_uris, img_uris

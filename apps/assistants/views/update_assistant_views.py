@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_assistant_views.py
 #  Last Modified: 2024-10-05 12:51:58
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -31,6 +30,9 @@ from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class AssistantView_Update(LoginRequiredMixin, TemplateView):
@@ -49,9 +51,7 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
             agent.context_overflow_strategy]
         context["assistant_current_vectorizer"] = EmbeddingManagersNames.as_dict()[
             agent.vectorizer_name] if agent.vectorizer_name else None
-        context["ner_integrations"] = NERIntegration.objects.filter(
-            organization__in=context['organizations']
-        )
+        context["ner_integrations"] = NERIntegration.objects.filter(organization__in=context['organizations'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -79,6 +79,7 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
             and request.POST.get('ner_integration') != "None"
             and request.POST.get('ner_integration') != ""):
             ner_id = request.POST.get('ner_integration')
+            logger.info(f"NER Integration is defined for this agent. NER ID: {ner_id}")
 
         if ner_id:
             agent.ner_integration = NERIntegration.objects.get(id=ner_id)
@@ -117,4 +118,5 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
         if 'assistant_image' in request.FILES:
             agent.assistant_image = request.FILES['assistant_image']
         agent.save()
+        logger.info(f"Assistant has been updated. ")
         return redirect('assistants:update', pk=agent.id)

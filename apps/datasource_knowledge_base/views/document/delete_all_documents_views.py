@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_all_documents_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_knowledge_base.models import KnowledgeBaseDocument
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class DocumentView_DeleteAll(LoginRequiredMixin, TemplateView):
@@ -51,4 +52,5 @@ class DocumentView_DeleteAll(LoginRequiredMixin, TemplateView):
         vs_id = kwargs.get('kb_id')
         KnowledgeBaseDocument.objects.filter(knowledge_base_id=vs_id).delete()
         messages.success(request, 'All documents in the selected knowledge base have been deleted successfully.')
+        logger.info(f"[views.delete_all_documents] All documents in the selected knowledge base have been deleted successfully.")
         return redirect('datasource_knowledge_base:list_documents')

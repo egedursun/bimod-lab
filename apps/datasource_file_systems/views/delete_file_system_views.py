@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_file_system_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +25,8 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_file_systems.models import DataSourceFileSystem
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+logger = logging.getLogger(__name__)
 
 
 class FileSystemView_Delete(LoginRequiredMixin, TemplateView):
@@ -49,4 +49,5 @@ class FileSystemView_Delete(LoginRequiredMixin, TemplateView):
 
         conn = get_object_or_404(DataSourceFileSystem, pk=kwargs['pk'])
         conn.delete()
+        logger.info(f"[FileSystemView_Delete] File System Connection Deleted: {conn}")
         return redirect('datasource_file_systems:list')

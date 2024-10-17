@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_video_generator_connections_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,6 +25,9 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from apps.video_generations.models import VideoGeneratorConnection
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class VideoGeneratorView_Connections(LoginRequiredMixin, TemplateView):
@@ -42,4 +46,5 @@ class VideoGeneratorView_Connections(LoginRequiredMixin, TemplateView):
         user_organizations = Organization.objects.filter(users__in=[self.request.user])
         context['video_generator_connections'] = VideoGeneratorConnection.objects.filter(
             organization__in=user_organizations)
+        logger.info(f"Video Generator Connections were listed by User: {self.request.user.id}.")
         return context

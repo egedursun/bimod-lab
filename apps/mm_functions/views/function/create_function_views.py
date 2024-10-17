@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_function_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.mm_functions.forms import CustomFunctionForm
 from apps.mm_functions.utils import CUSTOM_FUNCTION_CATEGORIES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomFunctionView_Create(LoginRequiredMixin, TemplateView):
@@ -57,12 +58,14 @@ class CustomFunctionView_Create(LoginRequiredMixin, TemplateView):
                                      request.POST.getlist('packages[][version]')):
                 if name:
                     packages.append({'name': name, 'version': version})
+
             custom_function.packages = packages
             categories = request.POST.getlist('categories')
             input_field_names = request.POST.getlist('input_fields[][name]')
             input_field_descriptions = request.POST.getlist('input_fields[][description]')
             input_field_types = request.POST.getlist('input_fields[][type]')
             input_field_requireds = request.POST.getlist('input_fields[][required]')
+
             input_fields = []
             for i in range(len(input_field_names)):
                 input_fields.append({
@@ -71,6 +74,7 @@ class CustomFunctionView_Create(LoginRequiredMixin, TemplateView):
                     'type': input_field_types[i] if i < len(input_field_types) else '',
                     'required': bool(input_field_requireds[i]) if i < len(input_field_requireds) else False
                 })
+
             custom_function.input_fields = input_fields
             output_field_names = request.POST.getlist('output_fields[][name]')
             output_field_descriptions = request.POST.getlist('output_fields[][description]')
@@ -82,6 +86,7 @@ class CustomFunctionView_Create(LoginRequiredMixin, TemplateView):
                     'description': output_field_descriptions[i] if i < len(output_field_descriptions) else '',
                     'type': output_field_types[i] if i < len(output_field_types) else ''
                 })
+
             custom_function.output_fields = output_fields
             secret_field_names = request.POST.getlist('secrets[][name]')
             secret_field_keys = request.POST.getlist('secrets[][key]')
@@ -91,11 +96,13 @@ class CustomFunctionView_Create(LoginRequiredMixin, TemplateView):
                     'name': secret_field_names[i] if i < len(secret_field_names) else '',
                     'key': secret_field_keys[i] if i < len(secret_field_keys) else ''
                 })
+
             custom_function.secrets = secrets
             if request.FILES.get('function_picture'):
                 custom_function.function_picture = request.FILES.get('function_picture')
             custom_function.categories = categories
             custom_function.save()
+            logger.info(f"Function '{custom_function.name}' created.")
             return redirect('mm_functions:list')
         return render(request, self.template_name, {'form': form, 'assistants': Assistant.objects.filter(
             organization__users__in=[request.user])})

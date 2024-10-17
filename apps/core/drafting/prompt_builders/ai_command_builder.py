@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: ai_command_builder.py
 #  Last Modified: 2024-10-16 01:31:24
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from apps.core.drafting.drafting_executor import DraftingExecutionManager
 from apps.core.drafting.prompts import (build_drafting_agent_nickname_prompt, build_drafting_agent_personality_prompt,
@@ -26,7 +27,12 @@ from apps.core.drafting.prompts.drafting.folder_and_document_data_prompt import 
 from apps.core.drafting.prompts.drafting.whole_text_supplier_prompt import build_whole_text_supply_prompt
 
 
+logger = logging.getLogger(__name__)
+
+
 def build_ai_command_system_prompt(xc: DraftingExecutionManager, user_query: str):
+    logger.info(f"Building AI command system prompt for user query: {user_query}")
+
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
@@ -53,5 +59,4 @@ def build_ai_command_system_prompt(xc: DraftingExecutionManager, user_query: str
     combined_system_prompt += folder_and_doc_info_prompt
     combined_system_prompt += drafting_ops_instruction_prompt
     combined_system_prompt += action_instructions_prompt
-
     return combined_system_prompt

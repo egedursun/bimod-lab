@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: assistant_models.py
 #  Last Modified: 2024-10-05 12:51:58
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 import boto3
 from django.db import models
@@ -22,6 +22,9 @@ from django.db import models
 from apps.assistants.utils import (AGENT_SPEECH_LANGUAGES, CONTEXT_MANAGEMENT_STRATEGY, EMBEDDING_MANAGERS,
                                    MULTI_STEP_REASONING_CAPABILITY_CHOICE, generate_random_name_suffix)
 from config import settings
+
+
+logger = logging.getLogger(__name__)
 
 
 class Assistant(models.Model):
@@ -78,7 +81,7 @@ class Assistant(models.Model):
                 s3c.put_object(Bucket=bucket, Key=f"{dir_name}/")
                 self.document_base_directory = f_uri
             except Exception as e:
-                pass
+                logger.error(f"Error while creating document base directory: {e}")
 
         if self.storages_base_directory is None:
             try:
@@ -87,7 +90,7 @@ class Assistant(models.Model):
                 s3c.put_object(Bucket=bucket, Key=f"{dir_name}/")
                 self.storages_base_directory = f_uri
             except Exception as e:
-                pass
+                logger.error(f"Error while creating storages base directory: {e}")
 
         if self.ml_models_base_directory is None:
             try:
@@ -96,8 +99,9 @@ class Assistant(models.Model):
                 s3c.put_object(Bucket=bucket, Key=f"{dir_name}/")
                 self.ml_models_base_directory = f_uri
             except Exception as e:
-                pass
+                logger.error(f"Error while creating ml models base directory: {e}")
 
+        logger.info(f"Assistant has been created for organization.")
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
@@ -112,8 +116,9 @@ class Assistant(models.Model):
                     if 'Contents' in page:
                         delete_keys = {'Objects': [{'Key': obj['Key']} for obj in page['Contents']]}
                         s3c.delete_objects(Bucket=bucket, Delete=delete_keys)
+                logger.info(f"Deleted s3 directory: {full_uri}")
             except Exception as e:
-                pass
+                logger.error(f"Error while deleting s3 directory: {e}")
 
         if self.document_base_directory is not None:
             delete_s3_directory(self.document_base_directory)
@@ -121,6 +126,7 @@ class Assistant(models.Model):
             delete_s3_directory(self.storages_base_directory)
         if self.ml_models_base_directory is not None:
             delete_s3_directory(self.ml_models_base_directory)
+        logger.info(f"Assistant has been deleted for organization.")
         super().delete(using, keep_parents)
 
     class Meta:

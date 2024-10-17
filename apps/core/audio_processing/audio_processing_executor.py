@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: audio_processing_executor.py
 #  Last Modified: 2024-10-05 02:13:34
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,15 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class AudioProcessingExecutor:
@@ -41,7 +44,9 @@ class AudioProcessingExecutor:
             )
             tx.save()
         except Exception as e:
+            logger.error(f"Error while saving LLM Transaction: {str(e)}")
             pass
+        logger.info(f"Converting audio to text: {audio_file_path}")
         output = self.client.transform_speech_to_text(audio_uri=audio_file_path)
         return output
 
@@ -59,7 +64,9 @@ class AudioProcessingExecutor:
             )
             tx.save()
         except Exception as e:
+            logger.error(f"Error while saving LLM Transaction: {str(e)}")
             pass
+        logger.info(f"Converting text to audio message: {message}")
         output = self.client.tts_audio_content_message(message=message)
         return output
 
@@ -77,6 +84,8 @@ class AudioProcessingExecutor:
             )
             tx.save()
         except Exception as e:
+            logger.error(f"Error while saving LLM Transaction: {str(e)}")
             pass
+        logger.info(f"Converting text to audio file: {text_content}")
         output = self.client.transform_text_to_speech(text_content=text_content, voice=voice_selection)
         return output

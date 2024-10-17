@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_document_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 import boto3
 from django.contrib import messages
@@ -36,6 +34,9 @@ from apps.user_permissions.utils import PermissionNames
 from config import settings
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class DocumentView_Create(LoginRequiredMixin, TemplateView):
@@ -61,6 +62,7 @@ class DocumentView_Create(LoginRequiredMixin, TemplateView):
         ##############################
 
         if not vs_id:
+            logger.error('Please select a knowledge base.')
             messages.error(request, 'Please select a knowledge base.')
             return redirect('datasource_knowledge_base:create_documents')
 
@@ -82,8 +84,10 @@ class DocumentView_Create(LoginRequiredMixin, TemplateView):
                 add_vector_store_doc_loaded_log(document_full_uri=doc_uri, log_name=VectorStoreDocProcessingStatusNames.UPLOADED)
 
             KnowledgeBaseSystemDecoder.get(vector_store).index_documents(document_paths=f_paths)
+            logger.info('Documents uploaded successfully.')
             messages.success(request, 'Documents uploaded successfully.')
             return redirect('datasource_knowledge_base:list_documents')
         else:
+            logger.error('Please select a knowledge base and upload documents.')
             messages.error(request, 'Please select a knowledge base and upload documents.')
         return redirect('datasource_knowledge_base:create_documents')

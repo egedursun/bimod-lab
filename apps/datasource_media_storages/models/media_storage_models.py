@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: media_storage_models.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
 #
-
+import logging
 import os
 
 import boto3
@@ -26,6 +26,9 @@ from slugify import slugify
 
 from apps.datasource_media_storages.utils import MEDIA_MANAGER_ITEM_TYPES
 from config.settings import MEDIA_URL
+
+
+logger = logging.getLogger(__name__)
 
 
 class DataSourceMediaStorageConnection(models.Model):
@@ -72,6 +75,8 @@ class DataSourceMediaStorageConnection(models.Model):
             bucket_path = f"{bucket_path}/"
             try:
                 s3c.delete_object(Bucket=bucket, Key=bucket_path)
+                logger.info(f"Deleted the S3 bucket path: {bucket_path}")
             except Exception as e:
+                logger.error(f"Error occurred while deleting the S3 bucket path: {bucket_path} - {e}")
                 pass
         super().delete(using, keep_parents)

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: download_file_from_url_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,16 +12,16 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
-
+import logging
 import uuid
 
 import filetype
 from celery import shared_task
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -30,13 +30,14 @@ def download_file_from_url(storage_id: int, url: str):
     import requests
     media_manager = DataSourceMediaStorageConnection.objects.get(id=storage_id)
     if not media_manager:
-        print(f"Storage with ID: {storage_id} does not exist")
+        logger.error(f"[tasks.download_file_from_url] Media manager not found: {storage_id}")
         return False
     file_format = url.split('.')[-1]
     f_generated = None
     try:
         f_generated = build_media_manager_file_name(file_extension=file_format, url=url)
     except Exception as e:
+        logger.error(f"[tasks.download_file_from_url] Error generating file name: {e}")
         pass
     try:
         output = requests.get(url)
@@ -50,9 +51,13 @@ def download_file_from_url(storage_id: int, url: str):
             )
             media_item.save()
         else:
+            logger.error(f"[tasks.download_file_from_url] Error downloading file from URL: {url}")
             return False
     except Exception as e:
+        logger.error(f"[tasks.download_file_from_url] Error downloading file from URL: {url} - {e}")
         return False
+    logger.info(f"[tasks.download_file_from_url] File downloaded successfully from URL: {url}")
+    return True
 
 
 def build_media_manager_file_name(url: str, file_extension: str):

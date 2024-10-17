@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_code_base_storage_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.datasource_codebase.forms import CodeRepositoryStorageForm
 from apps.datasource_codebase.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CodeBaseView_StorageCreate(LoginRequiredMixin, TemplateView):
@@ -57,9 +58,11 @@ class CodeBaseView_StorageCreate(LoginRequiredMixin, TemplateView):
 
         if form.is_valid():
             form.save()
+            logger.info(f"Code Base Storage created successfully.")
             messages.success(request, "Code Base Storage created successfully.")
             return redirect('datasource_codebase:list')
         else:
+            logger.error(f"Error creating Code Base Storage. Please check the form for errors.")
             messages.error(request, "Error creating Code Base Storage. Please check the form for errors.")
             context = self.get_context_data(**kwargs)
             context['form'] = form

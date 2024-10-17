@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_orchestration_queries_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 
 import base64
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,6 +31,9 @@ from apps.orchestrations.models import Maestro, OrchestrationQuery, Orchestratio
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrchestrationView_QueryList(LoginRequiredMixin, TemplateView):
@@ -73,6 +77,8 @@ class OrchestrationView_QueryList(LoginRequiredMixin, TemplateView):
         query_chat.save()
         orch_xc = OrchestrationExecutor(maestro=maestro, query_chat=query_chat)
         final_response = orch_xc.execute_for_query()
+
+        logger.info(f"Orchestration query was created by User: {self.request.user.id}.")
         return redirect('orchestrations:query_detail', pk=maestro_id, query_id=query_chat.id)
 
     @staticmethod
@@ -85,6 +91,8 @@ class OrchestrationView_QueryList(LoginRequiredMixin, TemplateView):
             audio_full_uri = MediaManager.save_files_and_return_uris([(audio_bytes, 'audio.webm')])[0]
         if audio_full_uri:
             file_full_uris.append(audio_full_uri)
+        logger.info(f"Audio was saved successfully.")
+        return
 
     @staticmethod
     def _handle_save_files(attached_files):
@@ -93,7 +101,9 @@ class OrchestrationView_QueryList(LoginRequiredMixin, TemplateView):
             file_name = file.name
             try:
                 file_bytes = file.read()
+                logger.info(f"File was saved successfully.")
             except Exception as e:
+                logger.error(f"File was not saved successfully.")
                 continue
             file_bytes_list.append((file_bytes, file_name))
         file_full_uris = MediaManager.save_files_and_return_uris(file_bytes_list)
@@ -105,7 +115,9 @@ class OrchestrationView_QueryList(LoginRequiredMixin, TemplateView):
         for image in attached_images:
             try:
                 image_bytes = image.read()
+                logger.info(f"Image was saved successfully.")
             except Exception as e:
+                logger.error(f"Image was not saved successfully.")
                 continue
             image_bytes_list.append(image_bytes)
         image_full_uris = MediaManager.save_images_and_return_uris(image_bytes_list)
@@ -127,7 +139,9 @@ class OrchestrationView_QueryList(LoginRequiredMixin, TemplateView):
             edit_image_bytes_dict['edit_image_mask'] = edit_image_mask_bytes
             edit_image_full_uris_list = MediaManager.save_edit_image_and_masked_image(
                 edit_img_map=edit_image_bytes_dict)
+            logger.info(f"Edit image was saved successfully.")
         except Exception as e:
+            logger.error(f"Edit image was not saved successfully.")
             pass
         return edit_image_full_uris_list
 
@@ -140,6 +154,8 @@ class OrchestrationView_QueryList(LoginRequiredMixin, TemplateView):
             sketch_image_bytes = base64.b64decode(attached_canvas_image.split("base64,")[1].encode())
             sketch_image['sketch_image'] = sketch_image_bytes
             sketch_image_full_uris_list = MediaManager.save_sketch(sketch_data_map=sketch_image)
+            logger.info(f"Sketch image was saved successfully.")
         except Exception as e:
+            logger.error(f"Sketch image was not saved successfully.")
             pass
         return sketch_image_full_uris_list

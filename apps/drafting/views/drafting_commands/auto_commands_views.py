@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: auto_commands.py
 #  Last Modified: 2024-10-15 23:18:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
@@ -25,6 +27,8 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingDocument
 from apps.user_permissions.utils import PermissionNames
 
+
+logger = logging.getLogger(__name__)
 
 class DraftingView_GenerateViaAutoCommand(LoginRequiredMixin, View):
 
@@ -46,4 +50,5 @@ class DraftingView_GenerateViaAutoCommand(LoginRequiredMixin, View):
 
         xc = DraftingExecutionManager(drafting_document=document)
         response_json = xc.execute_auto_command()
+        logger.info(f"Auto Command was executed for Drafting Document: {document.id}.")
         return JsonResponse(response_json)

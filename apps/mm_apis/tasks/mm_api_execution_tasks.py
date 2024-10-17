@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: mm_api_execution_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,17 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 import requests
 from celery import shared_task
 
 from apps.mm_apis.utils import MAXIMUM_RETRIES
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -43,27 +47,36 @@ def mm_api_execution_task(custom_api_id, endpoint_name: str, path_values=None, q
         for key, value in query_values.items():
             url += key + "=" + value + "&"
         url = url[:-1]
+    logger.info(f"API URL: {url}")
 
     body = {}
     if body_values and endpoints[endpoint_name]["method"] in ["POST", "PUT"]:
         for key, value in body_values.items():
             body[key] = value
+    logger.info(f"API Body: {body}")
 
     headers = {}
     if auth_type == "Bearer":
         headers["Authorization"] = auth_key
+    logger.info(f"API Headers: {headers}")
 
     if endpoints[endpoint_name]["method"] == AcceptedHTTPRequestMethods.GET:
+        logger.info(f"Executing API: {custom_api_id} - {endpoint_name}")
         request_object = requests.Request(AcceptedHTTPRequestMethods.GET, url, headers=headers)
     elif endpoints[endpoint_name]["method"] == AcceptedHTTPRequestMethods.POST:
+        logger.info(f"Executing API: {custom_api_id} - {endpoint_name}")
         request_object = requests.Request(AcceptedHTTPRequestMethods.POST, url, headers=headers, json=body)
     elif endpoints[endpoint_name]["method"] == AcceptedHTTPRequestMethods.PUT:
+        logger.info(f"Executing API: {custom_api_id} - {endpoint_name}")
         request_object = requests.Request(AcceptedHTTPRequestMethods.PUT, url, headers=headers, json=body)
     elif endpoints[endpoint_name]["method"] == AcceptedHTTPRequestMethods.PATCH:
+        logger.info(f"Executing API: {custom_api_id} - {endpoint_name}")
         request_object = requests.Request(AcceptedHTTPRequestMethods.PATCH, url, headers=headers, json=body)
     elif endpoints[endpoint_name]["method"] == AcceptedHTTPRequestMethods.DELETE:
+        logger.info(f"Executing API: {custom_api_id} - {endpoint_name}")
         request_object = requests.Request(AcceptedHTTPRequestMethods.DELETE, url, headers=headers)
     else:
+        logger.error(f"Unsupported HTTP method: {endpoints[endpoint_name]['method']}")
         response["stderr"] = "Unsupported HTTP method: " + endpoints[endpoint_name]["method"]
         return response
 
@@ -72,8 +85,10 @@ def mm_api_execution_task(custom_api_id, endpoint_name: str, path_values=None, q
         try:
             response_object = requests.Session().send(prep_req)
             response["stdout"] = response_object.json()
+            logger.info(f"API executed successfully: {custom_api_id} - {endpoint_name}")
             return response
         except Exception as e:
+            logger.error(f"Failed to execute API: {custom_api_id} - {endpoint_name} - Attempt: {i + 1}")
             response["stderr"] = str(e)
             continue
     return response

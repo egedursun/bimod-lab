@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: add_periodic_task_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,15 +12,16 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
-#
-#
-#
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import json
+import logging
 
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
+
+
+logger = logging.getLogger(__name__)
 
 
 def add_periodic_task(scheduled_job):
@@ -37,3 +38,5 @@ def add_periodic_task(scheduled_job):
         task='apps.mm_scheduled_jobs.tasks.execute_scheduled_job',
         args=json.dumps([scheduled_job.id])
     )
+    logger.info(f"Periodic Task for Scheduled Job: {scheduled_job.id} was added.")
+    return

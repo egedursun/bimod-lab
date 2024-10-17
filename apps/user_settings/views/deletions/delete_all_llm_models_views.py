@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_all_llm_models_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +26,9 @@ from apps.llm_core.models import LLMCore
 from apps.user_permissions.utils import PermissionNames
 
 
+logger = logging.getLogger(__name__)
+
+
 class SettingsView_DeleteAllLLMModels(View, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
@@ -35,6 +38,7 @@ class SettingsView_DeleteAllLLMModels(View, LoginRequiredMixin):
         if confirmation_field != 'CONFIRM DELETING ALL LLM MODELS':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL LLM MODELS'.")
+            logger.error(f"Invalid confirmation field: {confirmation_field}")
             return redirect('user_settings:settings')
 
         ##############################
@@ -48,7 +52,9 @@ class SettingsView_DeleteAllLLMModels(View, LoginRequiredMixin):
         try:
             for llm_model in user_llm_models:
                 llm_model.delete()
+            logger.info(f"All LLM models associated with User: {user.id} have been deleted.")
             messages.success(request, "All LLM models associated with your account have been deleted.")
         except Exception as e:
+            logger.error(f"Error deleting LLM models: {e}")
             messages.error(request, f"Error deleting LLM models: {e}")
         return redirect('user_settings:settings')

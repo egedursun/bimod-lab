@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: add_balance_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import decimal
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +29,9 @@ from apps.llm_transaction.utils import InvoiceTypesNames, AcceptedMethodsOfPayme
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from auth.models import PromoCode
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
@@ -47,6 +51,7 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
         topup_amount = request.POST.get('topup_amount')
         promo_code = request.POST.get('promo_code')
         if float(topup_amount) <= 0:
+            logger.error(f"User: {context_user.id} tried to top up with an invalid amount: {topup_amount}")
             messages.error(request, 'Top up amount must be greater than zero.')
             return redirect('llm_transaction:list')
 
@@ -95,7 +100,9 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
                         float(float(topup_amount) * ((bonus_pct_referee) / 100)) - topup_amount_without_bonus),
                     payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER,
                 )
+            logger.info(f"User: {context_user.id} added ${topup_amount} to Organization: {org.id}.")
             messages.success(request, f'Credits successfully added. New balance: ${org.balance}')
         except ValueError:
+            logger.error(f"User: {context_user.id} tried to top up with an invalid amount: {topup_amount}")
             messages.error(request, 'Invalid amount entered. Please enter a valid number.')
         return redirect('llm_transaction:list')

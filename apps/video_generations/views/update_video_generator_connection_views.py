@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_video_generator_connection_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +28,9 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from apps.video_generations.models import VideoGeneratorConnection
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class VideoGeneratorView_Update(LoginRequiredMixin, TemplateView):
@@ -76,6 +80,7 @@ class VideoGeneratorView_Update(LoginRequiredMixin, TemplateView):
         if errors:
             context = self.get_context_data()
             context['error_messages'] = errors
+            logger.error(f"Error updating the Video Generator Connection. Errors: {errors}")
             return render(request, self.template_name, context)
 
         orgg = None
@@ -83,23 +88,29 @@ class VideoGeneratorView_Update(LoginRequiredMixin, TemplateView):
         try:
             orgg = Organization.objects.get(id=org_id)
         except Organization.DoesNotExist:
+            logger.error(f"Organization with ID {org_id} does not exist.")
             errors['organization'] = 'Selected organization does not exist.'
         try:
             agent = Assistant.objects.get(id=agent_id)
         except Assistant.DoesNotExist:
+            logger.error(f"Assistant with ID {agent_id} does not exist.")
             errors['assistant'] = 'Selected assistant does not exist.'
         if errors:
             context = self.get_context_data()
             context['error_messages'] = errors
+            logger.error(f"Error updating the Video Generator Connection. Errors: {errors}")
             return render(request, self.template_name, context)
 
         if orgg is None:
             errors['organization'] = 'Selected organization does not exist.'
+            logger.error(f"Error updating the Video Generator Connection. Errors: {errors}")
         if agent is None:
             errors['assistant'] = 'Selected assistant does not exist.'
+            logger.error(f"Error updating the Video Generator Connection. Errors: {errors}")
         if errors:
             context = self.get_context_data()
             context['error_messages'] = errors
+            logger.error(f"Error updating the Video Generator Connection. Errors: {errors}")
             return render(request, self.template_name, context)
 
         video_generator_connection.organization = orgg
@@ -109,5 +120,6 @@ class VideoGeneratorView_Update(LoginRequiredMixin, TemplateView):
         video_generator_connection.provider = provider
         video_generator_connection.provider_api_key = provider_api_key
         video_generator_connection.save()
+        logger.info(f"Video Generator Connection updated by User: {self.request.user.id}.")
         messages.success(request, 'Video Generator Connection updated successfully.')
         return redirect('video_generations:list')

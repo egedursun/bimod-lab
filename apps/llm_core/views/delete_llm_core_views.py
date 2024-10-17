@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_llm_core_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.llm_core.models import LLMCore
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class LLMView_Delete(DeleteView, LoginRequiredMixin):
@@ -45,6 +49,7 @@ class LLMView_Delete(DeleteView, LoginRequiredMixin):
 
         llm_core = get_object_or_404(LLMCore, id=kwargs['pk'])
         llm_core.delete()
+        logger.info(f"LLM Core {llm_core.nickname} was deleted by User: {self.request.user.id}.")
         return redirect('llm_core:list')
 
     def get_queryset(self):

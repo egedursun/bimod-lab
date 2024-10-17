@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_user_role_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +26,9 @@ from apps.organization.models import Organization
 from apps.user_permissions.forms import UserRoleForm
 from apps.user_permissions.utils import PERMISSION_TYPES, PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class PermissionView_UserRoleCreate(LoginRequiredMixin, TemplateView):
@@ -56,8 +59,10 @@ class PermissionView_UserRoleCreate(LoginRequiredMixin, TemplateView):
             selected_permissions = request.POST.getlist('role_permissions')
             role.role_permissions = selected_permissions
             role.save()
+            logger.info(f"User role created by User: {self.request.user.id}.")
             messages.success(request, f'Role "{role.role_name}" created successfully.')
             return redirect('user_permissions:list_user_roles')
         else:
+            logger.error(f"Error creating the role. Form errors: {form.errors}")
             messages.error(request, 'Error creating the role.')
             return redirect('user_permissions:add_user_role')

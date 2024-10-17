@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_ml_storage_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.datasource_ml_models.forms import DataSourceMLModelConnectionForm
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MLModelView_ManagerUpdate(LoginRequiredMixin, TemplateView):
@@ -57,9 +58,11 @@ class MLModelView_ManagerUpdate(LoginRequiredMixin, TemplateView):
         form = DataSourceMLModelConnectionForm(request.POST, instance=mgr)
         if form.is_valid():
             form.save()
+            logger.info(f"ML Model Connection updated: {mgr}")
             messages.success(request, "ML Model Connection updated successfully.")
             return redirect('datasource_ml_models:list')
         else:
+            logger.error("Error updating ML Model Connection: " + str(form.errors))
             messages.error(request, "Error updating ML Model Connection: " + str(form.errors))
             context = self.get_context_data(**kwargs)
             context['form'] = form

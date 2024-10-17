@@ -1,7 +1,7 @@
   <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
-  ~ Project: Br6.in™
+  ~ Project: Bimod.io™
   ~ File: settings.html
   ~ Last Modified: 2024-10-05 01:39:48
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -13,7 +13,7 @@
   ~ without the prior express written permission of BMD™ Autonomous
   ~ Holdings.
   ~
-  ~  For permission inquiries, please contact: admin@br6.in.
+  ~  For permission inquiries, please contact: admin@Bimod.io.
   ~
   -->
 
@@ -303,6 +303,41 @@
                   </td>
                 </form>
               </tr>
+              <!-- delete all harmoniq agents -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-microphone me-4"></i>
+                  <strong>Harmoniq Agents</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_harmoniq_agents' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL HARMONIQ AGENTS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-harmoniq-agents-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-harmoniq-agents-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Agents</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
               <!-- delete all lean assistants -->
               <tr>
                 <td class="text-nowrap text-heading">
@@ -586,6 +621,111 @@
                   </td>
                 </form>
               </tr>
+              <!-- delete all drafting folders -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-folder me-4"></i>
+                  <strong>Drafting Folders</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_drafting_folders' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL DRAFTING FOLDERS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-drafting-folders-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-drafting-folders-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Folders</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all drafting documents -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-pencil me-4"></i>
+                  <strong>Drafting Documents</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_drafting_documents' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL DRAFTING DOCUMENTS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-drafting-documents-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-drafting-documents-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Drafts</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all brainstorming sessions -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-brain me-4"></i>
+                  <strong>Brainstorming Sessions</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_brainstorming_sessions' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL BRAINSTORMING SESSIONS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-brainstorming-sessions-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-brainstorming-sessions-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Sessions</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
               <!-- delete all orchestrations -->
               <tr>
                 <td class="text-nowrap text-heading">
@@ -756,6 +896,76 @@
                   </td>
                   <td>
                     <button id="delete-custom-sql-queries-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Queries</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all NoSQL databases -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-database me-4"></i>
+                  <strong>NoSQL Databases</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_nosql_databases' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL NOSQL DATABASES' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-nosql-databases-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-nosql-databases-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL NoSQL Databases</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all custom NoSQL queries -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-database me-4"></i>
+                  <strong>Custom NoSQL Queries</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_nosql_queries' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL CUSTOM NOSQL QUERIES' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-nosql-queries-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-nosql-queries-button" type="submit" class="btn btn-danger w-100" disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Queries</strong>
                     </button>
@@ -1046,6 +1256,42 @@
                   </td>
                 </form>
               </tr>
+              <!-- delete all video generator connections -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-camera me-4"></i>
+                  <strong>Video Generators</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_video_generator_connections' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL VIDEO GENERATOR CONNECTIONS' to confirm the deletion
+                          process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-video-generators-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-video-generators-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Generators</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
               <!-- delete all functions -->
               <tr>
                 <td class="text-nowrap text-heading">
@@ -1217,6 +1463,41 @@
                     <button id="delete-triggered-jobs-button" type="submit" class="btn btn-danger w-100" disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Triggered Jobs</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all data backups -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-refresh me-4"></i>
+                  <strong>Data Backups</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_data_backups' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL DATA BACKUPS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-data-backups-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-data-backups-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Backups</strong>
                     </button>
                   </td>
                 </form>

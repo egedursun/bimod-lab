@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: narrate_chat_message_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
@@ -25,17 +25,24 @@ from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_audio_client import
 from apps.multimodal_chat.models import MultimodalChatMessage
 
 
+logger = logging.getLogger(__name__)
+
+
+
 class LeanChat_MessageNarration(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         msg_id = kwargs.get('pk')
         try:
             msg = get_object_or_404(MultimodalChatMessage, id=msg_id, multimodal_chat__user=request.user)
         except Exception as e:
+            logger.error(f"LeanMod chat message not found. Error: {e}")
             return JsonResponse({'audio_url': None})
         try:
             if msg.message_audio:
+                logger.info(f"LeanMod chat message audio found. Returning audio URL.")
                 return JsonResponse({'audio_url': msg.message_audio})
         except Exception as e:
+            logger.error(f"LeanMod chat message audio not found. Error: {e}")
             pass
         try:
             output = (
@@ -44,10 +51,14 @@ class LeanChat_MessageNarration(LoginRequiredMixin, View):
                     chat_object=msg.multimodal_chat).tts_audio_content_message(message=msg)
             )
         except Exception as e:
+            logger.error(f"LeanMod chat message audio generation failed. Error: {e}")
             return JsonResponse({'audio_url': None})
         try:
             msg.message_audio = output['audio_url']
             msg.save()
+            logger.info(f"LeanMod chat message audio generated and saved.")
         except Exception as e:
+            logger.error(f"LeanMod chat message audio saving failed. Error: {e}")
             pass
+        logger.info(f"LeanMod chat message audio generated. Returning audio URL.")
         return JsonResponse({'audio_url': output['audio_url']})

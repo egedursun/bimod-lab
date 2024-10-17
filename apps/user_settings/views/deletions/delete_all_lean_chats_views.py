@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_all_lean_chats_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +26,9 @@ from apps.multimodal_chat.models import MultimodalLeanChat
 from apps.user_permissions.utils import PermissionNames
 
 
+logger = logging.getLogger(__name__)
+
+
 class SettingsView_DeleteAllLeanModChats(View, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
@@ -34,6 +38,7 @@ class SettingsView_DeleteAllLeanModChats(View, LoginRequiredMixin):
         if confirmation_field != 'CONFIRM DELETING ALL LEANMOD CHATS':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL LEANMOD CHATS'.")
+            logger.error(f"Invalid confirmation field: {confirmation_field}")
             return redirect('user_settings:settings')
 
         ##############################
@@ -47,7 +52,9 @@ class SettingsView_DeleteAllLeanModChats(View, LoginRequiredMixin):
         try:
             for chat in user_chats:
                 chat.delete()
+            logger.info(f"All LeanMod™ chat messages associated with User: {user.id} have been deleted.")
             messages.success(request, "All LeanMod™ chat messages associated with your account have been deleted.")
         except Exception as e:
+            logger.error(f"Error deleting LeanMod™ chat messages: {e}")
             messages.error(request, f"Error deleting LeanMod™ chat messages: {e}")
         return redirect('user_settings:settings')

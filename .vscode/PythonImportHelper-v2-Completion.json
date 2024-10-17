@@ -42392,7 +42392,7 @@
         "kind": 2,
         "importPath": "apps.core.orchestration.prompts.orchestration.build_main_orchestration_prompt",
         "description": "apps.core.orchestration.prompts.orchestration.build_main_orchestration_prompt",
-        "peekOfCode": "def build_structured_orchestrator_primary_guidelines():\n    return f\"\"\"\n    **ORCHESTRATOR - PRIMARY GUIDELINES:**\n    - Until instructed by further instructions, you are an orchestrator assistant of Br6.in, and you are\n     responsible for providing the best user experience to the user you are currently chatting with.\n     Br6.in is a platform that provides a wide range of Artificial Intelligence services for its users,\n     letting them create AI orchestrators, worker assistants, and other AI services such as data source integration,\n     function and API integration, retrieval augmented generation, multiple assistant collaborative orchestration\n     with Mixture of Experts techniques, timed or triggered AI assistant tasks, etc.\n    - These definitions can be \"OVERRIDEN\" by the instructions section or other prompts given by the user",
+        "peekOfCode": "def build_structured_orchestrator_primary_guidelines():\n    return f\"\"\"\n    **ORCHESTRATOR - PRIMARY GUIDELINES:**\n    - Until instructed by further instructions, you are an orchestrator assistant of Bimod.io, and you are\n     responsible for providing the best user experience to the user you are currently chatting with.\n     Bimod.io is a platform that provides a wide range of Artificial Intelligence services for its users,\n     letting them create AI orchestrators, worker assistants, and other AI services such as data source integration,\n     function and API integration, retrieval augmented generation, multiple assistant collaborative orchestration\n     with Mixture of Experts techniques, timed or triggered AI assistant tasks, etc.\n    - These definitions can be \"OVERRIDEN\" by the instructions section or other prompts given by the user",
         "detail": "apps.core.orchestration.prompts.orchestration.build_main_orchestration_prompt",
         "documentation": {}
     },
@@ -42680,7 +42680,7 @@
         "kind": 2,
         "importPath": "apps.core.system_prompts.agent_configuration.internal_principles_prompt_manager",
         "description": "apps.core.system_prompts.agent_configuration.internal_principles_prompt_manager",
-        "peekOfCode": "def build_internal_principles_prompt():\n    return f\"\"\"\n            ### **PRIMARY GUIDELINES:**\n            - Until further instructions are provided, assume the role of an AI assistant of Br6.in. You are\n                responsible for delivering the best possible user experience for the user you are interacting with.\n                Br6.in is a platform that offers diverse AI services, enabling users to create AI assistants,\n                chatbots, and services including:\n              - AI assistant orchestration via Mixture of Experts techniques.\n              - Data source integration, API and function integration.\n              - Retrieval-augmented generation.",
+        "peekOfCode": "def build_internal_principles_prompt():\n    return f\"\"\"\n            ### **PRIMARY GUIDELINES:**\n            - Until further instructions are provided, assume the role of an AI assistant of Bimod.io. You are\n                responsible for delivering the best possible user experience for the user you are interacting with.\n                Bimod.io is a platform that offers diverse AI services, enabling users to create AI assistants,\n                chatbots, and services including:\n              - AI assistant orchestration via Mixture of Experts techniques.\n              - Data source integration, API and function integration.\n              - Retrieval-augmented generation.",
         "detail": "apps.core.system_prompts.agent_configuration.internal_principles_prompt_manager",
         "documentation": {}
     },
@@ -48872,7 +48872,7 @@
         "kind": 5,
         "importPath": "apps.finetuning.utils.constant_utils",
         "description": "apps.finetuning.utils.constant_utils",
-        "peekOfCode": "FINE_TUNING_MODEL_PROVIDERS = [\n    ('openai', 'OpenAI'),\n]\n#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.\n#\n#  Project: Br6.in™\n#  File: constant_utils.py\n#  Last Modified: 2024-10-05 01:39:48\n#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)\n#  Created: 2024-10-05 14:42:38",
+        "peekOfCode": "FINE_TUNING_MODEL_PROVIDERS = [\n    ('openai', 'OpenAI'),\n]\n#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.\n#\n#  Project: Bimod.io™\n#  File: constant_utils.py\n#  Last Modified: 2024-10-05 01:39:48\n#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)\n#  Created: 2024-10-05 14:42:38",
         "detail": "apps.finetuning.utils.constant_utils",
         "documentation": {}
     },
@@ -56369,7 +56369,7 @@
         "kind": 2,
         "importPath": "auth.utils.function_utils",
         "description": "auth.utils.function_utils",
-        "peekOfCode": "def get_absolute_url(path):\n    return settings.BASE_URL + path\ndef render_html_template(file_path, context):\n    with open(file_path, 'r') as file:\n        html_content = file.read()\n    for key, value in context.items():\n        html_content = html_content.replace(f'<[[{key}]]>', value)\n    return html_content\ndef send_verification_email(email, token):\n    subject = \"Br6.in | Verify Email\"",
+        "peekOfCode": "def get_absolute_url(path):\n    return settings.BASE_URL + path\ndef render_html_template(file_path, context):\n    with open(file_path, 'r') as file:\n        html_content = file.read()\n    for key, value in context.items():\n        html_content = html_content.replace(f'<[[{key}]]>', value)\n    return html_content\ndef send_verification_email(email, token):\n    subject = \"Bimod.io | Verify Email\"",
         "detail": "auth.utils.function_utils",
         "documentation": {}
     },
@@ -56378,7 +56378,7 @@
         "kind": 2,
         "importPath": "auth.utils.function_utils",
         "description": "auth.utils.function_utils",
-        "peekOfCode": "def render_html_template(file_path, context):\n    with open(file_path, 'r') as file:\n        html_content = file.read()\n    for key, value in context.items():\n        html_content = html_content.replace(f'<[[{key}]]>', value)\n    return html_content\ndef send_verification_email(email, token):\n    subject = \"Br6.in | Verify Email\"\n    verification_url = get_absolute_url(reverse('verify-email', kwargs={'token': token}))\n    context = {'VERIFICATION_LINK': verification_url}",
+        "peekOfCode": "def render_html_template(file_path, context):\n    with open(file_path, 'r') as file:\n        html_content = file.read()\n    for key, value in context.items():\n        html_content = html_content.replace(f'<[[{key}]]>', value)\n    return html_content\ndef send_verification_email(email, token):\n    subject = \"Bimod.io | Verify Email\"\n    verification_url = get_absolute_url(reverse('verify-email', kwargs={'token': token}))\n    context = {'VERIFICATION_LINK': verification_url}",
         "detail": "auth.utils.function_utils",
         "documentation": {}
     },
@@ -56387,7 +56387,7 @@
         "kind": 2,
         "importPath": "auth.utils.function_utils",
         "description": "auth.utils.function_utils",
-        "peekOfCode": "def send_verification_email(email, token):\n    subject = \"Br6.in | Verify Email\"\n    verification_url = get_absolute_url(reverse('verify-email', kwargs={'token': token}))\n    context = {'VERIFICATION_LINK': verification_url}\n    file_path = os.path.join(os.path.dirname(__file__), 'helper_templates', 'verification_email_template.html')\n    html_content = render_html_template(file_path, context)\n    send_email(subject, email, html_content)\ndef send_invitation_email(email, token):\n    subject = \"Br6.in | Invitation\"\n    set_password_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))",
+        "peekOfCode": "def send_verification_email(email, token):\n    subject = \"Bimod.io | Verify Email\"\n    verification_url = get_absolute_url(reverse('verify-email', kwargs={'token': token}))\n    context = {'VERIFICATION_LINK': verification_url}\n    file_path = os.path.join(os.path.dirname(__file__), 'helper_templates', 'verification_email_template.html')\n    html_content = render_html_template(file_path, context)\n    send_email(subject, email, html_content)\ndef send_invitation_email(email, token):\n    subject = \"Bimod.io | Invitation\"\n    set_password_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))",
         "detail": "auth.utils.function_utils",
         "documentation": {}
     },
@@ -56396,7 +56396,7 @@
         "kind": 2,
         "importPath": "auth.utils.function_utils",
         "description": "auth.utils.function_utils",
-        "peekOfCode": "def send_invitation_email(email, token):\n    subject = \"Br6.in | Invitation\"\n    set_password_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))\n    context = {'VERIFICATION_LINK': set_password_url}\n    file_path = os.path.join(os.path.dirname(__file__), 'helper_templates', 'invitation_email_template.html')\n    html_content = render_html_template(file_path, context)\n    send_email(subject, email, html_content)\ndef send_password_reset_email(email, token):\n    subject = \"Br6.in | Reset Password\"\n    reset_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))",
+        "peekOfCode": "def send_invitation_email(email, token):\n    subject = \"Bimod.io | Invitation\"\n    set_password_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))\n    context = {'VERIFICATION_LINK': set_password_url}\n    file_path = os.path.join(os.path.dirname(__file__), 'helper_templates', 'invitation_email_template.html')\n    html_content = render_html_template(file_path, context)\n    send_email(subject, email, html_content)\ndef send_password_reset_email(email, token):\n    subject = \"Bimod.io | Reset Password\"\n    reset_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))",
         "detail": "auth.utils.function_utils",
         "documentation": {}
     },
@@ -56405,7 +56405,7 @@
         "kind": 2,
         "importPath": "auth.utils.function_utils",
         "description": "auth.utils.function_utils",
-        "peekOfCode": "def send_password_reset_email(email, token):\n    subject = \"Br6.in | Reset Password\"\n    reset_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))\n    context = {'VERIFICATION_LINK': reset_url}\n    file_path = os.path.join(os.path.dirname(__file__), 'helper_templates', 'reset_password_email_template.html')\n    html_content = render_html_template(file_path, context)\n    send_email(subject, email, html_content)\ndef generate_random_string(length=16):\n    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))\ndef generate_referral_code(length=16):",
+        "peekOfCode": "def send_password_reset_email(email, token):\n    subject = \"Bimod.io | Reset Password\"\n    reset_url = get_absolute_url(reverse('reset-password', kwargs={'token': token}))\n    context = {'VERIFICATION_LINK': reset_url}\n    file_path = os.path.join(os.path.dirname(__file__), 'helper_templates', 'reset_password_email_template.html')\n    html_content = render_html_template(file_path, context)\n    send_email(subject, email, html_content)\ndef generate_random_string(length=16):\n    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))\ndef generate_referral_code(length=16):",
         "detail": "auth.utils.function_utils",
         "documentation": {}
     },
@@ -56792,7 +56792,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nAPPEND_SLASH = True\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = os.environ.get(\"SECRET_KEY\", default='')\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = os.environ.get(\"DEBUG\", 'True').lower() in ['true', 'yes', '1']\n# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts\nALLOWED_HOSTS = [\"localhost\", \"0.0.0.0\", \"127.0.0.1\", \"www.br6.in\", \"br6.in\", \"dev.br6.in\"]",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nAPPEND_SLASH = True\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = os.environ.get(\"SECRET_KEY\", default='')\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = os.environ.get(\"DEBUG\", 'True').lower() in ['true', 'yes', '1']\n# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts\nALLOWED_HOSTS = [\"localhost\", \"0.0.0.0\", \"127.0.0.1\", \"www.Bimod.io\", \"Bimod.io\", \"dev.Bimod.io\"]",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -56801,7 +56801,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "APPEND_SLASH = True\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = os.environ.get(\"SECRET_KEY\", default='')\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = os.environ.get(\"DEBUG\", 'True').lower() in ['true', 'yes', '1']\n# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts\nALLOWED_HOSTS = [\"localhost\", \"0.0.0.0\", \"127.0.0.1\", \"www.br6.in\", \"br6.in\", \"dev.br6.in\"]\n# Current DJANGO_ENVIRONMENT",
+        "peekOfCode": "APPEND_SLASH = True\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = os.environ.get(\"SECRET_KEY\", default='')\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = os.environ.get(\"DEBUG\", 'True').lower() in ['true', 'yes', '1']\n# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts\nALLOWED_HOSTS = [\"localhost\", \"0.0.0.0\", \"127.0.0.1\", \"www.Bimod.io\", \"Bimod.io\", \"dev.Bimod.io\"]\n# Current DJANGO_ENVIRONMENT",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -56810,7 +56810,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SECRET_KEY = os.environ.get(\"SECRET_KEY\", default='')\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = os.environ.get(\"DEBUG\", 'True').lower() in ['true', 'yes', '1']\n# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts\nALLOWED_HOSTS = [\"localhost\", \"0.0.0.0\", \"127.0.0.1\", \"www.br6.in\", \"br6.in\", \"dev.br6.in\"]\n# Current DJANGO_ENVIRONMENT\nENVIRONMENT = os.environ.get(\"DJANGO_ENVIRONMENT\", default=\"local\")\n# Application definition\nINSTALLED_APPS = [\n    \"config.apps.MainAppConfig\",",
+        "peekOfCode": "SECRET_KEY = os.environ.get(\"SECRET_KEY\", default='')\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = os.environ.get(\"DEBUG\", 'True').lower() in ['true', 'yes', '1']\n# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts\nALLOWED_HOSTS = [\"localhost\", \"0.0.0.0\", \"127.0.0.1\", \"www.Bimod.io\", \"Bimod.io\", \"dev.Bimod.io\"]\n# Current DJANGO_ENVIRONMENT\nENVIRONMENT = os.environ.get(\"DJANGO_ENVIRONMENT\", default=\"local\")\n# Application definition\nINSTALLED_APPS = [\n    \"config.apps.MainAppConfig\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -56819,7 +56819,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "DEBUG = os.environ.get(\"DEBUG\", 'True').lower() in ['true', 'yes', '1']\n# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts\nALLOWED_HOSTS = [\"localhost\", \"0.0.0.0\", \"127.0.0.1\", \"www.br6.in\", \"br6.in\", \"dev.br6.in\"]\n# Current DJANGO_ENVIRONMENT\nENVIRONMENT = os.environ.get(\"DJANGO_ENVIRONMENT\", default=\"local\")\n# Application definition\nINSTALLED_APPS = [\n    \"config.apps.MainAppConfig\",\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",",
+        "peekOfCode": "DEBUG = os.environ.get(\"DEBUG\", 'True').lower() in ['true', 'yes', '1']\n# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts\nALLOWED_HOSTS = [\"localhost\", \"0.0.0.0\", \"127.0.0.1\", \"www.Bimod.io\", \"Bimod.io\", \"dev.Bimod.io\"]\n# Current DJANGO_ENVIRONMENT\nENVIRONMENT = os.environ.get(\"DJANGO_ENVIRONMENT\", default=\"local\")\n# Application definition\nINSTALLED_APPS = [\n    \"config.apps.MainAppConfig\",\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -56828,7 +56828,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "ALLOWED_HOSTS = [\"localhost\", \"0.0.0.0\", \"127.0.0.1\", \"www.br6.in\", \"br6.in\", \"dev.br6.in\"]\n# Current DJANGO_ENVIRONMENT\nENVIRONMENT = os.environ.get(\"DJANGO_ENVIRONMENT\", default=\"local\")\n# Application definition\nINSTALLED_APPS = [\n    \"config.apps.MainAppConfig\",\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",",
+        "peekOfCode": "ALLOWED_HOSTS = [\"localhost\", \"0.0.0.0\", \"127.0.0.1\", \"www.Bimod.io\", \"Bimod.io\", \"dev.Bimod.io\"]\n# Current DJANGO_ENVIRONMENT\nENVIRONMENT = os.environ.get(\"DJANGO_ENVIRONMENT\", default=\"local\")\n# Application definition\nINSTALLED_APPS = [\n    \"config.apps.MainAppConfig\",\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57287,7 +57287,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SESSION_COOKIE_HTTPONLY = True\nSESSION_COOKIE_SAMESITE = \"Lax\"\nSESSION_SAVE_EVERY_REQUEST = True\nSESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day\nCSRF_TRUSTED_ORIGINS = [\n    \"http://localhost:5050\",\n    \"http://localhost:8000\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://br6.in\",",
+        "peekOfCode": "SESSION_COOKIE_HTTPONLY = True\nSESSION_COOKIE_SAMESITE = \"Lax\"\nSESSION_SAVE_EVERY_REQUEST = True\nSESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day\nCSRF_TRUSTED_ORIGINS = [\n    \"http://localhost:5050\",\n    \"http://localhost:8000\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://Bimod.io\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57296,7 +57296,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SESSION_COOKIE_SAMESITE = \"Lax\"\nSESSION_SAVE_EVERY_REQUEST = True\nSESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day\nCSRF_TRUSTED_ORIGINS = [\n    \"http://localhost:5050\",\n    \"http://localhost:8000\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://br6.in\",\n    \"https://dev.br6.in\",",
+        "peekOfCode": "SESSION_COOKIE_SAMESITE = \"Lax\"\nSESSION_SAVE_EVERY_REQUEST = True\nSESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day\nCSRF_TRUSTED_ORIGINS = [\n    \"http://localhost:5050\",\n    \"http://localhost:8000\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://Bimod.io\",\n    \"https://dev.Bimod.io\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57305,7 +57305,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SESSION_SAVE_EVERY_REQUEST = True\nSESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day\nCSRF_TRUSTED_ORIGINS = [\n    \"http://localhost:5050\",\n    \"http://localhost:8000\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://br6.in\",\n    \"https://dev.br6.in\",\n    \"https://www.br6.in\",",
+        "peekOfCode": "SESSION_SAVE_EVERY_REQUEST = True\nSESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day\nCSRF_TRUSTED_ORIGINS = [\n    \"http://localhost:5050\",\n    \"http://localhost:8000\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://Bimod.io\",\n    \"https://dev.Bimod.io\",\n    \"https://www.Bimod.io\",",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57314,7 +57314,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day\nCSRF_TRUSTED_ORIGINS = [\n    \"http://localhost:5050\",\n    \"http://localhost:8000\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://br6.in\",\n    \"https://dev.br6.in\",\n    \"https://www.br6.in\",\n]",
+        "peekOfCode": "SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day\nCSRF_TRUSTED_ORIGINS = [\n    \"http://localhost:5050\",\n    \"http://localhost:8000\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://Bimod.io\",\n    \"https://dev.Bimod.io\",\n    \"https://www.Bimod.io\",\n]",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57323,7 +57323,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CSRF_TRUSTED_ORIGINS = [\n    \"http://localhost:5050\",\n    \"http://localhost:8000\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://br6.in\",\n    \"https://dev.br6.in\",\n    \"https://www.br6.in\",\n]\nCORS_ALLOWED_ORIGINS = [",
+        "peekOfCode": "CSRF_TRUSTED_ORIGINS = [\n    \"http://localhost:5050\",\n    \"http://localhost:8000\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://Bimod.io\",\n    \"https://dev.Bimod.io\",\n    \"https://www.Bimod.io\",\n]\nCORS_ALLOWED_ORIGINS = [",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57332,7 +57332,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "CORS_ALLOWED_ORIGINS = [\n    \"http://localhost:8000\",\n    \"http://localhost:5050\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://br6.in\",\n    \"https://dev.br6.in\",\n    \"https://www.br6.in\",\n]\nCORS_ALLOW_CREDENTIALS = True",
+        "peekOfCode": "CORS_ALLOWED_ORIGINS = [\n    \"http://localhost:8000\",\n    \"http://localhost:5050\",\n    \"http://0.0.0.0:8000\",\n    \"http://127.0.0.1:8000\",\n    \"https://Bimod.io\",\n    \"https://dev.Bimod.io\",\n    \"https://www.Bimod.io\",\n]\nCORS_ALLOW_CREDENTIALS = True",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57800,7 +57800,7 @@
         "kind": 5,
         "importPath": "config.template",
         "description": "config.template",
-        "peekOfCode": "THEME_VARIABLES = {\n    \"creator_name\": \"Br6.in\",\n    \"creator_url\": \"https://www.br6.in/\",\n    \"template_name\": \"Br6.in\",\n    \"template_suffix\": \"Br6.in - Intelligent Assistant as a Service (AIaaS)\",\n    \"template_version\": \"2.0.0\",\n    \"template_free\": False,\n    \"template_description\": \"Br6.in is an AI-powered AIaaS provider that helps you to build, train, and deploy your own AI assistant in minutes and automate your business processes.\",\n    \"template_keyword\": \"django, django admin, dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5\",\n    \"facebook_url\": \"https://www.facebook.com/pixinvents/\",",
+        "peekOfCode": "THEME_VARIABLES = {\n    \"creator_name\": \"Bimod.io\",\n    \"creator_url\": \"https://www.Bimod.io/\",\n    \"template_name\": \"Bimod.io\",\n    \"template_suffix\": \"Bimod.io - Intelligent Assistant as a Service (AIaaS)\",\n    \"template_version\": \"2.0.0\",\n    \"template_free\": False,\n    \"template_description\": \"Bimod.io is an AI-powered AIaaS provider that helps you to build, train, and deploy your own AI assistant in minutes and automate your business processes.\",\n    \"template_keyword\": \"django, django admin, dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5\",\n    \"facebook_url\": \"https://www.facebook.com/pixinvents/\",",
         "detail": "config.template",
         "documentation": {}
     },
@@ -58223,7 +58223,7 @@
         "kind": 5,
         "importPath": "source.conf",
         "description": "source.conf",
-        "peekOfCode": "project = 'Br6.in'\ncopyright = '2024, Ege Dogan Dursun'\nauthor = 'Ege Dogan Dursun'\nrelease = 'v0.1.0'\n# -- General configuration ---------------------------------------------------\nextensions = [\n    'sphinx.ext.autodoc',\n    'sphinx.ext.napoleon',\n    'sphinx.ext.autosummary',\n    # 'sphinx.ext.viewcode',  # Comment this out or remove it",
+        "peekOfCode": "project = 'Bimod.io'\ncopyright = '2024, Ege Dogan Dursun'\nauthor = 'Ege Dogan Dursun'\nrelease = 'v0.1.0'\n# -- General configuration ---------------------------------------------------\nextensions = [\n    'sphinx.ext.autodoc',\n    'sphinx.ext.napoleon',\n    'sphinx.ext.autosummary',\n    # 'sphinx.ext.viewcode',  # Comment this out or remove it",
         "detail": "source.conf",
         "documentation": {}
     },

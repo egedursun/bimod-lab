@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: mysql_executor.py
 #  Last Modified: 2024-10-05 02:25:59
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
+import logging
 
 import mysql
 from mysql.connector import cursor_cext
@@ -25,6 +26,9 @@ from apps.core.sql.utils import before_execute_sql_query, can_write_to_database
 from apps.datasource_sql.models import SQLDatabaseConnection
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class MySQLExecutor:
@@ -45,9 +49,11 @@ class MySQLExecutor:
                 with conn.cursor(cursor_class=cursor_cext.CMySQLCursorDict, buffered=True) as cursor:
                     cursor.execute(query, parameters)
                     output = cursor.fetchall()
+            logger.info(f"Query executed successfully.")
         except Exception as e:
             output["status"] = False
             output["error"] = str(e)
+            logger.error(f"Error occurred while executing query: {e}")
 
         new_tx = LLMTransaction(
             organization=self.connection_object.assistant.organization,
@@ -56,6 +62,7 @@ class MySQLExecutor:
             llm_cost=InternalServiceCosts.SQLReadExecutor.COST, transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SQL_READ, is_tool_cost=True)
         new_tx.save()
+        logger.info(f"Transaction saved successfully.")
         return output
 
     def execute_write(self, query, parameters=None):
@@ -70,9 +77,11 @@ class MySQLExecutor:
                 with conn.cursor(buffered=True) as cursor:
                     cursor.execute(query, parameters)
                     conn.commit()
+            logger.info(f"Query executed successfully.")
         except Exception as e:
             output["status"] = False
             output["error"] = str(e)
+            logger.error(f"Error occurred while executing query: {e}")
 
         new_tx = LLMTransaction(
             organization=self.connection_object.assistant.organization,
@@ -81,4 +90,5 @@ class MySQLExecutor:
             llm_cost=InternalServiceCosts.SQLWriteExecutor.COST, transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SQL_WRITE, is_tool_cost=True)
         new_tx.save()
+        logger.info(f"Transaction saved successfully.")
         return output

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_export_leanmod_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,6 +28,9 @@ from apps.leanmod.models import LeanAssistant
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MAX_LEANMODS_EXPORTS_ORGANIZATION
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExportLeanModView_Create(TemplateView, LoginRequiredMixin):
@@ -57,10 +58,13 @@ class ExportLeanModView_Create(TemplateView, LoginRequiredMixin):
         req_limit_hourly = request.POST.get('request_limit_per_hour')
         if ExportLeanmodAssistantAPI.objects.filter(
             created_by_user=request.user).count() > MAX_LEANMODS_EXPORTS_ORGANIZATION:
+            logger.error(f"User: {request.user.id} tried to create more than {MAX_LEANMODS_EXPORTS_ORGANIZATION} "
+                         f"Export LeanMod Assistant APIs.")
             messages.error(request, f"Maximum number of Export LeanMod Assistant APIs reached for the organization.")
             return self.render_to_response(self.get_context_data())
 
         if not agent_id or not req_limit_hourly:
+            logger.error(f"User: {request.user.id} tried to create Export LeanMod Assistant API without required fields.")
             messages.error(request, "LeanMod Assistant ID and Request Limit Per Hour are required.")
             return self.render_to_response(self.get_context_data())
         try:
@@ -75,8 +79,10 @@ class ExportLeanModView_Create(TemplateView, LoginRequiredMixin):
                 org.exported_leanmods.add(new_exp_leanmod)
             org.save()
             start_endpoint_for_leanmod(assistant=new_exp_leanmod)
+            logger.info(f"Export LeanMod Assistant API was created by User: {request.user.id}.")
             messages.success(request, "Export LeanMod Assistant API created successfully!")
             return redirect("export_leanmods:list")
         except Exception as e:
+            logger.error(f"Error creating Export LeanMod Assistant API by User: {request.user.id}.")
             messages.error(request, f"Error creating Export LeanMod Assistant API: {str(e)}")
             return self.render_to_response(self.get_context_data())

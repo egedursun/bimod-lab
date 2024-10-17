@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: core_service_generate_video.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,16 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.core.video_generation.utils import VideoGeneratorFrameTypes, VideoGenerationActionTypes
 from apps.core.video_generation.video_generation_executor import VideoGenerationExecutor
 from apps.core.video_generation.video_generator_decoder import VideoGeneratorDecoder
+
+
+logger = logging.getLogger(__name__)
 
 
 def run_generate_video(connection_id: int,
@@ -56,14 +59,17 @@ def run_generate_video(connection_id: int,
                                                   frame_type=VideoGeneratorFrameTypes.START_AND_END,
                                                   start_frame_url=start_frame_url, end_frame_url=end_frame_url)
         else:
+            logger.error(f"Invalid action type: {video_generator_action_type}.")
             return {
                 "video_url": None,
                 "error": "The action type is not recognized. Please check the action type and try again."
             }
     except Exception as e:
+        logger.error(f"Error occurred while generating the video: {e}")
         error = f"Error occurred while generating the image: {str(e)}"
         return {
             "video_url": None,
             "error": error
         }
+    logger.info(f"Video generation output: {response}")
     return response

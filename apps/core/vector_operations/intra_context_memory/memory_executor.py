@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: memory_executor.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
+import logging
 
 import weaviate
 from weaviate.config import AdditionalConfig, Timeout
@@ -31,6 +32,9 @@ from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 from config.settings import WEAVIATE_CLUSTER_URL, WEAVIATE_API_KEY, WEAVIATE_SINGLE_TIME_MEMORY_RETRIEVAL_LIMIT
 import weaviate.classes as wvc
+
+
+logger = logging.getLogger(__name__)
 
 
 class IntraContextMemoryExecutor:
@@ -49,14 +53,18 @@ class IntraContextMemoryExecutor:
                                     query=WEAVIATE_QUERY_TIMEOUT,
                                     insert=WEAVIATE_INSERT_TIMEOUT)))
             self.client = c
+            logger.info(f"Connected to Weaviate successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while connecting to Weaviate: {e}")
             return self.client
         return self.client
 
     def close_c(self):
         try:
             self.client.close()
+            logger.info(f"Closed the Weaviate connection successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while closing the Weaviate connection: {e}")
             pass
         return
 
@@ -64,8 +72,10 @@ class IntraContextMemoryExecutor:
     def decode_vectorizer(vectorizer_name):
         from apps.assistants.utils import EmbeddingManagersNames
         if vectorizer_name == EmbeddingManagersNames.TEXT2VEC_OPENAI:
+            logger.info(f"Vectorizer is set to: {vectorizer_name}")
             return wvc.config.Configure.Vectorizer.text2vec_openai()
         else:
+            logger.info(f"Vectorizer is set to: {vectorizer_name}")
             return wvc.config.Configure.Vectorizer.text2vec_openai()
 
     def create_chat_history_classes(self):
@@ -73,7 +83,9 @@ class IntraContextMemoryExecutor:
             _ = self.connect_c()
             output = create_intra_context_history_classes_helper(executor=self)
             self.close_c()
+            logger.info(f"Created chat history classes successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while creating chat history classes: {e}")
             return False
         return output
 
@@ -82,7 +94,9 @@ class IntraContextMemoryExecutor:
             _ = self.connect_c()
             output = delete_intra_context_history_class_helper(executor=self, class_name=class_name)
             self.close_c()
+            logger.info(f"Deleted chat history classes successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while deleting chat history classes: {e}")
             return False
         return output
 
@@ -91,7 +105,9 @@ class IntraContextMemoryExecutor:
             _ = self.connect_c()
             data = delete_chat_history_document_helper(executor=self, class_name=class_name, document_uuid=document_uuid)
             self.close_c()
+            logger.info(f"Deleted chat history document successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while deleting chat history document: {e}")
             return False
         return data
 
@@ -100,7 +116,9 @@ class IntraContextMemoryExecutor:
             _ = self.connect_c()
             index_memory_helper.delay(connection_id=connection_id, message_text=message_text)
             self.close_c()
+            logger.info(f"Indexed memory successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while indexing memory: {e}")
             return False
         return
 
@@ -115,7 +133,9 @@ class IntraContextMemoryExecutor:
         try:
             doc_id, doc_uuid, error = embed_memory_data(executor_params=executor_params,
                                                         number_of_chunks=number_of_chunks)
+            logger.info(f"Embedded memory successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while embedding memory: {e}")
             return None, None, str(e)
         return doc_id, doc_uuid, error
 
@@ -130,7 +150,9 @@ class IntraContextMemoryExecutor:
         try:
             errors = embed_memory_chunks(executor_params=executor_params, chunks=chunks,
                                          memory_id=memory_id, memory_uuid=memory_uuid)
+            logger.info(f"Embedded memory chunks successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while embedding memory chunks: {e}")
             return str(e)
         return errors
 
@@ -169,6 +191,8 @@ class IntraContextMemoryExecutor:
                 is_tool_cost=True
             )
             tx.save()
+            logger.info(f"Transaction saved successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while saving the transaction: {e}")
             return {"success": False, "message": "Error occurred while saving the transaction.", "memories": []}
         return memories

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: embed_repository_data_tasks.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,13 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from apps.core.codebase.handler_methods.embedding_handler_repo import embed_repository_helper
+
+logger = logging.getLogger(__name__)
 
 
 def embed_repository_data(executor_params, document, path, number_of_chunks):
@@ -31,5 +31,7 @@ def embed_repository_data(executor_params, document, path, number_of_chunks):
             number_of_chunks=number_of_chunks
         )
     except Exception as e:
+        logger.error(f"[tasks.embed_repository_data] Error embedding the repository: {e}")
         error = f"[tasks.embed_repository_data] Error embedding the repository: {e}"
+    logger.info(f"[tasks.embed_repository_data] Repository embedded successfully.")
     return doc_id, doc_uuid, error

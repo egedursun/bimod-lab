@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_assistant_views.py
 #  Last Modified: 2024-10-05 12:51:58
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -33,6 +34,9 @@ from apps.assistants.utils import MULTI_STEP_REASONING_CAPABILITY_CHOICE
 from web_project import TemplateLayout
 
 
+logger = logging.getLogger(__name__)
+
+
 class AssistantView_Create(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
@@ -42,9 +46,7 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
         context['context_overflow_strategies'] = CONTEXT_MANAGEMENT_STRATEGY
         context['reasoning_capability_choices'] = MULTI_STEP_REASONING_CAPABILITY_CHOICE
         context['vectorizers'] = EMBEDDING_MANAGERS
-        context["ner_integrations"] = NERIntegration.objects.filter(
-            organization__in=context['organizations']
-        )
+        context["ner_integrations"] = NERIntegration.objects.filter(organization__in=context['organizations'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -64,6 +66,7 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             and request.POST.get('ner_integration') != "None"
             and request.POST.get('ner_integration') != ""):
             ner_id = request.POST.get('ner_integration')
+            logger.info(f"NER Integration is defined for this agent. NER ID: {ner_id}")
 
         agent_name = request.POST.get('name')
         agent_description = request.POST.get('description')
@@ -80,6 +83,7 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
         max_msgs_context = request.POST.get('max_context_messages')
         embedding_vectorizer_name = None
         embedding_vectorizer_api_key = None
+        logger.info(f"Agent information is received.")
         if intra_memory_strategy == ContextManagementStrategyNames.FORGET:
             pass
         elif intra_memory_strategy == ContextManagementStrategyNames.STOP:
@@ -121,4 +125,5 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
         org.assistants.add(agent)
         org.save()
         messages.success(request, "Agent created successfully!")
+        logger.info(f"Agent is created successfully. Agent ID: {agent.id}")
         return redirect('assistants:list')

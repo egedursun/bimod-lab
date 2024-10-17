@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_starred_messages_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.starred_messages.models import StarredMessage
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class StarredMessageView_Delete(LoginRequiredMixin, DeleteView):
@@ -57,4 +58,5 @@ class StarredMessageView_Delete(LoginRequiredMixin, DeleteView):
         starred_message.chat_message.starred = False
         starred_message.chat_message.save()
         messages.success(request, success_message)
+        logger.info(f"Starred message was deleted by User: {context_user.id}.")
         return redirect(self.success_url)

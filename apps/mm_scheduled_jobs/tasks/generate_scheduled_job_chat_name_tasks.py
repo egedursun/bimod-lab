@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: generate_scheduled_job_chat_name_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,18 +12,19 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
-
+import logging
 from uuid import uuid4
 
 from slugify import slugify
 
 
+logger = logging.getLogger(__name__)
+
+
 def generate_scheduled_job_chat_name(scheduled_job_name):
     uuid_1 = str(uuid4())
     uuid_2 = str(uuid4())
+    logger.info(f"Generating Chat Name for Scheduled Job: {scheduled_job_name}")
     return f"{slugify(scheduled_job_name)} - {uuid_1} - {uuid_2}"

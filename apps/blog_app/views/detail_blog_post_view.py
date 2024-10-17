@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: detail_blog_post_view.py
 #  Last Modified: 2024-10-05 12:51:58
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
@@ -21,6 +22,9 @@ from django.views.generic import TemplateView
 
 from apps.blog_app.models import BlogPost
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class BlogPostView_Detail(LoginRequiredMixin, TemplateView):
@@ -33,4 +37,5 @@ class BlogPostView_Detail(LoginRequiredMixin, TemplateView):
             context['seo_meta'] = post.seo_meta
         related_posts = BlogPost.objects.filter(tags__in=post.tags.all()).exclude(id=post.id).distinct()[:3]
         context['related_posts'] = related_posts
+        logger.info(f"Blog Post {post.title} was viewed.")
         return context

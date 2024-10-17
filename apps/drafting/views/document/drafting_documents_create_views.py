@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: drafting_documents_create_views.py
 #  Last Modified: 2024-10-14 18:48:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -22,6 +24,8 @@ from django.views import View
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingFolder, DraftingDocument
 from apps.user_permissions.utils import PermissionNames
+
+logger = logging.getLogger(__name__)
 
 
 class DraftingView_DocumentCreate(LoginRequiredMixin, View):
@@ -49,4 +53,5 @@ class DraftingView_DocumentCreate(LoginRequiredMixin, View):
             created_by_user=request.user,
             last_updated_by_user=request.user
         )
+        logger.info(f"Drafting Document {document.document_title} was created.")
         return redirect('drafting:documents_detail', folder_id=folder.id, document_id=document.id)

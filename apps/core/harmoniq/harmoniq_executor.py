@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: harmoniq_executor.py
 #  Last Modified: 2024-10-07 03:01:58
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 
 import asyncio
+import logging
 import time
 import wave
 from io import BytesIO
@@ -35,6 +36,8 @@ import json
 from apps.harmoniq.models import Harmoniq
 from apps.harmoniq.utils import HARMONIQ_DEITIES_INSTRUCTIONS_MAP
 from apps.llm_core.models import LLMCore
+
+logger = logging.getLogger(__name__)
 
 
 class OpenAIRealtimeAPIClient:
@@ -56,6 +59,7 @@ class OpenAIRealtimeAPIClient:
                 "Authorization": f"Bearer {self.llm_model.api_key}",
                 "OpenAI-Beta": "realtime=v1"
             })
+        logger.info("Connected to OpenAI Realtime API.")
 
     async def send_message(self, message):
         harmoniq_deity = self.harmoniq_agent.harmoniq_deity
@@ -104,6 +108,7 @@ class OpenAIRealtimeAPIClient:
                      "content": [{"type": "input_text", "text": formal_message}]
                  }}
 
+        logger.info(f"Sending message to OpenAI Realtime API.")
         await self.ws.send(json.dumps(event))
 
     async def create_response(self):
@@ -113,6 +118,7 @@ class OpenAIRealtimeAPIClient:
                 "modalities": ["audio", "text"],  # Request both audio and text response
                 "voice": DEFAULT_HARMONIQ_VOICE
         }}
+        logger.info(f"Creating response from OpenAI Realtime API.")
         await self.ws.send(json.dumps(event))
 
     async def receive_audio_response(self):
@@ -158,6 +164,7 @@ class OpenAIRealtimeAPIClient:
                     text_done = True
 
             except asyncio.TimeoutError:
+                logger.info("Timeout occurred while receiving audio response from OpenAI Realtime API.")
                 if audio_done and transcript_done and (time.time() - last_message_time) >= timeout:
                     await self.ws.close()
                     wav_data = pcm_to_wav(self.audio_buffer)
@@ -165,19 +172,22 @@ class OpenAIRealtimeAPIClient:
                     break
 
     async def request_communication(self, query_text: str = None):
-            await self.connect()
-            if query_text:
-                await self.send_message(query_text)
-                await self.create_response()
-            await self.receive_audio_response()
+        logger.info("Asynchronous request to OpenAI Realtime API.")
+        await self.connect()
+        if query_text:
+            await self.send_message(query_text)
+            await self.create_response()
+        await self.receive_audio_response()
 
 
 def sync_request_communication(api_client, query_text):
+    logger.info("Synchronous request to OpenAI Realtime API.")
     async_to_sync(api_client.request_communication)(query_text)
 
 
 def pcm_to_wav(pcm_data, num_channels=DEFAULT_PCM_NUMBER_OF_CHANNELS, sample_rate=DEFAULT_PCM_SAMPLING_RATE,
                bits_per_sample=DEFAULT_PCM_BITS_PER_SAMPLE):
+    logger.info("Converting PCM data to WAV format.")
     byte_depth = bits_per_sample // 8
     wav_output = BytesIO()
     with wave.open(wav_output, 'wb') as wav_file:

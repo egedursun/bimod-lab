@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: brainstorms_executor.py
 #  Last Modified: 2024-10-05 02:13:33
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from openai import OpenAI
 
@@ -25,6 +25,9 @@ from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
 from apps.brainstorms.models import BrainstormingIdea
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class BrainstormsExecutor:
@@ -45,6 +48,7 @@ class BrainstormsExecutor:
             llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
             transaction_type=ChatRoles.SYSTEM, transaction_source=LLMTransactionSourcesTypesNames.BRAINSTORMING,
         )
+        logger.info(f"Generating LLM response for system prompt: {system_prompt}")
 
         choice_message_content = None
         try:
@@ -59,7 +63,9 @@ class BrainstormsExecutor:
             first_choice = choices[0]
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+            logger.info(f"LLM response generated successfully.")
         except Exception as e:
+            logger.error(f"Error while generating LLM response: {str(e)}")
             pass
         output = choice_message_content
         return output
@@ -68,18 +74,23 @@ class BrainstormsExecutor:
         elements = []
         try:
             elements = find_json_presence(response=llm_response)
+            logger.info(f"Deepening idea object with LLM response: {llm_response}")
         except Exception as e:
+            logger.error(f"Error while deepening idea object with LLM response: {str(e)}")
             pass
 
         element = elements[0]
         try:
             existing_idea = BrainstormingIdea.objects.get(id=idea.id)
             if not existing_idea:
+                logger.error(f"Error while deepening idea object with LLM response: Idea not found.")
                 return
             existing_idea.idea_description = element.get("deep_description")
             existing_idea.save()
         except Exception as e:
+            logger.error(f"Error while deepening idea object with LLM response: {str(e)}")
             return
+        logger.info(f"Idea object deepened successfully.")
         return
 
 
@@ -88,7 +99,9 @@ class BrainstormsExecutor:
         elements = []
         try:
             elements = find_json_presence(response=llm_response)
+            logger.info(f"Creating idea objects with LLM response: {llm_response}")
         except Exception as e:
+            logger.error(f"Error while creating idea objects with LLM response: {str(e)}")
             pass
 
         for element in elements:
@@ -105,7 +118,9 @@ class BrainstormsExecutor:
                     idea_description=idea_description,
                     depth_level=depth_level,
                     is_bookmarked=is_bookmarked)
+                logger.info(f"Idea object created successfully.")
             except Exception as e:
+                logger.error(f"Error while creating idea objects with LLM response: {str(e)}")
                 continue
         return
 
@@ -113,7 +128,9 @@ class BrainstormsExecutor:
         from apps.brainstorms.models import BrainstormingLevelSynthesis
         try:
             element = find_json_presence(response=llm_response)[0]
+            logger.info(f"Creating level synthesis object with LLM response: {llm_response}")
         except Exception as e:
+            logger.error(f"Error while creating level synthesis object with LLM response: {str(e)}")
             return
 
         try:
@@ -123,7 +140,9 @@ class BrainstormsExecutor:
             BrainstormingLevelSynthesis.objects.create(
                 brainstorming_session=session, created_by_user=created_by_user, synthesis_content=synthesis_content,
                 depth_level=depth_level)
+            logger.info(f"Level synthesis object created successfully.")
         except Exception as e:
+            logger.error(f"Error while creating level synthesis object with LLM response: {str(e)}")
             return
         return
 
@@ -131,7 +150,9 @@ class BrainstormsExecutor:
         from apps.brainstorms.models import BrainstormingCompleteSynthesis
         try:
             element = find_json_presence(response=llm_response)[0]
+            logger.info(f"Creating complete synthesis object with LLM response: {llm_response}")
         except Exception as e:
+            logger.error(f"Error while creating complete synthesis object with LLM response: {str(e)}")
             return
 
         try:
@@ -140,7 +161,9 @@ class BrainstormsExecutor:
             synthesis_content = element.get("synthesis_content")
             BrainstormingCompleteSynthesis.objects.create(
                 brainstorming_session=session, created_by_user=created_by_user, synthesis_content=synthesis_content)
+            logger.info(f"Complete synthesis object created successfully.")
         except Exception as e:
+            logger.error(f"Error while creating complete synthesis object with LLM response: {str(e)}")
             return
         return
 
@@ -153,6 +176,7 @@ class BrainstormsExecutor:
                 system_prompt = build_from_scratch_brainstorms_system_prompt(session=self.session)
                 output = self._generate_llm_response(system_prompt)
                 self._create_idea_objects_with_llm_response(llm_response=output, depth_level=depth_level)
+                logger.info(f"Ideas produced successfully.")
             else:
                 previous_depth_level = (depth_level - 1)
                 previous_level_bookmarked_ideas = BrainstormingIdea.objects.filter(
@@ -161,7 +185,9 @@ class BrainstormsExecutor:
                     session=self.session, previous_level_bookmarked_ideas=previous_level_bookmarked_ideas)
                 output = self._generate_llm_response(system_prompt)
                 self._create_idea_objects_with_llm_response(llm_response=output, depth_level=depth_level)
+                logger.info(f"Ideas produced successfully.")
         except Exception as e:
+            logger.error(f"Error while producing ideas: {str(e)}")
             return
         return
 
@@ -179,7 +205,9 @@ class BrainstormsExecutor:
                 session=self.session, bookmarked_ideas=depth_level_bookmarked_ideas)
             output = self._generate_llm_response(system_prompt)
             self._create_level_synthesis_object_with_llm_response(llm_response=output, depth_level=depth_level)
+            logger.info(f"Level synthesis generated successfully.")
         except Exception as e:
+            logger.error(f"Error while generating level synthesis: {str(e)}")
             return
         return
 
@@ -196,7 +224,9 @@ class BrainstormsExecutor:
                 session=self.session, bookmarked_ideas=bookmarked_ideas)
             output = self._generate_llm_response(system_prompt)
             self._create_complete_synthesis_object_with_llm_response(llm_response=output)
+            logger.info(f"Complete synthesis generated successfully.")
         except Exception as e:
+            logger.error(f"Error while generating complete synthesis: {str(e)}")
             return
         return
 
@@ -205,7 +235,9 @@ class BrainstormsExecutor:
             system_prompt = build_deepen_thought_over_idea_system_prompt(idea=idea)
             output = self._generate_llm_response(system_prompt)
             self._deepen_idea_object_with_llm_response(idea=idea, llm_response=output)
+            logger.info(f"Idea deepened successfully.")
         except Exception as e:
+            logger.error(f"Error while deepening idea: {str(e)}")
             return
         return
 

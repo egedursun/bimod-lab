@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_all_memories_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,6 +24,9 @@ from django.views import View
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.memories.models import AssistantMemory
 from apps.user_permissions.utils import PermissionNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class SettingsView_DeleteAllStandardMemories(View, LoginRequiredMixin):
@@ -42,6 +45,7 @@ class SettingsView_DeleteAllStandardMemories(View, LoginRequiredMixin):
         if not UserPermissionManager.is_authorized(user=self.request.user,
                                                    operation=PermissionNames.DELETE_ASSISTANT_MEMORIES):
             messages.error(self.request, "You do not have permission to delete assistant memories.")
+            logger.error(f"User: {user.id} does not have permission to delete assistant memories.")
             return redirect('user_settings:settings')
         ##############################
 
@@ -49,6 +53,8 @@ class SettingsView_DeleteAllStandardMemories(View, LoginRequiredMixin):
             for std_memory in user_std_memories:
                 std_memory.delete()
             messages.success(request, "All memories associated with your account have been deleted.")
+            logger.info(f"All memories associated with User: {user.id} have been deleted.")
         except Exception as e:
             messages.error(request, f"Error deleting memories: {e}")
+            logger.error(f"Error deleting memories: {e}")
         return redirect('user_settings:settings')

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_users_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +29,9 @@ from apps.user_management.forms import UserStatusForm
 from apps.user_permissions.utils import PermissionNames
 from auth.models import Profile
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class UserManagementView_UserList(LoginRequiredMixin, TemplateView):
@@ -75,7 +78,9 @@ class UserManagementView_UserList(LoginRequiredMixin, TemplateView):
             for user_permission in user_permissions:
                 user_permission.is_active = profile.is_active
                 user_permission.save()
+            logger.info(f"User status updated by User: {self.request.user.id}.")
             messages.success(request, 'User status updated successfully!')
         else:
+            logger.error(f"Failed to update user status by User: {self.request.user.id}.")
             messages.error(request, 'Failed to update user status.')
         return redirect('user_management:list')

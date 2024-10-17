@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_execution_task_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
-#
-#
-#
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import json
+import logging
 import os
 import shutil
 import subprocess
@@ -26,6 +24,9 @@ import subprocess
 from celery import shared_task
 
 from apps.mm_functions.models import CustomFunction
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -47,6 +48,7 @@ def mm_function_execution_task(custom_function_id, input_values: dict):
         name = field["name"]
         if name not in input_values:
             if field["required"] is True:
+                logger.error(f"Input field '{name}' is missing.")
                 return {"stout": None, "stderr": f"Input field '{name}' is missing."}
             value = None
         else:
@@ -105,10 +107,11 @@ print("[INFO] Outputs for the Custom Execution:")
             [os.path.join(venv_path, "bin", "python"), script_path], capture_output=True, text=True, check=True)
         stdout = result.stdout
         stderr = result.stderr
+        logger.info(f"Custom Function executed successfully.")
     except subprocess.CalledProcessError as e:
+        logger.error(f"Error while executing the custom function: {e}")
         pass
     finally:
         shutil.rmtree(venv_path)
-
     response = {"stdout": stdout, "stderr": stderr}
     return response

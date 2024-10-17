@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: chat_history_factory_builder.py
 #  Last Modified: 2024-10-05 02:26:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 import uuid
 
 import requests
@@ -24,6 +24,9 @@ from apps.core.data_security.ner.ner_executor import NERExecutor
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
 import base64 as b64
+
+
+logger = logging.getLogger(__name__)
 
 
 class HistoryBuilder:
@@ -56,6 +59,7 @@ class HistoryBuilder:
                         data_bytes = output.content
                         image_b64 = b64.b64encode(data_bytes).decode("utf-8")
                     except Exception as e:
+                        logger.error(f"Error while fetching image content: {e}")
                         continue
                     img_wrapper = {
                         "type": "image_url",
@@ -89,6 +93,7 @@ class HistoryBuilder:
                 transaction_context_content=message_text_content, llm_cost=0, internal_service_cost=0,
                 tax_cost=0, total_cost=0, total_billable_cost=0, transaction_type=src_type.lower(),
                 transaction_source=chat.chat_source)
+            logger.info(f"Chat Transaction: {tx}")
             chat.transactions.add(tx)
             chat.save()
             msg.save()
@@ -120,6 +125,7 @@ class HistoryBuilder:
                         data_bytes = output.content
                         image_b64 = b64.b64encode(data_bytes).decode("utf-8")
                     except Exception as e:
+                        logger.error(f"Error while fetching image content: {e}")
                         continue
                     img_content_wrapper = {
                         "type": "image_url",
@@ -145,5 +151,6 @@ class HistoryBuilder:
                 transaction_type=source_type.lower(), transaction_source=lean_chat.chat_source)
             lean_chat.transactions.add(tx)
             lean_chat.save()
+            logger.info(f"Lean Chat Transaction: {tx}")
             msg.save()
         return history, temporary_uuid

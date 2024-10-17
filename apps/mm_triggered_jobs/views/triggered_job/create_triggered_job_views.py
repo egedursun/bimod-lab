@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_triggered_job_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_triggered_jobs.forms import TriggeredJobForm
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class TriggeredJobView_Create(LoginRequiredMixin, TemplateView):
@@ -50,8 +53,10 @@ class TriggeredJobView_Create(LoginRequiredMixin, TemplateView):
             step_guide = request.POST.getlist('step_guide[]')
             triggered_job.step_guide = step_guide
             triggered_job.save()
+            logger.info(f"Triggered Job was created by User: {self.request.user.id}.")
             messages.success(request, "Triggered Job created successfully!")
             return redirect('mm_triggered_jobs:list')
         else:
+            logger.error(f"Error creating triggered job: {form.errors}")
             messages.error(request, "There was an error creating the triggered job.")
             return self.render_to_response({'form': form})

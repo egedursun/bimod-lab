@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: script_store_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -31,6 +29,9 @@ from apps.mm_scripts.models import CustomScript, CustomScriptReference
 from apps.mm_scripts.utils import CUSTOM_SCRIPT_CATEGORIES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomScriptView_Store(LoginRequiredMixin, TemplateView):
@@ -63,6 +64,7 @@ class CustomScriptView_Store(LoginRequiredMixin, TemplateView):
         context['search_query'] = search_query
         context['selected_categories'] = selected_categories
         context['script_assistant_map'] = script_agent_map
+        logger.info(f"Scripts list fetched successfully.")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -84,7 +86,9 @@ class CustomScriptView_Store(LoginRequiredMixin, TemplateView):
                 agent = Assistant.objects.get(id=agent_id)
                 CustomScriptReference.objects.create(assistant=agent, custom_script=custom_script,
                                                      created_by_user=request.user)
+                logger.info(f"Script '{custom_script.name}' assigned to assistant '{agent.name}'.")
                 messages.success(request, f"Script '{custom_script.name}' assigned to assistant '{agent.name}'.")
         else:
+            logger.error(f"Invalid input. Please try again.")
             messages.error(request, "Invalid input. Please try again.")
         return redirect('mm_scripts:store')

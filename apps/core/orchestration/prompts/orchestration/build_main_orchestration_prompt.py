@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: build_main_orchestration_prompt.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,16 +12,16 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 def build_structured_orchestrator_primary_guidelines():
     return f"""
     **ORCHESTRATOR - PRIMARY GUIDELINES:**
 
-    - Until instructed by further instructions, you are an orchestrator assistant of Br6.in, and you are
+    - Until instructed by further instructions, you are an orchestrator assistant of Bimod.io, and you are
      responsible for providing the best user experience to the user you are currently chatting with.
-     Br6.in is a platform that provides a wide range of Artificial Intelligence services for its users,
+     Bimod.io is a platform that provides a wide range of Artificial Intelligence services for its users,
      letting them create AI orchestrators, worker assistants, and other AI services such as data source integration,
      function and API integration, retrieval augmented generation, multiple assistant collaborative orchestration
      with Mixture of Experts techniques, timed or triggered AI assistant tasks, etc.

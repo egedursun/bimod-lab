@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: core_service_vector_store_query.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,15 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.core.vector_operations.vector_document.vector_store_decoder import KnowledgeBaseSystemDecoder
 from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
+
+
+logger = logging.getLogger(__name__)
 
 
 def run_query_vector_store(c_id: int, vector_store_query: str, semantic_alpha: float):
@@ -25,7 +28,9 @@ def run_query_vector_store(c_id: int, vector_store_query: str, semantic_alpha: f
     try:
         client = KnowledgeBaseSystemDecoder().get(connection=conn)
         output = client.search_hybrid(query=vector_store_query, alpha=semantic_alpha)
+        logger.info(f"Knowledge base query output: {output}")
     except Exception as e:
         error_msg = f"Error occurred while executing the knowledge base query: {str(e)}"
+        logger.error(error_msg)
         return error_msg
     return output

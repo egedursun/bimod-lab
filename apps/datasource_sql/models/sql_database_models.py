@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: sql_database_models.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.db import models
 
@@ -21,6 +22,9 @@ from apps.datasource_sql.utils import DBMS_CHOICES, DBMSChoicesNames, POSTGRESQL
     POSTGRESQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY, MYSQL_SCHEMA_RETRIEVAL_QUERY, MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY
 import psycopg2
 import mysql.connector
+
+
+logger = logging.getLogger(__name__)
 
 
 class SQLDatabaseConnection(models.Model):
@@ -87,7 +91,9 @@ class SQLDatabaseConnection(models.Model):
                 schema[table_name] = [{'name': col[0], 'type': col[1]} for col in columns]
             crs.close()
             c.close()
+            logger.info(f"Schema retrieved: {schema}")
         except Exception as e:
+            logger.error(f"Error occurred while retrieving the schema: {e}")
             return {}
         return schema
 
@@ -106,6 +112,8 @@ class SQLDatabaseConnection(models.Model):
                 schema[table_name] = [{'name': col[0], 'type': col[1]} for col in columns]
             crs.close()
             c.close()
+            logger.info(f"Schema retrieved: {schema}")
         except Exception as e:
+            logger.error(f"Error occurred while retrieving the schema: {e}")
             return {}
         return schema

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: class_creator.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,14 +12,17 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 import weaviate.classes as wvc
 
 from apps.core.codebase.utils import REPOSITORY_WEAVIATE_FIELDS_CONFIG, REPOSITORY_CHUNK_WEAVIATE_FIELDS_CONFIG
 from apps.core.codebase.utils import DEFAULT_GENERATIVE_SEARCH_MODEL
+
+
+logger = logging.getLogger(__name__)
 
 
 def create_classes_helper(executor):
@@ -34,9 +37,11 @@ def create_classes_helper(executor):
             generative_config=wvc.config.Configure.Generative.openai(
                 model=DEFAULT_GENERATIVE_SEARCH_MODEL, temperature=conn.assistant.llm_model.temperature,
                 max_tokens=conn.assistant.llm_model.maximum_tokens), properties=REPOSITORY_WEAVIATE_FIELDS_CONFIG)
+        logger.info(f"Created class: {conn.class_name}")
     except Exception as e:
         output["status"] = False
         output["error"] = str(e)
+        logger.error(f"Error while creating class: {str(e)}")
         return output
 
     try:
@@ -48,8 +53,10 @@ def create_classes_helper(executor):
                 max_tokens=conn.assistant.llm_model.maximum_tokens
             ),
             properties=REPOSITORY_CHUNK_WEAVIATE_FIELDS_CONFIG)
+        logger.info(f"Created class: {conn.class_name}Chunks")
     except Exception as e:
         output["status"] = False
         output["error"] = str(e)
+        logger.error(f"Error while creating class: {str(e)}")
         return output
     return output

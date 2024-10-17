@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: document_chunk_embedder.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,15 +12,19 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
 
 import datetime
 import json
+import logging
 
 from apps.datasource_knowledge_base.utils import VectorStoreDocProcessingStatusNames
+
+
+logger = logging.getLogger(__name__)
 
 
 def factory_chunk_orm_build(chunk: dict,
@@ -47,7 +51,9 @@ def factory_chunk_orm_build(chunk: dict,
             document=chunk_doc, document_uuid=chunk_doc_uuid
         )
         _id = chunk_orm_object.id
+        logger.info(f"Chunk ORM object created with id: {_id}")
     except Exception as e:
+        logger.error(f"Error creating chunk ORM object: {e}")
         pass
     return _id, error
 
@@ -66,7 +72,9 @@ def factory_intra_context_memory_chunk_orm_build(chunk: str, knowledge_base, mem
             knowledge_base_memory_uuid=intra_context_memory_uuid, context_history_base=vector_store,
         )
         _id = chunk_orm_object.id
+        logger.info(f"Memory chunk ORM object created with id: {_id}")
     except Exception as e:
+        logger.error(f"Error creating memory chunk ORM object: {e}")
         pass
     return _id, error
 
@@ -88,7 +96,9 @@ def factory_chunk_weaviate_build(chunk: dict, path: str,
             "chunk_content": weaviate_chunk_ingredient, "chunk_metadata": weaviate_chunk_metadata,
             "created_at": weaviate_chunk_created_at
         }
+        logger.info(f"Chunk Weaviate object instance created.")
     except Exception as e:
+        logger.error(f"Error creating chunk Weaviate object instance: {e}")
         pass
     return weaviate_object_instance_chunk, error
 
@@ -103,7 +113,9 @@ def factory_intra_context_memory_chunk_weaviate_build(memory, chunk: str, chunk_
             "memory_uuid": memory_uuid, "memory_name": memory.memory_name, "chunk_number": weaviate_chunk_no,
             "chunk_content": weaviate_chunk_igredient, "created_at": weaviate_chunk_created_at
         }
+        logger.info(f"Memory chunk Weaviate object instance created.")
     except Exception as e:
+        logger.error(f"Error creating memory chunk Weaviate object instance: {e}")
         pass
     return weaviate_memory_instance_chunk, error
 
@@ -116,8 +128,10 @@ def factory_embed_document_chunk_synchronized(executor_params, chunk_id, chunk_w
     x = KnowledgeBaseSystemDecoder.get(connection=c_orm)
     c = x.connect_c()
     if not c:
+        logger.error(f"Error connecting to the Weaviate cluster.")
         pass
     pass
+    logger.info(f"Connected to the Weaviate cluster.")
 
     error = None
     try:
@@ -126,6 +140,7 @@ def factory_embed_document_chunk_synchronized(executor_params, chunk_id, chunk_w
         uuid = collection.data.insert(properties=chunk_weaviate_object)
         if not uuid:
             error = "Error inserting the chunk."
+            logger.error(f"Error inserting the chunk.")
             pass
         chunk_orm = KnowledgeBaseDocumentChunk.objects.filter(id=chunk_id).first()
         chunk_orm.chunk_uuid = str(uuid)
@@ -133,7 +148,9 @@ def factory_embed_document_chunk_synchronized(executor_params, chunk_id, chunk_w
         document = chunk_orm.document
         document.document_chunks.add(chunk_orm)
         document.save()
+        logger.info(f"Chunk embedded successfully.")
     except Exception as e:
+        logger.error(f"Error embedding the chunk: {e}")
         pass
     return error
 
@@ -146,8 +163,10 @@ def factory_embed_memory_chunk_synchronized(executor_params, chunk_id, chunk_wea
     x = IntraContextMemoryExecutor(connection=c_orm)
     c = x.connect_c()
     if not c:
+        logger.error(f"Error connecting to the Weaviate cluster.")
         pass
     pass
+    logger.info(f"Connected to the Weaviate cluster.")
 
     error = None
     try:
@@ -156,6 +175,7 @@ def factory_embed_memory_chunk_synchronized(executor_params, chunk_id, chunk_wea
         uuid = collection.data.insert(properties=chunk_weaviate_object)
         if not uuid:
             error = "Error inserting the memory chunk."
+            logger.error(f"Error inserting the memory chunk.")
             pass
         chunk_orm = ContextHistoryMemoryChunk.objects.filter(id=chunk_id).first()
         chunk_orm.chunk_uuid = str(uuid)
@@ -163,7 +183,9 @@ def factory_embed_memory_chunk_synchronized(executor_params, chunk_id, chunk_wea
         memory_object = chunk_orm.memory
         memory_object.memory_chunks.add(chunk_orm)
         memory_object.save()
+        logger.info(f"Memory chunk embedded successfully.")
     except Exception as e:
+        logger.error(f"Error embedding the memory chunk: {e}")
         pass
     return error
 
@@ -183,22 +205,27 @@ def factory_embed_document_chunks_handler(executor_params, chunks: list, path: s
             )
             if error:
                 errors.append(error)
+                logger.error(f"Error creating the chunk ORM object.")
                 continue
             document_weaviate_object, error = factory_chunk_weaviate_build(
                 chunk=ch, path=path, chunk_index=i, document_uuid=document_uuid
             )
             if error:
+                logger.error(f"Error creating the chunk Weaviate object instance.")
                 errors.append(error)
                 continue
             error = factory_embed_document_chunk_synchronized(
                 executor_params=executor_params, chunk_id=ch_id, chunk_weaviate_object=document_weaviate_object
             )
             if error:
+                logger.error(f"Error embedding the chunk.")
                 errors.append(error)
                 continue
         add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.EMBEDDED_CHUNKS)
         add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.SAVED_CHUNKS)
+        logger.info(f"Document chunks embedded successfully.")
     except Exception as e:
+        logger.error(f"Error embedding the chunks: {e}")
         pass
     return errors
 
@@ -216,6 +243,7 @@ def factory_embed_memory_chunks_handler(executor_params, chunks: list, memory_id
                 knowledge_base=c_orm, chunk=ch,  chunk_index=i, memory_id=memory_id, memory_uuid=memory_uuid
             )
             if error:
+                logger.error(f"Error creating the memory chunk ORM object.")
                 errors.append(error)
                 continue
 
@@ -223,14 +251,18 @@ def factory_embed_memory_chunks_handler(executor_params, chunks: list, memory_id
                 memory=memory, chunk=ch, chunk_index=i, memory_uuid=memory_uuid
             )
             if error:
+                logger.error(f"Error creating the memory chunk Weaviate object instance.")
                 errors.append(error)
                 continue
             error = factory_embed_memory_chunk_synchronized(
                 executor_params=executor_params, chunk_id=ch_id, chunk_weaviate_object=chunk_weaviate_object
             )
             if error:
+                logger.error(f"Error embedding the memory chunk.")
                 errors.append(error)
                 continue
+        logger.info(f"Memory chunks embedded successfully.")
     except Exception as e:
+        logger.error(f"Error embedding the chunks: {e}")
         errors.append(f"Error embedding the chunks: {e}")
     return errors

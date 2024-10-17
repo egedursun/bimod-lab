@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: randomize_featured_functions_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,16 +12,17 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from celery import shared_task
 
 from apps.mm_functions.models import CustomFunction
 from apps.mm_functions.utils import NUMBER_OF_RANDOM_FEATURED_FUNCTIONS
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -33,4 +34,5 @@ def randomize_featured_functions():
     featured_functions = CustomFunction.objects.order_by('?')[:NUMBER_OF_RANDOM_FEATURED_FUNCTIONS]
     for function in featured_functions:
         function.is_featured = True
+        logger.info(f"Function: {function.id} is now featured.")
         function.save()

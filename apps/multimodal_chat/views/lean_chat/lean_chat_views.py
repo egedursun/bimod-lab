@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: lean_chat_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 
 import base64
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -33,6 +34,9 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout, TemplateHelper
+
+
+logger = logging.getLogger(__name__)
 
 
 class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
@@ -125,6 +129,7 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
             'chat_id': active_chat.id if active_chat else None, 'chats': chats, 'assistants': lean_agents,
             'active_chat': active_chat})
         redirect_string = self.request.path_info + '?chat_id=' + str(active_chat.id)
+        logger.info(f"LeanMod chat was streamed by User: {context_user.id}.")
         return redirect(redirect_string, *args, **kwargs)
 
     @staticmethod
@@ -137,6 +142,8 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
             audio_full_uri = MediaManager.save_files_and_return_uris([(audio_bytes, 'audio.webm')])[0]
         if audio_full_uri:
             file_full_uris.append(audio_full_uri)
+        logger.info(f"Audio was recorded successfully.")
+        return
 
     @staticmethod
     def _handle_save_files(attached_files):
@@ -145,7 +152,9 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
             file_name = file.name
             try:
                 file_bytes = file.read()
+                logger.info(f"File: {file_name} was read successfully.")
             except Exception as e:
+                logger.error(f"Error while reading file: {file_name}.")
                 continue
             file_bytes_list.append((file_bytes, file_name))
         file_full_uris = MediaManager.save_files_and_return_uris(file_bytes_list)
@@ -157,7 +166,9 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
         for image in attached_images:
             try:
                 image_bytes = image.read()
+                logger.info(f"Image: {image.name} was read successfully.")
             except Exception as e:
+                logger.error(f"Error while reading image: {image.name}.")
                 continue
             image_bytes_list.append(image_bytes)
         image_full_uris = MediaManager.save_images_and_return_uris(image_bytes_list)
@@ -180,7 +191,9 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
             edit_image_bytes_dict['edit_image_mask'] = edit_image_mask_bytes
             edit_image_full_uris_list = MediaManager.save_edit_image_and_masked_image(
                 edit_img_map=edit_image_bytes_dict)
+            logger.info(f"Edit image was saved successfully.")
         except Exception as e:
+            logger.error(f"Error while saving edit image.")
             pass
         return edit_image_full_uris_list
 
@@ -193,6 +206,8 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
             sketch_image_bytes = base64.b64decode(attached_canvas_image.split("base64,")[1].encode())
             sketch_image['sketch_image'] = sketch_image_bytes
             sketch_image_full_uris_list = MediaManager.save_sketch(sketch_data_map=sketch_image)
+            logger.info(f"Sketch image was saved successfully.")
         except Exception as e:
+            logger.error(f"Error while saving sketch image.")
             pass
         return sketch_image_full_uris_list

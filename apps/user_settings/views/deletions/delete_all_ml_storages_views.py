@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_all_ml_storages_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,6 +24,9 @@ from django.views import View
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
 from apps.user_permissions.utils import PermissionNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class SettingsView_DeleteAllMLManagers(View, LoginRequiredMixin):
@@ -36,6 +39,7 @@ class SettingsView_DeleteAllMLManagers(View, LoginRequiredMixin):
         if confirmation_field != 'CONFIRM DELETING ALL ML MODEL STORAGES':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL ML MODEL STORAGES'.")
+            logger.error(f"Invalid confirmation field: {confirmation_field}")
             return redirect('user_settings:settings')
 
         ##############################
@@ -50,6 +54,8 @@ class SettingsView_DeleteAllMLManagers(View, LoginRequiredMixin):
             for ml_model_storage in user_ml_managers:
                 ml_model_storage.delete()
             messages.success(request, "All ML model storages associated with your account have been deleted.")
+            logger.info(f"All ML model storages associated with User: {user.id} have been deleted.")
         except Exception as e:
             messages.error(request, f"Error deleting ML model storages: {e}")
+            logger.error(f"Error deleting ML model storages: {e}")
         return redirect('user_settings:settings')

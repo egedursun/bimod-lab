@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: permission_manager.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,16 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib.auth.models import User
 
 from apps.user_permissions.models import UserPermission
 
+
+logger = logging.getLogger(__name__)
 
 class UserPermissionManager:
     @staticmethod
@@ -27,5 +30,7 @@ class UserPermissionManager:
             user=user
         ).all().values_list('permission_type', flat=True)
         if operation not in user_permissions:
+            logger.warning(f"User: {user.username} is not authorized to perform operation: {operation}")
             return False
+        logger.info(f"User: {user.username} is authorized to perform operation: {operation}")
         return True

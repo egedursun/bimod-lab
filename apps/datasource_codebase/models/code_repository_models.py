@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: code_repository_models.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
 #
-
+import logging
 import os
 
 import boto3
@@ -26,6 +26,8 @@ from slugify import slugify
 
 from apps.core.codebase.codebase_decoder import CodeBaseDecoder
 from config.settings import MEDIA_URL
+
+logger = logging.getLogger(__name__)
 
 
 class CodeBaseRepository(models.Model):
@@ -69,6 +71,7 @@ class CodeBaseRepository(models.Model):
                 class_name=self.knowledge_base.class_name,
                 document_uuid=self.knowledge_base_uuid)
             if not result["status"]:
+                logger.error(f"Error occurred while deleting the document: {result['message']}")
                 pass
 
             document_full_path = self.repository_uri
@@ -80,6 +83,8 @@ class CodeBaseRepository(models.Model):
             if document_full_path is not None:
                 try:
                     boto3_client.delete_object(Bucket=bucket_name, Key=s3_path)
+                    logger.info(f"Document deleted from the S3 bucket: {document_full_path}")
                 except Exception as e:
+                    logger.error(f"Error occurred while deleting the document: {e}")
                     pass
         super().delete(using, keep_parents)

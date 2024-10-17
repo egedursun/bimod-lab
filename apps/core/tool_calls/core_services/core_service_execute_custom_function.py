@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: core_service_execute_custom_function.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,15 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.core.flexible_modalities.custom_function_executor import CustomFunctionExecutor
 from apps.mm_functions.models import CustomFunctionReference
+
+
+logger = logging.getLogger(__name__)
 
 
 def run_execute_custom_code(ref_id, function_input_values: dict):
@@ -27,7 +30,9 @@ def run_execute_custom_code(ref_id, function_input_values: dict):
                                     context_organization=ref.assistant.organization,
                                     context_assistant=ref.assistant)
         output = xc.execute_custom_function(input_data=function_input_values)
+        logger.info(f"Custom function execution output: {output}")
     except Exception as e:
+        logger.error(f"Error occurred while executing the function: {e}")
         error_msg = f"Error occurred while executing the function: {str(e)}"
         return error_msg
     return output

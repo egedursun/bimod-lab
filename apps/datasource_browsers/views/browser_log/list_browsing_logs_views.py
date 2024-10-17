@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_browsing_logs_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +29,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class BrowserView_BrowserLogList(LoginRequiredMixin, TemplateView):
@@ -57,4 +61,5 @@ class BrowserView_BrowserLogList(LoginRequiredMixin, TemplateView):
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         context['search_query'] = search_query
+        logger.info(f"User: {self.request.user} - Browser Connection: {browser_c.name} - Browsing Logs Listed.")
         return context

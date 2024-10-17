@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_auto_topup_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -26,6 +24,9 @@ from django.views.generic import TemplateView
 from apps.llm_transaction.models import AutoBalanceTopUpModel
 from apps.organization.models import Organization
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class Transactions_AutoTopUpCreate(LoginRequiredMixin, TemplateView):
@@ -79,4 +80,5 @@ class Transactions_AutoTopUpCreate(LoginRequiredMixin, TemplateView):
         top_up_model.save()
         org.auto_balance_topup = top_up_model
         org.save()
+        logger.info(f"Auto Top Up Plan created for organization: {org.id}")
         return redirect('llm_transaction:auto_top_up_list')

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_finetunings_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,6 +28,9 @@ from apps.finetuning.utils import FineTuningModelProvidersNames, FineTunedModelT
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class FineTuningView_List(LoginRequiredMixin, TemplateView):
@@ -55,6 +56,7 @@ class FineTuningView_List(LoginRequiredMixin, TemplateView):
         context['organizations'] = orgs
         context['providers'] = FineTuningModelProvidersNames.as_list()
         context['model_types'] = FineTunedModelTypesNames.as_list()
+        logger.info(f"Finetuning Models were listed by User: {self.request.user.id}.")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -66,4 +68,5 @@ class FineTuningView_List(LoginRequiredMixin, TemplateView):
             return redirect('finetuning:list')
         context = self.get_context_data(**kwargs)
         context['form'] = form
+        logger.error(f"Finetuning Model was not added by User: {request.user.id}.")
         return self.render_to_response(context)

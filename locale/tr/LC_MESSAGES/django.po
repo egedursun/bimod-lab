@@ -130,7 +130,7 @@ msgid "by passion and perseverance."
 msgstr "güç alan bir ekip."
 
 msgid "Meet the dedicated team behind"
-msgstr "Br6.in'in arkasındaki özverili ekibi tanıyın."
+msgstr "Bimod.io'in arkasındaki özverili ekibi tanıyın."
 
 msgid "Co-Founder & Chief Executive Officer (CEO)"
 msgstr "Kurucu & Başkan"

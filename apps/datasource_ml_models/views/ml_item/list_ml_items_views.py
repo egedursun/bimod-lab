@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_ml_items_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,6 +28,9 @@ from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSo
 from apps.datasource_ml_models.utils import DELETE_ALL_ML_ITEMS_SPECIFIER
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MLModelView_ItemList(LoginRequiredMixin, TemplateView):
@@ -67,6 +68,7 @@ class MLModelView_ItemList(LoginRequiredMixin, TemplateView):
                 agents_data.append({'assistant': agent, 'ml_model_connections': conns_data})
             conn_by_orgs.append({'organization': org, 'assistants': agents_data})
         context['connections_by_organization'] = conn_by_orgs
+        logger.info(f"ML Model Items were listed.")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -84,8 +86,10 @@ class MLModelView_ItemList(LoginRequiredMixin, TemplateView):
         chosen_insts = [item for item in chosen_insts if item]
         if DELETE_ALL_ML_ITEMS_SPECIFIER in request.POST:
             DataSourceMLModelItem.objects.filter(ml_model_base__id=mgr_id).delete()
+            logger.info(f"All ML models in the selected connection have been deleted.")
             messages.success(request, 'All ML models in the selected connection have been deleted.')
         elif chosen_insts:
             DataSourceMLModelItem.objects.filter(id__in=chosen_insts).delete()
+            logger.info(f"Selected ML models have been deleted.")
             messages.success(request, 'Selected ML models have been deleted.')
         return redirect('datasource_ml_models:item_list')

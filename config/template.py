@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: template.py
 #  Last Modified: 2024-10-05 15:31:31
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,7 +12,7 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 # Template Settings
@@ -57,13 +57,13 @@ TEMPLATE_CONFIG = {
 # Theme Variables
 # ? Personalize template by changing theme variables (For ex: Name, URL Version etc...)
 THEME_VARIABLES = {
-    "creator_name": "Br6.in",
-    "creator_url": "https://www.br6.in/",
-    "template_name": "Br6.in",
-    "template_suffix": "Br6.in - Intelligent Assistant as a Service (AIaaS)",
+    "creator_name": "Bimod.io",
+    "creator_url": "https://www.bimod.io/",
+    "template_name": "Bimod.io",
+    "template_suffix": "Bimod.io - Intelligent Assistant as a Service (AIaaS)",
     "template_version": "2.0.0",
     "template_free": False,
-    "template_description": "Br6.in is an AI-powered AIaaS provider that helps you to build, train, and deploy your own AI assistant in minutes and automate your business processes.",
+    "template_description": "Bimod.io is an AI-powered AIaaS provider that helps you to build, train, and deploy your own AI assistant in minutes and automate your business processes.",
     "template_keyword": "django, django admin, dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5",
     "facebook_url": "https://www.facebook.com/pixinvents/",
     "twitter_url": "https://twitter.com/pixinvents",

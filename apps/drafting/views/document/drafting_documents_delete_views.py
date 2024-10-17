@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: drafting_documents_delete_views.py
 #  Last Modified: 2024-10-14 14:07:17
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,23 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#  Project: Br6.in™
-#  File: drafting_documents_delete_views.py
-#  Last Modified: 2024-10-14 14:03:53
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-14 14:03:54
-#
-#  This software is proprietary and confidential. Unauthorized copying,
-#  distribution, modification, or use of this software, whether for
-#  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD™ Autonomous
-#  Holdings.
-#
-#   For permission inquiries, please contact: admin@br6.in.
-#
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -37,6 +24,9 @@ from django.views import View
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingDocument
 from apps.user_permissions.utils import PermissionNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class DraftingView_DocumentDelete(LoginRequiredMixin, View):
@@ -56,4 +46,5 @@ class DraftingView_DocumentDelete(LoginRequiredMixin, View):
         document_id = self.kwargs['document_id']
         document = get_object_or_404(DraftingDocument, id=document_id)
         document.delete()
+        logger.info(f"Drafting Document {document.document_title} was deleted.")
         return redirect('drafting:documents_list', folder_id=folder_id)

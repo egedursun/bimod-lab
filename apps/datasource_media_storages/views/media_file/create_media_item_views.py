@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_media_item_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MediaView_ItemCreate(LoginRequiredMixin, TemplateView):
@@ -73,8 +74,10 @@ class MediaView_ItemCreate(LoginRequiredMixin, TemplateView):
                     file_bytes=f_data_bytes, description=desc
                 )
                 media_item.save()
+            logger.info(f"[views.create_media_item] Files uploaded successfully.")
             messages.success(request, 'Files uploaded successfully.')
             return redirect('datasource_media_storages:list_items')
         else:
+            logger.error('Please select a media storage and upload files.')
             messages.error(request, 'Please select a media storage and upload files.')
         return redirect('datasource_media_storages:create_item')

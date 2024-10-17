@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_api_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.mm_apis.forms import CustomAPIForm
 from apps.mm_apis.utils import CATEGORIES_OF_CUSTOM_APIS, CUSTOM_API_AUTHENTICATION_TYPES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomAPIView_Create(LoginRequiredMixin, TemplateView):
@@ -75,6 +76,7 @@ class CustomAPIView_Create(LoginRequiredMixin, TemplateView):
                 custom_api.api_picture = request.FILES.get('api_picture')
             custom_api.categories = request.POST.getlist('categories')
             custom_api.save()
+            logger.info(f"Custom API was created by User: {self.request.user.id}.")
             return redirect('mm_apis:list')
         return render(request, self.template_name, {'form': form, 'assistants': Assistant.objects.filter(
             organization__users__in=[request.user])})

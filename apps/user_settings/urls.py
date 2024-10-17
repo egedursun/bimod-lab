@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: urls.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,7 +12,7 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 
@@ -33,13 +33,17 @@ from apps.user_settings.views import SettingsView_UserSettings, SettingsView_Del
     SettingsView_DeleteAllScheduledJobs, \
     SettingsView_DeleteAllTriggeredJobs, SettingsView_DeleteAllCodeRepos, SettingsView_DeleteAllLeanModAssistants, \
     SettingsView_DeleteAllExpertNets, \
-    SettingsView_DeleteAllLeanModChats, SettingsView_ToggleAutoBackups
+    SettingsView_DeleteAllLeanModChats, SettingsView_ToggleAutoBackups, SettingsView_DeleteAllBrainstormingSessions, \
+    SettingsView_DeleteAllDraftingDocuments, SettingsView_DeleteAllDraftingFolders, \
+    SettingsView_DeleteAllHarmoniqAgents, SettingsView_DeleteAllNoSQLDBs, SettingsView_DeleteAllDataBackups, \
+    SettingsView_DeleteAllVideoGeneratorConnections, SettingsView_DeleteAllNoSQLQueries
 
 app_name = "user_settings"
 
 urlpatterns = [
     path('settings/', SettingsView_UserSettings.as_view(template_name="user_settings/settings.html"),
          name='settings'),
+
     path('delete/all/llm_models/', SettingsView_DeleteAllLLMModels.as_view(),
          name='delete_all_llm_models'),
     path('delete/all/assistants/', SettingsView_DeleteAllAssistants.as_view(),
@@ -96,6 +100,23 @@ urlpatterns = [
          name='delete_all_scheduled_jobs'),
     path('delete/all/triggered_jobs/', SettingsView_DeleteAllTriggeredJobs.as_view(),
          name='delete_all_triggered_jobs'),
+    path('delete/all/brainstorming_sessions/', SettingsView_DeleteAllBrainstormingSessions.as_view(),
+            name='delete_all_brainstorming_sessions'),
+    path('delete/all/drafting_documents/', SettingsView_DeleteAllDraftingDocuments.as_view(),
+            name='delete_all_drafting_documents'),
+    path('delete/all/drafting_folders/', SettingsView_DeleteAllDraftingFolders.as_view(),
+            name='delete_all_drafting_folders'),
+    path('delete/all/harmoniq_agents/', SettingsView_DeleteAllHarmoniqAgents.as_view(),
+            name='delete_all_harmoniq_agents'),
+    path('delete/all/nosql_databases/', SettingsView_DeleteAllNoSQLDBs.as_view(),
+            name='delete_all_nosql_databases'),
+    path('delete/all/data_backups/', SettingsView_DeleteAllDataBackups.as_view(),
+            name='delete_all_data_backups'),
+    path('delete/all/video_generator_connections/', SettingsView_DeleteAllVideoGeneratorConnections.as_view(),
+            name='delete_all_video_generator_connections'),
+    path('delete/all/nosql_queries/', SettingsView_DeleteAllNoSQLQueries.as_view(),
+            name='delete_all_nosql_queries'),
+
     path('auto_backups/toggle/', SettingsView_ToggleAutoBackups.as_view(),
          name='toggle_automated_backups'),
 ]

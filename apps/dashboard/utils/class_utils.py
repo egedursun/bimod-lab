@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: class_utils.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.utils import timezone
 
@@ -37,6 +38,9 @@ from apps.llm_transaction.models import LLMTransaction
 from apps.mm_scheduled_jobs.models import ScheduledJob
 from apps.mm_triggered_jobs.models import TriggeredJob
 from apps.organization.models import Organization
+
+
+logger = logging.getLogger(__name__)
 
 
 class TransactionStatisticsManager:
@@ -74,6 +78,7 @@ class TransactionStatisticsManager:
             "ml": {},
         }
         self._calculate()
+        logger.info(f"Transaction statistics calculated for User: {self.user.id}")
 
     def _calculate(self):
         self._calculate__costs()
@@ -87,6 +92,7 @@ class TransactionStatisticsManager:
         self._calculate__modalities()
         self._calculate__tasks()
         self._calculate__users()
+        logger.info(f"Transaction statistics calculated for User: {self.user.id}")
 
     def _calculate__users(self):
         self.total_users_per_organizations()

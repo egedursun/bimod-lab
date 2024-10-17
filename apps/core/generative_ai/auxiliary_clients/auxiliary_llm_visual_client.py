@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: auxiliary_llm_visual_client.py
 #  Last Modified: 2024-10-09 01:02:34
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 import requests
 from openai import OpenAI
@@ -24,6 +25,9 @@ from apps.core.generative_ai.utils import DEFAULT_IMAGE_GENERATION_MODEL, Defaul
     DefaultImageQualityChoices, DEFAULT_IMAGE_GENERATION_N, DEFAULT_IMAGE_MODIFICATION_MODEL, \
     DEFAULT_IMAGE_MODIFICATION_N, DEFAULT_IMAGE_VARIATION_MODEL, DEFAULT_IMAGE_VARIATION_N
 from apps.core.generative_ai.utils import DefaultImageResolutionChoicesNames, DefaultImageQualityChoicesNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class AuxiliaryLLMVisualClient:
@@ -58,8 +62,10 @@ class AuxiliaryLLMVisualClient:
             image_url = gen_img_output.data[0].url
             final_output["success"] = True
             final_output["image_url"] = image_url
+            logger.info(f"Generated image at: {image_url}")
             return final_output
         except Exception as e:
+            logger.error(f"Failed to generate image: {str(e)}")
             final_output["message"] = get_image_generation_error_log(error_logs=str(e))
             return final_output
 
@@ -87,8 +93,10 @@ class AuxiliaryLLMVisualClient:
             img_url = llm_output.data[0].url
             final_output["success"] = True
             final_output["image_url"] = img_url
+            logger.info(f"Edited image at: {img_url}")
             return final_output
         except Exception as e:
+            logger.error(f"Failed to edit image: {str(e)}")
             final_output["message"] = get_image_modification_error_log(error_logs=str(e))
             return final_output
 
@@ -112,7 +120,9 @@ class AuxiliaryLLMVisualClient:
             img_url = output.data[0].url
             final_output["success"] = True
             final_output["image_url"] = img_url
+            logger.info(f"Dreamed image at: {img_url}")
         except Exception as e:
+            logger.error(f"Failed to dream image: {str(e)}")
             final_output["message"] = get_image_variation_error_log(error_logs=str(e))
             return final_output
         return final_output

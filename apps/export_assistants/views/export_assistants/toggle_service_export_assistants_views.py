@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: toggle_service_export_assistants_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
-#
-#
-#
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import importlib
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,6 +28,9 @@ from apps.export_assistants.models import ExportAssistantAPI
 from apps.user_permissions.utils import PermissionNames
 from config import settings
 from config.settings import EXPORT_API_BASE_URL
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExportAssistantView_ToggleService(LoginRequiredMixin, View):
@@ -54,6 +55,7 @@ class ExportAssistantView_ToggleService(LoginRequiredMixin, View):
         if exp_agent.is_online:
             if not any(endpoint in str(url) for url in api_urls):
                 start_endpoint_for_assistant(exp_agent)
+        logger.info(f"Export Assistant was toggled by User: {context_user.id}.")
         return redirect('export_assistants:list')
 
     def get(self, request, *args, **kwargs):

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: document_deleter.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,15 +12,19 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
+import logging
 
 from weaviate.classes.query import Filter
 
+logger = logging.getLogger(__name__)
+
 
 def delete_document_helper(executor, class_name: str, document_uuid):
+    logger.info(f"Deleting document: {document_uuid}")
     c = executor.connect_c()
     output = {"status": True, "error": ""}
     try:
@@ -30,8 +34,9 @@ def delete_document_helper(executor, class_name: str, document_uuid):
         _ = c.collections.get(f"{class_name}Chunks").data.delete_many(
             where=Filter.by_property("document_uuid").equal(document_uuid)
         )
-        print(f"[document_deleter.delete_document_helper] Deleted document: {document_uuid}")
+        logger.info(f"Deleted document: {document_uuid}")
     except Exception as e:
+        logger.error(f"Error deleting document: {e}")
         output["status"] = False
         output["error"] = f"[document_deleter.delete_document_helper] Error deleting document: {e}"
     return output
@@ -48,8 +53,9 @@ def delete_chat_history_document_helper(executor, class_name: str, document_uuid
             where=Filter.by_property("document_uuid").equal(document_uuid)
         )
     except Exception as e:
+        logger.error(f"Error deleting chat history document: {e}")
         output["status"] = False
         output[
             "error"] = f"[document_deleter.delete_chat_history_document_helper] Error deleting chat history document: {e}"
-    print(f"[document_deleter.delete_chat_history_document_helper] Deleted chat history document: {document_uuid}")
+    logger.info(f"Deleted chat history document: {document_uuid}")
     return output

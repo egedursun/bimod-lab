@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-05 02:26:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,15 +12,19 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.datasource_sql.models import SQLDatabaseConnection
 from apps.datasource_sql.utils import DBMSChoicesNames
 
 
+logger = logging.getLogger(__name__)
+
+
 def before_execute_sql_query(connection: SQLDatabaseConnection):
+    logger.info(f"Retrieving schema for connection: {connection.name}")
     old_schema_json = connection.schema_data_json
     new_schema = {}
     if connection.dbms_type == DBMSChoicesNames.POSTGRESQL:
@@ -33,4 +37,5 @@ def before_execute_sql_query(connection: SQLDatabaseConnection):
 
 
 def can_write_to_database(connection: SQLDatabaseConnection):
+    logger.info(f"Checking if the connection is read-only: {connection.name}")
     return not connection.is_read_only

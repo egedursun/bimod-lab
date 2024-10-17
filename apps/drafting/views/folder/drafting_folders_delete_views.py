@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: drafting_folders_delete_views.py
 #  Last Modified: 2024-10-14 18:45:45
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingFolder
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class DraftingView_FolderDelete(LoginRequiredMixin, TemplateView):
@@ -48,4 +51,5 @@ class DraftingView_FolderDelete(LoginRequiredMixin, TemplateView):
         folder_id = self.kwargs['folder_id']
         folder = get_object_or_404(DraftingFolder, id=folder_id)
         folder.delete()
+        logger.info(f"Drafting Folder was deleted by User: {request.user.id}.")
         return redirect('drafting:folders_list')

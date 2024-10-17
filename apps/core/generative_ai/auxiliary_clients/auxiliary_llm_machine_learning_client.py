@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: auxiliary_llm_machine_learning_client.py
 #  Last Modified: 2024-10-09 01:09:22
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 import requests
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
@@ -32,6 +34,9 @@ from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
 
+logger = logging.getLogger(__name__)
+
+
 class AuxiliaryLLMMachineLearningClient:
 
     def __init__(self, assistant, chat_object):
@@ -48,21 +53,28 @@ class AuxiliaryLLMMachineLearningClient:
         try:
             model = requests.get(ml_model_path)
             deployed_model_bytes = model.content
+            logger.info(f"Retrieved model content from: {ml_model_path}")
         except FileNotFoundError:
+            logger.error(f"Model not found at: {ml_model_path}")
             return ML_MODEL_NOT_FOUND_ERROR_LOG, [], []
         except Exception as e:
+            logger.error(f"Error loading model from: {ml_model_path}")
             return ML_MODEL_LOADING_ERROR_LOG, [], []
 
         f_data = []
         for pth in input_data_urls:
             if not pth:
+                logger.error("Empty object path.")
                 return EMPTY_OBJECT_PATH_LOG, [], []
             try:
                 f = requests.get(pth)
                 f_data.append(f.content)
+                logger.info(f"Retrieved file content from: {pth}")
             except FileNotFoundError:
+                logger.error(f"File not found at: {pth}")
                 continue
             except Exception as e:
+                logger.error(f"Failed to retrieve file content from: {pth}")
                 continue
 
         f_data.append(deployed_model_bytes)
@@ -71,8 +83,10 @@ class AuxiliaryLLMMachineLearningClient:
             try:
                 f = c.files.create(purpose="assistants", file=data)
                 f_objs.append(f)
+                logger.info(f"Created file object for file content.")
             except Exception as e:
                 if i == len(f_data) - 1:
+                    logger.error(f"Failed to create file object for model content.")
                     return ML_MODEL_OPENAI_UPLOAD_ERROR_LOG, [], []
                 continue
 
@@ -84,7 +98,9 @@ class AuxiliaryLLMMachineLearningClient:
                 tool_resources={"code_interpreter": {"file_ids": [x.id for x in f_objs]}},
                 temperature=interpretation_temperature,
             )
+            logger.info(f"Created new assistant for ML model prediction.")
         except Exception as e:
+            logger.error(f"Failed to create new assistant for ML model prediction.")
             return ML_MODEL_AGENT_PREPARATION_ERROR_LOG, [], []
 
         try:
@@ -94,12 +110,16 @@ class AuxiliaryLLMMachineLearningClient:
                     "content": (query_string + GENERIC_AFFIRMATION_PROMPT + MACHINE_LEARNING_AFFIRMATION_PROMPT)
                 }
             ])
+            logger.info(f"Created new thread for ML model prediction.")
         except Exception as e:
+            logger.error(f"Failed to create new thread for ML model prediction.")
             return ML_MODEL_THREAD_CREATION_ERROR_LOG, [], []
 
         try:
             run = c.beta.threads.runs.create_and_poll(thread_id=thread.id, assistant_id=agent.id)
+            logger.info(f"Created new run for ML model prediction.")
         except Exception as e:
+            logger.error(f"Failed to create new run for ML model prediction.")
             return ML_MODEL_RESPONSE_RETRIEVAL_ERROR_LOG, [], []
 
         txts, img_http_ids, f_http_ids = [], [], []
@@ -122,21 +142,28 @@ class AuxiliaryLLMMachineLearningClient:
         else:
             if run.status == AgentRunConditions.FAILED:
                 msgs = get_ml_prediction_status_log(status=AgentRunConditions.FAILED)
+                logger.error(f"ML model prediction failed.")
             elif run.status == AgentRunConditions.INCOMPLETE:
                 msgs = get_ml_prediction_status_log(status=AgentRunConditions.INCOMPLETE)
+                logger.error(f"ML model prediction incomplete.")
             elif run.status == AgentRunConditions.EXPIRED:
                 msgs = get_ml_prediction_status_log(status=AgentRunConditions.EXPIRED)
+                logger.error(f"ML model prediction expired.")
             elif run.status == AgentRunConditions.CANCELLED:
                 msgs = get_ml_prediction_status_log(status=AgentRunConditions.CANCELLED)
+                logger.error(f"ML model prediction cancelled.")
             else:
                 msgs = get_ml_prediction_status_log(status="unknown")
+                logger.error(f"ML model prediction status unknown.")
 
         fs_http = []
         for f_id, remote in f_http_ids:
             try:
                 data_bytes = c.files.content(f_id).read()
                 fs_http.append((data_bytes, remote))
+                logger.info(f"Retrieved file content from: {remote}")
             except Exception as e:
+                logger.error(f"Failed to retrieve file content from: {remote}")
                 continue
 
         imgs_http = []
@@ -144,18 +171,23 @@ class AuxiliaryLLMMachineLearningClient:
             try:
                 data_bytes = c.files.content(image_id).read()
                 imgs_http.append(data_bytes)
+                logger.info(f"Retrieved image content.")
             except Exception as e:
+                logger.error(f"Failed to retrieve image content.")
                 continue
 
         try:
             for f in f_objs:
                 try:
                     c.files.delete(f.id)
+                    logger.info(f"Deleted file object.")
                 except Exception as e:
+                    logger.error(f"Failed to delete file object.")
                     continue
             c.beta.threads.delete(thread.id)
             c.beta.assistants.delete(agent.id)
         except Exception as e:
+            logger.error(f"Failed to cleanup the ML model prediction.")
             return ML_MODEL_CLEANUP_ERROR_LOG, [], []
 
         LLMTransaction.objects.create(
@@ -164,4 +196,5 @@ class AuxiliaryLLMMachineLearningClient:
             transaction_context_content=txts, llm_cost=0, internal_service_cost=0, tax_cost=0,
             total_cost=0, total_billable_cost=0, transaction_type=ChatRoles.ASSISTANT,
             transaction_source=LLMTransactionSourcesTypesNames.GENERATION)
+        logger.info(f"Created new LLM transaction for ML model prediction.")
         return txts, fs_http, imgs_http

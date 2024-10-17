@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: knowledge_base_executor.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 import weaviate
 import weaviate.classes as wvc
@@ -30,6 +30,9 @@ from apps.datasource_knowledge_base.tasks import split_document_into_chunks, emb
     embed_document_chunks, index_document_helper
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class WeaviateExecutor:
@@ -49,14 +52,18 @@ class WeaviateExecutor:
                         init=WEAVIATE_INITIALIZATION_TIMEOUT, query=WEAVIATE_QUERY_TIMEOUT,
                         insert=WEAVIATE_INSERT_TIMEOUT)))
             self.client = c
+            logger.info(f"Connected to Weaviate successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while connecting to Weaviate: {e}")
             return self.client
         return self.client
 
     def close_c(self):
         try:
             self.client.close()
+            logger.info(f"Closed the Weaviate connection successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while closing the Weaviate connection: {e}")
             pass
         return
 
@@ -65,7 +72,9 @@ class WeaviateExecutor:
             c = self.connect_c()
             schema = c.collections.list_all()
             self.close_c()
+            logger.info(f"Retrieved schema: {schema}")
         except Exception as e:
+            logger.error(f"Error occurred while retrieving schema: {e}")
             return None
         return schema
 
@@ -73,16 +82,20 @@ class WeaviateExecutor:
     def decode_vectorizer(vectorizer_name):
         from apps.assistants.utils import EmbeddingManagersNames
         if vectorizer_name == EmbeddingManagersNames.TEXT2VEC_OPENAI:
+            logger.info(f"Vectorizer is set to: {vectorizer_name}")
             return wvc.config.Configure.Vectorizer.text2vec_openai()
         else:
+            logger.info(f"Vectorizer is set to: {vectorizer_name}")
             return wvc.config.Configure.Vectorizer.text2vec_openai()
 
     def create_weaviate_classes(self):
         try:
             _ = self.connect_c()
             data = create_weaviate_classes_handler(executor=self)
+            logger.info(f"Created Weaviate classes successfully.")
             self.close_c()
         except Exception as e:
+            logger.error(f"Error occurred while creating Weaviate classes: {e}")
             return None
         return data
 
@@ -91,32 +104,40 @@ class WeaviateExecutor:
             _ = self.connect_c()
             data = delete_weaviate_class_handler(executor=self, class_name=class_name)
             self.close_c()
+            logger.info(f"Deleted Weaviate classes successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while deleting Weaviate classes: {e}")
             return None
         return data
 
     def delete_weaviate_document(self, class_name: str, document_uuid: str):
         try:
             _ = self.connect_c()
+            logger.info(f"Deleting document: {document_uuid}")
             data = delete_document_helper(executor=self, class_name=class_name, document_uuid=document_uuid)
             self.close_c()
         except Exception as e:
+            logger.error(f"Error occurred while deleting document: {e}")
             return None
         return data
 
     def index_documents(self, document_paths: list | str):
         try:
             _ = self.connect_c()
+            logger.info(f"Indexing documents: {document_paths}")
             index_document_helper.delay(connection_id=self.connection_object.id, document_paths=document_paths)
             self.close_c()
         except Exception as e:
+            logger.error(f"Error occurred while indexing documents: {e}")
             return None
         return
 
     def chunk_document(self, connection_id, document: dict):
         try:
+            logger.info(f"Chunking document: {document}")
             ch = split_document_into_chunks(connection_id, document)
         except Exception as e:
+            logger.error(f"Error occurred while chunking document: {e}")
             return None
         return ch
 
@@ -131,7 +152,9 @@ class WeaviateExecutor:
         try:
             doc_id, doc_uuid, error = embed_document_data(executor_params=executor_params, document=document,
                                                           path=path, number_of_chunks=number_of_chunks)
+            logger.info(f"Embedded document successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while embedding document: {e}")
             return None, None, None
         return doc_id, doc_uuid, error
 
@@ -146,7 +169,9 @@ class WeaviateExecutor:
         try:
             errors = embed_document_chunks(executor_params=executor_params, chunks=chunks, path=path,
                                            document_id=document_id, document_uuid=document_uuid)
+            logger.info(f"Embedded document chunks successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while embedding document chunks: {e}")
             return
         return errors
 
@@ -185,6 +210,8 @@ class WeaviateExecutor:
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.KNOWLEDGE_BASE_SEARCH, is_tool_cost=True)
             tx.save()
+            logger.info(f"Transaction saved successfully.")
         except Exception as e:
+            logger.error(f"Error occurred while saving transaction: {e}")
             return None
         return docs

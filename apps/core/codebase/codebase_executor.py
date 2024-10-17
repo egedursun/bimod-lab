@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: codebase_executor.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
-
+import logging
 import os
 from uuid import uuid4
 
@@ -35,6 +34,9 @@ from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
 
+logger = logging.getLogger(__name__)
+
+
 class WeaviateExecutor:
 
     def __init__(self, connection):
@@ -50,15 +52,19 @@ class WeaviateExecutor:
                 additional_config=AdditionalConfig(
                     timeout=Timeout(init=WEAVIATE_INITIALIZATION_TIMEOUT, query=WEAVIATE_QUERY_TIMEOUT,
                                     insert=WEAVIATE_INSERT_TIMEOUT)))
+            logger.info(f"[WeaviateExecutor.connect_c] Connected to Weaviate cluster: {self.connection_object.host_url}")
             self.client = c
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.connect_c] Error connecting to Weaviate cluster: {e}")
             return self.client
         return self.client
 
     def close_c(self):
         try:
+            logger.info(f"[WeaviateExecutor.close_c] Closing Weaviate connection")
             self.client.close()
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.close_c] Error closing Weaviate connection: {e}")
             pass
         return
 
@@ -66,8 +72,10 @@ class WeaviateExecutor:
         try:
             c = self.connect_c()
             schema = c.collections.list_all()
+            logger.info(f"[WeaviateExecutor.retrieve_schema] Retrieved Weaviate schema")
             self.close_c()
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.retrieve_schema] Error retrieving Weaviate schema: {e}")
             return None
         return schema
 
@@ -75,43 +83,53 @@ class WeaviateExecutor:
     def decode_vectorizer(vectorizer_name):
         from apps.assistants.utils import EmbeddingManagersNames
         if vectorizer_name == EmbeddingManagersNames.TEXT2VEC_OPENAI:
+            logger.info(f"[WeaviateExecutor.decode_vectorizer] Decoding vectorizer: {vectorizer_name}")
             return wvc.config.Configure.Vectorizer.text2vec_openai()
         else:
+            logger.info(f"[WeaviateExecutor.decode_vectorizer] Decoding vectorizer: {vectorizer_name}")
             return wvc.config.Configure.Vectorizer.text2vec_openai()
 
     def create_weaviate_classes(self):
         try:
             _ = self.connect_c()
             output = create_classes_helper(executor=self)
+            logger.info(f"[WeaviateExecutor.create_weaviate_classes] Created Weaviate classes")
             self.close_c()
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.create_weaviate_classes] Error creating Weaviate classes: {e}")
             return None
         return output
 
     def delete_weaviate_classes(self, class_name: str):
         try:
             _ = self.connect_c()
+            logger.info(f"[WeaviateExecutor.delete_weaviate_classes] Deleting Weaviate class: {class_name}")
             output = delete_weaviate_class_helper(executor=self, class_name=class_name)
             self.close_c()
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.delete_weaviate_classes] Error deleting Weaviate class: {e}")
             return None
         return output
 
     def delete_weaviate_repository(self, class_name: str, document_uuid: str):
         try:
             _ = self.connect_c()
+            logger.info(f"[WeaviateExecutor.delete_weaviate_repository] Deleting Weaviate repository: {document_uuid}")
             output = delete_repository_helper(executor=self, class_name=class_name, document_uuid=document_uuid)
             self.close_c()
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.delete_weaviate_repository] Error deleting Weaviate repository: {e}")
             return None
         return output
 
     def index_repositories(self, document_paths: list | str):
         try:
             _ = self.connect_c()
+            logger.info(f"[WeaviateExecutor.index_repositories] Indexing repositories: {document_paths}")
             index_repository_helper.delay(connection_id=self.connection_object.id, document_paths=document_paths)
             self.close_c()
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.index_repositories] Error indexing repositories: {e}")
             return None
         return
 
@@ -120,21 +138,27 @@ class WeaviateExecutor:
         formatted_content = ""
         cloned_repository_path = self._clone_repository(repository_url=file_path)
         if not cloned_repository_path:
+            logger.error(f"[WeaviateExecutor.repository_loader] Error cloning repository: {file_path}")
             return None
         try:
             for root, dirs, files in os.walk(cloned_repository_path):
                 for file in files:
                     file_path = os.path.join(root, file)
                     if not self.is_supported_file(file_path):
+                        logger.info(f"[WeaviateExecutor.repository_loader] Skipping unsupported file: {file_path}")
                         continue
                     content_lines = self.extract_file_content_and_metadata(file_path)
                     if not content_lines:
+                        logger.error(f"[WeaviateExecutor.repository_loader] Error extracting file content: {file_path}")
                         continue
                     formatted_content += self.assign_line_numbers_and_filename_to_line(str(file_path), content_lines)
                     formatted_content += "\n"
+                    logger.info(f"[WeaviateExecutor.repository_loader] Loaded file: {file_path}")
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.repository_loader] Error loading repository: {file_path}")
             return None
         result["page_content"] = formatted_content
+        logger.info(f"[WeaviateExecutor.repository_loader] Loaded repository: {file_path}")
         return result
 
     @staticmethod
@@ -143,7 +167,9 @@ class WeaviateExecutor:
         assigned_path = f"/tmp/{uuid_str}"
         try:
             os.system(f"git clone {repository_url} {assigned_path}")
+            logger.info(f"[WeaviateExecutor._clone_repository] Cloned repository: {repository_url}")
         except Exception as e:
+            logger.error(f"[WeaviateExecutor._clone_repository] Error cloning repository: {repository_url}")
             return None
         return assigned_path
 
@@ -153,7 +179,9 @@ class WeaviateExecutor:
         supported_files = SupportedCodeFileTypes.as_list()
         file_extension = "." + file_path.split(".")[-1]
         if file_extension in supported_files:
+            logger.info(f"[WeaviateExecutor.is_supported_file] Supported file: {file_path}")
             return True
+        logger.info(f"[WeaviateExecutor.is_supported_file] Unsupported file: {file_path}")
         return False
 
     @staticmethod
@@ -163,6 +191,7 @@ class WeaviateExecutor:
             with open(file_path, "r") as f:
                 content = f.readlines()
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.extract_file_content_and_metadata] Error extracting file content: {file_path}")
             pass
         return content
 
@@ -173,13 +202,19 @@ class WeaviateExecutor:
             for i, line in enumerate(content):
                 accumulated_content += f"[File Path: {file_path}] | [Line Number: {i}] --- {line}"
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.assign_line_numbers_and_filename_to_line] Error assigning line numbers "
+                         f"and filename to line: {file_path}")
             return accumulated_content
+        logger.info(f"[WeaviateExecutor.assign_line_numbers_and_filename_to_line] Assigned line numbers and "
+                    f"filename to line: {file_path}")
         return accumulated_content
 
     def chunk_repository(self, connection_id, document: dict):
         try:
             chunks = split_repository_into_chunks(connection_id, document)
+            logger.info(f"[WeaviateExecutor.chunk_repository] Chunked the repository")
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.chunk_repository] Error chunking the repository: {e}")
             return None
         return chunks
 
@@ -191,7 +226,9 @@ class WeaviateExecutor:
             doc_id, doc_uuid, error = embed_repository_data(executor_params=executor_params, document=document,
                                                             path=path,
                                                             number_of_chunks=number_of_chunks)
+            logger.info(f"[WeaviateExecutor.embed_repository] Embedded the repository")
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.embed_repository] Error embedding the repository: {e}")
             return None, None, None
         return doc_id, doc_uuid, error
 
@@ -206,7 +243,9 @@ class WeaviateExecutor:
         try:
             errors = embed_repository_chunks(executor_params=executor_params, chunks=chunks, path=path,
                                              document_id=document_id, document_uuid=document_uuid)
+            logger.info(f"[WeaviateExecutor.embed_repository_chunks] Embedded the repository chunks")
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.embed_repository_chunks] Error embedding the repository chunks: {e}")
             return
         return errors
 
@@ -223,6 +262,7 @@ class WeaviateExecutor:
         for o in response.objects:
             cleaned_object = {}
             if not o.properties:
+                logger.info(f"[WeaviateExecutor.search_hybrid] Skipping empty object")
                 continue
             for k, v in o.properties.items():
                 if k in ["chunk_repository_file_name", "chunk_content", "chunk_number", "created_at"]:
@@ -237,6 +277,8 @@ class WeaviateExecutor:
                 llm_cost=InternalServiceCosts.CodeBaseExecutor.COST, transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.CODE_BASE_SEARCH, is_tool_cost=True)
             tx.save()
+            logger.info(f"[WeaviateExecutor.search_hybrid] Saved LLM Transaction: {tx.id}")
         except Exception as e:
+            logger.error(f"[WeaviateExecutor.search_hybrid] Error saving LLM Transaction: {e}")
             return None
         return cleaned_documents

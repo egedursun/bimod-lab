@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: manage_backups_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,6 +31,8 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 from apps.data_backups.utils import BACKUP_TYPES, BackupTypesNames
 
+
+logger = logging.getLogger(__name__)
 
 class DataBackupView_BackupManage(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
@@ -95,9 +98,12 @@ class DataBackupView_BackupManage(LoginRequiredMixin, TemplateView):
                 e = "Invalid backup model selected."
                 messages.error(request, e)
             if e is None:
+                logger.info(f"User: {request.user} - Backup created successfully.")
                 messages.success(request, "Backup created successfully!")
             else:
+                logger.error(f"User: {request.user} - Backup creation failed. Error: {e}")
                 messages.error(request, "An error occurred while creating the backup.")
         else:
+            logger.error("User: {request.user} - Backup creation failed.")
             messages.error(request, "Please provide all the required fields.")
         return redirect('data_backups:manage')

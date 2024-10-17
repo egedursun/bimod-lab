@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: core_service_execute_custom_script.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,15 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.core.flexible_modalities.custom_script_executor import CustomScriptsContentRetriever
 from apps.mm_scripts.models import CustomScriptReference
+
+
+logger = logging.getLogger(__name__)
 
 
 def run_execute_custom_script(ref_id):
@@ -26,7 +29,9 @@ def run_execute_custom_script(ref_id):
         xc = CustomScriptsContentRetriever(script=ref.custom_script, context_organization=ref.assistant.organization,
                                            context_assistant=ref.assistant)
         output = xc.retrieve_custom_script_content()
+        logger.info(f"Custom script execution output: {output}")
     except Exception as e:
+        logger.error(f"Error occurred while retrieving the script content: {e}")
         error_msg = f"Error occurred while retrieving the script content: {str(e)}"
         return error_msg
     return output

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: mm_scripts_content_retriever.py
 #  Last Modified: 2024-10-05 02:26:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,16 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomScriptsContentRetriever:
@@ -42,4 +46,5 @@ class CustomScriptsContentRetriever:
             if self.script.is_public else LLMTransactionSourcesTypesNames.INTERNAL_SCRIPT_RETRIEVAL, is_tool_cost=True)
         tx.save()
         response = script_content if script_content else "[The script content is empty.]"
+        logger.info(f"Retrieved custom script content: {script.name}")
         return response

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_nosql_database_views.py
 #  Last Modified: 2024-10-12 13:21:35
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +28,9 @@ from apps.datasource_nosql.models import NoSQLDatabaseConnection
 from apps.datasource_nosql.utils import NOSQL_DATABASE_CHOICES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class NoSQLDatabaseView_ManagerUpdate(TemplateView, LoginRequiredMixin):
@@ -58,9 +61,11 @@ class NoSQLDatabaseView_ManagerUpdate(TemplateView, LoginRequiredMixin):
         form = NoSQLDatabaseConnectionForm(request.POST, instance=conn)
         if form.is_valid():
             form.save()
+            logger.info(f"NoSQL Data Source updated: {conn}")
             messages.success(request, "NoSQL Data Source updated successfully.")
             return redirect('datasource_nosql:list')
         else:
+            logger.error("Error updating NoSQL Data Source: " + str(form.errors))
             messages.error(request, "Error updating NoSQL Data Source: " + str(form.errors))
             context = self.get_context_data(**kwargs)
             context['form'] = form

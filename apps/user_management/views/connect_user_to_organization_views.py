@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: connect_user_to_organization_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +26,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class UserManagementView_ConnectUser(LoginRequiredMixin, TemplateView):
@@ -59,11 +60,15 @@ class UserManagementView_ConnectUser(LoginRequiredMixin, TemplateView):
                 messages.error(request, 'User is already a member of this organization.')
             else:
                 org.users.add(user)
+                logger.info(f"User: {user.id} was added to Organization: {org.id} by User: {context_user.id}.")
                 messages.success(request, 'User added to organization successfully!')
         except User.DoesNotExist:
+            logger.error(f"User does not exist. User ID: {user}")
             messages.error(request, 'User does not exist.')
         except Organization.DoesNotExist:
+            logger.error(f"Organization does not exist. Organization ID: {org_id}")
             messages.error(request, 'Organization does not exist.')
         except Exception as e:
+            logger.error(f"Error adding user to organization: {str(e)}")
             messages.error(request, f'Error adding user to organization: {str(e)}')
         return redirect('user_management:add_user_to_organization')

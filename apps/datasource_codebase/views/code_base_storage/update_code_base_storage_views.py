@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_code_base_storage_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,6 +28,9 @@ from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 from apps.datasource_codebase.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CodeBaseView_StorageUpdate(LoginRequiredMixin, TemplateView):
@@ -62,9 +63,11 @@ class CodeBaseView_StorageUpdate(LoginRequiredMixin, TemplateView):
         form = CodeRepositoryStorageForm(request.POST, instance=vector_store)
         if form.is_valid():
             form.save()
+            logger.info(f"[CodeBaseView_StorageUpdate] Code Repository Storage updated: {vector_store}")
             messages.success(request, "Code Base Storage updated successfully.")
             return redirect('datasource_codebase:list')
         else:
+            logger.error(f"[CodeBaseView_StorageUpdate] Error updating Code Base Storage. Please check the form for errors.")
             messages.error(request, "Error updating Code Base Storage. Please check the form for errors.")
             context = self.get_context_data(**kwargs)
             context['form'] = form

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_ml_storage_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_ml_models.forms import DataSourceMLModelConnectionForm
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MLModelView_ManagerCreate(LoginRequiredMixin, TemplateView):
@@ -51,9 +52,11 @@ class MLModelView_ManagerCreate(LoginRequiredMixin, TemplateView):
             conn = form.save(commit=False)
             conn.created_by_user = request.user
             conn.save()
+            logger.info(f"ML Model Connection created: {conn}")
             messages.success(request, 'ML Model Connection created successfully.')
             return redirect('datasource_ml_models:list')
         else:
+            logger.error('There was an error creating the ML Model Connection.')
             messages.error(request, 'There was an error creating the ML Model Connection.')
             context = self.get_context_data()
             context['form'] = form

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: orchestration_tool_manager.py
 #  Last Modified: 2024-10-05 02:25:59
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 
 import json
+import logging
 
 from apps.core.orchestration.utils import get_orchestration_json_decode_error_log, \
     validate_orchestration_main_tool_json, get_no_orchestration_tool_found_error_log
@@ -26,6 +27,9 @@ from apps.core.orchestration.validators.validate_orchestration_assistant_call im
 from apps.core.tool_calls.utils import ToolCallDescriptorNames
 from apps.orchestrations.models import Maestro, OrchestrationQuery
 from config.settings import MEDIA_URL
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrchestrationToolManager:
@@ -42,7 +46,9 @@ class OrchestrationToolManager:
                 self.tool_usage_json = self.tool_usage_json_str
             else:
                 self.tool_usage_json = json.loads(self.tool_usage_json_str)
+            logger.info(f"[OrchestrationToolManager.use_tool] The tool usage JSON is loaded successfully.")
         except Exception as e:
+            logger.error(f"[OrchestrationToolManager.use_tool] An error occurred while loading the tool usage JSON:", e)
             return get_orchestration_json_decode_error_log(error_logs=str(e)), None, None, None, None
 
         file_uris, image_uris = [], []
@@ -62,7 +68,10 @@ class OrchestrationToolManager:
         if tool_name == ToolCallDescriptorNames.EXECUTE_ORCHESTRATION_WORKER_CONSULTANCY:
             error = validate_orchestration_worker_assistant_call_execution_tool_json(
                 tool_usage_json=self.tool_usage_json)
-            if error: return error, None, None, None, None
+            if error:
+                logger.error(f"[OrchestrationToolManager.use_tool] An error occurred while validating the worker "
+                             f"assistant call execution tool JSON: {error}")
+                return error, None, None, None, None
             worker_assistant_id = self.tool_usage_json.get("parameters").get("assistant_id")
             query_text = self.tool_usage_json.get("parameters").get("query")
             file_urls = self.tool_usage_json.get("parameters").get("file_urls")
@@ -75,6 +84,7 @@ class OrchestrationToolManager:
 
         # TOOLS: NO TOOL SPECIFIED
         else:
+            logger.error(f"[OrchestrationToolManager.use_tool] No orchestration tool found with the name: {tool_name}")
             return get_no_orchestration_tool_found_error_log(
                 query_name=tool_name), tool_name, agent_id, file_uris, image_uris
         ##################################################
@@ -91,4 +101,5 @@ class OrchestrationToolManager:
                 if not uri.startswith("http"):
                     uri = f"{MEDIA_URL}{uri}"
                 image_uris[i] = uri
+        logger.info(f"[OrchestrationToolManager.use_tool] The tool response is prepared successfully.")
         return tool_resp, tool_name, agent_id, file_uris, image_uris

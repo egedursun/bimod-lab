@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_archived_chats_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
-#
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
@@ -33,6 +30,9 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ChatView_ListArchivedChats(LoginRequiredMixin, TemplateView):
@@ -71,4 +71,5 @@ class ChatView_ListArchivedChats(LoginRequiredMixin, TemplateView):
         context.update({"chats": chats, "assistants": agents, "active_chat": active_chat,
                         "chat_messages": active_chat_msgs, "message_templates": msg_templates,
                         "base_url": MEDIA_URL})
+        logger.info(f"Archived Chats were listed by User: {self.request.user.id}.")
         return context

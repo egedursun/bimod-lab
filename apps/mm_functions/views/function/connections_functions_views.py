@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: connections_functions_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.mm_functions.models import CustomFunction, CustomFunctionReference
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomFunctionView_Connections(LoginRequiredMixin, TemplateView):
@@ -52,6 +53,7 @@ class CustomFunctionView_Connections(LoginRequiredMixin, TemplateView):
         context.update({
             'connected_organizations': conn_orgs, 'functions': functions, 'assistants': agents,
             'assistant_function_map': agent_function_map, 'external_function_references_map': ext_function_refs_map})
+        logger.info(f"User: {self.request.user.id} is connecting functions.")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -69,6 +71,7 @@ class CustomFunctionView_Connections(LoginRequiredMixin, TemplateView):
 
         if not agent_id or not action:
             messages.error(request, "Invalid input. Please try again.")
+            logger.error(f"Invalid input. Please try again.")
             return redirect('mm_functions:connect')
 
         try:
@@ -77,6 +80,7 @@ class CustomFunctionView_Connections(LoginRequiredMixin, TemplateView):
                 custom_function = CustomFunction.objects.get(id=function_id)
                 CustomFunctionReference.objects.create(
                     assistant=agent, custom_function=custom_function, created_by_user=request.user)
+                logger.info(f"Function '{custom_function.name}' assigned to assistant '{agent.name}'.")
                 messages.success(request,
                                  f"Function '{custom_function.name}' assigned to assistant '{agent.name}'.")
             elif action == 'remove':
@@ -84,11 +88,15 @@ class CustomFunctionView_Connections(LoginRequiredMixin, TemplateView):
                 if ref_id:
                     reff = CustomFunctionReference.objects.get(id=ref_id)
                     reff.delete()
+                    logger.info(f"Function reference removed from assistant '{agent.name}'.")
                     messages.success(request, f"Function reference removed from assistant '{agent.name}'.")
         except Assistant.DoesNotExist:
             messages.error(request, "Assistant not found.")
+            logger.error(f"Assistant not found.")
         except CustomFunction.DoesNotExist:
             messages.error(request, "Custom Function not found.")
+            logger.error(f"Custom Function not found.")
         except CustomFunctionReference.DoesNotExist:
             messages.error(request, "Custom Function Reference not found.")
+            logger.error(f"Custom Function Reference not found.")
         return redirect('mm_functions:connect')

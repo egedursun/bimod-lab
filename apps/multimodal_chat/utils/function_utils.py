@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 import tiktoken
 import wonderwords
@@ -30,6 +30,9 @@ with warnings.catch_warnings():
     warnings.simplefilter("ignore")
 
 
+logger = logging.getLogger(__name__)
+
+
 def transmit_websocket_log(log_message, chat_id, stop_tag=BIMOD_STREAMING_END_TAG):
     channel_layer = get_channel_layer()
     group_name = f'logs_{chat_id}'
@@ -40,8 +43,10 @@ def transmit_websocket_log(log_message, chat_id, stop_tag=BIMOD_STREAMING_END_TA
         async_to_sync(channel_layer.group_send)(group_name, {'type': 'send_log', 'message': BIMOD_PROCESS_END})
     else:
         if stop_tag is None or stop_tag == "" or stop_tag == BIMOD_NO_TAG_PLACEHOLDER:
+            logger.info("No stop tag provided.")
             pass
         else:
+            logger.info("Sending stop tag.")
             async_to_sync(channel_layer.group_send)(group_name, {'type': 'send_log', 'message': stop_tag})
 
 
@@ -82,6 +87,7 @@ def calculate_billable_cost_from_raw(encoding_engine, model, text):
 
 
 def generate_chat_name():
+    logger.info("Generating chat name.")
     chat_name_1 = wonderwords.RandomWord().word(word_max_length=8, include_categories=["verb"])
     chat_name_2 = wonderwords.RandomWord().word(word_max_length=8, include_categories=["adjective"])
     chat_name_3 = wonderwords.RandomWord().word(word_max_length=8, include_categories=["noun"])

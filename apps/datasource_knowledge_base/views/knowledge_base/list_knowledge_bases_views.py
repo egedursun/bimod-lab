@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_knowledge_bases_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +26,9 @@ from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnectio
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class VectorStoreView_List(LoginRequiredMixin, TemplateView):
@@ -56,4 +58,5 @@ class VectorStoreView_List(LoginRequiredMixin, TemplateView):
 
         context['connections_by_organization'] = conns_by_orgs
         context['user'] = context_user
+        logger.info(f"Knowledge Bases were listed.")
         return context

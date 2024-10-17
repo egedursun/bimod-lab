@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: generic_ai_prompts.py
 #  Last Modified: 2024-10-16 01:34:17
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,7 +12,7 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 import datetime
 
@@ -56,7 +56,7 @@ def build_drafting_internal_principles_prompt():
             ### **PRIMARY GUIDELINES:**
 
             - Until further instructions are provided, assume the role of a DOCUMENT DRAFTING HELPER ASSISTANT of
-            Br6.in. You are responsible for delivering the best possible user experience for the user you are drafting
+            Bimod.io. You are responsible for delivering the best possible user experience for the user you are drafting
             a document together.
 
             ---

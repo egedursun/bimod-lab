@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: use_harmoniq_agent_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 
 import base64
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -33,6 +34,8 @@ from apps.harmoniq.models import Harmoniq
 from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+logger = logging.getLogger(__name__)
 
 
 class HarmoniqView_Use(LoginRequiredMixin, TemplateView):
@@ -118,9 +121,11 @@ class HarmoniqCommunicationView(View):
 
             def process_tool_calls(transcript, audio, attempt=0):
                 if attempt > MAX_ATTEMPTS_TOOL_CALL:
+                    logger.error(f"Tool calls are not successful after {MAX_ATTEMPTS_TOOL_CALL} attempts.")
                     return transcript, audio
                 json_content_of_resp = find_tool_call_from_json(transcript)
                 if not json_content_of_resp:
+                    logger.info("No tool call found in the transcript.")
                     return transcript, audio
 
                 tool_resp_list = []
@@ -154,9 +159,12 @@ class HarmoniqCommunicationView(View):
                 sync_request_communication(api_client, updated_msg)
                 updated_audio_data = base64.b64encode(api_client.audio_buffer).decode('utf-8')
                 updated_transcript_data = api_client.transcript
+                logger.info(f"Tool calls are successful after {attempt + 1} attempts.")
                 return process_tool_calls(updated_transcript_data, updated_audio_data, attempt + 1)
 
             final_transcript, final_audio = process_tool_calls(transcript_data, audio_data)
+            logger.info(f"Communication is successful.")
             return JsonResponse({'transcript': final_transcript, 'audio': final_audio})
         except Exception as e:
+            logger.error(f"Communication is not successful. Error: {str(e)}")
             return JsonResponse({'error': str(e)}, status=400)

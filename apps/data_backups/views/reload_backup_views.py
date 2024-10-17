@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: reload_backup_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,6 +25,9 @@ from apps.core.data_backups.data_backup_executor import DataBackupExecutor
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.data_backups.models import DataBackup
 from apps.user_permissions.utils import PermissionNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class DataBackupView_ReloadBackup(LoginRequiredMixin, View):
@@ -42,9 +46,12 @@ class DataBackupView_ReloadBackup(LoginRequiredMixin, View):
         try:
             result = DataBackupExecutor.restore(backup_object=backup, password=password)
             if result is None:
+                logger.info(f"User: {request.user} - Backup: {backup.backup_name} - Reloaded.")
                 messages.success(request, f"Backup '{backup.backup_name}' has been successfully reloaded.")
             else:
+                logger.error(f"User: {request.user} - Backup: {backup.backup_name} - Reload failed.")
                 messages.error(request, result)
         except Exception as e:
+            logger.error(f"User: {request.user} - Backup: {backup.backup_name} - Reload failed.")
             messages.error(request, f"An error occurred while trying to reload the backup: {str(e)}")
         return redirect('data_backups:manage')

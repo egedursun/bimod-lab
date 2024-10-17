@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: generated_media_items_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
-
+import logging
 import os
 
 import boto3
@@ -37,6 +34,9 @@ from apps.user_permissions.utils import PermissionNames
 from apps.video_generations.models import GeneratedVideo
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MediaView_Generated(LoginRequiredMixin, TemplateView):
@@ -114,6 +114,7 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
                         s3c.delete_object(Bucket=bucket, Key=item.full_file_path.split(MEDIA_URL)[1])
                     except Exception as e:
                         pass
+            logger.info(f"[views.generated_media_items] Deleting selected generated media files.")
             DataSourceMediaStorageItem.objects.filter(id__in=item_ids).delete()
             messages.success(request, 'Selected generated media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')

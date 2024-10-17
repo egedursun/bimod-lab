@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_file_system_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.datasource_file_systems.models import DataSourceFileSystem
 from apps.datasource_file_systems.utils import DATASOURCE_FILE_SYSTEMS_OS_TYPES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class FileSystemView_Update(LoginRequiredMixin, TemplateView):
@@ -79,13 +80,16 @@ class FileSystemView_Update(LoginRequiredMixin, TemplateView):
             agent = Assistant.objects.get(id=assistant_id)
             c.assistant = agent
         except Assistant.DoesNotExist:
+            logger.error(f'Invalid assistant selected.')
             messages.error(request, 'Invalid assistant selected.')
             return redirect('datasource_file_systems:update', kwargs={'pk': kwargs['pk']})
 
         try:
             c.save()
+            logger.info(f"Data Source File System updated successfully.")
             messages.success(request, 'Data Source File System updated successfully.')
             return redirect('datasource_file_systems:list')
         except Exception as e:
+            logger.error(f'Error updating Data Source File System: {e}')
             messages.error(request, f'Error updating Data Source File System: {e}')
             return redirect('datasource_file_systems:update', kwargs={'pk': kwargs['pk']})

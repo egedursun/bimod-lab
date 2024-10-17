@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: data_backup_executor.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.assistants.models import Assistant
 
@@ -25,6 +25,9 @@ from apps.llm_core.models import LLMCore
 from apps.mm_apis.models import CustomAPI
 from apps.mm_functions.models import CustomFunction
 from apps.mm_scripts.models import CustomScript
+
+
+logger = logging.getLogger(__name__)
 
 class DataBackupExecutor:
     class BackupLLMModel:
@@ -43,7 +46,9 @@ class DataBackupExecutor:
                     organization=self.organization, responsible_user=self.responsible_user,
                     backup_name=backup_name, backup_type=BackupTypesNames.LLM_MODELS,
                     serialized_data=serialized_data, encryption_password=password)
+                logger.info(f"[DataBackupExecutor.BackupLLMModel.backup_llm_models] Backed up LLM models.")
             except Exception as e:
+                logger.error(f"[DataBackupExecutor.BackupLLMModel.backup_llm_models] Error backing up LLM models: {e}")
                 return "An error occurred while backing up the data."
             return None
 
@@ -62,7 +67,9 @@ class DataBackupExecutor:
                     organization=self.organization, responsible_user=self.responsible_user,
                     backup_name=backup_name, backup_type=BackupTypesNames.NER_INSTANCES,
                     serialized_data=serialized_data, encryption_password=password)
+                logger.info(f"[DataBackupExecutor.BackupNERInstance.backup_ner_instances] Backed up NER instances.")
             except Exception as e:
+                logger.error(f"[DataBackupExecutor.BackupNERInstance.backup_ner_instances] Error backing up NER instances: {e}")
                 return "An error occurred while backing up the data."
             return None
 
@@ -84,7 +91,9 @@ class DataBackupExecutor:
                     organization=self.organization, responsible_user=self.responsible_user,
                     backup_name=backup_name, backup_type=BackupTypesNames.ASSISTANTS,
                     serialized_data=serialized_data, encryption_password=password)
+                logger.info(f"[DataBackupExecutor.BackupAssistant.backup_assistants] Backed up assistants.")
             except Exception as e:
+                logger.error(f"[DataBackupExecutor.BackupAssistant.backup_assistants] Error backing up assistants: {e}")
                 return "An error occurred while backing up the data."
             return None
 
@@ -103,7 +112,9 @@ class DataBackupExecutor:
                     organization=self.organization, responsible_user=self.responsible_user,
                     backup_name=backup_name, backup_type=BackupTypesNames.CUSTOM_FUNCTIONS,
                     serialized_data=serialized_data, encryption_password=password)
+                logger.info(f"[DataBackupExecutor.BackupCustomFunction.backup_custom_functions] Backed up custom functions.")
             except Exception as e:
+                logger.error(f"[DataBackupExecutor.BackupCustomFunction.backup_custom_functions] Error backing up custom functions: {e}")
                 return "An error occurred while backing up the data."
             return None
 
@@ -122,7 +133,9 @@ class DataBackupExecutor:
                     organization=self.organization, responsible_user=self.responsible_user,
                     backup_name=backup_name, backup_type=BackupTypesNames.CUSTOM_APIS,
                     serialized_data=serialized_data, encryption_password=password)
+                logger.info(f"[DataBackupExecutor.BackupCustomAPI.backup_custom_apis] Backed up custom APIs.")
             except Exception as e:
+                logger.error(f"[DataBackupExecutor.BackupCustomAPI.backup_custom_apis] Error backing up custom APIs: {e}")
                 return "An error occurred while backing up the data."
             return None
 
@@ -141,7 +154,9 @@ class DataBackupExecutor:
                     organization=self.organization, responsible_user=self.responsible_user,
                     backup_name=backup_name, backup_type=BackupTypesNames.CUSTOM_SCRIPTS,
                     serialized_data=serialized_data, encryption_password=password)
+                logger.info(f"[DataBackupExecutor.BackupCustomScript.backup_custom_scripts] Backed up custom scripts.")
             except Exception as e:
+                logger.error(f"[DataBackupExecutor.BackupCustomScript.backup_custom_scripts] Error backing up custom scripts: {e}")
                 return "An error occurred while backing up the data."
             return None
 
@@ -155,9 +170,12 @@ class DataBackupExecutor:
                 obj: Assistant
                 try:
                     obj.save()
+                    logger.info(f"[DataBackupExecutor.restore] Restored the data.")
                 except Exception as e:
+                    logger.error(f"[DataBackupExecutor.restore] Error restoring the data: {e}")
                     return "An error occurred while restoring the data."
 
         except Exception as e:
+            logger.error(f"[DataBackupExecutor.restore] Error restoring the data: {e}")
             return "An error occurred while restoring the data: " + str(e)
         return None

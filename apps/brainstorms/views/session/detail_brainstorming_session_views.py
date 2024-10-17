@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: detail_brainstorming_session_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 from collections import defaultdict
 
 from django.contrib import messages
@@ -29,6 +29,9 @@ from apps.brainstorms.models import BrainstormingSession, BrainstormingIdea, Bra
     BrainstormingCompleteSynthesis
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class BrainstormingView_SessionDetail(LoginRequiredMixin, TemplateView):
@@ -79,4 +82,5 @@ class BrainstormingView_SessionDetail(LoginRequiredMixin, TemplateView):
         elif action == BrainstormingActionTypeNames.GENERATE_COMPLETE_SYNTHESIS:
             xc.generate_complete_synthesis()
             messages.success(request, "Complete synthesis generated successfully.")
+        logger.info(f"Action {action} performed successfully. Session ID: {session.id}")
         return redirect('brainstorms:detail_session', session_id=session.id)

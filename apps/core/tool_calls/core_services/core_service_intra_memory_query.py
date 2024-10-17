@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: core_service_intra_memory_query.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,15 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.core.vector_operations.intra_context_memory.memory_executor import IntraContextMemoryExecutor
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+
+
+logger = logging.getLogger(__name__)
 
 
 def run_query_intra_memory(c_id: int, intra_memory_query: str, semantic_alpha: float):
@@ -26,6 +29,7 @@ def run_query_intra_memory(c_id: int, intra_memory_query: str, semantic_alpha: f
         c = IntraContextMemoryExecutor(connection=conn)
         output = c.search_hybrid(query=intra_memory_query, alpha=semantic_alpha)
     except Exception as e:
+        logger.error(f"Error occurred while executing the memory query: {e}")
         error_msg = f"Error occurred while executing the memory query: {str(e)}"
         return error_msg
     return output

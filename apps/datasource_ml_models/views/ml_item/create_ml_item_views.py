@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_ml_item_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.datasource_ml_models.forms import DataSourceMLModelItemForm
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MLModelView_ItemCreate(LoginRequiredMixin, TemplateView):
@@ -60,9 +61,11 @@ class MLModelView_ItemCreate(LoginRequiredMixin, TemplateView):
             ml_model_item.ml_model_size = uploaded_file.size
             ml_model_item.created_by_user = request.user
             ml_model_item.save()
+            logger.info(f'ML Model Item uploaded: {ml_model_item}')
             messages.success(request, 'ML Model Item uploaded successfully.')
             return redirect('datasource_ml_models:item_list')
         else:
+            logger.error('There was an error uploading the ML Model Item.')
             messages.error(request, 'There was an error uploading the ML Model Item.')
             context = self.get_context_data()
             context['form'] = form

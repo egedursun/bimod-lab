@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: endpoint_export_orchestration_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 
 import json
+import logging
 
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -30,6 +31,8 @@ from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 from config.settings import BASE_URL
 
+logger = logging.getLogger(__name__)
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ExportOrchestrationAPIView(View):
@@ -39,17 +42,20 @@ class ExportOrchestrationAPIView(View):
         try:
             export_assistant: ExportOrchestrationAPI = ExportOrchestrationAPI.objects.get(endpoint=endpoint)
         except ExportOrchestrationAPI.DoesNotExist:
+            logger.error(f"Invalid endpoint: {endpoint}")
             return JsonResponse({
                 "message": "Invalid endpoint", "data": {}, "status": ExportOrchestrationRequestStatusCodes.NOT_FOUND
             }, status=ExportOrchestrationRequestStatusCodes.NOT_FOUND)
 
         if not export_assistant.is_online:
+            logger.error(f"The endpoint is currently offline: {endpoint}")
             return JsonResponse({
                 "message": "The endpoint is currently offline. Please try again later.", "data": {},
                 "status": ExportOrchestrationRequestStatusCodes.SERVICE_OFFLINE
             }, status=ExportOrchestrationRequestStatusCodes.SERVICE_OFFLINE)
 
         if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
+            logger.error(f"Invalid API key provided for endpoint: {endpoint}")
             return JsonResponse({
                 "message": "The API key provided is invalid, please provide a valid API key.", "data": {},
                 "status": ExportOrchestrationRequestStatusCodes.UNAUTHORIZED
@@ -57,6 +63,7 @@ class ExportOrchestrationAPIView(View):
 
         OrchestratorRequestLog.objects.create(export_orchestration=export_assistant)
         if export_assistant.requests_in_last_hour() > export_assistant.request_limit_per_hour:
+            logger.error(f"The API request limit has been reached for endpoint: {endpoint}")
             return JsonResponse({
                 "error": "The API request limit has been reached. Please try again later.",
                 "data": {
@@ -69,18 +76,25 @@ class ExportOrchestrationAPIView(View):
         try:
             chat_history = body.get('chat_history')
             if len(chat_history) == 0:
+                logger.error("Chat history is empty.")
                 raise ValueError("Chat history is empty.")
             if "role" not in chat_history[0]:
+                logger.error("Each of the chat history elements must contain 'role' key.")
                 raise ValueError("Each of the chat history elements must contain 'role' key, which can either"
                                  "be 'system', 'assistant' or 'user'.")
             if chat_history[0]["role"] not in ["system", "assistant", "user"]:
+                logger.error("Invalid chat history: The 'role' key in the first element of the chat history must be either 'system',"
+                             "'assistant' or 'user'.")
                 raise ValueError("The 'role' key in the first element of the chat history must be either 'system',"
                                  "'assistant' or 'user'.")
             if "content" not in chat_history[0]:
+                logger.error("Each of the chat history elements must contain 'content' key.")
                 raise ValueError("Each of the chat history elements must contain 'content' key.")
             if not isinstance(chat_history[0]["content"], str):
+                logger.error("Invalid chat history: The 'content' key in the first element of the chat history must be a string.")
                 raise ValueError("The 'content' key in the first element of the chat history must be a string.")
         except Exception as e:
+            logger.error(f"Invalid chat history: {str(e)}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e), "data": {},
                 "status": ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR
@@ -111,6 +125,7 @@ class ExportOrchestrationAPIView(View):
                 api_chat.save()
 
         except Exception as e:
+            logger.error(f"Invalid chat history: {str(e)}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e), "data": {},
                 "status": ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR
@@ -120,6 +135,7 @@ class ExportOrchestrationAPIView(View):
             orch_xc = OrchestrationExecutor(maestro=export_assistant.orchestrator, query_chat=api_chat)
             final_output = orch_xc.execute_for_query()
         except Exception as e:
+            logger.error(f"Error executing orchestration for endpoint: {endpoint}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e), "data": {},
                 "status": ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR
@@ -130,4 +146,5 @@ class ExportOrchestrationAPIView(View):
             "message": {"assistant_name": export_assistant.orchestrator.name, "content": final_output,
                         "role": "assistant", "media": {"files": [], "images": []}
                         }}}
+        logger.info(f"Orchestration executed successfully for endpoint: {endpoint}")
         return JsonResponse(response_data, status=ExportOrchestrationRequestStatusCodes.OK)

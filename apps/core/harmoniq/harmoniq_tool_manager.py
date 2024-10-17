@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: harmoniq_tool_manager.py
 #  Last Modified: 2024-10-11 21:22:57
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 
 import json
+import logging
 
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_json_decode_error_log
 from apps.core.tool_calls.harmoniq.core_services.core_service_query_expert_network_harmoniq import \
@@ -27,6 +28,9 @@ from apps.core.tool_calls.input_verifiers.verify_main_query_or_run_call import v
 from apps.core.tool_calls.utils import ToolCallDescriptorNames, get_no_tool_found_error_log
 from apps.harmoniq.models import Harmoniq
 from config.settings import MEDIA_URL
+
+
+logger = logging.getLogger(__name__)
 
 
 class HarmoniqToolManager:
@@ -40,14 +44,18 @@ class HarmoniqToolManager:
         try:
             if isinstance(self.tool_usage_dict_stringified, dict):
                 self.tool_usage_dict = self.tool_usage_dict_stringified
+                logger.info("Tool usage dictionary is already a dictionary.")
             else:
                 self.tool_usage_dict = json.loads(self.tool_usage_dict_stringified)
+                logger.info("Tool usage dictionary is converted to a dictionary.")
         except Exception as e:
+            logger.error(f"Error occurred while converting tool usage dictionary to a dictionary: {e}")
             return get_json_decode_error_log(error_logs=str(e)), None, None, None
 
         f_uris, img_uris = [], []
         error_msg = verify_main_call_or_query_content(content=self.tool_usage_dict)
         if error_msg:
+            logger.error(f"Error occurred while verifying main call or query content: {error_msg}")
             return error_msg, None, None, None
 
         defined_tool_descriptor = self.tool_usage_dict.get("tool")
@@ -68,9 +76,11 @@ class HarmoniqToolManager:
                 agent_id=assistant_id, xn_query=query, img_uris=image_urls, f_uris=file_urls)
             expert_network_response_raw_str = json.dumps(expert_network_response, sort_keys=True, default=str)
             output_tool_call += expert_network_response_raw_str
+            logger.info("Expert network query executed successfully.")
 
         # NO TOOL FOUND
         else:
+            logger.error(f"No tool found with the descriptor: {defined_tool_descriptor}")
             return get_no_tool_found_error_log(query_name=defined_tool_descriptor), defined_tool_descriptor, f_uris, img_uris
 
         output_tool_call += f"""
@@ -86,6 +96,7 @@ class HarmoniqToolManager:
                 if not uri.startswith("http"):
                     uri = f"{MEDIA_URL}{uri}"
                 img_uris[i] = uri
+        logger.info("Tool call service executed successfully.")
         return output_tool_call, defined_tool_descriptor, f_uris, img_uris
 
 

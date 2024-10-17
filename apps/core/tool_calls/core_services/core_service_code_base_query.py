@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: core_service_code_base_query.py
 #  Last Modified: 2024-10-05 02:26:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,15 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.core.codebase.codebase_decoder import CodeBaseDecoder
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection
+
+
+logger = logging.getLogger(__name__)
 
 
 def run_query_code_base(c_id: int, query_content_str: str, semantic_alpha: float):
@@ -25,7 +28,9 @@ def run_query_code_base(c_id: int, query_content_str: str, semantic_alpha: float
     try:
         cli = CodeBaseDecoder().get(connection=conn)
         output = cli.search_hybrid(query=query_content_str, alpha=semantic_alpha)
+        logger.info(f"Code base query output: {output}")
     except Exception as e:
+        logger.error(f"Error occurred while running the codebase query: {e}")
         error = f"There has been an unexpected error on running the codebase query: {e}"
         return error
     return output

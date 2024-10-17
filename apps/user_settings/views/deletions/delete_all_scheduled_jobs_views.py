@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_all_scheduled_jobs_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +26,9 @@ from apps.mm_scheduled_jobs.models import ScheduledJob
 from apps.user_permissions.utils import PermissionNames
 
 
+logger = logging.getLogger(__name__)
+
+
 class SettingsView_DeleteAllScheduledJobs(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -34,6 +37,7 @@ class SettingsView_DeleteAllScheduledJobs(View, LoginRequiredMixin):
         if confirmation_field != 'CONFIRM DELETING ALL SCHEDULED JOBS':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL SCHEDULED JOBS'.")
+            logger.error(f"Invalid confirmation field: {confirmation_field}")
             return redirect('user_settings:settings')
 
         ##############################
@@ -48,6 +52,8 @@ class SettingsView_DeleteAllScheduledJobs(View, LoginRequiredMixin):
             for scheduled_job in user_scheduled_jobs:
                 scheduled_job.delete()
             messages.success(request, "All scheduled jobs associated with your account have been deleted.")
+            logger.info(f"All scheduled jobs associated with User: {user.id} have been deleted.")
         except Exception as e:
             messages.error(request, f"Error deleting scheduled jobs: {e}")
+            logger.error(f"Error deleting scheduled jobs: {e}")
         return redirect('user_settings:settings')

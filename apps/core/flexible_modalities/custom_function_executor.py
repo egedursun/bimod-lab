@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: mm_functions_executor.py
 #  Last Modified: 2024-10-05 02:26:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,17 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 from apps.mm_functions.tasks import mm_function_execution_task
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomFunctionExecutor:
@@ -44,4 +48,5 @@ class CustomFunctionExecutor:
             if self.function.is_public else LLMTransactionSourcesTypesNames.INTERNAL_FUNCTION_EXECUTION,
             is_tool_cost=True)
         tx.save()
+        logger.info(f"Executed custom function: {self.function.name} with response: {response}")
         return response

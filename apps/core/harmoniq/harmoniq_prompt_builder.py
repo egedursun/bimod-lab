@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: harmoniq_prompt_builder.py
 #  Last Modified: 2024-10-11 21:17:49
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from apps.core.system_prompts.harmoniq.harmoniq_guidelines_prompt import build_structured_primary_guidelines_harmoniq
 from apps.core.system_prompts.harmoniq.harmoniq_instructions_prompt import \
@@ -30,8 +31,13 @@ from apps.core.system_prompts.harmoniq.tools.harmoniq_tools_instructions_prompt 
 from apps.harmoniq.models import Harmoniq
 
 
+logger = logging.getLogger(__name__)
+
+
 def build_harmoniq_system_prompt(harmoniq_agent: Harmoniq, expert_net_and_refs: list, org_data: dict, user_data: dict):
+    logger.info("Building Harmoniq system prompt.")
     system_prompt = ""
+
     name = build_structured_name_prompt_harmoniq(harmoniq=harmoniq_agent)
     guidelines = build_structured_primary_guidelines_harmoniq()
     instructions = build_structured_instructions_prompt_harmoniq(agent=harmoniq_agent)

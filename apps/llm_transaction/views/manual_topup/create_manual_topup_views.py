@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_manual_topup_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,18 +12,18 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
-#
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from apps.organization.models import Organization
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class Transactions_ManualTopUpCreate(LoginRequiredMixin, TemplateView):
@@ -33,4 +33,5 @@ class Transactions_ManualTopUpCreate(LoginRequiredMixin, TemplateView):
         context['selected_organization'] = selected_org
         orgs = Organization.objects.filter(users__in=[self.request.user]).all()
         context['organizations'] = orgs
+        logger.info(f"Manual Top Up was created by User: {self.request.user.id}.")
         return context

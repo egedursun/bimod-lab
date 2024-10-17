@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_media_storage_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,6 +28,9 @@ from apps.datasource_media_storages.utils import MEDIA_MANAGER_ITEM_TYPES
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MediaView_ManagerUpdate(LoginRequiredMixin, TemplateView):
@@ -67,11 +68,14 @@ class MediaView_ManagerUpdate(LoginRequiredMixin, TemplateView):
             media_manager.media_category = manager_category
             media_manager.assistant = agent
             media_manager.save()
+            logger.info('Data Source Media Storage updated successfully.')
             messages.success(request, 'Data Source Media Storage updated successfully.')
             return redirect('datasource_media_storages:list')
         except Assistant.DoesNotExist:
+            logger.error('Invalid assistant selected.')
             messages.error(request, 'Invalid assistant selected.')
             return redirect('datasource_media_storages:update', pk=media_manager.pk)
         except Exception as e:
+            logger.error(f'Error updating Data Source Media Storage: {e}')
             messages.error(request, f'Error updating Data Source Media Storage: {e}')
             return redirect('datasource_media_storages:update', pk=media_manager.pk)

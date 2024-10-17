@@ -4,8 +4,8 @@
 
 ......
 
-1. Add logs to every part of the code
-2. Fix the headings to Bimod.io again
+1. Deploy the application to the server. Update -> SSL Certificates, NGINX configuration.
+2. Add the new features -> drafting to the documentation
 
 [i] BUG: The messages cut short in Harmoniq + can't send audio in real time to Harmoniq agent.
 
@@ -47,7 +47,8 @@
 
 - Bitwarden for Password Protection
   - **Host:** Birwarden Cloud
-  - **Username:** admin@br6.in
+  - **Username:** admin@bimod.io
+  - **Password:** MejA@ZV38E.%fqF
 
 - Hosting Service (Hostinger)
   - Login Credentials:
@@ -70,8 +71,8 @@
 
   - Email Accounts:
     - **Provider:** mail.hostinger.com
-      - **Username:** admin@br6.in
-      - **PW:** V]*aM@y3
+      - **Username:** admin@bimod.io
+      - **PW:** FXYP9tU5o^
 
 - PostgreSQL DB:
   - **Host:** Hostinger VPS Server (SSH)
@@ -85,7 +86,7 @@
 
 - AWS Buckets
   - **Host:** AWS S3
-  - **Username:**: admin@br6.in
+  - **Username:**: admin@bimod.io
   - **PW:** ,vVzEkn/PVn+8Gc
 
 - GitHub Account:
@@ -100,7 +101,7 @@
 
 - Sentry Logging
   - **Host:** Sentry Cloud
-  - **Username:** admin@br6.in
+  - **Username:** admin@bimod.io
 
 - Website Analytics:
 - **Host:** Google Analytics

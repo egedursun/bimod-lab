@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: api_store_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,9 +30,11 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.mm_apis.models import CustomAPI, CustomAPIReference
 from apps.mm_apis.utils import CATEGORIES_OF_CUSTOM_APIS
-from apps.user_permissions.models import UserPermission
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomAPIView_Store(LoginRequiredMixin, TemplateView):
@@ -83,7 +86,9 @@ class CustomAPIView_Store(LoginRequiredMixin, TemplateView):
                 custom_api = CustomAPI.objects.get(id=api_id)
                 agent = Assistant.objects.get(id=agent_id)
                 CustomAPIReference.objects.create(assistant=agent, custom_api=custom_api, created_by_user=request.user)
+                logger.info(f"API '{custom_api.name}' assigned to assistant '{agent.name}'.")
                 messages.success(request, f"API '{custom_api.name}' assigned to assistant '{agent.name}'.")
         else:
+            logger.error(f"Invalid input. Please try again.")
             messages.error(request, "Invalid input. Please try again.")
         return redirect('mm_apis:store')

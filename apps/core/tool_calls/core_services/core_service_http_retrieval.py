@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: core_service_http_retrieval.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,14 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.core.http_client.http_client_download_manager import HTTPClientDownloadExecutor
 from config.settings import MEDIA_URL
+
+logger = logging.getLogger(__name__)
 
 
 def run_http_retrieval(connection_id: int, url: str):
@@ -26,7 +28,9 @@ def run_http_retrieval(connection_id: int, url: str):
         if not url.startswith("http"):
             url = f"{MEDIA_URL}{url}"
         output = xc.retrieve(url=url)
+        logger.info(f"HTTP retrieval output: {output}")
     except Exception as e:
+        logger.error(f"Error occurred while downloading the file from the URL: {e}")
         error = f"Error occurred while downloading the file from the URL: {str(e)}"
         return error
     return output

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_brainstorming_session_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +27,9 @@ from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class BrainstormingView_SessionUpdate(LoginRequiredMixin, TemplateView):
@@ -67,8 +71,10 @@ class BrainstormingView_SessionUpdate(LoginRequiredMixin, TemplateView):
                 session.constraints = constraints
                 session.save()
                 messages.success(request, "Brainstorming session updated successfully!")
+                logger.info(f'The session "{session_name}" was updated successfully. Session ID: {session.id}')
                 return redirect('brainstorms:list_sessions')
             except Exception as e:
+                logger.error(f"Error updating brainstorming session: {str(e)}")
                 messages.error(request, f"Error updating brainstorming session: {str(e)}")
         else:
             messages.error(request, "All fields are required.")

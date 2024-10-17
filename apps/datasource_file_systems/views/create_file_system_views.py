@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_file_system_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.datasource_file_systems.models import DataSourceFileSystem
 from apps.datasource_file_systems.utils import DATASOURCE_FILE_SYSTEMS_OS_TYPES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class FileSystemView_Create(LoginRequiredMixin, TemplateView):
@@ -71,11 +72,14 @@ class FileSystemView_Create(LoginRequiredMixin, TemplateView):
                 is_read_only=is_read_only, created_by_user=created_by_user
             )
             conn.save()
+            logger.info(f"Data Source File System created successfully.")
             messages.success(request, 'Data Source File System created successfully.')
             return redirect('datasource_file_systems:list')
         except Assistant.DoesNotExist:
+            logger.error(f'Invalid assistant selected.')
             messages.error(request, 'Invalid assistant selected.')
             return redirect('datasource_file_systems:create')
         except Exception as e:
+            logger.error(f'Error creating Data Source File System: {e}')
             messages.error(request, f'Error creating Data Source File System: {e}')
             return redirect('datasource_file_systems:list')

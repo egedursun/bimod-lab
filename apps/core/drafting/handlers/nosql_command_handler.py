@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: nosql_command_handler.py
 #  Last Modified: 2024-10-15 23:33:02
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 
 import json
+import logging
 
 from apps.core.drafting.utils import find_tool_call_from_json, DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
@@ -25,6 +26,9 @@ from apps.core.tool_calls.core_services.core_service_nosql_query import run_nosq
 from apps.core.tool_calls.input_verifiers.verify_run_nosql_query import verify_run_nosql_query_content
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+
+logger = logging.getLogger(__name__)
 
 
 def handle_nosql_command(xc, command: str) -> str:
@@ -39,7 +43,9 @@ def handle_nosql_command(xc, command: str) -> str:
             llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
             transaction_type=ChatRoles.USER, transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+        logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
     except Exception as e:
+        logger.error(f"[handle_ai_command] Error creating LLMTransaction for user command: {command}. Error: {e}")
         pass
 
     output, error = None, None
@@ -55,7 +61,9 @@ def handle_nosql_command(xc, command: str) -> str:
             llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
             transaction_type=ChatRoles.SYSTEM, transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+        logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
     except Exception as e:
+        logger.error(f"[handle_ai_command] Error creating LLMTransaction for system prompt. Error: {e}")
         pass
 
     try:
@@ -70,6 +78,7 @@ def handle_nosql_command(xc, command: str) -> str:
         first_choice = choices[0]
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+        logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
             tx = LLMTransaction.objects.create(
@@ -79,10 +88,13 @@ def handle_nosql_command(xc, command: str) -> str:
                 llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
                 transaction_type=ChatRoles.ASSISTANT, transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
             )
+            logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
         except Exception as e:
+            logger.error(f"[handle_ai_command] Error creating LLMTransaction for AI response. Error: {e}")
             pass
     except Exception as e:
         error = f"[handle_ai_command] Error executing NoSQL command: {command}. Error: {e}"
+        logger.error(error)
         return output, error
 
     # TOOL USAGE IDENTIFICATION
@@ -102,6 +114,7 @@ def handle_nosql_command(xc, command: str) -> str:
                 """
                 error = verify_run_nosql_query_content(content=tool_req_dict)
                 if error:
+                    logger.error(error)
                     return error, None, None, None
                 output_tool_call = _handle_tool_nosql_query(tool_usage_dict=tool_req_dict,
                                                             output_tool_call=output_tool_call)
@@ -120,6 +133,7 @@ def handle_nosql_command(xc, command: str) -> str:
             first_choice = choices[0]
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+            logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
                 tx = LLMTransaction.objects.create(
@@ -129,9 +143,12 @@ def handle_nosql_command(xc, command: str) -> str:
                     llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT, transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
                 )
+                logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
             except Exception as e:
+                logger.error(f"[handle_ai_command] Error creating LLMTransaction for AI response. Error: {e}")
                 pass
         except Exception as e:
+            logger.error(f"[handle_ai_command] Error executing NoSQL command: {command}. Error: {e}")
             error = f"[handle_ai_command] Error executing NoSQL command: {command}. Error: {e}"
             return output, error
 
@@ -149,7 +166,9 @@ def handle_nosql_command(xc, command: str) -> str:
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING, is_tool_cost=True
         )
         tx.save()
+        logger.info(f"[handle_ai_command] Created LLMTransaction for Drafting.")
     except Exception as e:
+        logger.error(f"[handle_ai_command] Error creating LLMTransaction for Drafting. Error: {e}")
         pass
 
     output = choice_message_content
@@ -163,4 +182,5 @@ def _handle_tool_nosql_query(tool_usage_dict, output_tool_call):
     output = run_nosql_query(c_id=c_id, nosql_query_type=query_type, query_content=nosql_query)
     output_str = json.dumps(output, sort_keys=True, default=str)
     output_tool_call += output_str
+    logger.info(f"[handle_ai_command] Tool Response: {output_tool_call}")
     return output_tool_call

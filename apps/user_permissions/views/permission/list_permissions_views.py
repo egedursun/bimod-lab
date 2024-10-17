@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_permissions_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +27,9 @@ from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class PermissionView_PermissionList(LoginRequiredMixin, TemplateView):
@@ -74,6 +78,7 @@ class PermissionView_PermissionList(LoginRequiredMixin, TemplateView):
             permission = get_object_or_404(UserPermission, id=permission_id)
             deletion_names.append(permission.get_permission_type_code())
             permission.delete()
+        logger.info(f"Permissions updated for User: {user.id}.")
         messages.success(request, 'Permissions updated successfully!')
 
         modify_permissions = PermissionNames.MODIFY_USER_PERMISSIONS
@@ -93,4 +98,5 @@ class PermissionView_PermissionList(LoginRequiredMixin, TemplateView):
             list_object.is_active = True
             modify_object.save()
             list_object.save()
+            logger.info(f"User: {context_user.id} has granted permissions to User: {user.id}.")
         return render(request, self.template_name, self.get_context_data(**kwargs))

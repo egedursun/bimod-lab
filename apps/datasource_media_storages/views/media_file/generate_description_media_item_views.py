@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: generate_description_media_item_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
-
+import logging
 import re
 
 from django.contrib import messages
@@ -35,6 +32,9 @@ from apps.datasource_media_storages.utils import MediaManagerItemFormatTypesName
     AI_GENERATED_DESCRIPTION_SPECIFIER
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MediaView_ItemAIDescription(LoginRequiredMixin, TemplateView):
@@ -56,13 +56,16 @@ class MediaView_ItemAIDescription(LoginRequiredMixin, TemplateView):
             DATA = MediaManagerItemFormatTypesNamesLists.DATA
 
         if media_item_type in MediaFileTypesNamesLists.IMAGE:
+            logger.info(f"Media Item Type: {media_item_type}")
             return AnalysisToolCallExecutionTypesNames.IMAGE_INTERPRETATION
         elif media_item_type in (
             MediaFileTypesNamesLists.COMPRESSED or
             media_item_type in MediaFileTypesNamesLists.DATA or
             media_item_type in MediaFileTypesNamesLists.CODE):
+            logger.info(f"Media Item Type: {media_item_type}")
             return AnalysisToolCallExecutionTypesNames.FILE_INTERPRETATION
         else:
+            logger.info(f"Media Item Type: {media_item_type}")
             return AnalysisToolCallExecutionTypesNames.FILE_INTERPRETATION
 
     @staticmethod
@@ -111,6 +114,8 @@ class MediaView_ItemAIDescription(LoginRequiredMixin, TemplateView):
                 gen_desc = self.normalize_whitespace(gen_desc)
                 media_item.description = gen_desc
                 media_item.save()
+                logger.info(f"[views.update_media_item] Media item updated successfully.")
             except Exception as e:
+                logger.error(f"Error while updating media item description: {e}")
                 pass
         return redirect('datasource_media_storages:item_detail', **kwargs)

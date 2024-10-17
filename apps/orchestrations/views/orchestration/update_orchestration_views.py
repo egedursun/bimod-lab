@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_orchestration_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +29,9 @@ from apps.orchestrations.models import Maestro
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrchestrationView_Update(LoginRequiredMixin, TemplateView):
@@ -62,9 +65,11 @@ class OrchestrationView_Update(LoginRequiredMixin, TemplateView):
             updated_orchestration.save()
             workers = request.POST.getlist('workers')
             updated_orchestration.workers.set(workers)
+            logger.info(f"Orchestration was updated by User: {self.request.user.id}.")
             return redirect('orchestrations:update', pk=kwargs['pk'])
         else:
             context = self.get_context_data(**kwargs)
             context['form'] = form
             context['error_messages'] = form.errors
+            logger.error(f"Orchestration update failed by User: {self.request.user.id}.")
             return self.render_to_response(context)

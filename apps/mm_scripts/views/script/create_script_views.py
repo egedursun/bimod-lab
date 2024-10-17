@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_script_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +27,9 @@ from apps.mm_scripts.forms import CustomScriptForm
 from apps.mm_scripts.utils import CUSTOM_SCRIPT_CATEGORIES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomScriptView_Create(LoginRequiredMixin, TemplateView):
@@ -60,9 +62,11 @@ class CustomScriptView_Create(LoginRequiredMixin, TemplateView):
             script_content = request.POST.get('code_text', '')
             custom_script.script_content = script_content
             custom_script.save()
+            logger.info(f"Custom Script was created by User: {self.request.user.id}.")
             messages.success(request, "Custom Script created successfully!")
             return redirect('mm_scripts:list')
         else:
+            logger.error(f"Error creating Custom Script by User: {self.request.user.id}.")
             messages.error(request, "There was an error creating the custom script.")
 
         return render(request, self.template_name, {

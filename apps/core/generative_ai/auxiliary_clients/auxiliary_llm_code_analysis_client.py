@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: auxiliary_llm_code_analysis_client.py
 #  Last Modified: 2024-10-09 01:08:44
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 import requests
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
@@ -31,6 +33,8 @@ from apps.core.generative_ai.utils import CONCRETE_LIMIT_SINGLE_FILE_INTERPRETAT
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 from config.settings import MEDIA_URL
+
+logger = logging.getLogger(__name__)
 
 
 class AuxiliaryLLMCodeAnalysisManager:
@@ -54,9 +58,12 @@ class AuxiliaryLLMCodeAnalysisManager:
             try:
                 f = requests.get(pth)
                 f_data.append(f.content)
+                logger.info(f"Retrieved file content from: {pth}")
             except FileNotFoundError:
+                logger.error(f"File not found at: {pth}")
                 continue
             except Exception as e:
+                logger.error(f"Failed to retrieve file content from: {pth}")
                 continue
 
         f_objs = []
@@ -64,7 +71,9 @@ class AuxiliaryLLMCodeAnalysisManager:
             try:
                 f = c.files.create(purpose="assistants", file=con)
                 f_objs.append(f)
+                logger.info(f"Created file object for file content.")
             except Exception as e:
+                logger.error(f"Failed to create file object for file content.")
                 continue
 
         try:
@@ -74,18 +83,24 @@ class AuxiliaryLLMCodeAnalysisManager:
                 model="gpt-4o", tools=[{"type": "code_interpreter"}],
                 tool_resources={"code_interpreter": {"file_ids": [x.id for x in f_objs]}},
                 temperature=float(interpretation_temperature))
+            logger.info(f"Created new assistant for code interpretation.")
         except Exception as e:
+            logger.error(f"Failed to create new assistant for code interpretation.")
             return CODE_ANALYST_AGENT_PREPARATION_ERROR_LOG, [], []
 
         try:
             thread = c.beta.threads.create(
                 messages=[{"role": ChatRoles.USER, "content": (query_string + GENERIC_AFFIRMATION_PROMPT)}])
+            logger.info(f"Created new thread for code interpretation.")
         except Exception as e:
+            logger.error(f"Failed to create new thread for code interpretation.")
             return CODE_ANALYST_THREAD_CREATION_ERROR_LOG, [], []
 
         try:
             run = c.beta.threads.runs.create_and_poll(thread_id=thread.id, assistant_id=agent.id)
+            logger.info(f"Created new run for code interpretation.")
         except Exception as e:
+            logger.error(f"Failed to create new run for code interpretation.")
             return CODE_ANALYST_RESPONSE_RETRIEVAL_ERROR_LOG, [], []
 
         txts, img_http_ids, f_http_ids = [], [], []
@@ -108,21 +123,28 @@ class AuxiliaryLLMCodeAnalysisManager:
         else:
             if run.status == AgentRunConditions.FAILED:
                 msgs = get_code_interpreter_status_log(status="failed")
+                logger.error(f"Code interpretation failed.")
             elif run.status == AgentRunConditions.INCOMPLETE:
                 msgs = get_code_interpreter_status_log(status="incomplete")
+                logger.error(f"Code interpretation incomplete.")
             elif run.status == AgentRunConditions.EXPIRED:
                 msgs = get_code_interpreter_status_log(status="expired")
+                logger.error(f"Code interpretation expired.")
             elif run.status == AgentRunConditions.CANCELLED:
                 msgs = get_code_interpreter_status_log(status="cancelled")
+                logger.error(f"Code interpretation cancelled.")
             else:
                 msgs = get_code_interpreter_status_log(status="unknown")
+                logger.error(f"Code interpretation status unknown.")
 
         fs_http = []
         for f_id, remote in f_http_ids:
             try:
                 data_bytes = c.files.content(f_id).read()
                 fs_http.append((data_bytes, remote))
+                logger.info(f"Retrieved file content from: {remote}")
             except Exception as e:
+                logger.error(f"Failed to retrieve file content from: {remote}")
                 continue
 
         imgs_http = []
@@ -130,18 +152,23 @@ class AuxiliaryLLMCodeAnalysisManager:
             try:
                 data_bytes = c.files.content(image_id).read()
                 imgs_http.append(data_bytes)
+                logger.info(f"Retrieved image content.")
             except Exception as e:
+                logger.error(f"Failed to retrieve image content.")
                 continue
 
         try:
             for f in f_objs:
                 try:
                     c.files.delete(f.id)
+                    logger.info(f"Deleted file object.")
                 except Exception as e:
+                    logger.error(f"Failed to delete file object.")
                     continue
             c.beta.threads.delete(thread.id)
             c.beta.assistants.delete(agent.id)
         except Exception as e:
+            logger.error(f"Failed to clean up the code interpretation process.")
             return CODE_ANALYST_CLEANUP_ERROR_LOG, [], []
 
         LLMTransaction.objects.create(
@@ -151,4 +178,5 @@ class AuxiliaryLLMCodeAnalysisManager:
             total_billable_cost=0, transaction_type=ChatRoles.ASSISTANT,
             transaction_source=LLMTransactionSourcesTypesNames.GENERATION
         )
+        logger.info(f"Created new LLM transaction for code interpretation.")
         return txts, fs_http, imgs_http

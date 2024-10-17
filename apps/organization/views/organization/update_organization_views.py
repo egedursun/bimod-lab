@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_organization_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +26,9 @@ from apps.organization.forms import OrganizationForm
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrganizationView_OrganizationUpdate(TemplateView, LoginRequiredMixin):
@@ -56,10 +57,12 @@ class OrganizationView_OrganizationUpdate(TemplateView, LoginRequiredMixin):
         form = OrganizationForm(request.POST, request.FILES, instance=org)
         if form.is_valid():
             form.save()
+            logger.info(f"Organization was updated by User: {self.request.user.id}.")
             return redirect('organization:list')
         else:
             context = self.get_context_data(**kwargs)
             context['form'] = form
             error_msgs = form.errors
             context['error_messages'] = error_msgs
+            logger.error(f"Organization update failed by User: {self.request.user.id}.")
             return self.render_to_response(context)

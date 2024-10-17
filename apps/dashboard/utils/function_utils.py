@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def build_statistics_for_graph(statistics, context):
@@ -65,6 +68,7 @@ def build_statistics_for_graph(statistics, context):
     agent_trg_jobs = statistics.get("triggers").get("total_triggered_task_executions_per_assistants", {})
     org_users_total = statistics.get("users").get("total_users_per_organizations", {})
     org_latest_registers = statistics.get("users").get("latest_registered_users_per_organizations", {})
+    logger.info("Building statistics for graph...")
 
     context["costs_per_organizations_labels"] = list(org_costs.keys())
     context["costs_per_assistants_labels"] = list(agent_costs.keys())
@@ -146,4 +150,5 @@ def build_statistics_for_graph(statistics, context):
     context["latest_registered_users_per_organizations_labels"] = list(org_latest_registers.keys())
     context["total_users_per_organizations_values"] = list(org_users_total.values())
     context["latest_registered_users_per_organizations_values"] = list(org_latest_registers.values())
+    logger.info("Statistics for graph built successfully.")
     return context

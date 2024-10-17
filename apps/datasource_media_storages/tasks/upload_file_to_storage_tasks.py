@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: upload_file_to_storage_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,17 +12,18 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 import boto3
 from celery import shared_task
 
 from apps.datasource_media_storages.utils import MEDIA_FILE_TYPES, MediaManagerItemCategoriesNames, MediaManagerItemFormatTypesNamesLists
 from config import settings
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -57,5 +58,7 @@ def upload_file_to_storage(file_bytes: bytes, full_path: str, media_category: st
         bucket = settings.AWS_STORAGE_BUCKET_NAME
         s3c.put_object(Bucket=bucket, Key=full_path, Body=file_bytes)
     except Exception as e:
+        logger.error(f"[tasks.upload_file_to_storage] Error uploading file to storage: {e}")
         return False
+    logger.info(f"[tasks.upload_file_to_storage] File uploaded successfully to storage: {full_path}")
     return True

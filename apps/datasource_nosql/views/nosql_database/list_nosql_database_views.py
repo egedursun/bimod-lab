@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_nosql_database_views.py
 #  Last Modified: 2024-10-12 13:21:24
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_nosql.models import NoSQLDatabaseConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class NoSQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
@@ -53,4 +56,5 @@ class NoSQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
                 c_by_orgs[orgs][agent] = []
             c_by_orgs[orgs][agent].append(connection)
         context['connections_by_organization'] = c_by_orgs
+        logger.info(f"NoSQL Database Connections were listed.")
         return context

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: fetch_media_file_from_url_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_media_storages.tasks import download_file_from_url
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MediaView_ItemHTTPRetrieval(LoginRequiredMixin, TemplateView):
@@ -49,13 +50,16 @@ class MediaView_ItemHTTPRetrieval(LoginRequiredMixin, TemplateView):
 
         mm_id = request.POST.get('storage_id') or None
         if not mm_id:
+            logger.error('Invalid media storage ID.')
             messages.error(request, 'Invalid media storage ID.')
             return redirect('datasource_media_storages:create_item')
         retrieval_uri = request.POST.get('download_url') or None
         if not retrieval_uri:
+            logger.error('Invalid download URL.')
             messages.error(request, 'Invalid download URL.')
             return redirect('datasource_media_storages:create_item')
         mm_id_int = int(mm_id)
         download_file_from_url.delay(storage_id=mm_id_int, url=retrieval_uri)
+        logger.info('File download from URL initiated.')
         messages.success(request, 'File download from URL initiated.')
         return redirect('datasource_media_storages:list_items')

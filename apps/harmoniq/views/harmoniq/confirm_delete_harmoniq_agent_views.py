@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: confirm_delete_harmoniq_agent_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -23,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.harmoniq.models import Harmoniq
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class HarmoniqView_ConfirmDelete(LoginRequiredMixin, TemplateView):
@@ -44,5 +49,6 @@ class HarmoniqView_ConfirmDelete(LoginRequiredMixin, TemplateView):
 
         harmoniq_agent = get_object_or_404(Harmoniq, id=self.kwargs['pk'])
         harmoniq_agent.delete()
+        logger.info(f"The Harmoniq agent was deleted by User: {request.user.id}.")
         messages.success(request, f'The Harmoniq agent "{harmoniq_agent.name}" has been successfully deleted.')
         return redirect('harmoniq:list')

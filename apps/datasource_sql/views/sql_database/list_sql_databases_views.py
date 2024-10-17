@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_sql_databases_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +25,9 @@ from apps.assistants.models import Assistant
 from apps.datasource_sql.models import SQLDatabaseConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class SQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
@@ -55,4 +56,5 @@ class SQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
                 c_by_orgs[orgs][agent] = []
             c_by_orgs[orgs][agent].append(connection)
         context['connections_by_organization'] = c_by_orgs
+        logger.info(f"SQL Database Connections were listed.")
         return context

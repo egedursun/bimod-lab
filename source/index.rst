@@ -1,7 +1,7 @@
-Br6.in Technical Documentation v0.1.0
+Bimod.io Technical Documentation v0.1.0
 ======================
 
-This is the official technical-level documentation for the Br6.in web application.
+This is the official technical-level documentation for the Bimod.io web application.
 
 .. toctree::
    :maxdepth: 10

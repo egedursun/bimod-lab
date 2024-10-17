@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_starred_messages_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +25,9 @@ from apps.starred_messages.models import StarredMessage
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class StarredMessageView_List(TemplateView, LoginRequiredMixin):
@@ -54,4 +55,5 @@ class StarredMessageView_List(TemplateView, LoginRequiredMixin):
                 org_agents_msgs[org_name][agent_name] = []
             org_agents_msgs[org_name][agent_name].append(msg)
         context.update({'org_assistants_messages': org_agents_msgs, 'base_url': MEDIA_URL})
+        logger.info(f"Starred messages list was viewed by User: {self.request.user.id}.")
         return context

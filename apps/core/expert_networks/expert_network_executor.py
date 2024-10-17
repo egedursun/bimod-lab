@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: expert_network_executor.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from apps.core.expert_networks.prompts.build_expert_network_to_assistant_instructions_prompt import \
     build_leanmod_to_expert_assistant_instructions_prompt
@@ -22,6 +23,9 @@ from apps.assistants.models import Assistant
 from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
 from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
 from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExpertNetworkExecutor:
@@ -40,12 +44,16 @@ class ExpertNetworkExecutor:
                 user=self.network.created_by_user, chat_source=SourcesForMultimodalChatsNames.ORCHESTRATION,
                 is_archived=False, created_by_user_id=self.network.created_by_user.id)
             chat = new_chat_object
+            logger.info(f"Created new chat object for expert network consultation: {chat}")
         except Exception as e:
+            logger.error(f"Failed to create new chat object for expert network consultation: {e}")
             return DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE
 
         try:
             llm_client = OpenAIGPTClientManager(assistant=expert_agent, chat_object=chat)
+            logger.info(f"Created new OpenAI GPT client manager for expert network consultation: {llm_client}")
         except Exception as e:
+            logger.error(f"Failed to create new OpenAI GPT client manager for expert network consultation: {e}")
             return DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE
 
         if image_urls is not None:
@@ -75,4 +83,5 @@ class ExpertNetworkExecutor:
             latest_message=structured_order, image_uris=image_urls, file_uris=file_urls)
         MultimodalChatMessage.objects.create(
             multimodal_chat=chat, sender_type='ASSISTANT', message_text_content=output)
+        logger.info(f"Created new chat message object for expert network consultation response: {output}")
         return output

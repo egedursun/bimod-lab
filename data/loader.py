@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: loader.py
 #  Last Modified: 2024-10-05 15:31:30
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,16 +12,20 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import json
+import logging
 
 from django.contrib.auth.models import User
 
 from apps.blog_app.models import BlogTag, BlogPost
 from apps.community_forum.models import ForumCategory, ForumThread
 from .path_consts import DataPaths
+
+
+logger = logging.getLogger(__name__)
 
 
 class BoilerplateDataLoader:
@@ -32,55 +36,56 @@ class BoilerplateDataLoader:
             BoilerplateDataLoader._load_forum_data()
             # print("[BoilerplateDataLoader.load_forum_data] Forum data loaded successfully")
         except Exception as e:
-            print(f"[BoilerplateDataLoader.load_forum_data] Error while loading forum data: {e}")
+            logger.error(f"[BoilerplateDataLoader.load_forum_data] Error while loading forum data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_blog_data()
             # print("[BoilerplateDataLoader.load_blog_data] Blog data loaded successfully")
         except Exception as e:
-            print(f"[BoilerplateDataLoader.load_blog_data] Error while loading blog data: {e}")
+            logger.error(f"[BoilerplateDataLoader.load_blog_data] Error while loading blog data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_functions_data()
             # print("[BoilerplateDataLoader.load_functions_data] Functions data loaded successfully")
         except Exception as e:
-            print(f"[BoilerplateDataLoader.load_functions_data] Error while loading functions data: {e}")
+            logger.error(f"[BoilerplateDataLoader.load_functions_data] Error while loading functions data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_apis_data()
             # print("[BoilerplateDataLoader.load_apis_data] APIs data loaded successfully")
         except Exception as e:
-            print(f"[BoilerplateDataLoader.load_apis_data] Error while loading APIs data: {e}")
+            logger.error(f"[BoilerplateDataLoader.load_apis_data] Error while loading APIs data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_scripts_data()
             # print("[BoilerplateDataLoader.load_scripts_data] Scripts data loaded successfully")
         except Exception as e:
-            print(f"[BoilerplateDataLoader.load_scripts_data] Error while loading scripts data: {e}")
+            logger.error(f"[BoilerplateDataLoader.load_scripts_data] Error while loading scripts data: {e}")
         ####
         try:
             BoilerplateDataLoader._load_knowledge_bases_data()
             # print("[BoilerplateDataLoader.load_knowledge_bases_data] Knowledge bases data loaded successfully")
         except Exception as e:
-            print(f"[BoilerplateDataLoader.load_knowledge_bases_data] Error while loading knowledge bases data: {e}")
+            logger.error(f"[BoilerplateDataLoader.load_knowledge_bases_data] Error while loading knowledge bases "
+                            f"data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_assistant_integrations_data()
             # print("[BoilerplateDataLoader.load_assistant_integrations_data] Assistant integrations data "
             #      "loaded successfully")
         except Exception as e:
-            print(f"[BoilerplateDataLoader.load_assistant_integrations_data] Error while loading assistant "
-                  f"integrations data: {e}")
+            logger.error(f"[BoilerplateDataLoader.load_assistant_integrations_data] Error while loading assistant "
+                            f"integrations data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_orchestration_meta_integrations_data()
             # print("[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Orchestration meta
             # integrations " "data loaded successfully")
         except Exception as e:
-            print(f"[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Error while loading "
-                  f"orchestration meta integrations data: {e}")
+            logger.error(f"[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Error while loading "
+                            f"orchestration meta integrations data: {e}")
         #####
-        print("[BoilerplateDataLoader.load] Pre-Fetched Data loading process is completed successfully.")
+        logger.info("[BoilerplateDataLoader.load] Boilerplate data loaded successfully")
 
     @staticmethod
     def _load_forum_data():

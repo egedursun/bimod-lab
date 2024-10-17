@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: like_comment_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
 #
+import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
@@ -25,6 +26,9 @@ from django.views import View
 
 from apps.community_forum.models import ForumComment, ForumLike
 from auth.utils import ForumRewardActionsNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class ForumView_CommentLike(LoginRequiredMixin, View):
@@ -43,4 +47,5 @@ class ForumView_CommentLike(LoginRequiredMixin, View):
             comment.save()
             comment_owner = comment.created_by
             comment_owner.profile.add_points(ForumRewardActionsNames.GET_LIKE)
+        logger.info(f"Comment liked. Comment ID: {comment.id}")
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

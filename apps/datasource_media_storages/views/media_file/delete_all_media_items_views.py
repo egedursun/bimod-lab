@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_all_media_items_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
-
+import logging
 import os
 
 from django.contrib import messages
@@ -29,6 +26,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_media_storages.models import DataSourceMediaStorageItem
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MediaView_ItemDeleteAll(LoginRequiredMixin, TemplateView):
@@ -56,7 +56,9 @@ class MediaView_ItemDeleteAll(LoginRequiredMixin, TemplateView):
                 try:
                     os.system(f"rm -rf {item.full_file_path}")
                 except Exception as e:
+                    logger.error(f"Error while deleting media file: {e}")
                     pass
         DataSourceMediaStorageItem.objects.filter(storage_base_id=mm_id).delete()
+        logger.info(f"[views.delete_all_media_items] All media files deleted successfully.")
         messages.success(request, 'All media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')

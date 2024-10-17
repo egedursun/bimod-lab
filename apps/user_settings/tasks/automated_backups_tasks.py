@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: automated_backups_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 import random
 
 from celery import shared_task
@@ -24,6 +24,9 @@ from django.utils import timezone
 from apps.organization.models import Organization
 from apps.data_backups.utils import BackupTypesNames
 from apps.core.data_backups.data_backup_executor import DataBackupExecutor
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -70,7 +73,10 @@ def initiate_automated_backups():
                                                                      responsible_user=org.users.first())
                     executor.backup_custom_scripts(backup_name=backup_name, password=sample_number)
                 else:
+                    logger.error(f"Unknown backup type: {backup_type}")
                     pass
             except Exception as e:
+                logger.error(f"Error initiating automated backup for organization {org.id}. Error: {e}")
                 continue
+    logger.info("Automated backups initiated.")
     return True

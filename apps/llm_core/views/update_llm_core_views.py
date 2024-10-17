@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_llm_core_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +29,9 @@ from apps.llm_core.utils import LARGE_LANGUAGE_MODEL_PROVIDERS, GPT_MODEL_NAMES
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class LLMView_Update(TemplateView, LoginRequiredMixin):
@@ -68,10 +72,12 @@ class LLMView_Update(TemplateView, LoginRequiredMixin):
             org = Organization.objects.get(id=request.POST['organization'])
             org.llm_cores.add(llm_core)
             org.save()
+            logger.info(f"LLM Core updated: {llm_core.id}")
             return redirect('llm_core:list')
         else:
             context = self.get_context_data(**kwargs)
             context['form'] = form
             error_msgs = form.errors
             context['error_messages'] = error_msgs
+            logger.error(f"Error updating LLM Core: {error_msgs}")
             return self.render_to_response(context)

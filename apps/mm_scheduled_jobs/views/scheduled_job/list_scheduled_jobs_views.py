@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_scheduled_jobs_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +26,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_scheduled_jobs.models import ScheduledJob
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ScheduledJobView_List(LoginRequiredMixin, TemplateView):
@@ -58,4 +59,5 @@ class ScheduledJobView_List(LoginRequiredMixin, TemplateView):
         context['scheduled_jobs'] = page_obj.object_list
         context['total_scheduled_jobs'] = ScheduledJob.objects.count()
         context['search_query'] = search_query
+        logger.info(f"Scheduled Jobs list was fetched by User: {self.request.user.id}.")
         return context

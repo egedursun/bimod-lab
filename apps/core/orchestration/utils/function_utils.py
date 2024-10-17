@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-05 02:26:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -23,7 +23,12 @@ from apps.multimodal_chat.utils import BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_EN
 from apps.orchestrations.models import OrchestrationQuery
 
 
+logger = logging.getLogger(__name__)
+
+
 def send_orchestration_message(log_message, query_id, stop_tag=BIMOD_STREAMING_END_TAG):
+    logger.info(f"Sending orchestration message: {log_message}")
+
     channel_layer = get_channel_layer()
     group_name = f'orchestration_logs_{query_id}'
     query_object = OrchestrationQuery.objects.get(id=query_id)

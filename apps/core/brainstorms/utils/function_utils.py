@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-05 02:13:34
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,16 +12,19 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
-
+import logging
 from json import JSONDecoder
 
 from apps.brainstorms.models import BrainstormingSession, BrainstormingIdea
 
 
+logger = logging.getLogger(__name__)
+
+
 def build_from_scratch_brainstorms_system_prompt(session: BrainstormingSession):
+    logger.info(f"Building from scratch prompt for session: {session.id}")
     topic_definition = session.topic_definition
     constraints = session.constraints
     prompt = f"""
@@ -119,6 +122,7 @@ def build_from_scratch_brainstorms_system_prompt(session: BrainstormingSession):
 
 def build_from_previous_level_brainstorms_system_prompt(session: BrainstormingSession,
                                                         previous_level_bookmarked_ideas: list):
+    logger.info(f"Building from previous level prompt for session: {session.id}")
     topic_definition = session.topic_definition
     constraints = session.constraints
     ideas_textual = ""
@@ -249,6 +253,7 @@ def build_from_previous_level_brainstorms_system_prompt(session: BrainstormingSe
 
 
 def build_synthesis_from_level_system_prompt(session: BrainstormingSession, bookmarked_ideas: list):
+    logger.info(f"Building synthesis prompt for session: {session.id}")
     topic_definition = session.topic_definition
     constraints = session.constraints
 
@@ -374,6 +379,7 @@ def build_synthesis_from_level_system_prompt(session: BrainstormingSession, book
 
 
 def build_synthesis_from_all_levels_system_prompt(session: BrainstormingSession, bookmarked_ideas: list):
+    logger.info(f"Building synthesis prompt for session: {session.id}")
     topic_definition = session.topic_definition
     constraints = session.constraints
 
@@ -499,6 +505,7 @@ def build_synthesis_from_all_levels_system_prompt(session: BrainstormingSession,
 
 
 def build_deepen_thought_over_idea_system_prompt(idea: BrainstormingIdea):
+    logger.info(f"Building deepen thought over idea prompt for idea: {idea.id}")
     topic_definition = idea.brainstorming_session.topic_definition
     constraints = idea.brainstorming_session.constraints
 
@@ -624,6 +631,7 @@ def build_deepen_thought_over_idea_system_prompt(idea: BrainstormingIdea):
 
 
 def find_json_presence(response: str, decoder=JSONDecoder()):
+    logger.info(f"Finding JSON presence in response: {response}")
     response = f"""{response}"""
     response = response.replace("\n", "").replace("'", '')
     json_objects = []

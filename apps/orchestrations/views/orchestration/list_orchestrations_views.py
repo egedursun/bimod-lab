@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_orchestrations_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +25,8 @@ from apps.orchestrations.models import Maestro
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+logger = logging.getLogger(__name__)
 
 
 class OrchestrationView_List(LoginRequiredMixin, TemplateView):
@@ -45,4 +47,5 @@ class OrchestrationView_List(LoginRequiredMixin, TemplateView):
         for org in user_orgs:
             orchestrations_by_org[org] = orchestrations.filter(organization=org)
         context['orchestrations_by_organization'] = orchestrations_by_org
+        logger.info(f"Orchestrations were listed by User: {self.request.user.id}.")
         return context

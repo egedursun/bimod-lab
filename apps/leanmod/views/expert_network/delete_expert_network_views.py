@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_expert_network_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.leanmod.models import ExpertNetwork
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExpertNetworkView_Delete(LoginRequiredMixin, TemplateView):
@@ -50,5 +51,6 @@ class ExpertNetworkView_Delete(LoginRequiredMixin, TemplateView):
         nw_id = kwargs.get('pk')
         nw = get_object_or_404(ExpertNetwork, id=nw_id)
         nw.delete()
+        logger.info(f"Expert Network {nw.name} was deleted by User: {self.request.user.id}.")
         messages.success(request, f'The expert network "{nw.name}" has been deleted successfully.')
         return redirect('leanmod:list_expert_networks')

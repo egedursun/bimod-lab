@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: upload_model_to_ml_storage_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 import boto3
 from celery import shared_task
@@ -24,6 +22,9 @@ from celery import shared_task
 from apps.datasource_ml_models.utils import ML_MODEL_ITEM_CATEGORIES
 from config import settings
 from config.settings import MEDIA_URL
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -36,6 +37,8 @@ def upload_model_to_ml_model_base(file_bytes: bytes, full_path: str):
         bucket = settings.AWS_STORAGE_BUCKET_NAME
         bucket_path = full_path.split(MEDIA_URL)[-1]
         s3c.put_object(Bucket=bucket, Key=bucket_path, Body=file_bytes)
+        logger.info(f"Model uploaded to ML Model Base: {full_path}")
     except Exception as e:
+        logger.error(f"Error while uploading model to ML Model Base: {e}")
         return False
     return True

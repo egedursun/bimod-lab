@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_media_storages_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MediaView_ManagerList(LoginRequiredMixin, TemplateView):
@@ -56,6 +57,7 @@ class MediaView_ManagerList(LoginRequiredMixin, TemplateView):
                 agent_data_list.append({'assistant': agent, 'media_storages': manager_data_list})
             data.append({'organization': org, 'assistants': agent_data_list})
         context['data'] = data
+        logger.info(f"Media Storages were listed.")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -71,5 +73,6 @@ class MediaView_ManagerList(LoginRequiredMixin, TemplateView):
         mm_ids = request.POST.getlist('selected_storages')
         if mm_ids:
             DataSourceMediaStorageConnection.objects.filter(id__in=mm_ids).delete()
+            logger.info(f"Media Storages were deleted.")
             messages.success(request, 'Selected storage connections deleted successfully.')
         return redirect('datasource_media_storages:list')

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_nosql_query_views.py
 #  Last Modified: 2024-10-12 13:22:36
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -25,6 +27,9 @@ from apps.datasource_nosql.forms import CustomNoSQLQueryForm
 from apps.datasource_nosql.models import CustomNoSQLQuery, NoSQLDatabaseConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class NoSQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
@@ -54,9 +59,11 @@ class NoSQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
         form = CustomNoSQLQueryForm(request.POST, instance=query)
         if form.is_valid():
             form.save()
+            logger.info("NoSQL Query updated.")
             messages.success(request, "NoSQL Query updated successfully.")
             return redirect('datasource_nosql:list_queries')
         else:
+            logger.error("Error updating NoSQL Query: " + str(form.errors))
             messages.error(request, "Error updating NoSQL Query: " + str(form.errors))
             context = self.get_context_data(**kwargs)
             context['form'] = form

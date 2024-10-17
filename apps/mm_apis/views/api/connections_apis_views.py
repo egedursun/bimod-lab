@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: connections_apis_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.mm_apis.models import CustomAPI, CustomAPIReference
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomAPIView_Connections(LoginRequiredMixin, TemplateView):
@@ -55,6 +56,7 @@ class CustomAPIView_Connections(LoginRequiredMixin, TemplateView):
             'connected_organizations': conn_orgs, 'apis': apis, 'assistants': agents,
             'assistant_api_map': agent_api_map, 'external_api_references_map': ext_api_refs_map
         })
+        logger.info(f"User: {self.request.user.id} is connecting APIs.")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -72,6 +74,7 @@ class CustomAPIView_Connections(LoginRequiredMixin, TemplateView):
         action = request.POST.get('action')
 
         if not agent_id or not action:
+            logger.error(f"Invalid input. Please try again.")
             messages.error(request, "Invalid input. Please try again.")
             return redirect('mm_apis:connect')
         try:
@@ -79,17 +82,22 @@ class CustomAPIView_Connections(LoginRequiredMixin, TemplateView):
             if action == 'add' and api_id:
                 custom_api = CustomAPI.objects.get(id=api_id)
                 CustomAPIReference.objects.create(assistant=agent, custom_api=custom_api, created_by_user=request.user)
+                logger.info(f"API '{custom_api.name}' assigned to assistant '{agent.name}'.")
                 messages.success(request, f"API '{custom_api.name}' assigned to assistant '{agent.name}'.")
             elif action == 'remove':
                 ref_id = request.POST.get('reference_id')
                 if ref_id:
                     reff = CustomAPIReference.objects.get(id=ref_id)
                     reff.delete()
+                    logger.info(f"API reference removed from assistant '{agent.name}'.")
                     messages.success(request, f"API reference removed from assistant '{agent.name}'.")
         except Assistant.DoesNotExist:
+            logger.error(f"Assistant not found.")
             messages.error(request, "Assistant not found.")
         except CustomAPI.DoesNotExist:
+            logger.error(f"Custom API not found.")
             messages.error(request, "Custom API not found.")
         except CustomAPIReference.DoesNotExist:
+            logger.error(f"Custom API Reference not found.")
             messages.error(request, "Custom API Reference not found.")
         return redirect('mm_apis:connect')

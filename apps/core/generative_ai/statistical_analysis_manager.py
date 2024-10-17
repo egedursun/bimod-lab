@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: statistical_analysis_manager.py
 #  Last Modified: 2024-10-09 00:27:17
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import json
+import logging
 
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_statistics_analysis_error_log
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
@@ -24,6 +25,9 @@ from apps.core.generative_ai.utils import DEFAULT_STATISTICS_ASSISTANT_NAME_PLAC
     DEFAULT_STATISTICS_TEMPERATURE, DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS
 from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
 from apps.core.system_prompts.dashboard_analysis.dashboard_statistics_prompt import build_dashboard_statistics_prompt
+
+
+logger = logging.getLogger(__name__)
 
 
 def provide_analysis(llm_model, statistics):
@@ -46,6 +50,8 @@ def provide_analysis(llm_model, statistics):
         choice_message = first_choice.message
         choice_message_content = choice_message.content
         output = choice_message_content
+        logger.info("Analysis has been provided successfully by the system.")
     except Exception as e:
+        logger.error(f"An error occurred while providing analysis: {str(e)}")
         output = get_statistics_analysis_error_log(error_logs=str(e))
     return output

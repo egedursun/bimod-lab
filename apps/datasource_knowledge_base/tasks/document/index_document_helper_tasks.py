@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: index_document_helper_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,15 +12,16 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from celery import shared_task
 
 from apps.datasource_knowledge_base.utils import document_loader
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -38,26 +39,35 @@ def index_document_helper(connection_id, document_paths):
             docc = _load_doc(path, xc)
             if not docc:
                 add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.FAILED)
+                logger.error(f"[index_document_helper] Document could not be loaded: {path}")
                 continue
             add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.LOADED)
+            logger.info(f"[index_document_helper] Document loaded: {path}")
             chks = _chunk_doc(docc, xc)
             if not chks:
                 add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.FAILED)
+                logger.error(f"[index_document_helper] Document could not be chunked: {path}")
                 continue
             add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.CHUNKED)
+            logger.info(f"[index_document_helper] Document chunked: {path}")
             doc_id, doc_uuid, error = _embed_doc(chks, docc, path, xc)
             add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.PROCESSED_DOCUMENT)
+            logger.info(f"[index_document_helper] Document embedded: {path}")
             if error or not doc_id or not doc_uuid:
                 add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.FAILED)
                 continue
+            logger.info(f"[index_document_helper] Document embedded successfully: {path}")
             errors = _chunk_doc_chks(chks, doc_id, doc_uuid, path, xc)
             if errors:
                 add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.PARTIALLY_FAILED)
+                logger.error(f"[index_document_helper] Document chunks could not be embedded: {path}")
                 continue
             add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.PROCESSED_CHUNKS)
             add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.COMPLETED)
+            logger.info(f"[index_document_helper] Document indexed successfully: {path}")
         except Exception as e:
             add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.FAILED)
+            logger.error(f"[index_document_helper] Error processing the document: {e}")
             continue
     return
 

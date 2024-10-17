@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_permission_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.organization.models import Organization
 from apps.user_permissions.models import UserPermission
 from apps.user_permissions.utils import PERMISSION_TYPES, PermissionNames, get_permissions_grouped
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class PermissionView_PermissionCreate(LoginRequiredMixin, TemplateView):
@@ -69,7 +70,9 @@ class PermissionView_PermissionCreate(LoginRequiredMixin, TemplateView):
             user = get_object_or_404(User, id=user_id)
             for perm in selected_permissions:
                 UserPermission.objects.get_or_create(user=user, permission_type=perm)
+            logger.info(f"Permissions added to User: {user.id}.")
             return redirect('user_permissions:list_permissions')
         context = self.get_context_data(**kwargs)
         context['error_messages'] = "All fields are required."
+        logger.error("All fields are required.")
         return render(request, self.template_name, context)

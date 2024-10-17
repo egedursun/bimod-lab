@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_nosql_database_views.py
 #  Last Modified: 2024-10-12 13:21:03
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -25,6 +27,9 @@ from apps.datasource_nosql.forms import NoSQLDatabaseConnectionForm
 from apps.datasource_nosql.utils import NOSQL_DATABASE_CHOICES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class NoSQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
@@ -51,9 +56,11 @@ class NoSQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
 
         if form.is_valid():
             form.save()
+            logger.info("NoSQL Data Source created.")
             messages.success(request, "NoSQL Data Source created successfully.")
             return redirect('datasource_nosql:create')
         else:
+            logger.error("Error creating NoSQL Data Source.")
             messages.error(request, "Error creating NoSQL Data Source.")
             context = self.get_context_data(**kwargs)
             context['form'] = form

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: endpoint_export_leanmod_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
-#
-#
-#
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import json
+import logging
 
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -33,6 +31,9 @@ from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalC
 from config.settings import BASE_URL
 
 
+logger = logging.getLogger(__name__)
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class ExportLeanmodAssistantAPIView(View):
     def post(self, request, *args, **kwargs):
@@ -42,15 +43,18 @@ class ExportLeanmodAssistantAPIView(View):
             exp_agent = ExportLeanmodAssistantAPI.objects.get(endpoint=endpoint)
 
         except ExportLeanmodAssistantAPI.DoesNotExist:
+            logger.error(f"Invalid endpoint: {endpoint}")
             return JsonResponse({
                 "message": "Invalid endpoint", "data": {}, "status": LeanModAssistantStatusCodes.NOT_FOUND
             }, status=LeanModAssistantStatusCodes.NOT_FOUND)
         if not exp_agent.is_online:
+            logger.error(f"The endpoint is currently offline: {endpoint}")
             return JsonResponse({
                 "message": "The endpoint is currently offline. Please try again later.", "data": {},
                 "status": LeanModAssistantStatusCodes.SERVICE_OFFLINE
             }, status=LeanModAssistantStatusCodes.SERVICE_OFFLINE)
         if (not exp_agent.is_public) and exp_agent.custom_api_key != api_key:
+            logger.error(f"Invalid API key provided for endpoint: {endpoint}")
             return JsonResponse({
                 "message": "The API key provided is invalid, please provide a valid API key.", "data": {},
                 "status": LeanModAssistantStatusCodes.UNAUTHORIZED
@@ -58,6 +62,7 @@ class ExportLeanmodAssistantAPIView(View):
 
         LeanmodRequestLog.objects.create(export_lean_assistant=exp_agent)
         if exp_agent.requests_in_last_hour() > exp_agent.request_limit_per_hour:
+            logger.error(f"The API request limit has been reached for endpoint: {endpoint}")
             return JsonResponse({
                 "error": "The API request limit has been reached. Please try again later.",
                 "data": {
@@ -69,18 +74,25 @@ class ExportLeanmodAssistantAPIView(View):
         try:
             chat_history = body.get('chat_history')
             if len(chat_history) == 0:
+                logger.error("Chat history is empty.")
                 raise ValueError("Chat history is empty.")
             if "role" not in chat_history[0]:
+                logger.error("Each of the chat history elements must contain 'role' key.")
                 raise ValueError("Each of the chat history elements must contain 'role' key, which can either"
                                  "be 'system', 'assistant' or 'user'.")
             if chat_history[0]["role"] not in ["system", "assistant", "user"]:
+                logger.error("The 'role' key in the first element of the chat history must be either 'system',"
+                             "'assistant' or 'user'.")
                 raise ValueError("The 'role' key in the first element of the chat history must be either 'system',"
                                  "'assistant' or 'user'.")
             if "content" not in chat_history[0]:
+                logger.error("Each of the chat history elements must contain 'content' key.")
                 raise ValueError("Each of the chat history elements must contain 'content' key.")
             if not isinstance(chat_history[0]["content"], str):
+                logger.error("The 'content' key in the first element of the chat history must be a string.")
                 raise ValueError("The 'content' key in the first element of the chat history must be a string.")
         except Exception as e:
+            logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e), "data": {}, "status": LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR
             }, status=LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR)
@@ -102,6 +114,7 @@ class ExportLeanmodAssistantAPIView(View):
                 )
                 user_message = api_chat.lean_chat_messages.filter(sender_type=role.upper()).last()
         except Exception as e:
+            logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e),
                 "data": {}, "status": LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR
@@ -114,6 +127,7 @@ class ExportLeanmodAssistantAPIView(View):
             MultimodalLeanChatMessage.objects.create(
                 multimodal_lean_chat=api_chat, sender_type='ASSISTANT', message_text_content=llm_response_text)
         except Exception as e:
+            logger.error(f"Error generating response for endpoint: {endpoint}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e), "data": {},
                 "status": LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR
@@ -125,4 +139,5 @@ class ExportLeanmodAssistantAPIView(View):
                          "chat": {"chat_name": api_chat.chat_name, }},
             "message": {"assistant_name": exp_agent.lean_assistant.name, "content": llm_response_text,
                         "role": "assistant", "media": {"files": file_uris, "images": image_uris}}}}
+        logger.info(f"Leanmod Assistant API response generated for endpoint: {endpoint}")
         return JsonResponse(response_data, status=LeanModAssistantStatusCodes.OK)

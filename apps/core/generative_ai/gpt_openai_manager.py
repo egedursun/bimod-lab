@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: openai.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from openai import OpenAI
 
@@ -32,6 +33,9 @@ from apps.core.system_prompts.chat_history_factory_builder import HistoryBuilder
 from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
 from apps.core.tool_calls.tool_call_manager import ToolCallManager
 from apps.multimodal_chat.utils import calculate_billable_cost_from_raw, transmit_websocket_log, BIMOD_NO_TAG_PLACEHOLDER
+
+
+logger = logging.getLogger(__name__)
 
 
 class OpenAIGPTClientManager:
@@ -70,6 +74,7 @@ class OpenAIGPTClientManager:
                 transmit_websocket_log(f"""💥 Chat history preparation is completed.""", chat_id=self.chat.id)
 
             except Exception as e:
+                logger.error(f"Error occurred while preparing the prompts for the process: {str(e)}")
                 transmit_websocket_log(f"""
                 🚨 A critical error occurred while preparing the prompts for the process.
                 """, chat_id=self.chat.id, stop_tag=BIMOD_PROCESS_END)
@@ -82,6 +87,7 @@ class OpenAIGPTClientManager:
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, model=self.chat.assistant.llm_model.model_name,
                     text=latest_message)
             except Exception as e:
+                logger.error(f"Error occurred while inspecting the transaction parameters: {str(e)}")
                 transmit_websocket_log(f"""
                 🚨 A critical error occurred while inspecting the transaction parameters.
                 """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
@@ -114,6 +120,7 @@ class OpenAIGPTClientManager:
                     max_tokens=int(self.assistant.llm_model.maximum_tokens),
                     top_p=float(self.assistant.llm_model.top_p), stream=True)
             except Exception as e:
+                logger.error(f"Error occurred while retrieving the response from the language model: {str(e)}")
                 transmit_websocket_log(f"""
                 🚨 A critical error occurred while retrieving the response from the language model.
                 """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
@@ -152,6 +159,7 @@ class OpenAIGPTClientManager:
 
                 transmit_websocket_log(f"""📦 Preparing the response...""", chat_id=self.chat.id)
             except Exception as e:
+                logger.error(f"Error occurred while processing the response from the language model: {str(e)}")
                 transmit_websocket_log(f"""
                 🚨 A critical error occurred while processing the response from the language model.
                 """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
@@ -169,6 +177,7 @@ class OpenAIGPTClientManager:
                     llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source)
             except Exception as e:
+                logger.error(f"Error occurred while saving the transaction: {str(e)}")
                 transmit_websocket_log(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
@@ -179,6 +188,7 @@ class OpenAIGPTClientManager:
             """, chat_id=self.chat.id)
             final_resp = acc_resp
         except Exception as e:
+            logger.error(f"Error occurred while processing the response: {str(e)}")
             final_resp = step_back_retry_mechanism(
                 client=self, latest_message=latest_message, caller=RetryCallersNames.RESPOND_STREAM)
             transmit_websocket_log(f"""
@@ -208,6 +218,7 @@ class OpenAIGPTClientManager:
                     self.chat.transactions.add(failure_tx)
                     self.chat.save()
                 except Exception as e:
+                    logger.error(f"Error occurred while saving the transaction: {str(e)}")
                     transmit_websocket_log(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
@@ -229,6 +240,7 @@ class OpenAIGPTClientManager:
                     self.chat.transactions.add(failure_tx)
                     self.chat.save()
                 except Exception as e:
+                    logger.error(f"Error occurred while saving the transaction: {str(e)}")
                     transmit_websocket_log(f"""
             🚨 A critical error occurred while saving the transaction. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
@@ -274,6 +286,7 @@ class OpenAIGPTClientManager:
                     🎯 Tool response from '{tool_name}' has been successfully delivered to the assistant.
                                         """, chat_id=self.chat.id)
                 except Exception as e:
+                    logger.error(f"Error occurred while executing the tool: {str(e)}")
                     transmit_websocket_log(f"""
                     🚨 Error occurred while executing the tool. Attempting to recover...
                                         """, chat_id=self.chat.id)
@@ -317,6 +330,7 @@ class OpenAIGPTClientManager:
                 """, chat_id=self.chat.id)
 
             except Exception as e:
+                logger.error(f"Error occurred while recording the tool request: {str(e)}")
                 transmit_websocket_log(f"""
             🚨 A critical error occurred while recording the tool request. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
@@ -335,6 +349,7 @@ class OpenAIGPTClientManager:
                     ⚙️ Tool response records have been prepared. Proceeding with the next actions...
                 """, chat_id=self.chat.id)
             except Exception as e:
+                logger.error(f"Error occurred while recording the tool response: {str(e)}")
                 transmit_websocket_log(f"""
             🚨 A critical error occurred while recording the tool response. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
@@ -354,6 +369,7 @@ class OpenAIGPTClientManager:
                     llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source)
             except Exception as e:
+                logger.error(f"Error occurred while recording the transaction: {str(e)}")
                 transmit_websocket_log(f"""
             🚨 A critical error occurred while recording the transaction. Cancelling the process.
                                 """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
@@ -392,6 +408,7 @@ class OpenAIGPTClientManager:
                 ext_msgs, encrypt_msgs = HistoryBuilder.build_chat_history(chat=self.chat, ner_executor=ner_xc)
                 prompt_msgs.extend(ext_msgs)
             except Exception as e:
+                logger.error(f"Error occurred while preparing the prompts for the process: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -399,6 +416,7 @@ class OpenAIGPTClientManager:
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, model=self.chat.assistant.llm_model.model_name,
                     text=latest_message)
             except Exception as e:
+                logger.error(f"Error occurred while inspecting the transaction parameters: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
 
             if latest_msg_billable_cost > self.chat.organization.balance:
@@ -424,6 +442,7 @@ class OpenAIGPTClientManager:
                     max_tokens=int(self.assistant.llm_model.maximum_tokens),
                     top_p=float(self.assistant.llm_model.top_p))
             except Exception as e:
+                logger.error(f"Error occurred while retrieving the response from the language model: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
             try:
                 choices = resp.choices
@@ -431,6 +450,7 @@ class OpenAIGPTClientManager:
                 choice_message = first_choice.message
                 choice_message_content = choice_message.content
             except Exception as e:
+                logger.error(f"Error occurred while processing the response from the language model: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
 
             ####################################################################################################
@@ -452,9 +472,11 @@ class OpenAIGPTClientManager:
                     transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source
                 )
             except Exception as e:
+                logger.error(f"Error occurred while saving the transaction: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
             final_resp = choice_message_content
         except Exception as e:
+            logger.error(f"Error occurred while processing the response: {str(e)}")
             final_resp = step_back_retry_mechanism(client=self, latest_message=latest_message,
                                                        caller=RetryCallersNames.RESPOND)
             if final_resp == DEFAULT_ERROR_MESSAGE:
@@ -476,6 +498,7 @@ class OpenAIGPTClientManager:
                     self.chat.transactions.add(failure_tx)
                     self.chat.save()
                 except Exception as e:
+                    logger.error(f"Error occurred while saving the transaction: {str(e)}")
                     return idle_tx_msg
                 apps.core.generative_ai.utils.constant_utils.ACTIVE_CHAIN_SIZE = 0
                 return idle_tx_msg
@@ -493,6 +516,7 @@ class OpenAIGPTClientManager:
                     self.chat.transactions.add(failure_tx)
                     self.chat.save()
                 except Exception as e:
+                    logger.error(f"Error occurred while saving the transaction: {str(e)}")
                     return idle_tx_msg
                 apps.core.generative_ai.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT = 0
                 return idle_tx_msg
@@ -516,6 +540,7 @@ class OpenAIGPTClientManager:
                                 [{i}c.] "image_uris": {image_uris}
                         """)
                 except Exception as e:
+                    logger.error(f"Error occurred while executing the tool: {str(e)}")
                     if tool_name is not None:
                         tool_resp = get_json_decode_error_log(error_logs=str(e))
                         tool_resp_list.append(f"""
@@ -544,6 +569,7 @@ class OpenAIGPTClientManager:
                 self.chat.chat_messages.add(tool_req)
                 self.chat.save()
             except Exception as e:
+                logger.error(f"Error occurred while recording the tool request: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -554,6 +580,7 @@ class OpenAIGPTClientManager:
                 self.chat.chat_messages.add(tool_msg)
                 self.chat.save()
             except Exception as e:
+                logger.error(f"Error occurred while recording the tool response: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -564,6 +591,7 @@ class OpenAIGPTClientManager:
                     llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source)
             except Exception as e:
+                logger.error(f"Error occurred while recording the transaction: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
             return self.respond(latest_message=tool_msg, prev_tool_name=prev_tool_name, with_media=with_media,
                                 file_uris=file_uris, image_uris=image_uris)

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,17 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 import re
 
 
+logger = logging.getLogger(__name__)
+
+
 def infer_credit_card_type(card_number):
+    logger.info(f"Inferring credit card type for card number.")
     card_types = {
         'visa': r'^4[0-9]{12}(?:[0-9]{3})?$',
         'mastercard': r'^5[1-5][0-9]{14}$',

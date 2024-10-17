@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: execute_scheduled_job_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from celery import shared_task
 from django.utils import timezone
@@ -28,6 +26,9 @@ from apps.llm_transaction.models import LLMTransaction
 
 from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
 from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -47,6 +48,7 @@ def execute_scheduled_job(scheduled_job_id):
                                                        status=ScheduledJobInstanceStatusesNames.PENDING)
     job.scheduled_job_instances.add(new_instance)
     job.save()
+    logger.info(f"Executing Scheduled Job: {job.id}")
     try:
         job.current_run_count += 1
         job.save()
@@ -137,6 +139,8 @@ def execute_scheduled_job(scheduled_job_id):
             llm_cost=InternalServiceCosts.ScheduledJobExecutor.COST, transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SCHEDULED_JOB_EXECUTION, is_tool_cost=True)
         transaction.save()
+        logger.info(f"Scheduled Job: {job.id} was executed successfully.")
     except Exception as e:
+        logger.error(f"Error while executing the scheduled job: {e}")
         new_instance.status = ScheduledJobInstanceStatusesNames.FAILED
         new_instance.save()

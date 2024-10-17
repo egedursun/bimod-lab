@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_export_assistant_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +26,9 @@ from apps.assistants.models import Assistant
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MAX_ASSISTANT_EXPORTS_ORGANIZATION
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExportAssistantView_Create(TemplateView, LoginRequiredMixin):
@@ -75,8 +76,10 @@ class ExportAssistantView_Create(TemplateView, LoginRequiredMixin):
             org.exported_assistants.add(new_export_assistant)
             org.save()
             start_endpoint_for_assistant(assistant=new_export_assistant)
+            logger.info(f"Export Assistant API was created by User: {request.user.id}.")
             messages.success(request, "Export Assistant API created successfully!")
             return redirect("export_assistants:list")
         except Exception as e:
+            logger.error(f"Error creating Export Assistant API: {str(e)}")
             messages.error(request, f"Error creating Export Assistant API: {str(e)}")
             return self.render_to_response(self.get_context_data())

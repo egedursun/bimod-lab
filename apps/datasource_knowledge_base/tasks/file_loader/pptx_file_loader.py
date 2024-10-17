@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: load_pptx_helper_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,13 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from langchain_community.document_loaders import UnstructuredPowerPointLoader
+
+logger = logging.getLogger(__name__)
 
 
 def load_pptx_content(path: str):
@@ -33,5 +36,7 @@ def load_pptx_content(path: str):
                 clean_doc["page_content"] += pg_content
                 clean_doc["metadata"] = meta
             except Exception as e:
+                logger.error(f"[tasks.load_pptx_content] Error loading the PPTX content: {e}")
                 continue
+    logger.info(f"[tasks.load_pptx_content] PPTX content loaded successfully.")
     return clean_doc

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: ssh_commands.py
 #  Last Modified: 2024-10-15 23:19:20
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
@@ -24,6 +26,8 @@ from apps.core.drafting.drafting_executor import DraftingExecutionManager
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingDocument
 from apps.user_permissions.utils import PermissionNames
+
+logger = logging.getLogger(__name__)
 
 
 class DraftingView_GenerateViaSSHCommand(LoginRequiredMixin, View):
@@ -47,4 +51,5 @@ class DraftingView_GenerateViaSSHCommand(LoginRequiredMixin, View):
         command = request.POST.get('command')
         xc = DraftingExecutionManager(drafting_document=document)
         response_json = xc.execute_ssh_command(command=command)
+        logger.info(f"SSH Command was executed for Drafting Document: {document.id}.")
         return JsonResponse(response_json)

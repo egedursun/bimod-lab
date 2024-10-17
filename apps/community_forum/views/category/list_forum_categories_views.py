@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_forum_categories_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
@@ -24,6 +22,9 @@ from django.views.generic import TemplateView
 
 from apps.community_forum.models import ForumCategory
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ForumView_CategoryList(LoginRequiredMixin, TemplateView):
@@ -41,4 +42,5 @@ class ForumView_CategoryList(LoginRequiredMixin, TemplateView):
         context['categories'] = page_obj
         context['page_obj'] = page_obj
         context['search_query'] = search_query
+        logger.info(f"Forum Categories were listed.")
         return context

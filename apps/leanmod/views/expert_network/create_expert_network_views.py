@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_expert_network_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExpertNetworkView_Create(LoginRequiredMixin, TemplateView):
@@ -58,6 +59,7 @@ class ExpertNetworkView_Create(LoginRequiredMixin, TemplateView):
         try:
             org = Organization.objects.get(id=org_id)
         except Organization.DoesNotExist:
+            logger.error(f"Selected organization does not exist.")
             messages.error(request, "Selected organization does not exist.")
             return redirect('leanmod:create_expert_network')
         try:
@@ -65,6 +67,7 @@ class ExpertNetworkView_Create(LoginRequiredMixin, TemplateView):
                 name=name, meta_description=desc, organization=org, created_by_user=request.user,
                 last_updated_by_user=request.user)
         except Exception as e:
+            logger.error(f"Error creating Expert Network: {e}")
             messages.error(request, f"Error creating Expert Network: {e}")
             return redirect('leanmod:create_expert_network')
 
@@ -78,7 +81,9 @@ class ExpertNetworkView_Create(LoginRequiredMixin, TemplateView):
                 expert_network.assistant_references.add(reference)
                 expert_network.save()
             except Exception as e:
+                logger.error(f"Error creating Expert Network Assistant Reference: {e}")
                 messages.error(request, f"Error creating Expert Network Assistant Reference: {e}")
                 return redirect('leanmod:create_expert_network')
+        logger.info(f"Expert Network created successfully with selected assistants.")
         messages.success(request, "Expert Network created successfully with selected assistants.")
         return redirect('leanmod:list_expert_networks')

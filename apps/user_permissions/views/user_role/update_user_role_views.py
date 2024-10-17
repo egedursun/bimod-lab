@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_user_role_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
@@ -28,6 +28,9 @@ from apps.user_permissions.forms import UserRoleForm
 from apps.user_permissions.models import UserRole
 from apps.user_permissions.utils import PERMISSION_TYPES, PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class PermissionView_UserRoleUpdate(LoginRequiredMixin, TemplateView):
@@ -68,8 +71,10 @@ class PermissionView_UserRoleUpdate(LoginRequiredMixin, TemplateView):
             selected_permissions = form.cleaned_data.get('role_permissions')
             role.role_permissions = selected_permissions
             role.save()
+            logger.info(f"User role updated by User: {self.request.user.id}.")
             messages.success(request, f'Role "{role.role_name}" updated successfully.')
             return redirect('user_permissions:list_user_roles')
         else:
+            logger.error(f"Error updating the role. Form errors: {form.errors}")
             messages.error(request, 'Error updating the role.')
             return self.render_to_response(self.get_context_data(**kwargs))

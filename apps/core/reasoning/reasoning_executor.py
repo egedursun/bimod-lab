@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: reasoning_executor.py
 #  Last Modified: 2024-10-06 19:55:08
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
-
+import logging
 from uuid import uuid4
 
 import boto3
@@ -28,6 +27,9 @@ from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 from config import settings
 from config.settings import MEDIA_URL
+
+
+logger = logging.getLogger(__name__)
 
 
 class ReasoningExecutor:
@@ -44,15 +46,18 @@ class ReasoningExecutor:
             llm_c = ReasoningAuxiliaryLLMManager(
                 assistant=self.assistant,
                 chat_object=self.chat)
+            logger.info(f"[ReasoningExecutor.execute_process_reasoning] OpenAI client created successfully.")
         except Exception as e:
+            logger.error(f"[ReasoningExecutor.execute_process_reasoning] Failed to create the OpenAI client.")
             return f"Failed to create the OpenAI client. The cause of the error is as follows: {str(e)}"
         try:
             texts = llm_c.process_reasoning(query=query_string)
+            logger.info(f"[ReasoningExecutor.execute_process_reasoning] Reasoning processed successfully.")
         except Exception as e:
+            logger.error(f"[ReasoningExecutor.execute_process_reasoning] Failed to process the reasoning. ")
             return f"Failed to process the reasoning. The cause of the error is as follows: {str(e)}"
 
         response = texts
-        print(f"[ReasoningExecutor.execute_process_reasoning] Response prepared successfully.")
         try:
             tx = LLMTransaction(
                 organization=self.chat.assistant.organization, model=self.chat.assistant.llm_model,
@@ -61,7 +66,9 @@ class ReasoningExecutor:
                 transaction_type=ChatRoles.SYSTEM, transaction_source=LLMTransactionSourcesTypesNames.REASONING,
                 is_tool_cost=True)
             tx.save()
+            logger.info(f"[ReasoningExecutor.execute_process_reasoning] User transaction saved successfully.")
         except Exception as e:
+            logger.error(f"[ReasoningExecutor.execute_process_reasoning] Failed to save the user transaction. ")
             return f"Failed to save the user transaction. The cause of the error is as follows: {str(e)}"
         return response
 
@@ -76,6 +83,7 @@ class ReasoningExecutor:
 
     @staticmethod
     def save_file_and_provide_full_uri(file_bytes, remote_name):
+        logger.info(f"[ReasoningExecutor.save_file_and_provide_full_uri] Saving the file to S3.")
         if not remote_name:
             guess_file_type = filetype.guess(file_bytes)
             if guess_file_type is None:
@@ -91,8 +99,9 @@ class ReasoningExecutor:
             s3c = boto3.client('s3')
             bucket = settings.AWS_STORAGE_BUCKET_NAME
             s3c.put_object(Bucket=bucket, Key=s3_path, Body=file_bytes)
+            logger.info(f"[ReasoningExecutor.save_file_and_provide_full_uri] File saved to S3 with URI: {full_uri}")
         except Exception as e:
-
+            logger.error(f"[ReasoningExecutor.save_file_and_provide_full_uri] Error occurred while saving the file to S3: {e}")
             return None
         return full_uri
 
@@ -109,7 +118,9 @@ class ReasoningExecutor:
             s3c = boto3.client('s3')
             bucket = settings.AWS_STORAGE_BUCKET_NAME
             s3c.put_object(Bucket=bucket, Key=s3_path, Body=image_bytes)
+            logger.info(f"[ReasoningExecutor.save_image_and_provide_full_uri] Image saved to S3 with URI: {full_uri}")
         except Exception as e:
+            logger.error(f"[ReasoningExecutor.save_image_and_provide_full_uri] Error occurred while saving the image to S3: {e}")
             return None
         return full_uri
 
@@ -121,7 +132,9 @@ class ReasoningExecutor:
                 f_uri = ReasoningExecutor.save_file_and_provide_full_uri(f_bytes, remote)
                 if f_uri is not None:
                     f_uris.append(f_uri)
+                logger.info(f"[ReasoningExecutor.save_files_and_provide_full_uris] File saved successfully.")
             except Exception as e:
+                logger.error(f"[ReasoningExecutor.save_files_and_provide_full_uris] Error occurred while saving the file: {e}")
                 pass
         return f_uris
 
@@ -133,6 +146,8 @@ class ReasoningExecutor:
                 f_uri = ReasoningExecutor.save_image_and_provide_full_uri(img_bytes)
                 if f_uri is not None:
                     f_uris.append(f_uri)
+                logger.info(f"[ReasoningExecutor.save_images_and_provide_full_uris] Image saved successfully.")
             except Exception as e:
+                logger.error(f"[ReasoningExecutor.save_images_and_provide_full_uris] Error occurred while saving the image: {e}")
                 pass
         return f_uris

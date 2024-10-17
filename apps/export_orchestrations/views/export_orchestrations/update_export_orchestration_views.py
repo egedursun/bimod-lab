@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_export_orchestration_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +26,9 @@ from apps.export_orchestrations.models import ExportOrchestrationAPI
 from apps.orchestrations.models import Maestro
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExportOrchestrationView_Update(TemplateView, LoginRequiredMixin):
@@ -62,4 +63,5 @@ class ExportOrchestrationView_Update(TemplateView, LoginRequiredMixin):
         context = self.get_context_data()
         context.update({'export_assistant': exp_agent,
                         'assistants': Maestro.objects.filter(organization__users__in=[self.request.user]).all()})
+        logger.error(f"Export Orchestration was not updated by User: {request.user.id}.")
         return render(request, self.template_name, context)

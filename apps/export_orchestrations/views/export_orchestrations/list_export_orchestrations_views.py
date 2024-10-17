@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_export_orchestrations_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +26,9 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExportOrchestrationView_List(TemplateView, LoginRequiredMixin):
@@ -60,4 +61,5 @@ class ExportOrchestrationView_List(TemplateView, LoginRequiredMixin):
         context["user"] = user_context
         context["organization_data"] = org_data
         context["export_assistants"] = exp_agents
+        logger.info(f"User: {user_context.id} listed Export Orchestration APIs.")
         return context

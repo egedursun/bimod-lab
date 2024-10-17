@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: detail_forum_thread_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -33,6 +31,9 @@ from auth.utils import ForumRewardActionsNames
 from web_project import TemplateLayout
 
 
+logger = logging.getLogger(__name__)
+
+
 class ForumView_ThreadDetail(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         thread_id = self.kwargs.get("thread_id")
@@ -42,6 +43,7 @@ class ForumView_ThreadDetail(LoginRequiredMixin, TemplateView):
         if request.user.profile.user_last_forum_comment_at:
             if (timezone.now() - request.user.profile.user_last_forum_comment_at).seconds < (5 * CONST_MINUTES):
                 messages.error(request, "You can only comment once every 5 minutes.")
+                logger.error(f"User tried to comment more than once per 5 minutes. User ID: {request.user.id}")
                 return redirect('community_forum:thread_detail', thread_id=thread.id)
         request.user.profile.user_last_forum_comment_at = timezone.now()
         request.user.profile.save()
@@ -53,10 +55,12 @@ class ForumView_ThreadDetail(LoginRequiredMixin, TemplateView):
             comment.created_by = request.user
             comment.save()
             request.user.profile.add_points(ForumRewardActionsNames.ADD_COMMENT)
+            logger.info(f"Forum comment created. Comment ID: {comment.id}")
             return redirect('community_forum:thread_detail', thread_id=thread.id)
 
         context = self.get_context_data(**kwargs)
         context['form'] = form
+        logger.error(f"Error creating forum comment: {form.errors}")
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
@@ -91,4 +95,5 @@ class ForumView_ThreadDetail(LoginRequiredMixin, TemplateView):
             for comment in post.ordered_comments:
                 comment.user_has_liked = ForumLike.objects.filter(comment=comment, user=self.request.user).exists()
         context['form'] = ForumCommentForm()
+        logger.info(f"Thread detail view accessed. Thread ID: {thread.id}")
         return context

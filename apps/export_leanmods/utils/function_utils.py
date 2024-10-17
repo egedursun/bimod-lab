@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
-#
-#
-#
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import hashlib
+import logging
 import random
 import string
 
@@ -26,7 +24,11 @@ from apps.leanmod.models import LeanAssistant
 from config import settings
 
 
+logger = logging.getLogger(__name__)
+
+
 def generate_leanmod_assistant_endpoint(assistant: LeanAssistant):
+    logger.info(f"Generating LeanMod Assistant Endpoint for Assistant: {assistant}")
     agent_id = assistant.id
     org_id = assistant.organization.id
     org_name = assistant.organization.name
@@ -44,6 +46,7 @@ def generate_leanmod_assistant_endpoint(assistant: LeanAssistant):
 
 
 def generate_leanmod_assistant_custom_api_key(assistant: LeanAssistant):
+    logger.info(f"Generating LeanMod Assistant Custom API Key for Assistant: {assistant}")
     agent_id = assistant.id
     org_id = assistant.organization.id
     org_name = assistant.organization.name

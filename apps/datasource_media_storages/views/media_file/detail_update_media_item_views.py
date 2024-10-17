@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: detail_update_media_item_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
-
+import logging
 import os
 
 import boto3
@@ -33,6 +30,9 @@ from apps.datasource_media_storages.utils import decode_stream__docx, decode_str
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MediaView_ItemUpdate(LoginRequiredMixin, TemplateView):
@@ -91,5 +91,6 @@ class MediaView_ItemUpdate(LoginRequiredMixin, TemplateView):
         description = request.POST.get('description')
         media_item.description = description
         media_item.save()
+        logger.info(f"[views.update_media_item] Media item updated successfully.")
         messages.success(request, 'Media item updated successfully.')
         return redirect('datasource_media_storages:list_items')

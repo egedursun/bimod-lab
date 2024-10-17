@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: drafting_folders_create_views.py
 #  Last Modified: 2024-10-14 18:45:30
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingFolder
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class DraftingView_FolderCreate(LoginRequiredMixin, View):
@@ -49,4 +52,5 @@ class DraftingView_FolderCreate(LoginRequiredMixin, View):
                 organization=organization, name=folder_name, description=description,
                 meta_context_instructions=meta_context_instructions, created_by_user=request.user
             )
+        logger.info(f"Drafting Folder was created by User: {request.user.id}.")
         return redirect('drafting:folders_list')

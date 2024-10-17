@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_organization_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +27,9 @@ from apps.llm_transaction.utils import InvoiceTypesNames, AcceptedMethodsOfPayme
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrganizationView_OrganizationDelete(DeleteView, LoginRequiredMixin):
@@ -65,6 +66,7 @@ class OrganizationView_OrganizationDelete(DeleteView, LoginRequiredMixin):
             organization=org, responsible_user=context_user, transaction_type=InvoiceTypesNames.TRANSFERRED_CREDITS,
             amount_added=src_org_balance, payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER)
         org.delete()
+        logger.info(f"Organization: {org.id} was deleted by User: {context_user.id}.")
         messages.success(request,
                          f'Organization "{org.name}" has been deleted and the balance has been transferred to "{transfer_org.name}".')
         return redirect('organization:list')

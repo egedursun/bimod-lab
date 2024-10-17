@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_code_repository_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -32,6 +30,9 @@ from apps.datasource_codebase.utils import RepositoryUploadStatusNames
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
@@ -57,6 +58,7 @@ class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
         ##############################
 
         if not vs_id:
+            logger.error(f"Please select a knowledge base.")
             messages.error(request, 'Please select a knowledge base.')
             return redirect('datasource_knowledge_base:create_documents')
         vector_store = CodeRepositoryStorageConnection.objects.get(pk=vs_id)
@@ -65,8 +67,10 @@ class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
             add_repository_upload_log(document_full_uri=repo_url, log_name=RepositoryUploadStatusNames.STAGED)
             add_repository_upload_log(document_full_uri=repo_url, log_name=RepositoryUploadStatusNames.UPLOADED)
             CodeBaseDecoder.get(vector_store).index_repositories(document_paths=[repo_url])
+            logger.info(f"Repositories uploaded successfully.")
             messages.success(request, 'Repositories uploaded successfully.')
             return redirect('datasource_codebase:list_repositories')
         else:
+            logger.error(f"Please select a knowledge base and add repositories.")
             messages.error(request, 'Please select a knowledge base and add repositories.')
         return redirect('datasource_codebase:create_repositories')

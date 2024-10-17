@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: core_service_execute_custom_api.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,15 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.core.flexible_modalities.custom_api_executor import CustomAPIExecutor
 from apps.mm_apis.models import CustomAPIReference
+
+
+logger = logging.getLogger(__name__)
 
 
 def run_execute_custom_api(ref_id, api_endpoint_str: str, header_path_vals=None, header_query_vals=None,
@@ -31,7 +34,9 @@ def run_execute_custom_api(ref_id, api_endpoint_str: str, header_path_vals=None,
                                        path_values=header_path_vals,
                                        query_values=header_query_vals,
                                        body_values=header_body_vals)
+        logger.info(f"Custom API execution output: {output}")
     except Exception as e:
+        logger.error(f"Error occurred while executing the API: {e}")
         error_msg = f"Error occurred while executing the API: {str(e)}"
         return error_msg
     return output

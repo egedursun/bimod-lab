@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_all_media_files_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +26,9 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageItem
 from apps.user_permissions.utils import PermissionNames
 
 
+logger = logging.getLogger(__name__)
+
+
 class SettingsView_DeleteAllMediaItems(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -35,6 +38,7 @@ class SettingsView_DeleteAllMediaItems(View, LoginRequiredMixin):
         if confirmation_field != 'CONFIRM DELETING ALL MULTIMEDIA FILES':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL MULTIMEDIA FILES'.")
+            logger.error(f"Invalid confirmation field: {confirmation_field}")
             return redirect('user_settings:settings')
 
         ##############################
@@ -49,6 +53,8 @@ class SettingsView_DeleteAllMediaItems(View, LoginRequiredMixin):
             for multimedia_file in user_multimedia_files:
                 multimedia_file.delete()
             messages.success(request, "All multimedia files associated with your account have been deleted.")
+            logger.info(f"All multimedia files associated with User: {user.id} have been deleted.")
         except Exception as e:
             messages.error(request, f"Error deleting multimedia files: {e}")
+            logger.error(f"Error deleting multimedia files: {e}")
         return redirect('user_settings:settings')

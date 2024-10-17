@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: load_csv_helper_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,14 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from langchain_community.document_loaders import UnstructuredCSVLoader
+
+
+logger = logging.getLogger(__name__)
 
 
 def load_csv_content(uri: str):
@@ -34,5 +38,7 @@ def load_csv_content(uri: str):
                 clean_doc["metadata"] = meta
                 return clean_doc
             except Exception as e:
+                logger.error(f"[tasks.load_csv_content] Error loading the CSV content: {e}")
                 continue
+    logger.info(f"[tasks.load_csv_content] CSV content loaded successfully.")
     return clean_doc

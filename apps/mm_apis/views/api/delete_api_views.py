@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_api_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.mm_apis.models import CustomAPI
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomAPIView_Delete(LoginRequiredMixin, TemplateView):
@@ -51,5 +52,6 @@ class CustomAPIView_Delete(LoginRequiredMixin, TemplateView):
         custom_api_id = self.kwargs.get('pk')
         custom_api = CustomAPI.objects.get(id=custom_api_id)
         custom_api.delete()
+        logger.info(f"Custom API was deleted by User: {self.request.user.id}.")
         messages.success(request, "Custom API deleted successfully.")
         return redirect('mm_apis:list')

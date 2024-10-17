@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_sql_query_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,6 +27,9 @@ from apps.datasource_sql.forms import CustomSQLQueryForm
 from apps.datasource_sql.models import CustomSQLQuery, SQLDatabaseConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class SQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
@@ -55,9 +58,11 @@ class SQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
         form = CustomSQLQueryForm(request.POST, instance=query)
         if form.is_valid():
             form.save()
+            logger.info("SQL Query updated.")
             messages.success(request, "SQL Query updated successfully.")
             return redirect('datasource_sql:list_queries')
         else:
+            logger.error("Error updating SQL Query.")
             messages.error(request, "Error updating SQL Query: " + str(form.errors))
             context = self.get_context_data(**kwargs)
             context['form'] = form

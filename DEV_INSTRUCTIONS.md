@@ -333,3 +333,22 @@ python manage.py collectstatic
 ```
 
 ---
+
+
+#### Using the Django Logger
+
+'''python3
+# Import the logging library
+import logging
+
+# Get the logger instance, using the module’s __name__
+logger = logging.getLogger(__name__)
+
+# Now you can log messages as needed
+def my_function():
+    logger.debug("Debug message from my_function")
+    logger.info("Info message from my_function")
+    logger.warning("Warning message from my_function")
+    logger.error("Error message from my_function")
+    logger.critical("Critical message from my_function")
+'''

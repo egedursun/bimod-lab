@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: endpoint_export_assistant_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
-#
-#
-#
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import json
+import logging
 
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -33,6 +31,9 @@ from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalC
 from config.settings import BASE_URL
 
 
+logger = logging.getLogger(__name__)
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class ExportAssistantAPIView(View):
     def post(self, request, *args, **kwargs):
@@ -42,17 +43,20 @@ class ExportAssistantAPIView(View):
         try:
             export_assistant = ExportAssistantAPI.objects.get(endpoint=endpoint)
         except ExportAssistantAPI.DoesNotExist:
+            logger.error(f"Invalid endpoint: {endpoint}")
             return JsonResponse({
                 "message": "Invalid endpoint", "data": {}, "status": ExportAPIStatusCodes.NOT_FOUND
             }, status=ExportAPIStatusCodes.NOT_FOUND)
 
         if not export_assistant.is_online:
+            logger.error(f"The endpoint is currently offline: {endpoint}")
             return JsonResponse({
                 "message": "The endpoint is currently offline. Please try again later.", "data": {},
                 "status": ExportAPIStatusCodes.SERVICE_OFFLINE
             }, status=ExportAPIStatusCodes.SERVICE_OFFLINE)
 
         if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
+            logger.error(f"Invalid API key provided for endpoint: {endpoint}")
             return JsonResponse({
                 "message": "The API key provided is invalid, please provide a valid API key.", "data": {},
                 "status": ExportAPIStatusCodes.UNAUTHORIZED
@@ -60,6 +64,7 @@ class ExportAssistantAPIView(View):
 
         RequestLog.objects.create(export_assistant=export_assistant)
         if export_assistant.requests_in_last_hour() > export_assistant.request_limit_per_hour:
+            logger.error(f"The API request limit has been reached for endpoint: {endpoint}")
             return JsonResponse({
                 "error": "The API request limit has been reached. Please try again later.",
                 "data": {
@@ -72,18 +77,24 @@ class ExportAssistantAPIView(View):
         try:
             chat_history = body.get('chat_history')
             if len(chat_history) == 0:
+                logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
                 raise ValueError("Chat history is empty.")
             if "role" not in chat_history[0]:
+                logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
                 raise ValueError("Each of the chat history elements must contain 'role' key, which can either"
                                  "be 'system', 'assistant' or 'user'.")
             if chat_history[0]["role"] not in ["system", "assistant", "user"]:
+                logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
                 raise ValueError("The 'role' key in the first element of the chat history must be either 'system',"
                                  "'assistant' or 'user'.")
             if "content" not in chat_history[0]:
+                logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
                 raise ValueError("Each of the chat history elements must contain 'content' key.")
             if not isinstance(chat_history[0]["content"], str):
+                logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
                 raise ValueError("The 'content' key in the first element of the chat history must be a string.")
         except Exception as e:
+            logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e), "data": {}, "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
             }, status=ExportAPIStatusCodes.INTERNAL_SERVER_ERROR)
@@ -107,6 +118,7 @@ class ExportAssistantAPIView(View):
                 user_msg = api_chat.chat_messages.filter(sender_type=role.upper()).last()
 
         except Exception as e:
+            logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e),
                 "data": {}, "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
@@ -119,6 +131,7 @@ class ExportAssistantAPIView(View):
                 multimodal_chat=api_chat, sender_type='ASSISTANT', message_text_content=llm_response_text
             )
         except Exception as e:
+            logger.error(f"Internal server error: {str(e)}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e), "data": {}, "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
             }, status=ExportAPIStatusCodes.INTERNAL_SERVER_ERROR)
@@ -131,4 +144,5 @@ class ExportAssistantAPIView(View):
             "message": {"assistant_name": export_assistant.assistant.name, "content": llm_response_text,
                         "role": "assistant", "media": {"files": f_uris, "images": img_uris}
                         }}}
+        logger.info(f"Export Assistant API response: {resp_data}")
         return JsonResponse(resp_data, status=ExportAPIStatusCodes.OK)

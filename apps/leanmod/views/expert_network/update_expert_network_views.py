@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_expert_network_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +26,9 @@ from apps.assistants.models import Assistant
 from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExpertNetworkView_Update(LoginRequiredMixin, TemplateView):
@@ -79,5 +80,6 @@ class ExpertNetworkView_Update(LoginRequiredMixin, TemplateView):
                 reff.last_updated_by_user = request.user
                 reff.save()
             nw.assistant_references.add(reff)
+        logger.info(f"Expert Network {nw.name} was updated by User: {user.id}.")
         messages.success(request, "Expert Network updated successfully.")
         return redirect('leanmod:update_expert_network', pk=nw_id)

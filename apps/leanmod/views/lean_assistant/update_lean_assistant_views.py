@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_lean_assistant_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +27,9 @@ from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class LeanModAssistantView_Update(LoginRequiredMixin, TemplateView):
@@ -58,6 +62,7 @@ class LeanModAssistantView_Update(LoginRequiredMixin, TemplateView):
         nw_ids = request.POST.getlist('expert_networks')
         agent_img = request.FILES.get('lean_assistant_image', None)
         if not org_id or not llm_id or not name or not instructions:
+            logger.error("Please fill in all required fields.")
             messages.error(request, "Please fill in all required fields.")
             return redirect('leanmod:update', pk=agent_id)
 
@@ -76,8 +81,10 @@ class LeanModAssistantView_Update(LoginRequiredMixin, TemplateView):
                     leanmod_agent.expert_networks.add(expert_network)
 
             leanmod_agent.save()
+            logger.info(f"Lean Assistant {leanmod_agent.name} was updated by User: {self.request.user.id}.")
             messages.success(request, "Lean Assistant updated successfully.")
             return redirect('leanmod:list')
         except Exception as e:
+            logger.error(f"Error updating Lean Assistant: {e}")
             messages.error(request, f"Error updating Lean Assistant: {e}")
             return redirect('leanmod:update', pk=agent_id)

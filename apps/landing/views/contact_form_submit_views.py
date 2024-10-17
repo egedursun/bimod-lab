@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: contact_form_submit_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
@@ -22,6 +23,9 @@ from django.core.mail import send_mail
 
 from config import settings
 from web_project import TemplateLayout, TemplateHelper
+
+
+logger = logging.getLogger(__name__)
 
 
 class LandingView_ContactFormSubmit(TemplateView):
@@ -84,4 +88,6 @@ class LandingView_ContactFormSubmit(TemplateView):
             subject, email_msg, settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL, email],
             fail_silently=False,
         )
+
+        logger.info(f"Contact Form was submitted by User: {request.user.id}.")
         return redirect("landing:contact_form_submit", )

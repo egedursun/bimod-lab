@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_user_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
-
+import logging
 import uuid
 
 from django.contrib import messages
@@ -34,6 +31,8 @@ from auth.utils import is_valid_password, send_verification_email, send_invitati
 from config import settings
 from web_project import TemplateLayout
 
+
+logger = logging.getLogger(__name__)
 
 class UserManagementView_UserInvite(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
@@ -104,21 +103,29 @@ class UserManagementView_UserInvite(LoginRequiredMixin, TemplateView):
             created_by_user.profile.save()
             send_verification_email(email, token)
             if settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD:
+                logger.info(f"Verification email sent to {email}")
                 messages.success(request, "Verification email sent successfully.")
             else:
+                logger.error("Email settings are not configured. Unable to send verification email.")
                 messages.error(request, "Email settings are not configured. Unable to send verification email.")
             messages.success(request, 'User created successfully!')
+            logger.info(f"User: {created_user.id} was created by User: {created_by_user.id}.")
 
             try:
                 email = created_user.email
                 send_invitation_email(email, token)
                 if settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD:
+                    logger.info(f"Invitation email sent to {email}")
                     messages.success(request, 'Invitation email sent successfully!')
                 else:
+                    logger.error('Email settings are not configured. Unable to send invitation email.')
                     messages.error(request, 'Email settings are not configured. Unable to send invitation email.')
                 messages.success(request, 'Invitation email sent successfully!')
+                logger.info(f"User: {created_user.id} was created by User: {created_by_user.id}.")
             except Exception as e:
+                logger.error(f'Error sending invitation email: {str(e)}')
                 messages.error(request, f'Error sending invitation email: {str(e)}')
         except Exception as e:
+            logger.error(f'Error creating user: {str(e)}')
             messages.error(request, f'Error creating user: {str(e)}')
         return redirect('user_management:list')

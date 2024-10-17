@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: img_command_handler.py
 #  Last Modified: 2024-10-15 23:32:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from apps.core.drafting.utils import DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS, find_tool_call_from_json
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
@@ -25,6 +26,9 @@ from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 from apps.multimodal_chat.models import MultimodalChat
 from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
+
+
+logger = logging.getLogger(__name__)
 
 
 def handle_img_command(xc, command: str) -> str:
@@ -39,7 +43,9 @@ def handle_img_command(xc, command: str) -> str:
             llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
             transaction_type=ChatRoles.USER, transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+        logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
     except Exception as e:
+        logger.error(f"[handle_ai_command] Error creating LLMTransaction for user command: {command}. Error: {e}")
         pass
 
     output, error = None, None
@@ -55,7 +61,9 @@ def handle_img_command(xc, command: str) -> str:
             llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
             transaction_type=ChatRoles.SYSTEM, transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+        logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
     except Exception as e:
+        logger.error(f"[handle_ai_command] Error creating LLMTransaction for system prompt. Error: {e}")
         pass
 
     try:
@@ -70,6 +78,7 @@ def handle_img_command(xc, command: str) -> str:
         first_choice = choices[0]
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+        logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
             tx = LLMTransaction.objects.create(
@@ -79,9 +88,12 @@ def handle_img_command(xc, command: str) -> str:
                 llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
                 transaction_type=ChatRoles.ASSISTANT, transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
             )
+            logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
         except Exception as e:
+            logger.error(f"[handle_ai_command] Error creating LLMTransaction for AI response. Error: {e}")
             pass
     except Exception as e:
+        logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
         error = f"[handle_ai_command] Error executing IMG command: {command}. Error: {e}"
         return output, error
 
@@ -95,6 +107,7 @@ def handle_img_command(xc, command: str) -> str:
             for tool_req_dict in tool_requests_dicts:
                 error = verify_generate_image_content(content=tool_req_dict)
                 if error:
+                    logger.error(f"[handle_ai_command] Error verifying tool content: {error}")
                     return error, None, None, None
                 image_uri = _handle_tool_generate_image(xc=xc, assistant_id=xc.copilot.id,
                                                                tool_usage_dict=tool_req_dict)
@@ -113,6 +126,7 @@ def handle_img_command(xc, command: str) -> str:
             first_choice = choices[0]
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+            logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
                 tx = LLMTransaction.objects.create(
@@ -122,16 +136,20 @@ def handle_img_command(xc, command: str) -> str:
                     llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT, transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
                 )
+                logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
             except Exception as e:
+                logger.error(f"[handle_ai_command] Error creating LLMTransaction for AI response. Error: {e}")
                 pass
 
         except Exception as e:
+            logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
             error = f"[handle_ai_command] Error executing AI command: {command}. Error: {e}"
             return output, error
 
     if tool_counter == DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS:
         error = (f"[handle_ai_command] Error executing IMG command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
+        logger.error(error)
         return output, error
 
     try:
@@ -143,7 +161,9 @@ def handle_img_command(xc, command: str) -> str:
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING, is_tool_cost=True
         )
         tx.save()
+        logger.info(f"[handle_ai_command] Created LLMTransaction for Drafting.")
     except Exception as e:
+        logger.error(f"[handle_ai_command] Error creating LLMTransaction for Drafting. Error: {e}")
         pass
 
     output = choice_message_content
@@ -164,4 +184,5 @@ def _handle_tool_generate_image(xc, assistant_id, tool_usage_dict):
         img_generation_prompt=prompt + IMAGE_GENERATION_AFFIRMATION_PROMPT, img_dimensions=size,
         img_resolution=quality)
     image_uri = image_generation_response.get("image_uri")
+    logger.info(f"[handle_ai_command] Generated image: {image_uri}")
     return image_uri

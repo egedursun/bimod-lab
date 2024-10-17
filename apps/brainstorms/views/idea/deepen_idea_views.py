@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: deepen_idea_views.py
 #  Last Modified: 2024-10-08 18:46:36
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
@@ -24,6 +26,7 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingSession, BrainstormingIdea
 from apps.user_permissions.utils import PermissionNames
 
+logger = logging.getLogger(__name__)
 
 class BrainstormingView_IdeaDeepen(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
@@ -43,4 +46,5 @@ class BrainstormingView_IdeaDeepen(LoginRequiredMixin, View):
         xc = BrainstormsExecutor(session=session)
         xc.deepen_thought_over_idea(idea=idea)
         messages.success(request, f'Idea {idea.id} deepened successfully.')
+        logger.info(f'Idea {idea.id} deepened successfully.')
         return redirect('brainstorms:detail_session', session_id=session.id)

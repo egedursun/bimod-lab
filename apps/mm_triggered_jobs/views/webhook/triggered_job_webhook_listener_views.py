@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: triggered_job_webhook_listener_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,14 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
-#
-#
-#
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-#
+
 import json
+import logging
 
 from django.http import JsonResponse
 from django.utils import timezone
@@ -38,10 +36,14 @@ from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
 from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
 
 
+logger = logging.getLogger(__name__)
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class TriggeredJobWebhookListenerView(View):
     def get(self, request, assistant_id, triggered_job_id):
         _, _ = assistant_id, triggered_job_id
+        logger.error('Method GET is not allowed')
         return JsonResponse({'status': 'error', 'message': 'Method GET is not allowed'}, status=405)
 
     def post(self, request, assistant_id, triggered_job_id):
@@ -52,14 +54,18 @@ class TriggeredJobWebhookListenerView(View):
                 assistant = job.trigger_assistant
                 check_assistant = Assistant.objects.get(id=assistant_id)
                 if assistant != check_assistant:
+                    logger.error(f"Assistant verification failed for Triggered Job: {job.id}")
                     return JsonResponse({'status': 'error', 'message': 'Assistant verification failed'}, status=400)
             except TriggeredJob.DoesNotExist:
+                logger.error(f"Triggered Job could not been found: {triggered_job_id}")
                 return JsonResponse({'status': 'error', 'message': 'Triggered Job could not been found'}, status=404)
             except Assistant.DoesNotExist:
+                logger.error(f"Assistant could not been found: {assistant_id}")
                 return JsonResponse({'status': 'error', 'message': 'Assistant could not been found'}, status=404)
 
             if job.current_run_count > job.maximum_runs:
                 job.delete()
+                logger.info(f"Maximum runs reached for Triggered Job: {job.id}")
                 return JsonResponse({'status': 'error', 'message': 'Maximum runs reached for the triggered job'},
                                     status=400)
             new_instance = TriggeredJobInstance.objects.create(
@@ -72,11 +78,13 @@ class TriggeredJobWebhookListenerView(View):
             new_instance.execution_index = job.current_run_count
             new_instance.save()
             self.handle_triggered_job(job=job, instance=new_instance)
+            logger.info(f"Webhook payload received for Triggered Job: {job.id}")
             return JsonResponse({
                 'status': 'success', 'message': 'Webhook payload received successfully',
                 'data': {'assistant_id': assistant_id, 'triggered_job_id': triggered_job_id, 'payload': payload}
             }, status=200)
         except json.JSONDecodeError:
+            logger.error('Invalid JSON object')
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON object'}, status=400)
 
     @staticmethod
@@ -91,6 +99,7 @@ class TriggeredJobWebhookListenerView(View):
 
             instance.status = TriggeredJobInstanceStatusesNames.BUILDING
             instance.save()
+            logger.info(f"Chat created for Triggered Job: {job.id}")
             instruction_feed = f"""
                 **WARNING: This is an AUTO-GENERATED user message.**
                 - If you see this message, it means that this message is sent to you by the system, within the context
@@ -167,6 +176,8 @@ class TriggeredJobWebhookListenerView(View):
                 transaction_source=LLMTransactionSourcesTypesNames.TRIGGER_JOB_EXECUTION, is_tool_cost=True
             )
             transaction.save()
+            logger.info(f"Triggered Job completed successfully: {job.id}")
         except Exception as e:
             instance.status = TriggeredJobInstanceStatusesNames.FAILED
             instance.save()
+            logger.error(f"Triggered Job failed: {job.id} - {str(e)}")

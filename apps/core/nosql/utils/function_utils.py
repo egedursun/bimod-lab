@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-10 16:19:17
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,15 +12,19 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from apps.datasource_nosql.models import NoSQLDatabaseConnection
 from apps.datasource_nosql.utils import NoSQLDatabaseChoicesNames
 
 
+logger = logging.getLogger(__name__)
+
+
 def before_execute_nosql_query(connection: NoSQLDatabaseConnection):
+    logger.info(f"Executing query on {connection.nosql_db_type} database: {connection.name}")
     old_schema_json = connection.schema_data_json
     new_schema = {}
     if connection.nosql_db_type == NoSQLDatabaseChoicesNames.COUCHBASE:
@@ -31,4 +35,5 @@ def before_execute_nosql_query(connection: NoSQLDatabaseConnection):
 
 
 def can_write_to_database(connection: NoSQLDatabaseConnection):
+    logger.info(f"Checking if the connection is read-only: {connection.name}")
     return not connection.is_read_only

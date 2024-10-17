@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: detail_orchestration_query_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.orchestrations.models.query import OrchestrationQuery
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrchestrationView_QueryDetail(LoginRequiredMixin, TemplateView):
@@ -43,4 +46,5 @@ class OrchestrationView_QueryDetail(LoginRequiredMixin, TemplateView):
         query = get_object_or_404(OrchestrationQuery, id=query_id)
         context['query'] = query
         context['logs'] = query.logs.all()
+        logger.info(f"Orchestration query was viewed by User: {self.request.user.id}.")
         return context

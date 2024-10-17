@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: auxiliary_tts_client.py
 #  Last Modified: 2024-10-09 00:56:02
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 import io
+import logging
 import mimetypes
 import os
 from pathlib import Path
@@ -29,6 +30,9 @@ from apps.core.generative_ai.utils import OpenAITTSVoiceNames, generate_random_a
     TTS_RETRY_REMOVAL, DEFAULT_AUDIO_MIME_TYPE, STT_MODEL_NAME
 from apps.core.media_managers.utils import GENERATED_FILES_ROOT_MEDIA_PATH
 from config.settings import MEDIA_URL, AWS_STORAGE_BUCKET_NAME
+
+
+logger = logging.getLogger(__name__)
 
 
 class AuxiliaryLLMAudioClient:
@@ -53,26 +57,33 @@ class AuxiliaryLLMAudioClient:
             try:
                 with open(temporary_path, "rb") as f:
                     audio_data = f.read()
+                logger.info(f"Retrieved audio content from: {temporary_path}")
             except Exception as e:
+                logger.error(f"Failed to read audio content from: {temporary_path}")
                 final_output["message"] = get_audio_reading_error_log(error_logs=str(e))
                 return final_output
 
             try:
                 s3 = boto3.client('s3')
                 s3.put_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key=bucket_path, Body=audio_data)
+                logger.info(f"Uploaded audio content to: {bucket_path}")
             except Exception as e:
+                logger.error(f"Failed to upload audio content to: {bucket_path}")
                 final_output["message"] = get_audio_upload_error_log(error_logs=str(e))
                 return final_output
 
         except Exception as e:
+            logger.error(f"Failed to generate audio content: {e}")
             final_output["message"] = get_audio_generation_error_log(error_logs=str(e))
             return final_output
 
         for i in range(0, TTS_RETRY_REMOVAL, 1):
             try:
                 os.remove(temporary_path)
+                logger.info(f"Removed temporary audio content: {temporary_path}")
                 break
             except Exception as e:
+                logger.error(f"Failed to remove temporary audio content: {temporary_path}")
                 continue
 
         final_output["success"] = True
@@ -93,26 +104,33 @@ class AuxiliaryLLMAudioClient:
             try:
                 with open(temporary_path, "rb") as f:
                     audio_bytes = f.read()
+                logger.info(f"Retrieved audio content from: {temporary_path}")
             except Exception as e:
+                logger.error(f"Failed to read audio content from: {temporary_path}")
                 final_output["message"] = get_audio_reading_error_log(error_logs=str(e))
                 return final_output
 
             try:
                 s3 = boto3.client('s3')
                 s3.put_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key=bucket_path, Body=audio_bytes)
+                logger.info(f"Uploaded audio content to: {bucket_path}")
             except Exception as e:
+                logger.error(f"Failed to upload audio content to: {bucket_path}")
                 final_output["message"] = get_audio_upload_error_log(error_logs=str(e))
                 return final_output
 
         except Exception as e:
+            logger.error(f"Failed to generate audio content: {e}")
             final_output["message"] = get_audio_generation_error_log(error_logs=str(e))
             return final_output
 
         for i in range(0, TTS_RETRY_REMOVAL, 1):
             try:
                 os.remove(temporary_path)
+                logger.info(f"Removed temporary audio content: {temporary_path}")
                 break
             except Exception as e:
+                logger.error(f"Failed to remove temporary audio content: {temporary_path}")
                 continue
 
         final_output["success"] = True
@@ -129,7 +147,9 @@ class AuxiliaryLLMAudioClient:
 
             f_sound_data = io.BytesIO(http_audio_file.content)
             f_sound_data.name = audio_uri.split('/')[-1]
+            logger.info(f"Retrieved audio content from: {audio_uri}")
         except Exception as e:
+            logger.error(f"Failed to read audio content from: {audio_uri}")
             final_output["message"] = get_audio_reading_error_log(error_logs=str(e))
             return final_output
 
@@ -139,6 +159,8 @@ class AuxiliaryLLMAudioClient:
             final_output["success"] = True
             final_output["text"] = transcription.text
         except Exception as e:
+            logger.error(f"Failed to transcribe audio content: {e}")
             final_output["message"] = get_audio_transcription_error_log(error_logs=str(e))
             return final_output
+        logger.info(f"Transcribed audio content: {audio_uri}")
         return final_output

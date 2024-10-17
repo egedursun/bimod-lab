@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: randomize_featured_scripts_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,16 +12,17 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from celery import shared_task
 
 from apps.mm_scripts.models import CustomScript
 from apps.mm_scripts.utils import NUMBER_OF_RANDOM_FEATURED_SCRIPTS
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -33,4 +34,5 @@ def randomize_featured_scripts():
     featured_scripts = CustomScript.objects.order_by('?')[:NUMBER_OF_RANDOM_FEATURED_SCRIPTS]
     for script in featured_scripts:
         script.is_featured = True
+        logger.info(f"Randomized Featured Script: {script.id}")
         script.save()

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: chat_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import base64
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -33,6 +34,8 @@ from apps.user_permissions.utils import PermissionNames
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout, TemplateHelper
 
+
+logger = logging.getLogger(__name__)
 
 class ChatView_Chat(LoginRequiredMixin, TemplateView):
     @staticmethod
@@ -91,6 +94,7 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             chat.chat_name = request.POST.get('new_chat_name')
             chat.save()
             active_chat = chat
+            logger.info(f"Chat name was changed by User: {context_user.id}.")
         elif ChatPostActionSpecifiers.STARRING_MESSAGE_SPECIFIER in request.POST:
             chat_id = request.POST.get('chat_id')
             chat = get_object_or_404(MultimodalChat, id=chat_id, user=request.user)
@@ -99,6 +103,7 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             msg.starred = not msg.starred
             msg.save()
             active_chat = chat
+            logger.info(f"Message was starred by User: {context_user.id}.")
         else:
             attached_fs, attached_imgs, chat, msg_content, sketch_image_full_uris_list = (
                 self._handle_attached_images(request))
@@ -121,6 +126,7 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
                 multimodal_chat=chat, sender_type='ASSISTANT', message_text_content=response
             )
             active_chat = chat
+            logger.info(f"Message was sent by User: {context_user.id}.")
 
         chats = MultimodalChat.objects.filter(user=request.user, chat_source=SourcesForMultimodalChatsNames.APP)
         agents = Assistant.objects.filter(organization__users=request.user)
@@ -147,7 +153,9 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             sketch_image_bytes = base64.b64decode(attached_canvas_image.split("base64,")[1].encode())
             sketch_image['sketch_image'] = sketch_image_bytes
             sketch_image_full_uris_list = MediaManager.save_sketch(sketch_data_map=sketch_image)
+            logger.info(f"Sketch image was saved by User: {request.user.id}.")
         except Exception as e:
+            logger.error(f"Error saving sketch image: {e}")
             pass
         return attached_fs, attached_imgs, chat, msg_content, sketch_image_full_uris_list
 
@@ -164,7 +172,9 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             edit_image_bytes_dict['edit_image_mask'] = edit_image_mask_bytes
             edit_image_full_uris_list = MediaManager.save_edit_image_and_masked_image(
                 edit_img_map=edit_image_bytes_dict)
+            logger.info(f"Edit image was saved by User: {request.user.id}.")
         except Exception as e:
+            logger.error(f"Error saving edit image: {e}")
             pass
         return edit_image_full_uris_list
 
@@ -174,7 +184,9 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
         for image in attached_imgs:
             try:
                 image_bytes = image.read()
+                logger.info(f"Image was read.")
             except Exception as e:
+                logger.error(f"Error reading image: {e}")
                 continue
             image_bytes_list.append(image_bytes)
         image_full_uris = MediaManager.save_images_and_return_uris(image_bytes_list)
@@ -191,7 +203,9 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             file_name = file.name
             try:
                 file_bytes = file.read()
+                logger.info(f"File was read.")
             except Exception as e:
+                logger.error(f"Error reading file: {e}")
                 continue
             file_bytes_list.append((file_bytes, file_name))
         file_full_uris = MediaManager.save_files_and_return_uris(file_bytes_list)
@@ -207,3 +221,5 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             audio_full_uri = MediaManager.save_files_and_return_uris([(audio_bytes, 'audio.webm')])[0]
         if audio_full_uri:
             file_full_uris.append(audio_full_uri)
+        logger.info(f"Audio was saved by User: {request.user.id}.")
+        return

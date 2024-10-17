@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: change_statistics_interval_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
@@ -26,6 +26,9 @@ from apps.dashboard.utils import CONST_MINUTES, TransactionStatisticsManager, bu
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class DashboardView_ChangeStatisticsInterval(LoginRequiredMixin, TemplateView):
@@ -56,4 +59,5 @@ class DashboardView_ChangeStatisticsInterval(LoginRequiredMixin, TemplateView):
         last_update_datetime = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
         context["last_update_datetime"] = last_update_datetime
         context = build_statistics_for_graph(statistics=data_statistics, context=context)
+        logger.info(f"User {user.id} requested statistics for the last {last_n_days} days.")
         return self.render_to_response(context)

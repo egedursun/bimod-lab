@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_support_tickets_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +26,9 @@ from apps.support_system.models import SupportTicket
 from apps.support_system.utils import TICKET_STATUS_PRIORITY_MAP
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class SupportView_TicketList(LoginRequiredMixin, TemplateView):
@@ -51,4 +54,5 @@ class SupportView_TicketList(LoginRequiredMixin, TemplateView):
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
+        logger.info(f"Support ticket list was viewed by User: {self.request.user.id}.")
         return context

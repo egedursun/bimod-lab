@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: auxiliary_reasoning_client.py
 #  Last Modified: 2024-10-09 00:55:31
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,10 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from openai import OpenAI
 
 from apps.assistants.utils import MultiStepReasoningCapabilityChoicesNames, MultiStepReasoningCapabilityModelNames
@@ -22,6 +24,9 @@ from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import g
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import ChatRoles
 from apps.core.system_prompts.reasoning.reasoning_prompt import build_reasoning_system_prompt
+
+
+logger = logging.getLogger(__name__)
 
 
 class ReasoningAuxiliaryLLMManager:
@@ -56,6 +61,8 @@ class ReasoningAuxiliaryLLMManager:
             choice_message = first_choice.message
             choice_message_content = choice_message.content
             final_output = choice_message_content
+            logger.info(f"Reasoning response: {final_output}")
         except Exception as e:
+            logger.error(f"Failed to reason: {str(e)}")
             final_output = get_default_reasoning_error_log(error_logs=str(e))
         return final_output

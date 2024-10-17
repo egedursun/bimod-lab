@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_user_role_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.user_permissions.models import UserRole
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class PermissionView_UserRoleDelete(LoginRequiredMixin, TemplateView):
@@ -49,5 +52,6 @@ class PermissionView_UserRoleDelete(LoginRequiredMixin, TemplateView):
         role_id = kwargs.get("pk")
         role = get_object_or_404(UserRole, pk=role_id, created_by_user=request.user)
         role.delete()
+        logger.info(f"User role was deleted by User: {self.request.user.id}.")
         messages.success(request, f'The role "{role.role_name}" has been deleted successfully.')
         return redirect('user_permissions:list_user_roles')

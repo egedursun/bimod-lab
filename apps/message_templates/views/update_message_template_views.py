@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_message_template_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +26,9 @@ from apps.message_templates.forms import MessageTemplateForm
 from apps.message_templates.models import MessageTemplate
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class MessageTemplateView_Update(TemplateView, LoginRequiredMixin):
@@ -55,5 +56,7 @@ class MessageTemplateView_Update(TemplateView, LoginRequiredMixin):
         form = MessageTemplateForm(request.POST, instance=msg_tmpl)
         if form.is_valid():
             form.save()
+            logger.info(f"Message Template was updated by User: {self.request.user.id}.")
             return redirect('message_templates:list')
+        logger.error(f"Message Template update failed by User: {self.request.user.id}.")
         return render(request, self.template_name, {'form': form, 'message_template': msg_tmpl})

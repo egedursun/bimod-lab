@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: ner_executor.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
-
+import logging
 from collections import defaultdict
 
 from apps.core.data_security.ner.utils import DEFAULT_MODEL, LANGUAGE_TO_MODEL_MAPPING
@@ -24,22 +24,31 @@ from apps.data_security.models import NERIntegration
 import spacy
 
 
+logger = logging.getLogger(__name__)
+
+
 class NERExecutor:
     def __init__(self, ner_id: int):
         try:
             self.ner_integration: NERIntegration = NERIntegration.objects.get(id=ner_id)
+            logger.info(f"NERIntegration: {self.ner_integration}")
         except Exception as e:
+            logger.error(f"Error fetching NERIntegration: {e}")
             pass
         try:
             self.model = self._decode_model_from_language(self.ner_integration.language)
+            logger.info(f"Model: {self.model}")
         except Exception as e:
+            logger.error(f"Error decoding model: {e}")
             pass
         try:
             self.nlp = self._load_model(self.model)
+            logger.info(f"Loaded model: {self.nlp}")
             if not self.nlp:
-                raise Exception("[NERExecutor.__init__] Error loading model.")
+                logger.error("[NERExecutor.__init__] Error loading model.")
+                raise Exception("Error loading model.")
         except Exception as e:
-            pass
+            logger.error(f"Error loading model: {e}")
 
         #__________________________________________________________________________________________________#
         # Temporary Storage for Entity Mappings
@@ -55,12 +64,15 @@ class NERExecutor:
         nlp = None
         try:
             nlp = spacy.load(model_name)
+            logger.info(f"Loaded model: {model_name}")
         except OSError:
             try:
                 from spacy.cli.download import download
                 download(model_name)
                 nlp = spacy.load(model_name)
+                logger.info(f"Downloaded and loaded model: {model_name}")
             except Exception as e:
+                logger.error(f"Error loading model: {e}")
                 pass
         return nlp
 
@@ -102,6 +114,7 @@ class NERExecutor:
             entity_mapping['ORDINAL'] = 0
         if self.ner_integration.encrypt_cardinal_numbers is True:
             entity_mapping['CARDINAL'] = 0
+        logger.info(f"Entity Mapping: {entity_mapping}")
         return entity_mapping
 
     def encrypt_text(self, text: str, uuid_str: str) -> str:
@@ -116,6 +129,7 @@ class NERExecutor:
                 self.entity_mapping[uuid_str][placeholder] = ent.text
                 anonymized_text = anonymized_text.replace(ent.text, placeholder)
                 entity_counters[entity_type] += 1
+        logger.info(f"Anonymized Text retrieved.")
         return anonymized_text
 
     def decrypt_text(self, anonymized_text: str, uuid: str) -> str:
@@ -125,6 +139,8 @@ class NERExecutor:
 
         try:
             self.entity_mapping.pop(uuid, None)
+            logger.info(f"De-anonymized Text retrieved.")
         except Exception as e:
+            logger.error(f"Error de-anonymizing text: {e}")
             pass
         return deanonymized_text

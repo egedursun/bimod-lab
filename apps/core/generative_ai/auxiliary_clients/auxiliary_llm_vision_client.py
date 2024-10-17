@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: auxiliary_llm_vision_client.py
 #  Last Modified: 2024-10-09 01:13:04
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,10 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
 import base64 as b64
+import logging
 
 import requests
 from openai import OpenAI
@@ -32,6 +33,9 @@ from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
 
+logger = logging.getLogger(__name__)
+
+
 class AuxiliaryLLMVisionClient:
 
     def __init__(self, assistant, chat_object):
@@ -43,18 +47,23 @@ class AuxiliaryLLMVisionClient:
                                 interpretation_maximum_tokens: int):
         c = self.connection
         if len(full_image_paths) > CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION:
+            logger.error(f"Number of files too high for image interpretation: {len(full_image_paths)}")
             return get_number_of_files_too_high_log(max=CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION)
 
         img_data = []
         for pth in full_image_paths:
             if not pth:
+                logger.error("Empty object path for image interpretation.")
                 return EMPTY_OBJECT_PATH_LOG
             try:
                 file = requests.get(pth)
                 img_data.append({"binary": file.content, "extension": pth.split(".")[-1]})
+                logger.info(f"Retrieved image content from: {pth}")
             except FileNotFoundError:
+                logger.error(f"File not found at: {pth}")
                 continue
             except Exception as e:
+                logger.error(f"Failed to retrieve image content from: {pth}")
                 continue
 
         img_objs = []
@@ -78,7 +87,9 @@ class AuxiliaryLLMVisionClient:
             llm_output = c.chat.completions.create(
                 model=HELPER_SYSTEM_INSTRUCTIONS["image_interpreter"]["model"], messages=msgs,
                 temperature=interpretation_temperature, max_tokens=interpretation_maximum_tokens)
+            logger.info(f"Retrieved image interpretation content.")
         except Exception as e:
+            logger.error(f"Failed to retrieve image interpretation content.")
             return IMAGE_ANALYST_RESPONSE_RETRIEVAL_ERROR_LOG
 
         try:
@@ -87,7 +98,9 @@ class AuxiliaryLLMVisionClient:
             choice_message = first_choice.message
             choice_message_content = choice_message.content
             final_response = choice_message_content
+            logger.info(f"Processed image interpretation content.")
         except Exception as e:
+            logger.error(f"Failed to process image interpretation content.")
             return IMAGE_ANALYST_RESPONSE_PROCESSING_ERROR_LOG
 
         LLMTransaction.objects.create(
@@ -96,4 +109,5 @@ class AuxiliaryLLMVisionClient:
             transaction_context_content=final_response, llm_cost=0, internal_service_cost=0,
             tax_cost=0, total_cost=0, total_billable_cost=0, transaction_type=ChatRoles.ASSISTANT,
             transaction_source=LLMTransactionSourcesTypesNames.GENERATION)
+        logger.info(f"Created new LLM transaction for image interpretation.")
         return final_response

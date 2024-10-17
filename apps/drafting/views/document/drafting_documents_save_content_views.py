@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: drafting_documents_save_content_views.py
 #  Last Modified: 2024-10-15 21:18:30
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,6 +24,9 @@ from django.views import View
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingDocument
 from apps.user_permissions.utils import PermissionNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class DraftingView_SaveContent(LoginRequiredMixin, View):
@@ -47,4 +50,5 @@ class DraftingView_SaveContent(LoginRequiredMixin, View):
         if document_content:
             document.document_content_json_quill = document_content
             document.save()
+        logger.info(f"Drafting Document {document.document_title} was updated.")
         return redirect('drafting:documents_detail', folder_id=folder_id, document_id=document_id)

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_browser_connection_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,12 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,6 +30,9 @@ from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.datasource_browsers.utils import BROWSER_TYPES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class BrowserView_BrowserCreate(LoginRequiredMixin, TemplateView):
@@ -102,11 +106,14 @@ class BrowserView_BrowserCreate(LoginRequiredMixin, TemplateView):
                 reading_abilities=capabilities, created_by_user=created_by_user
             )
             info_feed.save()
+            logger.info(f"User: {request.user} - Data Source Browser Connection: {info_feed.name} - Created.")
             messages.success(request, 'Data Source Browser Connection created successfully.')
             return redirect('datasource_browsers:list')
         except Assistant.DoesNotExist:
+            logger.error('Invalid assistant selected.')
             messages.error(request, 'Invalid assistant selected.')
             return redirect('datasource_browsers:create')
         except Exception as e:
+            logger.error(f'Error creating Data Source Browser Connection: {e}')
             messages.error(request, f'Error creating Data Source Browser Connection: {e}')
             return redirect('datasource_browsers:create')

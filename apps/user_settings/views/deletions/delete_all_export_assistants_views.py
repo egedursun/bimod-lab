@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_all_export_assistants_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +26,9 @@ from apps.export_assistants.models import ExportAssistantAPI
 from apps.user_permissions.utils import PermissionNames
 
 
+logger = logging.getLogger(__name__)
+
+
 class SettingsView_DeleteAllExportAssistants(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -34,6 +37,7 @@ class SettingsView_DeleteAllExportAssistants(View, LoginRequiredMixin):
         if confirmation_field != 'CONFIRM DELETING ALL EXPORTED ASSISTANTS':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL EXPORTED ASSISTANTS'.")
+            logger.error(f"Invalid confirmation field: {confirmation_field}")
             return redirect('user_settings:settings')
 
         ##############################
@@ -47,7 +51,9 @@ class SettingsView_DeleteAllExportAssistants(View, LoginRequiredMixin):
         try:
             for exp_agent in user_exp_agents:
                 exp_agent.delete()
+            logger.info(f"All exported assistants associated with User: {user.id} have been deleted.")
             messages.success(request, "All exported assistants associated with your account have been deleted.")
         except Exception as e:
+            logger.error(f"Error deleting exported assistants: {e}")
             messages.error(request, f"Error deleting exported assistants: {e}")
         return redirect('user_settings:settings')

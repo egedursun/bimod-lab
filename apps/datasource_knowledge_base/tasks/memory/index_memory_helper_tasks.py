@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: index_memory_helper_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,13 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
+
 from celery import shared_task
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -30,6 +31,7 @@ def index_memory_helper(connection_id, message_text):
         "status": True,
         "error": None
     }
+    logger.info(f"[tasks.index_memory_helper] Indexing the memory.")
     conn = ContextHistoryKnowledgeBaseConnection.objects.get(id=connection_id)
     xc = IntraContextMemoryExecutor(connection=conn)
     try:
@@ -39,6 +41,7 @@ def index_memory_helper(connection_id, message_text):
                 "status": False,
                 "error": error
             }
+            logger.error(f"[tasks.index_memory_helper] Error chunking the message: {error}")
             return output
 
         n_chks = len(chks)
@@ -48,6 +51,7 @@ def index_memory_helper(connection_id, message_text):
                 "status": False,
                 "error": error
             }
+            logger.error(f"[tasks.index_memory_helper] Error embedding the memory: {error}")
             return output
 
         error = xc.embed_memory_chunks(chunks=chks, memory_id=doc_id, memory_uuid=doc_uuid)
@@ -56,10 +60,12 @@ def index_memory_helper(connection_id, message_text):
                 "status": False,
                 "error": error
             }
+            logger.error(f"[tasks.index_memory_helper] Error embedding the memory chunks: {error}")
             return output
     except Exception as e:
         output = {
             "status": False,
             "error": str(e)
         }
+        logger.error(f"[tasks.index_memory_helper] Error indexing the memory: {e}")
     return output

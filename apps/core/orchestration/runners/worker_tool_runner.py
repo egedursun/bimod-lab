@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: worker_tool_runner.py
 #  Last Modified: 2024-10-05 02:26:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,12 +12,16 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
+import logging
 
 from apps.orchestrations.models import OrchestrationQuery, Maestro
+
+
+logger = logging.getLogger(__name__)
 
 
 def run_worker_tool(maestro_id, query_id, worker_assistant_id, query_text, file_urls, image_urls):
@@ -32,8 +36,9 @@ def run_worker_tool(maestro_id, query_id, worker_assistant_id, query_text, file_
             maestro=maestro,
             query_chat=query_chat,
         )
+        logger.info('[worker_tool_runner.run_worker_tool] The executor is created successfully.')
     except Exception as e:
-        print('[worker_tool_runner.run_worker_tool] An error occurred while creating the executor:', e)
+        logger.error('[worker_tool_runner.run_worker_tool] An error occurred while creating the executor:', e)
         return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
 
     try:
@@ -43,10 +48,10 @@ def run_worker_tool(maestro_id, query_id, worker_assistant_id, query_text, file_
             file_urls=file_urls,
             image_urls=image_urls,
         )
+        logger.info('[worker_tool_runner.run_worker_tool] The worker assistant is asked successfully.')
     except Exception as e:
-        print('[worker_tool_runner.run_worker_tool] An error occurred while asking the worker assistant:', e)
+        logger.error('[worker_tool_runner.run_worker_tool] An error occurred while asking the worker assistant:', e)
         return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
 
-    print('[worker_tool_runner.run_worker_tool] The final response is retrieved from the worker assistant.')
-    print('[worker_tool_runner.run_worker_tool] The final response is:', final_response)
+    logger.info('[worker_tool_runner.run_worker_tool] The worker assistant is asked successfully.')
     return final_response

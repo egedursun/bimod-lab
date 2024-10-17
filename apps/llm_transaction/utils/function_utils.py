@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,18 +12,20 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
-#
-#
-#
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+
+import logging
 from io import BytesIO
 
 import qrcode
 import tiktoken
 from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
+
+
+logger = logging.getLogger(__name__)
 
 
 def process_and_calculate_number_of_billable_tokens(encoding_engine, text):
@@ -82,17 +84,20 @@ def sum_costs(transactions):
 
 
 def barcode_generator(hashed_string):
+    logger.info(f"Generating barcode for hashed string: {hashed_string}")
     try:
         img = qrcode.make(hashed_string)
         buffer = BytesIO()
         img.save(buffer, format="PNG")
         buffer.seek(0)
     except Exception as e:
+        logger.error(f"Error occurred while generating barcode: {str(e)}")
         return None
     return ContentFile(buffer.getvalue(), name=f"QR_{hashed_string}.png")
 
 
 def invoice_paper_generator(invoice_object, barcode_data):
+    logger.info(f"Generating invoice: {invoice_object.invoice_number}")
     import base64
     org = invoice_object.organization
     user = invoice_object.responsible_user
@@ -107,5 +112,6 @@ def invoice_paper_generator(invoice_object, barcode_data):
         file_content = ContentFile(html_content.encode('utf-8'))
         filename = f"invoice_{str(invoice_object.invoice_number)}.html"
     except Exception as e:
+        logger.error(f"Error occurred while generating invoice: {str(e)}")
         return None, None
     return filename, file_content

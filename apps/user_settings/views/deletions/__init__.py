@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: __init__.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,7 +12,7 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
@@ -47,3 +47,11 @@ from .delete_all_custom_apis_views import *
 from .delete_all_custom_scripts_views import *
 from .delete_all_scheduled_jobs_views import *
 from .delete_all_triggered_jobs_views import *
+from .delete_all_brainstorming_sessions_views import *
+from .delete_all_custom_nosql_queries_views import *
+from .delete_all_data_backups_views import *
+from .delete_all_drafting_documents_views import *
+from .delete_all_drafting_folders_views import *
+from .delete_all_harmoniq_agents_views import *
+from .delete_all_nosql_databases_views import *
+from .delete_all_video_generator_connections_views import *

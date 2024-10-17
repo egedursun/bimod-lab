@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: couchbase_executor.py
 #  Last Modified: 2024-10-10 16:20:31
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.core.nosql.utils import before_execute_nosql_query, can_write_to_database
@@ -27,6 +28,9 @@ from couchbase.auth import PasswordAuthenticator
 from couchbase.exceptions import CouchbaseException
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
 from apps.core.generative_ai.utils import ChatRoles
+
+
+logger = logging.getLogger(__name__)
 
 
 class CouchbaseNoSQLExecutor:
@@ -45,12 +49,15 @@ class CouchbaseNoSQLExecutor:
         try:
             cluster = Cluster(f"couchbase://{self.conn_params['host']}", ClusterOptions(
                 PasswordAuthenticator(self.conn_params['user'], self.conn_params['password'])))
+            logger.info(f"Executing query: {query}")
             if parameters:
                 result = cluster.query(query, QueryOptions(named_parameters=parameters))
             else:
                 result = cluster.query(query)
             output['result'] = [row for row in result]
+            logger.info(f"Query executed successfully.")
         except CouchbaseException as e:
+            logger.error(f"Error occurred while executing query: {e}")
             output["status"] = False
             output["error"] = str(e)
 
@@ -61,6 +68,7 @@ class CouchbaseNoSQLExecutor:
             llm_cost=InternalServiceCosts.NoSQLReadExecutor.COST, transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.NOSQL_READ, is_tool_cost=True)
         new_tx.save()
+        logger.info(f"Transaction saved successfully.")
         return output
 
     def execute_write(self, query, parameters=None) -> dict:
@@ -71,6 +79,7 @@ class CouchbaseNoSQLExecutor:
         try:
             cluster = Cluster(f"couchbase://{self.conn_params['host']}", ClusterOptions(
                 PasswordAuthenticator(self.conn_params['user'], self.conn_params['password'])))
+            logger.info(f"Executing query: {query}")
             if parameters:
                 result = cluster.query(query, QueryOptions(named_parameters=parameters))
             else:
@@ -80,8 +89,9 @@ class CouchbaseNoSQLExecutor:
             if len(rows) != 0:
                 output['status'] = False
                 output['error'] = str(rows)
-
+            logger.info(f"Query executed successfully.")
         except CouchbaseException as e:
+            logger.error(f"Error occurred while executing query: {e}")
             output["status"] = False
             output["error"] = str(e)
 
@@ -92,4 +102,5 @@ class CouchbaseNoSQLExecutor:
             llm_cost=InternalServiceCosts.NoSQLWriteExecutor.COST, transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.NOSQL_WRITE, is_tool_cost=True)
         new_tx.save()
+        logger.info(f"Transaction saved successfully.")
         return output

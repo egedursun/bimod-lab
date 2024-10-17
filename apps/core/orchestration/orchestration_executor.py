@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: orchestration_executor.py
 #  Last Modified: 2024-10-05 02:25:59
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,9 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import logging
 
 import websockets
 
@@ -34,6 +34,9 @@ from apps.multimodal_chat.utils import BIMOD_NO_TAG_PLACEHOLDER, BIMOD_STREAMING
     SourcesForMultimodalChatsNames
 from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrchestrationExecutor:
@@ -63,7 +66,9 @@ class OrchestrationExecutor:
         try:
             c = self.client
             user = self.query_chat.created_by_user
+            logger.info(f"User: {user}")
         except Exception as e:
+            logger.error(f"Error while setting the connection and user: {e}")
             send_orchestration_message(f"""
             🚨 Error while setting the connection and user: {e}
             """, query_id=self.query_chat.id)
@@ -79,6 +84,7 @@ class OrchestrationExecutor:
                     query_chat=self.query_chat, maestro=self.maestro, user=user, role=ChatRoles.SYSTEM
                 )]
         except Exception as e:
+            logger.error(f"Error while creating the system prompt for the orchestration process: {e}")
             send_orchestration_message(f"""
             🚨 Error while creating the system prompt for the orchestration process: {e}
             """, query_id=self.query_chat.id)
@@ -91,6 +97,7 @@ class OrchestrationExecutor:
         try:
             prompt_msgs.extend(OrchestrationHistoryBuilder.build(query_chat=query_chat))
         except Exception as e:
+            logger.error(f"Error while creating the history prompt for the orchestration process: {e}")
             send_orchestration_message(f"""
             🚨 Error while creating the history prompt for the orchestration process: {e}
             """, query_id=self.query_chat.id)
@@ -112,6 +119,7 @@ class OrchestrationExecutor:
                 max_tokens=int(self.maestro.llm_model.maximum_tokens), top_p=float(self.maestro.llm_model.top_p),
                 stream=True)
         except Exception as e:
+            logger.error(f"Error occurred while generating the response in cooperation with the orchestrator: {e}")
             send_orchestration_message(f"""
             🚨 Error occurred while generating the response in cooperation with the orchestrator: {str(e)}
             """, query_id=self.query_chat.id)
@@ -146,6 +154,7 @@ class OrchestrationExecutor:
             📦 Orchestrator is preparing the response...
             """, query_id=self.query_chat.id)
         except Exception as e:
+            logger.error(f"Error occurred while processing the Orchestration response from the language model: {e}")
             send_orchestration_message(f"""
             🚨 A critical error occurred while processing the Orchestration response from the language model.
             """, stop_tag=BIMOD_PROCESS_END, query_id=self.query_chat.id)
@@ -195,6 +204,7 @@ class OrchestrationExecutor:
                 """, query_id=self.query_chat.id)
 
             except Exception as e:
+                logger.error(f"Error occurred while calling the worker assistant: {e}")
                 send_orchestration_message(f"""
                 🚨 Error occurred while calling the worker assistant. Attempting to recover...
                 """, query_id=self.query_chat.id)
@@ -242,6 +252,7 @@ class OrchestrationExecutor:
                 ⚙️ Worker Assistant call records have been prepared. Proceeding with the next actions...
                 """, query_id=self.query_chat.id)
             except Exception as e:
+                logger.error(f"Error occurred while recording the tool request: {e}")
                 send_orchestration_message(f"""
                 🚨 A critical error occurred while recording the tool request. Cancelling the process.
                 """, stop_tag=BIMOD_PROCESS_END, query_id=self.query_chat.id)
@@ -262,6 +273,7 @@ class OrchestrationExecutor:
                 ⚙️ Worker Assistant response records have been prepared. Proceeding with the next actions...
                 """, query_id=self.query_chat.id)
             except Exception as e:
+                logger.error(f"Error occurred while recording the Worker Assistant response: {e}")
                 send_orchestration_message(f"""
                 🚨 A critical error occurred while recording the Worker Assistant response. Cancelling the process.
                 """, stop_tag=BIMOD_PROCESS_END, query_id=self.query_chat.id)
@@ -334,6 +346,7 @@ class OrchestrationExecutor:
                 🧑‍🚀🔧✅ >> Worker Assistant chat object has been successfully created.
                 """, query_id=self.query_chat.id)
             except Exception as e:
+                logger.error(f"Error while creating the chat object for the Worker Assistant: {e}")
                 send_orchestration_message(f"""
                 🧑‍🚀🔧🚨 >> Error while creating the chat object for the Worker Assistant: {e}
                 """, query_id=self.query_chat.id)
@@ -342,6 +355,7 @@ class OrchestrationExecutor:
         try:
             internal_llm_client = OpenAIGPTClientManager(assistant=agent, chat_object=chat)
         except Exception as e:
+            logger.error(f"Error while creating the internal LLM client for the Worker Assistant: {e}")
             send_orchestration_message(f"""
             🧑‍🚀🚨 Error while setting the connection and user: {e}
             """, query_id=self.query_chat.id)
@@ -374,4 +388,5 @@ class OrchestrationExecutor:
             latest_message=structured_maestro_order, image_uris=image_urls, file_uris=file_urls)
         MultimodalChatMessage.objects.create(
             multimodal_chat=chat, sender_type='ASSISTANT', message_text_content=final_resp)
+        logger.info(f"Worker Assistant response is ready.")
         return final_resp

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-05 02:20:19
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,11 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
-
+import logging
 import re
 import uuid
 from json import JSONDecoder
@@ -24,7 +24,11 @@ from json import JSONDecoder
 import apps.core
 
 
+logger = logging.getLogger(__name__)
+
+
 def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
+    logger.info("Finding tool call from JSON response.")
     response = f"""{response}"""
     response = response.replace("\n", "").replace("'", '"')
     json_objects = []
@@ -43,12 +47,14 @@ def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
 
 
 def extract_image_uri(response_str):
+    logger.info("Extracting image URI from response.")
     pattern = r'"image_uri":\s*"([^"]+)"'
     match = re.search(pattern, response_str)
     return match.group(1) if match else None
 
 
 def extract_file_uri(response_str):
+    logger.info("Extracting file URI from response.")
     pattern = r'"file_uri":\s*"([^"]+)"'
     match = re.search(pattern, response_str)
     return match.group(1) if match else None
@@ -62,6 +68,7 @@ def generate_random_audio_filename(extension="mp3"):
 
 
 def step_back_retry_mechanism(client, latest_message, caller="respond"):
+    logger.info("Step back retry mechanism.")
     from apps.core.generative_ai.utils import RetryCallersNames, DEFAULT_ERROR_MESSAGE
     if apps.core.generative_ai.utils.constant_utils.ACTIVE_RETRY_COUNT < client.assistant.max_retry_count:
         apps.core.generative_ai.utils.constant_utils.ACTIVE_RETRY_COUNT += 1

@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_export_assistants_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,6 +26,9 @@ from apps.assistants.models import Assistant
 from apps.export_assistants.models import ExportAssistantAPI
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExportAssistantView_Update(TemplateView, LoginRequiredMixin):
@@ -55,9 +56,11 @@ class ExportAssistantView_Update(TemplateView, LoginRequiredMixin):
         exp_agent.is_public = request.POST.get('is_public') == 'on'
         if exp_agent.assistant_id and exp_agent.request_limit_per_hour:
             exp_agent.save()
+            logger.info(f"Export Assistant was updated by User: {request.user.id}.")
             messages.success(request, "Export Assistant updated successfully.")
             return redirect('export_assistants:list')
         else:
+            logger.error(f"Error updating Export Assistant by User: {request.user.id}.")
             messages.error(request, "There was an error updating the Export Assistant.")
 
         context = self.get_context_data()

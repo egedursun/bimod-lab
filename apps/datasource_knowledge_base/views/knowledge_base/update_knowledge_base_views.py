@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: update_knowledge_base_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,6 +28,9 @@ from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnectio
 from apps.datasource_knowledge_base.utils import VECTORSTORE_SYSTEMS, EMBEDDING_VECTORIZER_MODELS
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class VectorStoreView_Update(LoginRequiredMixin, TemplateView):
@@ -62,9 +63,11 @@ class VectorStoreView_Update(LoginRequiredMixin, TemplateView):
         form = DocumentKnowledgeBaseForm(request.POST, instance=vector_store)
         if form.is_valid():
             form.save()
+            logger.info(f"[views.update_knowledge_base] Knowledge Base updated successfully.")
             messages.success(request, "Knowledge Base updated successfully.")
             return redirect('datasource_knowledge_base:list')
         else:
+            logger.error(f"[views.update_knowledge_base] Error updating Knowledge Base. Please check the form for errors.")
             messages.error(request, "Error updating Knowledge Base. Please check the form for errors.")
             context = self.get_context_data(**kwargs)
             context['form'] = form

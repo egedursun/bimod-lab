@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: drafting_documents_create_update_views.py
 #  Last Modified: 2024-10-14 14:03:21
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,6 +25,8 @@ from apps.drafting.models import DraftingDocument
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+logger = logging.getLogger(__name__)
 
 
 class DraftingView_DocumentDetail(TemplateView, LoginRequiredMixin):
@@ -45,4 +48,5 @@ class DraftingView_DocumentDetail(TemplateView, LoginRequiredMixin):
         context['folder'] = document.document_folder
         content = document.document_content_json_quill
         context['content'] = content
+        logger.info(f"Drafting Document {document.document_title} was viewed.")
         return context

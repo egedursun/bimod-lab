@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: produce_ideas_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,6 +25,9 @@ from apps.core.brainstorms.brainstorms_executor import BrainstormsExecutor
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingSession
 from apps.user_permissions.utils import PermissionNames
+
+
+logger = logging.getLogger(__name__)
 
 
 class BrainstormingView_IdeasGenerate(LoginRequiredMixin, View):
@@ -43,4 +47,5 @@ class BrainstormingView_IdeasGenerate(LoginRequiredMixin, View):
         xc = BrainstormsExecutor(session=session)
         xc.produce_ideas(depth_level=int(depth_level))
         messages.success(request, f'Ideas for level {depth_level} generated successfully.')
+        logger.info(f'Ideas for level {depth_level} generated successfully. Session ID: {session.id}')
         return redirect('brainstorms:detail_session', session_id=session.id)

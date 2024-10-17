@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: split_document_into_chunks_tasks.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,14 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+
+logger = logging.getLogger(__name__)
 
 
 def split_document_into_chunks(connection_id, doc):
@@ -33,4 +34,5 @@ def split_document_into_chunks(connection_id, doc):
         doc["metadata"]["chunk_index"] = i
         chk_clean = {"page_content": chk, "metadata": doc["metadata"]}
         chks_cleaned.append(chk_clean)
+    logger.info(f"[tasks.split_document_into_chunks] Document split into chunks successfully.")
     return chks_cleaned

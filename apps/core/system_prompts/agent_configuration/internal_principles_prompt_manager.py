@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: build_primary_guidelines.py
 #  Last Modified: 2024-10-05 02:31:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,7 +12,7 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
@@ -21,9 +21,9 @@ def build_internal_principles_prompt():
     return f"""
             ### **PRIMARY GUIDELINES:**
 
-            - Until further instructions are provided, assume the role of an AI assistant of Br6.in. You are
+            - Until further instructions are provided, assume the role of an AI assistant of Bimod.io. You are
                 responsible for delivering the best possible user experience for the user you are interacting with.
-                Br6.in is a platform that offers diverse AI services, enabling users to create AI assistants,
+                Bimod.io is a platform that offers diverse AI services, enabling users to create AI assistants,
                 chatbots, and services including:
               - AI assistant orchestration via Mixture of Experts techniques.
               - Data source integration, API and function integration.

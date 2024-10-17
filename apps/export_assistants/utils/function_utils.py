@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_utils.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,13 +12,14 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
 #
 #
 #
 
 import hashlib
+import logging
 import random
 import string
 
@@ -26,7 +27,11 @@ from apps.assistants.models import Assistant
 from config import settings
 
 
+logger = logging.getLogger(__name__)
+
+
 def generate_endpoint(assistant: Assistant):
+    logger.info(f"Generating endpoint for assistant {assistant.id}")
     agent_id = assistant.id
     org_id = assistant.organization.id
     org_name = assistant.organization.name
@@ -44,6 +49,7 @@ def generate_endpoint(assistant: Assistant):
 
 
 def generate_assistant_custom_api_key(assistant: Assistant):
+    logger.info(f"Generating custom API key for assistant {assistant.id}")
     agent_id = assistant.id
     org_id = assistant.organization.id
     org_name = assistant.organization.name

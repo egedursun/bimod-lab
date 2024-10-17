@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: create_forum_post_views.py
 #  Last Modified: 2024-10-05 01:39:47
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -32,6 +30,9 @@ from auth.utils import ForumRewardActionsNames
 from web_project import TemplateLayout
 
 
+logger = logging.getLogger(__name__)
+
+
 class ForumView_PostCreate(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         thread_id = self.kwargs.get("thread_id")
@@ -40,6 +41,7 @@ class ForumView_PostCreate(LoginRequiredMixin, TemplateView):
         if request.user.profile.user_last_forum_post_at:
             if (timezone.now() - request.user.profile.user_last_forum_post_at).seconds < (1 * CONST_HOURS):
                 messages.error(request, "You can only post once per hour.")
+                logger.error(f"User tried to post more than once per hour. User ID: {request.user.id}")
                 return redirect('community_forum:thread_detail', thread_id=thread.id)
 
         request.user.profile.user_last_forum_post_at = timezone.now()
@@ -51,10 +53,12 @@ class ForumView_PostCreate(LoginRequiredMixin, TemplateView):
             post.created_by = request.user
             post.save()
             request.user.profile.add_points(ForumRewardActionsNames.ASK_QUESTION)
+            logger.info(f"Forum post created. Post ID: {post.id}")
             return redirect('community_forum:thread_detail', thread_id=thread.id)
 
         context = self.get_context_data(**kwargs)
         context['form'] = form
+        logger.error(f"Error creating forum post: {form.errors}")
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):

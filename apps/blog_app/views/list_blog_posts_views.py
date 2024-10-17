@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: list_blog_posts_views.py
 #  Last Modified: 2024-10-05 12:51:58
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
@@ -22,6 +23,9 @@ from django.views.generic import TemplateView
 
 from apps.blog_app.models import BlogPost
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class BlogPostView_List(LoginRequiredMixin, TemplateView):
@@ -41,4 +45,5 @@ class BlogPostView_List(LoginRequiredMixin, TemplateView):
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         context['search_query'] = search_query
+        logger.info(f"Blog Posts were listed.")
         return context

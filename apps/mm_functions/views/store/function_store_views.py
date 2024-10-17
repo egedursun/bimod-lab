@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: function_store_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,11 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -31,6 +29,9 @@ from apps.mm_functions.models import CustomFunction, CustomFunctionReference
 from apps.mm_functions.utils import CUSTOM_FUNCTION_CATEGORIES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomFunctionView_Store(LoginRequiredMixin, TemplateView):
@@ -64,6 +65,7 @@ class CustomFunctionView_Store(LoginRequiredMixin, TemplateView):
         context['selected_categories'] = selected_categories
         context['CUSTOM_FUNCTION_CATEGORIES'] = CUSTOM_FUNCTION_CATEGORIES
         context['function_assistant_map'] = function_agent_map
+        logger.info(f"User: {self.request.user.id} is checking function store.")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -74,6 +76,7 @@ class CustomFunctionView_Store(LoginRequiredMixin, TemplateView):
         # PERMISSION CHECK FOR - UPDATE_FUNCTIONS
         if not UserPermissionManager.is_authorized(user=self.request.user,
                                                    operation=PermissionNames.UPDATE_FUNCTIONS):
+            logger.error(f"You do not have permission to update custom functions.")
             messages.error(self.request, "You do not have permission to update custom functions.")
             return redirect('mm_functions:list')
         ##############################
@@ -85,8 +88,10 @@ class CustomFunctionView_Store(LoginRequiredMixin, TemplateView):
                 agent = Assistant.objects.get(id=agent_id)
                 CustomFunctionReference.objects.create(assistant=agent, custom_function=custom_function,
                                                        created_by_user=request.user)
+                logger.info(f"Function '{custom_function.name}' assigned to assistant '{agent.name}'.")
                 messages.success(request,
                                  f"Function '{custom_function.name}' assigned to assistant '{agent.name}'.")
         else:
+            logger.error(f"Invalid input. Please try again.")
             messages.error(request, "Invalid input. Please try again.")
         return redirect('mm_functions:store')

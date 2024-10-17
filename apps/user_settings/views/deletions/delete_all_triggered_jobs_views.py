@@ -1,6 +1,6 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
-#  Project: Br6.in™
+#  Project: Bimod.io™
 #  File: delete_all_triggered_jobs_views.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
@@ -12,8 +12,9 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@br6.in.
+#   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +26,9 @@ from apps.mm_triggered_jobs.models import TriggeredJob
 from apps.user_permissions.utils import PermissionNames
 
 
+logger = logging.getLogger(__name__)
+
+
 class SettingsView_DeleteAllTriggeredJobs(View, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
@@ -34,6 +38,7 @@ class SettingsView_DeleteAllTriggeredJobs(View, LoginRequiredMixin):
         if confirmation_field != 'CONFIRM DELETING ALL TRIGGERED JOBS':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL TRIGGERED JOBS'.")
+            logger.error(f"Invalid confirmation field: {confirmation_field}")
             return redirect('user_settings:settings')
 
         ##############################
@@ -48,6 +53,8 @@ class SettingsView_DeleteAllTriggeredJobs(View, LoginRequiredMixin):
             for triggered_job in user_triggered_jobs:
                 triggered_job.delete()
             messages.success(request, "All triggered jobs associated with your account have been deleted.")
+            logger.info(f"All triggered jobs associated with User: {user.id} have been deleted.")
         except Exception as e:
             messages.error(request, f"Error deleting triggered jobs: {e}")
+            logger.error(f"Error deleting triggered jobs: {e}")
         return redirect('user_settings:settings')
