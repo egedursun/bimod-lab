@@ -78,4 +78,4 @@ class FileSystemView_Create(LoginRequiredMixin, TemplateView):
             return redirect('datasource_file_systems:create')
         except Exception as e:
             messages.error(request, f'Error creating Data Source File System: {e}')
-            return redirect('datasource_file_systems:create')
+            return redirect('datasource_file_systems:list')

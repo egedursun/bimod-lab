@@ -14,8 +14,5 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
 from .starred_message_admin import *

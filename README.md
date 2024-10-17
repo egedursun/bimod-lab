@@ -4,8 +4,10 @@
 
 ......
 
-1. Integrate NOSQL + add the functionality to SEARCH BAR.
-2. BUG: The messages cut short in Harmoniq + can't send audio in real time to Harmoniq agent.
+1. Add logs to every part of the code
+2. Fix the headings to Bimod.io again
+
+[i] BUG: The messages cut short in Harmoniq + can't send audio in real time to Harmoniq agent.
 
 ---
 
@@ -54,11 +56,15 @@
 
   - SSH Connection for VPS Server:
     - **Connection:** ssh -o "StrictHostKeyChecking=no" root@185.170.198.44
+    - **Default Port:** 22
     - **Username:** root
     - **PW:** 7#Ao141j3$sI?k5#aDrR
 
   - SSH Connection to DB VPS Server:
     - **Connection:** ssh -o "StrictHostKeyChecking=no" root@92.113.31.31
+    - **Default Port:** 
+      - Development Server: 5432
+      - Production Server: ****
     - **Username:** root
     - **PW:** b6VtNjUvpogj=C:UMsx?
 
@@ -109,8 +115,8 @@
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Total Lines of Code by 2024-10-05: (Day: 98) **317,150,000**
-- Total Code Files by 2024-08-23: (Day: 98) **54,250**
+- Total Lines of Code by 2024-10-16: (Day: 109) **360,000,000**
+- Total Code Files by 2024-10-16: (Day: 109) **55,000**
 
 ---
 

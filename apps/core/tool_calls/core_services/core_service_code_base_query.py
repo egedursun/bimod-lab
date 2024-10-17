@@ -26,6 +26,6 @@ def run_query_code_base(c_id: int, query_content_str: str, semantic_alpha: float
         cli = CodeBaseDecoder().get(connection=conn)
         output = cli.search_hybrid(query=query_content_str, alpha=semantic_alpha)
     except Exception as e:
-        error = f"There has been an unexpected error on running the codebase query."
+        error = f"There has been an unexpected error on running the codebase query: {e}"
         return error
     return output

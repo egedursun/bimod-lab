@@ -22,3 +22,4 @@ from .ssh_tool_prompts import *
 from .web_tool_prompts import *
 from .nosql_tool_prompts import *
 from .vect_tool_prompts import *
+from .repo_tool_prompts import *

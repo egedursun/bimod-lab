@@ -130,7 +130,8 @@ class WeaviateExecutor:
                     content_lines = self.extract_file_content_and_metadata(file_path)
                     if not content_lines:
                         continue
-                    formatted_content = self.assign_line_numbers_and_filename_to_line(str(file_path), content_lines)
+                    formatted_content += self.assign_line_numbers_and_filename_to_line(str(file_path), content_lines)
+                    formatted_content += "\n"
         except Exception as e:
             return None
         result["page_content"] = formatted_content
@@ -216,7 +217,7 @@ class WeaviateExecutor:
         client = self.connect_c()
         documents_collection = client.collections.get(search_vector_store_class_name)
         response = documents_collection.query.hybrid(
-            query_properties=["chunk_document_file_name", "chunk_content"],
+            query_properties=["chunk_repository_file_name", "chunk_content"],
             query=query, alpha=float(alpha), limit=int(self.connection_object.search_instance_retrieval_limit))
         cleaned_documents = []
         for o in response.objects:
@@ -224,7 +225,7 @@ class WeaviateExecutor:
             if not o.properties:
                 continue
             for k, v in o.properties.items():
-                if k in ["chunk_document_file_name", "chunk_content", "chunk_number", "created_at"]:
+                if k in ["chunk_repository_file_name", "chunk_content", "chunk_number", "created_at"]:
                     cleaned_object[k] = v
             cleaned_documents.append(cleaned_object)
 

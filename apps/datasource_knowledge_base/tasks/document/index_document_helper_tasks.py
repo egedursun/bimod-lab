@@ -20,6 +20,8 @@
 
 from celery import shared_task
 
+from apps.datasource_knowledge_base.utils import document_loader
+
 
 @shared_task
 def index_document_helper(connection_id, document_paths):
@@ -72,7 +74,7 @@ def _chunk_doc(docc, xc):
 
 def _load_doc(path, xc):
     file_format = path.split(".")[-1]
-    docc = xc.document_loader(file_path=path, file_type=file_format)
+    docc = document_loader(file_path=path, file_type=file_format)
     return docc
 
 

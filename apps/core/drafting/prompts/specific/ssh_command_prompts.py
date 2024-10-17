@@ -15,4 +15,38 @@
 #   For permission inquiries, please contact: admin@br6.in.
 #
 
+def build_drafting_action__ssh_prompt(user_query: str):
+    return f"""
+        ### **SELECTED ACTION BY THE USER:**
 
+        '''
+            //ssh
+        '''
+
+        **Tools & Data Sources:**
+
+        '''
+        - Data Sources You Have: [SSH FILE SYSTEM CONNECTIONS]
+        - Tools You Have: [USE SSH FILE SYSTEM CONNECTIONS TO EXECUTE SSH FILE SYSTEM READ QUERIES]
+        '''
+
+        ---
+
+        **YOUR GOAL:** The user picked the SSH File System Command action. You MUST check the user's query and
+        understand what kind of operation they want to perform. And then, based on the query they provided to you, you
+        need to perform a search on the SSH File System using one of the available SSH File System connections you
+        have. You can run any type of read SSH File System command on the file system to get the information requested
+        by the user. Then, using the information you found in the file system, you must write the text in the form and
+        content requested by the user's query. If you have the information specified in your own internal knowledge,
+        you don't need to perform a SSH file system search. But be careful in not providing false information
+        (unless specifically requested by the user).
+
+        ---
+
+        **QUERY OF THE USER:**
+
+        '''
+        {user_query}
+        '''
+
+    """

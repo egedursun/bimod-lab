@@ -24,3 +24,4 @@ from .auto_command_builder import *
 from .vect_command_builder import *
 from .nosql_command_builder import *
 from .select_command_builder import *
+from .repo_command_builder import *

@@ -118,13 +118,16 @@
 
 function saveContent() {
   let deltaContent = quill.getContents();
+  const documentId = "{{ document.id }}";
   document.querySelector('input[name="draft_text"]').value = JSON.stringify(deltaContent);
-  localStorage.setItem('unsavedChanges', false);
+  localStorage.setItem(`unsavedChanges_${documentId}`, false);
   document.querySelector('#saveForm').submit();
 }
 
 // Page load initialization
 document.addEventListener('DOMContentLoaded', function () {
+  const documentId = "{{ document.id }}";
+  const localStorageKey = `quillContent_${documentId}`;
   let initialDocumentContent;
   try {
     initialDocumentContent = JSON.parse('{{ content|escapejs }}');
@@ -132,8 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.error('Initial content parsing error:', e);
     initialDocumentContent = '{}';
   }
-
-  let savedContent = localStorage.getItem('quillContent');
+  let savedContent = localStorage.getItem(localStorageKey);
   if (savedContent) {
     try {
       quill.setContents(JSON.parse(savedContent));
@@ -143,22 +145,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   } else {
     quill.setContents(initialDocumentContent);
-    localStorage.setItem('quillContent', initialDocumentContent);
+    localStorage.setItem(localStorageKey, JSON.stringify(initialDocumentContent));
   }
-  let unsavedChanges = localStorage.getItem('unsavedChanges');
+  let unsavedChanges = localStorage.getItem(`unsavedChanges_${documentId}`);
   document.querySelector('.bg-label-warning').hidden = (unsavedChanges !== 'true');
 });
 
-// Handle text changes in Quill editor
 quill.on('text-change', function() {
+  const documentId = "{{ document.id }}";
   let currentContent = quill.getContents();
   let currentContentString = JSON.stringify(currentContent);
-  let initialDocumentContent = localStorage.getItem('quillContent');
-  localStorage.setItem('quillContent', currentContentString);
+  let initialDocumentContent = localStorage.getItem(`quillContent_${documentId}`);
+  localStorage.setItem(`quillContent_${documentId}`, currentContentString);
   if (currentContentString === initialDocumentContent) {
     document.querySelector('.bg-label-warning').hidden = true;
   } else {
-    localStorage.setItem('unsavedChanges', true);
+    localStorage.setItem(`unsavedChanges_${documentId}`, true);
     document.querySelector('.bg-label-warning').hidden = false;
   }
 });
@@ -187,8 +189,8 @@ function resetChanges() {
         initialDocumentContent = '{}';
       }
       quill.setContents(initialDocumentContent);
-      localStorage.setItem('quillContent', JSON.stringify(initialDocumentContent));
-      localStorage.setItem('unsavedChanges', false);
+      localStorage.setItem(`quillContent_${documentId}`, JSON.stringify(initialDocumentContent));
+      localStorage.setItem(`unsavedChanges_${documentId}`, false);
       document.querySelector('.bg-label-warning').hidden = true;
     }
   });
@@ -274,6 +276,7 @@ quill.on('text-change', function(delta, oldDelta, source) {
     "//img": { title: "Generate Image with AI", placeholder: "Write the details of the image you want...", buttonText: "Generate Image" },
     "//ssh": { title: "Check SSH Server with AI", placeholder: "Query your SSH servers with AI...", buttonText: "Check SSH" },
     "//vect": { title: "Check Knowledge with AI", placeholder: "Query knowledge bases with AI...", buttonText: "Check Knowledge" },
+    "//repo": { title: "Search Code with AI", placeholder: "Query your code repositories with AI...", buttonText: "Query Repository" },
     "//auto": { title: "", placeholder: "", buttonText: "" },  // No modal, just handling.
   };
 
@@ -361,6 +364,8 @@ function consultAI() {
       handleSshConsult();
     } else if (currentCommand === "//vect") {
       handleVectConsult();
+    } else if (currentCommand === "//repo") {
+      handleRepoConsult();
     }
   }
 }
@@ -377,65 +382,352 @@ quill.root.addEventListener('keydown', function(event) {
   }
 });
 
-// Handle selected text to show modal
-quill.on('selection-change', function(range) {
-  if (range && range.length > 0) {
-    // Save the selected range
-    savedRange = range;
+let selectedText = '';
+let selectionMade = false;  // Flag to track if text was selected
 
-    // Show the modal for text manipulation
-    showModal({
-      title: "Manipulate Text with AI",
-      placeholder: "Write how do you want to change the text...",
-      buttonText: "Submit"
-    });
-  }
+quill.on('selection-change', function(range) {
+    if (range && range.length > 0) {
+        savedRange = range;
+        selectedText = quill.getText(range.index, range.length);
+        selectionMade = true;  // Set flag to true when text is selected
+    } else {
+        selectionMade = false;  // Reset flag when no selection is made
+    }
+});
+
+// Listen for the 'q' key after text selection
+document.addEventListener('keydown', function(event) {
+    if (selectionMade && event.key === 'F2') {
+        showModal({
+            title: "Manipulate Text with AI",
+            placeholder: "Write how do you want to change the text...",
+            buttonText: "Submit"
+        });
+
+        document.getElementById('consultButton').onclick = function() {
+            const aiPrompt = document.getElementById('aiPrompt').value;
+            if (aiPrompt.trim() !== "") {
+                closeModal();
+
+                const documentId = "{{ document.id }}";
+                fetch("{% url 'drafting:generate_select' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    body: new URLSearchParams({
+                        document_id: documentId,
+                        selected_text: selectedText,
+                        command: aiPrompt
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.output) {
+                        const cleanedOutput = data.output.replace(/\r?\n|\r/g, " ");
+                        if (savedRange) {
+                            quill.deleteText(savedRange.index, savedRange.length);
+                            quill.insertText(savedRange.index, cleanedOutput);
+                        }
+                    }
+                    if (data.error) {
+                        console.error("Error while manipulating text:", data.error);
+                    }
+                });
+            }
+        };
+    }
 });
 
 // Handle the //auto command
 function handleAutoCommand() {
-  console.log("Handling //auto command");
-
-  // Remove the //auto from the text after handling it
   const selection = quill.getSelection(true);
-  if (!selection) {
-    console.warn("No active selection when handling auto.");
-    return;
-  }
-  const cursorPosition = selection.index;
+  if (!selection) return;
+  let cursorPosition = selection.index;
   const triggerPhraseLength = "//auto".length;
   if (cursorPosition >= triggerPhraseLength) {
     quill.deleteText(cursorPosition - triggerPhraseLength, triggerPhraseLength);
+    cursorPosition -= triggerPhraseLength;
   }
+
+  const documentId = "{{ document.id }}";
+  fetch("{% url 'drafting:generate_auto' %}", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "X-CSRFToken": "{{ csrf_token }}"
+    },
+    body: new URLSearchParams({
+      document_id: documentId
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.output) {
+      const cleanedOutput = data.output.replace(/\r?\n|\r/g, " ");
+      quill.insertText(cursorPosition, cleanedOutput, 'user');
+      quill.setSelection(cursorPosition + cleanedOutput.length);
+    }
+    if (data.error) {
+      console.error("Error while auto-completing:", data.error);
+    }
+  });
 }
 
 // Functions for handling each command's submission (empty handlers for now)
 function handleAiConsult() {
-  console.log("Handling AI consultation logic...");
+  const aiPrompt = document.getElementById('aiPrompt').value;
+  if (aiPrompt.trim() !== "") {
+    closeModal();
+    const selection = quill.getSelection(true);
+    if (!selection) return;
+    const cursorPosition = selection.index;
+    const triggerPhraseLength = currentCommand.length;
+    const documentId = "{{ document.id }}";
+    fetch("{% url 'drafting:generate_ai' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: new URLSearchParams({
+        document_id: documentId,
+        command: aiPrompt
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.output) {
+        quill.insertText(cursorPosition, data.output, 'user');
+      }
+      if (data.error) {
+        console.error("Error while consulting AI:", data.error);
+      }
+    });
+  }
 }
 
 function handleWebConsult() {
-  console.log("Handling web browsing consultation logic...");
+  const webPrompt = document.getElementById('aiPrompt').value;
+  if (webPrompt.trim() !== "") {
+    closeModal();
+    const selection = quill.getSelection(true);
+    if (!selection) return;
+    const cursorPosition = selection.index;
+    const triggerPhraseLength = currentCommand.length;
+    const documentId = "{{ document.id }}";
+    fetch("{% url 'drafting:generate_web' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: new URLSearchParams({
+        document_id: documentId,
+        command: webPrompt
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.output) {
+        quill.insertText(cursorPosition, data.output, 'user');
+      }
+      if (data.error) {
+        console.error("Error while browsing the web:", data.error);
+      }
+    });
+  }
 }
 
 function handleSqlConsult() {
-  console.log("Handling SQL consultation logic...");
+  const sqlPrompt = document.getElementById('aiPrompt').value;
+  if (sqlPrompt.trim() !== "") {
+    closeModal();
+    const selection = quill.getSelection(true);
+    if (!selection) return;
+    const cursorPosition = selection.index;
+    const triggerPhraseLength = currentCommand.length;
+    const documentId = "{{ document.id }}";
+    fetch("{% url 'drafting:generate_sql' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: new URLSearchParams({
+        document_id: documentId,
+        command: sqlPrompt
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.output) {
+        quill.insertText(cursorPosition, data.output, 'user');
+      }
+    });
+  }
 }
 
 function handleNoSqlConsult() {
-  console.log("Handling NoSQL consultation logic...");
+  const noSqlPrompt = document.getElementById('aiPrompt').value;
+  if (noSqlPrompt.trim() !== "") {
+    closeModal();
+    const selection = quill.getSelection(true);
+    if (!selection) return;
+    const cursorPosition = selection.index;
+    const triggerPhraseLength = currentCommand.length;
+    const documentId = "{{ document.id }}";
+    fetch("{% url 'drafting:generate_nosql' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: new URLSearchParams({
+        document_id: documentId,
+        command: noSqlPrompt
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.output) {
+        quill.insertText(cursorPosition, data.output, 'user');
+      }
+      if (data.error) {
+        console.error("Error while searching NoSQL:", data.error);
+      }
+    });
+  }
 }
 
 function handleImageConsult() {
-  console.log("Handling image generation consultation logic...");
+  console.log("Handling image consultation...");
+  const imgPrompt = document.getElementById('aiPrompt').value;
+  if (imgPrompt.trim() !== "") {
+    closeModal();
+    const selection = quill.getSelection(true);
+    if (!selection) return;
+    const cursorPosition = selection.index;
+    const triggerPhraseLength = currentCommand.length;
+    const documentId = "{{ document.id }}";
+    fetch("{% url 'drafting:generate_img' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: new URLSearchParams({
+        document_id: documentId,
+        command: imgPrompt
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.output) {
+        quill.insertEmbed(cursorPosition, 'image', data.output);
+      }
+      if (data.error) {
+        console.error("Error while generating image:", data.error);
+      }
+    });
+  }
 }
 
 function handleSshConsult() {
-  console.log("Handling SSH consultation logic...");
+  const sshPrompt = document.getElementById('aiPrompt').value;
+  if (sshPrompt.trim() !== "") {
+    closeModal();
+    const selection = quill.getSelection(true);
+    if (!selection) return;
+    const cursorPosition = selection.index;
+    const triggerPhraseLength = currentCommand.length;
+    const documentId = "{{ document.id }}";
+    fetch("{% url 'drafting:generate_ssh' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: new URLSearchParams({
+        document_id: documentId,
+        command: sshPrompt
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.output) {
+        quill.insertText(cursorPosition, data.output, 'user');
+      }
+      if (data.error) {
+        console.error("Error while checking SSH servers:", data.error);
+      }
+    });
+  }
 }
 
 function handleVectConsult() {
-  console.log("Handling vector knowledge consultation logic...");
+  const vectPrompt = document.getElementById('aiPrompt').value;
+  if (vectPrompt.trim() !== "") {
+    closeModal();
+    const selection = quill.getSelection(true);
+    if (!selection) return;
+    const cursorPosition = selection.index;
+    const triggerPhraseLength = currentCommand.length;
+    const documentId = "{{ document.id }}";
+    fetch("{% url 'drafting:generate_vect' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: new URLSearchParams({
+        document_id: documentId,
+        command: vectPrompt
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.output) {
+        quill.insertText(cursorPosition, data.output, 'user');
+      }
+      if (data.error) {
+        console.error("Error while querying knowledge bases:", data.error);
+      }
+    });
+  }
+}
+
+function handleRepoConsult() {
+  const repoPrompt = document.getElementById('aiPrompt').value;
+  if (repoPrompt.trim() !== "") {
+    closeModal();
+    const selection = quill.getSelection(true);
+    if (!selection) return;
+    const cursorPosition = selection.index;
+    const triggerPhraseLength = currentCommand.length;
+    const documentId = "{{ document.id }}";
+    fetch("{% url 'drafting:generate_repo' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: new URLSearchParams({
+        document_id: documentId,
+        command: repoPrompt
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.output) {
+        quill.insertText(cursorPosition, data.output, 'user');
+      }
+      if (data.error) {
+        console.error("Error while querying knowledge bases:", data.error);
+      }
+    });
+  }
 }
 
 // Make modal draggable
@@ -642,9 +934,9 @@ document.addEventListener('DOMContentLoaded', function () {
               <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
                 <div class="">
                   <i class="fa fa-i-cursor me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>[Select]</strong></span>
+                  <span class="h6 mb-2 text-body"><strong>[Pick+F2]</strong></span>
                   <span class="text-dark ms-4">
-                    <strong>Manipulate Text</strong>
+                    <strong>Change Text</strong>
                   </span>
                 </div>
               </div>
@@ -663,6 +955,15 @@ document.addEventListener('DOMContentLoaded', function () {
                   <span class="h6 mb-2 text-body"><strong>//vect</strong></span>
                   <span class="text-dark ms-4">
                     <strong>Search Documents</strong>
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+                <div class="">
+                  <i class="fa fa-code me-2"></i>
+                  <span class="h6 mb-2 text-body"><strong>//repo</strong></span>
+                  <span class="text-dark ms-4">
+                    <strong>Search Codebase</strong>
                   </span>
                 </div>
               </div>

@@ -497,6 +497,7 @@ AUDIO_PROCESSING_STT = os.environ.get("AUDIO_PROCESSING_STT", default="0")
 AUDIO_PROCESSING_TTS = os.environ.get("AUDIO_PROCESSING_TTS", default="0")
 VIDEO_GENERATOR = os.environ.get("VIDEO_GENERATOR", default="0")
 REASONING = os.environ.get("REASONING", default="0")
+DRAFTING = os.environ.get("DRAFTING", default="0")
 
 COSTS_MAP = {
     "CONTEXT_MEMORY": float(CONTEXT_MEMORY),
@@ -529,6 +530,7 @@ COSTS_MAP = {
     "AUDIO_PROCESSING_TTS": float(AUDIO_PROCESSING_TTS),
     "VIDEO_GENERATOR": float(VIDEO_GENERATOR),
     "REASONING": float(REASONING),
+    "DRAFTING": float(DRAFTING),
 }
 
 if ENVIRONMENT != "local":

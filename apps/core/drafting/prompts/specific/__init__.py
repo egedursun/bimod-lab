@@ -25,3 +25,4 @@ from .auto_command_prompts import *
 from .vect_command_prompts import *
 from .nosql_command_prompts import *
 from .select_command_prompts import *
+from .repo_command_prompts import *

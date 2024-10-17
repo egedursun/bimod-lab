@@ -14,10 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
-#
 
 from langchain_community.document_loaders import UnstructuredODTLoader
 

@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
 def load_txt_content(path: str):
     clean_doc = {

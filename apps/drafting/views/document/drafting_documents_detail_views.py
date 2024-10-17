@@ -14,13 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.assistants.models import Assistant
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.drafting.models import DraftingDocument, DraftingFolder
+from apps.drafting.models import DraftingDocument
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
@@ -39,8 +39,6 @@ class DraftingView_DocumentDetail(TemplateView, LoginRequiredMixin):
         ##############################
 
         user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        folders = DraftingFolder.objects.filter(organization__in=user_orgs)
-        assistants = Assistant.objects.filter(organization__in=user_orgs)
         document_id = self.kwargs.get('document_id')
         document = DraftingDocument.objects.get(id=document_id)
         context['document'] = document
@@ -48,8 +46,3 @@ class DraftingView_DocumentDetail(TemplateView, LoginRequiredMixin):
         content = document.document_content_json_quill
         context['content'] = content
         return context
-
-    def post(self, request, *args, **kwargs):
-        # Action (1): "Save file content"
-        # Action (2): "Delete file" (redirect to delete view (after confirmation))
-        pass

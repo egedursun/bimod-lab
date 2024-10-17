@@ -53,6 +53,7 @@ class InternalServiceCosts:
             InternalServiceCosts.AudioProcessingTTS.COST,
             InternalServiceCosts.VideoGenerator.COST,
             InternalServiceCosts.Reasoning.COST,
+            InternalServiceCosts.Drafting.COST,
         ]
 
     class ContextMemory:
@@ -145,6 +146,9 @@ class InternalServiceCosts:
     class Reasoning:
         COST = COSTS_MAP["REASONING"]
 
+    class Drafting:
+        COST = COSTS_MAP["DRAFTING"]
+
 
 TOOL_NAME_TO_COST_MAP = {
     "store-memory": InternalServiceCosts.ContextMemory.COST,
@@ -177,4 +181,5 @@ TOOL_NAME_TO_COST_MAP = {
     "audio-processing-tts": InternalServiceCosts.AudioProcessingTTS.COST,
     "generate-video": InternalServiceCosts.VideoGenerator.COST,
     "reasoning": InternalServiceCosts.Reasoning.COST,
+    "drafting": InternalServiceCosts.Drafting.COST,
 }

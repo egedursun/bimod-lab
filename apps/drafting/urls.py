@@ -25,6 +25,7 @@ from apps.drafting.views import (DraftingView_DocumentDetail, DraftingView_Docum
                                  DraftingView_GenerateViaSSHCommand, DraftingView_GenerateViaSelectCommand,
                                  DraftingView_GenerateViaVectCommand, DraftingView_GenerateViaAutoCommand,
                                  DraftingView_GenerateViaImgCommand, DraftingView_GenerateViaWebCommand)
+from apps.drafting.views.drafting_commands.repo_commands_views import DraftingView_GenerateViaRepoCommand
 
 app_name = 'drafting'
 
@@ -59,4 +60,5 @@ urlpatterns = [
     path("generate/commands/auto/", DraftingView_GenerateViaAutoCommand.as_view(), name="generate_auto"),
     path("generate/commands/img/", DraftingView_GenerateViaImgCommand.as_view(), name="generate_img"),
     path("generate/commands/web/", DraftingView_GenerateViaWebCommand.as_view(), name="generate_web"),
+    path("generate/commands/repo/", DraftingView_GenerateViaRepoCommand.as_view(), name="generate_repo"),
 ]

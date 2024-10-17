@@ -15,4 +15,42 @@
 #   For permission inquiries, please contact: admin@br6.in.
 #
 
+def build_drafting_action__select_prompt(user_query: str, selected_text: str):
+    return f"""
+        ### **SELECTED ACTION BY THE USER:**
 
+        '''
+            //select
+        '''
+
+        **Tools & Data Sources:**
+
+        '''
+        - Data Sources You Have: [Your Internal Knowledge]
+        - Tools You Have: [No Specific Tools Required]
+        '''
+
+        ---
+
+        **YOUR GOAL:** The user picked the Selection Modifier Command action. You MUST check the user's query and
+        understand what kind of modification they want to perform on the text. Then, you must modify the text user
+        selected in a way to satisfy his expectations and needs. The content must be fitting the overall status of the
+        document, the query of the user, and of course only modify the selected text.
+
+        ---
+
+        **SELECTED TEXT:**
+
+        '''
+        {selected_text}
+        '''
+
+        ---
+
+        **QUERY OF THE USER:**
+
+        '''
+        {user_query}
+        '''
+
+    """

@@ -21,3 +21,4 @@ from .ssh_datasource_prompt import *
 from .web_datasource_prompt import *
 from .vect_datasource_prompt import *
 from .nosql_datasource_prompt import *
+from .repo_datasource_prompt import *

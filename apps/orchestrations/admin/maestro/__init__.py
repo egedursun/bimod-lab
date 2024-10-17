@@ -14,8 +14,5 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
 
 from .maestro_admin import *

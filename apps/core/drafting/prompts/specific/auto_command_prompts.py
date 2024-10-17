@@ -14,4 +14,38 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
+from apps.core.drafting.drafting_executor import DraftingExecutionManager
 
+
+def build_drafting_action__auto_prompt(xc: DraftingExecutionManager):
+    return f"""
+        ### **SELECTED ACTION BY THE USER:**
+
+        '''
+            //auto
+        '''
+
+        **Tools & Data Sources:**
+
+        '''
+        - Data Sources You Have: [Your Internal Knowledge]
+        - Tools You Have: [No Specific Tools Required]
+        '''
+
+        ---
+
+        **YOUR GOAL:** The user picked the Auto-Completion Command action. You MUST check the user's text and
+        understand the context very carefully. Then, you must provide an auto-completion for the rest of the text
+        and ideally produce at least a few next sentences that are fitting to the overall status of the document.
+        Do not make up information to complete the text, but rather use the existing information to generate the
+        text or use your internal correct information to complete the text.
+
+        ---
+
+        **CURRENT DOCUMENT TEXT OF THE DOCUMENT:**
+
+        '''
+        {xc.drafting_document.document_content_json_quill}
+        '''
+
+    """

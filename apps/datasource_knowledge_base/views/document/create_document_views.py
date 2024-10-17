@@ -23,6 +23,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
+from slugify import slugify
 
 from apps.core.vector_operations.vector_document.vector_store_decoder import KnowledgeBaseSystemDecoder
 from apps.core.user_permissions.permission_manager import UserPermissionManager
@@ -70,7 +71,8 @@ class DocumentView_Create(LoginRequiredMixin, TemplateView):
             f_paths = []
             for file in fs:
                 file_type = file.name.split('.')[-1]
-                doc_uri = generate_document_uri(agent_base_dir, file.name, file_type)
+                structured_file_name = slugify(file.name)
+                doc_uri = generate_document_uri(agent_base_dir, structured_file_name, file_type)
                 f_paths.append(doc_uri)
                 add_vector_store_doc_loaded_log(document_full_uri=doc_uri, log_name=VectorStoreDocProcessingStatusNames.STAGED)
                 s3c = boto3.client('s3')

@@ -16,12 +16,12 @@
 #
 
 
-from .ai_commands import *
-from .img_commands import *
-from .sql_commands import *
-from .ssh_commands import *
-from .web_commands import *
-from .nosql_commands import *
-from .auto_commands import *
-from .vect_commands import *
-from .select_commands import *
+from .ai_commands_views import *
+from .img_commands_views import *
+from .sql_commands_views import *
+from .ssh_commands_views import *
+from .web_commands_views import *
+from .nosql_commands_views import *
+from .auto_commands_views import *
+from .vect_commands_views import *
+from .select_commands_views import *

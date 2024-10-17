@@ -21,7 +21,8 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.views.generic import DeleteView
+from django.views import View
+from django.views.generic import DeleteView, TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
@@ -29,17 +30,15 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
-class VectorStoreView_Delete(LoginRequiredMixin, DeleteView):
-    model = DocumentKnowledgeBaseConnection
-    success_url = '/app/datasource_knowledge_base/list/'
+class VectorStoreView_Delete(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['knowledge_base'] = self.get_object()
+        context['knowledge_base'] = DocumentKnowledgeBaseConnection.objects.get(pk=self.kwargs['pk'])
         return context
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        vector_store = DocumentKnowledgeBaseConnection.objects.get(pk=self.kwargs['pk'])
         context_user = self.request.user
 
         ##############################
@@ -50,6 +49,6 @@ class VectorStoreView_Delete(LoginRequiredMixin, DeleteView):
             return redirect('datasource_knowledge_base:list')
         ##############################
 
-    def get_queryset(self):
-        context_user = self.request.user
-        return DocumentKnowledgeBaseConnection.objects.filter(assistant__organization__users__in=[context_user])
+        vector_store.delete()
+        messages.success(request, "Knowledge Base deleted successfully.")
+        return redirect('datasource_knowledge_base:list')

@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@br6.in.
 #
-#
-#
-#
+
 
 from .organization_admin import *

@@ -66,6 +66,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("audio-processing-tts", "Audio Processing TTS"),
     ("brainstorming", "Brainstorming"),
     ("generate-video", "Generate Video"),
+    ("drafting", "Drafting"),
 ]
 
 
@@ -112,6 +113,7 @@ class LLMTransactionSourcesTypesNames:
     AUDIO_PROCESSING_TTS = "audio-processing-tts"
     BRAINSTORMING = "brainstorming"
     GENERATE_VIDEO = "generate-video"
+    DRAFTING = "drafting"
 
     @staticmethod
     def as_list():
@@ -151,6 +153,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.BRAINSTORMING,
             LLMTransactionSourcesTypesNames.GENERATE_VIDEO,
             LLMTransactionSourcesTypesNames.REASONING,
+            LLMTransactionSourcesTypesNames.DRAFTING,
         ]
 
 

@@ -25,6 +25,7 @@ SOURCES_FOR_MULTIMODAL_CHATS = [
     ("api", "API"),
     ("scheduled", "Scheduled"),
     ("orchestration", "Orchestration"),
+    ("drafting", "Drafting"),
 ]
 
 
@@ -34,6 +35,7 @@ class SourcesForMultimodalChatsNames:
     SCHEDULED = "scheduled"
     TRIGGERED = "triggered"
     ORCHESTRATION = "orchestration"
+    DRAFTING = "drafting"
 
 
 class ChatMessageRoleSenderTypes:

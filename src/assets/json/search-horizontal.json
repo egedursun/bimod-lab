@@ -91,6 +91,18 @@
       "url": "/app/data_security/ner/list"
     },
     {
+      "name": "Harmoniq Agents",
+      "icon": "menu-icon tf-icons ti ti-microphone",
+      "slug": "harmoniq-agents",
+      "url": "/app/harmoniq/create"
+    },
+    {
+      "name": "Harmoniq Chat",
+      "icon": "menu-icon tf-icons ti ti-microphone",
+      "slug": "harmoniq-chat",
+      "url": "/app/harmoniq/use"
+    },
+    {
       "name": "Chats",
       "icon": "menu-icon tf-icons ti ti-messages",
       "slug": "chats",
@@ -131,6 +143,12 @@
       "icon": "menu-icon tf-icons ti ti-template",
       "slug": "message-templates",
       "url": "/app/message_templates/list"
+    },
+    {
+      "name": "Drafting",
+      "icon": "menu-icon tf-icons ti ti-pencil",
+      "slug": "drafting",
+      "url": "/app/drafting/folders/list"
     },
     {
       "name": "Brainstorming",
@@ -181,10 +199,22 @@
       "url": "/app/datasource_sql/list"
     },
     {
+      "name": "NoSQL Databases",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "nosql-databases",
+      "url": "/app/datasource_nosql/list"
+    },
+    {
       "name": "SQL Queries",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "sql-queries",
       "url": "/app/datasource_sql/list_queries"
+    },
+    {
+      "name": "NoSQL Queries",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "nosql-queries",
+      "url": "/app/datasource_nosql/list_queries"
     },
     {
       "name": "Knowledge Bases",

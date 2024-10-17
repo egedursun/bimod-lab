@@ -15,4 +15,36 @@
 #   For permission inquiries, please contact: admin@br6.in.
 #
 
+def build_drafting_action__web_prompt(user_query: str):
+    return f"""
+        ### **SELECTED ACTION BY THE USER:**
 
+        '''
+            //web
+        '''
+
+        **Tools & Data Sources:**
+
+        '''
+        - Data Sources You Have: [BROWSER CONNECTIONS]
+        - Tools You Have: [USE BROWSER TOOLS TO EXECUTE BROWSER QUERIES]
+        '''
+
+        ---
+
+        **YOUR GOAL:** The user picked the Web Command action. You MUST check the user's query and understand what
+        kind of operation they want to perform. And then, based on the query they provided to you, you need to perform
+        a search online using one of the available web browser connections you have. Then, using the information
+        you found online, you must write the text in the form and content requested by the user's query. If you have
+        the information specified in your own internal knowledge, you don't need to perform online search. But be
+        careful in not providing false information (unless specifically requested by the user).
+
+        ---
+
+        **QUERY OF THE USER:**
+
+        '''
+        {user_query}
+        '''
+
+    """

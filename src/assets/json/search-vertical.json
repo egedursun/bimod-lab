@@ -145,6 +145,12 @@
       "url": "/app/message_templates/list"
     },
     {
+      "name": "Drafting",
+      "icon": "menu-icon tf-icons ti ti-pencil",
+      "slug": "drafting",
+      "url": "/app/drafting/folders/list"
+    },
+    {
       "name": "Brainstorming",
       "icon": "menu-icon tf-icons ti ti-brain",
       "slug": "brainstorming",
@@ -193,10 +199,22 @@
       "url": "/app/datasource_sql/list"
     },
     {
+      "name": "NoSQL Databases",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "nosql-databases",
+      "url": "/app/datasource_nosql/list"
+    },
+    {
       "name": "SQL Queries",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "sql-queries",
       "url": "/app/datasource_sql/list_queries"
+    },
+    {
+      "name": "NoSQL Queries",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "nosql-queries",
+      "url": "/app/datasource_nosql/list_queries"
     },
     {
       "name": "Knowledge Bases",

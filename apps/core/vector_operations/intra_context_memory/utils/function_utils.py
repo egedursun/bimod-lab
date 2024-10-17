@@ -21,7 +21,7 @@ from apps.datasource_knowledge_base.tasks import load_pdf_content, load_html_con
     load_odt_content, load_pptx_content, load_xlsx_content
 
 
-def document_loader(self, file_path, file_type):
+def document_loader(file_path, file_type):
     d = None
     if file_type == SupportedDocumentTypesNames.PDF:
         d = load_pdf_content(path=file_path)
