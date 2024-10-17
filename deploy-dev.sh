@@ -80,7 +80,7 @@ sudo chown www-data:www-data /run/uvicorn/
 sudo chmod 755 /run/uvicorn/
 sudo mkdir -p /run/celery
 sudo chown www-data:www-data /run/celery
-sudo chown www-data:www-data /var/www/bimod_dev/apps/core/llms/tmp
+sudo chown www-data:www-data /var/www/bimod_dev/apps/core/generative_ai/tmp
 sudo chmod 755 /run/celery
 
 echo "          [Deploy / Development] Restarting services..."
