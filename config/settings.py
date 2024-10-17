@@ -299,7 +299,7 @@ LANGUAGES = [
     # English
     ("en", _("English")),
     # Turkish
-    ("tr", _("Turkish")),
+    # ("tr", _("Turkish")),
 ]
 
 # Set default language

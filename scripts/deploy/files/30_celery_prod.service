@@ -3,16 +3,16 @@ Description=Celery Service for Production
 After=network.target
 
 [Service]
-Type=forking
+Type=notify
 User=www-data
 Group=www-data
 WorkingDirectory=/var/www/bimod_prod
 ExecStartPre=/bin/mkdir -p /run/celery
 ExecStartPre=/bin/chown www-data:www-data /run/celery
-ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && celery -A config worker --loglevel=info --detach'
+ExecStart=/bin/bash -c 'source /var/www/bimod_prod/venv/bin/activate && celery -A config worker --loglevel=info'
 ExecStartPost=/bin/sleep 5
 Restart=always
-RestartSec=5
+RestartSec=10
 StartLimitInterval=60
 StartLimitBurst=3
 TimeoutStartSec=300
