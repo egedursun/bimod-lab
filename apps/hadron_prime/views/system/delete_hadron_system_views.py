@@ -14,21 +14,31 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from apps.hadron_prime.models import HadronSystem
 from web_project import TemplateLayout
 
+logger = logging.getLogger(__name__)
 
-# TODO-EGE: Implement the delete_hadron_system_views.py file.
 
 class HadronPrimeView_DeleteHadronSystem(LoginRequiredMixin, TemplateView):
-
-    # This page will allow the user to confirm the deletion of a system object, or to cancel the deletion.
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        system_id = kwargs.get('pk')
+        hadron_system = get_object_or_404(HadronSystem, id=system_id)
+        context['hadron_system'] = hadron_system
         return context
 
     def post(self, request, *args, **kwargs):
-        pass
+        system_id = kwargs.get('pk')
+        hadron_system = get_object_or_404(HadronSystem, id=system_id)
+        hadron_system.delete()
+        logger.info(f'Hadron System "{hadron_system.system_name}" has been deleted successfully.')
+        messages.success(request, f'Hadron System "{hadron_system.system_name}" has been deleted successfully.')
+        return redirect('hadron_prime:list_hadron_system')
