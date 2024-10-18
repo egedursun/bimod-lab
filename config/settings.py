@@ -434,6 +434,7 @@ EXCLUDED_PAGES = [
     "/app/export_assistants/api/v1/export/*",
     "/app/export_leanmods/api/v1/export/*",
     "/app/export_orchestrations/api/v1/export/*",
+    "/app/hadron_prime/hadron_node/activate/*",
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'
@@ -499,6 +500,7 @@ AUDIO_PROCESSING_TTS = os.environ.get("AUDIO_PROCESSING_TTS", default="0")
 VIDEO_GENERATOR = os.environ.get("VIDEO_GENERATOR", default="0")
 REASONING = os.environ.get("REASONING", default="0")
 DRAFTING = os.environ.get("DRAFTING", default="0")
+HADRON_PRIME = os.environ.get("HADRON_PRIME", default="0")
 
 COSTS_MAP = {
     "CONTEXT_MEMORY": float(CONTEXT_MEMORY),
@@ -532,6 +534,7 @@ COSTS_MAP = {
     "VIDEO_GENERATOR": float(VIDEO_GENERATOR),
     "REASONING": float(REASONING),
     "DRAFTING": float(DRAFTING),
+    "HADRON_PRIME": float(HADRON_PRIME),
 }
 
 if ENVIRONMENT != "local":

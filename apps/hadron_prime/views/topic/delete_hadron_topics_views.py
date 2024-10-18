@@ -14,23 +14,33 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
+
+import logging
+
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from apps.hadron_prime.models import HadronTopic
 from web_project import TemplateLayout
 
-
-# TODO-EGE: Implement the delete_hadron_topics_views.py file.
+logger = logging.getLogger(__name__)
 
 
 class HadronPrimeView_DeleteHadronTopic(LoginRequiredMixin, TemplateView):
-
-    # This page will allow the user to confirm the deletion of a topic object, or to cancel the deletion.
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        topic_id = kwargs.get('pk')
+        hadron_topic = get_object_or_404(HadronTopic, id=topic_id)
+        context['hadron_topic'] = hadron_topic
         return context
 
     def post(self, request, *args, **kwargs):
-        pass
-
+        topic_id = kwargs.get('pk')
+        hadron_topic = get_object_or_404(HadronTopic, id=topic_id)
+        hadron_topic.delete()
+        logger.info(f'Hadron Topic "{hadron_topic.topic_name}" has been deleted successfully.')
+        messages.success(request, f'Hadron Topic "{hadron_topic.topic_name}" has been deleted successfully.')
+        return redirect('hadron_prime:list_hadron_system')

@@ -15,25 +15,34 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 
+from apps.hadron_prime.models import HadronSystem, HadronNode, HadronTopic
 from apps.organization.models import Organization
 from web_project import TemplateLayout
 
 
-# TODO-EGE: Implement the detail_hadron_system_views.py file.
+# In this page, the user will be able to see:
+#  1. The details and information of the system data model.
+#  2. The list of nodes in the system. -> When clicked, redirects to: Detail Node, Update Node, Delete Node
+#  3. The list of topics in the system. -> When clicked, redirects to: Detail Topic, Update Topic, Delete Topic
+
 
 class HadronPrimeView_DetailHadronSystem(LoginRequiredMixin, TemplateView):
-
-    # In this page, the user will be able to see:
-    #  1. The details and information of the system data model.
-    #  2. The list of nodes in the system. -> When clicked, redirects to: Detail Node, Update Node, Delete Node
-    #  3. The list of topics in the system. -> When clicked, redirects to: Detail Topic, Update Topic, Delete Topic
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
+        system_id = self.kwargs['pk']
+        system = HadronSystem.objects.get(pk=system_id)
+        nodes = HadronNode.objects.filter(system=system)
+        topics = HadronTopic.objects.filter(system=system)
+        nodes_paginator = Paginator(nodes, 10)
+        topics_paginator = Paginator(topics, 10)
+        nodes_page_number = self.request.GET.get('nodes_page')
+        topics_page_number = self.request.GET.get('topics_page')
+        nodes_page_obj = nodes_paginator.get_page(nodes_page_number)
+        topics_page_obj = topics_paginator.get_page(topics_page_number)
+        context['hadron_system'] = system
+        context['nodes_page_obj'] = nodes_page_obj
+        context['topics_page_obj'] = topics_page_obj
         return context
-
-    def post(self, request, *args, **kwargs):
-        pass

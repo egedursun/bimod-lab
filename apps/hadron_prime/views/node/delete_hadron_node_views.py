@@ -14,22 +14,32 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
+
+import logging
+
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from apps.hadron_prime.models import HadronNode
 from web_project import TemplateLayout
 
-
-# TODO-EGE: Implement the delete_hadron_node_views.py file.
+logger = logging.getLogger(__name__)
 
 
 class HadronPrimeView_DeleteHadronNode(LoginRequiredMixin, TemplateView):
-
-    # This page will allow the user to confirm the deletion of a node object, or to cancel the deletion.
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        node = get_object_or_404(HadronNode, id=kwargs['pk'])
+        context['node'] = node
         return context
 
     def post(self, request, *args, **kwargs):
-        pass
+        node = get_object_or_404(HadronNode, id=kwargs['pk'])
+        system_id = node.system.id
+        node.delete()
+        logger.info(f'Hadron Node "{node.node_name}" deleted by user "{request.user}".')
+        messages.success(request, f'The Hadron Node "{node.node_name}" was successfully deleted.')
+        return redirect('hadron_prime:detail_hadron_system', pk=system_id)

@@ -18,4 +18,259 @@
   ~
   -->
 
-<!-- TODO-EGE: Implement the update hadron node template. -->
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: update_hadron_node.html
+  ~ Last Modified: 2024-10-17 22:48:48
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-17 22:48:49
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Update Hadron Node{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  <script>
+    $(document).ready(function () {
+      $('.select2').select2({
+        allowClear: true,
+      });
+    });
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Update Hadron Node</strong></h5>
+        </div>
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex ms-4 col-lg-11 align-items-center"
+               role="alert">
+          <img src="{% static 'img/custom-illustrations-v2/i2-66.png' %}" width="25%" style="border-radius:25px;"
+               class="justify-content-end me-8" alt="Illustration for tip">
+          <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              You can update this Hadron Node by filling out the form below. Make sure to provide all the necessary
+              information for the node to function properly. Once you are done, click the "Update Hadron Node" button.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <a href="{% url 'hadron_prime:detail_hadron_system' pk=node.system.id %}">
+          <button class="btn btn-secondary ms-4 mt-4 mb-8">
+            <i class="fa fa-dashboard me-4"></i>
+            <strong>Back to System Details</strong>
+          </button>
+        </a>
+        <hr>
+        <div class="card-body mt-4">
+          <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="row p-8">
+
+              <!-- System Selection -->
+              <div class="col-6 mb-6">
+                <label class="form-label" for="system">System</label>
+                <select class="form-select" id="system" name="system" required>
+                  <option value="" disabled>Select System</option>
+                  {% for system in systems %}
+                    <option value="{{ system.id }}" {% if system.id == node.system.id %}selected{% endif %}>{{ system.system_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- LLM Model Selection -->
+              <div class="col-6 mb-6">
+                <label class="form-label" for="llm_model">LLM Model</label>
+                <select class="form-select" id="llm_model" name="llm_model">
+                  <option value="" disabled>Select LLM Model</option>
+                  {% for llm in llm_models %}
+                    <option value="{{ llm.id }}" {% if node.llm_model and llm.id == node.llm_model.id %}selected{% endif %}>{{ llm.nickname }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Node Name -->
+              <div class="col-6 mb-6">
+                <label class="form-label" for="node_name">Node Name</label>
+                <input type="text" class="form-control" id="node_name" name="node_name" value="{{ node.node_name }}" required>
+              </div>
+
+              <!-- Node Description -->
+              <div class="col-6 mb-6">
+                <label class="form-label" for="node_description">Node Description</label>
+                <textarea class="form-control" id="node_description" name="node_description" rows="1">{{ node.node_description }}</textarea>
+              </div>
+
+              <!-- Optional Instructions -->
+              <div class="col-12 mb-6">
+                <label class="form-label" for="optional_instructions">Optional Instructions</label>
+                <textarea class="form-control" id="optional_instructions" name="optional_instructions" rows="2">{{ node.optional_instructions }}</textarea>
+              </div>
+
+              <hr class="pt-8 pb-8">
+
+              <!-- Current State -->
+              <div class="col-6 mb-6">
+                <h6><strong>Current State</strong></h6>
+                <label class="form-label" for="current_state_curl">cURL</label>
+                <input type="text" class="form-control" id="current_state_curl" name="current_state_curl" value="{{ node.current_state_curl }}">
+                <label class="form-label mt-2" for="current_state_input_params_description">Input Parameters</label>
+                <textarea class="form-control" id="current_state_input_params_description" name="current_state_input_params_description" rows="2">{{ node.current_state_input_params_description }}</textarea>
+                <label class="form-label mt-2" for="current_state_output_params_description">Output Parameters</label>
+                <textarea class="form-control" id="current_state_output_params_description" name="current_state_output_params_description" rows="2">{{ node.current_state_output_params_description }}</textarea>
+              </div>
+
+              <!-- Goal State -->
+              <div class="col-6 mb-6">
+                <h6><strong>Goal State</strong></h6>
+                <label class="form-label" for="goal_state_curl">cURL</label>
+                <input type="text" class="form-control" id="goal_state_curl" name="goal_state_curl" value="{{ node.goal_state_curl }}">
+                <label class="form-label mt-2" for="goal_state_input_params_description">Input Parameters</label>
+                <textarea class="form-control" id="goal_state_input_params_description" name="goal_state_input_params_description" rows="2">{{ node.goal_state_input_params_description }}</textarea>
+                <label class="form-label mt-2" for="goal_state_output_params_description">Output Parameters</label>
+                <textarea class="form-control" id="goal_state_output_params_description" name="goal_state_output_params_description" rows="2">{{ node.goal_state_output_params_description }}</textarea>
+              </div>
+
+              <hr class="pt-8 pb-8">
+
+              <!-- Sensory Measurements -->
+              <div class="col-6 mb-6">
+                <h6><strong>Sensory Measurements</strong></h6>
+                <label class="form-label" for="measurements_curl">cURL</label>
+                <input type="text" class="form-control" id="measurements_curl" name="measurements_curl" value="{{ node.measurements_curl }}">
+                <label class="form-label mt-2" for="measurements_input_params_description">Input Parameters</label>
+                <textarea class="form-control" id="measurements_input_params_description" name="measurements_input_params_description" rows="2">{{ node.measurements_input_params_description }}</textarea>
+                <label class="form-label mt-2" for="measurements_output_params_description">Output Parameters</label>
+                <textarea class="form-control" id="measurements_output_params_description" name="measurements_output_params_description" rows="2">{{ node.measurements_output_params_description }}</textarea>
+              </div>
+
+              <!-- Action Set -->
+              <div class="col-6 mb-6">
+                <h6><strong>Action Set</strong></h6>
+                <label class="form-label" for="action_set_curl">cURL</label>
+                <input type="text" class="form-control" id="action_set_curl" name="action_set_curl" value="{{ node.action_set_curl }}">
+                <label class="form-label mt-2" for="action_set_input_params_description">Input Parameters</label>
+                <textarea class="form-control" id="action_set_input_params_description" name="action_set_input_params_description" rows="2">{{ node.action_set_input_params_description }}</textarea>
+                <label class="form-label mt-2" for="action_set_output_params_description">Output Parameters</label>
+                <textarea class="form-control" id="action_set_output_params_description" name="action_set_output_params_description" rows="2">{{ node.action_set_output_params_description }}</textarea>
+              </div>
+
+              <hr class="pt-8 pb-8">
+
+              <!-- Analytic Calculation -->
+              <div class="col-6 mb-6">
+                <h6><strong>Analytic Calculation</strong></h6>
+                <label class="form-label" for="analytic_calculation_curl">cURL</label>
+                <input type="text" class="form-control" id="analytic_calculation_curl" name="analytic_calculation_curl" value="{{ node.analytic_calculation_curl }}">
+                <label class="form-label mt-2" for="analytic_calculation_input_params_description">Input Parameters</label>
+                <textarea class="form-control" id="analytic_calculation_input_params_description" name="analytic_calculation_input_params_description" rows="2">{{ node.analytic_calculation_input_params_description }}</textarea>
+                <label class="form-label mt-2" for="analytic_calculation_output_params_description">Output Parameters</label>
+                <textarea class="form-control" id="analytic_calculation_output_params_description" name="analytic_calculation_output_params_description" rows="2">{{ node.analytic_calculation_output_params_description }}</textarea>
+              </div>
+
+              <!-- Actuation -->
+              <div class="col-6 mb-6">
+                <h6><strong>Actuation</strong></h6>
+                <label class="form-label" for="actuation_curl">cURL</label>
+                <input type="text" class="form-control" id="actuation_curl" name="actuation_curl" value="{{ node.actuation_curl }}">
+                <label class="form-label mt-2" for="actuation_input_params_description">Input Parameters</label>
+                <textarea class="form-control" id="actuation_input_params_description" name="actuation_input_params_description" rows="2">{{ node.actuation_input_params_description }}</textarea>
+                <label class="form-label mt-2" for="actuation_output_params_description">Output Parameters</label>
+                <textarea class="form-control" id="actuation_output_params_description" name="actuation_output_params_description" rows="2">{{ node.actuation_output_params_description }}</textarea>
+              </div>
+
+              <hr class="pt-8 pb-8">
+
+              <div class="col-6 mb-6">
+                <label class="form-label" for="subscribed_topics">
+                  <i class="fa fa-bookmark me-2"></i>
+                  Subscribed Topics
+                </label>
+                <select class="form-select select2" id="subscribed_topics" name="subscribed_topics" multiple="multiple">
+                  {% for topic in topics %}
+                    <option value="{{ topic.id }}" {% if topic.id in selected_topic_ids %}selected{% endif %}>{{ topic.topic_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Expert Networks -->
+              <div class="col-6 mb-6">
+                <label class="form-label" for="expert_networks">
+                  <i class="fa fa-robot me-2"></i>
+                  Expert Networks
+                </label>
+                <select class="form-select select2" id="expert_networks" name="expert_networks" multiple="multiple">
+                  {% for network in expert_networks %}
+                    <option value="{{ network.id }}" {% if network.id in selected_expert_network_ids %}selected{% endif %}>{{ network.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <hr class="pt-8 pb-8">
+
+              <div class="mb-6 col-6">
+                <label class="form-label" for="publishing_history_lookback_memory_size">Publishing History Memory Capacity</label>
+                <input type="range" class="form-range mt-4" id="publishing_history_lookback_memory_size" name="publishing_history_lookback_memory_size" min="0" max="100"
+                       step="1" value="{{ node.publishing_history_lookback_memory_size }}" oninput="this.nextElementSibling.value = this.value">
+                <output>{{ node.publishing_history_lookback_memory_size }}</output>
+              </div>
+
+              <div class="mb-6 col-6">
+                <label class="form-label" for="state_action_state_lookback_memory_size">State-Error-Action-State'-Error' Memory Capacity</label>
+                <input type="range" class="form-range mt-4" id="state_action_state_lookback_memory_size" name="state_action_state_lookback_memory_size" min="0" max="100"
+                       step="1" value="{{ node.state_action_state_lookback_memory_size }}" oninput="this.nextElementSibling.value = this.value">
+                <output>{{ node.state_action_state_lookback_memory_size }}</output>
+              </div>
+
+              <hr>
+              <button type="submit" class="btn btn-primary d-grid w-25 mt-4"><strong>
+                <i class="fa fa-edit me-4"></i>
+                Update Hadron Node
+              </strong></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -22,7 +22,8 @@ from apps.hadron_prime.views import (HadronPrimeView_CreateHadronSystem, HadronP
                                      HadronPrimeView_CreateHadronTopic, HadronPrimeView_DeleteHadronNode,
                                      HadronPrimeView_UpdateHadronNode, HadronPrimeView_UpdateHadronTopic,
                                      HadronPrimeView_TriggerActiveHadronNode, HadronPrimeView_DetailHadronNode,
-                                     HadronPrimeView_DetailHadronSystem, HadronPrimeView_DetailHadronTopic)
+                                     HadronPrimeView_DetailHadronSystem, HadronPrimeView_DetailHadronTopic,
+                                     HadronPrimeView_RegenerateNodeApiKey)
 
 app_name = "hadron_prime"
 
@@ -65,7 +66,9 @@ urlpatterns = [
     ), name="update_hadron_node"),
     path("hadron_node/detail/<int:pk>/", HadronPrimeView_DetailHadronNode.as_view(
         template_name="hadron_prime/node/detail_hadron_node.html"), name="detail_hadron_node"),
+    path("hadron_node/regenerate_api_key/<int:pk>/", HadronPrimeView_RegenerateNodeApiKey.as_view(),
+         name="regenerate_node_api_key"),
 
-    path("hadron_node/activate/<int:pk>/", HadronPrimeView_TriggerActiveHadronNode.as_view(),
+    path("hadron_node/activate/<int:pk>/<str:hash>/", HadronPrimeView_TriggerActiveHadronNode.as_view(),
          name="trigger_activate_hadron_node"),
 ]

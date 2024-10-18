@@ -14,25 +14,57 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
+
+import logging
+
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
+from apps.hadron_prime.models import HadronSystem, HadronTopic
+from apps.hadron_prime.utils import HADRON_TOPIC_CATEGORIES
 from apps.organization.models import Organization
 from web_project import TemplateLayout
 
-
-# NOTE: The category of the topic MUST NOT be changed.
-# TODO-EGE: Implement the update_hadron_topic_views.py file.
+logger = logging.getLogger(__name__)
 
 
 class HadronPrimeView_UpdateHadronTopic(LoginRequiredMixin, TemplateView):
-
-    # In this page the user will update the information for the topic object.
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        topic_id = kwargs.get('pk')
+        hadron_topic = get_object_or_404(HadronTopic, id=topic_id)
+
         user_orgs = Organization.objects.filter(users__in=[self.request.user])
+        systems = HadronSystem.objects.filter(organization__in=user_orgs)
+
+        context['hadron_topic'] = hadron_topic
+        context['systems'] = systems
+        context['topic_categories'] = HADRON_TOPIC_CATEGORIES
         return context
 
     def post(self, request, *args, **kwargs):
-        pass
+        topic_id = kwargs.get('pk')
+        hadron_topic = get_object_or_404(HadronTopic, id=topic_id)
+
+        system_id = request.POST.get('system')
+        topic_name = request.POST.get('topic_name')
+        topic_description = request.POST.get('topic_description')
+        topic_purpose = request.POST.get('topic_purpose')
+        if not system_id or not topic_name:
+            logger.error('The required fields are not filled out.')
+            messages.error(request, 'Please fill out all required fields.')
+            return redirect('hadron_prime:update_hadron_topic', pk=topic_id)
+
+        system = HadronSystem.objects.get(id=system_id)
+        hadron_topic.system = system
+        hadron_topic.topic_name = topic_name
+        hadron_topic.topic_description = topic_description
+        hadron_topic.topic_purpose = topic_purpose
+        hadron_topic.save()
+
+        logger.info(f'Hadron Topic "{hadron_topic.topic_name}" updated.')
+        messages.success(request, f'Hadron Topic "{hadron_topic.topic_name}" updated successfully.')
+        return redirect('hadron_prime:list_hadron_system')

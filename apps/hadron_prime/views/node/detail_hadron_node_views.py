@@ -14,24 +14,41 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
-from apps.organization.models import Organization
+from apps.hadron_prime.models import HadronNode, HadronNodeExecutionLog, HadronStateErrorActionStateErrorLog, \
+    HadronTopicMessage
+from config.settings import BASE_URL
 from web_project import TemplateLayout
 
+logger = logging.getLogger(__name__)
 
-# TODO-EGE: Implement the detail view for the HadronNode model.
 
 class HadronPrimeView_DetailHadronNode(LoginRequiredMixin, TemplateView):
-
-    # In this page, the user will be able to see the execution and internal logs for the hadron nodes:
-    #  1. Configuration information for the node will shown at the top.
-    #  2. Execution LOGS for the node will be shown.
-    #  3. Publishing LOGS for the node "per topic" will be shown.
-    #  4. State-Error-Action-State-Error LOGS for the node will be shown.
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
+        node = get_object_or_404(HadronNode, id=kwargs['pk'])
+        context['node'] = node
+
+        # Fetch execution logs
+        execution_logs = node.execution_logs.all().order_by('-created_at')
+        paginator_exec_logs = Paginator(execution_logs, 10)
+        page_number_exec_logs = self.request.GET.get('execution_logs_page')
+        context['execution_logs_page_obj'] = paginator_exec_logs.get_page(page_number_exec_logs)
+        # Fetch state-error-action-state-error logs
+        seas_logs = node.state_action_state_history_logs.all().order_by('-created_at')
+        paginator_seas_logs = Paginator(seas_logs, 10)
+        page_number_seas_logs = self.request.GET.get('seas_logs_page')
+        context['seas_logs_page_obj'] = paginator_seas_logs.get_page(page_number_seas_logs)
+        # Fetch publishing logs (HadronTopicMessages)
+        topic_messages = node.publishing_history_logs.all().order_by('-created_at')
+        paginator_topic_logs = Paginator(topic_messages, 10)
+        page_number_topic_logs = self.request.GET.get('publishing_logs_page')
+        context['publishing_logs_page_obj'] = paginator_topic_logs.get_page(page_number_topic_logs)
+        context["BASE_URL"] = BASE_URL
         return context

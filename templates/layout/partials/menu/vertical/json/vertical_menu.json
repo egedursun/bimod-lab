@@ -340,6 +340,23 @@
       ]
     },
     {
+      "name": "Hadron Prime™",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "hadron-prime",
+      "submenu": [
+        {
+          "name": "Create Hadron System",
+          "slug": "hadron-prime",
+          "url": "hadron_prime:create_hadron_system"
+        },
+        {
+          "name": "Hadron Prime™ Systems",
+          "slug": "hadron-prime",
+          "url": "hadron_prime:list_hadron_system"
+        }
+      ]
+    },
+    {
       "menu_header": "Publishing Resources"
     },
     {
@@ -836,12 +853,6 @@
       "name": "VoidForger™",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "voidforger",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Hadron Prime™",
-      "icon": "menu-icon tf-icons ti ti-rocket",
-      "slug": "hadron-prime",
       "url": "dashboard:main-dashboard"
     },
     {

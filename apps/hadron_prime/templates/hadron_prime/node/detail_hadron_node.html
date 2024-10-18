@@ -18,4 +18,383 @@
   ~
   -->
 
-<!-- TODO-EGE: Implement the detail hadron node template. -->
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Hadron Node Details{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+<!-- JavaScript for copy and toggle visibility -->
+<script>
+  // Function to copy text to clipboard
+  function copyToClipboard(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+  }
+  // Function to copy text from input elements
+  function copyToClipboardInput(elementId, apiKeyToken) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(apiKeyToken).select();
+    document.execCommand("copy");
+    $temp.remove();
+  }
+  // Function to toggle visibility of API key
+  function toggleVisibility(fieldId, button) {
+    var field = document.getElementById(fieldId);
+    if (field.type === "password") {
+      field.type = "text";
+      button.innerHTML = '<i class="fa fa-eye-slash me-2"></i> Show/Hide';
+    } else {
+      field.type = "password";
+      button.innerHTML = '<i class="fa fa-eye me-2"></i> Show/Hide';
+    }
+  }
+</script>
+<script>
+  function confirmRegenerateApiKey() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this action.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, regenerate it!',
+      cancelButtonText: 'No, cancel!',
+      customClass: {
+        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+      },
+      buttonsStyling: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        regenerateApiKey();
+      }
+    });
+  }
+  function regenerateApiKey() {
+    const url = `{% url 'hadron_prime:regenerate_node_api_key' pk=node.id %}`;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.new_token) {
+        document.getElementById('apiKey').value = data.new_token;
+      } else {
+        console.error('Error:', data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+</script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-71.png' %}" width="25%" style="border-radius:25px;"
+           class="justify-content-end me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
+        <i class="ti ti-bookmark"></i>
+      </span>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          This page aims to provide detailed information about the selected Hadron Node.
+          You can view the execution logs, state-error-action-state-error logs, and publishing logs for the node.
+          For more information, please refer to the documentation or contact the support team.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+      </div>
+    </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    <a href="{% url 'hadron_prime:detail_hadron_system' pk=node.system.id %}">
+      <button class="btn btn-secondary ms-4 mt-4 mb-8">
+        <i class="fa fa-dashboard me-4"></i>
+        <strong>Back to System Details</strong>
+      </button>
+    </a>
+    <hr>
+      <div class="card">
+        <div class="card-header justify-content-between align-items-center">
+          <h4 class="mb-0"><strong>
+            <i class="fa fa-cogs me-4 mt-4"></i>
+            Node Details
+          </strong></h4>
+          <h6 class="">
+            <strong>
+              <i class="fa fa-bookmark me-4 mt-4"></i>
+              {{ node.node_name }}
+            </strong>
+          </h6>
+        </div>
+        <hr>
+
+        <div class="tips-section alert alert-solid-primary alert-dismissible d-flex ms-8 mt-4 me-8 align-items-center" role="alert">
+          <div class="d-flex flex-column p-12">
+            <h5 class="alert-heading mb-2">
+              <strong>
+                <i class="fa fa-info-circle me-4"></i>
+                Activation Trigger
+              </strong>
+            </h5>
+            <p class="mt-2">
+              The activation trigger is a unique URL that can be used to trigger the Hadron Node.
+              The node will be triggered when the activation trigger is accessed with the correct authentication key.
+              The activation trigger is unique to each node and can be used to trigger the node from external systems.
+            </p>
+            <hr>
+            <!-- Endpoint Section with Copy Button -->
+            <p><strong>Endpoint:</strong></p>
+            <div class="d-flex align-items-center">
+              <p id="endpointText" class="bg-label-dark p-2 rounded flex-grow-1">
+                <strong>{{ BASE_URL }}/app/hadron_prime/hadron_node/activate/{{ node.id }}/{{ node.activation_trigger_hashed_param }}/</strong>
+              </p>
+              <button class="btn btn-warning ms-2 mb-4" onclick="copyToClipboard('#endpointText')">
+                <i class="fa fa-copy me-2"></i> <strong>Copy</strong>
+              </button>
+            </div>
+            <hr>
+            <!-- HTTP Method -->
+            <p><strong>HTTP Method</strong></p>
+            <p class="bg-label-dark p-2 rounded">
+              <strong>POST</strong>
+            </p>
+            <hr>
+            <p><strong>Authentication Header</strong></p>
+            <p class="bg-label-dark p-2 rounded">
+              <strong>Authorization</strong>
+            </p>
+            <!-- Authentication Key Section with Copy Button and Toggle Visibility -->
+            <p><strong>Authentication Key:</strong></p>
+            <div class="d-flex align-items-center">
+              <strong class="me-2 bg-label-dark p-2 rounded">Bearer</strong> <input type="password" id="apiKey" class="form-control bg-label-dark p-2 rounded fw-bolder" value="{{ node.activation_trigger_authentication_key }}" readonly>
+              <button class="btn btn-warning ms-2" onclick="toggleVisibility('apiKey', this)">
+                <i class="fa fa-eye me-2"></i> <strong>Show/Hide</strong>
+              </button>
+              <button class="btn btn-warning ms-2" onclick="copyToClipboardInput('apiKey', '{{ node.activation_trigger_authentication_key }}')">
+                <i class="fa fa-copy me-2"></i> <strong>Copy</strong>
+              </button>
+              <button class="btn btn-danger ms-2" id="regenerate-api-key-button" onclick="confirmRegenerateApiKey()">
+                <i class="fa fa-refresh me-2"></i> <strong>Regenerate</strong>
+              </button>
+            </div>
+            <hr>
+          </div>
+        </div>
+
+        <hr>
+        <div class="card-body mt-4">
+          <p><strong>
+            <i class="fa fa-building me-4"></i>
+            System:
+          </strong> {{ node.system.system_name }}</p>
+          <p><strong>
+            <i class="fa fa-book me-4"></i>
+            Node Description:
+          </strong> {{ node.node_description }}</p>
+          <p><strong>
+            <i class="fa fa-cog me-4"></i>
+            Optional Instructions:
+          </strong> {{ node.optional_instructions }}</p>
+
+          <!-- Execution Logs -->
+          <hr class="mt-8">
+          <h5><strong><i class="fa fa-terminal me-4"></i>Execution Logs</strong></h5>
+          {% if execution_logs_page_obj %}
+            <table class="table table-striped table-bordered mt-4">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Log</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in execution_logs_page_obj %}
+                  <tr>
+                    <td>{{ log.created_at|date:"Y-m-d H:i:s" }}</td>
+                    <td><p style="min-width:900px; max-width: 900px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.execution_log }}</p></td>
+                    <td>{{ log.execution_status|capfirst }}</td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="3" class="text-center">No execution logs available for this node (yet).</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            <!-- Pagination Controls for Execution Logs -->
+            <nav aria-label="Execution Logs pagination">
+              <ul class="pagination p-4">
+                {% if execution_logs_page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?execution_logs_page={{ execution_logs_page_obj.previous_page_number }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+                {% for num in execution_logs_page_obj.paginator.page_range %}
+                  <li class="page-item {% if execution_logs_page_obj.number == num %}active{% endif %}">
+                    <a class="page-link" href="?execution_logs_page={{ num }}">{{ num }}</a>
+                  </li>
+                {% endfor %}
+                {% if execution_logs_page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?execution_logs_page={{ execution_logs_page_obj.next_page_number }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          {% endif %}
+
+          <!-- State-Error-Action-State-Error Logs -->
+          <hr class="mt-8">
+          <h5><strong><i class="fa fa-exchange me-4"></i>State-Error-Action-State-Error Logs</strong></h5>
+          {% if seas_logs_page_obj %}
+            <table class="table table-striped table-bordered mt-4">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Old State</th>
+                  <th>Old Error</th>
+                  <th>Action</th>
+                  <th>New State</th>
+                  <th>New Error</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in seas_logs_page_obj %}
+                  <tr>
+                    <td>{{ log.created_at|date:"Y-m-d H:i:s" }}</td>
+                    <td><p style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.old_state }}</p></td>
+                    <td><p style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.old_error }}</p></td>
+                    <td><p style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.action }}</p></td>
+                    <td><p style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.new_state }}</p></td>
+                    <td><p style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.new_error }}</p></td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="6" class="text-center">No State-Error-Action-State'-Error' logs available (yet).</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            <!-- Pagination Controls for SEAS Logs -->
+            <nav aria-label="SEAS Logs pagination">
+              <ul class="pagination p-4">
+                {% if seas_logs_page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?seas_logs_page={{ seas_logs_page_obj.previous_page_number }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+                {% for num in seas_logs_page_obj.paginator.page_range %}
+                  <li class="page-item {% if seas_logs_page_obj.number == num %}active{% endif %}">
+                    <a class="page-link" href="?seas_logs_page={{ num }}">{{ num }}</a>
+                  </li>
+                {% endfor %}
+                {% if seas_logs_page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?seas_logs_page={{ seas_logs_page_obj.next_page_number }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          {% endif %}
+
+          <!-- Publishing Logs -->
+          <hr class="mt-8">
+          <h5><strong><i class="fa fa-bullhorn me-4"></i>Publishing History Logs</strong></h5>
+          {% if publishing_logs_page_obj %}
+            <table class="table table-striped table-bordered mt-4">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Topic</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in publishing_logs_page_obj %}
+                  <tr>
+                    <td>{{ log.created_at|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ log.topic.topic_name }}</td>
+                    <td><p style="min-width:900px; max-width: 900px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.message }}</p></td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="3" class="text-center">No publishing history logs available for this node (yet).</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            <!-- Pagination Controls for Publishing Logs -->
+            <nav aria-label="Publishing Logs pagination">
+              <ul class="pagination p-4">
+                {% if publishing_logs_page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?publishing_logs_page={{ publishing_logs_page_obj.previous_page_number }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+                {% for num in publishing_logs_page_obj.paginator.page_range %}
+                  <li class="page-item {% if publishing_logs_page_obj.number == num %}active{% endif %}">
+                    <a class="page-link" href="?publishing_logs_page={{ num }}">{{ num }}</a>
+                  </li>
+                {% endfor %}
+                {% if publishing_logs_page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?publishing_logs_page={{ publishing_logs_page_obj.next_page_number }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

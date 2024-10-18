@@ -19,4 +19,109 @@
   -->
 
 
-<!-- TODO-EGE: Implement the create hadron topic template. -->
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Create Hadron Topic{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'hadron_prime:list_hadron_system' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong>Manage Hadron Systems</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Create New Hadron Topic</strong></h5>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-85.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8" alt="Illustration for tip">
+            <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can create a new Hadron Topic for your Hadron systems. The topics are used by the
+                Hadron nodes as a communication feed where they can share their messages and data with each other.
+                Please fill in the required fields and click the "Create Hadron Topic" button to create a new Hadron
+                Topic.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <hr>
+          <form method="post">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="col-6 mb-6">
+                <label class="form-label" for="system">System</label>
+                <select class="form-select" id="system" name="system" required>
+                  <option value="" disabled selected>Select System</option>
+                  {% for system in systems %}
+                    <option value="{{ system.id }}">{{ system.system_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="topic_name">Topic Name</label>
+                <input type="text" class="form-control" id="topic_name" name="topic_name" placeholder="Enter topic name" required>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="topic_description">Topic Description</label>
+                <textarea class="form-control" id="topic_description" name="topic_description" rows="3" placeholder="Enter topic description"></textarea>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="topic_purpose">Topic Purpose</label>
+                <textarea class="form-control" id="topic_purpose" name="topic_purpose" rows="3" placeholder="Enter topic purpose"></textarea>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="topic_category">Topic Category</label>
+                <select class="form-select" id="topic_category" name="topic_category" required>
+                  <option value="" disabled selected>Select Category</option>
+                  {% for category_key, category_value in topic_categories %}
+                    <option value="{{ category_key }}">{{ category_value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid w-25">
+              <strong>
+                <i class="fa fa-plus me-4"></i>Create Hadron Topic
+              </strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

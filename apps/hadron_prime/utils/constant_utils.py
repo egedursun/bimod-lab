@@ -69,3 +69,33 @@ HADRON_TOPIC_MESSAGE_ADMIN_SEARCH = ['topic', 'sender_node', 'created_at']
 HADRON_NODE_EXECUTION_LOG_ADMIN_LIST = ('node', 'created_at')
 HADRON_NODE_EXECUTION_LOG_ADMIN_FILTER = ('node', 'created_at')
 HADRON_NODE_EXECUTION_LOG_ADMIN_SEARCH = ('node', 'created_at')
+
+
+HADRON_NODE_AUTHENTICATION_KEY_TOKEN_SIZE = 64
+
+
+HADRON_NODE_EXECUTION_STATUSES = [
+    ('DEACTIVE', 'DEACTIVE'),
+    ('PENDING', 'PENDING'),
+    ('RUNNING', 'RUNNING'),
+    ('COMPLETED', 'COMPLETED'),
+    ('FAILED', 'FAILED'),
+]
+
+
+class HadronNodeExecutionStatusesNames:
+    DEACTIVE = 'DEACTIVE'
+    PENDING = 'PENDING'
+    RUNNING = 'RUNNING'
+    COMPLETED = 'COMPLETED'
+    FAILED = 'FAILED'
+
+    @staticmethod
+    def as_list():
+        return [
+            HadronNodeExecutionStatusesNames.DEACTIVE,
+            HadronNodeExecutionStatusesNames.PENDING,
+            HadronNodeExecutionStatusesNames.RUNNING,
+            HadronNodeExecutionStatusesNames.COMPLETED,
+            HadronNodeExecutionStatusesNames.FAILED
+        ]

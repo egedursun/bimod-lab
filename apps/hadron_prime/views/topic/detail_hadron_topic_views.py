@@ -14,22 +14,26 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
-from apps.organization.models import Organization
+from apps.hadron_prime.models import HadronTopic, HadronTopicMessage
 from web_project import TemplateLayout
 
 
-# TODO-EGE: Implement the detail_hadron_topic_views.py file.
-
-
 class HadronPrimeView_DetailHadronTopic(LoginRequiredMixin, TemplateView):
-
-    # This view will show the LOGS for the topic in a paginated list.
-    # There will be chronological ordering and pagination, and there won't be a chance to search the logs.
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
+        topic_id = kwargs.get('pk')
+        hadron_topic = get_object_or_404(HadronTopic, id=topic_id)
+        messages_list = HadronTopicMessage.objects.filter(topic=hadron_topic).order_by('-created_at')
+        paginator = Paginator(messages_list, 10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['hadron_topic'] = hadron_topic
+        context['page_obj'] = page_obj
         return context

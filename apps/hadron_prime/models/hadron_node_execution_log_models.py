@@ -18,10 +18,14 @@
 
 from django.db import models
 
+from apps.hadron_prime.utils import HADRON_NODE_EXECUTION_STATUSES, HadronNodeExecutionStatusesNames
+
 
 class HadronNodeExecutionLog(models.Model):
     node = models.ForeignKey('HadronNode', on_delete=models.CASCADE)
-    execution_log = models.TextField(null=True, blank=True)  # leave empty for now
+    execution_log = models.TextField(null=True, blank=True)
+    execution_status = models.CharField(max_length=100, choices=HADRON_NODE_EXECUTION_STATUSES,
+                                        default=HadronNodeExecutionStatusesNames.DEACTIVE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

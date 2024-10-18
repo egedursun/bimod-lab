@@ -18,4 +18,115 @@
   ~
   -->
 
-<!-- TODO-EGE: Implement the detail hadron topic template. -->
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Hadron Topic Details{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header justify-content-between align-items-center">
+          <h4 class="mb-0"><strong>
+            <i class="fa fa-robot me-4 mt-4"></i>
+            Hadron Topic Logs
+          </strong></h4>
+          <h6 class="">
+            <strong>
+              <i class="fa fa-bookmark me-4 mt-4"></i>
+              {{ hadron_topic.topic_name }}
+            </strong>
+          </h6>
+          <h6 class="">
+            <strong>
+              <i class="fa fa-lightbulb me-4 mt-0"></i>
+              {{ hadron_topic.topic_category|capfirst }}
+            </strong>
+          </h6>
+        <hr>
+        <a href="{% url 'hadron_prime:detail_hadron_system' pk=hadron_topic.system.id %}" class="btn btn-secondary mt-4">
+          <i class="fa fa-arrow-left me-2"></i>
+          <strong>Back to System Details</strong>
+        </a>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-37.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8" alt="Illustration for logs">
+            <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Logs</h5>
+              <p class="mb-0">
+                This page shows the logs for the selected Hadron Topic. The logs are ordered chronologically, with the most recent log displayed at the top.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Sender Node</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for message in page_obj %}
+                  <tr>
+                    <td style="min-width: 200px; max-width: 200px;">{{ message.created_at|date:"Y-m-d H:i:s" }}</td>
+                    <td style="min-width: 200px; max-width: 200px;">{{ message.sender_node.node_name }}</td>
+                    <td><p style="min-width:800px; max-width: 800px; min-height: 100px; max-height: 100px; overflow: auto;">{{ message.message }}</p></td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="3" class="text-center">No logs available for this topic.</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination controls -->
+          <div class="pagination-wrapper p-4">
+            <nav aria-label="Logs pagination">
+              <ul class="pagination">
+                {% if page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                  <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                  </li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

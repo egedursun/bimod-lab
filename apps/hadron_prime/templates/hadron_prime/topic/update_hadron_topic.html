@@ -19,4 +19,110 @@
   -->
 
 
-<!-- TODO-EGE: Implement the update hadron topic template. -->
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Update Hadron Topic{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'hadron_prime:list_hadron_system' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong>Manage Hadron Systems</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Update Hadron Topic</strong></h5>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-70.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8" alt="Illustration for tip">
+            <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can update the details of the selected Hadron Topic. Modify the fields below and click "Update" to save changes.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <hr>
+          <form method="post">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="col-6 mb-6">
+                <label class="form-label" for="system">System</label>
+                <select class="form-select" id="system" name="system" required>
+                  <option value="" disabled>Select System</option>
+                  {% for system in systems %}
+                    <option value="{{ system.id }}" {% if system.id == hadron_topic.system.id %}selected{% endif %}>
+                      {{ system.system_name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="topic_name">Topic Name</label>
+                <input type="text" class="form-control" id="topic_name" name="topic_name" value="{{ hadron_topic.topic_name }}" required>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="topic_description">Topic Description</label>
+                <textarea class="form-control" id="topic_description" name="topic_description" rows="3">{{ hadron_topic.topic_description }}</textarea>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="topic_purpose">Topic Purpose</label>
+                <textarea class="form-control" id="topic_purpose" name="topic_purpose" rows="3">{{ hadron_topic.topic_purpose }}</textarea>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="topic_category">Topic Category</label>
+                <select class="form-select" id="topic_category" name="topic_category" disabled>
+                  <option value="" disabled>Select Category</option>
+                  {% for category_key, category_value in topic_categories %}
+                    <option value="{{ category_key }}" {% if hadron_topic.topic_category == category_key %}selected{% endif %}>
+                      {{ category_value }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid w-25">
+              <strong>
+                <i class="fa fa-edit me-4"></i>Update Hadron Topic
+              </strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

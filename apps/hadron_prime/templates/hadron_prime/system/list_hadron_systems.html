@@ -91,11 +91,11 @@
               aria-controls="collapse-{{ organization.id }}"><strong>&nbsp; See Systems</strong></span>
       </div>
       <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse p-8">
-                          <a href="{% url 'hadron_prime:create_hadron_system' %}">
-              <button class="btn btn-success mb-4">
-                <i class="fa fa-plus me-2"></i><strong>Create New System</strong>
-              </button>
-            </a>
+        <a href="{% url 'hadron_prime:create_hadron_system' %}">
+          <button class="btn btn-success mb-4">
+            <i class="fa fa-plus me-2"></i><strong>Create New System</strong>
+          </button>
+        </a>
         <table class="datatables-systems table">
           <thead class="border-top">
           <tr>
@@ -112,10 +112,10 @@
               <td>{{ system.system_description|linebreaksbr }}</td>
               <td>{{ system.created_by_user.username }}</td>
               <td>
-                <a href="{% url 'hadron_prime:detail_hadron_system' system.id %}" class="btn btn-sm btn-info me-4">
-                  <i class="fa fa-eye me-2"></i>Details
+                <a href="{% url 'hadron_prime:detail_hadron_system' system.id %}" class="btn btn-sm btn-primary me-4">
+                  <i class="fa fa-eye me-2"></i>Manage
                 </a>
-                <a href="{% url 'hadron_prime:update_hadron_system' system.id %}" class="btn btn-sm btn-primary me-4">
+                <a href="{% url 'hadron_prime:update_hadron_system' system.id %}" class="btn btn-sm btn-warning me-4">
                   <i class="fa fa-edit me-2"></i>Edit
                 </a>
                 <a href="{% url 'hadron_prime:delete_hadron_system' system.id %}" class="btn btn-sm btn-danger">

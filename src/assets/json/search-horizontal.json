@@ -163,6 +163,12 @@
       "url": "/app/orchestrations/list"
     },
     {
+      "name": "Hadron Prime™",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "orchestrations",
+      "url": "/app/hadron_prime/hadron_system/list/"
+    },
+    {
       "name": "Exported Assistants",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "exported-assistants",

@@ -1,12 +1,10 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
   ~ Project: Bimod.io™
   ~ File: confirm_delete_hadron_node.html
-  ~ Last Modified: 2024-10-17 22:49:11
+  ~ Last Modified: 2024-10-18
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-17 22:49:12
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -18,4 +16,44 @@
   ~
   -->
 
-<!-- TODO-EGE: Implement the confirm delete hadron node template. -->
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Delete Hadron Node{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0"><strong>Delete Hadron Node</strong></h3>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete the Hadron Node <strong>"{{ node.node_name }}"</strong>?</p><br>
+            <h6><strong>
+              • This operation will result in the complete removal of the node from the platform.
+              <br>
+              • This deletion is irreversible and will completely remove the node and all its associated data.
+            </strong></h6>
+            <img src="{% static 'img/custom-illustrations-v2/i2-22.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end" alt="Illustration for confirming deletion">
+            <hr>
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the node.</button>
+            <a href="{% url 'hadron_prime:detail_hadron_system' pk=node.system.id %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the deletion
+              operation.</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

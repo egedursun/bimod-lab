@@ -20,3 +20,4 @@ from .delete_hadron_node_views import *
 from .update_hadron_node_views import *
 from .create_hadron_node_views import *
 from .detail_hadron_node_views import *
+from .regenerate_node_api_key_views import *
