@@ -1,0 +1,115 @@
+
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: update_hadron_systems.html
+  ~ Last Modified: 2024-10-17 22:47:45
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-17 22:47:46
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Update Hadron System{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'hadron_prime:list_hadron_system' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong>Manage Hadron Systems</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Update Hadron System</strong></h5>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-80.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8" alt="Illustration for tip">
+            <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can update the existing Hadron Prime control system details. Edit the fields below
+                and click "Update" to save changes.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <hr>
+          <form method="post">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="col-6 mb-6">
+                <label class="form-label" for="organization">Organization</label>
+                <select class="form-select" id="organization" name="organization" required>
+                  <option value="" disabled>Select Organization</option>
+                  {% for org in organizations %}
+                    <option value="{{ org.id }}" {% if org.id == hadron_system.organization.id %}selected{% endif %}>
+                      {{ org.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="system_name">System Name</label>
+                <input type="text" class="form-control" id="system_name" name="system_name" value="{{ hadron_system.system_name }}" required>
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="system_description">System Description</label>
+                <textarea class="form-control" id="system_description" name="system_description" rows="4">{{ hadron_system.system_description }}</textarea>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid w-25">
+              <strong>
+                <i class="fa fa-edit me-4"></i>Update Hadron System
+              </strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

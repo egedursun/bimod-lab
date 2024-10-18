@@ -1,0 +1,136 @@
+
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: list_hadron_systems.html
+  ~ Last Modified: 2024-10-17 22:47:38
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-17 22:47:38
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Hadron Systems List{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-4">
+      <h3 class="mb-0"><strong>Manage Hadron Systems</strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-41.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view and manage all the Hadron systems created for your organizations. You can update, delete, or view the details of any system, or create a new one using the button above.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% for organization, systems in systems_by_org.items %}
+    <!-- Organization's Systems List Table -->
+    <div class="card mb-6">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+          <div class="d-flex">
+            <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 alt="Organization Image" class="rounded" width="60">
+            <h4>
+              <strong class="ms-4">{{ organization.name }}</strong>
+            </h4>
+          </div>
+        </a>
+        <p class="mt-8"><i class="fa fa-robot"></i><strong>&nbsp; Total Systems: </strong> {{ systems|length }}</p>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-{{ organization.id }}"><strong>&nbsp; See Systems</strong></span>
+      </div>
+      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse p-8">
+                          <a href="{% url 'hadron_prime:create_hadron_system' %}">
+              <button class="btn btn-success mb-4">
+                <i class="fa fa-plus me-2"></i><strong>Create New System</strong>
+              </button>
+            </a>
+        <table class="datatables-systems table">
+          <thead class="border-top">
+          <tr>
+            <th style="min-width: 200px;">System Name</th>
+            <th style="min-width: 400px;">Description</th>
+            <th style="min-width: 150px;">Created By</th>
+            <th style="min-width: 200px;">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for system in systems %}
+            <tr>
+              <td><strong>{{ system.system_name }}</strong></td>
+              <td>{{ system.system_description|linebreaksbr }}</td>
+              <td>{{ system.created_by_user.username }}</td>
+              <td>
+                <a href="{% url 'hadron_prime:detail_hadron_system' system.id %}" class="btn btn-sm btn-info me-4">
+                  <i class="fa fa-eye me-2"></i>Details
+                </a>
+                <a href="{% url 'hadron_prime:update_hadron_system' system.id %}" class="btn btn-sm btn-primary me-4">
+                  <i class="fa fa-edit me-2"></i>Edit
+                </a>
+                <a href="{% url 'hadron_prime:delete_hadron_system' system.id %}" class="btn btn-sm btn-danger">
+                  <i class="fa fa-trash me-2"></i>Delete
+                </a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="4" class="text-center">No systems have been created for this organization yet.</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

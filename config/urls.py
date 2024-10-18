@@ -65,13 +65,13 @@ urlpatterns = [
     path("app/video_generations/", include("apps.video_generations.urls", namespace="video_generations")),
     path("app/harmoniq/", include("apps.harmoniq.urls", namespace="harmoniq")),
     path("app/drafting/", include("apps.drafting.urls", namespace="drafting")),
+    path("app/hadron_prime/", include("apps.hadron_prime.urls", namespace="hadron_prime")),
 
     path('app/docs/', docs_redirect_view, name='technical_docs'),
     path("app/support_system/", include("apps.support_system.urls", namespace="support_system")),
     path("app/community_forum/", include("apps.community_forum.urls", namespace="community_forum")),
     path("app/blog_app/", include("apps.blog_app.urls", namespace="blog_app")),
 
-    path('app/voidforger/', include("apps._meta.voidforger.urls", namespace="voidforger")),
     path('sentry/test/', trigger_error),
 ]
 

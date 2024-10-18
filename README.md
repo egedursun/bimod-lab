@@ -4,8 +4,12 @@
 
 ......
 
-1. Deploy the application to the server. Update -> SSL Certificates, NGINX configuration.
-2. Add the new features -> drafting to the documentation
+1. Add the hadron prime views & templates
+2. Add the hadron prime permissions.
+3. Add hadron prime to vertical & horizontal search
+4. Add hadron prime to vertical & horizontal menu
+5. Adjust the costs and add them to .env files (for nosql + for hadron prime)
+
 
 [i] BUG: The messages cut short in Harmoniq + can't send audio in real time to Harmoniq agent.
 

@@ -63,5 +63,5 @@ class DashboardView_Main(LoginRequiredMixin, TemplateView):
         data_statistics = manager.statistics
         response = GenerativeAIDecodeController.provide_analysis(llm_model=llm_core, statistics=data_statistics)
         context.update(response=response)
-        logger.info(f"AI Model: {llm_core.name} - Response: {response}")
+        logger.info(f"AI Model: {llm_core.nickname} - Response: {response}")
         return self.render_to_response(context)

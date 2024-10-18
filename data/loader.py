@@ -42,48 +42,45 @@ class BoilerplateDataLoader:
             BoilerplateDataLoader._load_blog_data()
             # print("[BoilerplateDataLoader.load_blog_data] Blog data loaded successfully")
         except Exception as e:
-            logger.error(f"[BoilerplateDataLoader.load_blog_data] Error while loading blog data: {e}")
+            pass
         #####
         try:
             BoilerplateDataLoader._load_functions_data()
             # print("[BoilerplateDataLoader.load_functions_data] Functions data loaded successfully")
         except Exception as e:
-            logger.error(f"[BoilerplateDataLoader.load_functions_data] Error while loading functions data: {e}")
+            pass
         #####
         try:
             BoilerplateDataLoader._load_apis_data()
             # print("[BoilerplateDataLoader.load_apis_data] APIs data loaded successfully")
         except Exception as e:
-            logger.error(f"[BoilerplateDataLoader.load_apis_data] Error while loading APIs data: {e}")
+            pass
         #####
         try:
             BoilerplateDataLoader._load_scripts_data()
             # print("[BoilerplateDataLoader.load_scripts_data] Scripts data loaded successfully")
         except Exception as e:
-            logger.error(f"[BoilerplateDataLoader.load_scripts_data] Error while loading scripts data: {e}")
+            pass
         ####
         try:
             BoilerplateDataLoader._load_knowledge_bases_data()
             # print("[BoilerplateDataLoader.load_knowledge_bases_data] Knowledge bases data loaded successfully")
         except Exception as e:
-            logger.error(f"[BoilerplateDataLoader.load_knowledge_bases_data] Error while loading knowledge bases "
-                            f"data: {e}")
+            pass
         #####
         try:
             BoilerplateDataLoader._load_assistant_integrations_data()
             # print("[BoilerplateDataLoader.load_assistant_integrations_data] Assistant integrations data "
             #      "loaded successfully")
         except Exception as e:
-            logger.error(f"[BoilerplateDataLoader.load_assistant_integrations_data] Error while loading assistant "
-                            f"integrations data: {e}")
+            pass
         #####
         try:
             BoilerplateDataLoader._load_orchestration_meta_integrations_data()
             # print("[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Orchestration meta
             # integrations " "data loaded successfully")
         except Exception as e:
-            logger.error(f"[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Error while loading "
-                            f"orchestration meta integrations data: {e}")
+            pass
         #####
         logger.info("[BoilerplateDataLoader.load] Boilerplate data loaded successfully")
 
