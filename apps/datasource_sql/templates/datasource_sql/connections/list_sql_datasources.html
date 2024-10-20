@@ -167,7 +167,7 @@
                               <i class="fa fa-server me-4"></i> Host:
                             </strong></span>
                           <span
-                            class="text-wrap border border-warning rounded p-1"><strong>{{ connection.host }}</strong></span>
+                            class="text-wrap btn-warning rounded p-1"><strong>{{ connection.host }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
                           <span class="text-body">
@@ -175,7 +175,7 @@
                               <i class="fa fa-signal me-4"></i> Port:
                             </strong></span>
                           <span
-                            class="text-wrap border border-warning p-1 rounded"><strong>{{ connection.port }}</strong></span>
+                            class="text-wrap btn-warning p-1 rounded"><strong>{{ connection.port }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
                           <span class="text-body">
@@ -184,7 +184,7 @@
                             </strong>
                           </span>
                           <span
-                            class="text-wrap border border-warning p-1 rounded"><strong>{{ connection.username }}</strong></span>
+                            class="text-wrap btn-warning p-1 rounded"><strong>{{ connection.username }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
                           <span class="text-body"><strong>
@@ -192,7 +192,7 @@
                             Read Only:
                           </strong></span>
                           <span
-                            class="text-wrap border {% if connection.is_read_only %}border-success{% else %}border-danger{% endif %} rounded p-1"><strong>{{ connection.is_read_only|yesno:"Yes,No" }}</strong></span>
+                            class="text-wrap border {% if connection.is_read_only %}btn-success{% else %}btn-danger{% endif %} rounded p-1"><strong>{{ connection.is_read_only|yesno:"Yes,No" }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
                           <span class="text-body">
@@ -202,7 +202,7 @@
                             </strong>
                           </span>
                           <span
-                            class="text-wrap border border-info rounded p-1"><strong>{{ connection.one_time_sql_retrieval_instance_limit }}</strong></span>
+                            class="text-wrap btn-info rounded p-1"><strong>{{ connection.one_time_sql_retrieval_instance_limit }}</strong></span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
                           <span class="text-body"><strong>
@@ -210,7 +210,7 @@
                             Max Tokens per Call:
                           </strong></span>
                           <span
-                            class="text-wrap border border-info rounded p-1"><strong>{{ connection.one_time_sql_retrieval_token_limit }}</strong></span>
+                            class="text-wrap btn-info rounded p-1"><strong>{{ connection.one_time_sql_retrieval_token_limit }}</strong></span>
                         </li>
                       </ul>
                       <hr>

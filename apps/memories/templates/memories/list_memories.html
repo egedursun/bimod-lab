@@ -155,14 +155,18 @@
               <td><strong>{{ memory.assistant.name }}</strong></td>
               <td><strong>{{ memory.user.username }}</strong></td>
               <td>
-                {% if memory.get_memory_type_display == "User-Specific" %}
+                {% if memory.get_memory_type_display == "Organization-Specific" %}
                   <span
-                    class="card p-1 card-border-shadow border border-warning">
-                    <strong>{{ memory.get_memory_type_display }}</strong>
+                    class="card p-2 card-border-shadow btn-success"><strong>{{ memory.get_memory_type_display }}</strong>
+                  </span>
+                {% elif memory.get_memory_type_display == "User-Specific" %}
+                  <span
+                    class="card p-2 card-border-shadow btn-warning"><strong>{{ memory.get_memory_type_display }}</strong>
                   </span>
                 {% else %}
                   <span
-                    class="card p-1 card-border-shadow border border-info"><strong>{{ memory.get_memory_type_display }}</strong></span>
+                    class="card p-2 card-border-shadow btn-info"><strong>{{ memory.get_memory_type_display }}</strong>
+                  </span>
                 {% endif %}
               </td>
               <td>{{ memory.memory_text_content }}</td>

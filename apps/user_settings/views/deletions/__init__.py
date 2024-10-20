@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .delete_all_organizations_views import *
 from .delete_all_llm_models_views import *
@@ -61,3 +58,5 @@ from .delete_all_hadron_sase_logs_views import *
 from .delete_all_hadron_systems_views import *
 from .delete_all_hadron_topic_messages_logs_views import *
 from .delete_all_hadron_topics_views import *
+from .delete_soft_all_smart_contracts_views import *
+from .delete_all_wallet_connections_views import *

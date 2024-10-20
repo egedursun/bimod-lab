@@ -19,12 +19,22 @@
 AGENT_STANDARD_MEMORY_TYPES = [
     ("user-specific", "User-Specific"),
     ("assistant-specific", "Assistant-Specific"),
+    ("organization-specific", "Organization-Specific"),
 ]
 
 
 class AgentStandardMemoryTypesNames:
     USER_SPECIFIC = "user-specific"
     ASSISTANT_SPECIFIC = "assistant-specific"
+    ORGANIZATION_SPECIFIC = "organization-specific"
+
+    @staticmethod
+    def as_list():
+        return [
+            AgentStandardMemoryTypesNames.USER_SPECIFIC,
+            AgentStandardMemoryTypesNames.ASSISTANT_SPECIFIC,
+            AgentStandardMemoryTypesNames.ORGANIZATION_SPECIFIC,
+        ]
 
 
 MEMORIES_ADMIN_LIST = [

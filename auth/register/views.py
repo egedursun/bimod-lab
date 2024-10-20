@@ -21,6 +21,8 @@ from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.conf import settings
 
+from apps.notifications.models import NotificationItem
+from apps.notifications.utils import NotificationTitleCategoryChoicesNames, NotificationFAIconChoicesNames
 from auth.utils import is_valid_password, send_verification_email
 from auth.views import AuthView
 from auth.models import Profile
@@ -98,4 +100,14 @@ class RegisterView(AuthView):
         else:
             messages.error(request, "Email settings are not configured. Unable to send verification email.")
         request.session['email'] = email
+
+        welcome_notification = NotificationItem.objects.create(
+            user=created_user,
+            notification_title_category=NotificationTitleCategoryChoicesNames.HumanReadable.BIMOD_TEAM,
+            notification_fa_icon=NotificationFAIconChoicesNames.BUILDING,
+            notification_message="Welcome to the platform! We have sent you a verification email, and we recommend you"
+                                 " to verify your email address for your own security and privacy. If you need help,"
+                                 " please contact us via the support page.")
+        user_profile.user.notifications.set([welcome_notification])
+
         return redirect("verify-email-page")

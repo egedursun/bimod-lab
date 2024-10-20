@@ -66,6 +66,8 @@ urlpatterns = [
     path("app/harmoniq/", include("apps.harmoniq.urls", namespace="harmoniq")),
     path("app/drafting/", include("apps.drafting.urls", namespace="drafting")),
     path("app/hadron_prime/", include("apps.hadron_prime.urls", namespace="hadron_prime")),
+    path("app/smart_contracts/", include("apps.smart_contracts.urls", namespace="smart_contracts")),
+    path("app/notifications/", include("apps.notifications.urls", namespace="notifications")),
 
     path('app/docs/', docs_redirect_view, name='technical_docs'),
     path("app/support_system/", include("apps.support_system.urls", namespace="support_system")),

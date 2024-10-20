@@ -139,7 +139,7 @@
             <td style="min-width: 200px; max-width: 200px;"><strong>{{ job.name }}</strong></td>
             <td style="min-width: 300px; max-width: 200px;">{{ job.task_description }}</td>
             <td style="min-width: 150px; max-width: 150px;"><strong>{{ job.created_by_user }}</strong></td>
-            <td style="min-width: 250px; max-width: 250px;"><strong class="border border-info rounded p-1">{{ job.assistant.name }}</strong></td>
+            <td style="min-width: 250px; max-width: 250px;"><strong class="btn-info rounded p-1">{{ job.assistant.name }}</strong></td>
             <td style="min-width: 380px; max-width: 380px;">
               <p class="bg-label-secondary rounded p-2 m-1">
                 <i class="bi bi-calendar-month me-4"></i>
@@ -168,12 +168,12 @@
               </p>
             </td>
             <td style="min-width: 200px; max-width: 200px;">
-              <strong class="border border-warning p-1 rounded">
+              <strong class="border btn-warning p-1 rounded">
                 {{ job.current_run_count }}
               </strong>
             </td>
             <td style="min-width: 200px; max-width: 200px;">
-              <strong class="border border-warning p-1 rounded">
+              <strong class="border btn-warning p-1 rounded">
                 {{ job.maximum_runs }}
               </strong>
             </td>

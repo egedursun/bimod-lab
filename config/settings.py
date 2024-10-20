@@ -133,6 +133,8 @@ INSTALLED_APPS = [
     "apps.harmoniq",
     "apps.drafting",
     "apps.hadron_prime",
+    "apps.smart_contracts",
+    "apps.notifications",
 
     ########################################
     # SUPPORT
@@ -501,6 +503,7 @@ VIDEO_GENERATOR = os.environ.get("VIDEO_GENERATOR", default="0")
 REASONING = os.environ.get("REASONING", default="0")
 DRAFTING = os.environ.get("DRAFTING", default="0")
 HADRON_PRIME = os.environ.get("HADRON_PRIME", default="0")
+SMART_CONTRACT_CREATION = os.environ.get("SMART_CONTRACT_CREATION", default="0")
 
 COSTS_MAP = {
     "CONTEXT_MEMORY": float(CONTEXT_MEMORY),
@@ -535,6 +538,7 @@ COSTS_MAP = {
     "REASONING": float(REASONING),
     "DRAFTING": float(DRAFTING),
     "HADRON_PRIME": float(HADRON_PRIME),
+    "SMART_CONTRACT_CREATION": float(SMART_CONTRACT_CREATION),
 }
 
 if ENVIRONMENT != "local":
@@ -561,3 +565,7 @@ NEW_USER_FREE_CREDITS = int(os.environ.get("NEW_USER_FREE_CREDITS", default="0")
 DEFAULT_APPLICATION_ZOOM = int(os.environ.get("DEFAULT_APPLICATION_ZOOM", default="100"))
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
+
+# Web3 INFURA Access Key
+INFURA_API_KEY = os.environ.get("INFURA_API_KEY", default="")
+INFURA_URL = f"https://mainnet.infura.io/v3/{INFURA_API_KEY}"

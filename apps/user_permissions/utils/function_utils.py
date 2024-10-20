@@ -202,6 +202,17 @@ def get_permissions_grouped():
             ('delete_hadron_node_publish_history_logs', 'Delete Hadron Node Publish History Logs'),
             ('delete_hadron_topic_message_history_logs', 'Delete Hadron Topic Message History Logs'),
         ],
+        "Blockchain Wallet Permissions": [
+            ('create_blockchain_wallet_connections', 'Create Blockchain Wallet Connections'),
+            ('list_blockchain_wallet_connections', 'List Blockchain Wallet Connections'),
+            ('update_blockchain_wallet_connections', 'Update Blockchain Wallet Connections'),
+            ('delete_blockchain_wallet_connections', 'Delete Blockchain Wallet Connections'),
+        ],
+        "Smart Contract Permissions": [
+            ('create_smart_contracts', 'Create Smart Contracts'),
+            ('list_smart_contracts', 'List Smart Contracts'),
+            ('soft_delete_smart_contracts', 'Soft Delete Smart Contracts'),
+        ],
         "File System Permissions": [
             ('add_file_systems', 'Add File Systems'),
             ('update_file_systems', 'Update File Systems'),
@@ -344,6 +355,10 @@ def get_permissions_grouped():
             ('create_support_tickets', 'Create Support Tickets'),
             ('list_support_tickets', 'List Support Tickets'),
             ('update_support_tickets', 'Update Support Tickets'),
+        ],
+        "Internal Notifications": [
+            ('create_internal_notifications', 'Create Internal Notifications'),
+            ('delete_internal_notifications', 'Delete Internal Notifications'),
         ],
     }
     return permissions_grouped

@@ -286,6 +286,18 @@ class PermissionNames:
     DELETE_HADRON_NODE_PUBLISH_HISTORY_LOGS = 'delete_hadron_node_publish_history_logs'
     DELETE_HADRON_TOPIC_MESSAGE_HISTORY_LOGS = 'delete_hadron_topic_message_history_logs'
 
+    CREATE_BLOCKCHAIN_WALLET_CONNECTIONS = 'create_blockchain_wallet_connections'
+    LIST_BLOCKCHAIN_WALLET_CONNECTIONS = 'list_blockchain_wallet_connections'
+    UPDATE_BLOCKCHAIN_WALLET_CONNECTIONS = 'update_blockchain_wallet_connections'
+    DELETE_BLOCKCHAIN_WALLET_CONNECTIONS = 'delete_blockchain_wallet_connections'
+
+    CREATE_SMART_CONTRACTS = 'create_smart_contracts'
+    LIST_SMART_CONTRACTS = 'list_smart_contracts'
+    SOFT_DELETE_SMART_CONTRACTS = 'soft_delete_smart_contracts'
+
+    CREATE_INTERNAL_NOTIFICATIONS = 'create_internal_notifications'
+    DELETE_INTERNAL_NOTIFICATIONS = 'delete_internal_notifications'
+
 
 PERMISSION_TYPES = [
     ('add_organizations', 'Add Organizations'),
@@ -557,6 +569,18 @@ PERMISSION_TYPES = [
     ('delete_hadron_node_sase_logs', 'Delete Hadron Node SASE Logs'),
     ('delete_hadron_node_publish_history_logs', 'Delete Hadron Node Publish History Logs'),
     ('delete_hadron_topic_message_history_logs', 'Delete Hadron Topic Message History Logs'),
+
+    ('create_blockchain_wallet_connections', 'Create Blockchain Wallet Connections'),
+    ('list_blockchain_wallet_connections', 'List Blockchain Wallet Connections'),
+    ('update_blockchain_wallet_connections', 'Update Blockchain Wallet Connections'),
+    ('delete_blockchain_wallet_connections', 'Delete Blockchain Wallet Connections'),
+
+    ('create_smart_contracts', 'Create Smart Contracts'),
+    ('list_smart_contracts', 'List Smart Contracts'),
+    ('soft_delete_smart_contracts', 'Soft Delete Smart Contracts'),
+
+    ('create_internal_notifications', 'Create Internal Notifications'),
+    ('delete_internal_notifications', 'Delete Internal Notifications'),
 ]
 
 

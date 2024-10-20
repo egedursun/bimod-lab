@@ -22,6 +22,7 @@ from apps.memories.utils import AGENT_STANDARD_MEMORY_TYPES
 
 class AssistantMemory(models.Model):
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE, null=True, blank=True)
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     memory_type = models.CharField(max_length=50, choices=AGENT_STANDARD_MEMORY_TYPES, default="user-specific")
     memory_text_content = models.TextField(default="")

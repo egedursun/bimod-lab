@@ -24,9 +24,9 @@ from django.views.generic import TemplateView
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.memories.models import AssistantMemory
+from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -36,24 +36,27 @@ class AssistantMemoryView_Create(TemplateView, LoginRequiredMixin):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
         agents = Assistant.objects.filter(organization__users=user)
-        context.update({'assistants': agents})
+        organizations = Organization.objects.filter(users__in=[user])
+        context.update({'organizations': organizations, 'assistants': agents})
         return context
 
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - ADD_ASSISTANT_MEMORIES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_ASSISTANT_MEMORIES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user, operation=PermissionNames.ADD_ASSISTANT_MEMORIES):
             messages.error(self.request, "You do not have permission to add assistant memories.")
             return redirect('memories:list')
         ##############################
 
+        org_id = request.POST.get('organization')
+        org = Organization.objects.get(id=org_id)
         agent_id = request.POST.get('assistant')
         memory_type = request.POST.get('memory_type')
         memory_text_content = request.POST.get('memory_text_content')
 
         AssistantMemory.objects.create(user=request.user, assistant_id=agent_id, memory_type=memory_type,
-                                       memory_text_content=memory_text_content)
+                                       memory_text_content=memory_text_content, organization=org)
 
         agent = Assistant.objects.get(id=agent_id)
         agent.memories.add(AssistantMemory.objects.last())

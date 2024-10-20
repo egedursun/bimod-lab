@@ -945,6 +945,80 @@
                   </td>
                 </form>
               </tr>
+              <!-- delete all blockchain wallets -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-wallet me-4"></i>
+                  <strong>Blockchain Wallet Connections</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_wallet_connections' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL BLOCKCHAIN WALLET CONNECTIONS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-blockchain-wallet-connections-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-blockchain-wallet-connections-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Wallets</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete (soft) all blockchain contracts -->
+              tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-file-contract me-4"></i>
+                  <strong>Blockchain Smart Contracts</strong>
+                  <strong class="btn-warning p-2 ms-4 rounded">
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    Soft Delete
+                  </strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_soft_all_smart_contracts' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM SOFT DELETING ALL BLOCKCHAIN SMART CONTRACTS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-blockchain-smart-contracts-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-blockchain-smart-contracts-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Contracts</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
               <!-- delete all file systems -->
               <tr>
                 <td class="text-nowrap text-heading">

@@ -57,6 +57,16 @@
           "url": "llm_transaction:list"
         },
         {
+          "name": "Add Balance",
+          "slug": "usage",
+          "url": "llm_transaction:create_top_up"
+        },
+        {
+          "name": "Transfer Balance",
+          "slug": "usage",
+          "url": "llm_transaction:transfer_balance"
+        },
+        {
           "name": "Automatic Top-ups",
           "slug": "payment",
           "submenu": [
@@ -353,6 +363,40 @@
           "name": "Hadron Prime™ Systems",
           "slug": "hadron-prime",
           "url": "hadron_prime:list_hadron_system"
+        }
+      ]
+    },
+    {
+      "name": "Blockchain Wallets",
+      "icon": "menu-icon tf-icons ti ti-wallet",
+      "slug": "blockchain",
+      "submenu": [
+        {
+          "name": "Connect Wallet",
+          "slug": "blockchain",
+          "url": "smart_contracts:wallet_connection_create"
+        },
+        {
+          "name": "Wallet Connections",
+          "slug": "blockchain",
+          "url": "smart_contracts:wallet_connection_list"
+        }
+      ]
+    },
+    {
+      "name": "Smart Contracts",
+      "icon": "menu-icon tf-icons ti ti-id-badge",
+      "slug": "smart-contract",
+      "submenu": [
+        {
+          "name": "Create Contract",
+          "slug": "smart-contract",
+          "url": "smart_contracts:contract_create"
+        },
+        {
+          "name": "Smart Contracts",
+          "slug": "smart-contract",
+          "url": "smart_contracts:contract_list"
         }
       ]
     },
@@ -835,7 +879,7 @@
       "url": "mm_scripts:store"
     },
     {
-      "menu_header": "Meta Modules"
+      "menu_header": "Meta Modules (Coming Soon)"
     },
     {
       "name": "Integrations",

@@ -154,8 +154,8 @@
           <th>Event Type</th>
           <th style="min-width: 150px; max-width: 150px;">Current Run Count</th>
           <th style="min-width: 150px; max-width: 150px;">Maximum Runs</th>
-          <th></th>
           <th>Actions</th>
+          <th></th>
         </tr>
         </thead>
         <tbody>
@@ -174,15 +174,15 @@
                 <i class="fa fa-copy me-2"></i><strong>Copy URL</strong>
               </button>
             </td>
-            <td style="min-width: 200px;">
-              <strong class="border border-info rounded p-1">{{ job.trigger_source }}</strong>
+            <td>
+              <strong class="btn-info rounded p-1" style="min-width: 200px; max-width: 200px;">{{ job.trigger_source }}</strong>
             </td>
             <td style="min-width: 200px;">{{ job.event_type }}</td>
-            <td>
-              <p class="border border-warning p-1 rounded">{{ job.current_run_count }}</p>
+            <td style="min-width: 60px; max-width: 60px;">
+              <p class="btn-warning p-1 rounded"><strong>{{ job.current_run_count }}</strong></p>
             </td>
-            <td>
-              <p class="border border-warning p-1 rounded">{{ job.maximum_runs }}</p>
+            <td style="min-width: 60px; max-width: 60px;">
+              <p class="btn-warning p-1 rounded"><strong>{{ job.maximum_runs }}</strong></p>
             </td>
             <td>
               <a href="{% url 'mm_triggered_jobs:logs' job.pk %}" class="btn btn-label-info"><i

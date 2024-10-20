@@ -96,7 +96,16 @@
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row p-8">
-              <div class="mb-6 col-6">
+              <div class="mb-6 col-4">
+                <label class="form-label" for="organization">Organization</label>
+                <select class="form-select" id="organization" name="organization">
+                  {% for organization in organizations %}
+                    <option value="{{ organization.id }}">{{ organization.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text"></div>
+              </div>
+              <div class="mb-6 col-4">
                 <label class="form-label" for="assistant">Assistant</label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}
@@ -105,9 +114,10 @@
                 </select>
                 <div class="form-text"></div>
               </div>
-              <div class="mb-6 col-6">
+              <div class="mb-6 col-4">
                 <label class="form-label" for="memory_type">Memory Type</label>
                 <select class="form-select" id="memory_type" name="memory_type">
+                  <option value="organization-specific">Organization-Specific</option>
                   <option value="user-specific">User-Specific</option>
                   <option value="assistant-specific">Assistant-Specific</option>
                 </select>

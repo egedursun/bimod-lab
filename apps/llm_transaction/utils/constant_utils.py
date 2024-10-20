@@ -68,6 +68,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("generate-video", "Generate Video"),
     ("drafting", "Drafting"),
     ("hadron-prime", "Hadron Prime"),
+    ("smart-contract-creation", "Smart Contract Creation"),
 ]
 
 
@@ -116,6 +117,7 @@ class LLMTransactionSourcesTypesNames:
     GENERATE_VIDEO = "generate-video"
     DRAFTING = "drafting"
     HADRON_PRIME = "hadron-prime"
+    SMART_CONTRACT_CREATION = "smart-contract-creation"
 
     @staticmethod
     def as_list():
@@ -157,6 +159,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.REASONING,
             LLMTransactionSourcesTypesNames.DRAFTING,
             LLMTransactionSourcesTypesNames.HADRON_PRIME,
+            LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
         ]
 
 

@@ -39,7 +39,8 @@ from apps.user_settings.views import SettingsView_UserSettings, SettingsView_Del
     SettingsView_DeleteAllVideoGeneratorConnections, SettingsView_DeleteAllNoSQLQueries, \
     SettingsView_DeleteAllHadronTopics, SettingsView_DeleteAllHadronNodes, SettingsView_DeleteAllHadronSystems, \
     SettingsView_DeleteAllHadronNodeExecutionLogs, SettingsView_DeleteAllHadronTopicMessagesLogs, \
-    SettingsView_DeleteAllHadronNodeSEASELogs
+    SettingsView_DeleteAllHadronNodeSEASELogs, SettingsView_DeleteAllWalletConnections, \
+    SettingsView_DeleteSoftAllSmartContracts
 
 app_name = "user_settings"
 
@@ -119,7 +120,6 @@ urlpatterns = [
          name='delete_all_video_generator_connections'),
     path('delete/all/nosql_queries/', SettingsView_DeleteAllNoSQLQueries.as_view(),
          name='delete_all_nosql_queries'),
-
     path('delete/all/hadron_topics/', SettingsView_DeleteAllHadronTopics.as_view(),
          name='delete_all_hadron_topics'),
     path('delete/all/hadron_nodes/', SettingsView_DeleteAllHadronNodes.as_view(),
@@ -132,6 +132,11 @@ urlpatterns = [
          name='delete_all_hadron_topic_message_logs'),
     path('delete/all/hadron_node_sease_logs/', SettingsView_DeleteAllHadronNodeSEASELogs.as_view(),
          name='delete_all_hadron_node_sease_logs'),
+
+    path('delete/all/wallet_connections/', SettingsView_DeleteAllWalletConnections.as_view(),
+            name='delete_all_wallet_connections'),
+    path('delete/soft/all/smart_contracts/', SettingsView_DeleteSoftAllSmartContracts.as_view(),
+            name='delete_soft_all_smart_contracts'),
 
     path('auto_backups/toggle/', SettingsView_ToggleAutoBackups.as_view(),
          name='toggle_automated_backups'),
