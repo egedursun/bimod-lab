@@ -21,12 +21,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.hadron_prime.models import HadronSystem, HadronNode, HadronTopic
 from apps.leanmod.models import ExpertNetwork
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +50,15 @@ class HadronPrimeView_CreateHadronNode(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         # Get data from POST request
         system_id = request.POST.get('system')
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_HADRON_NODES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.CREATE_HADRON_NODES):
+            messages.error(self.request, "You do not have permission to create Hadron Nodes.")
+            return redirect('hadron_prime:detail_hadron_system', pk=system_id)
+        ##############################
+
         llm_model_id = request.POST.get('llm_model')
         node_name = request.POST.get('node_name')
         node_description = request.POST.get('node_description')
@@ -62,6 +72,10 @@ class HadronPrimeView_CreateHadronNode(LoginRequiredMixin, TemplateView):
         goal_state_curl = request.POST.get('goal_state_curl')
         goal_state_input_desc = request.POST.get('goal_state_input_params_description')
         goal_state_output_desc = request.POST.get('goal_state_output_params_description')
+        # Retrieve error calculation
+        error_calculation_curl = request.POST.get('error_calculation_curl')
+        error_calculation_input_desc = request.POST.get('error_calculation_input_params_description')
+        error_calculation_output_desc = request.POST.get('error_calculation_output_params_description')
         # Retrieve Sensory Measurements fields
         measurements_curl = request.POST.get('measurements_curl')
         measurements_input_desc = request.POST.get('measurements_input_params_description')
@@ -84,6 +98,7 @@ class HadronPrimeView_CreateHadronNode(LoginRequiredMixin, TemplateView):
         # Lookback memory sizes
         state_action_state_lookback_memory_size = request.POST.get('state_action_state_lookback_memory_size')
         publishing_history_lookback_memory_size = request.POST.get('publishing_history_lookback_memory_size')
+        topic_messages_history_lookback_memory_size = request.POST.get('topic_messages_history_lookback_memory_size')
 
         # Create the HadronNode object
         node = HadronNode.objects.create(
@@ -92,7 +107,11 @@ class HadronPrimeView_CreateHadronNode(LoginRequiredMixin, TemplateView):
             current_state_input_params_description=current_state_input_desc,
             current_state_output_params_description=current_state_output_desc, goal_state_curl=goal_state_curl,
             goal_state_input_params_description=goal_state_input_desc,
-            goal_state_output_params_description=goal_state_output_desc, measurements_curl=measurements_curl,
+            goal_state_output_params_description=goal_state_output_desc,
+            error_calculation_curl=error_calculation_curl,
+            error_calculation_input_params_description=error_calculation_input_desc,
+            error_calculation_output_params_description=error_calculation_output_desc,
+            measurements_curl=measurements_curl,
             measurements_input_params_description=measurements_input_desc,
             measurements_output_params_description=measurements_output_desc, action_set_curl=action_set_curl,
             action_set_input_params_description=action_set_input_desc,
@@ -103,7 +122,8 @@ class HadronPrimeView_CreateHadronNode(LoginRequiredMixin, TemplateView):
             actuation_curl=actuation_curl, actuation_input_params_description=actuation_input_desc,
             actuation_output_params_description=actuation_output_desc, created_by_user=request.user,
             publishing_history_lookback_memory_size=publishing_history_lookback_memory_size,
-            state_action_state_lookback_memory_size=state_action_state_lookback_memory_size)
+            state_action_state_lookback_memory_size=state_action_state_lookback_memory_size,
+            topic_messages_history_lookback_memory_size=topic_messages_history_lookback_memory_size)
 
         # Save relations (ManyToMany fields)
         node.subscribed_topics.set(subscribed_topics)

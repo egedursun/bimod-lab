@@ -14,6 +14,37 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
+from apps.core.hadron_prime.parsers import make_request_from_curl
+from apps.hadron_prime.models import HadronNode
 
 
-# TODO-EGE: Implement the current error calculation handlers here.
+logger = logging.getLogger(__name__)
+
+
+def calculate_error_data(node: HadronNode):
+    error_calculation_data, error = "N/A", None
+    error_measurement_curl = node.error_calculation_curl
+
+    try:
+        response_text = make_request_from_curl(curl_command=error_measurement_curl)
+    except Exception as e:
+        logger.error(f"Error occurred while evaluating error calculation: {str(e)}")
+        error = str(e)
+        return error_calculation_data, error
+    if not response_text:
+        logger.error("Error calculation data could not have been received.")
+        error = "Error calculation data could not have been received."
+        return error_calculation_data, error
+
+    error_calculation_data = f"""
+        ### **ERROR CALCULATION DATA:**
+        '''
+        {response_text}
+        '''
+
+        -----
+    """
+    logger.info("Error calculation data has been evaluated.")
+    return error_calculation_data, error

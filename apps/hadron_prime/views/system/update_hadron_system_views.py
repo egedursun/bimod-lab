@@ -21,8 +21,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.hadron_prime.models import HadronSystem
 from apps.organization.models import Organization
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -41,6 +43,15 @@ class HadronPrimeView_UpdateHadronSystem(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         system_id = kwargs.get('pk')
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_HADRON_SYSTEMS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_HADRON_SYSTEMS):
+            messages.error(self.request, "You do not have permission to update Hadron Systems.")
+            return redirect('hadron_prime:list_hadron_system')
+        ##############################
+
         hadron_system = get_object_or_404(HadronSystem, id=system_id)
         organization_id = request.POST.get('organization')
         system_name = request.POST.get('system_name')

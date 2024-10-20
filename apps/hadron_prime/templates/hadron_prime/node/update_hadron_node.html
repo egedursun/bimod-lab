@@ -150,8 +150,10 @@
               <hr class="pt-8 pb-8">
 
               <!-- Current State -->
-              <div class="col-6 mb-6">
-                <h6><strong>Current State</strong></h6>
+              <div class="col-4 mb-6">
+                <img src="{% static 'img/hadron_prime/h-10.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
+                <h6 class="mt-4"><strong>Current State</strong></h6>
                 <label class="form-label" for="current_state_curl">cURL</label>
                 <input type="text" class="form-control" id="current_state_curl" name="current_state_curl" value="{{ node.current_state_curl }}">
                 <label class="form-label mt-2" for="current_state_input_params_description">Input Parameters</label>
@@ -161,8 +163,10 @@
               </div>
 
               <!-- Goal State -->
-              <div class="col-6 mb-6">
-                <h6><strong>Goal State</strong></h6>
+              <div class="col-4 mb-6">
+                <img src="{% static 'img/hadron_prime/h-5.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
+                <h6 class="mt-4"><strong>Goal State</strong></h6>
                 <label class="form-label" for="goal_state_curl">cURL</label>
                 <input type="text" class="form-control" id="goal_state_curl" name="goal_state_curl" value="{{ node.goal_state_curl }}">
                 <label class="form-label mt-2" for="goal_state_input_params_description">Input Parameters</label>
@@ -171,11 +175,26 @@
                 <textarea class="form-control" id="goal_state_output_params_description" name="goal_state_output_params_description" rows="2">{{ node.goal_state_output_params_description }}</textarea>
               </div>
 
+              <!-- Error Calculation -->
+              <div class="col-4 mb-6">
+                <img src="{% static 'img/hadron_prime/h-9.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
+                <h6 class="mt-4"><strong>Error Calculation</strong></h6>
+                <label class="form-label" for="error_calculation_curl">cURL</label>
+                <input type="text" class="form-control" id="error_calculation_curl" name="error_calculation_curl" value="{{ node.error_calculation_curl }}">
+                <label class="form-label mt-2" for="error_calculation_input_params_description">Input Parameters</label>
+                <textarea class="form-control" id="error_calculation_input_params_description" name="error_calculation_input_params_description" rows="2">{{ node.error_calculation_input_params_description }}</textarea>
+                <label class="form-label mt-2" for="error_calculation_output_params_description">Output Parameters</label>
+                <textarea class="form-control" id="error_calculation_output_params_description" placeholder="Describe the output parameters in JSON." name="error_calculation_output_params_description" rows="2">{{ node.error_calculation_output_params_description }}</textarea>
+              </div>
+
               <hr class="pt-8 pb-8">
 
               <!-- Sensory Measurements -->
               <div class="col-6 mb-6">
-                <h6><strong>Sensory Measurements</strong></h6>
+                <img src="{% static 'img/hadron_prime/h-4.png' %}" width="100%" style="border-radius:60px;"
+                     class="justify-content-end me-8 p-12 image" alt="Hadron prime image">
+                <h6 class="mt-4"><strong>Sensory Measurements</strong></h6>
                 <label class="form-label" for="measurements_curl">cURL</label>
                 <input type="text" class="form-control" id="measurements_curl" name="measurements_curl" value="{{ node.measurements_curl }}">
                 <label class="form-label mt-2" for="measurements_input_params_description">Input Parameters</label>
@@ -186,7 +205,9 @@
 
               <!-- Action Set -->
               <div class="col-6 mb-6">
-                <h6><strong>Action Set</strong></h6>
+                <img src="{% static 'img/hadron_prime/h-1.png' %}" width="100%" style="border-radius:60px;"
+                     class="justify-content-end me-8 p-12 image" alt="Hadron prime image">
+                <h6 class="mt-4"><strong>Action Set</strong></h6>
                 <label class="form-label" for="action_set_curl">cURL</label>
                 <input type="text" class="form-control" id="action_set_curl" name="action_set_curl" value="{{ node.action_set_curl }}">
                 <label class="form-label mt-2" for="action_set_input_params_description">Input Parameters</label>
@@ -199,7 +220,9 @@
 
               <!-- Analytic Calculation -->
               <div class="col-6 mb-6">
-                <h6><strong>Analytic Calculation</strong></h6>
+                <img src="{% static 'img/hadron_prime/h-2.png' %}" width="100%" style="border-radius:60px;"
+                     class="justify-content-end me-8 p-12 image" alt="Hadron prime image">
+                <h6 class="mt-4"><strong>Analytic Calculation</strong></h6>
                 <label class="form-label" for="analytic_calculation_curl">cURL</label>
                 <input type="text" class="form-control" id="analytic_calculation_curl" name="analytic_calculation_curl" value="{{ node.analytic_calculation_curl }}">
                 <label class="form-label mt-2" for="analytic_calculation_input_params_description">Input Parameters</label>
@@ -210,7 +233,9 @@
 
               <!-- Actuation -->
               <div class="col-6 mb-6">
-                <h6><strong>Actuation</strong></h6>
+                <img src="{% static 'img/hadron_prime/h-3.png' %}" width="100%" style="border-radius:60px;"
+                     class="justify-content-end me-8 p-12 image" alt="Hadron prime image">
+                <h6 class="mt-4"><strong>Actuation</strong></h6>
                 <label class="form-label" for="actuation_curl">cURL</label>
                 <input type="text" class="form-control" id="actuation_curl" name="actuation_curl" value="{{ node.actuation_curl }}">
                 <label class="form-label mt-2" for="actuation_input_params_description">Input Parameters</label>
@@ -248,18 +273,25 @@
 
               <hr class="pt-8 pb-8">
 
-              <div class="mb-6 col-6">
+              <div class="mb-6 col-4">
                 <label class="form-label" for="publishing_history_lookback_memory_size">Publishing History Memory Capacity</label>
                 <input type="range" class="form-range mt-4" id="publishing_history_lookback_memory_size" name="publishing_history_lookback_memory_size" min="0" max="100"
                        step="1" value="{{ node.publishing_history_lookback_memory_size }}" oninput="this.nextElementSibling.value = this.value">
                 <output>{{ node.publishing_history_lookback_memory_size }}</output>
               </div>
 
-              <div class="mb-6 col-6">
+              <div class="mb-6 col-4">
                 <label class="form-label" for="state_action_state_lookback_memory_size">State-Error-Action-State'-Error' Memory Capacity</label>
                 <input type="range" class="form-range mt-4" id="state_action_state_lookback_memory_size" name="state_action_state_lookback_memory_size" min="0" max="100"
                        step="1" value="{{ node.state_action_state_lookback_memory_size }}" oninput="this.nextElementSibling.value = this.value">
                 <output>{{ node.state_action_state_lookback_memory_size }}</output>
+              </div>
+
+              <div class="mb-6 col-4">
+                <label class="form-label" for="topic_messages_history_lookback_memory_size">Topic Message Memory Capacity</label>
+                <input type="range" class="form-range mt-4" id="topic_messages_history_lookback_memory_size" name="topic_messages_history_lookback_memory_size" min="0" max="250"
+                       step="1" value="{{ node.topic_messages_history_lookback_memory_size }}" oninput="this.nextElementSibling.value = this.value">
+                <output>{{ node.topic_messages_history_lookback_memory_size }}</output>
               </div>
 
               <hr>

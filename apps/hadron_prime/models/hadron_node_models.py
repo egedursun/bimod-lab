@@ -39,6 +39,11 @@ class HadronNode(models.Model):
     goal_state_input_params_description = models.TextField(null=True, blank=True)
     goal_state_output_params_description = models.TextField(null=True, blank=True)
 
+    # RETRIEVING THE ERROR CALCULATION
+    error_calculation_curl = models.CharField(null=True, blank=True)
+    error_calculation_input_params_description = models.TextField(null=True, blank=True)
+    error_calculation_output_params_description = models.TextField(null=True, blank=True)
+
     # RETRIEVING THE SENSORY MEASUREMENTS
     measurements_curl = models.CharField(null=True, blank=True)
     measurements_input_params_description = models.TextField(null=True, blank=True)
@@ -66,6 +71,7 @@ class HadronNode(models.Model):
     state_action_state_lookback_memory_size = models.IntegerField(default=20)
     publishing_history_logs = models.ManyToManyField('hadron_prime.HadronTopicMessage', blank=True)
     publishing_history_lookback_memory_size = models.IntegerField(default=20)
+    topic_messages_history_lookback_memory_size = models.IntegerField(default=50)
     expert_networks = models.ManyToManyField('leanmod.ExpertNetwork', blank=True)
     execution_logs = models.ManyToManyField('hadron_prime.HadronNodeExecutionLog', blank=True)
 

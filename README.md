@@ -4,13 +4,6 @@
 
 ......
 
-1. Add the hadron prime permissions. (~1 hour)
-2. Implement hadron prime services (~4-6 hours)
-3. Test hadron prime services (~1 hour)
-4. Implement hadron prime transactions (~1 hour)
-5. Add the new .env.dev and .env.prod files in the server files. (~10 minutes)
-6. Add hadron prime to documentation (~15 minutes)
-
 [i] BUG: The messages cut short in Harmoniq + can't send audio in real time to Harmoniq agent.
 
 ---

@@ -23,9 +23,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.hadron_prime.models import HadronSystem, HadronTopic
 from apps.hadron_prime.utils import HADRON_TOPIC_CATEGORIES
 from apps.organization.models import Organization
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -45,6 +47,15 @@ class HadronPrimeView_CreateHadronTopic(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         system_id = request.POST.get('system')
+
+        ##############################
+        # PERMISSION CHECK FOR - CREATE_HADRON_TOPICS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.CREATE_HADRON_TOPICS):
+            messages.error(self.request, "You do not have permission to create Hadron Topics.")
+            return redirect('hadron_prime:list_hadron_system')
+        ##############################
+
         topic_name = request.POST.get('topic_name')
         topic_description = request.POST.get('topic_description')
         topic_purpose = request.POST.get('topic_purpose')

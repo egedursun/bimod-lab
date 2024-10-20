@@ -23,9 +23,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.hadron_prime.models import HadronSystem, HadronTopic
 from apps.hadron_prime.utils import HADRON_TOPIC_CATEGORIES
 from apps.organization.models import Organization
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -49,6 +51,14 @@ class HadronPrimeView_UpdateHadronTopic(LoginRequiredMixin, TemplateView):
         topic_id = kwargs.get('pk')
         hadron_topic = get_object_or_404(HadronTopic, id=topic_id)
 
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_HADRON_TOPICS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_HADRON_TOPICS):
+            messages.error(self.request, "You do not have permission to update Hadron Topics.")
+            return redirect('hadron_prime:list_hadron_system')
+        ##############################
+
         system_id = request.POST.get('system')
         topic_name = request.POST.get('topic_name')
         topic_description = request.POST.get('topic_description')
@@ -67,4 +77,4 @@ class HadronPrimeView_UpdateHadronTopic(LoginRequiredMixin, TemplateView):
 
         logger.info(f'Hadron Topic "{hadron_topic.topic_name}" updated.')
         messages.success(request, f'Hadron Topic "{hadron_topic.topic_name}" updated successfully.')
-        return redirect('hadron_prime:list_hadron_system')
+        return redirect('hadron_prime:detail_hadron_topic', pk=topic_id)

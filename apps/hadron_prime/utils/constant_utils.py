@@ -18,21 +18,21 @@
 
 HADRON_TOPIC_CATEGORIES = [
     ('alerts', 'Alerts'),
-    ('measurements', 'Measurements'),
+    ('info', 'Info'),
     ('states', 'States'),
+    ('measurements', 'Measurements'),
     ('actions', 'Actions'),
     ('commands', 'Commands'),
-    ('info', 'Info'),
 ]
 
 
 class HadronTopicCategoriesNames:
     ALERTS = 'alerts'
-    MEASUREMENTS = 'measurements'
+    INFO = 'info'
     STATES = 'states'
+    MEASUREMENTS = 'measurements'
     ACTIONS = 'actions'
     COMMANDS = 'commands'
-    INFO = 'info'
 
     @staticmethod
     def as_list():
@@ -58,7 +58,7 @@ HADRON_SYSTEM_ADMIN_LIST = ['organization', 'system_name', 'created_by_user', 'c
 HADRON_SYSTEM_ADMIN_FILTER = ['organization', 'created_by_user']
 HADRON_SYSTEM_ADMIN_SEARCH = ['system_name', 'system_description']
 
-HADRON_TOPIC_ADMIN_LIST = ['topic_name', 'system', 'created_by_user', 'created_at']
+HADRON_TOPIC_ADMIN_LIST = ['topic_name', 'system', 'topic_category', 'created_by_user', 'created_at']
 HADRON_TOPIC_ADMIN_FILTER = ['system', 'created_by_user']
 HADRON_TOPIC_ADMIN_SEARCH = ['topic_name', 'system__system_name', 'created_by_user__username']
 

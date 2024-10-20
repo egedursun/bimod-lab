@@ -67,6 +67,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("brainstorming", "Brainstorming"),
     ("generate-video", "Generate Video"),
     ("drafting", "Drafting"),
+    ("hadron-prime", "Hadron Prime"),
 ]
 
 
@@ -114,6 +115,7 @@ class LLMTransactionSourcesTypesNames:
     BRAINSTORMING = "brainstorming"
     GENERATE_VIDEO = "generate-video"
     DRAFTING = "drafting"
+    HADRON_PRIME = "hadron-prime"
 
     @staticmethod
     def as_list():
@@ -154,7 +156,28 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.GENERATE_VIDEO,
             LLMTransactionSourcesTypesNames.REASONING,
             LLMTransactionSourcesTypesNames.DRAFTING,
+            LLMTransactionSourcesTypesNames.HADRON_PRIME,
         ]
+
+
+"""
+    ================================================================================================================
+    **IMPORTANT NOTE:**
+    ================================================================================================================
+
+    **IF YOU ARE ADDING A NEW TOOL THAT IS ASSOCIATED WITH A "COST",**
+
+    DON'T FORGET TO UPDATE:
+
+    - TOOL_NAME_TO_COST_MAP
+        (apps/core/internal_cost_manager/costs_map.py)
+
+    ---
+
+    If NO COST is associated with the tool, DON'T update the `TOOL_NAME_TO_COST_MAP`.
+
+    ================================================================================================================
+"""
 
 
 INVOICE_TYPES = [

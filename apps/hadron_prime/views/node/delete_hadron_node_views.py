@@ -23,7 +23,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.hadron_prime.models import HadronNode
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -38,8 +40,16 @@ class HadronPrimeView_DeleteHadronNode(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         node = get_object_or_404(HadronNode, id=kwargs['pk'])
-        system_id = node.system.id
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_HADRON_NODES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_HADRON_NODES):
+            messages.error(self.request, "You do not have permission to delete Hadron Nodes.")
+            return redirect('hadron_prime:detail_hadron_node', pk=node.id)
+        ##############################
+
         node.delete()
         logger.info(f'Hadron Node "{node.node_name}" deleted by user "{request.user}".')
         messages.success(request, f'The Hadron Node "{node.node_name}" was successfully deleted.')
-        return redirect('hadron_prime:detail_hadron_system', pk=system_id)
+        return redirect('hadron_prime:detail_hadron_system', pk=node.system.id)

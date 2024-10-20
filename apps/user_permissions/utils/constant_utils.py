@@ -266,6 +266,26 @@ class PermissionNames:
     LIST_DRAFTING_DOCUMENTS = 'list_drafting_documents'
     DELETE_DRAFTING_DOCUMENTS = 'delete_drafting_documents'
 
+    CREATE_HADRON_SYSTEMS = 'create_hadron_systems'
+    LIST_HADRON_SYSTEMS = 'list_hadron_systems'
+    UPDATE_HADRON_SYSTEMS = 'update_hadron_systems'
+    DELETE_HADRON_SYSTEMS = 'delete_hadron_systems'
+
+    CREATE_HADRON_NODES = 'create_hadron_nodes'
+    LIST_HADRON_NODES = 'list_hadron_nodes'
+    UPDATE_HADRON_NODES = 'update_hadron_nodes'
+    DELETE_HADRON_NODES = 'delete_hadron_nodes'
+
+    CREATE_HADRON_TOPICS = 'create_hadron_topics'
+    LIST_HADRON_TOPICS = 'list_hadron_topics'
+    UPDATE_HADRON_TOPICS = 'update_hadron_topics'
+    DELETE_HADRON_TOPICS = 'delete_hadron_topics'
+
+    DELETE_HADRON_NODE_EXECUTION_LOGS = 'delete_hadron_node_execution_logs'
+    DELETE_HADRON_NODE_SASE_LOGS = 'delete_hadron_node_sase_logs'
+    DELETE_HADRON_NODE_PUBLISH_HISTORY_LOGS = 'delete_hadron_node_publish_history_logs'
+    DELETE_HADRON_TOPIC_MESSAGE_HISTORY_LOGS = 'delete_hadron_topic_message_history_logs'
+
 
 PERMISSION_TYPES = [
     ('add_organizations', 'Add Organizations'),
@@ -517,6 +537,26 @@ PERMISSION_TYPES = [
     ('update_drafting_documents', 'Update Drafting Documents'),
     ('list_drafting_documents', 'List Drafting Documents'),
     ('delete_drafting_documents', 'Delete Drafting Documents'),
+
+    ('create_hadron_systems', 'Create Hadron Systems'),
+    ('list_hadron_systems', 'List Hadron Systems'),
+    ('update_hadron_systems', 'Update Hadron Systems'),
+    ('delete_hadron_systems', 'Delete Hadron Systems'),
+
+    ('create_hadron_nodes', 'Create Hadron Nodes'),
+    ('list_hadron_nodes', 'List Hadron Nodes'),
+    ('update_hadron_nodes', 'Update Hadron Nodes'),
+    ('delete_hadron_nodes', 'Delete Hadron Nodes'),
+
+    ('create_hadron_topics', 'Create Hadron Topics'),
+    ('list_hadron_topics', 'List Hadron Topics'),
+    ('update_hadron_topics', 'Update Hadron Topics'),
+    ('delete_hadron_topics', 'Delete Hadron Topics'),
+
+    ('delete_hadron_node_execution_logs', 'Delete Hadron Node Execution Logs'),
+    ('delete_hadron_node_sase_logs', 'Delete Hadron Node SASE Logs'),
+    ('delete_hadron_node_publish_history_logs', 'Delete Hadron Node Publish History Logs'),
+    ('delete_hadron_topic_message_history_logs', 'Delete Hadron Topic Message History Logs'),
 ]
 
 

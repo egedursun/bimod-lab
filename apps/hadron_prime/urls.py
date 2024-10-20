@@ -23,7 +23,10 @@ from apps.hadron_prime.views import (HadronPrimeView_CreateHadronSystem, HadronP
                                      HadronPrimeView_UpdateHadronNode, HadronPrimeView_UpdateHadronTopic,
                                      HadronPrimeView_TriggerActiveHadronNode, HadronPrimeView_DetailHadronNode,
                                      HadronPrimeView_DetailHadronSystem, HadronPrimeView_DetailHadronTopic,
-                                     HadronPrimeView_RegenerateNodeApiKey)
+                                     HadronPrimeView_RegenerateNodeApiKey, HadronPrimeView_DeleteAllNodeExecutionLogs,
+                                     HadronPrimeView_DeleteAllNodePublishHistoryLogs,
+                                     HadronPrimeView_DeleteAllTopicMessages, HadronPrimeView_DeleteAllNodeSASELogs,
+                                     HadronPrimeView_TriggerActiveHadronNodeViaForm)
 
 app_name = "hadron_prime"
 
@@ -69,6 +72,18 @@ urlpatterns = [
     path("hadron_node/regenerate_api_key/<int:pk>/", HadronPrimeView_RegenerateNodeApiKey.as_view(),
          name="regenerate_node_api_key"),
 
+    path("hadron_Node/activate/manual/<int:pk>/<str:hash>/", HadronPrimeView_TriggerActiveHadronNodeViaForm.as_view(),
+         name="trigger_activate_hadron_node_via_form"),
     path("hadron_node/activate/<int:pk>/<str:hash>/", HadronPrimeView_TriggerActiveHadronNode.as_view(),
          name="trigger_activate_hadron_node"),
+
+    path("hadron_node/delete_all_execution_logs/<int:pk>/", HadronPrimeView_DeleteAllNodeExecutionLogs.as_view(),
+         name="delete_all_execution_logs"),
+    path("hadron_node/delete_all_publish_history_logs/<int:pk>/",
+         HadronPrimeView_DeleteAllNodePublishHistoryLogs.as_view(),
+         name="delete_all_publish_history_logs"),
+    path("hadron_node/delete_all_sase_logs/<int:pk>/", HadronPrimeView_DeleteAllNodeSASELogs.as_view(),
+         name="delete_all_sase_logs"),
+    path("hadron_topic/delete_all_messages/<int:pk>/", HadronPrimeView_DeleteAllTopicMessages.as_view(),
+         name="delete_all_messages"),
 ]

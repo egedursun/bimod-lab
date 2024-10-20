@@ -22,10 +22,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.hadron_prime.models import HadronNode, HadronTopic, HadronSystem
 from apps.llm_core.models import LLMCore
 from apps.leanmod.models import ExpertNetwork
 from apps.organization.models import Organization
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -55,6 +57,15 @@ class HadronPrimeView_UpdateHadronNode(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         node = get_object_or_404(HadronNode, pk=self.kwargs['pk'])
         system_id = request.POST.get('system')
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_HADRON_NODES
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_HADRON_NODES):
+            messages.error(self.request, "You do not have permission to update Hadron Nodes.")
+            return redirect('hadron_prime:detail_hadron_system', pk=node.system_id)
+        ##############################
+
         llm_model_id = request.POST.get('llm_model')
         node_name = request.POST.get('node_name')
         node_description = request.POST.get('node_description')
@@ -68,6 +79,10 @@ class HadronPrimeView_UpdateHadronNode(LoginRequiredMixin, TemplateView):
         goal_state_curl = request.POST.get('goal_state_curl')
         goal_state_input_desc = request.POST.get('goal_state_input_params_description')
         goal_state_output_desc = request.POST.get('goal_state_output_params_description')
+        # Retrieve error calculation
+        error_calculation_curl = request.POST.get('error_calculation_curl')
+        error_calculation_input_desc = request.POST.get('error_calculation_input_params_description')
+        error_calculation_output_desc = request.POST.get('error_calculation_output_params_description')
         # Retrieve Sensory Measurements fields
         measurements_curl = request.POST.get('measurements_curl')
         measurements_input_desc = request.POST.get('measurements_input_params_description')
@@ -90,6 +105,7 @@ class HadronPrimeView_UpdateHadronNode(LoginRequiredMixin, TemplateView):
         # Lookback memory sizes
         state_action_state_lookback_memory_size = request.POST.get('state_action_state_lookback_memory_size')
         publishing_history_lookback_memory_size = request.POST.get('publishing_history_lookback_memory_size')
+        topic_messages_history_lookback_memory_size = request.POST.get('topic_messages_history_lookback_memory_size')
 
         # Update the node object
         node.system_id = system_id
@@ -103,6 +119,9 @@ class HadronPrimeView_UpdateHadronNode(LoginRequiredMixin, TemplateView):
         node.goal_state_curl = goal_state_curl
         node.goal_state_input_params_description = goal_state_input_desc
         node.goal_state_output_params_description = goal_state_output_desc
+        node.error_calculation_curl = error_calculation_curl
+        node.error_calculation_input_params_description = error_calculation_input_desc
+        node.error_calculation_output_params_description = error_calculation_output_desc
         node.measurements_curl = measurements_curl
         node.measurements_input_params_description = measurements_input_desc
         node.measurements_output_params_description = measurements_output_desc
@@ -117,6 +136,7 @@ class HadronPrimeView_UpdateHadronNode(LoginRequiredMixin, TemplateView):
         node.actuation_output_params_description = actuation_output_desc
         node.state_action_state_lookback_memory_size = state_action_state_lookback_memory_size
         node.publishing_history_lookback_memory_size = publishing_history_lookback_memory_size
+        node.topic_messages_history_lookback_memory_size = topic_messages_history_lookback_memory_size
 
         node.save()
         node.subscribed_topics.set(subscribed_topics)
@@ -124,4 +144,4 @@ class HadronPrimeView_UpdateHadronNode(LoginRequiredMixin, TemplateView):
 
         logger.info(f'Node updated: {node}')
         messages.success(request, 'Node updated successfully.')
-        return redirect('hadron_prime:detail_hadron_system', pk=node.system_id)
+        return redirect('hadron_prime:detail_hadron_node', pk=node.id)

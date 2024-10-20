@@ -36,7 +36,10 @@ from apps.user_settings.views import SettingsView_UserSettings, SettingsView_Del
     SettingsView_DeleteAllLeanModChats, SettingsView_ToggleAutoBackups, SettingsView_DeleteAllBrainstormingSessions, \
     SettingsView_DeleteAllDraftingDocuments, SettingsView_DeleteAllDraftingFolders, \
     SettingsView_DeleteAllHarmoniqAgents, SettingsView_DeleteAllNoSQLDBs, SettingsView_DeleteAllDataBackups, \
-    SettingsView_DeleteAllVideoGeneratorConnections, SettingsView_DeleteAllNoSQLQueries
+    SettingsView_DeleteAllVideoGeneratorConnections, SettingsView_DeleteAllNoSQLQueries, \
+    SettingsView_DeleteAllHadronTopics, SettingsView_DeleteAllHadronNodes, SettingsView_DeleteAllHadronSystems, \
+    SettingsView_DeleteAllHadronNodeExecutionLogs, SettingsView_DeleteAllHadronTopicMessagesLogs, \
+    SettingsView_DeleteAllHadronNodeSEASELogs
 
 app_name = "user_settings"
 
@@ -101,21 +104,34 @@ urlpatterns = [
     path('delete/all/triggered_jobs/', SettingsView_DeleteAllTriggeredJobs.as_view(),
          name='delete_all_triggered_jobs'),
     path('delete/all/brainstorming_sessions/', SettingsView_DeleteAllBrainstormingSessions.as_view(),
-            name='delete_all_brainstorming_sessions'),
+         name='delete_all_brainstorming_sessions'),
     path('delete/all/drafting_documents/', SettingsView_DeleteAllDraftingDocuments.as_view(),
-            name='delete_all_drafting_documents'),
+         name='delete_all_drafting_documents'),
     path('delete/all/drafting_folders/', SettingsView_DeleteAllDraftingFolders.as_view(),
-            name='delete_all_drafting_folders'),
+         name='delete_all_drafting_folders'),
     path('delete/all/harmoniq_agents/', SettingsView_DeleteAllHarmoniqAgents.as_view(),
-            name='delete_all_harmoniq_agents'),
+         name='delete_all_harmoniq_agents'),
     path('delete/all/nosql_databases/', SettingsView_DeleteAllNoSQLDBs.as_view(),
-            name='delete_all_nosql_databases'),
+         name='delete_all_nosql_databases'),
     path('delete/all/data_backups/', SettingsView_DeleteAllDataBackups.as_view(),
-            name='delete_all_data_backups'),
+         name='delete_all_data_backups'),
     path('delete/all/video_generator_connections/', SettingsView_DeleteAllVideoGeneratorConnections.as_view(),
-            name='delete_all_video_generator_connections'),
+         name='delete_all_video_generator_connections'),
     path('delete/all/nosql_queries/', SettingsView_DeleteAllNoSQLQueries.as_view(),
-            name='delete_all_nosql_queries'),
+         name='delete_all_nosql_queries'),
+
+    path('delete/all/hadron_topics/', SettingsView_DeleteAllHadronTopics.as_view(),
+         name='delete_all_hadron_topics'),
+    path('delete/all/hadron_nodes/', SettingsView_DeleteAllHadronNodes.as_view(),
+         name='delete_all_hadron_nodes'),
+    path('delete/all/hadron_systems/', SettingsView_DeleteAllHadronSystems.as_view(),
+         name='delete_all_hadron_systems'),
+    path('delete/all/hadron_node_execution_logs/', SettingsView_DeleteAllHadronNodeExecutionLogs.as_view(),
+         name='delete_all_hadron_node_execution_logs'),
+    path('delete/all/hadron_topic_message_logs/', SettingsView_DeleteAllHadronTopicMessagesLogs.as_view(),
+         name='delete_all_hadron_topic_message_logs'),
+    path('delete/all/hadron_node_sease_logs/', SettingsView_DeleteAllHadronNodeSEASELogs.as_view(),
+         name='delete_all_hadron_node_sease_logs'),
 
     path('auto_backups/toggle/', SettingsView_ToggleAutoBackups.as_view(),
          name='toggle_automated_backups'),

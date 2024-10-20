@@ -178,6 +178,30 @@ def get_permissions_grouped():
             ('create_and_use_orchestration_chats', 'Create and Use Orchestration Chats'),
             ('remove_orchestration_chats', 'Remove Orchestration Chats'),
         ],
+        "Hadron System Permissions": [
+            ('create_hadron_systems', 'Create Hadron Systems'),
+            ('list_hadron_systems', 'List Hadron Systems'),
+            ('update_hadron_systems', 'Update Hadron Systems'),
+            ('delete_hadron_systems', 'Delete Hadron Systems'),
+        ],
+        "Hadron Node Permissions": [
+            ('create_hadron_nodes', 'Create Hadron Nodes'),
+            ('list_hadron_nodes', 'List Hadron Nodes'),
+            ('update_hadron_nodes', 'Update Hadron Nodes'),
+            ('delete_hadron_nodes', 'Delete Hadron Nodes'),
+        ],
+        "Hadron Topic Permissions": [
+            ('create_hadron_topics', 'Create Hadron Topics'),
+            ('list_hadron_topics', 'List Hadron Topics'),
+            ('update_hadron_topics', 'Update Hadron Topics'),
+            ('delete_hadron_topics', 'Delete Hadron Topics'),
+        ],
+        "Hadron Logs Permissions": [
+            ('delete_hadron_node_execution_logs', 'Delete Hadron Node Execution Logs'),
+            ('delete_hadron_node_sase_logs', 'Delete Hadron Node SASE Logs'),
+            ('delete_hadron_node_publish_history_logs', 'Delete Hadron Node Publish History Logs'),
+            ('delete_hadron_topic_message_history_logs', 'Delete Hadron Topic Message History Logs'),
+        ],
         "File System Permissions": [
             ('add_file_systems', 'Add File Systems'),
             ('update_file_systems', 'Update File Systems'),

@@ -102,6 +102,9 @@
                   <th>Node Name</th>
                   <th>Description</th>
                   <th>LLM Model</th>
+                  <th style="min-width:110px; max-width: 110px;">Message Memory</th>
+                  <th style="min-width:110px; max-width: 110px;">SEASE Memory</th>
+                  <th style="min-width:110px; max-width: 110px;">Publish Memory</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -109,13 +112,22 @@
                 {% for node in nodes_page_obj %}
                   <tr>
                     <td><strong>{{ node.node_name }}</strong></td>
-                    <td><p style="min-width:500px; max-width: 500px; min-height: 100px; max-height: 100px; overflow: auto;">{{ node.node_description }}</p></td>
+                    <td><p style="min-width:310px; max-width: 310px; min-height: 100px; max-height: 100px; overflow: auto;">{{ node.node_description }}</p></td>
                     <td>
                       {% if node.llm_model %}
                         {{ node.llm_model.nickname }}
                       {% else %}
                         <em>No model assigned</em>
                       {% endif %}
+                    </td>
+                    <td>
+                      <strong>{{ node.topic_messages_history_lookback_memory_size }}</strong>
+                    </td>
+                    <td>
+                      <strong>{{ node.state_action_state_lookback_memory_size }}</strong>
+                    </td>
+                    <td>
+                      <strong>{{ node.publishing_history_lookback_memory_size }}</strong>
                     </td>
                     <td>
                       <a href="{% url 'hadron_prime:detail_hadron_node' node.id %}" class="btn btn-primary btn-sm me-4">
@@ -197,7 +209,23 @@
                 {% for topic in topics_page_obj %}
                   <tr>
                     <td><strong>{{ topic.topic_name }}</strong></td>
-                    <td><strong>{{ topic.get_topic_category_display }}</strong></td>
+                    <td>
+                      {% if topic.get_topic_category_display == 'Alerts' %}
+                      <span class="btn-danger p-2 rounded"><strong>Alerts</strong></span>
+                      {% elif topic.get_topic_category_display == 'Info' %}
+                        <span class="btn-warning p-2 rounded"><strong>Info</strong></span>
+                      {% elif topic.get_topic_category_display == 'States' %}
+                        <span class="btn-primary p-2 rounded"><strong>States</strong></span>
+                      {% elif topic.get_topic_category_display == 'Measurements' %}
+                        <span class="btn-info p-2 rounded"><strong>Measurements</strong></span>
+                      {% elif topic.get_topic_category_display == 'Actions' %}
+                        <span class="btn-success p-2 rounded"><strong>Actions</strong></span>
+                      {% elif topic.get_topic_category_display == 'Commands' %}
+                        <span class="btn-dark p-2 rounded"><strong>Commands</strong></span>
+                      {% else %}
+                        <span class="btn-secondary p-2 rounded"><strong>Unknown</strong></span>
+                      {% endif %}
+                    </td>
                     <td><p style="min-width:400px; max-width: 400px; min-height: 100px; max-height: 100px; overflow: auto;">{{ topic.topic_purpose }}</p></td>
                     <td>{{ topic.created_at|date:"Y-m-d H:i:s" }}</td>
                     <td>

@@ -54,6 +54,7 @@ class InternalServiceCosts:
             InternalServiceCosts.VideoGenerator.COST,
             InternalServiceCosts.Reasoning.COST,
             InternalServiceCosts.Drafting.COST,
+            InternalServiceCosts.HadronPrime.COST,
         ]
 
     class ContextMemory:
@@ -149,6 +150,9 @@ class InternalServiceCosts:
     class Drafting:
         COST = COSTS_MAP["DRAFTING"]
 
+    class HadronPrime:
+        COST = COSTS_MAP["HADRON_PRIME"]
+
 
 TOOL_NAME_TO_COST_MAP = {
     "store-memory": InternalServiceCosts.ContextMemory.COST,
@@ -182,4 +186,5 @@ TOOL_NAME_TO_COST_MAP = {
     "generate-video": InternalServiceCosts.VideoGenerator.COST,
     "reasoning": InternalServiceCosts.Reasoning.COST,
     "drafting": InternalServiceCosts.Drafting.COST,
+    "hadron-prime": InternalServiceCosts.HadronPrime.COST,
 }

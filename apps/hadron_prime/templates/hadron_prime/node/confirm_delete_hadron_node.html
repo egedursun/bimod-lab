@@ -49,7 +49,7 @@
             <img src="{% static 'img/custom-illustrations-v2/i2-22.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end" alt="Illustration for confirming deletion">
             <hr>
             <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the node.</button>
-            <a href="{% url 'hadron_prime:detail_hadron_system' pk=node.system.id %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the deletion
+            <a href="{% url 'hadron_prime:detail_hadron_node' pk=node.id %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the deletion
               operation.</a>
           </form>
         </div>

@@ -55,3 +55,9 @@ from .delete_all_drafting_folders_views import *
 from .delete_all_harmoniq_agents_views import *
 from .delete_all_nosql_databases_views import *
 from .delete_all_video_generator_connections_views import *
+from .delete_all_hadron_execution_logs_views import *
+from .delete_all_hadron_nodes_views import *
+from .delete_all_hadron_sase_logs_views import *
+from .delete_all_hadron_systems_views import *
+from .delete_all_hadron_topic_messages_logs_views import *
+from .delete_all_hadron_topics_views import *

@@ -207,32 +207,6 @@
               </tr>
               </thead>
               <tbody>
-              <!-- delete ALL organizations -->
-              <!-- <tr>
-                <td class="text-nowrap text-heading">
-                  <i class="fa fa-building me-4"></i>
-                  <strong>Organizations</strong>
-                </td>
-                <form method="post" action="{ % url 'user_settings:delete_all_organizations' % ">
-                  {% csrf_token %}
-                  <td>
-                    <label for="confirmation" class="form-label">
-                      <i class="fa fa-delete-left me-2"></i>
-                      <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL ORGANIZATIONS' to confirm the deletion process.</strong>
-                      </small>
-                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required/>
-                    </label>
-                  </td>
-                  <td>
-                    <button type="submit" class="btn btn-danger w-100">
-                      <i class="fa fa-trash me-2"></i>
-                      <strong>Delete ALL Organizations</strong>
-                    </button>
-                  </td>
-                </form>
-              </tr>
-              -->
               <!-- delete ALL LLM models -->
               <tr>
                 <td class="text-nowrap text-heading">
@@ -757,6 +731,216 @@
                     <button id="delete-orchestrations-button" type="submit" class="btn btn-danger w-100" disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Orchestrations</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all hadron systems -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-cogs me-4"></i>
+                  <strong>Hadron Systems</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_hadron_systems' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL HADRON SYSTEMS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-hadron-systems-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-hadron-systems-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Systems</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all hadron nodes -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-cogs me-4"></i>
+                  <strong>Hadron Nodes</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_hadron_nodes' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL HADRON NODES' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-hadron-nodes-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-hadron-nodes-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Nodes</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all hadron topics -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-cogs me-4"></i>
+                  <strong>Hadron Topics</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_hadron_topics' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL HADRON TOPICS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-hadron-topics-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-hadron-topics-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Topics</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all node execution logs -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-cogs me-4"></i>
+                  <strong>Hadron Node Execution Logs</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_hadron_node_execution_logs' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL HADRON NODE EXECUTION LOGS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-hadron-node-execution-logs-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-hadron-node-execution-logs-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Logs</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all SEASE logs -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-cogs me-4"></i>
+                  <strong>Hadron SEASE Logs</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_hadron_node_sease_logs' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL HADRON NODE SEASE LOGS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-hadron-sease-logs-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-hadron-sease-logs-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Logs</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all topic message logs -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-cogs me-4"></i>
+                  <strong>Hadron Topic Messages</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_hadron_topic_message_logs' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL HADRON TOPIC MESSAGES' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-hadron-topic-messages-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-hadron-topic-messages-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Messages</strong>
                     </button>
                   </td>
                 </form>
