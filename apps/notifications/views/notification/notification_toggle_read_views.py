@@ -33,7 +33,7 @@ class NotificationView_MarkAllAsRead(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         try:
             user = request.user
-            user_notifications = NotificationItem.objects.filter(user=user)
+            user_notifications = user.profile.notifications.all()
             for notification in user_notifications:
                 notification: NotificationItem
                 notification.readers.add(user) if notification.readers is not None else notification.readers.set(

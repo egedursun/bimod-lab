@@ -45,7 +45,7 @@ class NotificationView_ItemDelete(LoginRequiredMixin, View):
 
         try:
             notification_id = kwargs.get('pk')
-            notification = get_object_or_404(NotificationItem, id=notification_id, user=request.user)
+            notification = get_object_or_404(NotificationItem, id=notification_id)
             notification.delete()
             logger.info(f"Notification deleted: {notification_id} by {request.user.username}")
             messages.success(request, 'Notification deleted successfully.')

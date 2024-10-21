@@ -20,8 +20,8 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from apps.notifications.utils import (NOTIFICATION_FA_ICON_CHOICES, NOTIFICATION_TITLE_CATEGORY_CHOICES,
-                                      NotificationTitleCategoryChoicesNames)
-
+                                      NOTIFICATION_SENDER_TYPES, NotificationSenderTypeNames)
+from apps.organization.models import Organization
 
 logger = logging.getLogger(__name__)
 
@@ -33,59 +33,56 @@ class OrderedNotificationManager(models.Manager):
 
 class NotificationItem(models.Model):
     organization = models.ForeignKey('organization.Organization', null=True, blank=True, on_delete=models.CASCADE)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='notifications')
-    notification_fa_icon = models.CharField(max_length=1000, choices=NOTIFICATION_FA_ICON_CHOICES,
-                                            default='fa fa-bell')
-    notification_fa_icon_color = models.CharField(max_length=1000, default='btn-primary', blank=True)
+    notification_sender_type = models.CharField(max_length=1000, choices=NOTIFICATION_SENDER_TYPES,
+                                                default=NotificationSenderTypeNames.BIMOD_TEAM)
     notification_title_category = models.CharField(max_length=1000, choices=NOTIFICATION_TITLE_CATEGORY_CHOICES,
                                                    default='info')
+    notification_fa_icon = models.CharField(max_length=1000, choices=NOTIFICATION_FA_ICON_CHOICES,
+                                            default='fa fa-bell')
+
     notification_message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    readers = models.ManyToManyField('auth.User', related_name='read_notifications', blank=True)
 
-    # Custom Manager to enforce ordering.
+    readers = models.ManyToManyField('auth.User', related_name='read_notifications', blank=True)
     objects = OrderedNotificationManager()
 
-    bimod_admin_notification = models.BooleanField(default=False)
-
     def __str__(self):
-        return self.notification_title_category + ' - ' + self.user.username + ' - ' + str(self.created_at)
+        return self.notification_title_category + ' - ' + str(self.created_at)
 
     class Meta:
         verbose_name = 'Notification Item'
         verbose_name_plural = 'Notification Items'
         ordering = ('-created_at',)
         indexes = [
-            models.Index(fields=['user']),
-            models.Index(fields=['user', 'created_at']),
+            models.Index(fields=['organization', 'created_at']),
+            models.Index(fields=['notification_sender_type', 'created_at']),
+            models.Index(fields=['notification_title_category', 'created_at']),
+            models.Index(fields=['notification_fa_icon', 'created_at']),
+            models.Index(fields=['created_at']),
         ]
 
-    def save(self, *args, **kwargs):
-        if self.notification_fa_icon_color == '':
-            if self.notification_title_category == NotificationTitleCategoryChoicesNames.HumanReadable.BIMOD_TEAM:
-                self.notification_fa_icon_color = 'btn-primary'
-            elif self.notification_title_category == NotificationTitleCategoryChoicesNames.HumanReadable.INTERNAL:
-                self.notification_fa_icon_color = 'btn-primary'
-            elif self.notification_title_category == NotificationTitleCategoryChoicesNames.HumanReadable.INFO:
-                self.notification_fa_icon_color = 'btn-info'
-            elif self.notification_title_category == NotificationTitleCategoryChoicesNames.HumanReadable.WARNING:
-                self.notification_fa_icon_color = 'btn-warning'
-            elif self.notification_title_category == NotificationTitleCategoryChoicesNames.HumanReadable.ERROR:
-                self.notification_fa_icon_color = 'btn-danger'
-            elif self.notification_title_category == NotificationTitleCategoryChoicesNames.HumanReadable.ALERT:
-                self.notification_fa_icon_color = 'btn-danger'
-            else:
-                self.notification_fa_icon_color = 'btn-dark'
+    @staticmethod
+    def add_notification_to_users(notification, acting_user):
+        orgs_users = []
+        if notification.notification_sender_type == NotificationSenderTypeNames.SYSTEM:
+            user_orgs = Organization.objects.filter(users__in=[acting_user])
+            for org in user_orgs:
+                orgs_users += org.users.all()
+            orgs_users = list(set(orgs_users))
+        elif notification.notification_sender_type == NotificationSenderTypeNames.BIMOD_TEAM:
+            orgs_users = User.objects.all()  # Send to all users
 
-        if self.bimod_admin_notification is True and self.notification_title_category == NotificationTitleCategoryChoicesNames.BIMOD_TEAM:
-            self.organization = None
-            all_users = User.objects.all()
-            for user in all_users:
-                try:
-                    if self not in user.notifications.all():
-                        user.notifications.add(self)
-                except Exception as e:
-                    logger.error(f"Error adding notification to user: {e}")
-            logger.info(f"Notification created for all users.")
-        super(NotificationItem, self).save(*args, **kwargs)
+        for user in orgs_users:
+            try:
+                if notification not in user.profile.notifications.all():
+                    user.profile.notifications.add(notification)
+                    print("Notification added to user")
+                else:
+                    logger.info("Notification already added to user, skipping...")
+            except Exception as e:
+                logger.error(f"Error adding notification to user: {e}")
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        super().save(force_insert, force_update, using, update_fields)
+        if self.notification_sender_type == NotificationSenderTypeNames.BIMOD_TEAM:
+            self.add_notification_to_users(notification=self, acting_user=None)

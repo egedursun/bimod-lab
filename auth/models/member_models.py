@@ -64,6 +64,8 @@ class Profile(models.Model):
     sub_users = models.ManyToManyField(User, related_name='sub_users', blank=True)
     automated_data_backups = models.BooleanField(default=False)
 
+    notifications = models.ManyToManyField('notifications.NotificationItem', related_name='notifications', default=list)
+
     def add_points(self, action):
         points = POINT_REWARDS.get(action, 0)
         old_points = self.user_forum_points

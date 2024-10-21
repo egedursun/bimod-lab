@@ -58,56 +58,68 @@ class NotificationFAIconChoicesNames:
         ]
 
 
-NOTIFICATION_TITLE_CATEGORY_CHOICES = [
+NOTIFICATION_SENDER_TYPES = [
     ('bimod-team', 'Bimod Team'),
-    ('internal', 'Internal Notification'),
-    ('info', 'Information'),
-    ('alert', 'Alert'),
-    ('warning', 'Warning'),
-    ('error', 'System Error'),
+    ('system', 'System'),
 ]
 
 
-class NotificationTitleCategoryChoicesNames:
+class NotificationSenderTypeNames:
     BIMOD_TEAM = 'bimod-team'
-    INTERNAL = 'internal'
-    INFO = 'info'
-    ALERT = 'alert'
-    WARNING = 'warning'
-    ERROR = 'error'
+    SYSTEM = 'system'
 
     @staticmethod
     def as_list():
         return [
-            NotificationTitleCategoryChoicesNames.BIMOD_TEAM,
-            NotificationTitleCategoryChoicesNames.INTERNAL,
+            NotificationSenderTypeNames.BIMOD_TEAM,
+            NotificationSenderTypeNames.SYSTEM,
+        ]
+
+
+NOTIFICATION_TITLE_CATEGORY_CHOICES = [
+    ('announcement', 'Announcement'),
+    ('info', 'Information'),
+    ('warning', 'Warning'),
+    ('error', 'System Error'),
+    ('alert', 'Alert'),
+]
+
+
+class NotificationTitleCategoryChoicesNames:
+    ANNOUNCEMENT = 'announcement'
+    INFO = 'info'
+    WARNING = 'warning'
+    ERROR = 'error'
+    ALERT = 'alert'
+
+    @staticmethod
+    def as_list():
+        return [
+            NotificationTitleCategoryChoicesNames.ANNOUNCEMENT,
             NotificationTitleCategoryChoicesNames.INFO,
-            NotificationTitleCategoryChoicesNames.ALERT,
             NotificationTitleCategoryChoicesNames.WARNING,
             NotificationTitleCategoryChoicesNames.ERROR,
+            NotificationTitleCategoryChoicesNames.ALERT,
         ]
 
     class HumanReadable:
-        BIMOD_TEAM = 'Bimod Team'
-        INTERNAL = 'Internal Notification'
+        ANNOUNCEMENT = 'Announcement'
         INFO = 'Information'
-        ALERT = 'Alert'
         WARNING = 'Warning'
         ERROR = 'System Error'
+        ALERT = 'Alert'
 
         @staticmethod
         def as_list():
             return [
-                NotificationTitleCategoryChoicesNames.HumanReadable.BIMOD_TEAM,
-                NotificationTitleCategoryChoicesNames.HumanReadable.INTERNAL,
+                NotificationTitleCategoryChoicesNames.HumanReadable.ANNOUNCEMENT,
                 NotificationTitleCategoryChoicesNames.HumanReadable.INFO,
-                NotificationTitleCategoryChoicesNames.HumanReadable.ALERT,
                 NotificationTitleCategoryChoicesNames.HumanReadable.WARNING,
                 NotificationTitleCategoryChoicesNames.HumanReadable.ERROR,
+                NotificationTitleCategoryChoicesNames.HumanReadable.ALERT,
             ]
 
 
-NOTIFICATION_ITEM_ADMIN_LIST = ('user', 'notification_fa_icon', 'notification_title_category', 'created_at')
-NOTIFICATION_ITEM_ADMIN_FILTER = ('user', 'notification_fa_icon', 'notification_title_category', 'created_at')
-NOTIFICATION_ITEM_ADMIN_SEARCH = ('user__username', 'notification_fa_icon', 'notification_title_category',
-                                  'notification_message')
+NOTIFICATION_ITEM_ADMIN_LIST = ('notification_sender_type', 'notification_title_category', 'created_at')
+NOTIFICATION_ITEM_ADMIN_FILTER = ('notification_sender_type', 'notification_title_category')
+NOTIFICATION_ITEM_ADMIN_SEARCH = ('notification_message', 'created_at')

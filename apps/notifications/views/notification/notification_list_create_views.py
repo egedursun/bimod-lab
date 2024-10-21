@@ -23,7 +23,8 @@ from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.notifications.models import NotificationItem
-from apps.notifications.utils import NotificationFAIconChoicesNames, NotificationTitleCategoryChoicesNames
+from apps.notifications.utils import NotificationFAIconChoicesNames, NotificationTitleCategoryChoicesNames, \
+    NotificationSenderTypeNames, NOTIFICATION_TITLE_CATEGORY_CHOICES
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 
@@ -38,10 +39,11 @@ class NotificationView_ItemListCreate(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user_orgs = Organization.objects.filter(users__in=[self.request.user])
         internal_notifications = NotificationItem.objects.filter(
-            organization__in=user_orgs,
-            notification_title_category=NotificationTitleCategoryChoicesNames.HumanReadable.INTERNAL)
+            notification_sender_type=NotificationSenderTypeNames.SYSTEM,
+            organization__in=user_orgs).order_by('-created_at')
         context['organizations'] = user_orgs
         context['internal_notifications'] = internal_notifications
+        context["notification_categories"] = NOTIFICATION_TITLE_CATEGORY_CHOICES
         return context
 
     def post(self, request, *args, **kwargs):
@@ -55,17 +57,19 @@ class NotificationView_ItemListCreate(LoginRequiredMixin, TemplateView):
         ##############################
 
         try:
-            user = request.user
             organization_id = request.POST.get('organization_id')
+            notification_category = request.POST.get('notification_category')
             organization = Organization.objects.get(id=organization_id)
             notification_text = request.POST.get('notification_text')
 
             new_notification = NotificationItem.objects.create(
-                organization=organization, user=user,
-                notification_title_category=NotificationTitleCategoryChoicesNames.HumanReadable.INTERNAL,
+                organization=organization,
+                notification_sender_type=NotificationSenderTypeNames.SYSTEM,
+                notification_title_category=notification_category,
                 notification_fa_icon=NotificationFAIconChoicesNames.BUILDING,
                 notification_message=notification_text)
             new_notification.save()
+            NotificationItem.add_notification_to_users(notification=new_notification, acting_user=request.user)
             logger.info(f"Notification created: {new_notification}")
             messages.success(request, 'Notification created successfully.')
             return redirect('notifications:list_create')

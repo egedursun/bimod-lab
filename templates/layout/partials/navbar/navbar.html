@@ -271,8 +271,8 @@
       <a class="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
         <span class="position-relative">
           <i class="ti ti-bell ti-md"></i>
-          {% if user.notifications.all|unread_notifications:user|length != 0 %}
-            <span class="badge rounded-pill bg-danger badge-notifications">{{ user.notifications.all|unread_notifications:user|length }}</span>
+          {% if user.profile.notifications.all|unread_notifications:user|length != 0 %}
+            <span class="badge rounded-pill bg-danger badge-notifications">{{ user.profile.notifications.all|unread_notifications:user|length }}</span>
           {% endif %}
         </span>
       </a>
@@ -284,7 +284,7 @@
               <strong>Unread Notifications</strong>
             </h6>
             <div class="d-flex align-items-center h6 mb-0">
-              <span class="badge bg-label-primary me-2">{{ user.notifications.all|unread_notifications:user|length }} New</span>
+              <span class="badge bg-label-primary me-2">{{ user.profile.notifications.all|unread_notifications:user|length }} New</span>
               <a href="{% url 'notifications:mark_all_as_read' %}" class="btn btn-text-secondary rounded-pill btn-icon dropdown-notifications-all" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark all as read">
                 <i class="ti ti-mail-opened text-heading"></i>
               </a>
@@ -293,12 +293,12 @@
         </li>
         <li class="dropdown-notifications-list scrollable-container">
           <ul class="list-group list-group-flush">
-            {% for notification in user.notifications.all|unread_notifications:user %}
+            {% for notification in user.profile.notifications.all|unread_notifications:user %}
               <li class="list-group-item list-group-item-action dropdown-notifications-item">
                 <div class="d-flex">
                   <div class="flex-shrink-0 me-3">
                     <div class="btn">
-                      <span class="rounded p-4 {{ notification.notification_fa_icon_color }}"><i class="{{ notification.notification_fa_icon }}"></i></span>
+                      <span class="rounded p-4 btn-primary"><i class="{{ notification.notification_fa_icon }}"></i></span>
                     </div>
                   </div>
                   <div class="flex-grow-1">
