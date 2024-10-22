@@ -6,11 +6,10 @@
 
 **BIMOD.IO SMART CONTRACTS**
 
-[3] Along with putting function execution button(s), there can be a tool connection page, for connecting the 
-    contracts as tools to existing BimodLab assistants, and they can use this tool to initiate function calls 
-    to smart contracts.
-[4] Pulling the existing smart contracts from the wallets for the AI assistants to be able to use their functions.
-[5] Aside from internal contracts, external smart contracts can be connected for the AI assistants to use.
+[1] Put the smart contracts environment variable to server .env.dev and .env.prod files.
+[2] There is a need to install """solcx""" in server environment with "sudo apt-get ?". Do it, otherwise the system
+    will fail while generating the contracts.
+[3] Put the sudo apt-get command in the deployment file and/or deployment instructions.
 
 ---
 
@@ -243,21 +242,27 @@
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Total Lines of Code by 2024-10-21: (Day: 114) **425,500,000**
-- Total Code Files by 2024-10-21: (Day: 114) **56,000**
+- Last Measurement Date: 2024-10-22
+- Total Days: 115
+    - Number of Files: 52,193
+    - Code Lines: 11,700,000
+    - Comment Lines: 3,700,000
+    - TOTAL: 15,400,000
+    - TOTAL RAW CALCULATION: ...
 
 ---
 
 *To count the number of lines of code in total:*
 
 ```bash
-find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
+brew install cloc (or sudo apt-get install cloc for Linux)
+cloc .
 ```
 
-*To count the number of files in total for specific file types:*
+*To count the number of lines of code (RAW CALCULATION):*
 
 ```bash
-find . -type f \( -name "*.py" -o -name "*.js" -o -name "*.css" -o -name "*.scss" -o -name "*.html" -o -name "*.txt" \) -o -type d | wc -l
+find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 ```
 
 ---
