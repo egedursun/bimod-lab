@@ -42,7 +42,7 @@ source venv/bin/activate
 
 sudo python3 -m solcx.install 0.8.0
 
-echo "          [Deploy / Production] SolCX Solidity Compiler installed!"
+echo "          [Deploy / Development] SolCX Solidity Compiler installed!"
 
 echo "          [Deploy / Development] Virtual environment created!"
 
