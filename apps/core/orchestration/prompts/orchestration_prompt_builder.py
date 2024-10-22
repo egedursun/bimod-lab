@@ -16,6 +16,7 @@
 #
 #
 #
+import logging
 
 from django.contrib.auth.models import User
 
@@ -32,15 +33,15 @@ from apps.core.system_prompts.agent_configuration.communication_user_tenant_prom
 from apps.orchestrations.models import OrchestrationQuery, Maestro
 
 
+logger = logging.getLogger(__name__)
+
+
 class OrchestrationPromptBuilder:
 
     @staticmethod
     def build(query_chat: OrchestrationQuery, maestro: Maestro, user: User, role: str):
         name = maestro.name
         query_chat_text = query_chat.query_text
-        print(f"[OrchestrationPromptBuilder.build] Building Orchestration Prompt for Maestro: {name}.")
-        print(f"[OrchestrationPromptBuilder.build] Query Chat Text: '{query_chat_text}'.")
-
         response_template = maestro.response_template
         audience = maestro.audience
         tone = maestro.tone
@@ -93,5 +94,5 @@ class OrchestrationPromptBuilder:
             "content": merged_prompt
         }
 
-        print(f"[OrchestrationPromptBuilder.build] Orchestration Prompt has been built.")
+        logger.info(f"[OrchestrationPromptBuilder] Built the prompt for the OrchestrationQuery.")
         return prompt

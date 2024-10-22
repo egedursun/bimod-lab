@@ -76,7 +76,7 @@ class NotificationItem(models.Model):
             try:
                 if notification not in user.profile.notifications.all():
                     user.profile.notifications.add(notification)
-                    print("Notification added to user")
+                    logger.info(f"Notification added to user: {user}")
                 else:
                     logger.info("Notification already added to user, skipping...")
             except Exception as e:

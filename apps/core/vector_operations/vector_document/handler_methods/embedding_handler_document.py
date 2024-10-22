@@ -181,7 +181,6 @@ def embed_memory_sync(executor_params, memory_id, memory_weaviate_object: dict):
         except Exception as e:
             logger.error(f"[document_embedder.embed_memory_sync] Error saving the memory ORM object into DB: {e}")
             error = f"[document_embedder.embed_memory_sync] Error saving the memory ORM object into DB: {e}"
-            print(error)
     except Exception as e:
         logger.error(f"[document_embedder.embed_memory_sync] Error embedding the memory: {e}")
         error = f"[document_embedder.embed_memory_sync] Error embedding the memory: {e}"

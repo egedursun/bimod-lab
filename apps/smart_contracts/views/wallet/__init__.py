@@ -19,3 +19,4 @@ from .create_wallet_connection_views import *
 from .delete_wallet_connection_views import *
 from .list_wallet_connections_views import *
 from .update_wallet_connection_views import *
+from .sync_wallet_public_data_views import *

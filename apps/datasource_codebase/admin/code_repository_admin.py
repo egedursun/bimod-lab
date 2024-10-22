@@ -17,6 +17,7 @@
 #
 #
 #
+import logging
 
 from django.contrib import admin
 
@@ -26,6 +27,9 @@ from django.contrib.admin.actions import delete_selected as django_delete_select
 
 from apps.datasource_codebase.utils import CODEBASE_REPOSITORY_ADMIN_LIST, CODEBASE_REPOSITORY_ADMIN_FILTER, \
     CODEBASE_REPOSITORY_ADMIN_SEARCH
+
+
+logger = logging.getLogger(__name__)
 
 
 @admin.register(CodeBaseRepository)
@@ -46,5 +50,5 @@ class CodeBaseRepositoryAdmin(admin.ModelAdmin):
                     class_name=obj.knowledge_base.class_name,
                     document_uuid=obj.document_uuid)
                 if not result["status"]:
-                    print(f"Error deleting Weaviate document: {result['error']}")
+                    logger.error(f"Failed to delete document from Weaviate.")
         return django_delete_selected(self, request, queryset)

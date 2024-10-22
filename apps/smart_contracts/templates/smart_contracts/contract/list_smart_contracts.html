@@ -18,6 +18,181 @@
   ~
   -->
 
-# TEST PAGE: LIST SMART CONTRACTS
+{% extends layout_path %}
 
-<!-- TODO-EGE: implement smart contract listing page -->
+{% load static %}
+{% load i18n %}
+
+{% block title %}Smart Contracts List{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  <script>
+    function downloadReceipt(txReceiptString) {
+      try {
+          const validTxReceiptString = txReceiptString.replace(/'/g, '"');
+          const txReceipt = JSON.parse(validTxReceiptString);
+          const jsonBlob = new Blob([JSON.stringify(txReceipt, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(jsonBlob);
+          const downloadLink = document.createElement('a');
+          downloadLink.href = url;
+          downloadLink.download = 'transaction_receipt.json';
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+          URL.revokeObjectURL(url);
+      } catch (error) {
+          console.error("Error processing transaction receipt:", error);
+          alert("Invalid receipt format or receipt not available.");
+      }
+  }
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-4">
+      <h3 class="mb-0"><strong>Manage Smart Contracts</strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-45.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view and manage all the smart contracts created for your organizations. You can update,
+        delete, or view the details of any smart contract.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  {% for organization, contracts in contracts_by_org.items %}
+    <div class="card mb-6 mt-4">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+          <div class="d-flex">
+            <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 alt="Organization Image" class="rounded" width="60">
+            <h4>
+              <strong class="ms-4">{{ organization.name }}</strong>
+            </h4>
+          </div>
+        </a>
+        <p class="mt-8"><i class="fa fa-file-contract"></i><strong>&nbsp; Total Smart Contracts: </strong> {{ contracts|length }}</p>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-{{ organization.id }}"><strong>&nbsp; See Smart Contracts</strong></span>
+      </div>
+      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse p-8">
+        <a href="{% url 'smart_contracts:contract_create' %}">
+          <button class="btn btn-success mb-4">
+            <i class="fa fa-plus me-2"></i><strong>Create New Smart Contract</strong>
+          </button>
+        </a>
+        <table class="datatables-contracts table">
+          <thead class="border-top">
+          <tr>
+            <th style="min-width: 200px;">Nickname</th>
+            <th style="min-width: 400px;">Description</th>
+            <th style="min-width: 400px;">Category</th>
+            <th style="min-width: 250px;">Contract Template</th>
+            <th style="min-width: 250px;">Maximum Gas Limit</th>
+            <th style="min-width: 250px;">Gas Price (GWEI)</th>
+            <th style="min-width: 240px;">Deployed</th>
+            <th style="min-width: 400px;">Contract Address</th>
+            <th style="min-width: 700px;">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for contract in contracts %}
+            <tr>
+              <td><strong>{{ contract.nickname }}</strong></td>
+              <td><div style="min-width: 400px; max-width: 400px; max-height: 150px; min-height: 150px; overflow: auto;">{{ contract.description }}</div></td>
+              <td><strong class="btn-info p-2 rounded">{{ contract.get_category_display }}</strong></td>
+              <td><strong class="btn-primary p-2 rounded">{{ contract.get_contract_template_display }}</strong></td>
+              <td><strong class="btn-warning p-2 rounded">{{ contract.maximum_gas_limit }} Units</strong></td>
+              <td><strong class="btn-warning p-2 rounded">{{ contract.gas_price_gwei }} gwei</strong></td>
+              <td>
+                {% if contract.get_deployment_status_display == "Not Generated" %}
+                  <div class="btn-dark p-2 rounded"><strong>Not Generated</strong></div>
+                {% elif contract.get_deployment_status_display == "Generated Unsigned" %}
+                  <div class="btn-warning p-2 rounded"><strong>Generated but Unsigned</strong></div>
+                {% elif contract.get_deployment_status_display == "Transaction Staged" %}
+                  <div class="btn-warning p-2 rounded"><strong>Transaction Staged</strong></div>
+                {% elif contract.get_deployment_status_display == "Waiting for Mining" %}
+                  <div class="btn-primary p-2 rounded"><strong>Waiting for Mining</strong></div>
+                {% elif contract.get_deployment_status_display == "Deployed" %}
+                  <div class="btn-success p-2 rounded"><strong>Deployed</strong></div>
+                {% else %}
+                  <div class="btn-danger p-2 rounded"><strong>Failed / Reverted</strong></div>
+                {% endif %}
+              </td>
+              <td>
+                {% if contract.contract_address %}
+                  <div class="bg-label-success p-2 rounded">{{ contract.contract_address }}</div>
+                {% else %}
+                  <div class="bg-label-dark p-2 rounded"><strong>N/A (Contract is not deployed yet)</strong></div>
+                {% endif %}
+              </td>
+              <td>
+                <a href="{% url 'smart_contracts:contract_generate' pk=contract.id %}" class="btn btn-primary me-4">
+                  <i class="fa fa-robot me-2"></i><strong>Draft</strong>
+                </a>
+                <button class="btn btn-success me-4 text-white" {% if not contract.tx_hash %} disabled {% endif %}>
+                  <a href="{% url 'smart_contracts:contract_update_deploy_status' pk=contract.id %}">
+                    <i class="fa fa-refresh me-2 text-white"></i><strong class="text-white">Update Status</strong>
+                  </a>
+                </button>
+                <button class="btn btn-warning me-4 text-white" {% if not contract.tx_receipt_raw %} disabled {% endif %} onclick="downloadReceipt('{{ contract.tx_receipt_raw }}')">
+                  <i class="fa fa-download me-2 text-white"></i><strong class="text-white">Receipt</strong>
+                </button>
+                <a href="{% url 'smart_contracts:contract_soft_delete' pk=contract.id %}" class="btn btn-danger">
+                  <i class="fa fa-trash me-2"></i><strong>Soft Delete</strong>
+                </a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="9" class="text-center bg-label-warning p-4 rounded">
+                <i class="fa fa-exclamation-triangle me-2"></i>
+                <strong>No smart contracts have been created for this organization yet.</strong>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

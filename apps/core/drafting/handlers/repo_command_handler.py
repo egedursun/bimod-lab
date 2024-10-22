@@ -181,7 +181,6 @@ def _handle_tool_code_base_query(tool_usage_dict, output_tool_call):
     alpha = tool_usage_dict.get("parameters").get("alpha")
     output = run_query_code_base(c_id=c_id, query_content_str=query, semantic_alpha=alpha)
     output_str = json.dumps(output, sort_keys=True, default=str)
-    print("Code output: ", output_str)
     output_tool_call += output_str
     logger.info(f"[handle_ai_command] Tool Response: {output_tool_call}")
     return output_tool_call

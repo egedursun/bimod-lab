@@ -18,6 +18,45 @@
   ~
   -->
 
-# TEST PAGE: SOFT DELETE SMART CONTRACT
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
 
-<!-- TODO-EGE: implement smart contract soft deletion page -->
+{% block title %}Delete Smart Contract{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0"><strong>Soft-Delete Smart Contract</strong></h3>
+        </div>
+        <div class="card-body">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete the smart contract <strong>"{{ contract }}"</strong>?</p><br>
+            <h6><strong>
+              • This operation will result in the removal of the smart contract from the platform.
+              <br>
+              • This deletion is irreversible and will remove the contract and all its associated data.
+              <br>
+              • This action will not affect the blockchain network, thus your smart contract will STILL remain active on the blockchain.
+            </strong></h6>
+            <img src="{% static 'img/custom-illustrations-v2/i2-88.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end" alt="Illustration for confirming deletion">
+            <hr>
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the Smart Contract.</button>
+            <a href="{% url 'smart_contracts:contract_list' %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the deletion
+              operation.</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

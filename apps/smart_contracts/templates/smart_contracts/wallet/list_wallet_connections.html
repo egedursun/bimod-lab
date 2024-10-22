@@ -18,6 +18,124 @@
   ~
   -->
 
-# TEST PAGE: LIST BLOCKCHAIN WALLET CONNECTIONS
+{% extends layout_path %}
 
-<!-- TODO-EGE: implement blockchain wallet listing page -->
+{% load static %}
+{% load i18n %}
+
+{% block title %}Wallet Connections List{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-4">
+      <h3 class="mb-0"><strong>Manage Wallet Connections</strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-41.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view and manage all the wallet connections created for your organizations. You can update, delete, or view the details of any wallet connection.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% for organization, wallet_connections in wallet_connections_by_org.items %}
+    <div class="card mb-6">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+          <div class="d-flex">
+            <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 alt="Organization Image" class="rounded" width="60">
+            <h4>
+              <strong class="ms-4">{{ organization.name }}</strong>
+            </h4>
+          </div>
+        </a>
+        <p class="mt-8"><i class="fa fa-wallet"></i><strong>&nbsp; Total Wallet Connections: </strong> {{ wallet_connections|length }}</p>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-{{ organization.id }}"><strong>&nbsp; See Wallet Connections</strong></span>
+      </div>
+      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse p-8">
+        <a href="{% url 'smart_contracts:wallet_connection_create' %}">
+          <button class="btn btn-success mb-4">
+            <i class="fa fa-plus me-2"></i><strong>Create New Wallet Connection</strong>
+          </button>
+        </a>
+        <table class="datatables-wallet-connections table">
+          <thead class="border-top">
+          <tr>
+            <th style="min-width: 200px;">Nickname</th>
+            <th style="min-width: 400px;">Description</th>
+            <th style="min-width: 150px;">Blockchain Type</th>
+            <th style="min-width: 250px;">Balance (Ether)</th>
+            <th style="min-width: 150px;">Last Synced</th>
+            <th style="min-width: 400px;">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for wallet_connection in wallet_connections %}
+            <tr class="overflow-auto">
+              <td><strong>{{ wallet_connection.nickname }}</strong></td>
+              <td><div style="min-width: 400px; max-width: 400px; max-height: 150px; min-height: 150px; overflow: auto;">{{ wallet_connection.description|linebreaksbr }}</div></td>
+              <td><strong>{{ wallet_connection.get_blockchain_type_display }}</strong></td>
+              <td><strong class="btn-success p-2 rounded">ETH {{ wallet_connection.wallet_balance }}</strong></td>
+              <td><strong>{{ wallet_connection.balance_last_synced_at|timesince }}</strong></td>
+              <td>
+                <a href="{% url 'smart_contracts:wallet_connection_sync' pk=wallet_connection.id %}" class="btn btn-sm btn-success me-4">
+                  <i class="fa fa-refresh me-2"></i>Sync
+                </a>
+                <a href="{% url 'smart_contracts:wallet_connection_update' pk=wallet_connection.id %}" class="btn btn-sm btn-warning me-4">
+                  <i class="fa fa-edit me-2"></i>Edit
+                </a>
+                <a href="{% url 'smart_contracts:wallet_connection_delete' pk=wallet_connection.id %}" class="btn btn-sm btn-danger">
+                  <i class="fa fa-trash me-2"></i>Delete
+                </a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="6" class="text-center bg-label-warning p-4 rounded">
+                <i class="fa fa-exclamation-triangle me-2"></i>
+                <strong>No wallet connections have been created for this organization yet.</strong>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

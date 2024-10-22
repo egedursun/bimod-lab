@@ -1,0 +1,1 @@
+{"blockHash": "0xabc123", "blockNumber": 1234567, "contractAddress": "0xContractAddress", "cumulativeGasUsed": 21000, "from": "0xSenderAddress", "gasUsed": 21000, "logs": [], "status": 1, "to": "0xReceiverAddress", "transactionHash": "0xTransactionHash", "transactionIndex": 0}

@@ -86,3 +86,4 @@ couchbase~=4.3.2
 uncurl~=0.0.11
 fastapi~=0.115.2
 web3~=7.4.0
+py-solc-x~=1.1.1

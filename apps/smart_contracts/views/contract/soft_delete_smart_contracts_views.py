@@ -14,21 +14,31 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
-
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
+from django.utils import timezone
 from django.views.generic import TemplateView
 
+from apps.smart_contracts.models import BlockchainSmartContract
 from web_project import TemplateLayout
+
+logger = logging.getLogger(__name__)
 
 
 class SmartContractView_ContractSoftDelete(LoginRequiredMixin, TemplateView):
-
-    # TODO-EGE: implement the smart contract soft deletion view.
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        contract_id = self.kwargs.get('pk')
+        context['contract'] = get_object_or_404(BlockchainSmartContract, id=contract_id)
         return context
 
     def post(self, request, *args, **kwargs):
-        pass
+        contract_id = self.kwargs.get('pk')
+        contract = get_object_or_404(BlockchainSmartContract, id=contract_id)
+        contract.delete()
+        logger.info(f"Smart contract {contract_id} soft-deleted.")
+        messages.success(request, f'Smart contract "{contract}" has been successfully deleted.')
+        return redirect('smart_contracts:contract_list')

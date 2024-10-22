@@ -137,8 +137,6 @@ def build_orchestration_workers_multi_modality_prompt(maestro):
     """
 
     worker_assistants = maestro.workers.all()
-    print("[build_assistant_calls_meta_tool_prompt.build_orchestration_workers_multi_modality_prompt] Maestro: ",
-          maestro)
     for i, worker in enumerate(worker_assistants):
         worker: Assistant
         response_prompt += f"""

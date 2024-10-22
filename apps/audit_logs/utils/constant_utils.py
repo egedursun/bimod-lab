@@ -23,21 +23,18 @@ AUDIT_LOG_ACTION_CHOICES = [
 AUDIT_LOG_ADMIN_LIST = [
     "action",
     'model_name',
-    'object_id',
     'timestamp',
     'user',
 ]
 AUDIT_LOG_ADMIN_SEARCH = [
     "action",
     'model_name',
-    'object_id',
     'timestamp',
     'user',
 ]
 AUDIT_LOG_ADMIN_FILTER = [
     "action",
     'model_name',
-    'object_id',
     'timestamp',
     'user',
 ]

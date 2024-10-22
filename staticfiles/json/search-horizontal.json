@@ -169,6 +169,18 @@
       "url": "/app/hadron_prime/hadron_system/list/"
     },
     {
+      "name": "Blockchain Wallets",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "blockchain-wallets",
+      "url": "/app/smart_contracts/wallet_connection/list/"
+    },
+    {
+      "name": "Smart Contracts",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "smart-contracts",
+      "url": "/app/smart_contracts/contract/list/"
+    },
+    {
       "name": "Exported Assistants",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "exported-assistants",

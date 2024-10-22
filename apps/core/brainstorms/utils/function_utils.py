@@ -646,5 +646,4 @@ def find_json_presence(response: str, decoder=JSONDecoder()):
             pos = match + index
         except ValueError:
             pos = match + 1
-    print("[utils.find_json_presence] Found JSON objects: ", json_objects)
     return json_objects

@@ -34,7 +34,6 @@ from lumaai import LumaAI
 
 from config.settings import MEDIA_URL
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -44,7 +43,7 @@ class VideoGenerationExecutor:
         try:
             self.client = LumaAI(auth_token=connection.provider_api_key)
         except Exception as e:
-            print("[VideoGenerationExecutor.__init__]: There was an error while initializing the LumaAI client: ", e)
+            logger.error(f"There was an error while initializing the LumaAI client: {e}")
 
     def _download_and_save_video(self, generation, video_url: str):
 
@@ -117,7 +116,7 @@ class VideoGenerationExecutor:
         video_url = generation.assets.video
         s3_url = self._download_and_save_video(generation, video_url)
         logger.info(f"Video generation process completed successfully. Video URL: {s3_url}")
-        return { "video_url": s3_url, "error": None}
+        return {"video_url": s3_url, "error": None}
 
     def text_and_image_to_video(self, query: str, start_frame_url: str = None, end_frame_url: str = None,
                                 frame_type: str = VideoGeneratorFrameTypes.START, loop=False):

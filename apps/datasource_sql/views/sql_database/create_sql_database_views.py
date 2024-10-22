@@ -58,7 +58,6 @@ class SQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
             form.save()
             logger.info("SQL Data Source created.")
             messages.success(request, "SQL Data Source created successfully.")
-            print('[CreateSQLDatabaseConnectionView.post] SQL Data Source created successfully.')
             return redirect('datasource_sql:create')
         else:
             logger.error("Error creating SQL Data Source.")

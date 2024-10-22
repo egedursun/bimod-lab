@@ -1,0 +1,393 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: generate_smart_contract.html
+  ~ Last Modified: 2024-10-20 23:22:05
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-20 23:22:06
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Generate Smart Contract{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-solidity.min.js"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+<script type="text/javascript">
+  function downloadSolidityCode() {
+    const solidityCode = `{{ contract.generated_solidity_code|escapejs }}`;
+    if (!solidityCode) {
+      alert("Solidity code is not available to download.");
+      return;
+    }
+    const blob = new Blob([solidityCode], { type: "text/plain" });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'smart_contract.sol';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-54.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        Select an LLM model and provide prompts to generate a smart contract. Then, you can sign and deploy the contract,
+        or download the generated Solidity code. You can also view the generated metadata for the contract, which you
+        can use later on to connect the contract functions to your AI assistants.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  <a href="{% url 'smart_contracts:contract_list' %}">
+    <button class="btn btn-secondary mt-4 mb-8">
+      <i class="fa fa-dashboard me-4"></i>
+      <strong> Manage Smart Contracts</strong>
+    </button>
+  </a>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <!-- Contract Details Card -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="card-title">
+            <i class="fa fa-info-circle me-4"></i>
+            <strong>Contract Details</strong>
+        </h5>
+    </div>
+
+    <hr>
+
+    <div class="card-body">
+        <!-- Nickname -->
+        <h6><strong>Nickname</strong></h6>
+        <p class="bg-label-dark p-4 rounded">
+            <strong>{{ contract.nickname|default:"N/A" }}</strong>
+        </p>
+
+        <!-- Description -->
+        <h6><strong>Description</strong></h6>
+        <p class="bg-label-dark p-4 rounded">
+            <strong>{{ contract.description|default:"N/A" }}</strong>
+        </p>
+
+        <!-- Category -->
+        <h6><strong>Category</strong></h6>
+        <p class="bg-label-dark p-4 rounded">
+            <strong>{{ contract.get_category_display|default:"N/A" }}</strong>
+        </p>
+
+        <!-- Contract Template -->
+        <h6><strong>Contract Template</strong></h6>
+        <p class="bg-label-dark p-4 rounded">
+            <strong>{{ contract.get_contract_template_display|default:"N/A" }}</strong>
+        </p>
+
+        <!-- Offchain Contract Seed -->
+        <h6><strong>Offchain Contract Seed</strong></h6>
+        <p class="bg-label-dark p-4 rounded border border-primary border-2 rounded" style="word-wrap: break-word; white-space: pre-wrap;">
+            <strong>{{ contract.offchain_contract_seed|default:"N/A" }}</strong>
+        </p>
+    </div>
+</div>
+
+
+  <!-- LLM Picker Card -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="fa fa-file-contract me-4"></i>
+        <strong>Select LLM Model and Provide Prompts</strong>
+      </h5>
+    </div>
+
+    <div class="card-body">
+      <form method="post" action="{% url 'smart_contracts:contract_generate' contract.id %}">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+          <label for="llm_id" class="form-label">Choose an LLM Model</label>
+          <select id="llm_id" name="llm_id" class="form-control select2">
+            {% for model in llm_models %}
+              <option value="{{ model.id }}">{{ model.nickname }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Original Prompt Field -->
+        <div class="form-group mb-3">
+          <label for="creation_prompt" class="form-label">Original Prompt</label>
+          <textarea id="creation_prompt" name="creation_prompt" class="form-control" rows="4">{{ contract.creation_prompt }}</textarea>
+        </div>
+
+        <!-- Previous Errors Prompt Field -->
+        <div class="form-group mb-3">
+          <label for="previous_mistakes_prompt" class="form-label">Previous Errors Prompt (Optional)</label>
+          <textarea id="previous_mistakes_prompt" name="previous_mistakes_prompt" class="form-control" rows="3"></textarea>
+        </div>
+
+        <hr>
+
+        <!-- Generate Button -->
+        <button type="submit" name="action_type" value="generate_contract" class="btn btn-primary mt-4">
+          <i class="fa fa-cogs me-2"></i>
+          <strong>Generate Contract</strong>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Contract Code Card -->
+  <div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="card-title">
+        <i class="fa fa-code me-4"></i>
+        <strong>Generated Solidity Code</strong>
+      </h5>
+      <button onclick="downloadSolidityCode()" class="btn btn-warning w-25" {% if not contract.generated_solidity_code %}disabled{% endif %}>
+        <i class="fa fa-download me-2"></i>
+        <strong>Download Solidity Script</strong>
+      </button>
+    </div>
+    <hr>
+    <div class="card-body mt-4">
+      {% if contract.generated_solidity_code %}
+      <pre><code class="language-solidity rounded">{{ contract.generated_solidity_code|safe|linenumbers }}</code></pre>
+      {% else %}
+        <p class="alert alert-warning p-8">
+          <i class="fa fa-exclamation-triangle me-2"></i>
+          <strong>Solidity code is not generated yet.</strong>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Contract Metadata Card -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="fa fa-magic-wand-sparkles me-4"></i>
+        <strong>Generated Contract Metadata</strong>
+      </h5>
+    </div>
+
+    <hr>
+
+    <div class="card-body mt-4">
+      <h6><strong>Topic</strong></h6>
+      <p class="bg-label-dark p-4 mb-4 rounded">
+        <strong>{{ contract.post_gen_topic|default:'N/A' }}</strong>
+      </p>
+
+      <hr>
+
+      <h6><strong>Protocol Details</strong></h6>
+      <p class="bg-label-dark p-4 mb-4 rounded">
+        <strong>{{ contract.post_gen_protocol_details|default:'N/A' }}</strong>
+      </p>
+
+      <hr>
+
+      <h6><strong>Contract Summary</strong></h6>
+      <p class="bg-label-dark p-4 mb-4 rounded">
+        <strong>{{ contract.pot_gen_summary|default:'N/A' }}</strong>
+      </p>
+
+      <hr>
+
+      <!-- Parties -->
+      <div class="mb-4">
+        <h6><strong>Parties</strong></h6>
+        <div class="bg-label-dark p-4 rounded">
+          {% for party in contract.post_gen_parties %}
+            <div class="btn-primary p-2 rounded m-2 w-50">🟡 &nbsp; <strong>{{ party }}</strong></div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Clauses -->
+      <div class="mb-4">
+        <h6><strong>Clauses</strong></h6>
+        <div class="bg-label-dark p-4 rounded">
+          {% for clause in contract.post_gen_clauses %}
+          <div class="btn-primary p-2 rounded m-2">🟢 &nbsp; <strong>{{ clause }}</strong></div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Arguments -->
+      <div class="mb-4">
+        <h6><strong>Arguments</strong></h6>
+        <div class="bg-label-dark p-4 rounded">
+          {% for arg_key, arg_value in contract.contract_args.items %}
+            <div class="btn-primary p-6 rounded m-2">
+              <span class="btn-danger p-2 rounded ms-2 my-2 me-1">🟡 &nbsp; <strong>{{ arg_key }}</strong></span>
+              <span class="btn-warning p-2 rounded ms-2 my-2">🔴 &nbsp; <strong>{{ arg_value }}</strong></span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Functions -->
+      <div class="mb-4">
+        <h6><strong>Functions</strong></h6>
+        <div class="bg-label-dark p-8 rounded">
+          {% for function in contract.post_gen_functions %}
+            <div class="bg-label-primary p-12 rounded m-8 border border-primary border-3 rounded">
+
+              <hr>
+
+              <div class="mb-4">
+                <h6>
+                  <strong>Function Name</strong>
+                </h6>
+                <p class="bg-label-dark p-2 rounded m-2 border border-primary border-2"><strong>🟡 &nbsp; {{ function.function_name }}</strong><p>
+              </div>
+
+              <hr>
+
+              <div class="mb-4">
+                <h6>
+                  <strong>Description</strong>
+                </h6>
+                <p class="bg-label-dark p-2 rounded m-2 border border-primary border-2"><strong>🟡 &nbsp; {{ function.description }}</strong></p>
+              </div>
+
+              <hr>
+
+              <div class="mb-4">
+                <h6>
+                  Input Parameters
+                </h6>
+                <div class="bg-label-dark p-4 rounded m-2 border border-primary border-2">
+                  {% for param in function.input_parameters %}
+                  <div class="btn-success p-2 rounded m-2 border"><strong> 🔵 &nbsp; {{ param.name }} ({{ param.type }}): {{ param.description }}</strong></div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <hr>
+
+              <div class="mb-4">
+                <h6>
+                  <strong>Return Types</strong>
+                </h6>
+                <p class="bg-label-dark p-2 rounded m-2 border border-primary border-2"><strong>🟠 &nbsp; {{ function.return_types|join:", " }}</strong></p>
+              </div>
+
+              <hr>
+
+              <div class="mb-4">
+                <h6>
+                  <strong>Visibility</strong>
+                </h6>
+                <p class="bg-label-dark p-2 rounded m-2 border border-primary border-2"><strong>🟠 &nbsp; {{ function.visibility }}</strong></p>
+              </div>
+
+              <hr>
+
+              <div class="mb-4">
+                <h6>
+                  <strong>Modifiers</strong>
+                </h6>
+                <p class="bg-label-dark p-2 rounded m-2 border border-primary border-2"><strong>🔴 &nbsp; {{ function.modifiers|join:", " }}</strong></p>
+              </div>
+
+              <hr>
+
+              <div class="mb-4">
+                <h6>
+                  <strong>Payable</strong>
+                </h6>
+                <p class="bg-label-dark p-2 rounded m-2 border border-primary border-2"><strong>🟤 &nbsp; {{ function.payable }}</strong></p>
+              </div>
+
+              <hr>
+
+              <div class="mb-4">
+                <h6>
+                  <strong>State Mutability</strong>
+                </h6>
+                <p class="bg-label-dark p-2 rounded m-2 border border-primary border-2"><strong>🔴 &nbsp; {{ function.state_mutability }}</strong></p>
+              </div>
+
+              <hr>
+            </div>
+            <hr>
+          {% endfor %}
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Sign and Deploy Button -->
+      <form method="post" action="{% url 'smart_contracts:contract_generate' contract.id %}">
+        {% csrf_token %}
+        <button type="submit" name="action_type" value="sign_and_deploy_contract"
+                class="btn btn-success mt-4 w-25"
+                {% if not contract.generated_solidity_code %}disabled{% endif %}>
+          <strong>
+            <i class="fa fa-signature me-2"></i>
+            Sign & Deploy Contract
+          </strong>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

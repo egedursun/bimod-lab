@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 from datetime import timedelta
 
 from couchbase.auth import PasswordAuthenticator
@@ -28,6 +29,9 @@ from apps.datasource_nosql.utils import NOSQL_DATABASE_ADMIN_LIST, NOSQL_DATABAS
     RETRIEVE_NOSQL_SCHEMA_MAX_DEPTH_ALLOWED, DEFAULT_SCHEMA_SAMPLING_LIMIT, VALUE_TRUNCATION_PREFIX_LENGTH, \
     VALUE_TRUNCATION_SUFFIX_LENGTH, NOSQL_KV_TIMOUT_CONSTANT, NOSQL_CONNECT_TIMOUT_CONSTANT, \
     NOSQL_QUERY_TIMOUT_CONSTANT
+
+
+logger = logging.getLogger(__name__)
 
 
 @admin.register(NoSQLDatabaseConnection)
@@ -66,9 +70,9 @@ class NoSQLDatabaseConnectionAdmin(admin.ModelAdmin):
         except KeyspaceNotFoundException as ke:
             pass
         except CouchbaseException as e:
-            print(f"[_infer_collection_schema] Error: {e}")
+            logger.error(f"[_infer_collection_schema] Error: {e}")
         except Exception as ex:
-            print(f"[_infer_collection_schema] Unexpected error: {ex}")
+            logger.error(f"[_infer_collection_schema] Unexpected error: {ex}")
         return schema
 
     @staticmethod
@@ -106,7 +110,7 @@ class NoSQLDatabaseConnectionAdmin(admin.ModelAdmin):
                     inferred_schema[field] = NoSQLDatabaseConnection._truncate_value(
                         value, max_value_characters_allowed)
         except Exception as e:
-            print(f"[_infer_fields] Error: {e}")
+            logger.error(f"[_infer_fields] Error: {e}")
         return inferred_schema
 
     @staticmethod
@@ -115,7 +119,7 @@ class NoSQLDatabaseConnectionAdmin(admin.ModelAdmin):
             if isinstance(value, str) and len(value) > max_value_characters_allowed:
                 return value[:VALUE_TRUNCATION_PREFIX_LENGTH] + "..." + value[-VALUE_TRUNCATION_SUFFIX_LENGTH:]
         except Exception as e:
-            print(f"[_truncate_value] Error: {e}")
+            logger.error(f"[_truncate_value] Error: {e}")
         return type(value).__name__
 
     def retrieve_couchbase_schema(self, obj):
@@ -137,7 +141,7 @@ class NoSQLDatabaseConnectionAdmin(admin.ModelAdmin):
                 for collection in scope.collections:
                     schema[collection.name] = self._infer_collection_schema(cluster, bucket.name, collection.name)
         except CouchbaseException as e:
-            print("[retrieve_couchbase_schema] Error: ", e)
+            logger.error(f"[retrieve_couchbase_schema] Error: {e}")
         except Exception as ex:
-            print(f"[retrieve_couchbase_schema] Unexpected error: {ex}")
+            logger.error(f"[retrieve_couchbase_schema] Unexpected error: {ex}")
         return schema

@@ -19,3 +19,5 @@
 from .create_smart_contract_views import *
 from .list_smart_contracts_views import *
 from .soft_delete_smart_contracts_views import *
+from .generate_smart_contract_views import *
+from .update_deploy_status_contract_views import *

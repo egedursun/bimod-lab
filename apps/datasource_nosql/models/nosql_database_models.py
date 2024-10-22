@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 from datetime import timedelta
 
 from couchbase.auth import PasswordAuthenticator
@@ -27,6 +28,9 @@ from apps.datasource_nosql.utils import NOSQL_DATABASE_CHOICES, NoSQLDatabaseCho
     RETRIEVE_NOSQL_SCHEMA_MAX_VALUE_CHARACTERS_ALLOWED, VALUE_TRUNCATION_PREFIX_LENGTH, VALUE_TRUNCATION_SUFFIX_LENGTH, \
     RETRIEVE_NOSQL_SCHEMA_MAX_DEPTH_ALLOWED, DEFAULT_SCHEMA_SAMPLING_LIMIT, NOSQL_KV_TIMOUT_CONSTANT, \
     NOSQL_CONNECT_TIMOUT_CONSTANT, NOSQL_QUERY_TIMOUT_CONSTANT
+
+
+logger = logging.getLogger(__name__)
 
 
 class NoSQLDatabaseConnection(models.Model):
@@ -102,7 +106,7 @@ class NoSQLDatabaseConnection(models.Model):
         except Exception as ex:
             error = str(ex)
         if error:
-            print(f"[_infer_collection_schema] Error: {error}")
+            logger.error(f"[_infer_collection_schema] Error: {error}")
         return schema
 
     @staticmethod
@@ -140,7 +144,7 @@ class NoSQLDatabaseConnection(models.Model):
                     inferred_schema[field] = NoSQLDatabaseConnection._truncate_value(
                         value, max_value_characters_allowed)
         except Exception as e:
-            print(f"[_infer_fields] Error: {e}")
+            logger.error(f"[_infer_fields] Error: {e}")
         return inferred_schema
 
     @staticmethod
@@ -149,7 +153,7 @@ class NoSQLDatabaseConnection(models.Model):
             if isinstance(value, str) and len(value) > max_value_characters_allowed:
                 return value[:VALUE_TRUNCATION_PREFIX_LENGTH] + "..." + value[-VALUE_TRUNCATION_SUFFIX_LENGTH:]
         except Exception as e:
-            print(f"[_truncate_value] Error: {e}")
+            logger.error(f"[_truncate_value] Error: {e}")
         return type(value).__name__
 
     def retrieve_couchbase_schema(self):
@@ -175,5 +179,5 @@ class NoSQLDatabaseConnection(models.Model):
         except Exception as ex:
             error = str(ex)
         if error:
-            print(f"[retrieve_couchbase_schema] Error: {error}")
+            logger.error(f"[retrieve_couchbase_schema] Error: {error}")
         return schema

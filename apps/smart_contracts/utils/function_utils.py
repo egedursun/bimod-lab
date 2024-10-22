@@ -14,5 +14,26 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+from json import JSONDecoder
+
+logger = logging.getLogger(__name__)
 
 
+def find_json_presence(response: str, decoder=JSONDecoder()):
+    logger.info(f"Finding JSON presence in response: {response}")
+    response = f"""{response}"""
+    response = response.replace("\n", "").replace("'", '').replace("`", '')
+    json_objects = []
+    pos = 0
+    while True:
+        match = response.find('{', pos)
+        if match == -1:
+            break
+        try:
+            result, index = decoder.raw_decode(response[match:])
+            json_objects.append(result)
+            pos = match + index
+        except ValueError:
+            pos = match + 1
+    return json_objects

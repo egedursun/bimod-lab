@@ -1239,6 +1239,43 @@ BLOCKCHAIN_WALLET_CONNECTION_ADMIN_LIST = ('organization', 'blockchain_type', 'n
 BLOCKCHAIN_WALLET_CONNECTION_ADMIN_FILTER = ('organization', 'blockchain_type', 'created_at', 'updated_at')
 BLOCKCHAIN_WALLET_CONNECTION_ADMIN_SEARCH = ('organization', 'blockchain_type', 'nickname', 'wallet_address')
 
-BLOCKCHAIN_SMART_CONTRACT_ADMIN_LIST = ['wallet', 'category', 'contract_template', 'created_at', 'updated_at']
-BLOCKCHAIN_SMART_CONTRACT_ADMIN_FILTER = ['wallet', 'category', 'contract_template', 'created_at', 'updated_at']
-BLOCKCHAIN_SMART_CONTRACT_ADMIN_SEARCH = ['wallet', 'category', 'contract_template', 'contract_template_filepath']
+BLOCKCHAIN_SMART_CONTRACT_ADMIN_LIST = ['nickname', 'wallet', 'category', 'contract_template', 'created_at',
+                                        'updated_at']
+BLOCKCHAIN_SMART_CONTRACT_ADMIN_FILTER = ['nickname', 'wallet', 'category', 'contract_template', 'created_at',
+                                          'updated_at']
+BLOCKCHAIN_SMART_CONTRACT_ADMIN_SEARCH = ['nickname', 'wallet', 'category', 'contract_template',
+                                          'contract_template_filepath']
+
+DEPLOYMENT_STATUSES = [
+    ('not-generated', 'Not Generated'),
+    ('generated-unsigned', 'Generated Unsigned'),
+    ('transaction-staged', 'Transaction Staged'),
+    ('waiting-for-mining', 'Waiting for Mining'),
+    ('deployed', 'Deployed'),
+    ('failed', 'Failed'),
+]
+
+
+class DeploymentStatusesNames:
+    NOT_GENERATED = 'not-generated'  #
+    GENERATED_UNSIGNED = 'generated-unsigned'  #
+    TRANSACTION_STAGED = 'transaction-staged'  #
+    WAITING_FOR_MINING = 'waiting-for-mining'  #
+    DEPLOYED = 'deployed'  #
+    FAILED = 'failed' #
+
+    @staticmethod
+    def as_list():
+        return [
+            DeploymentStatusesNames.NOT_GENERATED,
+            DeploymentStatusesNames.GENERATED_UNSIGNED,
+            DeploymentStatusesNames.TRANSACTION_STAGED,
+            DeploymentStatusesNames.WAITING_FOR_MINING,
+            DeploymentStatusesNames.DEPLOYED,
+            DeploymentStatusesNames.FAILED,
+        ]
+
+
+class GenerateSmartContractViewActionTypes:
+    GENERATE_CONTRACT = 'generate_contract'
+    SIGN_AND_DEPLOY_CONTRACT = 'sign_and_deploy_contract'

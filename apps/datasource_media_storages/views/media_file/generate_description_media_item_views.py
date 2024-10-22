@@ -42,7 +42,6 @@ class MediaView_ItemAIDescription(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         if AI_GENERATED_DESCRIPTION_SPECIFIER in kwargs:
             context['generated_description'] = kwargs['generated_description']
-            print(f"Generated Description: {kwargs['generated_description']}")
         return context
 
     @staticmethod

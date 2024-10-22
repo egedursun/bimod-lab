@@ -6,36 +6,14 @@
 
 **BIMOD.IO SMART CONTRACTS**
 
-[1] Add server time to the UI on website.
-[2] Implement the views & templates for the Wallet Connection data model.
-[3] Test the wallet balance synchronization method.
-[4] Implement a latest transactions retrieval method (IF POSSIBLE).
-[5] Implement the views & templates for the Smart Contract data model.
-[6] Visual Fixes & Tweaks for the Wallet Connection & Smart Contract data models.
-[7] Implement the Smart Contract executor.
-      [a.] Implement the contract creation prompt.
-      [b.] Implement the contract syntactic check prompt.
-      [c.] Implement the contract refinement prompt.
-      [d.] Implement the contract cost-effectiveness prompt.
-      [e.] Implement the contract evaluation & scoring prompt.
-      [f.] Implement the prompt builder function(s).
-      [g.] Implement the basic logic of the contract generation function.
-      [h.] Implement the iteration logic for the contract generation function.
-      [i.] Implement the contract deployment function.
-[8] Test the contract generation feature.
-[9] Test the contract deployment feature.
-[10] Contemplate over the functions in the contracts, should AI generate caller buttons to instantiate those functions?
-      [a.] Check if it is helpful.
-      [b.] Check if it is feasible with AI consultancy.
-      [c.] Check if it is easy to implement.
-      [d.] If so, implement the feature.
-      [e.] These calls must have their own page & view: Detail Smart Contract View, which can be accessible from the 
-            Smart Contract List View (with a redirection button).
-      [f.] Test the function calls to see if they work or not.
-      [IDEA]: Along with putting function execution button(s), there can be a tool connection page, for connecting the
-              contracts as tools to existing BimodLab assistants, and they can use this tool to initiate function calls
-              to smart contracts.
-[11] Add notifications application.
+
+[1] Test the contract generation feature.
+[2] Test the contract deployment feature.
+[3] Along with putting function execution button(s), there can be a tool connection page, for connecting the 
+    contracts as tools to existing BimodLab assistants, and they can use this tool to initiate function calls 
+    to smart contracts.
+[4] Pulling the existing smart contracts from the wallets for the AI assistants to be able to use their functions.
+[5] Aside from internal contracts, external smart contracts can be connected for the AI assistants to use.
 
 ---
 
@@ -268,8 +246,8 @@
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Total Lines of Code by 2024-10-19: (Day: 112) **402,000,000**
-- Total Code Files by 2024-10-19: (Day: 112) **55,000**
+- Total Lines of Code by 2024-10-21: (Day: 114) **425,500,000**
+- Total Code Files by 2024-10-21: (Day: 114) **56,000**
 
 ---
 
