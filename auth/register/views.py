@@ -42,6 +42,14 @@ class RegisterView(AuthView):
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
+        # check if the username and email are unique
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "User with this username already exists.")
+            return redirect("register")
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "User with this email already exists.")
+            return redirect("register")
+
         is_valid, message = is_valid_password(password)
         if not is_valid:
             messages.error(request, message)

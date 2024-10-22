@@ -24,6 +24,7 @@ from django.views.generic import TemplateView
 from apps.organization.models import Organization
 from apps.smart_contracts.models import BlockchainWalletConnection, BlockchainSmartContract
 from apps.smart_contracts.utils import SMART_CONTRACT_CATEGORIES, SMART_CONTRACT_TEMPLATE_CHOICES
+from config.settings import SMART_CONTRACT_CREATION
 from web_project import TemplateLayout
 from apps.smart_contracts.utils import DeploymentStatusesNames
 
@@ -38,6 +39,7 @@ class SmartContractView_ContractCreate(LoginRequiredMixin, TemplateView):
             organization__in=context['organizations'])
         context['contract_categories'] = SMART_CONTRACT_CATEGORIES
         context['contract_templates'] = SMART_CONTRACT_TEMPLATE_CHOICES
+        context['SMART_CONTRACT_CREATION'] = round(float(SMART_CONTRACT_CREATION), 2)
         return context
 
     def post(self, request, *args, **kwargs):

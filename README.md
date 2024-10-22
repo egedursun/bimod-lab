@@ -6,9 +6,6 @@
 
 **BIMOD.IO SMART CONTRACTS**
 
-
-[1] Test the contract generation feature.
-[2] Test the contract deployment feature.
 [3] Along with putting function execution button(s), there can be a tool connection page, for connecting the 
     contracts as tools to existing BimodLab assistants, and they can use this tool to initiate function calls 
     to smart contracts.

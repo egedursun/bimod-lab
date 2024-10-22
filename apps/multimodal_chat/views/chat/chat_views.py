@@ -155,7 +155,6 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             sketch_image_full_uris_list = MediaManager.save_sketch(sketch_data_map=sketch_image)
             logger.info(f"Sketch image was saved by User: {request.user.id}.")
         except Exception as e:
-            logger.error(f"Error saving sketch image: {e}")
             pass
         return attached_fs, attached_imgs, chat, msg_content, sketch_image_full_uris_list
 
@@ -174,7 +173,6 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
                 edit_img_map=edit_image_bytes_dict)
             logger.info(f"Edit image was saved by User: {request.user.id}.")
         except Exception as e:
-            logger.error(f"Error saving edit image: {e}")
             pass
         return edit_image_full_uris_list
 

@@ -52,6 +52,7 @@ class BlockchainSmartContract(models.Model):
     post_gen_parties = models.JSONField(default=list, null=True, blank=True)
     post_gen_clauses = models.JSONField(default=list, null=True, blank=True)
     post_gen_functions = models.JSONField(default=list, null=True, blank=True)
+    contract_abi = models.JSONField(default=list, null=True, blank=True)
     contract_args = models.JSONField(default=dict, null=True, blank=True)
 
     ############################################

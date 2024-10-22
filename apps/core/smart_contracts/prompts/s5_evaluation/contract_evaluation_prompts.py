@@ -90,6 +90,10 @@ def contract_natural_language_context_explanation_prompt(contract_object: Blockc
                 these details, you can produce these YOURSELF. But NEVER use placeholders or variables that require
                 user input. Also NEVER leave this section empty (if the contract requires arguments).
 
+                - To fill in the contract arguments and their exact values, you can use the contract ABI (Application
+                Binary Interface) provided in the prompt. This ABI will help you understand what the contract expects
+                as arguments.
+
             - **IMPORTANT NOTE:** In order for the contract to be successfully deployed, YOU MUST provide the field
             names for the contract arguments "AND" the values for these fields. DO NOT leave any mandatory fields
             empty. This mostly depends on the contract type you are working on. For example, _borrower, _amount,
@@ -275,6 +279,16 @@ def contract_natural_language_context_explanation_prompt(contract_object: Blockc
         '''
         {contract_object.generated_solidity_code}
         '''
+
+        -----
+
+        **CONTRACT ABI (Application Binary Interface):**
+
+        '''
+        {str(contract_object.contract_abi)}
+        '''
+
+            - You can use this ABI to understand what you MUST put in the contract arguments section.
 
         -----
 

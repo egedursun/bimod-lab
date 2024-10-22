@@ -70,9 +70,13 @@ class SmartContractsExecutionManager:
     @staticmethod
     def is_valid_solidity_syntax(solidity_code: str):
         try:
-            compile_source(solidity_code)
+            compiled_sol = compile_source(solidity_code)
             logger.info(f"Solidity code passed the syntax check.")
-            return True, None
+
+            # Extract the ABI (Application Binary Interface)
+            contract_interface = compiled_sol.popitem()[1]
+            contract_abi = contract_interface['abi']
+            return contract_abi, None
         except SolcError as e:
             logger.error(f"Solidity syntax check failed: {e}")
             return False, str(e)
@@ -160,6 +164,7 @@ class SmartContractsExecutionManager:
         output, contract_explanation, error = "N/A", "N/A", None
         n_iterations = self.contract_obj.refinement_iterations_before_evaluation
         messages = []
+        contract_abi = []
         for i in range(0, n_iterations, 1):
             assistant_response, error = self._ai_generate_contract_code(
                 messages=messages, previous_mistakes_prompt=previous_mistakes_prompt)
@@ -196,9 +201,9 @@ class SmartContractsExecutionManager:
                     contract_object=self.contract_obj, previous_mistakes_prompt=previous_mistakes_prompt)
                 messages.append({"role": "user", "content": refinement_prompt})
 
-                is_valid, syntax_error = self.is_valid_solidity_syntax(
+                contract_abi, syntax_error = self.is_valid_solidity_syntax(
                     solidity_code=self.contract_obj.generated_solidity_code)
-                if not is_valid:
+                if contract_abi is False:
                     logger.error(f"Smart Contract Generation Failed: {syntax_error}")
                     refinement_prompt += f"""
                         =================================================================================
@@ -241,7 +246,9 @@ class SmartContractsExecutionManager:
             return None, None, error
 
         self.contract_obj.generated_solidity_code = final_contract_code
+        self.contract_obj.contract_abi = contract_abi
         self.contract_obj.save()
+
         nlp_feed_prompt = contract_natural_language_context_explanation_prompt(contract_object=self.contract_obj)
         if nlp_feed_prompt is not None and nlp_feed_prompt != "":
             try:
@@ -304,7 +311,7 @@ class SmartContractsExecutionManager:
 
     def generate_contract_and_save_content(self, previous_mistakes_prompt):
         try:
-            contract_code, contract_explanation, error = self. _create_contract(
+            contract_code, contract_explanation, error = self._create_contract(
                 previous_mistakes_prompt=previous_mistakes_prompt)
             if error is not None:
                 logger.error(f"Smart Contract Generation Failed: {error}")
@@ -334,7 +341,7 @@ class SmartContractsExecutionManager:
     @staticmethod
     def deploy_contract(contract_obj):
         is_success, error = False, None
-        c_obj:BlockchainSmartContract = contract_obj
+        c_obj: BlockchainSmartContract = contract_obj
         contract_text = c_obj.generated_solidity_code
         contract_args = c_obj.contract_args
         try:
@@ -365,7 +372,6 @@ class SmartContractsExecutionManager:
             logger.info(f"Account and Private Key Retrieved Successfully.")
 
             # Build the contract deploy tx
-
             nonce = web3.eth.get_transaction_count(account)
             transaction = contract.constructor(**contract_args).build_transaction({
                 'from': account,
@@ -440,3 +446,53 @@ class SmartContractsExecutionManager:
             error = e
             logger.error(f"Smart Contract Deployment Status Check Failed: {error}")
             return False, error
+
+    #####
+
+    def call_smart_contract_function(self, function_name: str, function_kwargs: dict):
+        c_obj: BlockchainSmartContract = self.contract_obj
+        contract_address = c_obj.contract_address
+        if contract_address is None:
+            error = "No contract address found."
+            logger.error(f"Smart Contract Function Execution Failed: {error}")
+            return error
+
+        try:
+            infura_url = f"https://mainnet.infura.io/v3/{settings.INFURA_API_KEY}"
+            web3 = Web3(Web3.HTTPProvider(infura_url))
+            if not web3.is_connected():
+                error = "Web3 Connection Failed."
+                logger.error(f"Smart Contract Function Execution Failed: {error}")
+                return error
+
+            contract_abi = c_obj.contract_abi
+            contract = web3.eth.contract(address=contract_address, abi=contract_abi)
+
+            function_metadata = next((f for f in c_obj.post_gen_functions if f["function_name"] == function_name),
+                                     None)
+            if function_metadata is None:
+                error = f"Function {function_name} not found in the stored contract functions."
+                logger.error(f"Smart Contract Function Execution Failed: {error}")
+                return error
+
+            input_params_metadata = function_metadata.get('input_parameters', [])
+            expected_param_names = [param['name'] for param in input_params_metadata]
+            for param in expected_param_names:
+                if param not in function_kwargs:
+                    error = f"Missing required parameter: {param}"
+                    logger.error(f"Smart Contract Function Execution Failed: {error}")
+                    return error
+
+            function_args = [function_kwargs[param] for param in expected_param_names]
+            contract_function = getattr(contract.functions, function_name)
+            response_of_call = contract_function(*function_args).call()
+
+            logger.info(f"Smart Contract Function Executed Successfully.")
+        except Exception as e:
+            error = e
+            logger.error(f"Smart Contract Function Execution Failed: {error}")
+            return error
+
+        logger.info(f"Smart Contract Function Execution Completed.")
+        final_response = str(response_of_call)
+        return final_response

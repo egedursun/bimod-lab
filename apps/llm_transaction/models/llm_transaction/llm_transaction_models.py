@@ -70,6 +70,10 @@ class LLMTransaction(models.Model):
 
     def save(self, *args, **kwargs):
         from apps.llm_transaction.models import TransactionInvoice
+
+        if self.organization.balance < 0:
+            raise ValueError("Organization does not have enough balance to perform this transaction.")
+
         if self.transaction_context_content and self.is_tool_cost is False:
             self.number_of_tokens = process_and_calculate_number_of_billable_tokens(self.encoding_engine, self.transaction_context_content)
             self.llm_cost = calculate_total_llm_model_costs(self.model.model_name, self.number_of_tokens)
