@@ -65,6 +65,16 @@ class UserManagementView_UserInvite(LoginRequiredMixin, TemplateView):
         is_active = request.POST.get('is_active') == 'on'
         created_by_user = request.user
 
+        if User.objects.filter(username=username, email=email).exists():
+            messages.error(request, "This user already exists in the system.")
+            return redirect("register")
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, "The specified email is already in use.")
+            return redirect("register")
+        elif User.objects.filter(username=username).exists():
+            messages.error(request, "The specified username is already in use.")
+            return redirect("register")
+
         try:
             is_valid, message = is_valid_password(pw)
             if not is_valid:
@@ -102,6 +112,7 @@ class UserManagementView_UserInvite(LoginRequiredMixin, TemplateView):
             created_by_user.profile.sub_users.add(created_user)
             created_by_user.profile.save()
             send_verification_email(email, token)
+
             if settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD:
                 logger.info(f"Verification email sent to {email}")
                 messages.success(request, "Verification email sent successfully.")

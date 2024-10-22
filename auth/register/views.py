@@ -42,14 +42,6 @@ class RegisterView(AuthView):
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
-        # check if the username and email are unique
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "User with this username already exists.")
-            return redirect("register")
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "User with this email already exists.")
-            return redirect("register")
-
         is_valid, message = is_valid_password(password)
         if not is_valid:
             messages.error(request, message)
@@ -67,6 +59,7 @@ class RegisterView(AuthView):
         country = request.POST.get("country")
         postal_code = request.POST.get("postal_code")
         profile_picture = request.FILES.get("profile_picture")
+
         if User.objects.filter(username=username, email=email).exists():
             messages.error(request, "User already exists, Try logging in.")
             return redirect("register")
@@ -82,9 +75,11 @@ class RegisterView(AuthView):
         created_user.is_staff = False
         created_user.is_superuser = True
         created_user.save()
+
         user_group, created = Group.objects.get_or_create(name="tenant")
         created_user.groups.add(user_group)
         token = str(uuid.uuid4())
+
         user_profile, created = Profile.objects.get_or_create(user=created_user)
         user_profile.email_token = token
         user_profile.email = email
@@ -99,6 +94,7 @@ class RegisterView(AuthView):
         user_profile.postal_code = postal_code
         user_profile.profile_picture = profile_picture
         user_profile.free_credits = settings.NEW_USER_FREE_CREDITS if hasattr(settings, 'NEW_USER_FREE_CREDITS') else 0
+
         primary_admin = User.objects.filter(username="admin").first()
         user_profile.created_by_user = primary_admin
         user_profile.save()
