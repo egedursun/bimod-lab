@@ -40,10 +40,6 @@ echo "          [Deploy / Production] Creating virtual environment..."
 # Activate the virtual environment
 source venv/bin/activate
 
-sudo python3 -m solcx.install 0.8.0
-
-echo "          [Deploy / Production] SolCX Solidity Compiler installed!"
-
 echo "          [Deploy / Production] Virtual environment created!"
 
 echo "          [Deploy / Production] Installing requirements..."
@@ -52,6 +48,10 @@ echo "          [Deploy / Production] Installing requirements..."
 pip install -r requirements.txt
 
 echo "          [Deploy / Production] Requirements installed!"
+
+sudo python3 -m solcx.install 0.8.0
+
+echo "          [Deploy / Production] SolCX Solidity Compiler installed!"
 
 echo "          [Deploy / Production] Running database migrations..."
 

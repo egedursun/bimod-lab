@@ -4,13 +4,6 @@
 
 ................................
 
-**BIMOD.IO SMART CONTRACTS**
-
-[1] Put the smart contracts environment variable to server .env.dev and .env.prod files.
-[2] There is a need to install """solcx""" in server environment with "sudo apt-get ?". Do it, otherwise the system
-    will fail while generating the contracts.
-[3] Put the sudo apt-get command in the deployment file and/or deployment instructions.
-
 ---
 
 **NEXT PROJECT-0: PAYMENT GATEWAY INTEGRATION**
