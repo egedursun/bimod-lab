@@ -49,9 +49,23 @@ pip install -r requirements.txt
 
 echo "          [Deploy / Development] Requirements installed!"
 
-sudo python3 -m solcx.install 0.8.0
+echo "Checking if py-solc-x is installed..."
+pip3 show py-solc-x &> /dev/null
 
-echo "          [Deploy / Development] SolCX Solidity Compiler installed!"
+if [ $? -ne 0 ]; then
+    echo "py-solc-x not found. Installing py-solc-x..."
+    sudo pip3 install py-solc-x
+else
+    echo "py-solc-x is already installed."
+fi
+
+echo "Installing Solidity compiler version 0.8.0..."
+python3 << EOF
+import solcx
+solcx.install_solc('0.8.0')
+EOF
+
+echo "          [Deploy / Development] Solidity compiler version 0.8.0 installed."
 
 echo "          [Deploy / Development] Running database migrations..."
 
