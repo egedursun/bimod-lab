@@ -285,6 +285,7 @@ class PermissionNames:
     DELETE_HADRON_NODE_SASE_LOGS = 'delete_hadron_node_sase_logs'
     DELETE_HADRON_NODE_PUBLISH_HISTORY_LOGS = 'delete_hadron_node_publish_history_logs'
     DELETE_HADRON_TOPIC_MESSAGE_HISTORY_LOGS = 'delete_hadron_topic_message_history_logs'
+    DELETE_HADRON_NODE_SPEECH_LOGS = 'delete_hadron_node_speech_logs'
 
     CREATE_BLOCKCHAIN_WALLET_CONNECTIONS = 'create_blockchain_wallet_connections'
     LIST_BLOCKCHAIN_WALLET_CONNECTIONS = 'list_blockchain_wallet_connections'
@@ -297,6 +298,15 @@ class PermissionNames:
 
     CREATE_INTERNAL_NOTIFICATIONS = 'create_internal_notifications'
     DELETE_INTERNAL_NOTIFICATIONS = 'delete_internal_notifications'
+
+    CREATE_BINEXUS_PROCESSES = 'create_binexus_processes'
+    LIST_BINEXUS_PROCESSES = 'list_binexus_processes'
+    UPDATE_BINEXUS_PROCESSES = 'update_binexus_processes'
+    DELETE_BINEXUS_PROCESSES = 'delete_binexus_processes'
+    EXECUTE_BINEXUS_PROCESSES = 'execute_binexus_processes'
+
+    DELETE_BINEXUS_ELITES = 'delete_binexus_elites'
+    LIST_BINEXUS_ELITES = 'list_binexus_elites'
 
 
 PERMISSION_TYPES = [
@@ -569,6 +579,7 @@ PERMISSION_TYPES = [
     ('delete_hadron_node_sase_logs', 'Delete Hadron Node SASE Logs'),
     ('delete_hadron_node_publish_history_logs', 'Delete Hadron Node Publish History Logs'),
     ('delete_hadron_topic_message_history_logs', 'Delete Hadron Topic Message History Logs'),
+    ('delete_hadron_node_speech_logs', 'Delete Hadron Node Speech Logs'),
 
     ('create_blockchain_wallet_connections', 'Create Blockchain Wallet Connections'),
     ('list_blockchain_wallet_connections', 'List Blockchain Wallet Connections'),
@@ -581,6 +592,15 @@ PERMISSION_TYPES = [
 
     ('create_internal_notifications', 'Create Internal Notifications'),
     ('delete_internal_notifications', 'Delete Internal Notifications'),
+
+    ('create_binexus_processes', 'Create Binexus Processes'),
+    ('list_binexus_processes', 'List Binexus Processes'),
+    ('update_binexus_processes', 'Update Binexus Processes'),
+    ('delete_binexus_processes', 'Delete Binexus Processes'),
+    ('execute_binexus_processes', 'Execute Binexus Processes'),
+
+    ('delete_binexus_elites', 'Delete Binexus Elites'),
+    ('list_binexus_elites', 'List Binexus Elites'),
 ]
 
 

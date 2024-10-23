@@ -46,6 +46,11 @@ class HadronPrimeView_DetailHadronNode(LoginRequiredMixin, TemplateView):
         node = get_object_or_404(HadronNode, id=kwargs['pk'])
         context['node'] = node
 
+        # Fetch speech logs
+        speech_logs = node.speech_logs.all().order_by('-created_at')
+        paginator_speech_logs = Paginator(speech_logs, 10)
+        page_number_speech_logs = self.request.GET.get('speech_logs_page')
+        context['speech_logs_page_obj'] = paginator_speech_logs.get_page(page_number_speech_logs)
         # Fetch execution logs
         execution_logs = node.execution_logs.all().order_by('-created_at')
         paginator_exec_logs = Paginator(execution_logs, 10)

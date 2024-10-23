@@ -27,35 +27,36 @@ def structure_topic_messages(node: HadronNode):
     hadron_topics = node.subscribed_topics.all()
 
     topic_messages_string = {}
-    n_last_topic_messages = 0
     chunk_size = (node.topic_messages_history_lookback_memory_size // len(hadron_topics))
     logger.info("Starting to structure the topic messages for the node.")
     for topic in hadron_topics:
         topic: HadronTopic
-        topic_messages = HadronTopicMessage.objects.filter(
-            topic=topic).order_by('-created_at')[:chunk_size]
-        n_last_topic_messages += len(topic_messages)
+        topic_messages = HadronTopicMessage.objects.filter(topic=topic).order_by('-created_at')[:chunk_size]
 
         for topic_message in topic_messages:
             topic_message: HadronTopicMessage
-            if topic.topic_name not in topic_messages:
-                topic_messages_string[topic.topic_name] = f"[SENDER_NODE_NAME | MESSAGE | CREATED_AT]" + "\n"
-                topic_messages_string[topic.topic_name] = f"[{topic_message.sender_node.node_name} | {topic_message.message} | {topic_message.created_at}]" + "\n"
-            else:
-                topic_messages_string[topic.topic_name] += f"[{topic_message.sender_node.node_name} | {topic_message.message} | {topic_message.created_at}]" + "\n"
+            try:
+                if topic.topic_name not in topic_messages:
+                    topic_messages_string[topic.topic_name] = str(f"[SENDER_NODE_NAME | MESSAGE | CREATED_AT]" + "\n")
+                    topic_messages_string[topic.topic_name] = f"[{str(topic_message.sender_node.node_name)} | {str(topic_message.message)} | {str(topic_message.created_at)}]" + "\n"
+                else:
+                    topic_messages_string[topic.topic_name] += f"[{str(topic_message.sender_node.node_name)} | {str(topic_message.message)} | {str(topic_message.created_at)}]" + "\n"
+            except Exception as e:
+                error = str(e)
+                logger.error(f"Error while structuring the topic messages for the node: {error}")
     logger.info("Finished structuring the topic messages for the node.")
 
-    topic_metadata_string = f"[TOPIC_NAME | TOPIC_CATEGORY | TOPIC_DESCRIPTION | TOPIC_PURPOSE | CREATED_AT]" + "\n"
+    topic_metadata_string = str(f"[TOPIC_NAME | TOPIC_CATEGORY | TOPIC_DESCRIPTION | TOPIC_PURPOSE | CREATED_AT]" + "\n")
     logger.info("Starting to structure the topic metadata for the node.")
     for topic in hadron_topics:
         topic: HadronTopic
-        topic_metadata_string += f"[{topic.topic_name} | {topic.topic_category} | {topic.topic_description} | {topic.topic_purpose} | {topic.created_at}]" + "\n"
+        topic_metadata_string += str(f"[{str(topic.topic_name)} | {str(topic.topic_category)} | {str(topic.topic_description)} | {str(topic.topic_purpose)} | {str(topic.created_at)}]" + "\n")
     logger.info("Finished structuring the topic metadata for the node.")
 
     structured_topic_messages = f"""
         ### **TOPIC METADATA:**
         '''
-        {topic_metadata_string}
+        {str(topic_metadata_string)}
         '''
 
         ### **LAST TOPIC MESSAGES PER TOPIC:**
@@ -64,7 +65,7 @@ def structure_topic_messages(node: HadronNode):
         '''
 
         '''
-        *Total Number of Last Messages Included: {n_last_topic_messages}*
+        *Total Number of Last Messages Included: {node.topic_messages_history_lookback_memory_size}*
         '''
 
         -----

@@ -40,7 +40,8 @@ from apps.user_settings.views import SettingsView_UserSettings, SettingsView_Del
     SettingsView_DeleteAllHadronTopics, SettingsView_DeleteAllHadronNodes, SettingsView_DeleteAllHadronSystems, \
     SettingsView_DeleteAllHadronNodeExecutionLogs, SettingsView_DeleteAllHadronTopicMessagesLogs, \
     SettingsView_DeleteAllHadronNodeSEASELogs, SettingsView_DeleteAllWalletConnections, \
-    SettingsView_DeleteSoftAllSmartContracts
+    SettingsView_DeleteSoftAllSmartContracts, SettingsView_DeleteAllBinexusEliteAgents, \
+    SettingsView_DeleteAllBinexusProcesses
 
 app_name = "user_settings"
 
@@ -132,11 +133,14 @@ urlpatterns = [
          name='delete_all_hadron_topic_message_logs'),
     path('delete/all/hadron_node_sease_logs/', SettingsView_DeleteAllHadronNodeSEASELogs.as_view(),
          name='delete_all_hadron_node_sease_logs'),
-
     path('delete/all/wallet_connections/', SettingsView_DeleteAllWalletConnections.as_view(),
             name='delete_all_wallet_connections'),
     path('delete/soft/all/smart_contracts/', SettingsView_DeleteSoftAllSmartContracts.as_view(),
             name='delete_soft_all_smart_contracts'),
+    path('delete/all/binexus_elite_agents/', SettingsView_DeleteAllBinexusEliteAgents.as_view(),
+            name='delete_all_binexus_elite_agents'),
+    path('delete/all/binexus_processes/', SettingsView_DeleteAllBinexusProcesses.as_view(),
+            name='delete_all_binexus_processes'),
 
     path('auto_backups/toggle/', SettingsView_ToggleAutoBackups.as_view(),
          name='toggle_automated_backups'),

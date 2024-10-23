@@ -60,3 +60,5 @@ from .delete_all_hadron_topic_messages_logs_views import *
 from .delete_all_hadron_topics_views import *
 from .delete_soft_all_smart_contracts_views import *
 from .delete_all_wallet_connections_views import *
+from .delete_all_binexus_processes_views import *
+from .delete_all_binexus_elite_agents_views import *

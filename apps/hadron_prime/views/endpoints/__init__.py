@@ -17,3 +17,4 @@
 
 
 from .trigger_activate_hadron_node_views import *
+from .speak_with_node_views import *

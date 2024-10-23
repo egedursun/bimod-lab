@@ -110,6 +110,27 @@
 </script>
 <script>
   // Function to show confirmation dialog before purging execution logs
+  function confirmPurgeSpeechLogs() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This will delete all speech logs, and you won\'t be able to revert this action.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, purge them!',
+      cancelButtonText: 'No, cancel!',
+      customClass: {
+        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+      },
+      buttonsStyling: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById('purge-speech-logs-form').submit();
+      }
+    });
+  }
+
+  // Function to show confirmation dialog before purging execution logs
   function confirmPurgeExecutionLogs() {
     Swal.fire({
       title: 'Are you sure?',
@@ -257,7 +278,7 @@
             <h5 class="alert-heading mb-2">
               <strong>
                 <i class="fa fa-info-circle me-4"></i>
-                Activation Trigger
+                Activation Trigger &amp; Node Communication Endpoints
               </strong>
             </h5>
             <p class="mt-2">
@@ -267,12 +288,22 @@
             </p>
             <hr>
             <!-- Endpoint Section with Copy Button -->
-            <p><strong>Endpoint:</strong></p>
+            <p><strong>Activation Trigger Endpoint:</strong></p>
             <div class="d-flex align-items-center">
               <p id="endpointText" class="bg-label-dark p-2 rounded flex-grow-1">
                 <strong>{{ BASE_URL }}/app/hadron_prime/hadron_node/activate/{{ node.id }}/{{ node.activation_trigger_hashed_param }}/</strong>
               </p>
               <button class="btn btn-warning ms-2 mb-4" onclick="copyToClipboard('#endpointText')">
+                <i class="fa fa-copy me-2"></i> <strong>Copy</strong>
+              </button>
+            </div>
+            <hr>
+            <p><strong>Node Speech &amp; Communication Endpoint:</strong></p>
+            <div class="d-flex align-items-center">
+              <p id="endpointTextSpeech" class="bg-label-dark p-2 rounded flex-grow-1">
+                <strong>{{ BASE_URL }}/app/hadron_prime/hadron_node/speak/{{ node.id }}/{{ node.activation_trigger_hashed_param }}/</strong>
+              </p>
+              <button class="btn btn-warning ms-2 mb-4" onclick="copyToClipboard('#endpointTextSpeech')">
                 <i class="fa fa-copy me-2"></i> <strong>Copy</strong>
               </button>
             </div>
@@ -319,6 +350,102 @@
             <i class="fa fa-cog me-4"></i>
             Optional Instructions:
           </strong> {{ node.optional_instructions }}</p>
+
+          <!-- Speech Logs -->
+          <hr class="mt-8">
+          <h5><strong><i class="fa fa-terminal me-4"></i>Node Speech Logs</strong></h5>
+          <a class="mt-12">
+            <button class="btn btn-danger mb-2 mt-2 w-25" onclick="confirmPurgeSpeechLogs()">
+              <i class="fa fa-skull-crossbones me-2"></i><strong>Purge Speech Logs</strong>
+            </button>
+          </a>
+          <form id="purge-speech-logs-form" method="post" action="{% url 'hadron_prime:delete_all_speech_logs' pk=node.id %}">
+            {% csrf_token %}
+          </form>
+          {% if speech_logs_page_obj|length != -1 %}
+            <table class="table table-striped table-bordered mt-4">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>User Query</th>
+                  <th>Node Response Log</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in speech_logs_page_obj %}
+                  <tr>
+                    <td><strong>{{ log.created_at|date:"Y-m-d H:i:s" }}</strong></td>
+                    <td>
+                      <p style="min-width:500px; max-width: 500px; min-height: 100px; max-height: 100px; overflow: auto;">
+                        <strong>
+                          🟡 &nbsp; {{ log.user_query_text|linebreaksbr }}
+                        </strong>
+                      </p>
+                    </td>
+                    <td>
+                      <p style="min-width:500px; max-width: 500px; min-height: 100px; max-height: 100px; overflow: auto;">
+                        <strong>
+                          🔵 &nbsp; {{ log.speech_log|linebreaksbr }}
+                        </strong>
+                      </p>
+                    </td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="3" class="text-center">
+                      <div class="alert alert-warning p-2 mt-4">
+                        <i class="fa fa-exclamation-triangle me-2"></i>
+                        <strong>No execution logs are available for this node (yet).</strong>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            <!-- Pagination Controls for Execution Logs -->
+            <nav aria-label="Speech Logs pagination">
+              <ul class="pagination p-4">
+                {% if speech_logs_page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?speech_logs_page={{ speech_logs_page_obj.previous_page_number }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+                {% for num in speech_logs_page_obj.paginator.page_range %}
+                  <li class="page-item {% if speech_logs_page_obj.number == num %}active{% endif %}">
+                    <a class="page-link" href="?speech_logs_page={{ num }}">{{ num }}</a>
+                  </li>
+                {% endfor %}
+                {% if speech_logs_page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?speech_logs_page={{ speech_logs_page_obj.next_page_number }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          {% endif %}
+
+          <!-- form for submitting a speech log request -->
+          <div class="mt-4">
+            <form method="post" action="{% url 'hadron_prime:speak_with_hadron_node_via_form' pk=node.id hash=node.activation_trigger_hashed_param %}">
+              {% csrf_token %}
+              <div class="form-group mb-4">
+                <label for="user_query_text" class="form-label"><strong>Your Query / Question to Node Manager</strong></label>
+                <textarea class="form-control" id="user_query_text" name="user_query_text" rows="3" required placeholder="Please enter your question or query to the managing agent of this node."></textarea>
+              </div>
+              <input type="hidden" name="node_id" value="{{ node.id }}">
+              <input type="hidden" name="id_token" value="{{ node.activation_trigger_hashed_param }}">
+              <input type="hidden" name="api_key" value="{{ node.activation_trigger_authentication_key }}">
+              <button type="submit" class="btn btn-success w-25">
+                <i class="fa fa-play me-2"></i>
+                <strong>Query Node Manager</strong>
+              </button>
+            </form>
+          </div>
 
           <!-- Execution Logs -->
           <hr class="mt-8">

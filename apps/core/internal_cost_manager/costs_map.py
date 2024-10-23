@@ -55,7 +55,8 @@ class InternalServiceCosts:
             InternalServiceCosts.Reasoning.COST,
             InternalServiceCosts.Drafting.COST,
             InternalServiceCosts.HadronPrime.COST,
-            InternalServiceCosts.SmartContractCreation.COST
+            InternalServiceCosts.SmartContractCreation.COST,
+            InternalServiceCosts.Binexus.COST,
         ]
 
     class ContextMemory:
@@ -157,6 +158,9 @@ class InternalServiceCosts:
     class SmartContractCreation:
         COST = COSTS_MAP["SMART_CONTRACT_CREATION"]
 
+    class Binexus:
+        COST = COSTS_MAP["BINEXUS"]
+
 
 TOOL_NAME_TO_COST_MAP = {
     "store-memory": InternalServiceCosts.ContextMemory.COST,
@@ -192,4 +196,5 @@ TOOL_NAME_TO_COST_MAP = {
     "drafting": InternalServiceCosts.Drafting.COST,
     "hadron-prime": InternalServiceCosts.HadronPrime.COST,
     "smart-contract-creation": InternalServiceCosts.SmartContractCreation.COST,
+    "binexus": InternalServiceCosts.Binexus.COST,
 }

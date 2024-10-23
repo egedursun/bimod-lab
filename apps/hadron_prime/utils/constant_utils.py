@@ -99,3 +99,8 @@ class HadronNodeExecutionStatusesNames:
             HadronNodeExecutionStatusesNames.COMPLETED,
             HadronNodeExecutionStatusesNames.FAILED
         ]
+
+
+HADRON_NODE_SPEECH_LOG_ADMIN_LIST = ('node', 'created_at')
+HADRON_NODE_SPEECH_LOG_ADMIN_SEARCH = ('node__name', 'speech_log')
+HADRON_NODE_SPEECH_LOG_ADMIN_FILTER = ('node', 'created_at')

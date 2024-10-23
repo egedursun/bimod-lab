@@ -201,6 +201,18 @@ def get_permissions_grouped():
             ('delete_hadron_node_sase_logs', 'Delete Hadron Node SASE Logs'),
             ('delete_hadron_node_publish_history_logs', 'Delete Hadron Node Publish History Logs'),
             ('delete_hadron_topic_message_history_logs', 'Delete Hadron Topic Message History Logs'),
+            ('delete_hadron_node_speech_logs', 'Delete Hadron Node Speech Logs'),
+        ],
+        "Binexus Processes": [
+            ('create_binexus_processes', 'Create Binexus Processes'),
+            ('list_binexus_processes', 'List Binexus Processes'),
+            ('update_binexus_processes', 'Update Binexus Processes'),
+            ('delete_binexus_processes', 'Delete Binexus Processes'),
+            ('execute_binexus_processes', 'Execute Binexus Processes'),
+        ],
+        "Binexus Elite Agents": [
+            ('list_binexus_elites', 'List Binexus Elites'),
+            ('delete_binexus_elites', 'Delete Binexus Elites'),
         ],
         "Blockchain Wallet Permissions": [
             ('create_blockchain_wallet_connections', 'Create Blockchain Wallet Connections'),

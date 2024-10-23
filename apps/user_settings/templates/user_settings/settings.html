@@ -945,6 +945,76 @@
                   </td>
                 </form>
               </tr>
+              <!-- delete all Binexus Processes -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-cogs me-4"></i>
+                  <strong>Binexus Processes</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_binexus_processes' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL BINEXUS PROCESSES' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-binexus-processes-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-binexus-processes-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Processes</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all Binexus Elite Agents -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-cogs me-4"></i>
+                  <strong>Binexus Elite Agents</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_binexus_elite_agents' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL BINEXUS ELITE AGENTS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-binexus-elite-agents-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-binexus-elite-agents-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Agents</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
               <!-- delete all blockchain wallets -->
               <tr>
                 <td class="text-nowrap text-heading">

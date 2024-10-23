@@ -26,7 +26,9 @@ from apps.hadron_prime.views import (HadronPrimeView_CreateHadronSystem, HadronP
                                      HadronPrimeView_RegenerateNodeApiKey, HadronPrimeView_DeleteAllNodeExecutionLogs,
                                      HadronPrimeView_DeleteAllNodePublishHistoryLogs,
                                      HadronPrimeView_DeleteAllTopicMessages, HadronPrimeView_DeleteAllNodeSASELogs,
-                                     HadronPrimeView_TriggerActiveHadronNodeViaForm)
+                                     HadronPrimeView_TriggerActiveHadronNodeViaForm,
+                                     HadronPrimeView_DeleteAllNodeSpeechLogs, HadronPrimeView_SpeakWithHadronNode,
+                                     HadronPrimeView_SpeakWithHadronNodeViaForm)
 
 app_name = "hadron_prime"
 
@@ -76,6 +78,10 @@ urlpatterns = [
          name="trigger_activate_hadron_node_via_form"),
     path("hadron_node/activate/<int:pk>/<str:hash>/", HadronPrimeView_TriggerActiveHadronNode.as_view(),
          name="trigger_activate_hadron_node"),
+    path("hadron_Node/activate/speak/<int:pk>/<str:hash>/", HadronPrimeView_SpeakWithHadronNodeViaForm.as_view(),
+         name="speak_with_hadron_node_via_form"),
+    path("hadron_node/speak/<int:pk>/<str:hash>/", HadronPrimeView_SpeakWithHadronNode.as_view(),
+         name="speak_with_hadron_node"),
 
     path("hadron_node/delete_all_execution_logs/<int:pk>/", HadronPrimeView_DeleteAllNodeExecutionLogs.as_view(),
          name="delete_all_execution_logs"),
@@ -86,4 +92,6 @@ urlpatterns = [
          name="delete_all_sase_logs"),
     path("hadron_topic/delete_all_messages/<int:pk>/", HadronPrimeView_DeleteAllTopicMessages.as_view(),
          name="delete_all_messages"),
+    path("hadron_node/delete_all_speech_logs/<int:pk>/", HadronPrimeView_DeleteAllNodeSpeechLogs.as_view(),
+         name="delete_all_speech_logs"),
 ]

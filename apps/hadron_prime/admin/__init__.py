@@ -22,3 +22,4 @@ from .hadron_system_admin import *
 from .hadron_sease_log_admin import *
 from .hadron_topic_message_admin import *
 from .hadron_node_execution_log_admin import *
+from .hadron_node_speech_log_admin import *

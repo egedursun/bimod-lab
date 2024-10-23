@@ -367,6 +367,23 @@
       ]
     },
     {
+      "name": "Binexus™",
+      "icon": "menu-icon tf-icons ti ti-dna",
+      "slug": "binexus",
+      "submenu": [
+        {
+          "name": "Create Process",
+          "slug": "binexus",
+          "url": "binexus:process_create"
+        },
+        {
+          "name": "Binexus™ Processes",
+          "slug": "binexus",
+          "url": "binexus:process_list"
+        }
+      ]
+    },
+    {
       "name": "Blockchain Wallets",
       "icon": "menu-icon tf-icons ti ti-wallet",
       "slug": "blockchain",

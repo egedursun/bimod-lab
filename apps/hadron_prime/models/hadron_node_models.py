@@ -74,6 +74,7 @@ class HadronNode(models.Model):
     topic_messages_history_lookback_memory_size = models.IntegerField(default=50)
     expert_networks = models.ManyToManyField('leanmod.ExpertNetwork', blank=True)
     execution_logs = models.ManyToManyField('hadron_prime.HadronNodeExecutionLog', blank=True)
+    speech_logs = models.ManyToManyField('hadron_prime.HadronNodeSpeechLog', blank=True)
 
     # ACTIVATION TRIGGER FOR THE NODE
     activation_trigger_hashed_param = models.CharField(max_length=1000, null=True, blank=True)

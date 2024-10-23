@@ -18,8 +18,11 @@ import logging
 
 from django.utils import timezone
 
+from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+from apps.core.hadron_prime.prompt_builders import build_hadron_node_speech_log_prompt
 from apps.hadron_prime.models import HadronNode, HadronSystem, HadronTopic, HadronNodeExecutionLog, \
-    HadronStateErrorActionStateErrorLog, HadronTopicMessage
+    HadronStateErrorActionStateErrorLog, HadronTopicMessage, HadronNodeSpeechLog
 from apps.hadron_prime.utils import HadronNodeExecutionStatusesNames
 from apps.core.hadron_prime.utils import NodeExecutionProcessLogTexts, HadronTopicCategoriesNames
 from apps.core.hadron_prime.handlers import (s1_state_evaluation_handlers, s2_measurement_evaluation_handlers,
@@ -27,6 +30,8 @@ from apps.core.hadron_prime.handlers import (s1_state_evaluation_handlers, s2_me
                                              s5_publishing_history_evaluation_handlers,
                                              s6_calculate_current_error_handlers, s7_analytical_calculation_handlers,
                                              s8_determine_action_with_ai_handlers, s9_perform_actuation_handlers)
+from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
 logger = logging.getLogger(__name__)
 
@@ -41,9 +46,10 @@ class HadronPrimeExecutor:
         self.topic_message_history_memory_size = self.node.topic_messages_history_lookback_memory_size
         self.publish_history_memory_size = self.node.publishing_history_lookback_memory_size
         self.sease_history_memory_size = self.node.state_action_state_lookback_memory_size
-        self._update_execution_log_object_status(new_status=HadronNodeExecutionStatusesNames.PENDING,
-                                                 log_text=NodeExecutionProcessLogTexts.memory_initialized(
-                                                        node=self.node))
+        if execution_log_object is not None:
+            self._update_execution_log_object_status(new_status=HadronNodeExecutionStatusesNames.PENDING,
+                                                     log_text=NodeExecutionProcessLogTexts.memory_initialized(
+                                                         node=self.node))
         self.expert_nets = self.node.expert_networks.all() if self.node.expert_networks else []
 
     def _update_execution_log_object_status(self, new_status: str, log_text: str):
@@ -141,7 +147,8 @@ class HadronPrimeExecutor:
             self._publish_message_to_topic(
                 event_type=HadronTopicCategoriesNames.INFO,
                 message="I managed to retrieve the current state data successfully.")
-            self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.STATES, message=str(current_state_data))
+            self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.STATES,
+                                           message=str(current_state_data))
 
             #####
 
@@ -167,7 +174,8 @@ class HadronPrimeExecutor:
             self._publish_message_to_topic(
                 event_type=HadronTopicCategoriesNames.INFO,
                 message="I managed to retrieve the current sensory measurements data successfully.")
-            self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.MEASUREMENTS, message=str(measurement_data))
+            self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.MEASUREMENTS,
+                                           message=str(measurement_data))
 
             #####
 
@@ -223,7 +231,8 @@ class HadronPrimeExecutor:
 
             self._update_execution_log_object_status(
                 new_status=HadronNodeExecutionStatusesNames.RUNNING,
-                log_text=NodeExecutionProcessLogTexts.node_publishing_history_logs_retrieval_started(timestamp=timezone.now())
+                log_text=NodeExecutionProcessLogTexts.node_publishing_history_logs_retrieval_started(
+                    timestamp=timezone.now())
             )
             publish_history_logs, error = s5_publishing_history_evaluation_handlers.retrieve_publish_history_logs(
                 node=self.node)
@@ -336,7 +345,8 @@ class HadronPrimeExecutor:
                 new_status=HadronNodeExecutionStatusesNames.RUNNING,
                 log_text=NodeExecutionProcessLogTexts.actuation_call_layer_started(timestamp=timezone.now())
             )
-            success, error = s9_perform_actuation_handlers.perform_actuation(node=self.node, determined_action=determined_action)
+            success, error = s9_perform_actuation_handlers.perform_actuation(node=self.node,
+                                                                             determined_action=determined_action)
             if error:
                 success, error = False, error
                 logger.error(f"Error occurred while executing the actuation call: {error}")
@@ -354,7 +364,8 @@ class HadronPrimeExecutor:
             self._publish_message_to_topic(
                 event_type=HadronTopicCategoriesNames.INFO,
                 message="I managed to perform my actuation call successfully.")
-            self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.ACTIONS, message=str(determined_action))
+            self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.ACTIONS,
+                                           message=str(determined_action))
 
             #####
 
@@ -364,7 +375,8 @@ class HadronPrimeExecutor:
                 new_status=HadronNodeExecutionStatusesNames.RUNNING,
                 log_text=NodeExecutionProcessLogTexts.post_action_state_evaluation_started(timestamp=timezone.now())
             )
-            new_current_state_data, new_goal_state_data, error = s1_state_evaluation_handlers.evaluate_state(node=self.node)
+            new_current_state_data, new_goal_state_data, error = s1_state_evaluation_handlers.evaluate_state(
+                node=self.node)
             if error:
                 success, error = False, error
                 logger.error(f"Error occurred while evaluating the updated state: {error}")
@@ -436,3 +448,64 @@ class HadronPrimeExecutor:
 
         logger.info("Hadron node executed successfully.")
         return success, error
+
+    def generate_node_speech(self, user_query_text: str):
+        system_prompt = build_hadron_node_speech_log_prompt(node=self.node)
+        structured_system_prompt = {"role": "system", "content": str(system_prompt)}
+        context_messages = [structured_system_prompt]
+        context_messages.append({"role": "user", "content": user_query_text})
+        c = OpenAIGPTClientManager.get_naked_client(llm_model=self.node.llm_model)
+
+        tx = LLMTransaction.objects.create(
+            organization=self.node.system.organization, model=self.node.llm_model,
+            responsible_user=self.node.created_by_user, responsible_assistant=None,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=system_prompt,
+            llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
+            transaction_type=ChatRoles.SYSTEM, transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
+        )
+        logger.info(f"[generate_node_speech] Created LLMTransaction for system prompt: {system_prompt}")
+
+        tx = LLMTransaction.objects.create(
+            organization=self.node.system.organization, model=self.node.llm_model,
+            responsible_user=self.node.created_by_user, responsible_assistant=None,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=user_query_text,
+            llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
+            transaction_type=ChatRoles.USER, transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
+        )
+        logger.info(f"[generate_node_speech] Created LLMTransaction for user prompt: {system_prompt}")
+
+        try:
+            llm_response = c.chat.completions.create(
+                model=self.node.llm_model.model_name, messages=context_messages,
+                temperature=float(self.node.llm_model.temperature),
+                frequency_penalty=float(self.node.llm_model.frequency_penalty),
+                presence_penalty=float(self.node.llm_model.presence_penalty),
+                max_tokens=int(self.node.llm_model.maximum_tokens),
+                top_p=float(self.node.llm_model.top_p))
+            choices = llm_response.choices
+            first_choice = choices[0]
+            choice_message = first_choice.message
+            choice_message_content = choice_message.content
+            logger.info(f"[generate_node_speech] Node speech generated successfully: {choice_message_content}")
+
+            final_speech_output = choice_message_content
+            speech_log = HadronNodeSpeechLog.objects.create(
+                node=self.node, user_query_text=user_query_text, speech_log=final_speech_output)
+            speech_log.save()
+            self.node.speech_logs.add(speech_log)
+            self.node.save()
+
+            tx = LLMTransaction.objects.create(
+                organization=self.node.system.organization, model=self.node.llm_model,
+                responsible_user=self.node.created_by_user, responsible_assistant=None,
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=final_speech_output,
+                llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
+                transaction_type=ChatRoles.ASSISTANT, transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
+            )
+            logger.info(f"[generate_node_speech] Created LLMTransaction for user prompt: {system_prompt}")
+
+            return final_speech_output, True, None
+        except Exception as e:
+            error = f"Error occurred while generating AI response: {e}"
+            logger.error(f"[generate_node_speech] Error occurred while generating AI response: {e}")
+            return None, False, error

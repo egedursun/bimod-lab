@@ -1,0 +1,221 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: create_binexus_process.html
+  ~ Last Modified: 2024-10-22 18:40:02
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-22 18:40:03
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+<!-- templates/binexus/process/create_binexus_process.html -->
+
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Create Binexus Process{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script>
+    $(document).ready(function() {
+      $('#llm_model, #organization').select2({
+        placeholder: "Select an option",
+        allowClear: true,
+        width: '100%'
+      });
+      $('#submit_button').prop('disabled', true);
+      $('form').on('change input', function() {
+        let isFormValid = $('#organization').val() && $('#process_name').val();
+        $('#submit_button').prop('disabled', !isFormValid);
+      });
+      $('#awarenessCheckbox').on('change', function() {
+        let isChecked = $(this).is(':checked');
+        $('#timeAwareness').val(isChecked ? 'on' : 'off');
+        $('#placeAwareness').val(isChecked ? 'on' : 'off');
+      });
+    });
+  </script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-62.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can create a new Binexus process for your organization. You can select an organization,
+        an LLM model, and provide details about the process. Once you create a process, you can manage it from the
+        process list page, where you can update, delete, or view the details of any process. Within the detail page
+        you will be able to run the process and view the results.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <div class="row mt-4">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Create New Binexus Process</strong></h5>
+          <a href="{% url 'binexus:process_list' %}">
+            <button class="btn btn-secondary mt-4 mb-8">
+              <i class="fa fa-list me-4"></i>
+              <strong> Manage Processes</strong>
+            </button>
+          </a>
+        </div>
+        <hr>
+        <div class="card-body mt-4">
+          <form method="post" action="{% url 'binexus:process_create' %}">
+            {% csrf_token %}
+            <div class="row p-8">
+
+              <div class="col-4 mb-6">
+                <label class="form-label" for="organization">Organization</label>
+                <select class="form-select" id="organization" name="organization" required>
+                  <option value="" disabled selected>Select Organization</option>
+                  {% for org in organizations %}
+                    <option value="{{ org.id }}">{{ org.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-4 mb-6">
+                <label class="form-label" for="llm_model">LLM Model</label>
+                <select class="form-select" id="llm_model" name="llm_model" required>
+                  <option value="" disabled selected>Select LLM Model</option>
+                  {% for model in llm_models %}
+                    <option value="{{ model.id }}">{{ model.nickname }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-4 mb-6">
+                <label class="form-label" for="process_name">Process Name</label>
+                <input type="text" class="form-control" id="process_name" name="process_name" placeholder="Enter process name" required>
+              </div>
+
+              <div class="col-12 mb-6">
+                <label class="form-label" for="process_description">Process Description</label>
+                <textarea class="form-control" id="process_description" name="process_description" rows="2" placeholder="Enter a description for this process."></textarea>
+              </div>
+
+              <div class="col-12 mb-6">
+                <label class="form-label" for="process_objective">Process Objective</label>
+                <textarea class="form-control" id="process_objective" name="process_objective" rows="2" placeholder="Enter process objective."></textarea>
+              </div>
+
+              <div class="col-12 mb-6">
+                <label class="form-label" for="process_success_criteria">Process Success Criteria</label>
+                <textarea class="form-control" id="process_success_criteria" name="process_success_criteria" rows="2" placeholder="Enter success criteria for this process."></textarea>
+              </div>
+
+              <div class="col-4 mb-6">
+                <img src="{% static 'img/binexus/bx-1.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
+                <label class="form-label" for="fitness_manager_selectiveness">Fitness Manager Selectiveness</label>
+                <input type="number" class="form-control" id="fitness_manager_selectiveness" name="fitness_manager_selectiveness" min="0.0" max="1.0" step="0.1" placeholder="Enter selectiveness value (0 to 1)" value="0.5">
+              </div>
+
+              <div class="col-4 mb-6">
+                <img src="{% static 'img/binexus/bx-2.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
+                <label class="form-label" for="optimization_generations">Optimization Generations</label>
+                <input type="number" class="form-control" id="optimization_generations" name="optimization_generations" min="1" max="25" value="10" required>
+              </div>
+
+              <div class="col-4 mb-6">
+                <img src="{% static 'img/binexus/bx-3.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
+                <label class="form-label" for="optimization_population_size">Optimization Population Size</label>
+                <input type="number" class="form-control" id="optimization_population_size" name="optimization_population_size" min="1" max="25" value="5" required>
+              </div>
+
+              <div class="col-3 mb-6">
+                <img src="{% static 'img/binexus/bx-4.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
+                <label class="form-label" for="optimization_breeding_pool_rate">Optimization Breeding Pool Rate</label>
+                <input type="number" class="form-control" id="optimization_breeding_pool_rate" name="optimization_breeding_pool_rate" min="0" max="1" step="0.05" value="0.4" required>
+              </div>
+
+              <div class="col-3 mb-6">
+                <img src="{% static 'img/binexus/bx-5.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
+                <label class="form-label" for="optimization_mutation_rate_per_individual">Mutation Rate per Individual</label>
+                <input type="number" class="form-control" id="optimization_mutation_rate_per_individual" name="optimization_mutation_rate_per_individual" min="0" max="1" step="0.01" value="0.1" required>
+              </div>
+
+              <div class="col-3 mb-6">
+                <img src="{% static 'img/binexus/bx-6.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
+                <label class="form-label" for="optimization_mutation_rate_per_gene">Mutation Rate per Gene</label>
+                <input type="number" class="form-control" id="optimization_mutation_rate_per_gene" name="optimization_mutation_rate_per_gene" min="0" max="1" step="0.01" value="0.1" required>
+              </div>
+
+              <div class="col-3 mb-6">
+                <img src="{% static 'img/binexus/bx-7.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
+                <label class="form-label" for="optimization_crossover_rate">Crossover Rate</label>
+                <input type="number" class="form-control" id="optimization_crossover_rate" name="optimization_crossover_rate" min="0" max="1" step="0.01" value="0.5" required>
+              </div>
+
+              <!-- Self Breeding Switch -->
+              <div class="col-12 mb-6">
+              <label class="form-label" for="self_breeding_possible">Allow Self Breeding</label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="self_breeding_possible" name="self_breeding_possible" checked>
+                  <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <hr>
+
+            <button type="submit" class="btn btn-primary d-flex w-25 mt-4" id="submit_button" disabled>
+              <i class="fa fa-plus me-4"></i>
+              <strong>Create Process</strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

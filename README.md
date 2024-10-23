@@ -4,121 +4,115 @@
 
 ................................
 
+**CURRENT PROJECT: BINEXUS**
+
+- *BINEXUS*: Self-Replicating Swarm Intelligence Multi-Modal AI Network
+  - *Details:*
+    - [1] Fix the prompt part to show a better prompt.
+
+---
+
 ---
 
 **NEXT PROJECT-0: PAYMENT GATEWAY INTEGRATION**
 
 - *PAYMENT GATEWAY*: Integration of a payment gateway to the web application, allowing for the clients to pay for the
-                      services they use in the application.
+  services they use in the application.
   - *Details:* TBD
 
 ---
 
-**NEXT PROJECT-1: BINEXUS**
-
-- *BINEXUS*: Self-Replicating Swarm Intelligence Multi-Modal AI Network
-  - *Details:* TBD
-
----
-
-**NEXT PROJECT-2: ELECTRON COPILOT**
+**NEXT PROJECT-1: ELECTRON COPILOT**
 
 - *ELECTRON COPILOT*: Desktop Client for Bimod & BimodLab, with features allowing for data transactions between the
-                        desktop and the web application. **(Probably Flutter-Based)**
+  desktop and the web application. **(Probably Flutter-Based)**
   - *Details:* TBD
 
 ---
 
-**NEXT PROJECT-3: FERMION COPILOT**
+**NEXT PROJECT-2: FERMION COPILOT**
 
 - *FERMION COPILOT*: Mobile App Client for Bimod & BimodLab, with features allowing for transactions between the
-                        mobile data and the web application. **(Probably Flutter-Based)**
+  mobile data and the web application. **(Probably Flutter-Based)**
   - *Details:* TBD
 
 ---
 
-**NEXT PROJECT-4: ASTROLITH X1**
+**NEXT PROJECT-3: ASTROLITH X1**
 
-- *ASTROLITH X1*: Two important plans to be developed: A physical server + a locally runnable instance of the 
-                      Bimod & BimodLab web application, with minimal interventions from our ends. 
-                      **(Probably with Licence Key and Encryption)** Once option will be hardware+standalone software,
-                      the other option will be a software-only solution. The balance will be one-time with burnout of
-                      of the software after a certain period of time and balance depletion. In the hardware included
-                      model, new firmware will be installed then. 
+- *ASTROLITH X1*: Two important plans to be developed: A physical server + a locally runnable instance of the
+  Bimod & BimodLab web application, with minimal interventions from our ends.
+  **(Probably with Licence Key and Encryption)** Once option will be hardware+standalone software,
+  the other option will be a software-only solution. The balance will be one-time with burnout of
+  of the software after a certain period of time and balance depletion. In the hardware included
+  model, new firmware will be installed then.
   - *Details:* TBD
 
 ---
 
-**NEXT PROJECT-5: MIS INTEGRATION**
-
-- *MIS INTEGRATION*: An AI manager that can interpret and control the MIS systems of the companies, with a focus on
-                      the data management and the data flow within the company. For example, ERP, CRM, HRM, etc. softwares
-                      will be integrated into the AI manager, and the AI manager will be able to control the data flow
-                      between these systems, and also provide insights and suggestions for the company management.
-  - *Details:* TBD
-
----
-
-**NEXT PROJECT-6: ASTROBELT**
+**NEXT PROJECT-4: ASTROBELT**
 
 - *ASTROBELT*: MS-Office plugins for connecting the drafting tool we have in our web application to the MS-Office
-                applications, such as Word, Excel, PowerPoint, etc. The plugin will allow for the drafting tool to be
-                used within the MS-Office applications, and the data will be synchronized between the web application
-                and the MS-Office applications.
+  applications, such as Word, Excel, PowerPoint, etc. The plugin will allow for the drafting tool to be
+  used within the MS-Office applications, and the data will be synchronized between the web application
+  and the MS-Office applications.
   - *Details:* TBD
 
 ---
 
-**NEXT PROJECT-7: MENTARA**
+**NEXT PROJECT-5: MENTARA**
 
 - *MENTARA*: A helper assistant that helps the clients configure their enterprise environments in the web application,
-                and uses our documentation to guide them through their questions and help them navigate their journey
-                in our products.
+  and uses our documentation to guide them through their questions and help them navigate their journey
+  in our products.
   - *Details:* TBD
 
 ---
 
-**NEXT PROJECT-8: INTEGRATIONS FRAMEWORK**
+**NEXT PROJECT-6: INTEGRATIONS FRAMEWORK**
 
-- *INTEGRATIONS*: A page/store that will include ready-made assistants that the clients can easily integrate to themselves.
+- *INTEGRATIONS*: A page/store that will include ready-made assistants that the clients can easily integrate to
+  themselves.
   - *Details:* TBD
 
 ---
 
-**NEXT PROJECT-9: META-INTEGRATIONS FRAMEWORK**
+**NEXT PROJECT-7: META-INTEGRATIONS FRAMEWORK**
 
-- *META-INTEGRATIONS*: A page/store that will include ready-made "team of assistants" that the clients can easily integrate to themselves.
+- *META-INTEGRATIONS*: A page/store that will include ready-made "team of assistants" that the clients can easily
+  integrate to themselves.
   - *Details:* TBD
 
 ---
 
-**NEXT PROJECT-10: AUTOMATED MEDIA SYNCHRONIZATION**
+**NEXT PROJECT-8: AUTOMATED MEDIA SYNCHRONIZATION**
 
-- *AUTOMATED MEDIA SYNC*: Connecting S3 Buckets, Google Drive, and other cloud storages to the web application, and allowing for
-                the media files to be synchronized between the cloud storages and the web application without the users
-                having to manually upload the files.
+- *AUTOMATED MEDIA SYNC*: Connecting S3 Buckets, Google Drive, and other cloud storages to the web application, and
+  allowing for
+  the media files to be synchronized between the cloud storages and the web application without the users
+  having to manually upload the files.
   - *Details:* TBD
 
 ---
 
-**NEXT PROJECT-11: VOIDFORGER**
+**NEXT PROJECT-9: VOIDFORGER**
 
-- *VOIDFORGER*: A hyper-assistant over orchestrators and all internal processes of an enterprise, controlling the 
-                assistants, leanmods, orchestrations, data sources such as sql, nosql, ssh servers, code bases,
-                vector stores, multimedia files, smart contracts, drafting documents, and also the multi-modalities 
-                such as functions, APIs, scripts, and other things to manage the organization completely autonomously.
+- *VOIDFORGER*: A hyper-assistant over orchestrators and all internal processes of an enterprise, controlling the
+  assistants, leanmods, orchestrations, data sources such as sql, nosql, ssh servers, code bases,
+  vector stores, multimedia files, smart contracts, drafting documents, and also the multi-modalities
+  such as functions, APIs, scripts, and other things to manage the organization completely autonomously.
   - *Details:* TBD
 
 ---
 
-**NEXT PROJECT-12: DEVELOPER ECOSYSTEM**
+**NEXT PROJECT-10: DEVELOPER ECOSYSTEM**
 
 - *DEV ECOSYSTEM*: Make the function, API, and Script Stores accessible to the developers for them to contribute, and
-                    incentivize them by rewarding Bimod & BimodLab credits, as well as a commission percentage from 
-                    the usage of the functions, APIs, and scripts they contribute to. This process must go through
-                    a verification process before the contribution is accepted, and developers must have separate
-                    accounts than clients to manage their contributions effectively.
-      - *Details:* TBD
+  incentivize them by rewarding Bimod & BimodLab credits, as well as a commission percentage from
+  the usage of the functions, APIs, and scripts they contribute to. This process must go through
+  a verification process before the contribution is accepted, and developers must have separate
+  accounts than clients to manage their contributions effectively.
+  - *Details:* TBD
 
 ---
 
@@ -182,7 +176,7 @@
 
   - SSH Connection to DB VPS Server:
     - **Connection:** ssh -o "StrictHostKeyChecking=no" root@92.113.31.31
-    - **Default Port:** 
+    - **Default Port:**
       - Development Server: 5432
       - Production Server: ****
     - **Username:** root
@@ -237,11 +231,11 @@
 - Start Date: 2024-06-29
 - Last Measurement Date: 2024-10-22
 - Total Days: 115
-    - Number of Files: 52,193
-    - Code Lines: 11,700,000
-    - Comment Lines: 3,700,000
-    - TOTAL: 15,400,000
-    - TOTAL RAW CALCULATION: ...
+  - Number of Files: 52,193
+  - Code Lines: 11,700,000
+  - Comment Lines: 3,700,000
+  - TOTAL: 15,400,000
+  - TOTAL RAW CALCULATION: ...
 
 ---
 
@@ -263,10 +257,10 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
 *TO BE DISCUSSED:*
 
 1. [ ] [EXPERIENCE NETWORK] for the application.
-       -> For the application users who are freelancers or independent workers.
-       -> They can collaborate and form networks within the application to work together.
-       -> They can share media storages, data sources, and other tools to create synergy.
-       -> Currently does not worth the development effort.
+   -> For the application users who are freelancers or independent workers.
+   -> They can collaborate and form networks within the application to work together.
+   -> They can share media storages, data sources, and other tools to create synergy.
+   -> Currently does not worth the development effort.
 
 ---
 
@@ -403,22 +397,22 @@ TOTAL COSTS: $13,000 / year (~$1,100 / month) ($550 per month per co-founder)
 
 [1] Marketing & Advertising = $50,000 (x12 months) = $600,000
 
-
 - Salaries (x12 months) = $300,000 + (tax: $200,000) = $500,000
 - Equipment = $47,000
 - Company Expenses = $42,000
 - Office Costs = $87,000
--- Total costs before marketing: $676,000
--- Safety Padding: (%20) = $135,000
--- Total costs with padding: $800,000
-
+  -- Total costs before marketing: $676,000
+  -- Safety Padding: (%20) = $135,000
+  -- Total costs with padding: $800,000
 
 ----
 
 begin:40% / s:34% / a:26% / b:20% / c:17% / d:14% / e:12% / ipo:9%
-begin:$0 / s:$510,000 / a:$13,000,000 / b:$30,000,000 / c:$90,500,000 / d:$140,000,000 / e:$200,000,000 / ipo:$225,000,000
+begin:$0 / s:$510,000 / a:$13,000,000 / b:$30,000,000 / c:$90,500,000 / d:$140,000,000 / e:$200,000,000 / ipo:
+$225,000,000
 
-Expected Growth: 
+Expected Growth:
+
 - $500,000 volume in the first year (start: $1,500,000 investment with [20%]) seed
 - $2,000,000 volume in the second year (start: $10,000,000 investment [20%]) series-a
 - $10,000,000 volume in the third year (start: $30,000,000 investment [20%]) series-b

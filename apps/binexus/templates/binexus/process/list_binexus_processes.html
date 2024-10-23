@@ -1,0 +1,140 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: list_binexus_processes.html
+  ~ Last Modified: 2024-10-22 18:41:48
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-22 18:41:48
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+<!-- templates/binexus/process/list_binexus_processes.html -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Process List{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-4">
+      <h3 class="mb-0"><strong>Manage Binexus Processes</strong></h3>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-61.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view and manage all the processes created for your organizations. You can update, delete, or view the details of any process.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% for organization, processes in processes_by_org.items %}
+    <div class="card mb-6">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
+          <div class="d-flex">
+            <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 alt="Organization Image" class="rounded" width="60">
+            <h4>
+              <strong class="ms-4">{{ organization.name }}</strong>
+            </h4>
+          </div>
+        </a>
+        <p class="mt-8"><i class="fa fa-tasks"></i><strong>&nbsp; Total Processes: </strong> {{ processes|length }}</p>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-{{ organization.id }}"><strong>&nbsp; See Processes</strong></span>
+      </div>
+      <div id="collapse-{{ organization.id }}" class="card-datatable table-responsive collapse p-8">
+        <a href="{% url 'binexus:process_create' %}">
+          <button class="btn btn-success mb-4">
+            <i class="fa fa-plus me-2"></i><strong>Create New Process</strong>
+          </button>
+        </a>
+        <table class="datatables-processes table">
+          <thead class="border-top">
+          <tr>
+            <th style="min-width: 200px;">Process Name</th>
+            <th style="min-width: 400px;">Description</th>
+            <th style="min-width: 150px;">LLM Model</th>
+            <th style="min-width: 150px;">Created At</th>
+            <th style="min-width: 400px;">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for process in processes %}
+            <tr class="overflow-auto">
+              <td><strong>{{ process.process_name }}</strong></td>
+              <td><div style="min-width: 400px; max-width: 400px; max-height: 150px; min-height: 150px; overflow: auto;">{{ process.process_description|linebreaksbr }}</div></td>
+              <td><strong>{{ process.llm_model.nickname }}</strong></td>
+              <td><strong>{{ process.created_at|date:"Y-m-d H:i" }}</strong></td>
+              <td>
+                <a href="{% url 'binexus:process_detail' pk=process.id %}" class="btn btn-primary me-4">
+                  <i class="fa fa-eye me-2"></i><strong>View</strong>
+                </a>
+                <a href="{% url 'binexus:process_update' pk=process.id %}" class="btn btn-warning me-4">
+                  <i class="fa fa-edit me-2"></i><strong>Edit</strong>
+                </a>
+                <a href="{% url 'binexus:process_delete' pk=process.id %}" class="btn btn-danger">
+                  <i class="fa fa-trash me-2"></i><strong>Delete</strong>
+                </a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="text-center bg-label-warning p-4 rounded">
+                <i class="fa fa-exclamation-triangle me-2"></i>
+                <strong>No processes have been created for this organization yet.</strong>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

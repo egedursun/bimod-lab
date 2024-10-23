@@ -17,3 +17,4 @@
 
 
 from .hadron_node_prompt_builder import *
+from .hadron_node_speech_log_prompt_builder import *

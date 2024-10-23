@@ -69,6 +69,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("drafting", "Drafting"),
     ("hadron-prime", "Hadron Prime"),
     ("smart-contract-creation", "Smart Contract Creation"),
+    ("binexus", "Binexus"),
 ]
 
 
@@ -118,6 +119,7 @@ class LLMTransactionSourcesTypesNames:
     DRAFTING = "drafting"
     HADRON_PRIME = "hadron-prime"
     SMART_CONTRACT_CREATION = "smart-contract-creation"
+    BINEXUS = "binexus"
 
     @staticmethod
     def as_list():
@@ -160,6 +162,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.DRAFTING,
             LLMTransactionSourcesTypesNames.HADRON_PRIME,
             LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
+            LLMTransactionSourcesTypesNames.BINEXUS,
         ]
 
 

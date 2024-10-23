@@ -1,0 +1,478 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: detail_binexus_process.html
+  ~ Last Modified: 2024-10-22 18:40:54
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-22 18:41:25
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+
+<!-- templates/binexus/process/detail_binexus_process.html -->
+
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Process Details: {{ binexus_process.process_name }}{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-13.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view the details of the training process you have executed. You can also run the
+        training process by clicking the button at the bottom of the page.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <a href="{% url 'binexus:process_list' %}">
+    <button class="btn btn-secondary mt-4 mb-2 me-4">
+      <i class="fa fa-list me-4"></i>
+      <strong> Back to Process List</strong>
+    </button>
+  </a>
+  <a href="{% url 'binexus:process_update' pk=binexus_process.id %}">
+    <button class="btn btn-warning mt-4 mb-2 me-4">
+      <i class="fa fa-edit me-2"></i><strong>Edit Process</strong>
+    </button>
+  </a>
+  <a href="{% url 'binexus:process_delete' pk=binexus_process.id %}">
+    <button class="btn btn-danger mt-4 mb-2 me-4">
+      <i class="fa fa-trash me-2"></i><strong>Delete Process</strong>
+    </button>
+  </a>
+  <button class="btn btn-danger border border-primary border-4 rounded mt-4 mb-2" onclick="confirmPurgeData('{{ binexus_process.id }}')">
+    <i class="fa fa-skull-crossbones me-2"></i><strong>Purge Process Data</strong>
+  </button>
+
+  <hr>
+
+  <!-- Training Hyperparameters Section -->
+  <div class="card mb-4 mt-4 border border-4 rounded border-success">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="fa fa-cogs me-4"></i>
+        <strong>Training Hyper-Parameters</strong>
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="col-sm-4">
+          <h6><i class="fa fa-bolt me-2"></i> <strong>Generations</strong></h6>
+          <h5 class="btn-primary p-4 rounded w-50 fs-large"><strong>{{ binexus_process.optimization_generations }}</strong></h5>
+        </div>
+        <div class="col-sm-4">
+          <h6><i class="fa fa-users me-2"></i> <strong>Population Size</strong></h6>
+          <h5 class="btn-primary p-4 rounded w-50 fs-large"><strong>{{ binexus_process.optimization_population_size }}</strong></h5>
+        </div>
+        <div class="col-sm-4">
+          <h6><i class="fa fa-dna me-2"></i> <strong>Mutation Rate (per individual)</strong></h6>
+          <h5 class="btn-info p-4 rounded w-50 fs-large"><strong>{{ binexus_process.optimization_mutation_rate_per_individual }}</strong></h5>
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-sm-4">
+          <h6><i class="fa fa-dna me-2"></i> <strong>Mutation Rate (per gene)</strong></h6>
+          <h5 class="btn-info p-4 rounded w-50 fs-large"><strong>{{ binexus_process.optimization_mutation_rate_per_gene }}</strong></h5>
+        </div>
+        <div class="col-sm-4">
+          <h6><i class="fa fa-random me-2"></i> <strong>Crossover Rate</strong></h6>
+          <h5 class="btn-success p-4 rounded w-50 fs-large"><strong>{{ binexus_process.optimization_crossover_rate }}</strong></h5>
+        </div>
+        <div class="col-sm-4">
+          <h6><i class="fa fa-heartbeat me-2"></i> <strong>Self Breeding Possible</strong></h6>
+          <h5 class="btn-{{ binexus_process.self_breeding_possible|yesno:'success,danger' }} p-4 rounded w-50 fs-large">
+            <strong>{{ binexus_process.self_breeding_possible|yesno:"Yes,No" }}</strong>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Training Logs and Metrics Section -->
+  <div class="card mb-4 border border-4 border-primary rounded">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="fa fa-chart-bar me-4"></i>
+        <strong>Training Output Logs and Metrics</strong>
+      </h5>
+    </div>
+    <div class="card-body">
+      <!-- Average Fitness per Epoch -->
+      <h6><strong>Average Fitness per Epoch</strong></h6>
+      <div>
+        {% for value in binexus_process.post_processing_history_average_fitness_per_epoch %}
+        <span class="badge bg-info p-4 m-2"><strong>{{ value|floatformat:2 }}</strong></span>
+        {% empty %}
+          <p class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <strong>No average fitness history data available (yet).</strong>
+          </p>
+        {% endfor %}
+      </div>
+
+      <hr>
+
+      <!-- Best Fitness per Epoch -->
+      <h6><strong>Best Fitness per Epoch</strong></h6>
+      <div>
+        {% for value in binexus_process.post_processing_history_best_fitness_per_epoch %}
+        <span class="badge bg-success p-4 m-2"><strong>{{ value|floatformat:2 }}</strong></span>
+        {% empty %}
+          <p class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <strong>No best fitness history data available (yet).</strong>
+          </p>
+        {% endfor %}
+      </div>
+
+      <hr>
+
+      <!-- Worst Fitness per Epoch -->
+      <h6><strong>Worst Fitness per Epoch</strong></h6>
+      <div>
+        {% for value in binexus_process.post_processing_history_worst_fitness_per_epoch %}
+        <span class="badge bg-danger p-4 m-2"><strong>{{ value|floatformat:2 }}</strong></span>
+        {% empty %}
+          <p class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <strong>No worst fitness history data available (yet).</strong>
+          </p>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Average of Averages Section -->
+  <div class="card mb-4 border border-4 border-primary rounded">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="fa fa-chart-line me-4"></i>
+        <strong>Overall Averages on Training Period</strong>
+      </h5>
+    </div>
+    <div class="card-body">
+
+      <!-- Average of Average Fitnesses -->
+      <h6><strong>Overall Average of Average Fitness per Generation</strong></h6>
+      <div>
+        {% if binexus_process.post_processing_history_average_of_average_fitnesses %}
+        <span class="badge bg-info p-4 px-12 m-2"><strong>{{ binexus_process.post_processing_history_average_of_average_fitnesses|floatformat:2 }}</strong></span>
+        {% else %}
+          <p class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <strong>No data available for the average of average fitnesses (yet).</strong>
+          </p>
+        {% endif %}
+      </div>
+
+      <hr>
+
+      <!-- Average of Best Fitnesses -->
+      <h6><strong>Overall Average of Best Fitness Values per Generation</strong></h6>
+      <div>
+        {% if binexus_process.post_processing_history_average_of_best_fitnesses %}
+        <span class="badge bg-success p-4 px-12 m-2"><strong>{{ binexus_process.post_processing_history_average_of_best_fitnesses|floatformat:2 }}</strong></span>
+        {% else %}
+          <p class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <strong>No data available for the average of best fitnesses (yet).</strong>
+          </p>
+        {% endif %}
+      </div>
+
+      <hr>
+
+      <!-- Average of Worst Fitnesses -->
+      <h6><strong>Overall Average of Worst Fitness Values per Generation</strong></h6>
+      <div>
+        {% if binexus_process.post_processing_history_average_of_worst_fitnesses %}
+        <span class="badge bg-danger p-4 px-12 m-2"><strong>{{ binexus_process.post_processing_history_average_of_worst_fitnesses|floatformat:2 }}</strong></span>
+        {% else %}
+          <p class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <strong>No data available for the average of worst fitnesses (yet).</strong>
+          </p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Training Output Chart Section -->
+  <div class="card mb-4 border border-4 border-primary rounded">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="fa fa-image me-4"></i>
+        <strong>Training Output Chart</strong>
+      </h5>
+    </div>
+    <hr>
+    <div class="d-flex card-body w-100 justify-content-center align-items-center">
+      {% if binexus_process.post_processing_history_visual_chart %}
+        <img src="{{ binexus_process.post_processing_history_visual_chart.url }}" alt="Training Output Chart" class="w-75 mb-4 border border-primary border-4 rounded">
+      {% else %}
+        <p class="alert alert-warning">
+          <i class="fa fa-exclamation-triangle me-2"></i>
+          <strong>No chart generated for this process (yet).</strong>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+  <hr>
+
+  <!-- Elite Agents Section -->
+  <div class="card mb-4 border border-warning rounded border-4">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="fa fa-users me-4"></i>
+        <strong>Binexus Elite Agents</strong>
+      </h5>
+    </div>
+    <div class="card-body">
+      {% if elite_agents %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nickname</th>
+                <th style="min-width: 200px;">Fitness Score</th>
+                <th style="min-width: 200px;">Temperature</th>
+                <th>Chromosome Parameters</th>
+                <th>Prompt</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for agent in elite_agents %}
+              <tr>
+                <td><strong>{{ agent.agent_nickname }}</strong></td>
+                <td><p class="btn-success rounded p-4"><strong>{{ agent.binexus_fitness_score }}</strong></p></td>
+                <td><p class="btn-warning rounded p-4"><strong>{{ agent.agent_temperature|floatformat:2 }}</strong></p></td>
+
+                <!-- Chromosome Parameters Display with Clear Key-Value Pairing -->
+                <td style="min-width: 600px;">
+                  <div class="p-2" style="max-height: 200px; overflow: auto;">
+                    {% for key, value in agent.agent_chromosome_parameters.items %}
+                      <div class="mb-2 btn-primary p-1 rounded d-flex align-items-center justify-content-between">
+                        <span class="btn btn-danger m-1 p-1"><strong>{{ key }}</strong></span>
+                        <span class="btn btn-success m-1 p-1"><strong>{{ value }}</strong></span>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </td>
+
+                <!-- Prompt Field -->
+                <td>
+                  <p style="min-width: 500px; max-width: 500px; max-height: 150px; overflow-x: auto; text-align: justify;">{{ agent.agent_prompt|linebreaksbr }}</p>
+                  <button class="btn btn-sm btn-primary" onclick="copyToClipboard('{{ agent.agent_prompt|escapejs }}')">
+                    <i class="fa fa-copy me-2"></i>
+                    <strong>Copy Prompt</strong>
+                  </button>
+                </td>
+
+                <!-- Actions -->
+                <td>
+                  <button class="btn btn-danger" onclick="confirmDeleteAgent('{{ agent.pk }}')">
+                    <i class="fa fa-trash me-2"></i>
+                    <strong>Delete</strong>
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="alert alert-warning">
+          <i class="fa fa-exclamation-triangle me-2"></i>
+          <strong>No elite agents generated for this process (yet).</strong>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
+
+
+  <hr>
+
+  <!-- Re-Training Button -->
+  <form method="post" action="{% url 'binexus:process_execute' pk=binexus_process.id %}" class="mt-4">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success mt-4"><i class="fa fa-cogs me-2"></i>
+      <strong>Execute Training Process</strong>
+    </button>
+  </form>
+
+</div>
+{% endblock %}
+
+{% block page_js %}
+<script type="text/javascript">
+  function copyToClipboard(promptText) {
+    const tempTextArea = document.createElement('textarea');
+    tempTextArea.style.position = 'fixed';
+    tempTextArea.style.left = '0';
+    tempTextArea.style.top = '0';
+    tempTextArea.style.opacity = '0';
+    tempTextArea.value = promptText.replace(/<br\s*[\/]?>/gi, '\n');
+    document.body.appendChild(tempTextArea);
+    tempTextArea.focus();
+    tempTextArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempTextArea);
+  }
+
+  // Function to confirm deletion of an elite agent using Swal
+  function confirmDeleteAgent(agentId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will permanently delete this elite agent.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      customClass: {
+        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+      },
+      buttonsStyling: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Trigger the delete request
+        $.ajax({
+          url: "{% url 'binexus:elite_agent_delete' 0 %}".replace(0, agentId),
+          type: 'POST',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          success: function(response) {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'The elite agent has been deleted.',
+              icon: 'success',
+              customClass: {
+                confirmButton: 'btn btn-success me-2 waves-effect waves-light',
+              },
+              buttonsStyling: false
+            }).then(() => {
+              window.location.reload();
+            });
+          },
+          error: function() {
+            Swal.fire({
+              title: 'Error',
+              text: 'There was a problem deleting the agent.',
+              icon: 'error',
+              customClass: {
+                confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              },
+              buttonsStyling: false
+            });
+          }
+        });
+      }
+    });
+  }
+
+  // Function to confirm purging of process data using Swal
+  function confirmPurgeData(processId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will permanently delete this process data.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      customClass: {
+        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+      },
+      buttonsStyling: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Trigger the purge request
+        $.ajax({
+          url: "{% url 'binexus:process_purge_data' 0 %}".replace(0, processId),
+          type: 'POST',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          success: function(response) {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'The process data has been deleted.',
+              icon: 'success',
+              customClass: {
+                confirmButton: 'btn btn-success me-2 waves-effect waves-light',
+              },
+              buttonsStyling: false
+            }).then(() => {
+              window.location.reload();
+            });
+          },
+          error: function() {
+            Swal.fire({
+              title: 'Error',
+              text: 'There was a problem deleting the process data.',
+              icon: 'error',
+              customClass: {
+                confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              },
+              buttonsStyling: false
+            });
+          }
+        });
+      }
+    });
+  }
+</script>
+{% endblock %}

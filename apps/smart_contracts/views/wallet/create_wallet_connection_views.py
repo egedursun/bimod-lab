@@ -56,10 +56,10 @@ class SmartContractView_WalletConnectionCreate(LoginRequiredMixin, TemplateView)
 
         organization_id = request.POST.get('organization')
         nickname = request.POST.get('nickname')
+        description = request.POST.get('description')
         blockchain_type = request.POST.get('blockchain_type')
         wallet_address = request.POST.get('wallet_address')
         wallet_private_key = request.POST.get('wallet_private_key')
-        description = request.POST.get('description')
 
         if not all([organization_id, nickname, blockchain_type, wallet_address, wallet_private_key]):
             logger.error('All fields are required.')

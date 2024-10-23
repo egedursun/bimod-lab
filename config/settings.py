@@ -135,6 +135,7 @@ INSTALLED_APPS = [
     "apps.hadron_prime",
     "apps.smart_contracts",
     "apps.notifications",
+    "apps.binexus",
 
     ########################################
     # SUPPORT
@@ -437,6 +438,7 @@ EXCLUDED_PAGES = [
     "/app/export_leanmods/api/v1/export/*",
     "/app/export_orchestrations/api/v1/export/*",
     "/app/hadron_prime/hadron_node/activate/*",
+    "/app/hadron_prime/hadron_node/speak/*",
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'
@@ -504,6 +506,7 @@ REASONING = os.environ.get("REASONING", default="0")
 DRAFTING = os.environ.get("DRAFTING", default="0")
 HADRON_PRIME = os.environ.get("HADRON_PRIME", default="0")
 SMART_CONTRACT_CREATION = os.environ.get("SMART_CONTRACT_CREATION", default="0")
+BINEXUS = os.environ.get("BINEXUS", default="0")
 
 COSTS_MAP = {
     "CONTEXT_MEMORY": float(CONTEXT_MEMORY),
@@ -539,6 +542,7 @@ COSTS_MAP = {
     "DRAFTING": float(DRAFTING),
     "HADRON_PRIME": float(HADRON_PRIME),
     "SMART_CONTRACT_CREATION": float(SMART_CONTRACT_CREATION),
+    "BINEXUS": float(BINEXUS),
 }
 
 if ENVIRONMENT != "local":

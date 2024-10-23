@@ -215,10 +215,10 @@ HADRON_TOPIC_CATEGORIES = [
 
 
 class HadronTopicCategoriesNames:
-    ALERTS = 'alerts' #
-    INFO = 'info'     #
-    STATES = 'states' #
-    MEASUREMENTS = 'measurements' #
+    ALERTS = 'alerts'  #
+    INFO = 'info'  #
+    STATES = 'states'  #
+    MEASUREMENTS = 'measurements'  #
     ACTIONS = 'actions'
     COMMANDS = 'commands'
 
@@ -272,3 +272,6 @@ class CURLHttpMethods:
 
 
 HADRON_PRIME_TOOL_CALL_MAXIMUM_ATTEMPTS = 3
+
+SPEECH_LOGS_MAXIMUM_LOOKBACK = 10
+EXECUTION_LOGS_MAXIMUM_LOOKBACK = 10
