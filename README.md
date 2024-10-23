@@ -4,13 +4,20 @@
 
 ................................
 
-**CURRENT PROJECT: BINEXUS**
+**SMALL TASKS**
 
-- *BINEXUS*: Self-Replicating Swarm Intelligence Multi-Modal AI Network
-  - *Details:*
-    - [1] Fix the prompt part to show a better prompt.
+[1] Visual improvement by adding photos (AI generated photos on Canva)
+[2] Introduction/Reduction of chromosome genes in Binexus Processes. (/? think about this, what, how and where ?\)
+[3] Add the latest cost variables to the server .env.dev and .env.prod (our SSH Server)
+[4] Add Binexus to the Bimod.io documentation (Google Docs)
 
 ---
+
+**CURRENT PROJECT: ELECTRON COPILOT**
+
+- *ELECTRON COPILOT*: Desktop Client for Bimod & BimodLab, with features allowing for data transactions between the
+  desktop and the web application. **(Probably Flutter-Based)**
+  - *Details:* TBD
 
 ---
 
@@ -22,15 +29,7 @@
 
 ---
 
-**NEXT PROJECT-1: ELECTRON COPILOT**
-
-- *ELECTRON COPILOT*: Desktop Client for Bimod & BimodLab, with features allowing for data transactions between the
-  desktop and the web application. **(Probably Flutter-Based)**
-  - *Details:* TBD
-
----
-
-**NEXT PROJECT-2: FERMION COPILOT**
+**NEXT PROJECT-1: FERMION COPILOT**
 
 - *FERMION COPILOT*: Mobile App Client for Bimod & BimodLab, with features allowing for transactions between the
   mobile data and the web application. **(Probably Flutter-Based)**
@@ -38,7 +37,7 @@
 
 ---
 
-**NEXT PROJECT-3: ASTROLITH X1**
+**NEXT PROJECT-2: ASTROLITH X1**
 
 - *ASTROLITH X1*: Two important plans to be developed: A physical server + a locally runnable instance of the
   Bimod & BimodLab web application, with minimal interventions from our ends.
@@ -50,7 +49,7 @@
 
 ---
 
-**NEXT PROJECT-4: ASTROBELT**
+**NEXT PROJECT-3: ASTROBELT**
 
 - *ASTROBELT*: MS-Office plugins for connecting the drafting tool we have in our web application to the MS-Office
   applications, such as Word, Excel, PowerPoint, etc. The plugin will allow for the drafting tool to be
@@ -60,7 +59,7 @@
 
 ---
 
-**NEXT PROJECT-5: MENTARA**
+**NEXT PROJECT-4: MENTARA**
 
 - *MENTARA*: A helper assistant that helps the clients configure their enterprise environments in the web application,
   and uses our documentation to guide them through their questions and help them navigate their journey
@@ -69,7 +68,7 @@
 
 ---
 
-**NEXT PROJECT-6: INTEGRATIONS FRAMEWORK**
+**NEXT PROJECT-5: INTEGRATIONS FRAMEWORK**
 
 - *INTEGRATIONS*: A page/store that will include ready-made assistants that the clients can easily integrate to
   themselves.
@@ -77,7 +76,7 @@
 
 ---
 
-**NEXT PROJECT-7: META-INTEGRATIONS FRAMEWORK**
+**NEXT PROJECT-6: META-INTEGRATIONS FRAMEWORK**
 
 - *META-INTEGRATIONS*: A page/store that will include ready-made "team of assistants" that the clients can easily
   integrate to themselves.
@@ -85,7 +84,7 @@
 
 ---
 
-**NEXT PROJECT-8: AUTOMATED MEDIA SYNCHRONIZATION**
+**NEXT PROJECT-7: AUTOMATED MEDIA SYNCHRONIZATION**
 
 - *AUTOMATED MEDIA SYNC*: Connecting S3 Buckets, Google Drive, and other cloud storages to the web application, and
   allowing for
@@ -95,7 +94,7 @@
 
 ---
 
-**NEXT PROJECT-9: VOIDFORGER**
+**NEXT PROJECT-8: VOIDFORGER**
 
 - *VOIDFORGER*: A hyper-assistant over orchestrators and all internal processes of an enterprise, controlling the
   assistants, leanmods, orchestrations, data sources such as sql, nosql, ssh servers, code bases,
@@ -105,7 +104,7 @@
 
 ---
 
-**NEXT PROJECT-10: DEVELOPER ECOSYSTEM**
+**NEXT PROJECT-9: DEVELOPER ECOSYSTEM**
 
 - *DEV ECOSYSTEM*: Make the function, API, and Script Stores accessible to the developers for them to contribute, and
   incentivize them by rewarding Bimod & BimodLab credits, as well as a commission percentage from
