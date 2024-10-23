@@ -24,7 +24,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Process Details: {{ binexus_process.process_name }}{% endblock %}
+{% block title %}Process Details{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -94,6 +94,51 @@
 
   <hr>
 
+  <!-- Process Metadata Section -->
+  <div class="card mb-4 mt-4 border border-primary rounded border-4">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="fa fa-info-circle me-4"></i>
+        <strong>Process Metadata</strong>
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-4">
+          <h6><i class="fa fa-building me-2"></i> <strong>Organization</strong></h6>
+          <h6 class="btn-primary p-4 rounded w-100"><strong>{{ binexus_process.organization.name }}</strong></h6>
+        </div>
+        <div class="col-sm-4">
+          <h6><i class="fa fa-robot me-2"></i> <strong>LLM Model</strong></h6>
+          <h6 class="btn-primary p-4 rounded w-100"><strong>{{ binexus_process.llm_model.nickname }}</strong></h6>
+        </div>
+        <div class="col-sm-4">
+          <h6><i class="fa fa-tag me-2"></i> <strong>Process Name</strong></h6>
+          <h6 class="btn-primary p-4 rounded w-100"><strong>{{ binexus_process.process_name }}</strong></h6>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row">
+        <div class="col-12 mb-4">
+          <h6><i class="fa fa-align-left me-2"></i> <strong>Process Description</strong></h6>
+          <p class="p-3 border border-primary rounded" style="min-height: 100px; max-height: 100px; overflow: auto;">{{ binexus_process.process_description }}</p>
+        </div>
+        <div class="col-6 mb-4">
+          <h6><i class="fa fa-bullseye me-2"></i> <strong>Process Objective</strong></h6>
+          <p class="p-3 border border-primary rounded" style="min-height: 200px; max-height: 200px; overflow: auto;">{{ binexus_process.process_objective|default:"Not Provided" }}</p>
+        </div>
+        <div class="col-6 mb-4">
+          <h6><i class="fa fa-check me-2"></i> <strong>Success Criteria</strong></h6>
+          <p class="p-3 border border-primary rounded" style="min-height: 200px; max-height: 200px; overflow: auto;">{{ binexus_process.process_success_criteria|default:"Not Provided" }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
   <!-- Training Hyperparameters Section -->
   <div class="card mb-4 mt-4 border border-4 rounded border-success">
     <div class="card-header">
@@ -136,8 +181,43 @@
     </div>
   </div>
 
+  <hr>
+
+  <!-- Additional Genes Section -->
+  <div class="card mb-4 mt-4 border border-warning rounded border-4">
+    <div class="card-header">
+      <h5 class="card-title">
+        <i class="fa fa-dna me-4"></i>
+        <strong>Custom Additional Genes</strong>
+      </h5>
+    </div>
+    <div class="card-body">
+      {% if binexus_process.additional_genes %}
+        <div class="row">
+          {% for gene_name, gene_values in binexus_process.additional_genes.items %}
+          <div class="col-sm-6 mb-4">
+            <h6><strong>{{ gene_name }}</strong></h6>
+            <div class="p-2 border border-primary rounded">
+              {% for value in gene_values %}
+                <span class="badge btn-primary m-1 p-2">{{ value }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="alert alert-warning">
+          <i class="fa fa-exclamation-triangle me-2"></i>
+          <strong>No custom genes defined for this process.</strong>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <hr>
+
   <!-- Training Logs and Metrics Section -->
-  <div class="card mb-4 border border-4 border-primary rounded">
+  <div class="card mb-4 mt-4 border border-4 border-primary rounded">
     <div class="card-header">
       <h5 class="card-title">
         <i class="fa fa-chart-bar me-4"></i>

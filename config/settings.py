@@ -136,6 +136,7 @@ INSTALLED_APPS = [
     "apps.smart_contracts",
     "apps.notifications",
     "apps.binexus",
+    "apps.metakanban",
 
     ########################################
     # SUPPORT
@@ -367,10 +368,10 @@ THEME_VARIABLES = THEME_VARIABLES
 # ------------------------------------------------------------------------------
 
 # Change this if you need to send real emails for testing purposes.
-FORCE_SMTP_USE = False
+FORCE_SMTP_USE = os.getenv('FORCE_SMTP_USE', "false").lower() in ['true', '1', 'yes']
 
 if ENVIRONMENT != "local" or FORCE_SMTP_USE:
-    print("[settings.py] Email backend is set to SMTP for production environment.")
+    print("[settings.py] Email backend is set to SMTP for production environment (or forced SMTP in local).")
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
     EMAIL_PORT = os.getenv('EMAIL_PORT', 587)

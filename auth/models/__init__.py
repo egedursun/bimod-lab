@@ -19,3 +19,4 @@
 from .member_models import *
 from .promo_code_models import *
 from .user_credit_card_models import *
+from .email_announcement_models import *

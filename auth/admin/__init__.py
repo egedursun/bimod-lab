@@ -19,3 +19,4 @@
 from .member_admin import *
 from .promo_code_admin import *
 from .user_credit_card_admin import *
+from .email_announcement_admin import *

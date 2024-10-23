@@ -2,9 +2,9 @@
 #
 #  Project: Bimod.io™
 #  File: apps.py
-#  Last Modified: 2024-10-05 15:45:58
+#  Last Modified: 2024-10-23 17:33:01
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 15:45:58
+#  Created: 2024-10-23 17:33:39
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -18,11 +18,6 @@
 from django.apps import AppConfig
 
 
-class AuthConfig(AppConfig):
+class MetakanbanConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'auth'
-    label = 'accounts'
-
-    def ready(self):
-        import auth.signals
-        pass
+    name = 'apps.metakanban'

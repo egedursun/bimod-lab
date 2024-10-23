@@ -47,6 +47,7 @@ class Profile(models.Model):
     postal_code = models.CharField(max_length=100, blank=True, null=True)
     free_credits = models.FloatField(default=0)
     is_accredited_by_staff = models.BooleanField(default=False)
+    accreditation_email_sent_at = models.DateTimeField(null=True, blank=True)
     user_forum_role = models.CharField(max_length=100, choices=USER_FORUM_ROLES, default='client_user')
     user_forum_rank = models.CharField(max_length=100, choices=USER_FORUM_RANKS, default='unranked')
     user_forum_points = models.IntegerField(default=0)

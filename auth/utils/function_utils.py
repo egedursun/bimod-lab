@@ -17,6 +17,7 @@
 
 
 import datetime
+import logging
 import os
 import random
 import string
@@ -25,6 +26,9 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse
 from django.utils.html import strip_tags
+
+
+logger = logging.getLogger(__name__)
 
 
 def send_email(subject, email, html_content):
@@ -48,6 +52,32 @@ def render_html_template(file_path, context):
     for key, value in context.items():
         html_content = html_content.replace(f'<[[{key}]]>', value)
     return html_content
+
+
+def send_announcement_email(recipient_emails: list, title_raw: str, body_raw: str):
+    subject = f"Bimod.io | {title_raw}"
+    context = {'ANNOUNCEMENT_TITLE': title_raw, 'ANNOUNCEMENT_BODY': body_raw}
+    file_path = os.path.join(os.path.dirname(__file__), '..', 'helper_templates', 'announcement_email_template.html')
+    html_content = render_html_template(file_path, context)
+    for email in recipient_emails:
+        send_email(subject, email, html_content)
+
+
+def send_accreditation_approval_email(email):
+    subject = "Bimod.io | Accreditation Approved"
+    context = {}
+    try:
+        file_path = os.path.join(os.path.dirname(__file__), '..', 'helper_templates', 'account_approved_email_template.html')
+        html_content = render_html_template(file_path, context)
+    except Exception as e:
+        logger.error(f"Error occurred while preparing accreditation approval email: {e}")
+        return
+
+    try:
+        send_email(subject, email, html_content)
+    except Exception as e:
+        logger.error(f"Error occurred while sending accreditation approval email: {e}")
+        return
 
 
 def send_verification_email(email, token):

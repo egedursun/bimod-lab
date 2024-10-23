@@ -79,3 +79,7 @@ PROMO_CODE_ADMIN_LIST = ("user", "code", "bonus_percentage_referrer", "bonus_per
 
 CREDIT_CARD_ADMIN_LIST = ("name_on_card", "card_number", "card_expiration_month", "card_expiration_year",
                           "card_cvc", "created_at",)
+
+BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_LIST = ['email_subject_raw', 'title_raw', 'created_at']
+BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_SEARCH = ['email_subject_raw', 'title_raw', 'body_raw']
+BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_FILTER = ['created_at']

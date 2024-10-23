@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: apps.py
-#  Last Modified: 2024-10-05 15:45:58
+#  File: __init__.py
+#  Last Modified: 2024-10-05 02:26:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 15:45:58
+#  Created: 2024-10-05 14:42:36
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,15 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+#
+#
 
-from django.apps import AppConfig
-
-
-class AuthConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'auth'
-    label = 'accounts'
-
-    def ready(self):
-        import auth.signals
-        pass

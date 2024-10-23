@@ -6,12 +6,9 @@
 
 **SMALL TASKS**
 
-[1] Visual improvement by adding photos (AI generated photos on Canva)
-[2] Introduction/Reduction of chromosome genes in Binexus Processes. (/? think about this, what, how and where ?\)
-[3] Add the process data in the process detail page as a new section.
-[3] Add the latest cost variables to the server .env.dev and .env.prod (our SSH Server)
-[4] Add Binexus to the Bimod.io documentation (Google Docs)
-[5] When user is approved, send a mail to let them know about it (New Email Template)
+[1] When user is approved, send a mail to let them know about it (New Email Template)
+[2] Visual improvement by adding photos (AI generated photos on Canva)
+[3] Work on meta-kanban
 
 ---
 
