@@ -29,6 +29,7 @@ class BinexusProcess(models.Model):
     process_objective = models.TextField(blank=True, null=True)
     process_success_criteria = models.TextField(blank=True, null=True)
     fitness_manager_selectiveness = models.FloatField(default=0.5)
+    additional_genes = models.JSONField(default=dict, blank=True, null=True)
 
     # Optimization Hyper-Parameters
     optimization_generations = models.IntegerField(default=10)

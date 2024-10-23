@@ -28,8 +28,9 @@ logger = logging.getLogger(__name__)
 
 
 class FitnessEvaluationManager:
-    def __init__(self, binexus_process: BinexusProcess):
+    def __init__(self, binexus_process: BinexusProcess, custom_genes: dict = None):
         self.process = binexus_process
+        self.custom_genes = {} if (custom_genes is None) else custom_genes
         self.llm_model = self.process.llm_model
         self.c = OpenAIGPTClientManager.get_naked_client(llm_model=self.llm_model)
 
@@ -88,7 +89,9 @@ class FitnessEvaluationManager:
         calculated_fitness_score = 0
         if is_test is True:
             for gene_name, gene_value in individual.get_chromosome().items():
-                if Chromosome.get_index_of_gene_value(gene_name=gene_name, gene_value=gene_value) == 0:
+                if Chromosome.get_index_of_gene_value(
+                    gene_name=gene_name, gene_value=gene_value, custom_genes=self.custom_genes
+                ) == 0:
                     calculated_fitness_score += 1
         else:
             fitness_score = self._consult_ai(individual=individual)

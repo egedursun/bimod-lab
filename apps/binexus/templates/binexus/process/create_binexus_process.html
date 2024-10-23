@@ -52,6 +52,57 @@
       });
     });
   </script>
+  <script>
+      function addKeyValuePair() {
+        const container = document.getElementById("key-value-container");
+        const keyValuePairId = `key-value-pair-${Date.now()}`; // Unique ID for each pair
+
+        const keyValuePair = document.createElement("div");
+        keyValuePair.classList.add("key-value-pair", "row", "mb-4");
+        keyValuePair.setAttribute("id", keyValuePairId); // Set unique ID
+
+        keyValuePair.innerHTML = `
+          <div class="col-5">
+            <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
+            <input id="additional_genes_keys" type="text" class="form-control" name="additional_genes_keys[]" placeholder="Gene Name" />
+          </div>
+          <div class="col-5">
+            <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
+            <input id="additional_genes_values" type="text" class="form-control gene-value-input" name="additional_genes_values[]" placeholder="Gene Value Set (Comma Separated ',')" oninput="splitValuesToBadges(this)">
+            <div class="gene-value-badges mt-2 fw-bolder"></div>
+          </div>
+          <div class="col-2">
+            <button class="btn btn-danger w-100" type="button" onclick="removeKeyValuePair('${keyValuePairId}')">
+              <i class="fa fa-minus me-2"></i><strong>Remove Row</strong>
+            </button>
+          </div>
+        </div>
+        `;
+
+        container.appendChild(keyValuePair);
+      }
+
+      function removeKeyValuePair(id) {
+        const rowToRemove = document.getElementById(id);
+        rowToRemove.remove();  // Remove the row from the DOM
+      }
+  </script>
+  <script>
+    function splitValuesToBadges(input) {
+      const values = input.value.split(',');
+      const badgesContainer = input.nextElementSibling;
+      badgesContainer.innerHTML = '';
+      values.forEach(value => {
+        const trimmedValue = value.trim();
+        if (trimmedValue) {
+          const badge = document.createElement('span');
+          badge.classList.add('badge', 'btn-primary', 'm-1', 'p-2');
+          badge.textContent = trimmedValue;
+          badgesContainer.appendChild(badge);
+        }
+      });
+    }
+  </script>
 {% endblock vendor_js %}
 
 {% block content %}
@@ -193,8 +244,36 @@
                 <input type="number" class="form-control" id="optimization_crossover_rate" name="optimization_crossover_rate" min="0" max="1" step="0.01" value="0.5" required>
               </div>
 
+              <hr>
+
+              <div class="col-12 mb-6 mt-4">
+                <h5><strong>Additional Genes (Optional)</strong></h5>
+                <label class="form-label" for="optimization_crossover_rate"></label>
+                <div id="key-value-container">
+                  <div class="key-value-pair row mb-4">
+                    <div class="col-5">
+                      <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
+                      <input id="additional_genes_keys" type="text" class="form-control" name="additional_genes_keys[]" placeholder="Gene Name" />
+                    </div>
+                    <div class="col-5">
+                      <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
+                      <input id="additional_genes_values" type="text" class="form-control gene-value-input" name="additional_genes_values[]" placeholder="Gene Value Set (Comma Separated ',')" oninput="splitValuesToBadges(this)">
+                      <div class="gene-value-badges mt-2 fw-bolder"></div> <!-- Container for the badges -->
+                    </div>
+                    <div class="col-2">
+                      <button class="col-2 btn btn-success w-100" type="button" onclick="addKeyValuePair()">
+                        <i class="fa fa-plus me-2"></i>
+                        <strong>Add Row</strong>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <hr>
+
               <!-- Self Breeding Switch -->
-              <div class="col-12 mb-6">
+              <div class="col-12 mb-6 mt-8">
               <label class="form-label" for="self_breeding_possible">Allow Self Breeding</label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">

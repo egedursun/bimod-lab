@@ -8,8 +8,10 @@
 
 [1] Visual improvement by adding photos (AI generated photos on Canva)
 [2] Introduction/Reduction of chromosome genes in Binexus Processes. (/? think about this, what, how and where ?\)
+[3] Add the process data in the process detail page as a new section.
 [3] Add the latest cost variables to the server .env.dev and .env.prod (our SSH Server)
 [4] Add Binexus to the Bimod.io documentation (Google Docs)
+[5] When user is approved, send a mail to let them know about it (New Email Template)
 
 ---
 
@@ -228,13 +230,14 @@
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Last Measurement Date: 2024-10-22
-- Total Days: 115
-  - Number of Files: 52,193
+- Last Measurement Date: 2024-10-23
+- Total Days: 116
+  - Number of Files: 52,266
   - Code Lines: 11,700,000
   - Comment Lines: 3,700,000
-  - TOTAL: 15,400,000
-  - TOTAL RAW CALCULATION: ...
+  - Blank Lines: 2,300,000
+  - TOTAL: 17,700,000
+  - TOTAL RAW CALCULATION: 452,000,000
 
 ---
 

@@ -52,7 +52,9 @@ class Matrix:
         )
         self.population = self.population_manager.build_population_with_size()
 
-        self.fitness_manager = FitnessEvaluationManager(binexus_process=binexus_process)
+        self.fitness_manager = FitnessEvaluationManager(
+            binexus_process=binexus_process, custom_genes=binexus_process.additional_genes)
+
         self.breeding_manager = BreedingManager(
             process=self.binexus_process,
             llm_model=binexus_process.llm_model,

@@ -55,7 +55,7 @@ class PopulationManager:
         for i in range(self.population_size):
             new_individual = Individual(
                 process=self.process,
-                chromosome=Chromosome.get_random_chromosome(),
+                chromosome=Chromosome.get_random_chromosome(custom_genes=self.process.additional_genes),
                 llm_model=self.llm_model
             )
             generated_population.append(new_individual)

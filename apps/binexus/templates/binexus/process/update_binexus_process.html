@@ -52,6 +52,48 @@
       });
     });
   </script>
+  <script>
+      function addKeyValuePair() {
+      const container = document.getElementById("key-value-container");
+      const keyValuePair = document.createElement("div");
+      keyValuePair.classList.add("key-value-pair", "row", "mb-4");
+
+      keyValuePair.innerHTML = `
+          <div class="col-5">
+              <input type="text" class="form-control" name="additional_genes_keys[]" placeholder="Gene Name">
+          </div>
+          <div class="col-5">
+              <input type="text" class="form-control gene-value-input" name="additional_genes_values[]" placeholder="Gene Value Set (Comma Separated ',')" oninput="splitValuesToBadges(this)">
+              <div class="gene-value-badges mt-2 fw-bolder"></div>
+          </div>
+          <div class="col-2">
+              <button class="btn btn-danger w-100" type="button" onclick="removeKeyValuePair(this)">
+                  <i class="fa fa-minus me-2"></i><strong>Remove</strong>
+              </button>
+          </div>
+      `;
+      container.appendChild(keyValuePair);
+  }
+
+  function removeKeyValuePair(element) {
+      element.closest(".key-value-pair").remove();
+  }
+
+  function splitValuesToBadges(input) {
+      const values = input.value.split(',');
+      const badgesContainer = input.nextElementSibling;
+      badgesContainer.innerHTML = '';
+      values.forEach(value => {
+          const trimmedValue = value.trim();
+          if (trimmedValue) {
+              const badge = document.createElement('span');
+              badge.classList.add('badge', 'btn-primary', 'm-1', 'p-2');
+              badge.textContent = trimmedValue;
+              badgesContainer.appendChild(badge);
+          }
+      });
+  }
+  </script>
 {% endblock vendor_js %}
 
 {% block content %}
@@ -193,8 +235,82 @@
                 <input type="number" class="form-control" id="optimization_crossover_rate" name="optimization_crossover_rate" min="0" max="1" step="0.01" value="{{ binexus_process.optimization_crossover_rate }}" required>
               </div>
 
+              <div class="col-12 mb-6 mt-4">
+                  <h5><strong>Additional Genes (Optional)</strong></h5>
+                  <div id="key-value-container">
+                      {% if binexus_process.additional_genes %}
+                          {% for gene_name, gene_values in binexus_process.additional_genes.items %}
+                              <div class="key-value-pair row mb-4">
+                                  {% if forloop.first %}
+                                      <div class="col-5">
+                                          <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
+                                          <input id="additional_genes_keys" type="text" class="form-control" name="additional_genes_keys[]" value="{{ gene_name }}" />
+                                      </div>
+                                      <div class="col-5">
+                                          <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
+                                          <input id="additional_genes_values" type="text" class="form-control gene-value-input" name="additional_genes_values[]" value="{{ gene_values|join:',' }}" oninput="splitValuesToBadges(this)">
+                                          <div class="gene-value-badges mt-2 fw-bolder">
+                                              {% for value in gene_values %}
+                                                  <span class="badge btn-primary m-1 p-2">{{ value }}</span>
+                                              {% endfor %}
+                                          </div>
+                                      </div>
+                                      <div class="col-2">
+                                          <button class="btn btn-success w-100 mb-2" type="button" onclick="addKeyValuePair()">
+                                              <i class="fa fa-plus me-2"></i><strong>Add Row</strong>
+                                          </button>
+                                      </div>
+                                  {% else %}
+                                      <div class="col-5">
+                                          <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
+                                          <input id="additional_genes_keys" type="text" class="form-control" name="additional_genes_keys[]" value="{{ gene_name }}" />
+                                      </div>
+                                      <div class="col-5">
+                                          <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
+                                          <input id="additional_genes_values" type="text" class="form-control gene-value-input" name="additional_genes_values[]" value="{{ gene_values|join:',' }}" oninput="splitValuesToBadges(this)">
+                                          <div class="gene-value-badges mt-2 fw-bolder">
+                                              {% for value in gene_values %}
+                                                  <span class="badge btn-primary m-1 p-2">{{ value }}</span>
+                                              {% endfor %}
+                                          </div>
+                                      </div>
+                                      <div class="col-2">
+                                          <button class="btn btn-danger w-100" type="button" onclick="removeKeyValuePair(this)">
+                                              <i class="fa fa-minus me-2"></i><strong>Remove</strong>
+                                          </button>
+                                      </div>
+                                  {% endif %}
+                              </div>
+                          {% endfor %}
+                      {% else %}
+                          <!-- If no genes, display empty row with badges container -->
+                          <div class="key-value-pair row mb-4">
+                              <div class="col-5">
+                                  <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
+                                  <input id="additional_genes_keys" type="text" class="form-control" name="additional_genes_keys[]" placeholder="Gene Name" />
+                              </div>
+                              <div class="col-5">
+                                  <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
+                                  <input id="additional_genes_values" type="text" class="form-control gene-value-input" name="additional_genes_values[]" placeholder="Gene Value Set (Comma Separated ',')" oninput="splitValuesToBadges(this)">
+                                  <div class="gene-value-badges mt-2 fw-bolder"></div>
+                              </div>
+                              <div class="col-2">
+                                  <button class="btn btn-success w-100 mb-2" type="button" onclick="addKeyValuePair()">
+                                      <i class="fa fa-plus me-2"></i><strong>Add Row</strong>
+                                  </button>
+                                  <button class="btn btn-danger w-100" type="button" onclick="removeKeyValuePair(this)">
+                                      <i class="fa fa-minus me-2"></i><strong>Remove</strong>
+                                  </button>
+                              </div>
+                          </div>
+                      {% endif %}
+                  </div>
+              </div>
+
+              <hr>
+
               <!-- Self Breeding Switch -->
-              <div class="col-12 mb-6">
+              <div class="col-12 mb-6 mt-8">
                 <label class="form-label" for="self_breeding_possible">Allow Self Breeding</label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">

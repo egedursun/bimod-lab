@@ -14,9 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 import random
 
 import numpy
+
+
+logger = logging.getLogger(__name__)
 
 
 # Expanded dictionary with gene names and contents
@@ -871,11 +875,26 @@ class Chromosome:
         def get_random_gene():
             return Chromosome.GeneNames.as_list()[random.randint(0, len(Chromosome.GeneNames.as_list()) - 1)]
 
+    class CustomGene:
+        @staticmethod
+        def as_list(custom_genes: dict):
+            custom_gene_names = []
+            for gene_name, gene_value_set in custom_genes.items():
+                custom_gene_names.append(gene_name)
+            return custom_gene_names
+
+        @staticmethod
+        def get_random_gene(custom_genes: dict):
+            cg = Chromosome.CustomGene.as_list(custom_genes=custom_genes)
+            return cg[random.randint(0, len(cg) - 1)]
+
+
+
     ############
 
     @staticmethod
-    def get_random_chromosome():
-        return {
+    def get_random_chromosome(custom_genes=None):
+        chromosome_data = {
             Chromosome.GeneNames.TONE: Chromosome.Tone.get_random_value(),
             Chromosome.GeneNames.CLARITY: Chromosome.Clarity.get_random_value(),
             Chromosome.GeneNames.FORMAT: Chromosome.Format.get_random_value(),
@@ -907,6 +926,9 @@ class Chromosome:
             Chromosome.GeneNames.HUMOR_AND_PLAYFULNESS: Chromosome.HumorAndPlayfulness.get_random_value(),
             Chromosome.GeneNames.AUDIENCE_ENGAGEMENT: Chromosome.AudienceEngagement.get_random_value(),
         }
+        for gene_name, gene_value_set in custom_genes.items():
+            chromosome_data[gene_name] = gene_value_set[random.randint(0, len(gene_value_set) - 1)]
+        return chromosome_data
 
     @staticmethod
     def give_random_value_of_gene(gene_name: str):
@@ -974,15 +996,30 @@ class Chromosome:
             return None
 
     @staticmethod
-    def get_index_of_gene(gene_name: str):
-        return Chromosome.GeneNames.as_list().index(gene_name)
+    def get_index_of_gene(gene_name: str, custom_genes=None):
+        custom_genes_names = Chromosome.CustomGene.as_list(custom_genes=custom_genes)
+        combined_list = Chromosome.GeneNames.as_list() + custom_genes_names
+        return combined_list.index(gene_name)
 
     @staticmethod
-    def get_class_name_of_gene(gene_name: str):
-        return Chromosome.GeneNames.as_list()[Chromosome.get_index_of_gene(gene_name)]
+    def get_class_name_of_gene(gene_name: str, custom_genes = None):
+        custom_genes_names = Chromosome.CustomGene.as_list(custom_genes=custom_genes)
+        combined_list = Chromosome.GeneNames.as_list() + custom_genes_names
+        class_name = combined_list[Chromosome.get_index_of_gene(gene_name)]
+        return class_name
 
     @staticmethod
-    def get_index_of_gene_value(gene_name: str, gene_value: str):
+    def get_index_of_gene_value(gene_name: str, gene_value: str, custom_genes = None):
         class_name = Chromosome.get_class_name_of_gene(gene_name)
-        gene_value_index = Chromosome.__dict__[class_name].as_list().index(gene_value)
-        return gene_value_index
+        chromosome_class_name_list = Chromosome.__dict__[class_name].as_list()
+        if gene_name not in chromosome_class_name_list:
+            custom_gene_names = Chromosome.CustomGene.as_list(custom_genes=custom_genes)
+            if gene_name in custom_gene_names:
+                custom_gene_value_index = custom_genes[gene_name].index(gene_value)
+                return custom_gene_value_index
+            else:
+                logger.error(f"Gene value {gene_value} not found in gene {gene_name}")
+                return None
+        else:
+            gene_value_index = chromosome_class_name_list.index(gene_value)
+            return gene_value_index
