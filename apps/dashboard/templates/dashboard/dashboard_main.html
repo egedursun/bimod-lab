@@ -4167,23 +4167,22 @@
 
   <div class="row d-flex align-items-stretch">
     <!-- HELPER BOT -->
-    <div class="card col-lg-12 mt-4 mb-4 border border-primary rounded border-4">
+    <div class="card col-lg-12 mt-4 mb-4 rounded">
       <div class="row">
         <div class="card-header col-12">
           <h5
-            class="text-dark d-flex justify-content-center text-center card card-border-shadow-primary p-4 ms-12 me-12 mt-2 mb-8 rounded">
-            <strong>Statistical Analysis Bot</strong>
+            class="text-dark d-flex justify-content-center text-center card p-4 ms-12 me-12 mt-2 mb-8 rounded">
+            <strong>
+              <i class="fa fa-robot me-2"></i>
+              Statistical Analysis Bot
+            </strong>
           </h5>
-          <small class="d-flex justify-content-center">
-            You can use me to gather insights about your organizations' data and statistics. <br>
-            Please click the button below to make me analyze the statistics for you and provide you with the insights.
-          </small>
         </div>
         <div class="row">
           <div class="col-12">
             <div class="d-flex justify-content-center">
-              <img src="{% static 'img/custom-illustrations-v2/i2-18.png' %}"
-                   class="justify-content-end rounded border border-2 border-primary" style="width:100px;" alt="Illustration for tips">
+              <img src="{% static 'img/dashboard/ds-22.png' %}"
+                   class="rounded ms-6" style="width: 100%;" alt="Illustration for tips">
             </div>
           </div>
           <form action="{% url 'dashboard:main-dashboard' %}" method="POST" id="form-analysis">
@@ -4462,6 +4461,8 @@ ${insightContent}
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
+              <img src="{% static 'img/dashboard/ds-1.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Cost per Organization</h5>
               <small class="text-muted">Total costs accumulated for a given organization, within the last {{ days }}
                 days,
@@ -4476,6 +4477,8 @@ ${insightContent}
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
+              <img src="{% static 'img/dashboard/ds-2.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Cost per Assistant</h5>
               <small class="text-muted">Total costs accumulated for each assistant, within the last {{ days }} days,
                 in United States Dollars ($). Please note that the statistics may not reflect a 1 to 1 ratio with the
@@ -4489,6 +4492,8 @@ ${insightContent}
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
+              <img src="{% static 'img/dashboard/ds-3.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Costs per User</h5>
               <small class="text-muted">Total costs accumulated for each user of the connected organizations, within the
                 last {{ days }} days,
@@ -4500,6 +4505,8 @@ ${insightContent}
             </div>
           </div>
         </div>
+        <img src="{% static 'img/dashboard/ds-20.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -4574,6 +4581,8 @@ ${insightContent}
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
+              <img src="{% static 'img/dashboard/ds-4.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Token Usage per Organization</h5>
               <small class="text-muted">Total token usage accumulated for a given organization, within the
                 last {{ days }} days,
@@ -4588,6 +4597,8 @@ ${insightContent}
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
+              <img src="{% static 'img/dashboard/ds-5.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Token Usage per Assistant</h5>
               <small class="text-muted">Total token usage accumulated for each assistant, within the last {{ days }}
                 days,
@@ -4602,6 +4613,8 @@ ${insightContent}
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
+              <img src="{% static 'img/dashboard/ds-6.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Token Usage per User</h5>
               <small class="text-muted">Total token usage accumulated for each user of the connected organizations,
                 within the last {{ days }} days,
@@ -4613,6 +4626,8 @@ ${insightContent}
             </div>
           </div>
         </div>
+        <img src="{% static 'img/dashboard/ds-21.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -4657,7 +4672,7 @@ ${insightContent}
       </div>
       <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
            role="alert">
-        <img src="{% static 'img/custom-illustrations-v2/i2-21.png' %}" width="25%" style="border-radius:25px;"
+        <img src="{% static 'img/dashboard/i2-21.png' %}" width="25%" style="border-radius:25px;"
              class="justify-content-end me-8" alt="Illustration for tips">
         <span class="alert-icon rounded">
           <i class="ti ti-bookmark"></i>
@@ -4689,6 +4704,8 @@ ${insightContent}
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
+              <img src="{% static 'img/dashboard/ds-7.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Chats per Organization</h5>
               <small class="text-muted">Total chats started for each assistant, within the last {{ days }} days.</small>
             </div>
@@ -4700,6 +4717,8 @@ ${insightContent}
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
+              <img src="{% static 'img/dashboard/ds-8.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Chat Messages per Organization</h5>
               <small class="text-muted">Total chat messages sent for each assistant, within the last {{ days }}
                 days.</small>
@@ -4712,6 +4731,8 @@ ${insightContent}
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
+              <img src="{% static 'img/dashboard/ds-9.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Request Count per Exported Assistant</h5>
               <small class="text-muted">Total request count for each exported assistant, within the last {{ days }}
                 days.</small>
@@ -4760,6 +4781,8 @@ ${insightContent}
         </div>
       </div>
       <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-10.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -4840,6 +4863,8 @@ ${insightContent}
         </div>
       </div>
       <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-11.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -4917,6 +4942,8 @@ ${insightContent}
         </div>
       </div>
       <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-12.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5017,6 +5044,8 @@ ${insightContent}
         </div>
       </div>
       <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-13.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-12 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5069,6 +5098,8 @@ ${insightContent}
         </div>
       </div>
       <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-14.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-6 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5134,6 +5165,8 @@ ${insightContent}
         </div>
       </div>
       <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-15.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5209,6 +5242,8 @@ ${insightContent}
         </div>
       </div>
       <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-16.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5286,6 +5321,8 @@ ${insightContent}
         </div>
       </div>
       <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-17.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5367,6 +5404,8 @@ ${insightContent}
         </div>
       </div>
       <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-18.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-6 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5430,6 +5469,8 @@ ${insightContent}
         </div>
       </div>
       <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-19.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-12 mb-6">
           <div class="card h-100">
             <div class="card-header">

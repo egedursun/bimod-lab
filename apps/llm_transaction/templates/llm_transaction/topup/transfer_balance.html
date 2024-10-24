@@ -125,7 +125,10 @@
   <!-- Form for selecting the source and target organizations -->
   <div class="row mb-6 mt-8 card card-border-shadow-primary p-8">
     <div class="col-sm-12 col-xl-12">
-      <h5 class="text-muted"><strong>Select Source and Target Organizations</strong></h5>
+      <h5><strong>Select Source and Target Organizations</strong></h5>
+
+      <img src="{% static 'img/dashboard/ds-19.png' %}" class="rounded w-100" alt="Illustration for tips">
+
       <hr>
 
       <form method="post" action="{% url 'organization:balance_transfer' %}">

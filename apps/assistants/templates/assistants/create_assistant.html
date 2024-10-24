@@ -95,7 +95,7 @@
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
             <div class="row p-8">
-              <div class="col-4 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="organization">Organization</label>
                 <select class="form-select" id="organization" name="organization">
                   <option value="" disabled selected>Select Organization</option>
@@ -105,7 +105,7 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-4 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="llm_model">LLM Model</label>
                 <select class="form-select" id="llm_model" name="llm_model">
                   <option value="" disabled selected>Select LLM Model</option>
@@ -115,7 +115,7 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-4 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="ner_integration">Named Entity Recognition (NER)</label>
                 <select class="form-select" id="ner_integration" name="ner_integration">
                   <option value="" selected>No NER Policy</option>
@@ -125,203 +125,35 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter assistant name"/>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="description">Description</label>
                 <textarea class="form-control" id="description" name="description"
-                          placeholder="Enter assistant description" rows="1"></textarea>
+                          placeholder="Enter assistant description" rows="2"></textarea>
               </div>
-              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
-                <span class="alert-icon rounded">
-                  <i class="ti ti-info-circle"></i>
-                </span>
-                This description will not be used to communicate or train the assistant. It is for human-readers to
-                understand the assistant's purpose.
-              </div>
-              <div class="col-12 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="instructions">Instructions</label>
                 <textarea class="form-control" id="instructions" name="instructions"
                           placeholder="Enter instructions"></textarea>
               </div>
-              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
-                <span class="alert-icon rounded">
-                  <i class="ti ti-info-circle"></i>
-                </span>
-                These instructions will be used to train the assistant. For example, "This assistant is designed to help
-                students with their homework."
-              </div>
-              <div class="col-12 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="response_template">Response Template</label>
-                <textarea class="form-control" id="response_template" name="response_template"
+                <textarea class="form-control" id="response_template" name="response_template" rows="2"
                           placeholder="Enter response template"></textarea>
               </div>
-              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
-                <span class="alert-icon rounded">
-                  <i class="ti ti-info-circle"></i>
-                </span>
-                This response template will be used to generate responses for the assistant. If you don't have a solid
-                response template for the assistant, you can leave this field empty. You can also put a sample response
-                in this field to make it more clear for the assistant to understand how it should respond to the user.
-              </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="audience">Audience</label>
                 <input type="text" class="form-control" id="audience" name="audience" placeholder="Enter audience"/>
-                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-                  <span class="alert-icon rounded">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                  Describe the audience for this assistant. For example, "This assistant is designed for students in the
-                  9th
-                  grade."
-                </div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="tone">Tone</label>
                 <input type="text" class="form-control" id="tone" name="tone" placeholder="Enter tone"/>
-                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-                  <span class="alert-icon rounded">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                  Describe the tone for this assistant. For example, "This assistant intends to be friendly and helpful,
-                  in
-                  a casual tone."
-                </div>
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="max_retry_count">Max Retries</label>
-                <!-- slider bar here -->
-                <input type="range" class="form-range" id="max_retry_count" name="max_retry_count" min="0" max="10"
-                       step="1" value="3" oninput="this.nextElementSibling.value = this.value">
-                <output>3</output>
-                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-                  <span class="alert-icon rounded">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                  The maximum number of times the assistant will retry generating a response if it fails to generate a
-                  response the first time. Please be aware that setting this value too high may cause the assistant to
-                  spend too much time and credits.
-                </div>
-              </div>
-              <div class="mb-6 col-3">
-                <label class="form-label" for="tool_max_attempts_per_instance">Max Tool Retries</label>
-                <!-- slider bar here -->
-                <input type="range" class="form-range" id="tool_max_attempts_per_instance"
-                       name="tool_max_attempts_per_instance" min="0" max="10" step="1" value="3"
-                       oninput="this.nextElementSibling.value = this.value">
-                <output>3</output>
-                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-                  <span class="alert-icon rounded">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                  The maximum number of times the assistant will retry using a tool if it fails to retrieve a data
-                  the first time. Please be aware that setting this value too high may cause the assistant to spend
-                  too much time and credits to retrieve data.
-                </div>
-              </div>
-              <div class="mb-6 col-3">
-                <label class="form-label" for="tool_max_chains">Max Pipelines</label>
-                <!-- slider bar here -->
-                <input type="range" class="form-range" id="tool_max_chains" name="tool_max_chains" min="0" max="20"
-                       step="1" value="3" oninput="this.nextElementSibling.value = this.value">
-                <output>3</output>
-                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-                  <span class="alert-icon rounded">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                  The maximum number of tools the assistant will use in a single response, one after the other one.
-                  Please be aware that setting this value too high may cause the assistant to spend too much time and
-                  credits to generate a response.
-                </div>
-              </div>
-              <div class="mb-6 col-3">
-                <label class="form-label" for="max_context_messages">Max Message Memory</label>
-                <!-- slider bar here -->
-                <input type="range" class="form-range" id="max_context_messages" name="max_context_messages" min="10"
-                       max="100" step=1" value="50" oninput="this.nextElementSibling.value = this.value">
-                <output>50</output>
-                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-                  <span class="alert-icon rounded">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                  The maximum number of messages the assistant will remember in a chat. Please note that there
-                  are strategies to overcome this limitation, which provide a cost-effective way of utilizing the
-                  assistants you have.
-                </div>
-              </div>
-              <div class="mb-6 col-6">
-                <label class="form-label" for="response_language">Response Language</label>
-                <select class="form-select" id="response_language" name="response_language">
-                  <option value="">Select Response Language</option>
-                  {% for language in response_languages %}
-                    <option value="{{ language.0 }}"
-                            {% if language.0 == "auto" %}selected{% endif %}>{{ language.1 }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="mb-6 col-6">
-                <label class="form-label" for="assistant_image">Assistant Image</label>
-                <input type="file" class="form-control" id="assistant_image" name="assistant_image"/>
-              </div>
-              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
-                  <span class="alert-icon rounded">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                Select the language in which the assistant will respond to the user. If you select "auto", the
-                assistant will automatically detect the language of the user's input and respond in the same language.
-              </div>
-              <div class="mb-6 col-12">
-                <label class="form-label" for="context_overflow_strategy">Context Overflow Management Strategy</label>
-                <select class="form-select" id="context_overflow_strategy" name="context_overflow_strategy">
-                  {% for strategy in context_overflow_strategies %}
-                    <option value="{{ strategy.0 }}" {% if forloop.first %}selected{% endif %}>{{ strategy.1 }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
-              <span class="alert-icon rounded">
-                <i class="ti ti-info-circle"></i>
-              </span>
-                Select the strategy the assistant will use to manage context overflow. If you select 'Stop
-                Conversation',
-                the assistant will stop the conversation if the context reaches the specified number of messages. If you
-                select 'Forget Oldest Messages', the assistant will forget the oldest messages surpassing the specified
-                number of messages. If you select 'Vectorize Oldest Messages', the assistant will vectorize the oldest
-                messages surpassing the specified number of messages, and be able to query them whenever needed.
-              </div>
-              <div id="memory-vectorizer-selection-bar" class="mb-6 col-6 d-none">
-                <label class="form-label" for="vectorizer_name">Chat Memory Vectorizer</label>
-                <select class="form-select" id="vectorizer_name" name="vectorizer_name">
-                  <option value="" disabled selected>Select Vectorizer</option>
-                  {% for vectorizer in vectorizers %}
-                    <option value="{{ vectorizer.0 }}">{{ vectorizer.1 }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div id="memory-vectorizer-api-key-bar" class="mb-6 col-6 d-none">
-                <label class="form-label" for="vectorizer_api_key">Vectorizer API Key</label>
-                <input type="text" class="form-control" id="vectorizer_api_key" name="vectorizer_api_key"
-                       placeholder="Enter the API key for your OpenAI account"/>
-              </div>
-              <div id="memory-vectorizer-alert-bar"
-                   class="tips-section alert alert-solid-warning d-flex align-items-center d-none"
-                   role="alert">
-                <span class="alert-icon rounded">
-                  <i class="ti ti-info-circle"></i>
-                </span>
-                The vectorizer API key is used to connect to the vectorizer service. The vectorizer service is used to
-                vectorize the oldest messages surpassing the specified number of messages, and be able to query them
-                whenever
-                needed. To be able to use this feature, you need to connect your OpenAI account to the vectorizer
-                service
-                by using the API key provided by OpenAI. In the future, we are planning to support other vectorizer
-                services
-                as well.
-              </div>
-              <div class="mb-6 col-4">
-                <label class="form-label" for="time_awareness">Time &amp; Location Awareness (Recommended)</label>
+                <label class="form-label" for="time_awareness">Time &amp; Location Awareness</label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">
                   <input type="checkbox" class="switch-input" id="awarenessCheckbox" checked>
@@ -334,9 +166,8 @@
                   </span>
                 </label>
               </div>
-              <div class="mb-6 col-4">
-                <label class="form-label" for="image_generation_capability">Image Generation &amp; Manipulation Capability
-                  (Recommended)</label>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="image_generation_capability">Image Generation &amp; Manipulation</label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">
                   <input type="checkbox" class="switch-input" id="imageGenerationCapabilityCheckbox" checked>
@@ -347,8 +178,64 @@
                   </span>
                 </label>
               </div>
-              <div class="mb-6 col-4">
-                <label class="form-label" for="multi_step_reasoning_capability_choice">Multi-Step Reasoning Capability <span class="text-warning"><strong>(† increases costs)</strong></span></label>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="max_retry_count">Max Retries</label>
+                <!-- slider bar here -->
+                <input type="range" class="form-range" id="max_retry_count" name="max_retry_count" min="0" max="10"
+                       step="1" value="3" oninput="this.nextElementSibling.value = this.value">
+                <output>3</output>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="tool_max_attempts_per_instance">Max Tool Retries</label>
+                <!-- slider bar here -->
+                <input type="range" class="form-range" id="tool_max_attempts_per_instance"
+                       name="tool_max_attempts_per_instance" min="0" max="10" step="1" value="3"
+                       oninput="this.nextElementSibling.value = this.value">
+                <output>3</output>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="tool_max_chains">Max Pipelines</label>
+                <!-- slider bar here -->
+                <input type="range" class="form-range" id="tool_max_chains" name="tool_max_chains" min="0" max="20"
+                       step="1" value="3" oninput="this.nextElementSibling.value = this.value">
+                <output>3</output>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="max_context_messages">Max Message Memory</label>
+                <!-- slider bar here -->
+                <input type="range" class="form-range" id="max_context_messages" name="max_context_messages" min="10"
+                       max="100" step=1" value="50" oninput="this.nextElementSibling.value = this.value">
+                <output>50</output>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="response_language">Response Language</label>
+                <select class="form-select" id="response_language" name="response_language">
+                  <option value="">Select Response Language</option>
+                  {% for language in response_languages %}
+                    <option value="{{ language.0 }}"
+                            {% if language.0 == "auto" %}selected{% endif %}>{{ language.1 }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="assistant_image">Assistant Image</label>
+                <input type="file" class="form-control" id="assistant_image" name="assistant_image"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="context_overflow_strategy">Context Overflow Management Strategy</label>
+                <select class="form-select" id="context_overflow_strategy" name="context_overflow_strategy">
+                  {% for strategy in context_overflow_strategies %}
+                    <option value="{{ strategy.0 }}" {% if forloop.first %}selected{% endif %}>{{ strategy.1 }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div id="memory-vectorizer-api-key-bar" class="mb-6 col-6 d-none">
+                <label class="form-label" for="vectorizer_api_key">Vectorizer API Key</label>
+                <input type="text" class="form-control" id="vectorizer_api_key" name="vectorizer_api_key"
+                       placeholder="Enter the API key for your OpenAI account"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="multi_step_reasoning_capability_choice">Multi-Step Reasoning <span class="text-warning"><strong>(† higher costs)</strong></span></label>
                 <select class="form-select" id="multi_step_reasoning_capability_choice" name="multi_step_reasoning_capability_choice">
                   {% for choice in reasoning_capability_choices %}
                     <option value="{{ strategy.0 }}" {% if forloop.first %}selected{% endif %}>{{ choice.1 }}</option>
@@ -378,27 +265,20 @@
                   </tr>
                   </tbody>
                 </table>
-                <button type="button" onclick="addRow()" class="btn btn-secondary d-grid w-20 mt-4"><strong>Add New
-                  Row</strong></button>
+                <button type="button" onclick="addRow()" class="btn btn-success d-grid w-20 mt-4"><strong>
+                  <i class="fa fa-plus me-2"></i>
+                  Add New Row</strong></button>
               </div>
               <div class="mb-6 col-12">
                 <label class="form-label" for="csv_file">Import Glossary from CSV</label>
                 <input type="file" class="form-control" id="csv_file" accept=".csv"/>
               </div>
-              <div class="tips-section alert alert-solid-info d-flex align-items-center" role="alert">
-                <span class="alert-icon rounded">
-                  <i class="ti ti-info-circle"></i>
-                </span>
-                You can provide a glossary for the assistant. The glossary is a list of terms and their definitions that
-                the assistant can use to provide more accurate and relevant responses. For example, if you provide a
-                term
-                "Aortic Anuerysm" with the definition "A bulge in a blood vessel in the brain", the assistant will be
-                able
-                to provide more accurate responses when the user asks about aortic aneurysms.
-              </div>
             </div>
             <hr>
-            <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>Create Assistant</strong></button>
+            <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>
+              <i class="fa fa-plus me-2"></i>
+              Create Assistant
+            </strong></button>
           </form>
         </div>
       </div>

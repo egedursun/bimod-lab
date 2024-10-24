@@ -6,9 +6,8 @@
 
 **SMALL TASKS**
 
-[1] When user is approved, send a mail to let them know about it (New Email Template)
-[2] Visual improvement by adding photos (AI generated photos on Canva)
-[3] Work on meta-kanban
+[1] Visual improvement by adding photos (AI generated photos on Canva)
+[2] Work on meta-kanban
 
 ---
 

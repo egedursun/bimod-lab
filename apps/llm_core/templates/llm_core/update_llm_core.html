@@ -135,7 +135,7 @@
                        value="{{ llm_core.api_key }}"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="model_name">Edit Model Name</label>
                 <select class="form-control" id="model_name" name="model_name">
                   {% for key, value in model_name_choices %}
@@ -144,40 +144,40 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="temperature">Edit Temperature</label>
                 <input type="number" class="form-control" id="temperature" name="temperature"
                        placeholder="Enter temperature"
                        min="0" max="2" step="0.05" value="{{ llm_core.temperature }}"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="maximum_tokens">Edit Maximum Tokens</label>
                 <input type="number" class="form-control" id="maximum_tokens" name="maximum_tokens"
                        placeholder="Enter maximum tokens"
                        min="256" max="4032" step="64" value="{{ llm_core.maximum_tokens }}"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="top_p">Edit Top P</label>
                 <input type="number" class="form-control" id="top_p" name="top_p" placeholder="Enter top P"
                        step="0.025" min="0" max="1" value="{{ llm_core.top_p }}"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-12 mb-6">
+              <div class="col-6 mb-6">
                 <label class="form-label" for="stop_sequences">Edit Stop Sequences</label>
-                <textarea class="form-control" id="stop_sequences" name="stop_sequences"
+                <textarea class="form-control" id="stop_sequences" name="stop_sequences" rows="1"
                           placeholder="Enter stop sequences">{{ llm_core.stop_sequences }}</textarea>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="frequency_penalty">Edit Frequency Penalty</label>
                 <input type="number" class="form-control" id="frequency_penalty" name="frequency_penalty"
                        step="0.025" min="0" max="2" placeholder="Enter frequency penalty"
                        value="{{ llm_core.frequency_penalty }}"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="presence_penalty">Edit Presence Penalty</label>
                 <input type="number" class="form-control" id="presence_penalty"
                        step="0.025" min="0" max="2" name="presence_penalty" placeholder="Enter presence penalty"
@@ -186,7 +186,10 @@
               </div>
             </div>
             <hr>
-            <button type="submit" class="btn btn-primary d-grid mt-8 w-25"><strong>Update Information</strong></button>
+            <button type="submit" class="btn btn-primary d-grid mt-8 w-25"><strong>
+              <i class="fa fa-save me-4"></i>
+              Update Information
+            </strong></button>
           </form>
         </div>
       </div>

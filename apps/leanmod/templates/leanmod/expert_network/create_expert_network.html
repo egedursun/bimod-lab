@@ -133,8 +133,10 @@
     <div class="card mb-4 p-4">
       <div class="card-body">
 
+        <img src="{% static 'img/leanmod/exp-1.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
+
         <div class="row g-6 mb-6">
-          <div class="col-12">
+          <div class="col-4">
             <label for="organization" class="form-label">Select Organization</label>
             <select class="form-select" id="organization" name="organization" required>
               <option value="" disabled selected>Select an organization</option>
@@ -143,20 +145,17 @@
               {% endfor %}
             </select>
           </div>
-        </div>
-
-        <div class="row g-6 mb-6">
-          <div class="col-12">
+          <div class="col-4">
             <label for="network_name" class="form-label">Network Name</label>
             <input type="text" class="form-control" id="network_name" name="network_name"
                    placeholder="Give a name to your expert network. A descriptive name can help your assistants more."
                    required>
           </div>
-          <div class="col-12">
+          <div class="col-4">
             <label for="network_description" class="form-label">Network Description</label>
             <textarea class="form-control" id="network_description" name="network_description"
                       placeholder="Provide a description for the network, by specifying the higher level goals and capabilities of it."
-                      rows="3"
+                      rows="1"
                       required></textarea>
           </div>
         </div>
@@ -189,7 +188,10 @@
         <hr>
 
         <div class="col-12">
-          <button type="submit" class="btn btn-primary w-25"><strong>Create Expert Network</strong></button>
+          <button type="submit" class="btn btn-primary w-25"><strong>
+            <i class="fa fa-plus me-2"></i>
+            Create Expert Network
+          </strong></button>
         </div>
       </div>
     </div>

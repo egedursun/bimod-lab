@@ -92,65 +92,66 @@
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row p-8">
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name"
                        placeholder="Enter the trading name of your organization"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
-                <label class="form-label" for="email">Email</label>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="email">Primary Contact Email</label>
                 <input type="email" class="form-control" id="email" name="email"
                        placeholder="Enter the primary contact email of your organization"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="phone">Phone</label>
                 <input type="text" class="form-control phone-mask" id="phone" name="phone"
                        placeholder="Enter organization phone"/>
                 <div class="form-text">Include the country code and the area code for more accuracy.</div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="address">Address</label>
                 <input type="text" class="form-control" id="address" name="address"
                        placeholder="Enter the address of your organization"/>
-                <div class="form-text">The municipality or district, street number, block number, and the apartment
-                  number
-                  if applies.
+                <div class="form-text">The municipality, district, street no, block no, apartment no.
                 </div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="city">City</label>
                 <input type="text" class="form-control" id="city" name="city"
                        placeholder="Enter the city of your organization / headquarters"/>
                 <div class="form-text">You can also include the state if it applies to your country.</div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="country">Country</label>
                 <input type="text" class="form-control" id="country" name="country"
                        placeholder="Enter the country your organization is primarily operating in"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="postal_code">Postal Code</label>
                 <input type="text" class="form-control" id="postal_code" name="postal_code"
                        placeholder="Enter the postal code"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="industry">Industry</label>
                 <input type="text" class="form-control" id="industry" name="industry"
                        placeholder="Enter the industry / domain of your organization"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="organization_image">Organization Image</label>
                 <input type="file" class="form-control" id="organization_image" name="organization_image"/>
                 <div class="form-text"></div>
               </div>
             </div>
             <hr>
-            <button type="submit" class="btn btn-primary d-grid mt-8 w-25"><strong>Create Organization</strong></button>
+            <button type="submit" class="btn btn-primary d-grid mt-8 w-25"><strong>
+              <i class="fa fa-plus me-4"></i>
+              Create Organization
+            </strong></button>
           </form>
         </div>
       </div>

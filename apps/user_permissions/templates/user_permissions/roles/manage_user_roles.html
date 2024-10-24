@@ -89,11 +89,12 @@
             <i class="fa fa-user me-2"></i>
             <strong>Add User to Role</strong>
           </h5>
+           <img src="{% static 'img/user_permissions/pm-1.png' %}" class="rounded mb-6 mt-3" style="width: 100%;" alt="Illustration for tips">
           <form method="post">
             {% csrf_token %}
 
             <!-- Organization Picker -->
-            <label class="mt-4" for="organization">Organization:</label>
+            <label class="col-4 mt-4" for="organization">Organization:</label>
             <select id="organization" name="organization_id" class="form-select" required>
               <option value="" disabled selected>Select Organization</option>
               {% for organization in organizations %}
@@ -102,7 +103,7 @@
             </select>
 
             <!-- User Picker (Initially hidden) -->
-            <label class="mt-4" for="user">User:</label>
+            <label class="col-4 mt-4" for="user">User:</label>
             <select id="user" name="user_id" class="form-select" required>
               <option value="" disabled selected>Select User</option>
               {% for organization in organizations %}
@@ -113,7 +114,7 @@
             </select>
 
             <!-- Role Picker -->
-            <label class="mt-4" for="role">Role:</label>
+            <label class="col-4 mt-4" for="role">Role:</label>
             <select id="role" name="role_id" class="form-select" required>
               <option value="" disabled selected>Select Role</option>
               {% for role in roles %}
@@ -121,8 +122,8 @@
               {% endfor %}
             </select>
 
-            <button type="submit" name="add_user_to_role" class="btn btn-primary mt-8">
-              <i class="fa fa-plus-circle me-2"></i>
+            <button type="submit" name="add_user_to_role" class="btn btn-success mt-8">
+              <i class="fa fa-plus me-2"></i>
               <strong>Add User to Role</strong>
             </button>
           </form>

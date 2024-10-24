@@ -55,10 +55,14 @@
               <img src="{% static 'img/custom-illustrations-v2/i2-4.png' %}" width="25%" style="border-radius:25px;"
                    class="justify-content-end me-8 mb-8" alt="Custom illustration for confirming deletion">
               <hr>
-              <button type="submit" class="btn btn-danger mt-8"><strong>DELETE &nbsp;</strong> the organization.</button>
+              <button type="submit" class="btn btn-danger mt-8"><strong>
+                <i class="fa fa-skull-crossbones me-4"></i>
+                DELETE &nbsp;</strong> the organization.
+              </button>
               <br><br>
-              <a href="{% url 'organization:list' %}" class="btn btn-secondary"><strong>CANCEL &nbsp;</strong> the
-                deletion operation.</a>
+              <a href="{% url 'organization:list' %}" class="btn btn-secondary"><strong>
+                <i class="fa fa-cancel me-4"></i>
+                CANCEL &nbsp;</strong> the deletion operation.</a>
             </form>
           {% else %}
             <div class="alert alert-danger alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
@@ -81,7 +85,10 @@
                 </button>
               </div>
             </div>
-            <a href="{% url 'organization:list' %}" class="btn btn-secondary"><strong>Turn Back</strong></a>
+            <a href="{% url 'organization:list' %}" class="btn btn-secondary"><strong>
+              <i class="fa fa-cancel me-4"></i>
+              Turn Back
+            </strong></a>
           {% endif %}
         </div>
       </div>

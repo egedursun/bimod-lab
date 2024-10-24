@@ -45,10 +45,14 @@
             <img src="{% static 'img/custom-illustrations-v2/i2-10.png' %}" width="25%" style="border-radius:25px;"
                  class="justify-content-end me-8 mb-8" alt="Illustration for tip">
             <hr>
-            <button type="submit" class="btn btn-danger mt-8"><strong>DELETE &nbsp;</strong> the LLM Core.</button>
+            <button type="submit" class="btn btn-danger mt-8"><strong>
+              <i class="fa fa-skull-crossbones me-4"></i>
+              DELETE &nbsp;</strong> the LLM Core.
+            </button>
             <br><br>
-            <a href="{% url 'llm_core:list' %}" class="btn btn-secondary"><strong>CANCEL &nbsp;</strong> the deletion
-              operation.</a>
+            <a href="{% url 'llm_core:list' %}" class="btn btn-secondary"><strong>
+              <i class="fa fa-cancel me-4"></i>
+              CANCEL &nbsp;</strong> the deletion operation.</a>
           </form>
         </div>
       </div>

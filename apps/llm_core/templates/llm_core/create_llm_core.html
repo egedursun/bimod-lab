@@ -118,13 +118,6 @@
                 <textarea class="form-control" id="description" name="description"
                           placeholder="Enter a description in natural langauge for this particular model configuration"></textarea>
                 <div class="form-text"></div>
-                <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-                  <span class="alert-icon rounded">
-                    <i class="ti ti-info-circle"></i>
-                  </span>
-                  A better nickname and description can help other users understand the purpose of this LLM Core, and
-                  therefore increase the reusability of the models for different assistants.
-                </div>
               </div>
               <div class="col-6 mb-3">
                 <label class="form-label" for="provider">Choose Model Provider</label>
@@ -140,16 +133,7 @@
                 <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API key"/>
                 <div class="form-text"></div>
               </div>
-              <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-                <span class="alert-icon rounded">
-                  <i class="ti ti-info-circle"></i>
-                </span>
-                The API key will be used to connect your {% get_theme_variables 'template_name' %} account and assistant
-                with the LLM providers. For example, if you use OpenAI's GPT, you will need to enter your OpenAI API key
-                here. Similarly, if you use Hugging Face's models, you will need to enter your Hugging Face API key
-                here.
-              </div>
-              <div class="col-6 mb-3">
+              <div class="col-3 mb-3">
                 <label class="form-label" for="model_name">Model Name</label>
                 <select class="form-select" id="model_name" name="model_name">
                   {% for key, value in model_name_choices %}
@@ -158,45 +142,37 @@
                 </select>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-3">
+              <div class="col-3 mb-3">
                 <label class="form-label" for="temperature">Temperature Value</label>
                 <input type="number" class="form-control" id="temperature" name="temperature" step="0.05"
                        min="0" max="2" placeholder="Enter temperature" value="1.00"/>
                 <div class="form-text"></div>
               </div>
-              <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
-                <span class="alert-icon rounded">
-                  <i class="ti ti-info-circle"></i>
-                </span>
-                A lower temperature can lead to more reliable and text that has less likelihood of hallucinations,
-                but it may also result in less creative responses. Conversely, a higher temperature can lead to more
-                creative responses, but it may also result in hallucinations and less reliable text.
-              </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="maximum_tokens">Maximum Response Tokens</label>
                 <input type="number" class="form-control" id="maximum_tokens" name="maximum_tokens"
                        min="256" max="4032" step="64" placeholder="Enter maximum tokens" value="4032"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="top_p">Top P (Optional)</label>
                 <input type="number" class="form-control" id="top_p" name="top_p" step="0.025"
                        min="0" max="1" placeholder="Enter a top P value for your model" value="1.0"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-12 mb-6">
+              <div class="col-6 mb-6">
                 <label class="form-label" for="stop_sequences">Stop Sequences (Optional)</label>
-                <textarea class="form-control" id="stop_sequences" name="stop_sequences"
+                <textarea class="form-control" id="stop_sequences" name="stop_sequences" rows="1"
                           placeholder="Enter the stop sequences for the configuration of your model"></textarea>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="frequency_penalty">Frequency Penalty (Optional)</label>
                 <input type="number" class="form-control" id="frequency_penalty" name="frequency_penalty" step="0.025"
                        min="0" max="2" placeholder="Enter a frequency penalty value for your model" value="0.0"/>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-3 mb-6">
                 <label class="form-label" for="presence_penalty">Presence Penalty (Optional)</label>
                 <input type="number" class="form-control" id="presence_penalty" name="presence_penalty" step="0.025"
                        min="0" max="2" placeholder="Enter a presence penalty value for your model" value="0.0"/>
@@ -204,7 +180,10 @@
               </div>
             </div>
             <hr>
-            <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>Create Model Configuration</strong>
+            <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>
+              <i class="fa fa-plus me-4"></i>
+              Create Model Configuration
+            </strong>
             </button>
           </form>
         </div>

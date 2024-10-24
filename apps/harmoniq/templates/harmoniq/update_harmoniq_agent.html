@@ -236,7 +236,7 @@
       <div class="card-body">
         <!-- Pre-populated fields from the context -->
         <div class="row g-6 mb-6">
-          <div class="col-12">
+          <div class="col-6">
             <label for="organization" class="form-label">Select Organization</label>
             <select class="form-select" id="organization" name="organization" required>
               {% for organization in organizations %}
@@ -244,11 +244,7 @@
               {% endfor %}
             </select>
           </div>
-        </div>
-
-        <!-- LLM Model Selection with pre-populated values -->
-        <div class="row g-6 mb-6">
-          <div class="col-12">
+          <div class="col-6">
             <label for="llm_model" class="form-label">Select LLM Model</label>
             <select class="form-select" id="llm_model" name="llm_model" required>
               {% for llm_model in llm_models %}
@@ -283,17 +279,17 @@
 
         <!-- Agent Name -->
         <div class="row g-6 mb-6 mt-4">
-          <div class="col-12">
+          <div class="col-4">
             <label for="name" class="form-label">Agent Name</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ harmoniq_agent.name }}" required>
           </div>
-        </div>
-
-        <!-- Description -->
-        <div class="row g-6 mb-6">
-          <div class="col-12">
+          <div class="col-4">
             <label for="description" class="form-label">Agent Description</label>
-            <textarea class="form-control" id="description" name="description" rows="3" required>{{ harmoniq_agent.description }}</textarea>
+            <textarea class="form-control" id="description" name="description" rows="1" required>{{ harmoniq_agent.description }}</textarea>
+          </div>
+          <div class="col-4">
+            <label for="optional_instructions" class="form-label">Optional Instructions</label>
+            <textarea class="form-control" id="optional_instructions" name="optional_instructions" rows="1">{{ harmoniq_agent.optional_instructions }}</textarea>
           </div>
         </div>
 
@@ -305,14 +301,6 @@
                       {% if network.id in selected_expert_networks %}selected{% endif %}>{{ network.name }}</option>
             {% endfor %}
           </select>
-        </div>
-
-        <!-- Optional Instructions -->
-        <div class="row g-6 mb-6">
-          <div class="col-12">
-            <label for="optional_instructions" class="form-label">Optional Instructions</label>
-            <textarea class="form-control" id="optional_instructions" name="optional_instructions" rows="3">{{ harmoniq_agent.optional_instructions }}</textarea>
-          </div>
         </div>
 
         <!-- Submit Button -->

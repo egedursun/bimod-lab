@@ -122,8 +122,8 @@
             <th style="min-width: 120px; max-width: 120px;">Top P</th>
             <th style="min-width: 120px; max-width: 120px;">Frequency Penalty</th>
             <th style="min-width: 120px; max-width: 120px;">Presence Penalty</th>
-            <th></th>
-            <th></th>
+            <th style="min-width: 140px; max-width: 140px;"></th>
+            <th style="min-width: 140px; max-width: 140px;"></th>
           </tr>
           </thead>
           <tbody>
@@ -142,10 +142,16 @@
               <td>{{ llm_core.presence_penalty }}</td>
               <td>
                 <a href="{% url 'llm_core:update' llm_core.id %}"
-                   class="btn btn-sm btn-primary"><strong>Edit</strong></a>
+                   class="btn btn-sm btn-primary"><strong>
+                  <i class="fa fa-edit me-2"></i>
+                  Edit
+                </strong></a>
               </td>
               <td>
-                <a href="{% url 'llm_core:delete' llm_core.id %}" class="btn btn-sm btn-danger"><strong>Delete</strong></a>
+                <a href="{% url 'llm_core:delete' llm_core.id %}" class="btn btn-sm btn-danger"><strong>
+                  <i class="fa fa-trash me-2"></i>
+                  Delete
+                </strong></a>
               </td>
             </tr>
           {% empty %}

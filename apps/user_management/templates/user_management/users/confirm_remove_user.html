@@ -44,9 +44,13 @@
             <img src="{% static 'img/custom-illustrations-v2/i2-36.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for confirming deletion">
             <hr>
-            <button type="submit" class="btn btn-danger me-2 mt-4"><strong>DELETE &nbsp;</strong> the user.</button>
-            <a href="{% url 'user_management:list' %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the
-              deletion operation.</a>
+            <button type="submit" class="btn btn-danger me-2 mt-4"><strong>
+              <i class="fa fa-skull-crossbones me-2"></i>
+              DELETE &nbsp;</strong> the user.
+            </button>
+            <a href="{% url 'user_management:list' %}" class="btn btn-secondary mt-4"><strong>
+              <i class="fa fa-cancel me-2"></i>
+              CANCEL &nbsp;</strong> the deletion operation.</a>
           </form>
         </div>
       </div>

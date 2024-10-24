@@ -59,8 +59,14 @@
             <img src="{% static 'img/custom-illustrations-v2/i2-35.png' %}" width="25%" style="border-radius:25px;"
                  class="justify-content-end me-8" alt="Illustration for confirming deletion">
             <hr>
-            <button type="submit" class="btn btn-warning mt-4 me-2"><strong>DISCONNECT User</strong></button>
-            <a href="{% url 'user_management:list' %}" class="btn btn-secondary mt-4"><strong>CANCEL operation</strong></a>
+            <button type="submit" class="btn btn-warning mt-4 me-2"><strong>
+              <i class="fa fa-unlink me-2"></i>
+              DISCONNECT User
+            </strong></button>
+            <a href="{% url 'user_management:list' %}" class="btn btn-secondary mt-4"><strong>
+              <i class="fa fa-cancel me-2"></i>
+              CANCEL operation
+            </strong></a>
           </form>
         </div>
       </div>

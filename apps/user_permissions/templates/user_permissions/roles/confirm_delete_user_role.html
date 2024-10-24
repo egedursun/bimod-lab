@@ -49,11 +49,16 @@
             <img src="{% static 'img/custom-illustrations-v2/i2-4.png' %}" width="25%" style="border-radius:25px;"
                  class="justify-content-end me-8 mb-8" alt="Custom illustration for confirming deletion">
             <hr>
-            <button type="submit" class="btn btn-danger mt-8"><strong>DELETE &nbsp;</strong> the user role.</button>
-            <br><br>
-            <a href="{% url 'user_permissions:list_user_roles' %}" class="btn btn-secondary"><strong>CANCEL
-              &nbsp;</strong> the
-              deletion operation.</a>
+            <div class="d-flex justify-content-start align-items-center">
+              <button type="submit" class="btn btn-danger mt-8 me-4"><strong>
+                <i class="fa fa-skull-crossbones me-2"></i>
+                DELETE &nbsp;</strong> the user role.
+              </button>
+              <br><br>
+              <a href="{% url 'user_permissions:list_user_roles' %}" class="btn btn-secondary mt-8"><strong>
+                <i class="fa fa-cancel me-2"></i>
+                CANCEL&nbsp;</strong> the deletion operation.</a>
+              </div>
           </form>
         </div>
       </div>

@@ -110,23 +110,23 @@
                 {% if organization.auto_balance_topup.on_balance_threshold_trigger %}
                   <div class="label bg-label-secondary rounded px-2 py-4 mb-4 border border-2 border-success">
                     <i class="fa fa-circle text-success me-12 ms-4"></i>
-                    <strong>Trigger on Low Balance &nbsp;&nbsp; (Active)</strong>
+                    <strong class="text-dark">Trigger on Low Balance &nbsp;&nbsp; (Active)</strong>
                   </div>
                 {% else %}
                   <div class="label bg-label-secondary rounded px-2 py-4 mb-4 border border-2 border-danger">
                     <i class="fa fa-circle text-danger me-12 ms-4"></i>
-                    <strong>Trigger on Low Balance &nbsp;&nbsp; (Inactive)</strong>
+                    <strong class="text-dark">Trigger on Low Balance &nbsp;&nbsp; (Inactive)</strong>
                   </div>
                 {% endif %}
                 {% if organization.auto_balance_topup.on_interval_by_days_trigger %}
                   <div class="label bg-label-secondary rounded px-2 py-4 mb-4 border border-2 border-success">
                     <i class="fa fa-circle text-success me-12 ms-4"></i>
-                    <strong>Trigger on Interval by Days &nbsp;&nbsp; (Active)</strong>
+                    <strong class="text-dark">Trigger on Interval by Days &nbsp;&nbsp; (Active)</strong>
                   </div>
                 {% else %}
                   <div class="label bg-label-secondary rounded px-2 py-4 mb-4 border border-2 border-danger">
                     <i class="fa fa-circle text-danger me-12 ms-4"></i>
-                    <strong>Trigger on Interval by Days &nbsp;&nbsp; (Inactive)</strong>
+                    <strong class="text-dark">Trigger on Interval by Days &nbsp;&nbsp; (Inactive)</strong>
                   </div>
                 {% endif %}
                 <hr>
@@ -138,7 +138,7 @@
                     </strong>
                   </span>
                   <span
-                    class="text-wrap bg-label-warning p-2 rounded w-50"><strong> &lt; $ {{ organization.auto_balance_topup.balance_lower_trigger_threshold_value }}</strong></span>
+                    class="text-wrap btn-warning p-2 rounded w-50"><strong> &lt; $ {{ organization.auto_balance_topup.balance_lower_trigger_threshold_value }}</strong></span>
                 </li>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
                   <span class="text-body">
@@ -147,7 +147,7 @@
                       Addition on Balance Threshold Trigger
                     </strong></span>
                   <span
-                    class="text-wrap bg-label-success p-2 rounded w-50"><strong>+ $ {{ organization.auto_balance_topup.addition_on_balance_threshold_trigger }}</strong></span>
+                    class="text-wrap btn-success p-2 rounded w-50"><strong>+ $ {{ organization.auto_balance_topup.addition_on_balance_threshold_trigger }}</strong></span>
                 </li>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
                   <span class="text-body"><strong>
@@ -155,7 +155,7 @@
                     Regular by Days Interval
                   </strong></span>
                   <span
-                    class="text-wrap bg-label-info p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.regular_by_days_interval }}</strong></span>
+                    class="text-wrap btn-info p-2 rounded w-50"><strong>{{ organization.auto_balance_topup.regular_by_days_interval }}</strong></span>
                 </li>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
                   <span class="text-body"><strong>
@@ -163,7 +163,7 @@
                     Addition on Interval by Days Trigger
                   </strong></span>
                   <span
-                    class="text-wrap bg-label-success p-2 rounded w-50"><strong>+ $ {{ organization.auto_balance_topup.addition_on_interval_by_days_trigger }}</strong></span>
+                    class="text-wrap btn-success p-2 rounded w-50"><strong>+ $ {{ organization.auto_balance_topup.addition_on_interval_by_days_trigger }}</strong></span>
                 </li>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
                   <span class="text-body"><strong>
@@ -171,7 +171,7 @@
                     Current Usage of Monthly Hard Limit
                   </strong></span>
                   <span
-                    class="text-wrap bg-label-danger p-2 rounded w-50"><strong>$ {{ organization.auto_balance_topup.calendar_month_total_auto_addition_value }}</strong></span>
+                    class="text-wrap btn-danger p-2 rounded w-50"><strong>$ {{ organization.auto_balance_topup.calendar_month_total_auto_addition_value }}</strong></span>
                 </li>
                 <li class="mb-4 d-flex justify-content-between align-items-center">
                   <span class="text-body"><strong>
@@ -179,7 +179,7 @@
                     Monthly Hard Limit
                   </strong></span>
                   <span
-                    class="text-wrap bg-label-danger p-2 rounded w-50"><strong>$ {{ organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount }}</strong></span>
+                    class="text-wrap btn-danger p-2 rounded w-50"><strong>$ {{ organization.auto_balance_topup.monthly_hard_limit_auto_addition_amount }}</strong></span>
                 </li>
                 </ul>
                 <hr>
