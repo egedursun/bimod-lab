@@ -13,6 +13,18 @@
       "url": "/app/organization/list"
     },
     {
+      "name": "Projects",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "projects",
+      "url": "/app/projects/project/list"
+    },
+    {
+      "name": "Teams",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "slug": "teams",
+      "url": "/app/projects/team/list"
+    },
+    {
       "name": "LLM Models",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-models",

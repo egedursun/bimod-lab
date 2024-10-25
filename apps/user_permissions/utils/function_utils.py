@@ -30,6 +30,18 @@ def get_permissions_grouped():
             ('add_balance_to_organization', 'Add Balance to Organization'),
             ('transfer_balance_between_organizations', 'Transfer Balance Between Organizations'),
         ],
+        "Project Permissions": [
+            ('add_projects', 'Add Projects'),
+            ('update_projects', 'Update Projects'),
+            ('list_projects', 'List Projects'),
+            ('delete_projects', 'Delete Projects'),
+        ],
+        "Team Permissions": [
+            ('add_teams', 'Add Teams'),
+            ('update_teams', 'Update Teams'),
+            ('list_teams', 'List Teams'),
+            ('delete_teams', 'Delete Teams'),
+        ],
         "LLM Core Permissions": [
             ('add_llm_cores', 'Add LLM Cores'),
             ('update_llm_cores', 'Update LLM Cores'),

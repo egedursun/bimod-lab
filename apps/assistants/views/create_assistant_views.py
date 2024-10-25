@@ -29,6 +29,7 @@ from apps.assistants.utils import ContextManagementStrategyNames
 from apps.data_security.models import NERIntegration
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
+from apps.projects.models import ProjectItem
 from apps.user_permissions.utils import PermissionNames
 from apps.assistants.utils import MULTI_STEP_REASONING_CAPABILITY_CHOICE
 from web_project import TemplateLayout
@@ -47,6 +48,7 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
         context['reasoning_capability_choices'] = MULTI_STEP_REASONING_CAPABILITY_CHOICE
         context['vectorizers'] = EMBEDDING_MANAGERS
         context["ner_integrations"] = NERIntegration.objects.filter(organization__in=context['organizations'])
+        context["projects"] = ProjectItem.objects.filter(organization__in=context['organizations'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -124,6 +126,11 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
         )
         org.assistants.add(agent)
         org.save()
+
+        project_items = request.POST.getlist('project_items[]')
+        agent.project_items.set(project_items)
+        agent.save()
+
         messages.success(request, "Agent created successfully!")
         logger.info(f"Agent is created successfully. Agent ID: {agent.id}")
         return redirect('assistants:list')

@@ -67,6 +67,8 @@ class Assistant(models.Model):
     ner_integration = models.ForeignKey("data_security.NERIntegration", on_delete=models.SET_NULL,
                                         related_name='assistants', null=True, blank=True)
 
+    project_items = models.ManyToManyField("projects.ProjectItem", related_name='assistants', blank=True)
+
     def __str__(self):
         return self.name
 

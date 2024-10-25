@@ -28,9 +28,9 @@ from apps.assistants.utils import ContextManagementStrategyNames, MULTI_STEP_REA
 from apps.data_security.models import NERIntegration
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
+from apps.projects.models import ProjectItem
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +52,7 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
         context["assistant_current_vectorizer"] = EmbeddingManagersNames.as_dict()[
             agent.vectorizer_name] if agent.vectorizer_name else None
         context["ner_integrations"] = NERIntegration.objects.filter(organization__in=context['organizations'])
+        context["projects"] = ProjectItem.objects.filter(organization__in=context['organizations'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -118,5 +119,10 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
         if 'assistant_image' in request.FILES:
             agent.assistant_image = request.FILES['assistant_image']
         agent.save()
+
+        project_items = request.POST.getlist('project_items[]')
+        agent.project_items.set(project_items)
+        agent.save()
+
         logger.info(f"Assistant has been updated. ")
         return redirect('assistants:update', pk=agent.id)

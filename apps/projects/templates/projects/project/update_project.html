@@ -1,0 +1,155 @@
+
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: update_project.html
+  ~ Last Modified: 2024-10-24 22:00:48
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-24 22:00:48
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Update Project{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'projects:project_list' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong> Manage Projects</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Update Project</strong></h5> <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-50.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8" alt="Illustration for tip">
+            <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can update the project details. Please fill in the form and click the "Update Project"
+                button to save the changes. You can also select an organization from the dropdown list.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <hr>
+          <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="col-4 mb-6">
+                <label class="form-label" for="organization">Organization</label>
+                <select class="form-select" id="organization" name="organization">
+                  {% for organization in organizations %}
+                    <option value="{{ organization.id }}" {% if organization == project.organization %}selected{% endif %}>
+                      {{ organization.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="project_name">Project Name</label>
+                <input type="text" class="form-control" id="project_name" name="project_name"
+                       value="{{ project.project_name }}" required>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="project_department">Project Department</label>
+                <input type="text" class="form-control" id="project_department" name="project_department"
+                       value="{{ project.project_department }}" required>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="project_description">Project Description</label>
+                <textarea class="form-control" id="project_description" name="project_description" rows="1" required>{{ project.project_description }}</textarea>
+              </div>
+              <div class="col-3 mb-6">
+                <label class="form-label" for="project_status">Project Status</label>
+                <input type="text" class="form-control" id="project_status" name="project_status" value="{{ project.project_status }}">
+              </div>
+              <div class="col-3 mb-6">
+                <label class="form-label" for="project_priority">Project Priority</label>
+                <input type="text" class="form-control" id="project_priority" name="project_priority" value="{{ project.project_priority }}">
+              </div>
+              <div class="col-2 mb-6">
+                <label class="form-label" for="project_risk_level">Project Risk Level</label>
+                <input type="text" class="form-control" id="project_risk_level" name="project_risk_level" value="{{ project.project_risk_level }}">
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="project_goals">Project Goals</label>
+                <textarea class="form-control" id="project_goals" name="project_goals" rows="1">{{ project.project_goals }}</textarea>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="project_constraints">Project Constraints</label>
+                <textarea class="form-control" id="project_constraints" name="project_constraints" rows="1">{{ project.project_constraints }}</textarea>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="project_stakeholders">Project Stakeholders</label>
+                <textarea class="form-control" id="project_stakeholders" name="project_stakeholders" rows="1">{{ project.project_stakeholders }}</textarea>
+              </div>
+              <div class="col-4 mb-6">
+              <label class="form-label" for="project_start_date">Start Date</label>
+              <input type="date" class="form-control" id="project_start_date" name="project_start_date"
+                     value="{{ project.project_start_date|date:"Y-m-d" }}">
+            </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="project_end_date">End Date</label>
+                <input type="date" class="form-control" id="project_end_date" name="project_end_date"
+                       value="{{ project.project_end_date|date:"Y-m-d" }}">
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>
+              <i class="fa fa-save me-2"></i>
+              Update Project
+            </strong></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+

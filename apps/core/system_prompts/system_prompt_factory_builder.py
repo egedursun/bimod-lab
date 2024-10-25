@@ -17,6 +17,8 @@
 
 from django.contrib.auth.models import User
 
+from apps.core.system_prompts.agent_configuration.agent_related_project_items_prompt_manager import \
+    build_agent_related_project_items_prompt
 from apps.core.system_prompts.agent_configuration.target_audience_prompt_manager import build_target_audience_prompt
 from apps.core.system_prompts.agent_configuration.intra_context_memory_prompt_manager import \
     build_intra_context_memory_prompt
@@ -140,39 +142,47 @@ class SystemPromptFactoryBuilder:
         output_language = assistant.response_language
 
         (base_prompt, target_audience, intra_memory, technical_dict, main_instructions, standard_memory,
-         agent_nickname, spatial_awareness, communication_lang, templated_response, tone, comm_user_info) = (
+         agent_nickname, spatial_awareness, projects_teams, communication_lang, templated_response, tone, comm_user_info) = (
             SystemPromptFactoryBuilder._build_foundation_prompts(
-                agent_nickname, agent_personality_tone, assistant, chat, output_language, target_audience,
-                templated_response, user))
+                agent_nickname=agent_nickname, agent_personality_tone=agent_personality_tone, assistant=assistant,
+                chat=chat, output_language=output_language, target_audience=target_audience,
+                templated_response=templated_response, user=user))
 
         (browsing_feed, codebase_feed, ssh_system_feed, vector_store_feed, media_manager_feed,
          ml_manager_feed, sql_feed, nosql_feed, smart_contract_feed) = (
-            SystemPromptFactoryBuilder._build_information_feeds_prompt(assistant))
+            SystemPromptFactoryBuilder._build_information_feeds_prompt(assistant=assistant))
 
         restful_apis, custom_functions, bash_scripts = (
-            SystemPromptFactoryBuilder._build_flexible_modalities_prompts(assistant))
+            SystemPromptFactoryBuilder._build_flexible_modalities_prompts(assistant=assistant))
 
         (process_audio, execute_browsing, execute_codebase, analyze_code, execute_api, execute_function,
          execute_script, execute_ssh_command, generate_image, edit_image, dream_image, query_vector_store,
          predict_with_ml, execute_reasoning, execute_sql_query, execute_nosql_query, execute_media_manager,
          generic_tool_calls, execute_http_retrieval, execute_intra_memory_retrieval, generate_video,
          smart_contract_func_call) = (
-            SystemPromptFactoryBuilder._build_tool_call_instructions_prompts(assistant))
+            SystemPromptFactoryBuilder._build_tool_call_instructions_prompts(assistant=assistant))
 
         #
         # MERGE
         #
 
         merged_prompt = SystemPromptFactoryBuilder._merge_system_prompts(
-            base_prompt, restful_apis, target_audience, process_audio, browsing_feed, execute_browsing,
-            codebase_feed, execute_codebase, analyze_code, intra_memory, execute_api, execute_function,
-            execute_script, execute_ssh_command, ssh_system_feed, custom_functions, technical_dict,
-            generate_image, edit_image, dream_image, main_instructions, vector_store_feed, query_vector_store,
-            media_manager_feed, standard_memory, ml_manager_feed,  agent_nickname,  spatial_awareness,
-            predict_with_ml, execute_reasoning, communication_lang, templated_response, bash_scripts,
-            sql_feed, execute_sql_query, nosql_feed, execute_nosql_query, execute_media_manager, tone,
-            generic_tool_calls, execute_http_retrieval, comm_user_info, execute_intra_memory_retrieval, generate_video,
-            smart_contract_feed, smart_contract_func_call)
+            foundation=base_prompt, apis_feed=restful_apis, target_audience=target_audience, do_audio=process_audio,
+            browsing_feed=browsing_feed, do_browsing=execute_browsing, codebase_feed=codebase_feed,
+            do_codebase=execute_codebase, do_analyze_code=analyze_code, intra_memory=intra_memory, do_api=execute_api,
+            do_function=execute_function, do_script=execute_script, do_ssh_command=execute_ssh_command,
+            file_systems=ssh_system_feed, functions_feed=custom_functions, technical_dictionary=technical_dict,
+            do_generate_image=generate_image, do_edit_image=edit_image, do_dream_image=dream_image,
+            generic_instructions=main_instructions, vector_store_feed=vector_store_feed,
+            do_vector_store=query_vector_store, media_store_feed=media_manager_feed, standard_memory=standard_memory,
+            ml_model_feed=ml_manager_feed,  agent_nickname=agent_nickname,  spatial_awareness=spatial_awareness,
+            do_ml_model=predict_with_ml, do_reasoning=execute_reasoning, projects_teams=projects_teams,
+            comm_language=communication_lang, templated_response=templated_response, scripts_feed=bash_scripts,
+            sql_feed=sql_feed, do_sql_query=execute_sql_query, nosql_feed=nosql_feed,
+            do_nosql_query=execute_nosql_query, do_media_manager=execute_media_manager, tone=tone,
+            do_instructions=generic_tool_calls, do_http_retrieval=execute_http_retrieval, user_info=comm_user_info,
+            do_intra_memory=execute_intra_memory_retrieval, do_generate_video=generate_video,
+            smart_contract_feed=smart_contract_feed, smart_contract_func_call=smart_contract_func_call)
 
         prompt = {"role": role, "content": merged_prompt}
         tx = LLMTransaction.objects.create(
@@ -191,16 +201,17 @@ class SystemPromptFactoryBuilder:
                               do_script, do_ssh_command, file_systems, functions_feed, technical_dictionary,
                               do_generate_image, do_edit_image, do_dream_image, generic_instructions,
                               vector_store_feed, do_vector_store, media_store_feed, standard_memory, ml_model_feed,
-                              agent_nickname, spatial_awareness, do_ml_model, do_reasoning, comm_language,
-                              templated_response, scripts_feed, sql_feed, do_sql_query, nosql_feed, do_nosql_query,
-                              do_media_manager, tone, do_instructions, do_http_retrieval, user_info, do_intra_memory,
-                              do_generate_video, smart_contract_feed, smart_contract_func_call):
+                              agent_nickname, spatial_awareness, do_ml_model, do_reasoning, projects_teams,
+                              comm_language, templated_response, scripts_feed, sql_feed, do_sql_query, nosql_feed,
+                              do_nosql_query, do_media_manager, tone, do_instructions, do_http_retrieval, user_info,
+                              do_intra_memory, do_generate_video, smart_contract_feed, smart_contract_func_call):
         combined_system_instructions = foundation
         combined_system_instructions += agent_nickname
         combined_system_instructions += generic_instructions
         combined_system_instructions += templated_response
         combined_system_instructions += target_audience
         combined_system_instructions += tone
+        combined_system_instructions += projects_teams
         combined_system_instructions += comm_language
         combined_system_instructions += user_info
         combined_system_instructions += standard_memory
@@ -299,34 +310,38 @@ class SystemPromptFactoryBuilder:
     def _build_foundation_prompts(agent_nickname, agent_personality_tone, assistant, chat, output_language,
                                   target_audience, templated_response, user):
         generic = build_internal_principles_prompt()
-        agent_nickname = build_agent_nickname_prompt(agent_nickname, chat.chat_name)
-        main_instructions = build_system_internal_instructions_prompt(assistant)
-        templated_response = build_templated_response_prompt(templated_response)
-        target_audience = build_target_audience_prompt(target_audience)
-        tone = build_agent_personality_prompt(agent_personality_tone)
-        comm_language = build_communication_language_prompt(output_language)
-        user_info = build_user_tenant_prompt(user)
-        standard_memory = build_standard_memory_prompt(assistant, user)
-        technical_dict = build_technical_dictionary_prompt(assistant.glossary)
+        agent_nickname = build_agent_nickname_prompt(name=agent_nickname, chat_name=chat.chat_name)
+        main_instructions = build_system_internal_instructions_prompt(assistant=assistant)
+        templated_response = build_templated_response_prompt(response_template=templated_response)
+        target_audience = build_target_audience_prompt(audience=target_audience)
+        tone = build_agent_personality_prompt(tone=agent_personality_tone)
+        projects_teams_prompt = build_agent_related_project_items_prompt(agent=assistant)
+        comm_language = build_communication_language_prompt(response_language=output_language)
+        user_info = build_user_tenant_prompt(user=user)
+        standard_memory = build_standard_memory_prompt(assistant=assistant, user=user)
+        technical_dict = build_technical_dictionary_prompt(glossary=assistant.glossary)
         spatial_awareness = ""
         if assistant.time_awareness and assistant.place_awareness:
-            spatial_awareness = build_spatial_awareness_prompt(user)
-        intra_memory = build_intra_context_memory_prompt(assistant)
+            spatial_awareness = build_spatial_awareness_prompt(user=user)
+        intra_memory = build_intra_context_memory_prompt(assistant=assistant)
         return (generic, target_audience, intra_memory, technical_dict, main_instructions, standard_memory,
-                agent_nickname, spatial_awareness, comm_language, templated_response, tone, user_info)
+                agent_nickname, spatial_awareness, projects_teams_prompt, comm_language, templated_response, tone,
+                user_info)
 
     @staticmethod
     def build_lean(assistant_name: str, instructions: str, audience: str = "standard", tone: str = "formal",
-                   language: str = "en",
-                   chat_name: str = "Default"):
+                   language: str = "en", chat_name: str = "Default"):
+        ##############################################################################################################
+        # DASHBOARD: STATISTICS ASSISTANT (THIS ASSISTANT HAS NO OTHER PURPOSE THAN DASHBOARD ANALYSIS)
+        ##############################################################################################################
         agent_nickname = assistant_name
         comm_language = language
         generic = build_internal_principles_prompt()
-        agent_nickname_prompt = build_agent_nickname_prompt(agent_nickname, chat_name)
+        agent_nickname_prompt = build_agent_nickname_prompt(name=agent_nickname, chat_name=chat_name)
         main_instructions = instructions
-        audience_prompt = build_target_audience_prompt(audience)
-        tone_prompt = build_agent_personality_prompt(tone)
-        output_language = build_communication_language_prompt(comm_language)
+        audience_prompt = build_target_audience_prompt(audience=audience)
+        tone_prompt = build_agent_personality_prompt(tone=tone)
+        output_language = build_communication_language_prompt(response_language=comm_language)
 
         sql_feed = build_lean_sql_data_source_prompt()
         nosql_feed = build_lean_nosql_data_source_prompt()
@@ -369,6 +384,7 @@ class SystemPromptFactoryBuilder:
         merged_prompt += main_instructions
         merged_prompt += audience_prompt
         merged_prompt += tone_prompt
+        merged_prompt += projects_teams_prompt
         merged_prompt += output_language
         # Data Feeds
         merged_prompt += sql_feed
@@ -430,11 +446,11 @@ class SystemPromptFactoryBuilder:
     def _prepare_leanmod_system_prompts(chat, lean_assistant, user):
         agent_nickname = lean_assistant.name
         generic = build_structured_primary_guidelines_leanmod()
-        agent_nickname = build_structured_name_prompt_leanmod(agent_nickname, chat.chat_name)
-        instructions = build_structured_instructions_prompt_leanmod(lean_assistant)
-        user_info = build_structured_user_information_prompt_leanmod(user)
-        spatial_awareness = build_structured_place_and_time_prompt_leanmod(user)
-        expert_network = build_expert_networks_multi_modality_prompt_leanmod(lean_assistant)
+        agent_nickname = build_structured_name_prompt_leanmod(assistant_name=agent_nickname, chat_name=chat.chat_name)
+        instructions = build_structured_instructions_prompt_leanmod(assistant=lean_assistant)
+        user_info = build_structured_user_information_prompt_leanmod(user=user)
+        spatial_awareness = build_structured_place_and_time_prompt_leanmod(user=user)
+        expert_network = build_expert_networks_multi_modality_prompt_leanmod(lean_assistant=lean_assistant)
         tool_instructions = build_structured_tool_usage_instructions_prompt_leanmod()
         do_expert_network = build_structured_tool_prompt__expert_network_query_execution_leanmod()
         combined_system_instructions = generic

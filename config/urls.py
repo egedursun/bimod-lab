@@ -73,6 +73,7 @@ urlpatterns = [
     path("app/notifications/", include("apps.notifications.urls", namespace="notifications")),
     path("app/binexus/", include("apps.binexus.urls", namespace="binexus")),
     path("app/metakanban/", include("apps.metakanban.urls", namespace="metakanban")),
+    path("app/projects/", include("apps.projects.urls", namespace="projects")),
 
     path('app/docs/', docs_redirect_view, name='technical_docs'),
     path("app/support_system/", include("apps.support_system.urls", namespace="support_system")),

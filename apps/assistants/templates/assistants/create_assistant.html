@@ -43,9 +43,18 @@
 {% block page_js %}
   {{ block.super }}
   <script src="{% static 'js/form-layouts.js' %}"></script>
-{% endblock page_js %}
+  <script>
+    $(document).ready(function () {
+      $('#project_items').select2({
+        placeholder: 'Select Team Members',
+        allowClear: true,
+        width: '100%'
+      });
+    });
+  </script>
+  {% endblock page_js %}
 
-{% block content %}
+  {% block content %}
   <!-- Basic Layout -->
   <div class="row">
     <div class="col-xl mb-6">
@@ -269,9 +278,17 @@
                   <i class="fa fa-plus me-2"></i>
                   Add New Row</strong></button>
               </div>
-              <div class="mb-6 col-12">
+              <div class="mb-6 col-6">
                 <label class="form-label" for="csv_file">Import Glossary from CSV</label>
                 <input type="file" class="form-control" id="csv_file" accept=".csv"/>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="project_items">Related Projects</label>
+                <select class="form-select select2" id="project_items" name="project_items[]" multiple>
+                  {% for project in projects %}
+                    <option value="{{ project.id }}">{{ project.project_name }}</option>
+                  {% endfor %}
+                </select>
               </div>
             </div>
             <hr>

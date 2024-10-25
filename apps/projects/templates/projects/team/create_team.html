@@ -1,0 +1,144 @@
+
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: create_team.html
+  ~ Last Modified: 2024-10-24 22:01:10
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-24 22:01:10
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Create Team{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script>
+    $(document).ready(function () {
+      $('#team_members').select2({
+        placeholder: 'Select Team Members',
+        allowClear: true,
+        dropdownAutoWidth: true,
+        width: '100%'
+      });
+    });
+
+    $(document).ready(function () {
+      $('#team_lead').select2({
+        placeholder: 'Select Team Lead',
+        width: '100%'
+      });
+    });
+  </script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'projects:team_list' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong> Manage Teams</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0"><strong>Create New Team</strong></h3>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-90.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end me-8" alt="Illustration for tip">
+            <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can create a new team. Select a project, team lead, and fill in team details like name,
+                description, and other key information. Once ready, click "Create Team" to finalize the team.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <hr>
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="col-4 mb-6">
+                <label class="form-label" for="team_name">Team Name</label>
+                <input type="text" class="form-control" id="team_name" name="team_name" placeholder="Enter team name" required>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="project">Project</label>
+                <select class="form-select" id="project" name="project" required>
+                  <option value="" disabled selected>Select Project</option>
+                  {% for project in projects %}
+                    <option value="{{ project.id }}">{{ project.project_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="team_lead">Team Lead</label>
+                <select class="form-select select2" id="team_lead" name="team_lead" required>
+                  <option value="" disabled selected>Select Team Lead</option>
+                  {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.profile.first_name }} {{ user.profile.last_name }}</option>  <!-- Accessing profile field -->
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="team_description">Team Description</label>
+                <textarea class="form-control" id="team_description" name="team_description" rows="1" placeholder="Enter team description"></textarea>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="team_members">Team Members</label>
+                <select class="form-select select2" id="team_members" name="team_members" multiple="multiple">
+                  {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.profile.first_name }} {{ user.profile.last_name }}</option>  <!-- Accessing profile field -->
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>
+              <i class="fa fa-plus me-2"></i>
+              Create Team
+            </strong></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

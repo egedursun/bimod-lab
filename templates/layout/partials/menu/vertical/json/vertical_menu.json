@@ -30,6 +30,40 @@
       ]
     },
     {
+      "name": "Projects",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "projects",
+      "submenu": [
+        {
+          "name": "Add New Project",
+          "slug": "projects",
+          "url": "projects:project_create"
+        },
+        {
+          "name": "Projects",
+          "slug": "projects",
+          "url": "projects:project_list"
+        }
+      ]
+    },
+    {
+      "name": "Teams",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "slug": "teams",
+      "submenu": [
+        {
+          "name": "Add New Team",
+          "slug": "teams",
+          "url": "projects:team_create"
+        },
+        {
+          "name": "Teams",
+          "slug": "teams",
+          "url": "projects:team_list"
+        }
+      ]
+    },
+    {
       "name": "LLM Models",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-cores",

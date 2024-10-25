@@ -137,6 +137,7 @@ INSTALLED_APPS = [
     "apps.notifications",
     "apps.binexus",
     "apps.metakanban",
+    "apps.projects",
 
     ########################################
     # SUPPORT
@@ -181,14 +182,17 @@ CACHEOPS = {
     'apps.datasource_browsers.DataSourceBrowserConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_browsers.DataSourceBrowserBrowsingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_file_systems.DataSourceFileSystem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.DocumentKnowledgeBaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.DocumentKnowledgeBaseConnection': {'ops': 'all',
+                                                                       'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.KnowledgeBaseDocument': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.KnowledgeBaseDocumentChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.ContextHistoryKnowledgeBaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_knowledge_base.ContextHistoryKnowledgeBaseConnection': {'ops': 'all',
+                                                                             'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.ContextHistoryMemory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.ContextHistoryMemoryChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_knowledge_base.DocumentProcessingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_media_storages.DataSourceMediaStorageConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
+    'apps.datasource_media_storages.DataSourceMediaStorageConnection': {'ops': 'all',
+                                                                        'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_media_storages.DataSourceMediaStorageItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_ml_models.DataSourceMLModelConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
     'apps.datasource_ml_models.DataSourceMLModelItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
@@ -226,7 +230,6 @@ CACHEOPS = {
 }
 
 CACHEOPS_LRU = True
-
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -329,7 +332,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "src" / "assets"]
 BASE_URL = os.environ.get("BASE_URL", default="http://127.0.0.1:8000")
 
-
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
@@ -399,13 +401,11 @@ SESSION_COOKIE_SAMESITE = "Lax"
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day
 
-
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5050",
     "http://localhost:8000", "http://0.0.0.0:8000", "http://127.0.0.1:8000",
     "https://bimod.io", "https://dev.bimod.io", "https://www.bimod.io",
 ]
-
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5050",
@@ -467,9 +467,9 @@ LOGGING = {
         'simple': {'format': '{levelname} {message}', 'style': '{'},
     },
     'handlers': {'file': {
-            'level': 'DEBUG', 'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'django_debug.log'), 'formatter': 'verbose',
-        },
+        'level': 'DEBUG', 'class': 'logging.FileHandler',
+        'filename': os.path.join(BASE_DIR, 'django_debug.log'), 'formatter': 'verbose',
+    },
     },
     'loggers': {'django': {'handlers': ['file'], 'level': 'DEBUG', 'propagate': True}},
 }

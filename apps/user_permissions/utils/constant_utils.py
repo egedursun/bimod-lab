@@ -28,6 +28,16 @@ class PermissionNames:
     ADD_BALANCE_TO_ORGANIZATION = 'add_balance_to_organization'
     TRANSFER_BALANCE_BETWEEN_ORGANIZATIONS = 'transfer_balance_between_organizations'
 
+    ADD_PROJECTS = 'add_projects'
+    UPDATE_PROJECTS = 'update_projects'
+    LIST_PROJECTS = 'list_projects'
+    DELETE_PROJECTS = 'delete_projects'
+
+    ADD_TEAMS = 'add_teams'
+    UPDATE_TEAMS = 'update_teams'
+    LIST_TEAMS = 'list_teams'
+    DELETE_TEAMS = 'delete_teams'
+
     LIST_TRANSACTIONS = 'list_transactions'
 
     ADD_USERS = 'add_users'
@@ -316,6 +326,16 @@ PERMISSION_TYPES = [
     ('delete_organizations', 'Delete Organizations'),
     ('add_balance_to_organization', 'Add Balance to Organization'),
     ('transfer_balance_between_organizations', 'Transfer Balance Between Organizations'),
+
+    ('add_projects', 'Add Projects'),
+    ('update_projects', 'Update Projects'),
+    ('list_projects', 'List Projects'),
+    ('delete_projects', 'Delete Projects'),
+
+    ('add_teams', 'Add Teams'),
+    ('update_teams', 'Update Teams'),
+    ('list_teams', 'List Teams'),
+    ('delete_teams', 'Delete Teams'),
 
     ('add_llm_cores', 'Add LLM Cores'),
     ('update_llm_cores', 'Update LLM Cores'),
