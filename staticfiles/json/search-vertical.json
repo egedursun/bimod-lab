@@ -395,6 +395,12 @@
       "icon": "menu-icon tf-icons ti ti-settings",
       "slug": "settings",
       "url": "/app/user_settings/settings"
+    },
+    {
+      "name": "Notification Manager",
+      "icon": "menu-icon tf-icons ti ti-bell",
+      "slug": "notification-manager",
+      "url": "/app/notifications/list"
     }
   ]
 }
