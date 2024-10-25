@@ -145,8 +145,9 @@
                 </tr>
                 </tbody>
               </table>
-              <button type="button" onclick="addRow('stepGuideTable')" class="btn btn-secondary d-grid w-20 mt-4">
-                <strong>Add New Row</strong></button>
+              <button type="button" onclick="addRow('stepGuideTable')" class="btn btn-success d-grid w-20 mt-4">
+                <strong>
+                  <i class="fa fa-plus me-4"></i>Add New Row</strong></button>
             </div>
               <div class="mb-6 col-8">
                 <label class="form-label" for="categories">Categories</label>
@@ -178,6 +179,7 @@
             <hr>
             <input type="hidden" name="created_by_user" value="{{ request.user.id }}">
             <button type="submit" class="btn btn-primary d-grid mt-4 w-25"><strong>
+              <i class="fa fa-plus me-4"></i>
               Create Custom Script
             </strong></button>
           </form>

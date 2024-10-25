@@ -98,6 +98,7 @@
         <hr>
         <form method="post" enctype="multipart/form-data" class="mt-4">
           {% csrf_token %}
+          <img src="{% static 'img/nosql_databases/nosql-1.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
           <div class="row p-8">
             <div class="mb-6 col-6">
               <label class="form-label" for="nosql_db_type">DBMS Type</label>
@@ -183,7 +184,7 @@
           <hr>
           <input type="hidden" name="created_by_user" value="{{ user.id }}">
           <button type="submit" class="btn btn-primary d-grid w-25 mt-4">
-            <strong>Create NoSQL Database Connection</strong>
+            <strong><i class="fa fa-plus me-4"></i>Create NoSQL Database Connection</strong>
           </button>
         </form>
       </div>

@@ -915,12 +915,6 @@
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "voidforger",
       "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Binexus™",
-      "icon": "menu-icon tf-icons ti ti-rocket",
-      "slug": "binexus",
-      "url": "dashboard:main-dashboard"
     }
   ]
 }

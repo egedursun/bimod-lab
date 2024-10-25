@@ -109,6 +109,7 @@
     <hr>
 
     <div class="card-body">
+      <img src="{% static 'img/smart_contracts/con-2.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
         <!-- Nickname -->
         <h6><strong>Nickname</strong></h6>
         <p class="bg-label-dark p-4 rounded">
@@ -152,6 +153,7 @@
     </div>
 
     <div class="card-body">
+      <img src="{% static 'img/smart_contracts/con-3.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
       <form method="post" action="{% url 'smart_contracts:contract_generate' contract.id %}">
         {% csrf_token %}
         <div class="form-group mb-3">
@@ -223,6 +225,8 @@
     <hr>
 
     <div class="card-body mt-4">
+      <img src="{% static 'img/smart_contracts/con-4.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
+
       <h6><strong>Topic</strong></h6>
       <p class="bg-label-dark p-4 mb-4 rounded">
         <strong>{{ contract.post_gen_topic|default:'N/A' }}</strong>

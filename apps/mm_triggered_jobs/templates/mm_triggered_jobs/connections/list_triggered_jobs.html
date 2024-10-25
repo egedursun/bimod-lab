@@ -134,6 +134,7 @@
       <h5 class="card-title">
         <strong>Your Triggered Jobs</strong>
       </h5>
+      <img src="{% static 'img/triggered_jobs/trg-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
     </div>
     <div class="card-datatable table-responsive">
       <a href="{% url 'mm_triggered_jobs:create' %}">
@@ -174,7 +175,7 @@
                 <i class="fa fa-copy me-2"></i><strong>Copy URL</strong>
               </button>
             </td>
-            <td>
+            <td style="min-width: 400px; max-width: 400px;">
               <strong class="btn-info rounded p-1" style="min-width: 200px; max-width: 200px;">{{ job.trigger_source }}</strong>
             </td>
             <td style="min-width: 200px;">{{ job.event_type }}</td>

@@ -238,7 +238,9 @@
                   </tbody>
                 </table>
                 <button type="button" onclick="addEndpointRow('endpointsTable')"
-                        class="btn btn-secondary d-grid w-20 mt-4 mb-4"><strong>Add New Endpoint</strong></button>
+                        class="btn btn-success d-grid w-20 mt-4 mb-4"><strong>
+                  <i class="fa fa-plus me-4"></i>
+                  Add New Endpoint</strong></button>
               </div>
               <div class="mb-6 col-8">
                 <label class="form-label" for="categories">Categories</label>
@@ -269,7 +271,9 @@
             <hr>
             <input type="hidden" name="created_by_user" value="{{ request.user.id }}">
             <button type="submit" class="btn btn-primary d-grid mt-4 w-25"><strong>
-              <strong>Create Custom API</strong>
+              <strong>
+                <i class="fa fa-plus me-4"></i>
+                Create Custom API</strong>
             </strong></button>
           </form>
         </div>

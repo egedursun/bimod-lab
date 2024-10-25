@@ -7,11 +7,12 @@
 **SMALL TASKS**
 
 [1] Visual improvement by adding photos (AI generated photos on Canva)
-[2] Work on meta-kanban
+[2] Work on meta-kanban (Electron Copilot Desktop App First !)
+[3] Projects Data Model (to add more context to AI)
 
 ---
 
-**CURRENT PROJECT: ELECTRON COPILOT**
+**CURRENT PROJECT: ELECTRON COPILOT (Ege)**
 
 - *ELECTRON COPILOT*: Desktop Client for Bimod & BimodLab, with features allowing for data transactions between the
   desktop and the web application. **(Probably Flutter-Based)**
@@ -19,7 +20,7 @@
 
 ---
 
-**NEXT PROJECT-0: PAYMENT GATEWAY INTEGRATION**
+**NEXT PROJECT-0: PAYMENT GATEWAY INTEGRATION (Ege)**
 
 - *PAYMENT GATEWAY*: Integration of a payment gateway to the web application, allowing for the clients to pay for the
   services they use in the application.
@@ -27,7 +28,7 @@
 
 ---
 
-**NEXT PROJECT-1: FERMION COPILOT**
+**NEXT PROJECT-1: FERMION COPILOT (Ege)**
 
 - *FERMION COPILOT*: Mobile App Client for Bimod & BimodLab, with features allowing for transactions between the
   mobile data and the web application. **(Probably Flutter-Based)**
@@ -35,7 +36,7 @@
 
 ---
 
-**NEXT PROJECT-2: ASTROLITH X1**
+**NEXT PROJECT-2: ASTROLITH X1 (Ege)**
 
 - *ASTROLITH X1*: Two important plans to be developed: A physical server + a locally runnable instance of the
   Bimod & BimodLab web application, with minimal interventions from our ends.
@@ -47,7 +48,7 @@
 
 ---
 
-**NEXT PROJECT-3: ASTROBELT**
+**NEXT PROJECT-3: ASTROBELT (Mert)**
 
 - *ASTROBELT*: MS-Office plugins for connecting the drafting tool we have in our web application to the MS-Office
   applications, such as Word, Excel, PowerPoint, etc. The plugin will allow for the drafting tool to be
@@ -57,7 +58,7 @@
 
 ---
 
-**NEXT PROJECT-4: MENTARA**
+**NEXT PROJECT-4: MENTARA (Ege)**
 
 - *MENTARA*: A helper assistant that helps the clients configure their enterprise environments in the web application,
   and uses our documentation to guide them through their questions and help them navigate their journey
@@ -66,7 +67,7 @@
 
 ---
 
-**NEXT PROJECT-5: INTEGRATIONS FRAMEWORK**
+**NEXT PROJECT-5: INTEGRATIONS FRAMEWORK (Ege)**
 
 - *INTEGRATIONS*: A page/store that will include ready-made assistants that the clients can easily integrate to
   themselves.
@@ -74,7 +75,7 @@
 
 ---
 
-**NEXT PROJECT-6: META-INTEGRATIONS FRAMEWORK**
+**NEXT PROJECT-6: META-INTEGRATIONS FRAMEWORK (Ege)**
 
 - *META-INTEGRATIONS*: A page/store that will include ready-made "team of assistants" that the clients can easily
   integrate to themselves.
@@ -82,7 +83,7 @@
 
 ---
 
-**NEXT PROJECT-7: AUTOMATED MEDIA SYNCHRONIZATION**
+**NEXT PROJECT-7: AUTOMATED MEDIA SYNCHRONIZATION (Mert)**
 
 - *AUTOMATED MEDIA SYNC*: Connecting S3 Buckets, Google Drive, and other cloud storages to the web application, and
   allowing for
@@ -92,7 +93,7 @@
 
 ---
 
-**NEXT PROJECT-8: VOIDFORGER**
+**NEXT PROJECT-8: VOIDFORGER (Ege)**
 
 - *VOIDFORGER*: A hyper-assistant over orchestrators and all internal processes of an enterprise, controlling the
   assistants, leanmods, orchestrations, data sources such as sql, nosql, ssh servers, code bases,
@@ -102,7 +103,7 @@
 
 ---
 
-**NEXT PROJECT-9: DEVELOPER ECOSYSTEM**
+**NEXT PROJECT-9: DEVELOPER ECOSYSTEM (Ege)**
 
 - *DEV ECOSYSTEM*: Make the function, API, and Script Stores accessible to the developers for them to contribute, and
   incentivize them by rewarding Bimod & BimodLab credits, as well as a commission percentage from
@@ -259,17 +260,6 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
    -> They can collaborate and form networks within the application to work together.
    -> They can share media storages, data sources, and other tools to create synergy.
    -> Currently does not worth the development effort.
-
----
-
-*Standalone Applications:*
-
-- **Django Mainframe (Server + Web Application)**
-  - For the main application and the frontend of the web application, the flag-ship.
-- **Electron Copilot (Desktop Application)**
-  - For image and text-based management and manipulation within the OS and overall system usage.
-- **Progressive Web App (PWA) (Android & iOS Application)**
-  - Connecting an exported assistant and chatting with the assistant.
 
 ---
 

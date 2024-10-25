@@ -134,7 +134,10 @@
                               class="ti ti-dots-vertical ti-md text-muted"></i></button>
                             <ul class="dropdown-menu dropdown-menu-end">
                               <li><a class="dropdown-item text-danger"
-                                     href="{% url 'starred_messages:delete' message.id %}">Delete</a></li>
+                                     href="{% url 'starred_messages:delete' message.id %}">
+                                <i class="fa fa-trash me-2"></i>
+                                <strong>Delete</strong>
+                              </a></li>
                             </ul>
                           </div>
                         </div>
@@ -158,9 +161,9 @@
                               </div>
                             {% empty %}
                               <div class="col-12 mt-4">
-                                <div class="alert alert-info" role="alert">
-                                  <i class="fa fa-info-circle me-2"></i>
-                                  No image content found for this message.
+                                <div class="alert alert-warning" role="alert">
+                                  <i class="fa fa-exclamation-triangle me-2"></i>
+                                  <strong>No image content found for this message.</strong>
                                 </div>
                               </div>
                             {% endfor %}
@@ -176,9 +179,9 @@
                               </div>
                             {% empty %}
                               <div class="col-12 mt-4">
-                                <div class="alert alert-info" role="alert">
-                                  <i class="fa fa-info-circle me-2"></i>
-                                  No file content found for this message.
+                                <div class="alert alert-warning" role="alert">
+                                  <i class="fa fa-exclamation-triangle me-2"></i>
+                                  <strong>No file content found for this message.</strong>
                                 </div>
                               </div>
                             {% endfor %}

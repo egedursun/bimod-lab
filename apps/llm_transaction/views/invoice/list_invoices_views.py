@@ -17,6 +17,7 @@
 import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 
 from apps.llm_transaction.models import TransactionInvoice
@@ -30,8 +31,13 @@ class Transactions_InvoiceList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         orgs = Organization.objects.filter(users__in=[self.request.user]).all()
-        context['invoices'] = TransactionInvoice.objects.filter(organization__in=orgs).select_related(
+        invoices = TransactionInvoice.objects.filter(organization__in=orgs).select_related(
             'organization', 'responsible_user').order_by('-transaction_date')
+
+        paginator = Paginator(invoices, 10)
+        page = self.request.GET.get('page')
+        paginated_invoices = paginator.get_page(page)
+        context['invoices'] = paginated_invoices
         context['organizations'] = orgs
         logger.info(f"Invoices were listed by User: {self.request.user.id}.")
         return context

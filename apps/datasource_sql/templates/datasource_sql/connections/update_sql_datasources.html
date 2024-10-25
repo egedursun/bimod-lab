@@ -93,6 +93,7 @@
           <hr>
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
+            <img src="{% static 'img/sql_databases/sql-1.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-6">
                 <label class="form-label" for="dbms_type">DBMS Type</label>
@@ -180,7 +181,9 @@
             </div>
             <hr>
             <input type="hidden" name="created_by_user" value="{{ connection.created_by_user.id }}">
-            <button type="submit" class="btn btn-primary d-grid mt-4 w-25"><strong>Update SQL Connection</strong>
+            <button type="submit" class="btn btn-primary d-grid mt-4 w-25"><strong>
+              <i class="fa fa-save me-4"></i>
+              Update SQL Connection</strong>
             </button>
           </form>
         </div>

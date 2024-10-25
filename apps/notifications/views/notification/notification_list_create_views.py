@@ -18,6 +18,7 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -41,8 +42,12 @@ class NotificationView_ItemListCreate(LoginRequiredMixin, TemplateView):
         internal_notifications = NotificationItem.objects.filter(
             notification_sender_type=NotificationSenderTypeNames.SYSTEM,
             organization__in=user_orgs).order_by('-created_at')
+
+        paginator = Paginator(internal_notifications, 10)
+        page = self.request.GET.get('page')
+        paginated_notifications = paginator.get_page(page)
         context['organizations'] = user_orgs
-        context['internal_notifications'] = internal_notifications
+        context['internal_notifications'] = paginated_notifications
         context["notification_categories"] = NOTIFICATION_TITLE_CATEGORY_CHOICES
         return context
 

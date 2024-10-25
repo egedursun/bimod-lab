@@ -98,7 +98,7 @@
     <div class="card-body">
 
       <div class="row g-6 mb-6">
-        <div class="col-12">
+        <div class="col-4">
           <label for="organization" class="form-label">Select Organization</label>
           <select class="form-select" id="organization" name="organization" required>
             <option value="" disabled selected>Select an organization</option>
@@ -107,10 +107,7 @@
             {% endfor %}
           </select>
         </div>
-      </div>
-
-      <div class="row g-6 mb-6">
-        <div class="col-12">
+        <div class="col-4">
           <label for="llm_model" class="form-label">Select LLM Model</label>
           <select class="form-select select2" id="llm_model" name="llm_model" required>
             <option value="" disabled selected>Select an LLM Model</option>
@@ -119,10 +116,7 @@
             {% endfor %}
           </select>
         </div>
-      </div>
-
-      <div class="row g-6 mb-6">
-        <div class="col-12">
+        <div class="col-4">
           <label for="session_name" class="form-label">Session Name</label>
           <input type="text" class="form-control" id="session_name" name="session_name" placeholder="Enter session name"
                  required>
@@ -144,8 +138,13 @@
         </div>
       </div>
 
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary w-25"><strong>Create Session</strong></button>
+      <hr>
+
+      <div class="col-12 mt-4">
+        <button type="submit" class="btn btn-primary w-25"><strong>
+          <i class="fa fa-plus me-4"></i>
+          Create Session
+        </strong></button>
       </div>
     </div>
   </div>

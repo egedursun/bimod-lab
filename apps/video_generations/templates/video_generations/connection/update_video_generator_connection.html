@@ -86,7 +86,7 @@
           <form method="post">
             {% csrf_token %}
             <div class="row p-8">
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="organization">Choose Organization</label>
                 <select class="form-select" id="organization" name="organization">
                   {% for organization in organizations %}
@@ -97,7 +97,7 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="assistant">Choose Assistant</label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}
@@ -108,17 +108,17 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-12 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name"
                        value="{{ video_generator_connection.name }}" placeholder="Enter a name for the connection"/>
               </div>
-              <div class="col-12 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" id="description" name="description"
+                <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter a description">{{ video_generator_connection.description }}</textarea>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="provider">Provider</label>
                 <select class="form-select" id="provider" name="provider">
                   {% for key, value in provider_choices %}
@@ -129,7 +129,7 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="provider_api_key">Provider API Key</label>
                 <input type="text" class="form-control" id="provider_api_key" name="provider_api_key"
                        value="{{ video_generator_connection.provider_api_key }}" placeholder="Enter the provider API key"/>
@@ -137,7 +137,7 @@
             </div>
             <hr>
             <button type="submit" class="btn btn-primary ms-8 mt-8"><strong>
-              <i class="fa fa-check-circle me-4"></i>
+              <i class="fa fa-save me-4"></i>
               Update Video Generator
             </strong></button>
           </form>

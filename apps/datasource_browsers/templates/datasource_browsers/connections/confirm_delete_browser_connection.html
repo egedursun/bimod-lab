@@ -58,12 +58,11 @@
             <img src="{% static 'img/custom-illustrations-v2/i2-51.png' %}" style="border-radius: 25px;" width="25%"
                  class="justify-content-end m-8" alt="Illustration for confirming deletion">
             <hr>
-            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the Browser
-              Connection.
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
+              <i class="fa fa-trash me-4"></i>DELETE &nbsp;</strong> the Browser Connection.
             </button>
-            <a href="{% url 'datasource_browsers:list' %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong>
-              the
-              deletion operation.</a>
+            <a href="{% url 'datasource_browsers:list' %}" class="btn btn-secondary mt-4"><strong>
+              <i class="fa fa-cancel me-4"></i>CANCEL &nbsp;</strong> the deletion operation.</a>
           </form>
         </div>
       </div>

@@ -84,42 +84,44 @@
           <form method="post" action="{% url 'drafting:documents_create' folder.id %}">
             {% csrf_token %}
 
-            <!-- Assistant Picker -->
-            <div class="mb-3">
-              <label for="copilot_assistant" class="form-label">Co-Pilot Assistant</label>
-              <select id="copilot_assistant" name="copilot_assistant" class="form-control" required>
-                <option value="" disabled selected>Select an Assistant</option>
-                {% for assistant in assistants %}
-                  <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-                {% endfor %}
-              </select>
+            <div class="row">
+              <!-- Assistant Picker -->
+              <div class="col-4 mb-3">
+                <label for="copilot_assistant" class="form-label">Co-Pilot Assistant</label>
+                <select id="copilot_assistant" name="copilot_assistant" class="form-control" required>
+                  <option value="" disabled selected>Select an Assistant</option>
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Document Title -->
+              <div class="col-4 mb-3">
+                <label for="document_title" class="form-label">Document Title</label>
+                <input type="text" class="form-control" id="document_title" name="document_title" required>
+              </div>
+
+              <!-- Context Instructions -->
+              <div class="col-4 mb-3">
+                <label for="context_instructions" class="form-label">Context Instructions</label>
+                <textarea class="form-control" id="context_instructions" name="context_instructions" rows="1"></textarea>
+              </div>
+
+              <!-- Target Audience -->
+              <div class="col-6 mb-3">
+                <label for="target_audience" class="form-label">Target Audience</label>
+                <input type="text" class="form-control" id="target_audience" name="target_audience"></input>
+              </div>
+
+              <!-- Tone -->
+              <div class="col-6 mb-3">
+                <label for="tone" class="form-label">Tone</label>
+                <input type="text" class="form-control" id="tone" name="tone"></input>
+              </div>
             </div>
 
-            <!-- Document Title -->
-            <div class="mb-3">
-              <label for="document_title" class="form-label">Document Title</label>
-              <input type="text" class="form-control" id="document_title" name="document_title" required>
-            </div>
-
-            <!-- Context Instructions -->
-            <div class="mb-3">
-              <label for="context_instructions" class="form-label">Context Instructions</label>
-              <textarea class="form-control" id="context_instructions" name="context_instructions" rows="3"></textarea>
-            </div>
-
-            <!-- Target Audience -->
-            <div class="mb-3">
-              <label for="target_audience" class="form-label">Target Audience</label>
-              <input type="text" class="form-control" id="target_audience" name="target_audience"></input>
-            </div>
-
-            <!-- Tone -->
-            <div class="mb-3">
-              <label for="tone" class="form-label">Tone</label>
-              <input type="text" class="form-control" id="tone" name="tone"></input>
-            </div>
-
-            <button type="submit" class="btn btn-primary mt-4">
+            <button type="submit" class="btn btn-success mt-4 w-25">
               <i class="fa fa-file-upload me-2"></i>
               <strong>Create Document</strong>
             </button>

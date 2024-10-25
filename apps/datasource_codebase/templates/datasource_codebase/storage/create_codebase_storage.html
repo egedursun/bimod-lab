@@ -96,11 +96,12 @@
 
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            <img src="{% static 'img/codebases/cbs-1.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-6">
-                <label class="form-label" for="provider">Knowledge Base System</label>
+                <label class="form-label" for="provider">Code Base System</label>
                 <select class="form-select" id="provider" name="provider">
-                  <option value="" disabled selected>Select Knowledge Base System</option>
+                  <option value="" disabled selected>Select Code Base System</option>
                   {% for key, value in knowledge_base_systems %}
                     <option value="{{ key }}">{{ value }}</option>
                   {% endfor %}
@@ -117,12 +118,12 @@
               </div>
               <div class="mb-6 col-6">
                 <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter knowledge base name"/>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter code base name"/>
               </div>
               <div class="mb-6 col-6">
                 <label class="form-label" for="description">Description</label>
                 <textarea class="form-control" id="description" name="description" rows="1"
-                          placeholder="Enter knowledge base description"></textarea>
+                          placeholder="Enter code base description"></textarea>
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="host_url">Host URL</label>
@@ -174,7 +175,9 @@
             <hr>
             <input type="hidden" name="created_by_user" value="{{ user.id }}">
             <button type="submit" class="btn btn-primary d-grid w-25">
-              <strong>Create Knowledge Base</strong>
+              <strong>
+                <i class="fa fa-plus me-4"></i>
+                Create Code Base</strong>
             </button>
           </form>
         </div>

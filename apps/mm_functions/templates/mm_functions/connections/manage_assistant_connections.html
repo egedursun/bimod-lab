@@ -108,9 +108,6 @@
            aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
             <img src="
-
-
-
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  class="rounded me-4" width="60" height="60" alt="Organization Image">
             <h4><strong>{{ organization.name }}</strong></h4>
@@ -155,7 +152,6 @@
                             <!-- Function Image -->
                             <img class="avatar avatar-lg rounded me-4"
                                  src="
-
                                    {% if reference.custom_function.function_picture %}{{ reference.custom_function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                                  alt="{{ reference.custom_function.name }}"
                                  style="width: 60px; height: 60px; object-fit: cover;">

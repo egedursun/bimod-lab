@@ -117,7 +117,7 @@
     <form method="post" enctype="multipart/form-data" class="mt-4">
       {% csrf_token %}
       <div class="row p-8">
-        <div class="mb-6 col-6">
+        <div class="mb-6 col-4">
           <label class="form-label" for="organization">Organization</label>
           <select class="form-select" id="organization" name="organization">
             <option value="" disabled selected>Select Organization</option>
@@ -126,7 +126,7 @@
             {% endfor %}
           </select>
         </div>
-        <div class="mb-6 col-6">
+        <div class="mb-6 col-4">
           <label class="form-label" for="provider">Model Provider</label>
           <select class="form-select" id="provider" name="provider">
             <option value="" disabled selected>Select Provider</option>
@@ -135,15 +135,15 @@
             {% endfor %}
           </select>
         </div>
-        <div class="mb-6 col-6">
+        <div class="mb-6 col-4">
           <label class="form-label" for="model_name">Model Name</label>
           <input type="text" class="form-control" id="model_name" name="model_name" placeholder="Enter Model Name">
         </div>
-        <div class="mb-6 col-6">
+        <div class="mb-6 col-4">
           <label class="form-label" for="nickname">Nickname</label>
           <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter Nickname">
         </div>
-        <div class="mb-6 col-6">
+        <div class="mb-6 col-4">
           <label class="form-label" for="model_type">Model Type</label>
           <select class="form-select" id="model_type" name="model_type">
             <option value="" disabled selected>Select Model Type</option>
@@ -152,7 +152,7 @@
             {% endfor %}
           </select>
         </div>
-        <div class="mb-6 col-6">
+        <div class="mb-6 col-4">
           <label class="form-label" for="provider_api_key">Provider API Key</label>
           <input type="text" class="form-control" id="provider_api_key" name="provider_api_key"
                  placeholder="Enter Provider API Key">

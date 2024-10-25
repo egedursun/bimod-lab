@@ -79,8 +79,9 @@
         <div class="card-body mt-4">
           <form method="post" action="{% url 'smart_contracts:wallet_connection_create' %}">
             {% csrf_token %}
+            <img src="{% static 'img/smart_contracts/wal-1.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
             <div class="row p-8">
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="organization">Organization</label>
                 <select class="form-select" id="organization" name="organization" required>
                   <option value="" disabled selected>Select Organization</option>
@@ -89,13 +90,13 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-6 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="nickname">Nickname</label>
                 <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter nickname for the wallet." required>
               </div>
-              <div class="col-12 mb-6">
+              <div class="col-4 mb-6">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="2" placeholder="Enter a description for this Blockchain wallet in natural language."></textarea>
+                <textarea class="form-control" id="description" name="description" rows="1" placeholder="Enter a description for this Blockchain wallet in natural language."></textarea>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="blockchain_type">Blockchain Type</label>

@@ -52,9 +52,13 @@
             </strong></h6>
             <img src="{% static 'img/custom-illustrations-v2/i2-102.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end" alt="Illustration for tip">
             <hr>
-            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the query.</button>
-            <a href="{% url 'orchestrations:query_list' pk=query.maestro.id %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the deletion
-              operation.</a>
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
+              <i class="fa fa-skull-crossbones me-2"></i>
+              DELETE &nbsp;</strong> the query.
+            </button>
+            <a href="{% url 'orchestrations:query_list' pk=query.maestro.id %}" class="btn btn-secondary mt-4"><strong>
+              <i class="fa fa-cancel me-2"></i>
+              CANCEL &nbsp;</strong> the deletion operation.</a>
           </form>
         </div>
       </div>

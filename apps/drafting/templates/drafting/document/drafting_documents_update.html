@@ -66,65 +66,67 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4>
+          <h5>
             <i class="fa fa-edit me-2"></i>
             <strong>Update Document</strong>
-          </h4>
+          </h5>
         </div>
         <div class="card-body">
           <form method="post" action="{% url 'drafting:documents_update' folder.id document.id %}">
             {% csrf_token %}
 
-            <!-- Document Title -->
-            <div class="mb-3">
-              <label for="document_title" class="form-label">Document Title</label>
-              <input type="text" class="form-control" id="document_title" name="document_title" value="{{ document.document_title }}" required>
+            <div class="row">
+              <!-- Assistant Picker -->
+              <div class="col-4 mb-3">
+                <label for="copilot_assistant" class="form-label">Co-pilot Assistant</label>
+                <select id="copilot_assistant" name="copilot_assistant" class="form-control" required>
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}" {% if assistant.id == document.copilot_assistant.id %}selected{% endif %}>
+                      {{ assistant.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Folder Picker -->
+              <div class="col-4 mb-3">
+                <label for="document_folder" class="form-label">Document Folder</label>
+                <select id="document_folder" name="document_folder" class="form-control" required>
+                  {% for available_folder in available_folders %}
+                    <option value="{{ available_folder.id }}" {% if available_folder.id == document.document_folder.id %}selected{% endif %}>
+                      {{ available_folder.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Document Title -->
+              <div class="col-4 mb-3">
+                <label for="document_title" class="form-label">Document Title</label>
+                <input type="text" class="form-control" id="document_title" name="document_title" value="{{ document.document_title }}" required>
+              </div>
+
+              <!-- Context Instructions -->
+              <div class="col-6 mb-3">
+                <label for="context_instructions" class="form-label">Context Instructions</label>
+                <textarea class="form-control" id="context_instructions" name="context_instructions" rows="1">{{ document.context_instructions }}</textarea>
+              </div>
+
+              <!-- Target Audience -->
+              <div class="col-3 mb-3">
+                <label for="target_audience" class="form-label">Target Audience</label>
+                <input type="text" class="form-control" id="target_audience" name="target_audience" value="{{ document.target_audience }}">
+              </div>
+
+              <!-- Tone -->
+              <div class="col-3 mb-3">
+                <label for="tone" class="form-label">Tone</label>
+                <input type="text" class="form-control" id="tone" name="tone" value="{{ document.tone }}">
+              </div>
             </div>
 
-            <!-- Folder Picker -->
-            <div class="mb-3">
-              <label for="document_folder" class="form-label">Document Folder</label>
-              <select id="document_folder" name="document_folder" class="form-control" required>
-                {% for available_folder in available_folders %}
-                  <option value="{{ available_folder.id }}" {% if available_folder.id == document.document_folder.id %}selected{% endif %}>
-                    {{ available_folder.name }}
-                  </option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <!-- Assistant Picker -->
-            <div class="mb-3">
-              <label for="copilot_assistant" class="form-label">Co-pilot Assistant</label>
-              <select id="copilot_assistant" name="copilot_assistant" class="form-control" required>
-                {% for assistant in assistants %}
-                  <option value="{{ assistant.id }}" {% if assistant.id == document.copilot_assistant.id %}selected{% endif %}>
-                    {{ assistant.name }}
-                  </option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <!-- Context Instructions -->
-            <div class="mb-3">
-              <label for="context_instructions" class="form-label">Context Instructions</label>
-              <textarea class="form-control" id="context_instructions" name="context_instructions" rows="3">{{ document.context_instructions }}</textarea>
-            </div>
-
-            <!-- Target Audience -->
-            <div class="mb-3">
-              <label for="target_audience" class="form-label">Target Audience</label>
-              <input type="text" class="form-control" id="target_audience" name="target_audience" value="{{ document.target_audience }}">
-            </div>
-
-            <!-- Tone -->
-            <div class="mb-3">
-              <label for="tone" class="form-label">Tone</label>
-              <input type="text" class="form-control" id="tone" name="tone" value="{{ document.tone }}">
-            </div>
-
-            <button type="submit" class="btn btn-primary mt-4">
-              <i class="fa fa-save me-2"></i>
+            <button type="submit" class="btn btn-primary mt-4 w-25">
+              <i class="fa fa-save me-4"></i>
               <strong>Update Document</strong>
             </button>
           </form>

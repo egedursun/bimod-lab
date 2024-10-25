@@ -75,32 +75,35 @@
           <form method="post" action="{% url 'drafting:folders_update' folder.id %}">
             {% csrf_token %}
 
-            <!-- Organization Picker -->
-            <div class="mb-3">
-              <label for="organization" class="form-label">Organization</label>
-              <select id="organization" name="organization" class="form-control" required>
-                <option value="" disabled>Select an Organization</option>
-                {% for org in organizations %}
-                  <option value="{{ org.id }}" {% if org.id == folder.organization.id %}selected{% endif %}>{{ org.name }}</option>
-                {% endfor %}
-              </select>
+            <div class="row">
+              <!-- Organization Picker -->
+              <div class="col-6 mb-3">
+                <label for="organization" class="form-label">Organization</label>
+                <select id="organization" name="organization" class="form-control" required>
+                  <option value="" disabled>Select an Organization</option>
+                  {% for org in organizations %}
+                    <option value="{{ org.id }}" {% if org.id == folder.organization.id %}selected{% endif %}>{{ org.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-3">
+                <label for="name" class="form-label">Folder Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ folder.name }}" required>
+              </div>
+              <div class="col-6 mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="2">{{ folder.description }}</textarea>
+              </div>
+              <div class="col-6 mb-3">
+                <label for="meta_context_instructions" class="form-label">Meta Context Instructions</label>
+                <textarea class="form-control" id="meta_context_instructions" name="meta_context_instructions" rows="2">{{ folder.meta_context_instructions }}</textarea>
+              </div>
             </div>
 
-            <div class="mb-3">
-              <label for="name" class="form-label">Folder Name</label>
-              <input type="text" class="form-control" id="name" name="name" value="{{ folder.name }}" required>
-            </div>
-            <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
-              <textarea class="form-control" id="description" name="description" rows="4">{{ folder.description }}</textarea>
-            </div>
-            <div class="mb-3">
-              <label for="meta_context_instructions" class="form-label">Meta Context Instructions</label>
-              <textarea class="form-control" id="meta_context_instructions" name="meta_context_instructions" rows="4">{{ folder.meta_context_instructions }}</textarea>
-            </div>
+            <hr>
 
-            <button type="submit" class="btn btn-primary">
-              <i class="fa fa-save me-2"></i>
+            <button type="submit" class="btn btn-primary mt-4 w-25">
+              <i class="fa fa-save me-4"></i>
               <strong>Update Folder</strong>
             </button>
           </form>

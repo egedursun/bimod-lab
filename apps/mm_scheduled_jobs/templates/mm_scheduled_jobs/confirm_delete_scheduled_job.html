@@ -45,9 +45,10 @@
             </strong></h6>
             <img src="{% static 'img/custom-illustrations-v2/i2-87.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for confirming deletion">
             <hr>
-            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the scheduled job.</button>
-            <a href="{% url 'mm_scheduled_jobs:list' %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the
-              deletion operation.</a>
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
+              <i class="fa fa-skull-crossbones me-4"></i>DELETE &nbsp;</strong> the scheduled job.</button>
+            <a href="{% url 'mm_scheduled_jobs:list' %}" class="btn btn-secondary mt-4"><strong>
+              <i class="fa fa-times me-4"></i>CANCEL &nbsp;</strong> the deletion operation.</a>
           </form>
         </div>
       </div>

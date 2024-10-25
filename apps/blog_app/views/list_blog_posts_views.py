@@ -22,8 +22,7 @@ from django.db.models import Q
 from django.views.generic import TemplateView
 
 from apps.blog_app.models import BlogPost
-from web_project import TemplateLayout
-
+from web_project import TemplateLayout, TemplateHelper
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +31,7 @@ class BlogPostView_List(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         search_query = self.request.GET.get('search', '')
+
         if search_query:
             posts = BlogPost.objects.filter(
                 Q(title__icontains=search_query) |
@@ -40,10 +40,12 @@ class BlogPostView_List(LoginRequiredMixin, TemplateView):
             ).order_by('-published_at')
         else:
             posts = BlogPost.objects.filter(status='published').order_by('-published_at')
+
         paginator = Paginator(posts, 9)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         context['search_query'] = search_query
-        logger.info(f"Blog Posts were listed.")
+
+        logger.info(f"Blog Posts were listed. User authenticated: {self.request.user.is_authenticated}")
         return context

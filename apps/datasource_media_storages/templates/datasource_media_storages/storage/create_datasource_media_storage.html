@@ -82,6 +82,7 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            <img src="{% static 'img/media_storages/mul-1.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-6">
                 <label class="form-label" for="media_category">Media Category</label>
@@ -127,7 +128,9 @@
             </div>
             <hr>
             <input type="hidden" name="created_by_user" value="{{ user.id }}">
-            <button type="submit" class="btn btn-primary d-grid w-25 mt-4"><strong>Create Media Storage</strong>
+            <button type="submit" class="btn btn-primary d-grid w-25 mt-4"><strong>
+              <i class="fa fa-plus me-4"></i>
+              Create Media Storage</strong>
             </button>
           </form>
           <!--

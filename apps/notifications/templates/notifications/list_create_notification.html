@@ -74,6 +74,8 @@
         <div class="mb-4">
           <h5><strong>Create Notification</strong></h5>
           <hr>
+          <img src="{% static 'img/notification_manager/ntf-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+          <hr>
           <form method="post" action="{% url 'notifications:list_create' %}">
             {% csrf_token %}
             <!-- Organization Selection -->
@@ -117,8 +119,8 @@
             <thead>
             <tr>
               <th>Organization</th>
+              <th>Category</th>
               <th>Notification Text</th>
-              <th>Created By</th>
               <th>Created At</th>
               <th>Readers</th>
               <th>Actions</th>
@@ -128,8 +130,8 @@
             {% for notification in internal_notifications %}
               <tr>
                 <td><strong>{{ notification.organization.name }}</strong></td>
-                <td>{{ notification.notification_message }}</td>
-                <td>{{ notification.user.username }}</td>
+                <td><strong>{{ notification.get_notification_title_category_display }}</strong></td>
+                <td><p style="max-width: 300px; min-width: 300px; max-height: 80px; min-height: 80px; overflow: auto;">{{ notification.notification_message }}</p></td>
                 <td>{{ notification.created_at|date:"Y-m-d H:i" }}</td>
                 <td><strong class="btn-info p-2 rounded">{{ notification.readers.all|length }}</strong></td>
                 <td>
@@ -151,6 +153,46 @@
             {% endfor %}
             </tbody>
           </table>
+
+          <!-- PAGINATION -->
+          {% if internal_notifications.has_other_pages %}
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center mt-4">
+                {% if internal_notifications.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ internal_notifications.previous_page_number }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">&laquo;</span>
+                  </li>
+                {% endif %}
+
+                {% for num in internal_notifications.paginator.page_range %}
+                  {% if internal_notifications.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% elif num > internal_notifications.number|add:'-3' and num < internal_notifications.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if internal_notifications.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ internal_notifications.next_page_number }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">&raquo;</span>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          {% endif %}
+
 
           <hr>
 

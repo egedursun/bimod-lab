@@ -94,11 +94,12 @@
           <hr>
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
+            <img src="{% static 'img/codebases/cbs-1.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-6">
-                <label class="form-label" for="provider">Knowledge Base System</label>
+                <label class="form-label" for="provider">Code Base System</label>
                 <select class="form-select" id="provider" name="provider">
-                  <option value="" disabled>Select Knowledge Base System</option>
+                  <option value="" disabled>Select Code Base System</option>
                   {% for key, value in knowledge_base_systems %}
                     <option value="{{ key }}"
                             {% if key == connection.provider %}selected{% endif %}>{{ value }}</option>
@@ -178,7 +179,8 @@
             </div>
             <hr>
             <input type="hidden" name="created_by_user" value="{{ connection.created_by_user.id }}">
-            <button type="submit" class="btn btn-primary d-grid w-25 mt-4"><strong>Update Knowledge Base</strong>
+            <button type="submit" class="btn btn-primary d-grid w-25 mt-4"><strong>
+              <i class="fa fa-save me-4"></i>Update Code Base Storage</strong>
             </button>
           </form>
         </div>

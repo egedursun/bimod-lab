@@ -32,6 +32,6 @@ urlpatterns = [
          name='list'),
     path('logs/<int:pk>/', ScheduledJobView_LogList.as_view(
         template_name='mm_scheduled_jobs/list_scheduled_job_logs.html'), name='logs'),
-    path('confirm-delete/<int:pk>', ScheduledJobView_Delete.as_view(
+    path('confirm-delete/<int:pk>/', ScheduledJobView_Delete.as_view(
         template_name='mm_scheduled_jobs/confirm_delete_scheduled_job.html'), name='delete'),
 ]

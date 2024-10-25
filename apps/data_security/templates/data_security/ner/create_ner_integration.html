@@ -38,7 +38,7 @@
 {% block content %}
 
   <a href="{% url 'data_security:list_ner_integrations' %}">
-    <button class="btn btn-info ms-4 mt-4 mb-8">
+    <button class="btn btn-secondary ms-4 mt-4 mb-8">
       <i class="fa fa-file-contract me-4"></i>
       <strong> Manage NER Policies</strong>
     </button>
@@ -86,6 +86,7 @@
         <div class="card-body">
           <form method="post">
             {% csrf_token %}
+            <img src="{% static 'img/data-security/ner-1.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
             <div class="row">
               <!-- Organization -->
               <div class="col-6 mb-6">
@@ -104,9 +105,9 @@
               </div>
 
               <!-- Description -->
-              <div class="col-12 mb-6">
+              <div class="col-6 mb-6">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" id="description" name="description"
+                <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter description for your policy in natural language."></textarea>
               </div>
 

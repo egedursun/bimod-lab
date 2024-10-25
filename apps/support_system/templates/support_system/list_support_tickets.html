@@ -75,6 +75,7 @@
           </button>
         </div>
       </div>
+      <img src="{% static 'img/support_tickets/spt-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
     </div>
 
     {% if messages %}
@@ -86,8 +87,6 @@
         </div>
       {% endfor %}
     {% endif %}
-
-    <hr>
 
     <div class="card-datatable table-responsive p-8 mt-4">
       <a href="{% url 'support_system:create' %}">

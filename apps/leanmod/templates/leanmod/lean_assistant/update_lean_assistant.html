@@ -97,6 +97,7 @@
           <hr>
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
+            <img src="{% static 'img/leanmod/lm-2.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
             <div class="row p-8">
               <div class="col-4 mb-6">
                 <label class="form-label" for="organization">Organization</label>
@@ -141,7 +142,10 @@
               </div>
             </div>
             <hr>
-            <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>Update Lean Assistant</strong>
+            <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>
+              <i class="fa fa-save me-4"></i>
+              Update Lean Assistant
+            </strong>
             </button>
           </form>
         </div>

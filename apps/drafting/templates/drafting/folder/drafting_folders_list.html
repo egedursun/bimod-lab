@@ -70,31 +70,33 @@
           <form method="post" action="{% url 'drafting:folders_create' %}">
             {% csrf_token %}
 
-            <!-- Organization Picker -->
-            <div class="mb-3">
-              <label for="organization" class="form-label">Organization</label>
-              <select id="organization" name="organization" class="form-control" required>
-                <option value="" disabled selected>Select an Organization</option>
-                {% for org in organizations %}
-                  <option value="{{ org.id }}">{{ org.name }}</option>
-                {% endfor %}
-              </select>
+            <div class="row">
+              <!-- Organization Picker -->
+              <div class="col-6 mb-3">
+                <label for="organization" class="form-label">Organization</label>
+                <select id="organization" name="organization" class="form-control" required>
+                  <option value="" disabled selected>Select an Organization</option>
+                  {% for org in organizations %}
+                    <option value="{{ org.id }}">{{ org.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-3">
+                <label for="name" class="form-label">Folder Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+              </div>
+              <div class="col-6 mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" rows="2" name="description"></textarea>
+              </div>
+              <div class="col-6 mb-3">
+                <label for="meta_context_instructions" class="form-label">Meta Context Instructions</label>
+                <textarea class="form-control" id="meta_context_instructions" rows="2" name="meta_context_instructions"></textarea>
+              </div>
             </div>
 
-            <div class="mb-3">
-              <label for="name" class="form-label">Folder Name</label>
-              <input type="text" class="form-control" id="name" name="name" required>
-            </div>
-            <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
-              <textarea class="form-control" id="description" name="description"></textarea>
-            </div>
-            <div class="mb-3">
-              <label for="meta_context_instructions" class="form-label">Meta Context Instructions</label>
-              <textarea class="form-control" id="meta_context_instructions" name="meta_context_instructions"></textarea>
-            </div>
             <hr>
-            <button type="submit" class="btn btn-primary mt-4">
+            <button type="submit" class="btn btn-success mt-4 w-25">
               <i class="fa fa-folder-plus me-2"></i>
               <strong>Create Folder</strong>
             </button>

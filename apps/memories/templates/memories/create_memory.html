@@ -95,7 +95,8 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="row p-8">
+            <img src="{% static 'img/memories/mem-1.png' %}" class="rounded mb-4 mt-4" style="width: 100%;" alt="Illustration for tips">
+            <div class="row p-6">
               <div class="mb-6 col-4">
                 <label class="form-label" for="organization">Organization</label>
                 <select class="form-select" id="organization" name="organization">
@@ -132,7 +133,7 @@
             </div>
             <hr>
             <button type="submit" class="btn btn-primary d-grid mt-4 w-25">
-              <strong>Create Memory</strong>
+              <strong><i class="fa fa-plus me-2"></i> Create Memory</strong>
             </button>
           </form>
         </div>

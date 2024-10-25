@@ -140,11 +140,14 @@
           <hr>
 
           <div class="table-responsive">
-            <a class="mt-12">
+            <a class="mt-4">
               <button class="btn btn-danger mb-8 mt-2 w-25" onclick="confirmPurgeTopicMessages()">
                 <i class="fa fa-skull-crossbones me-2"></i><strong>Purge Topic Messages</strong>
               </button>
             </a>
+            <hr>
+            <img src="{% static 'img/hadron_prime/had-6.png' %}" class="rounded mt-0" style="width: 100%;" alt="Illustration for tips">
+            <hr>
             <form id="purge-publishing-logs-form" method="post" action="{% url 'hadron_prime:delete_all_messages' pk=hadron_topic.id %}">
               {% csrf_token %}
             </form>

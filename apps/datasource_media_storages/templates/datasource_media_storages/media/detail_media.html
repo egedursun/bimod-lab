@@ -76,6 +76,13 @@
     {% endfor %}
   {% endif %}
 
+  <a href="{% url 'datasource_media_storages:list_items' %}">
+    <button class="btn btn-secondary mt-4 mb-4">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to Media Items</strong>
+    </button>
+  </a>
+
   <hr>
 
   <div class="row mt-4">

@@ -157,6 +157,7 @@
     <!-- Search and Filter Form -->
     <div class="row g-4 mb-4 mt-8 card card-border-shadow-primary p-4">
       <div class="col-xl-12">
+        <img src="{% static 'img/community_forum/frm-2.png' %}" class="rounded mt-4 mb-8" style="width: 100%;" alt="Illustration for tips">
         <h5 class="text-muted"><strong>Search Posts</strong></h5>
         <div class="card text-center mb-4">
           <div class="card-header">
@@ -187,17 +188,19 @@
         {% if posts %}
           {% for post in posts %}
             <hr>
-            <div class="card card-border-shadow-primary p-8 post">
+            <div class="card card-border-shadow-primary p-8 post border border-3 border-primary">
               <div class="d-flex justify-content-between">
                 <div>
                   <strong>Posted by:</strong> {{ post.created_by.username }} <br>
                   <small>on {{ post.created_at }}</small>
                 </div>
               </div>
-              <div class="post-content border border-primary border-2 mt-3 p-4 rounded mb-4 overflow-auto"
+              <div class="post-content btn-primary mt-3 p-4 rounded mb-4 overflow-auto"
                    style="max-height: 400px;">
                 {{ post.content|linebreaks }}
               </div>
+
+              <hr>
 
               <!-- Comments Section -->
               <div class="comments mt-4">
@@ -212,7 +215,7 @@
                       {% endif %}
                       <div class="card card-border-shadow-primary m-2 p-4 w-25">
                         <div>
-                          <strong><i class="fa fa-user-astronaut me-2"></i>{{ comment.created_by.username }}</strong>
+                          <strong><i class="fa fa-user-astronaut ms-4 me-2"></i>{{ comment.created_by.username }}</strong>
                         </div>
                         <div>
                           <small><i class="fa fa-clock ms-4 me-2"></i>{{ comment.created_at }}</small>
@@ -321,6 +324,8 @@
                   <p class="text-muted">No comments yet. Be the first to comment!</p>
                 {% endif %}
               </div>
+
+              <hr>
 
               <!-- Comment Form -->
               <div class="comment-form mt-4 col-6">

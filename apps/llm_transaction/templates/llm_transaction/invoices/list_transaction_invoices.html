@@ -73,6 +73,7 @@
         <hr>
 
         <table class="table table-striped mt-4">
+          <img src="{% static 'img/invoices/inv-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
           <thead>
           <tr>
             <th>Barcode</th>
@@ -122,6 +123,32 @@
           {% endfor %}
           </tbody>
         </table>
+
+        <nav aria-label="Page navigation" class="ms-12 p-12">
+          <ul class="pagination justify-content-center">
+            {% if invoices.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ invoices.previous_page_number }}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+            {% endif %}
+
+            {% for num in invoices.paginator.page_range %}
+              <li class="page-item {% if invoices.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+            {% endfor %}
+
+            {% if invoices.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ invoices.next_page_number }}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
       </div>
     </div>
   </div>

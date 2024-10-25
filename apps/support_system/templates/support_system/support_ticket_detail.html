@@ -109,7 +109,7 @@
           <i class="bi bi-activity me-2"></i>
           Status:
         </strong></span>
-        <span class="border border-info rounded p-1">
+        <span class="btn-primary rounded p-2">
           {% if ticket.get_status_display == "Open" %}
             <i class="fa fa-circle text-warning me-2"></i>
           {% elif ticket.get_status_display == "In Progress" %}
@@ -128,7 +128,7 @@
           <i class="bi bi-exclamation-triangle me-2"></i>
           Priority:
         </strong></span>
-        <span class="border border-info p-1 rounded">
+        <span class="btn-primary p-2 rounded">
           {% if ticket.get_priority_display == "Recommendation" %}
             <i class="fa fa-lightbulb text-success me-2"></i>
           {% elif ticket.get_priority_display == "Low" %}

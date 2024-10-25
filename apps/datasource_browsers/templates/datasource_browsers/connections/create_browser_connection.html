@@ -100,6 +100,7 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            <img src="{% static 'img/browsers/brw-1.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-6">
                 <label class="form-label" for="browser_type">Browser Type</label>
@@ -325,7 +326,9 @@
             <hr>
             <input type="hidden" name="created_by_user" value="{{ request.user.id }}">
             <button type="submit" class="btn btn-primary mt-8 d-grid w-25">
-              <strong>Create Browser Connection</strong>
+              <strong>
+                <i class="fa fa-plus me-4"></i>
+                Create Browser Connection</strong>
             </button>
           </form>
         </div>

@@ -37,7 +37,7 @@ class PermissionView_UserRoleManage(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['organizations'] = Organization.objects.prefetch_related('users')
+        context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
         context['roles'] = UserRole.objects.filter(organization__users__in=[self.request.user])
         return context
 
