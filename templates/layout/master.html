@@ -42,8 +42,13 @@
   </script>
 
   <script>
-    window.onload = function () {
+    document.addEventListener('DOMContentLoaded', function() {
       document.body.style.zoom = "{% default_application_zoom %}";
+    });
+  </script>
+
+  <script>
+    window.onload = function () {
       document.getElementById("template-customizer").style.display = "none";
       const tipsSections = document.querySelectorAll('.tips-section');
       const tipsSwitch = document.querySelector('.switch-input');
