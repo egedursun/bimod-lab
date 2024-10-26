@@ -25,16 +25,19 @@ from django.urls import path
 
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI
 from config import settings
-from config.settings import EXPORT_LEANMOD_API_BASE_URL
+from config.settings import EXPORT_LEANMOD_API_BASE_URL, EXPORT_LEANMOD_API_HEALTH_BASE_URL
 
 
 def start_endpoint_for_leanmod(assistant: ExportLeanmodAssistantAPI):
     from apps.export_leanmods.views import ExportLeanmodAssistantAPIView
+    from apps.export_leanmods.views import ExportLeanmodAssistantAPIHealthCheckView
     endpoint_url = assistant.endpoint
     endpoint_local = EXPORT_LEANMOD_API_BASE_URL + endpoint_url.split(EXPORT_LEANMOD_API_BASE_URL)[1]
+    health_local = EXPORT_LEANMOD_API_HEALTH_BASE_URL + endpoint_url.split(EXPORT_LEANMOD_API_BASE_URL)[1]
     urlpatterns = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
     urlpatterns += [
-        path(endpoint_local, ExportLeanmodAssistantAPIView.as_view(), name=f'export_assistant_{assistant.id}')
+        path(endpoint_local, ExportLeanmodAssistantAPIView.as_view(), name=f'export_leanmod_{assistant.id}'),
+        path(health_local, ExportLeanmodAssistantAPIHealthCheckView.as_view(), name=f'export_leanmod_health_{assistant.id}'),
     ]
 
 

@@ -436,8 +436,11 @@ EXCLUDED_PAGES = [
     "/bimod_endeavours/*",
     "/integration_to_organizations/*",
     "/app/export_assistants/api/v1/export/*",
+    "/health/export_assistants/api/v1/*",
     "/app/export_leanmods/api/v1/export/*",
+    "/health/export_leanmods/api/v1/*",
     "/app/export_orchestrations/api/v1/export/*",
+    "/health/export_orchestrations/api/v1/*",
     "/app/hadron_prime/hadron_node/activate/*",
     "/app/hadron_prime/hadron_node/speak/*",
 ]
@@ -445,8 +448,11 @@ EXCLUDED_PAGES = [
 DESIGN_DOCS_ROUTE = 'dev/design/'
 
 EXPORT_API_BASE_URL = "app/export_assistants/api/v1/export"
+EXPORT_API_HEALTH_BASE_URL = "health/export_assistants/api/v1/export"
 EXPORT_LEANMOD_API_BASE_URL = "app/export_leanmods/api/v1/export"
+EXPORT_LEANMOD_API_HEALTH_BASE_URL = "health/export_leanmods/api/v1/export"
 EXPORT_ORCHESTRATION_API_BASE_URL = "app/export_orchestrations/api/v1/export"
+EXPORT_ORCHESTRATION_API_HEALTH_BASE_URL = "health/export_orchestrations/api/v1/export"
 
 LEAN_BASE_URL = BASE_URL.split("://")[-1].split(":")[0]
 CELERY_BROKER_URL = 'redis://localhost:6379/0'

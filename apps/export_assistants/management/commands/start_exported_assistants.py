@@ -24,17 +24,19 @@ from django.core.management.base import BaseCommand
 from django.urls import path
 
 from apps.export_assistants.models import ExportAssistantAPI
-from apps.export_assistants.views.endpoints import ExportAssistantAPIView
+from apps.export_assistants.views.endpoints import ExportAssistantAPIView, ExportAssistantAPIHealthCheckView
 from config import settings
-from config.settings import EXPORT_API_BASE_URL
+from config.settings import EXPORT_API_BASE_URL, EXPORT_API_HEALTH_BASE_URL
 
 
 def start_endpoint_for_assistant(assistant):
     endpoint_url = assistant.endpoint
     endpoint_local = EXPORT_API_BASE_URL + endpoint_url.split(EXPORT_API_BASE_URL)[1]
+    health_local = EXPORT_API_HEALTH_BASE_URL + endpoint_url.split(EXPORT_API_BASE_URL)[1]
     urlpatterns = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
     urlpatterns += [
-        path(endpoint_local, ExportAssistantAPIView.as_view(), name=f'export_assistant_{assistant.id}')
+        path(endpoint_local, ExportAssistantAPIView.as_view(), name=f'export_assistant_{assistant.id}'),
+        path(health_local, ExportAssistantAPIHealthCheckView.as_view(), name=f'export_assistant_health_{assistant.id}'),
     ]
 
 

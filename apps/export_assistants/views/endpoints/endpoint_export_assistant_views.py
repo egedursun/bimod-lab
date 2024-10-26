@@ -30,8 +30,41 @@ from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
 from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
 from config.settings import BASE_URL
 
-
 logger = logging.getLogger(__name__)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class ExportAssistantAPIHealthCheckView(View):
+    def post(self, request, *args, **kwargs):
+        endpoint = (BASE_URL + request.path).replace("health", "app")
+        api_key = request.headers.get('Authorization')
+        try:
+            export_assistant = ExportAssistantAPI.objects.get(endpoint=endpoint)
+        except ExportAssistantAPI.DoesNotExist:
+            logger.error(f"Invalid Assistant endpoint: {endpoint}")
+            return JsonResponse({
+                "message": "Invalid Assistant endpoint", "data": {}, "status": ExportAPIStatusCodes.NOT_FOUND
+            }, status=ExportAPIStatusCodes.NOT_FOUND)
+
+        if not export_assistant.is_online:
+            logger.error(f"The Assistant endpoint is currently offline: {endpoint}")
+            return JsonResponse({
+                "message": "The Assistant endpoint is currently offline. Please try again later.", "data": {},
+                "status": ExportAPIStatusCodes.SERVICE_OFFLINE
+            }, status=ExportAPIStatusCodes.SERVICE_OFFLINE)
+
+        if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
+            logger.error(f"Invalid Assistant API key provided for endpoint: {endpoint}")
+            return JsonResponse({
+                "message": "The Assistant API key provided is invalid, please provide a valid API key.", "data": {},
+                "status": ExportAPIStatusCodes.UNAUTHORIZED
+            }, status=ExportAPIStatusCodes.UNAUTHORIZED)
+
+        return JsonResponse({
+                "message": "The Assistant endpoint is online and healthy.", "data": {},
+                "status": ExportAPIStatusCodes.OK
+            }, status=ExportAPIStatusCodes.OK
+        )
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -39,34 +72,33 @@ class ExportAssistantAPIView(View):
     def post(self, request, *args, **kwargs):
         endpoint = BASE_URL + request.path
         api_key = request.headers.get('Authorization')
-
         try:
             export_assistant = ExportAssistantAPI.objects.get(endpoint=endpoint)
         except ExportAssistantAPI.DoesNotExist:
-            logger.error(f"Invalid endpoint: {endpoint}")
+            logger.error(f"Invalid Assistant endpoint: {endpoint}")
             return JsonResponse({
-                "message": "Invalid endpoint", "data": {}, "status": ExportAPIStatusCodes.NOT_FOUND
+                "message": "Invalid Assistant endpoint", "data": {}, "status": ExportAPIStatusCodes.NOT_FOUND
             }, status=ExportAPIStatusCodes.NOT_FOUND)
 
         if not export_assistant.is_online:
-            logger.error(f"The endpoint is currently offline: {endpoint}")
+            logger.error(f"The Assistant endpoint is currently offline: {endpoint}")
             return JsonResponse({
-                "message": "The endpoint is currently offline. Please try again later.", "data": {},
+                "message": "The Assistant endpoint is currently offline. Please try again later.", "data": {},
                 "status": ExportAPIStatusCodes.SERVICE_OFFLINE
             }, status=ExportAPIStatusCodes.SERVICE_OFFLINE)
 
         if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
-            logger.error(f"Invalid API key provided for endpoint: {endpoint}")
+            logger.error(f"Invalid Assistant API key provided for endpoint: {endpoint}")
             return JsonResponse({
-                "message": "The API key provided is invalid, please provide a valid API key.", "data": {},
+                "message": "The Assistant API key provided is invalid, please provide a valid API key.", "data": {},
                 "status": ExportAPIStatusCodes.UNAUTHORIZED
             }, status=ExportAPIStatusCodes.UNAUTHORIZED)
 
         RequestLog.objects.create(export_assistant=export_assistant)
         if export_assistant.requests_in_last_hour() > export_assistant.request_limit_per_hour:
-            logger.error(f"The API request limit has been reached for endpoint: {endpoint}")
+            logger.error(f"The Assistant API request limit has been reached for endpoint: {endpoint}")
             return JsonResponse({
-                "error": "The API request limit has been reached. Please try again later.",
+                "error": "The Assistant API request limit has been reached. Please try again later.",
                 "data": {
                     "request_limit_per_hour": export_assistant.request_limit_per_hour,
                     "requests_in_last_hour": export_assistant.requests_in_last_hour()
@@ -96,7 +128,8 @@ class ExportAssistantAPIView(View):
         except Exception as e:
             logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
             return JsonResponse({
-                "message": "Internal server error: " + str(e), "data": {}, "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
+                "message": "Internal server error: " + str(e), "data": {},
+                "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
             }, status=ExportAPIStatusCodes.INTERNAL_SERVER_ERROR)
 
         api_chat = MultimodalChat.objects.create(
@@ -125,7 +158,8 @@ class ExportAssistantAPIView(View):
             }, status=ExportAPIStatusCodes.INTERNAL_SERVER_ERROR)
 
         try:
-            llm_client = GenerativeAIDecodeController.get(assistant=export_assistant.assistant, multimodal_chat=api_chat)
+            llm_client = GenerativeAIDecodeController.get(assistant=export_assistant.assistant,
+                                                          multimodal_chat=api_chat)
             llm_response_text, f_uris, img_uris = llm_client.respond(latest_message=user_msg, with_media=True)
             MultimodalChatMessage.objects.create(
                 multimodal_chat=api_chat, sender_type='ASSISTANT', message_text_content=llm_response_text
@@ -133,7 +167,8 @@ class ExportAssistantAPIView(View):
         except Exception as e:
             logger.error(f"Internal server error: {str(e)}")
             return JsonResponse({
-                "message": "Internal server error: " + str(e), "data": {}, "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
+                "message": "Internal server error: " + str(e), "data": {},
+                "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
             }, status=ExportAPIStatusCodes.INTERNAL_SERVER_ERROR)
 
         resp_data = {"message": "Success", "data": {

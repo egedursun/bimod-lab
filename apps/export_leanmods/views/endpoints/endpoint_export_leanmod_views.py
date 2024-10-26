@@ -17,6 +17,7 @@
 
 import json
 import logging
+from urllib.parse import urljoin
 
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -35,6 +36,40 @@ logger = logging.getLogger(__name__)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
+class ExportLeanmodAssistantAPIHealthCheckView(View):
+    def post(self, request, *args, **kwargs):
+        endpoint = (BASE_URL + request.path).replace("health", "app")
+        api_key = request.headers.get('Authorization')
+        try:
+            export_assistant = ExportLeanmodAssistantAPI.objects.get(endpoint=endpoint)
+        except ExportLeanmodAssistantAPI.DoesNotExist:
+            logger.error(f"Invalid LeanMod endpoint: {endpoint}")
+            return JsonResponse({
+                "message": "Invalid LeanMod endpoint", "data": {}, "status": LeanModAssistantStatusCodes.NOT_FOUND
+            }, status=LeanModAssistantStatusCodes.NOT_FOUND)
+
+        if not export_assistant.is_online:
+            logger.error(f"The LeanMod  is currently offline: {endpoint}")
+            return JsonResponse({
+                "message": "The LeanMod endpoint is currently offline. Please try again later.", "data": {},
+                "status": LeanModAssistantStatusCodes.SERVICE_OFFLINE
+            }, status=LeanModAssistantStatusCodes.SERVICE_OFFLINE)
+
+        if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
+            logger.error(f"Invalid LeanMod API key provided for endpoint: {endpoint}")
+            return JsonResponse({
+                "message": "The LeanMod API key provided is invalid, please provide a valid API key.", "data": {},
+                "status": LeanModAssistantStatusCodes.UNAUTHORIZED
+            }, status=LeanModAssistantStatusCodes.UNAUTHORIZED)
+
+        return JsonResponse({
+                "message": "The LeanMod endpoint is online and healthy.", "data": {},
+                "status": LeanModAssistantStatusCodes.OK
+            }, status=LeanModAssistantStatusCodes.OK
+        )
+
+
+@method_decorator(csrf_exempt, name='dispatch')
 class ExportLeanmodAssistantAPIView(View):
     def post(self, request, *args, **kwargs):
         endpoint = BASE_URL + request.path
@@ -43,20 +78,20 @@ class ExportLeanmodAssistantAPIView(View):
             exp_agent = ExportLeanmodAssistantAPI.objects.get(endpoint=endpoint)
 
         except ExportLeanmodAssistantAPI.DoesNotExist:
-            logger.error(f"Invalid endpoint: {endpoint}")
+            logger.error(f"Invalid LeanMod endpoint: {endpoint}")
             return JsonResponse({
-                "message": "Invalid endpoint", "data": {}, "status": LeanModAssistantStatusCodes.NOT_FOUND
+                "message": "Invalid LeanMod endpoint", "data": {}, "status": LeanModAssistantStatusCodes.NOT_FOUND
             }, status=LeanModAssistantStatusCodes.NOT_FOUND)
         if not exp_agent.is_online:
-            logger.error(f"The endpoint is currently offline: {endpoint}")
+            logger.error(f"The LeanMod endpoint is currently offline: {endpoint}")
             return JsonResponse({
-                "message": "The endpoint is currently offline. Please try again later.", "data": {},
+                "message": "The LeanMod endpoint is currently offline. Please try again later.", "data": {},
                 "status": LeanModAssistantStatusCodes.SERVICE_OFFLINE
             }, status=LeanModAssistantStatusCodes.SERVICE_OFFLINE)
         if (not exp_agent.is_public) and exp_agent.custom_api_key != api_key:
-            logger.error(f"Invalid API key provided for endpoint: {endpoint}")
+            logger.error(f"Invalid LeanMod API key provided for endpoint: {endpoint}")
             return JsonResponse({
-                "message": "The API key provided is invalid, please provide a valid API key.", "data": {},
+                "message": "The LeanMod API key provided is invalid, please provide a valid API key.", "data": {},
                 "status": LeanModAssistantStatusCodes.UNAUTHORIZED
             }, status=LeanModAssistantStatusCodes.UNAUTHORIZED)
 

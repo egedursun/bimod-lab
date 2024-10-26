@@ -25,16 +25,18 @@ from django.urls import path
 
 from apps.export_orchestrations.models import ExportOrchestrationAPI
 from config import settings
-from config.settings import EXPORT_ORCHESTRATION_API_BASE_URL
+from config.settings import EXPORT_ORCHESTRATION_API_BASE_URL, EXPORT_ORCHESTRATION_API_HEALTH_BASE_URL
 
 
 def start_endpoint_for_orchestration(assistant: ExportOrchestrationAPI):
-    from apps.export_orchestrations.views import ExportOrchestrationAPIView
+    from apps.export_orchestrations.views import ExportOrchestrationAPIView, ExportOrchestrationAPIHealthCheckView
     endpoint_url = assistant.endpoint
     endpoint_local = EXPORT_ORCHESTRATION_API_BASE_URL + endpoint_url.split(EXPORT_ORCHESTRATION_API_BASE_URL)[1]
+    health_local = EXPORT_ORCHESTRATION_API_HEALTH_BASE_URL + endpoint_url.split(EXPORT_ORCHESTRATION_API_BASE_URL)[1]
     urlpatterns = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
     urlpatterns += [
-        path(endpoint_local, ExportOrchestrationAPIView.as_view(), name=f'export_assistant_{assistant.id}')
+        path(endpoint_local, ExportOrchestrationAPIView.as_view(), name=f'export_orchestration_{assistant.id}'),
+        path(health_local, ExportOrchestrationAPIHealthCheckView.as_view(), name=f'export_orchestration_health_{assistant.id}'),
     ]
 
 

@@ -35,6 +35,49 @@ logger = logging.getLogger(__name__)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
+class ExportOrchestrationAPIHealthCheckView(View):
+    def post(self, request, *args, **kwargs):
+        endpoint = (BASE_URL + request.path).replace("health", "app")
+        api_key = request.headers.get('Authorization')
+        try:
+            export_assistant = ExportOrchestrationAPI.objects.get(endpoint=endpoint)
+        except ExportOrchestrationAPI.DoesNotExist:
+            return JsonResponse({
+                "message": "Invalid Orchestration endpoint", "data": {}, "status": ExportOrchestrationRequestStatusCodes.NOT_FOUND
+            }, status=ExportOrchestrationRequestStatusCodes.NOT_FOUND)
+
+        if not export_assistant.is_online:
+            logger.error(f"The Orchestration endpoint is currently offline: {endpoint}")
+            return JsonResponse({
+                "message": "The Orchestration endpoint is currently offline. Please try again later.", "data": {},
+                "status": ExportOrchestrationRequestStatusCodes.SERVICE_OFFLINE
+            }, status=ExportOrchestrationRequestStatusCodes.SERVICE_OFFLINE)
+
+        if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
+            logger.error(f"Invalid Orchestration API key provided for endpoint: {endpoint}")
+            return JsonResponse({
+                "message": "The Orchestration API key provided is invalid, please provide a valid API key.", "data": {},
+                "status": ExportOrchestrationRequestStatusCodes.UNAUTHORIZED
+            }, status=ExportOrchestrationRequestStatusCodes.UNAUTHORIZED)
+
+        OrchestratorRequestLog.objects.create(export_orchestration=export_assistant)
+        if export_assistant.requests_in_last_hour() > export_assistant.request_limit_per_hour:
+            logger.error(f"The Orchestration API request limit has been reached for endpoint: {endpoint}")
+            return JsonResponse({
+                "error": "The Orchestration API request limit has been reached. Please try again later.",
+                "data": {
+                    "request_limit_per_hour": export_assistant.request_limit_per_hour,
+                    "requests_in_last_hour": export_assistant.requests_in_last_hour()
+                },
+            }, status=ExportOrchestrationRequestStatusCodes.TOO_MANY_REQUESTS)
+
+        return JsonResponse({
+            "message": "The Orchestration endpoint is online and ready to serve requests.", "data": {},
+            "status": ExportOrchestrationRequestStatusCodes.OK
+        }, status=ExportOrchestrationRequestStatusCodes.OK)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
 class ExportOrchestrationAPIView(View):
     def post(self, request, *args, **kwargs):
         endpoint = BASE_URL + request.path
@@ -42,30 +85,30 @@ class ExportOrchestrationAPIView(View):
         try:
             export_assistant: ExportOrchestrationAPI = ExportOrchestrationAPI.objects.get(endpoint=endpoint)
         except ExportOrchestrationAPI.DoesNotExist:
-            logger.error(f"Invalid endpoint: {endpoint}")
+            logger.error(f"Invalid Orchestration endpoint: {endpoint}")
             return JsonResponse({
-                "message": "Invalid endpoint", "data": {}, "status": ExportOrchestrationRequestStatusCodes.NOT_FOUND
+                "message": "Invalid Orchestration endpoint", "data": {}, "status": ExportOrchestrationRequestStatusCodes.NOT_FOUND
             }, status=ExportOrchestrationRequestStatusCodes.NOT_FOUND)
 
         if not export_assistant.is_online:
-            logger.error(f"The endpoint is currently offline: {endpoint}")
+            logger.error(f"The Orchestration endpoint is currently offline: {endpoint}")
             return JsonResponse({
-                "message": "The endpoint is currently offline. Please try again later.", "data": {},
+                "message": "The Orchestration endpoint is currently offline. Please try again later.", "data": {},
                 "status": ExportOrchestrationRequestStatusCodes.SERVICE_OFFLINE
             }, status=ExportOrchestrationRequestStatusCodes.SERVICE_OFFLINE)
 
         if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
-            logger.error(f"Invalid API key provided for endpoint: {endpoint}")
+            logger.error(f"Invalid Orchestration API key provided for endpoint: {endpoint}")
             return JsonResponse({
-                "message": "The API key provided is invalid, please provide a valid API key.", "data": {},
+                "message": "The Orchestration API key provided is invalid, please provide a valid API key.", "data": {},
                 "status": ExportOrchestrationRequestStatusCodes.UNAUTHORIZED
             }, status=ExportOrchestrationRequestStatusCodes.UNAUTHORIZED)
 
         OrchestratorRequestLog.objects.create(export_orchestration=export_assistant)
         if export_assistant.requests_in_last_hour() > export_assistant.request_limit_per_hour:
-            logger.error(f"The API request limit has been reached for endpoint: {endpoint}")
+            logger.error(f"The Orchestration API request limit has been reached for endpoint: {endpoint}")
             return JsonResponse({
-                "error": "The API request limit has been reached. Please try again later.",
+                "error": "The Orchestration API request limit has been reached. Please try again later.",
                 "data": {
                     "request_limit_per_hour": export_assistant.request_limit_per_hour,
                     "requests_in_last_hour": export_assistant.requests_in_last_hour()

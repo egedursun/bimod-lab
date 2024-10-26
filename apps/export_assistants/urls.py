@@ -20,8 +20,10 @@
 
 from django.urls import path
 
-from apps.export_assistants.views import ExportAssistantView_List, ExportAssistantView_Create, \
-    ExportAssistantView_Update, ExportAssistantView_Delete, ExportAssistantAPIView, ExportAssistantView_ToggleService
+from apps.export_assistants.views import (ExportAssistantView_List, ExportAssistantView_Create,
+                                          ExportAssistantView_Update, ExportAssistantView_Delete,
+                                          ExportAssistantAPIView, ExportAssistantView_ToggleService,
+                                          ExportAssistantAPIHealthCheckView)
 
 app_name = 'export_assistants'
 
@@ -34,5 +36,6 @@ urlpatterns = [
         template_name="export_assistants/update_export_assistants.html"), name='update'),
     path('delete/<int:pk>/', ExportAssistantView_Delete.as_view(), name='delete'),
     path('exported/<str:endpoint>/', ExportAssistantAPIView.as_view(), name='api'),
+    path('health/<str:endpoint>/', ExportAssistantAPIHealthCheckView.as_view(), name='health_check'),
     path('toggle_service/<int:pk>/', ExportAssistantView_ToggleService.as_view(), name='toggle_service'),
 ]

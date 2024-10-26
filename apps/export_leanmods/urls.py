@@ -20,9 +20,9 @@
 
 from django.urls import path
 
-from apps.export_leanmods.views import ExportLeanModView_List, ExportLeanModView_Create, \
-    ExportLeanModView_Update, ExportLeanModView_Delete, ExportLeanmodAssistantAPIView, \
-    ExportLeanModView_ToggleService
+from apps.export_leanmods.views import (ExportLeanModView_List, ExportLeanModView_Create, ExportLeanModView_Update,
+                                        ExportLeanModView_Delete, ExportLeanmodAssistantAPIView,
+                                        ExportLeanModView_ToggleService, ExportLeanmodAssistantAPIHealthCheckView)
 
 app_name = 'export_leanmods'
 
@@ -35,5 +35,6 @@ urlpatterns = [
         template_name="export_leanmods/update_export_leanmods.html"), name='update'),
     path('delete/<int:pk>/', ExportLeanModView_Delete.as_view(), name='delete'),
     path('exported/<str:endpoint>/', ExportLeanmodAssistantAPIView.as_view(), name='api'),
+    path('ping/<str:endpoint>/', ExportLeanmodAssistantAPIHealthCheckView.as_view(), name='health_check'),
     path('toggle_service/<int:pk>/', ExportLeanModView_ToggleService.as_view(), name='toggle_service'),
 ]
