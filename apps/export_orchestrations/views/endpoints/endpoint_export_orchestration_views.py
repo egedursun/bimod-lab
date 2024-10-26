@@ -148,21 +148,46 @@ class ExportOrchestrationAPIView(View):
         try:
             for msg in chat_history:
                 role = msg["role"]
-                if not role:
-                    pass
                 content = msg["content"]
-                f_uris = msg.get("file_uris") or []
-                img_uris = msg.get("image_uris") or []
-                if not f_uris or not img_uris:
-                    pass
+                f_uris = []
+                img_uris = []
+                if "file_uris" in msg and msg["file_uris"] != "":
+                    f_uris = msg.get("file_uris", "").split(",") if msg.get("file_uris") else []
+                if "image_uris" in msg and msg["image_uris"] != "":
+                    img_uris = msg.get("image_uris", "").split(",") if msg.get("image_uris") else []
+
+                f_uris = [uri.strip() for uri in f_uris if uri.strip()] if f_uris else []
+                img_uris = [uri.strip() for uri in img_uris if uri.strip()]
+
                 user_msg = content
-                api_chat: OrchestrationQuery = OrchestrationQuery.objects.create(
-                    maestro=export_assistant.orchestrator, query_text=user_msg,
+                api_chat = OrchestrationQuery.objects.create(
+                    maestro=export_assistant.orchestrator,
+                    query_text=user_msg,
                     created_by_user=export_assistant.created_by_user,
-                    last_updated_by_user=export_assistant.created_by_user)
+                    last_updated_by_user=export_assistant.created_by_user
+                )
                 query_log = OrchestrationQueryLog.objects.create(
-                    orchestration_query=api_chat, log_type=OrchestrationQueryLogTypesNames.USER,
-                    log_text_content=content, log_file_contents=None, log_image_contents=None,
+                    orchestration_query=api_chat,
+                    log_type=OrchestrationQueryLogTypesNames.USER,
+                    log_text_content=content + f"""
+                        -----
+
+                        **IMAGE URLS:**
+                        '''
+                        {img_uris}
+                        '''
+
+                        -----
+
+                        **FILE URLS:**
+                        '''
+                        {f_uris}
+                        '''
+
+                        -----
+                    """,
+                    log_file_contents=f_uris,
+                    log_image_contents=img_uris
                 )
                 api_chat.logs.add(query_log)
                 api_chat.save()
@@ -183,11 +208,22 @@ class ExportOrchestrationAPIView(View):
                 "message": "Internal server error: " + str(e), "data": {},
                 "status": ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR
             }, status=ExportOrchestrationRequestStatusCodes.INTERNAL_SERVER_ERROR)
-        response_data = {"message": "Success", "data": {
-            "metadata": {"organization": {"organization_name": export_assistant.orchestrator.organization.name, },
-                         "assistant": {"assistant_name": export_assistant.orchestrator.name}},
-            "message": {"assistant_name": export_assistant.orchestrator.name, "content": final_output,
-                        "role": "assistant", "media": {"files": [], "images": []}
-                        }}}
+
+        response_data = {
+            "message": "Success",
+            "data": {
+                "metadata": {
+                    "organization": {"organization_name": export_assistant.orchestrator.organization.name},
+                    "assistant": {"assistant_name": export_assistant.orchestrator.name}
+                },
+                "message": {
+                    "assistant_name": export_assistant.orchestrator.name,
+                    "content": final_output,
+                    "role": "assistant",
+                    "media": {"files": [], "images": []}
+                }
+            }
+        }
         logger.info(f"Orchestration executed successfully for endpoint: {endpoint}")
         return JsonResponse(response_data, status=ExportOrchestrationRequestStatusCodes.OK)
+

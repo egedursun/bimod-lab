@@ -14,7 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
 import json
 import logging
 
@@ -109,24 +108,24 @@ class ExportAssistantAPIView(View):
         try:
             chat_history = body.get('chat_history')
             if len(chat_history) == 0:
-                logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
+                logger.error(f"Invalid chat history provided for endpoint, no chat history error: {endpoint}")
                 raise ValueError("Chat history is empty.")
             if "role" not in chat_history[0]:
-                logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
+                logger.error(f"Invalid chat history provided for endpoint, not existent role field error: {endpoint}")
                 raise ValueError("Each of the chat history elements must contain 'role' key, which can either"
                                  "be 'system', 'assistant' or 'user'.")
             if chat_history[0]["role"] not in ["system", "assistant", "user"]:
-                logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
+                logger.error(f"Invalid chat history provided for endpoint, invalid role error: {endpoint}")
                 raise ValueError("The 'role' key in the first element of the chat history must be either 'system',"
                                  "'assistant' or 'user'.")
             if "content" not in chat_history[0]:
-                logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
+                logger.error(f"Invalid chat history provided for endpoint, no content in chat history element: {endpoint}")
                 raise ValueError("Each of the chat history elements must contain 'content' key.")
             if not isinstance(chat_history[0]["content"], str):
-                logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
+                logger.error(f"Invalid chat history provided for endpoint, content field error: {endpoint}")
                 raise ValueError("The 'content' key in the first element of the chat history must be a string.")
         except Exception as e:
-            logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
+            logger.error(f"Invalid chat history provided for endpoint, {e}: {endpoint}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e), "data": {},
                 "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
@@ -142,8 +141,16 @@ class ExportAssistantAPIView(View):
             for msg in chat_history:
                 role = msg["role"]
                 content = msg["content"]
-                f_uris = msg.get("file_uris") or []
-                img_uris = msg.get("image_uris") or []
+                f_uris = []
+                img_uris = []
+                if "file_uris" in msg and msg["file_uris"] != "":
+                    f_uris = msg.get("file_uris", "").split(",") if msg.get("file_uris") else []
+                if "image_uris" in msg and msg["image_uris"] != "":
+                    img_uris = msg.get("image_uris", "").split(",") if msg.get("image_uris") else []
+
+                f_uris = [uri.strip() for uri in f_uris if uri.strip()] if f_uris else []
+                img_uris = [uri.strip() for uri in img_uris if uri.strip()]
+
                 api_chat.chat_messages.create(
                     multimodal_chat=api_chat, sender_type=role.upper(), message_text_content=content,
                     message_file_contents=f_uris, message_image_contents=img_uris
@@ -151,7 +158,7 @@ class ExportAssistantAPIView(View):
                 user_msg = api_chat.chat_messages.filter(sender_type=role.upper()).last()
 
         except Exception as e:
-            logger.error(f"Invalid chat history provided for endpoint: {endpoint}")
+            logger.error(f"Invalid chat history provided for endpoint, {e}: {endpoint}")
             return JsonResponse({
                 "message": "Internal server error: " + str(e),
                 "data": {}, "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR

@@ -29,7 +29,6 @@ from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,10 +50,28 @@ class OrchestrationView_QueryRerun(LoginRequiredMixin, TemplateView):
         query_id = self.kwargs.get('query_id')
         query = get_object_or_404(OrchestrationQuery, id=query_id)
         query_text = query.query_text
+        attached_images = request.FILES.getlist('attached_images[]', [])
+        attached_files = request.FILES.getlist('attached_files[]', [])
         query.logs.all().delete()
         query_log = OrchestrationQueryLog.objects.create(
             orchestration_query=query, log_type=OrchestrationQueryLogTypesNames.USER,
-            log_text_content=query_text, log_file_contents=None, log_image_contents=None)
+            log_text_content=query_text + f"""
+                        -----
+
+                        **IMAGE URLS:**
+                        '''
+                        {attached_images}
+                        '''
+
+                        -----
+
+                        **FILE URLS:**
+                        '''
+                        {attached_files}
+                        '''
+
+                        -----
+                    """, log_file_contents=attached_files, log_image_contents=attached_images)
         query.logs.add(query_log)
         query.save()
         orch_xc = OrchestrationExecutor(

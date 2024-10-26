@@ -48,6 +48,7 @@ ENVIRONMENT = os.environ.get("DJANGO_ENVIRONMENT", default="local")
 
 # Application definition
 INSTALLED_APPS = [
+    "jazzmin",
     "config.apps.MainAppConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -580,3 +581,13 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 # Web3 INFURA Access Key
 INFURA_API_KEY = os.environ.get("INFURA_API_KEY", default="")
 INFURA_URL = f"https://mainnet.infura.io/v3/{INFURA_API_KEY}"
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "BimodLab Admin",
+    "site_header": "BimodLab Admin",
+    "site_brand": "BimodLab Admin",
+    "welcome_sign": "Primary Staff Control Panel",
+    "copyright": "BMD Autonomous Holdings. All rights reserved.",
+    "show_sidebar": True,
+}

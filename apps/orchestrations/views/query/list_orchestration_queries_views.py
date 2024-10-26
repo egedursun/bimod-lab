@@ -72,7 +72,23 @@ class OrchestrationView_QueryList(LoginRequiredMixin, TemplateView):
             maestro=maestro, query_text=query_text, created_by_user=request.user, last_updated_by_user=request.user)
         query_log = OrchestrationQueryLog.objects.create(
             orchestration_query=query_chat, log_type=OrchestrationQueryLogTypesNames.USER,
-            log_text_content=query_text, log_file_contents=None, log_image_contents=None)
+            log_text_content=query_text + f"""
+                        -----
+
+                        **IMAGE URLS:**
+                        '''
+                        {attached_images}
+                        '''
+
+                        -----
+
+                        **FILE URLS:**
+                        '''
+                        {attached_files}
+                        '''
+
+                        -----
+                    """, log_file_contents=attached_images, log_image_contents=attached_files)
         query_chat.logs.add(query_log)
         query_chat.save()
         orch_xc = OrchestrationExecutor(maestro=maestro, query_chat=query_chat)
