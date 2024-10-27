@@ -17,6 +17,5 @@
 
 from .meta_kanban_task_admin import *
 from .meta_kanban_column_admin import *
-from .meta_kanban_comment_admin import *
 from .meta_kanban_board_admin import *
 from .meta_kanban_change_log_admin import *

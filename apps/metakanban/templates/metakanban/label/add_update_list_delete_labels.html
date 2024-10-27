@@ -1,0 +1,157 @@
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Manage Task Labels{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-4">
+    <h3 class="mb-0"><strong>Manage Task Labels</strong></h3>
+  </div>
+</div>
+
+<a href="{% url 'metakanban:board_detail' board.id %}">
+    <button class="btn btn-secondary mt-4 me-4 mb-4">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to MetaKanban™ Board</strong>
+    </button>
+</a>
+
+<hr>
+
+<div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+  <img src="{% static 'img/custom-illustrations-v2/i2-32.png' %}" width="25%" class="me-8" alt="Illustration for tip">
+  <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
+  <div class="d-flex flex-column ps-1">
+    <h5 class="alert-heading mb-2">Tip</h5>
+    <p class="mb-0">Create, update, or delete task labels for your kanban board. Each label can be customized by name and color.</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+
+<hr>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<!-- Create New Label Form -->
+<div class="card mb-6">
+  <div class="card-header"><strong>
+    <i class="fa fa-plus-circle me-2"></i>
+    Create New Label
+  </strong></div>
+  <div class="card-body">
+    <form method="post" action="{% url 'metakanban:label_create' board.id %}">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-6">
+          <label for="label_name" class="form-label">Label Name</label>
+          <input type="text" name="label_name" id="label_name" class="form-control" placeholder="Enter label name" required>
+        </div>
+        <div class="col-6">
+          <label for="label_color" class="form-label">Label Color</label>
+          <select name="label_color" id="label_color" class="form-select select2">
+            {% for code, color in color_choices %}
+              <option value="{{ code }}">{{ color }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mt-4">
+        <i class="fa fa-plus me-2"></i><strong>Create Label</strong>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Labels List -->
+<div class="card">
+  <div class="card-header"><strong>Existing Labels</strong></div>
+  <div class="card-body">
+    <img src="{% static 'img/metakanban/kbn-3.png' %}" class="rounded mb-8 mt-4" style="width: 100%;" alt="Illustration for tips">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Current Color</th>
+          <th>Change Color</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for label in labels %}
+          <tr>
+            <form method="post" action="{% url 'metakanban:label_update' board.id label.id %}">
+              {% csrf_token %}
+              <td>
+                <input type="text" name="label_name" value="{{ label.label_name }}" class="form-control" required>
+              </td>
+              <td>
+                <span class="bg-label-dark p-3 rounded"><i class="fa fa-circle fa-xl" style="color: {{ label.label_color }};"></i></span>
+              </td>
+              <td>
+                <select name="label_color" class="form-select">
+                  {% for code, color in color_choices %}
+                    <option value="{{ code }}" {% if code == label.label_color %}selected{% endif %}>
+                      <span class="rounded-circle d-inline-block me-2" style="width: 20px; height: 20px; background-color: {{ code }};"></span>
+                      {{ color }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <!-- Save Changes Button -->
+                <button type="submit" class="btn btn-sm btn-success me-4">
+                  <i class="fa fa-save me-2"></i><strong>Save Changes</strong>
+                </button>
+
+                <!-- Delete Label Form -->
+                <form method="post" action="{% url 'metakanban:label_delete' board.id label.id %}" class="d-inline-block">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-danger me-4">
+                    <i class="fa fa-trash me-2"></i><strong>Delete</strong>
+                  </button>
+                </form>
+              </td>
+            </form>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4" class="text-center">
+              <div class="alert alert-warning rounded p-4 mt-4 d-flex align-items-center" role="alert">
+                <i class="fa fa-exclamation-triangle me-3"></i>
+                <strong>No labels have been created for this board yet.</strong>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('.select2').select2({
+      width: '100%',
+      placeholder: 'Select a color',
+    });
+  });
+</script>
+{% endblock %}

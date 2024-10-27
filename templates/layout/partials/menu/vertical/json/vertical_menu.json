@@ -64,6 +64,23 @@
       ]
     },
     {
+      "name": "MetaKanban™",
+      "icon": "menu-icon tf-icons ti ti-layout",
+      "slug": "teams",
+      "submenu": [
+        {
+          "name": "Add Board",
+          "slug": "teams",
+          "url": "metakanban:board_create"
+        },
+        {
+          "name": "Manage Boards",
+          "slug": "teams",
+          "url": "metakanban:board_list"
+        }
+      ]
+    },
+    {
       "name": "LLM Models",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-cores",

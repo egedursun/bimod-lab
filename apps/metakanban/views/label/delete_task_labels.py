@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: assign_board_task_views.py
-#  Last Modified: 2024-10-27 00:07:04
+#  File: delete_task_labels.py
+#  Last Modified: 2024-10-27 00:34:03
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-27 00:07:04
+#  Created: 2024-10-27 00:34:04
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -20,29 +20,30 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanTask
+from apps.metakanban.models import MetaKanbanTaskLabel
 from apps.user_permissions.utils import PermissionNames
 
 
-class MetaKanbanView_TaskAssign(LoginRequiredMixin, View):
+class MetaKanbanView_LabelDelete(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        task_id = request.POST.get("task_id")
-        task = get_object_or_404(MetaKanbanTask, id=task_id)
+        board_id = kwargs.get("board_id")
 
         ##############################
-        # PERMISSION CHECK FOR - ASSIGN_METAKANBAN_TASK
+        # PERMISSION CHECK FOR - DELETE_METAKANBAN_TASK_LABEL
         if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ASSIGN_METAKANBAN_TASK):
-            messages.error(self.request, "You do not have permission to assign users to a kanban task.")
-            return redirect('metakanban:board_detail', board_id=task.board.id)
+                                                   operation=PermissionNames.DELETE_METAKANBAN_TASK_LABEL):
+            messages.error(self.request, "You do not have permission to delete a kanban task label.")
+            return redirect('metakanban:board_detail', board_id=board_id)
         ##############################
 
-        assignee_ids = request.POST.getlist("assignees")
-        task.assignees.set(assignee_ids)
-        task.save()
-        messages.success(request, f"Users assigned to task '{task.title}' successfully.")
-        return redirect("metakanban:board_detail", board_id=task.board.id)
+        label_id = kwargs.get("label_id")
+        label = get_object_or_404(MetaKanbanTaskLabel, id=label_id, board_id=board_id)
+        label_name = label.label_name
+        label.delete()
+
+        messages.success(request, f'Label "{label_name}" deleted successfully.')
+        return redirect("metakanban:label_list", board_id=board_id)

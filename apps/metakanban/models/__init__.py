@@ -19,5 +19,5 @@
 from .meta_kanban_board_models import *
 from .meta_kanban_task_models import *
 from .meta_kanban_column_models import *
-from .meta_kanban_comment_models import *
 from .meta_kanban_change_log_models import *
+from .meta_kanban_task_label_models import *

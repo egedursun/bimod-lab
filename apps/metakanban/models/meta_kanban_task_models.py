@@ -25,12 +25,16 @@ class MetaKanbanTask(models.Model):
     board = models.ForeignKey('metakanban.MetaKanbanBoard', on_delete=models.CASCADE)
     status_column = models.ForeignKey('metakanban.MetaKanbanStatusColumn', on_delete=models.CASCADE)
     title = models.CharField(max_length=10000)
+    labels = models.ManyToManyField('metakanban.MetaKanbanTaskLabel', related_name='metakanban_tasks', blank=True)
     description = models.TextField(null=True, blank=True)
     priority = models.CharField(max_length=100, choices=META_KANBAN_TASK_PRIORITIES,
-                                default=MetaKanbanTaskPrioritiesNames.UNCATEGORIZED)
+                                default=MetaKanbanTaskPrioritiesNames.UNCATEGORIZED, null=True, blank=True)
     due_date = models.DateTimeField(null=True, blank=True)
-    assignee = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True,
-                                 related_name='assigned_tasks')
+    assignees = models.ManyToManyField('auth.User', related_name='metakanban_tasks', blank=True)
+
+    task_image = models.ImageField(upload_to='metakanban/task_images/%Y/%m/%d/', null=True, blank=True)
+    task_url = models.URLField(null=True, blank=True)
+    task_file = models.FileField(upload_to='metakanban/task_files/%Y/%m/%d/', null=True, blank=True)
 
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

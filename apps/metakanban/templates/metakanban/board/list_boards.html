@@ -18,3 +18,165 @@
   ~
   -->
 
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Manage MetaKanban™ Boards{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-4">
+    <h3 class="mb-0"><strong>Manage MetaKanban™ Boards</strong></h3>
+  </div>
+</div>
+
+<div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+  <img src="{% static 'img/custom-illustrations-v2/i2-11.png' %}" width="25%" style="border-radius:25px;" class="me-8" alt="Illustration for tip">
+  <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+  <div class="d-flex flex-column ps-1">
+    <h5 class="alert-heading mb-2">Tip</h5>
+    <p class="mb-0">In this page, you can view all the kanban boards organized by your projects and organizations. You can also edit or delete any board that belongs to you.</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+
+<hr>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% for organization, projects in org_projects_boards.items %}
+  <div class="card mb-6">
+    <div class="card-header border-bottom">
+      <a class="collapsed" data-bs-toggle="collapse" href="#org-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="org-{{ organization.id }}">
+        <div class="d-flex">
+          <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}" alt="Organization Image" class="rounded" width="60">
+          <h4><strong class="ms-4">{{ organization.name }}</strong></h4>
+        </div>
+      </a>
+      <p class="mt-8"><i class="fa fa-briefcase"></i><strong>&nbsp; Total Projects: </strong>{{ projects|length }}</p>
+      <span data-bs-toggle="collapse" href="#org-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="org-{{ organization.id }}">
+        <i class="fa fa-arrow-alt-circle-down toggle-icon"></i><strong>&nbsp; See Projects</strong>
+      </span>
+    </div>
+
+    <div id="org-{{ organization.id }}" class="collapse">
+      {% for project, boards in projects.items %}
+        <div class="card mb-4">
+          <div class="card-header border-bottom">
+            <h5><strong>{{ project.project_name }}</strong></h5>
+            <p><i class="fa fa-project-diagram"></i><strong>&nbsp; Total Boards: </strong>{{ boards|length }}</p>
+          </div>
+
+          <div class="card-body">
+            <a href="{% url 'metakanban:board_create' %}">
+              <button class="btn btn-success mt-4 ms-4 mb-4">
+                <i class="fa fa-add me-4"></i>
+                <strong> Add MetaKanban™ Board</strong>
+              </button>
+            </a>
+            {% if boards %}
+              <table class="table datatables-boards">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for board in boards %}
+                    <tr>
+                      <td><strong>{{ board.title }}</strong></td>
+                      <td>{{ board.description|linebreaksbr }}</td>
+                      <td>{{ board.created_at|date:"Y-m-d H:i" }}</td>
+                      <td>
+                        <a href="{% url 'metakanban:board_detail' board.id %}" class="btn btn-sm btn-info me-4">
+                          <i class="fa fa-info-circle me-2"></i><strong>Detail</strong>
+                        </a>
+                        <a href="{% url 'metakanban:board_update' board.id %}" class="btn btn-sm btn-primary me-4">
+                          <i class="fa fa-edit me-2"></i><strong>Edit</strong>
+                        </a>
+                        <a href="{% url 'metakanban:board_delete' board.id %}" class="btn btn-sm btn-danger me-4">
+                          <i class="fa fa-trash me-2"></i><strong>Delete</strong>
+                        </a>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr><td colspan="4" class="text-center">No boards available for this project.</td></tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <div class="alert alert-warning" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i><strong>No boards created for this project yet.</strong>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.toggle-icon').forEach(function (icon) {
+      icon.addEventListener('click', function () {
+        var target = document.querySelector(this.getAttribute('data-target'));
+        var bootstrapCollapse = new bootstrap.Collapse(target, {
+          toggle: false
+        });
+        if (target.classList.contains('show')) {
+          bootstrapCollapse.hide();
+        } else {
+          bootstrapCollapse.show();
+        }
+      });
+    });
+
+    document.querySelectorAll('.collapse').forEach(function (collapse) {
+      collapse.addEventListener('show.bs.collapse', function () {
+        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+        if (icon) {
+          icon.classList.remove('fa-arrow-alt-circle-down');
+          icon.classList.add('fa-arrow-alt-circle-up');
+        }
+      });
+
+      collapse.addEventListener('hide.bs.collapse', function () {
+        var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
+        if (icon) {
+          icon.classList.remove('fa-arrow-alt-circle-up');
+          icon.classList.add('fa-arrow-alt-circle-down');
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}

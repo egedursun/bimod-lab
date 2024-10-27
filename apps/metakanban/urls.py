@@ -16,18 +16,19 @@
 #
 from django.urls import path
 
-from apps.metakanban.views import (MetaKanbanView_TaskCreate, MetaKanbanView_CommentCreate,
-                                   MetaKanbanView_CommentDelete, MetaKanbanView_TaskDelete,
+from apps.metakanban.views import (MetaKanbanView_TaskCreate, MetaKanbanView_TaskDelete,
                                    MetaKanbanView_TaskDetailAndUpdate, MetaKanbanView_TaskMove,
                                    MetaKanbanView_ColumnConfirmDelete, MetaKanbanView_BoardConfirmDelete,
                                    MetaKanbanView_BoardList, MetaKanbanView_BoardCreate, MetaKanbanView_BoardDetail,
                                    MetaKanbanView_ColumnCreate, MetaKanbanView_ColumnUpdate,
-                                   MetaKanbanView_CommentUpdate, MetaKanbanView_BoardUpdate,
-                                   MetaKanbanView_ChangeLogList, MetaKanbanView_TaskAssign)
+                                   MetaKanbanView_BoardUpdate, MetaKanbanView_TaskAssign, MetaKanbanView_LabelList,
+                                   MetaKanbanView_LabelCreate, MetaKanbanView_LabelDelete, MetaKanbanView_LabelUpdate,
+                                   MetaKanbanView_ColumnMove)
 
 app_name = 'metakanban'
 
 urlpatterns = [
+    # Board: All TemplateView
     path("board/list/", MetaKanbanView_BoardList.as_view(
         template_name="metakanban/board/list_boards.html"), name="board_list"),
     path("board/create/", MetaKanbanView_BoardCreate.as_view(
@@ -39,29 +40,23 @@ urlpatterns = [
     path("board/delete/<int:board_id>/", MetaKanbanView_BoardConfirmDelete.as_view(
         template_name="metakanban/board/confirm_delete_board.html"), name="board_delete"),
 
-    path("column/create/<int:board_id>/", MetaKanbanView_ColumnCreate.as_view(
-        template_name="metakanban/column/create_board_column.html"), name="column_create"),
-    path("column/update/<int:board_id>/<int:column_id>/", MetaKanbanView_ColumnUpdate.as_view(
-        template_name="metakanban/column/update_board_column.html"), name="column_update"),
-    path("column/delete/<int:board_id>/<int:column_id>/", MetaKanbanView_ColumnConfirmDelete.as_view(
-        template_name="metakanban/column/confirm_delete_board_column.html"), name="column_delete"),
+    # Label: Manager Page Template View / Create, Update, Delete HTTP Views
+    path("label/list/<int:board_id>/", MetaKanbanView_LabelList.as_view(
+        template_name="metakanban/label/add_update_list_delete_labels.html"), name="label_list"),
+    path("label/create/<int:board_id>/", MetaKanbanView_LabelCreate.as_view(), name="label_create"),
+    path("label/update/<int:board_id>/<int:label_id>/", MetaKanbanView_LabelUpdate.as_view(), name="label_update"),
+    path("label/delete/<int:board_id>/<int:label_id>/", MetaKanbanView_LabelDelete.as_view(), name="label_delete"),
 
-    path("task/create/<int:board_id>/", MetaKanbanView_TaskCreate.as_view(), name="task_create"),
-    path("task/move/<int:board_id>/<int:task_id>/", MetaKanbanView_TaskMove.as_view(), name="task_move"),
-    path("task/assign/<int:board_id>/<int:task_id>/", MetaKanbanView_TaskAssign.as_view(), name="task_assign"),
-    path("task/delete/<int:board_id>/<int:task_id>/", MetaKanbanView_TaskDelete.as_view(), name="task_delete"),
-    path("task/detail/<int:board_id>/<int:task_id>/", MetaKanbanView_TaskDetailAndUpdate.as_view(
-        template_name="metakanban/task/detail_and_update_task.html"
-    ), name="task_detail"),
+    # Column: Create, Update, Delete HTTP Views
+    path("column/create/", MetaKanbanView_ColumnCreate.as_view(), name="column_create"),
+    path("column/update/", MetaKanbanView_ColumnUpdate.as_view(), name="column_update"),
+    path("column/move/", MetaKanbanView_ColumnMove.as_view(), name="column_move"),
+    path("column/delete/", MetaKanbanView_ColumnConfirmDelete.as_view(), name="column_delete"),
 
-    path("comment/create/<int:board_id>/<int:task_id>/", MetaKanbanView_CommentCreate.as_view(),
-         name="comment_create"),
-    path("comment/update/<int:board_id>/<int:task_id>/<int:comment_id>/", MetaKanbanView_CommentUpdate.as_view(),
-         name="comment_update"),
-    path("comment/delete/<int:board_id>/<int:task_id>/<int:comment_id>/", MetaKanbanView_CommentDelete.as_view(),
-         name="comment_delete"),
-
-    path("changelog/list/<int:board_id>/", MetaKanbanView_ChangeLogList.as_view(
-        template_name="metakanban/change_log/list_change_logs.html"
-    ), name="changelog_list"),
+    # Task: Create, Update, Delete, Move, Assign HTTP Views
+    path("task/create/", MetaKanbanView_TaskCreate.as_view(), name="task_create"),
+    path("task/move/", MetaKanbanView_TaskMove.as_view(), name="task_move"),
+    path("task/assign/", MetaKanbanView_TaskAssign.as_view(), name="task_assign"),
+    path("task/delete/", MetaKanbanView_TaskDelete.as_view(), name="task_delete"),
+    path("task/detail/", MetaKanbanView_TaskDetailAndUpdate.as_view(), name="task_detail"),
 ]

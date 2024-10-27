@@ -50,10 +50,6 @@ META_KANBAN_CHANGE_LOG_ACTION_TYPES = [
     ('delete_task', 'Delete Task'),
     ('move_task', 'Move Task'),
     ('assign_task', 'Assign Task'),
-    # Columns
-    ('create_column', 'Create Column'),
-    ('update_column', 'Update Column'),
-    ('delete_column', 'Delete Column'),
     # Comments
     ('create_comment', 'Create Comment'),
     ('update_comment', 'Update Comment'),
@@ -75,19 +71,6 @@ class MetaKanbanChangeLogActionTypes:
                     MetaKanbanChangeLogActionTypes.Task.DELETE_TASK, MetaKanbanChangeLogActionTypes.Task.MOVE_TASK,
                     MetaKanbanChangeLogActionTypes.Task.ASSIGN_TASK]
 
-    class Column:
-        CREATE_COLUMN = 'create_column'
-        UPDATE_COLUMN = 'update_column'
-        DELETE_COLUMN = 'delete_column'
-        COLUMN_REORDER = 'column_reorder'
-
-        @staticmethod
-        def as_list():
-            return [MetaKanbanChangeLogActionTypes.Column.CREATE_COLUMN,
-                    MetaKanbanChangeLogActionTypes.Column.UPDATE_COLUMN,
-                    MetaKanbanChangeLogActionTypes.Column.DELETE_COLUMN,
-                    MetaKanbanChangeLogActionTypes.Column.COLUMN_REORDER]
-
     class Comment:
         CREATE_COMMENT = 'create_comment'
         UPDATE_COMMENT = 'update_comment'
@@ -107,19 +90,14 @@ class MetaKanbanChangeLogActionTypes:
                 MetaKanbanChangeLogActionTypes.Task.MOVE_TASK,
                 MetaKanbanChangeLogActionTypes.Task.ASSIGN_TASK,
 
-                MetaKanbanChangeLogActionTypes.Column.CREATE_COLUMN,
-                MetaKanbanChangeLogActionTypes.Column.UPDATE_COLUMN,
-                MetaKanbanChangeLogActionTypes.Column.DELETE_COLUMN,
-                MetaKanbanChangeLogActionTypes.Column.COLUMN_REORDER,
-
                 MetaKanbanChangeLogActionTypes.Comment.CREATE_COMMENT,
                 MetaKanbanChangeLogActionTypes.Comment.UPDATE_COMMENT,
                 MetaKanbanChangeLogActionTypes.Comment.DELETE_COMMENT]
 
 
-META_KANBAN_CHANGE_LOG_ADMIN_LIST = ['board', 'action_type', 'change_by_user', 'timestamp']
-META_KANBAN_CHANGE_LOG_ADMIN_FILTER = ['board', 'action_type', 'change_by_user']
-META_KANBAN_CHANGE_LOG_ADMIN_SEARCH = ['board', 'action_type', 'change_by_user']
+META_KANBAN_CHANGE_LOG_ADMIN_LIST = ['task', 'action_type', 'change_by_user', 'timestamp']
+META_KANBAN_CHANGE_LOG_ADMIN_FILTER = ['task', 'action_type', 'change_by_user']
+META_KANBAN_CHANGE_LOG_ADMIN_SEARCH = ['task', 'action_type', 'change_by_user']
 
 META_KANBAN_STATUS_COLUMN_LIST = ('id', 'board', 'column_name', 'position_id', 'created_by_user',
                                   'created_at', 'updated_at')
@@ -130,8 +108,63 @@ META_KANBAN_COMMENT_ADMIN_LIST = ['task', 'comment_by_user', 'created_at', 'upda
 META_KANBAN_COMMENT_ADMIN_SEARCH = ['task', 'comment_by_user']
 META_KANBAN_COMMENT_ADMIN_FILTER = ['created_at', 'updated_at', 'task', 'comment_by_user']
 
-META_KANBAN_TASK_ADMIN_LIST = ['title', 'board', 'status_column', 'priority', 'due_date', 'assignee',
+META_KANBAN_TASK_ADMIN_LIST = ['title', 'board', 'status_column', 'priority', 'due_date',
                                'created_by_user', 'created_at', 'updated_at']
-META_KANBAN_TASK_ADMIN_FILTER = ['board', 'status_column', 'priority', 'due_date', 'assignee', 'created_by_user',
+META_KANBAN_TASK_ADMIN_FILTER = ['board', 'status_column', 'priority', 'due_date', 'created_by_user',
                                  'created_at', 'updated_at']
 META_KANBAN_TASK_ADMIN_SEARCH = ('title',)
+
+META_KANBAN_TASK_LABEL_COLOR_CHOICES = [
+    ('#FF0000', 'Red'),
+    ('#FFA500', 'Orange'),
+    ('#FFFF00', 'Yellow'),
+    ('#008000', 'Green'),
+    ('#008080', 'Teal'),
+    ('#0000FF', 'Blue'),
+    ('#000080', 'Navy'),
+    ('#EE82EE', 'Violet'),
+    ('#FFC0CB', 'Pink'),
+    ('#000000', 'Black'),
+    ('#A52A2A', 'Brown'),
+    ('#FFFFFF', 'White'),
+    ('#808080', 'Gray'),
+]
+
+
+class MetaKanbanTaskLabelColorChoiceNames:
+    RED = '#FF0000'
+    ORANGE = '#FFA500'
+    YELLOW = '#FFFF00'
+    GREEN = '#008000'
+    TEAL = '#008080'
+    BLUE = '#0000FF'
+    NAVY = '#000080'
+    VIOLET = '#EE82EE'
+    PINK = '#FFC0CB'
+    BLACK = '#000000'
+    BROWN = '#A52A2A'
+    WHITE = '#FFFFFF'
+    GRAY = '#808080'
+
+    @staticmethod
+    def as_list():
+        return [
+            MetaKanbanTaskLabelColorChoiceNames.RED,
+            MetaKanbanTaskLabelColorChoiceNames.ORANGE,
+            MetaKanbanTaskLabelColorChoiceNames.YELLOW,
+            MetaKanbanTaskLabelColorChoiceNames.GREEN,
+            MetaKanbanTaskLabelColorChoiceNames.TEAL,
+            MetaKanbanTaskLabelColorChoiceNames.BLUE,
+            MetaKanbanTaskLabelColorChoiceNames.NAVY,
+            MetaKanbanTaskLabelColorChoiceNames.VIOLET,
+            MetaKanbanTaskLabelColorChoiceNames.PINK,
+            MetaKanbanTaskLabelColorChoiceNames.BLACK,
+            MetaKanbanTaskLabelColorChoiceNames.BROWN,
+            MetaKanbanTaskLabelColorChoiceNames.WHITE,
+            MetaKanbanTaskLabelColorChoiceNames.GRAY,
+        ]
+
+
+META_KANBAN_TASK_LABEL_ADMIN_LIST = ('label_name', 'label_color', 'created_by_user', 'created_at', 'updated_at')
+META_KANBAN_TASK_LABEL_ADMIN_FILTER = ('label_color', 'created_by_user', 'created_at', 'updated_at')
+META_KANBAN_TASK_LABEL_ADMIN_SEARCH = ('label_name',)

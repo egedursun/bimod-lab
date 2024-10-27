@@ -43,18 +43,21 @@ class PermissionNames:
     LIST_METAKANBAN_BOARD = 'list_metakanban_board'
     DELETE_METAKANBAN_BOARD = 'delete_metakanban_board'
 
+    ADD_METAKANBAN_TASK_LABEL = 'add_metakanban_task_label'
+    UPDATE_METAKANBAN_TASK_LABEL = 'update_metakanban_task_label'
+    LIST_METAKANBAN_TASK_LABEL = 'list_metakanban_task_label'
+    DELETE_METAKANBAN_TASK_LABEL = 'delete_metakanban_task_label'
+
     ADD_METAKANBAN_COLUMN = 'add_metakanban_column'
     UPDATE_METAKANBAN_COLUMN = 'update_metakanban_column'
     DELETE_METAKANBAN_COLUMN = 'delete_metakanban_column'
+    MOVE_METAKANBAN_COLUMN = 'move_metakanban_column'
 
     ADD_METAKANBAN_TASK = 'add_metakanban_task'
     UPDATE_METAKANBAN_TASK = 'update_metakanban_task'
     DELETE_METAKANBAN_TASK = 'delete_metakanban_task'
     MOVE_METAKANBAN_TASK = 'move_metakanban_task'
     ASSIGN_METAKANBAN_TASK = 'assign_metakanban_task'
-
-    ADD_METAKANBAN_TASK_COMMENT = 'add_metakanban_task_comment'
-    DELETE_METAKANBAN_TASK_COMMENT = 'delete_metakanban_task_comment'
 
     LIST_TRANSACTIONS = 'list_transactions'
 
@@ -360,18 +363,21 @@ PERMISSION_TYPES = [
     ('list_metakanban_board', 'List MetaKanban Board'),
     ('delete_metakanban_board', 'Delete MetaKanban Board'),
 
+    ('add_metakanban_task_label', 'Add MetaKanban Task Label'),
+    ('update_metakanban_task_label', 'Update MetaKanban Task Label'),
+    ('list_metakanban_task_label', 'List MetaKanban Task Label'),
+    ('delete_metakanban_task_label', 'Delete MetaKanban Task Label'),
+
     ('add_metakanban_column', 'Add MetaKanban Column'),
     ('update_metakanban_column', 'Update MetaKanban Column'),
     ('delete_metakanban_column', 'Delete MetaKanban Column'),
+    ('move_metakanban_column', 'Move MetaKanban Column'),
 
     ('add_metakanban_task', 'Add MetaKanban Task'),
     ('update_metakanban_task', 'Update MetaKanban Task'),
     ('delete_metakanban_task', 'Delete MetaKanban Task'),
     ('move_metakanban_task', 'Move MetaKanban Task'),
     ('assign_metakanban_task', 'Assign MetaKanban Task'),
-
-    ('add_metakanban_task_comment', 'Add MetaKanban Task Comment'),
-    ('delete_metakanban_task_comment', 'Delete MetaKanban Task Comment'),
 
     ('add_llm_cores', 'Add LLM Cores'),
     ('update_llm_cores', 'Update LLM Cores'),

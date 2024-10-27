@@ -14,17 +14,54 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+from django.db import models, transaction
+from django.shortcuts import get_object_or_404, redirect
+from django.views import View
 
-from web_project import TemplateLayout
+from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.metakanban.models import MetaKanbanBoard, MetaKanbanStatusColumn
+from apps.user_permissions.utils import PermissionNames
 
 
-class MetaKanbanView_ColumnCreate(LoginRequiredMixin, TemplateView):
-
-    def get_context_data(self, **kwargs):
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        return context
+class MetaKanbanView_ColumnCreate(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        pass
+        board_id = request.POST.get("board_id")
+        board = get_object_or_404(MetaKanbanBoard, id=board_id)
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_METAKANBAN_COLUMN
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_METAKANBAN_COLUMN):
+            messages.error(self.request, "You do not have permission to add a kanban column.")
+            return redirect('metakanban:board_detail', board_id=board_id)
+        ##############################
+
+        column_name = request.POST.get("column_name")
+        position_id = request.POST.get("position_id")
+        if column_name and position_id is not None:
+            position_id = int(position_id)
+            with transaction.atomic():
+                MetaKanbanStatusColumn.objects.filter(
+                    board=board, position_id__gte=position_id
+                ).update(position_id=models.F("position_id") + 1)
+                MetaKanbanStatusColumn.objects.create(
+                    board=board, column_name=column_name, position_id=position_id, created_by_user=request.user
+                )
+
+            self.reorder_columns(board_id)
+            messages.success(request, f'Column "{column_name}" created successfully at position {position_id}.')
+        else:
+            messages.error(request, "Column name and position are required to create a new column.")
+        return redirect("metakanban:board_detail", board_id=board_id)
+
+    def reorder_columns(self, board_id):
+        columns = MetaKanbanStatusColumn.objects.filter(board_id=board_id).order_by("position_id")
+        for index, column in enumerate(columns):
+            if column.position_id != index:
+                column.position_id = index
+                column.save()

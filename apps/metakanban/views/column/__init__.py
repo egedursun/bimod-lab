@@ -19,3 +19,4 @@
 from .create_board_column_views import *
 from .update_board_column_views import *
 from .confirm_delete_board_column_views import *
+from .move_column_views import *

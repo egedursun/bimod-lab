@@ -14,8 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.views import View
+
+from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.metakanban.models import MetaKanbanTask
+from apps.user_permissions.utils import PermissionNames
 
 
 class MetaKanbanView_TaskMove(LoginRequiredMixin, View):
@@ -24,4 +30,23 @@ class MetaKanbanView_TaskMove(LoginRequiredMixin, View):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        pass
+        task_id = request.POST.get("task_id")
+        task = get_object_or_404(MetaKanbanTask, id=task_id)
+
+        ##############################
+        # PERMISSION CHECK FOR - MOVE_METAKANBAN_TASK
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.MOVE_METAKANBAN_TASK):
+            messages.error(self.request, "You do not have permission to move a kanban task.")
+            return redirect('metakanban:board_detail', board_id=task.board.id)
+        ##############################
+
+        new_status_column_id = request.POST.get("column_id")
+        if new_status_column_id:
+            task.status_column_id = new_status_column_id
+            task.save()
+            messages.success(request, f'Task "{task.title}" moved to the new column successfully.')
+        else:
+            messages.error(request, "Invalid status column.")
+
+        return redirect("metakanban:board_detail", board_id=task.board.id)

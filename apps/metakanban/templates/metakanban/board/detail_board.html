@@ -1,19 +1,522 @@
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: detail_board.html
-  ~ Last Modified: 2024-10-26 23:43:55
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-26 23:43:56
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
 
+{% block title %}MetaKanban Dashboard{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#taskDetailModal').on('shown.bs.modal', function () {
+            const taskDetailModalClass = $('#taskDetailModal');
+            $('#task_labels').select2({
+                placeholder: 'Select labels',
+                allowClear: true,
+                width: '100%',
+                dropdownParent: taskDetailModalClass
+            });
+
+            $('#task_assignees').select2({
+                placeholder: 'Select assignees',
+                allowClear: true,
+                width: '100%',
+                dropdownParent: taskDetailModalClass
+            });
+        });
+    });
+
+    function showCreateColumnModal() {
+        $('#createColumnModal').modal('show');
+    }
+
+    function showUpdateColumnModal(columnId, columnName) {
+        $('#update_column_id').val(columnId);
+        $('#update_column_name').val(columnName);
+        $('#updateColumnModal').modal('show');
+    }
+
+    function showDeleteColumnConfirm(columnId) {
+        Swal.fire({
+            title: 'Delete this Column?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+                confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+                cancelButton: 'btn btn-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post("{% url 'metakanban:column_delete' %}", {
+                    column_id: columnId,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                }).done(function() {
+                    location.reload();
+                });
+            }
+        });
+    }
+
+    function moveColumn(boardId, columnId, direction) {
+        $.post("{% url 'metakanban:column_move' %}", {
+            board_id: boardId,
+            column_id: columnId,
+            direction: direction,
+            csrfmiddlewaretoken: "{{ csrf_token }}"
+        }).done(function() {
+            location.reload();
+        });
+    }
+
+    function showCreateTaskModal(columnId) {
+        $('#create_task_column_id').val(columnId);
+        $('#createTaskModal').modal('show');
+    }
+
+    function showTaskDetailModal(taskId) {
+        const taskData = JSON.parse(document.getElementById(`task-data-${taskId}`).textContent);
+        $('#task_detail_task_id').val(taskData.id);
+        $('#task_description').val(taskData.description);
+        $('#task_priority').val(taskData.priority);
+        if (taskData.due_date) {
+            $('#task_due_date').val(taskData.due_date);
+        } else {
+            $('#task_due_date').val('');
+        }
+        $('#task_url').val(taskData.task_url);
+        if (taskData.file_url) {
+            $('#current_task_file_link').attr('href', taskData.file_url).text(taskData.file_url.split('/').pop()).show();
+            $('#existing_file_display').show();
+        } else {
+            $('#existing_file_display').hide();
+        }
+        if (taskData.image_url) {
+            $('#current_task_image_preview').attr('src', taskData.image_url).show();
+            $('#existing_image_display').show();
+        } else {
+            $('#existing_image_display').hide();
+        }
+        const labelIds = taskData.labels.map(label => label.id);
+        $('#task_labels').val(labelIds).trigger('change');
+        const assigneeIds = taskData.assignees.map(assignee => assignee.id);
+        $('#task_assignees').val(assigneeIds).trigger('change');
+        $('#taskDetailModal').modal('show');
+    }
+
+    function showTaskMoveModal(taskId) {
+        $('#move_task_id').val(taskId);
+        $('#moveTaskModal').modal('show');
+    }
+
+    function showDeleteTaskConfirm(taskId) {
+        Swal.fire({
+            title: 'Delete this Task?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+                confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+                cancelButton: 'btn btn-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post("{% url 'metakanban:task_delete' %}", {
+                    task_id: taskId,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                }).done(function() {
+                    location.reload();
+                });
+            }
+        });
+    }
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-8"><strong>MetaKanban ™</strong></h2>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mt-4" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-65.png' %}" width="25%" class="justify-content-end me-8"
+         style="border-radius: 25px;" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        MetaKanban is an AI-powered Kanban board that helps you manage your tasks efficiently,
+        collaborate with your team, and track your progress. You can create columns, add tasks, and move tasks across
+        columns to reflect the status of your work.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <img src="{% static 'img/metakanban/kbn-4.png' %}" class="rounded mb-4 mt-4" style="width: 100%;" alt="Illustration for tips">
+
+  <hr>
+
+  <a href="{% url 'metakanban:board_list' %}">
+    <button class="btn btn-secondary mt-4 me-4 mb-4">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Manage MetaKanban™ Boards</strong>
+    </button>
+  </a>
+
+  <button class="btn btn-success w-25 me-4" onclick="showCreateColumnModal()">
+    <i class="fa fa-plus me-4"></i>
+    <strong>Add New Column</strong>
+  </button>
+
+  <a href="{% url 'metakanban:label_list' board.id %}">
+    <button class="btn btn-warning mt-4 me-4 mb-4">
+      <i class="fa fa-tags me-4"></i>
+      <strong> Manage Labels</strong>
+    </button>
+  </a>
+
+  <hr>
+
+  <div class="d-flex overflow-auto mt-4" style="white-space: nowrap; min-height: 1000px;">
+    {% for column in columns %}
+    <div class="col-md-4 mr-4 mx-2">
+      <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <strong>{{ column.column_name|capfirst }}</strong>
+          </h5>
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm rounded me-2" onclick="moveColumn('{{ column.board.id }}', '{{ column.id }}', 'up')">
+              <i class="fa fa-arrow-left"></i>
+            </button>
+            <button class="btn btn-secondary btn-sm rounded me-2" onclick="moveColumn('{{ column.board.id }}', '{{ column.id }}', 'down')">
+              <i class="fa fa-arrow-right"></i>
+            </button>
+            <button class="btn btn-primary btn-sm rounded me-2" onclick="showUpdateColumnModal('{{ column.id }}', '{{ column.column_name }}')">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button class="btn btn-danger btn-sm rounded" onclick="showDeleteColumnConfirm('{{ column.id }}')" data-url="{% url 'metakanban:column_delete' %}">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <hr>
+        <div class="card-body" style="min-height: 1000px;" id="column-{{ column.id }}">
+          {% for task in tasks %}
+          {% if task.status_column_id == column.id %}
+          <div class="card mb-2 border border-primary border-1 rounded">
+            <div class="card-body">
+              <p class="card-text font-weight-bold">
+                <i class="fa fa-tasks me-2"></i>
+                <strong>{{ task.title|capfirst }}</strong>
+              </p>
+              <hr>
+              <p class="card-text"><strong>
+                <i class="fa fa-tags me-2"></i>
+              </strong>
+                {% for label in task.labels.all %}
+                  <span class="badge me-1" style="background-color: {{ label.label_color }}50">
+                    <strong>
+                      {{ label.label_name }}
+                    </strong>
+                  </span>
+                {% endfor %}
+              </p>
+              <hr>
+              <p class="card-text"><strong>
+              </strong>
+                <strong>
+                  {% if task.priority == 'uncategorized' %}
+                    <i class="fa fa-thermometer-0 me-2 text-white"></i>
+                  {% elif task.priority == 'low' %}
+                    <i class="fa fa-thermometer-1 me-2 text-info"></i>
+                  {% elif task.priority == 'medium' %}
+                    <i class="fa fa-thermometer-2 me-2 text-success"></i>
+                  {% elif task.priority == 'high' %}
+                    <i class="fa fa-thermometer-3 me-2 text-warning"></i>
+                  {% elif task.priority == 'urgent' %}
+                    <i class="fa fa-thermometer-4 me-2 text-danger"></i>
+                  {% else %}
+                    <i class="fa fa-thermometer-0 me-2 text-white"></i>
+                  {% endif %}
+                  {{ task.get_priority_display }}
+                </strong>
+              </p>
+              <div id="task-data-{{ task.id }}" style="display: none;">
+                {
+                    "id": "{{ task.id }}",
+                    "description": "{{ task.description|escapejs|default_if_none:"" }}",
+                    "priority": "{{ task.priority }}",
+                    "due_date": "{{ task.due_date|date:'Y-m-d' }}",
+                    "task_url": "{{ task.task_url|escapejs }}",
+                    "file_url": "{% if task.task_file %}{{ task.task_file.url }}{% else %}{{ task.task_file }}{% endif %}",
+                    "image_url": "{% if task.task_image %}{{ task.task_image.url }}{% else %}{{ task.task_image }}{% endif %}",
+                    "labels": [
+                        {% for label in task.labels.all %}
+                            {
+                                "id": "{{ label.id }}",
+                                "name": "{{ label.label_name|escapejs }}"
+                            }{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    "assignees": [
+                        {% for assignee in task.assignees.all %}
+                            {
+                                "id": "{{ assignee.id }}",
+                                "name": "{{ assignee.profile.first_name }} {{ assignee.profile.last_name|escapejs }}"
+                            }{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    ]
+                }
+              </div>
+              <hr>
+              <button class="btn btn-sm btn-warning me-2" onclick="showTaskDetailModal('{{ task.id }}')">
+                <i class="fa fa-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-info me-2" onclick="showTaskMoveModal('{{ task.id }}')">
+                <i class="fa fa-arrows"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="showDeleteTaskConfirm('{{ task.id }}')" data-url="{% url 'metakanban:task_delete' %}">
+                  <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          <button class="btn btn-success btn-block mt-2" onclick="showCreateTaskModal('{{ column.id }}')">
+            <i class="fa fa-plus me-2"></i>
+            <strong>Add New Task</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Modals -->
+<!-- Create Column Modal -->
+<div class="modal" id="createColumnModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="createColumnForm" action="{% url 'metakanban:column_create' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                      <strong>Create Column</strong>
+                    </h5>
+                </div>
+                <hr>
+                <div class="modal-body">
+                    <input type="text" name="column_name" class="form-control" placeholder="Column Name" required>
+                    <input type="hidden" name="board_id" value="{{ board.id }}">
+                    <input type="hidden" name="position_id" value="0">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fa fa-plus me-4"></i>
+                      <strong>Create Column</strong>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Update Column Modal -->
+<div class="modal" id="updateColumnModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="updateColumnForm" action="{% url 'metakanban:column_update' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                      <strong>Update Column Name</strong>
+                    </h5>
+                </div>
+                <hr>
+                <div class="modal-body">
+                    <input type="text" name="column_name" class="form-control" id="update_column_name" placeholder="New Column Name" required>
+                    <input type="hidden" name="column_id" id="update_column_id">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fa fa-save me-4"></i>
+                      Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Create Task Modal -->
+<div class="modal" id="createTaskModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="createTaskForm" action="{% url 'metakanban:task_create' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Task</h5>
+                </div>
+                <hr>
+                <div class="modal-body">
+                    <input type="text" name="title" class="form-control" placeholder="Task Title" required>
+                    <input type="hidden" name="column_id" id="create_task_column_id">
+                    <input type="hidden" name="board_id" value="{{ board.id }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fa fa-plus me-4"></i>
+                      <strong>Create Task</strong>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Task Details Modal -->
+<div class="modal" id="taskDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="taskDetailForm" action="{% url 'metakanban:task_detail' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                      <strong>Task Details</strong>
+                    </h5>
+                </div>
+                <hr>
+                <div class="modal-body">
+                    <input type="hidden" name="task_id" id="task_detail_task_id">
+                    <label>Description</label>
+                    <textarea name="description" class="form-control mb-2" id="task_description" placeholder="Description"></textarea>
+
+                    <hr>
+
+                    <label><strong>Current File</strong></label>
+                    <div id="existing_file_display" class="mb-4 mt-4" style="display: none;">
+                        <strong>
+                          <span class="badge badge-secondary"><a id="current_task_file_link" href="#" target="_blank">View Current File</a></span>
+                        </strong>
+                    </div>
+                    <input type="file" name="task_file" class="form-control mb-2" id="task_file">
+
+                    <hr>
+
+                    <label><strong>Current Image</strong></label>
+                    <div id="existing_image_display" class="mb-4 mt-4" style="display: none;">
+                        <img id="current_task_image_preview" src="" alt="Current Image" class="img-fluid" style="max-height: 100px;">
+                    </div>
+                    <input type="file" name="task_image" class="form-control mb-2" id="task_image">
+
+                    <hr>
+
+                    <label><strong>Priority</strong></label>
+                    <select name="priority" class="form-control mb-2" id="task_priority">
+                        {% for key, label in priorities %}
+                        <option value="{{ key }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label><strong>Due Date</strong></label>
+                    <input type="date" name="due_date" class="form-control mb-2" id="task_due_date">
+
+                    <label><strong>Task URL</strong></label>
+                    <input type="text" name="task_url" class="form-control mb-2" id="task_url" placeholder="URL">
+
+                    <hr>
+
+                    <label><strong>Labels</strong></label>
+                    <select name="labels" class="form-select select2 mb-2" id="task_labels" multiple="multiple">
+                        {% for label in labels %}
+                        <option value="{{ label.id }}" {% if label in task.labels.all %}selected{% endif %}>{{ label.label_name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label><strong>Assignees</strong></label>
+                    <select name="assignees" class="form-select select2 mb-2" id="task_assignees" multiple="multiple">
+                        {% for user in users %}
+                        <option value="{{ user.id }}" {% if user in task.assignees.all %}selected{% endif %}>{{ user.profile.first_name }} {{ user.profile.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fa fa-save me-4"></i>
+                      Update Task
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Move Task Modal -->
+<div class="modal" id="moveTaskModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="moveTaskForm" action="{% url 'metakanban:task_move' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                      <strong>Move Task</strong>
+                    </h5>
+                </div>
+                <hr>
+                <div class="modal-body">
+                    <input type="hidden" name="task_id" id="move_task_id">
+                    <label for="new_column_id">Select Column:</label>
+                    <select name="column_id" id="new_column_id" class="form-control">
+                        {% for column in columns %}
+                        <option value="{{ column.id }}">{{ column.column_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fa fa-arrows me-4"></i>
+                      <strong>Move Task</strong>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

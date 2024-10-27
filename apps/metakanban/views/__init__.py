@@ -18,5 +18,4 @@
 from .task import *
 from .board import *
 from .column import *
-from .comment import *
-from .change_log import *
+from .label import *

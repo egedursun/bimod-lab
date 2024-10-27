@@ -48,10 +48,17 @@ def get_permissions_grouped():
             ('list_metakanban_board', 'List MetaKanban Board'),
             ('delete_metakanban_board', 'Delete MetaKanban Board'),
         ],
+        "MetaKanban Task Label Permissions": [
+            ('add_metakanban_task_label', 'Add MetaKanban Task Label'),
+            ('update_metakanban_task_label', 'Update MetaKanban Task Label'),
+            ('list_metakanban_task_label', 'List MetaKanban Task Label'),
+            ('delete_metakanban_task_label', 'Delete MetaKanban Task Label'),
+        ],
         "MetaKanban Column Permissions": [
             ('add_metakanban_column', 'Add MetaKanban Column'),
             ('update_metakanban_column', 'Update MetaKanban Column'),
             ('delete_metakanban_column', 'Delete MetaKanban Column'),
+            ('move_metakanban_column', 'Move MetaKanban Column'),
         ],
         "MetaKanban Task Permissions": [
             ('add_metakanban_task', 'Add MetaKanban Task'),
@@ -59,10 +66,6 @@ def get_permissions_grouped():
             ('delete_metakanban_task', 'Delete MetaKanban Task'),
             ('move_metakanban_task', 'Move MetaKanban Task'),
             ('assign_metakanban_task', 'Assign MetaKanban Task'),
-        ],
-        "MetaKanban Comment Permissions": [
-            ('add_metakanban_task_comment', 'Add MetaKanban Task Comment'),
-            ('delete_metakanban_task_comment', 'Delete MetaKanban Task Comment'),
         ],
         "LLM Core Permissions": [
             ('add_llm_cores', 'Add LLM Cores'),
