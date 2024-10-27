@@ -25,6 +25,18 @@
       "url": "/app/projects/team/list"
     },
     {
+      "name": "MetaKanban™ Boards",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "metakanban",
+      "url": "/app/metakanban/board/list"
+    },
+    {
+      "name": "MetaKanban™ AI",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "metakanban",
+      "url": "/app/metakanban/agent/communication"
+    },
+    {
       "name": "LLM Models",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-models",

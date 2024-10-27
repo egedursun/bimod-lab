@@ -66,16 +66,21 @@
     {
       "name": "MetaKanban™",
       "icon": "menu-icon tf-icons ti ti-layout",
-      "slug": "teams",
+      "slug": "metakanban",
       "submenu": [
         {
+          "name": "MetaKanban™ AI",
+          "slug": "metakanban",
+          "url": "metakanban:agent_communication"
+        },
+        {
           "name": "Add Board",
-          "slug": "teams",
+          "slug": "metakanban",
           "url": "metakanban:board_create"
         },
         {
           "name": "Manage Boards",
-          "slug": "teams",
+          "slug": "metakanban",
           "url": "metakanban:board_list"
         }
       ]

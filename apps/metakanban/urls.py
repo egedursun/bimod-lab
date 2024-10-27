@@ -23,7 +23,7 @@ from apps.metakanban.views import (MetaKanbanView_TaskCreate, MetaKanbanView_Tas
                                    MetaKanbanView_ColumnCreate, MetaKanbanView_ColumnUpdate,
                                    MetaKanbanView_BoardUpdate, MetaKanbanView_TaskAssign, MetaKanbanView_LabelList,
                                    MetaKanbanView_LabelCreate, MetaKanbanView_LabelDelete, MetaKanbanView_LabelUpdate,
-                                   MetaKanbanView_ColumnMove)
+                                   MetaKanbanView_ColumnMove, MetaKanbanView_AgentCommunication)
 
 app_name = 'metakanban'
 
@@ -59,4 +59,8 @@ urlpatterns = [
     path("task/assign/", MetaKanbanView_TaskAssign.as_view(), name="task_assign"),
     path("task/delete/", MetaKanbanView_TaskDelete.as_view(), name="task_delete"),
     path("task/detail/", MetaKanbanView_TaskDetailAndUpdate.as_view(), name="task_detail"),
+
+    # Agent Communication: TemplateView
+    path("agent/communication/", MetaKanbanView_AgentCommunication.as_view(
+        template_name="metakanban/agent/agent_communication.html"), name="agent_communication"),
 ]
