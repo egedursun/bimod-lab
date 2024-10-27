@@ -23,7 +23,7 @@ from apps.metakanban.views import (MetaKanbanView_TaskCreate, MetaKanbanView_Com
                                    MetaKanbanView_BoardList, MetaKanbanView_BoardCreate, MetaKanbanView_BoardDetail,
                                    MetaKanbanView_ColumnCreate, MetaKanbanView_ColumnUpdate,
                                    MetaKanbanView_CommentUpdate, MetaKanbanView_BoardUpdate,
-                                   MetaKanbanView_ChangeLogList)
+                                   MetaKanbanView_ChangeLogList, MetaKanbanView_TaskAssign)
 
 app_name = 'metakanban'
 
@@ -48,6 +48,7 @@ urlpatterns = [
 
     path("task/create/<int:board_id>/", MetaKanbanView_TaskCreate.as_view(), name="task_create"),
     path("task/move/<int:board_id>/<int:task_id>/", MetaKanbanView_TaskMove.as_view(), name="task_move"),
+    path("task/assign/<int:board_id>/<int:task_id>/", MetaKanbanView_TaskAssign.as_view(), name="task_assign"),
     path("task/delete/<int:board_id>/<int:task_id>/", MetaKanbanView_TaskDelete.as_view(), name="task_delete"),
     path("task/detail/<int:board_id>/<int:task_id>/", MetaKanbanView_TaskDetailAndUpdate.as_view(
         template_name="metakanban/task/detail_and_update_task.html"

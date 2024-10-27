@@ -54,7 +54,6 @@ META_KANBAN_CHANGE_LOG_ACTION_TYPES = [
     ('create_column', 'Create Column'),
     ('update_column', 'Update Column'),
     ('delete_column', 'Delete Column'),
-    ('column_reorder', 'Reorder Column'),
     # Comments
     ('create_comment', 'Create Comment'),
     ('update_comment', 'Update Comment'),

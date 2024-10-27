@@ -42,6 +42,28 @@ def get_permissions_grouped():
             ('list_teams', 'List Teams'),
             ('delete_teams', 'Delete Teams'),
         ],
+        "MetaKanban Board Permissions": [
+            ('add_metakanban_board', 'Add MetaKanban Board'),
+            ('update_metakanban_board', 'Update MetaKanban Board'),
+            ('list_metakanban_board', 'List MetaKanban Board'),
+            ('delete_metakanban_board', 'Delete MetaKanban Board'),
+        ],
+        "MetaKanban Column Permissions": [
+            ('add_metakanban_column', 'Add MetaKanban Column'),
+            ('update_metakanban_column', 'Update MetaKanban Column'),
+            ('delete_metakanban_column', 'Delete MetaKanban Column'),
+        ],
+        "MetaKanban Task Permissions": [
+            ('add_metakanban_task', 'Add MetaKanban Task'),
+            ('update_metakanban_task', 'Update MetaKanban Task'),
+            ('delete_metakanban_task', 'Delete MetaKanban Task'),
+            ('move_metakanban_task', 'Move MetaKanban Task'),
+            ('assign_metakanban_task', 'Assign MetaKanban Task'),
+        ],
+        "MetaKanban Comment Permissions": [
+            ('add_metakanban_task_comment', 'Add MetaKanban Task Comment'),
+            ('delete_metakanban_task_comment', 'Delete MetaKanban Task Comment'),
+        ],
         "LLM Core Permissions": [
             ('add_llm_cores', 'Add LLM Cores'),
             ('update_llm_cores', 'Update LLM Cores'),
