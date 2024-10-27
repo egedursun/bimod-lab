@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: __init__.py
-#  Last Modified: 2024-10-23 17:36:19
+#  File: conftest.py
+#  Last Modified: 2024-10-05 02:26:00
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-23 17:36:20
+#  Created: 2024-10-05 14:42:34
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,9 +14,12 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+#
+#
 
-from .task import *
-from .board import *
-from .column import *
-from .comment import *
-from .change_log import *
+import pytest
+
+
+@pytest.fixture
+def fixture_transcriber_init():
+    return True

@@ -2,9 +2,9 @@
 #
 #  Project: Bimod.io™
 #  File: __init__.py
-#  Last Modified: 2024-10-23 17:36:19
+#  Last Modified: 2024-10-26 22:10:07
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-23 17:36:20
+#  Created: 2024-10-26 22:10:07
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -15,8 +15,7 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from .task import *
-from .board import *
-from .column import *
-from .comment import *
-from .change_log import *
+
+from .create_task_comment_views import *
+from .delete_task_comment_views import *
+from .update_task_comment_views import *

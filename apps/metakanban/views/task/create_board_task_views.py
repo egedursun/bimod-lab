@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: __init__.py
-#  Last Modified: 2024-10-23 17:36:19
+#  File: create_board_task.py
+#  Last Modified: 2024-10-26 23:46:24
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-23 17:36:20
+#  Created: 2024-10-26 23:46:25
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,9 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 
-from .task import *
-from .board import *
-from .column import *
-from .comment import *
-from .change_log import *
+
+class MetaKanbanView_TaskCreate(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        pass

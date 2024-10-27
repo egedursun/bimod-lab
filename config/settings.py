@@ -582,7 +582,6 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 INFURA_API_KEY = os.environ.get("INFURA_API_KEY", default="")
 INFURA_URL = f"https://mainnet.infura.io/v3/{INFURA_API_KEY}"
 
-
 JAZZMIN_SETTINGS = {
     "site_title": "BimodLab Admin",
     "site_header": "BimodLab Admin",
