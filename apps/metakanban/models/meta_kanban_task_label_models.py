@@ -27,7 +27,7 @@ class MetaKanbanTaskLabel(models.Model):
     label_color = models.CharField(max_length=100, choices=META_KANBAN_TASK_LABEL_COLOR_CHOICES,
                                    default=MetaKanbanTaskLabelColorChoiceNames.NAVY)
 
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

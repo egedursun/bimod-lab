@@ -22,7 +22,8 @@ from django.db import transaction
 import logging
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanStatusColumn
+from apps.metakanban.models import MetaKanbanStatusColumn, MetaKanbanChangeLog, MetaKanbanBoard
+from apps.metakanban.utils import MetaKanbanChangeLogActionTypes
 from apps.user_permissions.utils import PermissionNames
 
 logger = logging.getLogger(__name__)
@@ -34,7 +35,9 @@ class MetaKanbanView_ColumnMove(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         board_id = request.POST.get("board_id")
+        board = get_object_or_404(MetaKanbanBoard, id=board_id)
         column_id = request.POST.get("column_id")
+        column = get_object_or_404(MetaKanbanStatusColumn, id=column_id)
         direction = request.POST.get("direction")
 
         ##############################
@@ -46,7 +49,6 @@ class MetaKanbanView_ColumnMove(LoginRequiredMixin, View):
         ##############################
 
         try:
-            column = get_object_or_404(MetaKanbanStatusColumn, id=column_id, board_id=board_id)
             old_position_id = column.position_id
             if direction == 'up' and old_position_id > 0:
                 new_position_id = old_position_id - 1
@@ -69,6 +71,17 @@ class MetaKanbanView_ColumnMove(LoginRequiredMixin, View):
         except Exception as e:
             logger.error(f"Column could not be moved. Error: {str(e)}")
             messages.error(request, f"Column could not be moved. Error: {str(e)}")
+
+        try:
+            # Add the change log for the change in the board.
+            MetaKanbanChangeLog.objects.create(
+                board=board,
+                action_type=MetaKanbanChangeLogActionTypes.Column.MOVE_COLUMN,
+                action_details="The column with the name " + column.column_name + " has been moved " + direction,
+                change_by_user=request.user
+            )
+        except Exception as e:
+            messages.error(request, "Column change log could not be created. Error: " + str(e))
 
         return redirect("metakanban:board_detail", board_id=board_id)
 

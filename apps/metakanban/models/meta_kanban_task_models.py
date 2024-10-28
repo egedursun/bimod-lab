@@ -36,7 +36,7 @@ class MetaKanbanTask(models.Model):
     task_url = models.URLField(null=True, blank=True)
     task_file = models.FileField(upload_to='metakanban/task_files/%Y/%m/%d/', null=True, blank=True)
 
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

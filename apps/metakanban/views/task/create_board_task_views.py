@@ -20,7 +20,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanBoard, MetaKanbanTask
+from apps.metakanban.models import MetaKanbanBoard, MetaKanbanTask, MetaKanbanChangeLog
+from apps.metakanban.utils import MetaKanbanChangeLogActionTypes
 from apps.user_permissions.utils import PermissionNames
 
 
@@ -54,5 +55,16 @@ class MetaKanbanView_TaskCreate(LoginRequiredMixin, View):
             messages.success(request, f'Task "{task.title}" created successfully.')
         else:
             messages.error(request, "Title and Status Column are required to create a task.")
+
+        try:
+            # Add the change log for the change in the board.
+            MetaKanbanChangeLog.objects.create(
+                board=board,
+                action_type=MetaKanbanChangeLogActionTypes.Task.CREATE_TASK,
+                action_details="Task with the title '" + title + "' has been created.",
+                change_by_user=request.user
+            )
+        except Exception as e:
+            messages.error(request, "Task change log could not be created. Error: " + str(e))
 
         return redirect("metakanban:board_detail", board_id=board.id)

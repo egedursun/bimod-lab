@@ -67,6 +67,9 @@ def get_permissions_grouped():
             ('move_metakanban_task', 'Move MetaKanban Task'),
             ('assign_metakanban_task', 'Assign MetaKanban Task'),
         ],
+        "MetaKanban AI Permissions": [
+            ('use_metakanban_ai', 'Use MetaKanban AI'),
+        ],
         "LLM Core Permissions": [
             ('add_llm_cores', 'Add LLM Cores'),
             ('update_llm_cores', 'Update LLM Cores'),

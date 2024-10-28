@@ -20,3 +20,4 @@ from .board import *
 from .column import *
 from .label import *
 from .agent import *
+from .log import *

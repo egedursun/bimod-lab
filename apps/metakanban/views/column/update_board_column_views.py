@@ -20,7 +20,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanStatusColumn
+from apps.metakanban.models import MetaKanbanStatusColumn, MetaKanbanChangeLog
+from apps.metakanban.utils import MetaKanbanChangeLogActionTypes
 from apps.user_permissions.utils import PermissionNames
 
 
@@ -31,6 +32,7 @@ class MetaKanbanView_ColumnUpdate(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         column_id = request.POST.get("column_id")
         column = get_object_or_404(MetaKanbanStatusColumn, id=column_id)
+        board = column.board
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_METAKANBAN_COLUMN
@@ -47,4 +49,16 @@ class MetaKanbanView_ColumnUpdate(LoginRequiredMixin, View):
             messages.success(request, f'Column "{new_column_name}" updated successfully.')
         else:
             messages.error(request, "Column name cannot be empty.")
+
+        try:
+            # Add the change log for the change in the board.
+            MetaKanbanChangeLog.objects.create(
+                board=board,
+                action_type=MetaKanbanChangeLogActionTypes.Column.UPDATE_COLUMN,
+                action_details="Column name updated from '" + column.column_name + "' to '" + new_column_name + "'.",
+                change_by_user=request.user
+            )
+        except Exception as e:
+            messages.error(request, "Column change log could not be created. Error: " + str(e))
+
         return redirect("metakanban:board_detail", board_id=column.board.id)

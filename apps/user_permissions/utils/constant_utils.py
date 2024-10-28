@@ -59,6 +59,8 @@ class PermissionNames:
     MOVE_METAKANBAN_TASK = 'move_metakanban_task'
     ASSIGN_METAKANBAN_TASK = 'assign_metakanban_task'
 
+    USE_METAKANBAN_AI = 'use_metakanban_ai'
+
     LIST_TRANSACTIONS = 'list_transactions'
 
     ADD_USERS = 'add_users'
@@ -378,6 +380,8 @@ PERMISSION_TYPES = [
     ('delete_metakanban_task', 'Delete MetaKanban Task'),
     ('move_metakanban_task', 'Move MetaKanban Task'),
     ('assign_metakanban_task', 'Assign MetaKanban Task'),
+
+    ('use_metakanban_ai', 'Use MetaKanban AI'),
 
     ('add_llm_cores', 'Add LLM Cores'),
     ('update_llm_cores', 'Update LLM Cores'),

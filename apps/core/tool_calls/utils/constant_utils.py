@@ -46,6 +46,7 @@ class ToolCallDescriptorNames:
     EXECUTE_EXPERT_NETWORK_QUERY = 'Expert Network Query Call'
     EXECUTE_ORCHESTRATION_WORKER_CONSULTANCY = 'Orchestration Worker Assistant Call'
     EXECUTE_SMART_CONTRACT_FUNCTION_CALL = 'Smart Contract Function Call'
+    EXECUTE_METAKANBAN_ACTION = 'Meta Kanban Command Execution'
 
 
 IMAGE_GENERATION_AFFIRMATION_PROMPT = f"""

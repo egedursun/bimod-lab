@@ -70,6 +70,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("hadron-prime", "Hadron Prime"),
     ("smart-contract-creation", "Smart Contract Creation"),
     ("binexus", "Binexus"),
+    ("metakanban", "MetaKanban"),
 ]
 
 
@@ -120,6 +121,7 @@ class LLMTransactionSourcesTypesNames:
     HADRON_PRIME = "hadron-prime"
     SMART_CONTRACT_CREATION = "smart-contract-creation"
     BINEXUS = "binexus"
+    METAKANBAN = "metakanban"
 
     @staticmethod
     def as_list():
@@ -163,6 +165,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.HADRON_PRIME,
             LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
             LLMTransactionSourcesTypesNames.BINEXUS,
+            LLMTransactionSourcesTypesNames.METAKANBAN,
         ]
 
 

@@ -1,6 +1,6 @@
 ### TODO LIST
 
-...
+- [ ] Add transactions to metakanban agent
 
 ---
 

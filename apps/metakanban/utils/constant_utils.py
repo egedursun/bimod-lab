@@ -50,10 +50,15 @@ META_KANBAN_CHANGE_LOG_ACTION_TYPES = [
     ('delete_task', 'Delete Task'),
     ('move_task', 'Move Task'),
     ('assign_task', 'Assign Task'),
-    # Comments
-    ('create_comment', 'Create Comment'),
-    ('update_comment', 'Update Comment'),
-    ('delete_comment', 'Delete Comment'),
+    # Column
+    ('create_column', 'Create Column'),
+    ('update_column', 'Update Column'),
+    ('delete_column', 'Delete Column'),
+    ('move_column', 'Move Column'),
+    # Label
+    ('create_label', 'Create Label'),
+    ('update_label', 'Update Label'),
+    ('delete_label', 'Delete Label'),
 ]
 
 
@@ -71,42 +76,47 @@ class MetaKanbanChangeLogActionTypes:
                     MetaKanbanChangeLogActionTypes.Task.DELETE_TASK, MetaKanbanChangeLogActionTypes.Task.MOVE_TASK,
                     MetaKanbanChangeLogActionTypes.Task.ASSIGN_TASK]
 
-    class Comment:
-        CREATE_COMMENT = 'create_comment'
-        UPDATE_COMMENT = 'update_comment'
-        DELETE_COMMENT = 'delete_comment'
+    class Column:
+        CREATE_COLUMN = 'create_column'
+        UPDATE_COLUMN = 'update_column'
+        DELETE_COLUMN = 'delete_column'
+        MOVE_COLUMN = 'move_column'
 
         @staticmethod
         def as_list():
-            return [MetaKanbanChangeLogActionTypes.Comment.CREATE_COMMENT,
-                    MetaKanbanChangeLogActionTypes.Comment.UPDATE_COMMENT,
-                    MetaKanbanChangeLogActionTypes.Comment.DELETE_COMMENT]
+            return [MetaKanbanChangeLogActionTypes.Column.CREATE_COLUMN, MetaKanbanChangeLogActionTypes.Column.UPDATE_COLUMN,
+                    MetaKanbanChangeLogActionTypes.Column.DELETE_COLUMN, MetaKanbanChangeLogActionTypes.Column.MOVE_COLUMN]
+
+    class Label:
+        CREATE_LABEL = 'create_label'
+        UPDATE_LABEL = 'update_label'
+        DELETE_LABEL = 'delete_label'
+
+        @staticmethod
+        def as_list():
+            return [MetaKanbanChangeLogActionTypes.Label.CREATE_LABEL, MetaKanbanChangeLogActionTypes.Label.UPDATE_LABEL,
+                    MetaKanbanChangeLogActionTypes.Label.DELETE_LABEL]
 
     @staticmethod
     def as_list():
-        return [MetaKanbanChangeLogActionTypes.Task.CREATE_TASK,
-                MetaKanbanChangeLogActionTypes.Task.UPDATE_TASK,
-                MetaKanbanChangeLogActionTypes.Task.DELETE_TASK,
-                MetaKanbanChangeLogActionTypes.Task.MOVE_TASK,
-                MetaKanbanChangeLogActionTypes.Task.ASSIGN_TASK,
+        return [
+            MetaKanbanChangeLogActionTypes.Task.CREATE_TASK, MetaKanbanChangeLogActionTypes.Task.UPDATE_TASK,
+            MetaKanbanChangeLogActionTypes.Task.DELETE_TASK, MetaKanbanChangeLogActionTypes.Task.MOVE_TASK,
+            MetaKanbanChangeLogActionTypes.Task.ASSIGN_TASK, MetaKanbanChangeLogActionTypes.Column.CREATE_COLUMN,
+            MetaKanbanChangeLogActionTypes.Column.UPDATE_COLUMN, MetaKanbanChangeLogActionTypes.Column.DELETE_COLUMN,
+            MetaKanbanChangeLogActionTypes.Column.MOVE_COLUMN, MetaKanbanChangeLogActionTypes.Label.CREATE_LABEL,
+            MetaKanbanChangeLogActionTypes.Label.UPDATE_LABEL, MetaKanbanChangeLogActionTypes.Label.DELETE_LABEL,
+        ]
 
-                MetaKanbanChangeLogActionTypes.Comment.CREATE_COMMENT,
-                MetaKanbanChangeLogActionTypes.Comment.UPDATE_COMMENT,
-                MetaKanbanChangeLogActionTypes.Comment.DELETE_COMMENT]
 
-
-META_KANBAN_CHANGE_LOG_ADMIN_LIST = ['task', 'action_type', 'change_by_user', 'timestamp']
-META_KANBAN_CHANGE_LOG_ADMIN_FILTER = ['task', 'action_type', 'change_by_user']
-META_KANBAN_CHANGE_LOG_ADMIN_SEARCH = ['task', 'action_type', 'change_by_user']
+META_KANBAN_CHANGE_LOG_ADMIN_LIST = ['board', 'action_type', 'change_by_user', 'timestamp']
+META_KANBAN_CHANGE_LOG_ADMIN_FILTER = ['board', 'action_type', 'change_by_user']
+META_KANBAN_CHANGE_LOG_ADMIN_SEARCH = ['board', 'action_type', 'change_by_user']
 
 META_KANBAN_STATUS_COLUMN_LIST = ('id', 'board', 'column_name', 'position_id', 'created_by_user',
                                   'created_at', 'updated_at')
 META_KANBAN_STATUS_COLUMN_FILTER = ('board', 'created_by_user', 'created_at', 'updated_at')
 META_KANBAN_STATUS_COLUMN_SEARCH = ('column_name',)
-
-META_KANBAN_COMMENT_ADMIN_LIST = ['task', 'comment_by_user', 'created_at', 'updated_at']
-META_KANBAN_COMMENT_ADMIN_SEARCH = ['task', 'comment_by_user']
-META_KANBAN_COMMENT_ADMIN_FILTER = ['created_at', 'updated_at', 'task', 'comment_by_user']
 
 META_KANBAN_TASK_ADMIN_LIST = ['title', 'board', 'status_column', 'priority', 'due_date',
                                'created_by_user', 'created_at', 'updated_at']

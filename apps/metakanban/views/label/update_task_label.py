@@ -20,7 +20,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanTaskLabel
+from apps.metakanban.models import MetaKanbanTaskLabel, MetaKanbanChangeLog, MetaKanbanBoard
+from apps.metakanban.utils import MetaKanbanChangeLogActionTypes
 from apps.user_permissions.utils import PermissionNames
 
 
@@ -31,6 +32,7 @@ class MetaKanbanView_LabelUpdate(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         board_id = kwargs.get("board_id")
+        board = get_object_or_404(MetaKanbanBoard, id=board_id)
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_METAKANBAN_TASK_LABEL
@@ -46,6 +48,17 @@ class MetaKanbanView_LabelUpdate(LoginRequiredMixin, View):
         label.label_name = request.POST.get("label_name", label.label_name)
         label.label_color = request.POST.get("label_color", label.label_color)
         label.save()
+
+        try:
+            # Add the change log for the change in the board.
+            MetaKanbanChangeLog.objects.create(
+                board=board,
+                action_type=MetaKanbanChangeLogActionTypes.Label.UPDATE_LABEL,
+                action_details="Label '" + label.label_name + "' has been updated to '" + label.label_name + "' and color has been updated to '" + label.label_color + "'.",
+                change_by_user=request.user
+            )
+        except Exception as e:
+            messages.error(request, "Label change log could not be created. Error: " + str(e))
 
         messages.success(request, "Label updated successfully.")
         return redirect("metakanban:label_list", board_id=board_id)

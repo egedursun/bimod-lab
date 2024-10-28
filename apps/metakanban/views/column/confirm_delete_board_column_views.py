@@ -21,7 +21,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanStatusColumn
+from apps.metakanban.models import MetaKanbanStatusColumn, MetaKanbanChangeLog
+from apps.metakanban.utils import MetaKanbanChangeLogActionTypes
 from apps.user_permissions.utils import PermissionNames
 
 
@@ -33,6 +34,7 @@ class MetaKanbanView_ColumnConfirmDelete(LoginRequiredMixin, View):
         column_id = request.POST.get("column_id")
         column = get_object_or_404(MetaKanbanStatusColumn, id=column_id)
         board_id = column.board.id
+        board = column.board
         column_name = column.column_name
 
         ##############################
@@ -46,6 +48,17 @@ class MetaKanbanView_ColumnConfirmDelete(LoginRequiredMixin, View):
         with transaction.atomic():
             column.delete()
             self.reorder_columns(board_id)
+
+        try:
+            # Add the change log for the change in the board.
+            MetaKanbanChangeLog.objects.create(
+                board=board,
+                action_type=MetaKanbanChangeLogActionTypes.Column.DELETE_COLUMN,
+                action_details="Column '" + column_name + "' has been deleted.",
+                change_by_user=request.user
+            )
+        except Exception as e:
+            messages.error(request, "Column change log could not be created. Error: " + str(e))
 
         messages.success(request, f'Column "{column_name}" deleted successfully.')
         return redirect("metakanban:board_detail", board_id=board_id)

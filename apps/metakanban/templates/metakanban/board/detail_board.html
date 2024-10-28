@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load field_to_label %}
 
-{% block title %}MetaKanban Dashboard{% endblock %}
+{% block title %}MetaKanban™ Dashboard{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -154,7 +154,7 @@
 
 {% block content %}
 <div class="container mt-5">
-  <h2 class="text-center mb-8"><strong>MetaKanban ™</strong></h2>
+  <h2 class="text-center mb-8"><strong>MetaKanban™</strong></h2>
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mt-4" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-65.png' %}" width="25%" class="justify-content-end me-8"
@@ -209,16 +209,33 @@
     </button>
   </a>
 
+  <a href="{% url 'metakanban:board_logs' board.id %}">
+    <button class="btn btn-info mt-4 me-4 mb-4">
+      <i class="fa fa-magic-wand-sparkles me-4"></i>
+      <strong> Board Action Logs</strong>
+    </button>
+  </a>
+
+  <a href="{% url 'metakanban:agent_communication' %}">
+    <button class="btn btn-primary mt-4 me-4 mb-4">
+      <i class="fa fa-magic-wand-sparkles me-4"></i>
+      <strong> AI Kanban Manager</strong>
+    </button>
+  </a>
+
   <hr>
 
   <div class="d-flex overflow-auto mt-4" style="white-space: nowrap; min-height: 1000px;">
     {% for column in columns %}
-    <div class="col-md-4 mr-4 mx-2">
-      <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">
-            <strong>{{ column.column_name|capfirst }}</strong>
+    <div class="col-md-4 mr-4 flex-grow-1 mb-4 mx-2">
+      <div class="card h-100 mb-4">
+        <div class="card justify-content-between align-items-center p-8 mb-4 text-wrap">
+          <h5 class="mb-0 text-wrap">
+            <strong>{{ column.column_name }}</strong>
           </h5>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center p-4">
           <div class="btn-group">
             <button class="btn btn-secondary btn-sm rounded me-2" onclick="moveColumn('{{ column.board.id }}', '{{ column.id }}', 'up')">
               <i class="fa fa-arrow-left"></i>

@@ -20,7 +20,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanBoard, MetaKanbanTaskLabel
+from apps.metakanban.models import MetaKanbanBoard, MetaKanbanTaskLabel, MetaKanbanChangeLog
+from apps.metakanban.utils import MetaKanbanChangeLogActionTypes
 from apps.user_permissions.utils import PermissionNames
 
 
@@ -51,5 +52,16 @@ class MetaKanbanView_LabelCreate(LoginRequiredMixin, View):
             messages.success(request, "Label created successfully.")
         else:
             messages.error(request, "Both label name and color are required.")
+
+        try:
+            # Add the change log for the change in the board.
+            MetaKanbanChangeLog.objects.create(
+                board=board,
+                action_type=MetaKanbanChangeLogActionTypes.Label.CREATE_LABEL,
+                action_details="Label '" + label_name + "' with the color '" + label_color + "' has been created.",
+                change_by_user=request.user
+            )
+        except Exception as e:
+            messages.error(request, "Label change log could not be created. Error: " + str(e))
 
         return redirect("metakanban:label_list", board_id=board_id)

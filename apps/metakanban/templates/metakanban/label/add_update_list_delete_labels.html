@@ -1,3 +1,22 @@
+  <!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: add_update_list_delete_labels.html
+  ~ Last Modified: 2024-10-27 22:47:34
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-27 22:48:46
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
 {% extends layout_path %}
 {% load static %}
 {% load i18n %}
@@ -6,12 +25,16 @@
 
 {% block vendor_css %}
   {{ block.super }}
+
   <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
   {{ block.super }}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block content %}
@@ -22,10 +45,10 @@
 </div>
 
 <a href="{% url 'metakanban:board_detail' board.id %}">
-    <button class="btn btn-secondary mt-4 me-4 mb-4">
-      <i class="fa fa-chevron-left me-4"></i>
-      <strong> Back to MetaKanban™ Board</strong>
-    </button>
+  <button class="btn btn-secondary mt-4 me-4 mb-4">
+    <i class="fa fa-chevron-left me-4"></i>
+    <strong> Back to MetaKanban™ Board</strong>
+  </button>
 </a>
 
 <hr>
@@ -97,6 +120,7 @@
       <tbody>
         {% for label in labels %}
           <tr>
+            <!-- Update Label Form -->
             <form method="post" action="{% url 'metakanban:label_update' board.id label.id %}">
               {% csrf_token %}
               <td>
@@ -109,7 +133,6 @@
                 <select name="label_color" class="form-select">
                   {% for code, color in color_choices %}
                     <option value="{{ code }}" {% if code == label.label_color %}selected{% endif %}>
-                      <span class="rounded-circle d-inline-block me-2" style="width: 20px; height: 20px; background-color: {{ code }};"></span>
                       {{ color }}
                     </option>
                   {% endfor %}
@@ -120,16 +143,16 @@
                 <button type="submit" class="btn btn-sm btn-success me-4">
                   <i class="fa fa-save me-2"></i><strong>Save Changes</strong>
                 </button>
+            </form>
 
-                <!-- Delete Label Form -->
-                <form method="post" action="{% url 'metakanban:label_delete' board.id label.id %}" class="d-inline-block">
+                <!-- Delete Label Form (Separate) -->
+                <form method="post" action="{% url 'metakanban:label_delete' board.id label.id %}" class="d-inline-block delete-label-form">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-sm btn-danger me-4">
+                  <button type="button" class="btn btn-sm btn-danger delete-label-btn">
                     <i class="fa fa-trash me-2"></i><strong>Delete</strong>
                   </button>
                 </form>
               </td>
-            </form>
           </tr>
         {% empty %}
           <tr>
@@ -145,13 +168,38 @@
     </table>
   </div>
 </div>
+{% endblock %}
 
-<script>
+{% block page_js %}
+  <script>
   $(document).ready(function() {
     $('.select2').select2({
       width: '100%',
       placeholder: 'Select a color',
     });
+
+    // Use delegated event to ensure it binds correctly
+    $(document).on('click', '.delete-label-btn', function(e) {
+      e.preventDefault();
+      const deleteForm = $(this).closest('.delete-label-form');
+
+      Swal.fire({
+        title: 'Delete this Label?',
+        text: "You won't be able to revert this action.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        customClass: {
+          confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+          cancelButton: 'btn btn-secondary waves-effect waves-light'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteForm.submit();  // Submit the form if confirmed
+        }
+      });
+    });
   });
 </script>
-{% endblock %}
+{% endblock page_js %}

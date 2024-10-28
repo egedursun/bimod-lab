@@ -515,6 +515,7 @@ DRAFTING = os.environ.get("DRAFTING", default="0")
 HADRON_PRIME = os.environ.get("HADRON_PRIME", default="0")
 SMART_CONTRACT_CREATION = os.environ.get("SMART_CONTRACT_CREATION", default="0")
 BINEXUS = os.environ.get("BINEXUS", default="0")
+METAKANBAN = os.environ.get("METAKANBAN", default="0")
 
 COSTS_MAP = {
     "CONTEXT_MEMORY": float(CONTEXT_MEMORY),
@@ -551,6 +552,7 @@ COSTS_MAP = {
     "HADRON_PRIME": float(HADRON_PRIME),
     "SMART_CONTRACT_CREATION": float(SMART_CONTRACT_CREATION),
     "BINEXUS": float(BINEXUS),
+    "METAKANBAN": float(METAKANBAN),
 }
 
 if ENVIRONMENT != "local":

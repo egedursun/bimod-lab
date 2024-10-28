@@ -21,7 +21,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanBoard, MetaKanbanStatusColumn
+from apps.metakanban.models import MetaKanbanBoard, MetaKanbanStatusColumn, MetaKanbanChangeLog
+from apps.metakanban.utils import MetaKanbanChangeLogActionTypes
 from apps.user_permissions.utils import PermissionNames
 
 
@@ -57,6 +58,18 @@ class MetaKanbanView_ColumnCreate(LoginRequiredMixin, View):
             messages.success(request, f'Column "{column_name}" created successfully at position {position_id}.')
         else:
             messages.error(request, "Column name and position are required to create a new column.")
+
+        try:
+            # Add the change log for the change in the board.
+            MetaKanbanChangeLog.objects.create(
+                board=board,
+                action_type=MetaKanbanChangeLogActionTypes.Column.CREATE_COLUMN,
+                action_details="A new column created for the board, with the name: " + column_name,
+                change_by_user=request.user
+            )
+        except Exception as e:
+            messages.error(request, "Column change log could not be created. Error: " + str(e))
+
         return redirect("metakanban:board_detail", board_id=board_id)
 
     def reorder_columns(self, board_id):

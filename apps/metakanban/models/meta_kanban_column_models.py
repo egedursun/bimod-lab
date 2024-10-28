@@ -24,7 +24,7 @@ class MetaKanbanStatusColumn(models.Model):
     column_name = models.CharField(max_length=10000)
     position_id = models.IntegerField(default=0)
 
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

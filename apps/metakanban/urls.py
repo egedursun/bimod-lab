@@ -23,7 +23,8 @@ from apps.metakanban.views import (MetaKanbanView_TaskCreate, MetaKanbanView_Tas
                                    MetaKanbanView_ColumnCreate, MetaKanbanView_ColumnUpdate,
                                    MetaKanbanView_BoardUpdate, MetaKanbanView_TaskAssign, MetaKanbanView_LabelList,
                                    MetaKanbanView_LabelCreate, MetaKanbanView_LabelDelete, MetaKanbanView_LabelUpdate,
-                                   MetaKanbanView_ColumnMove, MetaKanbanView_AgentCommunication)
+                                   MetaKanbanView_ColumnMove, MetaKanbanView_AgentCommunication,
+                                   MetaKanbanView_BoardLogList)
 
 app_name = 'metakanban'
 
@@ -63,4 +64,8 @@ urlpatterns = [
     # Agent Communication: TemplateView
     path("agent/communication/", MetaKanbanView_AgentCommunication.as_view(
         template_name="metakanban/agent/agent_communication.html"), name="agent_communication"),
+
+    # Board Logs: TemplateView
+    path("board/logs/<int:board_id>/", MetaKanbanView_BoardLogList.as_view(
+        template_name="metakanban/log/metakanban_board_logs.html"), name="board_logs"),
 ]

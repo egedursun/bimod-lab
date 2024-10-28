@@ -21,7 +21,8 @@ from django.utils.dateparse import parse_datetime
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanTask, MetaKanbanTaskLabel
+from apps.metakanban.models import MetaKanbanTask, MetaKanbanTaskLabel, MetaKanbanChangeLog
+from apps.metakanban.utils import MetaKanbanChangeLogActionTypes
 from apps.user_permissions.utils import PermissionNames
 
 
@@ -33,6 +34,7 @@ class MetaKanbanView_TaskDetailAndUpdate(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         task_id = request.POST.get("task_id")
         task = get_object_or_404(MetaKanbanTask, id=task_id)
+        board = task.board
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_METAKANBAN_TASK
@@ -55,7 +57,18 @@ class MetaKanbanView_TaskDetailAndUpdate(LoginRequiredMixin, View):
             task.task_file = request.FILES["task_file"]
         if "task_image" in request.FILES:
             task.task_image = request.FILES["task_image"]
-
         task.save()
+
+        try:
+            # Add the change log for the change in the board.
+            MetaKanbanChangeLog.objects.create(
+                board=board,
+                action_type=MetaKanbanChangeLogActionTypes.Task.UPDATE_TASK,
+                action_details="Task '" + task.title + "' information has been updated.",
+                change_by_user=request.user
+            )
+        except Exception as e:
+            messages.error(request, "Task change log could not be created. Error: " + str(e))
+
         messages.success(request, f'Task "{task.title}" updated successfully.')
         return redirect("metakanban:board_detail", board_id=task.board.id)

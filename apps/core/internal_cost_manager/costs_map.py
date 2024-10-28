@@ -57,6 +57,7 @@ class InternalServiceCosts:
             InternalServiceCosts.HadronPrime.COST,
             InternalServiceCosts.SmartContractCreation.COST,
             InternalServiceCosts.Binexus.COST,
+            InternalServiceCosts.MetaKanban.COST,
         ]
 
     class ContextMemory:
@@ -161,6 +162,9 @@ class InternalServiceCosts:
     class Binexus:
         COST = COSTS_MAP["BINEXUS"]
 
+    class MetaKanban:
+        COST = COSTS_MAP["METAKANBAN"]
+
 
 TOOL_NAME_TO_COST_MAP = {
     "store-memory": InternalServiceCosts.ContextMemory.COST,
@@ -197,4 +201,5 @@ TOOL_NAME_TO_COST_MAP = {
     "hadron-prime": InternalServiceCosts.HadronPrime.COST,
     "smart-contract-creation": InternalServiceCosts.SmartContractCreation.COST,
     "binexus": InternalServiceCosts.Binexus.COST,
+    "metakanban": InternalServiceCosts.MetaKanban.COST,
 }

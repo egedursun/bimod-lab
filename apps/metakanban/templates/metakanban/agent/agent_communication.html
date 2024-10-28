@@ -3,9 +3,9 @@
   ~
   ~ Project: Bimod.io™
   ~ File: agent_communication.html
-  ~ Last Modified: 2024-10-27 18:54:07
+  ~ Last Modified: 2024-10-28 01:39:48
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-27 18:54:23
+  ~ Created: 2024-10-28 14:42:41
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -15,5 +15,121 @@
   ~
   ~  For permission inquiries, please contact: admin@Bimod.io.
   ~
-  -->
+-->
+
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}MetaKanban™ AI Communication{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+
+<a href="{% url 'metakanban:board_list' %}">
+  <button class="btn btn-secondary mt-4 mb-4">
+    <i class="fa fa-dashboard me-4"></i>
+    <strong> Back to MetaKanban™ Boards</strong>
+  </button>
+</a>
+
+<div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mt-4" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-72.png' %}" width="25%" class="justify-content-end me-8"
+         style="border-radius: 25px;" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        You can give orders to the MetaKanban™ Manager AI by selecting a board and writing a query. The AI will process
+        your query and provide you with a response based on the data in your Kanban board. You can also paste your meeting
+        transcripts for the AI to process them quickly and efficiently.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+<hr>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<hr>
+
+<div class="card mt-4">
+  <div class="card-header">
+    <h5><i class="fa fa-comments me-2"></i>
+      <strong>Give Order to MetaKanban™ Manager AI</strong>
+    </h5>
+  </div>
+  <div class="card-body">
+    <img src="{% static 'img/metakanban/kbn-5.png' %}" class="rounded mb-4 mt-0" style="width: 100%;" alt="Illustration for tips">
+    <form method="post" action="{% url 'metakanban:agent_communication' %}">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="board_id" class="form-label"><strong>Board ID</strong></label>
+        <select id="board_id" name="board_id" class="form-select" required>
+          {% for board in organization_boards %}
+            <option value="{{ board.id }}">{{ board.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="user_query" class="form-label"><strong>Query</strong></label>
+        <textarea id="user_query" name="user_query" class="form-control" rows="3" placeholder="You can write in an order for the AI to work on within your Kanban board or simply paste your meeting transcripts for the AI to process them quickly and efficiently." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary mt-4"><i class="fa fa-paper-plane me-2"></i>
+        <strong>Submit Query</strong>
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+
+{% if llm_output %}
+  <div class="card border border-success border-2 mt-4">
+    <div class="card-body">
+      <h5 class="card-title mb-2">
+        <i class="fa fa-lightbulb text-success me-2"></i>
+        <strong>LLM Response</strong>
+      </h5>
+      <hr>
+      <p class="text-muted mt-4">
+        <strong class="text-white">🟡 &nbsp; Here is the response from the AI based on your query.</strong>
+      </p>
+      <hr>
+      <div class="btn-primary p-3 rounded">
+        <p class="text-white"><strong>{{ llm_output|safe|linebreaksbr }}</strong></p>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% endblock content %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // ...
+    });
+  </script>
+{% endblock page_js %}
 
