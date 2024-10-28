@@ -142,6 +142,27 @@
                 <div class="form-text">Include the country code and the area code for more accuracy.</div>
               </div>
               <div class="col-4 mb-6">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3">
+                  {% if organization.description %}{{ organization.description }}{% endif %}
+                </textarea>
+                <div class="form-text"></div>
+              </div>
+               <div class="col-4 mb-6">
+                <label class="form-label" for="mission">Organization Mission</label>
+                <textarea class="form-control" id="mission" name="mission" rows="3">
+                  {% if organization.mission %}{{ organization.mission }}{% endif %}
+                </textarea>
+                <div class="form-text"></div>
+              </div>
+               <div class="col-4 mb-6">
+                <label class="form-label" for="vision">Organization Vision</label>
+                <textarea class="form-control" id="vision" name="vision" rows="3">
+                  {% if organization.vision %}{{ organization.vision }}{% endif %}
+                </textarea>
+                <div class="form-text"></div>
+              </div>
+              <div class="col-4 mb-6">
                 <label class="form-label" for="address">Address</label>
                 <input type="text" class="form-control" id="address" name="address"
                        placeholder="Enter organization address"

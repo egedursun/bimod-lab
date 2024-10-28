@@ -20,6 +20,9 @@ from django.db import models
 
 class Organization(models.Model):
     name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    mission = models.TextField(null=True, blank=True)
+    vision = models.TextField(null=True, blank=True)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     address = models.TextField()

@@ -26,8 +26,7 @@ class MetaKanbanBoard(models.Model):
     llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE)
     title = models.CharField(max_length=10000)
     description = models.TextField()
-    connection_api_key = models.CharField(max_length=1000,
-                                          default=secrets.token_urlsafe(META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH))
+    connection_api_key = models.CharField(max_length=1000)
 
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

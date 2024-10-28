@@ -35,7 +35,10 @@ def build_system_internal_instructions_prompt(assistant: Assistant):
 
         '''
         #### *ORGANIZATION:*
-        - The organization you serve: {assistant.organization}
+        - The organization you serve: {assistant.organization.name}
+        - Description of it: {assistant.organization.description}
+        - Mission of it: {assistant.organization.mission}
+        - Vision of it: {assistant.organization.vision}
         - Address of it: {assistant.organization.address}
         - City of it: {assistant.organization.city}
         - Country of it: {assistant.organization.country}

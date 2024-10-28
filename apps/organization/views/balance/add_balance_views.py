@@ -46,7 +46,7 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
             return redirect('llm_transaction:list')
         ##############################
 
-        org_id = kwargs.get('pk')
+        org_id = request.POST.get('org_id')
         org = get_object_or_404(Organization, id=org_id, users__in=[context_user])
         topup_amount = request.POST.get('topup_amount')
         promo_code = request.POST.get('promo_code')

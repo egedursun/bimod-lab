@@ -37,8 +37,8 @@ urlpatterns = [
         template_name="organization/update_organization.html"), name="update"),
     path('delete/<int:pk>/', OrganizationView_OrganizationDelete.as_view(),
          name="delete"),
-    path('add_credits/<int:pk>/', OrganizationView_AddBalanceCredits.as_view(),
+    path('add_credits/', OrganizationView_AddBalanceCredits.as_view(),
          name="add_credits"),
     path('balance_transfer/', OrganizationView_TransferBalance.as_view(), name='balance_transfer'),
-    path('add_gift_credits/<int:pk>/', OrganizationView_AddGiftCredits.as_view(), name='add_gift_credits'),
+    path('add_gift_credits/', OrganizationView_AddGiftCredits.as_view(), name='add_gift_credits'),
 ]

@@ -36,6 +36,9 @@ logger = logging.getLogger(__name__)
 
 class OrganizationView_AddGiftCredits(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_BALANCE_TO_ORGANIZATION
@@ -45,7 +48,7 @@ class OrganizationView_AddGiftCredits(LoginRequiredMixin, View):
             return redirect('llm_transaction:list')
         ##############################
 
-        org_id = kwargs.get('pk')
+        org_id = request.POST.get('org_id')
         user = request.user
         org = get_object_or_404(Organization, id=org_id, users__in=[request.user])
         user = User.objects.get(id=user.id)
