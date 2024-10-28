@@ -51,7 +51,6 @@ class MetaKanbanView_AgentCommunication(LoginRequiredMixin, TemplateView):
 
         user_query = request.POST.get('user_query')
         xc = MetaKanbanExecutionManager(board_id=board_id)
-        print(f"User query: {user_query}")
         success, llm_output = xc.consult_ai(user_query=user_query)
         if not success:
             messages.error(request, "Error executing MetaKanban query.")

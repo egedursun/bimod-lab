@@ -52,10 +52,6 @@ class MetaKanbanExecutionManager:
         logger.info(f"[handle_metakanban_operation_command] AI response: {output}")
         return True, output
 
-    def consult_ai_via_transcript(self, transcript: str):
-        # TODO-EGE: implement
-        pass
-
     def handle_metakanban_operation_command(self, system_prompt: str, query: str):
         output, error = None, None
         context_messages = [

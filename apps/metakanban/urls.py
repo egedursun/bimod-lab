@@ -24,7 +24,9 @@ from apps.metakanban.views import (MetaKanbanView_TaskCreate, MetaKanbanView_Tas
                                    MetaKanbanView_BoardUpdate, MetaKanbanView_TaskAssign, MetaKanbanView_LabelList,
                                    MetaKanbanView_LabelCreate, MetaKanbanView_LabelDelete, MetaKanbanView_LabelUpdate,
                                    MetaKanbanView_ColumnMove, MetaKanbanView_AgentCommunication,
-                                   MetaKanbanView_BoardLogList)
+                                   MetaKanbanView_BoardLogList, MetaKanbanView_MeetingRecordingAudioAIDelivery,
+                                   MetaKanbanView_MeetingTranscriptionAIImplement,
+                                   MetaKanbanView_MeetingTranscriptionList, MetaKanbanView_MeetingTranscriptionDelete)
 
 app_name = 'metakanban'
 
@@ -68,4 +70,21 @@ urlpatterns = [
     # Board Logs: TemplateView
     path("board/logs/<int:board_id>/", MetaKanbanView_BoardLogList.as_view(
         template_name="metakanban/log/metakanban_board_logs.html"), name="board_logs"),
+
+    ###############################################################################################################
+
+    # Meeting Recording Audio AI Delivery: HTTP Endpoint Retriever
+    path("meeting/recording/delivery/", MetaKanbanView_MeetingRecordingAudioAIDelivery.as_view(),
+         name="meeting_recording_delivery"),
+
+    path("meeting/transcription/list/<int:board_id>/", MetaKanbanView_MeetingTranscriptionList.as_view(
+        template_name="metakanban/meeting/meeting_transcriptions_list.html"
+    ), name="meeting_transcription_list"),
+
+    path("meeting/transcription/implement/<int:transcription_id>/", MetaKanbanView_MeetingTranscriptionAIImplement.as_view(),
+            name="meeting_transcription_implement"),
+    path("meeting/transcription/delete/<int:transcription_id>/", MetaKanbanView_MeetingTranscriptionDelete.as_view(),
+            name="meeting_transcription_delete"),
+
+    ###############################################################################################################
 ]

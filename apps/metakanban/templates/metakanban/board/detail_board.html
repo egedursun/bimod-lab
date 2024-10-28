@@ -193,13 +193,13 @@
   <a href="{% url 'metakanban:board_list' %}">
     <button class="btn btn-secondary mt-4 me-4 mb-4">
       <i class="fa fa-chevron-left me-4"></i>
-      <strong> Manage MetaKanban™ Boards</strong>
+      <strong> Manage MetaKanban™</strong>
     </button>
   </a>
 
-  <button class="btn btn-success w-25 me-4" onclick="showCreateColumnModal()">
+  <button class="btn btn-success me-4" onclick="showCreateColumnModal()">
     <i class="fa fa-plus me-4"></i>
-    <strong>Add New Column</strong>
+    <strong>Add Column</strong>
   </button>
 
   <a href="{% url 'metakanban:label_list' board.id %}">
@@ -212,7 +212,7 @@
   <a href="{% url 'metakanban:board_logs' board.id %}">
     <button class="btn btn-info mt-4 me-4 mb-4">
       <i class="fa fa-magic-wand-sparkles me-4"></i>
-      <strong> Board Action Logs</strong>
+      <strong> Action Logs</strong>
     </button>
   </a>
 
@@ -220,6 +220,13 @@
     <button class="btn btn-primary mt-4 me-4 mb-4">
       <i class="fa fa-magic-wand-sparkles me-4"></i>
       <strong> AI Kanban Manager</strong>
+    </button>
+  </a>
+
+  <a href="{% url 'metakanban:meeting_transcription_list' board.id %}">
+    <button class="btn btn-primary mt-4 me-4 mb-4">
+      <i class="fa fa-magic-wand-sparkles me-4"></i>
+      <strong> AI Meeting Records</strong>
     </button>
   </a>
 

@@ -61,6 +61,10 @@ class PermissionNames:
 
     USE_METAKANBAN_AI = 'use_metakanban_ai'
 
+    USE_METAKANBAN_MEETING_TRANSCRIPTION = 'use_metakanban_meeting_transcription'
+    IMPLEMENT_MEETING_TRANSCRIPTION_WITH_AI = 'implement_meeting_transcription_with_ai'
+    DELETE_MEETING_TRANSCRIPTION = 'delete_meeting_transcription'
+
     LIST_TRANSACTIONS = 'list_transactions'
 
     ADD_USERS = 'add_users'
@@ -382,6 +386,10 @@ PERMISSION_TYPES = [
     ('assign_metakanban_task', 'Assign MetaKanban Task'),
 
     ('use_metakanban_ai', 'Use MetaKanban AI'),
+
+    ("use_metakanban_meeting_transcription", "Use MetaKanban Meeting Transcription"),
+    ("implement_meeting_transcription_with_ai", "Implement Meeting Transcription with AI"),
+    ("delete_meeting_transcription", "Delete Meeting Transcription"),
 
     ('add_llm_cores', 'Add LLM Cores'),
     ('update_llm_cores', 'Update LLM Cores'),

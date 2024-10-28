@@ -70,6 +70,11 @@ def get_permissions_grouped():
         "MetaKanban AI Permissions": [
             ('use_metakanban_ai', 'Use MetaKanban AI'),
         ],
+        "MetaKanban Meeting Transcription Permissions": [
+            ("use_metakanban_meeting_transcription", "Use MetaKanban Meeting Transcription"),
+            ("implement_meeting_transcription_with_ai", "Implement Meeting Transcription with AI"),
+            ("delete_meeting_transcription", "Delete Meeting Transcription"),
+        ],
         "LLM Core Permissions": [
             ('add_llm_cores', 'Add LLM Cores'),
             ('update_llm_cores', 'Update LLM Cores'),

@@ -444,6 +444,7 @@ EXCLUDED_PAGES = [
     "/health/export_orchestrations/api/v1/*",
     "/app/hadron_prime/hadron_node/activate/*",
     "/app/hadron_prime/hadron_node/speak/*",
+    "/app/metakanban/meeting/recording/delivery/*"
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'
@@ -516,6 +517,7 @@ HADRON_PRIME = os.environ.get("HADRON_PRIME", default="0")
 SMART_CONTRACT_CREATION = os.environ.get("SMART_CONTRACT_CREATION", default="0")
 BINEXUS = os.environ.get("BINEXUS", default="0")
 METAKANBAN = os.environ.get("METAKANBAN", default="0")
+MEETING_TRANSCRIPTION = os.environ.get("MEETING_TRANSCRIPTION", default="0")
 
 COSTS_MAP = {
     "CONTEXT_MEMORY": float(CONTEXT_MEMORY),
@@ -553,6 +555,7 @@ COSTS_MAP = {
     "SMART_CONTRACT_CREATION": float(SMART_CONTRACT_CREATION),
     "BINEXUS": float(BINEXUS),
     "METAKANBAN": float(METAKANBAN),
+    "MEETING_TRANSCRIPTION": float(MEETING_TRANSCRIPTION),
 }
 
 if ENVIRONMENT != "local":
@@ -592,3 +595,5 @@ JAZZMIN_SETTINGS = {
     "copyright": "BMD Autonomous Holdings. All rights reserved.",
     "show_sidebar": True,
 }
+
+VOSK_MODEL_PATH = os.environ.get("VOSK_MODEL_PATH", default="ml_models/vosk-model-en-us-0.22-lgraph")

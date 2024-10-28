@@ -31,6 +31,7 @@ class AppendSlashMiddleware:
             and not request.path.startswith('/app/export_leanmods/api/v1/export')
             and not request.path.startswith('/health/export_leanmods/api/v1')
             and not request.path.startswith('/app/export_orchestrations/api/v1/export')
-            and not request.path.startswith('/health/export_orchestrations/api/v1')):
+            and not request.path.startswith('/health/export_orchestrations/api/v1')
+            and not request.path.startswith('/app/metakanban/meeting/recording/delivery')):
             return HttpResponsePermanentRedirect(request.path + '/')
         return self.get_response(request)

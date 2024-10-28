@@ -15,6 +15,7 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 import logging
+import secrets
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -24,6 +25,7 @@ from django.contrib import messages
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.llm_core.models import LLMCore
 from apps.metakanban.models import MetaKanbanBoard
+from apps.metakanban.utils import META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
 from apps.user_permissions.utils import PermissionNames
@@ -58,9 +60,12 @@ class MetaKanbanView_BoardCreate(LoginRequiredMixin, TemplateView):
             messages.error(request, "Please fill out all required fields.")
             return self.render_to_response(self.get_context_data())
 
+        connection_api_key = secrets.token_urlsafe(META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH)
+
         board = MetaKanbanBoard.objects.create(
             project_id=project_id, llm_model_id=llm_model_id, title=title,
             description=description, created_by_user=request.user,
+            connection_api_key=connection_api_key
         )
         messages.success(request, "Kanban board created successfully.")
         return redirect("metakanban:board_list")

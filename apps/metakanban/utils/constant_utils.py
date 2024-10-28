@@ -84,8 +84,10 @@ class MetaKanbanChangeLogActionTypes:
 
         @staticmethod
         def as_list():
-            return [MetaKanbanChangeLogActionTypes.Column.CREATE_COLUMN, MetaKanbanChangeLogActionTypes.Column.UPDATE_COLUMN,
-                    MetaKanbanChangeLogActionTypes.Column.DELETE_COLUMN, MetaKanbanChangeLogActionTypes.Column.MOVE_COLUMN]
+            return [MetaKanbanChangeLogActionTypes.Column.CREATE_COLUMN,
+                    MetaKanbanChangeLogActionTypes.Column.UPDATE_COLUMN,
+                    MetaKanbanChangeLogActionTypes.Column.DELETE_COLUMN,
+                    MetaKanbanChangeLogActionTypes.Column.MOVE_COLUMN]
 
     class Label:
         CREATE_LABEL = 'create_label'
@@ -94,7 +96,8 @@ class MetaKanbanChangeLogActionTypes:
 
         @staticmethod
         def as_list():
-            return [MetaKanbanChangeLogActionTypes.Label.CREATE_LABEL, MetaKanbanChangeLogActionTypes.Label.UPDATE_LABEL,
+            return [MetaKanbanChangeLogActionTypes.Label.CREATE_LABEL,
+                    MetaKanbanChangeLogActionTypes.Label.UPDATE_LABEL,
                     MetaKanbanChangeLogActionTypes.Label.DELETE_LABEL]
 
     @staticmethod
@@ -178,3 +181,11 @@ class MetaKanbanTaskLabelColorChoiceNames:
 META_KANBAN_TASK_LABEL_ADMIN_LIST = ('label_name', 'label_color', 'created_by_user', 'created_at', 'updated_at')
 META_KANBAN_TASK_LABEL_ADMIN_FILTER = ('label_color', 'created_by_user', 'created_at', 'updated_at')
 META_KANBAN_TASK_LABEL_ADMIN_SEARCH = ('label_name',)
+
+META_KANBAN_MEETING_TRANSCRIPTION_ADMIN_LIST = ('board', 'is_processed_with_ai', 'created_at', 'updated_at')
+META_KANBAN_MEETING_TRANSCRIPTION_ADMIN_FILTER = ('is_processed_with_ai', 'created_at', 'updated_at')
+META_KANBAN_MEETING_TRANSCRIPTION_ADMIN_SEARCH = ('board', 'meeting_transcription_text',
+                                                  'meeting_transcription_key_takeaways')
+
+
+META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH = 64

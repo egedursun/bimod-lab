@@ -1,25 +1,12 @@
 ### TODO LIST
 
-- [ ] Add transactions to metakanban agent
-
----
-
-................................
+...
 
 ---
 
 **CURRENT PROJECT: METAKANBAN (Ege)**
 
-- [ ] Integrate the AI functionality to provide a prompt, and kanban creates / edits something on the board.
-
-- [ ] Integrate the Audio Transcriber to the _core folder so that Electron can send meeting data to be transcribed.
-- [ ] The transcription files are stored persistently in the database.
-
-- [ ] Add the MetaKanban a list showing the meeting transcriptions, with the click of a button, the user can see,
-edit, and automatically let the AI to generate / modify tasks based on meeting transcriptions.
 - [ ] Work on Electron to reliably send the meeting data to the Django server.
-- [ ] Work on the Django server to reliably receive the meeting data from the Electron.
-
 - [ ] Test the functionality.
 
 ---

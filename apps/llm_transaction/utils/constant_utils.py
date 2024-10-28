@@ -71,6 +71,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("smart-contract-creation", "Smart Contract Creation"),
     ("binexus", "Binexus"),
     ("metakanban", "MetaKanban"),
+    ("meeting-transcription", "Meeting Transcription"),
 ]
 
 
@@ -122,6 +123,7 @@ class LLMTransactionSourcesTypesNames:
     SMART_CONTRACT_CREATION = "smart-contract-creation"
     BINEXUS = "binexus"
     METAKANBAN = "metakanban"
+    MEETING_TRANSCRIPTION = "meeting-transcription"
 
     @staticmethod
     def as_list():
@@ -166,6 +168,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
             LLMTransactionSourcesTypesNames.BINEXUS,
             LLMTransactionSourcesTypesNames.METAKANBAN,
+            LLMTransactionSourcesTypesNames.MEETING_TRANSCRIPTION,
         ]
 
 
