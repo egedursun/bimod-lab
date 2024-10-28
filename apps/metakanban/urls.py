@@ -26,7 +26,8 @@ from apps.metakanban.views import (MetaKanbanView_TaskCreate, MetaKanbanView_Tas
                                    MetaKanbanView_ColumnMove, MetaKanbanView_AgentCommunication,
                                    MetaKanbanView_BoardLogList, MetaKanbanView_MeetingRecordingAudioAIDelivery,
                                    MetaKanbanView_MeetingTranscriptionAIImplement,
-                                   MetaKanbanView_MeetingTranscriptionList, MetaKanbanView_MeetingTranscriptionDelete)
+                                   MetaKanbanView_MeetingTranscriptionList, MetaKanbanView_MeetingTranscriptionDelete,
+                                   MetaKanbanView_MeetingRegenerateAPIKey)
 
 app_name = 'metakanban'
 
@@ -85,6 +86,8 @@ urlpatterns = [
             name="meeting_transcription_implement"),
     path("meeting/transcription/delete/<int:transcription_id>/", MetaKanbanView_MeetingTranscriptionDelete.as_view(),
             name="meeting_transcription_delete"),
+    path("meeting/regenerate/api_key/", MetaKanbanView_MeetingRegenerateAPIKey.as_view(),
+            name="meeting_regenerate_api_key"),
 
     ###############################################################################################################
 ]

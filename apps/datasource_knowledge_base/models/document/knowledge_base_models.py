@@ -17,11 +17,15 @@
 #
 #
 #
+import logging
 
 from django.db import models
 
 from apps.core.vector_operations.vector_document.vector_store_decoder import KnowledgeBaseSystemDecoder
-from apps.datasource_knowledge_base.utils import VECTORSTORE_SYSTEMS, EMBEDDING_VECTORIZER_MODELS, build_weaviate_class_name
+from apps.datasource_knowledge_base.utils import VECTORSTORE_SYSTEMS, EMBEDDING_VECTORIZER_MODELS, \
+    build_weaviate_class_name
+
+logger = logging.getLogger(__name__)
 
 
 class DocumentKnowledgeBaseConnection(models.Model):
@@ -32,7 +36,8 @@ class DocumentKnowledgeBaseConnection(models.Model):
     name = models.CharField(max_length=1000)
     class_name = models.CharField(max_length=1000, null=True, blank=True)
     description = models.TextField()
-    vectorizer = models.CharField(max_length=100, choices=EMBEDDING_VECTORIZER_MODELS, default="text2vec-openai", null=True,
+    vectorizer = models.CharField(max_length=100, choices=EMBEDDING_VECTORIZER_MODELS, default="text2vec-openai",
+                                  null=True,
                                   blank=True)
     vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
     embedding_chunk_size = models.IntegerField(default=1024)
@@ -64,18 +69,25 @@ class DocumentKnowledgeBaseConnection(models.Model):
         if self.class_name is None:
             self.class_name = build_weaviate_class_name(self)
 
-        c = KnowledgeBaseSystemDecoder.get(self)
-        if c is not None:
-            o = c.create_weaviate_classes()
-            if not o["status"]:
-                pass
-        self.schema_json = c.retrieve_schema()
+        try:
+            c = KnowledgeBaseSystemDecoder.get(self)
+            if c is not None:
+                o = c.create_weaviate_classes()
+                if not o["status"]:
+                    pass
+            self.schema_json = c.retrieve_schema()
+        except Exception as e:
+            logger.error(f"[DocumentKnowledgeBaseConnection] Error creating Weaviate class: {e}")
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):
-        c = KnowledgeBaseSystemDecoder.get(self)
-        if c is not None:
-            o = c.delete_weaviate_classes(class_name=self.class_name)
-            if not o["status"]:
-                pass
+        try:
+            c = KnowledgeBaseSystemDecoder.get(self)
+            if c is not None:
+                o = c.delete_weaviate_classes(class_name=self.class_name)
+                if not o["status"]:
+                    pass
+        except Exception as e:
+            logger.error(f"[DocumentKnowledgeBaseConnection] Error deleting Weaviate class: {e}")
+
         super().delete(using, keep_parents)

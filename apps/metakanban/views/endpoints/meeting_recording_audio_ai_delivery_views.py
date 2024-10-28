@@ -37,13 +37,11 @@ class MetaKanbanView_MeetingRecordingAudioAIDelivery(View):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        board_id = request.POST.get('board_id')
         metakanban_board_api_key = request.POST.get('metakanban_api_key')
         meeting_recording_audio_wav = request.FILES.get('meeting_recording_audio_wav')
 
-        if not board_id:
-            return JsonResponse({"success": False, "error": "board_id is required."}, status=400)
         if not metakanban_board_api_key:
+            logger.error("[metakanban_meeting_transcription] metakanban_api_key is required.")
             return JsonResponse({"success": False, "error": "metakanban_api_key is required."}, status=400)
         if not meeting_recording_audio_wav:
             return JsonResponse({"success": False, "error": "meeting_recording_audio_wav is required."},
@@ -55,7 +53,7 @@ class MetaKanbanView_MeetingRecordingAudioAIDelivery(View):
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)}, status=500)
 
-        board: MetaKanbanBoard = MetaKanbanBoard.objects.filter(id=board_id).first()
+        board: MetaKanbanBoard = MetaKanbanBoard.objects.filter(connection_api_key=metakanban_board_api_key).first()
         if not board:
             return JsonResponse({"success": False, "error": "Board not found."}, status=404)
         if board.connection_api_key != metakanban_board_api_key:
@@ -71,7 +69,7 @@ class MetaKanbanView_MeetingRecordingAudioAIDelivery(View):
 
         # Save transcription_text to MetaKanbanMeetingTranscription
         MetaKanbanMeetingTranscription.objects.create(
-            board_id=board_id,
+            board_id=board.id,
             meeting_transcription_text=transcription_text,
             is_processed_with_ai=False
         )

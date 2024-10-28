@@ -18,3 +18,4 @@
 from .meeting_transcriptions_list_views import *
 from .meeting_transcription_ai_implement_views import *
 from .meeting_transcription_delete_views import *
+from .meeting_regenerate_board_api_key_views import *

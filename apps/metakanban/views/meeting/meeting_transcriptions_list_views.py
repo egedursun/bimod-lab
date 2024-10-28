@@ -16,6 +16,8 @@
 #
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
@@ -32,12 +34,22 @@ class MetaKanbanView_MeetingTranscriptionList(LoginRequiredMixin, TemplateView):
         board = get_object_or_404(MetaKanbanBoard, pk=board_id)
 
         ##############################
-        # PERMISSION CHECK FOR - USE_METAKANBAN_MEETING_TRANSCRIPTION
+        # PERMISSION CHECK - USE_METAKANBAN_MEETING_TRANSCRIPTION
         if UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.USE_METAKANBAN_MEETING_TRANSCRIPTION):
+                                               operation=PermissionNames.USE_METAKANBAN_MEETING_TRANSCRIPTION):
             context["board_api_key"] = board.connection_api_key
         ##############################
 
-        context['transcriptions'] = MetaKanbanMeetingTranscription.objects.filter(board_id=board_id).order_by('-created_at')
-        context['board'] = get_object_or_404(MetaKanbanBoard, pk=board_id)
+        # Retrieve transcriptions and apply pagination
+        transcriptions = MetaKanbanMeetingTranscription.objects.filter(board_id=board_id).order_by('-created_at')
+        paginator = Paginator(transcriptions, 10)
+
+        page_number = self.request.GET.get('page', 1)
+        try:
+            page_obj = paginator.get_page(page_number)
+        except:
+            raise Http404("Page not found.")
+
+        context['page_obj'] = page_obj
+        context['board'] = board
         return context
