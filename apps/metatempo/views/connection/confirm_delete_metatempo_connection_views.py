@@ -19,7 +19,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.metatempo.models import MetaTempoConnection
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
@@ -32,6 +34,15 @@ class MetaTempoView_ConnectionConfirmDelete(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_METATEMPO_CONNECTION
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_METATEMPO_CONNECTION):
+            messages.error(self.request, "You do not have permission to delete a MetaTempo Connection.")
+            return redirect('metatempo:connection_list')
+        ##############################
+
         connection_id = kwargs['connection_id']
         connection = get_object_or_404(MetaTempoConnection, id=connection_id)
         connection.delete()

@@ -107,7 +107,7 @@ class RegisterView(AuthView):
 
         welcome_notification = NotificationItem.objects.create(
             user=created_user,
-            notification_title_category=NotificationTitleCategoryChoicesNames.HumanReadable.BIMOD_TEAM,
+            notification_title_category=NotificationTitleCategoryChoicesNames.HumanReadable.INFO,
             notification_fa_icon=NotificationFAIconChoicesNames.BUILDING,
             notification_message="Welcome to the platform! We have sent you a verification email, and we recommend you"
                                  " to verify your email address for your own security and privacy. If you need help,"

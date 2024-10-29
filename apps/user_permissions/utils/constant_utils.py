@@ -65,6 +65,12 @@ class PermissionNames:
     IMPLEMENT_MEETING_TRANSCRIPTION_WITH_AI = 'implement_meeting_transcription_with_ai'
     DELETE_MEETING_TRANSCRIPTION = 'delete_meeting_transcription'
 
+    ADD_METATEMPO_CONNECTION = 'add_metatempo_connection'
+    UPDATE_METATEMPO_CONNECTION = 'update_metatempo_connection'
+    LIST_METATEMPO_CONNECTION = 'list_metatempo_connection'
+    DELETE_METATEMPO_CONNECTION = 'delete_metatempo_connection'
+    USE_META_TEMPO_AI = 'use_meta_tempo_ai'
+
     LIST_TRANSACTIONS = 'list_transactions'
 
     ADD_USERS = 'add_users'
@@ -390,6 +396,12 @@ PERMISSION_TYPES = [
     ("use_metakanban_meeting_transcription", "Use MetaKanban Meeting Transcription"),
     ("implement_meeting_transcription_with_ai", "Implement Meeting Transcription with AI"),
     ("delete_meeting_transcription", "Delete Meeting Transcription"),
+
+    ('add_metatempo_connection', 'Add MetaTempo Connection'),
+    ('update_metatempo_connection', 'Update MetaTempo Connection'),
+    ('list_metatempo_connection', 'List MetaTempo Connection'),
+    ('delete_metatempo_connection', 'Delete MetaTempo Connection'),
+    ('use_meta_tempo_ai', 'Use MetaTempo AI'),
 
     ('add_llm_cores', 'Add LLM Cores'),
     ('update_llm_cores', 'Update LLM Cores'),

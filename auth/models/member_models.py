@@ -14,7 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import secrets
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -22,6 +22,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
+from apps.metatempo.utils import META_TEMPO_CONNECTION_API_KEY_DEFAULT_LENGTH
 from apps.user_permissions.models import UserPermission
 from apps.user_permissions.utils import PERMISSION_TYPES
 from auth.utils import USER_FORUM_ROLES, USER_FORUM_RANKS, POINT_REWARDS, UNIT_REWARD_FOR_POINTS, \
@@ -68,6 +69,8 @@ class Profile(models.Model):
     notifications = models.ManyToManyField('notifications.NotificationItem', related_name='notifications',
                                            default=list, blank=True)
 
+    metatempo_tracking_auth_key = models.CharField(max_length=100, blank=True, null=True)
+
     def add_points(self, action):
         points = POINT_REWARDS.get(action, 0)
         old_points = self.user_forum_points
@@ -112,14 +115,6 @@ class Profile(models.Model):
         from auth.models import PromoCode
         if created:
             Profile.objects.create(user=instance, email=instance.email)
-            if instance.profile.referral_code is None:
-                promo_code = PromoCode.objects.create(
-                    user=instance, code=generate_referral_code(),
-                    bonus_percentage_referrer=REFERRAL_DEFAULT_BONUS_PERCENTAGE,
-                    bonus_percentage_referee=REFERRAL_DEFAULT_BONUS_PERCENTAGE, is_active=True, current_referrals=0,
-                    max_referral_limit=5, datetime_limit=timezone.now() + timezone.timedelta(days=360)
-                )
-                instance.profile.referral_code = promo_code
         if instance.is_superuser:
             for permission in PERMISSION_TYPES:
                 UserPermission.objects.get_or_create(user=instance, permission_type=permission[0])
@@ -128,6 +123,24 @@ class Profile(models.Model):
 
         if not instance.profile.profile_picture:
             instance.profile.profile_picture = 'profile_pictures/default.png'
+            instance.profile.save()
+
+        if instance.profile.referral_code is None:
+            promo_code = PromoCode.objects.create(
+                user=instance, code=generate_referral_code(),
+                bonus_percentage_referrer=REFERRAL_DEFAULT_BONUS_PERCENTAGE,
+                bonus_percentage_referee=REFERRAL_DEFAULT_BONUS_PERCENTAGE, is_active=True, current_referrals=0,
+                max_referral_limit=5, datetime_limit=timezone.now() + timezone.timedelta(days=360)
+            )
+            instance.profile.referral_code = promo_code
+            print("Saved referral code: ", instance.profile.referral_code)
+            instance.profile.save()
+        else:
+            print("Referral Code Already Exists: ", instance.profile.referral_code)
+
+        if instance.profile.metatempo_tracking_auth_key is None:
+            instance.profile.metatempo_tracking_auth_key = secrets.token_urlsafe(
+                META_TEMPO_CONNECTION_API_KEY_DEFAULT_LENGTH)
             instance.profile.save()
 
     class Meta:

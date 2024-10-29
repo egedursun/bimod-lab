@@ -20,10 +20,13 @@ import secrets
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.views import View
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.metatempo.models import MetaTempoConnection
 from apps.metatempo.utils import META_TEMPO_CONNECTION_API_KEY_DEFAULT_LENGTH
+from apps.user_permissions.utils import PermissionNames
 
 
 class MetaTempoView_ConnectionRegenerateAPIKey(LoginRequiredMixin, View):
@@ -32,14 +35,19 @@ class MetaTempoView_ConnectionRegenerateAPIKey(LoginRequiredMixin, View):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        try:
-            data = json.loads(request.body)
-            connection_id_text = data.get('connection_id')
-            connection_id = int(connection_id_text)
-        except (json.JSONDecodeError, TypeError, ValueError) as e:
-            messages.error(request, "Invalid connection ID.")
-            return JsonResponse({'error': 'Invalid connection ID.'}, status=400)
 
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_METATEMPO_CONNECTION
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_METATEMPO_CONNECTION):
+            messages.error(self.request, "You do not have permission to update a MetaTempo Connection.")
+            return JsonResponse({'error': 'You do not have permission to update a MetaTempo Connection.'}, status=403)
+        ##############################
+
+        connection_id = kwargs.get('connection_id')
+        if not connection_id:
+            messages.error(request, "Connection ID not provided.")
+            return JsonResponse({'error': 'Connection ID not provided.'}, status=400)
         try:
             connection = MetaTempoConnection.objects.get(id=connection_id)
             new_api_key = secrets.token_urlsafe(META_TEMPO_CONNECTION_API_KEY_DEFAULT_LENGTH)

@@ -14,17 +14,30 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.views import View
+
+from apps.metatempo.models import MetaTempoMemberLog, MetaTempoMemberLogDaily, MetaTempoProjectOverallLog
 
 
 class MetaTempoView_PurgeLogs(LoginRequiredMixin, View):
-
-    # TODO-EGE: SIMPLE-VIEW: This will delete all individual logs, as well as the overall logs associated with the
-    #       connection. This will be a 'hard-deletion' operation, and it will be irreversible.
-
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        pass
+        connection_id = kwargs.get('connection_id')
+        try:
+            individual_logs_deleted, _ = MetaTempoMemberLog.objects.filter(
+                metatempo_connection_id=connection_id).delete()
+            daily_logs_deleted, _ = MetaTempoMemberLogDaily.objects.filter(
+                metatempo_connection_id=connection_id).delete()
+            overall_logs_deleted, _ = MetaTempoProjectOverallLog.objects.filter(
+                metatempo_connection_id=connection_id).delete()
+        except Exception as e:
+            messages.error(request, f"Failed to purge logs for the selected MetaTempo connection. Error: {str(e)}")
+            return redirect('metatempo:main_board', connection_id=connection_id)
+
+        messages.success(request, f"All logs for the selected MetaTempo connection have been purged successfully.")
+        return redirect('metatempo:main_board', connection_id=connection_id)

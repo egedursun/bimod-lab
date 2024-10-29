@@ -14,17 +14,33 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.views import View
+
+from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.user_permissions.utils import PermissionNames
 
 
 class MetaTempoView_TriggerManualAnalysis(LoginRequiredMixin, View):
-
-    # TODO-EGE: Functional view, this will manually trigger the 'overall analysis' function in the 'executor' in
-    #   'core' directory.
-
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        ##############################
+        # PERMISSION CHECK FOR - USE_METAKANBAN_AI
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.USE_METAKANBAN_AI):
+            messages.error(self.request, "You do not have permission to trigger manual analysis for a "
+                                         "MetaTempo Connection.")
+            return redirect('metatempo:main_board', connection_id=connection_id)
+        ##############################
+
+        # TODO-EGE: Functional view, this will manually trigger the 'overall analysis' function in the 'executor' in
+        #   'core' directory.
         pass
+
+        messages.success(request, f"Manual analysis has been successfully completed for the selected "
+                                  f"MetaTempo connection.")
+        return redirect('metatempo:main_board', connection_id=connection_id)

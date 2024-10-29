@@ -82,7 +82,18 @@
       </span>
     </div>
 
-    <div id="org-{{ organization.id }}" class="collapse">
+    <div id="org-{{ organization.id }}" class="collapse ">
+      <div class="mt-4">
+        <a href="{% url 'metatempo:connection_create' %}" class="btn btn-success rounded mt-2 mb-2 ms-4 me-4">
+           <strong>
+             <i class="fa fa-plus me-2"></i>
+             Create MetaTempo™ Connection
+           </strong>
+        </a>
+      </div>
+
+      <hr>
+
       {% for project, connections in projects.items %}
         <div class="card mb-4">
           <div class="card-header border-bottom">

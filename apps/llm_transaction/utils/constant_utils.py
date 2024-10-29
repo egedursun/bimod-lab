@@ -72,6 +72,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("binexus", "Binexus"),
     ("metakanban", "MetaKanban"),
     ("meeting-transcription", "Meeting Transcription"),
+    ("metatempo", "MetaTempo"),
 ]
 
 
@@ -124,6 +125,7 @@ class LLMTransactionSourcesTypesNames:
     BINEXUS = "binexus"
     METAKANBAN = "metakanban"
     MEETING_TRANSCRIPTION = "meeting-transcription"
+    METATEMPO = "metatempo"
 
     @staticmethod
     def as_list():
@@ -169,6 +171,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.BINEXUS,
             LLMTransactionSourcesTypesNames.METAKANBAN,
             LLMTransactionSourcesTypesNames.MEETING_TRANSCRIPTION,
+            LLMTransactionSourcesTypesNames.METATEMPO,
         ]
 
 

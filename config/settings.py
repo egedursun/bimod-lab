@@ -521,6 +521,7 @@ SMART_CONTRACT_CREATION = os.environ.get("SMART_CONTRACT_CREATION", default="0")
 BINEXUS = os.environ.get("BINEXUS", default="0")
 METAKANBAN = os.environ.get("METAKANBAN", default="0")
 MEETING_TRANSCRIPTION = os.environ.get("MEETING_TRANSCRIPTION", default="0")
+METATEMPO = os.environ.get("METATEMPO", default="0")
 
 COSTS_MAP = {
     "CONTEXT_MEMORY": float(CONTEXT_MEMORY),
@@ -559,6 +560,7 @@ COSTS_MAP = {
     "BINEXUS": float(BINEXUS),
     "METAKANBAN": float(METAKANBAN),
     "MEETING_TRANSCRIPTION": float(MEETING_TRANSCRIPTION),
+    "METATEMPO": float(METATEMPO),
 }
 
 if ENVIRONMENT != "local":

@@ -59,6 +59,7 @@ class InternalServiceCosts:
             InternalServiceCosts.Binexus.COST,
             InternalServiceCosts.MetaKanban.COST,
             InternalServiceCosts.MeetingTranscription.COST,
+            InternalServiceCosts.MetaTempo.COST,
         ]
 
     class ContextMemory:
@@ -169,6 +170,9 @@ class InternalServiceCosts:
     class MeetingTranscription:
         COST = COSTS_MAP["MEETING_TRANSCRIPTION"]
 
+    class MetaTempo:
+        COST = COSTS_MAP["METATEMPO"]
+
 
 TOOL_NAME_TO_COST_MAP = {
     "store-memory": InternalServiceCosts.ContextMemory.COST,
@@ -207,4 +211,5 @@ TOOL_NAME_TO_COST_MAP = {
     "binexus": InternalServiceCosts.Binexus.COST,
     "metakanban": InternalServiceCosts.MetaKanban.COST,
     "meeting-transcription": InternalServiceCosts.MeetingTranscription.COST,
+    "metatempo": InternalServiceCosts.MetaTempo.COST,
 }

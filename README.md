@@ -1,12 +1,20 @@
 ### TODO LIST
 
+- [ ] Integrate the metatempo _core functionalities to interpret with AI.
+- [ ] Create the transactions for the metatempo
+
+- [ ] Build & test the endpoint for delivering the screenshots (metatempo data).
+
+- [ ] Integrate the metakanban application to the Electron copilot.
+- [ ] Test the integration with the primary server (BimodLab).
+
 - [ ] Add recording length visibility to Electron copilot.
+
 - [ ] Add projects to settings page -- purge deletions.
 - [ ] Add metakanban to settings page -- purge deletions.
 - [ ] Add metatempo to settings page -- purge deletions.
-- [ ] Create the permissions for the metatempo
-- [ ] Create the cost fields for the metatempo
-- [ ] Create the transactions for the metatempo
+
+- [ ] Add the environment variables for: METAKANBAN=0.0300, MEETING_TRANSCRIPTION=0.0200, METATEMPO=0.005 to server .env, .env.dev, .env.prod
 
 ---
 
@@ -226,14 +234,14 @@ to provide consistent feedback to the team members and the team leaders.
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Last Measurement Date: 2024-10-23
-- Total Days: 116
-  - Number of Files: 52,266
-  - Code Lines: 11,700,000
-  - Comment Lines: 3,700,000
-  - Blank Lines: 2,300,000
-  - TOTAL: 17,700,000
-  - TOTAL RAW CALCULATION: 452,000,000
+- Last Measurement Date: 2024-10-29
+- Total Days: 122
+  - Number of Files: 54,600 
+  - Code Lines: 12,700,000
+  - Comment Lines: 3,800,000
+  - Blank Lines: 2,400,000
+  - TOTAL: 18,900,000
+  - TOTAL RAW CALCULATION: 550,000,000
 
 ---
 

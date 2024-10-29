@@ -21,12 +21,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.metakanban.models import MetaKanbanBoard
 from apps.metatempo.models import MetaTempoConnection
 from apps.metatempo.utils import METATEMPO_MEMBER_LOG_INTERVALS, METATEMPO_OVERALL_LOG_INTERVALS, \
     META_TEMPO_CONNECTION_API_KEY_DEFAULT_LENGTH
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
@@ -42,6 +44,15 @@ class MetaTempoView_ConnectionCreate(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_METATEMPO_CONNECTION
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_METATEMPO_CONNECTION):
+            messages.error(self.request, "You do not have permission to create a MetaTempo Connection.")
+            return redirect('metatempo:connection_list')
+        ##############################
+
         board_id = request.POST.get("board")
         is_tracking_active = request.POST.get("is_tracking_active") == "True"
         overall_log_intervals = request.POST.get("overall_log_intervals")

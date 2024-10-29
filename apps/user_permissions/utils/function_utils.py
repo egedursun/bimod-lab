@@ -75,6 +75,13 @@ def get_permissions_grouped():
             ("implement_meeting_transcription_with_ai", "Implement Meeting Transcription with AI"),
             ("delete_meeting_transcription", "Delete Meeting Transcription"),
         ],
+        "MetaTempo Connection Permissions": [
+            ('add_metatempo_connection', 'Add MetaTempo Connection'),
+            ('update_metatempo_connection', 'Update MetaTempo Connection'),
+            ('list_metatempo_connection', 'List MetaTempo Connection'),
+            ('delete_metatempo_connection', 'Delete MetaTempo Connection'),
+            ('use_meta_tempo_ai', 'Use MetaTempo AI'),
+        ],
         "LLM Core Permissions": [
             ('add_llm_cores', 'Add LLM Cores'),
             ('update_llm_cores', 'Update LLM Cores'),

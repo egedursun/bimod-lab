@@ -14,12 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.metakanban.models import MetaKanbanBoard
 from apps.metatempo.models import MetaTempoConnection
 from apps.metatempo.utils import METATEMPO_OVERALL_LOG_INTERVALS, METATEMPO_MEMBER_LOG_INTERVALS
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 from django.contrib import messages
@@ -47,6 +48,15 @@ class MetaTempoView_ConnectionUpdate(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_METATEMPO_CONNECTION
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_METATEMPO_CONNECTION):
+            messages.error(self.request, "You do not have permission to update a MetaTempo Connection.")
+            return redirect('metatempo:connection_list')
+        ##############################
+
         connection_id = kwargs['connection_id']
         connection = get_object_or_404(MetaTempoConnection, id=connection_id)
 

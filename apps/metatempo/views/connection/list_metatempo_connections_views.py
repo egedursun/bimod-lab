@@ -14,18 +14,30 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.metatempo.models import MetaTempoConnection
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
 class MetaTempoView_ConnectionList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_METATEMPO_CONNECTION
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_METATEMPO_CONNECTION):
+            messages.error(self.request, "You do not have permission to list MetaTempo Connections.")
+            return context
+        ##############################
+
         user = self.request.user
         org_projects_connections = {}
 
