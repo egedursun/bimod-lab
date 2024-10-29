@@ -46,6 +46,9 @@
             <hr>
 
             <div class="card-body">
+
+                <img src="{% static 'img/metatempo/mtmp-1.png' %}" class="rounded mb-8 mt-4" style="width: 100%;" alt="Illustration for tips">
+
                 {% if messages %}
                     {% for message in messages %}
                         <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">

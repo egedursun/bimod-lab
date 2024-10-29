@@ -20,6 +20,10 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.metakanban.models import MetaKanbanBoard
+from apps.metatempo.models import MetaTempoConnection
+from apps.organization.models import Organization
+from apps.projects.models import ProjectItem
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -27,6 +31,11 @@ from web_project import TemplateLayout
 class MetaTempoView_AgentCommunication(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        user_orgs = Organization.objects.filter(users__in=[self.request.user])
+        organization_projects = ProjectItem.objects.filter(organization__in=user_orgs)
+        organization_boards = MetaKanbanBoard.objects.filter(project__in=organization_projects)
+        metatempo_connections = MetaTempoConnection.objects.filter(board__in=organization_boards)
+        context['metatempo_connections'] = metatempo_connections
         return context
 
     def post(self, request, *args, **kwargs):

@@ -15,6 +15,9 @@
 - [ ] Add metatempo to settings page -- purge deletions.
 
 - [ ] Add the environment variables for: METAKANBAN=0.0300, MEETING_TRANSCRIPTION=0.0200, METATEMPO=0.005 to server .env, .env.dev, .env.prod
+- [ ] Stop Development: Package and Deploy the Electron Copilot.
+- [ ] Create a Download Page for the Electron Copilot application.
+- [ ] Update the Website Landing Page for the BimodLab flagship server.
 
 ---
 

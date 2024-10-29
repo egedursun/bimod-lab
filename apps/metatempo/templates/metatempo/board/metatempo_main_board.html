@@ -51,7 +51,8 @@
     <!-- Information and Settings -->
     <div class="alert alert-solid-primary alert-dismissible d-flex ms-0 my-8 me-0 align-items-center" role="alert">
       <div class="d-flex flex-column p-12">
-          <img src="{% static 'img/metakanban/kbn-4.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
+
+        <img src="{% static 'img/metatempo/mtmp-3.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
 
         <h5 class="alert-heading mb-2">
               <strong>
@@ -133,6 +134,12 @@
            MetaTempo™ AI
          </strong>
        </a>
+        <a href="{% url 'metatempo:trigger_manual_analysis' connection_id=connection.id %}" class="btn btn-success rounded me-4">
+         <strong>
+           <i class="fa fa-sync me-2"></i>
+           Manually Trigger Overall Analysis
+         </strong>
+        </a>
         <a href="#" class="btn btn-danger rounded me-4" onclick="confirmPurgeLogs()">
           <strong>
             <i class="fa fa-skull-crossbones me-2"></i>

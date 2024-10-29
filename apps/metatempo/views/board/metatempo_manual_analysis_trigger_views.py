@@ -28,6 +28,8 @@ class MetaTempoView_TriggerManualAnalysis(LoginRequiredMixin, View):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        connection_id = kwargs.get('connection_id')
+
         ##############################
         # PERMISSION CHECK FOR - USE_METAKANBAN_AI
         if not UserPermissionManager.is_authorized(user=self.request.user,
