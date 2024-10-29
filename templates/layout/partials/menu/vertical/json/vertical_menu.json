@@ -86,6 +86,28 @@
       ]
     },
     {
+      "name": "MetaTempo™",
+      "icon": "menu-icon tf-icons ti ti-dashboard",
+      "slug": "metatempo",
+      "submenu": [
+        {
+          "name": "MetaTempo™ AI",
+          "slug": "metatempo",
+          "url": "metatempo:agent_communication"
+        },
+        {
+          "name": "Create Tracker",
+          "slug": "metatempo",
+          "url": "metatempo:connection_create"
+        },
+        {
+          "name": "MetaTempo™ Trackers",
+          "slug": "metatempo",
+          "url": "metatempo:connection_list"
+        }
+      ]
+    },
+    {
       "name": "LLM Models",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-cores",

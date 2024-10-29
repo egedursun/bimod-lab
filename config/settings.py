@@ -138,6 +138,7 @@ INSTALLED_APPS = [
     "apps.notifications",
     "apps.binexus",
     "apps.metakanban",
+    "apps.metatempo",
     "apps.projects",
 
     ########################################
@@ -444,7 +445,9 @@ EXCLUDED_PAGES = [
     "/health/export_orchestrations/api/v1/*",
     "/app/hadron_prime/hadron_node/activate/*",
     "/app/hadron_prime/hadron_node/speak/*",
-    "/app/metakanban/meeting/recording/delivery/*"
+    "/app/metakanban/meeting/recording/delivery/*",
+    "/app/metatempo/tempo/screenshot/delivery/*",
+    "/app/metatempo/tempo/connection/config/*",
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'

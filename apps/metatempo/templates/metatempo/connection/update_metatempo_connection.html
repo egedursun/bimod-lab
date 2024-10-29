@@ -1,0 +1,154 @@
+
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: update_metatempo_connection.html
+  ~ Last Modified: 2024-10-28 20:27:24
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-28 20:27:24
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Update MetaTempo™ Connection{% endblock %}
+
+{% block vendor_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+    {{ block.super }}
+    <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl mb-6">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><strong>Update MetaTempo™ Connection</strong></h5>
+            </div>
+
+            <a href="{% url 'metatempo:connection_list' %}">
+                <button class="btn btn-secondary mt-4 ms-8 mb-4">
+                    <i class="fa fa-dashboard me-4"></i>
+                    <strong>Manage MetaTempo™ Connections</strong>
+                </button>
+            </a>
+
+            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-8 me-8" role="alert">
+                <img src="{% static 'img/custom-illustrations-v2/i2-35.png' %}" width="25%" style="border-radius:25px;" class="me-4" alt="Illustration for tip">
+                <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
+                <div class="d-flex flex-column">
+                    <h5 class="alert-heading mb-2">Tip</h5>
+                    <p class="mb-0">
+                        Update the fields to modify the MetaTempo™ connection. Be sure to verify tracking intervals
+                      and active hours before you save the changes.
+                    </p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <hr>
+
+            <div class="card-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-3 mb-4">
+                            <label for="board" class="form-label">Board</label>
+                            <select class="form-select select2" id="board" name="board" required>
+                                <option value="" disabled>Select Board</option>
+                                {% for board in boards %}
+                                    <option value="{{ board.id }}" {% if board.id == connection.board.id %}selected{% endif %}>{{ board.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-3 mb-4">
+                            <label for="is_tracking_active" class="form-label">Tracking Active</label>
+                            <select class="form-select" id="is_tracking_active" name="is_tracking_active" required>
+                                <option value="True" {% if connection.is_tracking_active %}selected{% endif %}>Active</option>
+                                <option value="False" {% if not connection.is_tracking_active %}selected{% endif %}>Inactive</option>
+                            </select>
+                        </div>
+                        <div class="col-3 mb-4">
+                            <label for="overall_log_intervals" class="form-label">Overall Log Intervals</label>
+                            <select class="form-select select2" id="overall_log_intervals" name="overall_log_intervals" required>
+                                {% for interval in METATEMPO_OVERALL_LOG_INTERVALS %}
+                                    <option value="{{ interval.0 }}" {% if interval.0 == connection.overall_log_intervals %}selected{% endif %}>{{ interval.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-3 mb-4">
+                            <label for="member_log_intervals" class="form-label">Member Log Intervals</label>
+                            <select class="form-select select2" id="member_log_intervals" name="member_log_intervals" required>
+                                {% for key, value in METATEMPO_MEMBER_LOG_INTERVALS %}
+                                    <option value="{{ key }}" {% if key == connection.member_log_intervals %}selected{% endif %}>{{ value }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-6 mb-4">
+                            <label for="tracked_weekdays" class="form-label">Tracked Weekdays</label>
+                            <select class="form-select select2" id="tracked_weekdays" name="tracked_weekdays" multiple="multiple">
+                                <option value="Monday" {% if 'Monday' in connection.tracked_weekdays %}selected{% endif %}>Monday</option>
+                                <option value="Tuesday" {% if 'Tuesday' in connection.tracked_weekdays %}selected{% endif %}>Tuesday</option>
+                                <option value="Wednesday" {% if 'Wednesday' in connection.tracked_weekdays %}selected{% endif %}>Wednesday</option>
+                                <option value="Thursday" {% if 'Thursday' in connection.tracked_weekdays %}selected{% endif %}>Thursday</option>
+                                <option value="Friday" {% if 'Friday' in connection.tracked_weekdays %}selected{% endif %}>Friday</option>
+                                <option value="Saturday" {% if 'Saturday' in connection.tracked_weekdays %}selected{% endif %}>Saturday</option>
+                                <option value="Sunday" {% if 'Sunday' in connection.tracked_weekdays %}selected{% endif %}>Sunday</option>
+                            </select>
+                        </div>
+                        <div class="col-3 mb-4">
+                            <label for="tracking_start_time" class="form-label">Tracking Start Time (UTC)</label>
+                            <input type="time" class="form-control" id="tracking_start_time" name="tracking_start_time" value="{{ connection.tracking_start_time|date:'H:i' }}">
+                        </div>
+                        <div class="col-3 mb-4">
+                            <label for="tracking_end_time" class="form-label">Tracking End Time (UTC)</label>
+                            <input type="time" class="form-control" id="tracking_end_time" name="tracking_end_time" value="{{ connection.tracking_end_time|date:'H:i' }}">
+                        </div>
+                        <div class="col-12 mb-4">
+                            <label for="optional_context_instructions" class="form-label">Optional Instructions</label>
+                            <textarea rows="3" class="form-control" id="optional_context_instructions" name="optional_context_instructions">{{ connection.optional_context_instructions }}</textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4 d-grid w-25">
+                        <strong><i class="fa fa-save me-2"></i>Update Connection</strong>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_js %}
+<script>
+    $(document).ready(function() {
+        $('#board, #overall_log_intervals, #member_log_intervals').select2({ width: '100%' });
+        $('#tracked_weekdays').select2({ width: '100%', multiple: true, placeholder: 'Select Weekdays' });
+    });
+</script>
+{% endblock page_js %}

@@ -1,13 +1,21 @@
 ### TODO LIST
 
-...
+- [ ] Add recording length visibility to Electron copilot.
+- [ ] Add projects to settings page -- purge deletions.
+- [ ] Add metakanban to settings page -- purge deletions.
+- [ ] Add metatempo to settings page -- purge deletions.
+- [ ] Create the permissions for the metatempo
+- [ ] Create the cost fields for the metatempo
+- [ ] Create the transactions for the metatempo
 
 ---
 
-**CURRENT PROJECT: METAKANBAN (Ege)**
+**CURRENT PROJECT: META TEMPO (Ege)**
 
-- [ ] Work on Electron to reliably send the meeting data to the Django server.
-- [ ] Test the functionality.
+- *META TEMPO*: A hyper-assistant over the performance of employees and tracking the team updates and the performance
+to provide consistent feedback to the team members and the team leaders.
+  - *Details:* TBD
+
 
 ---
 
@@ -19,15 +27,7 @@
 
 ---
 
-**NEXT PROJECT-1: META TEMPO (Ege)**
-
-- *META TEMPO*: A hyper-assistant over the performance of employees and tracking the team updates and the performance
-to provide consistent feedback to the team members and the team leaders.
-  - *Details:* TBD
-
----
-
-**NEXT PROJECT-2: FERMION COPILOT (Ege)**
+**NEXT PROJECT-1: FERMION COPILOT (Ege)**
 
 - *FERMION COPILOT*: Mobile App Client for Bimod & BimodLab, with features allowing for transactions between the
   mobile data and the web application. **(Probably Flutter-Based)**
@@ -35,7 +35,7 @@ to provide consistent feedback to the team members and the team leaders.
 
 ---
 
-**NEXT PROJECT-3: ASTROLITH X1 (Ege)**
+**NEXT PROJECT-2: ASTROLITH X1 (Ege)**
 
 - *ASTROLITH X1*: Two important plans to be developed: A physical server + a locally runnable instance of the
   Bimod & BimodLab web application, with minimal interventions from our ends.
@@ -47,7 +47,7 @@ to provide consistent feedback to the team members and the team leaders.
 
 ---
 
-**NEXT PROJECT-4: ASTROBELT (Mert)**
+**NEXT PROJECT-3: ASTROBELT (Mert)**
 
 - *ASTROBELT*: MS-Office plugins for connecting the drafting tool we have in our web application to the MS-Office
   applications, such as Word, Excel, PowerPoint, etc. The plugin will allow for the drafting tool to be
@@ -57,7 +57,7 @@ to provide consistent feedback to the team members and the team leaders.
 
 ---
 
-**NEXT PROJECT-5: MENTARA (Ege)**
+**NEXT PROJECT-4: MENTARA (Ege)**
 
 - *MENTARA*: A helper assistant that helps the clients configure their enterprise environments in the web application,
   and uses our documentation to guide them through their questions and help them navigate their journey
@@ -66,7 +66,7 @@ to provide consistent feedback to the team members and the team leaders.
 
 ---
 
-**NEXT PROJECT-6: INTEGRATIONS FRAMEWORK (Ege)**
+**NEXT PROJECT-5: INTEGRATIONS FRAMEWORK (Ege)**
 
 - *INTEGRATIONS*: A page/store that will include ready-made assistants that the clients can easily integrate to
   themselves.
@@ -74,7 +74,7 @@ to provide consistent feedback to the team members and the team leaders.
 
 ---
 
-**NEXT PROJECT-7: META-INTEGRATIONS FRAMEWORK (Ege)**
+**NEXT PROJECT-6: META-INTEGRATIONS FRAMEWORK (Ege)**
 
 - *META-INTEGRATIONS*: A page/store that will include ready-made "team of assistants" that the clients can easily
   integrate to themselves.
@@ -82,7 +82,7 @@ to provide consistent feedback to the team members and the team leaders.
 
 ---
 
-**NEXT PROJECT-8: AUTOMATED MEDIA SYNCHRONIZATION (Mert)**
+**NEXT PROJECT-7: AUTOMATED MEDIA SYNCHRONIZATION (Mert)**
 
 - *AUTOMATED MEDIA SYNC*: Connecting S3 Buckets, Google Drive, and other cloud storages to the web application, and
   allowing for
@@ -92,7 +92,7 @@ to provide consistent feedback to the team members and the team leaders.
 
 ---
 
-**NEXT PROJECT-9: VOIDFORGER (Ege)**
+**NEXT PROJECT-8: VOIDFORGER (Ege)**
 
 - *VOIDFORGER*: A hyper-assistant over orchestrators and all internal processes of an enterprise, controlling the
   assistants, leanmods, orchestrations, data sources such as sql, nosql, ssh servers, code bases,
@@ -102,7 +102,7 @@ to provide consistent feedback to the team members and the team leaders.
 
 ---
 
-**NEXT PROJECT-10: DEVELOPER ECOSYSTEM (Ege)**
+**NEXT PROJECT-9: DEVELOPER ECOSYSTEM (Ege)**
 
 - *DEV ECOSYSTEM*: Make the function, API, and Script Stores accessible to the developers for them to contribute, and
   incentivize them by rewarding Bimod & BimodLab credits, as well as a commission percentage from

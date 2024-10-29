@@ -7,10 +7,22 @@
       "url": "/app/dashboard"
     },
     {
+      "name": "Add Organization",
+      "icon": "menu-icon tf-icons ti ti-world",
+      "slug": "organizations",
+      "url": "/app/organization/create"
+    },
+    {
       "name": "Organizations",
       "icon": "menu-icon tf-icons ti ti-world",
       "slug": "organizations",
       "url": "/app/organization/list"
+    },
+    {
+      "name": "Add Project",
+      "icon": "menu-icon tf-icons ti ti-folder",
+      "slug": "projects",
+      "url": "/app/projects/project/create"
     },
     {
       "name": "Projects",
@@ -19,10 +31,22 @@
       "url": "/app/projects/project/list"
     },
     {
+      "name": "Add Team",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "slug": "teams",
+      "url": "/app/projects/team/create"
+    },
+    {
       "name": "Teams",
       "icon": "menu-icon tf-icons ti ti-users",
       "slug": "teams",
       "url": "/app/projects/team/list"
+    },
+    {
+      "name": "Create MetaKanban™ Board",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "metakanban",
+      "url": "/app/metakanban/board/create"
     },
     {
       "name": "MetaKanban™ Boards",
@@ -32,9 +56,33 @@
     },
     {
       "name": "MetaKanban™ AI",
-      "icon": "menu-icon tf-icons ti ti-rocket",
+      "icon": "menu-icon tf-icons ti ti-robot",
       "slug": "metakanban",
       "url": "/app/metakanban/agent/communication"
+    },
+    {
+      "name": "Create MetaTempo™ Connection",
+      "icon": "menu-icon tf-icons ti ti-dashboard",
+      "slug": "metatempo",
+      "url": "/app/metatempo/connection/create"
+    },
+    {
+      "name": "MetaTempo™ Connections",
+      "icon": "menu-icon tf-icons ti ti-dashboard",
+      "slug": "metatempo",
+      "url": "/app/metatempo/connection/list"
+    },
+    {
+      "name": "MetaTempo™ AI",
+      "icon": "menu-icon tf-icons ti ti-robot",
+      "slug": "metatempo",
+      "url": "/app/metatempo/agent/communication"
+    },
+    {
+      "name": "Add LLM Model",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "llm-models",
+      "url": "/app/llm_core/create"
     },
     {
       "name": "LLM Models",
@@ -73,10 +121,28 @@
       "url": "/app/llm_transaction/transaction_invoices/list"
     },
     {
+      "name": "Add User",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "/app/user_management/add"
+    },
+    {
+      "name": "Connect User to Organization",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "users",
+      "url": "/app/user_management/add_user_to_organization"
+    },
+    {
       "name": "Users",
       "icon": "menu-icon tf-icons ti ti-user",
       "slug": "users",
       "url": "/app/user_management/list"
+    },
+    {
+      "name": "Add Permissions to User",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "permissions",
+      "url": "/app/user_permissions/add"
     },
     {
       "name": "Permissions",
@@ -85,10 +151,22 @@
       "url": "/app/user_permissions/list"
     },
     {
+      "name": "Add User Role",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "user-roles",
+      "url": "/app/user_permissions/roles/add"
+    },
+    {
       "name": "User Roles",
       "icon": "menu-icon tf-icons ti ti-key",
       "slug": "user-roles",
       "url": "/app/user_permissions/roles/list"
+    },
+    {
+      "name": "Create Assistant",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "assistants",
+      "url": "/app/assistants/create"
     },
     {
       "name": "Assistants",
@@ -97,16 +175,34 @@
       "url": "/app/assistants/list"
     },
     {
+      "name": "Create Expert Network",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "expert-networks",
+      "url": "/app/leanmod/create_expert_network"
+    },
+    {
       "name": "Expert Networks",
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "expert-networks",
       "url": "/app/leanmod/list_expert_network"
     },
     {
+      "name": "Create LeanMod Assistant",
+      "icon": "menu-icon tf-icons ti ti-eye",
+      "slug": "leanmod-assistants",
+      "url": "/app/leanmod/create"
+    },
+    {
       "name": "LeanMod Assistants",
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "leanmod-assistants",
       "url": "/app/leanmod/list"
+    },
+    {
+      "name": "Add Data Security Layer",
+      "icon": "menu-icon tf-icons ti ti-lock",
+      "slug": "data-security",
+      "url": "/app/data_security/ner/create"
     },
     {
       "name": "Data Security",
@@ -157,10 +253,22 @@
       "url": "/app/starred_messages/list"
     },
     {
+      "name": "Create Memory",
+      "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "memories",
+      "url": "/app/memories/create"
+    },
+    {
       "name": "Memories",
       "icon": "menu-icon tf-icons ti ti-archive",
       "slug": "memories",
       "url": "/app/memories/list"
+    },
+    {
+      "name": "Create Message Template",
+      "icon": "menu-icon tf-icons ti ti-template",
+      "slug": "message-templates",
+      "url": "/app/message_templates/create"
     },
     {
       "name": "Message Templates",
@@ -175,10 +283,22 @@
       "url": "/app/drafting/folders/list"
     },
     {
+      "name": "Create Brainstorming Session",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "brainstorming",
+      "url": "/app/brainstorms/create"
+    },
+    {
       "name": "Brainstorming",
       "icon": "menu-icon tf-icons ti ti-brain",
       "slug": "brainstorming",
       "url": "/app/brainstorms/list"
+    },
+    {
+      "name": "Create Orchestration",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "orchestrations",
+      "url": "/app/orchestrations/create"
     },
     {
       "name": "Orchestrations",
@@ -187,28 +307,58 @@
       "url": "/app/orchestrations/list"
     },
     {
+      "name": "Create Hadron Prime™ System",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "orchestrations",
+      "url": "/app/hadron_prime/hadron_system/create"
+    },
+    {
       "name": "Hadron Prime™",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "hadron-prime",
-      "url": "/app/hadron_prime/hadron_system/list/"
+      "url": "/app/hadron_prime/hadron_system/list"
+    },
+    {
+      "name": "Create Binexus™ Process",
+      "icon": "menu-icon tf-icons ti ti-dna",
+      "slug": "binexus",
+      "url": "/app/binexus/process/create"
     },
     {
       "name": "Binexus™",
       "icon": "menu-icon tf-icons ti ti-dna",
       "slug": "binexus",
-      "url": "/app/binexus/process/list/"
+      "url": "/app/binexus/process/list"
+    },
+    {
+      "name": "Add Blockchain Wallet",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "blockchain-wallets",
+      "url": "/app/smart_contracts/wallet_connection/create"
     },
     {
       "name": "Blockchain Wallets",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "blockchain-wallets",
-      "url": "/app/smart_contracts/wallet_connection/list/"
+      "url": "/app/smart_contracts/wallet_connection/list"
+    },
+    {
+      "name": "Create Smart Contract",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "smart-contracts",
+      "url": "/app/smart_contracts/contract/create"
     },
     {
       "name": "Smart Contracts",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "smart-contracts",
-      "url": "/app/smart_contracts/contract/list/"
+      "url": "/app/smart_contracts/contract/list"
+    },
+    {
+      "name": "Export New Assistant",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "exported-assistants",
+      "url": "/app/export_assistants/create"
     },
     {
       "name": "Exported Assistants",
@@ -217,10 +367,22 @@
       "url": "/app/export_assistants/list"
     },
     {
+      "name": "Export New LeanMod Assistant",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "exported-leanmod-assistants",
+      "url": "/app/export_leanmods/create"
+    },
+    {
       "name": "Exported LeanMod Assistants",
       "icon": "menu-icon tf-icons ti ti-cloud-up",
       "slug": "exported-leanmod-assistants",
       "url": "/app/export_leanmods/list"
+    },
+    {
+      "name": "Export New Orchestration",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "exported-orchestrations",
+      "url": "/app/export_orchestrations/create"
     },
     {
       "name": "Exported Orchestrations",
@@ -229,10 +391,22 @@
       "url": "/app/export_orchestrations/list"
     },
     {
+      "name": "Connect File System",
+      "icon": "menu-icon tf-icons ti ti-server",
+      "slug": "file-systems",
+      "url": "/app/datasource_file_systems/create"
+    },
+    {
       "name": "File Systems",
       "icon": "menu-icon tf-icons ti ti-server",
       "slug": "file-systems",
       "url": "/app/datasource_file_systems/list"
+    },
+    {
+      "name": "Connect Web Browser",
+      "icon": "menu-icon tf-icons ti ti-browser",
+      "slug": "web-browsers",
+      "url": "/app/datasource_browsers/create"
     },
     {
       "name": "Web Browsers",
@@ -241,10 +415,22 @@
       "url": "/app/datasource_browsers/list"
     },
     {
+      "name": "Connect SQL Database",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-databases",
+      "url": "/app/datasource_sql/create"
+    },
+    {
       "name": "SQL Databases",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "sql-databases",
       "url": "/app/datasource_sql/list"
+    },
+    {
+      "name": "Connect NoSQL Database",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "nosql-databases",
+      "url": "/app/datasource_nosql/create"
     },
     {
       "name": "NoSQL Databases",
@@ -253,10 +439,22 @@
       "url": "/app/datasource_nosql/list"
     },
     {
+      "name": "Create SQL Query",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "sql-queries",
+      "url": "/app/datasource_sql/create_query"
+    },
+    {
       "name": "SQL Queries",
       "icon": "menu-icon tf-icons ti ti-database",
       "slug": "sql-queries",
       "url": "/app/datasource_sql/list_queries"
+    },
+    {
+      "name": "Create NoSQL Query",
+      "icon": "menu-icon tf-icons ti ti-database",
+      "slug": "nosql-queries",
+      "url": "/app/datasource_nosql/create_query"
     },
     {
       "name": "NoSQL Queries",
@@ -265,10 +463,22 @@
       "url": "/app/datasource_nosql/list_queries"
     },
     {
+      "name": "Connect Knowledge Base",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "knowledge-bases",
+      "url": "/app/datasource_knowledge_base/create"
+    },
+    {
       "name": "Knowledge Bases",
       "icon": "menu-icon tf-icons ti ti-vector",
       "slug": "knowledge-bases",
       "url": "/app/datasource_knowledge_base/list"
+    },
+    {
+      "name": "Upload Documents",
+      "icon": "menu-icon tf-icons ti ti-vector",
+      "slug": "documents",
+      "url": "/app/datasource_knowledge_base/create_documents"
     },
     {
       "name": "Documents",
@@ -277,10 +487,22 @@
       "url": "/app/datasource_knowledge_base/list_documents"
     },
     {
+      "name": "Connect Code Storage",
+      "icon": "menu-icon tf-icons ti ti-code",
+      "slug": "code-storages",
+      "url": "/app/datasource_codebase/create"
+    },
+    {
       "name": "Code Storages",
       "icon": "menu-icon tf-icons ti ti-code",
       "slug": "code-storages",
       "url": "/app/datasource_codebase/list"
+    },
+    {
+      "name": "Connect Code Repository",
+      "icon": "menu-icon tf-icons ti ti-code",
+      "slug": "code-repositories",
+      "url": "/app/datasource_codebase/create_repositories"
     },
     {
       "name": "Code Repositories",
@@ -289,10 +511,22 @@
       "url": "/app/datasource_codebase/list_repositories"
     },
     {
+      "name": "Connect Machine Learning Storage",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-storages",
+      "url": "/app/datasource_ml_models/create"
+    },
+    {
       "name": "Machine Learning Storages",
       "icon": "menu-icon tf-icons ti ti-wand",
       "slug": "machine-learning-storages",
       "url": "/app/datasource_ml_models/list"
+    },
+    {
+      "name": "Upload Machine Learning Model",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "machine-learning-models",
+      "url": "/app/datasource_ml_models/item/create"
     },
     {
       "name": "Machine Learning Models",
@@ -301,16 +535,34 @@
       "url": "/app/datasource_ml_models/item/list"
     },
     {
+      "name": "Connect Media Storage",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-storages",
+      "url": "/app/datasource_media_storages/create"
+    },
+    {
       "name": "Media Storages",
       "icon": "menu-icon tf-icons ti ti-camera",
       "slug": "media-storages",
       "url": "/app/datasource_media_storages/list"
     },
     {
+      "name": "Upload Media Files",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "media-files",
+      "url": "/app/datasource_media_storages/create_item"
+    },
+    {
       "name": "Media Files",
       "icon": "menu-icon tf-icons ti ti-camera",
       "slug": "media-files",
       "url": "/app/datasource_media_storages/list_items"
+    },
+    {
+      "name": "Connect Video Generator",
+      "icon": "menu-icon tf-icons ti ti-camera",
+      "slug": "video-generators",
+      "url": "/app/video_generations/create"
     },
     {
       "name": "Video Generators",
@@ -325,6 +577,18 @@
       "url": "/app/datasource_media_storages/items/list_generated"
     },
     {
+      "name": "Create New Function",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "functions",
+      "url": "/app/mm_functions/create"
+    },
+    {
+      "name": "Connect Function to Assistants",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "functions",
+      "url": "/app/mm_functions/connect"
+    },
+    {
       "name": "Functions",
       "icon": "menu-icon tf-icons ti ti-plug",
       "slug": "functions",
@@ -335,6 +599,18 @@
       "icon": "menu-icon tf-icons ti ti-plug",
       "slug": "function-store",
       "url": "/app/mm_functions/store"
+    },
+    {
+      "name": "Create New API",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/create"
+    },
+    {
+      "name": "Connect API to Assistants",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "apis",
+      "url": "/app/mm_apis/connect"
     },
     {
       "name": "APIs",
@@ -349,6 +625,18 @@
       "url": "/app/mm_apis/store"
     },
     {
+      "name": "Create New Script",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/create"
+    },
+    {
+      "name": "Connect Script to Assistants",
+      "icon": "menu-icon tf-icons ti ti-script",
+      "slug": "scripts",
+      "url": "/app/mm_scripts/connect"
+    },
+    {
       "name": "Scripts",
       "icon": "menu-icon tf-icons ti ti-script",
       "slug": "scripts",
@@ -361,10 +649,22 @@
       "url": "/app/mm_scripts/store"
     },
     {
+      "name": "Create Scheduled Job",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "scheduled-jobs",
+      "url": "/app/mm_scheduled_jobs/create"
+    },
+    {
       "name": "Scheduled Jobs",
       "icon": "menu-icon tf-icons ti ti-clock",
       "slug": "scheduled-jobs",
       "url": "/app/mm_scheduled_jobs/list"
+    },
+    {
+      "name": "Create Triggered Job",
+      "icon": "menu-icon tf-icons ti ti-anchor",
+      "slug": "triggers",
+      "url": "/app/mm_triggered_jobs/create"
     },
     {
       "name": "Triggers",

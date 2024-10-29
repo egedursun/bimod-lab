@@ -1,0 +1,180 @@
+
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: list_metatempo_connections.html
+  ~ Last Modified: 2024-10-28 20:27:32
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-10-28 20:27:34
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Manage MetaTempo™ Connections{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="row g-6 mb-6">
+  <div class="col-sm-6 col-xl-4">
+    <h3 class="mb-0"><strong>Manage MetaTempo™ Connections</strong></h3>
+  </div>
+</div>
+
+<div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+  <img src="{% static 'img/custom-illustrations-v2/i2-11.png' %}" width="25%" style="border-radius:25px;" class="me-8" alt="Illustration for tip">
+  <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+  <div class="d-flex flex-column ps-1">
+    <h5 class="alert-heading mb-2">Tip</h5>
+    <p class="mb-0">Here you can manage your MetaTempo™ connections, organized by project and organization. Edit or delete connections as needed.</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+
+<hr>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% for organization, projects in org_projects_connections.items %}
+  <div class="card mb-6">
+    <div class="card-header border-bottom">
+      <a class="collapsed" data-bs-toggle="collapse" href="#org-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="org-{{ organization.id }}">
+        <div class="d-flex">
+          <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}" alt="Organization Image" class="rounded" width="60">
+          <h4><strong class="ms-4">{{ organization.name }}</strong></h4>
+        </div>
+      </a>
+      <p class="mt-8"><i class="fa fa-briefcase"></i><strong>&nbsp; Total Projects: </strong>{{ projects|length }}</p>
+      <span data-bs-toggle="collapse" href="#org-{{ organization.id }}" role="button" aria-expanded="false" aria-controls="org-{{ organization.id }}">
+        <i class="fa fa-arrow-alt-circle-down toggle-icon"></i><strong>&nbsp; See Projects</strong>
+      </span>
+    </div>
+
+    <div id="org-{{ organization.id }}" class="collapse">
+      {% for project, connections in projects.items %}
+        <div class="card mb-4">
+          <div class="card-header border-bottom">
+            <h5><strong>{{ project.project_name }}</strong></h5>
+            <p><i class="fa fa-project-diagram"></i><strong>&nbsp; Total Connections: </strong>{{ connections|length }}</p>
+          </div>
+
+          <div class="card-body overflow-auto">
+            {% if connections %}
+              <table class="table datatables-connections">
+                <thead>
+                  <tr>
+                    <th>Board</th>
+                    <th style="min-width: 120px;">Status</th>
+                    <th style="min-width: 120px;">Created At</th>
+                    <th style="min-width: 200px;">Tracking Interval</th>
+                    <th style="min-width: 150px;">Analysis Interval</th>
+                    <th style="min-width: 200px;">Tracking Weekdays</th>
+                    <th style="min-width: 200px;">Tracking Hour Range</th>
+                    <th style="min-width: 400px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for connection in connections %}
+                    <tr>
+                      <td><strong>{{ connection.board.title }}</strong></td>
+                      <td><strong>
+                        {% if connection.is_tracking_active %}
+                        <span class="btn-success p-2 rounded">
+                          {{ connection.is_tracking_active|yesno:"Active,Inactive" }}
+                        </span>
+                        {% else %}
+                        <span class="btn-danger p-2 rounded">
+                          {{ connection.is_tracking_active|yesno:"Active,Inactive" }}
+                        </span>
+                        {% endif %}
+                      </strong></td>
+                      <td>{{ connection.created_at|date:"Y-m-d H:i" }}</td>
+                      <td>
+                        <strong class="btn-dark p-2 rounded">{{ connection.get_member_log_intervals_display }}</strong>
+                      </td>
+                      <td>
+                        <strong class="btn-dark p-2 rounded">{{ connection.get_overall_log_intervals_display }}</strong>
+                      </td>
+                      <td><strong>
+                        {% for track_day in connection.tracked_weekdays %}
+                          <div class="btn-warning p-2 m-1 rounded">{{ track_day }}</div>
+                        {% empty %}
+                          <div class="btn-danger p-2 m-1 rounded">N/A</div>
+                        {% endfor %}
+                      </strong>
+                      </td>
+                      <td>
+                        <strong class="btn-dark p-2 rounded">{{ connection.tracking_start_time }}</strong> - <strong class="btn-dark p-2 rounded">{{ connection.tracking_end_time }}</strong>
+                      </td>
+                      <td>
+                        <a href="{% url 'metatempo:main_board' connection.id %}" class="btn btn-sm btn-primary me-4">
+                          <i class="fa fa-dashboard me-2"></i><strong>Manage</strong>
+                        </a>
+                        <a href="{% url 'metatempo:connection_update' connection.id %}" class="btn btn-sm btn-warning me-4">
+                          <i class="fa fa-edit me-2"></i><strong>Edit</strong>
+                        </a>
+                        <a href="{% url 'metatempo:connection_confirm_delete' connection.id %}" class="btn btn-sm btn-danger me-4">
+                          <i class="fa fa-trash me-2"></i><strong>Delete</strong>
+                        </a>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr><td colspan="8" class="text-center mt-4">No connections available for this project.</td></tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <div class="alert alert-warning mt-4" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i><strong>No connections created for this project yet.</strong>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+
+<script>
+  $(document).ready(function () {
+    $('.datatables-connections').DataTable({
+      pageLength: 10,
+      ordering: true,
+      info: true
+    });
+  });
+</script>
+
+{% endblock %}
