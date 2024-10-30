@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import json
 import logging
 
 from django.contrib.auth.models import User
@@ -27,7 +28,7 @@ from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.core.metatempo.metatempo_execution_handler import MetaTempoExecutionManager
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-from apps.metatempo.models import MetaTempoConnection
+from apps.metatempo.models import MetaTempoConnection, MetaTempoMemberLog
 
 logger = logging.getLogger(__name__)
 
@@ -93,6 +94,28 @@ class MetaTempoView_ScreenshotDelivery(View):
         if connection.is_tracking_active is False:
             logger.error("[metatempo_screenshot_delivery] Tracking is not active for this board.")
             return JsonResponse({"success": False, "error": "Tracking is not active for this board."}, status=403)
+
+        try:
+            snapshot_metadata = json.loads(snapshot_metadata)
+            if 'timestamp' not in snapshot_metadata:
+                logger.error("[metatempo_screenshot_delivery] timestamp is required in snapshot metadata.")
+                return JsonResponse({"success": False, "error": "timestamp is required in snapshot metadata."}, status=400)
+            if 'identifier_uuid' not in snapshot_metadata:
+                logger.error("[metatempo_screenshot_delivery] identifier_uuid is required in snapshot metadata.")
+                return JsonResponse({"success": False, "error": "identifier_uuid is required in snapshot metadata."}, status=400)
+        except Exception as e:
+            logger.error(f"[metatempo_screenshot_delivery] Error processing snapshot metadata: {str(e)}")
+            snapshot_metadata = {}
+
+        identifier_uuid = snapshot_metadata.get('identifier_uuid')
+        try:
+            exists = MetaTempoMemberLog.objects.filter(identifier_uuid=identifier_uuid)
+            if exists:
+                logger.error("[metatempo_screenshot_delivery] This record has already been saved.")
+                return JsonResponse({"success": True, "error": "This record has already been saved."}, status=200)
+        except Exception as e:
+            logger.error(f"[metatempo_screenshot_delivery] Error processing identifier_uuid: {str(e)}")
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
 
         try:
             xc = MetaTempoExecutionManager(metatempo_connection_id=connection.id)

@@ -223,7 +223,7 @@ class MetaTempoExecutionManager:
 
         return final_response, None
 
-    def interpret_and_save_log_snapshot(self, context_user: User, snapshot_metadata: str, log_screenshot_data: str):
+    def interpret_and_save_log_snapshot(self, context_user: User, snapshot_metadata: dict, log_screenshot_data: str):
         # Trigger: Via API Call (POST)
         response_json_string, error = self._consult_ai(
             action_type=MetaTempoExecutionActionTypesNames.INTERPRET_AND_SAVE_LOG_SNAPSHOT,
@@ -254,12 +254,14 @@ class MetaTempoExecutionManager:
 
         try:
             log_entry = MetaTempoMemberLog.objects.create(
+                identifier_uuid=snapshot_metadata.get("identifier_uuid"),
                 metatempo_connection=self.metatempo_connection,
                 user=context_user,
                 activity_summary=activity_summary,
                 activity_tags=activity_tags,
                 work_intensity=work_intensity,
-                application_usage_stats=application_usage_stats
+                application_usage_stats=application_usage_stats,
+                timestamp=snapshot_metadata.get("timestamp")
             )
             log_entry.screenshot_image.save('screenshot.png', ContentFile(log_screenshot_data))
             log_entry.save()

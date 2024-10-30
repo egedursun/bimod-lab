@@ -15,12 +15,12 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
+import uuid
 from django.db import models
-from django.utils import timezone
 
 
 class MetaTempoMemberLog(models.Model):
+    identifier_uuid = models.UUIDField(null=True, blank=True)
     metatempo_connection = models.ForeignKey('metatempo.MetaTempoConnection', on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
     screenshot_image = models.ImageField(upload_to='metatempo/member_logs/%Y/%m/%d/', null=True, blank=True)
@@ -33,7 +33,7 @@ class MetaTempoMemberLog(models.Model):
     application_usage_stats = models.JSONField(null=True, blank=True)
     #################################################################################################################
 
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField()
 
     def __str__(self):
         return f'{self.metatempo_connection} - {self.timestamp}'
@@ -46,4 +46,5 @@ class MetaTempoMemberLog(models.Model):
             models.Index(fields=['metatempo_connection', 'user']),
             models.Index(fields=['timestamp']),
             models.Index(fields=['work_intensity']),
+            models.Index(fields=['identifier_uuid']),
         ]

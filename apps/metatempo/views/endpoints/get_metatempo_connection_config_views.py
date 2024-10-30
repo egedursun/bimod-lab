@@ -45,8 +45,8 @@ class MetaTempoView_GetConnectionConfig(View):
             "board": connection.board.title,
             "is_tracking_active": connection.is_tracking_active,
             "optional_context_instructions": connection.optional_context_instructions or "",
-            "overall_log_intervals": connection.get_overall_log_intervals_display(),
-            "member_log_intervals": connection.get_member_log_intervals_display(),
+            "overall_log_intervals": connection.overall_log_intervals,
+            "member_log_intervals": connection.member_log_intervals,
             "tracked_weekdays": connection.tracked_weekdays if connection.tracked_weekdays else [],
             "tracking_start_time": connection.tracking_start_time.strftime(
                 '%H:%M') if connection.tracking_start_time else None,
