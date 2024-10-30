@@ -1,18 +1,8 @@
 ### TODO LIST
 
-- [ ] Add recording length visibility to Electron copilot.
-- 
-- [ ] Integrate the metakanban application to the Electron copilot.
-- [ ] Test the integration with the primary server (BimodLab).
-
-- [ ] Add projects to settings page -- purge deletions.
-- [ ] Add metakanban to settings page -- purge deletions.
-- [ ] Add metatempo to settings page -- purge deletions.
-
-- [ ] Add the environment variables for: METAKANBAN=0.0300, MEETING_TRANSCRIPTION=0.0200, METATEMPO=0.005 to server .env, .env.dev, .env.prod
-- [ ] Stop Development: Package and Deploy the Electron Copilot.
-- [ ] Create a Download Page for the Electron Copilot application.
-- [ ] Update the Website Landing Page for the BimodLab flagship server.
+- [ ] Ellma Adjustments
+- [ ] Start implementing the Google Office tools
+- [ ] Blog app must be public
 
 ---
 
@@ -225,7 +215,7 @@
 - Start Date: 2024-06-29
 - Last Measurement Date: 2024-10-29
 - Total Days: 122
-  - Number of Files: 54,600 
+  - Number of Files: 54,600
   - Code Lines: 12,700,000
   - Comment Lines: 3,800,000
   - Blank Lines: 2,400,000

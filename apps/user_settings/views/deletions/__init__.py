@@ -62,3 +62,7 @@ from .delete_soft_all_smart_contracts_views import *
 from .delete_all_wallet_connections_views import *
 from .delete_all_binexus_processes_views import *
 from .delete_all_binexus_elite_agents_views import *
+from .delete_all_metakanban_boards_views import *
+from .delete_all_metatempo_connections_views import *
+from .delete_all_projects_views import *
+from .delete_all_teams_views import *

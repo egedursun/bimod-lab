@@ -19,7 +19,7 @@ from django.urls import path
 
 from apps.landing.views import (LandingView_Index, LandingView_ContactFormSubmit, LandingView_FAQ,
                                 LandingView_AdminNotAccredited, LandingView_Endeavours,
-                                LandingView_IntegrationToOrganizations)
+                                LandingView_IntegrationToOrganizations, LandingView_ElectronCopilotReleases)
 
 app_name = "landing"
 
@@ -35,4 +35,7 @@ urlpatterns = [
     path('integration_to_organizations/',
          LandingView_IntegrationToOrganizations.as_view(template_name="landing/integration_to_organizations.html"),
          name='integration_to_organizations'),
+    path('electron_copilot_releases/',
+            LandingView_ElectronCopilotReleases.as_view(template_name="landing/electron_copilot_releases.html"),
+            name='electron_copilot_releases'),
 ]

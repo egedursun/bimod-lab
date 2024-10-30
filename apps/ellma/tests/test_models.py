@@ -1,10 +1,12 @@
+
+
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: __init__.py
+#  File: test_models.py
 #  Last Modified: 2024-10-05 01:39:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:33
+#  Created: 2024-10-05 14:42:40
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -15,10 +17,5 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from .faq_views import *
-from .endeavours_views import *
-from .landing_page_views import *
-from .contact_form_submit_views import *
-from .not_accredited_admin_views import *
-from .integration_to_organizations_views import *
-from .electron_copilot_releases_views import *
+def test_init_ellma_test_models():
+    assert True

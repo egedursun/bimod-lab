@@ -41,7 +41,8 @@ from apps.user_settings.views import SettingsView_UserSettings, SettingsView_Del
     SettingsView_DeleteAllHadronNodeExecutionLogs, SettingsView_DeleteAllHadronTopicMessagesLogs, \
     SettingsView_DeleteAllHadronNodeSEASELogs, SettingsView_DeleteAllWalletConnections, \
     SettingsView_DeleteSoftAllSmartContracts, SettingsView_DeleteAllBinexusEliteAgents, \
-    SettingsView_DeleteAllBinexusProcesses
+    SettingsView_DeleteAllBinexusProcesses, SettingsView_DeleteAllMetaTempoConnections, \
+    SettingsView_DeleteAllProjects, SettingsView_DeleteAllMetaKanbanBoards, SettingsView_DeleteAllTeams
 
 app_name = "user_settings"
 
@@ -141,6 +142,14 @@ urlpatterns = [
             name='delete_all_binexus_elite_agents'),
     path('delete/all/binexus_processes/', SettingsView_DeleteAllBinexusProcesses.as_view(),
             name='delete_all_binexus_processes'),
+    path('delete/all/metatempo_connections/', SettingsView_DeleteAllMetaTempoConnections.as_view(),
+            name='delete_all_metatempo_connections'),
+    path('delete/all/projects/', SettingsView_DeleteAllProjects.as_view(),
+            name='delete_all_projects'),
+    path('delete/all/teams/', SettingsView_DeleteAllTeams.as_view(),
+            name='delete_all_teams'),
+    path('delete/all/metakanban_boards/', SettingsView_DeleteAllMetaKanbanBoards.as_view(),
+            name='delete_all_metakanban_boards'),
 
     path('auto_backups/toggle/', SettingsView_ToggleAutoBackups.as_view(),
          name='toggle_automated_backups'),

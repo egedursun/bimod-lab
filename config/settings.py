@@ -140,6 +140,7 @@ INSTALLED_APPS = [
     "apps.metakanban",
     "apps.metatempo",
     "apps.projects",
+    "apps.ellma",
 
     ########################################
     # SUPPORT
@@ -432,6 +433,7 @@ EXCLUDED_PAGES = [
     "/app/reset_password/*",
     "/app/multimodal_chat/tts/chat/message/*"
     "/contact-form-submit/*",
+    "/electron_copilot_releases/*",
     "/docs/*",
     "/faq/*",
     "/not_accredited/*",
