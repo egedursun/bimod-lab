@@ -20,7 +20,6 @@ import secrets
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.shortcuts import redirect
 from django.views import View
 
 from apps.metakanban.models import MetaKanbanBoard

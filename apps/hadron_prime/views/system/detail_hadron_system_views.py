@@ -21,15 +21,8 @@ from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.hadron_prime.models import HadronSystem, HadronNode, HadronTopic
-from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
-
-# In this page, the user will be able to see:
-#  1. The details and information of the system data model.
-#  2. The list of nodes in the system. -> When clicked, redirects to: Detail Node, Update Node, Delete Node
-#  3. The list of topics in the system. -> When clicked, redirects to: Detail Topic, Update Topic, Delete Topic
 
 
 class HadronPrimeView_DetailHadronSystem(LoginRequiredMixin, TemplateView):

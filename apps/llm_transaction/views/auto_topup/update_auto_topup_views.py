@@ -41,11 +41,11 @@ class Transactions_AutoTopUp_Update(LoginRequiredMixin, TemplateView):
         p = get_object_or_404(AutoBalanceTopUpModel, id=plan_id)
         p.on_balance_threshold_trigger = request.POST.get('on_balance_threshold_trigger') == 'on' or False
         p.on_interval_by_days_trigger = request.POST.get('on_interval_by_days_trigger') == 'on' or False
-        p.balance_lower_trigger_threshold_value = request.POST.get('balance_lower_trigger_threshold_value') or 0
-        p.addition_on_balance_threshold_trigger = request.POST.get('addition_on_balance_threshold_trigger') or 0
-        p.regular_by_days_interval = request.POST.get('regular_by_days_interval') or 0
-        p.addition_on_interval_by_days_trigger = request.POST.get('addition_on_interval_by_days_trigger') or 0
-        p.monthly_hard_limit_auto_addition_amount = request.POST.get('monthly_hard_limit_auto_addition_amount') or 0
+        p.balance_lower_trigger_threshold_value = request.POST.get('balance_lower_trigger_threshold_value') or None
+        p.addition_on_balance_threshold_trigger = request.POST.get('addition_on_balance_threshold_trigger') or None
+        p.regular_by_days_interval = request.POST.get('regular_by_days_interval') or None
+        p.addition_on_interval_by_days_trigger = request.POST.get('addition_on_interval_by_days_trigger') or None
+        p.monthly_hard_limit_auto_addition_amount = request.POST.get('monthly_hard_limit_auto_addition_amount') or 100_000
         p.date_of_last_auto_top_up = timezone.now()
         p.save()
         logger.info(f"Auto Top Up was updated by User: {self.request.user.id}.")

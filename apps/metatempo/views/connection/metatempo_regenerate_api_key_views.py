@@ -14,13 +14,11 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-import json
 import secrets
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.shortcuts import redirect
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager

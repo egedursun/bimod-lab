@@ -384,7 +384,6 @@ class SystemPromptFactoryBuilder:
         merged_prompt += main_instructions
         merged_prompt += audience_prompt
         merged_prompt += tone_prompt
-        merged_prompt += projects_teams_prompt
         merged_prompt += output_language
         # Data Feeds
         merged_prompt += sql_feed

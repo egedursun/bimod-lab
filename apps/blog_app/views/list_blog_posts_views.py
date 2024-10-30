@@ -22,7 +22,7 @@ from django.db.models import Q
 from django.views.generic import TemplateView
 
 from apps.blog_app.models import BlogPost
-from web_project import TemplateLayout, TemplateHelper
+from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
 

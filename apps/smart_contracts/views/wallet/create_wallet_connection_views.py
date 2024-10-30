@@ -23,7 +23,7 @@ from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 from django.utils import timezone

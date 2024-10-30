@@ -14,11 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-import secrets
 
 from django.db import models
-
-from apps.metakanban.utils import META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH
 
 
 class MetaKanbanBoard(models.Model):

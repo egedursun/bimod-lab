@@ -15,6 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
-from .generic import *
+from .datasource import *
+from .metadata import *
 from .generic import *

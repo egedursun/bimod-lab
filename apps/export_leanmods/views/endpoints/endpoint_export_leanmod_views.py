@@ -17,7 +17,6 @@
 
 import json
 import logging
-from urllib.parse import urljoin
 
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator

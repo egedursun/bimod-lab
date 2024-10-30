@@ -24,8 +24,8 @@ from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.notifications.models import NotificationItem
-from apps.notifications.utils import NotificationFAIconChoicesNames, NotificationTitleCategoryChoicesNames, \
-    NotificationSenderTypeNames, NOTIFICATION_TITLE_CATEGORY_CHOICES
+from apps.notifications.utils import (NotificationFAIconChoicesNames, NotificationSenderTypeNames,
+                                      NOTIFICATION_TITLE_CATEGORY_CHOICES)
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 

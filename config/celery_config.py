@@ -52,6 +52,14 @@ app.conf.beat_schedule = {
         'task': 'apps.user_settings.tasks.automated_backups_tasks.initiate_automated_backups',
         'schedule': crontab(minute=0, hour=0, day_of_week="sunday"),
     },
+    'generate_daily_metatempo_logs-every-1-day': {
+        'task': 'apps.metatempo.tasks.daily_metatempo_logs_processor.generate_daily_metatempo_logs',
+        'schedule': crontab(hour="0", minute="30"),
+    },
+    'generate_period_overall_metatempo_logs-every-1-day': {
+        'task': 'apps.metatempo.tasks.overall_metatempo_logs_processor.generate_period_overall_metatempo_logs',
+        'schedule': crontab(hour="*", minute="*"),
+    },
 }
 
 

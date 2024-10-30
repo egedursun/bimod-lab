@@ -16,7 +16,7 @@
 #
 import logging
 
-from apps.core.hadron_prime.parsers import make_request_from_curl, parse_curl
+from apps.core.hadron_prime.parsers import parse_curl
 from apps.hadron_prime.models import HadronNode
 import json
 

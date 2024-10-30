@@ -17,12 +17,10 @@
 import logging
 
 from django.contrib import admin
-from django.contrib.auth.models import User
 
 from apps.notifications.models import NotificationItem
-from apps.notifications.utils import NOTIFICATION_ITEM_ADMIN_LIST, NOTIFICATION_ITEM_ADMIN_FILTER, \
-    NOTIFICATION_ITEM_ADMIN_SEARCH, NotificationTitleCategoryChoicesNames
-from apps.organization.models import Organization
+from apps.notifications.utils import (NOTIFICATION_ITEM_ADMIN_LIST, NOTIFICATION_ITEM_ADMIN_FILTER,
+                                      NOTIFICATION_ITEM_ADMIN_SEARCH)
 
 logger = logging.getLogger(__name__)
 

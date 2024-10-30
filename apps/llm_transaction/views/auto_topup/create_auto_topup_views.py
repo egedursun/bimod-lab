@@ -62,7 +62,10 @@ class Transactions_AutoTopUpCreate(LoginRequiredMixin, TemplateView):
             addition_on_interval_by_days_trigger = request.POST.get('addition_on_interval_by_days_trigger')
             date_of_last_auto_top_up = timezone.now()
 
-        monthly_hard_limit_auto_addition_amount = request.POST.get('monthly_hard_limit_auto_addition_amount')
+        monthly_hard_limit_auto_addition_amount = request.POST.get('monthly_hard_limit_auto_addition_amount', 100_000)
+        if monthly_hard_limit_auto_addition_amount == '':
+            monthly_hard_limit_auto_addition_amount = 100_000
+
         org = Organization.objects.get(id=org_id)
         if org.auto_balance_topup:
             org.auto_balance_topup.delete()
@@ -71,9 +74,9 @@ class Transactions_AutoTopUpCreate(LoginRequiredMixin, TemplateView):
             organization=org, on_balance_threshold_trigger=on_balance_threshold_trigger,
             on_interval_by_days_trigger=on_interval_by_days_trigger,
             balance_lower_trigger_threshold_value=balance_lower_trigger_threshold_value,
-            addition_on_balance_threshold_trigger=addition_on_balance_threshold_trigger,
+            addition_on_balance_threshold_trigger=round(float(addition_on_balance_threshold_trigger), 2) if addition_on_balance_threshold_trigger else None,
             regular_by_days_interval=regular_by_days_interval,
-            addition_on_interval_by_days_trigger=addition_on_interval_by_days_trigger,
+            addition_on_interval_by_days_trigger=round(float(addition_on_interval_by_days_trigger), 2) if addition_on_interval_by_days_trigger else None,
             date_of_last_auto_top_up=date_of_last_auto_top_up, calendar_month_total_auto_addition_value=0,
             monthly_hard_limit_auto_addition_amount=monthly_hard_limit_auto_addition_amount
         )

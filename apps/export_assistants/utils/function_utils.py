@@ -30,6 +30,7 @@ import filetype
 from apps.assistants.models import Assistant
 from apps.core.code_analyst.utils import BIN_FILE_FORMAT
 from apps.core.media_managers.utils import GENERATED_FILES_ROOT_MEDIA_PATH, GENERATED_IMAGES_ROOT_MEDIA_PATH
+from config import settings
 from config.settings import MEDIA_URL
 
 logger = logging.getLogger(__name__)

@@ -164,7 +164,7 @@ class BrowsingExecutor:
         except Exception as e:
             logger.error(f"Error while searching the query: {str(e)}")
             return (f"[BrowsingExecutor.browser_search] There has been an unexpected error while trying to search "
-                    f"the query: {e}")
+                    f"the query: {e}"), None
 
         if page > 1:
             try:
@@ -217,7 +217,7 @@ class BrowsingExecutor:
             logger.error(f"Error while getting the screenshot: {str(e)}")
             return (
                 f"[BrowsingExecutor.get_search_results] There has been an unexpected error while trying to get the "
-                f"screenshot on browsing: {e}")
+                f"screenshot on browsing: {e}"), None
         try:
             raw_results = self.d.find_elements(By.CSS_SELECTOR, "div.g")
             clean_results = self.get_cleaned_search_results(raw_results)
@@ -231,7 +231,7 @@ class BrowsingExecutor:
             logger.error(f"Error while getting the search results: {str(e)}")
             return (
                 f"[BrowsingExecutor.get_search_results] There has been an unexpected error while trying to get the "
-                f"search results on browsing: {e}")
+                f"search results on browsing: {e}"), None
 
     def wait(self):
         try:

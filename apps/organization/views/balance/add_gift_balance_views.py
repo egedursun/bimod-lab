@@ -65,7 +65,7 @@ class OrganizationView_AddGiftCredits(LoginRequiredMixin, View):
                     organization=org,
                     responsible_user=request.user,
                     transaction_type=InvoiceTypesNames.GIFT_CREDITS,
-                    amount_added=decimal.Decimal.from_float(free_credits),
+                    amount_added=decimal.Decimal.from_float(round(free_credits, 6)),
                     payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER,
                 )
                 logger.info(f"Gift credits were added to Organization: {org.id} by User: {user.id}.")
