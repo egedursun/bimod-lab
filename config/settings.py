@@ -450,6 +450,7 @@ EXCLUDED_PAGES = [
     "/app/metakanban/meeting/recording/delivery/*",
     "/app/metatempo/tempo/screenshot/delivery/*",
     "/app/metatempo/tempo/connection/config/*",
+    "/app/drafting/public/*"
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'

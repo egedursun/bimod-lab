@@ -1,7 +1,17 @@
 ### TODO LIST
 
-- [ ] Start implementing the Google Office tools
-- [ ] Blog app must be public
+- [ ] Start implementing the Google Office tools. (~3-4 days of work ?)
+
+**BUGS:**
+- [ ] Bug regarding the Select2 fields must be resolved.
+- [ ] Website sometimes fails on registration (login field ?, 504 hatası ?)
+- [ ] Add balance sometimes fails on Huseyin (?)
+- [ ] Browsing functionality does'nt work on Huseyin but works on local (?)
+- [ ] Harmoniq gives bullshit answers, sometimes mixes words up (must do audio streaming with web sockets)
+- 
+
+**ENHANCEMENTS:**
+- [ ] Blog app must be converted to public. (~3-4 hours of work ?)
 
 ---
 
@@ -10,6 +20,9 @@
 - *FERMION COPILOT*: Mobile App Client for Bimod & BimodLab, with features allowing for transactions between the
   mobile data and the web application. **(Probably Flutter-Based)**
   - *Details:* TBD
+    - Large Project (~1 month to implement)
+    - Flutter looks like a good framework to use for this.
+    - **RESEARCH:** Can there be an easier technology to use, and how? Take a research on this.
 
 ---
 
@@ -25,11 +38,12 @@
 
 - *ASTROLITH X1*: Two important plans to be developed: A physical server + a locally runnable instance of the
   Bimod & BimodLab web application, with minimal interventions from our ends.
-  **(Probably with Licence Key and Encryption)** Once option will be hardware+standalone software,
-  the other option will be a software-only solution. The balance will be one-time with burnout of
-  of the software after a certain period of time and balance depletion. In the hardware included
-  model, new firmware will be installed then.
-  - *Details:* TBD
+  **(Probably with Licence Key and Encryption)**
+    - One option will be hardware+standalone software.
+    - The other option will be a software-only solution.
+      - The balance will be one-time with burnout of the software after a certain period of time and balance depletion.
+      - In hardware included model, new firmware will then be installed. Otherwise, new software image is provided.
+    - *Details:* TBD
 
 ---
 
@@ -96,12 +110,6 @@
   a verification process before the contribution is accepted, and developers must have separate
   accounts than clients to manage their contributions effectively.
   - *Details:* TBD
-
----
-
-**MINOR/NON-URGENT BUGS:**
-
-[i] BUG: The messages cut short in Harmoniq + can't send audio in real time to Harmoniq agent.
 
 ---
 

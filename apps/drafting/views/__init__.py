@@ -18,3 +18,5 @@
 from .folder import *
 from .document import *
 from .drafting_commands import *
+from .public import *
+from .google_apps_connection import *

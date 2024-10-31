@@ -26,3 +26,10 @@ DRAFTING_DOCUMENT_ADMIN_SEARCH = ('organization', 'copilot_assistant', 'document
 DRAFTING_FOLDER_ADMIN_LIST = ('organization', 'name', 'description', 'created_at', 'created_by_user')
 DRAFTING_FOLDER_ADMIN_FILTER = ('organization', 'created_at', 'created_by_user')
 DRAFTING_FOLDER_ADMIN_SEARCH = ('organization', 'name', 'description')
+
+DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_LIST = ['drafting_assistant', 'owner_user', 'connection_api_key', 'created_at', 'updated_at']
+DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_FILTER = ['drafting_assistant', 'owner_user', 'created_at', 'updated_at']
+DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH = ['drafting_assistant', 'owner_user', 'connection_api_key']
+
+
+DRAFTING_GOOGLE_APPS_CONNECTION_API_KEY_DEFAULT_LENGTH = 64

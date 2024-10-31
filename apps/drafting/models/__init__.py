@@ -17,3 +17,4 @@
 
 from .drafting_document_models import *
 from .drafting_folder_models import *
+from .drafting_google_apps_connection_models import *

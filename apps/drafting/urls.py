@@ -24,7 +24,15 @@ from apps.drafting.views import (DraftingView_DocumentDetail, DraftingView_Docum
                                  DraftingView_GenerateViaNoSQLCommand, DraftingView_GenerateViaSQLCommand,
                                  DraftingView_GenerateViaSSHCommand, DraftingView_GenerateViaSelectCommand,
                                  DraftingView_GenerateViaVectCommand, DraftingView_GenerateViaAutoCommand,
-                                 DraftingView_GenerateViaImgCommand, DraftingView_GenerateViaWebCommand)
+                                 DraftingView_GenerateViaImgCommand, DraftingView_GenerateViaWebCommand,
+                                 DraftingView_PublicGenerateViaNoSQLCommand, DraftingView_PublicGenerateViaAICommand,
+                                 DraftingView_PublicGenerateViaSQLCommand, DraftingView_PublicGenerateViaSelectCommand,
+                                 DraftingView_PublicGenerateViaVectCommand, DraftingView_PublicGenerateViaWebCommand,
+                                 DraftingView_PublicGenerateViaAutoCommand, DraftingView_PublicGenerateViaImgCommand,
+                                 DraftingView_PublicGenerateViaRepoCommand, DraftingView_PublicGenerateViaSSHCommand,
+                                 DraftingView_GoogleAppsConnectionCreate, DraftingView_GoogleAppsConnectionUpdate,
+                                 DraftingView_GoogleAppsConnectionDelete, DraftingView_GoogleAppsConnectionList)
+
 from apps.drafting.views.drafting_commands.repo_commands_views import DraftingView_GenerateViaRepoCommand
 
 app_name = 'drafting'
@@ -61,4 +69,33 @@ urlpatterns = [
     path("generate/commands/img/", DraftingView_GenerateViaImgCommand.as_view(), name="generate_img"),
     path("generate/commands/web/", DraftingView_GenerateViaWebCommand.as_view(), name="generate_web"),
     path("generate/commands/repo/", DraftingView_GenerateViaRepoCommand.as_view(), name="generate_repo"),
+
+    # Google Apps Connections
+    path("google_apps/connections/list/", DraftingView_GoogleAppsConnectionList.as_view(
+        template_name="drafting/google_apps_connection/manage_google_apps_connections.html"
+    ), name="google_apps_connections_list"),
+    path("google_apps/connections/create/", DraftingView_GoogleAppsConnectionCreate.as_view(), name="google_apps_connections_create"),
+    path("google_apps/connections/update/<int:pk>/", DraftingView_GoogleAppsConnectionUpdate.as_view(), name="google_apps_connections_update"),
+    path("google_apps/connections/delete/<int:pk>/", DraftingView_GoogleAppsConnectionDelete.as_view(), name="google_apps_connections_delete"),
+
+    # Public endpoints
+    path("public/generate/commands/ai/", DraftingView_PublicGenerateViaAICommand.as_view(), name="public_generate_ai"),
+    path("public/generate/commands/nosql/", DraftingView_PublicGenerateViaNoSQLCommand.as_view(),
+         name="public_generate_nosql"),
+    path("public/generate/commands/sql/", DraftingView_PublicGenerateViaSQLCommand.as_view(),
+         name="public_generate_sql"),
+    path("public/generate/commands/ssh/", DraftingView_PublicGenerateViaSSHCommand.as_view(),
+         name="public_generate_ssh"),
+    path("public/generate/commands/select/", DraftingView_PublicGenerateViaSelectCommand.as_view(),
+         name="public_generate_select"),
+    path("public/generate/commands/vect/", DraftingView_PublicGenerateViaVectCommand.as_view(),
+         name="public_generate_vect"),
+    path("public/generate/commands/auto/", DraftingView_PublicGenerateViaAutoCommand.as_view(),
+         name="public_generate_auto"),
+    path("public/generate/commands/img/", DraftingView_PublicGenerateViaImgCommand.as_view(),
+         name="public_generate_img"),
+    path("public/generate/commands/web/", DraftingView_PublicGenerateViaWebCommand.as_view(),
+         name="public_generate_web"),
+    path("public/generate/commands/repo/", DraftingView_PublicGenerateViaRepoCommand.as_view(),
+         name="public_generate_repo"),
 ]

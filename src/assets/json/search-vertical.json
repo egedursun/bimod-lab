@@ -289,6 +289,12 @@
       "url": "/app/ellma/manage"
     },
     {
+      "name": "Drafting Google Apps Authentication",
+      "icon": "menu-icon tf-icons ti ti-pencil",
+      "slug": "drafting",
+      "url": "/app/drafting/google_apps/connections/list"
+    },
+    {
       "name": "Drafting",
       "icon": "menu-icon tf-icons ti ti-pencil",
       "slug": "drafting",
