@@ -60,6 +60,7 @@ class InternalServiceCosts:
             InternalServiceCosts.MetaKanban.COST,
             InternalServiceCosts.MeetingTranscription.COST,
             InternalServiceCosts.MetaTempo.COST,
+            InternalServiceCosts.EllmaScripting.COST,
         ]
 
     class ContextMemory:
@@ -152,6 +153,9 @@ class InternalServiceCosts:
     class Reasoning:
         COST = COSTS_MAP["REASONING"]
 
+    class EllmaScripting:
+        COST = COSTS_MAP["ELLMA_SCRIPTING"]
+
     class Drafting:
         COST = COSTS_MAP["DRAFTING"]
 
@@ -205,6 +209,7 @@ TOOL_NAME_TO_COST_MAP = {
     "audio-processing-tts": InternalServiceCosts.AudioProcessingTTS.COST,
     "generate-video": InternalServiceCosts.VideoGenerator.COST,
     "reasoning": InternalServiceCosts.Reasoning.COST,
+    "ellma-scripting": InternalServiceCosts.EllmaScripting.COST,
     "drafting": InternalServiceCosts.Drafting.COST,
     "hadron-prime": InternalServiceCosts.HadronPrime.COST,
     "smart-contract-creation": InternalServiceCosts.SmartContractCreation.COST,

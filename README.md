@@ -1,6 +1,5 @@
 ### TODO LIST
 
-- [ ] Ellma Adjustments
 - [ ] Start implementing the Google Office tools
 - [ ] Blog app must be public
 

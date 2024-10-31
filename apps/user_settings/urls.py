@@ -42,7 +42,8 @@ from apps.user_settings.views import SettingsView_UserSettings, SettingsView_Del
     SettingsView_DeleteAllHadronNodeSEASELogs, SettingsView_DeleteAllWalletConnections, \
     SettingsView_DeleteSoftAllSmartContracts, SettingsView_DeleteAllBinexusEliteAgents, \
     SettingsView_DeleteAllBinexusProcesses, SettingsView_DeleteAllMetaTempoConnections, \
-    SettingsView_DeleteAllProjects, SettingsView_DeleteAllMetaKanbanBoards, SettingsView_DeleteAllTeams
+    SettingsView_DeleteAllProjects, SettingsView_DeleteAllMetaKanbanBoards, SettingsView_DeleteAllTeams, \
+    SettingsView_DeleteAllEllmaScripts
 
 app_name = "user_settings"
 
@@ -150,6 +151,8 @@ urlpatterns = [
             name='delete_all_teams'),
     path('delete/all/metakanban_boards/', SettingsView_DeleteAllMetaKanbanBoards.as_view(),
             name='delete_all_metakanban_boards'),
+    path('delete/all/ellma_scripts/', SettingsView_DeleteAllEllmaScripts.as_view(),
+            name='delete_all_ellma_scripts'),
 
     path('auto_backups/toggle/', SettingsView_ToggleAutoBackups.as_view(),
          name='toggle_automated_backups'),

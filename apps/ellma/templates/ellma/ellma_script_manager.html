@@ -17,3 +17,189 @@
   ~
   -->
 
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+{% endblock %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock %}
+
+{% block title %}Manage eLLMa Scripts{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <!-- Creation Tips Section -->
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-72.png' %}" width="25%" style="border-radius:25px;" class="me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can manage and create your eLLMa scripts. eLLMa scripts are very powerful tools with which
+        you can design your code with minimal effort and save time by letting AI transcribe your code for you.
+        You can create new scripts, edit existing ones, and delete them as you wish by using the buttons provided.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <!-- New Script Creation Form -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h4><i class="fa fa-plus-circle me-2"></i>Create New Script</h4>
+    </div>
+    <div class="card-body">
+      <form method="post" action="{% url 'ellma:create-script' %}">
+        {% csrf_token %}
+
+        <div class="row">
+          <!-- Organization Picker -->
+          <div class="col-md-4 mb-3">
+            <label for="organization" class="form-label">Organization</label>
+            <select id="organization" name="organization" class="form-control" required>
+              <option value="" disabled selected>Select an Organization</option>
+              {% for org in organizations %}
+                <option value="{{ org.id }}">{{ org.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- LLM Model Picker -->
+          <div class="col-md-4 mb-3">
+            <label for="llm_model" class="form-label">LLM Model</label>
+            <select id="llm_model" name="llm_model" class="form-control" required>
+              <option value="" disabled selected>Select an LLM Model</option>
+              {% for model in llm_models %}
+                <option value="{{ model.id }}">{{ model.nickname }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Script Name -->
+          <div class="col-md-4 mb-3">
+            <label for="script_name" class="form-label">Script Name</label>
+            <input type="text" id="script_name" name="script_name" class="form-control" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3 w-25">
+          <i class="fa fa-file-upload me-2"></i>
+          <strong>Create New Script</strong>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Existing Scripts Listing -->
+  {% for organization, scripts in org_scripts.items %}
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>{{ organization.name }} Scripts</h4>
+      </div>
+      <div class="card-body">
+        {% if scripts %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Script Name</th>
+                <th>Transcription Language</th>
+                <th>Created At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for script in scripts %}
+                <tr>
+                  <td><strong>{{ script.script_name }}</strong></td>
+                  <td>{{ script.get_ellma_transcription_language_display }}</td>
+                  <td>{{ script.created_at|date:"Y-m-d H:i" }}</td>
+                  <td>
+                    <a href="{% url 'ellma:script-editor' script.id %}" class="btn btn-sm btn-primary me-4">
+                      <i class="fa fa-magic-wand-sparkles me-2"></i>
+                      <strong>Design Script</strong>
+                    </a>
+                    <button class="btn btn-sm btn-danger script-delete-btn me-4" data-script-id="{{ script.id }}">
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete</strong>
+                    </button>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <div class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle me-2"></i>No scripts available for {{ organization.name }}.
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+
+</div>
+{% endblock %}
+
+{% block page_js %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.script-delete-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+
+          const scriptId = button.getAttribute('data-script-id');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'This action cannot be undone. Do you want to delete this script?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2',
+              cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const form = document.createElement('form');
+              form.method = 'POST';
+              form.action = `{% url 'ellma:delete-script' 0 %}`.replace('0', scriptId);
+
+              const csrfInput = document.createElement('input');
+              csrfInput.type = 'hidden';
+              csrfInput.name = 'csrfmiddlewaretoken';
+              csrfInput.value = '{{ csrf_token }}';
+              form.appendChild(csrfInput);
+
+              document.body.appendChild(form);
+              form.submit();
+            }
+          });
+        });
+      });
+    });
+  </script>
+{% endblock %}

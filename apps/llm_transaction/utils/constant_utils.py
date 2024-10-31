@@ -66,6 +66,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("audio-processing-tts", "Audio Processing TTS"),
     ("brainstorming", "Brainstorming"),
     ("generate-video", "Generate Video"),
+    ("ellma-scripting", "Ellma Scripting"),
     ("drafting", "Drafting"),
     ("hadron-prime", "Hadron Prime"),
     ("smart-contract-creation", "Smart Contract Creation"),
@@ -119,6 +120,7 @@ class LLMTransactionSourcesTypesNames:
     AUDIO_PROCESSING_TTS = "audio-processing-tts"
     BRAINSTORMING = "brainstorming"
     GENERATE_VIDEO = "generate-video"
+    ELLMA_SCRIPTING = "ellma-scripting"
     DRAFTING = "drafting"
     HADRON_PRIME = "hadron-prime"
     SMART_CONTRACT_CREATION = "smart-contract-creation"
@@ -165,6 +167,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.BRAINSTORMING,
             LLMTransactionSourcesTypesNames.GENERATE_VIDEO,
             LLMTransactionSourcesTypesNames.REASONING,
+            LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING,
             LLMTransactionSourcesTypesNames.DRAFTING,
             LLMTransactionSourcesTypesNames.HADRON_PRIME,
             LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,

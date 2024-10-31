@@ -66,3 +66,4 @@ from .delete_all_metakanban_boards_views import *
 from .delete_all_metatempo_connections_views import *
 from .delete_all_projects_views import *
 from .delete_all_teams_views import *
+from .delete_all_ellma_scripts_views import *

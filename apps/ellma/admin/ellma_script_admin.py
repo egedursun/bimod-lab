@@ -15,3 +15,16 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+
+from django.contrib import admin
+
+from apps.ellma.models import EllmaScript
+from apps.ellma.utils import ELLMA_SCRIPT_ADMIN_LIST, ELLMA_SCRIPT_ADMIN_SEARCH, ELLMA_SCRIPT_ADMIN_FILTER
+
+
+@admin.register(EllmaScript)
+class EllmaScriptAdmin(admin.ModelAdmin):
+    list_display = ELLMA_SCRIPT_ADMIN_LIST
+    search_fields = ELLMA_SCRIPT_ADMIN_SEARCH
+    list_filter = ELLMA_SCRIPT_ADMIN_FILTER
+    ordering = ['-created_at']

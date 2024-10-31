@@ -388,6 +388,12 @@
       "menu_header": "Meta Features"
     },
     {
+      "name": "eLLMa Scripting",
+      "icon": "menu-icon tf-icons ti ti-apple",
+      "slug": "ellma-scripting",
+      "url": "ellma:manage-scripts"
+    },
+    {
       "name": "Drafting",
       "icon": "menu-icon tf-icons ti ti-pencil",
       "slug": "drafting",

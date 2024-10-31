@@ -299,6 +299,11 @@ class PermissionNames:
     UPDATE_VIDEO_GENERATOR_CONNECTIONS = 'update_video_generator_connections'
     DELETE_VIDEO_GENERATOR_CONNECTIONS = 'delete_video_generator_connections'
 
+    CREATE_ELLMA_SCRIPTS = "create_ellma_scripts"
+    LIST_ELLMA_SCRIPTS = "list_ellma_scripts"
+    UPDATE_ELLMA_SCRIPTS = "update_ellma_scripts"
+    DELETE_ELLMA_SCRIPTS = "delete_ellma_scripts"
+
     ADD_DRAFTING_FOLDERS = 'add_drafting_folders'
     UPDATE_DRAFTING_FOLDERS = 'update_drafting_folders'
     LIST_DRAFTING_FOLDERS = 'list_drafting_folders'
@@ -635,6 +640,11 @@ PERMISSION_TYPES = [
     ('list_video_generator_connections', 'List Video Generator Connections'),
     ('update_video_generator_connections', 'Update Video Generator Connections'),
     ('delete_video_generator_connections', 'Delete Video Generator Connections'),
+
+    ('create_ellma_scripts', 'Create Ellma Scripts'),
+    ('list_ellma_scripts', 'List Ellma Scripts'),
+    ('update_ellma_scripts', 'Update Ellma Scripts'),
+    ('delete_ellma_scripts', 'Delete Ellma Scripts'),
 
     ('add_drafting_folders', 'Add Drafting Folders'),
     ('update_drafting_folders', 'Update Drafting Folders'),

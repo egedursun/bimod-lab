@@ -32,6 +32,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css"/>
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+  <style>
+    .CodeMirror {
+    transform: scale(1.43);
+    transform-origin: top left;
+    width: calc(100% / 1.43);
+    max-height: calc((100% / 1.43));
+    overflow: scroll;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 0.70rem;
+    margin-bottom: 15%;
+  }
+  </style>
 {% endblock vendor_css %}
 
 {% block vendor_js %}

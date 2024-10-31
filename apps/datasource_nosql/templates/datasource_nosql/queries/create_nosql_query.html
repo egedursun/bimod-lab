@@ -30,6 +30,19 @@
 <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css"/>
+  <style>
+    .CodeMirror {
+    transform: scale(1.43);
+    transform-origin: top left;
+    width: calc(100% / 1.43);
+    max-height: calc((100% / 1.43));
+    overflow: scroll;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 0.70rem;
+    margin-bottom: 15%;
+  }
+  </style>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -136,7 +149,7 @@
             </div>
             <hr>
             <button type="submit" class="btn btn-primary d-grid w-25 mt-4">
-              <strong>Create NoSQL Query</strong>
+              <strong><i class="fa fa-plus me-4"></i> Create NoSQL Query</strong>
             </button>
           </form>
         </div>

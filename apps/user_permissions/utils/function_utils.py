@@ -192,6 +192,12 @@ def get_permissions_grouped():
             ('list_assistant_memories', 'List Assistant Memories'),
             ('delete_assistant_memories', 'Delete Assistant Memories')
         ],
+        "eLLMa Scripts": [
+            ('create_ellma_scripts', 'Create Ellma Scripts'),
+            ('list_ellma_scripts', 'List Ellma Scripts'),
+            ('update_ellma_scripts', 'Update Ellma Scripts'),
+            ('delete_ellma_scripts', 'Delete Ellma Scripts'),
+        ],
         "Drafting Folder Permissions": [
             ('add_drafting_folders', 'Add Drafting Folders'),
             ('update_drafting_folders', 'Update Drafting Folders'),
