@@ -277,6 +277,18 @@
       "url": "/app/message_templates/list"
     },
     {
+      "name": "Create eLLMa Script",
+      "icon": "menu-icon tf-icons ti ti-apple",
+      "slug": "ellma-scripts",
+      "url": "/app/ellma/manage"
+    },
+    {
+      "name": "Manage eLLMa Scripts",
+      "icon": "menu-icon tf-icons ti ti-apple",
+      "slug": "ellma-scripts",
+      "url": "/app/ellma/manage"
+    },
+    {
       "name": "Drafting",
       "icon": "menu-icon tf-icons ti ti-pencil",
       "slug": "drafting",
