@@ -144,6 +144,20 @@
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete</strong>
                     </button>
+                    <!-- Download and Copy Buttons -->
+                    <button class="btn btn-sm btn-success me-2 {% if not script.ellma_transcribed_content %}disabled{% endif %}"
+                            onclick="downloadScript('{{ script.id }}', '{{ script.script_name }}')">
+                      <i class="fa fa-download me-2"></i><strong>Download</strong>
+                    </button>
+                    <button class="btn btn-sm btn-info {% if not script.ellma_transcribed_content %}disabled{% endif %}"
+                            onclick="copyScript('{{ script.id }}')">
+                      <i class="fa fa-copy me-2"></i><strong>Copy</strong>
+                    </button>
+
+                    <!-- Hidden textarea for script content -->
+                    {% if script.ellma_transcribed_content %}
+                      <textarea id="script-content-{{ script.id }}" style="display:none;">{{ script.ellma_transcribed_content }}</textarea>
+                    {% endif %}
                   </td>
                 </tr>
               {% endfor %}
@@ -157,7 +171,6 @@
       </div>
     </div>
   {% endfor %}
-
 </div>
 {% endblock %}
 
@@ -201,5 +214,40 @@
         });
       });
     });
+  </script>
+<script>
+    // Function to download the script content as a .txt file
+    function downloadScript(scriptId, scriptName) {
+      const scriptContent = document.getElementById(`script-content-${scriptId}`).value;
+      if (!scriptContent) return;
+
+      const blob = new Blob([scriptContent], { type: "text/plain" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${scriptName}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
+
+    // Function to copy script content to clipboard
+    function copyScript(scriptId) {
+      const scriptContent = document.getElementById(`script-content-${scriptId}`).value;
+      if (!scriptContent) return;
+
+      navigator.clipboard.writeText(scriptContent).then(() => {
+        Swal.fire({
+          title: 'Copied!',
+          text: 'Generated code has been copied to clipboard.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }).catch(err => {
+        console.error('Error copying text: ', err);
+      });
+    }
   </script>
 {% endblock %}

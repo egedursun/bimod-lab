@@ -29,8 +29,8 @@ class EllmaScript(models.Model):
 
     ellma_script_content = models.TextField(null=True, blank=True)
     ellma_transcription_language = models.CharField(max_length=255, choices=ELLMA_TRANSCRIPTION_LANGUAGES,
-                                                    default=EllmaTranscriptionLanguagesNames.PYTHON3)
-    ellma_transcribed_file = models.FileField(upload_to='ellma_scripts/%Y/%m/%d/', null=True, blank=True)
+                                                    null=True, blank=True)
+    ellma_transcribed_content = models.TextField(null=True, blank=True)
 
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='ellma_scripts')
     created_at = models.DateTimeField(auto_now_add=True)

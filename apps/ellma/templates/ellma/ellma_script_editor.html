@@ -101,8 +101,10 @@
   function saveContent() {
     const content = editor.getValue();
     document.getElementById("scriptContentInput").value = content;
+    document.getElementById("scriptContentInputCompilation").value = content;
     document.getElementById("scriptNameInput").value = document.getElementById("scriptName").value;
     document.getElementById("transcriptionLanguageInput").value = document.getElementById("transcriptionLanguage").value;
+    document.getElementById("transcriptionLanguageInputCompilation").value = document.getElementById("transcriptionLanguage").value;
     document.getElementById("saveForm").submit();
   }
 
@@ -131,6 +133,90 @@
         editor.setValue(initialContent);
         document.getElementById('unsavedChangesWarning').hidden = true;
       }
+    });
+  }
+</script>
+<script>
+  // Map transcription language to CodeMirror mode
+  const languageModes = {
+    'python3': 'python',
+    'javascript': 'javascript',
+    'typescript': 'javascript',
+    'java': 'text/x-java',
+    'csharp': 'text/x-csharp',
+    'c': 'text/x-csrc',
+    'cpp': 'text/x-c++src',
+    'go': 'go',
+    'rust': 'rust',
+    'ruby': 'ruby',
+    'php': 'php',
+    'swift': 'swift',
+    'kotlin': 'text/x-kotlin',
+    'scala': 'text/x-scala',
+    'r': 'r',
+    'perl': 'perl',
+    'bash': 'shell',
+    'powershell': 'powershell'
+  };
+
+  // Initialize generatedCodeEditor with the mode based on the selected transcription language
+  const selectedLanguage = "{{ ellma_script.ellma_transcription_language }}";
+  const initialMode = languageModes[selectedLanguage] || 'plaintext';
+
+  // Initialize CodeMirror for the generated code editor
+  const generatedCodeEditor = CodeMirror.fromTextArea(document.getElementById("generatedCodeEditor"), {
+    lineNumbers: true,
+    theme: "default",
+    mode: initialMode,   // Set initial mode based on selected language
+    readOnly: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+    viewportMargin: Infinity
+  });
+
+  // Update the mode of generatedCodeEditor when transcription language changes
+  document.getElementById("transcriptionLanguage").addEventListener("change", function() {
+    const newLanguage = this.value;
+    const newMode = languageModes[newLanguage] || 'plaintext';
+    generatedCodeEditor.setOption("mode", newMode);
+  });
+
+  // Update generatedCodeEditor mode when transcription language changes
+  document.getElementById("transcriptionLanguage").addEventListener("change", function() {
+    const newMode = languageModes[this.value] || 'plaintext';
+    generatedCodeEditor.setOption("mode", newMode);
+  });
+
+  // Download content as text file
+  function downloadGeneratedCode() {
+    const content = generatedCodeEditor.getValue();
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "{{ ellma_script.script_name }}.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url); // Clean up the URL object
+  }
+
+  // Function to copy generated code content to clipboard
+  function copyGeneratedCode() {
+    const content = generatedCodeEditor.getValue();
+    navigator.clipboard.writeText(content).then(() => {
+      // Show success message (optional)
+      Swal.fire({
+        title: 'Copied!',
+        text: 'Generated code has been copied to clipboard.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
+    }).catch(err => {
+      console.error('Error copying text: ', err);
     });
   }
 </script>
@@ -318,6 +404,8 @@
     <!-- Compile Form -->
     <form method="post" action="{% url 'ellma:compile-script' ellma_script.id %}">
       {% csrf_token %}
+      <input type="hidden" name="script_content" id="scriptContentInputCompilation">
+      <input type="hidden" name="transcription_language" id="transcriptionLanguageInputCompilation">
       <button type="submit" class="btn btn-link btn-primary p-2 rounded ms-12">
         <i class="fa fa-play text-success me-2" style="font-size: 24px;"></i>
         <strong>Compile Script</strong>
@@ -328,6 +416,33 @@
   <hr>
 
   <!-- Code Editor -->
+  <h5 class="mt-8"><strong>
+      <i class="fa fa-code me-2"></i>
+      Editor Space
+    </strong>
+  </h5>
   <textarea id="editor" hidden>{{ ellma_script.ellma_script_content }}</textarea>
+
+  {% if ellma_script.ellma_transcribed_content %}
+    <hr>
+    <div class="bg-label-primary p-4 rounded">
+      <h5 class="mt-8 bg-body p-4 rounded"><strong>
+        <i class="fa fa-magic-wand-sparkles me-2"></i>
+        Generated Code Output (Read-Only)
+      </strong></h5>
+      <textarea class="" id="generatedCodeEditor">{{ ellma_script.ellma_transcribed_content }}</textarea>
+      <div class="d-flex justify-content-evenly align-items-center">
+        <button type="button" class="btn btn-success rounded mt-3 mb-3 w-50 mx-12" onclick="downloadGeneratedCode()">
+          <i class="fa fa-download me-2"></i>
+          <strong>Download Generated Code as Text</strong>
+        </button>
+        <button type="button" class="btn btn-secondary rounded mt-3 mb-3 w-50 mx-12" onclick="copyGeneratedCode()">
+          <i class="fa fa-copy me-2"></i>
+          <strong>Copy Generated Code as Text</strong>
+        </button>
+      </div>
+    </div>
+  {% endif %}
+
 </div>
 {% endblock content %}

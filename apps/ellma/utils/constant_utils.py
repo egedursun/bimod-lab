@@ -21,7 +21,7 @@ ELLMA_SCRIPT_ADMIN_SEARCH = ['script_name', 'organization__name', 'llm_model__ni
 ELLMA_SCRIPT_ADMIN_FILTER = ['organization', 'llm_model', 'created_at', 'updated_at']
 
 ELLMA_TRANSCRIPTION_LANGUAGES = [
-    ('python3', 'Python 3'),
+    ('python', 'Python'),
     ('javascript', 'JavaScript'),
     ('typescript', 'TypeScript'),
     ('java', 'Java'),
@@ -43,24 +43,24 @@ ELLMA_TRANSCRIPTION_LANGUAGES = [
 
 
 class EllmaTranscriptionLanguagesNames:
-    PYTHON3 = 'Python 3'
-    JAVASCRIPT = 'JavaScript'
-    TYPESCRIPT = 'TypeScript'
-    JAVA = 'Java'
-    CSHARP = 'C#'
-    C = 'C'
-    CPP = 'C++'
-    GO = 'Go'
-    RUST = 'Rust'
-    RUBY = 'Ruby'
-    PHP = 'PHP'
-    SWIFT = 'Swift'
-    KOTLIN = 'Kotlin'
-    SCALA = 'Scala'
-    R = 'R'
-    PERL = 'Perl'
-    BASH = 'Bash'
-    POWERSHELL = 'PowerShell'
+    PYTHON3 = 'python3'
+    JAVASCRIPT = 'javascript'
+    TYPESCRIPT = 'typescript'
+    JAVA = 'java'
+    CSHARP = 'csharp'
+    C = 'c'
+    CPP = 'cpp'
+    GO = 'go'
+    RUST = 'rust'
+    RUBY = 'ruby'
+    PHP = 'php'
+    SWIFT = 'swift'
+    KOTLIN = 'kotlin'
+    SCALA = 'scala'
+    R = 'r'
+    PERL = 'perl'
+    BASH = 'bash'
+    POWERSHELL = 'powershell'
 
     @staticmethod
     def as_list():
