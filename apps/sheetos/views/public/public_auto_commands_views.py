@@ -29,7 +29,6 @@ logger = logging.getLogger(__name__)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class SheetosView_PublicGenerateViaAutoCommand(View):
-
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 

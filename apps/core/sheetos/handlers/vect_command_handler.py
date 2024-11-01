@@ -172,6 +172,7 @@ def handle_vect_command(xc, command: str) -> str:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for Sheetos. Error: {e}")
         pass
 
+    choice_message_content = choice_message_content.replace('```', "").replace("`", "")
     output = choice_message_content
     return output, error
 

@@ -1,9 +1,6 @@
 ### TODO LIST
 
-- [ ] Integrate Sheetos for local use
 - [ ] Integrate Sheetos for Google Docs use.
-- [ ] Make sure user permissions are intact.
-- [ ] Integrate DELETE ALL page on user settings page for sheetos.
 
 **BUGS:**
 - [ ] Bug regarding the Select2 fields must be resolved.
@@ -14,6 +11,7 @@
 - 
 
 **ENHANCEMENTS:**
+- [ ] Add PAGINATION to the drafting and sheetos pages.
 - [ ] Blog app must be converted to public. (~3-4 hours of work ?)
 
 ---

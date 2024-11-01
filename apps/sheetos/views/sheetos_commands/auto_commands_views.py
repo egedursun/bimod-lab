@@ -31,7 +31,6 @@ logger = logging.getLogger(__name__)
 
 
 class SheetosView_GenerateViaAutoCommand(LoginRequiredMixin, View):
-
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 

@@ -41,6 +41,7 @@ class SheetosView_DocumentDelete(LoginRequiredMixin, View):
             return redirect('sheetos:documents_list', folder_id=self.kwargs['folder_id'])
         ##############################
 
+        print("test")
         folder_id = self.kwargs['folder_id']
         document_id = self.kwargs['document_id']
         document = get_object_or_404(SheetosDocument, id=document_id)

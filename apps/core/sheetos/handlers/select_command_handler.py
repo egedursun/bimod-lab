@@ -105,5 +105,6 @@ def handle_select_command(xc, command: str, selected_data: str) -> str:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for SELECT command cost. Error: {e}")
         pass
 
+    choice_message_content = choice_message_content.replace('```', "").replace("`", "")
     output = choice_message_content
     return output, error

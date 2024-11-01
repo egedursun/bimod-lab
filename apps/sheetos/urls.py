@@ -40,7 +40,7 @@ urlpatterns = [
     path("folders/list/", SheetosView_FolderList.as_view(
         template_name="sheetos/folder/sheetos_folder_list.html"), name="folders_list"),
     path("folders/delete/<int:folder_id>/", SheetosView_FolderDelete.as_view(
-        template_name="sheetos/folder/sheetos_folder_list.html"), name="folders_delete"),
+        template_name="sheetos/folder/sheetos_folder_delete.html"), name="folders_delete"),
     path("folders/create/", SheetosView_FolderCreate.as_view(), name="folders_create"),
     path("folders/update/<int:folder_id>/", SheetosView_FolderUpdate.as_view(
         template_name="sheetos/folder/sheetos_folder_update.html"), name="folders_update"),

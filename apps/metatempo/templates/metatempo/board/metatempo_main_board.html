@@ -193,7 +193,7 @@
                     <ul class="list-group">
                         {% for log in member_logs %}
                             <hr>
-                            <li class="card user-log mb-8 mt-8 p-4 border border-dark border-4 rounded shadow-sm btn-primary" style="border-radius: 10px;" data-user="{{ log.user.id }}" data-date="{{ log.timestamp|date:'Y-m-d' }}">
+                            <li class="card user-log mb-8 mt-8 p-4 border border-dark border-4 rounded shadow-sm bg-card" style="border-radius: 10px;" data-user="{{ log.user.id }}" data-date="{{ log.timestamp|date:'Y-m-d' }}">
                               <!-- Header: Date and Username -->
                               <div class="d-flex justify-content-between bg-body rounded p-4 align-items-center mb-4">
                                   <div class="d-flex align-items-center btn-primary p-2 rounded text-muted">
@@ -208,7 +208,7 @@
 
                               <!-- Activity Summary Section -->
                               <div class="p-4 mb-4 mb-3 bg-body rounded">
-                                  <div class="bg-primary p-2 rounded mb-6 mt-2">
+                                  <div class="bg-primary p-2 rounded mb-6 mt-2 text-white">
                                     <strong>
                                       <i class="fa fa-list me-2"></i>
                                       Activity Summary
@@ -222,7 +222,7 @@
                               <div class="row ms-0 me-0 bg-body">
                                 <!-- Tags Section -->
                                 <div class="col-4 p-4 mb-3 rounded">
-                                    <div class="bg-primary p-2 rounded mb-6 mt-2">
+                                    <div class="bg-primary p-2 rounded mb-6 mt-2 text-white">
                                       <strong>
                                         <i class="fa fa-tags me-2"></i>
                                         Tags and Key Insights
@@ -296,7 +296,7 @@
                     <ul class="list-group">
                         {% for log in daily_logs %}
                             <hr>
-                            <li class="card user-log-daily mb-8 mt-8 p-4 border border-dark border-4 rounded shadow-sm btn-primary" style="border-radius: 10px;" data-user="{{ log.user.id }}" data-date="{{ log.datestamp|date:'Y-m-d' }}">
+                            <li class="card user-log-daily mb-8 mt-8 p-4 rounded shadow-sm bg-card" style="border-radius: 10px;" data-user="{{ log.user.id }}" data-date="{{ log.datestamp|date:'Y-m-d' }}">
                                 <!-- Header: Date and Username -->
                                 <div class="d-flex justify-content-between bg-body rounded p-4 align-items-center mb-4">
                                     <div class="d-flex align-items-center btn-primary p-2 rounded text-muted">
@@ -312,7 +312,7 @@
                                 <div class="row ms-0 me-0 bg-body">
                                     <!-- Daily Activity Summary Section -->
                                     <div class="col-4 p-4 mb-3 rounded">
-                                        <div class="bg-primary p-2 rounded mb-6 mt-2">
+                                        <div class="bg-primary text-white p-2 rounded mb-6 mt-2">
                                             <strong>
                                                 <i class="fa fa-list-alt me-2"></i>
                                                 Daily Activity Summary
@@ -383,7 +383,7 @@
                     <ul class="list-group">
                         {% for log in overall_logs %}
                             <hr>
-                            <li class="card overall-log mb-8 mt-8 p-4 border border-dark border-4 rounded shadow-sm btn-primary" style="border-radius: 10px;" data-date="{{ log.datestamp|date:'Y-m-d' }}">
+                            <li class="card overall-log mb-8 mt-8 p-4 border border-dark border-4 rounded shadow-sm bg-card" style="border-radius: 10px;" data-date="{{ log.datestamp|date:'Y-m-d' }}">
                                 <!-- Header: Date -->
                                 <div class="d-flex justify-content-between bg-body rounded p-4 align-items-center mb-4">
                                     <div class="d-flex align-items-center btn-primary p-2 rounded text-muted">
@@ -395,7 +395,7 @@
                                 <div class="row ms-0 me-0 bg-body">
                                     <!-- Overall Activity Summary Section -->
                                     <div class="col-4 p-4 mb-3 rounded">
-                                        <div class="bg-primary p-2 rounded mb-6 mt-2">
+                                        <div class="bg-primary p-2 rounded mb-6 mt-2 text-white">
                                             <strong>
                                                 <i class="fa fa-list-alt me-2"></i>
                                                 Overall Activity Summary

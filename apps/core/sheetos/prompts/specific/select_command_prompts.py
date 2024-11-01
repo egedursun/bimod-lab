@@ -43,7 +43,7 @@ def build_sheetos_action__select_prompt(user_query: str, selected_data: str):
         **SELECTED DATA:**
 
         '''
-        {selected_text}
+        {selected_data}
         '''
 
         ---
