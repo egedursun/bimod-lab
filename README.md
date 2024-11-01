@@ -15,6 +15,7 @@
 - 
 
 **ENHANCEMENTS:**
+- [ ] Adding the bonuses on balance purchases.
 - [ ] Blog app must be converted to public. (~3-4 hours of work ?)
 
 ---
@@ -342,7 +343,7 @@ TOTAL COSTS: $13,000 / year (~$1,100 / month) ($550 per month per co-founder)
 
 **Headhunting & Recruitment:**
 
-[-] Huseyin - Operations Project Management (net: $2,000)
+[-] Hüseyin - Operations Project Management (net: $2,000)
 [-] Ege - Artificial Intelligence Engineer & Tech Project Management (net: $2,000)
 [-] Selin - Social Media Management & Digital Marketing & Legal Consultancy (net: $2,000)
 [-] Emre - Marketing & Sales, Business Development (net: $2,000)

@@ -440,6 +440,7 @@ EXCLUDED_PAGES = [
     "/electron_copilot_releases/*",
     "/docs/*",
     "/faq/*",
+    "/app/blog_app/*",
     "/not_accredited/*",
     "/bimod_endeavours/*",
     "/integration_to_organizations/*",

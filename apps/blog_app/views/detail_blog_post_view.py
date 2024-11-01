@@ -16,20 +16,21 @@
 #
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
 from apps.blog_app.models import BlogPost
-from web_project import TemplateLayout
-
+from web_project import TemplateLayout, TemplateHelper
 
 logger = logging.getLogger(__name__)
 
 
-class BlogPostView_Detail(LoginRequiredMixin, TemplateView):
+class BlogPostView_Detail(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context.update({
+            "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+        })
         post_slug = self.kwargs.get('slug')
         post = get_object_or_404(BlogPost, slug=post_slug, status='published')
         context['post'] = post

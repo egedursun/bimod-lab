@@ -35,22 +35,18 @@
 
 {% block content %}
 
-  {% if messages %}
-    {% for message in messages %}
-      <div
-        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-        role="alert">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
+  <section class="section-py over first-section-pt" style="width: 100vw; margin-left: 10%; margin-top: 5%; margin-bottom: 5%;">
 
-  <hr>
-
-  <section class="section-py first-section-pt">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8">
+    <div class="container" style="width: 100vw; ">
+      <a href="{% url 'blog_app:post_list' %}" class="btn btn-primary w-25 mt-8 mb-4">
+        <strong>
+          <i class="ti ti-home me-2"></i>
+          Back to Blog List
+        </strong>
+      </a>
+      <hr>
+      <div class="row card p-12 mt-4 rounded" style="width: 100vw; display: grid; grid-template-columns: 4fr 2fr; gap: 0;">
+        <div class="w-100">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-style1 mb-2">
               <li class="breadcrumb-item">
@@ -59,9 +55,13 @@
               <li class="breadcrumb-item active"><strong>{{ post.title }}</strong></li>
             </ol>
           </nav>
-          <h4 class="mb-2">{{ post.title }}</h4>
+          <hr>
+          <h2 class="mb-2 mt-8">
+            <strong>{{ post.title }}</strong>
+          </h2>
+          <hr>
           <p>
-            <i class="ti ti-user me-2"></i>
+            <i class="ti ti-user me-2 mt-4"></i>
             {{ post.author.username }}
           </p>
           <p>
@@ -76,17 +76,16 @@
               </span>
             {% endfor %}
           </p>
+          <hr>
+          <div class="mt-12 mb-12 " style="width: 50%; height: auto;">
+            <img src="{% if post.thumbnail_image %}{{ post.thumbnail_image.url }}{% else %}{% static 'img/custom-illustrations-v2/i2-1.png' %}{% endif %}"
+                 alt="{{ post.title }}" class="img-fluid rounded border border-primary border-4 rounded">
+          </div>
           <hr class="my-6">
-          {% if post.thumbnail_image %}
-            <div class="my-6">
-              <img src="{{ post.thumbnail_image.url }}" alt="{{ post.title }}"
-                   class="img-fluid w-50 rounded float-start m-4">
-            </div>
-          {% endif %}
           <p style="text-align: justify;">{{ post.content|safe|linebreaksbr }}</p>
           <hr class="my-6">
         </div>
-        <div class="col-lg-4">
+        <div class="w-100">
           <div class="bg-lighter py-2 px-4 rounded">
             <h6 class="mb-0">
               <i class="ti ti-link me-2"></i>
@@ -101,6 +100,15 @@
                   <span class="text-truncate me-2">{{ related_post.title }}</span>
                   <i class="ti ti-chevron-right scaleX-n1-rtl text-muted"></i>
                 </a>
+              </li>
+            {% empty %}
+              <li class="mb-4">
+                <div class="alert alert-info p-4 rounded" role="alert">
+                  <strong>
+                    <i class="fa fa-info-circle me-2"></i>
+                    No related content found for this post (yet).
+                  </strong>
+                </div>
               </li>
             {% endfor %}
           </ul>

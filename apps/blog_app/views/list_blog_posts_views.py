@@ -16,20 +16,23 @@
 #
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views.generic import TemplateView
 
 from apps.blog_app.models import BlogPost
-from web_project import TemplateLayout
+from web_project import TemplateLayout, TemplateHelper
 
 logger = logging.getLogger(__name__)
 
 
-class BlogPostView_List(LoginRequiredMixin, TemplateView):
+class BlogPostView_List(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context.update({
+            "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+            'layout_content': "compact",
+        })
         search_query = self.request.GET.get('search', '')
 
         if search_query:
