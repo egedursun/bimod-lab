@@ -1,6 +1,10 @@
 ### TODO LIST
 
-- [ ] Integrate Sheetos for Google Docs use.
+**DAILY:**
+- [ ] Develop the visuals for the landing page (for new blocks + the new section for the office tools)
+- [ ] Google Docs plugin (drafting) must support bold texts / italics etc.
+- [ ] Integrate Slides to local app.
+- [ ] Integrate Slides to google apps.
 
 **BUGS:**
 - [ ] Bug regarding the Select2 fields must be resolved.
@@ -222,12 +226,12 @@
 - Start Date: 2024-06-29
 - Last Measurement Date: 2024-10-31
 - Total Days: 124
-  - Number of Files: 54,600 ? 
-  - Code Lines: 12,700,000 ?
-  - Comment Lines: 3,800,000 ?
-  - Blank Lines: 2,400,000 ?
-  - TOTAL: 18,900,000 ?
-  - TOTAL RAW CALCULATION: 550,000,000
+  - Number of Files: 59,100
+  - Code Lines: 13,600,000
+  - Comment Lines: 4,100,000
+  - Blank Lines: 2,600,000
+  - TOTAL: 20,300,000
+  - TOTAL RAW CALCULATION: 600,000,000
 
 ---
 

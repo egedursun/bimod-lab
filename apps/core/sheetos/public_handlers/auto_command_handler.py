@@ -94,6 +94,6 @@ def handle_auto_command_public(xc, content: str) -> str:
         logger.error(f"[handle_auto_command] Error calculating AUTO command cost. Error: {e}")
         pass
 
-    choice_message_content = choice_message_content.replace('```', "").replace("`", "")
+    choice_message_content = choice_message_content.replace("```csv", "").replace('```', "").replace("`", "")
     output = choice_message_content
     return output, error

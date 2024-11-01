@@ -32,12 +32,12 @@ def build_sheetos_ops_instruction_prompt():
         - [1] //ai : This command is used to generate an AI-based operation based on the user's spreadsheet and the query
         provided to you by the user. You will use this to generate useful data and/or other operations related to using
         a spreadsheet. This operation is an insertion-only operation and can't be used to replace the content of the
-        spreadsheet.
+        spreadsheet. You must share your output in (CSV) form.
 
         - [2] //auto: This command is used for auto-completion of the spreadsheet content based on the last data of the
         user's spreadsheet. Ideally, you must create at least a couple of instances of next data lines/pieces/atoms by
         predicting the next content  according to the previous content of the user, as well as the information you have
-        about the document.
+        about the document. You must share your output in (CSV) form.
 
         - [3] //nosql: This command is used for you to activate your NoSQL capability tools for generating data based on
         the query user provided. You still need to provide your responses after your NoSQL operations in a form that
@@ -45,7 +45,8 @@ def build_sheetos_ops_instruction_prompt():
 
         - [4] //select: This command is used to select a specific part of the data on the spreadsheet and replace it
         according to the user's prompt. This selected data will of course be provided to you. This is the primary
-        update-operation command users will deliver to you for modifying the data on the spreadsheet.
+        update-operation command users will deliver to you for modifying the data on the spreadsheet. You must share
+        your output in (CSV) form.
 
         - [5] //sql: This command is used for you to activate your SQL capability tools for generating data based on the
          query user provided. You still need to provide your responses after your SQL operations in a form that can be

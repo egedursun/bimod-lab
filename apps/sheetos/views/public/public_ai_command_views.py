@@ -35,6 +35,7 @@ class SheetosView_PublicGenerateViaAICommand(View):
 
     def post(self, request, *args, **kwargs):
         command = request.POST.get('command')
+        print("command: ", command)
         if command is None:
             logger.error(f"AI Command is required.")
             return JsonResponse({"output": None, "message": "AI Command is required."})

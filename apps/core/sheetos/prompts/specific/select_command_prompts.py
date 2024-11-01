@@ -38,6 +38,11 @@ def build_sheetos_action__select_prompt(user_query: str, selected_data: str):
         spreadsheet document, the query of the user, and of course only modify the selected pieces of data. Always
         share your results in plain CSV format.
 
+        !!!!!
+        - **DO NOT** SHARE A DATA THAT'S NOT PROPERLY BUILT IN CSV FORMAT. YOU MUST ONLY SHARE THE SELECTED DATA
+        IN CSV FORMAT.
+        !!!!!
+
         ---
 
         **SELECTED DATA:**

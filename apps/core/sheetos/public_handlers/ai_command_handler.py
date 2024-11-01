@@ -107,6 +107,6 @@ def handle_ai_command_public(xc, content: str, command: str) -> str:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for Sheetos. Error: {e}")
         pass
 
-    choice_message_content = choice_message_content.replace('```', "").replace("`", "")
+    choice_message_content = choice_message_content.replace("```csv", "").replace('```', "").replace("`", "")
     output = choice_message_content
     return output, error

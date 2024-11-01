@@ -59,4 +59,5 @@ class SheetosView_PublicGenerateViaWebCommand(View):
                                             text_content=text_content)
         response_json = xc.execute_web_command(command=command)
         logger.info(f"Web Command was executed for Google Apps Connection: {connection_object}")
+        print("response_json: ", response_json)
         return JsonResponse(response_json)

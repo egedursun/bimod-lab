@@ -35,6 +35,7 @@ class AppendSlashMiddleware:
             and not request.path.startswith('/app/metakanban/meeting/recording/delivery')
             and not request.path.startswith('/app/metatempo/tempo/screenshot/delivery')
             and not request.path.startswith('/app/metatempo/tempo/connection/config')
-            and not request.path.startswith('/app/drafting/public')):
+            and not request.path.startswith('/app/drafting/public')
+            and not request.path.startswith('/app/sheetos/public')):
             return HttpResponsePermanentRedirect(request.path + '/')
         return self.get_response(request)

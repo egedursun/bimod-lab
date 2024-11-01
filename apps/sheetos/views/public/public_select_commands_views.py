@@ -64,4 +64,5 @@ class SheetosView_PublicGenerateViaSelectCommand(View):
                                             text_content=text_content)
         response_json = xc.execute_select_command(selected_data=selected_data, command=command)
         logger.info(f"Select Command was executed for Google Apps Connection: {connection_object}")
+        print("response_json: ", response_json)
         return JsonResponse(response_json)
