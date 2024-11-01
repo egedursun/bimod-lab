@@ -18,6 +18,7 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
@@ -26,7 +27,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingFolder, DraftingDocument
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -47,10 +47,18 @@ class DraftingView_DocumentList(LoginRequiredMixin, TemplateView):
         folder = get_object_or_404(DraftingFolder, id=folder_id)
         documents = DraftingDocument.objects.filter(document_folder=folder)
         assistants = Assistant.objects.filter(organization=folder.organization)
+        paginator = Paginator(documents, 10)
+        page = self.request.GET.get('page')
+
+        try:
+            documents = paginator.page(page)
+        except PageNotAnInteger:
+            documents = paginator.page(1)
+        except EmptyPage:
+            documents = paginator.page(paginator.num_pages)
+
         context['folder'] = folder
         context['documents'] = documents
         context['assistants'] = assistants
         logger.info(f"Drafting Documents in Folder {folder.name} were listed.")
         return context
-
-

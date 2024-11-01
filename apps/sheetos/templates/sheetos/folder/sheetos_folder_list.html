@@ -132,13 +132,8 @@
         </a>
         <p>
           <i class="fa fa-folder"></i>
-          <strong>&nbsp; Number of Folders: </strong> {{ org_data.folders|length }}
+          <strong>&nbsp; Number of Folders: </strong> {{ org_data.folders.paginator.count }}
         </p>
-        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ org_data.organization.id }}"></i>
-        <span data-bs-toggle="collapse" href="#collapse-{{ org_data.organization.id }}" role="button" aria-expanded="false"
-              aria-controls="collapse-{{ org_data.organization.id }}">
-          <strong>&nbsp; See Folders</strong>
-        </span>
       </div>
 
       <!-- Folder Table -->
@@ -153,14 +148,13 @@
                 <th>Meta Context Instructions</th>
                 <th>Created At</th>
                 <th>Actions</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
               {% for folder in org_data.folders %}
                 <tr>
+                  <!-- Folder Details -->
                   <td>
-                    <!-- Folder Icon -->
                     <a href="{% url 'sheetos:documents_list' folder_id=folder.id %}" class="d-flex">
                       <i class="fa fa-folder-open fa-2x"></i>
                       <i class="fa fa-eye fa-1x"></i>
@@ -184,6 +178,48 @@
               {% endfor %}
             </tbody>
           </table>
+
+          <!-- Pagination Controls for Each Organization -->
+          <nav aria-label="Pagination for {{ org_data.organization.name }} folders" class="mt-6">
+            <ul class="pagination justify-content-center">
+              {% if org_data.folders.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page_{{ org_data.organization.id }}=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page_{{ org_data.organization.id }}={{ org_data.folders.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+
+              {% for num in org_data.folders.paginator.page_range %}
+                {% if org_data.folders.number == num %}
+                  <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ num }}</span>
+                  </li>
+                {% elif num > org_data.folders.number|add:'-3' and num < org_data.folders.number|add:'3' %}
+                  <li class="page-item"><a class="page-link" href="?page_{{ org_data.organization.id }}={{ num }}">{{ num }}</a></li>
+                {% endif %}
+              {% endfor %}
+
+              {% if org_data.folders.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page_{{ org_data.organization.id }}={{ org_data.folders.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page_{{ org_data.organization.id }}={{ org_data.folders.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+
         {% else %}
           <div class="alert alert-warning">
             <i class="fa fa-exclamation-triangle me-2"></i>

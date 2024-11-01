@@ -119,6 +119,7 @@
   {% for org_data in org_folders %}
     <div class="card mb-6 mt-4">
       <div class="card-header border-bottom">
+        <!-- Organization Header with Collapsible Label -->
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ org_data.organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-{{ org_data.organization.id }}">
           <h4>
@@ -131,7 +132,7 @@
         </a>
         <p>
           <i class="fa fa-folder"></i>
-          <strong>&nbsp; Number of Folders: </strong> {{ org_data.folders|length }}
+          <strong>&nbsp; Number of Folders: </strong> {{ org_data.page_obj.paginator.count }}
         </p>
         <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ org_data.organization.id }}"></i>
         <span data-bs-toggle="collapse" href="#collapse-{{ org_data.organization.id }}" role="button" aria-expanded="false"
@@ -140,9 +141,9 @@
         </span>
       </div>
 
-      <!-- Folder Table -->
+      <!-- Folder Table Inside Collapsible Section -->
       <div id="collapse-{{ org_data.organization.id }}" class="collapse p-8 overflow-auto">
-        {% if org_data.folders %}
+        {% if org_data.page_obj %}
           <table class="table">
             <thead>
               <tr>
@@ -152,30 +153,30 @@
                 <th>Meta Context Instructions</th>
                 <th>Created At</th>
                 <th>Actions</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
-              {% for folder in org_data.folders %}
+              {% for folder in org_data.page_obj %}
                 <tr>
                   <td>
-                    <!-- Folder Icon -->
                     <a href="{% url 'drafting:documents_list' folder_id=folder.id %}" class="d-flex">
                       <i class="fa fa-folder-open fa-2x"></i>
                       <i class="fa fa-eye fa-1x"></i>
                     </a>
                   </td>
                   <td><strong>{{ folder.name }}</strong></td>
-                  <td style="min-width: 500px; max-width: 500px; text-align: justify;"><p style="max-height: 200px; overflow: auto;">{{ folder.description }}</p></td>
-                  <td style="min-width: 500px; max-width: 500px; text-align: justify;"><p style="max-height: 200px; overflow: auto;">{{ folder.meta_context_instructions }}</p></td>
+                  <td style="min-width: 500px; max-width: 500px; text-align: justify;">
+                    <p style="max-height: 200px; overflow: auto;">{{ folder.description }}</p>
+                  </td>
+                  <td style="min-width: 500px; max-width: 500px; text-align: justify;">
+                    <p style="max-height: 200px; overflow: auto;">{{ folder.meta_context_instructions }}</p>
+                  </td>
                   <td>{{ folder.created_at|date:"Y-m-d H:i" }}</td>
-                  <td>
-                    <a href="{% url 'drafting:folders_update' folder.id %}" class="btn btn-sm btn-warning">
+                  <td style="min-width: 300px; max-width: 300px;">
+                    <a href="{% url 'drafting:folders_update' folder.id %}" class="btn btn-sm btn-warning me-4">
                       <i class="fa fa-edit me-2"></i> <strong>Edit</strong>
                     </a>
-                  </td>
-                  <td>
-                    <a href="{% url 'drafting:folders_delete' folder.id %}" class="btn btn-sm btn-danger">
+                    <a href="{% url 'drafting:folders_delete' folder.id %}" class="btn btn-sm btn-danger me-4">
                       <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
                     </a>
                   </td>
@@ -183,6 +184,32 @@
               {% endfor %}
             </tbody>
           </table>
+
+          <!-- Pagination Controls -->
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-6">
+              {% if org_data.page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page_{{ org_data.organization.id }}={{ org_data.page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+              {% for num in org_data.page_obj.paginator.page_range %}
+                <li class="page-item {% if org_data.page_obj.number == num %}active{% endif %}">
+                  <a class="page-link" href="?page_{{ org_data.organization.id }}={{ num }}">{{ num }}</a>
+                </li>
+              {% endfor %}
+              {% if org_data.page_obj.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page_{{ org_data.organization.id }}={{ org_data.page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+
         {% else %}
           <div class="alert alert-warning">
             <i class="fa fa-exclamation-triangle me-2"></i>

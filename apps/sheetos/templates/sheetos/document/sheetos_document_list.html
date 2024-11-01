@@ -143,60 +143,101 @@
 
   <!-- Document Listing -->
   <div class="card mb-6 mt-4">
-    <div class="card-header border-bottom">
-      <h5>
-        <strong>{{ folder.name }}</strong>
-      </h5>
-    </div>
-    <div class="card-body p-8 overflow-auto">
-      {% if documents %}
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Enter Spreadsheet</th>
-              <th>Document Title</th>
-              <th>Target Audience</th>
-              <th>Tone</th>
-              <th>Created At</th>
-              <th>Actions</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for document in documents %}
-              <tr>
-                <td>
-                  <a href="{% url 'sheetos:documents_detail' folder.id document.id %}" class="d-flex">
-                    <i class="fa fa-file-alt fa-2x"></i>
-                    <i class="fa fa-eye fa-1x"></i>
-                  </a>
-                </td>
-                <td><strong>{{ document.document_title }}</strong></td>
-                <td>{{ document.target_audience|default:'N/A' }}</td>
-                <td>{{ document.tone|default:'N/A' }}</td>
-                <td>{{ document.created_at|date:"Y-m-d H:i" }}</td>
-                <td>
-                  <a href="{% url 'sheetos:documents_update' folder.id document.id %}" class="btn btn-sm btn-warning">
-                    <i class="fa fa-edit me-2"></i> <strong>Update Config</strong>
-                  </a>
-                </td>
-                <td>
-                  <a href="{% url 'sheetos:documents_delete' folder.id document.id %}" class="btn btn-sm btn-danger document-delete-btn" data-folder-id="{{ folder.id }}" data-document-id="{{ document.id }}">
-                    <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
-                  </a>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% else %}
-        <div class="alert alert-warning">
-          <i class="fa fa-exclamation-triangle me-2"></i>
-          <strong>No documents available in this folder.</strong>
-        </div>
-      {% endif %}
-    </div>
+  <div class="card-header border-bottom">
+    <h5>
+      <strong>{{ folder.name }}</strong>
+    </h5>
   </div>
+  <div class="card-body p-8 overflow-auto">
+    {% if documents %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Enter Spreadsheet</th>
+            <th>Document Title</th>
+            <th>Target Audience</th>
+            <th>Tone</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for document in documents %}
+            <tr>
+              <td>
+                <a href="{% url 'sheetos:documents_detail' folder.id document.id %}" class="d-flex">
+                  <i class="fa fa-file-alt fa-2x"></i>
+                  <i class="fa fa-eye fa-1x"></i>
+                </a>
+              </td>
+              <td><strong>{{ document.document_title }}</strong></td>
+              <td>{{ document.target_audience|default:'N/A' }}</td>
+              <td>{{ document.tone|default:'N/A' }}</td>
+              <td>{{ document.created_at|date:"Y-m-d H:i" }}</td>
+              <td>
+                <a href="{% url 'sheetos:documents_update' folder.id document.id %}" class="btn btn-sm btn-warning">
+                  <i class="fa fa-edit me-2"></i> <strong>Update Config</strong>
+                </a>
+              </td>
+              <td>
+                <a href="{% url 'sheetos:documents_delete' folder.id document.id %}" class="btn btn-sm btn-danger document-delete-btn" data-folder-id="{{ folder.id }}" data-document-id="{{ document.id }}">
+                  <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Pagination Controls -->
+      <nav aria-label="Document pagination" class="mt-6">
+        <ul class="pagination justify-content-center">
+          {% if documents.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page=1" aria-label="First">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ documents.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          {% endif %}
+
+          {% for num in documents.paginator.page_range %}
+            {% if documents.number == num %}
+              <li class="page-item active" aria-current="page">
+                <span class="page-link">{{ num }}</span>
+              </li>
+            {% elif num > documents.number|add:'-3' and num < documents.number|add:'3' %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if documents.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ documents.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ documents.paginator.num_pages }}" aria-label="Last">
+                <span aria-hidden="true">&raquo;&raquo;</span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+
+    {% else %}
+      <div class="alert alert-warning">
+        <i class="fa fa-exclamation-triangle me-2"></i>
+        <strong>No documents available in this folder.</strong>
+      </div>
+    {% endif %}
+  </div>
+</div>
 
 </div>
 {% endblock %}

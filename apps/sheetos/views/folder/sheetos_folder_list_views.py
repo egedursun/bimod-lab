@@ -18,6 +18,7 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
@@ -45,10 +46,21 @@ class SheetosView_FolderList(LoginRequiredMixin, TemplateView):
         org_folders = []
         for org in user_orgs:
             folders = SheetosFolder.objects.filter(organization=org)
+            paginator = Paginator(folders, 10)
+            page = self.request.GET.get(f'page_{org.id}')
+            try:
+                folders = paginator.page(page)
+            except PageNotAnInteger:
+                folders = paginator.page(1)
+            except EmptyPage:
+                folders = paginator.page(paginator.num_pages)
             org_folders.append({
                 'organization': org,
-                'folders': folders
+                'folders': folders,
+                'paginator': paginator,
+                'page_obj': folders,
             })
+
         context['org_folders'] = org_folders
         context['organizations'] = user_orgs
         logger.info(f"Sheetos Folders were listed for User: {self.request.user.id}.")

@@ -11,7 +11,6 @@
 - 
 
 **ENHANCEMENTS:**
-- [ ] Add PAGINATION to the drafting and sheetos pages.
 - [ ] Blog app must be converted to public. (~3-4 hours of work ?)
 
 ---
