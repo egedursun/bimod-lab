@@ -29,7 +29,11 @@ from apps.llm_transaction.utils import InvoiceTypesNames, AcceptedMethodsOfPayme
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from auth.models import PromoCode
-
+from config.settings import BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_1, \
+    BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_1000_LT_5000, BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_2, \
+    BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_5000_LT_10000, BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_3, \
+    BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_10000_LT_50000, BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_4, \
+    BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_50000
 
 logger = logging.getLogger(__name__)
 
@@ -48,12 +52,26 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
 
         org_id = request.POST.get('org_id')
         org = get_object_or_404(Organization, id=org_id, users__in=[context_user])
-        topup_amount = request.POST.get('topup_amount')
+        topup_amount = float(request.POST.get('topup_amount'))
         promo_code = request.POST.get('promo_code')
         if float(topup_amount) <= 0:
             logger.error(f"User: {context_user.id} tried to top up with an invalid amount: {topup_amount}")
             messages.error(request, 'Top up amount must be greater than zero.')
             return redirect('llm_transaction:list')
+
+        # Addition bonuses
+        bulk_addition_bonus_percentage = 0
+        if topup_amount >= int(BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_1):
+            bulk_addition_bonus_percentage = int(BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_1000_LT_5000)
+        if topup_amount >= int(BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_2):
+            bulk_addition_bonus_percentage = int(BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_5000_LT_10000)
+        if topup_amount >= int(BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_3):
+            bulk_addition_bonus_percentage = int(BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_10000_LT_50000)
+        if topup_amount >= int(BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_4):
+            bulk_addition_bonus_percentage = int(BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_50000)
+        bulk_addition_bonus = float(float(topup_amount) * (bulk_addition_bonus_percentage) / 100)
+        messages.success(request, f'You have received a {bulk_addition_bonus_percentage}% (${round(bulk_addition_bonus, 2)}) bonus for adding ${topup_amount} to your account.')
+        topup_amount += bulk_addition_bonus
 
         bonus_pct_referrer, bonus_pct_referee = 0, 0
         promo_code = PromoCode.objects.filter(code=promo_code).first()
@@ -87,6 +105,7 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
             topup_amount_without_bonus = topup_amount
             topup_amount += float(float(topup_amount) * (bonus_pct_referee) / 100)
             org.balance += decimal.Decimal.from_float(topup_amount)
+            org.balance = round(org.balance, 4)
             org.save()
 
             TransactionInvoice.objects.create(

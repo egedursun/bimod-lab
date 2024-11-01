@@ -37,7 +37,7 @@ class Organization(models.Model):
                                         related_name="organization_created_by_users", blank=True, null=True)
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                              related_name="organization_last_updated_by_users", blank=True, null=True)
-    balance = models.DecimalField(max_digits=10, decimal_places=6, default=0.000000)
+    balance = models.DecimalField(max_digits=100, decimal_places=6, default=0.000000)
     organization_image_save_path = 'organization_images/%Y/%m/%d/'
     organization_image = models.ImageField(upload_to=organization_image_save_path, blank=True, max_length=1000,
                                            null=True)

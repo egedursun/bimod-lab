@@ -16,7 +16,6 @@
 
 **ENHANCEMENTS:**
 - [ ] Adding the bonuses on balance purchases.
-- [ ] Blog app must be converted to public. (~3-4 hours of work ?)
 
 ---
 

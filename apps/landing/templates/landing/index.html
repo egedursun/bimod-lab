@@ -76,7 +76,7 @@
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h3.png' %}" class="" width="70%"
                style="position: absolute; top: 1500px; right:100px; opacity: 0.15; rotate: 0deg" alt="Main page illustration 9">
 
-          <div class="hero-text-box text-center position-relative">
+          <div class="hero-text-box text-center position-relative" style="min-width: 50vw;">
             <h1 class="text-primary hero-title display-1 fw-extrabold" style="font-size: 7.5vw;">
               <strong>{% get_theme_variables 'template_name' %}</strong></h1>
             <h1 class="text-primary hero-title display-6 fw-extrabold" style="font-size: 2.5vw;">
@@ -88,36 +88,39 @@
               of different <br> multi-modality tools and tailor-made integrations to automate workflows at every scale.
             </h2>
             <div class="landing-hero-btn d-inline-block position-relative">
-            <span class="hero-btn-item position-absolute d-none d-md-flex fw-medium"><strong><span
-              class="bg-label-primary rounded p-1 ms-1 me-1">$100</span> FREE CREDITS</strong>
-              <img src="{% static 'img/front-pages/icons/Join-community-arrow.png' %}" alt="Join community arrow"
-                   class="scaleX-n1-rtl"/></span>
-              <a href="{% url 'login' %}" class="btn btn-success btn-lg mt-8" style="min-width: 20vw;">
+              <a href="{% url 'login' %}" class="btn btn-success btn-lg mt-8 mx-2" style="min-width: 20vw;">
                 <strong>
                   <i class="fa fa-rocket me-2"></i>
                   Launch BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>
                 </strong>
               </a>
             </div>
-            <a href="{% url 'landing:bimod_endeavours' %}" class="btn btn-primary btn-lg mt-8"
+            <a href="{% url 'landing:bimod_endeavours' %}" class="btn btn-primary btn-lg mt-8 mx-2"
                style="min-width: 20vw;">
               <strong>
                 <i class="fa fa-building me-2"></i>
                 BMD<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Holdings
               </strong>
             </a>
-            <a href="{% url 'landing:integration_to_organizations' %}" class="btn btn-primary btn-lg mt-8"
+            <a href="{% url 'landing:integration_to_organizations' %}" class="btn btn-primary btn-lg mx-2 mt-8"
                style="min-width: 20vw;">
               <strong>
                 <i class="fa fa-weight-scale me-2"></i>
                 Tailored Integrations
               </strong>
             </a>
-            <a href="https://calendly.com/bimod-sales-team/60min" target="_blank" class="btn btn-instagram btn-lg mt-8 border-primary rounded"
+            <a href="https://calendly.com/bimod-sales-team/60min" target="_blank" class="btn btn-instagram btn-lg mt-8 mx-2"
                style="min-width: 20vw;">
               <strong>
                 <i class="fa fa-magic-wand-sparkles me-2"></i>
                 Request Demo
+              </strong>
+            </a>
+            <a href="{% url 'blog_app:list'" target="_blank" class="btn btn-primary btn-lg mt-8 mx-2 border-primary rounded"
+               style="min-width: 20vw;">
+              <strong>
+                <i class="fa fa-newspaper me-2"></i>
+                Blog
               </strong>
             </a>
           </div>
