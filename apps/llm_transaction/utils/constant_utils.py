@@ -68,6 +68,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("generate-video", "Generate Video"),
     ("ellma-scripting", "Ellma Scripting"),
     ("drafting", "Drafting"),
+    ("sheetos", "Sheetos"),
     ("hadron-prime", "Hadron Prime"),
     ("smart-contract-creation", "Smart Contract Creation"),
     ("binexus", "Binexus"),
@@ -122,6 +123,7 @@ class LLMTransactionSourcesTypesNames:
     GENERATE_VIDEO = "generate-video"
     ELLMA_SCRIPTING = "ellma-scripting"
     DRAFTING = "drafting"
+    SHEETOS = "sheetos"
     HADRON_PRIME = "hadron-prime"
     SMART_CONTRACT_CREATION = "smart-contract-creation"
     BINEXUS = "binexus"
@@ -169,6 +171,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.REASONING,
             LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING,
             LLMTransactionSourcesTypesNames.DRAFTING,
+            LLMTransactionSourcesTypesNames.SHEETOS,
             LLMTransactionSourcesTypesNames.HADRON_PRIME,
             LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
             LLMTransactionSourcesTypesNames.BINEXUS,

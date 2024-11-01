@@ -314,6 +314,16 @@ class PermissionNames:
     LIST_DRAFTING_DOCUMENTS = 'list_drafting_documents'
     DELETE_DRAFTING_DOCUMENTS = 'delete_drafting_documents'
 
+    ADD_SHEETOS_FOLDERS = 'add_sheetos_folders'
+    UPDATE_SHEETOS_FOLDERS = 'update_sheetos_folders'
+    LIST_SHEETOS_FOLDERS = 'list_sheetos_folders'
+    DELETE_SHEETOS_FOLDERS = 'delete_sheetos_folders'
+
+    ADD_SHEETOS_DOCUMENTS = 'add_sheetos_documents'
+    UPDATE_SHEETOS_DOCUMENTS = 'update_sheetos_documents'
+    LIST_SHEETOS_DOCUMENTS = 'list_sheetos_documents'
+    DELETE_SHEETOS_DOCUMENTS = 'delete_sheetos_documents'
+
     CREATE_HADRON_SYSTEMS = 'create_hadron_systems'
     LIST_HADRON_SYSTEMS = 'list_hadron_systems'
     UPDATE_HADRON_SYSTEMS = 'update_hadron_systems'
@@ -655,6 +665,16 @@ PERMISSION_TYPES = [
     ('update_drafting_documents', 'Update Drafting Documents'),
     ('list_drafting_documents', 'List Drafting Documents'),
     ('delete_drafting_documents', 'Delete Drafting Documents'),
+
+    ('add_sheetos_folders', 'Add Sheetos Folders'),
+    ('update_sheetos_folders', 'Update Sheetos Folders'),
+    ('list_sheetos_folders', 'List Sheetos Folders'),
+    ('delete_sheetos_folders', 'Delete Sheetos Folders'),
+
+    ('add_sheetos_documents', 'Add Sheetos Documents'),
+    ('update_sheetos_documents', 'Update Sheetos Documents'),
+    ('list_sheetos_documents', 'List Sheetos Documents'),
+    ('delete_sheetos_documents', 'Delete Sheetos Documents'),
 
     ('create_hadron_systems', 'Create Hadron Systems'),
     ('list_hadron_systems', 'List Hadron Systems'),

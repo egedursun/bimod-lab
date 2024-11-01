@@ -1,12 +1,15 @@
 ### TODO LIST
 
-- [ ] Start implementing the Google Office tools. (~3-4 days of work ?)
+- [ ] Integrate Sheetos for local use
+- [ ] Integrate Sheetos for Google Docs use.
+- [ ] Make sure user permissions are intact.
+- [ ] Integrate DELETE ALL page on user settings page for sheetos.
 
 **BUGS:**
 - [ ] Bug regarding the Select2 fields must be resolved.
 - [ ] Website sometimes fails on registration (login field ?, 504 hatası ?)
-- [ ] Add balance sometimes fails on Huseyin (?)
-- [ ] Browsing functionality does'nt work on Huseyin but works on local (?)
+- [ ] Add balance sometimes fails on Hüseyin (?)
+- [ ] Browsing functionality doesn't work on Hüseyin but works on local (?)
 - [ ] Harmoniq gives bullshit answers, sometimes mixes words up (must do audio streaming with web sockets)
 - 
 
@@ -220,13 +223,13 @@
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Last Measurement Date: 2024-10-29
-- Total Days: 122
-  - Number of Files: 54,600
-  - Code Lines: 12,700,000
-  - Comment Lines: 3,800,000
-  - Blank Lines: 2,400,000
-  - TOTAL: 18,900,000
+- Last Measurement Date: 2024-10-31
+- Total Days: 124
+  - Number of Files: 54,600 ? 
+  - Code Lines: 12,700,000 ?
+  - Comment Lines: 3,800,000 ?
+  - Blank Lines: 2,400,000 ?
+  - TOTAL: 18,900,000 ?
   - TOTAL RAW CALCULATION: 550,000,000
 
 ---

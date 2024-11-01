@@ -289,10 +289,28 @@
       "url": "/app/ellma/manage"
     },
     {
+      "name": "Drafting Google Apps Authentication",
+      "icon": "menu-icon tf-icons ti ti-pencil",
+      "slug": "drafting",
+      "url": "/app/drafting/google_apps/connections/list"
+    },
+    {
       "name": "Drafting",
       "icon": "menu-icon tf-icons ti ti-pencil",
       "slug": "drafting",
       "url": "/app/drafting/folders/list"
+    },
+    {
+      "name": "Sheetos Google Apps Authentication",
+      "icon": "menu-icon tf-icons ti ti-pencil",
+      "slug": "drafting",
+      "url": "/app/sheetos/google_apps/connections/list"
+    },
+    {
+      "name": "Sheetos Spreadsheets",
+      "icon": "menu-icon tf-icons ti ti-pencil",
+      "slug": "drafting",
+      "url": "/app/sheetos/folders/list"
     },
     {
       "name": "Create Brainstorming Session",

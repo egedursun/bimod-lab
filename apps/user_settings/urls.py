@@ -43,7 +43,7 @@ from apps.user_settings.views import SettingsView_UserSettings, SettingsView_Del
     SettingsView_DeleteSoftAllSmartContracts, SettingsView_DeleteAllBinexusEliteAgents, \
     SettingsView_DeleteAllBinexusProcesses, SettingsView_DeleteAllMetaTempoConnections, \
     SettingsView_DeleteAllProjects, SettingsView_DeleteAllMetaKanbanBoards, SettingsView_DeleteAllTeams, \
-    SettingsView_DeleteAllEllmaScripts
+    SettingsView_DeleteAllEllmaScripts, SettingsView_DeleteAllSheetosDocuments, SettingsView_DeleteAllSheetosFolders
 
 app_name = "user_settings"
 
@@ -113,6 +113,10 @@ urlpatterns = [
          name='delete_all_drafting_documents'),
     path('delete/all/drafting_folders/', SettingsView_DeleteAllDraftingFolders.as_view(),
          name='delete_all_drafting_folders'),
+    path('delete/all/sheetos_documents/', SettingsView_DeleteAllSheetosDocuments.as_view(),
+            name='delete_all_sheetos_documents'),
+    path('delete/all/sheetos_folders/', SettingsView_DeleteAllSheetosFolders.as_view(),
+            name='delete_all_sheetos_folders'),
     path('delete/all/harmoniq_agents/', SettingsView_DeleteAllHarmoniqAgents.as_view(),
          name='delete_all_harmoniq_agents'),
     path('delete/all/nosql_databases/', SettingsView_DeleteAllNoSQLDBs.as_view(),

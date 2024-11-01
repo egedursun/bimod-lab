@@ -61,6 +61,7 @@ class InternalServiceCosts:
             InternalServiceCosts.MeetingTranscription.COST,
             InternalServiceCosts.MetaTempo.COST,
             InternalServiceCosts.EllmaScripting.COST,
+            InternalServiceCosts.Sheetos.COST,
         ]
 
     class ContextMemory:
@@ -159,6 +160,9 @@ class InternalServiceCosts:
     class Drafting:
         COST = COSTS_MAP["DRAFTING"]
 
+    class Sheetos:
+        COST = COSTS_MAP["SHEETOS"]
+
     class HadronPrime:
         COST = COSTS_MAP["HADRON_PRIME"]
 
@@ -211,6 +215,7 @@ TOOL_NAME_TO_COST_MAP = {
     "reasoning": InternalServiceCosts.Reasoning.COST,
     "ellma-scripting": InternalServiceCosts.EllmaScripting.COST,
     "drafting": InternalServiceCosts.Drafting.COST,
+    "sheetos": InternalServiceCosts.Sheetos.COST,
     "hadron-prime": InternalServiceCosts.HadronPrime.COST,
     "smart-contract-creation": InternalServiceCosts.SmartContractCreation.COST,
     "binexus": InternalServiceCosts.Binexus.COST,

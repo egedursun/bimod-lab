@@ -210,6 +210,18 @@ def get_permissions_grouped():
             ('list_drafting_documents', 'List Drafting Documents'),
             ('delete_drafting_documents', 'Delete Drafting Documents'),
         ],
+        "Sheetos Folder Permissions": [
+            ('add_sheetos_folders', 'Add Sheetos Folders'),
+            ('update_sheetos_folders', 'Update Sheetos Folders'),
+            ('list_sheetos_folders', 'List Sheetos Folders'),
+            ('delete_sheetos_folders', 'Delete Sheetos Folders'),
+        ],
+        "Sheetos Document Permissions": [
+            ('add_sheetos_documents', 'Add Sheetos Documents'),
+            ('update_sheetos_documents', 'Update Sheetos Documents'),
+            ('list_sheetos_documents', 'List Sheetos Documents'),
+            ('delete_sheetos_documents', 'Delete Sheetos Documents'),
+        ],
         "Brainstorming Permissions": [
             ('create_brainstorming_sessions', 'Create Brainstorming Sessions'),
             ('list_brainstorming_sessions', 'List Brainstorming Sessions'),

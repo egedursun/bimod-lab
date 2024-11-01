@@ -27,8 +27,8 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingDocument
 from apps.user_permissions.utils import PermissionNames
 
-
 logger = logging.getLogger(__name__)
+
 
 class DraftingView_GenerateViaNoSQLCommand(LoginRequiredMixin, View):
 

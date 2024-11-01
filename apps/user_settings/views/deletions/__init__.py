@@ -67,3 +67,5 @@ from .delete_all_metatempo_connections_views import *
 from .delete_all_projects_views import *
 from .delete_all_teams_views import *
 from .delete_all_ellma_scripts_views import *
+from .delete_all_sheetos_documents_views import *
+from .delete_all_sheetos_folders_views import *

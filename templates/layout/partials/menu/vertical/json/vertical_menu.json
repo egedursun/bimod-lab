@@ -394,19 +394,41 @@
       "url": "ellma:manage-scripts"
     },
     {
-      "name": "Drafting",
-      "icon": "menu-icon tf-icons ti ti-pencil",
-      "slug": "drafting",
+      "name": "Bimod Office",
+      "icon": "menu-icon tf-icons ti ti-ruler",
+      "slug": "bimod-office",
       "submenu": [
         {
-          "name": "Drafts",
+          "name": "Drafting",
           "slug": "drafting",
-          "url": "drafting:folders_list"
+          "submenu": [
+            {
+              "name": "Drafts",
+              "slug": "drafting",
+              "url": "drafting:folders_list"
+            },
+            {
+              "name": "Google Apps Auth",
+              "slug": "drafting",
+              "url": "drafting:google_apps_connections_list"
+            }
+          ]
         },
         {
-          "name": "Google Apps Auth",
+          "name": "Sheetos",
           "slug": "drafting",
-          "url": "drafting:google_apps_connections_list"
+          "submenu": [
+            {
+              "name": "Spreadsheets",
+              "slug": "sheetos",
+              "url": "sheetos:folders_list"
+            },
+            {
+              "name": "Google Apps Auth",
+              "slug": "sheetos",
+              "url": "sheetos:google_apps_connections_list"
+            }
+          ]
         }
       ]
     },
