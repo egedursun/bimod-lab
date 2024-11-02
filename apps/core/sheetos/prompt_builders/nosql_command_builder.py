@@ -26,6 +26,7 @@ from apps.core.sheetos.prompts.sheetos.folder_and_document_data_prompt import \
 from apps.core.sheetos.prompts.sheetos.whole_text_supplier_prompt import build_whole_text_supply_prompt_public, \
     build_whole_text_supply_prompt
 from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
+from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +66,7 @@ def build_nosql_command_system_prompt(xc: SheetosExecutionManager, user_query: s
     return combined_system_prompt
 
 
-def build_nosql_command_system_prompt_public(xc: SheetosExecutionManager, user_query: str, content: str):
+def build_nosql_command_system_prompt_public(xc: SheetosExecutionManager_Public, user_query: str, content: str):
     logger.info(f"Building NOSQL command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""

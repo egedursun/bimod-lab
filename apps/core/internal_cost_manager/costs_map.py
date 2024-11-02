@@ -54,6 +54,8 @@ class InternalServiceCosts:
             InternalServiceCosts.VideoGenerator.COST,
             InternalServiceCosts.Reasoning.COST,
             InternalServiceCosts.Drafting.COST,
+            InternalServiceCosts.Sheetos.COST,
+            InternalServiceCosts.Formica.COST,
             InternalServiceCosts.HadronPrime.COST,
             InternalServiceCosts.SmartContractCreation.COST,
             InternalServiceCosts.Binexus.COST,
@@ -61,7 +63,6 @@ class InternalServiceCosts:
             InternalServiceCosts.MeetingTranscription.COST,
             InternalServiceCosts.MetaTempo.COST,
             InternalServiceCosts.EllmaScripting.COST,
-            InternalServiceCosts.Sheetos.COST,
         ]
 
     class ContextMemory:
@@ -163,6 +164,9 @@ class InternalServiceCosts:
     class Sheetos:
         COST = COSTS_MAP["SHEETOS"]
 
+    class Formica:
+        COST = COSTS_MAP["FORMICA"]
+
     class HadronPrime:
         COST = COSTS_MAP["HADRON_PRIME"]
 
@@ -216,6 +220,7 @@ TOOL_NAME_TO_COST_MAP = {
     "ellma-scripting": InternalServiceCosts.EllmaScripting.COST,
     "drafting": InternalServiceCosts.Drafting.COST,
     "sheetos": InternalServiceCosts.Sheetos.COST,
+    "formica": InternalServiceCosts.Formica.COST,
     "hadron-prime": InternalServiceCosts.HadronPrime.COST,
     "smart-contract-creation": InternalServiceCosts.SmartContractCreation.COST,
     "binexus": InternalServiceCosts.Binexus.COST,

@@ -25,6 +25,7 @@ from apps.core.sheetos.prompts.sheetos.folder_and_document_data_prompt import \
 from apps.core.sheetos.prompts.sheetos.whole_text_supplier_prompt import build_whole_text_supply_prompt, \
     build_whole_text_supply_prompt_public
 from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
+from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +59,7 @@ def build_auto_command_system_prompt(xc: SheetosExecutionManager):
     return combined_system_prompt
 
 
-def build_auto_command_system_prompt_public(xc: SheetosExecutionManager, content: str):
+def build_auto_command_system_prompt_public(xc: SheetosExecutionManager_Public, content: str):
     logger.info(f"Building AUTO command system prompt.")
 
     combined_system_prompt = ""

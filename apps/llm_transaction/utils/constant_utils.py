@@ -69,6 +69,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("ellma-scripting", "Ellma Scripting"),
     ("drafting", "Drafting"),
     ("sheetos", "Sheetos"),
+    ("formica", "Formica"),
     ("hadron-prime", "Hadron Prime"),
     ("smart-contract-creation", "Smart Contract Creation"),
     ("binexus", "Binexus"),
@@ -124,6 +125,7 @@ class LLMTransactionSourcesTypesNames:
     ELLMA_SCRIPTING = "ellma-scripting"
     DRAFTING = "drafting"
     SHEETOS = "sheetos"
+    FORMICA = "formica"
     HADRON_PRIME = "hadron-prime"
     SMART_CONTRACT_CREATION = "smart-contract-creation"
     BINEXUS = "binexus"
@@ -172,6 +174,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING,
             LLMTransactionSourcesTypesNames.DRAFTING,
             LLMTransactionSourcesTypesNames.SHEETOS,
+            LLMTransactionSourcesTypesNames.FORMICA,
             LLMTransactionSourcesTypesNames.HADRON_PRIME,
             LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
             LLMTransactionSourcesTypesNames.BINEXUS,

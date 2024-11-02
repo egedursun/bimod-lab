@@ -429,6 +429,17 @@
               "url": "sheetos:google_apps_connections_list"
             }
           ]
+        },
+        {
+          "name": "Formica",
+          "slug": "formica",
+          "submenu": [
+            {
+              "name": "Google Apps Auth",
+              "slug": "formica",
+              "url": "formica:google_apps_connections_list"
+            }
+          ]
         }
       ]
     },

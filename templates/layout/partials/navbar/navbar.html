@@ -6,9 +6,7 @@
 
 {% if navbar_detached %}
 
-<nav
-    class="layout-navbar {{ container_class }} navbar navbar-expand-xl {{ navbar_detached_class }} align-items-center bg-navbar-theme"
-    id="layout-navbar">
+<nav class="layout-navbar {{ container_class }} navbar navbar-expand-xl {{ navbar_detached_class }} align-items-center bg-navbar-theme" id="layout-navbar">
 {% endif %}
 
 {# Horizontal layout (navbar not detached) #}
@@ -51,8 +49,8 @@
 <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
   {% if not menu_horizontal %}
     <!-- Search -->
-    <div class="navbar-nav align-items-center">
-      <div class="nav-item navbar-search-wrapper mb-0">
+    <div class="navbar-nav align-items-center flex-grow-1">
+      <div class="nav-item navbar-search-wrapper mb-0 w-100">
         <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
           <i class="ti ti-search ti-md me-2 me-lg-4 ti-lg"></i>
           <span class="d-none d-md-inline-block text-muted fw-normal">Search (Ctrl+/)</span>
@@ -240,10 +238,10 @@
           -->
     <!-- Quick links -->
 
-    <li class="nav-item me-4 btn-primary p-2 rounded" style="width: 210px;">
+    <li class="nav-item me-4 btn-primary p-2 rounded">
       <i class="ti ti-server"></i>
       <i class="ti ti-clock"></i>
-      <span class="align-middle"><strong><span id="server-time"></span></strong></span>
+      <span style="width: 210px;" data-bs-toggle="tooltip" data-bs-auto-close="outside" aria-expanded="true" title="Server Time (UTC)" class="align-middle"><strong><span id="server-time"></span></strong></span>
       <script>
         document.addEventListener('DOMContentLoaded', function() {
           function updateClock() {

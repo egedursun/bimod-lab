@@ -146,6 +146,7 @@ INSTALLED_APPS = [
     "apps.projects",
     "apps.ellma",
     "apps.sheetos",
+    "apps.formica",
 
     ########################################
     # SUPPORT
@@ -457,6 +458,7 @@ EXCLUDED_PAGES = [
     "/app/metatempo/tempo/connection/config/*",
     "/app/drafting/public/*",
     "/app/sheetos/public/*",
+    "/app/formica/public/*",
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'
@@ -526,6 +528,7 @@ VIDEO_GENERATOR = os.environ.get("VIDEO_GENERATOR", default="0")
 REASONING = os.environ.get("REASONING", default="0")
 DRAFTING = os.environ.get("DRAFTING", default="0")
 SHEETOS = os.environ.get("SHEETOS", default="0")
+FORMICA = os.environ.get("FORMICA", default="0")
 HADRON_PRIME = os.environ.get("HADRON_PRIME", default="0")
 SMART_CONTRACT_CREATION = os.environ.get("SMART_CONTRACT_CREATION", default="0")
 BINEXUS = os.environ.get("BINEXUS", default="0")
@@ -567,6 +570,7 @@ COSTS_MAP = {
     "REASONING": float(REASONING),
     "DRAFTING": float(DRAFTING),
     "SHEETOS": float(SHEETOS),
+    "FORMICA": float(FORMICA),
     "HADRON_PRIME": float(HADRON_PRIME),
     "SMART_CONTRACT_CREATION": float(SMART_CONTRACT_CREATION),
     "BINEXUS": float(BINEXUS),
