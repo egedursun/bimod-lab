@@ -1,21 +1,17 @@
 ### TODO LIST
 
 **DAILY:**
-- [ ] Develop the visuals for the landing page (for new blocks + the new section for the office tools)
-- [ ] Google Docs plugin (drafting) must support bold texts / italics etc.
+- [ ] Integrate the Forms app (Headless & Direct Connection with Google Forms)
 - [ ] Integrate Slides to local app.
 - [ ] Integrate Slides to google apps.
+
 
 **BUGS:**
 - [ ] Bug regarding the Select2 fields must be resolved.
 - [ ] Website sometimes fails on registration (login field ?, 504 hatası ?)
-- [ ] Add balance sometimes fails on Hüseyin (?)
+- [ ] Page refreshes must not remove all the entered fields.
 - [ ] Browsing functionality doesn't work on Hüseyin but works on local (?)
 - [ ] Harmoniq gives bullshit answers, sometimes mixes words up (must do audio streaming with web sockets)
-- 
-
-**ENHANCEMENTS:**
-- [ ] Adding the bonuses on balance purchases.
 
 ---
 

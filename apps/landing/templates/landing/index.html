@@ -131,7 +131,7 @@
                   src="{% static 'img/front-pages/landing-page/hero-dashboard-' %}{{ COOKIES.style|default:style }}.png"
                   alt="hero dashboard" data-app-light-img="front-pages/landing-page/hero-dashboard-light.png"
                   data-app-dark-img="front-pages/landing-page/hero-dashboard-dark.png"
-                  class="animation-img border border-2 border-primary" style="border-radius: 25px; margin-top: 80px;"/>
+                  class="animation-img border border-2 border-primary" style="border-radius: 25px; margin-top: 80px; opacity: 0.9;"/>
               </div>
             </a>
           </div>
@@ -344,14 +344,130 @@
             <p class="features-icon-description">Manage your organization's MIS &amp; ERP systems with the power of AI
               and let the agents handle your data and resources.</p>
           </div>
-          <!-- Definitive candidate 1: metakanban & metatempo, short information -->
-          <!-- Definitive candidate 2: eLLMa Scripting -->
-          <!-- Candidate 1: Smart Office (Drafting, Slider, Sheetos / they deserve their own section, here 1 block) -->
-          <!-- Candidate 2: In-App Messaging & AI Integration ?? -->
+          <div class="col-lg-4 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/custom-illustrations-v2/i2-100.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>MetaKanban and MetaTempo</strong></h5>
+            <p class="features-icon-description">
+              Record your meetings and let AI automatically integrate the updates into Kanban boards. Let AI track the
+              updates of your team, automated insight generation, and much more.
+            </p>
+          </div>
+          <div class="col-lg-4 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/custom-illustrations-v2/i2-22.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>Meta-PL: eLLMa</strong></h5>
+            <p class="features-icon-description">
+              eLLMa is a meta-level programming language where you only focus on the architecture of your code, and
+              let AI implement the functions and logic for you, and then convert it to popular languages.
+            </p>
+          </div>
+          <div class="col-lg-4 col-sm-6 text-center features-icon-box">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/custom-illustrations-v2/i2-103.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+            </div>
+            <h5 class="mb-2"><strong>In-App Office Suite</strong></h5>
+            <p class="features-icon-description">
+              We provide a set of tools for you to draft documents, manipulate spreadsheets, and design slides
+              with the power of AI agents. You can also use our plugins to connect your agents to Google Apps.
+            </p>
+          </div>
+          <!-- Candidate 1: In-App Messaging & AI Integration ?? -->
         </div>
       </div>
     </section>
     <!-- Useful features: End -->
+
+    <!-- Bimod AI Office: Start -->
+
+    <div class="text-center mb-4">
+      <span class="badge bg-label-primary"><strong>AI Office Suite</strong></span>
+    </div>
+    <h4 class="text-center mb-1">
+        <span class="position-relative fw-extrabold z-1">Astrobelt<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
+          <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
+               class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
+        </span>
+      <strong>
+        Automate your Office Suite with AI
+      </strong>
+    </h4>
+    <p class="text-center mb-md-11 pb-0 pb-xl-12">
+      Empower your Google Docs, Sheets, and Slides with the Power and Knowledge of your AI assistants. Make them use
+      your web browsers, search through your SQL or NoSQL databases, gather data from your computer, and much more.
+    </p>
+    <div class="d-flex justify-content-center align-items-center">
+      <div style="width: 70%;">
+        <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
+          <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
+               style="width: 100%;">
+            <div style="overflow: hidden; border-radius: 15px; max-width: 65%;" class="border border-4 border-primary">
+              <img src="{% static 'img/office-suite/suite-1.png' %}"
+                   style="margin-top: -3px; width: 100%; opacity: 0.85; display: block; filter: contrast(120%);"/>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="container mt-12 mb-12">
+      <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
+        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+          <div class="text-center mb-4">
+            <img src="{% static 'img/office-suite/drafting-1.png' %}" class="border border-2 border-primary"
+                 style="width: 150px; border-radius: 25px;" alt=""/>
+          </div>
+          <h5 class="mb-2"><strong>Drafting: Google Docs</strong></h5>
+          <p class="features-icon-description">
+            Give your AI assistants the power to draft your documents, search through the web, your documents, databases,
+            and make them generate creative content, even auto-complete the text for you, all with a single click of a
+            button without interrupting your workflows on Google Docs platform thanks to our plugin.
+          </p>
+        </div>
+        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+          <div class="text-center mb-4">
+            <img src="{% static 'img/office-suite/sheets-1.png' %}" class="border border-2 border-primary"
+                 style="width: 150px; border-radius: 25px;" alt="transition up"/>
+          </div>
+          <h5 class="mb-2"><strong>Sheetos: Google Sheets</strong></h5>
+          <p class="features-icon-description">
+            Your data management assistant is here to help you with your Google Sheets. Make them search through your
+            databases, web browsers, even create synthetic data for you, and much more with a single click of a button
+            without interrupting your workflows on Google Sheets platform thanks to our plugin.
+          </p>
+        </div>
+        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+          <div class="text-center mb-4">
+            <img src="{% static 'img/office-suite/slides-1.png' %}" class="border border-2 border-primary"
+                 style="width: 150px; border-radius: 25px;" alt="edit"/>
+          </div>
+          <h5 class="mb-2"><strong>Slider: Google Slides</strong></h5>
+          <p class="features-icon-description">
+            No need to use 5 different platforms to create a presentation. Make your AI assistants create
+            presentation elements for you, tell them what you want, and let them do the rest for you, all with a single
+            click of a button without interrupting your workflows on Google Slides platform thanks to our plugin.
+          </p>
+        </div>
+        <div class="col-lg-3 col-sm-6 text-center features-icon-box">
+          <div class="text-center mb-4">
+            <img src="{% static 'img/office-suite/forms-1.png' %}" class="border border-2 border-primary"
+                 style="width: 150px; border-radius: 25px;" alt="edit"/>
+          </div>
+          <h5 class="mb-2"><strong>Formica: Google Forms</strong></h5>
+          <p class="features-icon-description">
+            No need to check a hundred different things from your data sources to create a simple form. Make your AI
+            assistants create forms for you, tell them what you want, and let them do the rest for you, all with a
+            single click of a button without interrupting your workflows on Google Forms platform thanks to our plugin.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bimod AI Office: End -->
 
     <!-- Void Forger: Start -->
 
@@ -369,16 +485,18 @@
       Unlock the cutting-edge power of using meta-orchestration and completely automate your enterprise: Hand them over
       to AI Orchestrators.
     </p>
-    <div style="width: 100%;">
-      <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
-        <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
-             style="width: 100%;">
-          <div style="overflow: hidden; border-radius: 15px; max-width: 65%;" class="border border-4 border-primary">
-            <img src="{% static 'img/voidforger/voidforger-animated.gif' %}"
-                 style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+    <div class="d-flex justify-content-center align-items-center">
+      <div style="width: 70%;">
+        <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
+          <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
+               style="width: 100%;">
+            <div style="overflow: hidden; border-radius: 15px; max-width: 65%;" class="border border-4 border-primary">
+              <img src="{% static 'img/voidforger/voidforger-animated.gif' %}"
+                   style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </div>
     <div class="container mt-12 mb-12">
       <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
@@ -439,16 +557,18 @@
       Grant your robots intelligence &amp; insight powered by Large Language Models. Hadron Prime allows
       you to build topic-based nodes for your controllers and orchestrate them with ease.
     </p>
-    <div style="width: 100%;">
-      <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
-        <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
-             style="width: 100%;">
-          <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
-            <img src="{% static 'img/hadron_prime/hadron_prime_animated.gif' %}"
-                 style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+    <div class="d-flex justify-content-center align-items-center">
+      <div style="width: 90%;">
+        <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
+          <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
+               style="width: 100%;">
+            <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
+              <img src="{% static 'img/hadron_prime/hadron_prime_animated.gif' %}"
+                   style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </div>
     <div class="container mt-12">
       <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
@@ -515,16 +635,18 @@
       A powerful swarm intelligence network to enable parallelizing workflows, and create a lean but scaled army
       of assistants capable of shaping themselves to concurrently manage multiple tasks.
     </p>
-    <div style="width: 100%;">
-      <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
-        <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
-             style="width: 100%;">
-          <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
-            <img src="{% static 'img/binexus/binexus-animated.png' %}"
-                 style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+    <div class="d-flex justify-content-center align-items-center">
+      <div style="width: 90%;">
+        <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
+          <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
+               style="width: 100%;">
+            <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
+              <img src="{% static 'img/binexus/binexus-animated.png' %}"
+                   style="margin-top: -3px; width: 100%; display: block; opacity: 0.9; filter: contrast(120%);"/>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </div>
     <div class="container mt-12">
       <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
@@ -579,16 +701,18 @@
       more
       than you need for tasks of more simplistic nature.
     </p>
-    <div style="width: 100%;">
-      <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
-        <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
-             style="width: 100%;">
-          <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
-            <img src="{% static 'img/leanmod/leanmod-image.png' %}"
-                 style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+    <div class="d-flex justify-content-center align-items-center">
+      <div style="width: 90%;">
+        <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
+          <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
+               style="width: 100%;">
+            <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
+              <img src="{% static 'img/leanmod/leanmod-image.png' %}"
+                   style="margin-top: -3px; width: 100%; display: block; opacity: 0.9; filter: contrast(120%);"/>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </div>
     <div class="container mt-12">
       <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
@@ -655,9 +779,11 @@
             control, and full integration with BimodLab Web Application.
           </p>
 
-          <div style="overflow: hidden; border-radius: 15px; max-width: 100%;" class="border border-4 border-primary mb-12 mt-12">
-            <img src="{% static 'img/electron-copilot/b-1.png' %}"
-                 style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+          <div class="d-flex justify-content-center align-items-center">
+            <div style="overflow: hidden; border-radius: 15px; max-width: 80%;" class="border border-4 border-primary mb-12 mt-12">
+              <img src="{% static 'img/electron-copilot/b-2.png' %}"
+                   style="margin-top: -3px; width: 100%; opacity: 0.9; display: block; filter: contrast(120%);"/>
+            </div>
           </div>
 
           <div class="row g-6 pt-lg-5 text-center">
@@ -753,16 +879,18 @@
       is specifically designed for maximizing customization, data security, and scalability for your organization's
       AI assistants and works best for organizations that require maximum control over their data and integrations.
     </p>
-    <div style="width: 100%;">
-      <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
-        <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
-             style="width: 100%;">
-          <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
-            <img src="{% static 'img/astrolith-x1/astrolith-x1-image.png' %}"
-                 style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+    <div class="d-flex justify-content-center align-items-center">
+      <div style="width: 90%;">
+        <a href="{% url 'dashboard:main-dashboard' %}" target="_blank">
+          <div class="d-flex align-items-center align-content-center justify-content-center ms-auto"
+               style="width: 100%;">
+            <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
+              <img src="{% static 'img/astrolith-x1/astrolith-x1-image.png' %}"
+                   style="margin-top: -3px; width: 100%; opacity: 0.9; display: block; filter: contrast(120%);"/>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </div>
     <div class="container mt-12">
       <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
@@ -810,12 +938,12 @@
         </h4>
         <p class="text-center mb-md-11 pb-0 pb-xl-12">Meet the dedicated team behind <strong>{% get_theme_variables 'template_name' %}</strong></p>
         <div class="row gy-12 mt-12">
-          <div class="col-lg-6 col-sm-12 mb-8">
+          <div class="col-lg-6 col-sm-12 mb-8" style="margin-top: 150px;">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div
                 class="bg-label-primary border border-bottom-0 border-label-primary position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-ege.png' %}"
-                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 300px;"
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 350px;"
                      alt="human image"/>
               </div>
               <div class="card-body border border-top-0 border-label-primary text-center">
@@ -838,11 +966,11 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-sm-12 mb-8">
+          <div class="col-lg-6 col-sm-12 mb-8" style="margin-top: 150px;">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-info border border-bottom-0 border-label-info position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-huseyin.png' %}"
-                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 280px;"
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 350px;"
                      alt="human image"/>
               </div>
               <div class="card-body border border-top-0 border-label-info text-center">
@@ -864,11 +992,11 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-12 mb-8">
+          <div class="col-lg-4 col-sm-12 mb-8" style="margin-top: 150px;">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-danger border border-bottom-0 border-label-danger position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-mert.png' %}"
-                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 240px;"
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 300px;"
                      alt="human image"/>
               </div>
               <div class="card-body border border-top-0 border-label-danger text-center">
@@ -889,11 +1017,11 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-12 mb-8">
+          <div class="col-lg-4 col-sm-12 mb-8" style="margin-top: 150px;">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-success border border-bottom-0 border-label-danger position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-selin.png' %}"
-                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 280px;"
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 300px;"
                      alt="human image"/>
               </div>
               <div class="card-body border border-top-0 border-label-danger text-center">
@@ -914,11 +1042,11 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-12">
+          <div class="col-lg-4 col-sm-12" style="margin-top: 150px;">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
               <div class="bg-label-danger border border-bottom-0 border-label-success position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-emre.png' %}"
-                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 240px;"
+                     class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 300px;"
                      alt="human image"/>
               </div>
               <div class="card-body border border-top-0 border-label-success text-center">
