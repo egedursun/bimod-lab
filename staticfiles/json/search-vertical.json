@@ -313,6 +313,12 @@
       "url": "/app/sheetos/folders/list"
     },
     {
+      "name": "Formica Google Apps Authentication",
+      "icon": "menu-icon tf-icons ti ti-pencil",
+      "slug": "formica",
+      "url": "/app/formica/google_apps/connections/list"
+    },
+    {
       "name": "Create Brainstorming Session",
       "icon": "menu-icon tf-icons ti ti-brain",
       "slug": "brainstorming",
