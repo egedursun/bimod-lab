@@ -19,8 +19,20 @@
 import logging
 from json import JSONDecoder
 
-
 logger = logging.getLogger(__name__)
+
+
+def is_final_output(response: str):
+    from apps.core.formica.utils import FormicaGoogleFormsQuestionTypesNames
+    count = 0
+    for specifier in FormicaGoogleFormsQuestionTypesNames.Config_OutputFinalResponseSpecifiers.as_list():
+        if specifier in response:
+            count += 1
+    if count == len(FormicaGoogleFormsQuestionTypesNames.Config_OutputFinalResponseSpecifiers.as_list()):
+        logger.info(f"Final output specifier found in response")
+        return True
+    logger.info(f"Final output specifier not found in response")
+    return False
 
 
 def find_tool_call_from_json(response: str, decoder=JSONDecoder()):

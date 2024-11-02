@@ -1,4 +1,3 @@
-
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
@@ -17,7 +16,9 @@
 #
 
 import logging
+import json
 
+from apps.core.formica.utils import find_tool_call_from_json
 from apps.core.generative_ai.utils import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.llm_transaction.models import LLMTransaction
@@ -79,6 +80,8 @@ def handle_ai_command_public(xc, content: str, command: str) -> str:
         error = f"[handle_ai_command] Error executing AI command: {command}. Error: {e}"
         return output, error
 
+    print("Content: ", choice_message_content)
+
     try:
         tx = LLMTransaction.objects.create(
             organization=xc.copilot.organization, model=xc.copilot_llm,
@@ -105,6 +108,13 @@ def handle_ai_command_public(xc, content: str, command: str) -> str:
     except Exception as e:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for Formica. Error: {e}")
         pass
+
+    try:
+        choice_message_content = choice_message_content.replace("```json", "").replace("```", "").replace("`", "")
+        choice_message_content = find_tool_call_from_json(choice_message_content)[0]
+    except Exception as e:
+        print(f"[handle_ai_command] Error parsing AI response. Error: {e}")
+        logger.error(f"[handle_ai_command] Error parsing AI response. Error: {e}")
 
     output = choice_message_content
     return output, error

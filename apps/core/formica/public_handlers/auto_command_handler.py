@@ -17,7 +17,9 @@
 #
 
 import logging
+import json
 
+from apps.core.formica.utils import find_tool_call_from_json
 from apps.core.generative_ai.utils import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.llm_transaction.models import LLMTransaction
@@ -93,6 +95,13 @@ def handle_auto_command_public(xc, content: str) -> str:
     except Exception as e:
         logger.error(f"[handle_auto_command] Error calculating AUTO command cost. Error: {e}")
         pass
+
+    try:
+        choice_message_content = choice_message_content.replace("```json", "").replace("```", "").replace("`", "")
+        choice_message_content = find_tool_call_from_json(choice_message_content)[0]
+    except Exception as e:
+        print(f"[handle_ai_command] Error parsing AI response. Error: {e}")
+        logger.error(f"[handle_ai_command] Error parsing AI response. Error: {e}")
 
     output = choice_message_content
     return output, error

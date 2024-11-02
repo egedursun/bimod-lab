@@ -20,7 +20,7 @@
 import json
 import logging
 
-from apps.core.formica.utils import FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS, find_tool_call_from_json
+from apps.core.formica.utils import FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS, find_tool_call_from_json, is_final_output
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.core.tool_calls.core_services.core_service_execute_ssh_system_command import run_execute_ssh_system_commands
@@ -101,7 +101,7 @@ def handle_ssh_command_public(xc, command: str, content: str) -> str:
     tool_counter = 0
     context_messages = [structured_system_prompt]
     while (len(find_tool_call_from_json(choice_message_content)) > 0 and
-           (tool_counter < FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS)):
+           (tool_counter < FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS) and not is_final_output(choice_message_content)):
         tool_counter += 1
         tool_requests_dicts = find_tool_call_from_json(choice_message_content)
         if len(tool_requests_dicts) > 0:
@@ -171,6 +171,13 @@ def handle_ssh_command_public(xc, command: str, content: str) -> str:
     except Exception as e:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for Formica. Error: {e}")
         pass
+
+    try:
+        choice_message_content = choice_message_content.replace("```json", "").replace("```", "").replace("`", "")
+        choice_message_content = find_tool_call_from_json(choice_message_content)[0]
+    except Exception as e:
+        print(f"[handle_ai_command] Error parsing AI response. Error: {e}")
+        logger.error(f"[handle_ai_command] Error parsing AI response. Error: {e}")
 
     output = choice_message_content
     return output, error

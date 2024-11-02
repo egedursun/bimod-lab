@@ -20,7 +20,7 @@ import json
 import logging
 
 from apps.core.browsers.utils import BrowserActionsNames
-from apps.core.formica.utils import find_tool_call_from_json, FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS
+from apps.core.formica.utils import find_tool_call_from_json, FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS, is_final_output
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.core.tool_calls.core_services.core_service_execute_browser import run_execute_browsing
@@ -101,7 +101,8 @@ def handle_web_command_public(xc, command: str, content: str) -> str:
     # TOOL USAGE IDENTIFICATION
     tool_counter = 0
     context_messages = [structured_system_prompt]
-    while len(find_tool_call_from_json(choice_message_content)) > 0 and (tool_counter < FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS):
+    while (len(find_tool_call_from_json(choice_message_content)) > 0 and
+           (tool_counter < FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS) and not is_final_output(choice_message_content)):
         tool_counter += 1
         tool_requests_dicts = find_tool_call_from_json(choice_message_content)
         if len(tool_requests_dicts) > 0:
@@ -173,7 +174,15 @@ def handle_web_command_public(xc, command: str, content: str) -> str:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for Formica. Error: {e}")
         pass
 
+    try:
+        choice_message_content = choice_message_content.replace("```json", "").replace("```", "").replace("`", "")
+        choice_message_content = find_tool_call_from_json(choice_message_content)[0]
+    except Exception as e:
+        print(f"[handle_ai_command] Error parsing AI response. Error: {e}")
+        logger.error(f"[handle_ai_command] Error parsing AI response. Error: {e}")
+
     output = choice_message_content
+    print("Web Command Output: ", output)
     return output, error
 
 
