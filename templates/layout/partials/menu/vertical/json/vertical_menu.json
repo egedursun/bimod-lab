@@ -431,6 +431,22 @@
           ]
         },
         {
+          "name": "Slider",
+          "slug": "slider",
+          "submenu": [
+            {
+              "name": "Slides",
+              "slug": "slider",
+              "url": "slider:folders_list"
+            },
+            {
+              "name": "Google Apps Auth",
+              "slug": "slider",
+              "url": "slider:google_apps_connections_list"
+            }
+          ]
+        },
+        {
           "name": "Formica",
           "slug": "formica",
           "submenu": [

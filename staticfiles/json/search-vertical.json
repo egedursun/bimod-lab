@@ -313,6 +313,18 @@
       "url": "/app/sheetos/folders/list"
     },
     {
+      "name": "Slider Google Apps Authentication",
+      "icon": "menu-icon tf-icons ti ti-pencil",
+      "slug": "drafting",
+      "url": "/app/slider/google_apps/connections/list"
+    },
+    {
+      "name": "Slider Slideshows",
+      "icon": "menu-icon tf-icons ti ti-pencil",
+      "slug": "slider",
+      "url": "/app/slider/folders/list"
+    },
+    {
       "name": "Formica Google Apps Authentication",
       "icon": "menu-icon tf-icons ti ti-pencil",
       "slug": "formica",

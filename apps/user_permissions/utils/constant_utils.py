@@ -314,6 +314,11 @@ class PermissionNames:
     LIST_DRAFTING_DOCUMENTS = 'list_drafting_documents'
     DELETE_DRAFTING_DOCUMENTS = 'delete_drafting_documents'
 
+    ADD_DRAFTING_GOOGLE_APPS_CONNECTIONS = 'add_drafting_google_apps_connections'
+    LIST_DRAFTING_GOOGLE_APPS_CONNECTIONS = 'list_drafting_google_apps_connections'
+    UPDATE_DRAFTING_GOOGLE_APPS_CONNECTIONS = 'update_drafting_google_apps_connections'
+    DELETE_DRAFTING_GOOGLE_APPS_CONNECTIONS = 'delete_drafting_google_apps_connections'
+
     ADD_SHEETOS_FOLDERS = 'add_sheetos_folders'
     UPDATE_SHEETOS_FOLDERS = 'update_sheetos_folders'
     LIST_SHEETOS_FOLDERS = 'list_sheetos_folders'
@@ -323,6 +328,31 @@ class PermissionNames:
     UPDATE_SHEETOS_DOCUMENTS = 'update_sheetos_documents'
     LIST_SHEETOS_DOCUMENTS = 'list_sheetos_documents'
     DELETE_SHEETOS_DOCUMENTS = 'delete_sheetos_documents'
+
+    ADD_SHEETOS_GOOGLE_APPS_CONNECTIONS = 'add_sheetos_google_apps_connections'
+    UPDATE_SHEETOS_GOOGLE_APPS_CONNECTIONS = 'update_sheetos_google_apps_connections'
+    LIST_SHEETOS_GOOGLE_APPS_CONNECTIONS = 'list_sheetos_google_apps_connections'
+    DELETE_SHEETOS_GOOGLE_APPS_CONNECTIONS = 'delete_sheetos_google_apps_connections'
+
+    ADD_SLIDER_FOLDERS = 'add_slider_folders'
+    UPDATE_SLIDER_FOLDERS = 'update_slider_folders'
+    LIST_SLIDER_FOLDERS = 'list_slider_folders'
+    DELETE_SLIDER_FOLDERS = 'delete_slider_folders'
+
+    ADD_SLIDER_DOCUMENTS = 'add_slider_documents'
+    UPDATE_SLIDER_DOCUMENTS = 'update_slider_documents'
+    LIST_SLIDER_DOCUMENTS = 'list_slider_documents'
+    DELETE_SLIDER_DOCUMENTS = 'delete_slider_documents'
+
+    ADD_SLIDER_GOOGLE_APPS_CONNECTIONS = 'add_slider_google_apps_connections'
+    UPDATE_SLIDER_GOOGLE_APPS_CONNECTIONS = 'update_slider_google_apps_connections'
+    LIST_SLIDER_GOOGLE_APPS_CONNECTIONS = 'list_slider_google_apps_connections'
+    DELETE_SLIDER_GOOGLE_APPS_CONNECTIONS = 'delete_slider_google_apps_connections'
+
+    ADD_FORMICA_GOOGLE_APPS_CONNECTIONS = 'add_formica_google_apps_connections'
+    UPDATE_FORMICA_GOOGLE_APPS_CONNECTIONS = 'update_formica_google_apps_connections'
+    LIST_FORMICA_GOOGLE_APPS_CONNECTIONS = 'list_formica_google_apps_connections'
+    DELETE_FORMICA_GOOGLE_APPS_CONNECTIONS = 'delete_formica_google_apps_connections'
 
     CREATE_HADRON_SYSTEMS = 'create_hadron_systems'
     LIST_HADRON_SYSTEMS = 'list_hadron_systems'
@@ -666,6 +696,11 @@ PERMISSION_TYPES = [
     ('list_drafting_documents', 'List Drafting Documents'),
     ('delete_drafting_documents', 'Delete Drafting Documents'),
 
+    ('add_drafting_google_apps_connections', 'Add Drafting Google Apps Connections'),
+    ('list_drafting_google_apps_connections', 'List Drafting Google Apps Connections'),
+    ('update_drafting_google_apps_connections', 'Update Drafting Google Apps Connections'),
+    ('delete_drafting_google_apps_connections', 'Delete Drafting Google Apps Connections'),
+
     ('add_sheetos_folders', 'Add Sheetos Folders'),
     ('update_sheetos_folders', 'Update Sheetos Folders'),
     ('list_sheetos_folders', 'List Sheetos Folders'),
@@ -675,6 +710,31 @@ PERMISSION_TYPES = [
     ('update_sheetos_documents', 'Update Sheetos Documents'),
     ('list_sheetos_documents', 'List Sheetos Documents'),
     ('delete_sheetos_documents', 'Delete Sheetos Documents'),
+
+    ('add_sheetos_google_apps_connections', 'Add Sheetos Google Apps Connections'),
+    ('update_sheetos_google_apps_connections', 'Update Sheetos Google Apps Connections'),
+    ('list_sheetos_google_apps_connections', 'List Sheetos Google Apps Connections'),
+    ('delete_sheetos_google_apps_connections', 'Delete Sheetos Google Apps Connections'),
+
+    ('add_slider_folders', 'Add Slider Folders'),
+    ('update_slider_folders', 'Update Slider Folders'),
+    ('list_slider_folders', 'List Slider Folders'),
+    ('delete_slider_folders', 'Delete Slider Folders'),
+
+    ('add_slider_documents', 'Add Slider Documents'),
+    ('update_slider_documents', 'Update Slider Documents'),
+    ('list_slider_documents', 'List Slider Documents'),
+    ('delete_slider_documents', 'Delete Slider Documents'),
+
+    ('add_slider_google_apps_connections', 'Add Slider Google Apps Connections'),
+    ('update_slider_google_apps_connections', 'Update Slider Google Apps Connections'),
+    ('list_slider_google_apps_connections', 'List Slider Google Apps Connections'),
+    ('delete_slider_google_apps_connections', 'Delete Slider Google Apps Connections'),
+
+    ('add_formica_google_apps_connections', 'Add Formica Google Apps Connections'),
+    ('update_formica_google_apps_connections', 'Update Formica Google Apps Connections'),
+    ('list_formica_google_apps_connections', 'List Formica Google Apps Connections'),
+    ('delete_formica_google_apps_connections', 'Delete Formica Google Apps Connections'),
 
     ('create_hadron_systems', 'Create Hadron Systems'),
     ('list_hadron_systems', 'List Hadron Systems'),

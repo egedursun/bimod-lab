@@ -78,6 +78,7 @@ urlpatterns = [
     path("app/ellma/", include("apps.ellma.urls", namespace="ellma")),
     path("app/sheetos/", include("apps.sheetos.urls", namespace="sheetos")),
     path("app/formica/", include("apps.formica.urls", namespace="formica")),
+    path("app/slider/", include("apps.slider.urls", namespace="slider")),
 
     path('app/docs/', docs_redirect_view, name='technical_docs'),
     path("app/support_system/", include("apps.support_system.urls", namespace="support_system")),

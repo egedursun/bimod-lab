@@ -210,6 +210,12 @@ def get_permissions_grouped():
             ('list_drafting_documents', 'List Drafting Documents'),
             ('delete_drafting_documents', 'Delete Drafting Documents'),
         ],
+        "Drafting Google Apps Permissions": [
+            ('add_drafting_google_apps_connections', 'Add Drafting Google Apps Connections'),
+            ('list_drafting_google_apps_connections', 'List Drafting Google Apps Connections'),
+            ('update_drafting_google_apps_connections', 'Update Drafting Google Apps Connections'),
+            ('delete_drafting_google_apps_connections', 'Delete Drafting Google Apps Connections'),
+        ],
         "Sheetos Folder Permissions": [
             ('add_sheetos_folders', 'Add Sheetos Folders'),
             ('update_sheetos_folders', 'Update Sheetos Folders'),
@@ -221,6 +227,36 @@ def get_permissions_grouped():
             ('update_sheetos_documents', 'Update Sheetos Documents'),
             ('list_sheetos_documents', 'List Sheetos Documents'),
             ('delete_sheetos_documents', 'Delete Sheetos Documents'),
+        ],
+        "Sheetos Google Apps Permissions": [
+            ('add_sheetos_google_apps_connections', 'Add Sheetos Google Apps Connections'),
+            ('update_sheetos_google_apps_connections', 'Update Sheetos Google Apps Connections'),
+            ('list_sheetos_google_apps_connections', 'List Sheetos Google Apps Connections'),
+            ('delete_sheetos_google_apps_connections', 'Delete Sheetos Google Apps Connections'),
+        ],
+        "Slider Folder Permissions": [
+            ('add_slider_folders', 'Add Slider Folders'),
+            ('update_slider_folders', 'Update Slider Folders'),
+            ('list_slider_folders', 'List Slider Folders'),
+            ('delete_slider_folders', 'Delete Slider Folders'),
+        ],
+        "Slider Document Permissions": [
+            ('add_slider_documents', 'Add Slider Documents'),
+            ('update_slider_documents', 'Update Slider Documents'),
+            ('list_slider_documents', 'List Slider Documents'),
+            ('delete_slider_documents', 'Delete Slider Documents'),
+        ],
+        "Slider Google Apps Permissions": [
+            ('add_slider_google_apps_connections', 'Add Slider Google Apps Connections'),
+            ('update_slider_google_apps_connections', 'Update Slider Google Apps Connections'),
+            ('list_slider_google_apps_connections', 'List Slider Google Apps Connections'),
+            ('delete_slider_google_apps_connections', 'Delete Slider Google Apps Connections'),
+        ],
+        "Formica Google Apps Permissions": [
+            ('add_formica_google_apps_connections', 'Add Formica Google Apps Connections'),
+            ('update_formica_google_apps_connections', 'Update Formica Google Apps Connections'),
+            ('list_formica_google_apps_connections', 'List Formica Google Apps Connections'),
+            ('delete_formica_google_apps_connections', 'Delete Formica Google Apps Connections'),
         ],
         "Brainstorming Permissions": [
             ('create_brainstorming_sessions', 'Create Brainstorming Sessions'),

@@ -1,0 +1,224 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: slider_folders_list.html
+  ~ Last Modified: 2024-11-01 05:25:40
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-02 20:31:27
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Slider Folders{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-28.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can list and manage the documents you have in your organization. You can use this page
+        to enter and manage each of your folders, edit them, or delete them if you want. Be careful in deleting your
+        slider folders, since doing so will cause irreversible deletion of the underlying documents.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <!-- Folder Creation Form at the Top -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4>
+            <i class="fa fa-plus-circle me-2"></i>
+            <strong>Create New Folder</strong>
+          </h4>
+        </div>
+        <div class="card-body">
+          <form method="post" action="{% url 'slider:folders_create' %}">
+            {% csrf_token %}
+
+            <div class="row">
+              <!-- Organization Picker -->
+              <div class="col-6 mb-3">
+                <label for="organization" class="form-label">Organization</label>
+                <select id="organization" name="organization" class="form-control" required>
+                  <option value="" disabled selected>Select an Organization</option>
+                  {% for org in organizations %}
+                    <option value="{{ org.id }}">{{ org.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-3">
+                <label for="name" class="form-label">Folder Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+              </div>
+              <div class="col-6 mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" rows="2" name="description"></textarea>
+              </div>
+              <div class="col-6 mb-3">
+                <label for="meta_context_instructions" class="form-label">Meta Context Instructions</label>
+                <textarea class="form-control" id="meta_context_instructions" rows="2" name="meta_context_instructions"></textarea>
+              </div>
+            </div>
+
+            <hr>
+            <button type="submit" class="btn btn-success mt-4 w-25">
+              <i class="fa fa-folder-plus me-2"></i>
+              <strong>Create Folder</strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h4 class="mb-4">
+    <i class="fa fa-magic-wand-sparkles me-2"></i>
+    <strong>Your Slider Folders</strong>
+  </h4>
+
+  <hr>
+
+  <!-- Folder Listing Grouped by Organization -->
+  {% for org_data in org_folders %}
+    <div class="card mb-6 mt-4">
+      <div class="card-header border-bottom">
+        <!-- Organization Header with Collapsible Label -->
+        <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ org_data.organization.id }}" role="button"
+           aria-expanded="false" aria-controls="collapse-{{ org_data.organization.id }}">
+          <h4>
+            <div class="d-flex">
+              <img src="{% if org_data.organization.organization_image %}{{ org_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   class="rounded" width="60" height="60" alt="Organization Image">
+              <strong class="ms-4">{{ org_data.organization.name }}</strong>
+            </div>
+          </h4>
+        </a>
+        <p>
+          <i class="fa fa-folder"></i>
+          <strong>&nbsp; Number of Folders: </strong> {{ org_data.page_obj.paginator.count }}
+        </p>
+        <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ org_data.organization.id }}"></i>
+        <span data-bs-toggle="collapse" href="#collapse-{{ org_data.organization.id }}" role="button" aria-expanded="false"
+              aria-controls="collapse-{{ org_data.organization.id }}">
+          <strong>&nbsp; See Folders</strong>
+        </span>
+      </div>
+
+      <!-- Folder Table Inside Collapsible Section -->
+      <div id="collapse-{{ org_data.organization.id }}" class="collapse p-8 overflow-auto">
+        {% if org_data.page_obj %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Enter Folder</th>
+                <th>Folder Name</th>
+                <th>Description</th>
+                <th>Meta Context Instructions</th>
+                <th>Created At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for folder in org_data.page_obj %}
+                <tr>
+                  <td>
+                    <a href="{% url 'slider:documents_list' folder_id=folder.id %}" class="d-flex">
+                      <i class="fa fa-folder-open fa-2x"></i>
+                      <i class="fa fa-eye fa-1x"></i>
+                    </a>
+                  </td>
+                  <td><strong>{{ folder.name }}</strong></td>
+                  <td style="min-width: 500px; max-width: 500px; text-align: justify;">
+                    <p style="max-height: 200px; overflow: auto;">{{ folder.description }}</p>
+                  </td>
+                  <td style="min-width: 500px; max-width: 500px; text-align: justify;">
+                    <p style="max-height: 200px; overflow: auto;">{{ folder.meta_context_instructions }}</p>
+                  </td>
+                  <td>{{ folder.created_at|date:"Y-m-d H:i" }}</td>
+                  <td style="min-width: 300px; max-width: 300px;">
+                    <a href="{% url 'slider:folders_update' folder.id %}" class="btn btn-sm btn-warning me-4">
+                      <i class="fa fa-edit me-2"></i> <strong>Edit</strong>
+                    </a>
+                    <a href="{% url 'slider:folders_delete' folder.id %}" class="btn btn-sm btn-danger me-4">
+                      <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <!-- Pagination Controls -->
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-6">
+              {% if org_data.page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page_{{ org_data.organization.id }}={{ org_data.page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+              {% for num in org_data.page_obj.paginator.page_range %}
+                <li class="page-item {% if org_data.page_obj.number == num %}active{% endif %}">
+                  <a class="page-link" href="?page_{{ org_data.organization.id }}={{ num }}">{{ num }}</a>
+                </li>
+              {% endfor %}
+              {% if org_data.page_obj.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page_{{ org_data.organization.id }}={{ org_data.page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+
+        {% else %}
+          <div class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <strong>No folders available for this organization.</strong>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

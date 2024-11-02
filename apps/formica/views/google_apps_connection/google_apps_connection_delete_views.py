@@ -2,9 +2,9 @@
 #
 #  Project: Bimod.io™
 #  File: google_apps_connection_delete_views.py
-#  Last Modified: 2024-11-02 12:48:35
+#  Last Modified: 2024-11-02 14:57:08
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-11-02 12:48:36
+#  Created: 2024-11-02 19:39:14
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,12 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.formica.models import FormicaGoogleAppsConnection
+from apps.user_permissions.utils import PermissionNames
 
 
 class FormicaView_GoogleAppsConnectionDelete(LoginRequiredMixin, View):
@@ -28,6 +31,15 @@ class FormicaView_GoogleAppsConnectionDelete(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         connection_id = kwargs.get('pk')
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_FORMICA_GOOGLE_APPS_CONNECTIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.DELETE_FORMICA_GOOGLE_APPS_CONNECTIONS):
+            messages.error(self.request, "You do not have permission to delete Formica Google Apps Connections.")
+            return redirect('formica:google_apps_connections_list')
+        ##############################
+
         connection = get_object_or_404(FormicaGoogleAppsConnection, id=connection_id, owner_user=request.user)
 
         try:

@@ -147,6 +147,7 @@ INSTALLED_APPS = [
     "apps.ellma",
     "apps.sheetos",
     "apps.formica",
+    "apps.slider",
 
     ########################################
     # SUPPORT
@@ -529,6 +530,7 @@ REASONING = os.environ.get("REASONING", default="0")
 DRAFTING = os.environ.get("DRAFTING", default="0")
 SHEETOS = os.environ.get("SHEETOS", default="0")
 FORMICA = os.environ.get("FORMICA", default="0")
+SLIDER = os.environ.get("SLIDER", default="0")
 HADRON_PRIME = os.environ.get("HADRON_PRIME", default="0")
 SMART_CONTRACT_CREATION = os.environ.get("SMART_CONTRACT_CREATION", default="0")
 BINEXUS = os.environ.get("BINEXUS", default="0")
@@ -571,6 +573,7 @@ COSTS_MAP = {
     "DRAFTING": float(DRAFTING),
     "SHEETOS": float(SHEETOS),
     "FORMICA": float(FORMICA),
+    "SLIDER": float(SLIDER),
     "HADRON_PRIME": float(HADRON_PRIME),
     "SMART_CONTRACT_CREATION": float(SMART_CONTRACT_CREATION),
     "BINEXUS": float(BINEXUS),

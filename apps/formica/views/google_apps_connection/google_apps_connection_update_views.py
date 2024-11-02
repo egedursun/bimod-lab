@@ -13,30 +13,18 @@
 #  Holdings.
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
-#
-#
-#  Project: Bimod.io™
-#  File: google_apps_connection_update_views.py
-#  Last Modified: 2024-11-02 12:48:20
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-11-02 12:48:20
-#
-#  This software is proprietary and confidential. Unauthorized copying,
-#  distribution, modification, or use of this software, whether for
-#  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD™ Autonomous
-#  Holdings.
-#
-#   For permission inquiries, please contact: admin@Bimod.io.
-#
+
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
 from apps.assistants.models import Assistant
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.formica.models import FormicaGoogleAppsConnection
 from apps.formica.utils import generate_google_apps_connection_api_key
+from apps.user_permissions.utils import PermissionNames
 
 
 class FormicaView_GoogleAppsConnectionUpdate(LoginRequiredMixin, View):
@@ -47,6 +35,15 @@ class FormicaView_GoogleAppsConnectionUpdate(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         connection_id = kwargs.get('pk')
         assistant_id = request.POST.get('assistant')
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_FORMICA_GOOGLE_APPS_CONNECTIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_FORMICA_GOOGLE_APPS_CONNECTIONS):
+            messages.error(self.request, "You do not have permission to update Formica Google Apps Connections.")
+            return redirect('formica:google_apps_connections_list')
+        ##############################
+
         try:
             connection = get_object_or_404(FormicaGoogleAppsConnection, id=connection_id, owner_user=request.user)
             connection.connection_api_key = generate_google_apps_connection_api_key()

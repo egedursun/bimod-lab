@@ -20,8 +20,10 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 
 from apps.assistants.models import Assistant
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.sheetos.models import SheetosGoogleAppsConnection
 from apps.sheetos.utils import generate_google_apps_connection_api_key
+from apps.user_permissions.utils import PermissionNames
 
 
 class SheetosView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
@@ -29,6 +31,15 @@ class SheetosView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_SHEETOS_GOOGLE_APPS_CONNECTIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.ADD_SHEETOS_GOOGLE_APPS_CONNECTIONS):
+            messages.error(self.request, "You do not have permission to add Sheetos Google Apps Connections.")
+            return redirect('sheetos:google_apps_connections_list')
+        ##############################
+
         assistant_id = request.POST.get('assistant')
         if not assistant_id:
             messages.error(request, "Assistant field is required.")

@@ -20,8 +20,10 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
 from apps.assistants.models import Assistant
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingGoogleAppsConnection
 from apps.drafting.utils import generate_google_apps_connection_api_key
+from apps.user_permissions.utils import PermissionNames
 
 
 class DraftingView_GoogleAppsConnectionUpdate(LoginRequiredMixin, View):
@@ -32,6 +34,15 @@ class DraftingView_GoogleAppsConnectionUpdate(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         connection_id = kwargs.get('pk')
         assistant_id = request.POST.get('assistant')
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_DRAFTING_GOOGLE_APPS_CONNECTIONS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.UPDATE_DRAFTING_GOOGLE_APPS_CONNECTIONS):
+            messages.error(self.request, "You do not have permission to update Drafting Google Apps Connections.")
+            return redirect('drafting:google_apps_connections_list')
+        ##############################
+
         try:
             connection = get_object_or_404(DraftingGoogleAppsConnection, id=connection_id, owner_user=request.user)
             connection.connection_api_key = generate_google_apps_connection_api_key()

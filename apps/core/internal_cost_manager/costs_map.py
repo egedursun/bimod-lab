@@ -56,6 +56,7 @@ class InternalServiceCosts:
             InternalServiceCosts.Drafting.COST,
             InternalServiceCosts.Sheetos.COST,
             InternalServiceCosts.Formica.COST,
+            InternalServiceCosts.Slider.COST,
             InternalServiceCosts.HadronPrime.COST,
             InternalServiceCosts.SmartContractCreation.COST,
             InternalServiceCosts.Binexus.COST,
@@ -167,6 +168,9 @@ class InternalServiceCosts:
     class Formica:
         COST = COSTS_MAP["FORMICA"]
 
+    class Slider:
+        COST = COSTS_MAP["SLIDER"]
+
     class HadronPrime:
         COST = COSTS_MAP["HADRON_PRIME"]
 
@@ -221,6 +225,7 @@ TOOL_NAME_TO_COST_MAP = {
     "drafting": InternalServiceCosts.Drafting.COST,
     "sheetos": InternalServiceCosts.Sheetos.COST,
     "formica": InternalServiceCosts.Formica.COST,
+    "slider": InternalServiceCosts.Slider.COST,
     "hadron-prime": InternalServiceCosts.HadronPrime.COST,
     "smart-contract-creation": InternalServiceCosts.SmartContractCreation.COST,
     "binexus": InternalServiceCosts.Binexus.COST,
