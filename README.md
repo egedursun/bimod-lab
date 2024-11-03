@@ -47,17 +47,7 @@
 
 ---
 
-**NEXT PROJECT-2: ASTROBELT (Mert)**
-
-- *ASTROBELT*: MS-Office plugins for connecting the drafting tool we have in our web application to the MS-Office
-  applications, such as Word, Excel, PowerPoint, etc. The plugin will allow for the drafting tool to be
-  used within the MS-Office applications, and the data will be synchronized between the web application
-  and the MS-Office applications.
-  - *Details:* TBD
-
----
-
-**NEXT PROJECT-3: MENTARA (Ege)**
+**NEXT PROJECT-2: MENTARA (Ege)**
 
 - *MENTARA*: A helper assistant that helps the clients configure their enterprise environments in the web application,
   and uses our documentation to guide them through their questions and help them navigate their journey
@@ -66,7 +56,7 @@
 
 ---
 
-**NEXT PROJECT-4: INTEGRATIONS FRAMEWORK (Ege)**
+**NEXT PROJECT-3: INTEGRATIONS FRAMEWORK (Ege)**
 
 - *INTEGRATIONS*: A page/store that will include ready-made assistants that the clients can easily integrate to
   themselves.
@@ -74,7 +64,7 @@
 
 ---
 
-**NEXT PROJECT-5: META-INTEGRATIONS FRAMEWORK (Ege)**
+**NEXT PROJECT-4: META-INTEGRATIONS FRAMEWORK (Ege)**
 
 - *META-INTEGRATIONS*: A page/store that will include ready-made "team of assistants" that the clients can easily
   integrate to themselves.
@@ -82,7 +72,7 @@
 
 ---
 
-**NEXT PROJECT-6: AUTOMATED MEDIA SYNCHRONIZATION (Mert)**
+**NEXT PROJECT-5: AUTOMATED MEDIA SYNCHRONIZATION (Mert)**
 
 - *AUTOMATED MEDIA SYNC*: Connecting S3 Buckets, Google Drive, and other cloud storages to the web application, and
   allowing for
@@ -92,7 +82,7 @@
 
 ---
 
-**NEXT PROJECT-7: VOIDFORGER (Ege)**
+**NEXT PROJECT-6: VOIDFORGER (Ege)**
 
 - *VOIDFORGER*: A hyper-assistant over orchestrators and all internal processes of an enterprise, controlling the
   assistants, leanmods, orchestrations, data sources such as sql, nosql, ssh servers, code bases,
@@ -102,7 +92,7 @@
 
 ---
 
-**NEXT PROJECT-8: DEVELOPER ECOSYSTEM (Ege)**
+**NEXT PROJECT-7: DEVELOPER ECOSYSTEM (Ege)**
 
 - *DEV ECOSYSTEM*: Make the function, API, and Script Stores accessible to the developers for them to contribute, and
   incentivize them by rewarding Bimod & BimodLab credits, as well as a commission percentage from

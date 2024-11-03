@@ -42,6 +42,8 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=250, blank=True, null=True)
     phone_number = models.CharField(max_length=60, blank=True, null=True)
     birthdate = models.DateField(default=timezone.now)
+    if birthdate is None or birthdate == '':
+        birthdate = timezone.now()
     address = models.CharField(max_length=500, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)

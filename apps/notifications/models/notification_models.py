@@ -32,6 +32,7 @@ class OrderedNotificationManager(models.Manager):
 
 
 class NotificationItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='associated_notifications', null=True, blank=True)
     organization = models.ForeignKey('organization.Organization', null=True, blank=True, on_delete=models.CASCADE)
     notification_sender_type = models.CharField(max_length=1000, choices=NOTIFICATION_SENDER_TYPES,
                                                 default=NotificationSenderTypeNames.BIMOD_TEAM)
@@ -62,6 +63,17 @@ class NotificationItem(models.Model):
         ]
 
     @staticmethod
+    def add_notification_to_user(notification, user):
+        try:
+            if notification not in user.profile.notifications.all():
+                user.profile.notifications.add(notification)
+                logger.info(f"Notification added to user: {user}")
+            else:
+                logger.info("Notification already added to user, skipping...")
+        except Exception as e:
+            logger.error(f"Error adding notification to user: {e}")
+
+    @staticmethod
     def add_notification_to_users(notification, acting_user):
         orgs_users = []
         if notification.notification_sender_type == NotificationSenderTypeNames.SYSTEM:
@@ -86,3 +98,5 @@ class NotificationItem(models.Model):
         super().save(force_insert, force_update, using, update_fields)
         if self.notification_sender_type == NotificationSenderTypeNames.BIMOD_TEAM:
             self.add_notification_to_users(notification=self, acting_user=None)
+        elif self.notification_sender_type == NotificationSenderTypeNames.WELCOME:
+            self.add_notification_to_user(notification=self, user=self.user)

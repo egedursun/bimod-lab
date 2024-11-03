@@ -94,7 +94,7 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
 
                 TransactionInvoice.objects.create(
                     organization=referrer_organization,
-                    responsible_user=bonus_pct_referrer,
+                    responsible_user=context_user,
                     transaction_type=InvoiceTypesNames.GIFT_CREDITS,
                     amount_added=decimal.Decimal.from_float(
                         float(float(topup_amount) * ((bonus_pct_referrer) / 100))),
@@ -115,8 +115,7 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
             if topup_amount_without_bonus != topup_amount:
                 TransactionInvoice.objects.create(
                     organization=org, responsible_user=context_user, transaction_type=InvoiceTypesNames.GIFT_CREDITS,
-                    amount_added=decimal.Decimal.from_float(
-                        float(float(topup_amount) * ((bonus_pct_referee) / 100)) - topup_amount_without_bonus),
+                    amount_added=(topup_amount - topup_amount_without_bonus),
                     payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER,
                 )
             logger.info(f"User: {context_user.id} added ${topup_amount} to Organization: {org.id}.")

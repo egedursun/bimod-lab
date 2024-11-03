@@ -22,7 +22,8 @@ from django.contrib import messages
 from django.conf import settings
 
 from apps.notifications.models import NotificationItem
-from apps.notifications.utils import NotificationTitleCategoryChoicesNames, NotificationFAIconChoicesNames
+from apps.notifications.utils import NotificationTitleCategoryChoicesNames, NotificationFAIconChoicesNames, \
+    NotificationSenderTypeNames
 from auth.utils import is_valid_password, send_verification_email
 from auth.views import AuthView
 from auth.models import Profile
@@ -45,10 +46,10 @@ class RegisterView(AuthView):
         is_valid, message = is_valid_password(password)
         if not is_valid:
             messages.error(request, message)
-            return redirect("register")
+            return self.render_to_response(self.get_context_data())
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
-            return redirect("register")
+            return self.render_to_response(self.get_context_data())
 
         first_name = request.POST.get("first_name")
         last_name = request.POST.get("last_name")
@@ -62,13 +63,13 @@ class RegisterView(AuthView):
 
         if User.objects.filter(username=username, email=email).exists():
             messages.error(request, "User already exists, Try logging in.")
-            return redirect("register")
+            return self.render_to_response(self.get_context_data())
         elif User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists.")
-            return redirect("register")
+            return self.render_to_response(self.get_context_data())
         elif User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists.")
-            return redirect("register")
+            return self.render_to_response(self.get_context_data())
 
         created_user = User.objects.create_user(username=username, email=email, password=password)
         created_user.set_password(password)
@@ -107,11 +108,11 @@ class RegisterView(AuthView):
 
         welcome_notification = NotificationItem.objects.create(
             user=created_user,
+            notification_sender_type=NotificationSenderTypeNames.WELCOME,
             notification_title_category=NotificationTitleCategoryChoicesNames.HumanReadable.INFO,
             notification_fa_icon=NotificationFAIconChoicesNames.BUILDING,
             notification_message="Welcome to the platform! We have sent you a verification email, and we recommend you"
                                  " to verify your email address for your own security and privacy. If you need help,"
                                  " please contact us via the support page.")
-        user_profile.user.notifications.set([welcome_notification])
-
+        welcome_notification.save()
         return redirect("verify-email-page")

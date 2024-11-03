@@ -60,18 +60,21 @@ class NotificationFAIconChoicesNames:
 
 NOTIFICATION_SENDER_TYPES = [
     ('bimod-team', 'Bimod Team'),
+    ('welcome', 'Welcome'),
     ('system', 'System'),
 ]
 
 
 class NotificationSenderTypeNames:
     BIMOD_TEAM = 'bimod-team'
+    WELCOME = 'welcome'
     SYSTEM = 'system'
 
     @staticmethod
     def as_list():
         return [
             NotificationSenderTypeNames.BIMOD_TEAM,
+            NotificationSenderTypeNames.WELCOME,
             NotificationSenderTypeNames.SYSTEM,
         ]
 
