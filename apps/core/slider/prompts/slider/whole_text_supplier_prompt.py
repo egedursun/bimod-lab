@@ -31,13 +31,14 @@ def build_whole_text_supply_prompt(xc: SliderExecutionManager):
             '''
 
             **NOTE**: This is the entire textual content of the document. There can be a dictionary format in the
-            content you receive, and this is because the user is interacting with the text with a Quill editor on
-            front-end side. Therefore, you must neglect the Quill-related things, and just focus on the plain text.
+            content you receive, and this is because the user is interacting with the slides content with a UI script
+            probably based on Javascript, on front-end side. Therefore, you must neglect the UI-related things if you
+            encounter any, and just focus on the plain text.
 
-                - **NEVER** include the Quill-related things in the text you generate for the drafting process,
-                because the text you generate will be directly pasted to the editor user is interacting with, and
-                it will be rendered as a plain text, so you MUST NOT provide your output in Quill JSON or anything
-                like that. You must produce plain text (UNLESS YOU HAVE TOOLS TO RUN, AND YOU DECIDE TO RUN A TOOL).
+                - **NEVER** include the UI related metadata from the editor in the content you generate for the slide content
+                generation process, as the text you generate will be directly pasted to the editor user is interacting
+                with, and it will be rendered as a plain text, so you MUST NOT provide your output in JSON or
+                anything like that. You must produce plain text (UNLESS YOU HAVE TOOLS TO RUN, AND YOU DECIDE TO RUN A TOOL).
 
             ---
         """
@@ -56,13 +57,15 @@ def build_whole_text_supply_prompt_public(content: str):
             '''
 
             **NOTE**: This is the entire textual content of the document. There can be a dictionary format in the
-            content you receive, and this is because the user is interacting with the text with a Quill editor on
-            front-end side. Therefore, you must neglect the Quill-related things, and just focus on the plain text.
+            content you receive, and this is because the user is interacting with the text with a Javascript based
+            slides editor/manager online on the front-end side. Therefore, you must neglect the UI things, and just
+            focus on the plain text.
 
-                - **NEVER** include the Quill-related things in the text you generate for the drafting process,
-                because the text you generate will be directly pasted to the editor user is interacting with, and
-                it will be rendered as a plain text, so you MUST NOT provide your output in Quill JSON or anything
-                like that. You must produce plain text (UNLESS YOU HAVE TOOLS TO RUN, AND YOU DECIDE TO RUN A TOOL).
+                - **NEVER** include the UI things in the text you generate for the slides generation and
+                manipulation process, because the content you generate will be directly pasted to the editor user is
+                interacting with, and it will be rendered as a plain text, so you MUST NOT provide your output in
+                JSON or anything like that. You must produce plain text (UNLESS YOU HAVE TOOLS TO RUN, AND YOU DECIDE
+                TO RUN A TOOL).
 
             ---
         """

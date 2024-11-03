@@ -32,11 +32,11 @@ def build_slider_action__img_prompt(user_query: str):
 
         ---
 
-        **YOUR GOAL:** The user picked the Image Generation Command action. You MUST check the user's query and
+        ### **YOUR GOAL:** The user picked the Image Generation Command action. You MUST check the user's query and
         understand what kind of image they want to generate. Then, you must generate an image that's fitting the
-        overall status of the document, as well as the query of the user to satisfy his expectations and needs.
+        overall status of the Slides presentation, as well as the query of the user to satisfy their expectations and needs.
         You must only generate a single (1) image. You must USE YOUR IMAGE GENERATION TOOL to provide the user with
-        a generated image, based on the query of the user. You must not directly write a prompt, you must provide
+        a generated image, based on the query of the user. You must not directly write a prompt; you must provide
         the prompt in a structured format, as specified in your prompt.
 
         ---

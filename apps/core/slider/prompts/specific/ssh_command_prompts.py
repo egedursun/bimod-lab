@@ -36,8 +36,8 @@ def build_slider_action__ssh_prompt(user_query: str):
         understand what kind of operation they want to perform. And then, based on the query they provided to you, you
         need to perform a search on the SSH File System using one of the available SSH File System connections you
         have. You can run any type of read SSH File System command on the file system to get the information requested
-        by the user. Then, using the information you found in the file system, you must write the text in the form and
-        content requested by the user's query. If you have the information specified in your own internal knowledge,
+        by the user. Then, using the information you found in the file system, you must write the content in the form and
+        shape requested by the user's query. If you have the information specified in your own internal knowledge,
         you don't need to perform a SSH file system search. But be careful in not providing false information
         (unless specifically requested by the user).
 

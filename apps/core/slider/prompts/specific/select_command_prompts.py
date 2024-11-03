@@ -33,13 +33,13 @@ def build_slider_action__select_prompt(user_query: str, selected_text: str):
         ---
 
         **YOUR GOAL:** The user picked the Selection Modifier Command action. You MUST check the user's query and
-        understand what kind of modification they want to perform on the text. Then, you must modify the text user
+        understand what kind of modification they want to perform on the slide content. Then, you must modify the content user
         selected in a way to satisfy his expectations and needs. The content must be fitting the overall status of the
-        document, the query of the user, and of course only modify the selected text.
+        document, the query of the user, and of course only modify the selected content.
 
         ---
 
-        **SELECTED TEXT:**
+        **SELECTED CONTENT:**
 
         '''
         {selected_text}

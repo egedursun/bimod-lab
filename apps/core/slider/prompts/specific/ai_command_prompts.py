@@ -32,10 +32,10 @@ def build_slider_action__ai_prompt(user_query: str):
 
         ---
 
-        **YOUR GOAL:** The user picked the AI Command action. You MUST check the user's query and understand what
+        ### **YOUR GOAL:** The user picked the AI Command action. You MUST check the user's query and understand what
         kind of operation they want to perform on the text. Then, you must create a text that's fitting the overall
-        status of the document, as well as the query of the user to satisfy his expectations and needs. There is no
-        upper or lower in the limit in the text you generate as long as it's not pages long.
+        status of the Slides presentation, as well as the query of the user to satisfy their expectations and needs.
+        There is no upper or lower limit in the text you generate as long as it's not pages long.
 
         ---
 

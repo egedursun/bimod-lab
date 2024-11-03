@@ -40,6 +40,11 @@ python manage.py graph_models -a -g -o bimod_db_dd-MM-YYYY.dot
 **Generating the Class and Package Graphs**
 
 - Generating an SVG file
+
+```bash
+pip3 install pylint
+```
+
 ```bash
 pyreverse -o svg -p bimod_project -a 1 -s 1 -f ALL *
 ```

@@ -35,9 +35,9 @@ def build_slider_action__auto_prompt(xc: SliderExecutionManager):
 
         ---
 
-        **YOUR GOAL:** The user picked the Auto-Completion Command action. You MUST check the user's text and
+        ### **YOUR GOAL:** The user picked the Auto-Completion Command action. You MUST check the user's text and
         understand the context very carefully. Then, you must provide an auto-completion for the rest of the text
-        and ideally produce at least a few next sentences that are fitting to the overall status of the document.
+        and ideally produce at least a few next sentences that are fitting to the overall status of the Slides presentation.
         Do not make up information to complete the text, but rather use the existing information to generate the
         text or use your internal correct information to complete the text.
 
@@ -69,9 +69,9 @@ def build_slider_action__auto_prompt_public(content: str):
 
         ---
 
-        **YOUR GOAL:** The user picked the Auto-Completion Command action. You MUST check the user's text and
+        ### **YOUR GOAL:** The user picked the Auto-Completion Command action. You MUST check the user's text and
         understand the context very carefully. Then, you must provide an auto-completion for the rest of the text
-        and ideally produce at least a few next sentences that are fitting to the overall status of the document.
+        and ideally produce at least a few next sentences that are fitting to the overall status of the Slides presentation.
         Do not make up information to complete the text, but rather use the existing information to generate the
         text or use your internal correct information to complete the text.
 
