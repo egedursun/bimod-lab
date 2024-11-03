@@ -27,6 +27,7 @@ SOURCES_FOR_MULTIMODAL_CHATS = [
     ("orchestration", "Orchestration"),
     ("drafting", "Drafting"),
     ("formica", "Formica"),
+    ("slider", "Slider"),
 ]
 
 
@@ -38,6 +39,7 @@ class SourcesForMultimodalChatsNames:
     ORCHESTRATION = "orchestration"
     DRAFTING = "drafting"
     FORMICA = "formica"
+    SLIDER = "slider"
 
 
 class ChatMessageRoleSenderTypes:

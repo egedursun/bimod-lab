@@ -23,7 +23,6 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.drafting.models import DraftingFolder
 from apps.slider.models import SliderFolder
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout

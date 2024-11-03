@@ -23,6 +23,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
+from apps.core.slider.slider_executor import SliderExecutionManager
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.slider.models import SliderDocument
 from apps.user_permissions.utils import PermissionNames
@@ -49,8 +50,7 @@ class SliderView_GenerateViaWebCommand(LoginRequiredMixin, View):
         ##############################
 
         command = request.POST.get('command')
-        # xc = SliderExecutionManager(slider_document=document)
-        # response_json = xc.execute_web_command(command=command)
+        xc = SliderExecutionManager(slider_document=document)
+        response_json = xc.execute_web_command(command=command)
         logger.info(f"Web Command was executed for Slider Document: {document.id}.")
-        # return JsonResponse(response_json)
-        return JsonResponse({"output": None, "message": "Web Command was executed."})
+        return JsonResponse(response_json)

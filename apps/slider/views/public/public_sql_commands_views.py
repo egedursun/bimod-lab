@@ -23,6 +23,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
+from apps.core.slider.slider_executor_public import SliderExecutionManager_Public
 from apps.slider.utils import is_valid_google_apps_authentication_key
 
 logger = logging.getLogger(__name__)
@@ -56,9 +57,8 @@ class SliderView_PublicGenerateViaSQLCommand(View):
             logger.error(f"Invalid Google Apps Authentication Key.")
             return JsonResponse({"output": None, "message": "Invalid Google Apps Authentication Key."})
 
-        # xc = SliderExecutionManager_Public(slider_google_apps_connection=connection_object,
-        #                                      text_content=text_content)
-        # response_json = xc.execute_sql_command(command=command)
+        xc = SliderExecutionManager_Public(slider_google_apps_connection=connection_object,
+                                           text_content=text_content)
+        response_json = xc.execute_sql_command(command=command)
         logger.info(f"SQL Command was executed for Google Apps Connection: {connection_object}")
-        # return JsonResponse(response_json)
-        return JsonResponse({"output": None, "message": "SQL Command was executed."})
+        return JsonResponse(response_json)
