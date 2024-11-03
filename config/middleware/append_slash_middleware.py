@@ -38,6 +38,7 @@ class AppendSlashMiddleware:
             and not request.path.startswith('/app/drafting/public')
             and not request.path.startswith('/app/sheetos/public')
             and not request.path.startswith('/app/formica/public')
+            and not request.path.startswith('/app/slider/public')
             and not request.path.startswith('/app/blog_app')):
             return HttpResponsePermanentRedirect(request.path + '/')
         return self.get_response(request)

@@ -460,6 +460,7 @@ EXCLUDED_PAGES = [
     "/app/drafting/public/*",
     "/app/sheetos/public/*",
     "/app/formica/public/*",
+    "/app/slider/public/*",
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'

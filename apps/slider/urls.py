@@ -37,37 +37,37 @@ from apps.slider.views.slider_commands.repo_commands_views import SliderView_Gen
 app_name = 'slider'
 
 urlpatterns = [
-    path("folders/list/", SliderView_FolderList.as_view(
-        template_name="slider/folder/slider_folders_list.html"), name="folders_list"),
-    path("folders/delete/<int:folder_id>/", SliderView_FolderDelete.as_view(
-        template_name="slider/folder/slider_folders_delete.html"), name="folders_delete"),
-    path("folders/create/", SliderView_FolderCreate.as_view(), name="folders_create"),
-    path("folders/update/<int:folder_id>/", SliderView_FolderUpdate.as_view(
-        template_name="slider/folder/slider_folders_update.html"), name="folders_update"),
-
-    path("documents/detail/<int:folder_id>/<int:document_id>/", SliderView_DocumentDetail.as_view(
-        template_name="slider/document/slider_documents_detail.html"), name="documents_detail"),
-    path("documents/list/<int:folder_id>/", SliderView_DocumentList.as_view(
-        template_name="slider/document/slider_documents_list.html"), name="documents_list"),
-    path("documents/delete/<int:folder_id>/<int:document_id>/", SliderView_DocumentDelete.as_view(),
-         name="documents_delete"),
-    path("documents/create/<int:folder_id>/", SliderView_DocumentCreate.as_view(), name="documents_create"),
-    path("documents/update/<int:folder_id>/<int:document_id>/", SliderView_DocumentUpdate.as_view(
-        template_name="slider/document/slider_documents_update.html"
-    ), name="documents_update"),
-    path("documents/save/<int:folder_id>/<int:document_id>/", SliderView_SaveContent.as_view(),
-         name="documents_save"),
-
-    path("generate/commands/ai/", SliderView_GenerateViaAICommand.as_view(), name="generate_ai"),
-    path("generate/commands/nosql/", SliderView_GenerateViaNoSQLCommand.as_view(), name="generate_nosql"),
-    path("generate/commands/sql/", SliderView_GenerateViaSQLCommand.as_view(), name="generate_sql"),
-    path("generate/commands/ssh/", SliderView_GenerateViaSSHCommand.as_view(), name="generate_ssh"),
-    path("generate/commands/select/", SliderView_GenerateViaSelectCommand.as_view(), name="generate_select"),
-    path("generate/commands/vect/", SliderView_GenerateViaVectCommand.as_view(), name="generate_vect"),
-    path("generate/commands/auto/", SliderView_GenerateViaAutoCommand.as_view(), name="generate_auto"),
-    path("generate/commands/img/", SliderView_GenerateViaImgCommand.as_view(), name="generate_img"),
-    path("generate/commands/web/", SliderView_GenerateViaWebCommand.as_view(), name="generate_web"),
-    path("generate/commands/repo/", SliderView_GenerateViaRepoCommand.as_view(), name="generate_repo"),
+    # path("folders/list/", SliderView_FolderList.as_view(
+    #    template_name="slider/folder/slider_folders_list.html"), name="folders_list"),
+    # path("folders/delete/<int:folder_id>/", SliderView_FolderDelete.as_view(
+    #    template_name="slider/folder/slider_folders_delete.html"), name="folders_delete"),
+    # path("folders/create/", SliderView_FolderCreate.as_view(), name="folders_create"),
+    # path("folders/update/<int:folder_id>/", SliderView_FolderUpdate.as_view(
+    #    template_name="slider/folder/slider_folders_update.html"), name="folders_update"),
+    #
+    # path("documents/detail/<int:folder_id>/<int:document_id>/", SliderView_DocumentDetail.as_view(
+    #    template_name="slider/document/slider_documents_detail.html"), name="documents_detail"),
+    # path("documents/list/<int:folder_id>/", SliderView_DocumentList.as_view(
+    #    template_name="slider/document/slider_documents_list.html"), name="documents_list"),
+    # path("documents/delete/<int:folder_id>/<int:document_id>/", SliderView_DocumentDelete.as_view(),
+    #     name="documents_delete"),
+    # path("documents/create/<int:folder_id>/", SliderView_DocumentCreate.as_view(), name="documents_create"),
+    # path("documents/update/<int:folder_id>/<int:document_id>/", SliderView_DocumentUpdate.as_view(
+    #    template_name="slider/document/slider_documents_update.html"
+    # ), name="documents_update"),
+    # path("documents/save/<int:folder_id>/<int:document_id>/", SliderView_SaveContent.as_view(),
+    #     name="documents_save"),
+    #
+    # path("generate/commands/ai/", SliderView_GenerateViaAICommand.as_view(), name="generate_ai"),
+    # path("generate/commands/nosql/", SliderView_GenerateViaNoSQLCommand.as_view(), name="generate_nosql"),
+    # path("generate/commands/sql/", SliderView_GenerateViaSQLCommand.as_view(), name="generate_sql"),
+    # path("generate/commands/ssh/", SliderView_GenerateViaSSHCommand.as_view(), name="generate_ssh"),
+    # path("generate/commands/select/", SliderView_GenerateViaSelectCommand.as_view(), name="generate_select"),
+    # path("generate/commands/vect/", SliderView_GenerateViaVectCommand.as_view(), name="generate_vect"),
+    # path("generate/commands/auto/", SliderView_GenerateViaAutoCommand.as_view(), name="generate_auto"),
+    # path("generate/commands/img/", SliderView_GenerateViaImgCommand.as_view(), name="generate_img"),
+    # path("generate/commands/web/", SliderView_GenerateViaWebCommand.as_view(), name="generate_web"),
+    # path("generate/commands/repo/", SliderView_GenerateViaRepoCommand.as_view(), name="generate_repo"),
 
     # Google Apps Connections
     path("google_apps/connections/list/", SliderView_GoogleAppsConnectionList.as_view(
