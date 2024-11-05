@@ -33,7 +33,7 @@
     "course_description": "Learn how to understand the statistics on your dashboard, how to use the statistics assistant to generate insights for you, how to interpret the different tables and charts within the dashboard, and more.",
     "course_language": "English",
     "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-understanding-the-dashboard.png",
-    "course_under_construction": true
+    "course_under_construction": false
   },
   {
     "__course": 5,

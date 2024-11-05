@@ -1607,6 +1607,319 @@
       }
     });
   </script>
+  <!-- NoSQL DATABASE -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Define color variables
+      const purpleColor = '#836AF9',
+        yellowColor = '#ffe800',
+        cyanColor = '#28dac6',
+        orangeColor = '#FF8132',
+        orangeLightColor = '#FDAC34',
+        oceanBlueColor = '#299AFF',
+        greyColor = '#4F5D70',
+        greyLightColor = '#EDF1F4',
+        blueColor = '#2B9AFF',
+        blueLightColor = '#84D0FF',
+        blueDarkColor = '#1D9FF2';
+      let cardColor, headingColor, labelColor, borderColor, legendColor;
+
+      // Check for dark mode
+      if (isDarkStyle) {
+        cardColor = config.colors_dark.cardColor;
+        headingColor = config.colors_dark.headingColor;
+        labelColor = config.colors_dark.textMuted;
+        legendColor = config.colors_dark.bodyColor;
+        borderColor = config.colors_dark.borderColor;
+      } else {
+        cardColor = config.colors.cardColor;
+        headingColor = config.colors.headingColor;
+        labelColor = config.colors.textMuted;
+        legendColor = config.colors.bodyColor;
+        borderColor = config.colors.borderColor;
+      }
+
+      // Set height according to their data-height
+      const chartList = document.querySelectorAll('.chartjs');
+      chartList.forEach(function (chartListItem) {
+        chartListItem.height = chartListItem.dataset.height;
+      });
+
+      // Total NoSQL Read Queries per Assistant Bar Chart
+      const costsBarChart = document.getElementById('totalNoSQLReadQueriesPerAssistants');
+      if (costsBarChart) {
+        const costsBarChartVar = new Chart(costsBarChart, {
+          type: 'bar',
+          data: {
+            labels: {{ total_nosql_read_queries_per_assistants_labels|safe }},
+            datasets: [{
+              label: 'Total NoSQL Read Queries per Assistant',
+              data: {{ total_nosql_read_queries_per_assistants_values|safe }},
+              backgroundColor: blueColor,
+              borderColor: 'transparent',
+              maxBarThickness: 60,
+              borderRadius: {
+                topRight: 15,
+                topLeft: 15
+              }
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+              duration: 500
+            },
+            plugins: {
+              tooltip: {
+                rtl: isRtl,
+                backgroundColor: cardColor,
+                titleColor: headingColor,
+                bodyColor: legendColor,
+                borderWidth: 1,
+                borderColor: borderColor
+              },
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              x: {
+                grid: {
+                  color: borderColor,
+                  drawBorder: false,
+                  borderColor: borderColor
+                },
+                ticks: {
+                  color: labelColor
+                }
+              },
+              y: {
+                min: 0,
+                grid: {
+                  color: borderColor,
+                  drawBorder: false,
+                  borderColor: borderColor
+                },
+                ticks: {
+                  stepSize: 100,
+                  color: labelColor
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Define color variables
+      const purpleColor = '#836AF9',
+        yellowColor = '#ffe800',
+        cyanColor = '#28dac6',
+        orangeColor = '#FF8132',
+        orangeLightColor = '#FDAC34',
+        oceanBlueColor = '#299AFF',
+        greyColor = '#4F5D70',
+        greyLightColor = '#EDF1F4',
+        blueColor = '#2B9AFF',
+        blueLightColor = '#84D0FF',
+        blueDarkColor = '#1D9FF2';
+      let cardColor, headingColor, labelColor, borderColor, legendColor;
+
+      // Check for dark mode
+      if (isDarkStyle) {
+        cardColor = config.colors_dark.cardColor;
+        headingColor = config.colors_dark.headingColor;
+        labelColor = config.colors_dark.textMuted;
+        legendColor = config.colors_dark.bodyColor;
+        borderColor = config.colors_dark.borderColor;
+      } else {
+        cardColor = config.colors.cardColor;
+        headingColor = config.colors.headingColor;
+        labelColor = config.colors.textMuted;
+        legendColor = config.colors.bodyColor;
+        borderColor = config.colors.borderColor;
+      }
+
+      // Set height according to their data-height
+      const chartList = document.querySelectorAll('.chartjs');
+      chartList.forEach(function (chartListItem) {
+        chartListItem.height = chartListItem.dataset.height;
+      });
+
+      // Total NoSQL Write Queries per Assistant Bar Chart
+      const costsBarChart = document.getElementById('totalNoSQLWriteQueriesPerAssistants');
+      if (costsBarChart) {
+        const costsBarChartVar = new Chart(costsBarChart, {
+          type: 'bar',
+          data: {
+            labels: {{ total_nosql_write_queries_per_assistants_labels|safe }},
+            datasets: [{
+              label: 'Total NoSQL Write Queries per Assistant',
+              data: {{ total_nosql_write_queries_per_assistants_values|safe }},
+              backgroundColor: oceanBlueColor,
+              borderColor: 'transparent',
+              maxBarThickness: 60,
+              borderRadius: {
+                topRight: 15,
+                topLeft: 15
+              }
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+              duration: 500
+            },
+            plugins: {
+              tooltip: {
+                rtl: isRtl,
+                backgroundColor: cardColor,
+                titleColor: headingColor,
+                bodyColor: legendColor,
+                borderWidth: 1,
+                borderColor: borderColor
+              },
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              x: {
+                grid: {
+                  color: borderColor,
+                  drawBorder: false,
+                  borderColor: borderColor
+                },
+                ticks: {
+                  color: labelColor
+                }
+              },
+              y: {
+                min: 0,
+                grid: {
+                  color: borderColor,
+                  drawBorder: false,
+                  borderColor: borderColor
+                },
+                ticks: {
+                  stepSize: 100,
+                  color: labelColor
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Define color variables
+      const purpleColor = '#836AF9',
+        yellowColor = '#ffe800',
+        cyanColor = '#28dac6',
+        orangeColor = '#FF8132',
+        orangeLightColor = '#FDAC34',
+        oceanBlueColor = '#299AFF',
+        greyColor = '#4F5D70',
+        greyLightColor = '#EDF1F4',
+        blueColor = '#2B9AFF',
+        blueLightColor = '#84D0FF',
+        blueDarkColor = '#1D9FF2';
+      let cardColor, headingColor, labelColor, borderColor, legendColor;
+
+      // Check for dark mode
+      if (isDarkStyle) {
+        cardColor = config.colors_dark.cardColor;
+        headingColor = config.colors_dark.headingColor;
+        labelColor = config.colors_dark.textMuted;
+        legendColor = config.colors_dark.bodyColor;
+        borderColor = config.colors_dark.borderColor;
+      } else {
+        cardColor = config.colors.cardColor;
+        headingColor = config.colors.headingColor;
+        labelColor = config.colors.textMuted;
+        legendColor = config.colors.bodyColor;
+        borderColor = config.colors.borderColor;
+      }
+
+      // Set height according to their data-height
+      const chartList = document.querySelectorAll('.chartjs');
+      chartList.forEach(function (chartListItem) {
+        chartListItem.height = chartListItem.dataset.height;
+      });
+
+      // Total NoSQL Queries per Assistant Bar Chart
+      const costsBarChart = document.getElementById('totalNoSQLQueriesPerAssistants');
+      if (costsBarChart) {
+        const costsBarChartVar = new Chart(costsBarChart, {
+          type: 'bar',
+          data: {
+            labels: {{ total_nosql_queries_per_assistants_labels|safe }},
+            datasets: [{
+              label: 'Total NoSQL Queries per Assistant',
+              data: {{ total_nosql_queries_per_assistants_values|safe }},
+              backgroundColor: purpleColor,
+              borderColor: 'transparent',
+              maxBarThickness: 60,
+              borderRadius: {
+                topRight: 15,
+                topLeft: 15
+              }
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+              duration: 500
+            },
+            plugins: {
+              tooltip: {
+                rtl: isRtl,
+                backgroundColor: cardColor,
+                titleColor: headingColor,
+                bodyColor: legendColor,
+                borderWidth: 1,
+                borderColor: borderColor
+              },
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              x: {
+                grid: {
+                  color: borderColor,
+                  drawBorder: false,
+                  borderColor: borderColor
+                },
+                ticks: {
+                  color: labelColor
+                }
+              },
+              y: {
+                min: 0,
+                grid: {
+                  color: borderColor,
+                  drawBorder: false,
+                  borderColor: borderColor
+                },
+                ticks: {
+                  stepSize: 100,
+                  color: labelColor
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+  </script>
   <!-- FILE SYSTEMS -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -4815,6 +5128,83 @@ ${insightContent}
             </div>
             <div class="card-body">
               <canvas id="totalSQLQueriesPerAssistants" class="chartjs" data-height="250"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-3 mb-3"></div>
+
+    <!-- NoSQL DATABASE -->
+    <div class="card g-1">
+      <div class="card-header pb-3 mb-8">
+        <h5 class="card-title m-2"><strong>NoSQL Operation Statistics</strong></h5>
+        <p class="card-subtitle m-2">Total NoSQL database operations accumulated within the last {{ days }} days.</p>
+      </div>
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-8 align-items-center"
+           role="alert">
+        <img src="{% static 'img/custom-illustrations-v2/i2-23.png' %}" width="25%" style="border-radius:25px;"
+             class="justify-content-end me-8" alt="Illustration for tips">
+        <span class="alert-icon rounded">
+          <i class="ti ti-bookmark"></i>
+        </span>
+        <div class="d-flex flex-column ps-1">
+          <h5 class="alert-heading mb-2">Tip</h5>
+          <p class="mb-0">
+            In this section, you can view the total NoSQL database operations accumulated within the last {{ days }} days,
+            stemming from
+            your organization's usage of the platform. The NoSQL database operations are calculated based on the
+            operations
+            conducted by the assistants on the connected NoSQL databases you have within the system. The NoSQL database
+            operations
+            are displayed in absolute numbers. The statistics are updated once every 30 minutes, so the data may not be
+            up to
+            date with the current time directly. Please note that the calculations are prone to errors since deletions
+            and
+            creations of the resources are not taken into account by the statistics and sometimes this can result in a
+            higher NoSQL database operations than the NoSQL database operations shown here.
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+      </div>
+      <div class="row mt-8">
+        <img src="{% static 'img/dashboard/ds-10.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+        <div class="col-4 mb-6">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5 class="card-title mb-0">NoSQL Read Queries per Assistant</h5>
+              <small class="text-muted">Total NoSQL read queries attempted by each assistant, within the last {{ days }}
+                days.</small>
+            </div>
+            <div class="card-body">
+              <canvas id="totalNoSQLReadQueriesPerAssistants" class="chartjs" data-height="250"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 mb-6">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5 class="card-title mb-0">NoSQL Write Queries per Assistant</h5>
+              <small class="text-muted">Total NoSQL write queries attempted by each assistant, within the last {{ days }}
+                days.</small>
+            </div>
+            <div class="card-body">
+              <canvas id="totalNoSQLWriteQueriesPerAssistants" class="chartjs" data-height="250"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 mb-6">
+          <div class="card h-100">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Total NoSQL Queries per Assistant</h5>
+              <small class="text-muted">Total NoSQL queries attempted by each assistant, within the last {{ days }}
+                days.</small>
+            </div>
+            <div class="card-body">
+              <canvas id="totalNoSQLQueriesPerAssistants" class="chartjs" data-height="250"></canvas>
             </div>
           </div>
         </div>

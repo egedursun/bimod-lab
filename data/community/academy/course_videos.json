@@ -134,7 +134,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Cost Statistics Section",
     "video_description": "This video demonstrates the cost statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-1.webm",
     "__course": 4,
     "__section": 1,
     "__video": 1
@@ -144,7 +144,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Token Statistics Section",
     "video_description": "This video demonstrates the token statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-2.webm",
     "__course": 4,
     "__section": 1,
     "__video": 2
@@ -154,7 +154,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Assistant Communication Statistics Section",
     "video_description": "This video demonstrates the assistant communication statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-3.webm",
     "__course": 4,
     "__section": 1,
     "__video": 3
@@ -164,7 +164,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "SQL Operation Statistics Section",
     "video_description": "This video demonstrates the SQL operation statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-4.webm",
     "__course": 4,
     "__section": 1,
     "__video": 4
@@ -172,9 +172,9 @@
   {
     "course": "BimodLab - Understanding the Dashboard",
     "course_section": "Dashboard Statistics",
-    "video_title": "File System, Browsing and ML Model Statistics Section",
-    "video_description": "This video demonstrates the file system, browsing and ML model statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "NoSQL Operation Statistics Section",
+    "video_description": "This video demonstrates the SQL operation statistics section of the BimodLab dashboard.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-5.webm",
     "__course": 4,
     "__section": 1,
     "__video": 5
@@ -182,9 +182,9 @@
   {
     "course": "BimodLab - Understanding the Dashboard",
     "course_section": "Dashboard Statistics",
-    "video_title": "Multimedia Management Statistics Section",
-    "video_description": "This video demonstrates the multimedia management statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "File System, Browsing and ML Model Statistics Section",
+    "video_description": "This video demonstrates the file system, browsing and ML model statistics section of the BimodLab dashboard.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-6.webm",
     "__course": 4,
     "__section": 1,
     "__video": 6
@@ -192,9 +192,9 @@
   {
     "course": "BimodLab - Understanding the Dashboard",
     "course_section": "Dashboard Statistics",
-    "video_title": "Knowledge Base Statistics Section",
-    "video_description": "This video demonstrates the knowledge base statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "Multimedia Management Statistics Section",
+    "video_description": "This video demonstrates the multimedia management statistics section of the BimodLab dashboard.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-7.webm",
     "__course": 4,
     "__section": 1,
     "__video": 7
@@ -202,9 +202,9 @@
   {
     "course": "BimodLab - Understanding the Dashboard",
     "course_section": "Dashboard Statistics",
-    "video_title": "Assistant Memory Statistics Section",
-    "video_description": "This video demonstrates the assistant memory statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "Knowledge Base Statistics Section",
+    "video_description": "This video demonstrates the knowledge base statistics section of the BimodLab dashboard.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-8.webm",
     "__course": 4,
     "__section": 1,
     "__video": 8
@@ -212,9 +212,9 @@
   {
     "course": "BimodLab - Understanding the Dashboard",
     "course_section": "Dashboard Statistics",
-    "video_title": "Function Execution Statistics Section",
-    "video_description": "This video demonstrates the function execution statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "Assistant Memory Statistics Section",
+    "video_description": "This video demonstrates the assistant memory statistics section of the BimodLab dashboard.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-9.webm",
     "__course": 4,
     "__section": 1,
     "__video": 9
@@ -222,9 +222,9 @@
   {
     "course": "BimodLab - Understanding the Dashboard",
     "course_section": "Dashboard Statistics",
-    "video_title": "API Execution Statistics Section",
-    "video_description": "This video demonstrates the API execution statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "Function Execution Statistics Section",
+    "video_description": "This video demonstrates the function execution statistics section of the BimodLab dashboard.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-10.webm",
     "__course": 4,
     "__section": 1,
     "__video": 10
@@ -232,9 +232,9 @@
   {
     "course": "BimodLab - Understanding the Dashboard",
     "course_section": "Dashboard Statistics",
-    "video_title": "Script Execution Statistics Section",
-    "video_description": "This video demonstrates the script execution statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "API Execution Statistics Section",
+    "video_description": "This video demonstrates the API execution statistics section of the BimodLab dashboard.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-11.webm",
     "__course": 4,
     "__section": 1,
     "__video": 11
@@ -242,9 +242,9 @@
   {
     "course": "BimodLab - Understanding the Dashboard",
     "course_section": "Dashboard Statistics",
-    "video_title": "Scheduled & Triggered Job Statistics Section",
-    "video_description": "This video demonstrates the scheduled & triggered job statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "Script Execution Statistics Section",
+    "video_description": "This video demonstrates the script execution statistics section of the BimodLab dashboard.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-12.webm",
     "__course": 4,
     "__section": 1,
     "__video": 12
@@ -252,19 +252,29 @@
   {
     "course": "BimodLab - Understanding the Dashboard",
     "course_section": "Dashboard Statistics",
-    "video_title": "Organization User Statistics Section",
-    "video_description": "This video demonstrates the organization user statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "Scheduled & Triggered Job Statistics Section",
+    "video_description": "This video demonstrates the scheduled & triggered job statistics section of the BimodLab dashboard.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-13.webm",
     "__course": 4,
     "__section": 1,
     "__video": 13
   },
   {
     "course": "BimodLab - Understanding the Dashboard",
+    "course_section": "Dashboard Statistics",
+    "video_title": "Organization User Statistics Section",
+    "video_description": "This video demonstrates the organization user statistics section of the BimodLab dashboard.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-14.webm",
+    "__course": 4,
+    "__section": 1,
+    "__video": 14
+  },
+  {
+    "course": "BimodLab - Understanding the Dashboard",
     "course_section": "Statistical Interpretation Assistant",
     "video_title": "Using the Statistical Interpretation Assistant",
     "video_description": "This video demonstrates how to use the statistical interpretation assistant on the BimodLab dashboard.",
-    "video_content_url": "https://www.google.com",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/statistical-interpretation-assistant/4-2-1.webm",
     "__course": 4,
     "__section": 2,
     "__video": 1

@@ -57,7 +57,6 @@ class TransactionStatisticsManager:
             organization__in=self.organizations,
             created_at__gte=timezone.now() - timezone.timedelta(days=self.last_days)
         )
-        print("len: ", len(self.transactions))
         self.export_assistants = ExportAssistantAPI.objects.filter(assistant__in=self.assistants)
         self.scheduled_jobs = ScheduledJob.objects.filter(assistant__in=self.assistants)
         self.triggered_jobs = TriggeredJob.objects.filter(trigger_assistant__in=self.assistants)
@@ -67,6 +66,7 @@ class TransactionStatisticsManager:
             "communication": {},
             "exports": {},
             "sql": {},
+            "nosql": {},
             "file_system": {},
             "browsing": {},
             "knowledge_base": {},
@@ -87,6 +87,7 @@ class TransactionStatisticsManager:
         self._calculate__tokens()
         self._calculate__interactions()
         self._calculate__sql()
+        self._calculate__nosql()
         self._calculate__information_feeds()
         self._calculate__files()
         self._calculate__vector_stores()
@@ -135,6 +136,11 @@ class TransactionStatisticsManager:
         self.total_sql_read_queries_per_assistants()
         self.total_sql_write_queries_per_assistants()
         self.total_sql_queries_per_assistants()
+
+    def _calculate__nosql(self):
+        self.total_nosql_read_queries_per_assistants()
+        self.total_nosql_write_queries_per_assistants()
+        self.total_nosql_queries_per_assistants()
 
     def _calculate__interactions(self):
         self.total_chats_per_organizations()
@@ -215,6 +221,18 @@ class TransactionStatisticsManager:
     def total_sql_queries_per_assistants(self):
         assistant_sql_queries = self._calculate_total_sql_queries_per_assistants()
         self.statistics["sql"]['total_sql_queries_per_assistants'] = assistant_sql_queries
+
+    def total_nosql_read_queries_per_assistants(self):
+        assistant_nosql_read_queries = self._calculate_total_nosql_read_queries_per_assistants()
+        self.statistics["nosql"]['total_nosql_read_queries_per_assistants'] = assistant_nosql_read_queries
+
+    def total_nosql_write_queries_per_assistants(self):
+        assistant_nosql_write_queries = self._calculate_total_nosql_write_queries_per_assistants()
+        self.statistics["nosql"]['total_nosql_write_queries_per_assistants'] = assistant_nosql_write_queries
+
+    def total_nosql_queries_per_assistants(self):
+        assistant_nosql_queries = self._calculate_total_nosql_queries_per_assistants()
+        self.statistics["nosql"]['total_nosql_queries_per_assistants'] = assistant_nosql_queries
 
     def total_ssh_file_system_access_per_assistants(self):
         assistant_ssh_file_system_access = self._calculate_total_ssh_file_system_access_per_assistants()
@@ -393,6 +411,21 @@ class TransactionStatisticsManager:
 
     def _calculate_total_sql_queries_per_assistants(self):
         o = AuxiliaryInformationFeedsManager.calculate_total_sql_queries_per_assistants(
+            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+        return o
+
+    def _calculate_total_nosql_read_queries_per_assistants(self):
+        o = AuxiliaryInformationFeedsManager.calculate_total_nosql_read_queries_per_assistants(
+            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+        return o
+
+    def _calculate_total_nosql_write_queries_per_assistants(self):
+        o = AuxiliaryInformationFeedsManager.calculate_total_nosql_write_queries_per_assistants(
+                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+        return o
+
+    def _calculate_total_nosql_queries_per_assistants(self):
+        o = AuxiliaryInformationFeedsManager.calculate_total_nosql_queries_per_assistants(
             agents=self.assistants, txs=self.transactions, n_days=self.last_days)
         return o
 

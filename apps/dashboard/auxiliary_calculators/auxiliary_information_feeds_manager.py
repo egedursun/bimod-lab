@@ -64,6 +64,49 @@ class AuxiliaryInformationFeedsManager:
         return result
 
     @staticmethod
+    def calculate_total_nosql_read_queries_per_assistants(agents, txs, n_days):
+        result = {}
+        for a in agents:
+            txs_f = txs.filter(
+                responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+            )
+            total = 0
+            for tx in txs_f:
+                if tx.transaction_source == LLMTransactionSourcesTypesNames.NOSQL_READ:
+                    total += 1
+            result[a.name] = total
+        return result
+
+    @staticmethod
+    def calculate_total_nosql_write_queries_per_assistants(agents, txs, n_days):
+        result = {}
+        for a in agents:
+            txs_f = txs.filter(
+                responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+            )
+            total = 0
+            for tx in txs_f:
+                if tx.transaction_source == LLMTransactionSourcesTypesNames.NOSQL_WRITE:
+                    total += 1
+            result[a.name] = total
+        return result
+
+    @staticmethod
+    def calculate_total_nosql_queries_per_assistants(agents, txs, n_days):
+        result = {}
+        for a in agents:
+            txs_f = txs.filter(
+                responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+            )
+            total = 0
+            for tx in txs_f:
+                if tx.transaction_source in [LLMTransactionSourcesTypesNames.NOSQL_READ,
+                                             LLMTransactionSourcesTypesNames.NOSQL_WRITE]:
+                    total += 1
+            result[a.name] = total
+        return result
+
+    @staticmethod
     def calculate_total_ssh_file_system_access_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
