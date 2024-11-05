@@ -26,11 +26,11 @@ class AuxiliaryCostsManager:
     def calculate_costs_per_organizations(orgs, txs, n_days):
         result = {}
         for org in orgs:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 organization=org, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 total += float(tx.total_billable_cost)
             if total > 0:
                 result[org.name] = total
@@ -40,11 +40,11 @@ class AuxiliaryCostsManager:
     def calculate_cost_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 total += float(tx.total_billable_cost)
             if total > 0:
                 result[a.name] = total
@@ -54,11 +54,11 @@ class AuxiliaryCostsManager:
     def calculate_cost_per_users(org_users, txs, n_days):
         result = {}
         for usr in org_users:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_user=usr, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 total += float(tx.total_billable_cost)
             if total > 0:
                 result[usr.username] = total
@@ -68,11 +68,11 @@ class AuxiliaryCostsManager:
     def calculate_cost_per_sources(txs, n_days):
         result = {"main": {}, "tool": {}}
         for src in LLMTransactionSourcesTypesNames.as_list():
-            txs = txs.filter(
+            txs_f = txs.filter(
                 transaction_source=src, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 total += float(tx.total_billable_cost)
             if total > 0:
                 if src == LLMTransactionSourcesTypesNames.APP or src == LLMTransactionSourcesTypesNames.API:

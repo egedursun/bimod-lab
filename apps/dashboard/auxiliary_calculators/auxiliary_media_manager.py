@@ -26,11 +26,11 @@ class AuxiliaryMediaManager:
     def calculate_total_file_downloads_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.DOWNLOAD_FILE]:
                     total += 1
             result[a.name] = total
@@ -40,11 +40,11 @@ class AuxiliaryMediaManager:
     def calculate_total_multimedia_generations_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.GENERATION,
                                              LLMTransactionSourcesTypesNames.GENERATE_IMAGE,
                                              LLMTransactionSourcesTypesNames.MODIFY_IMAGE,

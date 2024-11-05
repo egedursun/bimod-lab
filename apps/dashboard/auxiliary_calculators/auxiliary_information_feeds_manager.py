@@ -25,11 +25,11 @@ class AuxiliaryInformationFeedsManager:
     def calculate_total_sql_read_queries_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source == LLMTransactionSourcesTypesNames.SQL_READ:
                     total += 1
             result[a.name] = total
@@ -39,11 +39,11 @@ class AuxiliaryInformationFeedsManager:
     def calculate_total_sql_write_queries_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source == LLMTransactionSourcesTypesNames.SQL_WRITE:
                     total += 1
             result[a.name] = total
@@ -53,11 +53,11 @@ class AuxiliaryInformationFeedsManager:
     def calculate_total_sql_queries_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.SQL_READ, LLMTransactionSourcesTypesNames.SQL_WRITE]:
                     total += 1
             result[a.name] = total
@@ -67,12 +67,12 @@ class AuxiliaryInformationFeedsManager:
     def calculate_total_ssh_file_system_access_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a,
                 created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.FILE_SYSTEM_COMMANDS]:
                     total += 1
             result[a.name] = total
@@ -82,11 +82,11 @@ class AuxiliaryInformationFeedsManager:
     def calculate_total_web_queries_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.BROWSING]:
                     total += 1
             result[a.name] = total

@@ -26,9 +26,9 @@ class AuxiliaryTokensManager:
     def calculate_tokens_per_organizations(orgs, txs, n_days):
         org_tokens = {}
         for org in orgs:
-            txs = txs.filter(organization=org, created_at__gte=timezone.now() - timezone.timedelta(days=n_days))
+            txs_f = txs.filter(organization=org, created_at__gte=timezone.now() - timezone.timedelta(days=n_days))
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 total += tx.number_of_tokens if tx.number_of_tokens else 0
             if total > 0:
                 org_tokens[org.name] = total
@@ -38,9 +38,9 @@ class AuxiliaryTokensManager:
     def calculate_tokens_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days))
+            txs_f = txs.filter(responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days))
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 total += tx.number_of_tokens if tx.number_of_tokens else 0
             if total > 0:
                 result[a.name] = total
@@ -50,11 +50,11 @@ class AuxiliaryTokensManager:
     def calculate_tokens_per_users(org_users, txs, n_days):
         result = {}
         for usr in org_users:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_user=usr, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 total += tx.number_of_tokens if tx.number_of_tokens else 0
             if total > 0:
                 result[usr.profile.username] = total
@@ -64,9 +64,9 @@ class AuxiliaryTokensManager:
     def calculate_tokens_per_sources(txs, n_days):
         result = {"main": {}, "tool": {}}
         for src in LLMTransactionSourcesTypesNames.as_list():
-            txs = txs.filter(transaction_source=src, created_at__gte=timezone.now() - timezone.timedelta(days=n_days))
+            txs_f = txs.filter(transaction_source=src, created_at__gte=timezone.now() - timezone.timedelta(days=n_days))
             total_tokens = 0
-            for tx in txs:
+            for tx in txs_f:
                 total_tokens += tx.number_of_tokens if tx.number_of_tokens else 0
             if total_tokens > 0:
                 if src == LLMTransactionSourcesTypesNames.APP or src == LLMTransactionSourcesTypesNames.API:

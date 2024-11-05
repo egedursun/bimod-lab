@@ -54,9 +54,10 @@ class TransactionStatisticsManager:
         self.organization_users = list(set(self.organization_users))
         self.assistants = Assistant.objects.filter(organization__in=self.organizations)
         self.transactions = LLMTransaction.objects.filter(
-            responsible_assistant__in=self.assistants,
+            organization__in=self.organizations,
             created_at__gte=timezone.now() - timezone.timedelta(days=self.last_days)
         )
+        print("len: ", len(self.transactions))
         self.export_assistants = ExportAssistantAPI.objects.filter(assistant__in=self.assistants)
         self.scheduled_jobs = ScheduledJob.objects.filter(assistant__in=self.assistants)
         self.triggered_jobs = TriggeredJob.objects.filter(trigger_assistant__in=self.assistants)

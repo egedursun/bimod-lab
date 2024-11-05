@@ -25,9 +25,9 @@ class AuxiliaryVectorStoreManager:
     def calculate_total_knowledge_base_searches_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days))
+            txs_f = txs.filter(responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days))
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.KNOWLEDGE_BASE_SEARCH]:
                     total += 1
             result[a.name] = total

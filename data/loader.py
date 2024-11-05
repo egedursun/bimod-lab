@@ -268,6 +268,9 @@ class BoilerplateDataLoader:
             # print(f"[BoilerplateDataLoader._load_academy_data] Pre-loaded {len(sections_data_json)} sections")
             pass
 
+        # Clean all videos (SAFETY MEASURE)
+        AcademyCourseVideo.objects.all().delete()
+
         # Load videos
         videos_data_json = None
         with open(videos_data_path, "r") as videos_file:

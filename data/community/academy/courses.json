@@ -15,7 +15,7 @@
     "course_description": "Learn how to navigate through BimodLab and authenticate yourself as a regular user to access the features of the platform, how to verify your email, and how to change your password.",
     "course_language": "English",
     "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-regular-user-authentication.png",
-    "course_under_construction": true
+    "course_under_construction": false
   },
   {
     "__course": 3,
@@ -24,7 +24,7 @@
     "course_description": "Learn about the basics of managing your account, your personal data, your payment information such as your stored credit cards and invoices on BimodLab.",
     "course_language": "English",
     "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-managing-your-account-and-payment-information.png",
-    "course_under_construction": true
+    "course_under_construction": false
   },
   {
     "__course": 4,

@@ -64,7 +64,7 @@
     "course_section": "Accepting an Invitation",
     "video_title": "Receiving and Accepting an Invitation",
     "video_description": "This video demonstrates how to receive and accept an invitation to BimodLab as a regular user.",
-    "video_content_url": "https://www.google1.com",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/bimod-lab-regular-user-authentication/accepting-an-invitation/2-1-1.webm",
     "__course": 2,
     "__section": 1,
     "__video": 1
@@ -74,27 +74,17 @@
     "course_section": "Resetting Your Password",
     "video_title": "Receiving the Password Reset Email",
     "video_description": "This video demonstrates how to receive the password reset email sent by BimodLab.",
-    "video_content_url": "https://www.google.com",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/bimod-lab-regular-user-authentication/resetting-your-password/2-2-1.webm",
     "__course": 2,
     "__section": 2,
     "__video": 1
   },
   {
     "course": "BimodLab - Regular User Authentication",
-    "course_section": "Resetting Your Password",
-    "video_title": "Creating a New Password",
-    "video_description": "This video demonstrates how to create a new password after receiving the password reset email.",
-    "video_content_url": "https://www.google.com",
-    "__course": 2,
-    "__section": 2,
-    "__video": 2
-  },
-  {
-    "course": "BimodLab - Regular User Authentication",
     "course_section": "Logging in",
     "video_title": "Logging in to BimodLab as a Regular User",
     "video_description": "This video demonstrates how to log in to BimodLab as a regular user.",
-    "video_content_url": "https://www.google.com",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/bimod-lab-regular-user-authentication/logging-in/2-3-1.webm",
     "__course": 2,
     "__section": 3,
     "__video": 1
@@ -104,7 +94,7 @@
     "course_section": "Profile Page",
     "video_title": "Checking Your Profile Page",
     "video_description": "This video demonstrates how to check your profile page on BimodLab.",
-    "video_content_url": "https://www.google.com",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/managing-your-account-and-payment-information/profile-page/3-1-1.webm",
     "__course": 3,
     "__section": 1,
     "__video": 1
@@ -114,7 +104,7 @@
     "course_section": "Profile Page",
     "video_title": "Updating Your Profile Information",
     "video_description": "This video demonstrates how to update your profile information on BimodLab.",
-    "video_content_url": "https://www.google.com",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/managing-your-account-and-payment-information/profile-page/3-1-2.webm",
     "__course": 3,
     "__section": 1,
     "__video": 2
@@ -122,9 +112,9 @@
   {
     "course": "BimodLab - Managing Your Account & Payment Information",
     "course_section": "Payment Information",
-    "video_title": "Checking Your Payment Information",
-    "video_description": "This video demonstrates how to check your payment information on BimodLab.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "Adding a New Payment Method",
+    "video_description": "This video demonstrates how to add a new payment method to your account on BimodLab.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/managing-your-account-and-payment-information/payment-information/3-2-1.webm",
     "__course": 3,
     "__section": 2,
     "__video": 1
@@ -132,22 +122,12 @@
   {
     "course": "BimodLab - Managing Your Account & Payment Information",
     "course_section": "Payment Information",
-    "video_title": "Adding a New Payment Method",
-    "video_description": "This video demonstrates how to add a new payment method to your account on BimodLab.",
-    "video_content_url": "https://www.google.com",
+    "video_title": "Removing a Payment Method",
+    "video_description": "This video demonstrates how to remove a payment method from your account on BimodLab.",
+    "video_content_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_videos/managing-your-account-and-payment-information/payment-information/3-2-2.webm",
     "__course": 3,
     "__section": 2,
     "__video": 2
-  },
-  {
-    "course": "BimodLab - Managing Your Account & Payment Information",
-    "course_section": "Payment Information",
-    "video_title": "Removing a Payment Method",
-    "video_description": "This video demonstrates how to remove a payment method from your account on BimodLab.",
-    "video_content_url": "https://www.google.com",
-    "__course": 3,
-    "__section": 2,
-    "__video": 3
   },
   {
     "course": "BimodLab - Understanding the Dashboard",

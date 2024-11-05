@@ -24,11 +24,11 @@ class AuxiliaryFunctionCallsManager:
     def calculate_total_internal_function_calls_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.INTERNAL_FUNCTION_EXECUTION]:
                     total += 1
             result[a.name] = total
@@ -38,11 +38,11 @@ class AuxiliaryFunctionCallsManager:
     def calculate_total_external_function_calls_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.EXTERNAL_FUNCTION_EXECUTION]:
                     total += 1
             result[a.name] = total
@@ -52,11 +52,11 @@ class AuxiliaryFunctionCallsManager:
     def calculate_total_function_calls_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.INTERNAL_FUNCTION_EXECUTION,
                                              LLMTransactionSourcesTypesNames.EXTERNAL_FUNCTION_EXECUTION]:
                     total += 1

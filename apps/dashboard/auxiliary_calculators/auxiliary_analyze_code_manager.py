@@ -25,11 +25,11 @@ class AuxiliaryAnalyzeCodeManager:
     def calculate_total_document_interpretations_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.INTERPRET_FILE]:
                     total += 1
             result[a.name] = total
@@ -39,11 +39,11 @@ class AuxiliaryAnalyzeCodeManager:
     def calculate_total_code_interpretations_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.INTERPRET_CODE]:
                     total += 1
             result[a.name] = total
@@ -53,11 +53,11 @@ class AuxiliaryAnalyzeCodeManager:
     def calculate_total_image_interpretations_per_assistants(agents, txs, n_days):
         result = {}
         for a in agents:
-            txs = txs.filter(
+            txs_f = txs.filter(
                 responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
             )
             total = 0
-            for tx in txs:
+            for tx in txs_f:
                 if tx.transaction_source in [LLMTransactionSourcesTypesNames.INTERPRET_IMAGE]:
                     total += 1
             result[a.name] = total
