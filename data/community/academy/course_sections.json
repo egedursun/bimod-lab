@@ -1,0 +1,660 @@
+[
+  {
+    "course": "BimodLab - Administrator Authentication",
+    "section_name": "Registration",
+    "section_description": "This section covers the registration process for administrators.",
+    "__course": 1,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Administrator Authentication",
+    "section_name": "Logging in",
+    "section_description": "This section covers the login process for administrators.",
+    "__course": 1,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Administrator Authentication",
+    "section_name": "Verifying Your Email",
+    "section_description": "This section covers the email verification process for administrators.",
+    "__course": 1,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Administrator Authentication",
+    "section_name": "Account Approval",
+    "section_description": "This section covers the account approval process for administrators.",
+    "__course": 1,
+    "__section": 4
+  },
+  {
+    "course": "BimodLab - Administrator Authentication",
+    "section_name": "Resetting Your Password",
+    "section_description": "This section covers the password reset process for administrators.",
+    "__course": 1,
+    "__section": 5
+  },
+  {
+    "course": "BimodLab - Regular User Authentication",
+    "section_name": "Accepting an Invitation",
+    "section_description": "This section covers the invitation acceptance process for regular users.",
+    "__course": 2,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Regular User Authentication",
+    "section_name": "Resetting Your Password",
+    "section_description": "This section covers the password reset process for regular users.",
+    "__course": 2,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Regular User Authentication",
+    "section_name": "Logging in",
+    "section_description": "This section covers the login process for regular users.",
+    "__course": 2,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Managing Your Account & Payment Information",
+    "section_name": "Profile Page",
+    "section_description": "This section covers the profile page.",
+    "__course": 3,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Managing Your Account & Payment Information",
+    "section_name": "Payment Information",
+    "section_description": "This section covers the payment information page.",
+    "__course": 3,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Understanding the Dashboard",
+    "section_name": "Dashboard Statistics",
+    "section_description": "This section covers the statistics on the dashboard.",
+    "__course": 4,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Understanding the Dashboard",
+    "section_name": "Statistical Interpretation Assistant",
+    "section_description": "This section covers the statistical interpretation assistant on the dashboard.",
+    "__course": 4,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Navigation Elements",
+    "section_name": "Top Navigation Bar",
+    "section_description": "This section covers the top navigation bar.",
+    "__course": 5,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Navigation Elements",
+    "section_name": "Dropdown Menu",
+    "section_description": "This section covers the dropdown menu.",
+    "__course": 5,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Navigation Elements",
+    "section_name": "Invoices",
+    "section_description": "This section covers the invoices page.",
+    "__course": 5,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Navigation Elements",
+    "section_name": "Data Backups",
+    "section_description": "This section covers data backups page.",
+    "__course": 5,
+    "__section": 4
+  },
+  {
+    "course": "BimodLab - Navigation Elements",
+    "section_name": "User Settings",
+    "section_description": "This section covers user settings page.",
+    "__course": 5,
+    "__section": 5
+  },
+  {
+    "course": "BimodLab - Navigation Elements",
+    "section_name": "Notification Manager",
+    "section_description": "This section covers the notification manager page.",
+    "__course": 5,
+    "__section": 6
+  },
+  {
+    "course": "BimodLab - Navigation Elements",
+    "section_name": "Support Tickets",
+    "section_description": "This section covers the support tickets page.",
+    "__course": 5,
+    "__section": 7
+  },
+  {
+    "course": "BimodLab - Navigation Elements",
+    "section_name": "FAQ & Troubleshooting",
+    "section_description": "This section covers the FAQ & troubleshooting page.",
+    "__course": 5,
+    "__section": 8
+  },
+  {
+    "course": "BimodLab - Navigation Elements",
+    "section_name": "Application Blog",
+    "section_description": "This section covers the application blog page.",
+    "__course": 5,
+    "__section": 9
+  },
+  {
+    "course": "BimodLab - Navigation Elements",
+    "section_name": "Community Forum",
+    "section_description": "This section covers the community forum page.",
+    "__course": 5,
+    "__section": 10
+  },
+  {
+    "course": "BimodLab - System Administration Tools",
+    "section_name": "Organizations",
+    "section_description": "This section covers the organizations data models and their features.",
+    "__course": 6,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - System Administration Tools",
+    "section_name": "Large Language Models (LLMs)",
+    "section_description": "This section covers the large language models data models and their features.",
+    "__course": 6,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - System Administration Tools",
+    "section_name": "Transactions & Payments",
+    "section_description": "This section covers the transactions and payments pages and features.",
+    "__course": 6,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - MetaKanban & MetaTempo: Project Management Tools",
+    "section_name": "Projects",
+    "section_description": "This section covers the project data models and their features.",
+    "__course": 7,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - MetaKanban & MetaTempo: Project Management Tools",
+    "section_name": "Teams",
+    "section_description": "This section covers the team data models and their features.",
+    "__course": 7,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - MetaKanban & MetaTempo: Project Management Tools",
+    "section_name": "MetaKanban & AI Kanban Boards",
+    "section_description": "This section covers the MetaKanban and AI Kanban Boards.",
+    "__course": 7,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - MetaKanban & MetaTempo: Project Management Tools",
+    "section_name": "MetaTempo & AI Performance and Time Tracking",
+    "section_description": "This section covers the MetaTempo and AI Team Performance and Tempo Tracking.",
+    "__course": 7,
+    "__section": 4
+  },
+  {
+    "course": "BimodLab - Managing Users & Permissions",
+    "section_name": "User Management",
+    "section_description": "This section covers the user management features.",
+    "__course": 8,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Managing Users & Permissions",
+    "section_name": "Permission Management",
+    "section_description": "This section covers the user permission management features.",
+    "__course": 8,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Managing Users & Permissions",
+    "section_name": "User Roles",
+    "section_description": "This section covers the user roles data models and their features.",
+    "__course": 8,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "section_name": "BimodLab Assistants",
+    "section_description": "This section covers the BimodLab Assistants and their features.",
+    "__course": 9,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "section_name": "Harmoniq Agents",
+    "section_description": "This section covers the Harmoniq Agents and their features.",
+    "__course": 9,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "section_name": "Expert Networks",
+    "section_description": "This section covers the Expert Networks and their features.",
+    "__course": 9,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "section_name": "LeanMod Assistants",
+    "section_description": "This section covers the LeanMod Assistants and their features.",
+    "__course": 9,
+    "__section": 4
+  },
+  {
+    "course": "BimodLab - Data Security & Named Entity Recognition (NER)",
+    "section_name": "Named Entity Recognition (NER)",
+    "section_description": "This section covers the Named Entity Recognition (NER) features.",
+    "__course": 10,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "section_name": "BimodLab Assistant Chats",
+    "section_description": "This section covers the BimodLab Assistant Chats and their features.",
+    "__course": 11,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "section_name": "LeanMod Assistant Chats",
+    "section_description": "This section covers the LeanMod Assistant Chats and their features.",
+    "__course": 11,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "section_name": "Harmoniq Agent Chats",
+    "section_description": "This section covers the Harmoniq Agent Chats and their features.",
+    "__course": 11,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "section_name": "Starred Messages",
+    "section_description": "This section covers the starred messages and their features.",
+    "__course": 11,
+    "__section": 4
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "section_name": "Message Templates",
+    "section_description": "This section covers the message templates and their features.",
+    "__course": 11,
+    "__section": 5
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "section_name": "Memory Statements",
+    "section_description": "This section covers the memory statements and their features.",
+    "__course": 11,
+    "__section": 6
+  },
+  {
+    "course": "BimodLab - eLLMa Scripting & Code Generation",
+    "section_name": "eLLMa Scripting",
+    "section_description": "This section covers the eLLMa Scripting methodology and its features.",
+    "__course": 12,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Office Suite: Drafting, Sheetos, Slider, Formica, and Google Apps Integration",
+    "section_name": "Drafting: AI Word Processor",
+    "section_description": "This section covers the Drafting AI Word Processor and its features.",
+    "__course": 13,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Office Suite: Drafting, Sheetos, Slider, Formica, and Google Apps Integration",
+    "section_name": "Sheetos: AI Spreadsheet Processor",
+    "section_description": "This section covers the Sheetos AI Spreadsheet Processor and its features.",
+    "__course": 13,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Office Suite: Drafting, Sheetos, Slider, Formica, and Google Apps Integration",
+    "section_name": "Slider: AI Presentation Processor",
+    "section_description": "This section covers the Slider AI Presentation Processor and its features.",
+    "__course": 13,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Office Suite: Drafting, Sheetos, Slider, Formica, and Google Apps Integration",
+    "section_name": "Formica: AI Form Processor",
+    "section_description": "This section covers the Formica AI Form Processor and its features.",
+    "__course": 13,
+    "__section": 4
+  },
+  {
+    "course": "BimodLab - Designing Multi-Agent Systems with Orchestrations",
+    "section_name": "Orchestrators",
+    "section_description": "This section covers the orchestrators and their features.",
+    "__course": 14,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - HadronPrime: Letting AI take the Lead to Manage Your Robots and IoT Devices",
+    "section_name": "Hadron Prime",
+    "section_description": "This section covers the Hadron Prime and its features.",
+    "__course": 15,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab: Binexus: Using Genetic Algorithms to Evolve the Best Prompts",
+    "section_name": "Binexus",
+    "section_description": "This section covers the Binexus and its features.",
+    "__course": 16,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Blockchain Wallets & AI Smart Contract Generation",
+    "section_name": "Blockchain Wallets",
+    "section_description": "This section covers the blockchain wallets and their features.",
+    "__course": 17,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Blockchain Wallets & AI Smart Contract Generation",
+    "section_name": "AI Smart Contract Generation",
+    "section_description": "This section covers the AI smart contract generation and its features.",
+    "__course": 17,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Publishing your Assistants and Orchestrations",
+    "section_name": "Exporting BimodLab Assistants via REST API",
+    "section_description": "This section covers the exporting BimodLab assistants via REST API and its features.",
+    "__course": 18,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Publishing your Assistants and Orchestrations",
+    "section_name": "Exporting LeanMod Assistants via REST API",
+    "section_description": "This section covers the exporting LeanMod assistants via REST API and its features.",
+    "__course": 18,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Publishing your Assistants and Orchestrations",
+    "section_name": "Exporting Orchestrations via REST API",
+    "section_description": "This section covers the exporting orchestrations via REST API and its features.",
+    "__course": 18,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Using Custom Large Language Models",
+    "section_name": "Fine-Tuned Models",
+    "section_description": "This section covers the using fine-tuned models and their features.",
+    "__course": 19,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Connecting Remote Servers to Assistants",
+    "section_name": "SSH & Remote Server Connections",
+    "section_description": "This section covers the SSH & remote server connections and their features.",
+    "__course": 20,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "section_name": "Web Browser Connections",
+    "section_description": "This section covers the web browser connections and their features.",
+    "__course": 21,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "section_name": "Browsing Logs & History",
+    "section_description": "This section covers the browsing logs & history and their features.",
+    "__course": 21,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Connecting SQL & NoSQL Databases to Assistants",
+    "section_name": "SQL Database Connections",
+    "section_description": "This section covers the SQL database connections and their features.",
+    "__course": 22,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Connecting SQL & NoSQL Databases to Assistants",
+    "section_name": "Custom SQL Queries",
+    "section_description": "This section covers the custom SQL queries and their features.",
+    "__course": 22,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Connecting SQL & NoSQL Databases to Assistants",
+    "section_name": "NoSQL Database Connections",
+    "section_description": "This section covers the NoSQL database connections and their features.",
+    "__course": 22,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Connecting SQL & NoSQL Databases to Assistants",
+    "section_name": "Custom NoSQL Queries",
+    "section_description": "This section covers the custom NoSQL queries and their features.",
+    "__course": 22,
+    "__section": 4
+  },
+  {
+    "course": "BimodLab - Connecting Document Bases and Managing Large Text Files",
+    "section_name": "Document Bases",
+    "section_description": "This section covers the document bases and their features.",
+    "__course": 23,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Connecting Document Bases and Managing Large Text Files",
+    "section_name": "Managing Text Documents",
+    "section_description": "This section covers the managing text documents and their features.",
+    "__course": 23,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Connecting GitHub Repositories and Managing Code Bases",
+    "section_name": "GitHub Repository Storages",
+    "section_description": "This section covers the GitHub repository storages and their features.",
+    "__course": 24,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Connecting GitHub Repositories and Managing Code Bases",
+    "section_name": "Managing Code Bases",
+    "section_description": "This section covers the managing code bases and their features.",
+    "__course": 24,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Connecting PyTorch Machine Learning Models to Your Assistants",
+    "section_name": "PyTorch ML Model Storages",
+    "section_description": "This section covers the PyTorch machine learning model storages and their features.",
+    "__course": 25,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Connecting PyTorch Machine Learning Models to Your Assistants",
+    "section_name": "Managing PyTorch ML Models",
+    "section_description": "This section covers the managing PyTorch machine learning models and their features.",
+    "__course": 25,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Connecting Media Storages, Uploading Your Media & AI Generated Files",
+    "section_name": "Media Storages",
+    "section_description": "This section covers the media storages and their features.",
+    "__course": 26,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Connecting Media Storages, Uploading Your Media & AI Generated Files",
+    "section_name": "Managing Media Files",
+    "section_description": "This section covers the uploading & managing media files and their features.",
+    "__course": 26,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Connecting Media Storages, Uploading Your Media & AI Generated Files",
+    "section_name": "AI Generated Files",
+    "section_description": "This section covers the AI generated files and their features.",
+    "__course": 26,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Connecting Video Generation Tools to Assistants",
+    "section_name": "Video Generation Tools",
+    "section_description": "This section covers the video generation tools and their features.",
+    "__course": 27,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Creating Custom Functions, APIs, Scripts & Navigating the Plugin Stores",
+    "section_name": "Custom Functions",
+    "section_description": "This section covers the custom functions and their features.",
+    "__course": 28,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Creating Custom Functions, APIs, Scripts & Navigating the Plugin Stores",
+    "section_name": "Custom APIs",
+    "section_description": "This section covers the custom APIs and their features.",
+    "__course": 28,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Creating Custom Functions, APIs, Scripts & Navigating the Plugin Stores",
+    "section_name": "Custom Scripts",
+    "section_description": "This section covers the custom scripts and their features.",
+    "__course": 28,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Creating Custom Functions, APIs, Scripts & Navigating the Plugin Stores",
+    "section_name": "Function Store",
+    "section_description": "This section covers the function store and its features.",
+    "__course": 28,
+    "__section": 4
+  },
+  {
+    "course": "BimodLab - Creating Custom Functions, APIs, Scripts & Navigating the Plugin Stores",
+    "section_name": "API Store",
+    "section_description": "This section covers the API store and its features.",
+    "__course": 28,
+    "__section": 5
+  },
+  {
+    "course": "BimodLab - Creating Custom Functions, APIs, Scripts & Navigating the Plugin Stores",
+    "section_name": "Script Store",
+    "section_description": "This section covers the script store and its features.",
+    "__course": 28,
+    "__section": 6
+  },
+  {
+    "course": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "section_name": "Scheduled Jobs",
+    "section_description": "This section covers the scheduled jobs and their features.",
+    "__course": 29,
+    "__section": 1
+  },
+  {
+    "course": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "section_name": "Log Management for Scheduled Jobs",
+    "section_description": "This section covers the log management for scheduled jobs and their features.",
+    "__course": 29,
+    "__section": 2
+  },
+  {
+    "course": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "section_name": "Triggered Jobs",
+    "section_description": "This section covers the triggered jobs and their features.",
+    "__course": 29,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "section_name": "Log Management for Triggered Jobs",
+    "section_description": "This section covers the log management for triggered jobs and their features.",
+    "__course": 29,
+    "__section": 4
+  },
+  {
+    "course": "Bimod AstroBelt - Bimod & Google Sync: Integrating Google Office with Your Assistants",
+    "section_name": "Integrating Drafting Tool with Google Docs",
+    "section_description": "This section covers the integration of the Drafting Tool with Google Docs.",
+    "__course": 30,
+    "__section": 1
+  },
+  {
+    "course": "Bimod AstroBelt - Bimod & Google Sync: Integrating Google Office with Your Assistants",
+    "section_name": "Integrating Sheetos Tool with Google Sheets",
+    "section_description": "This section covers the integration of the Sheetos Tool with Google Sheets.",
+    "__course": 30,
+    "__section": 2
+  },
+  {
+    "course": "Bimod AstroBelt - Bimod & Google Sync: Integrating Google Office with Your Assistants",
+    "section_name": "Integrating Slider Tool with Google Slides",
+    "section_description": "This section covers the integration of the Slider Tool with Google Slides.",
+    "__course": 30,
+    "__section": 3
+  },
+  {
+    "course": "Bimod AstroBelt - Bimod & Google Sync: Integrating Google Office with Your Assistants",
+    "section_name": "Integrating Formica Tool with Google Forms",
+    "section_description": "This section covers the integration of the Formica Tool with Google Forms.",
+    "__course": 30,
+    "__section": 4
+  },
+  {
+    "course": "Bimod Electron Copilot - Your Desktop Client: Installation & Configuration",
+    "section_name": "Managing BimodLab Assistant Connections & Chats",
+    "section_description": "This section covers the managing assistant connections & chats.",
+    "__course": 31,
+    "__section": 1
+  },
+  {
+    "course": "Bimod Electron Copilot - Your Desktop Client: Installation & Configuration",
+    "section_name": "Managing LeanMod Assistant Connections & Chats",
+    "section_description": "This section covers the managing LeanMod assistant connections & chats.",
+    "__course": 31,
+    "__section": 2
+  },
+  {
+    "course": "Bimod Electron Copilot - Your Desktop Client: Installation & Configuration",
+    "section_name": "Managing Orchestration Connections & Chats",
+    "section_description": "This section covers the managing orchestration connections & chats.",
+    "__course": 31,
+    "__section": 3
+  },
+  {
+    "course": "Bimod Electron Copilot - Your Desktop Client: Installation & Configuration",
+    "section_name": "Using Copilot",
+    "section_description": "This section covers the usage of Copilot.",
+    "__course": 31,
+    "__section": 4
+  },
+  {
+    "course": "Bimod Electron Copilot - Your Desktop Client: Installation & Configuration",
+    "section_name": "MetaKanban Connections & Meeting Tracking",
+    "section_description": "This section covers the MetaKanban connections & meeting tracking.",
+    "__course": 31,
+    "__section": 5
+  },
+  {
+    "course": "Bimod Electron Copilot - Your Desktop Client: Installation & Configuration",
+    "section_name": "MetaTempo Connections & Time Tracking",
+    "section_description": "This section covers the MetaTempo connections & time tracking.",
+    "__course": 31,
+    "__section": 6
+  }
+]

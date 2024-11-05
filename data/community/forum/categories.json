@@ -1,55 +1,66 @@
 [
   {
+    "__category": 1,
     "name": "General",
     "description": "A place for general discussions about the application and its features.",
     "slug": "general"
   },
   {
+    "__category": 2,
     "name": "Off-Topic",
     "description": "A place for off-topic discussions of any kind that is not related to the application.",
     "slug": "off-topic"
   },
   {
+    "__category": 3,
     "name": "Support and Feedback",
     "description": "A place for support questions and answers regarding the application and the community.",
     "slug": "support-and-feedback"
   },
   {
+    "__category": 4,
     "name": "Technical Discussions",
     "description": "A place for technical and developer-level discussions about the application and its features.",
     "slug": "technical-discussions"
   },
   {
+    "__category": 5,
     "name": "Interactions",
     "description": "A place for discussions about the interactions within the services and possible improvements.",
     "slug": "interactions"
   },
   {
+    "__category": 6,
     "name": "Data Sources",
     "description": "A place for discussions about the data sources and potential collaborations.",
     "slug": "data-sources"
   },
   {
+    "__category": 7,
     "name": "Tools",
     "description": "A place for discussions about the multi-modality tools and potential improvements.",
     "slug": "tools"
   },
   {
+    "__category": 8,
     "name": "Stores and Developer Contributions",
     "description": "A place dedicated to the boilerplate code, plugins, and other contributions to the application.",
     "slug": "stores-and-developer-contributions"
   },
   {
+    "__category": 9,
     "name": "Administration",
     "description": "A place for discussions about the administration of the application such as users, permissions, organization, and billing.",
     "slug": "administration"
   },
   {
+    "__category": 10,
     "name": "User Profile and Payment Methods",
     "description": "A place for discussions about the user profile, payment methods, and problems with the billing.",
     "slug": "user-profile-and-payment-methods"
   },
   {
+    "__category": 11,
     "name": "Data Security",
     "description": "A place for discussions about the data security methodologies embedded in the application such as NER, encryption, and data masking.",
     "slug": "data-security"

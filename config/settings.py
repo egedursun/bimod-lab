@@ -148,6 +148,7 @@ INSTALLED_APPS = [
     "apps.sheetos",
     "apps.formica",
     "apps.slider",
+    "apps.bmd_academy",
 
     ########################################
     # SUPPORT
@@ -442,6 +443,7 @@ EXCLUDED_PAGES = [
     "/electron_copilot_releases/*",
     "/docs/*",
     "/faq/*",
+    "/bmd_academy/*",
     "/app/blog_app/*",
     "/not_accredited/*",
     "/bimod_endeavours/*",

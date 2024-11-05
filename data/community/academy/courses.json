@@ -1,0 +1,281 @@
+[
+  {
+    "__course": 1,
+    "instructor": "admin",
+    "course_title": "BimodLab - Administrator Authentication",
+    "course_description": "Learn more about how to register to BimodLab as a system administrator, how to login, how to verify your email, and how to change your password.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-administrator-authentication.png",
+    "course_under_construction": false
+  },
+  {
+    "__course": 2,
+    "instructor": "admin",
+    "course_title": "BimodLab - Regular User Authentication",
+    "course_description": "Learn how to navigate through BimodLab and authenticate yourself as a regular user to access the features of the platform, how to verify your email, and how to change your password.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-regular-user-authentication.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 3,
+    "instructor": "admin",
+    "course_title": "BimodLab - Managing Your Account & Payment Information",
+    "course_description": "Learn about the basics of managing your account, your personal data, your payment information such as your stored credit cards and invoices on BimodLab.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-managing-your-account-and-payment-information.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 4,
+    "instructor": "admin",
+    "course_title": "BimodLab - Understanding the Dashboard",
+    "course_description": "Learn how to understand the statistics on your dashboard, how to use the statistics assistant to generate insights for you, how to interpret the different tables and charts within the dashboard, and more.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-understanding-the-dashboard.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 5,
+    "instructor": "admin",
+    "course_title": "BimodLab - Navigation Elements",
+    "course_description": "Learn about the navigation pane elements and how they work, how to use the search bar, managing your invoices, controlling your automated data backups, managing your backups, sending custom notifications to users, bulk deleting your data & organizational resources, creating & tracking support tickets, troubleshooting steps, utilizing application blog & forum, understanding gifts for contributions, and overall tips about how to navigate through the platform.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-navigation-elements.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 6,
+    "instructor": "admin",
+    "course_title": "BimodLab - System Administration Tools",
+    "course_description": "Learn how to create and manage organizations to let assistants know more about your enterprise goals, strategies, and vision. You will also learn how to connect your LLM models to your account, and how to track your usage and billing information.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-system-administration-tools.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 7,
+    "instructor": "admin",
+    "course_title": "BimodLab - MetaKanban & MetaTempo: Project Management Tools",
+    "course_description": "Learn how to take the most of the AI-Controlled Kanban Boards and Automated Team Tempo Tracking with our Electron Copilot Desktop client tool. Empower your online and real world meetings with automated note taking, automated task creation & management, as well as automatically assigning tasks to adequate team members.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-metakanban-and-metatempo-project-management-tools.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 8,
+    "instructor": "admin",
+    "course_title": "BimodLab - Managing Users & Permissions",
+    "course_description": "Learn about how to manage your users, how to assign roles and permissions, and how to create and manage user roles to control access to your organization's resources.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-managing-users-and-permissions.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 9,
+    "instructor": "admin",
+    "course_title": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "course_description": "Learn how to create and manage your own assistants, when and how to use LeanMod and Expert Networks, and how to connect your assistants to your organization's resources and Large Language Models (LLM). You will also learn about the key differences between BimodLab assistants versus LeanMod assistants to know when to use them, and what you can do to take the best of both worlds.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-bimodlab-assistants-leanmod-and-expert-networks.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 10,
+    "instructor": "admin",
+    "course_title": "BimodLab - Data Security & Named Entity Recognition (NER)",
+    "course_description": "Learn how to secure your data, how to use Named Entity Recognition (NER) to extract information from your data, and how to connect NER models to your assistants. You will also learn about which types of data you can hide and prevent from reaching to servers of Large Language Model (LLM) providers and still have a seamless process on your end.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-data-security-and-named-entity-recognition-ner.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 11,
+    "instructor": "admin",
+    "course_title": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "course_description": "Learn how to use the chats for complex assistants and LeanMod assistants, how to manage your chat metadata & tools, and how to control your active and archived chats. You will also learn about the multi modal chat functionalities for chats, such as uploading images & files, freeform drawing on canvas, requesting changes on images, recording your voice, making assistants narrate the text messages, copying or starring your favorite messages as well using predefined message templates to speed up your chat processes.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-understanding-and-using-chats-and-chat-metadata.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 12,
+    "instructor": "admin",
+    "course_title": "BimodLab - eLLMa Scripting & Code Generation",
+    "course_description": "Learn how to use eLLMa scripting to automatically generate code for various different languages in a few seconds. You will also learn about the potential use cases for eLLMa scripting and how you can take the most of your experience while developing.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-ellma-scripting-and-code-generation.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 13,
+    "instructor": "admin",
+    "course_title": "BimodLab - Office Suite: Drafting, Sheetos, Slider, Formica, and Google Apps Integration",
+    "course_description": "Learn how to use AI integrations of BimodLab to automatically draft documents (Drafting), create spreadsheets (Sheetos), generate slides (Slider), create forms (Forms), and integrate all of these within Google Apps by using our plugins. You will also learn how to save the content you develop internally within folder and document structures, creating and managing API keys for your Google Office Apps workspaces, as well as different AI commands you can use during your office workflows.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-office-suite-drafting-sheetos-slider-formica-and-google-apps-integration.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 14,
+    "instructor": "admin",
+    "course_title": "BimodLab - Designing Multi-Agent Systems with Orchestrations",
+    "course_description": "Learn how to design and manage multi-agent systems with Orchestrations, how to create manager agents to control other assistants, and how to use the Orchestrations to create complex workflows. You will also learn why certain tasks can be more advantageous to delegate to an orchestrator instead of a standard assistant, and in which cases you must consider using Expert Networks instead of Orchestrators.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-designing-multi-agent-systems-with-orchestrations.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 15,
+    "instructor": "admin",
+    "course_title": "BimodLab - HadronPrime: Letting AI take the Lead to Manage Your Robots and IoT Devices",
+    "course_description": "Learn how to use HadronPrime to manage your robots, IoT devices, or other industrial agents, how to create and manage your own robotic control systems, and how to connect your systems to your Large Language Models. You will also learn about the potential use cases of HadronPrime in real world applications, certain limitations of the system, and how the overall node, topic, message, and state & action based systems work within HadronPrime.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-hadronprime-letting-ai-take-the-lead-to-manage-your-robots-and-iot-devices.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 16,
+    "instructor": "admin",
+    "course_title": "BimodLab: Binexus: Using Genetic Algorithms to Evolve the Best Prompts",
+    "course_description": "Learn how to use Binexus to evolve the best prompts for your assistants, and how to take the most of genetic algorithms and natural selection to optimize them. You will also learn more about the internal working dynamics of Binexus and how it is possible to adjust it to your needs by adding up new genes to the agent chromosomes, and how to use the evolved prompts to generate more accurate responses from your assistants.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-binexus-using-genetic-algorithms-to-evolve-the-best-prompts.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 17,
+    "instructor": "admin",
+    "course_title": "BimodLab - Blockchain Wallets & AI Smart Contract Generation",
+    "course_description": "Learn how to use BimodLab to manage your blockchain wallets, how to generate Smart Contracts by using AI, and how to deploy your contracts to the blockchain networks. You will also learn how AI generated smart contracts work, how to interpret the clauses in a smart contract to associate it with a real world contract, and understand how AI can generate smart contracts from your off-chain, real world contract templates.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-blockchain-wallets-and-ai-smart-contract-generation.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 18,
+    "instructor": "admin",
+    "course_title": "BimodLab - Publishing your Assistants and Orchestrations",
+    "course_description": "Learn how to publish your assistants, LeanMods, and Orchestrations by quickly generating API endpoints and integrate them with your applications. You will also learn about how exported endpoints work and how to connect these endpoints to your systems to have a seamless integration with your applications.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-publishing-your-assistants-and-orchestrations.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 19,
+    "instructor": "admin",
+    "course_title": "BimodLab - Using Custom Large Language Models",
+    "course_description": "Learn how to use connect Large Language Models (LLM) in your BimodLab account, and connecting them to your assistants to generate more accurate and specific responses. You will also learn more about what kind of fine-tuned model providers BimodLab currently supports and certain limitations of the system.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-using-custom-large-language-models.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 20,
+    "instructor": "admin",
+    "course_title": "BimodLab - Connecting Remote Servers to Assistants",
+    "course_description": "Learn how to connect your remote SSH servers to your assistants, and how to use the assistants to read, manage, or control your servers. You will also learn how your assistants will connect to your remote servers and computers, how it will interact with the contents, and what kind of potential use cases can be achieved by using this feature.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-connecting-remote-servers-to-assistants.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 21,
+    "instructor": "admin",
+    "course_title": "BimodLab - Connecting Web Browsers to Assistants",
+    "course_description": "Learn how to connect your web browsers to your assistants, and how to use the assistants to search through and manage your web browsers. You will also learn how your assistants will connect to your web browsers, how it will interact with the contents, potential ways to prune or expand the content your assistant tracks while browsing, whitelisting or blacklisting certain domains or extensions to prevent unreliable data, customizing the data selectivity/pickiness of your assistant as well as the number of websites to track before coming with a response, how you can search through your browsing history and track the screenshots of the browsing process and find what you need with ease, and what kind of potential use cases can be achieved by using this feature.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-connecting-web-browsers-to-assistants.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 22,
+    "instructor": "admin",
+    "course_title": "BimodLab - Connecting SQL & NoSQL Databases to Assistants",
+    "course_description": "Learn how to connect your SQL and NoSQL databases to your assistants, and how to use the assistants to read, write, or manage your databases. You will also learn how your assistants will connect to your databases, how it will interact with the tables, schemas, records/rows within your tables, and what kind of potential use cases can be achieved by using this feature.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-connecting-sql-and-nosql-databases-to-assistants.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 23,
+    "instructor": "admin",
+    "course_title": "BimodLab - Connecting Document Bases and Managing Large Text Files",
+    "course_description": "Learn how to connect your document bases to your assistants, and how to use the assistants to search through and manage your documents and large text files. You will also learn how your assistants will connect to your document bases by seamless integration with vector stores & embedding models such as OpenAI ada & davinci, how it will interact and search through PDF, Microsoft Word, Rich Text, and a myriad of other types of text documents, how this will allow you to speak with your documents directly by spending much less time searching for information, and what kind of potential use cases can be achieved by using this feature.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-connecting-document-bases-and-manipulating-large-text-files.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 24,
+    "instructor": "admin",
+    "course_title": "BimodLab - Connecting GitHub Repositories and Managing Code Bases",
+    "course_description": "Learn how to connect your GitHub repositories to your assistants, and how to use the assistants to search through and manage your code bases and repositories. You will also learn how your assistants will connect to your GitHub repositories by seamless integration with vector stores & embedding models such as OpenAI ada & davinci, how it will interact with your code bases and repositories, how it will search through your code and configuration files, how this will allow you the query your code and find what you need with ease, and what kind of potential use cases can be achieved by using this feature.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-connecting-github-repositories-and-managing-code-bases.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 25,
+    "instructor": "admin",
+    "course_title": "BimodLab - Connecting PyTorch Machine Learning Models to Your Assistants",
+    "course_description": "Learn how to connect your PyTorch models to your assistants, and how to use the assistants to create inferences by using your models and generate responses based on them. You will also learn how your assistants will connect to your PyTorch models, how it will interact with the models, how it will generate inferences by using the machine learning models, how this will allow you to create more accurate responses by using your models & generating natural language responses, and what kind of potential use cases can be achieved by using this feature.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-connecting-pytorch-machine-learning-models-to-your-assistants.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 26,
+    "instructor": "admin",
+    "course_title": "BimodLab - Connecting Media Storages, Uploading Your Media & AI Generated Files",
+    "course_description": "Learn how to connect your media storages to your assistants, how to upload your media files, and how to manage AI-generated media by using BimodLab. You will also learn how your assistants will connect to your media storages, how it will interact with the media files, the different type of media storages such as image, audio, video, data, code & their functional differences, how you will upload media files, how to inspect and manage your AI-generated media files, how this allows AI to create more accurate responses by using your media files, and what kind of potential use cases can be achieved by using this feature.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-connecting-media-storages-uploading-your-media-and-ai-generated-files.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 27,
+    "instructor": "admin",
+    "course_title": "BimodLab - Connecting Video Generation Tools to Assistants",
+    "course_description": "Learn how to connect video generation tools to your assistants, and how to use the assistants to generate videos by using tools. You will also learn how your assistants will connect to your video generation tools, how it will interact with the API of these tools, how your assistants will generate videos by using the connections, how this feature will allow you to create useful video content, and what kind of potential use cases can be achieved by using this feature.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-connecting-video-generation-tools-to-assistants.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 28,
+    "instructor": "admin",
+    "course_title": "BimodLab - Creating Custom Functions, APIs, Scripts & Navigating the Plugin Stores",
+    "course_description": "Learn how to create custom functions, APIs, and scripts to extend the functionality of your assistants, and how to navigate through the plugin stores to find the best plugins for your assistants. You will also learn how to create custom functions, APIs, and scripts, the functional differences and use cases between custom functions, custom APIs, and custom scripts, when to use each of these to gather the best potential results, how to connect the custom tools to your assistants, how to navigate through the plugin stores for anything you don't want to implement yourself or reinvent the wheel, how to locate and integrate the best plugins for your assistants.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-creating-custom-functions-apis-scripts-and-navigating-the-plugin-stores.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 29,
+    "instructor": "admin",
+    "course_title": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "course_description": "Learn how to create automated AI workflows by using scheduled and triggered Webhook jobs, how to manage the jobs and navigate through the execution logs, and how to connect your automated jobs to your assistants. You will also learn the function differences between the scheduled and triggered jobs, how to create and manage the jobs, how to connect the jobs to your assistants and let them be triggered automatically on certain conditions, how to navigate through the logs to understand the results of your executions, how to interpret the logs, and what kind of potential use cases can be achieved by using this feature.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/bimod-lab-automated-ai-workflows-scheduled-and-triggered-job-management.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 30,
+    "instructor": "admin",
+    "course_title": "Bimod AstroBelt - Bimod & Google Sync: Integrating Google Office with Your Assistants",
+    "course_description": "Learn how to integrate Google Apps with BimodLab Assistants, and manipulate your files using your assistants within Google Docs, Sheets, Slides, and Forms. You will also learn about the limitations of using the external plugins, how to connect your Google Office Apps to your assistants, how to use the AI commands to generate more accurate responses, and how to use the AI integrations to automate your office workflows.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/astrobelt-bimod-and-google-sync-integrating-google-office-with-your-assistants.png",
+    "course_under_construction": true
+  },
+  {
+    "__course": 31,
+    "instructor": "admin",
+    "course_title": "Bimod Electron Copilot - Your Desktop Client: Installation & Configuration",
+    "course_description": "Learn how to install and configure the Bimod Electron Copilot Desktop Client, how to connect your assistants, LeanMods, Orchestrations, Kanban boards, Tempo tracking tools to your client, and learn how to use the client to access the features of BimodLab. You will also learn about the potential use cases of the client, how to connect your client to your account, how to connect assistants, LeanMods, or orchestrators to your client by using API and authentication keys, how to create and manage chats on the client, certain limitations of the client, limitations of MetaKanban / Kanban Board management and automatic task generation & management tool, limitations of the MetaTempo / Tempo Team Performance & Efficiency tracking tool, how to use the client to access the features of BimodLab, and how to navigate through the client to take the most of your experience.",
+    "course_language": "English",
+    "course_thumbnail_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/academy/course_thumbnail_images/electroncopilot-your-desktop-client-installation-and-configuration.png",
+    "course_under_construction": true
+  }
+]

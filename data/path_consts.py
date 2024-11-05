@@ -23,6 +23,12 @@ class DataPaths:
     class Blog:
         BLOGS = "data/community/blog/blogs.json"
 
+    class Academy:
+        INSTRUCTORS = "data/community/academy/instructors.json"
+        COURSES = "data/community/academy/courses.json"
+        COURSE_SECTIONS = "data/community/academy/course_sections.json"
+        COURSE_VIDEOS = "data/community/academy/course_videos.json"
+
     class Functions:
         FUNCTIONS = "data/marketplace/functions/custom_functions.json"
 

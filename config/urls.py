@@ -27,6 +27,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("app/", include("auth.urls")),
     path("audit_logs/", include("apps.audit_logs.urls", namespace="audit_logs")),
+    path("bmd_academy/", include("apps.bmd_academy.urls", namespace="bmd_academy")),
     path("app/user_profile_management/",
          include("apps.user_profile_management.urls", namespace="user_profile_management")),
     path("app/user_settings/", include("apps.user_settings.urls", namespace="user_settings")),
