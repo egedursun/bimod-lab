@@ -223,12 +223,12 @@
             <h5>
               <strong>
                 <i class="fa fa-user me-2"></i>
-                Instructor
+                About the Instructor
               </strong>
             </h5>
-            <div class="d-flex justify-content-start align-items-center user-name">
+            <div class="d-flex justify-content-start align-items-center bg-body p-12 rounded user-name">
               <div class="avatar-wrapper">
-                <div class="avatar avatar-lg me-4 border border-primary border-3 rounded-circle">
+                <div class="avatar avatar-lg me-4 border border-primary border-3 rounded-circle me-12">
                   <img src="{% if course.course_instructor.user.profile.profile_picture %}{{ course.course_instructor.user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}" alt="Instructor Image" class="rounded-circle">
                 </div>
               </div>
