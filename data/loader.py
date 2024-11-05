@@ -232,7 +232,8 @@ class BoilerplateDataLoader:
                         "course_description": c["course_description"],
                         "course_language": c["course_language"],
                         "course_instructor": c_instructor,
-                        "course_under_construction": c["course_under_construction"]
+                        "course_under_construction": c["course_under_construction"],
+                        "tags": c["tags"]
                     }
                 )
                 if item[1] is False:
@@ -242,6 +243,7 @@ class BoilerplateDataLoader:
                     item[0].course_instructor = c_instructor
                     item[0].course_thumbnail_image_url = c["course_thumbnail_image_url"]
                     item[0].course_under_construction = c["course_under_construction"]
+                    item[0].tags = c["tags"]
                     item[0].save()
                     logger.info(f"[BoilerplateDataLoader._load_academy_data] Updated course: {c['course_title']}")
             # print(f"[BoilerplateDataLoader._load_academy_data] Pre-loaded {len(courses_data_json)} courses")

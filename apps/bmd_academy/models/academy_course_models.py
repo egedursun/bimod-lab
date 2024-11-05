@@ -28,6 +28,8 @@ class AcademyCourse(models.Model):
     course_thumbnail_image_url = models.URLField(null=True, blank=True)
     course_under_construction = models.BooleanField(default=True)
 
+    tags = models.JSONField(null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
