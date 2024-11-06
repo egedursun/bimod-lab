@@ -149,6 +149,7 @@ INSTALLED_APPS = [
     "apps.formica",
     "apps.slider",
     "apps.bmd_academy",
+    "apps.integrations",
 
     ########################################
     # SUPPORT

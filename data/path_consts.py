@@ -42,6 +42,7 @@ class DataPaths:
         KNOWLEDGE_BASES = "data/marketplace/knowledge_bases/boilerplate_knowledge_bases.json"
 
     class AssistantIntegrations:
+        ASSISTANT_INTEGRATION_CATEGORIES = "data/meta_features/assistant_integrations/custom_assistant_categories.json"
         ASSISTANT_INTEGRATIONS = "data/meta_features/assistant_integrations/custom_assistants.json"
 
     class OrchestrationMetaIntegrations:

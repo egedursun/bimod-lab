@@ -175,6 +175,12 @@
       "url": "/app/assistants/list"
     },
     {
+      "name": "Plug & Play Agents",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "integrations",
+      "url": "/app/integrations/categories/"
+    },
+    {
       "name": "Create Expert Network",
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "expert-networks",

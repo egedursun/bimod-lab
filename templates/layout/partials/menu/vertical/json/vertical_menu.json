@@ -264,6 +264,12 @@
       ]
     },
     {
+      "name": "Plug & Play Agents",
+      "icon": "menu-icon tf-icons ti ti-plug",
+      "slug": "plug-and-play-agents",
+      "url": "integrations:list"
+    },
+    {
       "menu_header": "Lightweight Assistants"
     },
     {

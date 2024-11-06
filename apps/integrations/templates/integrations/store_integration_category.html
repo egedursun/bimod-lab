@@ -1,0 +1,161 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: list_integration_assistants.html
+  ~ Last Modified: 2024-11-05
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-05
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~ For permission inquiries, please contact: admin@Bimod.io.
+-->
+
+{% extends layout_path %}
+{% load custom_filters %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}BMD™ Autonomous Holdings - Assistant Integrations{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/css/pages/app-integration-assistants.css' %}" />
+{% endblock page_css %}
+
+{% block page_js %}
+{{ block.super }}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.querySelector('input[type="search"]');
+    searchInput.addEventListener('input', function () {
+      const searchValue = searchInput.value.toLowerCase();
+      const assistantCards = document.querySelectorAll('.assistant-card');
+
+      assistantCards.forEach(card => {
+        const title = card.querySelector('.assistant-title').textContent.toLowerCase();
+        const description = card.querySelector('.assistant-description').textContent.toLowerCase();
+        const audience = card.querySelector('.assistant-audience').textContent.toLowerCase();
+        const tone = card.querySelector('.assistant-tone').textContent.toLowerCase();
+        if (title.includes(searchValue) || description.includes(searchValue) || audience.includes(searchValue) || tone.includes(searchValue)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="app-integration-assistants">
+  <h2>
+    <strong>
+      <i class="fa fa-plug me-4"></i>
+      Assistant Integrations
+    </strong>
+  </h2>
+
+  <hr>
+
+  <a href="{% url 'integrations:list' %}" class="btn btn-primary btn-icon mt-4 w-25">
+    <strong>
+      <i class="fa fa-chevron-left me-2"></i>
+      Back to Categories
+    </strong>
+  </a>
+
+  <hr>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 mt-4 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-68.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        <strong>Explore Assistant Integrations</strong> to find the right assistant for your needs.
+        You can search through assistants to find the best fit. Click the button below each assistant to learn more about them.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="card mb-6">
+    <div class="card-header">
+      <h5 class="mb-0"><strong>Available Assistants</strong></h5>
+      <p class="mb-0">Total {{ assistants|length }} assistants available.</p>
+    </div>
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-4 p-6">
+        <input type="search" placeholder="Search through assistants..." class="form-control me-4 border border-primary border-3 mt-4 rounded" style="min-height: 60px;" />
+      </div>
+      <hr>
+      <div class="row gy-6 mb-6">
+        {% for assistant in assistants %}
+        <div class="col-sm-3 col-lg-3 assistant-card">
+          <div class="card p-2 h-100 shadow-none border">
+            <div class="rounded-2 text-center mb-4">
+              <a href="{% url 'integrations:store' assistant.integration_name|slugify %}">
+                {% if assistant.integration_assistant_image %}
+                  <img class="img-fluid rounded px-4 pt-4" src="{{ assistant.integration_assistant_image.url }}" alt="{{ assistant.integration_name }}">
+                {% else %}
+                  <img class="img-fluid rounded px-4 pt-4" src="{% static 'img/default-assistant.png' %}" alt="{{ assistant.integration_name }}">
+                {% endif %}
+              </a>
+            </div>
+            <div class="card-body p-4 pt-2 d-flex flex-column">
+                <div class="badge bg-danger mb-2 p-2">
+                  <strong>
+                    <i class="fa fa-tag me-2"></i>
+                    {{ assistant.integration_category }}
+                  </strong>
+                </div>
+                <hr>
+                <a href="{% url 'integrations:store' assistant.integration_name|slugify %}" class="h5 assistant-title">
+                    <strong>{{ assistant.integration_name }}</strong>
+                </a>
+                <p class="mt-1 assistant-description">{{ assistant.integration_description|truncatewords:20 }}</p>
+                <p class="assistant-audience" style="display: none;">Audience: {{ assistant.integration_audience }}</p>
+                <p class="assistant-tone" style="display: none;">Tone: {{ assistant.integration_tone }}</p>
+                <div class="mt-auto"> <!-- This div will push the button to the bottom -->
+                    <a class="w-100 btn btn-primary" href="{% url 'integrations:store' assistant.integration_name|slugify %}">
+                        <strong>
+                            <i class="fa fa-rocket me-2"></i>
+                            <span class="me-2">
+                              <strong>
+                                Integrate
+                              </strong>
+                            </span>
+                        </strong>
+                    </a>
+                </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

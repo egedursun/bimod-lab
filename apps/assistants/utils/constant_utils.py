@@ -37,20 +37,22 @@ AGENT_SPEECH_LANGUAGES = [AGENT_SPEECH_LANGUAGES[0]] + sorted(AGENT_SPEECH_LANGU
 CONTEXT_MANAGEMENT_STRATEGY = [
     ("stop", "Stop Conversation"),
     ("forget", "Forget Oldest Messages"),
-    ("vectorize", "Vectorize Oldest Messages"),
+    # ("vectorize", "Vectorize Oldest Messages"),  # Will be turned on at a later time, after optimization
 ]
 
 
 class ContextManagementStrategyNames:
     STOP = "stop"
     FORGET = "forget"
-    VECTORIZE = "vectorize"
+    # VECTORIZE = "vectorize"  # Will be turned on at a later time, after optimization
 
     @staticmethod
     def as_dict():
-        return {"stop": "Stop Conversation",
-                "forget": "Forget Oldest Messages",
-                "vectorize": "Vectorize Oldest Messages"}
+        return {
+            "stop": "Stop Conversation",
+            "forget": "Forget Oldest Messages",
+            # "vectorize": "Vectorize Oldest Messages",  # Will be turned on at a later time, after optimization
+        }
 
 
 EMBEDDING_MANAGERS = [

@@ -23,6 +23,7 @@ from django.contrib.auth.models import User
 from apps.blog_app.models import BlogTag, BlogPost
 from apps.community_forum.models import ForumCategory, ForumThread
 from apps.bmd_academy.models import AcademyCourse, AcademyCourseVideo, AcademyCourseSection, AcademyCourseInstructor
+from apps.integrations.models import AssistantIntegrationCategory, AssistantIntegration
 from .path_consts import DataPaths
 
 logger = logging.getLogger(__name__)
@@ -81,7 +82,7 @@ class BoilerplateDataLoader:
             #      "loaded successfully")
         except Exception as e:
             logger.error(f"[BoilerplateDataLoader.load_assistant_integrations_data] Error while loading assistant "
-                         "integrations data: {e}")
+                         f"integrations data: {e}")
         #####
         try:
             BoilerplateDataLoader._load_orchestration_meta_integrations_data()
@@ -89,7 +90,7 @@ class BoilerplateDataLoader:
             # integrations " "data loaded successfully")
         except Exception as e:
             logger.error(f"[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Error while loading "
-                         "orchestration meta integrations data: {e}")
+                         f"orchestration meta integrations data: {e}")
         #####
         logger.info("[BoilerplateDataLoader.load] Boilerplate data loaded successfully")
 
@@ -339,12 +340,65 @@ class BoilerplateDataLoader:
 
     @staticmethod
     def _load_assistant_integrations_data():
+        assistant_integration_categories_data_path = DataPaths.AssistantIntegrations.ASSISTANT_INTEGRATION_CATEGORIES
         assistant_integrations_data_path = DataPaths.AssistantIntegrations.ASSISTANT_INTEGRATIONS
-        # TODO:
-        #   1. Read the relevant data fixture JSON file
-        #   2. Get or create the data
-        #   3. Save the database
-        #   4. Provide the required logs
+
+        # Categories
+        categories_data_json = None
+        with open(assistant_integration_categories_data_path, "r") as categories_file:
+            categories_data_json = json.load(categories_file)
+
+            for c in categories_data_json:
+                c_name = c["category_name"]
+                item = AssistantIntegrationCategory.objects.get_or_create(
+                    category_name=c_name,
+                    defaults={
+                        "category_description": c["category_description"],
+                        "category_image_url": c["category_image_url"],
+                        "tags": c["tags"]
+                    }
+                )
+                if item[1] is False:
+                    # If item exists, update the item
+                    item[0].category_name = c["category_name"]
+                    item[0].description = c["category_description"]
+                    item[0].category_image_url = c["category_image_url"]
+                    item[0].tags = c["tags"]
+                    item[0].save()
+                    logger.info(f"[BoilerplateDataLoader._load_assistant_integrations_data] Updated category: {c['category_name']}")
+            # print(f"[BoilerplateDataLoader._load_assistant_integrations_data] Pre-loaded {len(categories_data_json)} categories")
+            pass
+
+        # Assistant Integrations
+        assistant_integrations_data_json = None
+        with open(assistant_integrations_data_path, "r") as assistant_integrations_file:
+            assistant_integrations_data_json = json.load(assistant_integrations_file)
+            for a in assistant_integrations_data_json:
+                a_category = AssistantIntegrationCategory.objects.get(category_name=a["integration_category"])
+                item = AssistantIntegration.objects.get_or_create(
+                    integration_name=a["integration_name"],
+                    integration_category=a_category,
+                    defaults={
+                        "integration_description": a["integration_description"],
+                        "integration_instructions": a["integration_instructions"],
+                        "integration_audience": a["integration_audience"],
+                        "integration_tone": a["integration_tone"],
+                        "tags": a["tags"]
+                    }
+                )
+                if item[1] is False:
+                    # If item exists, update the item
+                    item[0].integration_category = a_category
+                    item[0].integration_description = a["integration_description"]
+                    item[0].integration_instructions = a["integration_instructions"]
+                    item[0].integration_audience = a["integration_audience"]
+                    item[0].integration_tone = a["integration_tone"]
+                    item[0].tags = a["tags"]
+                    item[0].save()
+                    logger.info(f"[BoilerplateDataLoader._load_assistant_integrations_data] Updated assistant integration: {a['integration_name']}")
+            # print(f"[BoilerplateDataLoader._load_assistant_integrations_data] Pre-loaded {len(assistant_integrations_data_json)} assistant integrations")
+            pass
+
         return
 
     @staticmethod
