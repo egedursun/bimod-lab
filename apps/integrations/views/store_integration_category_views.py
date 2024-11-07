@@ -14,16 +14,68 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.integrations.models import AssistantIntegration
+from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.datasource_browsers.models import DataSourceBrowserConnection
+from apps.datasource_codebase.models import CodeRepositoryStorageConnection
+from apps.datasource_file_systems.models import DataSourceFileSystem
+from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
+from apps.datasource_media_storages.models import DataSourceMediaStorageConnection
+from apps.datasource_ml_models.models import DataSourceMLModelConnection
+from apps.datasource_nosql.models import NoSQLDatabaseConnection
+from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.integrations.models import AssistantIntegration, AssistantIntegrationCategory
+from apps.llm_core.models import LLMCore
+from apps.organization.models import Organization
+from apps.projects.models import ProjectItem
+from apps.user_permissions.utils import PermissionNames
+from apps.video_generations.models import VideoGeneratorConnection
 from web_project import TemplateLayout
 
 
 class IntegrationView_IntegrationCategoryStore(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_PLUG_AND_PLAY_AGENTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_PLUG_AND_PLAY_AGENTS):
+            messages.error(self.request, "You do not have permission to list plug and play agents.")
+            return context
+        ##############################
+
+        category = AssistantIntegrationCategory.objects.get(category_slug=self.kwargs['category_slug'])
+
+        user_organizations = Organization.objects.filter(users__in=[self.request.user])
+        llm_models = LLMCore.objects.filter(organization__in=user_organizations)
+        web_browsers = DataSourceBrowserConnection.objects.filter(assistant__organization__in=user_organizations)
+        ssh_file_systems = DataSourceFileSystem.objects.filter(assistant__organization__in=user_organizations)
+        sql_databases = SQLDatabaseConnection.objects.filter(assistant__organization__in=user_organizations)
+        nosql_databases = NoSQLDatabaseConnection.objects.filter(assistant__organization__in=user_organizations)
+        knowledge_bases = DocumentKnowledgeBaseConnection.objects.filter(assistant__organization__in=user_organizations)
+        code_bases = CodeRepositoryStorageConnection.objects.filter(assistant__organization__in=user_organizations)
+        media_storages = DataSourceMediaStorageConnection.objects.filter(assistant__organization__in=user_organizations)
+        ml_storages = DataSourceMLModelConnection.objects.filter(assistant__organization__in=user_organizations)
+        video_generators = VideoGeneratorConnection.objects.filter(assistant__organization__in=user_organizations)
+        project_items = ProjectItem.objects.filter(organization__in=user_organizations)
+
         integrations = AssistantIntegration.objects.filter(integration_category__category_slug=self.kwargs['category_slug']).order_by("integration_name")
+        context['category'] = category
+        context['organizations'] = user_organizations
         context['assistants'] = integrations
+        context['llm_models'] = llm_models
+        context['web_browsers'] = web_browsers
+        context['ssh_file_systems'] = ssh_file_systems
+        context['sql_databases'] = sql_databases
+        context['nosql_databases'] = nosql_databases
+        context['knowledge_bases'] = knowledge_bases
+        context['code_bases'] = code_bases
+        context['media_storages'] = media_storages
+        context['ml_storages'] = ml_storages
+        context['video_generators'] = video_generators
+        context['project_items'] = project_items
         return context

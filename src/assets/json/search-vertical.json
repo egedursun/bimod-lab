@@ -178,7 +178,13 @@
       "name": "Plug & Play Agents",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "integrations",
-      "url": "/app/integrations/categories/"
+      "url": "/app/integrations/categories"
+    },
+    {
+      "name": "Plug & Play Teams",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "meta_integrations",
+      "url": "/app/meta_integrations/categories"
     },
     {
       "name": "Create Expert Network",

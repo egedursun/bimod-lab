@@ -1,0 +1,4471 @@
+[
+  {
+    "__category": 1,
+    "meta_integration_category": "Manufacturing",
+    "meta_integration_name": "Efficiency Maximization Team",
+    "meta_integration_description": "A team focused on maximizing production efficiency through scheduling, maintenance, and assembly line optimization.",
+    "integration_assistants": [
+      "Production Scheduler",
+      "Predictive Maintenance Specialist",
+      "Assembly Line Optimizer",
+      "Equipment Maintenance Scheduler"
+    ]
+  },
+  {
+    "__category": 1,
+    "meta_integration_category": "Manufacturing",
+    "meta_integration_name": "Quality and Standards Assurance Team",
+    "meta_integration_description": "Ensures production quality, compliance with regulations, and adherence to safety standards across manufacturing processes.",
+    "integration_assistants": [
+      "Quality Control Assistant",
+      "Regulatory Compliance Assistant",
+      "Safety Compliance Monitor"
+    ]
+  },
+  {
+    "__category": 1,
+    "meta_integration_category": "Manufacturing",
+    "meta_integration_name": "Sustainable Production Team",
+    "meta_integration_description": "Supports the implementation of eco-friendly practices and compliance with environmental standards for sustainable manufacturing.",
+    "integration_assistants": [
+      "Sustainability Consultant",
+      "Safety Compliance Monitor",
+      "Regulatory Compliance Assistant"
+    ]
+  },
+  {
+    "__category": 1,
+    "meta_integration_category": "Manufacturing",
+    "meta_integration_name": "Advanced Process Optimization Team",
+    "meta_integration_description": "Enhances production through data-driven insights, process optimization, and lean manufacturing practices.",
+    "integration_assistants": [
+      "Data Analytics Consultant",
+      "Lean Manufacturing Advisor",
+      "Industrial Engineering Advisor",
+      "Assembly Line Optimizer"
+    ]
+  },
+  {
+    "__category": 1,
+    "meta_integration_category": "Manufacturing",
+    "meta_integration_name": "Inventory and Supply Chain Optimization Team",
+    "meta_integration_description": "Streamlines inventory and supply chain processes to ensure cost-effectiveness and timely deliveries.",
+    "integration_assistants": [
+      "Inventory Optimizer",
+      "Supply Chain Analyst",
+      "Logistics Coordinator"
+    ]
+  },
+  {
+    "__category": 1,
+    "meta_integration_category": "Manufacturing",
+    "meta_integration_name": "Cost and Resource Management Team",
+    "meta_integration_description": "Helps reduce production costs and manage resources efficiently without compromising quality.",
+    "integration_assistants": [
+      "Cost Management Advisor",
+      "Inventory Optimizer",
+      "Supply Chain Analyst"
+    ]
+  },
+  {
+    "__category": 1,
+    "meta_integration_category": "Manufacturing",
+    "meta_integration_name": "Product Development Support Team",
+    "meta_integration_description": "Facilitates product development and ensures design quality with tools for efficient project management and quality control.",
+    "integration_assistants": [
+      "Product Development Guide",
+      "Quality Control Assistant",
+      "Data Analytics Consultant"
+    ]
+  },
+  {
+    "__category": 1,
+    "meta_integration_category": "Manufacturing",
+    "meta_integration_name": "Operational Safety and Compliance Team",
+    "meta_integration_description": "Ensures operational safety, compliance with regulations, and efficient maintenance to maintain high standards and safety.",
+    "integration_assistants": [
+      "Safety Compliance Monitor",
+      "Regulatory Compliance Assistant",
+      "Predictive Maintenance Specialist"
+    ]
+  },
+  {
+    "__category": 1,
+    "meta_integration_category": "Manufacturing",
+    "meta_integration_name": "Supply and Demand Coordination Team",
+    "meta_integration_description": "Aligns production schedules and supply chain management with demand forecasting to optimize resource use and meet customer demands.",
+    "integration_assistants": [
+      "Production Scheduler",
+      "Supply Chain Analyst",
+      "Inventory Optimizer"
+    ]
+  },
+  {
+    "__category": 1,
+    "meta_integration_category": "Manufacturing",
+    "meta_integration_name": "Additive Manufacturing Innovation Team",
+    "meta_integration_description": "Promotes innovation by incorporating additive manufacturing techniques and optimizing workflows for 3D-printed parts and designs.",
+    "integration_assistants": [
+      "Additive Manufacturing Consultant",
+      "Industrial Engineering Advisor",
+      "Product Development Guide"
+    ]
+  },
+  {
+    "__category": 2,
+    "meta_integration_category": "Logistics & Supply Chain",
+    "meta_integration_name": "Cost Optimization Team",
+    "meta_integration_description": "Focuses on reducing logistics costs by optimizing freight, auditing, and sourcing strategies.",
+    "integration_assistants": [
+      "Freight Cost Estimator",
+      "Freight Optimization Advisor",
+      "Freight Auditing Consultant",
+      "Sourcing Strategy Advisor"
+    ]
+  },
+  {
+    "__category": 2,
+    "meta_integration_category": "Logistics & Supply Chain",
+    "meta_integration_name": "Inventory and Demand Planning Team",
+    "meta_integration_description": "Improves inventory management and demand forecasting for better stock optimization and service levels.",
+    "integration_assistants": [
+      "Inventory Optimization Advisor",
+      "Demand Forecasting Assistant",
+      "Supply Chain Analytics Dashboard"
+    ]
+  },
+  {
+    "__category": 2,
+    "meta_integration_category": "Logistics & Supply Chain",
+    "meta_integration_name": "Supplier and Risk Management Team",
+    "meta_integration_description": "Monitors and assesses supplier performance to minimize risks and enhance procurement strategies.",
+    "integration_assistants": [
+      "Supplier Risk Assessment Tool",
+      "Vendor Performance Evaluator",
+      "Procurement Strategy Advisor"
+    ]
+  },
+  {
+    "__category": 2,
+    "meta_integration_category": "Logistics & Supply Chain",
+    "meta_integration_name": "Warehouse and Layout Efficiency Team",
+    "meta_integration_description": "Optimizes warehouse operations through layout planning, material handling, and robotics integration.",
+    "integration_assistants": [
+      "Warehouse Layout Planner",
+      "Material Handling Expert",
+      "Warehouse Robotics Advisor"
+    ]
+  },
+  {
+    "__category": 2,
+    "meta_integration_category": "Logistics & Supply Chain",
+    "meta_integration_name": "Compliance and Customs Management Team",
+    "meta_integration_description": "Ensures adherence to customs and international trade regulations while managing hazardous materials safely.",
+    "integration_assistants": [
+      "Customs Compliance Advisor",
+      "Hazardous Materials Compliance Consultant",
+      "Global Trade Compliance Advisor"
+    ]
+  },
+  {
+    "__category": 2,
+    "meta_integration_category": "Logistics & Supply Chain",
+    "meta_integration_name": "Reverse Logistics and Returns Team",
+    "meta_integration_description": "Improves reverse logistics processes to manage returns effectively and minimize losses.",
+    "integration_assistants": [
+      "Reverse Logistics Consultant",
+      "Return Merchandise Authorization (RMA) Advisor",
+      "Freight Claims Specialist"
+    ]
+  },
+  {
+    "__category": 2,
+    "meta_integration_category": "Logistics & Supply Chain",
+    "meta_integration_name": "Sustainable and Ethical Supply Chain Team",
+    "meta_integration_description": "Promotes eco-friendly and ethical practices in the supply chain, supporting sustainability goals.",
+    "integration_assistants": [
+      "Sustainability Consultant",
+      "Ethical Sourcing Advisor",
+      "Lean Supply Chain Consultant"
+    ]
+  },
+  {
+    "__category": 2,
+    "meta_integration_category": "Logistics & Supply Chain",
+    "meta_integration_name": "Cold Chain and Perishables Management Team",
+    "meta_integration_description": "Manages temperature-sensitive goods in the supply chain, ensuring product quality and compliance.",
+    "integration_assistants": [
+      "Cold Chain Logistics Specialist",
+      "Warehouse Layout Planner",
+      "Last Mile Delivery Coordinator"
+    ]
+  },
+  {
+    "__category": 2,
+    "meta_integration_category": "Logistics & Supply Chain",
+    "meta_integration_name": "Advanced Technology Integration Team",
+    "meta_integration_description": "Guides the adoption of emerging technologies, like digital twins and blockchain, to enhance transparency and efficiency.",
+    "integration_assistants": [
+      "Blockchain Logistics Advisor",
+      "Digital Twin Specialist",
+      "Transport Management System Consultant"
+    ]
+  },
+  {
+    "__category": 2,
+    "meta_integration_category": "Logistics & Supply Chain",
+    "meta_integration_name": "E-commerce and Agile Logistics Team",
+    "meta_integration_description": "Optimizes logistics processes specifically for e-commerce while integrating agile practices for responsiveness.",
+    "integration_assistants": [
+      "E-commerce Logistics Consultant",
+      "Agile Supply Chain Coach",
+      "Last Mile Delivery Coordinator"
+    ]
+  },
+  {
+    "__category": 3,
+    "meta_integration_category": "Construction",
+    "meta_integration_name": "Project Execution Team",
+    "meta_integration_description": "Focused on the efficient execution and monitoring of construction projects, ensuring they stay on schedule and within budget.",
+    "integration_assistants": [
+      "Project Management Assistant",
+      "Construction Project Scheduler",
+      "Construction Monitoring Specialist",
+      "Construction Workflow Optimization Specialist"
+    ]
+  },
+  {
+    "__category": 3,
+    "meta_integration_category": "Construction",
+    "meta_integration_name": "Safety and Compliance Team",
+    "meta_integration_description": "Ensures safety and compliance with labor and building regulations to maintain a safe and legal construction environment.",
+    "integration_assistants": [
+      "Construction Safety Advisor",
+      "Labor Compliance Officer",
+      "Building Code Compliance Assistant"
+    ]
+  },
+  {
+    "__category": 3,
+    "meta_integration_category": "Construction",
+    "meta_integration_name": "Cost Efficiency and Estimation Team",
+    "meta_integration_description": "Helps estimate costs accurately and manage budget allocations for optimized resource use.",
+    "integration_assistants": [
+      "Cost Estimation Specialist",
+      "Equipment Rental Advisor",
+      "Materials Sourcing Advisor"
+    ]
+  },
+  {
+    "__category": 3,
+    "meta_integration_category": "Construction",
+    "meta_integration_name": "Quality and Assurance Team",
+    "meta_integration_description": "Monitors quality standards to ensure that construction projects adhere to rigorous specifications and industry benchmarks.",
+    "integration_assistants": [
+      "Quality Assurance Monitor",
+      "Construction Safety Advisor",
+      "Building Code Compliance Assistant"
+    ]
+  },
+  {
+    "__category": 3,
+    "meta_integration_category": "Construction",
+    "meta_integration_name": "Sustainability and Green Building Team",
+    "meta_integration_description": "Guides construction projects towards sustainable practices and eco-friendly materials for environmentally conscious building.",
+    "integration_assistants": [
+      "Green Building Advisor",
+      "Sustainability Assessment Advisor",
+      "Construction Technology Consultant"
+    ]
+  },
+  {
+    "__category": 3,
+    "meta_integration_category": "Construction",
+    "meta_integration_name": "Logistics and Resource Management Team",
+    "meta_integration_description": "Optimizes logistics and manages resources on-site to ensure a smooth flow of materials and efficient labor management.",
+    "integration_assistants": [
+      "Construction Logistics Coordinator",
+      "Labor Management Consultant",
+      "Equipment Rental Advisor"
+    ]
+  },
+  {
+    "__category": 3,
+    "meta_integration_category": "Construction",
+    "meta_integration_name": "Contract and Subcontractor Management Team",
+    "meta_integration_description": "Manages construction contracts and oversees subcontractor coordination for seamless project integration.",
+    "integration_assistants": [
+      "Construction Contract Management Consultant",
+      "Subcontractor Management Assistant",
+      "Project Management Assistant"
+    ]
+  },
+  {
+    "__category": 3,
+    "meta_integration_category": "Construction",
+    "meta_integration_name": "Renovation and Demolition Team",
+    "meta_integration_description": "Supports the planning and execution of safe and efficient renovation and demolition projects.",
+    "integration_assistants": [
+      "Renovation Advisor",
+      "Demolition Planning Consultant",
+      "Labor Management Consultant"
+    ]
+  },
+  {
+    "__category": 3,
+    "meta_integration_category": "Construction",
+    "meta_integration_name": "Advanced Construction Technology Team",
+    "meta_integration_description": "Advises on the implementation of modern construction technologies like BIM, enhancing project visualization and efficiency.",
+    "integration_assistants": [
+      "Building Information Modeling (BIM) Specialist",
+      "Construction Technology Consultant",
+      "Field Data Collection Advisor"
+    ]
+  },
+  {
+    "__category": 3,
+    "meta_integration_category": "Construction",
+    "meta_integration_name": "Urban Development and Planning Team",
+    "meta_integration_description": "Provides insights on urban planning and development, aligning projects with city infrastructure and growth strategies.",
+    "integration_assistants": [
+      "Urban Development Consultant",
+      "Green Building Advisor",
+      "Sustainability Assessment Advisor"
+    ]
+  },
+  {
+    "__category": 4,
+    "meta_integration_category": "Energy & Utilities",
+    "meta_integration_name": "Renewable Energy Development Team",
+    "meta_integration_description": "Supports the development and implementation of renewable energy projects including solar, wind, and geothermal energy.",
+    "integration_assistants": [
+      "Renewable Energy Advisor",
+      "Solar Power Consultant",
+      "Wind Energy Specialist",
+      "Geothermal Energy Consultant"
+    ]
+  },
+  {
+    "__category": 4,
+    "meta_integration_category": "Energy & Utilities",
+    "meta_integration_name": "Grid and Storage Optimization Team",
+    "meta_integration_description": "Optimizes grid management and energy storage to balance supply and demand effectively.",
+    "integration_assistants": [
+      "Grid Management Specialist",
+      "Energy Storage Consultant",
+      "Battery Storage Specialist",
+      "Load Forecasting Specialist"
+    ]
+  },
+  {
+    "__category": 4,
+    "meta_integration_category": "Energy & Utilities",
+    "meta_integration_name": "Energy Efficiency and Conservation Team",
+    "meta_integration_description": "Improves energy efficiency in buildings and operations, with a focus on reducing energy consumption and costs.",
+    "integration_assistants": [
+      "Energy Efficiency Consultant",
+      "Energy Efficiency Program Manager",
+      "Energy Audit Specialist",
+      "Carbon Footprint Evaluator"
+    ]
+  },
+  {
+    "__category": 4,
+    "meta_integration_category": "Energy & Utilities",
+    "meta_integration_name": "Environmental Impact and Compliance Team",
+    "meta_integration_description": "Ensures compliance with environmental regulations and minimizes the environmental impact of energy projects.",
+    "integration_assistants": [
+      "Regulatory Compliance Advisor",
+      "Environmental Impact Analyst",
+      "Carbon Trading Specialist",
+      "Climate Resilience Advisor"
+    ]
+  },
+  {
+    "__category": 4,
+    "meta_integration_category": "Energy & Utilities",
+    "meta_integration_name": "Smart Grid and Demand Management Team",
+    "meta_integration_description": "Guides the implementation of smart grid technologies and demand response programs to enhance grid flexibility and efficiency.",
+    "integration_assistants": [
+      "Smart Grid Advisor",
+      "Demand Response Specialist",
+      "Distributed Energy Resources Advisor"
+    ]
+  },
+  {
+    "__category": 4,
+    "meta_integration_category": "Energy & Utilities",
+    "meta_integration_name": "Water and Waste Management Team",
+    "meta_integration_description": "Focuses on efficient water management and effective waste disposal strategies to support sustainable operations.",
+    "integration_assistants": [
+      "Water Supply Management Consultant",
+      "Waste Management Advisor",
+      "Climate Resilience Advisor"
+    ]
+  },
+  {
+    "__category": 4,
+    "meta_integration_category": "Energy & Utilities",
+    "meta_integration_name": "Energy Trading and Market Analysis Team",
+    "meta_integration_description": "Provides insights into energy trading and market trends, helping utilities navigate dynamic energy markets.",
+    "integration_assistants": [
+      "Energy Market Analyst",
+      "Energy Trading Advisor",
+      "Carbon Trading Specialist"
+    ]
+  },
+  {
+    "__category": 4,
+    "meta_integration_category": "Energy & Utilities",
+    "meta_integration_name": "Electric Vehicle Infrastructure and Fuel Management Team",
+    "meta_integration_description": "Supports the integration of EV infrastructure and offers strategies for effective fuel management.",
+    "integration_assistants": [
+      "Electric Vehicle Infrastructure Consultant",
+      "Fuel Management Consultant",
+      "Climate Resilience Advisor"
+    ]
+  },
+  {
+    "__category": 4,
+    "meta_integration_category": "Energy & Utilities",
+    "meta_integration_name": "Distributed Energy Integration Team",
+    "meta_integration_description": "Assists in integrating distributed energy resources into the grid to improve resilience and sustainability.",
+    "integration_assistants": [
+      "Distributed Energy Resources Advisor",
+      "Energy Storage Consultant",
+      "Battery Storage Specialist"
+    ]
+  },
+  {
+    "__category": 4,
+    "meta_integration_category": "Energy & Utilities",
+    "meta_integration_name": "Carbon and Energy Compliance Team",
+    "meta_integration_description": "Conducts audits and evaluations to ensure compliance with carbon reduction and energy regulations.",
+    "integration_assistants": [
+      "Energy Compliance Auditor",
+      "Carbon Footprint Evaluator",
+      "Energy Audit Specialist"
+    ]
+  },
+  {
+    "__category": 5,
+    "meta_integration_category": "Healthcare",
+    "meta_integration_name": "Telehealth and Patient Engagement Team",
+    "meta_integration_description": "Supports healthcare organizations in implementing telemedicine and enhancing patient engagement for better access and communication.",
+    "integration_assistants": [
+      "Telemedicine Advisor",
+      "Patient Engagement Specialist",
+      "Telehealth Implementation Specialist"
+    ]
+  },
+  {
+    "__category": 5,
+    "meta_integration_category": "Healthcare",
+    "meta_integration_name": "Healthcare Compliance and Safety Team",
+    "meta_integration_description": "Ensures healthcare facilities meet regulatory standards, enhancing patient safety and infection control practices.",
+    "integration_assistants": [
+      "Healthcare Compliance Consultant",
+      "Infection Control Advisor",
+      "Patient Safety Consultant"
+    ]
+  },
+  {
+    "__category": 5,
+    "meta_integration_category": "Healthcare",
+    "meta_integration_name": "Chronic Disease and Wellness Support Team",
+    "meta_integration_description": "Provides resources and support for chronic disease management and wellness program development.",
+    "integration_assistants": [
+      "Chronic Disease Management Coach",
+      "Wellness Program Coordinator",
+      "Nutrition Services Advisor"
+    ]
+  },
+  {
+    "__category": 5,
+    "meta_integration_category": "Healthcare",
+    "meta_integration_name": "Healthcare IT and Data Security Team",
+    "meta_integration_description": "Guides healthcare organizations in leveraging technology and protecting patient data through secure IT practices.",
+    "integration_assistants": [
+      "Health Information Technology Advisor",
+      "Electronic Health Records Specialist",
+      "Healthcare IT Security Advisor"
+    ]
+  },
+  {
+    "__category": 5,
+    "meta_integration_category": "Healthcare",
+    "meta_integration_name": "Mental Health and Behavioral Support Team",
+    "meta_integration_description": "Provides mental health resources and integrates behavioral health services into primary care settings.",
+    "integration_assistants": [
+      "Mental Health Counselor",
+      "Behavioral Health Consultant",
+      "Patient Engagement Specialist"
+    ]
+  },
+  {
+    "__category": 5,
+    "meta_integration_category": "Healthcare",
+    "meta_integration_name": "Healthcare Analytics and Quality Improvement Team",
+    "meta_integration_description": "Focuses on using data analytics to drive healthcare quality improvements and better patient outcomes.",
+    "integration_assistants": [
+      "Healthcare Analytics Specialist",
+      "Healthcare Quality Improvement Specialist",
+      "Clinical Data Management Specialist"
+    ]
+  },
+  {
+    "__category": 5,
+    "meta_integration_category": "Healthcare",
+    "meta_integration_name": "Public Health and Community Wellness Team",
+    "meta_integration_description": "Enhances public health through community-focused initiatives and health education programs.",
+    "integration_assistants": [
+      "Public Health Advisor",
+      "Health Education Specialist",
+      "Wellness Program Coordinator"
+    ]
+  },
+  {
+    "__category": 5,
+    "meta_integration_category": "Healthcare",
+    "meta_integration_name": "Clinical Research and Pharmaceutical Guidance Team",
+    "meta_integration_description": "Supports clinical research and provides guidance on pharmaceutical practices for medication management.",
+    "integration_assistants": [
+      "Clinical Research Advisor",
+      "Pharmaceutical Advisor",
+      "Clinical Data Management Specialist"
+    ]
+  },
+  {
+    "__category": 5,
+    "meta_integration_category": "Healthcare",
+    "meta_integration_name": "Healthcare Operations and Management Team",
+    "meta_integration_description": "Helps optimize healthcare management practices and enhance operational efficiency in healthcare settings.",
+    "integration_assistants": [
+      "Healthcare Management Consultant",
+      "Medical Billing Expert",
+      "Healthcare Marketing Consultant"
+    ]
+  },
+  {
+    "__category": 5,
+    "meta_integration_category": "Healthcare",
+    "meta_integration_name": "Emergency Response and Patient Navigation Team",
+    "meta_integration_description": "Improves emergency response protocols and assists patients in navigating healthcare services effectively.",
+    "integration_assistants": [
+      "Emergency Services Consultant",
+      "Patient Care Navigator",
+      "Nursing Services Consultant"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "E-commerce and Customer Service Optimization Team",
+    "meta_integration_description": "Enhances online shopping experiences and strengthens customer service practices.",
+    "integration_assistants": [
+      "E-commerce Optimization Consultant",
+      "Customer Service Specialist",
+      "Inventory Management Advisor"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "Sales and Promotion Strategy Team",
+    "meta_integration_description": "Provides insights into sales analytics and effective promotional strategies.",
+    "integration_assistants": [
+      "Sales Analytics Specialist",
+      "Promotional Strategies Consultant",
+      "Sales Forecasting Advisor"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "Retail Technology and Omni-Channel Integration Team",
+    "meta_integration_description": "Guides on retail technology and seamless omni-channel retail experiences.",
+    "integration_assistants": [
+      "Retail Technology Advisor",
+      "Omni-channel Retailing Consultant",
+      "Customer Loyalty Program Manager"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "Pricing and Inventory Optimization Team",
+    "meta_integration_description": "Focuses on price optimization and effective inventory control.",
+    "integration_assistants": [
+      "Price Optimization Specialist",
+      "Inventory Management Advisor",
+      "Category Management Advisor"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "Sustainability and Consumer Behavior Analysis Team",
+    "meta_integration_description": "Promotes sustainable retail practices and provides consumer behavior insights.",
+    "integration_assistants": [
+      "Sustainability Practices Advisor",
+      "Consumer Behavior Analyst",
+      "Market Trends Analyst"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "Retail Event and Engagement Team",
+    "meta_integration_description": "Specializes in event marketing and enhancing customer engagement.",
+    "integration_assistants": [
+      "Event Marketing Coordinator",
+      "Social Media Marketing Consultant",
+      "Loyalty Program Analytics Specialist"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "Retail Operations and Efficiency Team",
+    "meta_integration_description": "Streamlines retail operations and return management processes.",
+    "integration_assistants": [
+      "Retail Operations Consultant",
+      "Return Management Consultant",
+      "Point of Sale (POS) Specialist"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "Digital Marketing and Market Analytics Team",
+    "meta_integration_description": "Optimizes digital marketing and provides market analytics for retail.",
+    "integration_assistants": [
+      "Digital Marketing Consultant",
+      "Market Trends Analyst",
+      "Customer Loyalty Program Manager"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "Seasonal and Promotional Sales Strategy Team",
+    "meta_integration_description": "Guides retailers on seasonal sales campaigns and promotions.",
+    "integration_assistants": [
+      "Seasonal Sales Strategist",
+      "Promotional Strategies Consultant",
+      "Market Trends Analyst"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "Consumer Loyalty and Engagement Team",
+    "meta_integration_description": "Enhances customer loyalty and engagement through targeted strategies.",
+    "integration_assistants": [
+      "Customer Loyalty Program Manager",
+      "Customer Service Specialist",
+      "Event Marketing Coordinator"
+    ]
+  },
+  {
+    "__category": 6,
+    "meta_integration_category": "Retail",
+    "meta_integration_name": "Inventory Control and Supply Chain Management Team",
+    "meta_integration_description": "Focuses on effective inventory and supply chain management strategies.",
+    "integration_assistants": [
+      "Inventory Management Advisor",
+      "Retail Operations Consultant",
+      "Sales Forecasting Advisor"
+    ]
+  },
+  {
+    "__category": 7,
+    "meta_integration_category": "Food & Beverage Processing",
+    "meta_integration_name": "Food Safety and Quality Assurance Team",
+    "meta_integration_description": "Ensures high standards of food safety and quality assurance throughout processing stages.",
+    "integration_assistants": [
+      "Food Safety Consultant",
+      "Quality Assurance Specialist",
+      "Regulatory Compliance Specialist"
+    ]
+  },
+  {
+    "__category": 7,
+    "meta_integration_category": "Food & Beverage Processing",
+    "meta_integration_name": "Nutritional and Ingredient Sourcing Team",
+    "meta_integration_description": "Focuses on nutritional analysis and ethical sourcing of quality ingredients.",
+    "integration_assistants": [
+      "Nutritional Analysis Advisor",
+      "Ingredient Sourcing Advisor",
+      "Ethical Sourcing Advisor"
+    ]
+  },
+  {
+    "__category": 7,
+    "meta_integration_category": "Food & Beverage Processing",
+    "meta_integration_name": "Packaging and Preservation Innovation Team",
+    "meta_integration_description": "Enhances food packaging and preservation techniques for improved shelf life and safety.",
+    "integration_assistants": [
+      "Packaging Technology Consultant",
+      "Food Preservation Consultant",
+      "Flavor Enhancement Specialist"
+    ]
+  },
+  {
+    "__category": 7,
+    "meta_integration_category": "Food & Beverage Processing",
+    "meta_integration_name": "Automation and Batch Processing Efficiency Team",
+    "meta_integration_description": "Optimizes batch processing and integrates automation to enhance production efficiency.",
+    "integration_assistants": [
+      "Batch Processing Advisor",
+      "Automated Production Consultant",
+      "Supply Chain Optimization Advisor"
+    ]
+  },
+  {
+    "__category": 7,
+    "meta_integration_category": "Food & Beverage Processing",
+    "meta_integration_name": "Sustainability and Waste Management Team",
+    "meta_integration_description": "Promotes sustainable practices and efficient waste management within food production.",
+    "integration_assistants": [
+      "Waste Management Specialist",
+      "Sustainability Practices Consultant",
+      "Supply Chain Optimization Advisor"
+    ]
+  },
+  {
+    "__category": 7,
+    "meta_integration_category": "Food & Beverage Processing",
+    "meta_integration_name": "Product Development and Consumer Trends Team",
+    "meta_integration_description": "Focuses on innovative food product development aligned with consumer trends and preferences.",
+    "integration_assistants": [
+      "Food Innovation Advisor",
+      "Health and Wellness Product Consultant",
+      "Consumer Trends Analyst"
+    ]
+  },
+  {
+    "__category": 7,
+    "meta_integration_category": "Food & Beverage Processing",
+    "meta_integration_name": "Culinary and Sensory Evaluation Team",
+    "meta_integration_description": "Enhances food quality through sensory evaluations and culinary innovation.",
+    "integration_assistants": [
+      "Sensory Evaluation Specialist",
+      "Culinary Innovation Consultant",
+      "Food Technology Researcher"
+    ]
+  },
+  {
+    "__category": 7,
+    "meta_integration_category": "Food & Beverage Processing",
+    "meta_integration_name": "Health and Regulatory Compliance Team",
+    "meta_integration_description": "Focuses on compliance with health regulations and quality control measures.",
+    "integration_assistants": [
+      "Health and Wellness Product Consultant",
+      "Regulatory Compliance Specialist",
+      "Food Safety Consultant"
+    ]
+  },
+  {
+    "__category": 7,
+    "meta_integration_category": "Food & Beverage Processing",
+    "meta_integration_name": "Distribution and Traceability Optimization Team",
+    "meta_integration_description": "Optimizes distribution channels and traceability systems for food safety.",
+    "integration_assistants": [
+      "Food Distribution Specialist",
+      "Traceability Advisor",
+      "Supply Chain Optimization Advisor"
+    ]
+  },
+  {
+    "__category": 7,
+    "meta_integration_category": "Food & Beverage Processing",
+    "meta_integration_name": "Flavor and Nutritional Innovation Team",
+    "meta_integration_description": "Drives flavor and nutritional enhancements for diverse food products.",
+    "integration_assistants": [
+      "Flavor Enhancement Specialist",
+      "Nutritional Analysis Advisor",
+      "Food Innovation Advisor"
+    ]
+  },
+  {
+    "__category": 8,
+    "meta_integration_category": "Pharmaceuticals",
+    "meta_integration_name": "Drug Development and Clinical Trials Team",
+    "meta_integration_description": "Supports drug development and clinical trials with a focus on compliance, safety, and efficacy.",
+    "integration_assistants": [
+      "Drug Development Consultant",
+      "Clinical Trials Coordinator",
+      "Clinical Data Management Specialist"
+    ]
+  },
+  {
+    "__category": 8,
+    "meta_integration_category": "Pharmaceuticals",
+    "meta_integration_name": "Regulatory Compliance and Safety Team",
+    "meta_integration_description": "Ensures adherence to regulatory standards and focuses on drug safety and adverse event reporting.",
+    "integration_assistants": [
+      "Regulatory Affairs Specialist",
+      "Pharmacovigilance Advisor",
+      "Adverse Event Reporting Consultant"
+    ]
+  },
+  {
+    "__category": 8,
+    "meta_integration_category": "Pharmaceuticals",
+    "meta_integration_name": "Quality Control and Manufacturing Efficiency Team",
+    "meta_integration_description": "Focuses on quality control and optimizing manufacturing processes in pharmaceutical production.",
+    "integration_assistants": [
+      "Quality Control Consultant",
+      "Pharmaceutical Manufacturing Advisor",
+      "Pharmaceutical Supply Chain Analyst"
+    ]
+  },
+  {
+    "__category": 8,
+    "meta_integration_category": "Pharmaceuticals",
+    "meta_integration_name": "Formulation and Drug Delivery Team",
+    "meta_integration_description": "Advises on formulation development and innovative drug delivery systems for effective treatment.",
+    "integration_assistants": [
+      "Formulation Development Specialist",
+      "Drug Delivery Systems Consultant",
+      "Therapeutic Areas Specialist"
+    ]
+  },
+  {
+    "__category": 8,
+    "meta_integration_category": "Pharmaceuticals",
+    "meta_integration_name": "Market Access and Health Economics Team",
+    "meta_integration_description": "Provides strategies for market access, reimbursement, and health economic assessments.",
+    "integration_assistants": [
+      "Market Access Consultant",
+      "Health Economics Analyst",
+      "Patent Management Specialist"
+    ]
+  },
+  {
+    "__category": 8,
+    "meta_integration_category": "Pharmaceuticals",
+    "meta_integration_name": "Personalized Medicine and Patient-Centric Development Team",
+    "meta_integration_description": "Guides the development of patient-centered and personalized medicine approaches.",
+    "integration_assistants": [
+      "Personalized Medicine Advisor",
+      "Patient-Centric Drug Development Advisor",
+      "Ethical Compliance Consultant"
+    ]
+  },
+  {
+    "__category": 8,
+    "meta_integration_category": "Pharmaceuticals",
+    "meta_integration_name": "Counterfeit Prevention and Supply Chain Security Team",
+    "meta_integration_description": "Focuses on preventing counterfeit drugs and securing the pharmaceutical supply chain.",
+    "integration_assistants": [
+      "Counterfeit Prevention Specialist",
+      "Pharmaceutical Supply Chain Analyst",
+      "Ethical Compliance Consultant"
+    ]
+  },
+  {
+    "__category": 8,
+    "meta_integration_category": "Pharmaceuticals",
+    "meta_integration_name": "Drug Safety and Pharmacovigilance Team",
+    "meta_integration_description": "Monitors drug safety and provides strategies for managing adverse effects.",
+    "integration_assistants": [
+      "Drug Safety Consultant",
+      "Pharmacovigilance Advisor",
+      "Adverse Event Reporting Consultant"
+    ]
+  },
+  {
+    "__category": 8,
+    "meta_integration_category": "Pharmaceuticals",
+    "meta_integration_name": "R&D and Innovation Strategy Team",
+    "meta_integration_description": "Advises on research and development strategies, focusing on innovative pharmaceutical practices.",
+    "integration_assistants": [
+      "Research and Development Consultant",
+      "Therapeutic Areas Specialist",
+      "Formulation Development Specialist"
+    ]
+  },
+  {
+    "__category": 8,
+    "meta_integration_category": "Pharmaceuticals",
+    "meta_integration_name": "Pharmaceutical Marketing and Sales Team",
+    "meta_integration_description": "Provides guidance on effective marketing and sales strategies for pharmaceutical products.",
+    "integration_assistants": [
+      "Pharmaceutical Marketing Specialist",
+      "Sales and Distribution Advisor",
+      "Market Access Consultant"
+    ]
+  },
+  {
+    "__category": 9,
+    "meta_integration_category": "Telecommunications",
+    "meta_integration_name": "Network Infrastructure and Optimization Team",
+    "meta_integration_description": "Focuses on designing and optimizing network infrastructure to ensure high performance and scalability.",
+    "integration_assistants": [
+      "Network Infrastructure Consultant",
+      "Network Optimization Specialist",
+      "Network Performance Analyst"
+    ]
+  },
+  {
+    "__category": 9,
+    "meta_integration_category": "Telecommunications",
+    "meta_integration_name": "5G and Emerging Technologies Team",
+    "meta_integration_description": "Provides insights on implementing 5G and exploring other emerging technologies within telecom networks.",
+    "integration_assistants": [
+      "5G Technology Advisor",
+      "Emerging Technologies Advisor",
+      "Mobile Networks Specialist"
+    ]
+  },
+  {
+    "__category": 9,
+    "meta_integration_category": "Telecommunications",
+    "meta_integration_name": "Telecom Security and Compliance Team",
+    "meta_integration_description": "Ensures the security and regulatory compliance of telecom networks against various risks.",
+    "integration_assistants": [
+      "Network Security Consultant",
+      "Telecom Regulations Advisor",
+      "Telecom Fraud Prevention Specialist"
+    ]
+  },
+  {
+    "__category": 9,
+    "meta_integration_category": "Telecommunications",
+    "meta_integration_name": "Customer Service and Support Optimization Team",
+    "meta_integration_description": "Focuses on enhancing customer service strategies and technical support in telecom.",
+    "integration_assistants": [
+      "Customer Service Specialist",
+      "Technical Support Specialist",
+      "Subscriber Management Advisor"
+    ]
+  },
+  {
+    "__category": 9,
+    "meta_integration_category": "Telecommunications",
+    "meta_integration_name": "Billing and Financial Operations Team",
+    "meta_integration_description": "Advises on optimizing telecom billing and financial operations for enhanced efficiency.",
+    "integration_assistants": [
+      "Telecom Billing Advisor",
+      "Sales and Distribution Advisor",
+      "Telecom Project Management Consultant"
+    ]
+  },
+  {
+    "__category": 9,
+    "meta_integration_category": "Telecommunications",
+    "meta_integration_name": "Capacity and Spectrum Management Team",
+    "meta_integration_description": "Helps manage network capacity and spectrum to maintain telecom service quality.",
+    "integration_assistants": [
+      "Capacity Planning Specialist",
+      "Spectrum Management Specialist",
+      "Fiber Optics Specialist"
+    ]
+  },
+  {
+    "__category": 9,
+    "meta_integration_category": "Telecommunications",
+    "meta_integration_name": "Digital and Cloud Communications Strategy Team",
+    "meta_integration_description": "Guides telecom organizations in transitioning to cloud and digital communication solutions.",
+    "integration_assistants": [
+      "Digital Communication Consultant",
+      "Cloud Communications Consultant",
+      "VoIP Specialist"
+    ]
+  },
+  {
+    "__category": 9,
+    "meta_integration_category": "Telecommunications",
+    "meta_integration_name": "Infrastructure and Compliance Audit Team",
+    "meta_integration_description": "Evaluates telecom infrastructure for performance and compliance with regulatory standards.",
+    "integration_assistants": [
+      "Telecom Infrastructure Auditor",
+      "Regulatory Affairs Specialist",
+      "Disaster Recovery Consultant"
+    ]
+  },
+  {
+    "__category": 9,
+    "meta_integration_category": "Telecommunications",
+    "meta_integration_name": "Data and Analytics-Driven Optimization Team",
+    "meta_integration_description": "Uses data-driven insights to optimize telecom services and improve operational efficiency.",
+    "integration_assistants": [
+      "Network Performance Analyst",
+      "Telecom Fraud Prevention Specialist",
+      "Market Trends Analyst"
+    ]
+  },
+  {
+    "__category": 9,
+    "meta_integration_category": "Telecommunications",
+    "meta_integration_name": "Subscriber and Market Insights Team",
+    "meta_integration_description": "Provides strategies for subscriber management, retention, and leveraging market insights.",
+    "integration_assistants": [
+      "Subscriber Management Advisor",
+      "Digital Communication Consultant",
+      "Market Trends Analyst"
+    ]
+  },
+  {
+    "__category": 10,
+    "meta_integration_category": "Transportation",
+    "meta_integration_name": "Freight and Logistics Optimization Team",
+    "meta_integration_description": "Focuses on optimizing freight, last-mile delivery, and logistics processes to enhance efficiency and reduce costs.",
+    "integration_assistants": [
+      "Freight Management Consultant",
+      "Last Mile Delivery Specialist",
+      "Shipping Logistics Consultant"
+    ]
+  },
+  {
+    "__category": 10,
+    "meta_integration_category": "Transportation",
+    "meta_integration_name": "Public Transit and Urban Mobility Team",
+    "meta_integration_description": "Aims to improve public transit services and develop sustainable urban mobility solutions.",
+    "integration_assistants": [
+      "Public Transit Advisor",
+      "Urban Mobility Planner",
+      "Public Transit Optimization Specialist"
+    ]
+  },
+  {
+    "__category": 10,
+    "meta_integration_category": "Transportation",
+    "meta_integration_name": "Safety and Environmental Impact Team",
+    "meta_integration_description": "Ensures transportation safety and reduces environmental impact through effective practices.",
+    "integration_assistants": [
+      "Transportation Safety Consultant",
+      "Environmental Impact Analyst",
+      "Bicycle and Pedestrian Program Consultant"
+    ]
+  },
+  {
+    "__category": 10,
+    "meta_integration_category": "Transportation",
+    "meta_integration_name": "Fleet and Telematics Management Team",
+    "meta_integration_description": "Specializes in fleet management, telematics systems, and vehicle tracking for operational efficiency.",
+    "integration_assistants": [
+      "Vehicle Fleet Management Specialist",
+      "Telematics Specialist",
+      "Transportation Analytics Advisor"
+    ]
+  },
+  {
+    "__category": 10,
+    "meta_integration_category": "Transportation",
+    "meta_integration_name": "Smart and Automated Transportation Team",
+    "meta_integration_description": "Focuses on integrating smart and automated technologies in transportation systems.",
+    "integration_assistants": [
+      "Smart Transportation Consultant",
+      "Automated Transportation Consultant",
+      "Mobility as a Service (MaaS) Advisor"
+    ]
+  },
+  {
+    "__category": 10,
+    "meta_integration_category": "Transportation",
+    "meta_integration_name": "Sustainable Transport and Green Initiatives Team",
+    "meta_integration_description": "Promotes sustainable practices and green initiatives in transportation operations.",
+    "integration_assistants": [
+      "Sustainable Transport Advisor",
+      "Environmental Impact Analyst",
+      "Smart Transportation Consultant"
+    ]
+  },
+  {
+    "__category": 10,
+    "meta_integration_category": "Transportation",
+    "meta_integration_name": "Infrastructure and Traffic Management Team",
+    "meta_integration_description": "Guides the planning of transportation infrastructure and effective traffic management.",
+    "integration_assistants": [
+      "Traffic Management Specialist",
+      "Transportation Infrastructure Planner",
+      "Urban Mobility Planner"
+    ]
+  },
+  {
+    "__category": 10,
+    "meta_integration_category": "Transportation",
+    "meta_integration_name": "Routing, Scheduling, and Optimization Team",
+    "meta_integration_description": "Optimizes routing and scheduling for streamlined transportation operations.",
+    "integration_assistants": [
+      "Routing and Scheduling Consultant",
+      "Capacity Planning Specialist",
+      "Smart Transportation Consultant"
+    ]
+  },
+  {
+    "__category": 10,
+    "meta_integration_category": "Transportation",
+    "meta_integration_name": "Cost Management and Efficiency Team",
+    "meta_integration_description": "Focuses on cost management strategies to enhance efficiency in transportation.",
+    "integration_assistants": [
+      "Cost Management Specialist",
+      "Freight Management Consultant",
+      "Shipping Logistics Consultant"
+    ]
+  },
+  {
+    "__category": 10,
+    "meta_integration_category": "Transportation",
+    "meta_integration_name": "Intermodal and Integrated Transport Team",
+    "meta_integration_description": "Supports integrating different transportation modes for cohesive and efficient transit solutions.",
+    "integration_assistants": [
+      "Intermodal Transport Specialist",
+      "Public Transit Advisor",
+      "Mobility as a Service (MaaS) Advisor"
+    ]
+  },
+  {
+    "__category": 11,
+    "meta_integration_category": "Aerospace & Defense",
+    "meta_integration_name": "Aerospace Engineering and Innovation Team",
+    "meta_integration_description": "Supports the development of innovative aerospace solutions, from engineering design to advanced technologies.",
+    "integration_assistants": [
+      "Aerospace Engineering Consultant",
+      "Spacecraft Development Consultant",
+      "Research and Development Consultant"
+    ]
+  },
+  {
+    "__category": 11,
+    "meta_integration_category": "Aerospace & Defense",
+    "meta_integration_name": "Defense Systems and Security Team",
+    "meta_integration_description": "Focused on enhancing security and operational efficiency in defense systems.",
+    "integration_assistants": [
+      "Military Technology Advisor",
+      "Cybersecurity for Aerospace Systems Consultant",
+      "Missile Defense Advisor"
+    ]
+  },
+  {
+    "__category": 11,
+    "meta_integration_category": "Aerospace & Defense",
+    "meta_integration_name": "Environmental and Sustainability Team",
+    "meta_integration_description": "Ensures sustainable practices and environmental compliance in aerospace operations.",
+    "integration_assistants": [
+      "Environmental Impact Consultant",
+      "Sustainability in Aerospace Consultant",
+      "Regulatory Compliance Advisor"
+    ]
+  },
+  {
+    "__category": 11,
+    "meta_integration_category": "Aerospace & Defense",
+    "meta_integration_name": "Supply Chain and Logistics Support Team",
+    "meta_integration_description": "Optimizes logistics and supply chain processes within the aerospace and defense sectors.",
+    "integration_assistants": [
+      "Aerospace Supply Chain Specialist",
+      "Logistics Support Specialist",
+      "Contracting and Procurement Advisor"
+    ]
+  },
+  {
+    "__category": 11,
+    "meta_integration_category": "Aerospace & Defense",
+    "meta_integration_name": "Intelligence and Surveillance Team",
+    "meta_integration_description": "Provides expertise in intelligence gathering, surveillance systems, and autonomous defense solutions.",
+    "integration_assistants": [
+      "Intelligence and Surveillance Consultant",
+      "Autonomous Systems Advisor",
+      "Data Analytics in Defense Specialist"
+    ]
+  },
+  {
+    "__category": 11,
+    "meta_integration_category": "Aerospace & Defense",
+    "meta_integration_name": "Maintenance and Quality Assurance Team",
+    "meta_integration_description": "Focused on maintenance, repair, and quality assurance for defense systems and aircraft.",
+    "integration_assistants": [
+      "Maintenance, Repair, and Overhaul (MRO) Advisor",
+      "Aircraft Manufacturing Specialist",
+      "Quality Control Consultant"
+    ]
+  },
+  {
+    "__category": 11,
+    "meta_integration_category": "Aerospace & Defense",
+    "meta_integration_name": "Satellite and Space Systems Team",
+    "meta_integration_description": "Supports the design, development, and operation of satellite and space systems.",
+    "integration_assistants": [
+      "Satellites Systems Advisor",
+      "Spacecraft Development Consultant",
+      "Aerospace Engineering Consultant"
+    ]
+  },
+  {
+    "__category": 11,
+    "meta_integration_category": "Aerospace & Defense",
+    "meta_integration_name": "UAV and Emerging Technologies Team",
+    "meta_integration_description": "Provides guidance on UAVs and the integration of emerging technologies in aerospace and defense.",
+    "integration_assistants": [
+      "Unmanned Aerial Vehicle (UAV) Consultant",
+      "Emerging Technologies Advisor",
+      "Defense Innovation Consultant"
+    ]
+  },
+  {
+    "__category": 11,
+    "meta_integration_category": "Aerospace & Defense",
+    "meta_integration_name": "Regulatory and Compliance Team",
+    "meta_integration_description": "Ensures regulatory compliance and ethical standards in aerospace and defense operations.",
+    "integration_assistants": [
+      "Regulatory Compliance Advisor",
+      "Ethical Compliance Consultant",
+      "Defense Systems Analyst"
+    ]
+  },
+  {
+    "__category": 11,
+    "meta_integration_category": "Aerospace & Defense",
+    "meta_integration_name": "Technical and Operational Efficiency Team",
+    "meta_integration_description": "Advises on operational efficiency and technical expertise in aerospace systems.",
+    "integration_assistants": [
+      "Defense Systems Analyst",
+      "Air Traffic Control Specialist",
+      "Data Analytics in Defense Specialist"
+    ]
+  },
+  {
+    "__category": 12,
+    "meta_integration_category": "Mining & Metals",
+    "meta_integration_name": "Mining Operations and Safety Team",
+    "meta_integration_description": "Focuses on optimizing mining operations and ensuring safety in mining environments.",
+    "integration_assistants": [
+      "Mining Operations Consultant",
+      "Mine Safety Advisor",
+      "Drilling and Blasting Consultant"
+    ]
+  },
+  {
+    "__category": 12,
+    "meta_integration_category": "Mining & Metals",
+    "meta_integration_name": "Environmental and Sustainability Team",
+    "meta_integration_description": "Supports sustainable practices and environmental management in mining operations.",
+    "integration_assistants": [
+      "Environmental Impact Analyst",
+      "Sustainability in Mining Advisor",
+      "Land Reclamation Specialist"
+    ]
+  },
+  {
+    "__category": 12,
+    "meta_integration_category": "Mining & Metals",
+    "meta_integration_name": "Resource and Logistics Optimization Team",
+    "meta_integration_description": "Enhances resource management and logistics for efficient mining operations.",
+    "integration_assistants": [
+      "Mining Logistics Specialist",
+      "Resource Management Consultant",
+      "Supply Chain Sustainability Advisor"
+    ]
+  },
+  {
+    "__category": 12,
+    "meta_integration_category": "Mining & Metals",
+    "meta_integration_name": "Technological Innovation Team",
+    "meta_integration_description": "Guides the adoption of innovative technologies within the mining sector.",
+    "integration_assistants": [
+      "Mining Technology Advisor",
+      "Automation in Mining Consultant",
+      "Data Analytics in Mining Consultant"
+    ]
+  },
+  {
+    "__category": 12,
+    "meta_integration_category": "Mining & Metals",
+    "meta_integration_name": "Ore Processing and Tailings Management Team",
+    "meta_integration_description": "Focuses on efficient ore processing and responsible tailings management.",
+    "integration_assistants": [
+      "Ore Processing Specialist",
+      "Tailings Management Specialist",
+      "Metal Recycling Consultant"
+    ]
+  },
+  {
+    "__category": 12,
+    "meta_integration_category": "Mining & Metals",
+    "meta_integration_name": "Exploration and Geological Survey Team",
+    "meta_integration_description": "Supports mineral exploration and geological survey activities.",
+    "integration_assistants": [
+      "Mineral Exploration Consultant",
+      "Geological Survey Advisor",
+      "Economic Impact Analyst"
+    ]
+  },
+  {
+    "__category": 12,
+    "meta_integration_category": "Mining & Metals",
+    "meta_integration_name": "Regulatory Compliance and Community Engagement Team",
+    "meta_integration_description": "Ensures regulatory adherence and fosters community relationships.",
+    "integration_assistants": [
+      "Mining Regulations Advisor",
+      "Community Engagement Specialist",
+      "Resilience Planning Advisor"
+    ]
+  },
+  {
+    "__category": 12,
+    "meta_integration_category": "Mining & Metals",
+    "meta_integration_name": "Advanced Materials and Defense Applications Team",
+    "meta_integration_description": "Explores applications of metals in defense and advanced material sectors.",
+    "integration_assistants": [
+      "Ground Defense Systems Specialist",
+      "Mining Technology Advisor",
+      "Ore Processing Specialist"
+    ]
+  },
+  {
+    "__category": 12,
+    "meta_integration_category": "Mining & Metals",
+    "meta_integration_name": "Supply Chain and Recycling Team",
+    "meta_integration_description": "Focuses on sustainable supply chain practices and recycling within mining operations.",
+    "integration_assistants": [
+      "Supply Chain Sustainability Advisor",
+      "Metal Recycling Consultant",
+      "Mining Logistics Specialist"
+    ]
+  },
+  {
+    "__category": 12,
+    "meta_integration_category": "Mining & Metals",
+    "meta_integration_name": "Safety and Environmental Compliance Team",
+    "meta_integration_description": "Ensures compliance with safety and environmental standards in mining activities.",
+    "integration_assistants": [
+      "Mine Safety Advisor",
+      "Environmental Impact Analyst",
+      "Tailings Management Specialist"
+    ]
+  },
+  {
+    "__category": 13,
+    "meta_integration_category": "Chemicals & Materials",
+    "meta_integration_name": "Chemical Production and Safety Team",
+    "meta_integration_description": "Focuses on optimizing chemical production processes and ensuring safety in handling chemicals.",
+    "integration_assistants": [
+      "Chemical Production Consultant",
+      "Chemical Safety Consultant",
+      "Quality Control Specialist"
+    ]
+  },
+  {
+    "__category": 13,
+    "meta_integration_category": "Chemicals & Materials",
+    "meta_integration_name": "Sustainability and Environmental Impact Team",
+    "meta_integration_description": "Supports sustainable practices and evaluates environmental impact in chemical production.",
+    "integration_assistants": [
+      "Sustainability Advisor",
+      "Environmental Impact Analyst",
+      "Sustainable Materials Advisor"
+    ]
+  },
+  {
+    "__category": 13,
+    "meta_integration_category": "Chemicals & Materials",
+    "meta_integration_name": "Compliance and Hazardous Materials Team",
+    "meta_integration_description": "Ensures regulatory compliance and safe management of hazardous materials.",
+    "integration_assistants": [
+      "Regulatory Compliance Advisor",
+      "Hazardous Materials Management Advisor",
+      "Corporate Social Responsibility (CSR) Advisor"
+    ]
+  },
+  {
+    "__category": 13,
+    "meta_integration_category": "Chemicals & Materials",
+    "meta_integration_name": "Innovation and Research Team",
+    "meta_integration_description": "Drives research and development for innovative chemical solutions.",
+    "integration_assistants": [
+      "Research and Development Advisor",
+      "Chemical Innovation Strategist",
+      "Biochemicals Specialist"
+    ]
+  },
+  {
+    "__category": 13,
+    "meta_integration_category": "Chemicals & Materials",
+    "meta_integration_name": "Processing and Formulation Team",
+    "meta_integration_description": "Specializes in chemical processing optimization and product formulation.",
+    "integration_assistants": [
+      "Chemical Processing Specialist",
+      "Product Formulation Specialist",
+      "Polymer Science Consultant"
+    ]
+  },
+  {
+    "__category": 13,
+    "meta_integration_category": "Chemicals & Materials",
+    "meta_integration_name": "Supply Chain and Resource Management Team",
+    "meta_integration_description": "Optimizes sourcing, logistics, and sustainable resource management for chemicals.",
+    "integration_assistants": [
+      "Raw Materials Sourcing Advisor",
+      "Chemical Distribution Consultant",
+      "Circular Economy Consultant"
+    ]
+  },
+  {
+    "__category": 13,
+    "meta_integration_category": "Chemicals & Materials",
+    "meta_integration_name": "Water Treatment and Environmental Applications Team",
+    "meta_integration_description": "Focuses on chemical solutions for water treatment and environmental management.",
+    "integration_assistants": [
+      "Water Treatment Chemicals Advisor",
+      "Environmental Impact Analyst",
+      "Sustainability Advisor"
+    ]
+  },
+  {
+    "__category": 13,
+    "meta_integration_category": "Chemicals & Materials",
+    "meta_integration_name": "Digital Transformation and Efficiency Team",
+    "meta_integration_description": "Guides chemical companies in adopting digital technologies for enhanced efficiency.",
+    "integration_assistants": [
+      "Digital Transformation Consultant",
+      "Data Analytics in Chemicals Consultant",
+      "Corporate Social Responsibility (CSR) Advisor"
+    ]
+  },
+  {
+    "__category": 13,
+    "meta_integration_category": "Chemicals & Materials",
+    "meta_integration_name": "Health and Safety Standards Team",
+    "meta_integration_description": "Ensures high safety standards in chemical handling, storage, and distribution.",
+    "integration_assistants": [
+      "Chemical Safety Consultant",
+      "Quality Control Specialist",
+      "Hazardous Materials Management Advisor"
+    ]
+  },
+  {
+    "__category": 13,
+    "meta_integration_category": "Chemicals & Materials",
+    "meta_integration_name": "Sustainable Production and Recycling Team",
+    "meta_integration_description": "Supports the transition to sustainable production methods and recycling of materials.",
+    "integration_assistants": [
+      "Circular Economy Consultant",
+      "Sustainable Materials Advisor",
+      "Raw Materials Sourcing Advisor"
+    ]
+  },
+  {
+    "__category": 14,
+    "meta_integration_category": "Automotive",
+    "meta_integration_name": "Vehicle Manufacturing and Supply Chain Team",
+    "meta_integration_description": "Focuses on optimizing manufacturing and supply chain processes for automotive production.",
+    "integration_assistants": [
+      "Vehicle Manufacturing Consultant",
+      "Supply Chain Management Consultant",
+      "Automotive Parts Specialist"
+    ]
+  },
+  {
+    "__category": 14,
+    "meta_integration_category": "Automotive",
+    "meta_integration_name": "Electric and Sustainable Vehicles Team",
+    "meta_integration_description": "Guides organizations on electric vehicle development and sustainable automotive practices.",
+    "integration_assistants": [
+      "Electric Vehicle Advisor",
+      "Sustainable Vehicle Design Consultant",
+      "Vehicle Emissions Consultant"
+    ]
+  },
+  {
+    "__category": 14,
+    "meta_integration_category": "Automotive",
+    "meta_integration_name": "Safety and Compliance Standards Team",
+    "meta_integration_description": "Ensures adherence to safety standards and regulatory compliance within automotive manufacturing.",
+    "integration_assistants": [
+      "Safety Standards Advisor",
+      "Vehicle Emissions Consultant",
+      "Regulatory Compliance Specialist"
+    ]
+  },
+  {
+    "__category": 14,
+    "meta_integration_category": "Automotive",
+    "meta_integration_name": "Connected and Autonomous Vehicle Team",
+    "meta_integration_description": "Provides insights on connected technologies and autonomous vehicle development.",
+    "integration_assistants": [
+      "Connected Vehicle Technology Advisor",
+      "Autonomous Vehicle Consultant",
+      "Telematics Specialist"
+    ]
+  },
+  {
+    "__category": 14,
+    "meta_integration_category": "Automotive",
+    "meta_integration_name": "In-Car Experience and Design Team",
+    "meta_integration_description": "Focuses on enhancing user experience and design innovation for vehicles.",
+    "integration_assistants": [
+      "In-Car Experience Designer",
+      "Vehicle Design Consultant",
+      "Automotive Electronics Specialist"
+    ]
+  },
+  {
+    "__category": 14,
+    "meta_integration_category": "Automotive",
+    "meta_integration_name": "Automotive Technology and Innovation Team",
+    "meta_integration_description": "Advises on implementing cutting-edge automotive technologies and innovations.",
+    "integration_assistants": [
+      "Automotive Technology Advisor",
+      "Performance Tuning Specialist",
+      "Digital Transformation Consultant"
+    ]
+  },
+  {
+    "__category": 14,
+    "meta_integration_category": "Automotive",
+    "meta_integration_name": "Vehicle Maintenance and Repair Team",
+    "meta_integration_description": "Supports effective vehicle maintenance and repair practices.",
+    "integration_assistants": [
+      "Vehicle Maintenance Advisor",
+      "Auto Repair Specialist",
+      "Fleet Management Advisor"
+    ]
+  },
+  {
+    "__category": 14,
+    "meta_integration_category": "Automotive",
+    "meta_integration_name": "Sales and Customer Engagement Team",
+    "meta_integration_description": "Provides strategies for improving car sales and customer engagement.",
+    "integration_assistants": [
+      "Car Sales Consultant",
+      "Auto Financing Advisor",
+      "Aftermarket Accessories Consultant"
+    ]
+  },
+  {
+    "__category": 14,
+    "meta_integration_category": "Automotive",
+    "meta_integration_name": "Environmental Impact and Sustainability Team",
+    "meta_integration_description": "Focuses on reducing the environmental impact of vehicle manufacturing and promoting sustainability.",
+    "integration_assistants": [
+      "Vehicle Emissions Consultant",
+      "Environmental Compliance Specialist",
+      "Sustainable Vehicle Design Consultant"
+    ]
+  },
+  {
+    "__category": 14,
+    "meta_integration_category": "Automotive",
+    "meta_integration_name": "Fleet Management and Telematics Team",
+    "meta_integration_description": "Supports effective fleet management and telematics implementation.",
+    "integration_assistants": [
+      "Fleet Management Advisor",
+      "Telematics Specialist",
+      "Vehicle Maintenance Advisor"
+    ]
+  },
+  {
+    "__category": 15,
+    "meta_integration_category": "Real Estate & Property Management",
+    "meta_integration_name": "Property Management and Tenant Relations Team",
+    "meta_integration_description": "Focuses on effective property management and tenant relationship strategies.",
+    "integration_assistants": [
+      "Property Management Consultant",
+      "Tenant Management Specialist",
+      "Property Maintenance Advisor"
+    ]
+  },
+  {
+    "__category": 15,
+    "meta_integration_category": "Real Estate & Property Management",
+    "meta_integration_name": "Real Estate Investment and Analysis Team",
+    "meta_integration_description": "Provides insights and analysis for informed real estate investment decisions.",
+    "integration_assistants": [
+      "Real Estate Investment Advisor",
+      "Market Analysis Specialist",
+      "Property Valuation Consultant"
+    ]
+  },
+  {
+    "__category": 15,
+    "meta_integration_category": "Real Estate & Property Management",
+    "meta_integration_name": "Legal and Compliance Advisory Team",
+    "meta_integration_description": "Guides property managers and developers through legal and regulatory requirements.",
+    "integration_assistants": [
+      "Lease Agreement Advisor",
+      "Zoning Regulations Advisor",
+      "Property Tax Consultant"
+    ]
+  },
+  {
+    "__category": 15,
+    "meta_integration_category": "Real Estate & Property Management",
+    "meta_integration_name": "Real Estate Development and Marketing Team",
+    "meta_integration_description": "Assists with real estate development projects and effective marketing strategies.",
+    "integration_assistants": [
+      "Real Estate Development Consultant",
+      "Real Estate Marketing Specialist",
+      "Virtual Tours Consultant"
+    ]
+  },
+  {
+    "__category": 15,
+    "meta_integration_category": "Real Estate & Property Management",
+    "meta_integration_name": "Sustainable and Smart Property Solutions Team",
+    "meta_integration_description": "Focuses on sustainable building practices and smart home technologies.",
+    "integration_assistants": [
+      "Sustainable Building Consultant",
+      "Smart Home Technology Advisor",
+      "Real Estate Technology Advisor"
+    ]
+  },
+  {
+    "__category": 15,
+    "meta_integration_category": "Real Estate & Property Management",
+    "meta_integration_name": "Commercial and Investment Property Team",
+    "meta_integration_description": "Provides expertise in commercial real estate and investment property management.",
+    "integration_assistants": [
+      "Commercial Real Estate Specialist",
+      "Investment Property Advisor",
+      "Mortgage Financing Specialist"
+    ]
+  },
+  {
+    "__category": 15,
+    "meta_integration_category": "Real Estate & Property Management",
+    "meta_integration_name": "Remote and Digital Property Management Team",
+    "meta_integration_description": "Supports digital and remote property management solutions for efficiency.",
+    "integration_assistants": [
+      "Remote Property Management Consultant",
+      "Property Digital Marketing Specialist",
+      "Real Estate Trends Analyst"
+    ]
+  },
+  {
+    "__category": 15,
+    "meta_integration_category": "Real Estate & Property Management",
+    "meta_integration_name": "Residential and Home Buying Assistance Team",
+    "meta_integration_description": "Guides home buyers and residential property managers through transactions and maintenance.",
+    "integration_assistants": [
+      "Mortgage Financing Specialist",
+      "Home Inspection Consultant",
+      "Property Maintenance Advisor"
+    ]
+  },
+  {
+    "__category": 15,
+    "meta_integration_category": "Real Estate & Property Management",
+    "meta_integration_name": "Advanced Real Estate Analytics Team",
+    "meta_integration_description": "Offers data-driven insights for market analysis and real estate trends.",
+    "integration_assistants": [
+      "Market Analysis Specialist",
+      "Real Estate Trends Analyst",
+      "Investment Property Advisor"
+    ]
+  },
+  {
+    "__category": 15,
+    "meta_integration_category": "Real Estate & Property Management",
+    "meta_integration_name": "Environmental and Sustainable Development Team",
+    "meta_integration_description": "Focuses on sustainable practices and environmental impact in property development.",
+    "integration_assistants": [
+      "Sustainable Building Consultant",
+      "Environmental Impact Analyst",
+      "Zoning Regulations Advisor"
+    ]
+  },
+  {
+    "__category": 16,
+    "meta_integration_category": "Insurance",
+    "meta_integration_name": "Risk Management and Underwriting Team",
+    "meta_integration_description": "Focuses on effective risk management, assessment, and underwriting practices.",
+    "integration_assistants": [
+      "Risk Management Consultant",
+      "Policy Underwriting Advisor",
+      "Actuarial Science Consultant"
+    ]
+  },
+  {
+    "__category": 16,
+    "meta_integration_category": "Insurance",
+    "meta_integration_name": "Claims and Fraud Prevention Team",
+    "meta_integration_description": "Provides guidance on efficient claims processing and strategies to prevent fraud.",
+    "integration_assistants": [
+      "Claims Processing Specialist",
+      "Insurance Fraud Analyst",
+      "Claims Fraud Prevention Specialist"
+    ]
+  },
+  {
+    "__category": 16,
+    "meta_integration_category": "Insurance",
+    "meta_integration_name": "Customer Experience and Retention Team",
+    "meta_integration_description": "Offers strategies to improve customer service and retention in insurance.",
+    "integration_assistants": [
+      "Customer Retention Consultant",
+      "Insurance Marketing Specialist",
+      "Claims Processing Specialist"
+    ]
+  },
+  {
+    "__category": 16,
+    "meta_integration_category": "Insurance",
+    "meta_integration_name": "Regulatory and Compliance Team",
+    "meta_integration_description": "Guides organizations on regulatory compliance and adherence to insurance laws.",
+    "integration_assistants": [
+      "Regulatory Compliance Advisor",
+      "Cyber Insurance Advisor",
+      "Sustainability Insurance Consultant"
+    ]
+  },
+  {
+    "__category": 16,
+    "meta_integration_category": "Insurance",
+    "meta_integration_name": "Data and Analytics Team",
+    "meta_integration_description": "Supports data-driven insights for underwriting, claims, and fraud prevention.",
+    "integration_assistants": [
+      "Insurance Data Analytics Specialist",
+      "Telematics Insurance Advisor",
+      "Premium Calculation Consultant"
+    ]
+  },
+  {
+    "__category": 16,
+    "meta_integration_category": "Insurance",
+    "meta_integration_name": "Product and Policy Development Team",
+    "meta_integration_description": "Assists in the development and management of diverse insurance products.",
+    "integration_assistants": [
+      "Insurance Products Specialist",
+      "Health Insurance Advisor",
+      "Liability Insurance Consultant"
+    ]
+  },
+  {
+    "__category": 16,
+    "meta_integration_category": "Insurance",
+    "meta_integration_name": "Technological Innovation in Insurance Team",
+    "meta_integration_description": "Focuses on integrating innovative technologies into insurance practices.",
+    "integration_assistants": [
+      "Insurance Technology Specialist",
+      "Telematics Insurance Advisor",
+      "Cyber Insurance Advisor"
+    ]
+  },
+  {
+    "__category": 16,
+    "meta_integration_category": "Insurance",
+    "meta_integration_name": "Employee Benefits and Advisory Team",
+    "meta_integration_description": "Provides guidance on employee benefits and education in insurance.",
+    "integration_assistants": [
+      "Employee Benefits Advisor",
+      "Insurance Education Consultant",
+      "Health Insurance Advisor"
+    ]
+  },
+  {
+    "__category": 16,
+    "meta_integration_category": "Insurance",
+    "meta_integration_name": "Sustainability and Eco-Focused Insurance Team",
+    "meta_integration_description": "Supports eco-conscious insurance solutions for sustainable businesses.",
+    "integration_assistants": [
+      "Sustainability Insurance Consultant",
+      "Environmental Risk Analyst",
+      "Sustainability Advisor"
+    ]
+  },
+  {
+    "__category": 16,
+    "meta_integration_category": "Insurance",
+    "meta_integration_name": "Policy and Claims Optimization Team",
+    "meta_integration_description": "Optimizes policy development, claims management, and customer satisfaction.",
+    "integration_assistants": [
+      "Policy Underwriting Advisor",
+      "Customer Retention Consultant",
+      "Claims Processing Specialist"
+    ]
+  },
+  {
+    "__category": 17,
+    "meta_integration_category": "Hospitality & Tourism",
+    "meta_integration_name": "Guest Experience and Customer Service Team",
+    "meta_integration_description": "Focuses on enhancing guest experience and customer service in hospitality settings.",
+    "integration_assistants": [
+      "Guest Relations Specialist",
+      "Customer Service Trainer",
+      "Experience Design Specialist"
+    ]
+  },
+  {
+    "__category": 17,
+    "meta_integration_category": "Hospitality & Tourism",
+    "meta_integration_name": "Sustainable and Cultural Tourism Team",
+    "meta_integration_description": "Promotes sustainable practices and authentic cultural experiences for travelers.",
+    "integration_assistants": [
+      "Sustainable Tourism Consultant",
+      "Cultural Experiences Advisor",
+      "Local Experience Curator"
+    ]
+  },
+  {
+    "__category": 17,
+    "meta_integration_category": "Hospitality & Tourism",
+    "meta_integration_name": "Digital Marketing and Revenue Optimization Team",
+    "meta_integration_description": "Specializes in digital marketing strategies and revenue management for hospitality.",
+    "integration_assistants": [
+      "Digital Marketing for Hospitality Consultant",
+      "Revenue Management Specialist",
+      "Destination Marketing Specialist"
+    ]
+  },
+  {
+    "__category": 17,
+    "meta_integration_category": "Hospitality & Tourism",
+    "meta_integration_name": "Safety and Compliance Team",
+    "meta_integration_description": "Advises on health, safety, and regulatory compliance for hospitality businesses.",
+    "integration_assistants": [
+      "Health and Safety Compliance Consultant",
+      "Travel Risk Management Consultant",
+      "Booking Systems Advisor"
+    ]
+  },
+  {
+    "__category": 17,
+    "meta_integration_category": "Hospitality & Tourism",
+    "meta_integration_name": "Accommodation and Property Management Team",
+    "meta_integration_description": "Supports efficient management and marketing of accommodations and vacation rentals.",
+    "integration_assistants": [
+      "Accommodation Specialist",
+      "Vacation Rentals Consultant",
+      "Property Maintenance Advisor"
+    ]
+  },
+  {
+    "__category": 17,
+    "meta_integration_category": "Hospitality & Tourism",
+    "meta_integration_name": "Corporate and Business Travel Team",
+    "meta_integration_description": "Focuses on strategies for managing corporate and business travel needs.",
+    "integration_assistants": [
+      "Business Travel Advisor",
+      "Travel Risk Management Consultant",
+      "Corporate Travel Specialist"
+    ]
+  },
+  {
+    "__category": 17,
+    "meta_integration_category": "Hospitality & Tourism",
+    "meta_integration_name": "Event and Experience Management Team",
+    "meta_integration_description": "Guides the planning and execution of events and curated experiences for guests.",
+    "integration_assistants": [
+      "Event Planning Advisor",
+      "Local Experience Curator",
+      "Cultural Experiences Advisor"
+    ]
+  },
+  {
+    "__category": 17,
+    "meta_integration_category": "Hospitality & Tourism",
+    "meta_integration_name": "Technology and Innovation in Hospitality Team",
+    "meta_integration_description": "Provides insights on leveraging technology for hospitality improvements.",
+    "integration_assistants": [
+      "Hospitality Technology Consultant",
+      "Booking Systems Advisor",
+      "Travel Trends Analyst"
+    ]
+  },
+  {
+    "__category": 17,
+    "meta_integration_category": "Hospitality & Tourism",
+    "meta_integration_name": "Customer Feedback and Insights Team",
+    "meta_integration_description": "Offers strategies for collecting and utilizing customer feedback effectively.",
+    "integration_assistants": [
+      "Customer Feedback Consultant",
+      "Travel Trends Analyst",
+      "Guest Relations Specialist"
+    ]
+  },
+  {
+    "__category": 17,
+    "meta_integration_category": "Hospitality & Tourism",
+    "meta_integration_name": "Tour and Destination Marketing Team",
+    "meta_integration_description": "Specializes in marketing and promoting tourist destinations and tour packages.",
+    "integration_assistants": [
+      "Destination Marketing Specialist",
+      "Tour Operators Consultant",
+      "Local Experience Curator"
+    ]
+  },
+  {
+    "__category": 18,
+    "meta_integration_category": "Education & Training",
+    "meta_integration_name": "Curriculum and Instructional Design Team",
+    "meta_integration_description": "Focuses on designing engaging curricula and instructional methods.",
+    "integration_assistants": [
+      "Curriculum Design Consultant",
+      "Instructional Design Specialist",
+      "Assessment and Evaluation Consultant"
+    ]
+  },
+  {
+    "__category": 18,
+    "meta_integration_category": "Education & Training",
+    "meta_integration_name": "Professional Development and Coaching Team",
+    "meta_integration_description": "Provides strategies for professional development and coaching in organizations.",
+    "integration_assistants": [
+      "Professional Development Advisor",
+      "Coaching Specialist",
+      "Mentoring Program Consultant"
+    ]
+  },
+  {
+    "__category": 18,
+    "meta_integration_category": "Education & Training",
+    "meta_integration_name": "E-Learning and Digital Education Team",
+    "meta_integration_description": "Guides on implementing and optimizing digital and online learning programs.",
+    "integration_assistants": [
+      "E-Learning Specialist",
+      "Online Courses Consultant",
+      "Learning Management Systems (LMS) Consultant"
+    ]
+  },
+  {
+    "__category": 18,
+    "meta_integration_category": "Education & Training",
+    "meta_integration_name": "Student Engagement and SEL Team",
+    "meta_integration_description": "Focuses on enhancing student engagement and social-emotional learning.",
+    "integration_assistants": [
+      "Student Engagement Consultant",
+      "Social-Emotional Learning (SEL) Consultant",
+      "Gamification Specialist"
+    ]
+  },
+  {
+    "__category": 18,
+    "meta_integration_category": "Education & Training",
+    "meta_integration_name": "Diversity and Inclusive Education Team",
+    "meta_integration_description": "Provides strategies for promoting diversity, inclusion, and cross-cultural education.",
+    "integration_assistants": [
+      "Diversity and Inclusion Educator",
+      "Cross-Cultural Education Consultant",
+      "Special Education Consultant"
+    ]
+  },
+  {
+    "__category": 18,
+    "meta_integration_category": "Education & Training",
+    "meta_integration_name": "Technology and Innovation in Education Team",
+    "meta_integration_description": "Advises on leveraging technology and innovative practices in education.",
+    "integration_assistants": [
+      "Educational Technology Advisor",
+      "Education Analytics Specialist",
+      "Remote Learning Advisor"
+    ]
+  },
+  {
+    "__category": 18,
+    "meta_integration_category": "Education & Training",
+    "meta_integration_name": "Adult and Lifelong Learning Team",
+    "meta_integration_description": "Promotes lifelong learning and vocational training for adults.",
+    "integration_assistants": [
+      "Lifelong Learning Advisor",
+      "Vocational Training Consultant",
+      "Workshop Facilitator"
+    ]
+  },
+  {
+    "__category": 18,
+    "meta_integration_category": "Education & Training",
+    "meta_integration_name": "Certification and Credentialing Team",
+    "meta_integration_description": "Specializes in the development and management of certification programs.",
+    "integration_assistants": [
+      "Certification Program Advisor",
+      "Assessment and Evaluation Consultant",
+      "Professional Development Advisor"
+    ]
+  },
+  {
+    "__category": 18,
+    "meta_integration_category": "Education & Training",
+    "meta_integration_name": "Community Engagement and Public Education Team",
+    "meta_integration_description": "Focuses on creating community-based education and public outreach programs.",
+    "integration_assistants": [
+      "Community Engagement Specialist",
+      "Public Education Consultant",
+      "Social-Emotional Learning (SEL) Consultant"
+    ]
+  },
+  {
+    "__category": 19,
+    "meta_integration_category": "Environmental Services",
+    "meta_integration_name": "Corporate Sustainability and Compliance Team",
+    "meta_integration_description": "Focuses on sustainable practices and regulatory compliance for organizations.",
+    "integration_assistants": [
+      "Sustainability Consultant",
+      "Environmental Compliance Consultant",
+      "Carbon Footprint Analyst"
+    ]
+  },
+  {
+    "__category": 19,
+    "meta_integration_category": "Environmental Services",
+    "meta_integration_name": "Waste and Pollution Management Team",
+    "meta_integration_description": "Provides expertise on waste management and pollution control strategies.",
+    "integration_assistants": [
+      "Waste Management Advisor",
+      "Pollution Control Specialist",
+      "Hazardous Waste Disposal Advisor"
+    ]
+  },
+  {
+    "__category": 19,
+    "meta_integration_category": "Environmental Services",
+    "meta_integration_name": "Natural Resource Conservation Team",
+    "meta_integration_description": "Advises on managing natural resources sustainably and preserving biodiversity.",
+    "integration_assistants": [
+      "Natural Resource Management Advisor",
+      "Biodiversity Conservation Specialist",
+      "Wildlife Management Consultant"
+    ]
+  },
+  {
+    "__category": 19,
+    "meta_integration_category": "Environmental Services",
+    "meta_integration_name": "Climate Change and Resilience Team",
+    "meta_integration_description": "Provides strategies for climate adaptation, resilience, and renewable energy.",
+    "integration_assistants": [
+      "Climate Change Advisor",
+      "Climate Resilience Advisor",
+      "Renewable Energy Consultant"
+    ]
+  },
+  {
+    "__category": 19,
+    "meta_integration_category": "Environmental Services",
+    "meta_integration_name": "Water and Air Quality Management Team",
+    "meta_integration_description": "Focuses on sustainable water management and air quality improvement.",
+    "integration_assistants": [
+      "Water Management Specialist",
+      "Air Quality Management Consultant",
+      "Environmental Monitoring Specialist"
+    ]
+  },
+  {
+    "__category": 19,
+    "meta_integration_category": "Environmental Services",
+    "meta_integration_name": "Sustainable Agriculture and Land Use Team",
+    "meta_integration_description": "Guides on sustainable agricultural practices and land use planning.",
+    "integration_assistants": [
+      "Sustainable Agriculture Advisor",
+      "Land Use Planning Advisor",
+      "Environmental Impact Assessment Specialist"
+    ]
+  },
+  {
+    "__category": 19,
+    "meta_integration_category": "Environmental Services",
+    "meta_integration_name": "Green Building and Eco-Labeling Team",
+    "meta_integration_description": "Specializes in sustainable building practices and product eco-labeling.",
+    "integration_assistants": [
+      "Green Building Consultant",
+      "Eco-Labeling Specialist",
+      "Energy Efficiency Advisor"
+    ]
+  },
+  {
+    "__category": 19,
+    "meta_integration_category": "Environmental Services",
+    "meta_integration_name": "Sustainable Supply Chain and Resource Efficiency Team",
+    "meta_integration_description": "Optimizes supply chain processes for minimal environmental impact.",
+    "integration_assistants": [
+      "Sustainable Supply Chain Consultant",
+      "Natural Resource Management Advisor",
+      "Energy Efficiency Advisor"
+    ]
+  },
+  {
+    "__category": 19,
+    "meta_integration_category": "Environmental Services",
+    "meta_integration_name": "Environmental Policy and Strategy Team",
+    "meta_integration_description": "Develops strategic environmental policies and guides compliance efforts.",
+    "integration_assistants": [
+      "Environmental Policy Consultant",
+      "Environmental Impact Assessment Specialist",
+      "Sustainability Consultant"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Financial Planning and Strategy Team",
+    "meta_integration_description": "Focuses on creating comprehensive financial plans and strategies for individuals and businesses.",
+    "integration_assistants": [
+      "Financial Planning Consultant",
+      "Personal Finance Advisor",
+      "Tax Planning Specialist"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Investment and Asset Management Team",
+    "meta_integration_description": "Manages investment portfolios and provides asset management strategies.",
+    "integration_assistants": [
+      "Investment Management Specialist",
+      "Portfolio Management Consultant",
+      "Asset Management Consultant"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Risk and Compliance Team",
+    "meta_integration_description": "Dedicated to assessing and managing financial risks, ensuring compliance with financial regulations.",
+    "integration_assistants": [
+      "Risk Assessment Advisor",
+      "Financial Regulations Consultant",
+      "Credit Analysis Specialist"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Corporate Finance and Business Strategy Team",
+    "meta_integration_description": "Provides strategic guidance on corporate finance and business funding.",
+    "integration_assistants": [
+      "Corporate Finance Consultant",
+      "Investment Banking Advisor",
+      "Commercial Banking Consultant"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Financial Technology and Innovation Team",
+    "meta_integration_description": "Focuses on leveraging financial technology for innovative solutions in banking.",
+    "integration_assistants": [
+      "FinTech Specialist",
+      "Cryptocurrency Advisor",
+      "Behavioral Finance Consultant"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Wealth and Asset Growth Team",
+    "meta_integration_description": "Guides wealth management and strategies for asset growth and alternative investments.",
+    "integration_assistants": [
+      "Wealth Management Advisor",
+      "Alternative Investment Consultant",
+      "Crowdfunding Specialist"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Educational and Financial Literacy Team",
+    "meta_integration_description": "Promotes financial literacy and education for individuals and organizations.",
+    "integration_assistants": [
+      "Financial Literacy Educator",
+      "Money Management Consultant",
+      "Consumer Banking Advisor"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Insurance and Protection Planning Team",
+    "meta_integration_description": "Assists individuals and businesses in selecting insurance plans and creating risk protection strategies.",
+    "integration_assistants": [
+      "Insurance Advisor",
+      "Risk Protection Consultant",
+      "Life and Health Insurance Specialist"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Retirement and Long-Term Planning Team",
+    "meta_integration_description": "Offers strategies and insights for retirement planning and long-term financial security.",
+    "integration_assistants": [
+      "Retirement Planning Specialist",
+      "Pension Consultant",
+      "Long-Term Financial Advisor"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Real Estate Investment and Financing Team",
+    "meta_integration_description": "Provides expertise in real estate investment, financing, and property management.",
+    "integration_assistants": [
+      "Real Estate Investment Advisor",
+      "Mortgage Specialist",
+      "Property Management Consultant"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Debt Management and Credit Optimization Team",
+    "meta_integration_description": "Assists individuals and businesses in managing debt and optimizing credit scores.",
+    "integration_assistants": [
+      "Debt Management Advisor",
+      "Credit Repair Specialist",
+      "Loan Refinancing Consultant"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Mergers and Acquisitions Advisory Team",
+    "meta_integration_description": "Specializes in providing strategic guidance on mergers, acquisitions, and business consolidations.",
+    "integration_assistants": [
+      "M&A Consultant",
+      "Business Valuation Specialist",
+      "Strategic Acquisitions Advisor"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "International Finance and Currency Exchange Team",
+    "meta_integration_description": "Provides expertise in international finance, currency exchange, and cross-border transactions.",
+    "integration_assistants": [
+      "International Finance Specialist",
+      "Foreign Exchange Consultant",
+      "Cross-Border Transactions Advisor"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Small Business Finance Support Team",
+    "meta_integration_description": "Offers tailored financial support and guidance for small businesses and startups.",
+    "integration_assistants": [
+      "Small Business Loan Advisor",
+      "Business Credit Specialist",
+      "Startup Finance Consultant"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Environmental and Sustainable Finance Team",
+    "meta_integration_description": "Focuses on integrating sustainable finance practices and green investments.",
+    "integration_assistants": [
+      "Sustainable Finance Consultant",
+      "Green Investment Advisor",
+      "Impact Investing Specialist"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Fraud Prevention and Security Advisory Team",
+    "meta_integration_description": "Guides businesses in implementing fraud prevention measures and financial security protocols.",
+    "integration_assistants": [
+      "Fraud Prevention Specialist",
+      "Financial Security Advisor",
+      "Cybersecurity Finance Consultant"
+    ]
+  },
+  {
+    "__category": 20,
+    "meta_integration_category": "Finance & Banking",
+    "meta_integration_name": "Economic Research and Market Analysis Team",
+    "meta_integration_description": "Provides insights on economic trends, market conditions, and financial forecasting.",
+    "integration_assistants": [
+      "Economic Analyst",
+      "Market Trends Researcher",
+      "Financial Forecaster"
+    ]
+  },
+  {
+    "__category": 21,
+    "meta_integration_category": "Information Technology",
+    "meta_integration_name": "IT Management and Infrastructure Team",
+    "meta_integration_description": "Focuses on effective management of IT infrastructure and support services.",
+    "integration_assistants": [
+      "IT Management Consultant",
+      "IT Infrastructure Consultant",
+      "IT Support Specialist"
+    ]
+  },
+  {
+    "__category": 21,
+    "meta_integration_category": "Information Technology",
+    "meta_integration_name": "Cybersecurity and Compliance Team",
+    "meta_integration_description": "Provides expertise in cybersecurity measures and regulatory compliance.",
+    "integration_assistants": [
+      "Network Security Specialist",
+      "Cybersecurity Advisor",
+      "Cybersecurity Compliance Advisor"
+    ]
+  },
+  {
+    "__category": 21,
+    "meta_integration_category": "Information Technology",
+    "meta_integration_name": "Software and Application Development Team",
+    "meta_integration_description": "Offers insights and guidance on software and application development best practices.",
+    "integration_assistants": [
+      "Software Development Advisor",
+      "Application Development Advisor",
+      "Web Development Consultant"
+    ]
+  },
+  {
+    "__category": 21,
+    "meta_integration_category": "Information Technology",
+    "meta_integration_name": "Data Management and Analytics Team",
+    "meta_integration_description": "Specializes in data management, database administration, and analytics.",
+    "integration_assistants": [
+      "Data Management Specialist",
+      "Database Administration Advisor",
+      "Data Analytics Consultant"
+    ]
+  },
+  {
+    "__category": 21,
+    "meta_integration_category": "Information Technology",
+    "meta_integration_name": "Cloud and Infrastructure Innovation Team",
+    "meta_integration_description": "Provides strategies and expertise in cloud computing and infrastructure optimization.",
+    "integration_assistants": [
+      "Cloud Computing Consultant",
+      "IT Infrastructure Consultant",
+      "System Integration Specialist"
+    ]
+  },
+  {
+    "__category": 21,
+    "meta_integration_category": "Information Technology",
+    "meta_integration_name": "Emerging Technologies Team",
+    "meta_integration_description": "Focuses on cutting-edge technologies like AI, blockchain, and quantum computing.",
+    "integration_assistants": [
+      "Artificial Intelligence Advisor",
+      "Blockchain Technology Consultant",
+      "Quantum Computing Consultant"
+    ]
+  },
+  {
+    "__category": 21,
+    "meta_integration_category": "Information Technology",
+    "meta_integration_name": "User Experience and Development Team",
+    "meta_integration_description": "Guides on enhancing user experience and developing interactive applications.",
+    "integration_assistants": [
+      "User Experience (UX) Consultant",
+      "Augmented Reality (AR) Consultant",
+      "Internet of Things (IoT) Specialist"
+    ]
+  },
+  {
+    "__category": 21,
+    "meta_integration_category": "Information Technology",
+    "meta_integration_name": "Project Management and DevOps Team",
+    "meta_integration_description": "Provides guidance on IT project management and DevOps best practices.",
+    "integration_assistants": [
+      "IT Project Management Advisor",
+      "DevOps Specialist",
+      "System Integration Specialist"
+    ]
+  },
+  {
+    "__category": 21,
+    "meta_integration_category": "Information Technology",
+    "meta_integration_name": "Data Privacy and Compliance Team",
+    "meta_integration_description": "Focuses on data privacy regulations and compliance in IT practices.",
+    "integration_assistants": [
+      "Data Privacy Specialist",
+      "Cybersecurity Compliance Advisor",
+      "Environmental Services Advisor"
+    ]
+  },
+  {
+    "__category": 22,
+    "meta_integration_category": "Biotechnology",
+    "meta_integration_name": "Genetic Engineering and Molecular Biology Team",
+    "meta_integration_description": "Specializes in genetic engineering, molecular biology, and related biotechnology applications.",
+    "integration_assistants": [
+      "Genetic Engineering Consultant",
+      "Molecular Biology Advisor",
+      "CRISPR Technology Specialist"
+    ]
+  },
+  {
+    "__category": 22,
+    "meta_integration_category": "Biotechnology",
+    "meta_integration_name": "Biomanufacturing and Bioprocessing Team",
+    "meta_integration_description": "Focuses on biomanufacturing, bioprocessing, and scaling up biotechnology applications.",
+    "integration_assistants": [
+      "Biomanufacturing Specialist",
+      "Bioprocessing Specialist",
+      "Biopharmaceuticals Specialist"
+    ]
+  },
+  {
+    "__category": 22,
+    "meta_integration_category": "Biotechnology",
+    "meta_integration_name": "Clinical and Pharmaceutical Biotechnology Team",
+    "meta_integration_description": "Provides expertise in clinical research and pharmaceutical biotechnology applications.",
+    "integration_assistants": [
+      "Pharmaceutical Biotechnology Advisor",
+      "Clinical Research Advisor",
+      "Vaccine Development Consultant"
+    ]
+  },
+  {
+    "__category": 22,
+    "meta_integration_category": "Biotechnology",
+    "meta_integration_name": "Environmental and Agricultural Biotechnology Team",
+    "meta_integration_description": "Specializes in environmental and agricultural biotechnology solutions.",
+    "integration_assistants": [
+      "Environmental Biotechnology Consultant",
+      "Agricultural Biotechnology Specialist",
+      "Bioremediation Consultant"
+    ]
+  },
+  {
+    "__category": 22,
+    "meta_integration_category": "Biotechnology",
+    "meta_integration_name": "Bioinformatics and Data Analysis Team",
+    "meta_integration_description": "Focuses on bioinformatics, data analysis, and computational tools for biotechnology.",
+    "integration_assistants": [
+      "Bioinformatics Consultant",
+      "Data Management Specialist",
+      "Biotechnology Market Analyst"
+    ]
+  },
+  {
+    "__category": 22,
+    "meta_integration_category": "Biotechnology",
+    "meta_integration_name": "Synthetic Biology and Biodesign Team",
+    "meta_integration_description": "Explores synthetic biology, biodesign, and development of new biological applications.",
+    "integration_assistants": [
+      "Synthetic Biology Consultant",
+      "Transgenic Organisms Specialist",
+      "Biodegradable Materials Consultant"
+    ]
+  },
+  {
+    "__category": 22,
+    "meta_integration_category": "Biotechnology",
+    "meta_integration_name": "Ethics and Regulatory Compliance Team",
+    "meta_integration_description": "Guides ethical and regulatory compliance in biotechnology innovations.",
+    "integration_assistants": [
+      "Bioethics Advisor",
+      "Biotechnology Regulations Advisor",
+      "Environmental Biotechnology Consultant"
+    ]
+  },
+  {
+    "__category": 22,
+    "meta_integration_category": "Biotechnology",
+    "meta_integration_name": "Genomics and Proteomics Research Team",
+    "meta_integration_description": "Provides expertise in genomics, proteomics, and related research fields.",
+    "integration_assistants": [
+      "Genomics Specialist",
+      "Proteomics Consultant",
+      "Stem Cell Research Specialist"
+    ]
+  },
+  {
+    "__category": 22,
+    "meta_integration_category": "Biotechnology",
+    "meta_integration_name": "Diagnostic and Clinical Applications Team",
+    "meta_integration_description": "Focused on diagnostics, clinical applications, and biotechnology tools.",
+    "integration_assistants": [
+      "Diagnostic Tools Advisor",
+      "Vaccine Development Consultant",
+      "Clinical Research Advisor"
+    ]
+  },
+  {
+    "__category": 22,
+    "meta_integration_category": "Biotechnology",
+    "meta_integration_name": "Advanced Therapeutics and Gene Therapy Team",
+    "meta_integration_description": "Specializes in gene therapy, viral vectors, and advanced therapeutics.",
+    "integration_assistants": [
+      "Gene Therapy Specialist",
+      "Viral Vector Specialist",
+      "Stem Cell Research Specialist"
+    ]
+  },
+  {
+    "__category": 23,
+    "meta_integration_category": "Media & Entertainment",
+    "meta_integration_name": "Film and Television Production Team",
+    "meta_integration_description": "Specializes in film and television production, providing comprehensive insights into script development, filming, and production best practices.",
+    "integration_assistants": [
+      "Film Production Consultant",
+      "Television Production Advisor",
+      "Scriptwriting Specialist"
+    ]
+  },
+  {
+    "__category": 23,
+    "meta_integration_category": "Media & Entertainment",
+    "meta_integration_name": "Digital Media and Content Creation Team",
+    "meta_integration_description": "Focuses on digital content creation, marketing, and distribution across various online platforms.",
+    "integration_assistants": [
+      "Digital Media Specialist",
+      "Content Creation Consultant",
+      "Social Media Strategy Consultant"
+    ]
+  },
+  {
+    "__category": 23,
+    "meta_integration_category": "Media & Entertainment",
+    "meta_integration_name": "Broadcast and Streaming Services Team",
+    "meta_integration_description": "Provides expertise in broadcasting, streaming, and effective content delivery for wide-reaching audiences.",
+    "integration_assistants": [
+      "Broadcasting Specialist",
+      "Streaming Services Advisor",
+      "Podcasting Specialist"
+    ]
+  },
+  {
+    "__category": 23,
+    "meta_integration_category": "Media & Entertainment",
+    "meta_integration_name": "Music and Audio Production Team",
+    "meta_integration_description": "Focuses on music production, audio engineering, and distribution in the entertainment industry.",
+    "integration_assistants": [
+      "Music Production Consultant",
+      "Podcasting Specialist",
+      "Audio Engineer"
+    ]
+  },
+  {
+    "__category": 23,
+    "meta_integration_category": "Media & Entertainment",
+    "meta_integration_name": "Theater and Performing Arts Team",
+    "meta_integration_description": "Dedicated to supporting theater production, performing arts management, and stage performance practices.",
+    "integration_assistants": [
+      "Theater Arts Specialist",
+      "Event Management Consultant",
+      "Cultural Programming Consultant"
+    ]
+  },
+  {
+    "__category": 23,
+    "meta_integration_category": "Media & Entertainment",
+    "meta_integration_name": "Gaming and Interactive Media Team",
+    "meta_integration_description": "Offers expertise in game development, virtual experiences, and interactive media.",
+    "integration_assistants": [
+      "Game Development Consultant",
+      "Virtual Reality Developer",
+      "Interactive Media Specialist"
+    ]
+  },
+  {
+    "__category": 23,
+    "meta_integration_category": "Media & Entertainment",
+    "meta_integration_name": "Public Relations and Advertising Team",
+    "meta_integration_description": "Specializes in managing public relations, advertising strategies, and brand image.",
+    "integration_assistants": [
+      "Public Relations Advisor",
+      "Advertising Consultant",
+      "Crisis Management Specialist"
+    ]
+  },
+  {
+    "__category": 23,
+    "meta_integration_category": "Media & Entertainment",
+    "meta_integration_name": "Photography and Visual Arts Team",
+    "meta_integration_description": "Supports professionals in photography, graphic design, and visual content creation.",
+    "integration_assistants": [
+      "Photography Consultant",
+      "Graphic Design Specialist",
+      "Animation Consultant"
+    ]
+  },
+  {
+    "__category": 23,
+    "meta_integration_category": "Media & Entertainment",
+    "meta_integration_name": "Event and Audience Engagement Team",
+    "meta_integration_description": "Focused on live event planning, virtual events, and enhancing audience interaction.",
+    "integration_assistants": [
+      "Event Management Consultant",
+      "Virtual Event Specialist",
+      "Audience Engagement Consultant"
+    ]
+  },
+  {
+    "__category": 23,
+    "meta_integration_category": "Media & Entertainment",
+    "meta_integration_name": "Media Law and Compliance Team",
+    "meta_integration_description": "Guides media professionals in legal and compliance issues within the entertainment industry.",
+    "integration_assistants": [
+      "Media Law Advisor",
+      "Crisis Management Specialist",
+      "Public Relations Advisor"
+    ]
+  },
+  {
+    "__category": 24,
+    "meta_integration_category": "Advertising & Marketing",
+    "meta_integration_name": "Digital Marketing Strategy Team",
+    "meta_integration_description": "Focuses on developing comprehensive digital marketing strategies across various platforms.",
+    "integration_assistants": [
+      "Digital Marketing Consultant",
+      "Social Media Marketing Consultant",
+      "SEO Specialist"
+    ]
+  },
+  {
+    "__category": 24,
+    "meta_integration_category": "Advertising & Marketing",
+    "meta_integration_name": "Brand and Content Development Team",
+    "meta_integration_description": "Specializes in brand identity, content creation, and market positioning.",
+    "integration_assistants": [
+      "Brand Management Specialist",
+      "Content Marketing Advisor",
+      "Copywriting Specialist"
+    ]
+  },
+  {
+    "__category": 24,
+    "meta_integration_category": "Advertising & Marketing",
+    "meta_integration_name": "Customer Engagement and Retention Team",
+    "meta_integration_description": "Dedicated to enhancing customer engagement and improving retention through various channels.",
+    "integration_assistants": [
+      "Customer Engagement Specialist",
+      "Email Marketing Specialist",
+      "Lead Generation Specialist"
+    ]
+  },
+  {
+    "__category": 24,
+    "meta_integration_category": "Advertising & Marketing",
+    "meta_integration_name": "Advertising Campaign and Media Planning Team",
+    "meta_integration_description": "Focuses on planning and executing effective advertising campaigns and media buying strategies.",
+    "integration_assistants": [
+      "Advertising Campaign Consultant",
+      "Media Planning Specialist",
+      "PPC Campaign Advisor"
+    ]
+  },
+  {
+    "__category": 24,
+    "meta_integration_category": "Advertising & Marketing",
+    "meta_integration_name": "Analytics and Optimization Team",
+    "meta_integration_description": "Provides insights on data analysis and optimization strategies for marketing efforts.",
+    "integration_assistants": [
+      "Analytics and Reporting Consultant",
+      "Behavioral Marketing Consultant",
+      "Conversion Optimization Consultant"
+    ]
+  },
+  {
+    "__category": 24,
+    "meta_integration_category": "Advertising & Marketing",
+    "meta_integration_name": "Public Relations and Crisis Management Team",
+    "meta_integration_description": "Specializes in public relations and managing communication during crises.",
+    "integration_assistants": [
+      "Public Relations Advisor",
+      "Crisis Communication Specialist",
+      "Event Marketing Specialist"
+    ]
+  },
+  {
+    "__category": 24,
+    "meta_integration_category": "Advertising & Marketing",
+    "meta_integration_name": "Video and Visual Content Team",
+    "meta_integration_description": "Supports video marketing and visual content creation for impactful brand storytelling.",
+    "integration_assistants": [
+      "Video Marketing Consultant",
+      "Graphic Design Consultant",
+      "User-Generated Content Strategist"
+    ]
+  },
+  {
+    "__category": 24,
+    "meta_integration_category": "Advertising & Marketing",
+    "meta_integration_name": "Market Research and Consumer Insights Team",
+    "meta_integration_description": "Provides expertise in market research and consumer behavior analysis to inform marketing decisions.",
+    "integration_assistants": [
+      "Market Research Specialist",
+      "Behavioral Marketing Consultant",
+      "Analytics and Reporting Consultant"
+    ]
+  },
+  {
+    "__category": 24,
+    "meta_integration_category": "Advertising & Marketing",
+    "meta_integration_name": "Influencer and Partnership Development Team",
+    "meta_integration_description": "Focuses on developing partnerships and influencer marketing strategies.",
+    "integration_assistants": [
+      "Influencer Marketing Consultant",
+      "Brand Management Specialist",
+      "Social Media Marketing Consultant"
+    ]
+  },
+  {
+    "__category": 24,
+    "meta_integration_category": "Advertising & Marketing",
+    "meta_integration_name": "Marketing Automation and Efficiency Team",
+    "meta_integration_description": "Optimizes marketing processes through automation tools and strategies.",
+    "integration_assistants": [
+      "Marketing Automation Specialist",
+      "Conversion Optimization Consultant",
+      "Email Marketing Specialist"
+    ]
+  },
+  {
+    "__category": 25,
+    "meta_integration_category": "Government & Public Sector",
+    "meta_integration_name": "Public Administration and Policy Team",
+    "meta_integration_description": "Focuses on developing and implementing effective public administration policies.",
+    "integration_assistants": [
+      "Public Administration Consultant",
+      "Policy Development Advisor",
+      "Transparency and Accountability Specialist"
+    ]
+  },
+  {
+    "__category": 25,
+    "meta_integration_category": "Government & Public Sector",
+    "meta_integration_name": "Regulatory Compliance and Public Safety Team",
+    "meta_integration_description": "Dedicated to ensuring compliance with regulations and enhancing public safety initiatives.",
+    "integration_assistants": [
+      "Regulatory Compliance Specialist",
+      "Public Safety Advisor",
+      "Law Enforcement Consultant"
+    ]
+  },
+  {
+    "__category": 25,
+    "meta_integration_category": "Government & Public Sector",
+    "meta_integration_name": "Community Services and Social Equity Team",
+    "meta_integration_description": "Works to improve community services and promote social equity in public policies.",
+    "integration_assistants": [
+      "Community Services Consultant",
+      "Social Equity Consultant",
+      "Community Engagement Specialist"
+    ]
+  },
+  {
+    "__category": 25,
+    "meta_integration_category": "Government & Public Sector",
+    "meta_integration_name": "Public Health and Social Services Team",
+    "meta_integration_description": "Focuses on enhancing public health policies and social services programs.",
+    "integration_assistants": [
+      "Public Health Consultant",
+      "Social Services Advisor",
+      "Public Services Advisor"
+    ]
+  },
+  {
+    "__category": 25,
+    "meta_integration_category": "Government & Public Sector",
+    "meta_integration_name": "E-Government and Digital Governance Team",
+    "meta_integration_description": "Provides guidance on digital governance and e-government solutions for efficient public administration.",
+    "integration_assistants": [
+      "E-Government Specialist",
+      "Digital Governance Advisor",
+      "Public Policy Analyst"
+    ]
+  },
+  {
+    "__category": 25,
+    "meta_integration_category": "Government & Public Sector",
+    "meta_integration_name": "Finance and Budget Management Team",
+    "meta_integration_description": "Specializes in government finance, budgeting, and fiscal management.",
+    "integration_assistants": [
+      "Government Finance Consultant",
+      "Public Finance Management Advisor",
+      "Public Procurement Advisor"
+    ]
+  },
+  {
+    "__category": 25,
+    "meta_integration_category": "Government & Public Sector",
+    "meta_integration_name": "Urban Planning and Infrastructure Team",
+    "meta_integration_description": "Guides on urban planning, sustainable development, and infrastructure projects.",
+    "integration_assistants": [
+      "Urban Planning Consultant",
+      "Infrastructure Development Specialist",
+      "Community Engagement Specialist"
+    ]
+  },
+  {
+    "__category": 25,
+    "meta_integration_category": "Government & Public Sector",
+    "meta_integration_name": "Disaster and Crisis Management Team",
+    "meta_integration_description": "Focused on disaster preparedness, crisis management, and public safety.",
+    "integration_assistants": [
+      "Disaster Management Advisor",
+      "Crisis Communication Specialist",
+      "Public Safety Advisor"
+    ]
+  },
+  {
+    "__category": 25,
+    "meta_integration_category": "Government & Public Sector",
+    "meta_integration_name": "Civil Services and Personnel Management Team",
+    "meta_integration_description": "Dedicated to improving civil service programs and personnel management in the public sector.",
+    "integration_assistants": [
+      "Civil Service Advisor",
+      "Local Government Specialist",
+      "Public Administration Consultant"
+    ]
+  },
+  {
+    "__category": 25,
+    "meta_integration_category": "Government & Public Sector",
+    "meta_integration_name": "Public Health Policy and Community Well-being Team",
+    "meta_integration_description": "Works on health policy development and improving community health services.",
+    "integration_assistants": [
+      "Public Health Consultant",
+      "Social Services Advisor",
+      "Community Services Consultant"
+    ]
+  },
+  {
+    "__category": 26,
+    "meta_integration_category": "Nonprofit & NGOs",
+    "meta_integration_name": "Nonprofit Management and Development Team",
+    "meta_integration_description": "Focuses on strategies and practices for effective nonprofit management and organizational development.",
+    "integration_assistants": [
+      "Nonprofit Management Consultant",
+      "Organizational Development Advisor",
+      "Capacity Building Consultant"
+    ]
+  },
+  {
+    "__category": 26,
+    "meta_integration_category": "Nonprofit & NGOs",
+    "meta_integration_name": "Fundraising and Donor Relations Team",
+    "meta_integration_description": "Dedicated to enhancing fundraising efforts and building lasting donor relationships.",
+    "integration_assistants": [
+      "Fundraising Specialist",
+      "Digital Fundraising Specialist",
+      "Donor Relations Specialist"
+    ]
+  },
+  {
+    "__category": 26,
+    "meta_integration_category": "Nonprofit & NGOs",
+    "meta_integration_name": "Volunteer and Community Engagement Team",
+    "meta_integration_description": "Guides in recruitment, management, and engagement of volunteers and community members.",
+    "integration_assistants": [
+      "Volunteer Management Advisor",
+      "Community Outreach Specialist",
+      "Stakeholder Engagement Advisor"
+    ]
+  },
+  {
+    "__category": 26,
+    "meta_integration_category": "Nonprofit & NGOs",
+    "meta_integration_name": "Program Development and Impact Assessment Team",
+    "meta_integration_description": "Focuses on designing impactful programs and measuring their effectiveness.",
+    "integration_assistants": [
+      "Program Development Specialist",
+      "Impact Assessment Specialist",
+      "Impact Measurement Advisor"
+    ]
+  },
+  {
+    "__category": 26,
+    "meta_integration_category": "Nonprofit & NGOs",
+    "meta_integration_name": "Advocacy and Awareness Team",
+    "meta_integration_description": "Dedicated to creating impactful awareness campaigns and advocacy strategies.",
+    "integration_assistants": [
+      "Advocacy Consultant",
+      "Awareness Campaign Specialist",
+      "Cultural Competency Advisor"
+    ]
+  },
+  {
+    "__category": 26,
+    "meta_integration_category": "Nonprofit & NGOs",
+    "meta_integration_name": "Grant Writing and Resource Acquisition Team",
+    "meta_integration_description": "Offers expertise in writing grants and securing resources for nonprofit programs.",
+    "integration_assistants": [
+      "Grant Writing Consultant",
+      "Fundraising Specialist",
+      "Philanthropy Consultant"
+    ]
+  },
+  {
+    "__category": 26,
+    "meta_integration_category": "Nonprofit & NGOs",
+    "meta_integration_name": "Social Media and Public Relations Team",
+    "meta_integration_description": "Guides organizations in managing social media and public relations.",
+    "integration_assistants": [
+      "Social Media Engagement Specialist",
+      "Public Relations Advisor",
+      "Content Marketing Advisor"
+    ]
+  },
+  {
+    "__category": 26,
+    "meta_integration_category": "Nonprofit & NGOs",
+    "meta_integration_name": "Crisis and Risk Management Team",
+    "meta_integration_description": "Advises nonprofits on handling crises and managing risks effectively.",
+    "integration_assistants": [
+      "Crisis Management Consultant",
+      "Risk Management Advisor",
+      "Public Relations Advisor"
+    ]
+  },
+  {
+    "__category": 26,
+    "meta_integration_category": "Nonprofit & NGOs",
+    "meta_integration_name": "Technology and Innovation Team",
+    "meta_integration_description": "Focuses on integrating innovative technology solutions in nonprofit operations.",
+    "integration_assistants": [
+      "Technology Integration Consultant",
+      "Digital Fundraising Specialist",
+      "Social Entrepreneurship Advisor"
+    ]
+  },
+  {
+    "__category": 26,
+    "meta_integration_category": "Nonprofit & NGOs",
+    "meta_integration_name": "Education and Training Development Team",
+    "meta_integration_description": "Provides guidance on educational program development and training staff members.",
+    "integration_assistants": [
+      "Education and Training Specialist",
+      "Program Development Specialist",
+      "Volunteer Management Advisor"
+    ]
+  },
+  {
+    "__category": 27,
+    "meta_integration_category": "Sports & Recreation",
+    "meta_integration_name": "Sports Management and Event Coordination Team",
+    "meta_integration_description": "Focuses on sports management practices, event planning, and coordination strategies.",
+    "integration_assistants": [
+      "Sports Management Consultant",
+      "Event Planning Specialist",
+      "Sports Facilities Manager"
+    ]
+  },
+  {
+    "__category": 27,
+    "meta_integration_category": "Sports & Recreation",
+    "meta_integration_name": "Athlete Training and Development Team",
+    "meta_integration_description": "Provides strategies for holistic athlete development, training, and mental support.",
+    "integration_assistants": [
+      "Fitness Training Specialist",
+      "Sports Psychology Consultant",
+      "Athlete Development Consultant"
+    ]
+  },
+  {
+    "__category": 27,
+    "meta_integration_category": "Sports & Recreation",
+    "meta_integration_name": "Youth and Community Sports Team",
+    "meta_integration_description": "Guides organizations in developing and promoting youth and community sports programs.",
+    "integration_assistants": [
+      "Youth Sports Coordinator",
+      "Recreational Programs Specialist",
+      "Community Engagement Specialist"
+    ]
+  },
+  {
+    "__category": 27,
+    "meta_integration_category": "Sports & Recreation",
+    "meta_integration_name": "Sports Marketing and Fan Engagement Team",
+    "meta_integration_description": "Dedicated to enhancing sports marketing strategies and fan engagement.",
+    "integration_assistants": [
+      "Sports Marketing Advisor",
+      "Fan Engagement Specialist",
+      "Digital Sports Marketing Specialist"
+    ]
+  },
+  {
+    "__category": 27,
+    "meta_integration_category": "Sports & Recreation",
+    "meta_integration_name": "Health, Nutrition, and Wellness Team",
+    "meta_integration_description": "Focuses on nutrition, wellness, and injury prevention for athletes and sports enthusiasts.",
+    "integration_assistants": [
+      "Sports Nutrition Advisor",
+      "Sports Injury Prevention Advisor",
+      "Health and Wellness Advisor"
+    ]
+  },
+  {
+    "__category": 27,
+    "meta_integration_category": "Sports & Recreation",
+    "meta_integration_name": "Data Analytics and Performance Team",
+    "meta_integration_description": "Provides insights on using data analytics for improved sports performance.",
+    "integration_assistants": [
+      "Sports Analytics Consultant",
+      "Data Analytics in Sports Specialist",
+      "Sports Performance Analyst"
+    ]
+  },
+  {
+    "__category": 27,
+    "meta_integration_category": "Sports & Recreation",
+    "meta_integration_name": "Esports and Digital Engagement Team",
+    "meta_integration_description": "Focuses on esports management, marketing, and fan engagement strategies.",
+    "integration_assistants": [
+      "Esports Advisor",
+      "Fan Engagement Specialist",
+      "Digital Sports Marketing Specialist"
+    ]
+  },
+  {
+    "__category": 27,
+    "meta_integration_category": "Sports & Recreation",
+    "meta_integration_name": "Adaptive and Inclusive Sports Team",
+    "meta_integration_description": "Provides guidance on managing adaptive sports and promoting inclusivity.",
+    "integration_assistants": [
+      "Adaptive Sports Consultant",
+      "Women in Sports Advisor",
+      "Inclusive Sports Specialist"
+    ]
+  },
+  {
+    "__category": 27,
+    "meta_integration_category": "Sports & Recreation",
+    "meta_integration_name": "Sports Rehabilitation and Recovery Team",
+    "meta_integration_description": "Guides organizations and athletes in rehabilitation and recovery programs.",
+    "integration_assistants": [
+      "Rehabilitation and Therapy Specialist",
+      "Sports Injury Prevention Advisor",
+      "Health and Wellness Advisor"
+    ]
+  },
+  {
+    "__category": 27,
+    "meta_integration_category": "Sports & Recreation",
+    "meta_integration_name": "Public Health and Sports Outreach Team",
+    "meta_integration_description": "Focuses on promoting public health initiatives through sports and recreation.",
+    "integration_assistants": [
+      "Public Health Initiatives Advisor",
+      "Sports Tourism Specialist",
+      "Community Engagement Specialist"
+    ]
+  },
+  {
+    "__category": 28,
+    "meta_integration_category": "Fashion & Apparel",
+    "meta_integration_name": "Sustainable Fashion and Ethical Practices Team",
+    "meta_integration_description": "Focuses on implementing sustainable and ethical practices within fashion brands.",
+    "integration_assistants": [
+      "Sustainable Fashion Consultant",
+      "Ethical Fashion Advisor",
+      "Fashion Sustainability Analyst"
+    ]
+  },
+  {
+    "__category": 28,
+    "meta_integration_category": "Fashion & Apparel",
+    "meta_integration_name": "Fashion Design and Production Team",
+    "meta_integration_description": "Provides expertise in fashion design, textile production, and manufacturing.",
+    "integration_assistants": [
+      "Fashion Design Consultant",
+      "Textile Production Specialist",
+      "Clothing Manufacturing Specialist"
+    ]
+  },
+  {
+    "__category": 28,
+    "meta_integration_category": "Fashion & Apparel",
+    "meta_integration_name": "Digital and E-Commerce Fashion Team",
+    "meta_integration_description": "Guides brands in optimizing digital platforms and e-commerce for fashion.",
+    "integration_assistants": [
+      "E-Commerce Fashion Advisor",
+      "Online Boutique Advisor",
+      "Fashion Retail Technology Specialist"
+    ]
+  },
+  {
+    "__category": 28,
+    "meta_integration_category": "Fashion & Apparel",
+    "meta_integration_name": "Fashion Marketing and Branding Team",
+    "meta_integration_description": "Focuses on effective fashion marketing, branding, and influencer collaborations.",
+    "integration_assistants": [
+      "Fashion Marketing Advisor",
+      "Brand Management Advisor",
+      "Fashion Influencer Consultant"
+    ]
+  },
+  {
+    "__category": 28,
+    "meta_integration_category": "Fashion & Apparel",
+    "meta_integration_name": "Technology and Innovation in Fashion Team",
+    "meta_integration_description": "Provides insights on leveraging technology in fashion design and retail.",
+    "integration_assistants": [
+      "Fashion Technology Consultant",
+      "Augmented Reality (AR) in Fashion Specialist",
+      "Virtual Fashion Consultant"
+    ]
+  },
+  {
+    "__category": 28,
+    "meta_integration_category": "Fashion & Apparel",
+    "meta_integration_name": "Fashion Event and Runway Coordination Team",
+    "meta_integration_description": "Specializes in planning, coordinating, and managing fashion events and runway shows.",
+    "integration_assistants": [
+      "Runway Show Coordinator",
+      "Fashion Events Specialist",
+      "Event Planning Specialist"
+    ]
+  },
+  {
+    "__category": 28,
+    "meta_integration_category": "Fashion & Apparel",
+    "meta_integration_name": "Fashion Analytics and Trend Forecasting Team",
+    "meta_integration_description": "Provides analysis on trends and consumer behavior in fashion.",
+    "integration_assistants": [
+      "Fashion Trends Analyst",
+      "Cultural Trends Consultant",
+      "Fashion Sustainability Analyst"
+    ]
+  },
+  {
+    "__category": 28,
+    "meta_integration_category": "Fashion & Apparel",
+    "meta_integration_name": "Wardrobe and Styling Team",
+    "meta_integration_description": "Focuses on wardrobe styling and fashion advice for individuals and brands.",
+    "integration_assistants": [
+      "Wardrobe Styling Consultant",
+      "Custom Apparel Advisor",
+      "Activewear Specialist"
+    ]
+  },
+  {
+    "__category": 28,
+    "meta_integration_category": "Fashion & Apparel",
+    "meta_integration_name": "Sourcing and Supply Chain Team",
+    "meta_integration_description": "Guides organizations on sustainable sourcing and efficient supply chain management.",
+    "integration_assistants": [
+      "Fashion Supply Chain Consultant",
+      "Sustainable Fabric Advisor",
+      "Fashion Design Software Specialist"
+    ]
+  },
+  {
+    "__category": 28,
+    "meta_integration_category": "Fashion & Apparel",
+    "meta_integration_name": "Inclusivity and Cultural Sensitivity Team",
+    "meta_integration_description": "Focuses on promoting inclusivity and cultural awareness in fashion.",
+    "integration_assistants": [
+      "Size Inclusivity Specialist",
+      "Cultural Trends Consultant",
+      "Inclusive Fashion Consultant"
+    ]
+  },
+  {
+    "__category": 29,
+    "meta_integration_category": "Home Improvement & Services",
+    "meta_integration_name": "Home Renovation and Design Team",
+    "meta_integration_description": "Focuses on providing comprehensive guidance for home renovation and design projects.",
+    "integration_assistants": [
+      "Home Renovation Consultant",
+      "Interior Design Advisor",
+      "Exterior Improvement Specialist"
+    ]
+  },
+  {
+    "__category": 29,
+    "meta_integration_category": "Home Improvement & Services",
+    "meta_integration_name": "Home Systems and Maintenance Team",
+    "meta_integration_description": "Offers expertise on maintenance and installation of essential home systems.",
+    "integration_assistants": [
+      "Plumbing Specialist",
+      "Electrical Services Consultant",
+      "HVAC Services Advisor"
+    ]
+  },
+  {
+    "__category": 29,
+    "meta_integration_category": "Home Improvement & Services",
+    "meta_integration_name": "Smart Home and Automation Team",
+    "meta_integration_description": "Provides guidance on implementing smart home technologies and automation systems.",
+    "integration_assistants": [
+      "Smart Home Technology Advisor",
+      "Home Automation Consultant",
+      "Smart Home Installation Specialist"
+    ]
+  },
+  {
+    "__category": 29,
+    "meta_integration_category": "Home Improvement & Services",
+    "meta_integration_name": "Outdoor and Landscaping Team",
+    "meta_integration_description": "Focuses on enhancing outdoor spaces with landscaping and sustainable practices.",
+    "integration_assistants": [
+      "Landscaping Consultant",
+      "Deck Building Advisor",
+      "Garden Maintenance Consultant"
+    ]
+  },
+  {
+    "__category": 29,
+    "meta_integration_category": "Home Improvement & Services",
+    "meta_integration_name": "Sustainable Home Improvement Team",
+    "meta_integration_description": "Specializes in eco-friendly and energy-efficient home improvements.",
+    "integration_assistants": [
+      "Home Sustainability Consultant",
+      "Energy Efficiency Upgrades Consultant",
+      "Sustainable Practices Advisor"
+    ]
+  },
+  {
+    "__category": 29,
+    "meta_integration_category": "Home Improvement & Services",
+    "meta_integration_name": "Home Repair and Inspection Team",
+    "meta_integration_description": "Provides expertise in home repair, inspection, and maintenance tasks.",
+    "integration_assistants": [
+      "Home Repair Consultant",
+      "Home Inspection Specialist",
+      "General Contracting Advisor"
+    ]
+  },
+  {
+    "__category": 29,
+    "meta_integration_category": "Home Improvement & Services",
+    "meta_integration_name": "Safety and Disaster Resilience Team",
+    "meta_integration_description": "Offers guidance on enhancing home safety and resilience against disasters.",
+    "integration_assistants": [
+      "Home Security Systems Consultant",
+      "Disaster Resilience Advisor",
+      "Pest Control Specialist"
+    ]
+  },
+  {
+    "__category": 29,
+    "meta_integration_category": "Home Improvement & Services",
+    "meta_integration_name": "Custom Design and Staging Team",
+    "meta_integration_description": "Focuses on creating custom home designs and staging homes for sale.",
+    "integration_assistants": [
+      "Home Staging Specialist",
+      "Virtual Home Design Consultant",
+      "Wardrobe and Furniture Assembly Specialist"
+    ]
+  },
+  {
+    "__category": 29,
+    "meta_integration_category": "Home Improvement & Services",
+    "meta_integration_name": "Kitchen and Bathroom Renovation Team",
+    "meta_integration_description": "Provides expertise in designing and renovating kitchen and bathroom spaces.",
+    "integration_assistants": [
+      "Kitchen Remodeling Advisor",
+      "Bathroom Renovation Specialist",
+      "Flooring Specialist"
+    ]
+  },
+  {
+    "__category": 29,
+    "meta_integration_category": "Home Improvement & Services",
+    "meta_integration_name": "Exterior Improvement and Roofing Team",
+    "meta_integration_description": "Guides homeowners on exterior improvements, roofing, and siding installations.",
+    "integration_assistants": [
+      "Roofing Consultant",
+      "Siding Installation Consultant",
+      "Window Replacement Specialist"
+    ]
+  },
+  {
+    "__category": 30,
+    "meta_integration_category": "Internet of Things (IoT)",
+    "meta_integration_name": "IoT Security and Data Management Team",
+    "meta_integration_description": "Focuses on securing IoT networks and managing data integrity and governance.",
+    "integration_assistants": [
+      "IoT Security Specialist",
+      "IoT Data Governance Advisor",
+      "Blockchain for IoT Specialist"
+    ]
+  },
+  {
+    "__category": 30,
+    "meta_integration_category": "Internet of Things (IoT)",
+    "meta_integration_name": "Smart Home Solutions Team",
+    "meta_integration_description": "Provides guidance on smart home devices, energy management, and user-friendly automation.",
+    "integration_assistants": [
+      "Smart Home Technology Advisor",
+      "Smart Home Energy Management Consultant",
+      "Home Automation Consultant"
+    ]
+  },
+  {
+    "__category": 30,
+    "meta_integration_category": "Internet of Things (IoT)",
+    "meta_integration_name": "Industrial IoT and Automation Team",
+    "meta_integration_description": "Offers expertise in implementing IoT for industrial automation and predictive maintenance.",
+    "integration_assistants": [
+      "Industrial IoT Advisor",
+      "Predictive Maintenance Specialist",
+      "Automated Systems Specialist"
+    ]
+  },
+  {
+    "__category": 30,
+    "meta_integration_category": "Internet of Things (IoT)",
+    "meta_integration_name": "Smart Cities and Infrastructure Team",
+    "meta_integration_description": "Guides municipalities and organizations on smart city technologies and infrastructure planning.",
+    "integration_assistants": [
+      "Smart Cities Consultant",
+      "Sensor Networks Specialist",
+      "Energy Management Consultant"
+    ]
+  },
+  {
+    "__category": 30,
+    "meta_integration_category": "Internet of Things (IoT)",
+    "meta_integration_name": "Healthcare and Wearable IoT Team",
+    "meta_integration_description": "Provides insights on IoT solutions in healthcare and wearable technology for real-time monitoring.",
+    "integration_assistants": [
+      "Healthcare IoT Specialist",
+      "Wearable Technology Advisor",
+      "Remote Monitoring Specialist"
+    ]
+  },
+  {
+    "__category": 30,
+    "meta_integration_category": "Internet of Things (IoT)",
+    "meta_integration_name": "Data Analytics and Real-Time Solutions Team",
+    "meta_integration_description": "Focuses on data collection, analysis, and utilization in real-time IoT applications.",
+    "integration_assistants": [
+      "Data Analytics Consultant",
+      "Real-Time Data Consultant",
+      "Big Data in IoT Consultant"
+    ]
+  },
+  {
+    "__category": 30,
+    "meta_integration_category": "Internet of Things (IoT)",
+    "meta_integration_name": "Agriculture and Environmental IoT Team",
+    "meta_integration_description": "Specializes in precision agriculture and sustainable IoT applications for environmental monitoring.",
+    "integration_assistants": [
+      "Smart Agriculture Consultant",
+      "Environmental Monitoring Advisor",
+      "Energy Management Consultant"
+    ]
+  },
+  {
+    "__category": 30,
+    "meta_integration_category": "Internet of Things (IoT)",
+    "meta_integration_name": "Transportation and Logistics IoT Team",
+    "meta_integration_description": "Offers expertise on optimizing logistics and transportation with IoT solutions.",
+    "integration_assistants": [
+      "Transportation IoT Advisor",
+      "Remote Monitoring Specialist",
+      "Predictive Maintenance Specialist"
+    ]
+  },
+  {
+    "__category": 30,
+    "meta_integration_category": "Internet of Things (IoT)",
+    "meta_integration_name": "IoT Development and Interoperability Team",
+    "meta_integration_description": "Provides guidance on IoT architecture, protocols, and interoperability across platforms.",
+    "integration_assistants": [
+      "IoT Protocols Specialist",
+      "IoT Interoperability Consultant",
+      "IoT Applications Consultant"
+    ]
+  },
+  {
+    "__category": 30,
+    "meta_integration_category": "Internet of Things (IoT)",
+    "meta_integration_name": "Edge and Cloud Computing IoT Team",
+    "meta_integration_description": "Focuses on leveraging cloud and edge computing for enhanced IoT performance and scalability.",
+    "integration_assistants": [
+      "Cloud Computing Advisor",
+      "Edge Computing Specialist",
+      "IoT Architecture Specialist"
+    ]
+  },
+  {
+    "__category": 31,
+    "meta_integration_category": "Blockchain & Cryptocurrency",
+    "meta_integration_name": "Blockchain Development and Implementation Team",
+    "meta_integration_description": "Focuses on blockchain development, smart contracts, and tokenization for diverse applications.",
+    "integration_assistants": [
+      "Blockchain Solutions Consultant",
+      "Smart Contracts Specialist",
+      "Tokenization Advisor"
+    ]
+  },
+  {
+    "__category": 31,
+    "meta_integration_category": "Blockchain & Cryptocurrency",
+    "meta_integration_name": "Cryptocurrency Investment and Management Team",
+    "meta_integration_description": "Provides guidance on cryptocurrency investments, wallet management, and tax compliance.",
+    "integration_assistants": [
+      "Cryptocurrency Investment Advisor",
+      "Crypto Wallet Advisor",
+      "Cryptocurrency Taxation Advisor"
+    ]
+  },
+  {
+    "__category": 31,
+    "meta_integration_category": "Blockchain & Cryptocurrency",
+    "meta_integration_name": "DeFi and Decentralized Solutions Team",
+    "meta_integration_description": "Offers expertise in decentralized finance (DeFi), peer-to-peer transactions, and ICO launches.",
+    "integration_assistants": [
+      "Decentralized Finance (DeFi) Consultant",
+      "Peer-to-Peer Transactions Consultant",
+      "Initial Coin Offering (ICO) Advisor"
+    ]
+  },
+  {
+    "__category": 31,
+    "meta_integration_category": "Blockchain & Cryptocurrency",
+    "meta_integration_name": "Blockchain Security and Compliance Team",
+    "meta_integration_description": "Guides organizations in cryptographic security, regulatory compliance, and privacy coin management.",
+    "integration_assistants": [
+      "Cryptographic Security Consultant",
+      "Cryptocurrency Regulations Advisor",
+      "Privacy Coins Advisor"
+    ]
+  },
+  {
+    "__category": 31,
+    "meta_integration_category": "Blockchain & Cryptocurrency",
+    "meta_integration_name": "NFTs and Digital Assets Team",
+    "meta_integration_description": "Focuses on non-fungible tokens (NFTs), digital asset management, and trading strategies.",
+    "integration_assistants": [
+      "NFTs Consultant",
+      "Asset Management Specialist",
+      "Trading Platform Specialist"
+    ]
+  },
+  {
+    "__category": 31,
+    "meta_integration_category": "Blockchain & Cryptocurrency",
+    "meta_integration_name": "Supply Chain and Transparency Solutions Team",
+    "meta_integration_description": "Offers guidance on using blockchain for supply chain transparency and digital identity solutions.",
+    "integration_assistants": [
+      "Supply Chain Transparency Consultant",
+      "Digital Identity Consultant",
+      "Decentralized Identity Consultant"
+    ]
+  },
+  {
+    "__category": 31,
+    "meta_integration_category": "Blockchain & Cryptocurrency",
+    "meta_integration_name": "Blockchain Technology and Interoperability Team",
+    "meta_integration_description": "Specializes in blockchain interoperability, protocol standards, and scalability for diverse industries.",
+    "integration_assistants": [
+      "Blockchain Technology Advisor",
+      "Blockchain Interoperability Specialist",
+      "Blockchain Scalability Specialist"
+    ]
+  },
+  {
+    "__category": 31,
+    "meta_integration_category": "Blockchain & Cryptocurrency",
+    "meta_integration_name": "Social Impact and Sustainability Team",
+    "meta_integration_description": "Guides on using blockchain for social good and environmentally sustainable practices.",
+    "integration_assistants": [
+      "Blockchain for Social Impact Advisor",
+      "Sustainable Blockchain Advisor",
+      "Financial Inclusion Advocate"
+    ]
+  },
+  {
+    "__category": 31,
+    "meta_integration_category": "Blockchain & Cryptocurrency",
+    "meta_integration_name": "Gaming and Digital Experiences Team",
+    "meta_integration_description": "Provides expertise on integrating blockchain technology in gaming and virtual experiences.",
+    "integration_assistants": [
+      "Blockchain Gaming Consultant",
+      "Digital Identity Consultant",
+      "NFTs Consultant"
+    ]
+  },
+  {
+    "__category": 31,
+    "meta_integration_category": "Blockchain & Cryptocurrency",
+    "meta_integration_name": "Central Bank Digital Currency (CBDC) and Financial Innovation Team",
+    "meta_integration_description": "Offers insights on CBDC implementation, blockchain protocols, and innovative financial technologies.",
+    "integration_assistants": [
+      "Central Bank Digital Currency (CBDC) Consultant",
+      "Blockchain Protocols Specialist",
+      "Financial Inclusion Advocate"
+    ]
+  },
+  {
+    "__category": 32,
+    "meta_integration_category": "E-commerce",
+    "meta_integration_name": "E-commerce Strategy and Marketing Team",
+    "meta_integration_description": "Focuses on e-commerce strategy, social commerce, and digital marketing for increased reach and sales.",
+    "integration_assistants": [
+      "E-commerce Strategy Consultant",
+      "Social Commerce Specialist",
+      "Digital Marketing Advisor"
+    ]
+  },
+  {
+    "__category": 32,
+    "meta_integration_category": "E-commerce",
+    "meta_integration_name": "Platform and Payments Optimization Team",
+    "meta_integration_description": "Provides expertise on e-commerce platform selection, payment gateway integration, and customer experience optimization.",
+    "integration_assistants": [
+      "E-commerce Platform Advisor",
+      "Payment Gateway Specialist",
+      "Customer Experience Specialist"
+    ]
+  },
+  {
+    "__category": 32,
+    "meta_integration_category": "E-commerce",
+    "meta_integration_name": "Order Fulfillment and Logistics Team",
+    "meta_integration_description": "Guides organizations on order fulfillment, logistics management, and efficient shipping strategies.",
+    "integration_assistants": [
+      "Order Fulfillment Consultant",
+      "Shipping and Logistics Consultant",
+      "Supply Chain Management Advisor"
+    ]
+  },
+  {
+    "__category": 32,
+    "meta_integration_category": "E-commerce",
+    "meta_integration_name": "Customer Retention and Personalization Team",
+    "meta_integration_description": "Offers strategies for customer retention, personalization, and enhancing customer loyalty in e-commerce.",
+    "integration_assistants": [
+      "Customer Retention Specialist",
+      "Personalization Specialist",
+      "Customer Service Advisor"
+    ]
+  },
+  {
+    "__category": 32,
+    "meta_integration_category": "E-commerce",
+    "meta_integration_name": "Data Analytics and SEO Optimization Team",
+    "meta_integration_description": "Provides insights on using retail analytics and search engine optimization for enhanced online visibility and sales.",
+    "integration_assistants": [
+      "Retail Analytics Consultant",
+      "SEO for E-commerce Specialist",
+      "Customer Journey Mapping Specialist"
+    ]
+  },
+  {
+    "__category": 32,
+    "meta_integration_category": "E-commerce",
+    "meta_integration_name": "Cross-Border and B2B E-commerce Team",
+    "meta_integration_description": "Specializes in cross-border e-commerce, B2B solutions, and navigating international logistics.",
+    "integration_assistants": [
+      "Cross-Border E-commerce Consultant",
+      "B2B E-commerce Specialist",
+      "E-commerce Regulations Advisor"
+    ]
+  },
+  {
+    "__category": 32,
+    "meta_integration_category": "E-commerce",
+    "meta_integration_name": "Augmented Reality and Voice Commerce Team",
+    "meta_integration_description": "Focuses on innovative e-commerce solutions including AR shopping and voice commerce for enhanced customer engagement.",
+    "integration_assistants": [
+      "Augmented Reality Shopping Advisor",
+      "Voice Commerce Consultant",
+      "Mobile Commerce Advisor"
+    ]
+  },
+  {
+    "__category": 32,
+    "meta_integration_category": "E-commerce",
+    "meta_integration_name": "Inventory and Product Management Team",
+    "meta_integration_description": "Offers guidance on inventory management, product listing strategies, and conversion rate optimization.",
+    "integration_assistants": [
+      "Inventory Management Specialist",
+      "Product Listings Consultant",
+      "Conversion Optimization Specialist"
+    ]
+  },
+  {
+    "__category": 32,
+    "meta_integration_category": "E-commerce",
+    "meta_integration_name": "Omni-Channel and Affiliate Marketing Team",
+    "meta_integration_description": "Provides strategies for omni-channel retail and managing affiliate marketing programs.",
+    "integration_assistants": [
+      "Omni-Channel Retail Consultant",
+      "Affiliate Marketing Consultant",
+      "Influencer Marketing Specialist"
+    ]
+  },
+  {
+    "__category": 32,
+    "meta_integration_category": "E-commerce",
+    "meta_integration_name": "Customer Support and Recovery Team",
+    "meta_integration_description": "Focuses on abandoned cart recovery, customer support, and creating engaging customer touchpoints.",
+    "integration_assistants": [
+      "Abandoned Cart Recovery Consultant",
+      "Customer Service Advisor",
+      "Email Marketing Consultant"
+    ]
+  },
+  {
+    "__category": 33,
+    "meta_integration_category": "Digital Marketing",
+    "meta_integration_name": "Strategic Marketing and Analytics Team",
+    "meta_integration_description": "Focuses on digital marketing strategy development and data analytics for insightful marketing decisions.",
+    "integration_assistants": [
+      "Digital Marketing Strategy Consultant",
+      "Digital Analytics Consultant",
+      "Market Segmentation Advisor"
+    ]
+  },
+  {
+    "__category": 33,
+    "meta_integration_category": "Digital Marketing",
+    "meta_integration_name": "Content Creation and Engagement Team",
+    "meta_integration_description": "Provides guidance on creating engaging content and enhancing customer engagement through various digital channels.",
+    "integration_assistants": [
+      "Content Marketing Advisor",
+      "Customer Engagement Consultant",
+      "Video Marketing Specialist"
+    ]
+  },
+  {
+    "__category": 33,
+    "meta_integration_category": "Digital Marketing",
+    "meta_integration_name": "SEO and Conversion Optimization Team",
+    "meta_integration_description": "Specializes in improving search engine optimization and website conversion rates for better digital visibility.",
+    "integration_assistants": [
+      "SEO Specialist",
+      "Conversion Rate Optimization Advisor",
+      "Voice Search Optimization Consultant"
+    ]
+  },
+  {
+    "__category": 33,
+    "meta_integration_category": "Digital Marketing",
+    "meta_integration_name": "Social Media and Community Management Team",
+    "meta_integration_description": "Focuses on social media engagement, influencer partnerships, and online community management.",
+    "integration_assistants": [
+      "Social Media Marketing Consultant",
+      "Influencer Marketing Specialist",
+      "Community Management Specialist"
+    ]
+  },
+  {
+    "__category": 33,
+    "meta_integration_category": "Digital Marketing",
+    "meta_integration_name": "Email and Retargeting Campaigns Team",
+    "meta_integration_description": "Offers strategies for targeted email marketing and retargeting to improve customer conversions.",
+    "integration_assistants": [
+      "Email Marketing Specialist",
+      "Retargeting Consultant",
+      "Marketing Automation Specialist"
+    ]
+  },
+  {
+    "__category": 33,
+    "meta_integration_category": "Digital Marketing",
+    "meta_integration_name": "PPC and SEM Optimization Team",
+    "meta_integration_description": "Guides organizations in managing and optimizing pay-per-click and search engine marketing campaigns.",
+    "integration_assistants": [
+      "PPC Advertising Consultant",
+      "Search Engine Marketing (SEM) Advisor",
+      "A/B Testing Specialist"
+    ]
+  },
+  {
+    "__category": 33,
+    "meta_integration_category": "Digital Marketing",
+    "meta_integration_name": "User Experience and Design Team",
+    "meta_integration_description": "Offers guidance on enhancing user experience through web design and customer journey optimization.",
+    "integration_assistants": [
+      "User Experience (UX) Consultant",
+      "Web Design Consultant",
+      "Customer Journey Advisor"
+    ]
+  },
+  {
+    "__category": 33,
+    "meta_integration_category": "Digital Marketing",
+    "meta_integration_name": "Visual and Chatbot Marketing Team",
+    "meta_integration_description": "Focuses on visual content strategies and chatbot integration for interactive customer engagement.",
+    "integration_assistants": [
+      "Visual Content Marketing Consultant",
+      "Chatbot Marketing Specialist",
+      "Digital Content Creation Consultant"
+    ]
+  },
+  {
+    "__category": 33,
+    "meta_integration_category": "Digital Marketing",
+    "meta_integration_name": "Lead Generation and Brand Awareness Team",
+    "meta_integration_description": "Provides insights on lead generation tactics and brand awareness strategies across digital platforms.",
+    "integration_assistants": [
+      "Lead Generation Specialist",
+      "Brand Awareness Consultant",
+      "Affiliate Marketing Advisor"
+    ]
+  },
+  {
+    "__category": 33,
+    "meta_integration_category": "Digital Marketing",
+    "meta_integration_name": "Sustainability and Digital PR Team",
+    "meta_integration_description": "Focuses on sustainable marketing practices and managing online reputation and public relations.",
+    "integration_assistants": [
+      "Sustainability Marketing Advisor",
+      "Digital PR Consultant",
+      "Social Media Analytics Specialist"
+    ]
+  },
+  {
+    "__category": 34,
+    "meta_integration_category": "Data Analytics & Business Intelligence",
+    "meta_integration_name": "Strategic Data Insights Team",
+    "meta_integration_description": "Focuses on implementing data analytics strategies for businesses to gain strategic insights.",
+    "integration_assistants": [
+      "Data Analytics Consultant",
+      "Predictive Analytics Advisor",
+      "Business Intelligence Specialist"
+    ]
+  },
+  {
+    "__category": 34,
+    "meta_integration_category": "Data Analytics & Business Intelligence",
+    "meta_integration_name": "Visualization and Storytelling Team",
+    "meta_integration_description": "Specializes in data visualization and storytelling to communicate insights effectively.",
+    "integration_assistants": [
+      "Data Visualization Consultant",
+      "Data Storytelling Advisor",
+      "Dashboard Reporting Specialist"
+    ]
+  },
+  {
+    "__category": 34,
+    "meta_integration_category": "Data Analytics & Business Intelligence",
+    "meta_integration_name": "Advanced Analytics and Machine Learning Team",
+    "meta_integration_description": "Guides organizations in leveraging machine learning and advanced analytics.",
+    "integration_assistants": [
+      "Machine Learning Specialist",
+      "Artificial Intelligence in Analytics Advisor",
+      "Big Data Consultant"
+    ]
+  },
+  {
+    "__category": 34,
+    "meta_integration_category": "Data Analytics & Business Intelligence",
+    "meta_integration_name": "Data Quality and Governance Team",
+    "meta_integration_description": "Focuses on maintaining data quality and implementing data governance practices.",
+    "integration_assistants": [
+      "Data Quality Specialist",
+      "Data Governance Advisor",
+      "Data Ethics Consultant"
+    ]
+  },
+  {
+    "__category": 34,
+    "meta_integration_category": "Data Analytics & Business Intelligence",
+    "meta_integration_name": "Real-Time and Operational Analytics Team",
+    "meta_integration_description": "Provides insights on using real-time data to optimize operations.",
+    "integration_assistants": [
+      "Real-Time Analytics Consultant",
+      "Operational Analytics Specialist",
+      "Customer Experience Analytics Specialist"
+    ]
+  },
+  {
+    "__category": 34,
+    "meta_integration_category": "Data Analytics & Business Intelligence",
+    "meta_integration_name": "Data Warehousing and Architecture Team",
+    "meta_integration_description": "Guides in data warehousing, architecture, and data fabric solutions.",
+    "integration_assistants": [
+      "Data Warehousing Advisor",
+      "Data Fabric Architect",
+      "ETL Specialist"
+    ]
+  },
+  {
+    "__category": 34,
+    "meta_integration_category": "Data Analytics & Business Intelligence",
+    "meta_integration_name": "Data Integration and Compliance Team",
+    "meta_integration_description": "Specializes in data integration and compliance to ensure regulatory adherence.",
+    "integration_assistants": [
+      "Data Integration Specialist",
+      "Data Privacy Advisor",
+      "Data Governance and Compliance Advisor"
+    ]
+  },
+  {
+    "__category": 34,
+    "meta_integration_category": "Data Analytics & Business Intelligence",
+    "meta_integration_name": "Descriptive and Financial Analytics Team",
+    "meta_integration_description": "Focuses on historical data analysis and financial data insights.",
+    "integration_assistants": [
+      "Descriptive Analytics Consultant",
+      "Financial Analytics Consultant",
+      "Market Research Analytics Advisor"
+    ]
+  },
+  {
+    "__category": 34,
+    "meta_integration_category": "Data Analytics & Business Intelligence",
+    "meta_integration_name": "Customer-Centric Analytics Team",
+    "meta_integration_description": "Provides strategies for customer-focused analytics and marketing insights.",
+    "integration_assistants": [
+      "Customer Analytics Advisor",
+      "Customer Experience Analytics Specialist",
+      "Market Research Analytics Advisor"
+    ]
+  },
+  {
+    "__category": 34,
+    "meta_integration_category": "Data Analytics & Business Intelligence",
+    "meta_integration_name": "Performance Management and KPI Team",
+    "meta_integration_description": "Guides organizations in tracking and analyzing key performance indicators.",
+    "integration_assistants": [
+      "Business Performance Management Consultant",
+      "KPI Specialist",
+      "Business Metrics Consultant"
+    ]
+  },
+  {
+    "__category": 35,
+    "meta_integration_category": "Legal Services & Law",
+    "meta_integration_name": "Corporate and Compliance Legal Team",
+    "meta_integration_description": "Focuses on legal compliance and corporate governance for business adherence to regulations.",
+    "integration_assistants": [
+      "Legal Compliance Advisor",
+      "Corporate Governance Advisor",
+      "Privacy Law Consultant"
+    ]
+  },
+  {
+    "__category": 35,
+    "meta_integration_category": "Legal Services & Law",
+    "meta_integration_name": "Intellectual Property and Digital Law Team",
+    "meta_integration_description": "Specializes in intellectual property protection and digital law guidance.",
+    "integration_assistants": [
+      "Intellectual Property Consultant",
+      "Digital Law Specialist",
+      "Contract Review Specialist"
+    ]
+  },
+  {
+    "__category": 35,
+    "meta_integration_category": "Legal Services & Law",
+    "meta_integration_name": "Dispute Resolution and Advocacy Team",
+    "meta_integration_description": "Provides support in mediation, arbitration, and advocacy for legal disputes.",
+    "integration_assistants": [
+      "Dispute Resolution Facilitator",
+      "Consumer Protection Advocate",
+      "Family Law Advisor"
+    ]
+  },
+  {
+    "__category": 35,
+    "meta_integration_category": "Legal Services & Law",
+    "meta_integration_name": "Employment and Labor Law Team",
+    "meta_integration_description": "Guides on employment laws, employee rights, and workplace compliance.",
+    "integration_assistants": [
+      "Employment Law Consultant",
+      "Labor Relations Advisor",
+      "Legal Compliance Advisor"
+    ]
+  },
+  {
+    "__category": 35,
+    "meta_integration_category": "Legal Services & Law",
+    "meta_integration_name": "Healthcare and Environmental Law Team",
+    "meta_integration_description": "Focuses on healthcare regulations, environmental laws, and related compliance.",
+    "integration_assistants": [
+      "Healthcare Law Consultant",
+      "Environmental Law Specialist",
+      "Data Protection Advisor"
+    ]
+  },
+  {
+    "__category": 35,
+    "meta_integration_category": "Legal Services & Law",
+    "meta_integration_name": "Bankruptcy and Financial Law Team",
+    "meta_integration_description": "Provides support in bankruptcy proceedings, financial law, and tax regulations.",
+    "integration_assistants": [
+      "Bankruptcy Law Advisor",
+      "Tax Law Specialist",
+      "Corporate Governance Advisor"
+    ]
+  },
+  {
+    "__category": 35,
+    "meta_integration_category": "Legal Services & Law",
+    "meta_integration_name": "Real Estate and Property Law Team",
+    "meta_integration_description": "Specializes in legal guidance for real estate transactions and property rights.",
+    "integration_assistants": [
+      "Real Estate Law Consultant",
+      "Property Rights Specialist",
+      "Contract Review Specialist"
+    ]
+  },
+  {
+    "__category": 35,
+    "meta_integration_category": "Legal Services & Law",
+    "meta_integration_name": "Immigration and Family Law Team",
+    "meta_integration_description": "Guides individuals and families in immigration and family law matters.",
+    "integration_assistants": [
+      "Immigration Law Advisor",
+      "Family Law Advisor",
+      "Legal Research Assistant"
+    ]
+  },
+  {
+    "__category": 35,
+    "meta_integration_category": "Legal Services & Law",
+    "meta_integration_name": "Mergers & Acquisitions and Corporate Strategy Team",
+    "meta_integration_description": "Provides legal guidance for mergers, acquisitions, and corporate strategy.",
+    "integration_assistants": [
+      "Mergers & Acquisitions Advisor",
+      "Corporate Governance Advisor",
+      "Legal Compliance Advisor"
+    ]
+  },
+  {
+    "__category": 35,
+    "meta_integration_category": "Legal Services & Law",
+    "meta_integration_name": "Digital and Data Protection Law Team",
+    "meta_integration_description": "Focuses on legal issues in digital law, data privacy, and internet compliance.",
+    "integration_assistants": [
+      "Digital Law Specialist",
+      "Data Protection Advisor",
+      "Privacy Law Consultant"
+    ]
+  },
+  {
+    "__category": 36,
+    "meta_integration_category": "Agriculture & Farming",
+    "meta_integration_name": "Sustainable and Organic Farming Team",
+    "meta_integration_description": "Supports farmers in implementing sustainable and organic agricultural practices.",
+    "integration_assistants": [
+      "Sustainable Farming Consultant",
+      "Organic Farming Consultant",
+      "Agroecology Consultant"
+    ]
+  },
+  {
+    "__category": 36,
+    "meta_integration_category": "Agriculture & Farming",
+    "meta_integration_name": "Crop and Soil Management Team",
+    "meta_integration_description": "Provides insights and techniques for effective crop and soil health management.",
+    "integration_assistants": [
+      "Crop Management Advisor",
+      "Soil Health Advisor",
+      "Pesticide Management Specialist"
+    ]
+  },
+  {
+    "__category": 36,
+    "meta_integration_category": "Agriculture & Farming",
+    "meta_integration_name": "Technology and Innovation in Agriculture Team",
+    "meta_integration_description": "Guides farmers on adopting new technologies in agriculture, such as robotics and precision farming.",
+    "integration_assistants": [
+      "Agricultural Technology Advisor",
+      "Precision Agriculture Consultant",
+      "Agricultural Robotics Specialist"
+    ]
+  },
+  {
+    "__category": 36,
+    "meta_integration_category": "Agriculture & Farming",
+    "meta_integration_name": "Water and Irrigation Solutions Team",
+    "meta_integration_description": "Offers guidance on efficient and sustainable water and irrigation systems.",
+    "integration_assistants": [
+      "Irrigation Systems Consultant",
+      "Sustainable Irrigation Consultant",
+      "Aquaponics Consultant"
+    ]
+  },
+  {
+    "__category": 36,
+    "meta_integration_category": "Agriculture & Farming",
+    "meta_integration_name": "Livestock and Animal Welfare Team",
+    "meta_integration_description": "Provides guidance on livestock health and animal welfare in farming.",
+    "integration_assistants": [
+      "Livestock Health Specialist",
+      "Animal Welfare Advisor",
+      "Food Safety Consultant"
+    ]
+  },
+  {
+    "__category": 36,
+    "meta_integration_category": "Agriculture & Farming",
+    "meta_integration_name": "Climate and Environmental Resilience Team",
+    "meta_integration_description": "Guides farmers on adapting to climate changes and enhancing environmental resilience.",
+    "integration_assistants": [
+      "Climate Resilience Advisor",
+      "Environmental Stewardship Consultant",
+      "Sustainable Farming Consultant"
+    ]
+  },
+  {
+    "__category": 36,
+    "meta_integration_category": "Agriculture & Farming",
+    "meta_integration_name": "Farm-to-Table and Rural Development Team",
+    "meta_integration_description": "Supports initiatives that connect farms to consumers and promotes rural development.",
+    "integration_assistants": [
+      "Farm-to-Table Advocate",
+      "Rural Development Specialist",
+      "Agricultural Economics Advisor"
+    ]
+  },
+  {
+    "__category": 36,
+    "meta_integration_category": "Agriculture & Farming",
+    "meta_integration_name": "Farm Management and Financial Advisory Team",
+    "meta_integration_description": "Provides guidance on farm management software and financial solutions for agriculture.",
+    "integration_assistants": [
+      "Farm Management Software Advisor",
+      "Agri-Fintech Advisor",
+      "Agricultural Economics Advisor"
+    ]
+  },
+  {
+    "__category": 37,
+    "meta_integration_category": "Wellness & Health",
+    "meta_integration_name": "Holistic Wellness Support Team",
+    "meta_integration_description": "Provides comprehensive support across physical, mental, and nutritional wellness to enhance overall health.",
+    "integration_assistants": [
+      "Health Coach",
+      "Nutrition Specialist",
+      "Holistic Health Practitioner",
+      "Mindfulness Coach"
+    ]
+  },
+  {
+    "__category": 37,
+    "meta_integration_category": "Wellness & Health",
+    "meta_integration_name": "Fitness and Physical Health Team",
+    "meta_integration_description": "Guides individuals and groups in achieving fitness and physical health goals.",
+    "integration_assistants": [
+      "Fitness Trainer",
+      "Yoga Instructor",
+      "Fitness Nutritionist",
+      "Therapeutic Yoga Instructor"
+    ]
+  },
+  {
+    "__category": 37,
+    "meta_integration_category": "Wellness & Health",
+    "meta_integration_name": "Mental Health and Emotional Support Team",
+    "meta_integration_description": "Provides support and guidance for mental health, stress management, and personal growth.",
+    "integration_assistants": [
+      "Mental Health Counselor",
+      "Personal Development Coach",
+      "Stress Management Advisor",
+      "Mindfulness Coach"
+    ]
+  },
+  {
+    "__category": 37,
+    "meta_integration_category": "Wellness & Health",
+    "meta_integration_name": "Corporate Wellness and Workplace Health Team",
+    "meta_integration_description": "Designs and implements wellness programs to improve employee health and productivity in the workplace.",
+    "integration_assistants": [
+      "Corporate Wellness Consultant",
+      "Wellness Program Coordinator",
+      "Stress Management Advisor",
+      "Health Education Specialist"
+    ]
+  },
+  {
+    "__category": 37,
+    "meta_integration_category": "Wellness & Health",
+    "meta_integration_name": "Chronic Disease and Rehabilitation Support Team",
+    "meta_integration_description": "Provides strategies and support for managing chronic illnesses and recovery from injuries.",
+    "integration_assistants": [
+      "Chronic Disease Management Coach",
+      "Rehabilitation Specialist",
+      "Sleep Coach",
+      "Therapeutic Yoga Instructor"
+    ]
+  },
+  {
+    "__category": 37,
+    "meta_integration_category": "Wellness & Health",
+    "meta_integration_name": "Health Equity and Community Wellness Team",
+    "meta_integration_description": "Focuses on promoting health equity and wellness initiatives within communities.",
+    "integration_assistants": [
+      "Health Equity Advisor",
+      "Health Education Specialist",
+      "Nutrition and Wellness Blogger",
+      "Health Coach"
+    ]
+  },
+  {
+    "__category": 37,
+    "meta_integration_category": "Wellness & Health",
+    "meta_integration_name": "Technology and Wellness Innovation Team",
+    "meta_integration_description": "Guides on utilizing technology and wellness apps to support health tracking and management.",
+    "integration_assistants": [
+      "Wellness Technology Advisor",
+      "Fitness Trainer",
+      "Mindfulness Coach",
+      "Nutrition Specialist"
+    ]
+  },
+  {
+    "__category": 37,
+    "meta_integration_category": "Wellness & Health",
+    "meta_integration_name": "Personal Growth and Lifestyle Optimization Team",
+    "meta_integration_description": "Supports individuals in achieving personal growth, optimizing lifestyle habits, and enhancing overall well-being.",
+    "integration_assistants": [
+      "Personal Development Coach",
+      "Time Management Consultant",
+      "Sleep Coach",
+      "Mindfulness Coach"
+    ]
+  },
+  {
+    "__category": 37,
+    "meta_integration_category": "Wellness & Health",
+    "meta_integration_name": "Family and Community Wellness Team",
+    "meta_integration_description": "Focuses on family health, nutrition, and community wellness, providing guidance for families and groups.",
+    "integration_assistants": [
+      "Nutrition Specialist",
+      "Family Wellness Coach",
+      "Health Education Specialist",
+      "Community Engagement Facilitator"
+    ]
+  },
+  {
+    "__category": 38,
+    "meta_integration_category": "Oil & Gas",
+    "meta_integration_name": "Exploration and Drilling Optimization Team",
+    "meta_integration_description": "Offers expertise on geological assessments, drilling optimization, and operational techniques to maximize exploration efficiency.",
+    "integration_assistants": [
+      "Oil Exploration Consultant",
+      "Drilling Operations Specialist",
+      "Geophysical Data Analyst",
+      "Hydraulic Fracturing Specialist"
+    ]
+  },
+  {
+    "__category": 38,
+    "meta_integration_category": "Oil & Gas",
+    "meta_integration_name": "Environmental and Regulatory Compliance Team",
+    "meta_integration_description": "Ensures environmental compliance and assesses the environmental impact of oil and gas operations.",
+    "integration_assistants": [
+      "Environmental Compliance Advisor",
+      "Regulatory Affairs Specialist",
+      "Environmental Impact Assessor",
+      "Carbon Management Specialist"
+    ]
+  },
+  {
+    "__category": 38,
+    "meta_integration_category": "Oil & Gas",
+    "meta_integration_name": "Health, Safety, and Risk Management Team",
+    "meta_integration_description": "Provides guidance on health, safety, and supply chain risk management within oil and gas operations.",
+    "integration_assistants": [
+      "Health and Safety Advisor",
+      "Supply Chain Risk Management Specialist",
+      "Pipeline Integrity Specialist",
+      "Decommissioning Advisor"
+    ]
+  },
+  {
+    "__category": 38,
+    "meta_integration_category": "Oil & Gas",
+    "meta_integration_name": "Market Analysis and Trading Strategy Team",
+    "meta_integration_description": "Offers market analysis and strategic guidance for trading in oil and natural gas markets.",
+    "integration_assistants": [
+      "Energy Market Analyst",
+      "Oil Trading Strategist",
+      "Natural Gas Advisor",
+      "Reservoir Management Consultant"
+    ]
+  },
+  {
+    "__category": 38,
+    "meta_integration_category": "Oil & Gas",
+    "meta_integration_name": "Sustainable Operations and Renewable Integration Team",
+    "meta_integration_description": "Guides organizations on integrating renewable energy and sustainability practices in oil and gas operations.",
+    "integration_assistants": [
+      "Sustainability Consultant for Oil & Gas",
+      "Renewable Energy Integration Consultant",
+      "Carbon Management Specialist",
+      "Environmental Compliance Advisor"
+    ]
+  },
+  {
+    "__category": 38,
+    "meta_integration_category": "Oil & Gas",
+    "meta_integration_name": "Refining and Process Optimization Team",
+    "meta_integration_description": "Focuses on optimizing refining processes and ensuring efficiency in oil and gas production.",
+    "integration_assistants": [
+      "Refining Process Consultant",
+      "Drilling Operations Specialist",
+      "Pipeline Integrity Specialist",
+      "Reservoir Management Consultant"
+    ]
+  },
+  {
+    "__category": 38,
+    "meta_integration_category": "Oil & Gas",
+    "meta_integration_name": "Advanced Data and Analytics Team",
+    "meta_integration_description": "Leverages data analytics, predictive modeling, and AI to enhance decision-making and operational efficiency in oil and gas.",
+    "integration_assistants": [
+      "Geophysical Data Analyst",
+      "Data Science Consultant",
+      "Predictive Analytics Advisor",
+      "Machine Learning Specialist"
+    ]
+  },
+  {
+    "__category": 38,
+    "meta_integration_category": "Oil & Gas",
+    "meta_integration_name": "Logistics and Supply Chain Efficiency Team",
+    "meta_integration_description": "Provides solutions for optimizing the logistics and supply chain in oil and gas, from transportation to distribution.",
+    "integration_assistants": [
+      "Supply Chain Manager for Oil & Gas",
+      "Supply Chain Risk Management Specialist",
+      "Pipeline Integrity Specialist",
+      "Logistics Advisor"
+    ]
+  },
+  {
+    "__category": 38,
+    "meta_integration_category": "Oil & Gas",
+    "meta_integration_name": "Infrastructure Maintenance and Asset Reliability Team",
+    "meta_integration_description": "Focuses on maintaining infrastructure integrity, reducing downtime, and ensuring reliability of critical assets.",
+    "integration_assistants": [
+      "Pipeline Integrity Specialist",
+      "Reservoir Management Consultant",
+      "Decommissioning Advisor",
+      "Asset Maintenance Specialist"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Personal Growth and Development Team",
+    "meta_integration_description": "Supports individuals in personal growth through development coaching, relationship building, and life skills training.",
+    "integration_assistants": [
+      "Personal Development Coach",
+      "Relationship Coach",
+      "Life Skills Coach",
+      "Mindfulness Coach"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Health and Wellness Team",
+    "meta_integration_description": "Offers comprehensive wellness guidance, including fitness, nutrition, and mental health practices.",
+    "integration_assistants": [
+      "Health & Wellness Advisor",
+      "Fitness Coach",
+      "Nutrition Consultant",
+      "Mindfulness Coach"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Home and Lifestyle Management Team",
+    "meta_integration_description": "Assists individuals in organizing their home, managing time, and planning personal spaces.",
+    "integration_assistants": [
+      "Home Organization Consultant",
+      "Time Management Consultant",
+      "Home Improvement Advisor",
+      "Digital Organizer"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Sustainable Living and Community Engagement Team",
+    "meta_integration_description": "Promotes sustainable lifestyle practices and encourages community involvement.",
+    "integration_assistants": [
+      "Sustainable Living Consultant",
+      "Community Engagement Facilitator",
+      "Digital Wellbeing Coach",
+      "Travel Planning Advisor"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Creative and Artistic Development Team",
+    "meta_integration_description": "Fosters creativity and artistic skills through hobby exploration and mentorship.",
+    "integration_assistants": [
+      "Art & Creativity Mentor",
+      "Hobby Exploration Coach",
+      "Culinary Coach",
+      "Digital Organizer"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Financial Planning and Lifestyle Management Team",
+    "meta_integration_description": "Provides financial guidance along with tips for managing personal and lifestyle choices.",
+    "integration_assistants": [
+      "Financial Planning Specialist",
+      "Time Management Consultant",
+      "Travel Planning Advisor",
+      "Sustainable Living Consultant"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Mindfulness and Mental Health Support Team",
+    "meta_integration_description": "Supports mental well-being with techniques for mindfulness, stress management, and overall mental health.",
+    "integration_assistants": [
+      "Mental Health Counselor",
+      "Mindfulness Coach",
+      "Stress Management Advisor",
+      "Therapeutic Yoga Instructor"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Physical Health and Fitness Team",
+    "meta_integration_description": "Focuses on physical health improvement through fitness and wellness programs.",
+    "integration_assistants": [
+      "Fitness Trainer",
+      "Health Coach",
+      "Fitness Nutritionist",
+      "Sleep Coach"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Digital Lifestyle and Productivity Team",
+    "meta_integration_description": "Helps users manage their digital lives for better productivity and well-being.",
+    "integration_assistants": [
+      "Digital Organizer",
+      "Digital Wellbeing Coach",
+      "Time Management Consultant",
+      "Health & Wellness Advisor"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Travel and Adventure Planning Team",
+    "meta_integration_description": "Guides individuals in planning trips, exploring new places, and managing travel logistics.",
+    "integration_assistants": [
+      "Travel Planning Advisor",
+      "Hobby Exploration Coach",
+      "Sustainable Living Consultant",
+      "Community Engagement Facilitator"
+    ]
+  },
+  {
+    "__category": 39,
+    "meta_integration_category": "Personal Use & Lifestyle",
+    "meta_integration_name": "Pet Care and Lifestyle Team",
+    "meta_integration_description": "Offers guidance on pet care, wellness, and training for pet owners.",
+    "integration_assistants": [
+      "Pet Care Consultant",
+      "Health & Wellness Advisor",
+      "Home Organization Consultant",
+      "Community Engagement Facilitator"
+    ]
+  },
+  {
+    "__category": 40,
+    "meta_integration_category": "Miscellaneous",
+    "meta_integration_name": "Creative Solutions and Innovation Team",
+    "meta_integration_description": "Provides inventive solutions for unique challenges across various areas, including problem-solving, hobby support, and lifestyle advice.",
+    "integration_assistants": [
+      "Creative Problem Solver",
+      "Ad Hoc Solutions Consultant",
+      "Creative Arts Instructor",
+      "Lifestyle Change Mentor"
+    ]
+  },
+  {
+    "__category": 40,
+    "meta_integration_category": "Miscellaneous",
+    "meta_integration_name": "Event and Community Engagement Team",
+    "meta_integration_description": "Assists individuals and organizations in event planning, marketing, and community initiatives.",
+    "integration_assistants": [
+      "Event Planning Consultant",
+      "Event Marketing Specialist",
+      "Local Initiative Coordinator",
+      "Community Engagement Facilitator"
+    ]
+  },
+  {
+    "__category": 40,
+    "meta_integration_category": "Miscellaneous",
+    "meta_integration_name": "Collectibles and Hobby Enthusiasts Team",
+    "meta_integration_description": "Provides advice on collectible items and hobby tools for enthusiasts.",
+    "integration_assistants": [
+      "Collectibles Specialist",
+      "Hobby Supplies Advisor",
+      "Unique Gift Advisor",
+      "Surplus and Spare Parts Finder"
+    ]
+  },
+  {
+    "__category": 40,
+    "meta_integration_category": "Miscellaneous",
+    "meta_integration_name": "Pet and Home Management Team",
+    "meta_integration_description": "Supports individuals in home organization and pet care for a well-organized lifestyle.",
+    "integration_assistants": [
+      "Home Organization Specialist",
+      "Pet Care Consultant",
+      "Gardening Advisor",
+      "Digital Organizer"
+    ]
+  },
+  {
+    "__category": 40,
+    "meta_integration_category": "Miscellaneous",
+    "meta_integration_name": "Educational Resources and Learning Team",
+    "meta_integration_description": "Offers resources and guidance for learning and educational material creation.",
+    "integration_assistants": [
+      "Educational Materials Advisor",
+      "Online Course Creator",
+      "Creative Writing Coach",
+      "Creative Arts Instructor"
+    ]
+  },
+  {
+    "__category": 40,
+    "meta_integration_category": "Miscellaneous",
+    "meta_integration_name": "DIY and Home Improvement Team",
+    "meta_integration_description": "Guides enthusiasts through various DIY and home improvement projects with practical advice.",
+    "integration_assistants": [
+      "DIY Project Advisor",
+      "Surplus and Spare Parts Finder",
+      "Home Improvement Advisor",
+      "Gardening Advisor"
+    ]
+  },
+  {
+    "__category": 40,
+    "meta_integration_category": "Miscellaneous",
+    "meta_integration_name": "Travel and Adventure Insights Team",
+    "meta_integration_description": "Offers travel insights, unique tips, and exploration advice for adventurers.",
+    "integration_assistants": [
+      "Traveling Tips Guide",
+      "Unique Gift Advisor",
+      "Community Engagement Facilitator",
+      "Local Initiative Coordinator"
+    ]
+  },
+  {
+    "__category": 40,
+    "meta_integration_category": "Miscellaneous",
+    "meta_integration_name": "Personalized Gift and Novelty Curation Team",
+    "meta_integration_description": "Specializes in finding unique gift ideas and novelty items for special occasions.",
+    "integration_assistants": [
+      "Unique Gift Advisor",
+      "Novelty Item Curator",
+      "Collectibles Specialist",
+      "Creative Problem Solver"
+    ]
+  },
+  {
+    "__category": 40,
+    "meta_integration_category": "Miscellaneous",
+    "meta_integration_name": "Support and Lifestyle Improvement Team",
+    "meta_integration_description": "Focuses on assisting individuals in making lifestyle improvements and organizing their daily routines.",
+    "integration_assistants": [
+      "Lifestyle Change Mentor",
+      "Home Organization Specialist",
+      "Time Management Consultant",
+      "Pet Care Consultant"
+    ]
+  },
+  {
+    "__category": 40,
+    "meta_integration_category": "Miscellaneous",
+    "meta_integration_name": "Practical Problem-Solving Team",
+    "meta_integration_description": "Provides tailored solutions for practical, real-world challenges encountered by individuals and businesses.",
+    "integration_assistants": [
+      "Creative Problem Solver",
+      "Ad Hoc Solutions Consultant",
+      "Surplus and Spare Parts Finder",
+      "Event Planning Consultant"
+    ]
+  }
+]

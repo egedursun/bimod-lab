@@ -1,9 +1,11 @@
 ### TODO LIST
 
 **DAILY:**
-- [ ] Integrate the Forms app (Headless & Direct Connection with Google Forms)
-- [ ] Integrate Slides to local app.
-- [ ] Integrate Slides to google apps.
+- [ ] Integrate Slides to google apps. (MERT)
+- [ ] Implement integrating the agents with a click.
+- [ ] Put a banner to the integration main page (where categories show).
+- [ ] Fill in the instructions and tags for the assistants (respectively).
+- [ ] Build the meta-integrations module for orchestration creations (team creation).
 
 
 **BUGS:**

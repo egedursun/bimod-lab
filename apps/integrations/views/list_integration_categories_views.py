@@ -14,16 +14,34 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.integrations.models import AssistantIntegrationCategory
+from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 
 class IntegrationView_IntegrationCategoriesList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        ##############################
+        # PERMISSION CHECK FOR - LIST_PLUG_AND_PLAY_AGENTS
+        if not UserPermissionManager.is_authorized(user=self.request.user,
+                                                   operation=PermissionNames.LIST_PLUG_AND_PLAY_AGENTS):
+            messages.error(self.request, "You do not have permission to list plug and play agents.")
+            return context
+        ##############################
+
         categories = AssistantIntegrationCategory.objects.all().order_by("category_name")
         context['categories'] = categories
+
+        total_boiler_plate_agents = 0
+        for category in categories:
+            total_boiler_plate_agents += category.assistantintegration_set.count()
+        context['total_agents'] = total_boiler_plate_agents
+
         return context

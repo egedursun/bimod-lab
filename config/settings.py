@@ -150,6 +150,7 @@ INSTALLED_APPS = [
     "apps.slider",
     "apps.bmd_academy",
     "apps.integrations",
+    "apps.meta_integrations",
 
     ########################################
     # SUPPORT

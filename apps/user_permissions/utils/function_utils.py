@@ -140,6 +140,14 @@ def get_permissions_grouped():
             ('list_assistants', 'List Assistants'),
             ('delete_assistants', 'Delete Assistants')
         ],
+        "Plug & Play Agents": [
+            ('integrate_plug_and_play_agents', 'Integrate Plug and Play Agents'),
+            ('list_plug_and_play_agents', 'List Plug and Play Agents'),
+        ],
+        "Plug & Play Teams": [
+            ('integrate_plug_and_play_teams', 'Integrate Plug and Play Teams'),
+            ('list_plug_and_play_teams', 'List Plug and Play Teams'),
+        ],
         "Assistant Exportation Permissions": [
             ('add_export_assistant', 'Add Export Assistants'),
             ('update_export_assistant', 'Update Export Assistants'),

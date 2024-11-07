@@ -270,6 +270,12 @@
       "url": "integrations:list"
     },
     {
+      "name": "Plug & Play Teams",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "slug": "plug-and-play-teams",
+      "url": "meta_integrations:list"
+    },
+    {
       "menu_header": "Lightweight Assistants"
     },
     {

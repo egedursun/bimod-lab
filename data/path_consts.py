@@ -41,9 +41,13 @@ class DataPaths:
     class KnowledgeBases:
         KNOWLEDGE_BASES = "data/marketplace/knowledge_bases/boilerplate_knowledge_bases.json"
 
+    class MLModels:
+        ML_MODELS = "data/marketplace/ml_models/boilerplate_ml_models.json"
+
     class AssistantIntegrations:
         ASSISTANT_INTEGRATION_CATEGORIES = "data/meta_features/assistant_integrations/custom_assistant_categories.json"
         ASSISTANT_INTEGRATIONS = "data/meta_features/assistant_integrations/custom_assistants.json"
 
-    class OrchestrationMetaIntegrations:
-        ORCHESTRATION_META_INTEGRATIONS = "data/meta_features/orchestration_meta_integrations/custom_orchestrations.json"
+    class CategoriesAndTeamsMetaIntegrations:
+        CATEGORIES_META_INTEGRATIONS = "data/meta_features/team_meta_integrations/custom_team_categories.json"
+        TEAMS_META_INTEGRATIONS = "data/meta_features/team_meta_integrations/custom_teams.json"

@@ -24,6 +24,7 @@ from apps.blog_app.models import BlogTag, BlogPost
 from apps.community_forum.models import ForumCategory, ForumThread
 from apps.bmd_academy.models import AcademyCourse, AcademyCourseVideo, AcademyCourseSection, AcademyCourseInstructor
 from apps.integrations.models import AssistantIntegrationCategory, AssistantIntegration
+from apps.meta_integrations.models import MetaIntegrationTeam, MetaIntegrationCategory
 from .path_consts import DataPaths
 
 logger = logging.getLogger(__name__)
@@ -77,6 +78,13 @@ class BoilerplateDataLoader:
                 f"[BoilerplateDataLoader.load_knowledge_bases_data] Error while loading knowledge bases data: {e}")
         #####
         try:
+            BoilerplateDataLoader._load_ml_models_data()
+            # print("[BoilerplateDataLoader.load_ml_models_data] ML models data loaded successfully")
+        except Exception as e:
+            logger.error(
+                f"[BoilerplateDataLoader.load_ml_models_data] Error while loading ML models data: {e}")
+        #####
+        try:
             BoilerplateDataLoader._load_assistant_integrations_data()
             # print("[BoilerplateDataLoader.load_assistant_integrations_data] Assistant integrations data "
             #      "loaded successfully")
@@ -85,12 +93,12 @@ class BoilerplateDataLoader:
                          f"integrations data: {e}")
         #####
         try:
-            BoilerplateDataLoader._load_orchestration_meta_integrations_data()
-            # print("[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Orchestration meta
-            # integrations " "data loaded successfully")
+            BoilerplateDataLoader._load_categories_and_teams_meta_integrations_data()
+            # print("[BoilerplateDataLoader.load_categories_and_teams_meta_integrations_data] Categories and teams "
+            #      "integrations data loaded successfully")
         except Exception as e:
-            logger.error(f"[BoilerplateDataLoader.load_orchestration_meta_integrations_data] Error while loading "
-                         f"orchestration meta integrations data: {e}")
+            logger.error(f"[BoilerplateDataLoader.load_categories_and_teams_meta_integrations_data] Error while loading "
+                            f"categories and teams integrations data: {e}")
         #####
         logger.info("[BoilerplateDataLoader.load] Boilerplate data loaded successfully")
 
@@ -339,6 +347,16 @@ class BoilerplateDataLoader:
         return
 
     @staticmethod
+    def _load_ml_models_data():
+        ml_models_data_path = DataPaths.MLModels.ML_MODELS
+        # TODO:
+        #   1. Read the relevant data fixture JSON file
+        #   2. Get or create the data
+        #   3. Save the database
+        #   4. Provide the required logs
+        return
+
+    @staticmethod
     def _load_assistant_integrations_data():
         assistant_integration_categories_data_path = DataPaths.AssistantIntegrations.ASSISTANT_INTEGRATION_CATEGORIES
         assistant_integrations_data_path = DataPaths.AssistantIntegrations.ASSISTANT_INTEGRATIONS
@@ -402,11 +420,75 @@ class BoilerplateDataLoader:
         return
 
     @staticmethod
-    def _load_orchestration_meta_integrations_data():
-        orchestration_meta_integrations_data_path = DataPaths.OrchestrationMetaIntegrations.ORCHESTRATION_META_INTEGRATIONS
-        # TODO:
-        #   1. Read the relevant data fixture JSON file
-        #   2. Get or create the data
-        #   3. Save the database
-        #   4. Provide the required logs
+    def _load_categories_and_teams_meta_integrations_data():
+        categories_meta_integrations_data_path = DataPaths.CategoriesAndTeamsMetaIntegrations.CATEGORIES_META_INTEGRATIONS
+        teams_meta_integrations_data_path = DataPaths.CategoriesAndTeamsMetaIntegrations.TEAMS_META_INTEGRATIONS
+
+        # Categories
+        with open(categories_meta_integrations_data_path, "r") as categories_file:
+            categories_data_json = json.load(categories_file)
+
+            for c in categories_data_json:
+                c_name = c["category_name"]
+                item = MetaIntegrationCategory.objects.get_or_create(
+                    category_name=c_name,
+                    defaults={
+                        "category_description": c["category_description"],
+                        "category_image_url": c["category_image_url"],
+                        "tags": c["tags"]
+                    }
+                )
+                if item[1] is False:
+                    # If item exists, update the item
+                    item[0].category_name = c["category_name"]
+                    item[0].description = c["category_description"]
+                    item[0].category_image_url = c["category_image_url"]
+                    item[0].tags = c["tags"]
+                    item[0].save()
+                    logger.info(
+                        f"[BoilerplateDataLoader._load_categories_and_teams_meta_integrations_data] Updated category: {c['category_name']}")
+            # print(f"[BoilerplateDataLoader._load_categories_and_teams_meta_integrations_data] Pre-loaded {len(categories_data_json)} categories")
+            pass
+
+        # Teams Integrations
+        with open(teams_meta_integrations_data_path, "r") as teams_integrations_file:
+            teams_integrations_data_json = json.load(teams_integrations_file)
+            for t in teams_integrations_data_json:
+                t_category = MetaIntegrationCategory.objects.get(category_name=t["meta_integration_category"])
+                t_integration_assistants = AssistantIntegration.objects.filter(
+                    integration_category__category_name=t_category,
+                    integration_name__in=t["integration_assistants"]
+                )
+                combined_tags = []
+                for ta in t_integration_assistants:
+                    combined_tags = list(set(combined_tags + ta.tags))
+                combined_tags = list(set(combined_tags))
+                item = MetaIntegrationTeam.objects.get_or_create(
+                    meta_integration_name=t["meta_integration_name"],
+                    meta_integration_category=t_category,
+                    defaults={
+                        "meta_integration_description": t["meta_integration_description"],
+                        "tags": combined_tags
+                    }
+                )
+                # Update assistant integrations list
+                item[0].integration_assistants.set(t_integration_assistants)
+                item[0].save()
+
+                if item[1] is False:
+                    # If item exists, update the item
+                    item[0].meta_integration_category = t_category
+                    item[0].meta_integration_description = t["meta_integration_description"]
+                    item[0].tags = combined_tags
+                    item[0].save()
+
+                    # Update assistant integrations list
+                    item[0].integration_assistants.set(t_integration_assistants)
+                    item[0].save()
+
+                    logger.info(
+                        f"[BoilerplateDataLoader._load_categories_and_teams_meta_integrations_data] Updated team integration: {t['meta_integration_name']}")
+            # print(f"[BoilerplateDataLoader._load_categories_and_teams_meta_integrations_data] Pre-loaded {len(teams_integrations_data_json)} teams integrations")
+            pass
+
         return

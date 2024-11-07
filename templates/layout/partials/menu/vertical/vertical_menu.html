@@ -27,7 +27,7 @@
       {% if item.name == "Meta Integrations" or item.name == "VoidForger™" %}
         <!-- put as grayed out -->
         {% include './partials/menu_item_template_disabled.html' with item=item %}
-      {% elif item.name == "Plug & Play Agents" %}
+      {% elif item.name == "Plug & Play Agents" or item.name == "Plug & Play Teams" %}
         {% include './partials/menu_link_template_superior.html' with item=item %}
       {% else %}
         {% include './partials/menu_item_template.html' with item=item %}

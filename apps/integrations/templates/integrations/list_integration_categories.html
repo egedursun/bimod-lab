@@ -52,7 +52,8 @@
       categoryCards.forEach(card => {
         const title = card.querySelector('.category-title').textContent.toLowerCase();
         const description = card.querySelector('.category-description').textContent.toLowerCase();
-        const tags = JSON.parse(card.getAttribute('data-tags') || '[]').join(' ').toLowerCase();
+        const tags = card.getAttribute('data-tags').toLowerCase();
+        console.log(tags);
         if (title.includes(searchValue) || description.includes(searchValue) || tags.includes(searchValue)) {
           card.style.display = 'block';
         } else {
@@ -94,12 +95,23 @@
     </div>
   </div>
 
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
   <hr>
 
   <div class="card mb-6">
     <div class="card-header">
-      <h5 class="mb-0"><strong>Available Categories</strong></h5>
-      <p class="mb-0">Total {{ categories|length }} categories available.</p>
+      <h5 class="mb-4"><strong>Available Categories</strong></h5>
+      <p class="mb-2">🟢 &nbsp; Total {{ categories|length }} categories available.</p>
+      <p class="mb-0">🟢 &nbsp; Total {{ total_agents }} boilerplate assistants available.</p>
     </div>
     <div class="card-body">
       <div class="d-flex align-items-center mb-4 p-6">
@@ -108,7 +120,7 @@
       <hr>
       <div class="row gy-6 mb-6">
         {% for category in categories %}
-        <div class="col-sm-4 col-lg-4 category-card">
+        <div class="col-sm-4 col-lg-4 category-card" data-tags="{{ category.tags|join:', ' }}">
           <div class="card p-2 h-100 shadow-none border">
             <div class="rounded-2 text-center mb-4">
               <a href="{% url 'integrations:store' category.category_slug %}">
@@ -119,12 +131,18 @@
                 {% endif %}
               </a>
             </div>
+            <div class="btn-primary rounded p-2 ms-4 me-4">
+              <strong>
+                <i class="fa fa-tag me-2"></i>
+                {{ category.assistantintegration_set.count }} Boilerplate Assistants
+              </strong>
+            </div>
+            <hr>
             <div class="card-body p-4 pt-2">
               <a href="{% url 'integrations:store' category.category_slug %}" class="h5 category-title">
                 <strong>{{ category.category_name }}</strong>
               </a>
-              <p class="mt-1 category-description">{{ category.category_description|truncatewords:20 }}</p>
-              <p style="display: none;" data-tags="{{ category.tags }}"></p>
+              <p class="mt-1 category-description">{{ category.category_description }}</p>
               <a class="w-100 btn btn-instagram" href="{% url 'integrations:store' category.category_slug %}">
                 <strong>
                   <i class="ti ti-eye me-2"></i>

@@ -81,6 +81,7 @@ urlpatterns = [
     path("app/formica/", include("apps.formica.urls", namespace="formica")),
     path("app/slider/", include("apps.slider.urls", namespace="slider")),
     path("app/integrations/", include("apps.integrations.urls", namespace="integrations")),
+    path("app/meta_integrations/", include("apps.meta_integrations.urls", namespace="meta_integrations")),
 
     path('app/docs/', docs_redirect_view, name='technical_docs'),
     path("app/support_system/", include("apps.support_system.urls", namespace="support_system")),

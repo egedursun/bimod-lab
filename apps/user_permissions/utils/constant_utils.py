@@ -94,6 +94,12 @@ class PermissionNames:
     DELETE_HARMONIQ_AGENTS = 'delete_harmoniq_agents'
     CHAT_WITH_HARMONIQ_AGENTS = 'chat_with_harmoniq_agents'
 
+    INTEGRATE_PLUG_AND_PLAY_AGENTS = 'integrate_plug_and_play_agents'
+    LIST_PLUG_AND_PLAY_AGENTS = 'list_plug_and_play_agents'
+
+    INTEGRATE_PLUG_AND_PLAY_TEAMS = 'integrate_plug_and_play_teams'
+    LIST_PLUG_AND_PLAY_TEAMS = 'list_plug_and_play_teams'
+
     CREATE_AND_USE_CHATS = 'create_and_use_chats'
     REMOVE_CHATS = 'remove_chats'
 
@@ -475,6 +481,12 @@ PERMISSION_TYPES = [
     ('list_harmoniq_agents', 'List Harmoniq Agents'),
     ('delete_harmoniq_agents', 'Delete Harmoniq Agents'),
     ('chat_with_harmoniq_agents', 'Chat with Harmoniq Agents'),
+
+    ('integrate_plug_and_play_agents', 'Integrate Plug and Play Agents'),
+    ('list_plug_and_play_agents', 'List Plug and Play Agents'),
+
+    ('integrate_plug_and_play_teams', 'Integrate Plug and Play Teams'),
+    ('list_plug_and_play_teams', 'List Plug and Play Teams'),
 
     ('create_and_use_chats', 'Create and Use Chats'),
     ('remove_chats', 'Remove Chats'),

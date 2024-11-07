@@ -22,6 +22,7 @@ from django.core.files import File
 from django.core.files.storage import default_storage
 from django.db import models
 
+from apps.assistants.utils import MultiStepReasoningCapabilityChoicesNames
 from config import settings
 
 
@@ -35,17 +36,17 @@ class AssistantIntegration(models.Model):
     integration_audience = models.CharField(max_length=1000, null=True, blank=True)  # Important
     integration_tone = models.CharField(max_length=1000, null=True, blank=True)  # Important
     integration_assistant_image = models.ImageField(upload_to='integration_assistant_images/%Y/%m/%d/',
-                                                        null=True, blank=True)
+                                                    null=True, blank=True)
 
     # Multi-modalities (Optional) (After Creation)
-    integration_multi_step_reasoning = models.BooleanField(default=False)  # Important
-    integration_context_overflow_strategy = models.CharField(default="forget", max_length=1000)  # Optional field
-    integration_response_language = models.CharField(max_length=1000, null=True, blank=True)  # Optional field
+    integration_multi_step_reasoning = models.CharField()  # Important
+    integration_context_overflow_strategy = models.CharField(default="forget", max_length=1100)  # Optional field
+    integration_response_language = models.CharField(default="auto", max_length=1000)  # Optional field
     integration_custom_functions = models.ManyToManyField('mm_functions.CustomFunction', blank=True)
     integration_custom_apis = models.ManyToManyField('mm_apis.CustomAPI', blank=True)
     integration_custom_scripts = models.ManyToManyField('mm_scripts.CustomScript', blank=True)
-    integration_response_template = models.TextField(null=True, blank=True)  # Optional field
-    integration_glossary = models.TextField(null=True, blank=True)  # Optional field
+    integration_response_template = models.TextField(default="")  # Optional field
+    integration_glossary = models.JSONField(default=dict, blank=True)  # Optional field
     ner_integration = models.ForeignKey("data_security.NERIntegration", on_delete=models.SET_NULL,
                                         related_name='assistant_integrations', null=True, blank=True)
     project_items = models.ManyToManyField('projects.ProjectItem', blank=True, related_name='assistant_integrations')
@@ -66,9 +67,7 @@ class AssistantIntegration(models.Model):
     #################################################################################################################
     #  USER DEFINED PROPERTIES
     #################################################################################################################
-    # Configuration: organization, llm_model, NER policy
-    # Assistant Creation:
-    # 1. related_projects
+    # Configuration: organization, llm_model
     #################################################################################################################
 
     def __str__(self):
@@ -92,6 +91,7 @@ class AssistantIntegration(models.Model):
 
     def save(self, *args, **kwargs):
         # Check if the image field is empty
+        self.integration_multi_step_reasoning = MultiStepReasoningCapabilityChoicesNames.HIGH_PERFORMANCE
         if not self.integration_assistant_image:
             static_image_directory = os.path.join(settings.STATIC_ROOT, 'img', 'integration-assistant-avatars')
             available_images = [f for f in os.listdir(static_image_directory) if f.endswith(('png', 'jpg', 'jpeg'))]
