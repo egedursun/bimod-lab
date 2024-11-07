@@ -151,6 +151,8 @@ INSTALLED_APPS = [
     "apps.bmd_academy",
     "apps.integrations",
     "apps.meta_integrations",
+    "apps.ml_model_store",
+    "apps.knowledge_base_store",
 
     ########################################
     # SUPPORT
@@ -609,15 +611,23 @@ else:
 
 NEW_USER_FREE_CREDITS = int(os.environ.get("NEW_USER_FREE_CREDITS", default="0"))
 
-BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_1 = int(os.environ.get("BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_1", default="1000"))
-BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_2 = int(os.environ.get("BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_2", default="5000"))
-BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_3 = int(os.environ.get("BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_3", default="10000"))
-BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_4 = int(os.environ.get("BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_4", default="50000"))
+BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_1 = int(
+    os.environ.get("BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_1", default="1000"))
+BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_2 = int(
+    os.environ.get("BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_2", default="5000"))
+BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_3 = int(
+    os.environ.get("BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_3", default="10000"))
+BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_4 = int(
+    os.environ.get("BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_4", default="50000"))
 
-BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_1000_LT_5000 = int(os.environ.get("BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_1000_LT_5000", default="0"))
-BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_5000_LT_10000 = int(os.environ.get("BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_5000_LT_10000", default="0"))
-BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_10000_LT_50000 = int(os.environ.get("BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_10000_LT_50000", default="0"))
-BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_50000 = int(os.environ.get("BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_50000", default="0"))
+BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_1000_LT_5000 = int(
+    os.environ.get("BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_1000_LT_5000", default="0"))
+BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_5000_LT_10000 = int(
+    os.environ.get("BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_5000_LT_10000", default="0"))
+BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_10000_LT_50000 = int(
+    os.environ.get("BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_10000_LT_50000", default="0"))
+BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_50000 = int(
+    os.environ.get("BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_50000", default="0"))
 
 DEFAULT_APPLICATION_ZOOM = int(os.environ.get("DEFAULT_APPLICATION_ZOOM", default="100"))
 
@@ -637,3 +647,12 @@ JAZZMIN_SETTINGS = {
 }
 
 VOSK_MODEL_PATH = os.environ.get("VOSK_MODEL_PATH", default="ml_models/vosk-model-en-us-0.22-lgraph")
+
+
+#####################################################################################################################
+# ATTEMPT FIXTURE DEPLOYMENT
+#####################################################################################################################
+
+ATTEMPT_FIXTURE_DEPLOYMENT = False
+
+#####################################################################################################################

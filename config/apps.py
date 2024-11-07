@@ -19,13 +19,19 @@ from django.apps import AppConfig
 from django.apps import apps
 from django.db.models.signals import pre_save, post_save, post_delete
 
+from config.settings import ATTEMPT_FIXTURE_DEPLOYMENT
+
 
 class MainAppConfig(AppConfig):
     name = 'config'
 
     def ready(self):
         from data.loader import BoilerplateDataLoader
-        BoilerplateDataLoader.load()
+
+        if ATTEMPT_FIXTURE_DEPLOYMENT:
+            BoilerplateDataLoader.load()
+        else:
+            print("[MainAppConfig.ready]: The fixture deployment is disabled, skipping upsertion...")
 
         from .signals import log_save, log_delete
         for model in apps.get_models():
