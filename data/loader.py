@@ -25,6 +25,8 @@ from apps.community_forum.models import ForumCategory, ForumThread
 from apps.bmd_academy.models import AcademyCourse, AcademyCourseVideo, AcademyCourseSection, AcademyCourseInstructor
 from apps.integrations.models import AssistantIntegrationCategory, AssistantIntegration
 from apps.meta_integrations.models import MetaIntegrationTeam, MetaIntegrationCategory
+from apps.semantor.models import IntegrationVectorData
+from config.settings import SKIP_FIXTURE_EMBEDDINGS
 from .path_consts import DataPaths
 
 logger = logging.getLogger(__name__)
@@ -97,8 +99,9 @@ class BoilerplateDataLoader:
             # print("[BoilerplateDataLoader.load_categories_and_teams_meta_integrations_data] Categories and teams "
             #      "integrations data loaded successfully")
         except Exception as e:
-            logger.error(f"[BoilerplateDataLoader.load_categories_and_teams_meta_integrations_data] Error while loading "
-                            f"categories and teams integrations data: {e}")
+            logger.error(
+                f"[BoilerplateDataLoader.load_categories_and_teams_meta_integrations_data] Error while loading "
+                f"categories and teams integrations data: {e}")
         #####
         logger.info("[BoilerplateDataLoader.load] Boilerplate data loaded successfully")
 
@@ -107,7 +110,6 @@ class BoilerplateDataLoader:
         categories_data_path = DataPaths.Forum.CATEGORIES
         threads_data_path = DataPaths.Forum.THREADS
 
-        categories_data_json = None
         with open(categories_data_path, "r") as categories_file:
             categories_data_json = json.load(categories_file)
             for c in categories_data_json:
@@ -128,7 +130,6 @@ class BoilerplateDataLoader:
             pass
 
         # Load threads
-        threads_data_json = None
         with open(threads_data_path, "r") as threads_file:
             threads_data_json = json.load(threads_file)
             for t in threads_data_json:
@@ -152,7 +153,6 @@ class BoilerplateDataLoader:
     def _load_blog_data():
         blogs_data_path = DataPaths.Blog.BLOGS
 
-        blogs_data_json = None
         with open(blogs_data_path, "r") as blogs_file:
             blogs_data_json = json.load(blogs_file)
             for b in blogs_data_json:
@@ -207,7 +207,7 @@ class BoilerplateDataLoader:
         videos_data_path = DataPaths.Academy.COURSE_VIDEOS
 
         # Load instructors
-        instructors_data_json = None
+        existing_instructor_ids = []
         with open(instructors_data_path, "r") as instructors_file:
             instructors_data_json = json.load(instructors_file)
             for i in instructors_data_json:
@@ -219,6 +219,7 @@ class BoilerplateDataLoader:
                         "course_instructor_bio": i["course_instructor_bio"]
                     }
                 )
+                existing_instructor_ids.append(item[0].id)
                 if item[1] is False:
                     # If item exists, update the item
                     item[0].full_name = i["full_name"]
@@ -227,9 +228,11 @@ class BoilerplateDataLoader:
                     logger.info(f"[BoilerplateDataLoader._load_academy_data] Updated instructor: {i['full_name']}")
             # print(f"[BoilerplateDataLoader._load_academy_data] Pre-loaded {len(instructors_data_json)} instructors")
             pass
+        # Delete others
+        AcademyCourseInstructor.objects.exclude(id__in=existing_instructor_ids).delete()
 
         # Load courses
-        courses_data_json = None
+        existing_course_ids = []
         with open(courses_data_path, "r") as courses_file:
             courses_data_json = json.load(courses_file)
             for c in courses_data_json:
@@ -245,6 +248,7 @@ class BoilerplateDataLoader:
                         "tags": c["tags"]
                     }
                 )
+                existing_course_ids.append(item[0].id)
                 if item[1] is False:
                     # If item exists, update the item
                     item[0].course_description = c["course_description"]
@@ -257,9 +261,11 @@ class BoilerplateDataLoader:
                     logger.info(f"[BoilerplateDataLoader._load_academy_data] Updated course: {c['course_title']}")
             # print(f"[BoilerplateDataLoader._load_academy_data] Pre-loaded {len(courses_data_json)} courses")
             pass
+        # Delete others
+        AcademyCourse.objects.exclude(id__in=existing_course_ids).delete()
 
         # Load sections
-        sections_data_json = None
+        existing_section_ids = []
         with open(sections_data_path, "r") as sections_file:
             sections_data_json = json.load(sections_file)
             for s in sections_data_json:
@@ -271,6 +277,7 @@ class BoilerplateDataLoader:
                         "section_description": s["section_description"]
                     }
                 )
+                existing_section_ids.append(item[0].id)
                 if item[1] is False:
                     # If item exists, update the item
                     item[0].section_description = s["section_description"]
@@ -278,16 +285,16 @@ class BoilerplateDataLoader:
                     logger.info(f"[BoilerplateDataLoader._load_academy_data] Updated section: {s['section_name']}")
             # print(f"[BoilerplateDataLoader._load_academy_data] Pre-loaded {len(sections_data_json)} sections")
             pass
-
-        # Clean all videos (SAFETY MEASURE)
-        AcademyCourseVideo.objects.all().delete()
+        # Delete others
+        AcademyCourseSection.objects.exclude(id__in=existing_section_ids).delete()
 
         # Load videos
-        videos_data_json = None
+        existing_video_ids = []
         with open(videos_data_path, "r") as videos_file:
             videos_data_json = json.load(videos_file)
             for v in videos_data_json:
-                v_section = AcademyCourseSection.objects.get(section_name=v["course_section"], course__course_title=v["course"])
+                v_section = AcademyCourseSection.objects.get(section_name=v["course_section"],
+                                                             course__course_title=v["course"])
                 item = AcademyCourseVideo.objects.get_or_create(
                     course_section=v_section,
                     video_title=v["video_title"],
@@ -296,6 +303,7 @@ class BoilerplateDataLoader:
                         "video_content_url": v["video_content_url"]
                     }
                 )
+                existing_video_ids.append(item[0].id)
                 if item[1] is False:
                     # If item exists, update the item
                     item[0].video_description = v["video_description"]
@@ -304,6 +312,9 @@ class BoilerplateDataLoader:
                     logger.info(f"[BoilerplateDataLoader._load_academy_data] Updated video: {v['video_title']}")
             # print(f"[BoilerplateDataLoader._load_academy_data] Pre-loaded {len(videos_data_json)} videos")
             pass
+        # Delete others
+        AcademyCourseVideo.objects.exclude(id__in=existing_video_ids).delete()
+
         return
 
     @staticmethod
@@ -362,7 +373,6 @@ class BoilerplateDataLoader:
         assistant_integrations_data_path = DataPaths.AssistantIntegrations.ASSISTANT_INTEGRATIONS
 
         # Categories
-        categories_data_json = None
         with open(assistant_integration_categories_data_path, "r") as categories_file:
             categories_data_json = json.load(categories_file)
 
@@ -383,12 +393,12 @@ class BoilerplateDataLoader:
                     item[0].category_image_url = c["category_image_url"]
                     item[0].tags = c["tags"]
                     item[0].save()
-                    logger.info(f"[BoilerplateDataLoader._load_assistant_integrations_data] Updated category: {c['category_name']}")
+                    logger.info(
+                        f"[BoilerplateDataLoader._load_assistant_integrations_data] Updated category: {c['category_name']}")
             # print(f"[BoilerplateDataLoader._load_assistant_integrations_data] Pre-loaded {len(categories_data_json)} categories")
             pass
 
         # Assistant Integrations
-        assistant_integrations_data_json = None
         with open(assistant_integrations_data_path, "r") as assistant_integrations_file:
             assistant_integrations_data_json = json.load(assistant_integrations_file)
             for a in assistant_integrations_data_json:
@@ -413,10 +423,25 @@ class BoilerplateDataLoader:
                     item[0].integration_tone = a["integration_tone"]
                     item[0].tags = a["tags"]
                     item[0].save()
-                    logger.info(f"[BoilerplateDataLoader._load_assistant_integrations_data] Updated assistant integration: {a['integration_name']}")
+                    logger.info(
+                        f"[BoilerplateDataLoader._load_assistant_integrations_data] Updated assistant integration: {a['integration_name']}")
+
+                    # Get or create the vector data
+                    if SKIP_FIXTURE_EMBEDDINGS is False:
+                        vector_data, created = IntegrationVectorData.objects.get_or_create(integration_assistant=item[0])
+                        if created:
+                            logger.info(
+                                f"[BoilerplateDataLoader._load_assistant_integrations_data] Vector data created for assistant: {a['integration_name']}")
+                        else:
+                            logger.info(
+                                f"[BoilerplateDataLoader._load_assistant_integrations_data] Vector data already exists; updating for assistant: {a['integration_name']}")
+                            vector_data.save()
+                    else:
+                        logger.info(
+                            f"[BoilerplateDataLoader._load_assistant_integrations_data] Skipping vector data creation for assistant: {a['integration_name']}")
+
             # print(f"[BoilerplateDataLoader._load_assistant_integrations_data] Pre-loaded {len(assistant_integrations_data_json)} assistant integrations")
             pass
-
         return
 
     @staticmethod
@@ -490,5 +515,4 @@ class BoilerplateDataLoader:
                         f"[BoilerplateDataLoader._load_categories_and_teams_meta_integrations_data] Updated team integration: {t['meta_integration_name']}")
             # print(f"[BoilerplateDataLoader._load_categories_and_teams_meta_integrations_data] Pre-loaded {len(teams_integrations_data_json)} teams integrations")
             pass
-
         return

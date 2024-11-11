@@ -19,10 +19,18 @@
 import json
 import logging
 
+from django.contrib.auth.models import User
+
 from apps.core.browsers.utils import BrowserActionsNames
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_json_decode_error_log
 from apps.core.tool_calls.core_services.core_service_process_reasoning import run_process_reasoning
 from apps.core.tool_calls.core_services.core_service_generate_video import run_generate_video
+from apps.core.tool_calls.leanmod.core_services.core_service_consultation_semantor import \
+    execute_semantor_consultation_query
+from apps.core.tool_calls.leanmod.core_services.core_service_query_semantor import execute_semantor_search_query
+from apps.core.tool_calls.leanmod.input_verifiers.verify_semantor_consultation_query import \
+    verify_semantor_consultation_query_content
+from apps.core.tool_calls.leanmod.input_verifiers.verify_semantor_query import verify_semantor_search_query_content
 from apps.core.tool_calls.input_verifiers.verify_analyze_code import verify_analyze_code_content
 from apps.core.tool_calls.input_verifiers.verify_audio_processing_query import verify_audio_processing_query
 from apps.core.tool_calls.input_verifiers.verify_browser_query import verify_browser_query_content
@@ -74,13 +82,13 @@ from apps.multimodal_chat.models import MultimodalChat
 from apps.video_generations.models import GeneratedVideo, VideoGeneratorConnection
 from config.settings import MEDIA_URL
 
-
 logger = logging.getLogger(__name__)
 
 
 class ToolCallManager:
 
-    def __init__(self, assistant: Assistant, chat: MultimodalChat, tool_usage_json_str: dict):
+    def __init__(self, assistant: Assistant, chat: MultimodalChat, tool_usage_json_str: dict, user: User = None):
+        self.user = user
         self.assistant = assistant
         self.chat = chat
         self.tool_usage_dict_stringified = tool_usage_json_str
@@ -164,7 +172,8 @@ class ToolCallManager:
             if error:
                 logger.error(f"Error occurred while verifying the media manager query content: {error}")
                 return error, None, None, None
-            f_uris, img_uris, output_tool_call = self._handle_tool_media_manager_query(f_uris, img_uris, output_tool_call)
+            f_uris, img_uris, output_tool_call = self._handle_tool_media_manager_query(f_uris, img_uris,
+                                                                                       output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_HTTP_RETRIEVAL:
             error = verify_http_retrieval_query_content(content=self.tool_usage_dict)
@@ -211,7 +220,7 @@ class ToolCallManager:
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_CUSTOM_SCRIPT:
             error = verify_run_custom_script_content(content=self.tool_usage_dict)
             if error:
-                logger .error(f"Error occurred while verifying the custom script content: {error}")
+                logger.error(f"Error occurred while verifying the custom script content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_execute_script(output_tool_call)
 
@@ -246,7 +255,7 @@ class ToolCallManager:
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_PROCESS_AUDIO:
             error = verify_audio_processing_query(content=self.tool_usage_dict)
             if error:
-                logger .error(f"Error occurred while verifying the audio processing content: {error}")
+                logger.error(f"Error occurred while verifying the audio processing content: {error}")
                 return error, None, None, None
             output_tool_call = self._handle_tool_execute_audio(output_tool_call)
 
@@ -276,7 +285,8 @@ class ToolCallManager:
         # NO TOOL FOUND
         else:
             logger.error(f"No tool found with the descriptor: {defined_tool_descriptor}")
-            return get_no_tool_found_error_log(query_name=defined_tool_descriptor), defined_tool_descriptor, f_uris, img_uris
+            return get_no_tool_found_error_log(
+                query_name=defined_tool_descriptor), defined_tool_descriptor, f_uris, img_uris
         ##################################################
         output_tool_call += f"""
             '''
@@ -556,7 +566,7 @@ class ToolCallManager:
                 logger.info("Tool usage dictionary is a string. Converting it to a dictionary.")
                 self.tool_usage_dict = json.loads(self.tool_usage_dict_stringified)
         except Exception as e:
-            logger .error(f"Error occurred while converting the tool usage dictionary to a dictionary: {e}")
+            logger.error(f"Error occurred while converting the tool usage dictionary to a dictionary: {e}")
             return get_json_decode_error_log(error_logs=str(e)), None, None, None
 
         f_uris, img_uris = [], []
@@ -585,11 +595,36 @@ class ToolCallManager:
             output_tool_call += expert_network_response_raw_str
             logger.info(f"Expert network query response retrieved.")
 
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SEMANTOR_SEARCH_QUERY:
+            error_msg = verify_semantor_search_query_content(content=self.tool_usage_dict)
+            if error_msg: return error_msg, None, None, None
+            query = self.tool_usage_dict.get("parameters").get("query")
+            semantor_response = execute_semantor_search_query(user=self.user, llm_model=self.assistant.llm_model,
+                                                              query=query)
+            semantor_response_raw_str = json.dumps(semantor_response, sort_keys=True, default=str)
+            output_tool_call += semantor_response_raw_str
+            logger.info(f"Semantor query response retrieved.")
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SEMANTOR_CONSULTATION_QUERY:
+            error_msg = verify_semantor_consultation_query_content(content=self.tool_usage_dict)
+            if error_msg: return error_msg, None, None, None
+            is_local = self.tool_usage_dict.get("parameters").get("is_local")
+            object_id = self.tool_usage_dict.get("parameters").get("object_id")
+            query = self.tool_usage_dict.get("parameters").get("query")
+            semantor_response = execute_semantor_consultation_query(
+                user=self.user, llm_model=self.assistant.llm_model, is_local=is_local, object_id=object_id,
+                query=query, image_urls=img_uris, file_urls=f_uris
+            )
+            semantor_consult_response_raw_str = json.dumps(semantor_response, sort_keys=True, default=str)
+            output_tool_call += semantor_consult_response_raw_str
+            logger.info(f"Semantor consultation response retrieved.")
+
         ##################################################
         # NO TOOL FOUND
         else:
             logger.error(f"No tool found with the descriptor: {defined_tool_descriptor}")
-            return get_no_tool_found_error_log(query_name=defined_tool_descriptor), defined_tool_descriptor, f_uris, img_uris
+            return get_no_tool_found_error_log(
+                query_name=defined_tool_descriptor), defined_tool_descriptor, f_uris, img_uris
         ##################################################
         output_tool_call += f"""
                     '''

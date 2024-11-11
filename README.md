@@ -2,18 +2,20 @@
 
 **DAILY:**
 - [ ] Integrate Slides to google apps. (MERT)
-- [ ] Implement integrating the agents with a click.
-- [ ] Put a banner to the integration main page (where categories show).
+
 - [ ] Fill in the instructions and tags for the assistants (respectively).
-- [ ] Build the meta-integrations module for orchestration creations (team creation).
+- [ ] Complete the course videos for documentation.
+
+- [ ] [ ] Semantor: Integration of the consultation mechanism for global network
+- [ ] [ ] Semantor: Main page landing addition
 
 
 **BUGS:**
-- [ ] Bug regarding the Select2 fields must be resolved.
-- [ ] Website sometimes fails on registration (login field ?, 504 hatası ?)
-- [ ] Page refreshes must not remove all the entered fields.
-- [ ] Browsing functionality doesn't work on Hüseyin but works on local (?)
-- [ ] Harmoniq gives bullshit answers, sometimes mixes words up (must do audio streaming with web sockets)
+- [ ] SELECT2: Bug regarding the Select2 fields must be resolved.
+- [ ] REGISTER/FAIL: Website sometimes fails on registration (login field ?, 504 hatası ?)
+- [ ] FORM-REFRESH-NULL: Page refreshes must not remove all the entered fields.
+- [ ] BROWSING-BUG: Browsing functionality doesn't work on Hüseyin but works on local (?)
+- [ ] HARMONIQ-STREAMING: Harmoniq gives bullshit answers, sometimes mixes words up (must do audio streaming with web sockets)
 
 ---
 

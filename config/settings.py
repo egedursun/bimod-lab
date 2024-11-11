@@ -153,6 +153,7 @@ INSTALLED_APPS = [
     "apps.meta_integrations",
     "apps.ml_model_store",
     "apps.knowledge_base_store",
+    "apps.semantor",
 
     ########################################
     # SUPPORT
@@ -648,11 +649,21 @@ JAZZMIN_SETTINGS = {
 
 VOSK_MODEL_PATH = os.environ.get("VOSK_MODEL_PATH", default="ml_models/vosk-model-en-us-0.22-lgraph")
 
+INTERNAL_OPENAI_API_KEY = os.environ.get("INTERNAL_OPENAI_API_KEY", default="")
 
 #####################################################################################################################
 # ATTEMPT FIXTURE DEPLOYMENT
 #####################################################################################################################
 
 ATTEMPT_FIXTURE_DEPLOYMENT = False
+if ATTEMPT_FIXTURE_DEPLOYMENT is True:
+    print("[settings.py] [V] Attempting to deploy the database fixtures...")
+else:
+    print("[settings.py] [X] Skipping the database fixtures deployment...")
+SKIP_FIXTURE_EMBEDDINGS = True
+if SKIP_FIXTURE_EMBEDDINGS is True:
+    print("[settings.py] [X] Skipping the database vector embeddings deployment...")
+else:
+    print("[settings.py] [V] Attempting to deploy the database vector embeddings...")
 
 #####################################################################################################################

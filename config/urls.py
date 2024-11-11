@@ -67,7 +67,6 @@ urlpatterns = [
     path("app/data_backups/", include("apps.data_backups.urls", namespace="data_backups")),
     path("app/brainstorms/", include("apps.brainstorms.urls", namespace="brainstorms")),
     path("app/video_generations/", include("apps.video_generations.urls", namespace="video_generations")),
-    path("app/harmoniq/", include("apps.harmoniq.urls", namespace="harmoniq")),
     path("app/drafting/", include("apps.drafting.urls", namespace="drafting")),
     path("app/hadron_prime/", include("apps.hadron_prime.urls", namespace="hadron_prime")),
     path("app/smart_contracts/", include("apps.smart_contracts.urls", namespace="smart_contracts")),
@@ -82,8 +81,15 @@ urlpatterns = [
     path("app/slider/", include("apps.slider.urls", namespace="slider")),
     path("app/integrations/", include("apps.integrations.urls", namespace="integrations")),
     path("app/meta_integrations/", include("apps.meta_integrations.urls", namespace="meta_integrations")),
-    path("app/knowledge_base_store/", include("apps.knowledge_base_store.urls", namespace="knowledge_base_store")),
-    path("app/ml_model_store/", include("apps.ml_model_store.urls", namespace="ml_model_store")),
+    path("app/semantor/", include("apps.semantor.urls", namespace="semantor")),
+
+    ############################################################
+    # WORK IN PROGRESS
+    ############################################################
+    # path("app/harmoniq/", include("apps.harmoniq.urls", namespace="harmoniq")),
+    # path("app/ml_model_store/", include("apps.ml_model_store.urls", namespace="ml_model_store")),
+    # path("app/knowledge_base_storee/", include("apps.knowledge_base_store.urls", namespace="knowledge_base_store")),
+    ############################################################
 
     path('app/docs/', docs_redirect_view, name='technical_docs'),
     path("app/support_system/", include("apps.support_system.urls", namespace="support_system")),

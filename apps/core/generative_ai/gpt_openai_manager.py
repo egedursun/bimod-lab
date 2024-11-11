@@ -48,6 +48,10 @@ class OpenAIGPTClientManager:
     def get_naked_client(llm_model):
         return OpenAI(api_key=llm_model.api_key)
 
+    @staticmethod
+    def get_naked_client_with_api_key(api_key):
+        return OpenAI(api_key=api_key)
+
     def respond_stream(self, latest_message, prev_tool_name=None, with_media=False, file_uris=None, image_uris=None):
         from apps.multimodal_chat.models import MultimodalChatMessage
         from apps.llm_transaction.models import LLMTransaction

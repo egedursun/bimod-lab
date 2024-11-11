@@ -115,8 +115,8 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
                                                      message_image_contents=image_full_uris,
                                                      message_file_contents=file_full_uris)
             user_msg = MultimodalLeanChatMessage.objects.filter(multimodal_lean_chat=chat).last()
-            internal_llm_client_lean = GenerativeAIDecodeController.get_lean(assistant=chat.lean_assistant,
-                                                                             multimodal_chat=chat)
+            internal_llm_client_lean = GenerativeAIDecodeController.get_lean(
+                user=request.user, assistant=chat.lean_assistant, multimodal_chat=chat)
             response = internal_llm_client_lean.respond(latest_message=user_msg, image_uris=image_full_uris,
                                                         file_uris=file_full_uris)
             MultimodalLeanChatMessage.objects.create(multimodal_lean_chat=chat, sender_type='ASSISTANT',

@@ -211,6 +211,12 @@
       "url": "/app/leanmod/list"
     },
     {
+      "name": "Semantor™ Configuration",
+      "icon": "menu-icon tf-icons ti ti-puzzle",
+      "slug": "semantor-configuration",
+      "url": "/app/semantor/configuration"
+    },
+    {
       "name": "Add Data Security Layer",
       "icon": "menu-icon tf-icons ti ti-lock",
       "slug": "data-security",
@@ -221,18 +227,6 @@
       "icon": "menu-icon tf-icons ti ti-lock",
       "slug": "data-security",
       "url": "/app/data_security/ner/list"
-    },
-    {
-      "name": "Harmoniq Agents",
-      "icon": "menu-icon tf-icons ti ti-microphone",
-      "slug": "harmoniq-agents",
-      "url": "/app/harmoniq/create"
-    },
-    {
-      "name": "Harmoniq Chat",
-      "icon": "menu-icon tf-icons ti ti-microphone",
-      "slug": "harmoniq-chat",
-      "url": "/app/harmoniq/use"
     },
     {
       "name": "Chats",

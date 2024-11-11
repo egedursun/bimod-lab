@@ -1211,52 +1211,12 @@
   },
   {
     "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
-    "course_section": "Harmoniq Agents",
-    "video_title": "Creating Harmoniq Agents",
-    "video_description": "This video demonstrates how to create Harmoniq agents.",
-    "video_content_url": "https://www.google.com",
-    "__course": 9,
-    "__section": 2,
-    "__video": 1
-  },
-  {
-    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
-    "course_section": "Harmoniq Agents",
-    "video_title": "Managing Harmoniq Agents",
-    "video_description": "This video demonstrates how to manage Harmoniq agents.",
-    "video_content_url": "https://www.google.com",
-    "__course": 9,
-    "__section": 2,
-    "__video": 2
-  },
-  {
-    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
-    "course_section": "Harmoniq Agents",
-    "video_title": "Updating Harmoniq Agents",
-    "video_description": "This video demonstrates how to update Harmoniq agents.",
-    "video_content_url": "https://www.google.com",
-    "__course": 9,
-    "__section": 2,
-    "__video": 3
-  },
-  {
-    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
-    "course_section": "Harmoniq Agents",
-    "video_title": "Deleting Harmoniq Agents",
-    "video_description": "This video demonstrates how to delete Harmoniq agents.",
-    "video_content_url": "https://www.google.com",
-    "__course": 9,
-    "__section": 2,
-    "__video": 4
-  },
-  {
-    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
     "course_section": "Expert Networks",
     "video_title": "Creating Expert Networks",
     "video_description": "This video demonstrates how to create expert networks.",
     "video_content_url": "https://www.google.com",
     "__course": 9,
-    "__section": 3,
+    "__section": 2,
     "__video": 1
   },
   {
@@ -1266,7 +1226,7 @@
     "video_description": "This video demonstrates how to manage expert networks.",
     "video_content_url": "https://www.google.com",
     "__course": 9,
-    "__section": 3,
+    "__section": 2,
     "__video": 2
   },
   {
@@ -1276,7 +1236,7 @@
     "video_description": "This video demonstrates how to update expert networks.",
     "video_content_url": "https://www.google.com",
     "__course": 9,
-    "__section": 3,
+    "__section": 2,
     "__video": 3
   },
   {
@@ -1286,7 +1246,7 @@
     "video_description": "This video demonstrates how to delete expert networks.",
     "video_content_url": "https://www.google.com",
     "__course": 9,
-    "__section": 3,
+    "__section": 2,
     "__video": 4
   },
   {
@@ -1296,7 +1256,7 @@
     "video_description": "This video demonstrates how to create LeanMod assistants.",
     "video_content_url": "https://www.google.com",
     "__course": 9,
-    "__section": 4,
+    "__section": 3,
     "__video": 1
   },
   {
@@ -1306,7 +1266,7 @@
     "video_description": "This video demonstrates how to manage LeanMod assistants.",
     "video_content_url": "https://www.google.com",
     "__course": 9,
-    "__section": 4,
+    "__section": 3,
     "__video": 2
   },
   {
@@ -1316,7 +1276,7 @@
     "video_description": "This video demonstrates how to update LeanMod assistants.",
     "video_content_url": "https://www.google.com",
     "__course": 9,
-    "__section": 4,
+    "__section": 3,
     "__video": 3
   },
   {
@@ -1326,7 +1286,7 @@
     "video_description": "This video demonstrates how to delete LeanMod assistants.",
     "video_content_url": "https://www.google.com",
     "__course": 9,
-    "__section": 4,
+    "__section": 3,
     "__video": 4
   },
   {
@@ -1336,8 +1296,68 @@
     "video_description": "This video demonstrates how to test expert network consultancy on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 9,
-    "__section": 4,
+    "__section": 3,
     "__video": 5
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "course_section": "Plug & Play Assistants",
+    "video_title": "Categories of Plug & Play Assistants",
+    "video_description": "This video demonstrates the categories of plug & play assistants on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 9,
+    "__section": 4,
+    "__video": 1
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "course_section": "Plug & Play Assistants",
+    "video_title": "Integrating Boilerplate Assistants",
+    "video_description": "This video demonstrates how to integrate boilerplate assistants on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 9,
+    "__section": 4,
+    "__video": 2
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "course_section": "Plug & Play Assistants",
+    "video_title": "Specifying Data Sources for Boilerplate Assistants",
+    "video_description": "This video demonstrates how to specify data sources for boilerplate assistants on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 9,
+    "__section": 4,
+    "__video": 3
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "course_section": "Plug & Play Teams",
+    "video_title": "Categories of Plug & Play Teams",
+    "video_description": "This video demonstrates the categories of plug & play teams on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 9,
+    "__section": 5,
+    "__video": 1
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "course_section": "Plug & Play Teams",
+    "video_title": "Integrating Boilerplate Teams",
+    "video_description": "This video demonstrates how to integrate boilerplate teams on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 9,
+    "__section": 5,
+    "__video": 2
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "course_section": "Plug & Play Teams",
+    "video_title": "Specifying Data Sources for Boilerplate Teams",
+    "video_description": "This video demonstrates how to specify data sources for boilerplate teams on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 9,
+    "__section": 5,
+    "__video": 3
   },
   {
     "course": "BimodLab - Data Security & Named Entity Recognition (NER)",
@@ -1611,32 +1631,12 @@
   },
   {
     "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
-    "course_section": "Harmoniq Agent Chats",
-    "video_title": "Picking the Right Agent",
-    "video_description": "This video demonstrates how to pick the right agent on BimodLab.",
-    "video_content_url": "https://www.google.com",
-    "__course": 11,
-    "__section": 3,
-    "__video": 1
-  },
-  {
-    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
-    "course_section": "Harmoniq Agent Chats",
-    "video_title": "Sending a Message / Query",
-    "video_description": "The video demonstrates how to send a message or query on BimodLab.",
-    "video_content_url": "https://www.google.com",
-    "__course": 11,
-    "__section": 3,
-    "__video": 2
-  },
-  {
-    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
     "course_section": "Starred Messages",
     "video_title": "Managing Starred Messages",
     "video_description": "This video demonstrates how to manage starred messages on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 4,
+    "__section": 3,
     "__video": 1
   },
   {
@@ -1646,7 +1646,7 @@
     "video_description": "The video demonstrates how to delete starred messages on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 4,
+    "__section": 3,
     "__video": 2
   },
   {
@@ -1656,7 +1656,7 @@
     "video_description": "The video demonstrates how to create message templates on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 5,
+    "__section": 4,
     "__video": 1
   },
   {
@@ -1666,7 +1666,7 @@
     "video_description": "The video demonstrates how to manage message templates on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 5,
+    "__section": 4,
     "__video": 2
   },
   {
@@ -1676,7 +1676,7 @@
     "video_description": "The video demonstrates how to update message templates on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 5,
+    "__section": 4,
     "__video": 3
   },
   {
@@ -1686,7 +1686,7 @@
     "video_description": "The video demonstrates how to delete message templates on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 5,
+    "__section": 4,
     "__video": 4
   },
   {
@@ -1696,7 +1696,7 @@
     "video_description": "The video demonstrates how to create memory statements on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 6,
+    "__section": 5,
     "__video": 1
   },
   {
@@ -1706,7 +1706,7 @@
     "video_description": "The video demonstrates how to manage memory statements on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 6,
+    "__section": 5,
     "__video": 2
   },
   {
@@ -1716,7 +1716,7 @@
     "video_description": "The video demonstrates how to delete memory statements on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 6,
+    "__section": 5,
     "__video": 3
   },
   {

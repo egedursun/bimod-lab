@@ -101,9 +101,12 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
             pass
         elif agent.context_overflow_strategy == ContextManagementStrategyNames.STOP:
             pass
+        # TODO: optimize the vectorization strategy, then will be uncommented
+        """
         elif agent.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE:
             vectorizer_name = request.POST.get('vectorizer_name')
             vectorizer_api_key = request.POST.get('vectorizer_api_key')
+        """
 
         agent.vectorizer_name = vectorizer_name
         agent.vectorizer_api_key = vectorizer_api_key

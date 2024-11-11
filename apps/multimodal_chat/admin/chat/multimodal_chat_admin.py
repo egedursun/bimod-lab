@@ -42,11 +42,14 @@ class MultimodalChatAdmin(admin.ModelAdmin):
     list_display_links_details = False
 
     def save_model(self, request, obj, form, change):
+        # TODO: optimize the vectorization strategy, then will be uncommented
+        """
         if obj.assistant.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE:
             if obj.assistant.vectorizer_name is None:
                 return
             if obj.assistant.vectorizer_api_key is None:
                 return
+        """
         super().save_model(request, obj, form, change)
 
     def delete_selected(self, request, queryset):

@@ -16,6 +16,7 @@
 #
 import logging
 
+from django.contrib.auth.models import User
 from openai import OpenAI
 
 from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import BALANCE_OVERFLOW_LOG
@@ -23,21 +24,23 @@ from apps.core.generative_ai.auxiliary_methods.json_operations.json_operation_pr
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_technical_error_log, \
     get_json_decode_error_log
 from apps.core.generative_ai.utils import find_tool_call_from_json, ChatRoles, DEFAULT_ERROR_MESSAGE, \
-    GPT_DEFAULT_ENCODING_ENGINE, BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, step_back_retry_mechanism, RetryCallersNames
+    GPT_DEFAULT_ENCODING_ENGINE, BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, step_back_retry_mechanism, \
+    RetryCallersNames
 from apps.core.system_prompts.chat_history_factory_builder import HistoryBuilder
 from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
 from apps.core.tool_calls.tool_call_manager import ToolCallManager
 from apps.leanmod.models import LeanAssistant
 from apps.multimodal_chat.models import MultimodalLeanChat
-from apps.multimodal_chat.utils import calculate_billable_cost_from_raw, transmit_websocket_log, BIMOD_NO_TAG_PLACEHOLDER
-
+from apps.multimodal_chat.utils import calculate_billable_cost_from_raw, transmit_websocket_log, \
+    BIMOD_NO_TAG_PLACEHOLDER
 
 logger = logging.getLogger(__name__)
 
 
 class OpenAIGPTLeanClientManager:
-    def __init__(self, assistant, multimodal_chat):
+    def __init__(self, user, assistant, multimodal_chat):
         self.connection = OpenAI(api_key=assistant.llm_model.api_key)
+        self.user: User = user
         self.lean_assistant: LeanAssistant = assistant
         self.chat: MultimodalLeanChat = multimodal_chat
 
@@ -159,7 +162,8 @@ class OpenAIGPTLeanClientManager:
                     content = delta.content
                     if content is not None:
                         acc_chunks += content
-                        transmit_websocket_log(f"""{content}""", stop_tag=BIMOD_NO_TAG_PLACEHOLDER, chat_id=self.chat.id)
+                        transmit_websocket_log(f"""{content}""", stop_tag=BIMOD_NO_TAG_PLACEHOLDER,
+                                               chat_id=self.chat.id)
                 transmit_websocket_log(f"""""", stop_tag=BIMOD_STREAMING_END_TAG, chat_id=self.chat.id)
                 transmit_websocket_log(f"""
             🔌 Generation iterations has been successfully accomplished.
@@ -237,7 +241,7 @@ class OpenAIGPTLeanClientManager:
                                     """, chat_id=self.chat.id)
                 try:
                     tool_xc = ToolCallManager(
-                        assistant=self.lean_assistant, chat=self.chat, tool_usage_json_str=json_part
+                        user=self.user, assistant=self.lean_assistant, chat=self.chat, tool_usage_json_str=json_part
                     )
                     tool_resp, tool_name, file_uris, image_uris = tool_xc.call_internal_tool_service_lean()
                     transmit_websocket_log(f"""
@@ -399,7 +403,7 @@ class OpenAIGPTLeanClientManager:
                     organization=self.chat.organization, model=self.chat.lean_assistant.llm_model,
                     responsible_user=self.chat.user, responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=final_output,
-                    llm_cost=0, internal_service_cost=0, tax_cost=0,  total_cost=0, total_billable_cost=0,
+                    llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source
                 )
                 self.chat.transactions.add(failure_tx)
@@ -442,7 +446,7 @@ class OpenAIGPTLeanClientManager:
         except Exception as e:
             logger.error(f"Error occurred while processing the response: {str(e)}")
             final_resp = step_back_retry_mechanism(client=self, latest_message=latest_message,
-                                                       caller=RetryCallersNames.RESPOND)
+                                                   caller=RetryCallersNames.RESPOND)
             if final_resp == DEFAULT_ERROR_MESSAGE:
                 final_resp += get_technical_error_log(error_logs=str(e))
 
@@ -453,7 +457,8 @@ class OpenAIGPTLeanClientManager:
             for i, json_part in enumerate(json_content_of_resp):
                 try:
                     tool_xc = ToolCallManager(
-                        assistant=self.lean_assistant, chat=self.chat, tool_usage_json_str=json_part)
+                        user=self.user, assistant=self.lean_assistant, chat=self.chat, tool_usage_json_str=json_part
+                    )
                     tool_resp, tool_name, file_uris, image_uris = tool_xc.call_internal_tool_service_lean()
                     if tool_name is not None:
                         prev_tool_name = tool_name

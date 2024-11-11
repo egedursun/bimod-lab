@@ -67,6 +67,10 @@ from apps.core.system_prompts.leanmod.leanmod_user_information_prompt import \
     build_structured_user_information_prompt_leanmod
 from apps.core.system_prompts.leanmod.multimodality.leanmod_multimodality_expert_network_prompt import \
     build_expert_networks_multi_modality_prompt_leanmod
+from apps.core.system_prompts.leanmod.tools.leanmod_semantor_execution_prompt import \
+    build_structured_tool_prompt__semantor_consultation_execution_leanmod
+from apps.core.system_prompts.leanmod.tools.leanmod_semantor_query_search_prompt import \
+    build_structured_tool_prompt__semantor_search_execution_leanmod
 from apps.core.system_prompts.leanmod.tools.leanmod_tools_expert_networks_query_prompt import \
     build_structured_tool_prompt__expert_network_query_execution_leanmod
 from apps.core.system_prompts.leanmod.tools.leanmod_tools_instructions_prompt import \
@@ -142,7 +146,8 @@ class SystemPromptFactoryBuilder:
         output_language = assistant.response_language
 
         (base_prompt, target_audience, intra_memory, technical_dict, main_instructions, standard_memory,
-         agent_nickname, spatial_awareness, projects_teams, communication_lang, templated_response, tone, comm_user_info) = (
+         agent_nickname, spatial_awareness, projects_teams, communication_lang, templated_response, tone,
+         comm_user_info) = (
             SystemPromptFactoryBuilder._build_foundation_prompts(
                 agent_nickname=agent_nickname, agent_personality_tone=agent_personality_tone, assistant=assistant,
                 chat=chat, output_language=output_language, target_audience=target_audience,
@@ -175,7 +180,7 @@ class SystemPromptFactoryBuilder:
             do_generate_image=generate_image, do_edit_image=edit_image, do_dream_image=dream_image,
             generic_instructions=main_instructions, vector_store_feed=vector_store_feed,
             do_vector_store=query_vector_store, media_store_feed=media_manager_feed, standard_memory=standard_memory,
-            ml_model_feed=ml_manager_feed,  agent_nickname=agent_nickname,  spatial_awareness=spatial_awareness,
+            ml_model_feed=ml_manager_feed, agent_nickname=agent_nickname, spatial_awareness=spatial_awareness,
             do_ml_model=predict_with_ml, do_reasoning=execute_reasoning, projects_teams=projects_teams,
             comm_language=communication_lang, templated_response=templated_response, scripts_feed=bash_scripts,
             sql_feed=sql_feed, do_sql_query=execute_sql_query, nosql_feed=nosql_feed,
@@ -329,8 +334,10 @@ class SystemPromptFactoryBuilder:
                 user_info)
 
     @staticmethod
-    def build_lean(assistant_name: str, instructions: str, audience: str = "standard", tone: str = "formal",
-                   language: str = "en", chat_name: str = "Default"):
+    def build_lean(
+        assistant_name: str, instructions: str, audience: str = "standard", tone: str = "formal",
+        language: str = "en", chat_name: str = "Default"
+    ):
         ##############################################################################################################
         # DASHBOARD: STATISTICS ASSISTANT (THIS ASSISTANT HAS NO OTHER PURPOSE THAN DASHBOARD ANALYSIS)
         ##############################################################################################################
@@ -452,6 +459,8 @@ class SystemPromptFactoryBuilder:
         expert_network = build_expert_networks_multi_modality_prompt_leanmod(lean_assistant=lean_assistant)
         tool_instructions = build_structured_tool_usage_instructions_prompt_leanmod()
         do_expert_network = build_structured_tool_prompt__expert_network_query_execution_leanmod()
+        search_semantor = build_structured_tool_prompt__semantor_search_execution_leanmod()
+        do_semantor = build_structured_tool_prompt__semantor_consultation_execution_leanmod()
         combined_system_instructions = generic
         combined_system_instructions += agent_nickname
         combined_system_instructions += instructions
@@ -460,4 +469,6 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += expert_network
         combined_system_instructions += tool_instructions
         combined_system_instructions += do_expert_network
+        combined_system_instructions += search_semantor
+        combined_system_instructions += do_semantor
         return combined_system_instructions

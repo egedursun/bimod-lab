@@ -16,6 +16,8 @@
 #
 import logging
 
+from django.contrib.auth.models import User
+
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.gpt_openai_manager_lean import OpenAIGPTLeanClientManager
 from apps.assistants.models import Assistant
@@ -35,10 +37,11 @@ class GenerativeAIDecodeController:
             return OpenAIGPTClientManager(assistant=assistant, chat_object=multimodal_chat)
 
     @staticmethod
-    def get_lean(assistant: Assistant, multimodal_chat: MultimodalChat):
+    def get_lean(user: User, assistant: Assistant, multimodal_chat: MultimodalChat):
         if assistant.llm_model.provider == LLM_CORE_PROVIDERS["OPENAI"]["code"]:
             logger.info("OpenAI provider is selected.")
-            return OpenAIGPTLeanClientManager(assistant=assistant, multimodal_chat=multimodal_chat)
+            return OpenAIGPTLeanClientManager(
+                user=user, assistant=assistant, multimodal_chat=multimodal_chat)
 
     @staticmethod
     def provide_analysis(llm_model, statistics):

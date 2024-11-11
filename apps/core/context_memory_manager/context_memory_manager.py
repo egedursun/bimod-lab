@@ -125,11 +125,16 @@ class ContextMemoryManager:
             ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
         elif mgm_strategy == ContextManagementStrategyNames.STOP:
             ctx_msgs = ContextMemoryManager._handle_strategy_stop_conversation(chat_history, max_context_msgs)
+        else:
+            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
+
+        # TODO: optimize the vectorization strategy, then will be uncommented
+        """
         elif mgm_strategy == ContextManagementStrategyNames.VECTORIZE:
             ctx_msgs = ContextMemoryManager._handle_strategy_vectorize_history(assistant, chat_history,
                                                                                        chat_object, max_context_msgs)
-        else:
-            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
+        """
+
         logger.info(f"[ChatContextManager.handle_context] Handled the context.")
         return ctx_msgs
 

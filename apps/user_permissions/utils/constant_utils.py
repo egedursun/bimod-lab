@@ -236,6 +236,9 @@ class PermissionNames:
     LIST_ML_MODEL_FILES = 'list_ml_model_files'
     DELETE_ML_MODEL_FILES = 'delete_ml_model_files'
 
+    INTEGRATE_ML_MODEL_FILES = 'integrate_ml_model_files'
+    LIST_ML_MODEL_INTEGRATIONS = 'list_ml_model_integrations'
+
     ADD_CUSTOM_SQL_QUERIES = 'add_custom_sql_queries'
     UPDATE_CUSTOM_SQL_QUERIES = 'update_custom_sql_queries'
     LIST_CUSTOM_SQL_QUERIES = 'list_custom_sql_queries'
@@ -623,6 +626,9 @@ PERMISSION_TYPES = [
     ('update_ml_model_files', 'Update ML Model Files'),
     ('list_ml_model_files', 'List ML Model Files'),
     ('delete_ml_model_files', 'Delete ML Model Files'),
+
+    ('integrate_ml_model_files', 'Integrate ML Model Files'),
+    ('list_ml_model_integrations', 'List ML Model Integrations'),
 
     ('add_custom_sql_queries', 'Add Custom SQL Queries'),
     ('update_custom_sql_queries', 'Update Custom SQL Queries'),

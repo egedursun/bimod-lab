@@ -90,9 +90,12 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             pass
         elif intra_memory_strategy == ContextManagementStrategyNames.STOP:
             pass
+        # TODO: optimize the vectorization strategy, then will be uncommented
+        """
         elif intra_memory_strategy == ContextManagementStrategyNames.VECTORIZE:
             embedding_vectorizer_name = request.POST.get('vectorizer_name')
             embedding_vectorizer_api_key = request.POST.get('vectorizer_api_key')
+        """
 
         tone = request.POST.get('tone')
         communication_lang = request.POST.get('response_language')

@@ -309,6 +309,8 @@ class MultimodalChat(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        # TODO: optimize the vectorization strategy, then will be uncommented
+        """
         if (self.assistant.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE
             and self.context_memory_connection is None):
             if self.assistant.vectorizer_name is None:
@@ -322,6 +324,7 @@ class MultimodalChat(models.Model):
             conn = ContextHistoryKnowledgeBaseConnection.objects.get(id=intra_memory.id)
             self.context_memory_connection = conn
             self.save()
+        """
 
     def delete(self, using=None, keep_parents=False):
         if self.context_memory_connection:

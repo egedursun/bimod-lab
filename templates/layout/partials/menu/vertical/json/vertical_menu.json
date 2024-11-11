@@ -111,7 +111,7 @@
       "name": "LLM Models",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-cores",
-      "submenu" : [
+      "submenu": [
         {
           "name": "Add New LLM Core",
           "slug": "llm-core",
@@ -247,23 +247,6 @@
       ]
     },
     {
-      "name": "Harmoniq™",
-      "icon": "menu-icon tf-icons ti ti-microphone",
-      "slug": "chats",
-      "submenu": [
-        {
-          "name": "Create Harmoniq™",
-          "slug": "harmoniq",
-          "url": "harmoniq:create"
-        },
-        {
-          "name": "Manage Harmoniq™",
-          "slug": "harmoniq",
-          "url": "harmoniq:list"
-        }
-      ]
-    },
-    {
       "name": "Plug & Play Agents",
       "icon": "menu-icon tf-icons ti ti-plug",
       "slug": "plug-and-play-agents",
@@ -313,6 +296,12 @@
       ]
     },
     {
+      "name": "Configure Semantor™",
+      "icon": "menu-icon tf-icons ti ti-puzzle",
+      "slug": "configure-semantor",
+      "url": "semantor:configuration"
+    },
+    {
       "menu_header": "Security & Privacy"
     },
     {
@@ -334,12 +323,6 @@
     },
     {
       "menu_header": "Interaction"
-    },
-    {
-      "name": "Harmoniq™ Chat",
-      "icon": "menu-icon tf-icons ti ti-microphone",
-      "slug": "harmoniq-chats",
-      "url": "harmoniq:use"
     },
     {
       "name": "Chats",

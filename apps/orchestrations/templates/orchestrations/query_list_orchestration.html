@@ -135,12 +135,12 @@
         <div class="mb-3">
           <label for="maestro-select" class="form-label">Select Maestro</label>
           <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle w-25" type="button" id="dropdownMenuButton"
+            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa fa-bolt-lightning me-2"></i>
               <strong>Pick Your Orchestration Maestro</strong>
             </button>
-            <ul class="dropdown-menu w-25" aria-labelledby="dropdownMenuButton">
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
               {% for maestro in maestro_list %}
                 <li>
                   <a class="dropdown-item" href="#" data-value="{{ maestro.id }}">

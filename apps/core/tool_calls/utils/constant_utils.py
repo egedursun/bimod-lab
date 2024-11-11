@@ -47,6 +47,8 @@ class ToolCallDescriptorNames:
     EXECUTE_ORCHESTRATION_WORKER_CONSULTANCY = 'Orchestration Worker Assistant Call'
     EXECUTE_SMART_CONTRACT_FUNCTION_CALL = 'Smart Contract Function Call'
     EXECUTE_METAKANBAN_ACTION = 'Meta Kanban Command Execution'
+    EXECUTE_SEMANTOR_SEARCH_QUERY = 'Semantor Search Query Execution'
+    EXECUTE_SEMANTOR_CONSULTATION_QUERY = 'Semantor Consultation Query Execution'
 
 
 IMAGE_GENERATION_AFFIRMATION_PROMPT = f"""

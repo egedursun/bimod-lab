@@ -206,3 +206,11 @@ media/generated/images/*
 # */*/migrations/*.pyc
 # */*/*/migrations/*.py
 # */*/*/migrations/*.pyc
+
+# Ignore everything in the assistants and integrations directories
+/semantor_vectors/assistants/*
+/semantor_vectors/integrations/*
+
+# Allow __init__.py files in all subdirectories of assistants and integrations
+!/semantor_vectors/assistants/**/__init__.py
+!/semantor_vectors/integrations/**/__init__.py

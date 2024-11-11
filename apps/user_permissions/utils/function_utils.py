@@ -423,6 +423,10 @@ def get_permissions_grouped():
             ('list_ml_model_files', 'List ML Model Files'),
             ('delete_ml_model_files', 'Delete ML Model Files'),
         ],
+        "ML Model Integrations Permissions": [
+            ('integrate_ml_model_files', 'Integrate ML Model Files'),
+            ('list_ml_model_integrations', 'List ML Model Integrations'),
+        ],
         "Function Permissions": [
             ('add_functions', 'Add Functions'),
             ('update_functions', 'Update Functions'),

@@ -232,24 +232,31 @@
   },
   {
     "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
-    "section_name": "Harmoniq Agents",
-    "section_description": "This section covers the Harmoniq Agents and their features.",
-    "__course": 9,
-    "__section": 2
-  },
-  {
-    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
     "section_name": "Expert Networks",
     "section_description": "This section covers the Expert Networks and their features.",
     "__course": 9,
-    "__section": 3
+    "__section": 2
   },
   {
     "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
     "section_name": "LeanMod Assistants",
     "section_description": "This section covers the LeanMod Assistants and their features.",
     "__course": 9,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "section_name": "Plug & Play Assistants",
+    "section_description": "This section covers the Plug & Play Assistants and their features.",
+    "__course": 9,
     "__section": 4
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "section_name": "Plug & Play Teams",
+    "section_description": "This section covers the Plug & Play Teams and their features.",
+    "__course": 9,
+    "__section": 5
   },
   {
     "course": "BimodLab - Data Security & Named Entity Recognition (NER)",
@@ -274,31 +281,24 @@
   },
   {
     "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
-    "section_name": "Harmoniq Agent Chats",
-    "section_description": "This section covers the Harmoniq Agent Chats and their features.",
-    "__course": 11,
-    "__section": 3
-  },
-  {
-    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
     "section_name": "Starred Messages",
     "section_description": "This section covers the starred messages and their features.",
     "__course": 11,
-    "__section": 4
+    "__section": 3
   },
   {
     "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
     "section_name": "Message Templates",
     "section_description": "This section covers the message templates and their features.",
     "__course": 11,
-    "__section": 5
+    "__section": 4
   },
   {
     "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
     "section_name": "Memory Statements",
     "section_description": "This section covers the memory statements and their features.",
     "__course": 11,
-    "__section": 6
+    "__section": 5
   },
   {
     "course": "BimodLab - eLLMa Scripting & Code Generation",
