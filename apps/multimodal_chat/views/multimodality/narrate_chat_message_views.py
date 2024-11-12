@@ -32,7 +32,7 @@ class LeanChat_MessageNarration(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         msg_id = kwargs.get('pk')
         try:
-            msg = get_object_or_404(MultimodalLeanChatMessage, id=msg_id, multimodal_chat__user=request.user)
+            msg = get_object_or_404(MultimodalLeanChatMessage, id=msg_id, multimodal_lean_chat__user=request.user)
         except Exception as e:
             logger.error(f"LeanMod chat message not found. Error: {e}")
             return JsonResponse({'audio_url': None})

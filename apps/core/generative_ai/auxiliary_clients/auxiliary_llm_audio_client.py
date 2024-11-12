@@ -51,7 +51,7 @@ class AuxiliaryLLMAudioClient:
             output_name = generate_random_audio_filename(extension=extension)
             bucket_path = f"{GENERATED_FILES_ROOT_MEDIA_PATH}{output_name}"
             uri = f"{MEDIA_URL}{bucket_path}"
-            temporary_path = os.path.join(str(Path(__file__).parent), "tmp", output_name)
+            temporary_path = os.path.join(str(Path(__file__).parent.parent), "tmp", output_name)
             c_data = self.connection.audio.speech.create(model=model_name, voice=voice, input=msg_output)
             c_data.stream_to_file(temporary_path)
             try:
@@ -98,7 +98,7 @@ class AuxiliaryLLMAudioClient:
             output_name = generate_random_audio_filename(extension=extension)
             bucket_path = f"{GENERATED_FILES_ROOT_MEDIA_PATH}{output_name}"
             uri = f"{MEDIA_URL}{bucket_path}"
-            temporary_path = os.path.join(str(Path(__file__).parent), "tmp", output_name)
+            temporary_path = os.path.join(str(Path(__file__).parent.parent), "tmp", output_name)
             c_data = self.connection.audio.speech.create(model=model_name, voice=voice, input=text_content)
             c_data.stream_to_file(temporary_path)
             try:
