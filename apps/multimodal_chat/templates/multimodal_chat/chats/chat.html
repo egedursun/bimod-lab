@@ -684,7 +684,7 @@
                 <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
                 <textarea class="form-control message-input border-0 me-4 shadow-none" name="message_content"
                           placeholder="Type your message here..." rows="1"></textarea>
-                <div class="message-actions d-flex align-items-center">
+                <div class="message-actions d-flex align-items-center bg-label-secondary p-2 mt-2 rounded">
                   <label for="record-audio-label" class="form-label mb-0">
                     <i id="recordAudioButton"
                        class="speech-to-text ti ti-microphone ti-md btn btn-sm btn-text-secondary btn-icon rounded-pill cursor-pointer text-heading"></i>
@@ -715,10 +715,12 @@
                     <input type="file" id="attach-doc" name="attached_files[]" multiple hidden>
                   </label>
 
+                  <!--
                   <button id="send-chat-message-button" class="btn btn-primary d-flex send-msg-btn" type="submit">
                     <span class="align-middle d-md-inline-block d-none"><strong>Send</strong></span>
                     <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
                   </button>
+                  -->
                   <button id="retry-response-button" class="btn btn-danger d-flex retry-msg-btn ms-4 me-4"
                           style="min-height: 38px;">
                     <i class="fa fa-redo-alt ti-16px"></i>
@@ -726,11 +728,11 @@
                 </div>
               </form>
               <!-- stick the button to the right side of the container -->
-              <div class="row me-4 mb-4" style="display: flex; justify-content: flex-end; ">
+              <div class="row me-1 mb-4" style="display: flex; justify-content: flex-end; ">
                 <button id="start-streaming" class="btn btn-primary"
-                        style="float: right; min-width: 177px; max-width: 177px;">
+                        style="float: right; min-width: 315px; max-width: 315px;">
                   <i class="fa fa-bolt-lightning me-2"></i>
-                  <strong>Send Stream</strong>
+                  <strong>Send Message</strong>
                 </button>
               </div>
             </div>

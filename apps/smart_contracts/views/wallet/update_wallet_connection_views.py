@@ -43,7 +43,9 @@ class SmartContractView_WalletConnectionUpdate(LoginRequiredMixin, TemplateView)
         wallet_connection_id = self.kwargs.get('pk')
         wallet_connection = get_object_or_404(BlockchainWalletConnection, pk=wallet_connection_id)
         context['wallet_connection'] = wallet_connection
-        context['organizations'] = Organization.objects.all()
+        context['organizations'] = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
         context['blockchain_types'] = BlockchainWalletConnection._meta.get_field('blockchain_type').choices
         return context
 

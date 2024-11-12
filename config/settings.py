@@ -96,6 +96,7 @@ INSTALLED_APPS = [
     "apps.theme.maps",
     "auth.apps.AuthConfig",
     "apps.theme.transactions",
+    'django.contrib.sitemaps',
 
     "apps.audit_logs",
     "apps.landing",

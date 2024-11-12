@@ -55,8 +55,8 @@ class AssistantMemoryView_List(TemplateView, LoginRequiredMixin):
                 agent_spec_mems = AssistantMemory.objects.filter(
                     organization=org, assistant=agent, memory_type=AgentStandardMemoryTypesNames.ASSISTANT_SPECIFIC)
                 user_spec_mems = AssistantMemory.objects.filter(
-                    organization=org, memory_type=AgentStandardMemoryTypesNames.USER_SPECIFIC, user=self.request.user)
-                memories = list(organization_spec_mems) + list(agent_spec_mems) + list(user_spec_mems)
+                    organization=org, assistant=agent, memory_type=AgentStandardMemoryTypesNames.USER_SPECIFIC, user=self.request.user)
+                memories = list(organization_spec_mems) + list(agent_spec_mems) + list(set(user_spec_mems))
                 org_memories[org].extend(memories)
         context['org_assistants'] = org_memories
         logger.info(f"Assistant Memories were listed by User: {self.request.user.id}.")

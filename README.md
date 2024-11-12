@@ -3,12 +3,6 @@
 **DAILY:**
 - [ ] Integrate Slides to google apps. (MERT)
 
-- [ ] Grant write permissions to the index file directories on server for semantor:
-  - Error Text: 
-    - Error occurred while executing the function: Error in faiss::FileIOWriter::FileIOWriter(const char*) at 
-    - /project/faiss/faiss/impl/io.cpp:101: Error: \'f\' failed: could not open /var/www/bimod_prod/semantor_vectors/
-    - assistants/assistants_index_1.index for writing: Permission denied"'
-
 - [ ] Fill in the instructions and tags for the assistants (respectively).
 - [ ] Complete the course videos for documentation.
 

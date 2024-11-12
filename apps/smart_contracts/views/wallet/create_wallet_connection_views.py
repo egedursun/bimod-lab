@@ -40,7 +40,9 @@ logger = logging.getLogger(__name__)
 class SmartContractView_WalletConnectionCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['organizations'] = Organization.objects.all()
+        context['organizations'] = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
         context['blockchain_types'] = BLOCKCHAIN_TYPE
         return context
 

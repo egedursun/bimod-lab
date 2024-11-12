@@ -1033,18 +1033,6 @@
       "menu_header": "Meta Modules (Coming Soon)"
     },
     {
-      "name": "Integrations",
-      "icon": "menu-icon tf-icons ti ti-dashboard",
-      "slug": "integrations",
-      "url": "dashboard:main-dashboard"
-    },
-    {
-      "name": "Meta Integrations",
-      "icon": "menu-icon tf-icons ti ti-rocket",
-      "slug": "meta-integrations",
-      "url": "dashboard:main-dashboard"
-    },
-    {
       "name": "VoidForger™",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "voidforger",
