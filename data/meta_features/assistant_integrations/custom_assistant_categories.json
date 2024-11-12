@@ -3,7 +3,7 @@
     "__category": 1,
     "category_name": "Manufacturing",
     "category_description": "Production of goods using labor, machines, tools, and chemical or biological processing.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/manufacturing.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/manufacturing.png",
     "tags": [
       "manufacturing",
       "production",
@@ -45,7 +45,7 @@
     "__category": 2,
     "category_name": "Logistics & Supply Chain",
     "category_description": "Management of the flow of goods and services from origin to consumption.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/logistics-and-supply-chain.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/logistics-and-supply-chain.png",
     "tags": [
       "logistics",
       "supply chain management",
@@ -85,7 +85,7 @@
     "__category": 3,
     "category_name": "Construction",
     "category_description": "Building infrastructure and facilities through labor and materials.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/construction.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/construction.png",
     "tags": [
       "construction",
       "building",
@@ -127,7 +127,7 @@
     "__category": 4,
     "category_name": "Energy & Utilities",
     "category_description": "Production and distribution of energy resources and essential utilities.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/energy-and-utilities.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/energy-and-utilities.png",
     "tags": [
       "energy",
       "utilities",
@@ -169,7 +169,7 @@
     "__category": 5,
     "category_name": "Healthcare",
     "category_description": "Services related to the diagnosis, treatment, and prevention of health issues.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/healthcare.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/healthcare.png",
     "tags": [
       "healthcare",
       "medical services",
@@ -210,7 +210,7 @@
     "__category": 6,
     "category_name": "Retail",
     "category_description": "Selling goods and services directly to consumers.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/retail.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/retail.png",
     "tags": [
       "retail",
       "consumer goods",
@@ -251,7 +251,7 @@
     "__category": 7,
     "category_name": "Food & Beverage Processing",
     "category_description": "Transformation of raw ingredients into consumable food and drinks.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/food-and-beverage-processing.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/food-and-beverage-processing.png",
     "tags": [
       "food processing",
       "beverage production",
@@ -291,7 +291,7 @@
     "__category": 8,
     "category_name": "Pharmaceuticals",
     "category_description": "Development and production of medications and health-related products.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/pharmaceuticals.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/pharmaceuticals.png",
     "tags": [
       "pharmaceuticals",
       "drug development",
@@ -331,7 +331,7 @@
     "__category": 9,
     "category_name": "Telecommunications",
     "category_description": "Transmission of information over significant distances through electronic means.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/telecommunications.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/telecommunications.png",
     "tags": [
       "telecommunications",
       "wireless communication",
@@ -370,7 +370,7 @@
     "__category": 10,
     "category_name": "Transportation",
     "category_description": "Movement of people and goods from one location to another.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/transportation.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/transportation.png",
     "tags": [
       "transportation",
       "logistics",
@@ -409,7 +409,7 @@
     "__category": 11,
     "category_name": "Aerospace & Defense",
     "category_description": "Manufacturing and maintenance of aircraft, spacecraft, and defense systems.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/aerospace-and-defence.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/aerospace-and-defence.png",
     "tags": [
       "aerospace",
       "defense",
@@ -448,7 +448,7 @@
     "__category": 12,
     "category_name": "Mining & Metals",
     "category_description": "Extraction and processing of minerals and metals from the earth.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/mining-and-metals.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/mining-and-metals.png",
     "tags": [
       "mining",
       "metals",
@@ -487,7 +487,7 @@
     "__category": 13,
     "category_name": "Chemicals & Materials",
     "category_description": "Production of chemicals and raw materials used in various industries.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/chemicals-and-materials.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/chemicals-and-materials.png",
     "tags": [
       "chemicals",
       "materials",
@@ -526,7 +526,7 @@
     "__category": 14,
     "category_name": "Automotive",
     "category_description": "Manufacturing and sales of vehicles and automotive parts.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/automotive.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/automotive.png",
     "tags": [
       "automotive",
       "vehicle manufacturing",
@@ -565,7 +565,7 @@
     "__category": 15,
     "category_name": "Real Estate & Property Management",
     "category_description": "Buying, selling, and managing properties and real estate.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/real-estate-and-property-management.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/real-estate-and-property-management.png",
     "tags": [
       "real estate",
       "property management",
@@ -604,7 +604,7 @@
     "__category": 16,
     "category_name": "Insurance",
     "category_description": "Financial protection against risks and uncertainties.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/insurance.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/insurance.png",
     "tags": [
       "insurance",
       "risk management",
@@ -644,7 +644,7 @@
     "__category": 17,
     "category_name": "Hospitality & Tourism",
     "category_description": "Services related to travel, accommodations, and entertainment.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/hospitality-and-tourism.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/hospitality-and-tourism.png",
     "tags": [
       "hospitality",
       "tourism",
@@ -684,7 +684,7 @@
     "__category": 18,
     "category_name": "Education & Training",
     "category_description": "Provision of knowledge and skills through formal and informal learning.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/education-and-training.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/education-and-training.png",
     "tags": [
       "education",
       "training",
@@ -724,7 +724,7 @@
     "__category": 19,
     "category_name": "Environmental Services",
     "category_description": "Management and protection of natural resources and the environment.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/environmental-services.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/environmental-services.png",
     "tags": [
       "environmental services",
       "sustainability",
@@ -763,7 +763,7 @@
     "__category": 20,
     "category_name": "Finance & Banking",
     "category_description": "Management of money, investments, and financial institutions.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/finance-and-banking.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/finance-and-banking.png",
     "tags": [
       "finance",
       "banking",
@@ -803,7 +803,7 @@
     "__category": 21,
     "category_name": "Information Technology",
     "category_description": "Implementation and management of computer systems and software.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/information-technology.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/information-technology.png",
     "tags": [
       "information technology",
       "IT management",
@@ -843,7 +843,7 @@
     "__category": 22,
     "category_name": "Biotechnology",
     "category_description": "Use of biological systems and organisms to develop products.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/biotechnology.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/biotechnology.png",
     "tags": [
       "biotechnology",
       "genetic engineering",
@@ -882,7 +882,7 @@
     "__category": 23,
     "category_name": "Media & Entertainment",
     "category_description": "Production and distribution of content for entertainment and information.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/media-and-entertainment.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/media-and-entertainment.png",
     "tags": [
       "media",
       "entertainment",
@@ -923,7 +923,7 @@
     "__category": 24,
     "category_name": "Advertising & Marketing",
     "category_description": "Promotion of products and services to consumers through various channels.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/advertising-and-marketing.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/advertising-and-marketing.png",
     "tags": [
       "advertising",
       "marketing",
@@ -963,7 +963,7 @@
     "__category": 25,
     "category_name": "Government & Public Sector",
     "category_description": "Management and administration of public services and policies.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/government-and-public-sector.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/government-and-public-sector.png",
     "tags": [
       "government",
       "public sector",
@@ -1002,7 +1002,7 @@
     "__category": 26,
     "category_name": "Nonprofit & NGOs",
     "category_description": "Organizations focused on social causes and community service.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/nonprofit-and-ngos.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/nonprofit-and-ngos.png",
     "tags": [
       "nonprofit",
       "NGOs",
@@ -1041,7 +1041,7 @@
     "__category": 27,
     "category_name": "Sports & Recreation",
     "category_description": "Services and activities related to sports, fitness, and leisure.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/sports-and-recreation.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/sports-and-recreation.png",
     "tags": [
       "sports",
       "recreation",
@@ -1080,7 +1080,7 @@
     "__category": 28,
     "category_name": "Fashion & Apparel",
     "category_description": "Design, production, and marketing of clothing and accessories.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/fashion-and-apparel.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/fashion-and-apparel.png",
     "tags": [
       "fashion",
       "apparel",
@@ -1118,7 +1118,7 @@
     "__category": 29,
     "category_name": "Home Improvement & Services",
     "category_description": "Services related to home renovations and maintenance.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/home-improvement-and-services.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/home-improvement-and-services.png",
     "tags": [
       "home improvement",
       "renovations",
@@ -1157,7 +1157,7 @@
     "__category": 30,
     "category_name": "Internet of Things (IoT)",
     "category_description": "Network of interconnected devices that communicate and exchange data.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/internet-of-things-iot.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/internet-of-things-iot.png",
     "tags": [
       "Internet of Things",
       "IoT devices",
@@ -1196,7 +1196,7 @@
     "__category": 31,
     "category_name": "Blockchain & Cryptocurrency",
     "category_description": "Technologies and applications related to decentralized digital currencies.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/blockchain-and-cryptocurrency.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/blockchain-and-cryptocurrency.png",
     "tags": [
       "blockchain",
       "cryptocurrency",
@@ -1234,7 +1234,7 @@
     "__category": 32,
     "category_name": "E-commerce",
     "category_description": "Buying and selling goods and services over the internet.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/e-commerce.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/e-commerce.png",
     "tags": [
       "e-commerce",
       "online shopping",
@@ -1273,7 +1273,7 @@
     "__category": 33,
     "category_name": "Digital Marketing",
     "category_description": "Marketing strategies implemented through digital channels.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/digital-marketing.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/digital-marketing.png",
     "tags": [
       "digital marketing",
       "online advertising",
@@ -1312,7 +1312,7 @@
     "__category": 34,
     "category_name": "Data Analytics & Business Intelligence",
     "category_description": "Analysis of data to inform business decisions and strategies.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/data-analytics-and-business-intelligence.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/data-analytics-and-business-intelligence.png",
     "tags": [
       "data analytics",
       "business intelligence",
@@ -1350,7 +1350,7 @@
     "__category": 35,
     "category_name": "Legal Services & Law",
     "category_description": "Services and practices related to legal matters, rights, and regulations.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/legal-services-and-law.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/legal-services-and-law.png",
     "tags": [
       "legal services",
       "law",
@@ -1389,7 +1389,7 @@
     "__category": 36,
     "category_name": "Agriculture & Farming",
     "category_description": "Practices and industries related to the cultivation of plants and livestock.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/agriculture-and-farming.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/agriculture-and-farming.png",
     "tags": [
       "agriculture",
       "farming",
@@ -1428,7 +1428,7 @@
     "__category": 37,
     "category_name": "Wellness & Health",
     "category_description": "Services and practices promoting physical, mental, and emotional well-being.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/wellness-and-health.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/wellness-and-health.png",
     "tags": [
       "wellness",
       "health",
@@ -1467,7 +1467,7 @@
     "__category": 38,
     "category_name": "Oil & Gas",
     "category_description": "Exploration, extraction, refining, and distribution of oil and natural gas resources.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/oil-and-gas.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/oil-and-gas.png",
     "tags": [
       "oil and gas",
       "petroleum",
@@ -1502,7 +1502,7 @@
     "__category": 39,
     "category_name": "Personal Use & Lifestyle",
     "category_description": "Tools and services designed to enhance personal well-being, productivity, and daily living.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/personal-use-and-lifestyle.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/personal-use-and-lifestyle.png",
     "tags": [
       "personal development",
       "lifestyle",
@@ -1541,7 +1541,7 @@
     "__category": 40,
     "category_name": "Miscellaneous",
     "category_description": "A collection of diverse tools and services that do not fit into specific categories.",
-    "category_image_url": "https://bimod-static.s3.us-east-1.amazonaws.com/integrations/category_images/miscellaneous.png",
+    "category_image_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/integrations/category_images/miscellaneous.png",
     "tags": [
       "miscellaneous",
       "general",

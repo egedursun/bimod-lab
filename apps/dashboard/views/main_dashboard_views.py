@@ -34,7 +34,6 @@ logger = logging.getLogger(__name__)
 
 
 class DashboardView_Main(LoginRequiredMixin, TemplateView):
-    @method_decorator(cache_page(30 * CONST_MINUTES))  # 30 minutes
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 

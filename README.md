@@ -6,10 +6,6 @@
 - [ ] Fill in the instructions and tags for the assistants (respectively).
 - [ ] Complete the course videos for documentation.
 
-- [ ] [ ] Semantor: Integration of the consultation mechanism for global network
-- [ ] [ ] Semantor: Main page landing addition
-
-
 **BUGS:**
 - [ ] SELECT2: Bug regarding the Select2 fields must be resolved.
 - [ ] REGISTER/FAIL: Website sometimes fails on registration (login field ?, 504 hatası ?)

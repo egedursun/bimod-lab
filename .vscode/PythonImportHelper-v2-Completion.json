@@ -57026,7 +57026,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTATICFILES_DIRS = [\n    BASE_DIR / \"src\" / \"assets\",\n]\nBASE_URL = os.environ.get(\"BASE_URL\", default=\"http://127.0.0.1:8000\")\nAWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')\nAWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')",
+        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTATICFILES_DIRS = [\n    BASE_DIR / \"src\" / \"assets\",\n]\nBASE_URL = os.environ.get(\"BASE_URL\", default=\"http://127.0.0.1:8000\")\nAWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')\nAWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-central-1')",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57035,7 +57035,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTATICFILES_DIRS = [\n    BASE_DIR / \"src\" / \"assets\",\n]\nBASE_URL = os.environ.get(\"BASE_URL\", default=\"http://127.0.0.1:8000\")\nAWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')\nAWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'",
+        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\nSTATICFILES_DIRS = [\n    BASE_DIR / \"src\" / \"assets\",\n]\nBASE_URL = os.environ.get(\"BASE_URL\", default=\"http://127.0.0.1:8000\")\nAWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')\nAWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-central-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57044,7 +57044,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATICFILES_DIRS = [\n    BASE_DIR / \"src\" / \"assets\",\n]\nBASE_URL = os.environ.get(\"BASE_URL\", default=\"http://127.0.0.1:8000\")\nAWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')\nAWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'",
+        "peekOfCode": "STATICFILES_DIRS = [\n    BASE_DIR / \"src\" / \"assets\",\n]\nBASE_URL = os.environ.get(\"BASE_URL\", default=\"http://127.0.0.1:8000\")\nAWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')\nAWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-central-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57053,7 +57053,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "BASE_URL = os.environ.get(\"BASE_URL\", default=\"http://127.0.0.1:8000\")\nAWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')\nAWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'\nMEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'\n__SERVICE_PROFIT_MARGIN = float(os.environ.get(\"SERVICE_PROFIT_MARGIN\", default=\"2.00\"))\n__SERVICE_TAX_RATE = float(os.environ.get(\"SERVICE_TAX_RATE\", default=\"0.18\"))",
+        "peekOfCode": "BASE_URL = os.environ.get(\"BASE_URL\", default=\"http://127.0.0.1:8000\")\nAWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')\nAWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-central-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'\nMEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'\n__SERVICE_PROFIT_MARGIN = float(os.environ.get(\"SERVICE_PROFIT_MARGIN\", default=\"2.00\"))\n__SERVICE_TAX_RATE = float(os.environ.get(\"SERVICE_TAX_RATE\", default=\"0.18\"))",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57062,7 +57062,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')\nAWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'\nMEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'\n__SERVICE_PROFIT_MARGIN = float(os.environ.get(\"SERVICE_PROFIT_MARGIN\", default=\"2.00\"))\n__SERVICE_TAX_RATE = float(os.environ.get(\"SERVICE_TAX_RATE\", default=\"0.18\"))\nENCRYPTION_SALT = os.environ.get(\"ENCRYPTION_SALT\", default=\"\")",
+        "peekOfCode": "AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')\nAWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-central-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'\nMEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'\n__SERVICE_PROFIT_MARGIN = float(os.environ.get(\"SERVICE_PROFIT_MARGIN\", default=\"2.00\"))\n__SERVICE_TAX_RATE = float(os.environ.get(\"SERVICE_TAX_RATE\", default=\"0.18\"))\nENCRYPTION_SALT = os.environ.get(\"ENCRYPTION_SALT\", default=\"\")",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57071,7 +57071,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'\nMEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'\n__SERVICE_PROFIT_MARGIN = float(os.environ.get(\"SERVICE_PROFIT_MARGIN\", default=\"2.00\"))\n__SERVICE_TAX_RATE = float(os.environ.get(\"SERVICE_TAX_RATE\", default=\"0.18\"))\nENCRYPTION_SALT = os.environ.get(\"ENCRYPTION_SALT\", default=\"\")\nMAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_ASSISTANT_EXPORTS_ORGANIZATION\", default=\"5\"))",
+        "peekOfCode": "AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')\nAWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-central-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'\nMEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'\n__SERVICE_PROFIT_MARGIN = float(os.environ.get(\"SERVICE_PROFIT_MARGIN\", default=\"2.00\"))\n__SERVICE_TAX_RATE = float(os.environ.get(\"SERVICE_TAX_RATE\", default=\"0.18\"))\nENCRYPTION_SALT = os.environ.get(\"ENCRYPTION_SALT\", default=\"\")\nMAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_ASSISTANT_EXPORTS_ORGANIZATION\", default=\"5\"))",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57080,7 +57080,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'\nMEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'\n__SERVICE_PROFIT_MARGIN = float(os.environ.get(\"SERVICE_PROFIT_MARGIN\", default=\"2.00\"))\n__SERVICE_TAX_RATE = float(os.environ.get(\"SERVICE_TAX_RATE\", default=\"0.18\"))\nENCRYPTION_SALT = os.environ.get(\"ENCRYPTION_SALT\", default=\"\")\nMAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_ASSISTANT_EXPORTS_ORGANIZATION\", default=\"5\"))\nMAX_LEANMODS_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_LEANMODS_EXPORTS_ORGANIZATION\", default=\"5\"))",
+        "peekOfCode": "AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')\nAWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-central-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'\nMEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'\n__SERVICE_PROFIT_MARGIN = float(os.environ.get(\"SERVICE_PROFIT_MARGIN\", default=\"2.00\"))\n__SERVICE_TAX_RATE = float(os.environ.get(\"SERVICE_TAX_RATE\", default=\"0.18\"))\nENCRYPTION_SALT = os.environ.get(\"ENCRYPTION_SALT\", default=\"\")\nMAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_ASSISTANT_EXPORTS_ORGANIZATION\", default=\"5\"))\nMAX_LEANMODS_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_LEANMODS_EXPORTS_ORGANIZATION\", default=\"5\"))",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -57089,7 +57089,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'\nMEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'\n__SERVICE_PROFIT_MARGIN = float(os.environ.get(\"SERVICE_PROFIT_MARGIN\", default=\"2.00\"))\n__SERVICE_TAX_RATE = float(os.environ.get(\"SERVICE_TAX_RATE\", default=\"0.18\"))\nENCRYPTION_SALT = os.environ.get(\"ENCRYPTION_SALT\", default=\"\")\nMAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_ASSISTANT_EXPORTS_ORGANIZATION\", default=\"5\"))\nMAX_LEANMODS_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_LEANMODS_EXPORTS_ORGANIZATION\", default=\"5\"))\nMAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION\", default=\"5\"))",
+        "peekOfCode": "AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-central-1')\nAWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'\nDEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'\nMEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'\n__SERVICE_PROFIT_MARGIN = float(os.environ.get(\"SERVICE_PROFIT_MARGIN\", default=\"2.00\"))\n__SERVICE_TAX_RATE = float(os.environ.get(\"SERVICE_TAX_RATE\", default=\"0.18\"))\nENCRYPTION_SALT = os.environ.get(\"ENCRYPTION_SALT\", default=\"\")\nMAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_ASSISTANT_EXPORTS_ORGANIZATION\", default=\"5\"))\nMAX_LEANMODS_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_LEANMODS_EXPORTS_ORGANIZATION\", default=\"5\"))\nMAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION = int(os.environ.get(\"MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION\", default=\"5\"))",
         "detail": "config.settings",
         "documentation": {}
     },

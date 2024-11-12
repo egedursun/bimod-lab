@@ -48,7 +48,11 @@ class LoginView(AuthView):
                 return redirect("login")
             authenticated_user = authenticate(request, username=username, password=password)
             if authenticated_user is not None:
-                login(request, authenticated_user)
+                try:
+                    login(request, authenticated_user)
+                except Exception as e:
+                    messages.error(request, "An error occurred while trying to log in. Please try again.")
+                    return redirect("login")
                 if "next" in request.POST:
                     return redirect(request.POST["next"])
                 else:

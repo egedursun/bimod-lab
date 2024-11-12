@@ -16,6 +16,8 @@
 #
 
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.utils.deprecation import MiddlewareMixin
@@ -36,12 +38,18 @@ class SessionTimeoutMiddleware(MiddlewareMixin):
 
         if not request.user.is_anonymous:
             user_data: User = request.user
-            user_profile: Profile = user_data.profile
-            if user_data.is_superuser:
-                if user_data.is_staff:
-                    return None
-                if not user_profile.is_accredited_by_staff:
-                    return redirect('landing:not_accredited')
+            try:
+                user_profile: Profile = user_data.profile
+                if user_data.is_superuser:
+                    if user_data.is_staff:
+                        return None
+                    if not user_profile.is_accredited_by_staff:
+                        return redirect('landing:not_accredited')
+            except Exception as e:
+                messages.error(request, "This account is corrupted for an unknown reason. Please contact the system administrator.")
+                # de-authenticate the user
+                logout(request)
+                return redirect(settings.LOGIN_URL)
 
         if not request.user.is_authenticated and request.path != settings.LOGIN_URL:
             return redirect(settings.LOGIN_URL)

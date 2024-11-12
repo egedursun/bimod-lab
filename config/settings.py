@@ -163,90 +163,6 @@ INSTALLED_APPS = [
     "apps.blog_app",
 ]
 
-#####################################################################################################################
-# CACHING OPERATIONS
-#####################################################################################################################
-
-CACHEOPS_GENERIC_CASH_TIME = 60 * 60  # 1 hour
-
-CACHEOPS_REDIS = {
-    # Redis server hostname
-    'host': 'localhost',
-    # Redis server port
-    'port': 6379,
-    # Redis database number
-    'db': 1,
-    'socket_timeout': 3,
-    'retry_on_timeout': True
-}
-
-CACHEOPS_DEFAULTS = {
-    # Cache timeout in seconds (60 minutes)
-    'timeout': CACHEOPS_GENERIC_CASH_TIME,
-}
-
-CACHEOPS = {
-    'apps.assistants.Assistant': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.blog_app.BlogPost': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.blog_app.BlogTag': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.blog_app.BlogSEOMeta': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.community_forum.ForumCategory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.community_forum.ForumThread': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.community_forum.ForumPost': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.community_forum.ForumComment': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.community_forum.ForumLike': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_browsers.DataSourceBrowserConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_browsers.DataSourceBrowserBrowsingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_file_systems.DataSourceFileSystem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.DocumentKnowledgeBaseConnection': {'ops': 'all',
-                                                                       'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.KnowledgeBaseDocument': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.KnowledgeBaseDocumentChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.ContextHistoryKnowledgeBaseConnection': {'ops': 'all',
-                                                                             'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.ContextHistoryMemory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.ContextHistoryMemoryChunk': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_knowledge_base.DocumentProcessingLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_media_storages.DataSourceMediaStorageConnection': {'ops': 'all',
-                                                                        'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_media_storages.DataSourceMediaStorageItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_ml_models.DataSourceMLModelConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_ml_models.DataSourceMLModelItem': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_sql.SQLDatabaseConnection': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.datasource_sql.CustomSQLQuery': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.export_assistants.RequestLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.export_assistants.ExportAssistantAPI': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.llm_core.LLMCore': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.llm_transaction.LLMTransaction': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.llm_transaction.AutoBalanceTopUpModel': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.llm_transaction.OrganizationBalanceSnapshot': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.memories.AssistantMemory': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.message_templates.MessageTemplate': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.mm_apis.CustomAPIReference': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.mm_apis.CustomAPI': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.mm_apis.CustomFunctionReference': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.mm_functions.CustomFunction': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.mm_scheduled_jobs.ScheduledJob': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.mm_scheduled_jobs.ScheduledJobInstance': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.mm_scripts.CustomScriptReference': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.mm_scripts.CustomScript': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.mm_triggered_jobs.TriggeredJob': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.mm_triggered_jobs.TriggeredJobInstance': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.multimodal_chat.MultiModalChat': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.multimodal_chat.MultiModalChatMessage': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.multimodal_chat.ChatCreationLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.orchestrations.Maestro': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.orchestrations.OrchestrationQuery': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.orchestrations.OrchestrationQueryLog': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.organization.Organization': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.starred_messages.StarredMessage': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.support_system.SupportTicket': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.support_system.SupportTicketResponse': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-    'apps.user_permissions.UserPermission': {'ops': 'all', 'timeout': CACHEOPS_GENERIC_CASH_TIME},
-}
-
-CACHEOPS_LRU = True
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     'corsheaders.middleware.CorsMiddleware',
@@ -351,7 +267,7 @@ BASE_URL = os.environ.get("BASE_URL", default="http://127.0.0.1:8000")
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-central-1')
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 DEFAULT_FILE_STORAGE = 'config.custom_storages.MediaStorage'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
@@ -655,12 +571,13 @@ INTERNAL_OPENAI_API_KEY = os.environ.get("INTERNAL_OPENAI_API_KEY", default="")
 # ATTEMPT FIXTURE DEPLOYMENT
 #####################################################################################################################
 
-ATTEMPT_FIXTURE_DEPLOYMENT = False
+ATTEMPT_FIXTURE_DEPLOYMENT = True
+SKIP_FIXTURE_EMBEDDINGS = True
+
 if ATTEMPT_FIXTURE_DEPLOYMENT is True:
     print("[settings.py] [V] Attempting to deploy the database fixtures...")
 else:
     print("[settings.py] [X] Skipping the database fixtures deployment...")
-SKIP_FIXTURE_EMBEDDINGS = True
 if SKIP_FIXTURE_EMBEDDINGS is True:
     print("[settings.py] [X] Skipping the database vector embeddings deployment...")
 else:

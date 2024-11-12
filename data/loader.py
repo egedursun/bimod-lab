@@ -239,8 +239,8 @@ class BoilerplateDataLoader:
                 c_instructor = AcademyCourseInstructor.objects.get(user__username=c["instructor"])
                 item = AcademyCourse.objects.get_or_create(
                     course_title=c["course_title"],
-                    course_thumbnail_image_url=c["course_thumbnail_image_url"],
                     defaults={
+                        "course_thumbnail_image_url": c["course_thumbnail_image_url"],
                         "course_description": c["course_description"],
                         "course_language": c["course_language"],
                         "course_instructor": c_instructor,

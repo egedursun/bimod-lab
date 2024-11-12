@@ -246,17 +246,24 @@
   },
   {
     "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "section_name": "Semantor Network Configuration",
+    "section_description": "This section covers the Semantor Configuration and relevant features.",
+    "__course": 9,
+    "__section": 4
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
     "section_name": "Plug & Play Assistants",
     "section_description": "This section covers the Plug & Play Assistants and their features.",
     "__course": 9,
-    "__section": 4
+    "__section": 5
   },
   {
     "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
     "section_name": "Plug & Play Teams",
     "section_description": "This section covers the Plug & Play Teams and their features.",
     "__course": 9,
-    "__section": 5
+    "__section": 6
   },
   {
     "course": "BimodLab - Data Security & Named Entity Recognition (NER)",
