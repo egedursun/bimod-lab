@@ -22,8 +22,7 @@ from django.shortcuts import get_object_or_404
 from django.views import View
 
 from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_audio_client import AuxiliaryLLMAudioClient
-from apps.multimodal_chat.models import MultimodalChatMessage
-
+from apps.multimodal_chat.models import MultimodalChatMessage, MultimodalLeanChatMessage
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +32,7 @@ class LeanChat_MessageNarration(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         msg_id = kwargs.get('pk')
         try:
-            msg = get_object_or_404(MultimodalChatMessage, id=msg_id, multimodal_chat__user=request.user)
+            msg = get_object_or_404(MultimodalLeanChatMessage, id=msg_id, multimodal_chat__user=request.user)
         except Exception as e:
             logger.error(f"LeanMod chat message not found. Error: {e}")
             return JsonResponse({'audio_url': None})
@@ -47,8 +46,8 @@ class LeanChat_MessageNarration(LoginRequiredMixin, View):
         try:
             output = (
                 AuxiliaryLLMAudioClient(
-                    assistant=msg.multimodal_chat.assistant,
-                    chat_object=msg.multimodal_chat).tts_audio_content_message(message=msg)
+                    assistant=msg.multimodal_lean_chat.lean_assistant,
+                    chat_object=msg.multimodal_lean_chat).tts_audio_content_message(message=msg)
             )
         except Exception as e:
             logger.error(f"LeanMod chat message audio generation failed. Error: {e}")
