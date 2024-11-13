@@ -189,3 +189,6 @@ META_KANBAN_MEETING_TRANSCRIPTION_ADMIN_SEARCH = ('board', 'meeting_transcriptio
 
 
 META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH = 64
+METAKANBAN_ASSISTANT_CONNECTION_ADMIN_LIST = ["metakanban_board", "assistant", "created_by_user", "created_at", "updated_at"]
+METAKANBAN_ASSISTANT_CONNECTION_ADMIN_SEARCH = ["metakanban_board__name", "assistant__name", "created_by_user__username"]
+METAKANBAN_ASSISTANT_CONNECTION_ADMIN_FILTER = ["created_at", "updated_at"]

@@ -1,0 +1,215 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: connect_assistant_to_metakanban.html
+  ~ Last Modified: 2024-11-13 02:29:34
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-13 02:29:34
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+{% endblock %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock %}
+
+{% block title %}MetaKanban Assistant Connections{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-49.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        Manage your MetaKanban Assistant connections here. You can create a new connection or view your existing connections.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <h3 class="p-8 rounded bg-card">
+    <strong>
+      <i class="fa fa-pencil me-2"></i>
+      Connect Assistant to MetaKanban Board
+    </strong>
+  </h3>
+
+  <hr>
+
+  <!-- Connection Creation Form at the Top -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4>
+            <i class="fa fa-plus-circle me-2"></i>
+            <strong>Create New MetaKanban Connection</strong>
+          </h4>
+        </div>
+        <div class="card-body">
+          <form method="post" action=".">
+            {% csrf_token %}
+            <div class="row">
+              <!-- Assistant Picker -->
+              <div class="col-12 mb-3">
+                <label for="assistant_id" class="form-label">Select Assistant</label>
+                <select id="assistant_id" name="assistant_id" class="form-control" required>
+                  <option value="" disabled selected>Select an Assistant</option>
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Board Picker -->
+              <div class="col-12 mb-3">
+                <label for="board_id" class="form-label">Select MetaKanban Board</label>
+                <select id="board_id" name="board_id" class="form-control" required>
+                  <option value="" disabled selected>Select a MetaKanban Board</option>
+                  {% for board in metakanban_boards %}
+                    <option value="{{ board.id }}">{{ board.title }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-success mt-4 w-25">
+              <i class="fa fa-link me-2"></i>
+              <strong>Create Connection</strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h4 class="mb-4">
+    <i class="fa fa-cogs me-2"></i>
+    <strong>Your Existing MetaKanban Connections</strong>
+  </h4>
+
+  <hr>
+
+  <!-- Connections Listing -->
+  <div class="card mb-6 mt-4">
+    <div class="card-header border-bottom">
+      <h4>
+        <strong>Existing Connections</strong>
+      </h4>
+    </div>
+    <div class="card-body p-8 overflow-auto">
+      {% if existing_connections %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Assistant</th>
+              <th>MetaKanban Board</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for connection in existing_connections %}
+              <tr>
+                <td>{{ connection.assistant.name }}</td>
+                <td>{{ connection.metakanban_board.title }}</td>
+                <td>{{ connection.created_at|date:"Y-m-d H:i" }}</td>
+                <td>
+                  <a href="{% url 'metakanban:disconnect_assistant' pk=connection.id %}" class="btn btn-sm btn-danger connection-delete-btn" data-connection-id="{{ connection.id }}">
+                    <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="alert alert-warning">
+          <i class="fa fa-exclamation-triangle me-2"></i>
+          <strong>No connections available.</strong>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block page_js %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.connection-delete-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+
+          const connectionId = button.getAttribute('data-connection-id');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'This action cannot be undone. Do you want to delete this connection?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2',
+              cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const form = document.createElement('form');
+              form.method = 'POST';
+              form.action = `{% url 'metakanban:disconnect_assistant' 0 %}`.replace('0', `${connectionId}`);
+
+              const csrfInput = document.createElement('input');
+              csrfInput.type = 'hidden';
+              csrfInput.name = 'csrfmiddlewaretoken';
+              csrfInput.value = '{{ csrf_token }}';
+              form.appendChild(csrfInput);
+
+              document.body.appendChild(form);
+              form.submit();
+            }
+          });
+        });
+      });
+    });
+  </script>
+{% endblock %}

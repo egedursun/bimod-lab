@@ -80,6 +80,14 @@
               </button>
             </div>
           </div>
+          <!-- Display Messages -->
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %}" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
           {% if error_messages %}
             {% for key, message in error_messages.items %}
               <div

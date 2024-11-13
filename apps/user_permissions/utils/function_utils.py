@@ -69,6 +69,8 @@ def get_permissions_grouped():
         ],
         "MetaKanban AI Permissions": [
             ('use_metakanban_ai', 'Use MetaKanban AI'),
+            ('connect_assistants_to_metakanban', 'Connect Assistants to MetaKanban'),
+            ('disconnect_assistants_from_metakanban', 'Disconnect Assistants from MetaKanban'),
         ],
         "MetaKanban Meeting Transcription Permissions": [
             ("use_metakanban_meeting_transcription", "Use MetaKanban Meeting Transcription"),

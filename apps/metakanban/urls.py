@@ -27,7 +27,8 @@ from apps.metakanban.views import (MetaKanbanView_TaskCreate, MetaKanbanView_Tas
                                    MetaKanbanView_BoardLogList, MetaKanbanView_MeetingRecordingAudioAIDelivery,
                                    MetaKanbanView_MeetingTranscriptionAIImplement,
                                    MetaKanbanView_MeetingTranscriptionList, MetaKanbanView_MeetingTranscriptionDelete,
-                                   MetaKanbanView_MeetingRegenerateAPIKey)
+                                   MetaKanbanView_MeetingRegenerateAPIKey, MetaKanbanView_ConnectAssistantToMetaKanban,
+                                   MetaKanbanView_AssistantConnectionDelete)
 
 app_name = 'metakanban'
 
@@ -71,6 +72,13 @@ urlpatterns = [
     # Board Logs: TemplateView
     path("board/logs/<int:board_id>/", MetaKanbanView_BoardLogList.as_view(
         template_name="metakanban/log/metakanban_board_logs.html"), name="board_logs"),
+
+    # Connect Assistant to MetaKanban
+    path("connect/assistant/", MetaKanbanView_ConnectAssistantToMetaKanban.as_view(
+        template_name="metakanban/connect_assistant/connect_assistant_to_metakanban.html"
+    ), name="connect_assistant"),
+    path("disconnect/assistant/<int:pk>/", MetaKanbanView_AssistantConnectionDelete.as_view(),
+         name="disconnect_assistant"),
 
     ###############################################################################################################
 

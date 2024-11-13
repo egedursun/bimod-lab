@@ -23,3 +23,4 @@ from .agent import *
 from .log import *
 from .endpoints import *
 from .meeting import *
+from .connect_assistant import *

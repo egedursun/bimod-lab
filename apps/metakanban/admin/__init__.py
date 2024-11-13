@@ -21,3 +21,4 @@ from .meta_kanban_board_admin import *
 from .meta_kanban_change_log_admin import *
 from .meta_kanban_meeting_transcription_admin import *
 from .meta_kanban_task_label_admin import *
+from .meta_kanban_assistant_connections_admin import *

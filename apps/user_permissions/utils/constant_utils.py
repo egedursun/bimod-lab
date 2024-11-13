@@ -60,6 +60,8 @@ class PermissionNames:
     ASSIGN_METAKANBAN_TASK = 'assign_metakanban_task'
 
     USE_METAKANBAN_AI = 'use_metakanban_ai'
+    CONNECT_ASSISTANTS_TO_METAKANBAN = 'connect_assistants_to_metakanban'
+    DISCONNECT_ASSISTANTS_FROM_METAKANBAN = 'disconnect_assistants_from_metakanban'
 
     USE_METAKANBAN_MEETING_TRANSCRIPTION = 'use_metakanban_meeting_transcription'
     IMPLEMENT_MEETING_TRANSCRIPTION_WITH_AI = 'implement_meeting_transcription_with_ai'
@@ -446,6 +448,8 @@ PERMISSION_TYPES = [
     ('assign_metakanban_task', 'Assign MetaKanban Task'),
 
     ('use_metakanban_ai', 'Use MetaKanban AI'),
+    ('connect_assistants_to_metakanban', 'Connect Assistants to MetaKanban'),
+    ('disconnect_assistants_from_metakanban', 'Disconnect Assistants from MetaKanban'),
 
     ("use_metakanban_meeting_transcription", "Use MetaKanban Meeting Transcription"),
     ("implement_meeting_transcription_with_ai", "Implement Meeting Transcription with AI"),

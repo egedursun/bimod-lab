@@ -2,9 +2,9 @@
 #
 #  Project: Bimod.io™
 #  File: __init__.py
-#  Last Modified: 2024-10-23 17:36:07
+#  Last Modified: 2024-11-13 02:29:51
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-23 17:36:07
+#  Created: 2024-11-13 02:29:52
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -15,11 +15,5 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
-from .meta_kanban_board_models import *
-from .meta_kanban_task_models import *
-from .meta_kanban_column_models import *
-from .meta_kanban_change_log_models import *
-from .meta_kanban_task_label_models import *
-from .meta_kanban_meeting_transcription_models import *
-from .meta_kanban_assistant_connection_models import *
+from .connect_assistant_to_metakanban_views import *
+from .delete_assistant_connection_views import *

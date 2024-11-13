@@ -82,6 +82,11 @@
           "name": "Manage Boards",
           "slug": "metakanban",
           "url": "metakanban:board_list"
+        },
+        {
+          "name": "Connect to Assistant",
+          "slug": "metakanban",
+          "url": "metakanban:connect_assistant"
         }
       ]
     },
