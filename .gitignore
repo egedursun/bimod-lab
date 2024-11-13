@@ -12,6 +12,7 @@ node_modules/
 *.so
 
 # Distribution / packaging
+.DS_store
 .Python
 develop-eggs/
 dist/
