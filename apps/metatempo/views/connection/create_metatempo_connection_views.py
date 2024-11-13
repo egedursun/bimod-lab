@@ -65,18 +65,22 @@ class MetaTempoView_ConnectionCreate(LoginRequiredMixin, TemplateView):
 
         board = MetaKanbanBoard.objects.get(id=board_id)
 
-        MetaTempoConnection.objects.create(
-            board=board,
-            is_tracking_active=is_tracking_active,
-            overall_log_intervals=overall_log_intervals,
-            member_log_intervals=member_log_intervals,
-            tracked_weekdays=tracked_weekdays,
-            tracking_start_time=tracking_start_time,
-            tracking_end_time=tracking_end_time,
-            connection_api_key=connection_api_key,
-            created_by_user=request.user,
-            optional_context_instructions=optional_context_instructions
-        )
+        try:
+            MetaTempoConnection.objects.create(
+                board=board,
+                is_tracking_active=is_tracking_active,
+                overall_log_intervals=overall_log_intervals,
+                member_log_intervals=member_log_intervals,
+                tracked_weekdays=tracked_weekdays,
+                tracking_start_time=tracking_start_time,
+                tracking_end_time=tracking_end_time,
+                connection_api_key=connection_api_key,
+                created_by_user=request.user,
+                optional_context_instructions=optional_context_instructions
+            )
+        except Exception as e:
+            messages.error(request, f"MetaTempo Connection creation failed. Error: {e}")
+            return redirect("metatempo:connection_list")
 
         messages.success(request, "MetaTempo Connection created successfully.")
         return redirect("metatempo:connection_list")

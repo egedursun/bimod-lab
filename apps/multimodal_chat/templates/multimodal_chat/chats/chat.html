@@ -1358,34 +1358,6 @@
         this.style.height = 'auto'; // Reset the height
         this.style.height = (this.scrollHeight) + 'px'; // Set the height to match the content
       });
-
-      document.querySelectorAll('.card-template').forEach(function (template) {
-        template.addEventListener('click', function () {
-          const fullText = this.getAttribute('data-full-text');
-          chatInput.value = fullText;
-          chatInput.style.height = 'auto'; // Reset the height
-          chatInput.style.height = (chatInput.scrollHeight) + 'px'; // Adjust height to match content
-
-          navigator.clipboard.writeText(fullText).then(() => {
-            const alertContainer = document.querySelector('.alert-container');
-            const successAlert = document.createElement('div');
-            successAlert.className = 'alert alert-solid-success d-flex align-items-center mt-4';
-            successAlert.role = 'alert';
-            successAlert.innerHTML = `
-          <span class="alert-icon rounded">
-            <i class="ti ti-check"></i>
-          </span>
-          Template text copied to chat input!
-        `;
-            alertContainer.appendChild(successAlert);
-            setTimeout(() => {
-              successAlert.remove();
-            }, 1000);
-          }).catch(err => {
-            alert('Failed to copy text: ' + err);
-          });
-        });
-      });
     });
   </script>
 

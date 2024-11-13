@@ -69,15 +69,19 @@ class MetaTempoView_ConnectionUpdate(LoginRequiredMixin, TemplateView):
         tracking_end_time = request.POST.get("tracking_end_time")
         optional_context_instructions = request.POST.get("optional_context_instructions")
 
-        connection.board = MetaKanbanBoard.objects.get(id=board_id)
-        connection.is_tracking_active = is_tracking_active
-        connection.overall_log_intervals = overall_log_intervals
-        connection.member_log_intervals = member_log_intervals
-        connection.tracked_weekdays = tracked_weekdays
-        connection.tracking_start_time = tracking_start_time
-        connection.tracking_end_time = tracking_end_time
-        connection.optional_context_instructions = optional_context_instructions
-        connection.save()
+        try:
+            connection.board = MetaKanbanBoard.objects.get(id=board_id)
+            connection.is_tracking_active = is_tracking_active
+            connection.overall_log_intervals = overall_log_intervals
+            connection.member_log_intervals = member_log_intervals
+            connection.tracked_weekdays = tracked_weekdays
+            connection.tracking_start_time = tracking_start_time
+            connection.tracking_end_time = tracking_end_time
+            connection.optional_context_instructions = optional_context_instructions
+            connection.save()
+        except Exception as e:
+            messages.error(request, f"Failed to update MetaTempo Connection: {e}")
+            return redirect("metatempo:connection_list")
 
         messages.success(request, "MetaTempo Connection updated successfully.")
         return redirect("metatempo:connection_list")
