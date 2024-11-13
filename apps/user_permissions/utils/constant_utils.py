@@ -401,6 +401,9 @@ class PermissionNames:
     LIST_SMART_CONTRACTS = 'list_smart_contracts'
     SOFT_DELETE_SMART_CONTRACTS = 'soft_delete_smart_contracts'
 
+    CONNECT_SMART_CONTRACTS_TO_ASSISTANT = 'connect_smart_contracts_to_assistant'
+    DISCONNECT_SMART_CONTRACTS_FROM_ASSISTANT = 'disconnect_smart_contracts_from_assistant'
+
     CREATE_INTERNAL_NOTIFICATIONS = 'create_internal_notifications'
     DELETE_INTERNAL_NOTIFICATIONS = 'delete_internal_notifications'
 
@@ -799,6 +802,9 @@ PERMISSION_TYPES = [
     ('create_smart_contracts', 'Create Smart Contracts'),
     ('list_smart_contracts', 'List Smart Contracts'),
     ('soft_delete_smart_contracts', 'Soft Delete Smart Contracts'),
+
+    ('connect_smart_contracts_to_assistant', 'Connect Smart Contracts to Assistant'),
+    ('disconnect_smart_contracts_from_assistant', 'Disconnect Smart Contracts from Assistant'),
 
     ('create_internal_notifications', 'Create Internal Notifications'),
     ('delete_internal_notifications', 'Delete Internal Notifications'),

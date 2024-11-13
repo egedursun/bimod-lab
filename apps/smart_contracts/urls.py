@@ -21,7 +21,8 @@ from apps.smart_contracts.views import (
     SmartContractView_WalletConnectionDelete, SmartContractView_WalletConnectionUpdate,
     SmartContractView_WalletConnectionList, SmartContractView_ContractList, SmartContractView_ContractSoftDelete,
     SmartContractView_SyncWalletPublicData, SmartContractView_ContractGenerate,
-    SmartContractView_ContractUpdateDeployStatus)
+    SmartContractView_ContractUpdateDeployStatus, SmartContractView_ConnectAssistantToSmartContract,
+    SmartContractView_AssistantConnectionDelete)
 
 app_name = "smart_contracts"
 
@@ -47,4 +48,11 @@ urlpatterns = [
         template_name='smart_contracts/contract/generate_smart_contract.html'), name='contract_generate'),
     path('contract/update_deploy_status/<int:pk>/', SmartContractView_ContractUpdateDeployStatus.as_view(),
          name='contract_update_deploy_status'),
+
+    # Connect Assistant to Smart Contract
+    path("connect/assistant/", SmartContractView_ConnectAssistantToSmartContract.as_view(
+        template_name="smart_contracts/connect_assistant/connect_assistant_to_contract.html",
+    ), name="connect_assistant"),
+    path("disconnect/assistant/<int:pk>/", SmartContractView_AssistantConnectionDelete.as_view(),
+         name="disconnect_assistant"),
 ]

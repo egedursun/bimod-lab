@@ -1279,3 +1279,8 @@ class DeploymentStatusesNames:
 class GenerateSmartContractViewActionTypes:
     GENERATE_CONTRACT = 'generate_contract'
     SIGN_AND_DEPLOY_CONTRACT = 'sign_and_deploy_contract'
+
+
+SMART_CONTRACT_ASSISTANT_CONNECTION_ADMIN_LIST = ["smart_contract", "assistant", "created_by_user", "created_at", "updated_at"]
+SMART_CONTRACT_ASSISTANT_CONNECTION_ADMIN_FILTER = ["smart_contract", "assistant", "created_by_user", "created_at", "updated_at"]
+SMART_CONTRACT_ASSISTANT_CONNECTION_ADMIN_SEARCH = ["smart_contract", "assistant", "created_by_user", "created_at", "updated_at"]

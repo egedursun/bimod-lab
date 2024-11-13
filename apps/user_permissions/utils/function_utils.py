@@ -349,6 +349,10 @@ def get_permissions_grouped():
             ('list_smart_contracts', 'List Smart Contracts'),
             ('soft_delete_smart_contracts', 'Soft Delete Smart Contracts'),
         ],
+        "Smart Contract Assistant Connection Permissions": [
+            ('connect_smart_contracts_to_assistant', 'Connect Smart Contracts to Assistant'),
+            ('disconnect_smart_contracts_from_assistant', 'Disconnect Smart Contracts from Assistant'),
+        ],
         "File System Permissions": [
             ('add_file_systems', 'Add File Systems'),
             ('update_file_systems', 'Update File Systems'),
