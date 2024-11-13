@@ -379,6 +379,12 @@
       "url": "/app/hadron_prime/hadron_system/list"
     },
     {
+      "name": "Connect Hadron Prime™ Node to Assistant",
+      "icon": "menu-icon tf-icons ti ti-rocket",
+      "slug": "hadron-prime",
+      "url": "/app/hadron_prime/connect/assistant"
+    },
+    {
       "name": "Create Binexus™ Process",
       "icon": "menu-icon tf-icons ti ti-dna",
       "slug": "binexus",
