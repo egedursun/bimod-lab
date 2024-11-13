@@ -49,7 +49,7 @@ urlpatterns = [
     path("agent/communication/", MetaTempoView_AgentCommunication.as_view(
         template_name="metatempo/agent/agent_communication.html"), name="agent_communication"),
 
-    # Connect Assistant to MetaTempo
+    # Connect Assistant to MetaTempo Tracker
     path("connect/assistant/", MetaTempoView_ConnectAssistantToMetaTempo.as_view(
         template_name="metatempo/connect_assistant/connect_assistant_to_metatempo.html"
     ), name="connect_assistant"),

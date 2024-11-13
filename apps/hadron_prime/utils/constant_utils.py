@@ -104,3 +104,8 @@ class HadronNodeExecutionStatusesNames:
 HADRON_NODE_SPEECH_LOG_ADMIN_LIST = ('node', 'created_at')
 HADRON_NODE_SPEECH_LOG_ADMIN_SEARCH = ('node__name', 'speech_log')
 HADRON_NODE_SPEECH_LOG_ADMIN_FILTER = ('node', 'created_at')
+HADRON_NODE_ASSISTANT_CONNECTION_ADMIN_LIST = ["hadron_prime_node", "assistant", "created_by_user", "created_at",
+                                               "updated_at"]
+HADRON_NODE_ASSISTANT_CONNECTION_ADMIN_FILTER = ["hadron_prime_node", "assistant", "created_by_user", "created_at",
+                                                 "updated_at"]
+HADRON_NODE_ASSISTANT_CONNECTION_ADMIN_SEARCH = ["hadron_prime_node", "assistant", "created_by_user"]

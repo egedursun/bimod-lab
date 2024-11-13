@@ -507,6 +507,11 @@
           "name": "Hadron Prime™ Systems",
           "slug": "hadron-prime",
           "url": "hadron_prime:list_hadron_system"
+        },
+        {
+          "name": "Connect to Assistant",
+          "slug": "hadron-prime",
+          "url": "hadron_prime:connect_assistant"
         }
       ]
     },

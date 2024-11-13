@@ -323,6 +323,10 @@ def get_permissions_grouped():
             ('delete_hadron_topic_message_history_logs', 'Delete Hadron Topic Message History Logs'),
             ('delete_hadron_node_speech_logs', 'Delete Hadron Node Speech Logs'),
         ],
+        "Hadron Node Assistant Connection Permissions": [
+            ('connect_assistants_to_hadron_node', 'Connect Assistants to Hadron Node'),
+            ('disconnect_assistants_from_hadron_node', 'Disconnect Assistants from Hadron Node'),
+        ],
         "Binexus Processes": [
             ('create_binexus_processes', 'Create Binexus Processes'),
             ('list_binexus_processes', 'List Binexus Processes'),

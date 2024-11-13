@@ -23,3 +23,4 @@ from .hadron_sease_log_models import *
 from .hadron_topic_message_models import *
 from .hadron_node_execution_log_models import *
 from .hadron_node_speech_log_models import *
+from .hadron_node_assistant_connection_models import *

@@ -389,6 +389,9 @@ class PermissionNames:
     DELETE_HADRON_TOPIC_MESSAGE_HISTORY_LOGS = 'delete_hadron_topic_message_history_logs'
     DELETE_HADRON_NODE_SPEECH_LOGS = 'delete_hadron_node_speech_logs'
 
+    CONNECT_ASSISTANTS_TO_HADRON_NODE = 'connect_assistants_to_hadron_node'
+    DISCONNECT_ASSISTANTS_FROM_HADRON_NODE = 'disconnect_assistants_from_hadron_node'
+
     CREATE_BLOCKCHAIN_WALLET_CONNECTIONS = 'create_blockchain_wallet_connections'
     LIST_BLOCKCHAIN_WALLET_CONNECTIONS = 'list_blockchain_wallet_connections'
     UPDATE_BLOCKCHAIN_WALLET_CONNECTIONS = 'update_blockchain_wallet_connections'
@@ -784,6 +787,9 @@ PERMISSION_TYPES = [
     ('delete_hadron_node_publish_history_logs', 'Delete Hadron Node Publish History Logs'),
     ('delete_hadron_topic_message_history_logs', 'Delete Hadron Topic Message History Logs'),
     ('delete_hadron_node_speech_logs', 'Delete Hadron Node Speech Logs'),
+
+    ('connect_assistants_to_hadron_node', 'Connect Assistants to Hadron Node'),
+    ('disconnect_assistants_from_hadron_node', 'Disconnect Assistants from Hadron Node'),
 
     ('create_blockchain_wallet_connections', 'Create Blockchain Wallet Connections'),
     ('list_blockchain_wallet_connections', 'List Blockchain Wallet Connections'),

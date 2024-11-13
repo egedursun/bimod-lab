@@ -28,7 +28,9 @@ from apps.hadron_prime.views import (HadronPrimeView_CreateHadronSystem, HadronP
                                      HadronPrimeView_DeleteAllTopicMessages, HadronPrimeView_DeleteAllNodeSASELogs,
                                      HadronPrimeView_TriggerActiveHadronNodeViaForm,
                                      HadronPrimeView_DeleteAllNodeSpeechLogs, HadronPrimeView_SpeakWithHadronNode,
-                                     HadronPrimeView_SpeakWithHadronNodeViaForm)
+                                     HadronPrimeView_SpeakWithHadronNodeViaForm,
+                                     HadronPrimeView_ConnectAssistantToHadronNode,
+                                     HadronPrimeView_AssistantConnectionDelete)
 
 app_name = "hadron_prime"
 
@@ -94,4 +96,13 @@ urlpatterns = [
          name="delete_all_messages"),
     path("hadron_node/delete_all_speech_logs/<int:pk>/", HadronPrimeView_DeleteAllNodeSpeechLogs.as_view(),
          name="delete_all_speech_logs"),
+
+    #####
+
+    # Connect Assistant to Hadron Prime Node
+    path("connect/assistant/", HadronPrimeView_ConnectAssistantToHadronNode.as_view(
+        template_name="hadron_prime/connect_assistant/connect_assistant_to_hadron_node.html"
+    ), name="connect_assistant"),
+    path("disconnect/assistant/<int:pk>/", HadronPrimeView_AssistantConnectionDelete.as_view(),
+         name="disconnect_assistant"),
 ]
