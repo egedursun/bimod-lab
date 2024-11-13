@@ -71,7 +71,10 @@ class PermissionNames:
     UPDATE_METATEMPO_CONNECTION = 'update_metatempo_connection'
     LIST_METATEMPO_CONNECTION = 'list_metatempo_connection'
     DELETE_METATEMPO_CONNECTION = 'delete_metatempo_connection'
+
     USE_META_TEMPO_AI = 'use_meta_tempo_ai'
+    CONNECT_ASSISTANTS_TO_METATEMPO = 'connect_assistants_to_metatempo'
+    DISCONNECT_ASSISTANTS_FROM_METATEMPO = 'disconnect_assistants_from_metatempo'
 
     LIST_TRANSACTIONS = 'list_transactions'
 
@@ -459,7 +462,10 @@ PERMISSION_TYPES = [
     ('update_metatempo_connection', 'Update MetaTempo Connection'),
     ('list_metatempo_connection', 'List MetaTempo Connection'),
     ('delete_metatempo_connection', 'Delete MetaTempo Connection'),
+
     ('use_meta_tempo_ai', 'Use MetaTempo AI'),
+    ('connect_assistants_to_metatempo', 'Connect Assistants to MetaTempo'),
+    ('disconnect_assistants_from_metatempo', 'Disconnect Assistants from MetaTempo'),
 
     ('add_llm_cores', 'Add LLM Cores'),
     ('update_llm_cores', 'Update LLM Cores'),

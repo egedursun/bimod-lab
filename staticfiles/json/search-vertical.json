@@ -61,6 +61,12 @@
       "url": "/app/metakanban/agent/communication"
     },
     {
+      "name": "Connect MetaKanban™ to Assistant",
+      "icon": "menu-icon tf-icons ti ti-robot",
+      "slug": "metakanban",
+      "url": "/app/metakanban/connect/assistant"
+    },
+    {
       "name": "Create MetaTempo™ Connection",
       "icon": "menu-icon tf-icons ti ti-dashboard",
       "slug": "metatempo",
@@ -77,6 +83,12 @@
       "icon": "menu-icon tf-icons ti ti-robot",
       "slug": "metatempo",
       "url": "/app/metatempo/agent/communication"
+    },
+    {
+      "name": "Connect MetaTempo™ to Assistant",
+      "icon": "menu-icon tf-icons ti ti-robot",
+      "slug": "metatempo",
+      "url": "/app/metatempo/connect/assistant"
     },
     {
       "name": "Add LLM Model",

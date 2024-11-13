@@ -82,7 +82,11 @@ def get_permissions_grouped():
             ('update_metatempo_connection', 'Update MetaTempo Connection'),
             ('list_metatempo_connection', 'List MetaTempo Connection'),
             ('delete_metatempo_connection', 'Delete MetaTempo Connection'),
+        ],
+        "MetaTempo AI Permissions": [
             ('use_meta_tempo_ai', 'Use MetaTempo AI'),
+            ('connect_assistants_to_metatempo', 'Connect Assistants to MetaTempo'),
+            ('disconnect_assistants_from_metatempo', 'Disconnect Assistants from MetaTempo'),
         ],
         "LLM Core Permissions": [
             ('add_llm_cores', 'Add LLM Cores'),

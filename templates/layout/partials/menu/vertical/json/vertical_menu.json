@@ -109,6 +109,11 @@
           "name": "MetaTempo™ Trackers",
           "slug": "metatempo",
           "url": "metatempo:connection_list"
+        },
+        {
+          "name": "Connect to Assistant",
+          "slug": "metatempo",
+          "url": "metatempo:connect_assistant"
         }
       ]
     },

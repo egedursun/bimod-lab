@@ -2,9 +2,9 @@
 #
 #  Project: Bimod.io™
 #  File: __init__.py
-#  Last Modified: 2024-10-28 19:35:07
+#  Last Modified: 2024-11-13 03:20:26
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-28 19:35:08
+#  Created: 2024-11-13 03:20:26
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -15,8 +15,5 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from .board import *
-from .connection import *
-from .endpoints import *
-from .agent import *
-from .connect_assistant import *
+from .delete_assistant_connection_views import *
+from .connect_assistant_to_metatempo_views import *

@@ -85,6 +85,12 @@
       "url": "/app/metatempo/agent/communication"
     },
     {
+      "name": "Connect MetaTempo™ to Assistant",
+      "icon": "menu-icon tf-icons ti ti-robot",
+      "slug": "metatempo",
+      "url": "/app/metatempo/connect/assistant"
+    },
+    {
       "name": "Add LLM Model",
       "icon": "menu-icon tf-icons ti ti-cloud",
       "slug": "llm-models",

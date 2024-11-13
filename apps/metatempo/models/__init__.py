@@ -1,4 +1,4 @@
-#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+# Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
 #  File: __init__.py
@@ -19,3 +19,4 @@ from .metatempo_connection_models import *
 from .metatempo_member_log_models import *
 from .metatempo_member_log_daily_models import *
 from .metatempo_project_overall_log_models import *
+from .metatempo_assistant_connection_models import *

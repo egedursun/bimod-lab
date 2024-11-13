@@ -92,3 +92,6 @@ META_TEMPO_PROJECT_OVERALL_LOG_ADMIN_SEARCH = ['metatempo_connection', 'overall_
 
 
 META_TEMPO_CONNECTION_API_KEY_DEFAULT_LENGTH = 64
+METATEMPO_ASSISTANT_CONNECTION_ADMIN_LIST = ["id", "metatempo_instance", "assistant", "created_by_user", "created_at", "updated_at"]
+METATEMPO_ASSISTANT_CONNECTION_ADMIN_FILTER = ["metatempo_instance", "assistant", "created_by_user", "created_at", "updated_at"]
+METATEMPO_ASSISTANT_CONNECTION_ADMIN_SEARCH = ["metatempo_instance", "assistant", "created_by_user"]

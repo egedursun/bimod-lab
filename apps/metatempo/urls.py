@@ -20,7 +20,8 @@ from apps.metatempo.views import (MetaTempoView_ConnectionRegenerateAPIKey, Meta
                                   MetaTempoView_ConnectionConfirmDelete, MetaTempoView_ConnectionList,
                                   MetaTempoView_ConnectionCreate, MetaTempoView_ConnectionUpdate,
                                   MetaTempoView_MainBoard, MetaTempoView_PurgeLogs, MetaTempoView_ScreenshotDelivery,
-                                  MetaTempoView_AgentCommunication, MetaTempoView_GetConnectionConfig)
+                                  MetaTempoView_AgentCommunication, MetaTempoView_GetConnectionConfig,
+                                  MetaTempoView_ConnectAssistantToMetaTempo, MetaTempoView_AssistantConnectionDelete)
 
 app_name = 'metatempo'
 
@@ -47,6 +48,13 @@ urlpatterns = [
     # AI Assistant
     path("agent/communication/", MetaTempoView_AgentCommunication.as_view(
         template_name="metatempo/agent/agent_communication.html"), name="agent_communication"),
+
+    # Connect Assistant to MetaTempo
+    path("connect/assistant/", MetaTempoView_ConnectAssistantToMetaTempo.as_view(
+        template_name="metatempo/connect_assistant/connect_assistant_to_metatempo.html"
+    ), name="connect_assistant"),
+    path("disconnect/assistant/<int:pk>/", MetaTempoView_AssistantConnectionDelete.as_view(),
+         name="disconnect_assistant"),
 
     ##############################################################################################################
 
