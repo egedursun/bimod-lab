@@ -122,6 +122,8 @@ class PermissionNames:
     UPDATE_ORCHESTRATIONS = 'update_orchestrations'
     LIST_ORCHESTRATIONS = 'list_orchestrations'
     DELETE_ORCHESTRATIONS = 'delete_orchestrations'
+    CONNECT_REACTANT_ASSISTANTS_TO_ORCHESTRATION = 'connect_reactant_assistants_to_orchestration'
+    DISCONNECT_REACTANT_ASSISTANTS_FROM_ORCHESTRATION = 'disconnect_reactant_assistants_from_orchestration'
 
     ADD_FILE_SYSTEMS = 'add_file_systems'
     UPDATE_FILE_SYSTEMS = 'update_file_systems'
@@ -524,6 +526,8 @@ PERMISSION_TYPES = [
     ('update_orchestrations', 'Update Orchestrations'),
     ('list_orchestrations', 'List Orchestrations'),
     ('delete_orchestrations', 'Delete Orchestrations'),
+    ('connect_reactant_assistants_to_orchestration', 'Connect Reactant Assistants to Orchestration'),
+    ('disconnect_reactant_assistants_from_orchestration', 'Disconnect Reactant Assistants from Orchestration'),
 
     ('add_file_systems', 'Add File Systems'),
     ('update_file_systems', 'Update File Systems'),

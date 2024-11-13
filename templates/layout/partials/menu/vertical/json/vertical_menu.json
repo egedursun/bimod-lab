@@ -490,6 +490,11 @@
           "name": "Orchestrations",
           "slug": "orchestration",
           "url": "orchestrations:list"
+        },
+        {
+          "name": "Connect Reactant Agent",
+          "slug": "orchestration",
+          "url": "orchestrations:connect_assistant"
         }
       ]
     },

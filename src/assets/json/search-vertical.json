@@ -367,6 +367,12 @@
       "url": "/app/orchestrations/list"
     },
     {
+      "name": "Connect Reactant Assistant to Orchestration",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "orchestrations",
+      "url": "/app/orchestrations/connect/assistant"
+    },
+    {
       "name": "Create Hadron Prime™ System",
       "icon": "menu-icon tf-icons ti ti-rocket",
       "slug": "orchestrations",

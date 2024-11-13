@@ -20,3 +20,4 @@
 
 from .maestro import *
 from .query import *
+from .connect_reactant_assistant import *

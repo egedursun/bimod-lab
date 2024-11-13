@@ -286,7 +286,9 @@ def get_permissions_grouped():
             ('add_orchestrations', 'Add Orchestrations'),
             ('update_orchestrations', 'Update Orchestrations'),
             ('list_orchestrations', 'List Orchestrations'),
-            ('delete_orchestrations', 'Delete Orchestrations')
+            ('delete_orchestrations', 'Delete Orchestrations'),
+            ('connect_reactant_assistants_to_orchestration', 'Connect Reactant Assistants to Orchestration'),
+            ('disconnect_reactant_assistants_from_orchestration', 'Disconnect Reactant Assistants from Orchestration'),
         ],
         "Orchestration Export Permissions": [
             ('add_export_orchestration', 'Add Export Orchestration'),

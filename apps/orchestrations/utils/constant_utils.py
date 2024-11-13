@@ -87,3 +87,6 @@ MAESTRO_QUERY_ADMIN_FILTER = ['maestro', 'created_by_user', 'last_updated_by_use
 MAESTRO_QUERY_LOG_ADMIN_LIST = ['orchestration_query', 'log_text_content', 'created_at']
 MAESTRO_QUERY_LOG_ADMIN_SEARCH = ['orchestration_query', 'log_text_content']
 MAESTRO_QUERY_LOG_ADMIN_FILTER = ['orchestration_query', 'created_at']
+ORCHESTRATION_REACTANT_ASSISTANT_ADMIN_LIST = ["orchestration_maestro", "assistant", "created_by_user", "created_at", "updated_at"]
+ORCHESTRATION_REACTANT_ASSISTANT_ADMIN_FILTER = ["orchestration_maestro", "assistant", "created_by_user", "created_at", "updated_at"]
+ORCHESTRATION_REACTANT_ASSISTANT_ADMIN_SEARCH = ["orchestration_maestro", "assistant", "created_by_user", "created_at", "updated_at"]

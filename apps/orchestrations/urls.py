@@ -23,7 +23,9 @@ from django.urls import path
 from apps.orchestrations.views import (OrchestrationView_Create, OrchestrationView_Update, OrchestrationView_QueryList, \
                                        OrchestrationView_List, OrchestrationView_Delete,
                                        OrchestrationView_QueryDelete,
-                                       OrchestrationView_QueryDetail, OrchestrationView_QueryRerun)
+                                       OrchestrationView_QueryDetail, OrchestrationView_QueryRerun,
+                                       OrchestrationView_ConnectReactantAssistantToOrchestration,
+                                       OrchestrationView_AssistantConnectionDelete)
 
 app_name = "orchestrations"
 
@@ -44,4 +46,12 @@ urlpatterns = [
         template_name="orchestrations/query_detail_orchestration.html"), name="query_detail"),
     path("query/<int:pk>/rerun/<int:query_id>/", OrchestrationView_QueryRerun.as_view(
         template_name="orchestrations/query_detail_orchestration.html"), name="query_rerun"),
+
+    #####
+
+    # Connect Assistant to MetaKanban
+    path("connect/assistant/", OrchestrationView_ConnectReactantAssistantToOrchestration.as_view(
+        template_name="orchestrations/connect_reactant_assistant.html"), name="connect_assistant"),
+    path("disconnect/assistant/<int:pk>/", OrchestrationView_AssistantConnectionDelete.as_view(),
+         name="disconnect_assistant"),
 ]
