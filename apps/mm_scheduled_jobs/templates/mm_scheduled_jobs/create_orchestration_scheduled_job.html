@@ -1,11 +1,12 @@
-  <!--
+
+<!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
   ~ Project: Bimod.io™
-  ~ File: create_scheduled_job.html
-  ~ Last Modified: 2024-10-05 01:39:48
+  ~ File: create_orchestration_scheduled_job.html
+  ~ Last Modified: 2024-11-14 06:15:01
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:45
+  ~ Created: 2024-11-14 06:15:02
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -22,7 +23,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Create Scheduled Job{% endblock %}
+{% block title %}Create Orchestration Scheduled Job{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -40,22 +41,22 @@
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-datatable table-responsive">
-          <a href="{% url 'mm_scheduled_jobs:list' %}">
+          <a href="{% url 'mm_scheduled_jobs:orchestration_list' %}">
             <button class="btn btn-secondary ms-4 mt-4 mb-8">
               <i class="fa fa-dashboard me-4"></i>
-              <strong> Manage Scheduled Jobs</strong>
+              <strong> Manage Orchestration Scheduled Jobs</strong>
             </button>
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">
-            <strong>Create New Scheduled Job</strong>
+            <strong>Create New Orchestration Scheduled Job</strong>
           </h5>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
           <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations-v2/i2-85.png' %}" width="25%" style="border-radius: 25px;"
+            <img src="{% static 'img/custom-illustrations-v2/i2-45.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tips">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
@@ -63,10 +64,10 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                In this page, you can create a new scheduled job. You can set the job name, description, step guide,
-                assistant, trigger type, interval, period, minute, hour, day of the week, day of the month, month of the
-                year, and maximum runs. Once you fill in the required fields, click the "Create Scheduled Job" button to
-                create the scheduled job.
+                In this page, you can create a new orchestration scheduled job. You can set the job name, description, step guide,
+                maestro, trigger type, interval, period, minute, hour, day of the week, day of the month, month of the
+                year, and maximum runs. Once you fill in the required fields, click the "Create Orchestration Scheduled Job" button to
+                create the orchestration scheduled job.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
               </button>
@@ -85,10 +86,10 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-4">
-                <label class="form-label" for="assistant">Assistant</label>
-                <select class="form-select" id="assistant" name="assistant">
-                  {% for assistant in assistants %}
-                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                <label class="form-label" for="maestro">Maestro</label>
+                <select class="form-select" id="maestro" name="maestro">
+                  {% for maestro in maestros %}
+                    <option value="{{ maestro.id }}">{{ maestro.name }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -215,15 +216,15 @@
             <span class="alert-icon rounded">
               <i class="ti ti-info-circle"></i>
             </span>
-                It can take up to 15 minutes for the scheduled job to be integrated to the system. If the scheduled job
-                is
-                not integrated even after a long while, please feel free to contact the support team to get help.
+                It can take up to 15 minutes for the orchestration scheduled job to be integrated to the system. If the
+                orchestration scheduled job is not integrated even after a long while, please feel free to contact the
+                support team to get help.
               </div>
             </div>
             <hr>
             <button type="submit" class="btn btn-primary d-grid mt-4 w-25"><strong>
               <i class="fa fa-plus me-4"></i>
-              Create Scheduled Job</strong></button>
+              Create Orchestration Scheduled Job</strong></button>
           </form>
         </div>
       </div>

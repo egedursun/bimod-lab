@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: create_scheduled_job_views.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: create_orchestration_scheduled_job_views.py
+#  Last Modified: 2024-11-14 06:15:41
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:45
+#  Created: 2024-11-14 06:15:42
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -21,9 +21,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.assistants.models import Assistant
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.mm_scheduled_jobs.forms import ScheduledJobForm
+from apps.mm_scheduled_jobs.forms.orchestration_scheduled_job_forms import OrchestrationScheduledJobForm
+from apps.orchestrations.models import Maestro
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
@@ -32,39 +32,40 @@ from web_project import TemplateLayout
 logger = logging.getLogger(__name__)
 
 
-class ScheduledJobView_Create(LoginRequiredMixin, TemplateView):
+class ScheduledJobView_OrchestrationCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['form'] = ScheduledJobForm()
+        context['form'] = OrchestrationScheduledJobForm()
         context["user"] = self.request.user
         user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+        context['maestros'] = Maestro.objects.filter(organization__in=user_orgs)
+        logger.error(context['maestros'])
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
-        # PERMISSION CHECK FOR - ADD_SCHEDULED_JOBS
+        # PERMISSION CHECK FOR - ADD_ORCHESTRATION_SCHEDULED_JOBS
         if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_SCHEDULED_JOBS):
-            messages.error(self.request, "You do not have permission to add scheduled jobs.")
-            return redirect('mm_scheduled_jobs:list')
+                                                   operation=PermissionNames.ADD_ORCHESTRATION_SCHEDULED_JOBS):
+            messages.error(self.request, "You do not have permission to add orchestration scheduled jobs.")
+            return redirect('mm_scheduled_jobs:orchestration_list')
         ##############################
 
-        form = ScheduledJobForm(request.POST)
-        assistant_id = request.POST.get('assistant')
-        assistant = Assistant.objects.get(id=assistant_id)
+        form = OrchestrationScheduledJobForm(request.POST)
+        maestro_id = request.POST.get('maestro')
+        maestro = Maestro.objects.get(id=maestro_id)
         if form.is_valid():
             scheduled_job = form.save(commit=False)
-            scheduled_job.assistant = assistant
+            scheduled_job.maestro = maestro
             scheduled_job.created_by_user = request.user
             step_guide = request.POST.getlist('step_guide[]')
             scheduled_job.step_guide = step_guide
             scheduled_job.save()
-            logger.info(f"Scheduled Job was created by User: {self.request.user.id}.")
-            messages.success(request, "Scheduled Job created successfully!")
-            return redirect('mm_scheduled_jobs:list')
+            logger.info(f"Orchestration Scheduled Job was created by User: {self.request.user.id}.")
+            messages.success(request, "Orchestration Scheduled Job created successfully!")
+            return redirect('mm_scheduled_jobs:orchestration_list')
         else:
-            logger.error(f"Error creating Scheduled Job by User: {self.request.user.id}: {form.errors}")
-            messages.error(request, "There was an error creating the scheduled job.")
+            logger.error(f"Error creating Orchestration Scheduled Job by User: {self.request.user.id}.")
+            messages.error(request, "There was an error creating the Orchestration scheduled job.")
             return self.render_to_response({'form': form})

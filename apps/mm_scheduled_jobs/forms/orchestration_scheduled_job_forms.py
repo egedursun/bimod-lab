@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: scheduled_job_forms.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: orchestration_scheduled_job_forms.py
+#  Last Modified: 2024-11-14 06:16:46
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:45
+#  Created: 2024-11-14 06:16:47
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,20 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
-
 from django import forms
 
-from apps.assistants.models import Assistant
-from apps.mm_scheduled_jobs.models import ScheduledJob
+from apps.mm_scheduled_jobs.models import OrchestrationScheduledJob
+from apps.orchestrations.models import Maestro
 from apps.organization.models import Organization
 
 
-class ScheduledJobForm(forms.ModelForm):
+class OrchestrationScheduledJobForm(forms.ModelForm):
     class Meta:
-        model = ScheduledJob
+        model = OrchestrationScheduledJob
         fields = ['name', 'task_description', 'step_guide', 'minute', 'hour', 'day_of_week',
                   'day_of_month', 'month_of_year', 'maximum_runs']
         widgets = {
@@ -35,12 +31,11 @@ class ScheduledJobForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(ScheduledJobForm, self).__init__(*args, **kwargs)
+        super(OrchestrationScheduledJobForm, self).__init__(*args, **kwargs)
         self.fields['step_guide'].required = False
 
-
-def clean(self):
-        cleaned_data = super(ScheduledJobForm, self).clean()
+    def clean(self):
+        cleaned_data = super(OrchestrationScheduledJobForm, self).clean()
         minute = cleaned_data.get('minute')
         hour = cleaned_data.get('hour')
         day_of_week = cleaned_data.get('day_of_week')
@@ -49,4 +44,3 @@ def clean(self):
         if not (minute and hour and day_of_week and day_of_month and month_of_year):
             raise forms.ValidationError("All cron fields are required for chronological jobs.")
         return cleaned_data
-

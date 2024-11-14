@@ -22,11 +22,17 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_celery_beat.models import PeriodicTask
 
-from apps.mm_scheduled_jobs.models import ScheduledJob
-from apps.mm_scheduled_jobs.tasks import add_periodic_task
+from apps.mm_scheduled_jobs.models import ScheduledJob, OrchestrationScheduledJob
+from apps.mm_scheduled_jobs.tasks import add_periodic_task, add_periodic_task_orchestration
 
 
 @receiver(post_save, sender=ScheduledJob)
 def register_periodic_task(sender, instance, created, **kwargs):
     PeriodicTask.objects.filter(name=f'ScheduledJob-{instance.id}').delete()
     add_periodic_task(instance)
+
+
+@receiver(post_save, sender=OrchestrationScheduledJob)
+def register_periodic_task_orchestration(sender, instance, created, **kwargs):
+    PeriodicTask.objects.filter(name=f'OrchestrationScheduledJob-{instance.id}').delete()
+    add_periodic_task_orchestration(instance)

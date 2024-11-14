@@ -185,10 +185,20 @@ class PermissionNames:
     LIST_SCHEDULED_JOBS = 'list_scheduled_jobs'
     DELETE_SCHEDULED_JOBS = 'delete_scheduled_jobs'
 
+    ADD_ORCHESTRATION_SCHEDULED_JOBS = 'add_orchestration_scheduled_jobs'
+    UPDATE_ORCHESTRATION_SCHEDULED_JOBS = 'update_orchestration_scheduled_jobs'
+    LIST_ORCHESTRATION_SCHEDULED_JOBS = 'list_orchestration_scheduled_jobs'
+    DELETE_ORCHESTRATION_SCHEDULED_JOBS = 'delete_orchestration_scheduled_jobs'
+
     ADD_TRIGGERS = 'add_triggers'
     UPDATE_TRIGGERS = 'update_triggers'
     LIST_TRIGGERS = 'list_triggers'
     DELETE_TRIGGERS = 'delete_triggers'
+
+    ADD_ORCHESTRATION_TRIGGERS = 'add_orchestration_triggers'
+    UPDATE_ORCHESTRATION_TRIGGERS = 'update_orchestration_triggers'
+    LIST_ORCHESTRATION_TRIGGERS = 'list_orchestration_triggers'
+    DELETE_ORCHESTRATION_TRIGGERS = 'delete_orchestration_triggers'
 
     CAN_GENERATE_IMAGES = 'can_generate_images'
 
@@ -589,10 +599,20 @@ PERMISSION_TYPES = [
     ('list_scheduled_jobs', 'List Scheduled Jobs'),
     ('delete_scheduled_jobs', 'Delete Scheduled Jobs'),
 
+    ('add_orchestration_scheduled_jobs', 'Add Orchestration Scheduled Jobs'),
+    ('update_orchestration_scheduled_jobs', 'Update Orchestration Scheduled Jobs'),
+    ('list_orchestration_scheduled_jobs', 'List Orchestration Scheduled Jobs'),
+    ('delete_orchestration_scheduled_jobs', 'Delete Orchestration Scheduled Jobs'),
+
     ('add_triggers', 'Add Triggers'),
     ('update_triggers', 'Update Triggers'),
     ('list_triggers', 'List Triggers'),
     ('delete_triggers', 'Delete Triggers'),
+
+    ('add_orchestration_triggers', 'Add Orchestration Triggers'),
+    ('update_orchestration_triggers', 'Update Orchestration Triggers'),
+    ('list_orchestration_triggers', 'List Orchestration Triggers'),
+    ('delete_orchestration_triggers', 'Delete Orchestration Triggers'),
 
     ('can_generate_images', 'Can Generate Images'),
 

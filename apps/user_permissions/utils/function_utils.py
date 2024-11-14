@@ -467,11 +467,23 @@ def get_permissions_grouped():
             ('list_scheduled_jobs', 'List Scheduled Jobs'),
             ('delete_scheduled_jobs', 'Delete Scheduled Jobs')
         ],
+        "Orchestration Scheduled Job Permissions": [
+            ('add_orchestration_scheduled_jobs', 'Add Orchestration Scheduled Jobs'),
+            ('update_orchestration_scheduled_jobs', 'Update Orchestration Scheduled Jobs'),
+            ('list_orchestration_scheduled_jobs', 'List Orchestration Scheduled Jobs'),
+            ('delete_orchestration_scheduled_jobs', 'Delete Orchestration Scheduled Jobs'),
+        ],
         "Trigger Permissions": [
             ('add_triggers', 'Add Triggers'),
             ('update_triggers', 'Update Triggers'),
             ('list_triggers', 'List Triggers'),
             ('delete_triggers', 'Delete Triggers')
+        ],
+        "Orchestration Trigger Permissions": [
+            ('add_orchestration_triggers', 'Add Orchestration Triggers'),
+            ('update_orchestration_triggers', 'Update Orchestration Triggers'),
+            ('list_orchestration_triggers', 'List Orchestration Triggers'),
+            ('delete_orchestration_triggers', 'Delete Orchestration Triggers'),
         ],
         "Image Generation Permissions": [
             ('can_generate_images', 'Can Generate Images')

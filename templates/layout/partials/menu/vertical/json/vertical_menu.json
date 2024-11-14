@@ -1012,6 +1012,23 @@
       ]
     },
     {
+      "name": "Meta Scheduled Jobs",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "meta-scheduled-jobs",
+      "submenu": [
+        {
+          "name": "Add Orchestrator Job",
+          "slug": "orchestartion-scheduled-job",
+          "url": "mm_scheduled_jobs:orchestration_create"
+        },
+        {
+          "name": "Orchestrator Jobs",
+          "slug": "orchestration-scheduled-job",
+          "url": "mm_scheduled_jobs:orchestration_list"
+        }
+      ]
+    },
+    {
       "name": "Triggered Jobs",
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
