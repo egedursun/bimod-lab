@@ -757,6 +757,18 @@
       "url": "/app/mm_triggered_jobs/list"
     },
     {
+      "name": "Create Orchestration Trigger",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "orchestration-triggers",
+      "url": "/app/mm_triggered_jobs/orchestration/create"
+    },
+    {
+      "name": "Orchestration Triggers",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "orchestration-triggers",
+      "url": "/app/mm_triggered_jobs/orchestration/list"
+    },
+    {
       "name": "Profile",
       "icon": "menu-icon tf-icons ti ti-user",
       "slug": "profile",

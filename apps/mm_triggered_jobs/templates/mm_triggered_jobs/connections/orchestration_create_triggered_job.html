@@ -2,10 +2,10 @@
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
   ~ Project: Bimod.io™
-  ~ File: create_triggered_job.html
-  ~ Last Modified: 2024-10-05 01:39:48
+  ~ File: orchestration_create_triggered_job.html
+  ~ Last Modified: 2024-11-14 07:20:06
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:45
+  ~ Created: 2024-11-14 13:33:50
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -17,14 +17,12 @@
   ~
   -->
 
-<!-- templates/mm_triggered_jobs/create_triggered_job.html -->
-
 {% extends layout_path %}
 
 {% load static %}
 {% load i18n %}
 
-{% block title %}Create Triggered Job{% endblock %}
+{% block title %}Create Orchestration Triggered Job{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -42,22 +40,22 @@
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-datatable table-responsive">
-          <a href="{% url 'mm_triggered_jobs:list' %}">
+          <a href="{% url 'mm_triggered_jobs:orchestration_list' %}">
             <button class="btn btn-secondary ms-4 mt-4 mb-8">
               <i class="fa fa-dashboard me-4"></i>
-              <strong> Manage Triggered Jobs</strong>
+              <strong> Manage Orchestration Triggered Jobs</strong>
             </button>
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">
-            <strong>Create New Triggered Job</strong>
+            <strong>Create New Orchestration Triggered Job</strong>
           </h5>
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
           <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-            <img src="{% static 'img/custom-illustrations-v2/i2-88.png' %}" width="25%" style="border-radius: 25px;"
+            <img src="{% static 'img/custom-illustrations-v2/i2-65.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tips">
             <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
@@ -65,9 +63,9 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                In this page, you can create a new triggered job. You can set the job name, description, step guide,
-                assistant, trigger source, event type, and maximum runs. Once you fill in the required fields, click the
-                "Create Triggered Job" button to create the job.
+                In this page, you can create a new orchestration triggered job. You can set the job name, description, step guide,
+                assistant, orchestration trigger source, event type, and maximum runs. Once you fill in the required fields, click the
+                "Create Orchestration Triggered Job" button to create the job.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
               </button>
@@ -87,10 +85,10 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-4">
-                <label class="form-label" for="trigger_assistant">Assistant</label>
-                <select class="form-select" id="trigger_assistant" name="trigger_assistant">
-                  {% for assistant in trigger_assistants %}
-                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                <label class="form-label" for="trigger_maestro">Maestro</label>
+                <select class="form-select" id="trigger_maestro" name="trigger_maestro">
+                  {% for maestro in trigger_maestros %}
+                    <option value="{{ maestro.id }}">{{ maestro.name }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -137,7 +135,7 @@
                 </span>
                   The trigger source is the source that triggers the job. You can provide this in natural language, for
                   example, if the source is "GitHub", you can simply type in "GitHub". This field is used to identify
-                  the source of the triggered job to provide context.
+                  the source of the orchestration triggered job to provide context.
                 </div>
               </div>
               <div class="mb-6 col-4">
@@ -162,13 +160,13 @@
                   <i class="ti ti-info-circle"></i>
                 </span>
                   It can take up to 15 minutes for the triggered job to be processed and integrated into the system to
-                  start getting executed properly. If the triggered job is not integrated even after a long while,
+                  start getting executed properly. If the orchestration triggered job is not integrated even after a long while,
                   please feel free to contact the support team to get help.
                 </div>
               </div>
             </div>
             <hr>
-            <button type="submit" class="btn btn-primary d-grid mt-4 w-25"><strong>Create Triggered Job</strong></button>
+            <button type="submit" class="btn btn-primary d-grid mt-4 w-25"><strong>Create Orchestration Triggered Job</strong></button>
           </form>
         </div>
       </div>
@@ -199,3 +197,4 @@
     }
   </script>
 {% endblock %}
+

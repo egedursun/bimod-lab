@@ -385,6 +385,8 @@ EXCLUDED_PAGES = [
     "/app/sheetos/public/*",
     "/app/formica/public/*",
     "/app/slider/public/*",
+    "/app/mm_triggered_jobs/api/v1/webhook/*",
+    "/app/mm_triggered_jobs/orchestration/api/v1/webhook/*",
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'

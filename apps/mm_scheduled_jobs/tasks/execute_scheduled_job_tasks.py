@@ -19,6 +19,7 @@ import logging
 from celery import shared_task
 from django.utils import timezone
 
+from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
 from apps.core.orchestration.orchestration_executor import OrchestrationExecutor
@@ -251,6 +252,14 @@ def execute_orchestration_scheduled_job(scheduled_job_id):
         query.save()
         xc = OrchestrationExecutor(maestro=new_instance.scheduled_job.maestro, query_chat=query)
         output = xc.execute_for_query()
+
+        transaction = LLMTransaction(
+            organization=job.assistant.organization, model=job.assistant.llm_model, responsible_user=None,
+            responsible_assistant=job.assistant, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.ScheduledJobExecutor.COST, transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.SCHEDULED_JOB_EXECUTION, is_tool_cost=True)
+        transaction.save()
+
         logger.info("Orchestration Scheduled Job Output: \n" + output)
         logger.info(f"Orchestration Scheduled Job: {job.id} was executed successfully.")
     except Exception as e:

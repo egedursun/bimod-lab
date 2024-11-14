@@ -1,0 +1,206 @@
+
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: orchestration_list_triggered_job_logs.html
+  ~ Last Modified: 2024-11-14 07:20:31
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-14 07:20:31
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Execution Logs for {{ triggered_job.name }}{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/triggered-job-logs.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+
+  <a href="{% url 'mm_triggered_jobs:orchestration_list' %}">
+    <button class="btn btn-secondary my-4 w-25">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to Orchestration Triggered jobs</strong>
+    </button>
+  </a>
+
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-3">
+      <h3 class="mb-0">
+        <strong>Execution Logs</strong>
+      </h3>
+      <h5 class="mb-0 mt-4">
+        <i class="fa fa-bolt-lightning me-2"></i>
+        <strong>{{ triggered_job.name }}</strong>
+      </h5>
+    </div>
+  </div>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-40.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded ms-4">
+    <i class="bi bi-info-circle"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        Use the search box to find specific execution logs by status. You can view the details of each log to understand
+        the execution flow and status. The execution logs are used to track the status of the executions of the orchestration
+        triggered jobs.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <!-- Search and Filter Form -->
+  <div class="row g-4 mb-4 mt-4 card card-border-shadow-primary p-4">
+    <img src="{% static 'img/triggered_jobs/trg-2.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+    <div class="col-xl-12">
+      <h5 class="text-muted"><strong>Filter Execution Logs</strong></h5>
+      <div class="card text-center mb-4">
+        <div class="card-header">
+          <div class="nav-align-top">
+            <form method="get" action=".">
+              <div class="input-group mb-3">
+                <input type="text" name="search" value="{{ request.GET.search }}" class="form-control"
+                       placeholder="Search by status">
+                <button type="submit" class="btn btn-primary"><strong>Search</strong></button>
+                <a href="." class="btn btn-secondary"><strong>Clear</strong></a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Triggered Job Instances List Table -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">
+        <strong>Execution Logs</strong>
+      </h5>
+    </div>
+    <div class="card-datatable table-responsive">
+      <table class="table datatables-triggered-job-logs">
+        <thead class="border-top">
+        <tr>
+          <th style="min-width: 150px; max-width: 150px;"><strong>Job</strong></th>
+          <th style="min-width: 200px; max-width: 200px;"><strong>Status</strong></th>
+          <th style="min-width: 350px; max-width: 350px;">Execution Logs</th>
+          <th style="min-width: 150px; max-width: 150px;">Execution Index</th>
+          <th style="min-width: 150px; max-width: 150px;">Started At</th>
+          <th style="min-width: 150px; max-width: 150px;">Ended At</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for instance in page_obj %}
+          <tr>
+            <td>
+              <strong>{{ instance.triggered_job.name }}</strong>
+            </td>
+            <td>
+              {% if instance.status == "completed" %}
+                <span class="badge bg-success"><strong>{{ instance.status|capfirst }}</strong></span>
+              {% elif instance.status == "failed" %}
+                <span class="badge bg-danger"><strong>{{ instance.status|capfirst }}</strong></span>
+              {% else %}
+                <span class="badge bg-warning"><strong>{{ instance.status|capfirst }}</strong></span>
+              {% endif %}
+            </td>
+            <td style="max-width: 500px;">
+              <p class="bg-label-secondary p-4 m-2 rounded text-dark font-monospace" style="font-size: 11px;">
+                {{ instance.logs }}
+              </p>
+            </td>
+            <td>
+              <strong class="bg-label-info p-2 m-2 rounded">
+                <i class="fa fa-hashtag"></i>
+                {{ instance.execution_index }} / {{ instance.triggered_job.maximum_runs }}
+              </strong>
+            </td>
+            <td>{{ instance.started_at }}</td>
+            <td>{{ instance.ended_at }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <!-- Pagination Controls -->
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-rounded overflow-auto m-4 pb-4">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}"><i
+                class="bi bi-chevron-double-left"></i></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page=
+                {{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"><i
+                class="bi bi-chevron-left"></i></a>
+            </li>
+          {% endif %}
+          {% for page_num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
+              <a class="page-link" href="?page=
+                {{ page_num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ page_num }}</a>
+            </li>
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link"
+                 href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"><i
+                class="bi bi-chevron-right"></i></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page=
+                {{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}"><i
+                class="bi bi-chevron-double-right"></i></a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+{% endblock %}
+

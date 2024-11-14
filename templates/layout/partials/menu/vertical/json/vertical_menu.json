@@ -1046,6 +1046,23 @@
       ]
     },
     {
+      "name": "Meta Triggered Jobs",
+      "icon": "menu-icon tf-icons ti ti-anchor",
+      "slug": "meta-triggers",
+      "submenu": [
+        {
+          "name": "Add Orchestrator Job",
+          "slug": "meta-trigger",
+          "url": "mm_triggered_jobs:orchestration_create"
+        },
+        {
+          "name": "Orchestration Jobs",
+          "slug": "meta-trigger",
+          "url": "mm_triggered_jobs:orchestration_list"
+        }
+      ]
+    },
+    {
       "menu_header": "Tool Stores"
     },
     {

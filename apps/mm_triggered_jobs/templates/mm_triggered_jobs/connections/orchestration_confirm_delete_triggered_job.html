@@ -1,0 +1,74 @@
+
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: orchestration_confirm_delete_triggered_job.html
+  ~ Last Modified: 2024-11-14 07:19:57
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-14 07:19:58
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Delete Orchestration Triggered Job{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">
+            <strong>Delete Orchestration Triggered Job</strong>
+          </h3>
+          <small class="text-muted float-end"></small>
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div
+              class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+              role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <hr>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete the orchestration triggered job <strong>"{{ triggered_job.name }}"</strong>?</p><br>
+            <h6><strong>
+              • This operation will result in the complete removal of the orchestration triggered job from the system.
+              <br>
+              • This deletion operation is completely irreversible and will entirely remove the orchestration triggered job and all
+              associated data from the system.
+            </strong></h6>
+            <img src="{% static 'img/custom-illustrations-v2/i2-73.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
+            <hr>
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
+              <i class="fa fa-skull-crossbones me-4"></i>
+              DELETE &nbsp;</strong> the orchestration triggered job.
+            </button>
+            <a href="{% url 'mm_triggered_jobs:orchestration_list' %}" class="btn btn-secondary mt-4"><strong>
+              <i class="fa fa-cancel me-4"></i>
+              CANCEL &nbsp;</strong> the deletion operation.</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

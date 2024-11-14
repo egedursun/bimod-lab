@@ -17,3 +17,5 @@
 
 from .triggered_job_admin import *
 from .triggered_job_instance_admin import *
+from .orchestration_triggered_job_admin import *
+from .orchestration_triggered_job_instance_admin import *
