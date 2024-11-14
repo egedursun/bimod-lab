@@ -733,6 +733,18 @@
       "url": "/app/mm_scheduled_jobs/list"
     },
     {
+      "name": "Create Orchestration Scheduled Job",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "orchestration-scheduled-jobs",
+      "url": "/app/mm_scheduled_jobs/orchestration/create"
+    },
+    {
+      "name": "Orchestration Scheduled Jobs",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "orchestration-scheduled-jobs",
+      "url": "/app/mm_scheduled_jobs/orchestration/list"
+    },
+    {
       "name": "Create Triggered Job",
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "triggers",
