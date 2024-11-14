@@ -36,6 +36,9 @@ class MetaKanbanCommandTypes:
     ASSIGN_TASK = "ASSIGN_TASK"
     MOVE_TASK = "MOVE_TASK"
 
+    ANALYZE = "ANALYZE"
+    INTEGRATE_MEETING_RECORDS = "INTEGRATE_MEETING_RECORDS"
+
     @staticmethod
     def as_list():
         return [
@@ -49,7 +52,9 @@ class MetaKanbanCommandTypes:
             MetaKanbanCommandTypes.UPDATE_TASK,
             MetaKanbanCommandTypes.DELETE_TASK,
             MetaKanbanCommandTypes.ASSIGN_TASK,
-            MetaKanbanCommandTypes.MOVE_TASK
+            MetaKanbanCommandTypes.MOVE_TASK,
+            MetaKanbanCommandTypes.ANALYZE,
+            MetaKanbanCommandTypes.INTEGRATE_MEETING_RECORDS,
         ]
 
     @staticmethod
@@ -110,5 +115,11 @@ class MetaKanbanCommandTypes:
             MetaKanbanCommandTypes.MOVE_TASK: {
                 "task_id": "<integer value here>",
                 "status_column_id": "<integer value here>",
+            },
+            MetaKanbanCommandTypes.ANALYZE: {
+                "report": "<string value here>",
+            },
+            MetaKanbanCommandTypes.INTEGRATE_MEETING_RECORDS: {
+                "record_id": "<integer value here>"
             },
         }

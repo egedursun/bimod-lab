@@ -39,6 +39,12 @@ def get_tool_prompt_metakanban_command_execution():
         and make sure the format of your JSON is completely correct and strictly avoided using invalid fields in the
         JSON such as `, ', or " characters.
 
+        - Other than the JSON call-based actions you can take, you can also **ANALYZE** the status of the Kanban Board
+        and provide insights by using natural language if this is prompted by the user.
+
+        - You can also **INTEGRATE_MEETING_RECORDS** to interpret meeting records and integrate relevant updates to the
+        Kanban Board by using your action types.
+
         - The format for the dictionary you will output to use the Meta Kanban Management Tool is as follows:
 
         '''
@@ -337,6 +343,30 @@ def get_tool_prompt_metakanban_command_execution():
                         }}
                     }}
                 '''
+
+            - **[11] `ANALYZE`**: Simply Analyze the status of the Kanban Board and provide insights based on the query.
+                - **Example Tool Usage**:
+
+                '''
+                < Just return your response in natural language without a **TOOL CALL**. >
+                '''
+
+                **NOTE:** THIS IS NOT AN ACTION TO BE CALLED DIRECTLY. THIS ACTION IS TO BE USED WHEN YOU ARE PROMPTED
+                BY THE USER TO ANALYZE THE KANBAN BOARD. YOU MUST PROVIDE YOUR RESPONSE IN NATURAL LANGUAGE.
+
+            - **[12] `INTEGRATE_MEETING_RECORDS`**: Interpret meeting records and integrate relevant updates to the Kanban Board by using your action types.
+                - **Example Tool Usage**:
+
+                '''
+                < If prompted by the user, you can integrate the recent meeting records to the Kanban board. You must
+                do this by understanding the context of the meeting records, transform these into whatever actions that
+                would be necessary within your own action specifications, and then call the relevant tools with associated
+                action calls and correct, valid JSON bodies for those action types. The latest 5 meeting transcriptions
+                are shared with you in your prompt.>
+                '''
+
+                **NOTE:** THIS IS NOT AN ACTION TO BE CALLED DIRECTLY. THIS ACTION IS TO BE USED WHEN YOU ARE PROMPTED
+                BY THE USER TO INTEGRATE MEETING RECORDS.
 
         -----
 

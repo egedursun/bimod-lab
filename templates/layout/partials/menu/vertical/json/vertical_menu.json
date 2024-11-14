@@ -568,11 +568,6 @@
           "name": "Smart Contracts",
           "slug": "smart-contract",
           "url": "smart_contracts:contract_list"
-        },
-        {
-          "name": "Connect to Assistant",
-          "slug": "smart-contract",
-          "url": "smart_contracts:connect_assistant"
         }
       ]
     },

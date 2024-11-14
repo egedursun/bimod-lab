@@ -16,13 +16,37 @@
 #
 
 from apps.assistants.models import Assistant
-from apps.smart_contracts.models import BlockchainSmartContract
+from apps.smart_contracts.models import BlockchainSmartContract, BlockchainWalletConnection
 
 
 def build_smart_contracts_data_source_prompt(assistant: Assistant):
     agent_org = assistant.organization
     smart_contracts = BlockchainSmartContract.objects.filter(wallet__organization=agent_org)
     response_prompt = """
+        ### **BLOCKCHAIN WALLET CONNECTIONS:**
+
+        '''
+    """
+
+    blockchain_wallets = BlockchainWalletConnection.objects.filter(organization=agent_org)
+    for i, wallet in enumerate(blockchain_wallets):
+        wallet: BlockchainWalletConnection
+        response_prompt += f"""
+        [Wallet ID: {wallet.id}]
+            Nickname: {wallet.nickname}
+            Description: {wallet.description}
+            Blockchain Type: {wallet.blockchain_type}
+            Address: {wallet.wallet_address}
+            Balance: {wallet.wallet_balance}
+            Balance Last Synced At: {wallet.balance_last_synced_at}
+
+        ---
+    """
+
+    response_prompt += """
+
+        ================
+
         ### **BLOCKCHAIN SMART CONTRACT CONNECTIONS:**
 
         '''
@@ -57,12 +81,7 @@ def build_smart_contracts_data_source_prompt(assistant: Assistant):
             Smart Contract's Wallet Information:
 
             [Wallet ID: {smart_contract.wallet.id}]
-                [Wallet's Nickname: {smart_contract.wallet.nickname}]
-                [Description: {smart_contract.wallet.description}]
-                [Blockchain Type: {smart_contract.wallet.blockchain_type}]
-                [Address: {smart_contract.wallet.wallet_address}]
-                [Balance: {smart_contract.wallet.wallet_balance}]
-                [Balance Last Synced At: {smart_contract.wallet.balance_last_synced_at}]
+                [**More information can be found in the Wallets section above.**]
 
         ---
 

@@ -18,4 +18,3 @@
 
 from .wallet_connection_models import *
 from .blockchain_contract_models import *
-from .connect_contract_to_assistant_models import *

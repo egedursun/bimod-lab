@@ -18,4 +18,3 @@
 
 from .wallet import *
 from .contract import *
-from .connect_assistant import *

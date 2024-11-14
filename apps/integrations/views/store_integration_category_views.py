@@ -27,8 +27,12 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
 from apps.datasource_nosql.models import NoSQLDatabaseConnection
 from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.hadron_prime.models import HadronNodeAssistantConnection
 from apps.integrations.models import AssistantIntegration, AssistantIntegrationCategory
 from apps.llm_core.models import LLMCore
+from apps.metakanban.models import MetaKanbanAssistantConnection
+from apps.metatempo.models import MetaTempoAssistantConnection
+from apps.orchestrations.models import OrchestrationReactantAssistantConnection
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
 from apps.user_permissions.utils import PermissionNames
@@ -62,6 +66,10 @@ class IntegrationView_IntegrationCategoryStore(LoginRequiredMixin, TemplateView)
         ml_storages = DataSourceMLModelConnection.objects.filter(assistant__organization__in=user_organizations)
         video_generators = VideoGeneratorConnection.objects.filter(assistant__organization__in=user_organizations)
         project_items = ProjectItem.objects.filter(organization__in=user_organizations)
+        hadron_node_connections = HadronNodeAssistantConnection.objects.filter(assistant__organization__in=user_organizations)
+        metakanban_connections = MetaKanbanAssistantConnection.objects.filter(assistant__organization__in=user_organizations)
+        metatempo_connections = MetaTempoAssistantConnection.objects.filter(assistant__organization__in=user_organizations)
+        orchestration_connections = OrchestrationReactantAssistantConnection.objects.filter(assistant__organization__in=user_organizations)
 
         integrations = AssistantIntegration.objects.filter(integration_category__category_slug=self.kwargs['category_slug']).order_by("integration_name")
         context['category'] = category
@@ -78,4 +86,8 @@ class IntegrationView_IntegrationCategoryStore(LoginRequiredMixin, TemplateView)
         context['ml_storages'] = ml_storages
         context['video_generators'] = video_generators
         context['project_items'] = project_items
+        context['hadron_node_connections'] = hadron_node_connections
+        context['metakanban_connections'] = metakanban_connections
+        context['metatempo_connections'] = metatempo_connections
+        context['orchestration_connections'] = orchestration_connections
         return context

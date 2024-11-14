@@ -22,7 +22,6 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
 from apps.export_assistants.models import ExportAssistantAPI, RequestLog
 from apps.export_assistants.utils import ExportAPIStatusCodes
 from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
@@ -165,6 +164,7 @@ class ExportAssistantAPIView(View):
             }, status=ExportAPIStatusCodes.INTERNAL_SERVER_ERROR)
 
         try:
+            from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
             llm_client = GenerativeAIDecodeController.get(assistant=export_assistant.assistant,
                                                           multimodal_chat=api_chat)
             llm_response_text, f_uris, img_uris = llm_client.respond(latest_message=user_msg, with_media=True)

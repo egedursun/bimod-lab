@@ -44,12 +44,21 @@ from apps.core.system_prompts.information_feeds.browser.build_browser_data_sourc
     build_browsing_data_source_prompt, build_lean_browsing_data_source_prompt
 from apps.core.system_prompts.information_feeds.code_base.build_code_base_data_source_prompt import \
     build_code_base_data_source_prompt, build_lean_code_base_data_source_prompt
+from apps.core.system_prompts.information_feeds.hadron_prime_node_to_assistant.build_hadron_prime_node_to_assistant_data_source_prompt import \
+    build_hadron_prime_node_to_assistant_data_source_prompt, \
+    build_lean_hadron_prime_node_to_assistant_data_source_prompt
 from apps.core.system_prompts.information_feeds.media_manager.build_media_manager_data_source_prompt import \
     build_media_manager_data_source_prompt, build_lean_media_manager_data_source_prompt
+from apps.core.system_prompts.information_feeds.metakanban_to_assistant.build_metakanban_to_assistant_data_source_prompt import \
+    build_metakanban_to_assistant_data_source_prompt, build_lean_metakanban_to_assistant_data_source_prompt
+from apps.core.system_prompts.information_feeds.metatempo_to_asisstant.build_metatempo_to_assistant_data_source_prompt import \
+    build_metatempo_to_assistant_data_source_prompt, build_lean_metatempo_to_assistant_data_source_prompt
 from apps.core.system_prompts.information_feeds.ml_manager.build_ml_models_data_source_prompt import \
     build_ml_models_data_source_prompt, build_lean_ml_models_data_source_prompt
 from apps.core.system_prompts.information_feeds.nosql.build_nosql_data_source_prompt import \
     build_nosql_data_source_prompt, build_lean_nosql_data_source_prompt
+from apps.core.system_prompts.information_feeds.orchestration_to_assistant.build_orchestration_to_assistant_data_source_prompt import \
+    build_orchestration_to_assistant_data_source_prompt, build_lean_orchestration_to_assistant_data_source_prompt
 from apps.core.system_prompts.information_feeds.smart_contracts.build_smart_contracts_data_source_prompt import \
     build_lean_smart_contracts_data_source_prompt, build_smart_contracts_data_source_prompt
 from apps.core.system_prompts.information_feeds.sql.build_sql_data_source_prompt import build_sql_data_source_prompt, \
@@ -93,18 +102,34 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_codebase_query_
     build_tool_prompt__execute_codebase_query
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_analysis_tool_prompt import \
     build_tool_prompt__analyze_code
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_dashboard_statistics_query_tool_prompt import \
+    build_tool_prompt__execute_dashboard_statistics_query
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_hadron_prime_node_query_tool_prompt import \
+    build_tool_prompt__execute_hadron_prime_node_query
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metakanban_query_tool_prompt import \
+    build_tool_prompt__execute_metakanban_query
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metatempo_query_tool_prompt import \
+    build_tool_prompt__execute_metatempo_query
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_nosql_query_tool_prompt import \
     build_tool_prompt__execute_nosql_query
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_orchestration_trigger_tool_prompt import \
+    build_tool_prompt__execute_orchestration_trigger
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_restful_api_tool_prompt import \
     build_tool_prompt__execute_restful_api
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_tool_prompt import \
     build_tool_prompt__execute_code
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_bash_script_tool_prompt import \
     build_tool_prompt__execute_bash_script
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_scheduled_job_logs_query_tool_prompt import \
+    build_tool_prompt__execute_scheduled_job_logs_query
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_smart_contract_function_call_prompt import \
     build_tool_prompt__smart_contract_function_call
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_smart_contract_query_tool_prompt import \
+    build_tool_prompt__execute_smart_contract_generation_query
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_ssh_file_system_command_tool_prompt import \
     build_tool_prompt__execute_ssh_file_system_command
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_triggered_job_logs_query_tool_prompt import \
+    build_tool_prompt__execute_triggered_job_logs_query
 from apps.core.system_prompts.tool_call_prompts.per_tool.generate_image_tool_prompt import \
     build_tool_prompt__generate_image
 from apps.core.system_prompts.tool_call_prompts.per_tool.edit_image_tool_prompt import \
@@ -154,7 +179,8 @@ class SystemPromptFactoryBuilder:
                 templated_response=templated_response, user=user))
 
         (browsing_feed, codebase_feed, ssh_system_feed, vector_store_feed, media_manager_feed,
-         ml_manager_feed, sql_feed, nosql_feed, smart_contract_feed) = (
+         ml_manager_feed, sql_feed, nosql_feed, smart_contract_feed, hadron_prime_node_feed, metakanban_feed,
+         metatempo_feed, orchestration_trigger_feed) = (
             SystemPromptFactoryBuilder._build_information_feeds_prompt(assistant=assistant))
 
         restful_apis, custom_functions, bash_scripts = (
@@ -164,7 +190,8 @@ class SystemPromptFactoryBuilder:
          execute_script, execute_ssh_command, generate_image, edit_image, dream_image, query_vector_store,
          predict_with_ml, execute_reasoning, execute_sql_query, execute_nosql_query, execute_media_manager,
          generic_tool_calls, execute_http_retrieval, execute_intra_memory_retrieval, generate_video,
-         smart_contract_func_call) = (
+         smart_contract_func_call, dashboard_statistics, hadron_node_query, metakanban_query, metatempo_query,
+         orchestration_trigger, scheduled_job_logs, triggered_job_logs, smart_contract_gen) = (
             SystemPromptFactoryBuilder._build_tool_call_instructions_prompts(assistant=assistant))
 
         #
@@ -187,7 +214,14 @@ class SystemPromptFactoryBuilder:
             do_nosql_query=execute_nosql_query, do_media_manager=execute_media_manager, tone=tone,
             do_instructions=generic_tool_calls, do_http_retrieval=execute_http_retrieval, user_info=comm_user_info,
             do_intra_memory=execute_intra_memory_retrieval, do_generate_video=generate_video,
-            smart_contract_feed=smart_contract_feed, smart_contract_func_call=smart_contract_func_call)
+            smart_contract_feed=smart_contract_feed, smart_contract_func_call=smart_contract_func_call,
+            dashboard_statistics=dashboard_statistics, hadron_node_query=hadron_node_query,
+            metakanban_query=metakanban_query, metatempo_query=metatempo_query,
+            orchestration_trigger=orchestration_trigger, scheduled_job_logs=scheduled_job_logs,
+            triggered_job_logs=triggered_job_logs, smart_contract_gen=smart_contract_gen,
+            hadron_prime_node_feed=hadron_prime_node_feed, metakanban_feed=metakanban_feed,
+            metatempo_feed=metatempo_feed, orchestration_trigger_feed=orchestration_trigger_feed
+        )
 
         prompt = {"role": role, "content": merged_prompt}
         tx = LLMTransaction.objects.create(
@@ -209,7 +243,11 @@ class SystemPromptFactoryBuilder:
                               agent_nickname, spatial_awareness, do_ml_model, do_reasoning, projects_teams,
                               comm_language, templated_response, scripts_feed, sql_feed, do_sql_query, nosql_feed,
                               do_nosql_query, do_media_manager, tone, do_instructions, do_http_retrieval, user_info,
-                              do_intra_memory, do_generate_video, smart_contract_feed, smart_contract_func_call):
+                              do_intra_memory, do_generate_video, smart_contract_feed, smart_contract_func_call,
+                              dashboard_statistics, hadron_node_query, metakanban_query, metatempo_query,
+                              orchestration_trigger, scheduled_job_logs, triggered_job_logs, smart_contract_gen,
+                              hadron_prime_node_feed, metakanban_feed, metatempo_feed, orchestration_trigger_feed
+                              ):
         combined_system_instructions = foundation
         combined_system_instructions += agent_nickname
         combined_system_instructions += generic_instructions
@@ -236,6 +274,10 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += apis_feed
         combined_system_instructions += scripts_feed
         combined_system_instructions += smart_contract_feed
+        combined_system_instructions += hadron_prime_node_feed
+        combined_system_instructions += metakanban_feed
+        combined_system_instructions += metatempo_feed
+        combined_system_instructions += orchestration_trigger_feed
 
         combined_system_instructions += do_instructions
         combined_system_instructions += do_sql_query
@@ -259,6 +301,14 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += do_audio
         combined_system_instructions += do_generate_video
         combined_system_instructions += smart_contract_func_call
+        combined_system_instructions += dashboard_statistics
+        combined_system_instructions += hadron_node_query
+        combined_system_instructions += metakanban_query
+        combined_system_instructions += metatempo_query
+        combined_system_instructions += orchestration_trigger
+        combined_system_instructions += scheduled_job_logs
+        combined_system_instructions += triggered_job_logs
+        combined_system_instructions += smart_contract_gen
 
         return combined_system_instructions
 
@@ -286,9 +336,19 @@ class SystemPromptFactoryBuilder:
         process_audio = build_tool_prompt__execute_audio()
         generate_video = build_tool_prompt__generate_video(assistant_id=assistant.id)
         smart_contract_func_call = build_tool_prompt__smart_contract_function_call()
+        dashboard_statistics = build_tool_prompt__execute_dashboard_statistics_query()
+        hadron_node_query = build_tool_prompt__execute_hadron_prime_node_query()
+        metakanban_query = build_tool_prompt__execute_metakanban_query()
+        metatempo_query = build_tool_prompt__execute_metatempo_query()
+        orchestration_trigger = build_tool_prompt__execute_orchestration_trigger()
+        scheduled_job_logs = build_tool_prompt__execute_scheduled_job_logs_query()
+        triggered_job_logs = build_tool_prompt__execute_triggered_job_logs_query()
+        smart_contract_gen = build_tool_prompt__execute_smart_contract_generation_query()
         return (process_audio, browsing, codebase, analyze_code, apis, functions, scripts, ssh_file_system,
                 generate_image, edit_image, dream_image, vector_store, infer_ml, reasoning, sql, nosql, media_manager,
-                instructions, http_retrieval, intra_memory, generate_video, smart_contract_func_call)
+                instructions, http_retrieval, intra_memory, generate_video, smart_contract_func_call,
+                dashboard_statistics, hadron_node_query, metakanban_query, metatempo_query, orchestration_trigger,
+                scheduled_job_logs, triggered_job_logs, smart_contract_gen)
 
     @staticmethod
     def _build_flexible_modalities_prompts(assistant):
@@ -308,8 +368,13 @@ class SystemPromptFactoryBuilder:
         ml_feed = build_ml_models_data_source_prompt(assistant)
         browsing_feed = build_browsing_data_source_prompt(assistant)
         smart_contract_feed = build_smart_contracts_data_source_prompt(assistant)
+        hadron_prime_node_feed = build_hadron_prime_node_to_assistant_data_source_prompt(assistant)
+        metakanban_feed = build_metakanban_to_assistant_data_source_prompt(assistant)
+        metatempo_feed = build_metatempo_to_assistant_data_source_prompt(assistant)
+        orchestration_trigger_feed = build_orchestration_to_assistant_data_source_prompt(assistant)
         return (browsing_feed, codebase_feed, ssh_system_feed, vector_store_feed, media_manager_feed,
-                ml_feed, sql_feed, nosql_feed, smart_contract_feed)
+                ml_feed, sql_feed, nosql_feed, smart_contract_feed, hadron_prime_node_feed, metakanban_feed,
+                metatempo_feed, orchestration_trigger_feed)
 
     @staticmethod
     def _build_foundation_prompts(agent_nickname, agent_personality_tone, assistant, chat, output_language,
@@ -359,6 +424,10 @@ class SystemPromptFactoryBuilder:
         ml_feed = build_lean_ml_models_data_source_prompt()
         browsing_feed = build_lean_browsing_data_source_prompt()
         smart_contract_feed = build_lean_smart_contracts_data_source_prompt()
+        hadron_prime_node_feed = build_lean_hadron_prime_node_to_assistant_data_source_prompt()
+        metakanban_feed = build_lean_metakanban_to_assistant_data_source_prompt()
+        metatempo_feed = build_lean_metatempo_to_assistant_data_source_prompt()
+        orchestration_trigger_feed = build_lean_orchestration_to_assistant_data_source_prompt()
 
         function_modality = build_lean_functions_multi_modality_prompt()
         api_modality = build_lean_apis_multi_modality_prompt()
@@ -384,6 +453,14 @@ class SystemPromptFactoryBuilder:
         do_audio = build_tool_prompt__execute_audio()
         do_generate_video = build_lean_tool_prompt__generate_video()
         do_smart_contract = build_tool_prompt__smart_contract_function_call()
+        do_dashboard_statistics = build_tool_prompt__execute_dashboard_statistics_query()
+        do_hadron_node_query = build_tool_prompt__execute_hadron_prime_node_query()
+        do_metakanban_query = build_tool_prompt__execute_metakanban_query()
+        do_metatempo_query = build_tool_prompt__execute_metatempo_query()
+        do_orchestration_trigger = build_tool_prompt__execute_orchestration_trigger()
+        do_scheduled_job_logs = build_tool_prompt__execute_scheduled_job_logs_query()
+        do_triggered_job_logs = build_tool_prompt__execute_triggered_job_logs_query()
+        do_smart_contract_gen = build_tool_prompt__execute_smart_contract_generation_query()
 
         # Core Instructions
         merged_prompt = generic
@@ -402,6 +479,10 @@ class SystemPromptFactoryBuilder:
         merged_prompt += ml_feed
         merged_prompt += browsing_feed
         merged_prompt += smart_contract_feed
+        merged_prompt += hadron_prime_node_feed
+        merged_prompt += metakanban_feed
+        merged_prompt += metatempo_feed
+        merged_prompt += orchestration_trigger_feed
         # Executors
         merged_prompt += function_modality
         merged_prompt += api_modality
@@ -426,6 +507,14 @@ class SystemPromptFactoryBuilder:
         merged_prompt += do_audio
         merged_prompt += do_generate_video
         merged_prompt += do_smart_contract
+        merged_prompt += do_dashboard_statistics
+        merged_prompt += do_hadron_node_query
+        merged_prompt += do_metakanban_query
+        merged_prompt += do_metatempo_query
+        merged_prompt += do_orchestration_trigger
+        merged_prompt += do_scheduled_job_logs
+        merged_prompt += do_triggered_job_logs
+        merged_prompt += do_smart_contract_gen
         prompt = {"role": "system", "content": merged_prompt}
         return prompt
 

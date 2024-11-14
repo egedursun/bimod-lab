@@ -19,7 +19,6 @@ import logging
 
 from django.utils import timezone
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.core.metakanban.builders import build_metakanban_agent_prompts
@@ -37,6 +36,7 @@ logger = logging.getLogger(__name__)
 class MetaKanbanExecutionManager:
 
     def __init__(self, board_id: int):
+        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
         self.board: MetaKanbanBoard = MetaKanbanBoard.objects.get(id=board_id)
         self.llm_model = self.board.llm_model
         self.c = OpenAIGPTClientManager.get_naked_client(llm_model=self.llm_model)

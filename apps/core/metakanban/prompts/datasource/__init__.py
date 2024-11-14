@@ -17,3 +17,4 @@
 
 
 from .metakanban_boards_datasource_prompt import *
+from .metakanban_meeting_records_datasource_prompt import *

@@ -23,7 +23,6 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.utils import timezone
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.core.metatempo.builders import (build_log_snapshot_interpretation_prompt,
@@ -58,6 +57,7 @@ class MetaTempoExecutionActionTypesNames:
 class MetaTempoExecutionManager:
 
     def __init__(self, metatempo_connection_id: int):
+        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
         self.metatempo_connection = MetaTempoConnection.objects.get(id=metatempo_connection_id)
         self.metakanban_board = self.metatempo_connection.board
         self.llm_model = self.metakanban_board.llm_model

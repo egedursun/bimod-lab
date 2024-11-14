@@ -17,4 +17,3 @@
 
 from .blockchain_contract_admin import *
 from .wallet_connection_admin import *
-from .connect_contract_to_assistant_admin import *

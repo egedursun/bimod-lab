@@ -57,7 +57,7 @@ class AssistantIntegration(models.Model):
     integration_max_retries = models.IntegerField(default=5)  # Can be overridden
     integration_max_tool_retries = models.IntegerField(default=5)  # Can be overridden
     integration_max_tool_pipelines = models.IntegerField(default=5)  # Can be overridden
-    integration_max_message_memory = models.IntegerField(default=5)  # Can be overridden
+    integration_max_message_memory = models.IntegerField(default=25)  # Can be overridden
     integration_image_generation_capability = models.BooleanField(default=True)  # Can be overridden
 
     # Metadata (On Creation + On Update)

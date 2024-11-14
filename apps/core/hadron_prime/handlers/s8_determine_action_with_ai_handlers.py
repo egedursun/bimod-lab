@@ -17,7 +17,6 @@
 import json
 import logging
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.hadron_prime.parsers import make_request_from_curl
 from apps.core.hadron_prime.prompt_builders import build_hadron_prime_system_prompt
@@ -35,6 +34,7 @@ logger = logging.getLogger(__name__)
 def consult_ai(node: HadronNode, current_state: str, goal_state: str, error_calculation: str, measurements: str,
                topic_messages: str, sease_logs: str, publish_history_logs: str, analytical_data: str,
                action_set_data: str):
+    from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
     ai_consultancy_output, command, error = "N/A", "N/A", None
 
     c = OpenAIGPTClientManager.get_naked_client(llm_model=node.llm_model)

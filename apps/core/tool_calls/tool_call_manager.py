@@ -23,8 +23,32 @@ from django.contrib.auth.models import User
 
 from apps.core.browsers.utils import BrowserActionsNames
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_json_decode_error_log
+from apps.core.tool_calls.core_services.core_service_dashboard_statistics_query import run_query_dashboard_statistics
+from apps.core.tool_calls.core_services.core_service_execute_metakanban_query import run_query_execute_metakanban
+from apps.core.tool_calls.core_services.core_service_execute_metatempo_query import run_query_execute_metatempo
+from apps.core.tool_calls.core_services.core_service_execute_orchestration_trigger import \
+    run_query_trigger_orchestration
+from apps.core.tool_calls.core_services.core_service_execute_scheduled_job_logs_query import \
+    run_query_execute_scheduled_job_logs
+from apps.core.tool_calls.core_services.core_service_execute_smart_contract_query import \
+    run_query_execute_smart_contract_generation_query
+from apps.core.tool_calls.core_services.core_service_execute_triggered_job_logs_query import \
+    run_query_execute_triggered_job_logs
+from apps.core.tool_calls.core_services.core_service_hadron_node_query import run_query_execute_hadron_node
 from apps.core.tool_calls.core_services.core_service_process_reasoning import run_process_reasoning
 from apps.core.tool_calls.core_services.core_service_generate_video import run_generate_video
+from apps.core.tool_calls.input_verifiers.verify_dashboard_statistics_query import \
+    verify_dashboard_statistics_query_content
+from apps.core.tool_calls.input_verifiers.verify_hadron_node_query import verify_hadron_node_query_content
+from apps.core.tool_calls.input_verifiers.verify_metakanban_query import verify_metakanban_query_content
+from apps.core.tool_calls.input_verifiers.verify_metatempo_query import verify_metatempo_query_content
+from apps.core.tool_calls.input_verifiers.verify_orchestration_trigger import verify_orchestration_trigger_content
+from apps.core.tool_calls.input_verifiers.verify_scheduled_job_logs_query import \
+    verify_scheduled_job_logs_query_content
+from apps.core.tool_calls.input_verifiers.verify_smart_contract_query import \
+    verify_smart_contract_generation_query_content
+from apps.core.tool_calls.input_verifiers.verify_triggered_job_logs_query import \
+    verify_triggered_job_logs_query_content
 from apps.core.tool_calls.leanmod.core_services.core_service_consultation_semantor import \
     execute_semantor_consultation_query
 from apps.core.tool_calls.leanmod.core_services.core_service_query_semantor import execute_semantor_search_query
@@ -78,6 +102,7 @@ from apps.core.tool_calls.leanmod.core_services.core_service_query_expert_networ
     execute_expert_network_query
 from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+from apps.llm_core.models import LLMCore
 from apps.multimodal_chat.models import MultimodalChat
 from apps.video_generations.models import GeneratedVideo, VideoGeneratorConnection
 from config.settings import MEDIA_URL
@@ -281,6 +306,64 @@ class ToolCallManager:
                 multimodal_chat=self.chat, created_by_user=self.chat.created_by_user, video_url=video_url)
             video_generation_response_raw_str = json.dumps(video_generation_response, sort_keys=True, default=str)
             output_tool_call += video_generation_response_raw_str
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_DASHBOARD_STATISTICS_QUERY:
+            error = verify_dashboard_statistics_query_content(content=self.tool_usage_dict)
+            if error:
+                logger.error(f"Error occurred while verifying the dashboard statistics query content: {error}")
+                return error, None, None, None
+            output_tool_call = self._handle_tool_dashboard_statistics_query(output_tool_call)
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_HADRON_PRIME_NODE_QUERY:
+            error = verify_hadron_node_query_content(content=self.tool_usage_dict)
+            if error:
+                logger.error(f"Error occurred while verifying the Hadron Prime Node query content: {error}")
+                return error, None, None, None
+            output_tool_call = self._handle_tool_hadron_node_query(output_tool_call)
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_METAKANBAN_QUERY:
+            error = verify_metakanban_query_content(content=self.tool_usage_dict)
+            if error:
+                logger.error(f"Error occurred while verifying the MetaKanban board query content: {error}")
+                return error, None, None, None
+            output_tool_call = self._handle_tool_metakanban_query(output_tool_call)
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_METATEMPO_QUERY:
+            error = verify_metatempo_query_content(content=self.tool_usage_dict)
+            if error:
+                logger.error(f"Error occurred while verifying the MetaTempo tracker query content: {error}")
+                return error, None, None, None
+            output_tool_call = self._handle_tool_metatempo_query(output_tool_call)
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_ORCHESTRATION_TRIGGER:
+            error = verify_orchestration_trigger_content(content=self.tool_usage_dict)
+            if error:
+                logger.error(f"Error occurred while verifying the Orchestration trigger content: {error}")
+                return error, None, None, None
+            output_tool_call = self._handle_tool_orchestration_trigger(output_tool_call)
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SCHEDULED_JOB_LOGS_QUERY:
+            error = verify_scheduled_job_logs_query_content(content=self.tool_usage_dict)
+            if error:
+                logger.error(f"Error occurred while verifying the scheduled job logs query content: {error}")
+                return error, None, None, None
+            output_tool_call = self._handle_tool_scheduled_job_logs_query(output_tool_call)
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_TRIGGERED_JOB_LOGS_QUERY:
+            error = verify_triggered_job_logs_query_content(content=self.tool_usage_dict)
+            if error:
+                logger.error(f"Error occurred while verifying the triggered job logs query content: {error}")
+                return error, None, None, None
+            output_tool_call = self._handle_tool_triggered_job_logs_query(output_tool_call)
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SMART_CONTRACT_GENERATION_QUERY:
+            error = verify_smart_contract_generation_query_content(content=self.tool_usage_dict)
+            if error:
+                logger.error(
+                    f"Error occurred while verifying the Smart Contract Generation query tool content: {error}")
+                return error, None, None, None
+            output_tool_call = self._handle_tool_smart_contract_gen_query(output_tool_call)
+
         ##################################################
         # NO TOOL FOUND
         else:
@@ -554,6 +637,94 @@ class ToolCallManager:
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
         logger.info(f"NoSQL query response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_dashboard_statistics_query(self, output_tool_call):
+        logger.info("Executing the Dashboard Statistics query process.")
+        user_id = self.chat.user.id
+        output = run_query_dashboard_statistics(llm_core=self.assistant.llm_model, user_id=user_id)
+        output_str = json.dumps(output, sort_keys=True, default=str)
+        output_tool_call += output_str
+        logger.info(f"Dashboard Statistics query response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_metakanban_query(self, output_tool_call):
+        logger.info("Executing the MetaKanban board query process.")
+        c_id = self.tool_usage_dict.get("parameters").get("connection_id")
+        query = self.tool_usage_dict.get("parameters").get("query")
+        output = run_query_execute_metakanban(c_id=c_id, query=query)
+        output_str = json.dumps(output, sort_keys=True, default=str)
+        output_tool_call += output_str
+        logger.info(f"Metakanban board query response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_metatempo_query(self, output_tool_call):
+        logger.info("Executing the MetaTempo tracker query process.")
+        c_id = self.tool_usage_dict.get("parameters").get("connection_id")
+        query = self.tool_usage_dict.get("parameters").get("query")
+        action = self.tool_usage_dict.get("parameters").get("action")
+        output = run_query_execute_metatempo(c_id=c_id, action=action, query=query)
+        output_str = json.dumps(output, sort_keys=True, default=str)
+        output_tool_call += output_str
+        logger.info(f"MetaTempo tracker query response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_orchestration_trigger(self, output_tool_call):
+        logger.info("Executing the Orchestration trigger process.")
+        user = self.chat.user
+        c_id = self.tool_usage_dict.get("parameters").get("connection_id")
+        query = self.tool_usage_dict.get("parameters").get("query")
+        output = run_query_trigger_orchestration(user=user, c_id=c_id, user_query=query)
+        output_str = json.dumps(output, sort_keys=True, default=str)
+        output_tool_call += output_str
+        logger.info(f"Orchestration trigger process response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_scheduled_job_logs_query(self, output_tool_call):
+        logger.info("Executing the Scheduled Job Logs query process.")
+        output = run_query_execute_scheduled_job_logs(assistant=self.assistant)
+        output_str = json.dumps(output, sort_keys=True, default=str)
+        output_tool_call += output_str
+        logger.info(f"Scheduled Job Logs query process response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_triggered_job_logs_query(self, output_tool_call):
+        logger.info("Executing the Triggered Job Logs query process.")
+        output = run_query_execute_triggered_job_logs(assistant=self.assistant)
+        output_str = json.dumps(output, sort_keys=True, default=str)
+        output_tool_call += output_str
+        logger.info(f"Triggered Job Logs query process response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_smart_contract_gen_query(self, output_tool_call):
+        logger.info("Executing the Smart Contract generation query process.")
+        user = self.chat.user
+        wallet_id = self.tool_usage_dict.get("parameters").get("wallet_id")
+        nickname = self.tool_usage_dict.get("parameters").get("nickname")
+        description = self.tool_usage_dict.get("parameters").get("description")
+        category = self.tool_usage_dict.get("parameters").get("category")
+        contract_template = self.tool_usage_dict.get("parameters").get("contract_template")
+        creation_prompt = self.tool_usage_dict.get("parameters").get("creation_prompt")
+        maximum_gas_limit = self.tool_usage_dict.get("parameters").get("maximum_gas_limit")
+        gas_price_gwei = self.tool_usage_dict.get("parameters").get("gas_price_gwei")
+        output = run_query_execute_smart_contract_generation_query(
+            wallet_id=wallet_id, user=user, llm_model=self.assistant.llm_model, nickname=nickname,
+            description=description, category=category, contract_template=contract_template,
+            creation_prompt=creation_prompt, maximum_gas_limit=maximum_gas_limit, gas_price_gwei=gas_price_gwei
+        )
+        output_str = json.dumps(output, sort_keys=True, default=str)
+        output_tool_call += output_str
+        logger.info(f"Smart contract generation query process response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_hadron_node_query(self, output_tool_call):
+        logger.info("Executing the Hadron Node query process.")
+        c_id = self.tool_usage_dict.get("parameters").get("connection_id")
+        query = self.tool_usage_dict.get("parameters").get("query")
+        output = run_query_execute_hadron_node(c_id=c_id, query=query)
+        output_str = json.dumps(output, sort_keys=True, default=str)
+        output_tool_call += output_str
+        logger.info(f"Hadron Node query process response retrieved.")
         return output_tool_call
 
     def call_internal_tool_service_lean(self):

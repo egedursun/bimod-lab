@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: __init__.py
-#  Last Modified: 2024-11-13 04:12:22
+#  File: verify_triggered_job_logs_query.py
+#  Last Modified: 2024-11-13 23:07:50
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-11-13 04:12:22
+#  Created: 2024-11-13 23:08:49
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -15,5 +15,5 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from .delete_assistant_connection_views import *
-from .connect_assistant_to_contract_views import *
+def verify_triggered_job_logs_query_content(content: dict):
+    return None

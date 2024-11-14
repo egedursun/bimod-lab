@@ -21,6 +21,10 @@ import faiss
 
 import numpy as np
 
+from apps.hadron_prime.models import HadronNodeAssistantConnection
+from apps.metakanban.models import MetaKanbanAssistantConnection
+from apps.metatempo.models import MetaTempoAssistantConnection
+from apps.orchestrations.models import OrchestrationReactantAssistantConnection
 from apps.semantor.utils.constant_utils import OpenAIEmbeddingModels, VECTOR_INDEX_PATH_ASSISTANTS, \
     OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
 import json
@@ -72,6 +76,7 @@ class AssistantVectorData(models.Model):
         return os.path.join(VECTOR_INDEX_PATH_ASSISTANTS, f'assistants_index_{organization_id}.index')
 
     def save(self, *args, **kwargs):
+
         raw_data = {
             "assistant_name": self.assistant.name,
             "assistant_description": self.assistant.description,
@@ -96,6 +101,10 @@ class AssistantVectorData(models.Model):
                 "ml_storages": {},
                 "projects": {},
                 "video_generators": {},
+                "hadron_node_connections": {},
+                "metakanban_board_connections": {},
+                "metatempo_tracker_connections": {},
+                "orchestration_trigger_connections": {},
             },
         }
         assistant_browsers = self.assistant.datasourcebrowserconnection_set.all()
@@ -108,6 +117,10 @@ class AssistantVectorData(models.Model):
         assistant_ml_storages = self.assistant.datasourcemlmodelconnection_set.all()  # -r ML Models
         assistant_projects = self.assistant.project_items.all()  # -r Teams
         assistant_video_generators = self.assistant.videogeneratorconnection_set.all()
+        hadron_node_connections = self.assistant.hadronnodeassistantconnection_set.all()
+        metakanban_board_connections = self.assistant.metakanbanassistantconnection_set.all()
+        metatempo_tracker_connections = self.assistant.metatempoassistantconnection_set.all()
+        orchestration_trigger_connections = self.assistant.orchestrationreactantassistantconnection_set.all()
         mm_functions = self.assistant.customfunctionreference_set.all()
         mm_apis = self.assistant.customapireference_set.all()
         mm_scripts = self.assistant.customscriptreference_set.all()
@@ -128,7 +141,9 @@ class AssistantVectorData(models.Model):
                                                          assistant_kbs, assistant_media_storages,
                                                          assistant_ml_storages,
                                                          assistant_nosql_dbs, assistant_projects, assistant_sql_dbs,
-                                                         assistant_video_generators, raw_data)
+                                                         assistant_video_generators, hadron_node_connections,
+                                                         metakanban_board_connections, metatempo_tracker_connections,
+                                                         orchestration_trigger_connections, raw_data)
 
         self.raw_data = raw_data
 
@@ -157,7 +172,10 @@ class AssistantVectorData(models.Model):
     def _populate_assistant_data_sources(self, assistant_browsers, assistant_codebases, assistant_file_systems,
                                          assistant_kbs, assistant_media_storages, assistant_ml_storages,
                                          assistant_nosql_dbs, assistant_projects, assistant_sql_dbs,
-                                         assistant_video_generators, raw_data):
+                                         assistant_video_generators, assistant_hadron_node_connections,
+                                         assistant_metakanban_board_connections,
+                                         assistant_metatempo_tracker_connections,
+                                         assistant_orchestration_trigger_connections, raw_data):
         # Data Sources: Browsers
         for browser in assistant_browsers:
             browser: DataSourceBrowserConnection
@@ -295,6 +313,38 @@ class AssistantVectorData(models.Model):
             raw_data["data_sources"]["video_generators"][video_generator.name] = {
                 "description": video_generator.description,
                 "provider": video_generator.provider,
+            }
+
+        # Data Sources: Hadron Prime Node Connections
+        for hadron_node_connection in assistant_hadron_node_connections:
+            hadron_node_connection: HadronNodeAssistantConnection
+            raw_data["data_sources"]["hadron_node_connections"][hadron_node_connection.hadron_prime_node.node_name] = {
+                "node_description": hadron_node_connection.hadron_prime_node.node_description,
+            }
+
+        # Data Sources: MetaKanban Board Connections
+        for hadron_node_connection in assistant_metakanban_board_connections:
+            hadron_node_connection: MetaKanbanAssistantConnection
+            raw_data["data_sources"]["metakanban_board_connections"][
+                hadron_node_connection.metakanban_board.title] = {
+                "board_description": hadron_node_connection.metakanban_board.description,
+            }
+
+        # Data Sources: MetaTempo Tracker Connections
+        for hadron_node_connection in assistant_metatempo_tracker_connections:
+            hadron_node_connection: MetaTempoAssistantConnection
+            raw_data["data_sources"]["metatempo_tracker_connections"][
+                hadron_node_connection.metatempo_instance.board.title] = {
+                "associated_board_title": hadron_node_connection.metatempo_instance.board.title,
+                "associated_board_description": hadron_node_connection.metatempo_instance.board.description,
+            }
+
+        # Data Sources: Orchestration Trigger Connections
+        for hadron_node_connection in assistant_orchestration_trigger_connections:
+            hadron_node_connection: OrchestrationReactantAssistantConnection
+            raw_data["data_sources"]["orchestration_trigger_connections"][
+                hadron_node_connection.orchestration_maestro.name] = {
+                "orchestrator_description": hadron_node_connection.orchestration_maestro.description,
             }
 
         return raw_data

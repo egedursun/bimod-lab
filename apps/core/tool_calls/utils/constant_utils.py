@@ -49,6 +49,14 @@ class ToolCallDescriptorNames:
     EXECUTE_METAKANBAN_ACTION = 'Meta Kanban Command Execution'
     EXECUTE_SEMANTOR_SEARCH_QUERY = 'Semantor Search Query Execution'
     EXECUTE_SEMANTOR_CONSULTATION_QUERY = 'Semantor Consultation Query Execution'
+    EXECUTE_DASHBOARD_STATISTICS_QUERY = 'Dashboard Statistics Query Execution'
+    EXECUTE_HADRON_PRIME_NODE_QUERY = 'Hadron Prime Node Query Execution'
+    EXECUTE_METAKANBAN_QUERY = 'MetaKanban Query Execution'
+    EXECUTE_METATEMPO_QUERY = 'MetaTempo Query Execution'
+    EXECUTE_ORCHESTRATION_TRIGGER = 'Orchestration Trigger'
+    EXECUTE_SCHEDULED_JOB_LOGS_QUERY = 'Scheduled Job Logs Query Execution'
+    EXECUTE_TRIGGERED_JOB_LOGS_QUERY = 'Triggered Job Logs Query Execution'
+    EXECUTE_SMART_CONTRACT_GENERATION_QUERY = 'Smart Contract Generation Query'
 
 
 IMAGE_GENERATION_AFFIRMATION_PROMPT = f"""

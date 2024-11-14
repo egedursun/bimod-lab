@@ -18,7 +18,6 @@ import logging
 
 from django.utils import timezone
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.hadron_prime.prompt_builders import build_hadron_node_speech_log_prompt
 from apps.hadron_prime.models import HadronNode, HadronSystem, HadronTopic, HadronNodeExecutionLog, \
@@ -450,6 +449,7 @@ class HadronPrimeExecutor:
         return success, error
 
     def generate_node_speech(self, user_query_text: str):
+        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
         system_prompt = build_hadron_node_speech_log_prompt(node=self.node)
         structured_system_prompt = {"role": "system", "content": str(system_prompt)}
         context_messages = [structured_system_prompt]

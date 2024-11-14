@@ -18,7 +18,6 @@ import logging
 
 import websockets
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import find_tool_call_from_json, ChatRoles
 from apps.core.orchestration.orchestration_tool_manager import OrchestrationToolManager
 from apps.core.orchestration.prompts.calls.build_maestro_to_assistant_instructions import \
@@ -42,6 +41,7 @@ logger = logging.getLogger(__name__)
 class OrchestrationExecutor:
 
     def __init__(self, maestro, query_chat):
+        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
         self.maestro = maestro
         self.query_chat = query_chat
         ############################################################################################################
@@ -353,6 +353,7 @@ class OrchestrationExecutor:
                 return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
 
         try:
+            from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
             internal_llm_client = OpenAIGPTClientManager(assistant=agent, chat_object=chat)
         except Exception as e:
             logger.error(f"Error while creating the internal LLM client for the Worker Assistant: {e}")

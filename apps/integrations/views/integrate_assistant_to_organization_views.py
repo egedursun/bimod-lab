@@ -33,8 +33,12 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSourceMLModelItem
 from apps.datasource_nosql.models import NoSQLDatabaseConnection, CustomNoSQLQuery
 from apps.datasource_sql.models import SQLDatabaseConnection, CustomSQLQuery
+from apps.hadron_prime.models import HadronNodeAssistantConnection
 from apps.integrations.models import AssistantIntegrationCategory, AssistantIntegration
 from apps.llm_core.models import LLMCore
+from apps.metakanban.models import MetaKanbanAssistantConnection
+from apps.metatempo.models import MetaTempoAssistantConnection
+from apps.orchestrations.models import OrchestrationReactantAssistantConnection
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
 from apps.user_permissions.utils import PermissionNames
@@ -68,6 +72,14 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
         # vii. Media Storages (Optional) -- (MEDIA + FILES)
         # viii. ML models (Optional) -- (ML)
         # ix. Video Generators (Optional) -- (VID)
+        # x. Projects (Optional) -- (PROJECT)
+        # _
+        # _____ new _____
+        # _
+        # xi. Hadron Node <> Assistant Connections
+        # xii. MetaKanban <> Assistant Connections
+        # xiii. MetaTempo <> Assistant Connections
+        # xiv. Orchestration <> Assistant Connections
         #############################################################################################################
         # MULTI-MODALITIES (Can be later MODIFIED BY USER, but on creation content PASSED FROM BIMOD STAFF) (OPTIONAL)
         #############################################################################################################
@@ -103,6 +115,15 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
         ml_storage_id = request.POST.get('ml_storage')
         video_generator_id = request.POST.get('video_generator')
         project_item_id = request.POST.get('project_item')
+        hadron_node_conn_id = request.POST.get('hadron_node')
+        metakanban_conn_id = request.POST.get('metakanban')
+        metatempo_conn_id = request.POST.get('metatempo')
+        orchestration_conn_id = request.POST.get('orchestration')
+
+        print("Hadron node id: ", hadron_node_conn_id)
+        print("MetaKanban id: ", metakanban_conn_id)
+        print("MetaTempo id: ", metatempo_conn_id)
+        print("Orchestration id: ", orchestration_conn_id)
 
         organization = Organization.objects.get(id=organization_id)
         llm_model = LLMCore.objects.get(id=llm_model_id)
@@ -137,6 +158,18 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
         project_item = None
         if project_item_id:
             project_item = ProjectItem.objects.get(id=project_item_id)
+        hadron_node = None
+        if hadron_node_conn_id:
+            hadron_node = HadronNodeAssistantConnection.objects.get(id=hadron_node_conn_id)
+        metakanban = None
+        if metakanban_conn_id:
+            metakanban = MetaKanbanAssistantConnection.objects.get(id=metakanban_conn_id)
+        metatempo = None
+        if metatempo_conn_id:
+            metatempo = MetaTempoAssistantConnection.objects.get(id=metatempo_conn_id)
+        orchestration = None
+        if orchestration_conn_id:
+            orchestration = OrchestrationReactantAssistantConnection.objects.get(id=orchestration_conn_id)
 
         # Step 1: Create the assistant
         created_assistant = Assistant.objects.create(
@@ -371,6 +404,62 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
         except Exception as e:
             messages.error(request, 'An error occurred while integrating the ML storage.')
             logger.error(f"Error occurred while integrating the ML storage: {e}")
+
+        # Step 11: Create a copy of the Hadron Node connection
+        try:
+            if hadron_node:
+                hadron_node: HadronNodeAssistantConnection
+                duplicated_hadron_node = hadron_node
+                duplicated_hadron_node: HadronNodeAssistantConnection
+                duplicated_hadron_node.pk = None
+                duplicated_hadron_node.assistant = created_assistant
+                duplicated_hadron_node.save()
+                created_assistant.save()
+        except Exception as e:
+            messages.error(request, 'An error occurred while integrating the Hadron Node <> Assistant connection.')
+            logger.error(f"Error occurred while integrating the Hadron Node <> Assistant connection: {e}")
+
+        # Step 12: Create a copy of the MetaKanban connection
+        try:
+            if metakanban:
+                metakanban: MetaKanbanAssistantConnection
+                duplicated_metakanban = metakanban
+                duplicated_metakanban: MetaKanbanAssistantConnection
+                duplicated_metakanban.pk = None
+                duplicated_metakanban.assistant = created_assistant
+                duplicated_metakanban.save()
+                created_assistant.save()
+        except Exception as e:
+            messages.error(request, 'An error occurred while integrating the MetaKanban <> Assistant connection.')
+            logger.error(f"Error occurred while integrating the MetaKanban <> Assistant connection: {e}")
+
+        # Step 13: Create a copy of the MetaTempo connection
+        try:
+            if metatempo:
+                metatempo: MetaTempoAssistantConnection
+                duplicated_metatempo = metatempo
+                duplicated_metatempo: MetaTempoAssistantConnection
+                duplicated_metatempo.pk = None
+                duplicated_metatempo.assistant = created_assistant
+                duplicated_metatempo.save()
+                created_assistant.save()
+        except Exception as e:
+            messages.error(request, 'An error occurred while integrating the MetaTempo <> Assistant connection.')
+            logger.error(f"Error occurred while integrating the MetaTempo <> Assistant connection: {e}")
+
+        # Step 14: Create a copy of the Orchestration connection
+        try:
+            if orchestration:
+                orchestration: OrchestrationReactantAssistantConnection
+                duplicated_orchestration = orchestration
+                duplicated_orchestration: OrchestrationReactantAssistantConnection
+                duplicated_orchestration.pk = None
+                duplicated_orchestration.assistant = created_assistant
+                duplicated_orchestration.save()
+                created_assistant.save()
+        except Exception as e:
+            messages.error(request, 'An error occurred while integrating the Orchestration <> Assistant connection.')
+            logger.error(f"Error occurred while integrating the Orchestration <> Assistant connection: {e}")
 
         messages.success(request, 'Assistant has been integrated to the organization successfully.')
         return redirect('integrations:store', category_slug=category.category_slug)

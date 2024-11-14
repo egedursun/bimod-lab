@@ -1,3 +1,22 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: store_meta_integration_category.html
+  ~ Last Modified: 2024-11-06 23:22:05
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-13 05:21:36
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
 {% extends layout_path %}
 {% load custom_filters %}
 {% load static %}
@@ -7,6 +26,7 @@
 
 {% block vendor_css %}
 {{ block.super }}
+
 <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
@@ -256,6 +276,7 @@
                 {% endfor %}
               </select>
             </div>
+
            <div class="col-6 mb-3">
               <label for="file_system" class="form-label">File System</label>
               <select id="file_system" name="file_system" class="form-control select">
@@ -265,6 +286,7 @@
                 {% endfor %}
               </select>
             </div>
+
             <div class="col-6 mb-3">
               <label for="sql_database" class="form-label">SQL Database</label>
               <select id="sql_database" name="sql_database" class="form-control select">
@@ -284,6 +306,7 @@
                 {% endfor %}
               </select>
             </div>
+
             <div class="col-6 mb-3">
               <label for="knowledge_base" class="form-label">Knowledge Base</label>
               <select id="knowledge_base" name="knowledge_base" class="form-control select">
@@ -303,6 +326,7 @@
                 {% endfor %}
               </select>
             </div>
+
             <div class="col-6 mb-3">
               <label for="media_storage" class="form-label">Media Storage</label>
               <select id="media_storage" name="media_storage" class="form-control select">
@@ -322,6 +346,7 @@
                 {% endfor %}
               </select>
             </div>
+
             <div class="col-6 mb-3">
               <label for="video_generator" class="form-label">Video Generator</label>
               <select id="video_generator" name="video_generator" class="form-control select">
@@ -331,12 +356,53 @@
                 {% endfor %}
               </select>
             </div>
+
             <div class="col-6 mb-3">
               <label for="project_item" class="form-label">Project</label>
               <select id="project_item" name="project_item" class="form-control select">
                 <option value="" selected>Choose a Project</option>
                 {% for project_item in project_items %}
                 <option value="{{ project_item.id }}">{{ project_item.project_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-6 mb-3">
+              <label for="hadron_node" class="form-label">Connect Hadron Prime Node</label>
+              <select id="hadron_node" name="hadron_node" class="form-control select">
+                <option value="" selected>Choose a Node</option>
+                {% for hadron_node_connection in hadron_node_connections %}
+                <option value="{{ hadron_node_connection.id }}">{{ hadron_node_connection.hadron_prime_node.node_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-6 mb-3">
+              <label for="metakanban" class="form-label">Connect MetaKanban Board</label>
+              <select id="metakanban" name="metakanban" class="form-control select">
+                <option value="" selected>Choose a Board</option>
+                {% for metakanban_connection in metakanban_connections %}
+                <option value="{{ metakanban_connection.id }}">{{ metakanban_connection.metakanban_board.title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-6 mb-3">
+              <label for="metatempo" class="form-label">Connect MetaTempo Tracker</label>
+              <select id="metatempo" name="metatempo" class="form-control select">
+                <option value="" selected>Choose a Tracker</option>
+                {% for metatempo_connection in metatempo_connections %}
+                <option value="{{ metatempo_connection.id }}">{{ metatempo_connection.metatempo_instance.board.title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-6 mb-3">
+              <label for="orchestration" class="form-label">Assign Orchestration Trigger</label>
+              <select id="orchestration" name="orchestration" class="form-control select">
+                <option value="" selected>Choose an Orchestrator</option>
+                {% for orchestration_connection in orchestration_connections %}
+                <option value="{{ orchestration_connection.id }}">{{ orchestration_connection.orchestration_maestro.name }}</option>
                 {% endfor %}
               </select>
             </div>

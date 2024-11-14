@@ -42,7 +42,18 @@ def provide_analysis(llm_model, statistics):
         output = c.chat.completions.create(
             model=llm_model.model_name,
             messages=[
-                {"role": "system", "content": json.dumps(lean_prompt, indent=4, sort_keys=True, default=str)}
+                {"role": "system", "content": json.dumps(lean_prompt, indent=4, sort_keys=True, default=str)},
+                {"role": "system", "content": """
+                    ===========================
+                    # **VERY IMPORTANT NOTE:**
+                    ===========================
+                    [1] NEVER ASK QUESTIONS, USER CAN'T ANSWER YOU!
+                    [2] ALWAYS SHARE YOUR INSIGHTS BASED ON THE DATA, NEVER GREET THE USER!
+                    [3] REPEATING AGAIN: NEVER ASK QUESTIONS, NEVER REJECT GENERATING INSIGHTS AND RECOMMENDATIONS!
+                    [4] YOUR '''ONLY TASK''' IS TO PROVIDE INSIGHTS AND RECOMMENDATIONS BASED ON THE DATA, NOTHING ELSE!
+                    [5] REPEATING AGAIN: NEVER ASK QUESTIONS, NEVER REJECT GENERATING INSIGHTS AND RECOMMENDATIONS!
+                    ===========================
+                """}
             ],
             temperature=DEFAULT_STATISTICS_TEMPERATURE, max_tokens=DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS)
         choices = output.choices

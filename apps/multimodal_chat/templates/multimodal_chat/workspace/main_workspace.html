@@ -588,7 +588,7 @@
 
     <div class="row border border-primary-subtle border-5 rounded">
         <!-- Assistants -->
-        <div class="col-2 overflow-auto card bg-body rounded p-4" style="min-height: 100vh; max-height: 100vh;">
+        <div class="col-3 overflow-auto card bg-body rounded p-4" style="min-height: 100vh; max-height: 100vh;">
           <h5 class="p-4">
             <strong>
               <i class="fa fa-robot me-2"></i>Available Assistants
@@ -627,24 +627,18 @@
                               <i class="fa fa-building me-2"></i>
                               {{ assistant.organization.name }}
                             </strong></small>
+                            <br>
                             <small
                               class="text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded mt-1">
                               <strong>
                                 <i class="fa fa-sd-card me-2"></i>
-                                {{ assistant.llm_model.nickname }}
-                              </strong>
-                            </small>
-                            <small
-                              class="text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded mt-1">
-                              <strong>
-                                <i class="fa fa-bolt-lightning me-2"></i>
-                                {{ assistant.llm_model.model_name }}
+                                {{ assistant.llm_model.nickname }} / {{ assistant.llm_model.model_name }}
                               </strong>
                             </small>
                           </div>
                         </div>
                       </button>
-                      <div class="row">
+                      <div class="row mt-2">
                         <hr>
                         <small>
                           <strong class="text-success">
@@ -673,7 +667,7 @@
         <!-- / Assistants -->
 
         <!-- Chat History -->
-        <div class="col-8 g-0 pt-0 pb-0" style="min-height: 100vh; max-height: 100vh;">
+        <div class="col-6 g-0 pt-0 pb-0" style="min-height: 100vh; max-height: 100vh;">
           <div class="col app-chat-history">
             <h5 class="text-primary mt-12"><strong></strong></h5>
             {% if not active_chat %}
@@ -1047,7 +1041,7 @@
         <!-- /Chat History -->
 
         <!-- Chats -->
-        <div class="col-2 overflow-auto card bg-body p-4" style="min-height: 100vh; max-height: 100vh;">
+        <div class="col-3 overflow-auto card bg-body p-4" style="min-height: 100vh; max-height: 100vh;">
           <div class="overflow-auto" id="app-chat-chats">
             <h5 class="p-4">
               <strong>
@@ -1094,7 +1088,6 @@
                                 {{ chat.lean_assistant.name }}
                               </strong></small>
                             </div>
-                            <br>
                             <div
                               class="text-dark ps-2 pe-2 pb-1 rounded">
                               <small><strong>

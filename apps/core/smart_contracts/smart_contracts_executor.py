@@ -23,7 +23,6 @@ from web3 import Web3
 from solcx import compile_source
 from web3.exceptions import TimeExhausted
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.core.smart_contracts.builders import build_smart_contract_generation_prompt, \
@@ -44,6 +43,7 @@ logger = logging.getLogger(__name__)
 
 class SmartContractsExecutionManager:
     def __init__(self, smart_contract_object: BlockchainSmartContract, llm_model: LLMCore):
+        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
         self.contract_obj: BlockchainSmartContract = smart_contract_object
         self.wallet: BlockchainWalletConnection = smart_contract_object.wallet
         self.llm_model: LLMCore = llm_model
