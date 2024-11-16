@@ -18,12 +18,13 @@
 from django.contrib import admin
 
 from apps.semantor.models import AssistantVectorData
-from apps.semantor.utils.constant_utils import ASSISTANT_VECTOR_DATA_ADMIN_LIST, ASSISTANT_VECTOR_DATA_ADMIN_SEARCH
+from apps.semantor.utils.constant_utils import ASSISTANT_VECTOR_DATA_ADMIN_LIST, ASSISTANT_VECTOR_DATA_ADMIN_SEARCH, \
+    ASSISTANT_VECTOR_DATA_ADMIN_FILTER
 
 
 @admin.register(AssistantVectorData)
 class AssistantVectorDataAdmin(admin.ModelAdmin):
     list_display = ASSISTANT_VECTOR_DATA_ADMIN_LIST
     search_fields = ASSISTANT_VECTOR_DATA_ADMIN_SEARCH
-    list_filter = ASSISTANT_VECTOR_DATA_ADMIN_LIST
+    list_filter = ASSISTANT_VECTOR_DATA_ADMIN_FILTER
     ordering = ['-created_at']

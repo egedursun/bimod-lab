@@ -1781,7 +1781,7 @@
       listenButtons.forEach(button => {
         button.addEventListener('click', () => {
           const messageId = button.getAttribute('data-message-id');
-          const url = `/app/multimodal_chat/tts/chat/message/${messageId}`;
+          const url = `/app/multimodal_chat/tts/lean_chat/message/${messageId}`;
 
           // Disable the button and change to loading state
           button.disabled = true;

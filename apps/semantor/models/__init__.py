@@ -18,3 +18,4 @@
 from .assistant_vector_data_models import *
 from .integration_vector_data_models import *
 from .semantor_configuration_models import *
+from .leanmod_vector_data_models import *

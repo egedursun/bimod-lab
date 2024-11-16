@@ -22,7 +22,7 @@ from .views import ChatView_Chat, ChatView_ChatDelete, ChatView_ChatArchive, Cha
     ChatView_ChatUnarchive, \
     ChatView_ChatStream, LeanChat_MessageNarration, ChatView_LeanChat, ChatView_LeanChatArchive, \
     ChatView_LeanChatUnarchive, ChatView_LeanChatListArchivedChats, ChatView_LeanChatStream, ChatView_LeanChatDelete, \
-    ChatView_MainWorkspace
+    ChatView_MainWorkspace, ChatView_MainWorkspaceStream, Chat_MessageNarration, VoidForgerChat_MessageNarration
 
 app_name = "multimodal_chat"
 
@@ -37,7 +37,11 @@ urlpatterns = [
         template_name="multimodal_chat/archives/archived_chats.html"), name='unarchive'),
     path('chat/archive/', ChatView_ListArchivedChats.as_view(
         template_name="multimodal_chat/archives/archived_chats.html"), name='archive_list'),
-    path('tts/chat/message/<int:pk>/', LeanChat_MessageNarration.as_view(), name='tts_chat_message'),
+
+    path('tts/chat/message/<int:pk>/', Chat_MessageNarration.as_view(), name='tts_chat_message'),
+    path('tts/lean_chat/message/<int:pk>/', LeanChat_MessageNarration.as_view(), name='tts_leanmod_chat_message'),
+    path('tts/voidforger_chat/message/<int:pk>/', VoidForgerChat_MessageNarration.as_view(), name='tts_voidforger_chat_message'),
+
     path('lean_chat/', ChatView_LeanChat.as_view(template_name="multimodal_chat/chats/lean_chat.html"),
          name='lean_chat'),
     path('lean_chat/stream/', ChatView_LeanChatStream.as_view(), name='chat_stream_lean'),
@@ -50,6 +54,7 @@ urlpatterns = [
     path('lean_chat/archive_lean/', ChatView_LeanChatListArchivedChats.as_view(
         template_name="multimodal_chat/archives/archived_lean_chats.html"), name='archive_list_lean'),
 
+    path('workspace/stream/', ChatView_MainWorkspaceStream.as_view(), name='main_workspace_stream'),
     path('workspace/', ChatView_MainWorkspace.as_view(template_name="multimodal_chat/workspace/main_workspace.html"
                                                       ), name='main_workspace')
 ]

@@ -18,3 +18,4 @@
 from .assistant_vector_data_admin import *
 from .integration_vector_data_admin import *
 from .semantor_configuration_admin import *
+from .leanmod_assistant_vector_data_admin import *

@@ -23,13 +23,13 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
 from apps.core.media_managers.media_manager_execution_handler import MediaManager
+from apps.core.tool_calls.utils import VoidForgerModesNames
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.leanmod.models import LeanAssistant
 from apps.message_templates.models import MessageTemplate
-from apps.multimodal_chat.models import MultimodalLeanChat, MultimodalLeanChatMessage
 from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames, ChatPostActionSpecifiers, generate_chat_name
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from apps.voidforger.models import MultimodalVoidForgerChat, MultimodalVoidForgerChatMessage, VoidForger
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout, TemplateHelper
 
@@ -43,26 +43,27 @@ class ChatView_MainWorkspace(TemplateView, LoginRequiredMixin):
         return redirect(f'/workspace/?chat_id={chat_id}')
 
     def get_context_data(self, **kwargs):
+        _, _ = VoidForger.objects.get_or_create(user=self.request.user)
         active_chat = None
         context_user = self.request.user
         if 'chat_id' in self.request.GET:
-            active_chat = get_object_or_404(MultimodalLeanChat, id=self.request.GET['chat_id'], user=self.request.user)
-        chats = MultimodalLeanChat.objects.filter(
-            user=self.request.user, chat_source=SourcesForMultimodalChatsNames.APP, is_archived=False)
+            active_chat = get_object_or_404(MultimodalVoidForgerChat, id=self.request.GET['chat_id'],
+                                            user=self.request.user)
+        chats = MultimodalVoidForgerChat.objects.filter(
+            user=self.request.user, chat_source=SourcesForMultimodalChatsNames.APP)
         if active_chat:
             chats = [active_chat] + [chat for chat in chats if chat.id != active_chat.id]
         else:
             pass
 
-        lean_agents = LeanAssistant.objects.filter(organization__users=self.request.user)
-        orgs = Organization.objects.filter(lean_assistants__in=lean_agents)
+        orgs = Organization.objects.filter(users__in=[context_user])
         msg_templates = MessageTemplate.objects.filter(user=context_user, organization__in=orgs)
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        active_chat_msgs = active_chat.lean_chat_messages.all().order_by('sent_at') if active_chat else None
+        active_chat_msgs = active_chat.voidforger_chat_messages.all().order_by('sent_at') if active_chat else None
         context.update({
             "layout": "blank",
             "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
-            "chats": chats, "assistants": lean_agents, "active_chat": active_chat, "user": context_user,
+            "chats": chats, "active_chat": active_chat, "user": context_user,
             "chat_messages": active_chat_msgs, "message_templates": msg_templates, "base_url": MEDIA_URL,
         })
         return context
@@ -73,31 +74,31 @@ class ChatView_MainWorkspace(TemplateView, LoginRequiredMixin):
         context_user = self.request.user
 
         ##############################
-        # PERMISSION CHECK FOR - CREATE_AND_USE_LEAN_CHATS
+        # PERMISSION CHECK FOR - CREATE_AND_USE_VOIDFORGER_CHATS
         if not UserPermissionManager.is_authorized(user=context_user,
-                                                   operation=PermissionNames.CREATE_AND_USE_LEAN_CHATS):
-            messages.error(self.request, "You do not have permission to create and use LeanMod chats.")
+                                                   operation=PermissionNames.CREATE_AND_USE_VOIDFORGER_CHATS):
+            messages.error(self.request, "You do not have permission to create and use VoidForger chats.")
             return redirect('multimodal_chat:main_workspace')
         ##############################
 
         if ChatPostActionSpecifiers.NEW_CHAT_WITH_ASSISTANT_SPECIFIER in request.POST:
-            assistant_id = request.POST.get('assistant_id')
-            assistant = get_object_or_404(LeanAssistant, id=assistant_id, organization__users=request.user)
-            chat = MultimodalLeanChat.objects.create(
-                organization=assistant.organization, lean_assistant=assistant, user=request.user,
-                chat_name=request.POST.get('chat_name', generate_chat_name()), created_by_user=request.user,
+            voidforger = get_object_or_404(VoidForger, user=request.user)
+            chat = MultimodalVoidForgerChat.objects.create(
+                voidforger=voidforger, user=request.user,
+                chat_name=request.POST.get('chat_name', generate_chat_name()),
+                created_by_user=request.user,
                 chat_source=SourcesForMultimodalChatsNames.APP
             )
             active_chat = chat
         elif ChatPostActionSpecifiers.CHANGE_CHAT_NAME_SPECIFIER in request.POST:
             chat_id = request.POST.get('chat_id')
-            chat = get_object_or_404(MultimodalLeanChat, id=chat_id, user=request.user)
+            chat = get_object_or_404(MultimodalVoidForgerChat, id=chat_id, user=request.user)
             chat.chat_name = request.POST.get('new_chat_name')
             chat.save()
             active_chat = chat
         else:
             chat_id = request.POST.get('chat_id')
-            chat = get_object_or_404(MultimodalLeanChat, id=chat_id, user=request.user)
+            chat = get_object_or_404(MultimodalVoidForgerChat, id=chat_id, user=request.user)
             msg_content = request.POST.get('message_content')
             attached_images = request.FILES.getlist('attached_images[]')
             attached_files = request.FILES.getlist('attached_files[]')
@@ -109,27 +110,49 @@ class ChatView_MainWorkspace(TemplateView, LoginRequiredMixin):
             file_full_uris = self._handle_save_files(attached_files)
             self._handle_record_audio(file_full_uris, request)
 
-            MultimodalLeanChatMessage.objects.create(multimodal_lean_chat=chat, sender_type='USER',
-                                                     message_text_content=msg_content,
-                                                     message_image_contents=image_full_uris,
-                                                     message_file_contents=file_full_uris)
-            user_msg = MultimodalLeanChatMessage.objects.filter(multimodal_lean_chat=chat).last()
-            internal_llm_client_lean = GenerativeAIDecodeController.get_lean(
-                user=request.user, assistant=chat.lean_assistant, multimodal_chat=chat)
-            response = internal_llm_client_lean.respond(latest_message=user_msg, image_uris=image_full_uris,
-                                                        file_uris=file_full_uris)
-            MultimodalLeanChatMessage.objects.create(multimodal_lean_chat=chat, sender_type='ASSISTANT',
-                                                     message_text_content=response)
+            MultimodalVoidForgerChatMessage.objects.create(
+                multimodal_voidforger_chat=chat,
+                sender_type='USER',
+                message_text_content=msg_content,
+                message_image_contents=image_full_uris,
+                message_file_contents=file_full_uris
+            )
+            user_msg = MultimodalVoidForgerChatMessage.objects.filter(
+                multimodal_voidforger_chat=chat
+            ).last()
+
+            internal_llm_client_voidforger = GenerativeAIDecodeController.get_voidforger(
+                user=request.user,
+                assistant=chat.voidforger,
+                multimodal_chat=chat
+            )
+            response = internal_llm_client_voidforger.respond(
+                latest_message=user_msg,
+                current_mode=VoidForgerModesNames.CHAT,
+                image_uris=image_full_uris,
+                file_uris=file_full_uris
+            )
+            MultimodalVoidForgerChatMessage.objects.create(
+                multimodal_voidforger_chat=chat,
+                sender_type='ASSISTANT',
+                message_text_content=response
+
+            )
             active_chat = chat
-        chats = MultimodalLeanChat.objects.filter(user=request.user, chat_source=SourcesForMultimodalChatsNames.APP)
-        lean_agents = LeanAssistant.objects.filter(organization__users=request.user)
+
+        chats = MultimodalVoidForgerChat.objects.filter(
+            user=request.user,
+            chat_source=SourcesForMultimodalChatsNames.APP
+        )
+
         context.update({
-            "layout": "blank",
-            "layout_path": TemplateHelper.set_layout("layout_blank.html", context), "user": context_user,
-            'chat_id': active_chat.id if active_chat else None, 'chats': chats, 'assistants': lean_agents,
-            'active_chat': active_chat})
+            "layout_path": TemplateHelper.set_layout("layout_vertical.html", context),
+            'chat_id': active_chat.id if active_chat else None, 'chats': chats,
+            'active_chat': active_chat
+        })
+
         redirect_string = self.request.path_info + '?chat_id=' + str(active_chat.id)
-        logger.info(f"LeanMod chat was streamed by User: {context_user.id}.")
+        logger.info(f"VoidForger chat was streamed by User: {context_user.id}.")
         return redirect(redirect_string, *args, **kwargs)
 
     @staticmethod

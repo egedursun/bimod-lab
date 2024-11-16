@@ -1,11 +1,11 @@
-  <!--
+<!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
   ~ Project: Bimod.io™
-  ~ File: lean_chat.html
-  ~ Last Modified: 2024-10-05 01:39:48
+  ~ File: main_workspace.html
+  ~ Last Modified: 2024-11-16 06:23:41
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:43
+  ~ Created: 2024-11-16 06:26:39
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -28,6 +28,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
+
 <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}"/>
 {% endblock vendor_css %}
 
@@ -587,76 +588,77 @@
     <div class="app-chat card">
 
     <div class="row border border-primary-subtle border-5 rounded">
-        <!-- Assistants -->
-        <div class="col-3 overflow-auto card bg-body rounded p-4" style="min-height: 100vh; max-height: 100vh;">
-          <h5 class="p-4">
-            <strong>
-              <i class="fa fa-robot me-2"></i>Available Assistants
-            </strong>
-          </h5>
-          <div class="alert alert-info rounded p-4 ms-4 me-4">
-            <strong>
-              <i class="fa fa-info-circle me-2"></i>
-              Click on any of the existing items to start a new chat with a LeanMod™ assistant.
-            </strong>
-          </div>
-          <hr>
-          <div class="overflow-auto" id="app-chat-contacts">
+
+        <!-- Chats -->
+        <div class="col-3 overflow-auto card bg-body p-4" style="min-height: 100vh; max-height: 100vh;">
+          <div class="overflow-auto" id="app-chat-chats">
+            <h5 class="p-4">
+              <strong>
+                <i class="fa fa-history me-2"></i>Chat History
+              </strong>
+            </h5>
+            <div class="alert alert-info rounded p-4 ms-4 me-4">
+              <strong>
+                <i class="fa fa-info-circle me-2"></i>
+                Click on any of your chats to continue chatting with VoidForger™, or create a new chat.
+              </strong>
+            </div>
+            <hr>
+            <div>
+              <form id="create-chat-form" method="post" action=".">
+                {% csrf_token %}
+                <input type="hidden" name="assistant_id" value="0">
+                <button type="submit" class="btn btn-success p-2 w-100">
+                  <i class="fa fa-plus me-2"></i>
+                  <strong>Create New Chat</strong>
+                </button>
+              </form>
+            </div>
+            <hr>
             <div class="">
-              <!-- LeanMod™ Assistants -->
-              <ul class="mb-0 p-4" id="assistant-list">
-                {% for assistant in assistants %}
-                  <li class="card card-border-shadow-dark mb-2 p-4">
-                    <form id="create-chat-form" method="post" action=".">
-                      {% csrf_token %}
-                      <input type="hidden" name="assistant_id" value="{{ assistant.id }}">
-                      <button type="submit" class="btn btn-link p-0">
+              <!-- VoidForger™ Chats -->
+              <ul class="mb-0 p-4" id="chat-list">
+                {% for chat in chats %}
+                  <li
+                    class="card card-border-shadow-dark mb-2 p-4 {% if chat.id == active_chat.id %} border border-1 rounded border-primary alert-secondary{% endif %}">
+                    <a href="?chat_id={{ chat.id }}" class="d-flex flex-grow-1 text-decoration-none">
+                      <form method="post" action=".">
+                        {% csrf_token %}
                         <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0 avatar avatar-lg">
-                            <img src="
-                              {% if assistant.lean_assistant_image %}{{ assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                                 alt="Avatar" class="rounded">
+                          <div
+                            class="flex-shrink-0 avatar avatar-lg {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded-pill"
+                            {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
+                            <img src="{% static 'img/voidforger/voidforger-avatar.png' %}"
+                                 class="rounded" alt="VoidForger Image">
                           </div>
-                          <div class="flex-grow-1 ms-4 text-start">
-                            <p class="text-dark m-0 fw-bold">
-                              <small><strong>{{ assistant.name }}</strong></small>
-                            </p>
-                            <hr>
-                            <small
-                              class="text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded"><strong>
-                              <i class="fa fa-building me-2"></i>
-                              {{ assistant.organization.name }}
-                            </strong></small>
-                            <br>
-                            <small
-                              class="text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded mt-1">
+                          <div class="chat-contact-info flex-grow-1 ms-4 text-start">
+                            <h6 class="m-0 fw-bolder"><strong>{{ chat.chat_name }}</strong>
+                            </h6>
+                            <small class="text-muted">
                               <strong>
-                                <i class="fa fa-sd-card me-2"></i>
-                                {{ assistant.llm_model.nickname }} / {{ assistant.llm_model.model_name }}
+                                <i class="fa fa-clock-rotate-left me-1"></i>{{ chat.updated_at|date:"H:i A" }}
                               </strong>
                             </small>
+                            <hr>
+                            <div
+                              class="text-dark ps-2 pe-2 pb-1 rounded">
+                              <small><strong>
+                                <i class="fa fa-message me-1"></i>
+                                VoidForger Meta-Orchestrator
+                              </strong></small>
+                            </div>
+                            <div
+                              class="text-dark ps-2 pe-2 pb-1 rounded">
+                              <small><strong>
+                                <i class="fa fa-building me-1"></i>
+                                {{ chat.voidforger.llm_model.organization.name }}
+                              </strong></small>
+                            </div>
+                            <div
+                              class="mt-1">{{ chat.messages.last.message_text_content }}</div>
                           </div>
                         </div>
-                      </button>
-                      <div class="row mt-2">
-                        <hr>
-                        <small>
-                          <strong class="text-success">
-                            <i class="fa fa-star me-2"></i>
-                            Click the item above to start a chat
-                          </strong>
-                        </small>
-                      </div>
-                    </form>
-                  </li>
-                {% empty %}
-                  <li class="card card-border-shadow-dark chat-contact-list-item mb-2">
-                    <p class="text-dark mb-2 mt-2"><strong>Oops. It seems like you don't have any LeanMod™ assistants yet.
-                      Want to create a new one?</strong></p>
-                    <a href="{% url 'leanmod:create' %}">
-                      <button class="btn btn-success mb-4 mt-4 w-100" style="min-height: 60px;">
-                        <i class="fa fa-plus me-4"></i><strong>Create a New LeanMod™ Assistant</strong>
-                      </button>
+                      </form>
                     </a>
                   </li>
                 {% endfor %}
@@ -664,10 +666,10 @@
             </div>
           </div>
         </div>
-        <!-- / Assistants -->
+        <!-- /Chat -->
 
         <!-- Chat History -->
-        <div class="col-6 g-0 pt-0 pb-0" style="min-height: 100vh; max-height: 100vh;">
+        <div class="col-9 g-0 pt-0 pb-0" style="min-height: 100vh; max-height: 100vh;">
           <div class="col app-chat-history">
             <h5 class="text-primary mt-12"><strong></strong></h5>
             {% if not active_chat %}
@@ -679,8 +681,8 @@
                       <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar"
                          data-overlay data-target="#app-chat-contacts"></i>
                       <div class="chat-contact-info flex-grow-1 ms-4">
-                        <h6 class="m-0 fw-normal"><strong>No LeanMod™ Chat Selected</strong></h6>
-                        <small class="user-status text-body">Select a chat to start chatting with LeanMod™ assistants</small>
+                        <h6 class="m-0 fw-normal"><strong>No VoidForger™ Chat Selected</strong></h6>
+                        <small class="user-status text-body">Select a chat to start chatting with VoidForger™.</small>
                       </div>
                     </div>
                   </div>
@@ -695,9 +697,8 @@
                       <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block me-4" data-bs-toggle="sidebar"
                          data-overlay data-target="#app-chat-chats"></i>
                       <div class="flex-shrink-0 avatar avatar-online">
-                        <img src="
-                          {% if active_chat.lean_assistant.lean_assistant_image %}{{ active_chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                             class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right" alt="Lean Assistant Image">
+                        <img src="{% static 'img/voidforger/voidforger-avatar.png' %}"
+                             class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right" alt="VoidForger Image">
                       </div>
                       <div class="chat-contact-info flex-grow-1 ms-4">
                         <form method="post" action=".">
@@ -714,9 +715,8 @@
                         <h6 class="m-0 fw-normal mt-1 ms-1">
                           <small class="text-muted">
                             <strong>
-                              {{ active_chat.lean_assistant.organization }} / {{ active_chat.lean_assistant.name }}
-                              / {{ active_chat.lean_assistant.llm_model.nickname }}
-                              / {{ active_chat.lean_assistant.llm_model.model_name }}
+                              {{ active_chat.voidforger.llm_model.organization }} / {{ active_chat.voidforger.llm_model.nickname }}
+                              / {{ active_chat.voidforger.llm_model.model_name }}
                             </strong>
                           </small>
                         </h6>
@@ -730,7 +730,7 @@
                           class="ti ti-dots-vertical ti-md"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
-                          <a class="dropdown-item bg-label-danger" href="{% url 'multimodal_chat:delete_lean' active_chat.id %}">
+                          <a class="dropdown-item bg-label-danger" href="{% url 'voidforger:delete_chat' active_chat.id %}">
                             <strong>
                               <i class="fa fa-trash me-2"></i>Delete
                             </strong></a>
@@ -747,9 +747,7 @@
                           {% if message.sender_type == 'ASSISTANT' %}
                             <div class="user-avatar flex-shrink-0 me-4">
                               <div class="avatar avatar-xl">
-                                <img src="
-                                  {% if active_chat.lean_assistant.lean_assistant_image %}{{ active_chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                                     alt="Avatar" class="rounded">
+                                <img src="{% static 'img/voidforger/voidforger-avatar.png' %}" alt="Avatar" class="rounded">
                               </div>
                             </div>
                           {% elif message.sender_type == 'TOOL' %}
@@ -1039,75 +1037,6 @@
           </div>
         </div>
         <!-- /Chat History -->
-
-        <!-- Chats -->
-        <div class="col-3 overflow-auto card bg-body p-4" style="min-height: 100vh; max-height: 100vh;">
-          <div class="overflow-auto" id="app-chat-chats">
-            <h5 class="p-4">
-              <strong>
-                <i class="fa fa-history me-2"></i>Chat History
-              </strong>
-            </h5>
-            <div class="alert alert-info rounded p-4 ms-4 me-4">
-              <strong>
-                <i class="fa fa-info-circle me-2"></i>
-                Click on any of your chats to continue chatting with a LeanMod™ assistant.
-              </strong>
-            </div>
-            <hr>
-            <div class="">
-              <!-- LeanMod™ Chats -->
-              <ul class="mb-0 p-4" id="chat-list">
-                {% for chat in chats %}
-                  <li
-                    class="card card-border-shadow-dark mb-2 p-4 {% if chat.id == active_chat.id %} border border-1 rounded border-primary alert-secondary{% endif %}">
-                    <a href="?chat_id={{ chat.id }}" class="d-flex flex-grow-1 text-decoration-none">
-                      <form method="post" action=".">
-                        {% csrf_token %}
-                        <div class="d-flex align-items-center">
-                          <div
-                            class="flex-shrink-0 avatar avatar-lg {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded-pill"
-                            {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
-                            <img src="
-                              {% if chat.lean_assistant.lean_assistant_image %}{{ chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                                 class="rounded" alt="Lean Assistant Image">
-                          </div>
-                          <div class="chat-contact-info flex-grow-1 ms-4 text-start">
-                            <h6 class="m-0 fw-bolder"><strong>{{ chat.chat_name }}</strong>
-                            </h6>
-                            <small class="text-muted">
-                              <strong>
-                                <i class="fa fa-clock-rotate-left me-1"></i>{{ chat.updated_at|date:"H:i A" }}
-                              </strong>
-                            </small>
-                            <hr>
-                            <div
-                              class="text-dark ps-2 pe-2 pb-1 rounded">
-                              <small><strong>
-                                <i class="fa fa-message me-1"></i>
-                                {{ chat.lean_assistant.name }}
-                              </strong></small>
-                            </div>
-                            <div
-                              class="text-dark ps-2 pe-2 pb-1 rounded">
-                              <small><strong>
-                                <i class="fa fa-building me-1"></i>
-                                {{ chat.organization.name }}
-                              </strong></small>
-                            </div>
-                            <div
-                              class="mt-1">{{ chat.messages.last.message_text_content }}</div>
-                          </div>
-                        </div>
-                      </form>
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </div>
-        <!-- /Chat -->
       </div>
 
     <!-- Freeform Drawing Modal -->
@@ -1880,7 +1809,7 @@
         const chatForm = document.querySelector('.form-send-message');
         const formData = new FormData(chatForm);
 
-        fetch(`/app/multimodal_chat/lean_chat/stream/`, {
+        fetch(`/app/multimodal_chat/workspace/stream/`, {
           method: 'POST',
           body: formData,
           headers: {
@@ -1906,8 +1835,8 @@
         // Determine the correct WebSocket protocol based on the current page's protocol
         let protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
         // Construct the WebSocket URL with the unique group identifier
-        const leanChatId = new URLSearchParams(window.location.search).get('chat_id');
-        socket = new WebSocket(protocol + window.location.host + `/ws/lean_logs/${leanChatId}/`);
+        const voidForgerChatId = new URLSearchParams(window.location.search).get('chat_id');
+        socket = new WebSocket(protocol + window.location.host + `/ws/workspace_logs/${voidForgerChatId}/`);
         socket.onmessage = function (event) {
           const data = JSON.parse(event.data);
           let newChunk = data.log;
@@ -2046,7 +1975,7 @@
       listenButtons.forEach(button => {
         button.addEventListener('click', () => {
           const messageId = button.getAttribute('data-message-id');
-          const url = `/app/multimodal_chat/tts/chat/message/${messageId}`;
+          const url = `/app/multimodal_chat/tts/voidforger_chat/message/${messageId}`;
 
           // Disable the button and change to loading state
           button.disabled = true;

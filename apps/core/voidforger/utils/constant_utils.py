@@ -1,0 +1,21 @@
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io™
+#  File: constant_utils.py
+#  Last Modified: 2024-10-17 16:15:05
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+#  Created: 2024-11-15 18:43:43
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD™ Autonomous
+#  Holdings.
+#
+#   For permission inquiries, please contact: admin@Bimod.io.
+#
+
+VOIDFORGER_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES = 5
+VOIDFORGER_DEFAULT_SEARCH_RESULTS_ACTION_HISTORY_LOGS = 5
+VOIDFORGER_DEFAULT_SEARCH_RESULTS_AUTO_EXECUTION_LOGS = 5
+

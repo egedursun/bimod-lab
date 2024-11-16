@@ -60,6 +60,10 @@ app.conf.beat_schedule = {
         'task': 'apps.metatempo.tasks.overall_metatempo_logs_processor.generate_period_overall_metatempo_logs',
         'schedule': crontab(hour="*", minute="*"),
     },
+    'control_and_initiate_automated_voidforger_executions-every-15-minutes': {
+        'task': 'apps.voidforger.tasks.voidforger_execute_auto_tasks.execute_voidforgers_auto_cycle',
+        'schedule': crontab(minute='*/1'),
+    },
 }
 
 

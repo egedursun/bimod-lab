@@ -58,6 +58,14 @@ class ToolCallDescriptorNames:
     EXECUTE_TRIGGERED_JOB_LOGS_QUERY = 'Triggered Job Logs Query Execution'
     EXECUTE_SMART_CONTRACT_GENERATION_QUERY = 'Smart Contract Generation Query'
 
+    #####
+
+    EXECUTE_VOIDFORGER_OLD_MESSAGE_SEARCH_QUERY = 'VoidForger Old Message Search Query Execution'
+    EXECUTE_VOIDFORGER_ACTION_HISTORY_LOG_SEARCH_QUERY = 'VoidForger Action History Log Search Query Execution'
+    EXECUTE_VOIDFORGER_AUTO_EXECUTION_LOG_SEARCH_QUERY = 'VoidForger Auto Execution Log Search Query Execution'
+    EXECUTE_VOIDFORGER_LEANMOD_ORACLE_SEARCH_QUERY = 'VoidForger LeanMod Oracle Search Query Execution'
+    EXECUTE_VOIDFORGER_LEANMOD_ORACLE_COMMAND_ORDER = 'VoidForger LeanMod Oracle Command Order Execution'
+
 
 IMAGE_GENERATION_AFFIRMATION_PROMPT = f"""
     **Important Note:**
@@ -70,3 +78,13 @@ VISUALIZATION_TOOL_ERROR_LOG = ("This assistant is not authorized to do visualiz
                                 "this tool.")
 
 VISUALIZATION_TOOL_STANDARD_ERROR_LOG = f"Error occurred while working on visualization capability tool."
+
+
+class VoidForgerModesNames:
+    AUTOMATED = "AUTOMATED"
+    MANUAL = "MANUAL"
+    CHAT = "CHAT"
+
+    @staticmethod
+    def as_list():
+        return [VoidForgerModesNames.AUTOMATED, VoidForgerModesNames.MANUAL, VoidForgerModesNames.CHAT]

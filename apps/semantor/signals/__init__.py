@@ -20,3 +20,5 @@ from .update_assistant_embedding_signals import *
 from .update_integration_embedding_signals import *
 from .delete_integration_embedding_signals import *
 from .delete_assistant_embedding_signals import *
+from .delete_leanmod_assistant_embedding_signals import *
+from .update_leanmod_assistant_embedding_signals import *

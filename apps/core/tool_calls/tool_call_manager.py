@@ -101,10 +101,18 @@ from apps.core.tool_calls.core_services.core_service_http_retrieval import run_h
 from apps.core.tool_calls.leanmod.core_services.core_service_query_expert_network import \
     execute_expert_network_query
 from apps.assistants.models import Assistant
+from apps.core.tool_calls.voidforger.core_services import execute_voidforger_old_message_search_query, \
+    execute_voidforger_action_history_log_search_query, execute_voidforger_auto_execution_log_search_query, \
+    execute_voidforger_leanmod_oracle_search_query, execute_voidforger_leanmod_oracle_command_order
+from apps.core.tool_calls.voidforger.input_verifiers import verify_voidforger_old_message_search_query_content, \
+    verify_voidforger_action_history_log_search_query_content, \
+    verify_voidforger_auto_execution_log_search_query_content, verify_voidforger_leanmod_oracle_search_query_content, \
+    verify_voidforger_leanmod_oracle_command_order_content
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
-from apps.llm_core.models import LLMCore
 from apps.multimodal_chat.models import MultimodalChat
 from apps.video_generations.models import GeneratedVideo, VideoGeneratorConnection
+from apps.voidforger.models import VoidForgerActionMemoryLog
+from apps.voidforger.utils import VoidForgerActionTypesNames
 from config.settings import MEDIA_URL
 
 logger = logging.getLogger(__name__)
@@ -797,6 +805,203 @@ class ToolCallManager:
             return get_no_tool_found_error_log(
                 query_name=defined_tool_descriptor), defined_tool_descriptor, f_uris, img_uris
         ##################################################
+        output_tool_call += f"""
+                    '''
+                """
+        if f_uris:
+            for i, uri in enumerate(f_uris):
+                if not uri.startswith("http"):
+                    uri = f"{MEDIA_URL}{uri}"
+                f_uris[i] = uri
+        if img_uris:
+            for i, uri in enumerate(img_uris):
+                if not uri.startswith("http"):
+                    uri = f"{MEDIA_URL}{uri}"
+                img_uris[i] = uri
+        logger.info(f"Processed the files and images. Returning the output.")
+        return output_tool_call, defined_tool_descriptor, f_uris, img_uris
+
+    #####
+
+    def call_internal_tool_service_voidforger(self):
+        logger.info("Calling the internal tool service.")
+        try:
+            if isinstance(self.tool_usage_dict_stringified, dict):
+                logger.info("Tool usage dictionary is already a dictionary.")
+                self.tool_usage_dict = self.tool_usage_dict_stringified
+            else:
+                logger.info("Tool usage dictionary is a string. Converting it to a dictionary.")
+                self.tool_usage_dict = json.loads(self.tool_usage_dict_stringified)
+        except Exception as e:
+            logger.error(f"Error occurred while converting the tool usage dictionary to a dictionary: {e}")
+            return get_json_decode_error_log(error_logs=str(e)), None, None, None
+
+        f_uris, img_uris = [], []
+        error_msg = verify_main_call_or_query_content(content=self.tool_usage_dict)
+        if error_msg:
+            logger.error(f"Error occurred while verifying the main call or query content: {error_msg}")
+            return error_msg, None, None, None
+
+        defined_tool_descriptor = self.tool_usage_dict.get("tool")
+        output_tool_call = f"""
+                    Tool Response: {defined_tool_descriptor}
+
+                    '''
+                """
+
+        if defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VOIDFORGER_OLD_MESSAGE_SEARCH_QUERY:
+            error_msg = verify_voidforger_old_message_search_query_content(content=self.tool_usage_dict)
+            if error_msg: return error_msg, None, None, None
+            query = self.tool_usage_dict.get("parameters").get("query")
+            voidforger_old_message_query_response = execute_voidforger_old_message_search_query(
+                user=self.user,
+                voidforger_id=self.assistant.id,
+                voidforger_chat_id=self.chat.id,
+                query=query
+            )
+            voidforger_old_message_query_response_raw_str = json.dumps(voidforger_old_message_query_response,
+                                                                       sort_keys=True, default=str)
+            output_tool_call += voidforger_old_message_query_response_raw_str
+
+            VoidForgerActionMemoryLog.objects.create(
+                voidforger=self.assistant,
+                action_type=VoidForgerActionTypesNames.OLD_CHAT_MESSAGES_SEARCH_ATTEMPT,
+                action_order_raw_text=f"""
+                    Tool Request:
+
+                    {json.dumps(self.tool_usage_dict)}
+
+                    Tool Response:
+
+                    {voidforger_old_message_query_response_raw_str}
+                """,
+            )
+
+            logger.info(f"Voidforger old message search query response retrieved.")
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VOIDFORGER_ACTION_HISTORY_LOG_SEARCH_QUERY:
+            error_msg = verify_voidforger_action_history_log_search_query_content(content=self.tool_usage_dict)
+            if error_msg: return error_msg, None, None, None
+            query = self.tool_usage_dict.get("parameters").get("query")
+            voidforger_action_history_log_search_query_response = execute_voidforger_action_history_log_search_query(
+                user=self.user,
+                voidforger_id=self.assistant.id,
+                query=query)
+            voidforger_action_history_log_search_query_response_raw_str = json.dumps(
+                voidforger_action_history_log_search_query_response, sort_keys=True, default=str)
+            output_tool_call += voidforger_action_history_log_search_query_response_raw_str
+
+            VoidForgerActionMemoryLog.objects.create(
+                voidforger=self.assistant,
+                action_type=VoidForgerActionTypesNames.ACTION_LOG_SEARCH_ATTEMPT,
+                action_order_raw_text=f"""
+                    Tool Request:
+
+                    {json.dumps(self.tool_usage_dict)}
+
+                    Tool Response:
+
+                    {voidforger_action_history_log_search_query_response}
+                """,
+            )
+
+            logger.info(f"Voidforger action history log search query response retrieved.")
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VOIDFORGER_AUTO_EXECUTION_LOG_SEARCH_QUERY:
+            error_msg = verify_voidforger_auto_execution_log_search_query_content(content=self.tool_usage_dict)
+            if error_msg: return error_msg, None, None, None
+            query = self.tool_usage_dict.get("parameters").get("query")
+            voidforger_auto_execution_log_search_query_response = execute_voidforger_auto_execution_log_search_query(
+                user=self.user,
+                voidforger_id=self.assistant.id,
+                query=query)
+            voidforger_auto_execution_log_search_query_response_raw_str = json.dumps(
+                voidforger_auto_execution_log_search_query_response, sort_keys=True, default=str)
+            output_tool_call += voidforger_auto_execution_log_search_query_response_raw_str
+
+            VoidForgerActionMemoryLog.objects.create(
+                voidforger=self.assistant,
+                action_type=VoidForgerActionTypesNames.AUTO_EXECUTION_LOG_SEARCH_ATTEMPT,
+                action_order_raw_text=f"""
+                    Tool Request:
+
+                    {json.dumps(self.tool_usage_dict)}
+
+                    Tool Response:
+
+                    {voidforger_auto_execution_log_search_query_response_raw_str}
+                """,
+            )
+
+            logger.info(f"Voidforger auto execution log search query response retrieved.")
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VOIDFORGER_LEANMOD_ORACLE_SEARCH_QUERY:
+            error_msg = verify_voidforger_leanmod_oracle_search_query_content(content=self.tool_usage_dict)
+            if error_msg: return error_msg, None, None, None
+            query = self.tool_usage_dict.get("parameters").get("query")
+            voidforger_leanmod_oracle_search_query_response = execute_voidforger_leanmod_oracle_search_query(
+                user=self.user,
+                llm_model=self.assistant.llm_model,
+                query=query)
+            voidforger_leanmod_oracle_search_query_response_raw_str = json.dumps(
+                voidforger_leanmod_oracle_search_query_response, sort_keys=True, default=str)
+            output_tool_call += voidforger_leanmod_oracle_search_query_response_raw_str
+
+            VoidForgerActionMemoryLog.objects.create(
+                voidforger=self.assistant,
+                action_type=VoidForgerActionTypesNames.INTERMEDIARY_AGENT_SEARCH_ATTEMPT,
+                action_order_raw_text=f"""
+                    Tool Request:
+
+                    {json.dumps(self.tool_usage_dict)}
+
+                    Tool Response:
+
+                    {voidforger_leanmod_oracle_search_query_response}
+                """,
+            )
+
+            logger.info(f"Voidforger leanmod oracle search query response retrieved.")
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VOIDFORGER_LEANMOD_ORACLE_COMMAND_ORDER:
+            error_msg = verify_voidforger_leanmod_oracle_command_order_content(content=self.tool_usage_dict)
+            if error_msg: return error_msg, None, None, None
+            object_id = self.tool_usage_dict.get("parameters").get("object_id")
+            query = self.tool_usage_dict.get("parameters").get("query")
+            image_urls = self.tool_usage_dict.get("parameters").get("image_urls")
+            file_urls = self.tool_usage_dict.get("parameters").get("file_urls")
+            voidforger_leanmod_oracle_command_order_response = execute_voidforger_leanmod_oracle_command_order(
+                user=self.user, llm_model=self.assistant.llm_model,
+                object_id=object_id, xn_query=query, img_uris=image_urls, f_uris=file_urls
+            )
+            voidforger_leanmod_oracle_command_order_response_raw_str = json.dumps(
+                voidforger_leanmod_oracle_command_order_response, sort_keys=True, default=str)
+            output_tool_call += voidforger_leanmod_oracle_command_order_response_raw_str
+
+            VoidForgerActionMemoryLog.objects.create(
+                voidforger=self.assistant,
+                action_type=VoidForgerActionTypesNames.INTERMEDIARY_AGENT_COMMAND,
+                action_order_raw_text=f"""
+                    Tool Request:
+
+                    {json.dumps(self.tool_usage_dict)}
+
+                    Tool Response:
+
+                    {voidforger_leanmod_oracle_command_order_response_raw_str}
+                """,
+            )
+
+            logger.info(f"Voidforger leanmod oracle command order response retrieved.")
+
+        ##################################################
+        # NO TOOL FOUND
+        else:
+            logger.error(f"No tool found with the descriptor: {defined_tool_descriptor}")
+            return get_no_tool_found_error_log(
+                query_name=defined_tool_descriptor), defined_tool_descriptor, f_uris, img_uris
+        ##################################################
+
         output_tool_call += f"""
                     '''
                 """

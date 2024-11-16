@@ -153,9 +153,34 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_query_intra_con
 from apps.core.system_prompts.tool_call_prompts.per_tool.generate_video_tool_prompt import \
     build_tool_prompt__generate_video, build_lean_tool_prompt__generate_video
 from apps.assistants.models import Assistant
+from apps.core.system_prompts.voidforger.build_voidforger_communication_language_prompt import \
+    build_communication_language_prompt_voidforger
+from apps.core.system_prompts.voidforger.tools.voidforger_action_history_log_search_prompt import \
+    build_structured_tool_prompt__action_history_log_search_voidforger
+from apps.core.system_prompts.voidforger.tools.voidforger_auto_execution_log_search_prompt import \
+    build_structured_tool_prompt__auto_execution_log_search_voidforger
+from apps.core.system_prompts.voidforger.tools.voidforger_leanmod_oracle_command_order_prompt import \
+    build_structured_tool_prompt__leanmod_oracle_command_order_voidforger
+from apps.core.system_prompts.voidforger.tools.voidforger_leanmod_oracle_search_prompt import \
+    build_structured_tool_prompt__leanmod_oracle_search_voidforger
+from apps.core.system_prompts.voidforger.tools.voidforger_old_message_search_prompt import \
+    build_structured_tool_prompt__old_message_search_execution_voidforger
+from apps.core.system_prompts.voidforger.tools.voidforger_tools_instructions_prompt import \
+    build_structured_tool_usage_instructions_prompt_voidforger
+from apps.core.system_prompts.voidforger.voidforger_agent_personality_prompt import \
+    build_agent_personality_prompt_voidforger
+from apps.core.system_prompts.voidforger.voidforger_guidelines_prompt import \
+    build_structured_primary_guidelines_voidforger
+from apps.core.system_prompts.voidforger.voidforger_instructions_prompt import \
+    build_structured_instructions_prompt_voidforger
+from apps.core.system_prompts.voidforger.voidforger_place_and_time_prompt import \
+    build_structured_place_and_time_prompt_voidforger
+from apps.core.system_prompts.voidforger.voidforger_user_information_prompt import \
+    build_structured_user_information_prompt_voidforger
 from apps.leanmod.models import LeanAssistant
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
+from apps.voidforger.models import VoidForger
 
 
 class SystemPromptFactoryBuilder:
@@ -560,4 +585,56 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += do_expert_network
         combined_system_instructions += search_semantor
         combined_system_instructions += do_semantor
+        return combined_system_instructions
+
+    @staticmethod
+    def build_voidforger_system_prompts(chat: MultimodalLeanChat, voidforger: VoidForger, user: User, role: str, current_mode: str):
+        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import ChatRoles
+
+        combined_system_instructions = SystemPromptFactoryBuilder._prepare_voidforger_system_prompts(
+            chat, voidforger, user, current_mode)
+
+        prompt = {"role": role, "content": combined_system_instructions}
+        tx = LLMTransaction.objects.create(
+            organization=voidforger.llm_model.organization, model=voidforger.llm_model,
+            responsible_user=user, responsible_assistant=None, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=combined_system_instructions, llm_cost=0, internal_service_cost=0,
+            tax_cost=0, total_cost=0, total_billable_cost=0, transaction_type=ChatRoles.SYSTEM,
+            transaction_source=chat.chat_source)
+        chat.transactions.add(tx)
+        chat.save()
+        return prompt
+
+    @staticmethod
+    def _prepare_voidforger_system_prompts(chat, voidforger, user, current_mode):
+        generic = build_structured_primary_guidelines_voidforger(voidforger=voidforger, current_mode=current_mode)
+        instructions = build_structured_instructions_prompt_voidforger(voidforger=voidforger)
+        user_info = build_structured_user_information_prompt_voidforger(user=user)
+        spatial_awareness = build_structured_place_and_time_prompt_voidforger(user=user)
+        tone_prompt = build_agent_personality_prompt_voidforger(tone=voidforger.tone)
+        output_language = build_communication_language_prompt_voidforger(
+            response_language=voidforger.response_language)
+
+        tool_instructions = build_structured_tool_usage_instructions_prompt_voidforger()
+        do_old_message_search = build_structured_tool_prompt__old_message_search_execution_voidforger()
+        do_action_history_log_search = build_structured_tool_prompt__action_history_log_search_voidforger()
+        do_auto_execution_log_search = build_structured_tool_prompt__auto_execution_log_search_voidforger()
+        do_leanmod_oracle_search = build_structured_tool_prompt__leanmod_oracle_search_voidforger()
+        do_leanmod_oracle_command_order = build_structured_tool_prompt__leanmod_oracle_command_order_voidforger()
+
+        combined_system_instructions = generic
+        combined_system_instructions += instructions
+        combined_system_instructions += user_info
+        combined_system_instructions += spatial_awareness
+        combined_system_instructions += tone_prompt
+        combined_system_instructions += output_language
+
+        combined_system_instructions += tool_instructions
+        combined_system_instructions += do_old_message_search
+        combined_system_instructions += do_action_history_log_search
+        combined_system_instructions += do_auto_execution_log_search
+        combined_system_instructions += do_leanmod_oracle_search
+        combined_system_instructions += do_leanmod_oracle_command_order
+
         return combined_system_instructions

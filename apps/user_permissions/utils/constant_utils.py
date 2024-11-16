@@ -108,6 +108,18 @@ class PermissionNames:
     CREATE_AND_USE_CHATS = 'create_and_use_chats'
     REMOVE_CHATS = 'remove_chats'
 
+    UPDATE_VOIDFORGER_CONFIGURATIONS = 'update_voidforger_configurations'
+    REFRESH_VOIDFORGER_CONNECTIONS = 'refresh_voidforger_connections'
+    TOGGLE_ACTIVATE_AND_DEACTIVATE_VOIDFORGER = 'toggle_activate_and_deactivate_voidforger'
+    MANUALLY_TRIGGER_VOIDFORGER = 'manually_trigger_voidforger'
+    LIST_VOIDFORGER_ACTION_MEMORY_LOGS = 'list_voidforger_action_logs'
+    DELETE_VOIDFORGER_ACTION_MEMORY_LOGS = 'delete_voidforger_action_logs'
+    LIST_VOIDFORGER_AUTO_EXECUTION_MEMORY_LOGS = 'list_voidforger_auto_execution_logs'
+    DELETE_VOIDFORGER_AUTO_EXECUTION_MEMORY_LOGS = 'delete_voidforger_auto_execution_logs'
+    CREATE_AND_USE_VOIDFORGER_CHATS = 'create_and_use_voidforger_chats'
+    UPDATE_VOIDFORGER_CHAT_NAME = 'update_voidforger_chat_name'
+    REMOVE_VOIDFORGER_CHATS = 'remove_voidforger_chats'
+
     ADD_ASSISTANT_MEMORIES = 'add_assistant_memories'
     UPDATE_ASSISTANT_MEMORIES = 'update_assistant_memories'
     LIST_ASSISTANT_MEMORIES = 'list_assistant_memories'
@@ -521,6 +533,18 @@ PERMISSION_TYPES = [
 
     ('create_and_use_chats', 'Create and Use Chats'),
     ('remove_chats', 'Remove Chats'),
+
+    ('update_voidforger_configurations', 'Update VoidForger Configurations'),
+    ('refresh_voidforger_connections', 'Refresh VoidForger Connections'),
+    ('toggle_activate_and_deactivate_voidforger', 'Toggle Activate and Deactivate VoidForger'),
+    ('manually_trigger_voidforger', 'Manually Trigger VoidForger'),
+    ('list_voidforger_action_logs', 'List VoidForger Action Logs'),
+    ('delete_voidforger_action_logs', 'Delete VoidForger Action Logs'),
+    ('list_voidforger_auto_execution_logs', 'List VoidForger Auto Execution Logs'),
+    ('delete_voidforger_auto_execution_logs', 'Delete VoidForger Auto Execution Logs'),
+    ('create_and_use_voidforger_chats', 'Create and Use VoidForger Chats'),
+    ('update_voidforger_chat_name', 'Update VoidForger Chat Name'),
+    ('remove_voidforger_chats', 'Remove VoidForger Chats'),
 
     ('add_assistant_memories', 'Add Assistant Memories'),
     ('update_assistant_memories', 'Update Assistant Memories'),

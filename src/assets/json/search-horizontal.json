@@ -7,6 +7,24 @@
       "url": "/app/dashboard"
     },
     {
+      "name": "VoidForger Configuration",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "voidforger-configuration",
+      "url": "/app/voidforger/configuration"
+    },
+    {
+      "name": "VoidForger Action Memory Logs",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "voidforger-action-memory-logs",
+      "url": "/app/voidforger/action_memory/logs"
+    },
+    {
+      "name": "VoidForger Auto-Execution Memory Logs",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "voidforger-auto-execution-memory-logs",
+      "url": "/app/voidforger/auto_execution/logs"
+    },
+    {
       "name": "Add Organization",
       "icon": "menu-icon tf-icons ti ti-world",
       "slug": "organizations",

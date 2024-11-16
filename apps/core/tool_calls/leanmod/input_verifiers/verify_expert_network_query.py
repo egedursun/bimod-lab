@@ -26,7 +26,7 @@ def verify_expert_network_query_content(content):
     ps = content.get("parameters")
     if "assistant_id" not in ps:
         return """
-            The 'alpha' field is missing from 'parameters' field in tool_usage_json. This field is mandatory for
+            The 'assistant_id' field is missing from 'parameters' field in tool_usage_json. This field is mandatory for
             using Expert Network Query Execution tool.
         """
     if "query" not in ps:

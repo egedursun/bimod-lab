@@ -10,6 +10,34 @@
       "url": "dashboard:main-dashboard"
     },
     {
+      "name": "Workspace Hub",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "main-workspace",
+      "url": "multimodal_chat:main_workspace"
+    },
+    {
+      "name": "VoidForger",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "voidforger",
+      "submenu": [
+        {
+          "name": "VoidForger Configuration",
+          "slug": "voidforger-configuration",
+          "url": "voidforger:configuration"
+        },
+        {
+          "name": "Action Logs",
+          "slug": "voidforger-action-logs",
+          "url": "voidforger:list_action_memory_logs"
+        },
+        {
+          "name": "Auto-Execution Logs",
+          "slug": "voidforger-auto-execution-logs",
+          "url": "voidforger:list_auto_execution_logs"
+        }
+      ]
+    },
+    {
       "menu_header": "Administration"
     },
     {
@@ -1082,15 +1110,6 @@
       "icon": "menu-icon tf-icons ti ti-script",
       "slug": "script-store",
       "url": "mm_scripts:store"
-    },
-    {
-      "menu_header": "Meta Modules (Coming Soon)"
-    },
-    {
-      "name": "VoidForger™",
-      "icon": "menu-icon tf-icons ti ti-rocket",
-      "slug": "voidforger",
-      "url": "dashboard:main-dashboard"
     }
   ]
 }

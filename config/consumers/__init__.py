@@ -20,3 +20,4 @@ from .log_consumer import *
 from .leanmod_log_consumer import *
 from .orchestration_log_consumer import *
 from .orchestration_generic_log_consumer import *
+from .workspace_log_consumer import *

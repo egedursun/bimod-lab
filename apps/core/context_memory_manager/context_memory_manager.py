@@ -26,7 +26,7 @@ from apps.assistants.models import Assistant
 from apps.assistants.utils import ContextManagementStrategyNames
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-
+from apps.voidforger.models import VoidForger
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,7 @@ class ContextMemoryManager:
         msg = {"role": ChatRoles.SYSTEM, "content": system_prompt}
         len_msg_history = len(message_history)
         if len_msg_history > maximum_allowed_messages:
-            trimmed_msg_history = message_history[-maximum_allowed_messages:] + [msg]
+            trimmed_msg_history = [msg] + message_history[-maximum_allowed_messages:]
             return trimmed_msg_history
         else:
             return message_history
@@ -61,7 +61,7 @@ class ContextMemoryManager:
         len_msg_history = len(message_history)
         if len_msg_history > maximum_allowed_messages:
             msg = {"role": ChatRoles.SYSTEM, "content": system_prompt}
-            trimmed_msg_history = message_history[-maximum_allowed_messages:] + [msg]
+            trimmed_msg_history = [msg] + message_history[-maximum_allowed_messages:]
             return trimmed_msg_history
         else:
             return message_history
@@ -83,7 +83,7 @@ class ContextMemoryManager:
         chat_history_length = len(message_history)
         if chat_history_length > maximum_allowed_messages:
             comb_msgs_history = ContextMemoryManager._generate_combined_context_history(message_history,
-                                                                                       maximum_allowed_messages)
+                                                                                        maximum_allowed_messages)
             try:
                 x.index_memory(connection_id=c.id, message_text=comb_msgs_history)
                 logger.info(f"[ChatContextManager.store_context_memory_as_embedding] Indexed the memory")
@@ -101,7 +101,8 @@ class ContextMemoryManager:
                 tx.save()
                 logger.info(f"[ChatContextManager.store_context_memory_as_embedding] Created the transaction")
             except Exception as e:
-                logger.error(f"[ChatContextManager.store_context_memory_as_embedding] Error creating the transaction: {e}")
+                logger.error(
+                    f"[ChatContextManager.store_context_memory_as_embedding] Error creating the transaction: {e}")
                 trimmed_msgs_history = message_history[-maximum_allowed_messages:]
                 return trimmed_msgs_history
             logger.info(f"[ChatContextManager.store_context_memory_as_embedding] Stored the memory")
@@ -139,6 +140,14 @@ class ContextMemoryManager:
         return ctx_msgs
 
     @staticmethod
+    def handle_context_voidforger(chat_history, voidforger: VoidForger, voidforger_chat_object):
+        ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(
+            chat_history, voidforger.short_term_memory_max_messages
+        )
+        logger.info(f"[ChatContextManager.handle_context_voidforger] Handled the context.")
+        return ctx_msgs
+
+    @staticmethod
     def _handle_strategy_vectorize_history(assistant, chat_history, chat_object, max_messages):
         try:
             ctx_msgs = ContextMemoryManager.store_context_memory_as_embedding(
@@ -158,7 +167,8 @@ class ContextMemoryManager:
             logger.info(f"[ChatContextManager._handle_strategy_stop_conversation] Stopped the conversation.")
         except Exception as e:
             ctx_msgs = chat_history
-            logger.error(f"[ChatContextManager._handle_strategy_stop_conversation] Error stopping the conversation: {e}")
+            logger.error(
+                f"[ChatContextManager._handle_strategy_stop_conversation] Error stopping the conversation: {e}")
         return ctx_msgs
 
     @staticmethod
@@ -168,5 +178,6 @@ class ContextMemoryManager:
             logger.info(f"[ChatContextManager._handle_strategy_forget_oldest] Forgot the oldest messages.")
         except Exception as e:
             ctx_msgs = chat_history
-            logger.error(f"[ChatContextManager._handle_strategy_forget_oldest] Error forgetting the oldest messages: {e}")
+            logger.error(
+                f"[ChatContextManager._handle_strategy_forget_oldest] Error forgetting the oldest messages: {e}")
         return ctx_msgs

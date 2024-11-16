@@ -32,17 +32,21 @@ from apps.core.expert_networks.prompts.error_messages import DEFAULT_EXPERT_ASSI
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import ChatRoles, DEFAULT_ERROR_MESSAGE
 from apps.core.semantor.utils import VECTOR_INDEX_PATH_ASSISTANTS, OpenAIEmbeddingModels, \
-    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS, VECTOR_INDEX_PATH_INTEGRATIONS
+    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS, VECTOR_INDEX_PATH_INTEGRATIONS, \
+    SEMANTOR_DEFAULT_SEARCH_RESULTS_ASSISTANTS, SEMANTOR_DEFAULT_SEARCH_RESULTS_INTEGRATIONS, \
+    SEMANTOR_DEFAULT_SEARCH_RESULTS_LEANMOD_ASSISTANTS, VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS
 from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
+from apps.core.system_prompts.voidforger.helpers.error_messages import DEFAULT_LEANMOD_ASSISTANT_ERROR_MESSAGE
+from apps.core.system_prompts.voidforger.tools.voidforger_to_leanmod_assistant_instructions_prompt import \
+    build_voidforger_to_leanmod_assistant_instructions_prompt
+from apps.leanmod.models import LeanAssistant
 from apps.llm_core.models import LLMCore
-from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
+from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage, MultimodalLeanChat, \
+    MultimodalLeanChatMessage
 from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
-from apps.semantor.models import AssistantVectorData, IntegrationVectorData
+from apps.semantor.models import AssistantVectorData, IntegrationVectorData, LeanModVectorData
 
 logger = logging.getLogger(__name__)
-
-SEMANTOR_DEFAULT_SEARCH_RESULTS_ASSISTANTS = 5
-SEMANTOR_DEFAULT_SEARCH_RESULTS_INTEGRATIONS = 5
 
 
 class SemantorVectorSearchExecutionManager:
@@ -52,6 +56,8 @@ class SemantorVectorSearchExecutionManager:
         self.vector_dim = vector_dim
         self.assistants_index_path = os.path.join(
             VECTOR_INDEX_PATH_ASSISTANTS, f'assistants_index_{self.llm_model.organization.id}.index')
+        self.leanmod_assistants_index_path = os.path.join(
+            VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS, f'leanmod_assistants_index_{self.llm_model.organization.id}.index')
         self.integrations_index_path = os.path.join(
             VECTOR_INDEX_PATH_INTEGRATIONS, f"integrations_index.index")
 
@@ -60,6 +66,12 @@ class SemantorVectorSearchExecutionManager:
         else:
             self.assistants_index = faiss.IndexIDMap(faiss.IndexFlatL2(self.vector_dim))
             faiss.write_index(self.assistants_index, self.assistants_index_path)
+
+        if os.path.exists(self.leanmod_assistants_index_path):
+            self.leanmod_assistants_index = faiss.read_index(self.leanmod_assistants_index_path)
+        else:
+            self.leanmod_assistants_index = faiss.IndexIDMap(faiss.IndexFlatL2(self.vector_dim))
+            faiss.write_index(self.leanmod_assistants_index, self.leanmod_assistants_index_path)
 
         if os.path.exists(self.integrations_index_path):
             self.integrations_index = faiss.read_index(self.integrations_index_path)
@@ -295,5 +307,93 @@ class SemantorVectorSearchExecutionManager:
                 logger.error(f"Error occurred while processing the response from the language model: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
 
-            logger.info(f"Created temporary chat message object for Semantor network consultation response: {choice_message_content}")
+            logger.info(
+                f"Created temporary chat message object for Semantor network consultation response: {choice_message_content}")
             return choice_message_content
+
+    def search_leanmod_assistants(self, query: str,
+                                  n_results: int = SEMANTOR_DEFAULT_SEARCH_RESULTS_LEANMOD_ASSISTANTS) -> List[Dict]:
+        query_vector = np.array([self._generate_query_embedding(query)], dtype=np.float32)
+        if self.leanmod_assistants_index is None:
+            raise ValueError("[search_assistants] FAISS index not initialized or loaded properly.")
+
+        distances, ids = self.leanmod_assistants_index.search(query_vector, n_results)
+        results = []
+        for item_id, distance in zip(ids[0], distances[0]):
+            if item_id == -1:
+                continue
+            try:
+                instance = LeanModVectorData.objects.get(id=item_id)
+                results.append({
+                    "id": instance.id,
+                    "data": instance.raw_data,
+                    "distance": distance,
+                })
+            except LeanModVectorData.DoesNotExist:
+                print(f"Warning: LeanMod Assistant Instance with ID {item_id} not found in the vector database.")
+                logger.error(f"LeanMod Assistant Instance with ID {item_id} not found in the vector database.")
+
+        return results
+
+    def consult_leanmod_oracle_by_query(
+        self, consultation_object_id: int,
+        query: str,
+        image_urls=None,
+        file_urls=None
+    ):
+        from apps.core.generative_ai.gpt_openai_manager_lean import OpenAIGPTLeanClientManager
+        leanmod_oracle_vector: LeanModVectorData = LeanModVectorData.objects.get(id=consultation_object_id)
+        lean_assistant: LeanAssistant = leanmod_oracle_vector.leanmod_assistant
+        structured_order = build_voidforger_to_leanmod_assistant_instructions_prompt(query_text=query)
+        try:
+            new_chat_object = MultimodalLeanChat.objects.create(
+                organization=lean_assistant.organization, lean_assistant=lean_assistant,
+                user=self.llm_model.created_by_user, chat_source=SourcesForMultimodalChatsNames.ORCHESTRATION,
+                is_archived=False, created_by_user_id=self.llm_model.created_by_user.id)
+            chat = new_chat_object
+            logger.info(f"Created new chat object for VoidForger to LeanMod Oracle consultation: {chat}")
+        except Exception as e:
+            logger.error(f"Failed to create new chat object for VoidForger to LeanMod Oracle consultation: {e}")
+            return DEFAULT_LEANMOD_ASSISTANT_ERROR_MESSAGE
+
+        try:
+            llm_client: OpenAIGPTLeanClientManager = OpenAIGPTLeanClientManager(assistant=lean_assistant,
+                                                                                multimodal_chat=chat, user=self.user)
+            logger.info(
+                f"Created new OpenAI GPT Lean client manager for VoidForger to LeanMod Oracle consultation: {llm_client}")
+        except Exception as e:
+            logger.error(
+                f"Failed to create new OpenAI GPT Lean client manager for VoidForger to LeanMod Oracle consultation: {e}")
+            return DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE
+
+        if image_urls is not None:
+            structured_order += """
+                ---
+                *IMAGE URLS*
+            """
+            for image_url in image_urls:
+                structured_order += f"""
+                - {image_url}
+            """
+            structured_order += "---"
+        if file_urls is not None:
+            structured_order += """
+                *FILE URLS*
+            """
+            for file_url in file_urls:
+                structured_order += f"""
+                - {file_url}
+            """
+            structured_order += "---"
+
+        MultimodalLeanChatMessage.objects.create(
+            multimodal_lean_chat=chat, sender_type='USER', message_text_content=structured_order,
+            message_image_contents=image_urls, message_file_contents=file_urls)
+
+        output = llm_client.respond(
+            latest_message=structured_order, image_uris=image_urls, file_uris=file_urls)
+
+        MultimodalLeanChatMessage.objects.create(
+            multimodal_lean_chat=chat, sender_type='ASSISTANT', message_text_content=output)
+        logger.info(f"Created new chat message object for VoidForger to LeanMod Oracle consultation response: {output}")
+        return output

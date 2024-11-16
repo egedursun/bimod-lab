@@ -17,3 +17,4 @@
 
 
 from .main_workspace_views import *
+from .main_workspace_stream_views import *

@@ -21,9 +21,11 @@ from django.contrib.auth.models import User
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.gpt_openai_manager_lean import OpenAIGPTLeanClientManager
 from apps.assistants.models import Assistant
+from apps.core.generative_ai.gpt_openai_manager_voidforger import OpenAIGPTVoidForgerClientManager
 from apps.core.generative_ai.statistical_analysis_manager import provide_analysis
 from apps.core.generative_ai.utils import LLM_CORE_PROVIDERS
 from apps.multimodal_chat.models import MultimodalChat
+from apps.voidforger.models import VoidForger, MultimodalVoidForgerChat
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +44,13 @@ class GenerativeAIDecodeController:
             logger.info("OpenAI provider is selected.")
             return OpenAIGPTLeanClientManager(
                 user=user, assistant=assistant, multimodal_chat=multimodal_chat)
+
+    @staticmethod
+    def get_voidforger(user: User, assistant: VoidForger, multimodal_chat: MultimodalVoidForgerChat):
+        if assistant.llm_model.provider == LLM_CORE_PROVIDERS["OPENAI"]["code"]:
+            logger.info("OpenAI provider is selected.")
+            return OpenAIGPTVoidForgerClientManager(
+                user=user, voidforger=assistant, multimodal_chat=multimodal_chat)
 
     @staticmethod
     def provide_analysis(llm_model, statistics):

@@ -26,6 +26,7 @@ class OpenAIEmbeddingModels:
 
 
 VECTOR_INDEX_PATH_ASSISTANTS = os.path.join(BASE_DIR, 'semantor_vectors', 'assistants')
+VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS = os.path.join(BASE_DIR, 'semantor_vectors', 'leanmod_assistants')
 VECTOR_INDEX_PATH_INTEGRATIONS = os.path.join(BASE_DIR, 'semantor_vectors', 'integrations')
 
 ANNOY_DEFAULT_NUMBER_OF_TREES = 10
@@ -33,6 +34,10 @@ ANNOY_DEFAULT_NUMBER_OF_TREES = 10
 ASSISTANT_VECTOR_DATA_ADMIN_LIST = ('created_at', 'updated_at')
 ASSISTANT_VECTOR_DATA_ADMIN_FILTER = ('created_at', 'updated_at')
 ASSISTANT_VECTOR_DATA_ADMIN_SEARCH = ('assistant__name', 'assistant__organization__name')
+
+LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_LIST = ('created_at', 'updated_at')
+LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_FILTER = ('created_at', 'updated_at')
+LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_SEARCH = ('leanmod_assistant__name', 'assistant__organization__name')
 
 INTEGRATION_VECTOR_DATA_ADMIN_LIST = ['id', 'created_at', 'updated_at']
 INTEGRATION_VECTOR_DATA_ADMIN_SEARCH = ['id']

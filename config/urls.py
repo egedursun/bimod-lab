@@ -82,6 +82,7 @@ urlpatterns = [
     path("app/integrations/", include("apps.integrations.urls", namespace="integrations")),
     path("app/meta_integrations/", include("apps.meta_integrations.urls", namespace="meta_integrations")),
     path("app/semantor/", include("apps.semantor.urls", namespace="semantor")),
+    path("app/voidforger/", include("apps.voidforger.urls", namespace="voidforger")),
 
     ############################################################
     # WORK IN PROGRESS

@@ -155,6 +155,7 @@ INSTALLED_APPS = [
     "apps.ml_model_store",
     "apps.knowledge_base_store",
     "apps.semantor",
+    "apps.voidforger",
 
     ########################################
     # SUPPORT
