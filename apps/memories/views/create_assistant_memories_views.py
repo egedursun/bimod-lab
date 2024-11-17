@@ -55,10 +55,14 @@ class AssistantMemoryView_Create(TemplateView, LoginRequiredMixin):
         memory_type = request.POST.get('memory_type')
         memory_text_content = request.POST.get('memory_text_content')
 
-        AssistantMemory.objects.create(user=request.user, assistant_id=agent_id, memory_type=memory_type,
-                                       memory_text_content=memory_text_content, organization=org)
+        try:
+            AssistantMemory.objects.create(user=request.user, assistant_id=agent_id, memory_type=memory_type,
+                                           memory_text_content=memory_text_content, organization=org)
+            agent = Assistant.objects.get(id=agent_id)
+            agent.memories.add(AssistantMemory.objects.last())
+        except Exception as e:
+            logger.error(f"Error creating Assistant Memory: {e}")
+            return redirect('memories:create')
 
-        agent = Assistant.objects.get(id=agent_id)
-        agent.memories.add(AssistantMemory.objects.last())
         logger.info(f"Assistant Memory was created by User: {self.request.user.id}.")
         return redirect('memories:list')

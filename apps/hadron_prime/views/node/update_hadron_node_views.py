@@ -108,39 +108,45 @@ class HadronPrimeView_UpdateHadronNode(LoginRequiredMixin, TemplateView):
         topic_messages_history_lookback_memory_size = request.POST.get('topic_messages_history_lookback_memory_size')
 
         # Update the node object
-        node.system_id = system_id
-        node.llm_model_id = llm_model_id
-        node.node_name = node_name
-        node.node_description = node_description
-        node.optional_instructions = optional_instructions
-        node.current_state_curl = current_state_curl
-        node.current_state_input_params_description = current_state_input_desc
-        node.current_state_output_params_description = current_state_output_desc
-        node.goal_state_curl = goal_state_curl
-        node.goal_state_input_params_description = goal_state_input_desc
-        node.goal_state_output_params_description = goal_state_output_desc
-        node.error_calculation_curl = error_calculation_curl
-        node.error_calculation_input_params_description = error_calculation_input_desc
-        node.error_calculation_output_params_description = error_calculation_output_desc
-        node.measurements_curl = measurements_curl
-        node.measurements_input_params_description = measurements_input_desc
-        node.measurements_output_params_description = measurements_output_desc
-        node.action_set_curl = action_set_curl
-        node.action_set_input_params_description = action_set_input_desc
-        node.action_set_output_params_description = action_set_output_desc
-        node.analytic_calculation_curl = analytic_calculation_curl
-        node.analytic_calculation_input_params_description = analytic_calculation_input_desc
-        node.analytic_calculation_output_params_description = analytic_calculation_output_desc
-        node.actuation_curl = actuation_curl
-        node.actuation_input_params_description = actuation_input_desc
-        node.actuation_output_params_description = actuation_output_desc
-        node.state_action_state_lookback_memory_size = state_action_state_lookback_memory_size
-        node.publishing_history_lookback_memory_size = publishing_history_lookback_memory_size
-        node.topic_messages_history_lookback_memory_size = topic_messages_history_lookback_memory_size
 
-        node.save()
-        node.subscribed_topics.set(subscribed_topics)
-        node.expert_networks.set(expert_networks)
+        try:
+            node.system_id = system_id
+            node.llm_model_id = llm_model_id
+            node.node_name = node_name
+            node.node_description = node_description
+            node.optional_instructions = optional_instructions
+            node.current_state_curl = current_state_curl
+            node.current_state_input_params_description = current_state_input_desc
+            node.current_state_output_params_description = current_state_output_desc
+            node.goal_state_curl = goal_state_curl
+            node.goal_state_input_params_description = goal_state_input_desc
+            node.goal_state_output_params_description = goal_state_output_desc
+            node.error_calculation_curl = error_calculation_curl
+            node.error_calculation_input_params_description = error_calculation_input_desc
+            node.error_calculation_output_params_description = error_calculation_output_desc
+            node.measurements_curl = measurements_curl
+            node.measurements_input_params_description = measurements_input_desc
+            node.measurements_output_params_description = measurements_output_desc
+            node.action_set_curl = action_set_curl
+            node.action_set_input_params_description = action_set_input_desc
+            node.action_set_output_params_description = action_set_output_desc
+            node.analytic_calculation_curl = analytic_calculation_curl
+            node.analytic_calculation_input_params_description = analytic_calculation_input_desc
+            node.analytic_calculation_output_params_description = analytic_calculation_output_desc
+            node.actuation_curl = actuation_curl
+            node.actuation_input_params_description = actuation_input_desc
+            node.actuation_output_params_description = actuation_output_desc
+            node.state_action_state_lookback_memory_size = state_action_state_lookback_memory_size
+            node.publishing_history_lookback_memory_size = publishing_history_lookback_memory_size
+            node.topic_messages_history_lookback_memory_size = topic_messages_history_lookback_memory_size
+
+            node.save()
+            node.subscribed_topics.set(subscribed_topics)
+            node.expert_networks.set(expert_networks)
+        except Exception as e:
+            logger.error(f"Error updating Hadron Node: {e}")
+            messages.error(request, f"Error updating Hadron Node: {e}")
+            return redirect('hadron_prime:detail_hadron_node', pk=node.id)
 
         logger.info(f'Node updated: {node}')
         messages.success(request, 'Node updated successfully.')

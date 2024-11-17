@@ -28,7 +28,6 @@ from apps.datasource_codebase.models import CodeBaseRepository
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -53,7 +52,14 @@ class CodeBaseView_RepositoryDeleteAll(LoginRequiredMixin, TemplateView):
             return redirect('datasource_codebase:list_repositories')
         ##############################
 
-        CodeBaseRepository.objects.filter(knowledge_base_id=vs_id).delete()
-        logger.info(f"[CodeBaseView_RepositoryDeleteAll] All repositories in the selected knowledge base have been deleted.")
+        try:
+            CodeBaseRepository.objects.filter(knowledge_base_id=vs_id).delete()
+        except Exception as e:
+            logger.error(f"User: {request.user} - Code Repository - Delete All Error: {e}")
+            messages.error(request, 'An error occurred while deleting all repositories.')
+            return redirect('datasource_codebase:list_repositories')
+
+        logger.info(
+            f"[CodeBaseView_RepositoryDeleteAll] All repositories in the selected knowledge base have been deleted.")
         messages.success(request, 'All repositories in the selected knowledge base have been deleted successfully.')
         return redirect('datasource_codebase:list_repositories')

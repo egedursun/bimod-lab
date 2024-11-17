@@ -51,7 +51,14 @@ class HadronPrimeView_DeleteHadronTopic(LoginRequiredMixin, TemplateView):
         ##############################
 
         hadron_topic = get_object_or_404(HadronTopic, id=topic_id)
-        hadron_topic.delete()
+
+        try:
+            hadron_topic.delete()
+        except Exception as e:
+            logger.error(f"Error deleting Hadron Topic: {e}")
+            messages.error(request, f"Error deleting Hadron Topic: {e}")
+            return redirect('hadron_prime:detail_hadron_topic', pk=topic_id)
+
         logger.info(f'Hadron Topic "{hadron_topic.topic_name}" has been deleted successfully.')
         messages.success(request, f'Hadron Topic "{hadron_topic.topic_name}" has been deleted successfully.')
         return redirect('hadron_prime:list_hadron_system')

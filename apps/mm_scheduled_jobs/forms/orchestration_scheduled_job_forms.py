@@ -17,8 +17,6 @@
 from django import forms
 
 from apps.mm_scheduled_jobs.models import OrchestrationScheduledJob
-from apps.orchestrations.models import Maestro
-from apps.organization.models import Organization
 
 
 class OrchestrationScheduledJobForm(forms.ModelForm):

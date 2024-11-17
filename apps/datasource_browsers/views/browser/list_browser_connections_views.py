@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -25,7 +26,6 @@ from apps.assistants.models import Assistant
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -43,17 +43,23 @@ class BrowserView_BrowserList(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        cs_by_orgs = {}
-        agents = Assistant.objects.filter(organization__in=context_user.organizations.filter(users__in=[context_user]))
-        for agent in agents:
-            org = agent.organization
-            if org not in cs_by_orgs:
-                cs_by_orgs[org] = {}
-            if agent not in cs_by_orgs[org]:
-                cs_by_orgs[org][agent] = []
+        try:
+            cs_by_orgs = {}
+            agents = Assistant.objects.filter(
+                organization__in=context_user.organizations.filter(users__in=[context_user]))
+            for agent in agents:
+                org = agent.organization
+                if org not in cs_by_orgs:
+                    cs_by_orgs[org] = {}
+                if agent not in cs_by_orgs[org]:
+                    cs_by_orgs[org][agent] = []
 
-            cs = DataSourceBrowserConnection.objects.filter(assistant=agent)
-            cs_by_orgs[org][agent].extend(cs)
+                cs = DataSourceBrowserConnection.objects.filter(assistant=agent)
+                cs_by_orgs[org][agent].extend(cs)
+        except Exception as e:
+            logger.error(f"User: {context_user} - Browser Connections - List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing Browser Connections.')
+            return context
 
         logger.info(f"Browser Connections were listed.")
         context['connections_by_organization'] = cs_by_orgs

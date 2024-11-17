@@ -26,7 +26,6 @@ from apps.datasource_knowledge_base.models import KnowledgeBaseDocument
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -49,8 +48,15 @@ class DocumentView_DeleteAll(LoginRequiredMixin, TemplateView):
             return redirect('datasource_knowledge_base:list_documents')
         ##############################
 
-        vs_id = kwargs.get('kb_id')
-        KnowledgeBaseDocument.objects.filter(knowledge_base_id=vs_id).delete()
+        try:
+            vs_id = kwargs.get('kb_id')
+            KnowledgeBaseDocument.objects.filter(knowledge_base_id=vs_id).delete()
+        except Exception as e:
+            logger.error(f"User: {request.user} - Document - Delete All Error: {e}")
+            messages.error(request, 'An error occurred while deleting all documents.')
+            return redirect('datasource_knowledge_base:list_documents')
+
         messages.success(request, 'All documents in the selected knowledge base have been deleted successfully.')
-        logger.info(f"[views.delete_all_documents] All documents in the selected knowledge base have been deleted successfully.")
+        logger.info(
+            f"[views.delete_all_documents] All documents in the selected knowledge base have been deleted successfully.")
         return redirect('datasource_knowledge_base:list_documents')

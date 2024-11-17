@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -25,7 +26,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_nosql.models import CustomNoSQLQuery
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -48,15 +48,21 @@ class NoSQLDatabaseView_QueryList(TemplateView, LoginRequiredMixin):
                 organization__in=context_user.organizations.all())).select_related(
             'database_connection__assistant', 'database_connection__assistant__organization')
 
-        queries_by_orgs = {}
-        for qu in queries:
-            org = qu.database_connection.assistant.organization
-            agent = qu.database_connection.assistant
-            if org not in queries_by_orgs:
-                queries_by_orgs[org] = {}
-            if agent not in queries_by_orgs[org]:
-                queries_by_orgs[org][agent] = []
-            queries_by_orgs[org][agent].append(qu)
+        try:
+            queries_by_orgs = {}
+            for qu in queries:
+                org = qu.database_connection.assistant.organization
+                agent = qu.database_connection.assistant
+                if org not in queries_by_orgs:
+                    queries_by_orgs[org] = {}
+                if agent not in queries_by_orgs[org]:
+                    queries_by_orgs[org][agent] = []
+                queries_by_orgs[org][agent].append(qu)
+        except Exception as e:
+            logger.error(f"User: {context_user} - NoSQL Query - List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing NoSQL Queries.')
+            return context
+
         context['queries_by_organization'] = queries_by_orgs
         logger.info(f"NoSQL Queries were listed.")
         return context

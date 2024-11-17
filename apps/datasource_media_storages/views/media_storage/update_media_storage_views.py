@@ -29,7 +29,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -38,12 +37,18 @@ class MediaView_ManagerUpdate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        media_manager = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
-        user_orgs = Organization.objects.filter(users__in=[context_user])
-        context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
-        context['media_categories'] = MEDIA_MANAGER_ITEM_TYPES
-        context['user'] = context_user
-        context['connection'] = media_manager
+
+        try:
+            media_manager = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
+            user_orgs = Organization.objects.filter(users__in=[context_user])
+            context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+            context['media_categories'] = MEDIA_MANAGER_ITEM_TYPES
+            context['user'] = context_user
+            context['connection'] = media_manager
+        except Exception as e:
+            logger.error(f"User: {context_user} - Media Storage - Update Error: {e}")
+            messages.error(self.request, 'An error occurred while updating media storage.')
+
         return context
 
     def post(self, request, *args, **kwargs):

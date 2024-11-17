@@ -26,7 +26,6 @@ from apps.llm_core.models import LLMCore
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -48,7 +47,14 @@ class LLMView_Delete(DeleteView, LoginRequiredMixin):
         ##############################
 
         llm_core = get_object_or_404(LLMCore, id=kwargs['pk'])
-        llm_core.delete()
+
+        try:
+            llm_core.delete()
+        except Exception as e:
+            logger.error(f"An error occurred while deleting LLM Core {llm_core.nickname}. Error: {str(e)}")
+            messages.error(request, f"An error occurred while deleting LLM Core {llm_core.nickname}. Error: {str(e)}")
+            return redirect('llm_core:list')
+
         logger.info(f"LLM Core {llm_core.nickname} was deleted by User: {self.request.user.id}.")
         return redirect('llm_core:list')
 

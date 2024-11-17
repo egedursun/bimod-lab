@@ -20,9 +20,7 @@
 
 from django import forms
 
-from apps.assistants.models import Assistant
 from apps.mm_scheduled_jobs.models import ScheduledJob
-from apps.organization.models import Organization
 
 
 class ScheduledJobForm(forms.ModelForm):

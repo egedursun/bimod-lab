@@ -29,7 +29,6 @@ from apps.user_permissions.utils import PermissionNames
 from apps.video_generations.models import VideoGeneratorConnection
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -113,13 +112,19 @@ class VideoGeneratorView_Update(LoginRequiredMixin, TemplateView):
             logger.error(f"Error updating the Video Generator Connection. Errors: {errors}")
             return render(request, self.template_name, context)
 
-        video_generator_connection.organization = orgg
-        video_generator_connection.assistant = agent
-        video_generator_connection.name = name
-        video_generator_connection.description = description
-        video_generator_connection.provider = provider
-        video_generator_connection.provider_api_key = provider_api_key
-        video_generator_connection.save()
+        try:
+            video_generator_connection.organization = orgg
+            video_generator_connection.assistant = agent
+            video_generator_connection.name = name
+            video_generator_connection.description = description
+            video_generator_connection.provider = provider
+            video_generator_connection.provider_api_key = provider_api_key
+            video_generator_connection.save()
+        except Exception as e:
+            logger.error(f"Error updating the Video Generator Connection. Error: {e}")
+            messages.error(request, f'Error updating the Video Generator Connection.')
+            return redirect('video_generations:list')
+
         logger.info(f"Video Generator Connection updated by User: {self.request.user.id}.")
         messages.success(request, 'Video Generator Connection updated successfully.')
         return redirect('video_generations:list')

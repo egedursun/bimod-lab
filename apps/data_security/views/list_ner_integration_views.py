@@ -24,7 +24,6 @@ from apps.data_security.models import NERIntegration
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -40,6 +39,14 @@ class NERView_IntegrationList(TemplateView):
             return context
         ##############################
 
+        try:
+            context['ner_integrations'] = NERIntegration.objects.select_related('organization').filter(
+                organization__users__in=[self.request.user]
+            )
+        except Exception as e:
+            logger.error(f"User: {self.request.user} - NER Integrations - List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing NER Integrations.')
+            return context
+
         logger.info(f"NER Integrations were listed.")
-        context['ner_integrations'] = NERIntegration.objects.select_related('organization').all()
         return context

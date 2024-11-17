@@ -52,14 +52,18 @@ class EllmaScriptView_ScriptEditor(LoginRequiredMixin, TemplateView):
         script_content = request.POST.get('script_content')
         transcription_language = request.POST.get('transcription_language')
 
-        if not script_name or not transcription_language:
-            messages.error(request, "Script name and transcription language are required.")
+        try:
+            if not script_name or not transcription_language:
+                messages.error(request, "Script name and transcription language are required.")
+                return redirect('ellma:script-editor', pk=script_id)
+
+            ellma_script.script_name = script_name
+            ellma_script.ellma_script_content = script_content
+            ellma_script.ellma_transcription_language = transcription_language
+            ellma_script.save()
+        except Exception as e:
+            messages.error(request, f"Error updating script: {e}")
             return redirect('ellma:script-editor', pk=script_id)
 
-        ellma_script.script_name = script_name
-        ellma_script.ellma_script_content = script_content
-        ellma_script.ellma_transcription_language = transcription_language
-        ellma_script.save()
         messages.success(request, "Script updated successfully.")
-
         return redirect('ellma:script-editor', pk=script_id)

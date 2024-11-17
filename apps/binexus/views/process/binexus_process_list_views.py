@@ -37,10 +37,15 @@ class BinexusView_ProcessList(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        processes_by_org = {
-            org: BinexusProcess.objects.filter(organization=org)
-            for org in user_orgs
-        }
-        context['processes_by_org'] = processes_by_org
+        try:
+            user_orgs = Organization.objects.filter(users__in=[self.request.user])
+            processes_by_org = {
+                org: BinexusProcess.objects.filter(organization=org)
+                for org in user_orgs
+            }
+            context['processes_by_org'] = processes_by_org
+        except Exception as e:
+            messages.error(self.request, "Error listing the Binexus Processes.")
+            return context
+
         return context

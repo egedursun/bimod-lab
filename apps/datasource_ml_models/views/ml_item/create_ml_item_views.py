@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -25,9 +26,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_ml_models.forms import DataSourceMLModelItemForm
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
+from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -36,11 +37,18 @@ class MLModelView_ItemCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        user_orgs = context_user.organizations.all()
-        user_agents = Assistant.objects.filter(organization__in=user_orgs)
-        ml_managers = DataSourceMLModelConnection.objects.filter(assistant__in=user_agents).all()
-        context['ml_model_connections'] = ml_managers
-        context['form'] = DataSourceMLModelItemForm()
+
+        try:
+            user_orgs = Organization.objects.filter(users__in=[context_user])
+            user_agents = Assistant.objects.filter(organization__in=user_orgs)
+            ml_managers = DataSourceMLModelConnection.objects.filter(assistant__in=user_agents).all()
+            context['ml_model_connections'] = ml_managers
+            context['form'] = DataSourceMLModelItemForm()
+        except Exception as e:
+            logger.error(f"User: {context_user} - ML Model Item - Create Error: {e}")
+            messages.error(self.request, 'An error occurred while creating ML Model Item.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):

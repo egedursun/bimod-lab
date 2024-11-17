@@ -27,7 +27,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -43,18 +42,23 @@ class VectorStoreView_List(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        context_user = self.request.user
-        user_orgs = Organization.objects.filter(users__in=[context_user])
-        conns_by_orgs = {}
-        for org in user_orgs:
-            agents = org.assistants.all()
-            agents_conns = {}
-            for agent in agents:
-                conn = DocumentKnowledgeBaseConnection.objects.filter(assistant=agent)
-                if conn.exists():
-                    agents_conns[agent] = conn
-            if agents_conns:
-                conns_by_orgs[org] = agents_conns
+        try:
+            context_user = self.request.user
+            user_orgs = Organization.objects.filter(users__in=[context_user])
+            conns_by_orgs = {}
+            for org in user_orgs:
+                agents = org.assistants.all()
+                agents_conns = {}
+                for agent in agents:
+                    conn = DocumentKnowledgeBaseConnection.objects.filter(assistant=agent)
+                    if conn.exists():
+                        agents_conns[agent] = conn
+                if agents_conns:
+                    conns_by_orgs[org] = agents_conns
+        except Exception as e:
+            logger.error(f"User: {self.request.user} - Knowledge Base - List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing the knowledge bases.')
+            return context
 
         context['connections_by_organization'] = conns_by_orgs
         context['user'] = context_user

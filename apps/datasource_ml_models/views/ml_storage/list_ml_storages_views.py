@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -25,7 +26,6 @@ from apps.assistants.models import Assistant
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -43,19 +43,26 @@ class MLModelView_ManagerList(LoginRequiredMixin, TemplateView):
         ##############################
 
         context_user = self.request.user
-        mgrs = DataSourceMLModelConnection.objects.filter(
-            assistant__in=Assistant.objects.filter(organization__in=context_user.organizations.all())
-        ).select_related('assistant__organization')
 
-        mgrs_by_orgs = {}
-        for manager in mgrs:
-            org = manager.assistant.organization
-            agent = manager.assistant
-            if org not in mgrs_by_orgs:
-                mgrs_by_orgs[org] = {}
-            if agent not in mgrs_by_orgs[org]:
-                mgrs_by_orgs[org][agent] = []
-            mgrs_by_orgs[org][agent].append(manager)
+        try:
+            mgrs = DataSourceMLModelConnection.objects.filter(
+                assistant__in=Assistant.objects.filter(organization__in=context_user.organizations.all())
+            ).select_related('assistant__organization')
+
+            mgrs_by_orgs = {}
+            for manager in mgrs:
+                org = manager.assistant.organization
+                agent = manager.assistant
+                if org not in mgrs_by_orgs:
+                    mgrs_by_orgs[org] = {}
+                if agent not in mgrs_by_orgs[org]:
+                    mgrs_by_orgs[org][agent] = []
+                mgrs_by_orgs[org][agent].append(manager)
+        except Exception as e:
+            logger.error(f"User: {context_user} - ML Model Connection - List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing ML Model Connections.')
+            return context
+
         context['connections_by_organization'] = mgrs_by_orgs
         logger.info(f"ML Model Connections were listed.")
         return context

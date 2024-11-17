@@ -19,7 +19,6 @@
 from django.db import models
 
 from apps.core.vector_operations.intra_context_memory.memory_executor import IntraContextMemoryExecutor
-from apps.assistants.utils import ContextManagementStrategyNames
 from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.multimodal_chat.utils import SOURCES_FOR_MULTIMODAL_CHATS
 

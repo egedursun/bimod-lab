@@ -66,66 +66,71 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
         ##############################
 
         agent_id = self.kwargs.get('pk')
-        agent = get_object_or_404(Assistant, id=agent_id)
-        agent.name = request.POST.get('name')
-        agent.description = request.POST.get('description')
-        agent.instructions = request.POST.get('instructions')
-        agent.audience = request.POST.get('audience')
-        agent.max_retry_count = request.POST.get('max_retry_count')
-        agent.tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
-        agent.tool_max_chains = request.POST.get('tool_max_chains')
+        try:
+            agent = get_object_or_404(Assistant, id=agent_id)
+            agent.name = request.POST.get('name')
+            agent.description = request.POST.get('description')
+            agent.instructions = request.POST.get('instructions')
+            agent.audience = request.POST.get('audience')
+            agent.max_retry_count = request.POST.get('max_retry_count')
+            agent.tool_max_attempts_per_instance = request.POST.get('tool_max_attempts_per_instance')
+            agent.tool_max_chains = request.POST.get('tool_max_chains')
 
-        ner_id = None
-        if ("ner_integration" in request.POST and request.POST.get('ner_integration')
-            and request.POST.get('ner_integration') != "None"
-            and request.POST.get('ner_integration') != ""):
-            ner_id = request.POST.get('ner_integration')
-            logger.info(f"NER Integration is defined for this agent. NER ID: {ner_id}")
+            ner_id = None
+            if ("ner_integration" in request.POST and request.POST.get('ner_integration')
+                and request.POST.get('ner_integration') != "None"
+                and request.POST.get('ner_integration') != ""):
+                ner_id = request.POST.get('ner_integration')
+                logger.info(f"NER Integration is defined for this agent. NER ID: {ner_id}")
 
-        if ner_id:
-            agent.ner_integration = NERIntegration.objects.get(id=ner_id)
-        else:
-            agent.ner_integration = None
+            if ner_id:
+                agent.ner_integration = NERIntegration.objects.get(id=ner_id)
+            else:
+                agent.ner_integration = None
 
-        terms = request.POST.getlist('terms[]')
-        definitions = request.POST.getlist('definitions[]')
-        updated_technical_dict = {}
-        for term, definition in zip(terms, definitions):
-            updated_technical_dict[term] = definition
-        agent.glossary = updated_technical_dict
-        agent.context_overflow_strategy = request.POST.get('context_overflow_strategy')
-        agent.max_context_messages = request.POST.get('max_context_messages')
-        vectorizer_name = None
-        vectorizer_api_key = None
-        if agent.context_overflow_strategy == ContextManagementStrategyNames.FORGET:
-            pass
-        elif agent.context_overflow_strategy == ContextManagementStrategyNames.STOP:
-            pass
-        # TODO: optimize the vectorization strategy, then will be uncommented
-        """
-        elif agent.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE:
-            vectorizer_name = request.POST.get('vectorizer_name')
-            vectorizer_api_key = request.POST.get('vectorizer_api_key')
-        """
+            terms = request.POST.getlist('terms[]')
+            definitions = request.POST.getlist('definitions[]')
+            updated_technical_dict = {}
+            for term, definition in zip(terms, definitions):
+                updated_technical_dict[term] = definition
+            agent.glossary = updated_technical_dict
+            agent.context_overflow_strategy = request.POST.get('context_overflow_strategy')
+            agent.max_context_messages = request.POST.get('max_context_messages')
+            vectorizer_name = None
+            vectorizer_api_key = None
+            if agent.context_overflow_strategy == ContextManagementStrategyNames.FORGET:
+                pass
+            elif agent.context_overflow_strategy == ContextManagementStrategyNames.STOP:
+                pass
+            # TODO: optimize the vectorization strategy, then will be uncommented
+            """
+            elif agent.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE:
+                vectorizer_name = request.POST.get('vectorizer_name')
+                vectorizer_api_key = request.POST.get('vectorizer_api_key')
+            """
 
-        agent.vectorizer_name = vectorizer_name
-        agent.vectorizer_api_key = vectorizer_api_key
-        agent.tone = request.POST.get('tone')
-        agent.llm_model_id = request.POST.get('llm_model')
-        agent.response_template = request.POST.get('response_template')
-        agent.response_language = request.POST.get('response_language')
-        agent.time_awareness = request.POST.get('time_awareness') == 'on'
-        agent.place_awareness = request.POST.get('place_awareness') == 'on'
-        agent.image_generation_capability = request.POST.get('image_generation_capability') == 'on'
-        agent.multi_step_reasoning_capability_choice = request.POST.get('multi_step_reasoning_capability_choice')
-        agent.last_updated_by_user = request.user
-        if 'assistant_image' in request.FILES:
-            agent.assistant_image = request.FILES['assistant_image']
-        agent.save()
+            agent.vectorizer_name = vectorizer_name
+            agent.vectorizer_api_key = vectorizer_api_key
+            agent.tone = request.POST.get('tone')
+            agent.llm_model_id = request.POST.get('llm_model')
+            agent.response_template = request.POST.get('response_template')
+            agent.response_language = request.POST.get('response_language')
+            agent.time_awareness = request.POST.get('time_awareness') == 'on'
+            agent.place_awareness = request.POST.get('place_awareness') == 'on'
+            agent.image_generation_capability = request.POST.get('image_generation_capability') == 'on'
+            agent.multi_step_reasoning_capability_choice = request.POST.get('multi_step_reasoning_capability_choice')
+            agent.last_updated_by_user = request.user
+            if 'assistant_image' in request.FILES:
+                agent.assistant_image = request.FILES['assistant_image']
+            agent.save()
 
-        project_items = request.POST.getlist('project_items[]')
-        agent.project_items.set(project_items)
-        agent.save()
+            project_items = request.POST.getlist('project_items[]')
+            agent.project_items.set(project_items)
+            agent.save()
+        except Exception as e:
+            logger.error(f"Error while updating the agent information: {e}")
+            messages.error(request, "Agent information is required.")
+            return redirect('assistants:update', pk=agent_id)
 
         logger.info(f"Assistant has been updated. ")
-        return redirect('assistants:update', pk=agent.id)
+        return redirect('assistants:update', pk=agent_id)

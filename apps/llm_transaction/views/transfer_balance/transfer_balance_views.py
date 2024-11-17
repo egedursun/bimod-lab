@@ -22,14 +22,19 @@ from django.views.generic import TemplateView
 from apps.organization.models import Organization
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
 class Transactions_BalanceTransfer(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        orgs = Organization.objects.filter(users__in=[self.request.user]).all()
-        context['organizations'] = orgs
+
+        try:
+            orgs = Organization.objects.filter(users__in=[self.request.user]).all()
+            context['organizations'] = orgs
+        except Exception as e:
+            logger.error(f"Error getting context data for Balance Transfer: {e}")
+            return context
+
         logger.info(f"Balance Transfer was initiated by User: {self.request.user.id}.")
         return context

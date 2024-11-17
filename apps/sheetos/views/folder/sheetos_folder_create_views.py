@@ -45,11 +45,16 @@ class SheetosView_FolderCreate(LoginRequiredMixin, View):
         description = request.POST.get('description', '')
         meta_context_instructions = request.POST.get('meta_context_instructions', '')
 
-        if organization_id and folder_name:
-            organization = Organization.objects.get(id=organization_id)
-            SheetosFolder.objects.create(
-                organization=organization, name=folder_name, description=description,
-                meta_context_instructions=meta_context_instructions, created_by_user=request.user
-            )
+        try:
+            if organization_id and folder_name:
+                organization = Organization.objects.get(id=organization_id)
+                SheetosFolder.objects.create(
+                    organization=organization, name=folder_name, description=description,
+                    meta_context_instructions=meta_context_instructions, created_by_user=request.user
+                )
+        except Exception as e:
+            messages.error(request, f"An error occurred while creating the Sheetos Folder: {str(e)}")
+            return redirect('sheetos:folders_list')
+
         logger.info(f"Sheetos Folder was created by User: {request.user.id}.")
         return redirect('sheetos:folders_list')

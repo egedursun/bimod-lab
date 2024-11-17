@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -25,9 +26,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_sql.forms import CustomSQLQueryForm
 from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -36,10 +37,18 @@ class SQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        user_orgs = context_user.organizations.all()
-        db_c = SQLDatabaseConnection.objects.filter(assistant__in=Assistant.objects.filter(organization__in=user_orgs))
-        context['database_connections'] = db_c
-        context['form'] = CustomSQLQueryForm()
+
+        try:
+            user_orgs = Organization.objects.filter(users__in=[context_user])
+            db_c = SQLDatabaseConnection.objects.filter(
+                assistant__in=Assistant.objects.filter(organization__in=user_orgs))
+            context['database_connections'] = db_c
+            context['form'] = CustomSQLQueryForm()
+        except Exception as e:
+            logger.error(f"User: {context_user} - SQL Query - Create Error: {e}")
+            messages.error(self.request, 'An error occurred while creating SQL Query.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):

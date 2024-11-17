@@ -41,17 +41,23 @@ class DraftingView_DocumentCreate(LoginRequiredMixin, View):
         ##############################
 
         folder_id = self.kwargs['folder_id']
-        folder = get_object_or_404(DraftingFolder, id=folder_id)
-        document = DraftingDocument.objects.create(
-            organization=folder.organization,
-            document_folder=folder,
-            document_title=request.POST.get('document_title'),
-            copilot_assistant_id=request.POST.get('copilot_assistant'),
-            context_instructions=request.POST.get('context_instructions', ''),
-            target_audience=request.POST.get('target_audience', ''),
-            tone=request.POST.get('tone', ''),
-            created_by_user=request.user,
-            last_updated_by_user=request.user
-        )
+        try:
+            folder = get_object_or_404(DraftingFolder, id=folder_id)
+            document = DraftingDocument.objects.create(
+                organization=folder.organization,
+                document_folder=folder,
+                document_title=request.POST.get('document_title'),
+                copilot_assistant_id=request.POST.get('copilot_assistant'),
+                context_instructions=request.POST.get('context_instructions', ''),
+                target_audience=request.POST.get('target_audience', ''),
+                tone=request.POST.get('tone', ''),
+                created_by_user=request.user,
+                last_updated_by_user=request.user
+            )
+        except Exception as e:
+            logger.error(f"Error creating Drafting Document: {e}")
+            messages.error(self.request, 'An error occurred while creating Drafting Document.')
+            return redirect('drafting:documents_list', folder_id=folder_id)
+
         logger.info(f"Drafting Document {document.document_title} was created.")
         return redirect('drafting:documents_detail', folder_id=folder.id, document_id=document.id)

@@ -75,27 +75,32 @@ class SmartContractView_WalletConnectionUpdate(LoginRequiredMixin, TemplateView)
 
         organization = get_object_or_404(Organization, id=organization_id)
 
-        wallet_connection.organization = organization
-        wallet_connection.nickname = nickname
-        wallet_connection.blockchain_type = blockchain_type
-        wallet_connection.wallet_address = wallet_address
-        wallet_connection.wallet_private_key = wallet_private_key
-        wallet_connection.description = description
-        wallet_connection.updated_at = timezone.now()
-        wallet_connection.save()
+        try:
+            wallet_connection.organization = organization
+            wallet_connection.nickname = nickname
+            wallet_connection.blockchain_type = blockchain_type
+            wallet_connection.wallet_address = wallet_address
+            wallet_connection.wallet_private_key = wallet_private_key
+            wallet_connection.description = description
+            wallet_connection.updated_at = timezone.now()
+            wallet_connection.save()
 
-        connection_response = self.attempt_wallet_connection(wallet_address=wallet_address)
-        if not connection_response:
-            logger.error('Error while connecting to wallet.')
-            messages.error(request, 'Error while connecting to wallet, please check your credentials.')
-            return redirect('smart_contracts:wallet_connection_create')
+            connection_response = self.attempt_wallet_connection(wallet_address=wallet_address)
+            if not connection_response:
+                logger.error('Error while connecting to wallet.')
+                messages.error(request, 'Error while connecting to wallet, please check your credentials.')
+                return redirect('smart_contracts:wallet_connection_create')
 
-        if self.sync_wallet_balance(wallet_connection):
-            logger.info('Wallet connection updated and balance synced successfully.')
-            messages.success(request, 'Wallet connection updated and balance synced successfully.')
-        else:
-            logger.warning('Wallet connection updated, but balance sync failed.')
-            messages.warning(request, 'Wallet connection updated, but balance sync failed.')
+            if self.sync_wallet_balance(wallet_connection):
+                logger.info('Wallet connection updated and balance synced successfully.')
+                messages.success(request, 'Wallet connection updated and balance synced successfully.')
+            else:
+                logger.warning('Wallet connection updated, but balance sync failed.')
+                messages.warning(request, 'Wallet connection updated, but balance sync failed.')
+        except Exception as e:
+            logger.error(f'An error occurred while updating the wallet connection: {str(e)}')
+            messages.error(request, f'An error occurred while updating the wallet connection: {str(e)}')
+            return redirect(reverse('smart_contracts:wallet_connection_update', kwargs={'pk': wallet_connection_id}))
 
         return redirect(reverse('smart_contracts:wallet_connection_list'))
 

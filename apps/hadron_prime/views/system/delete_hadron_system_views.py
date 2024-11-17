@@ -49,7 +49,14 @@ class HadronPrimeView_DeleteHadronSystem(LoginRequiredMixin, TemplateView):
         ##############################
 
         hadron_system = get_object_or_404(HadronSystem, id=system_id)
-        hadron_system.delete()
-        logger.info(f'Hadron System "{hadron_system.system_name}" has been deleted successfully.')
-        messages.success(request, f'Hadron System "{hadron_system.system_name}" has been deleted successfully.')
+
+        try:
+            hadron_system.delete()
+        except Exception as e:
+            logger.error(f"Error deleting Hadron System: {e}")
+            messages.error(request, f"Error deleting Hadron System: {e}")
+            return redirect('hadron_prime:detail_hadron_system', pk=system_id)
+
+            logger.info(f'Hadron System "{hadron_system.system_name}" has been deleted successfully.')
+            messages.success(request, f'Hadron System "{hadron_system.system_name}" has been deleted successfully.')
         return redirect('hadron_prime:list_hadron_system')

@@ -26,9 +26,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSourceMLModelItem
 from apps.datasource_ml_models.utils import DELETE_ALL_ML_ITEMS_SPECIFIER
+from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -47,26 +47,33 @@ class MLModelView_ItemList(LoginRequiredMixin, TemplateView):
 
         context_user = self.request.user
         conn_by_orgs = []
-        orgs = context_user.organizations.all()
-        for org in orgs:
-            agents_data = []
-            agents = Assistant.objects.filter(organization=org)
-            for agent in agents:
-                conns_data = []
-                conns = DataSourceMLModelConnection.objects.filter(assistant=agent)
-                for conn in conns:
-                    items = DataSourceMLModelItem.objects.filter(ml_model_base=conn)
-                    page = self.request.GET.get('page', 1)
-                    paginator = Paginator(items, 5)  # Show 5 items per page
-                    try:
-                        paginated_items = paginator.page(page)
-                    except PageNotAnInteger:
-                        paginated_items = paginator.page(1)
-                    except EmptyPage:
-                        paginated_items = paginator.page(paginator.num_pages)
-                    conns_data.append({'connection': conn, 'items': paginated_items})
-                agents_data.append({'assistant': agent, 'ml_model_connections': conns_data})
-            conn_by_orgs.append({'organization': org, 'assistants': agents_data})
+
+        try:
+            orgs = Organization.objects.filter(users__in=[context_user])
+            for org in orgs:
+                agents_data = []
+                agents = Assistant.objects.filter(organization=org)
+                for agent in agents:
+                    conns_data = []
+                    conns = DataSourceMLModelConnection.objects.filter(assistant=agent)
+                    for conn in conns:
+                        items = DataSourceMLModelItem.objects.filter(ml_model_base=conn)
+                        page = self.request.GET.get('page', 1)
+                        paginator = Paginator(items, 5)  # Show 5 items per page
+                        try:
+                            paginated_items = paginator.page(page)
+                        except PageNotAnInteger:
+                            paginated_items = paginator.page(1)
+                        except EmptyPage:
+                            paginated_items = paginator.page(paginator.num_pages)
+                        conns_data.append({'connection': conn, 'items': paginated_items})
+                    agents_data.append({'assistant': agent, 'ml_model_connections': conns_data})
+                conn_by_orgs.append({'organization': org, 'assistants': agents_data})
+        except Exception as e:
+            logger.error(f"User: {context_user} - ML Model Item - List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing ML Model Items.')
+            return context
+
         context['connections_by_organization'] = conn_by_orgs
         logger.info(f"ML Model Items were listed.")
         return context

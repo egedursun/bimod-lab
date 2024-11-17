@@ -48,9 +48,15 @@ class SheetosView_GenerateViaSelectCommand(LoginRequiredMixin, View):
                             folder_id=document.document_folder.id, document_id=document_id)
         ##############################
 
-        selected_data = request.POST.get('selected_text', "")
-        command = request.POST.get('command')
-        xc = SheetosExecutionManager(sheetos_document=document)
-        response_json = xc.execute_select_command(selected_data=selected_data, command=command)
+        try:
+            selected_data = request.POST.get('selected_text', "")
+            command = request.POST.get('command')
+            xc = SheetosExecutionManager(sheetos_document=document)
+            response_json = xc.execute_select_command(selected_data=selected_data, command=command)
+        except Exception as e:
+            messages.error(request, f"An error occurred while executing the Select Command: {str(e)}")
+            return redirect('sheetos:documents_detail',
+                            folder_id=document.document_folder.id, document_id=document_id)
+
         logger.info(f"Select Command was executed for Sheetos Document: {document.id}.")
         return JsonResponse(response_json)

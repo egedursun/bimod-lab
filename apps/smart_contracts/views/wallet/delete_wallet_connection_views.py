@@ -49,7 +49,14 @@ class SmartContractView_WalletConnectionDelete(LoginRequiredMixin, TemplateView)
 
         wallet_connection_id = self.kwargs.get('pk')
         wallet_connection = get_object_or_404(BlockchainWalletConnection, pk=wallet_connection_id)
-        wallet_connection.delete()
+
+        try:
+            wallet_connection.delete()
+        except Exception as e:
+            logger.error(f"An error occurred while deleting the wallet connection: {str(e)}")
+            messages.error(request, f"An error occurred while deleting the wallet connection: {str(e)}")
+            return redirect('smart_contracts:wallet_connection_detail', pk=wallet_connection_id)
+
         logger.info(f'Wallet connection deleted. Wallet_connection_id: {wallet_connection_id}')
         messages.success(request, 'Wallet connection deleted successfully.')
         return redirect('smart_contracts:wallet_connection_list')

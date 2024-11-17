@@ -29,7 +29,6 @@ from apps.user_permissions.utils import PermissionNames
 from config import settings
 from config.settings import EXPORT_API_BASE_URL
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -49,12 +48,18 @@ class ExportAssistantView_ToggleService(LoginRequiredMixin, View):
             return redirect('export_assistants:list')
         ##############################
 
-        api_urls = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
-        exp_agent.is_online = not exp_agent.is_online
-        exp_agent.save()
-        if exp_agent.is_online:
-            if not any(endpoint in str(url) for url in api_urls):
-                start_endpoint_for_assistant(exp_agent)
+        try:
+            api_urls = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
+            exp_agent.is_online = not exp_agent.is_online
+            exp_agent.save()
+            if exp_agent.is_online:
+                if not any(endpoint in str(url) for url in api_urls):
+                    start_endpoint_for_assistant(exp_agent)
+        except Exception as e:
+            logger.error(f"Error toggling Export Assistant: {e}")
+            messages.error(request, "Error toggling Export Assistant.")
+            return redirect('export_assistants:list')
+
         logger.info(f"Export Assistant was toggled by User: {context_user.id}.")
         return redirect('export_assistants:list')
 

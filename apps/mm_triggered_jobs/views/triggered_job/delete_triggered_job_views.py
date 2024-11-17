@@ -26,7 +26,6 @@ from apps.mm_triggered_jobs.models import TriggeredJob
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -49,7 +48,13 @@ class TriggeredJobView_Delete(LoginRequiredMixin, TemplateView):
 
         triggered_job_id = self.kwargs.get('pk')
         triggered_job = get_object_or_404(TriggeredJob, id=triggered_job_id)
-        triggered_job.delete()
+
+        try:
+            triggered_job.delete()
+        except Exception as e:
+            messages.error(request, "An error occurred while deleting the Triggered Job: " + str(e))
+            return redirect("mm_triggered_jobs:list")
+
         logger.info(f"Triggered Job was deleted by User: {self.request.user.id}.")
         messages.success(request, "Triggered Job deleted successfully.")
         return redirect('mm_triggered_jobs:list')

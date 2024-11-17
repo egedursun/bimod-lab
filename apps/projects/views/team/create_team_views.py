@@ -53,17 +53,21 @@ class ProjectsView_TeamCreate(LoginRequiredMixin, TemplateView):
             messages.error(request, "Team name, project, and team lead are required fields.")
             return redirect("projects:team_create")
 
-        project = ProjectItem.objects.get(id=project_id)
-        team_lead = User.objects.get(id=team_lead_id)
-        team = ProjectTeamItem.objects.create(
-            team_name=team_name,
-            project=project,
-            team_description=description,
-            team_lead=team_lead,
-            created_by_user=request.user
-        )
+        try:
+            project = ProjectItem.objects.get(id=project_id)
+            team_lead = User.objects.get(id=team_lead_id)
+            team = ProjectTeamItem.objects.create(
+                team_name=team_name,
+                project=project,
+                team_description=description,
+                team_lead=team_lead,
+                created_by_user=request.user
+            )
+            team.team_members.set(User.objects.filter(id__in=members))
+        except Exception as e:
+            messages.error(request, f"An error occurred while creating the team: {str(e)}")
+            return redirect("projects:team_create")
 
-        team.team_members.set(User.objects.filter(id__in=members))
         messages.success(request, f"Team '{team_name}' has been created successfully.")
         logger.info(f"New team created: {team.id}")
         return redirect("projects:team_list")

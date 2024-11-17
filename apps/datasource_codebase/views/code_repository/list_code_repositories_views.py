@@ -31,7 +31,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -47,38 +46,44 @@ class CodeBaseView_RepositoryList(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        orgs = Organization.objects.filter(users__in=[request.user])
-        data = []
-        for org in orgs:
-            agents = Assistant.objects.filter(organization=org)
-            agent_data_list = []
-            for agent in agents:
-                vector_stores = CodeRepositoryStorageConnection.objects.filter(assistant=agent)
-                kb_data_list = []
-                for kb in vector_stores:
-                    docs = CodeBaseRepository.objects.filter(knowledge_base=kb).order_by('-created_at')
-                    paginator = Paginator(docs, 5)  # 5 repositories per page
-                    page_number = request.GET.get('page')
-                    page_obj = paginator.get_page(page_number)
+        try:
+            orgs = Organization.objects.filter(users__in=[request.user])
+            data = []
+            for org in orgs:
+                agents = Assistant.objects.filter(organization=org)
+                agent_data_list = []
+                for agent in agents:
+                    vector_stores = CodeRepositoryStorageConnection.objects.filter(assistant=agent)
+                    kb_data_list = []
+                    for kb in vector_stores:
+                        docs = CodeBaseRepository.objects.filter(knowledge_base=kb).order_by('-created_at')
+                        paginator = Paginator(docs, 5)  # 5 repositories per page
+                        page_number = request.GET.get('page')
+                        page_obj = paginator.get_page(page_number)
 
-                    doc_data_list = []
-                    for doc in page_obj:
-                        doc: CodeBaseRepository
-                        logs = RepositoryProcessingLog.objects.filter(
-                            repository_full_uri=doc.repository_uri)
-                        cur_statuses = [log.log_message for log in logs]
-                        doc_data_list.append({'document': doc, 'current_statuses': cur_statuses})
-                    kb_data_list.append({
-                        'knowledge_base': kb, 'documents': page_obj, 'document_data': doc_data_list,
-                    })
-                agent_data_list.append({'assistant': agent, 'knowledge_bases': kb_data_list})
-            data.append({'organization': org, 'assistants': agent_data_list})
+                        doc_data_list = []
+                        for doc in page_obj:
+                            doc: CodeBaseRepository
+                            logs = RepositoryProcessingLog.objects.filter(
+                                repository_full_uri=doc.repository_uri)
+                            cur_statuses = [log.log_message for log in logs]
+                            doc_data_list.append({'document': doc, 'current_statuses': cur_statuses})
+                        kb_data_list.append({
+                            'knowledge_base': kb, 'documents': page_obj, 'document_data': doc_data_list,
+                        })
+                    agent_data_list.append({'assistant': agent, 'knowledge_bases': kb_data_list})
+                data.append({'organization': org, 'assistants': agent_data_list})
 
-        context['data'] = data
-        context['document_statuses'] = [
-            'staged', 'uploaded', 'loaded', 'chunked', 'embedded_document', 'saved_document', 'processed_document',
-            'embedded_chunks', 'saved_chunks', 'processed_chunks', 'completed'
-        ]
+            context['data'] = data
+            context['document_statuses'] = [
+                'staged', 'uploaded', 'loaded', 'chunked', 'embedded_document', 'saved_document', 'processed_document',
+                'embedded_chunks', 'saved_chunks', 'processed_chunks', 'completed'
+            ]
+        except Exception as e:
+            logger.error(f"User: {request.user} - Code Repository - List Error: {e}")
+            messages.error(request, 'An error occurred while listing Code Repositories.')
+            return self.render_to_response(context)
+
         context['failed_statuses'] = ['failed']
         context['partially_failed_statuses'] = ['partially_failed']
         logger.info(f"Code Repositories were listed.")
@@ -94,9 +99,15 @@ class CodeBaseView_RepositoryList(LoginRequiredMixin, TemplateView):
             return redirect('datasource_codebase:list_repositories')
         ##############################
 
-        doc_ids = request.POST.getlist('selected_documents')
-        if doc_ids:
-            CodeBaseRepository.objects.filter(id__in=doc_ids).delete()
-            logger.info(f"Code Repositories {doc_ids} were deleted.")
-            messages.success(request, 'Selected repositories deleted successfully.')
+        try:
+            doc_ids = request.POST.getlist('selected_documents')
+            if doc_ids:
+                CodeBaseRepository.objects.filter(id__in=doc_ids).delete()
+                logger.info(f"Code Repositories {doc_ids} were deleted.")
+        except Exception as e:
+            logger.error(f"User: {request.user} - Code Repository - Delete Error: {e}")
+            messages.error(request, 'An error occurred while deleting selected repositories.')
+            return redirect('datasource_codebase:list_repositories')
+
+        messages.success(request, 'Selected repositories deleted successfully.')
         return redirect('datasource_codebase:list_repositories')

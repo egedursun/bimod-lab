@@ -31,19 +31,24 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
 class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
-        user_agents = Assistant.objects.filter(organization__users__in=[request.user])
-        vector_stores = CodeRepositoryStorageConnection.objects.filter(assistant__in=user_agents)
-        orgs = Organization.objects.filter(users__in=[request.user])
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['organizations'] = list(orgs.values('id', 'name'))
-        context['assistants'] = list(user_agents.values('id', 'name', 'organization_id'))
-        context['knowledge_bases'] = list(vector_stores.values('id', 'name', 'assistant_id'))
+        try:
+            user_agents = Assistant.objects.filter(organization__users__in=[request.user])
+            vector_stores = CodeRepositoryStorageConnection.objects.filter(assistant__in=user_agents)
+            orgs = Organization.objects.filter(users__in=[request.user])
+            context['organizations'] = list(orgs.values('id', 'name'))
+            context['assistants'] = list(user_agents.values('id', 'name', 'organization_id'))
+            context['knowledge_bases'] = list(vector_stores.values('id', 'name', 'assistant_id'))
+        except Exception as e:
+            logger.error(f"User: {request.user} - Code Repository - Create Error: {e}")
+            messages.error(request, 'An error occurred while creating Code Repository.')
+            return self.render_to_response(context)
+
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):

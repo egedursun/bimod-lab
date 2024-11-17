@@ -25,7 +25,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_sql.models import SQLDatabaseConnection
 from apps.user_permissions.utils import PermissionNames
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -45,8 +44,14 @@ class SQLDatabaseView_ManagerDelete(LoginRequiredMixin, DeleteView):
             return redirect('datasource_sql:list')
         ##############################
 
-        self.object = self.get_object()
-        self.object.delete()
+        try:
+            self.object = self.get_object()
+            self.object.delete()
+        except Exception as e:
+            logger.error(f"Error deleting SQL Database Connection: {e}")
+            messages.error(self.request, 'An error occurred while deleting SQL Database Connection.')
+            return redirect(self.success_url)
+
         logger.info(f"SQL Database Connection {self.object.name} was deleted.")
         messages.success(request, f'SQL Database Connection {self.object.name} was deleted successfully.')
         return redirect(self.success_url)

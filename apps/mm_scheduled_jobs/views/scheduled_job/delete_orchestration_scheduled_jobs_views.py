@@ -48,7 +48,13 @@ class ScheduledJobView_OrchestrationDelete(LoginRequiredMixin, TemplateView):
 
         scheduled_job_id = self.kwargs.get('pk')
         scheduled_job = get_object_or_404(OrchestrationScheduledJob, id=scheduled_job_id)
-        scheduled_job.delete()
+
+        try:
+            scheduled_job.delete()
+        except Exception as e:
+            messages.error(request, "An error occurred while deleting the Orchestration Scheduled Job: " + str(e))
+            return redirect("mm_scheduled_jobs:orchestration_list")
+
         logger.info(f"Orchestration Scheduled Job was deleted by User: {self.request.user.id}.")
         messages.success(request, "Orchestration Scheduled Job deleted successfully.")
         return redirect('mm_scheduled_jobs:orchestration_list')

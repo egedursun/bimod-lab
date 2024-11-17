@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+
 import logging
 
 from django.contrib import messages
@@ -29,7 +27,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -48,18 +45,25 @@ class BrowserView_BrowserLogList(LoginRequiredMixin, TemplateView):
 
         c_id = kwargs.get('pk')
         browser_c = get_object_or_404(DataSourceBrowserConnection, pk=c_id)
-        context['browser_connection'] = browser_c
-        logs = browser_c.logs.all()
-        search_query = self.request.GET.get('search', '')
-        if search_query:
-            logs = logs.filter(action__icontains=search_query) | logs.filter(
-                html_content__icontains=search_query) | logs.filter(
-                context_content__icontains=search_query) | logs.filter(log_content__icontains=search_query)
+        try:
+            context['browser_connection'] = browser_c
+            logs = browser_c.logs.all()
+            search_query = self.request.GET.get('search', '')
+            if search_query:
+                logs = logs.filter(action__icontains=search_query) | logs.filter(
+                    html_content__icontains=search_query) | logs.filter(
+                    context_content__icontains=search_query) | logs.filter(log_content__icontains=search_query)
 
-        paginator = Paginator(logs, 10)
-        page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context['page_obj'] = page_obj
-        context['search_query'] = search_query
+            paginator = Paginator(logs, 10)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
+            context['search_query'] = search_query
+        except Exception as e:
+            logger.error(
+                f"User: {self.request.user} - Browser Connection: {browser_c.name} - Browsing Logs List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing Browsing Logs.')
+            return context
+
         logger.info(f"User: {self.request.user} - Browser Connection: {browser_c.name} - Browsing Logs Listed.")
         return context

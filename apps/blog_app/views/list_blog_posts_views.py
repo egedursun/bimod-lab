@@ -33,22 +33,27 @@ class BlogPostView_List(TemplateView):
             "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
             'layout_content': "compact",
         })
-        search_query = self.request.GET.get('search', '')
 
-        if search_query:
-            posts = BlogPost.objects.filter(
-                Q(title__icontains=search_query) |
-                Q(content__icontains=search_query) |
-                Q(tags__name__icontains=search_query),
-            ).order_by('-published_at')
-        else:
-            posts = BlogPost.objects.filter(status='published').order_by('-published_at')
+        try:
+            search_query = self.request.GET.get('search', '')
 
-        paginator = Paginator(posts, 9)
-        page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context['page_obj'] = page_obj
-        context['search_query'] = search_query
+            if search_query:
+                posts = BlogPost.objects.filter(
+                    Q(title__icontains=search_query) |
+                    Q(content__icontains=search_query) |
+                    Q(tags__name__icontains=search_query),
+                ).order_by('-published_at')
+            else:
+                posts = BlogPost.objects.filter(status='published').order_by('-published_at')
+
+            paginator = Paginator(posts, 9)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
+            context['search_query'] = search_query
+        except Exception as e:
+            logger.error(f"[BlogPostView_List] Error listing the Blog Posts: {e}")
+            return context
 
         logger.info(f"Blog Posts were listed. User authenticated: {self.request.user.is_authenticated}")
         return context

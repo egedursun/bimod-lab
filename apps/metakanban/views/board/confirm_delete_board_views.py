@@ -44,7 +44,13 @@ class MetaKanbanView_BoardConfirmDelete(LoginRequiredMixin, TemplateView):
 
         board_id = self.kwargs.get("board_id")
         board = get_object_or_404(MetaKanbanBoard, id=board_id)
-        board_title = board.title
-        board.delete()
+
+        try:
+            board_title = board.title
+            board.delete()
+        except Exception as e:
+            messages.error(request, f'Error deleting kanban board: {e}')
+            return redirect('metakanban:board_list')
+
         messages.success(request, f'The kanban board "{board_title}" was deleted successfully.')
         return redirect("metakanban:board_list")

@@ -20,7 +20,6 @@
 
 from django.db import models
 
-from apps.mm_scheduled_jobs.models import ScheduledJob
 from apps.mm_scheduled_jobs.utils import SCHEDULED_JOB_INSTANCE_STATUSES
 
 

@@ -25,9 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_sql.forms import SQLDatabaseConnectionForm
 from apps.datasource_sql.utils import DBMS_CHOICES
+from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -36,11 +36,18 @@ class SQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        user_orgs = context_user.organizations.all()
-        agents = Assistant.objects.filter(organization__in=user_orgs)
-        context['dbms_choices'] = DBMS_CHOICES
-        context['form'] = SQLDatabaseConnectionForm()
-        context['assistants'] = agents
+
+        try:
+            user_orgs = Organization.objects.filter(users__in=[context_user])
+            agents = Assistant.objects.filter(organization__in=user_orgs)
+            context['dbms_choices'] = DBMS_CHOICES
+            context['form'] = SQLDatabaseConnectionForm()
+            context['assistants'] = agents
+        except Exception as e:
+            logger.error(f"User: {context_user} - SQL Data Source - Create Error: {e}")
+            messages.error(self.request, 'An error occurred while creating SQL Data Source.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):

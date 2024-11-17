@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -25,7 +26,6 @@ from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -44,18 +44,23 @@ class CodeBaseView_StorageList(LoginRequiredMixin, TemplateView):
         ##############################
 
         context_user = self.request.user
-        user_orgs = Organization.objects.filter(users__in=[context_user])
+        try:
+            user_orgs = Organization.objects.filter(users__in=[context_user])
 
-        conns_by_orgs = {}
-        for org in user_orgs:
-            agents = org.assistants.all()
-            agent_conns = {}
-            for agent in agents:
-                conns = CodeRepositoryStorageConnection.objects.filter(assistant=agent)
-                if conns.exists():
-                    agent_conns[agent] = conns
-            if agent_conns:
-                conns_by_orgs[org] = agent_conns
+            conns_by_orgs = {}
+            for org in user_orgs:
+                agents = org.assistants.all()
+                agent_conns = {}
+                for agent in agents:
+                    conns = CodeRepositoryStorageConnection.objects.filter(assistant=agent)
+                    if conns.exists():
+                        agent_conns[agent] = conns
+                if agent_conns:
+                    conns_by_orgs[org] = agent_conns
+        except Exception as e:
+            logger.error(f"User: {context_user} - Code Base Storage - List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing Code Base Storages.')
+            return context
 
         context['connections_by_organization'] = conns_by_orgs
         context['user'] = context_user

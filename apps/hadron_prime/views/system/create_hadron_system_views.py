@@ -27,7 +27,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -57,10 +56,16 @@ class HadronPrimeView_CreateHadronSystem(LoginRequiredMixin, TemplateView):
             messages.error(request, 'Please fill out all required fields.')
             return redirect('create_hadron_system')
 
-        organization = Organization.objects.get(id=organization_id)
-        hadron_system = HadronSystem.objects.create(
-            organization=organization, system_name=system_name, system_description=system_description,
-            created_by_user=request.user)
+        try:
+            organization = Organization.objects.get(id=organization_id)
+            hadron_system = HadronSystem.objects.create(
+                organization=organization, system_name=system_name, system_description=system_description,
+                created_by_user=request.user)
+        except Exception as e:
+            logger.error(f"Error creating Hadron System: {e}")
+            messages.error(request, f"Error creating Hadron System: {e}")
+            return redirect('create_hadron_system')
+
         logger.info(f'Hadron System "{hadron_system.system_name}" created.')
         messages.success(request, f'Hadron System "{hadron_system.system_name}" created successfully.')
         return redirect('hadron_prime:list_hadron_system')

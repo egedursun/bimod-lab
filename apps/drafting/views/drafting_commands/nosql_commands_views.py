@@ -48,8 +48,15 @@ class DraftingView_GenerateViaNoSQLCommand(LoginRequiredMixin, View):
                             folder_id=document.document_folder.id, document_id=document_id)
         ##############################
 
-        command = request.POST.get('command')
-        xc = DraftingExecutionManager(drafting_document=document)
-        response_json = xc.execute_nosql_command(command=command)
+        try:
+            command = request.POST.get('command')
+            xc = DraftingExecutionManager(drafting_document=document)
+            response_json = xc.execute_nosql_command(command=command)
+        except Exception as e:
+            logger.error(f"Error executing NoSQL Command for Drafting Document: {e}")
+            messages.error(self.request, 'An error occurred while executing NoSQL Command.')
+            return redirect('drafting:documents_detail',
+                            folder_id=document.document_folder.id, document_id=document_id)
+
         logger.info(f"NoSQL Command was executed for Drafting Document: {document.id}.")
         return JsonResponse(response_json)

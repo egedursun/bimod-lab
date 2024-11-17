@@ -48,7 +48,13 @@ class SliderView_GenerateViaAutoCommand(LoginRequiredMixin, View):
                             folder_id=document.document_folder.id, document_id=document_id)
         ##############################
 
-        xc = SliderExecutionManager(slider_document=document)
-        response_json = xc.execute_auto_command()
+        try:
+            xc = SliderExecutionManager(slider_document=document)
+            response_json = xc.execute_auto_command()
+        except Exception as e:
+            messages.error(request, f"An error occurred while executing the Auto Command: {str(e)}")
+            return redirect('slider:documents_detail',
+                            folder_id=document.document_folder.id, document_id=document_id)
+
         logger.info(f"Auto Command was executed for Slider Document: {document.id}.")
         return JsonResponse(response_json)

@@ -46,8 +46,14 @@ class SheetosView_SaveContent(LoginRequiredMixin, View):
         document_id = self.kwargs['document_id']
         document = get_object_or_404(SheetosDocument, id=document_id)
         document_content = request.POST.get('draft_text')
-        if document_content:
-            document.document_content_json_quill = document_content
-            document.save()
+
+        try:
+            if document_content:
+                document.document_content_json_quill = document_content
+                document.save()
+        except Exception as e:
+            messages.error(request, f"An error occurred while saving the Sheetos Document: {str(e)}")
+            return redirect('sheetos:documents_detail', folder_id=folder_id, document_id=document_id)
+
         logger.info(f"Sheetos Document {document.document_title} was updated.")
         return redirect('sheetos:documents_detail', folder_id=folder_id, document_id=document_id)

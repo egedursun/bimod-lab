@@ -37,9 +37,14 @@ class BinexusView_ProcessDetail(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        process_id = self.kwargs.get('pk')
-        binexus_process = get_object_or_404(BinexusProcess, id=process_id)
-        elite_agents = BinexusEliteAgent.objects.filter(binexus_process=binexus_process)
-        context['binexus_process'] = binexus_process
-        context['elite_agents'] = elite_agents
+        try:
+            process_id = self.kwargs.get('pk')
+            binexus_process = get_object_or_404(BinexusProcess, id=process_id)
+            elite_agents = BinexusEliteAgent.objects.filter(binexus_process=binexus_process)
+            context['binexus_process'] = binexus_process
+            context['elite_agents'] = elite_agents
+        except Exception as e:
+            messages.error(self.request, "Error listing the Binexus Process.")
+            return context
+
         return context

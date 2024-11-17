@@ -29,7 +29,6 @@ from apps.datasource_nosql.utils import NOSQL_DATABASE_CHOICES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -37,13 +36,20 @@ class NoSQLDatabaseView_ManagerUpdate(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        conn = NoSQLDatabaseConnection.objects.get(id=kwargs['pk'])
-        user_orgs = context_user.organizations.all()
-        agents = Assistant.objects.filter(organization__in=user_orgs)
-        context['dbms_choices'] = NOSQL_DATABASE_CHOICES
-        context['form'] = NoSQLDatabaseConnectionForm(instance=conn)
-        context['assistants'] = agents
-        context['connection'] = conn
+
+        try:
+            conn = NoSQLDatabaseConnection.objects.get(id=kwargs['pk'])
+            user_orgs = context_user.organizations.all()
+            agents = Assistant.objects.filter(organization__in=user_orgs)
+            context['dbms_choices'] = NOSQL_DATABASE_CHOICES
+            context['form'] = NoSQLDatabaseConnectionForm(instance=conn)
+            context['assistants'] = agents
+            context['connection'] = conn
+        except Exception as e:
+            logger.error(f"User: {context_user} - NoSQL Data Source - Update Error: {e}")
+            messages.error(self.request, 'An error occurred while updating NoSQL Data Source.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):

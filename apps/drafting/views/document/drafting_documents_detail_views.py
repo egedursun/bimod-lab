@@ -41,12 +41,18 @@ class DraftingView_DocumentDetail(TemplateView, LoginRequiredMixin):
             return context
         ##############################
 
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        document_id = self.kwargs.get('document_id')
-        document = DraftingDocument.objects.get(id=document_id)
-        context['document'] = document
-        context['folder'] = document.document_folder
-        content = document.document_content_json_quill
+        try:
+            user_orgs = Organization.objects.filter(users__in=[self.request.user])
+            document_id = self.kwargs.get('document_id')
+            document = DraftingDocument.objects.get(id=document_id)
+            context['document'] = document
+            context['folder'] = document.document_folder
+            content = document.document_content_json_quill
+        except Exception as e:
+            logger.error(f"Error getting Drafting Document: {e}")
+            messages.error(self.request, 'An error occurred while getting Drafting Document.')
+            return context
+
         context['content'] = content
         logger.info(f"Drafting Document {document.document_title} was viewed.")
         return context

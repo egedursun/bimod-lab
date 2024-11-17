@@ -26,7 +26,6 @@ from apps.starred_messages.models import StarredMessage
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -53,10 +52,16 @@ class StarredMessageView_Delete(LoginRequiredMixin, DeleteView):
             return redirect('starred_messages:list')
         ##############################
 
-        starred_message.delete()
-        success_message = "Starred message deleted successfully."
-        starred_message.chat_message.starred = False
-        starred_message.chat_message.save()
+        try:
+            starred_message.delete()
+            success_message = "Starred message deleted successfully."
+            starred_message.chat_message.starred = False
+            starred_message.chat_message.save()
+        except Exception as e:
+            logger.error(f"An error occurred while deleting the starred message: {str(e)}")
+            messages.error(request, f"An error occurred while deleting the starred message: {str(e)}")
+            return redirect('starred_messages:list')
+
         messages.success(request, success_message)
         logger.info(f"Starred message was deleted by User: {context_user.id}.")
         return redirect(self.success_url)

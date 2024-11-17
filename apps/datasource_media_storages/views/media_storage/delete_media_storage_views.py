@@ -26,7 +26,6 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -35,9 +34,16 @@ class MediaView_ManagerDelete(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        media_manager = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
-        context['user'] = context_user
-        context['media_storage'] = media_manager
+
+        try:
+            media_manager = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
+            context['user'] = context_user
+            context['media_storage'] = media_manager
+        except Exception as e:
+            logger.error(f"User: {context_user} - Media Storage - Delete Error: {e}")
+            messages.error(self.request, 'An error occurred while deleting media storage.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -50,7 +56,14 @@ class MediaView_ManagerDelete(LoginRequiredMixin, TemplateView):
         ##############################
 
         media_manager = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
-        media_manager.delete()
+
+        try:
+            media_manager.delete()
+        except Exception as e:
+            logger.error(f"Error while deleting media storage: {e}")
+            messages.error(request, 'An error occurred while deleting media storage.')
+            return redirect('datasource_media_storages:list')
+
         logger.info(f"Media Storage Connection deleted: {media_manager}")
         messages.success(request, 'Media Storage Connection deleted successfully.')
         return redirect('datasource_media_storages:list')

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +26,8 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.formica.models import FormicaGoogleAppsConnection
 from apps.formica.utils import generate_google_apps_connection_api_key
 from apps.user_permissions.utils import PermissionNames
+
+logger = logging.getLogger(__name__)
 
 
 class FormicaView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
@@ -46,16 +49,21 @@ class FormicaView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
             messages.error(request, "Assistant field is required.")
             return redirect('formica:google_apps_connections_list')
 
-        assistant = get_object_or_404(Assistant, id=assistant_id)
+        try:
+            assistant = get_object_or_404(Assistant, id=assistant_id)
+            connection, created = FormicaGoogleAppsConnection.objects.get_or_create(
+                owner_user=request.user, formica_assistant=assistant,
+                defaults={'connection_api_key': generate_google_apps_connection_api_key()}
+            )
 
-        connection, created = FormicaGoogleAppsConnection.objects.get_or_create(
-            owner_user=request.user, formica_assistant=assistant,
-            defaults={'connection_api_key': generate_google_apps_connection_api_key()}
-        )
+            if not created:
+                messages.warning(request, "A connection for this model already exists. Please renew if necessary.")
+            else:
+                messages.success(request, "Connection successfully created.")
+        except Exception as e:
+            logger.error(f"Error creating Google Apps Connection: {e}")
+            messages.error(request, "Error creating Google Apps Connection.")
+            return redirect('formica:google_apps_connections_list')
 
-        if not created:
-            messages.warning(request, "A connection for this model already exists. Please renew if necessary.")
-        else:
-            messages.success(request, "Connection successfully created.")
-
+        logger.info(f"Google Apps Connection was created by User: {request.user.id}.")
         return redirect('formica:google_apps_connections_list')

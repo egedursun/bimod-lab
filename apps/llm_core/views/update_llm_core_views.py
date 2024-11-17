@@ -30,7 +30,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -65,19 +64,25 @@ class LLMView_Update(TemplateView, LoginRequiredMixin):
         llm_core = LLMCore.objects.get(id=kwargs['pk'])
         prev_org = llm_core.organization
         form = LLMCoreForm(request.POST, request.FILES, instance=llm_core)
-        if form.is_valid():
-            prev_org.llm_cores.remove(llm_core)
-            prev_org.save()
-            form.save()
-            org = Organization.objects.get(id=request.POST['organization'])
-            org.llm_cores.add(llm_core)
-            org.save()
-            logger.info(f"LLM Core updated: {llm_core.id}")
+
+        try:
+            if form.is_valid():
+                prev_org.llm_cores.remove(llm_core)
+                prev_org.save()
+                form.save()
+                org = Organization.objects.get(id=request.POST['organization'])
+                org.llm_cores.add(llm_core)
+                org.save()
+                logger.info(f"LLM Core updated: {llm_core.id}")
+                return redirect('llm_core:list')
+            else:
+                context = self.get_context_data(**kwargs)
+                context['form'] = form
+                error_msgs = form.errors
+                context['error_messages'] = error_msgs
+                logger.error(f"Error updating LLM Core: {error_msgs}")
+                return self.render_to_response(context)
+        except Exception as e:
+            logger.error(f"Error updating LLM Core: {e}")
+            messages.error(request, f"Error updating LLM Core: {e}")
             return redirect('llm_core:list')
-        else:
-            context = self.get_context_data(**kwargs)
-            context['form'] = form
-            error_msgs = form.errors
-            context['error_messages'] = error_msgs
-            logger.error(f"Error updating LLM Core: {error_msgs}")
-            return self.render_to_response(context)

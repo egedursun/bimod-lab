@@ -28,20 +28,25 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
 class MediaView_ItemCreate(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
-        user_agents = Assistant.objects.filter(organization__users__in=[request.user])
-        media_managers = DataSourceMediaStorageConnection.objects.filter(assistant__in=user_agents)
-        orgs = Organization.objects.filter(users__in=[request.user])
-
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['organizations'] = list(orgs.values('id', 'name'))
-        context['assistants'] = list(user_agents.values('id', 'name', 'organization_id'))
-        context['media_storages'] = list(media_managers.values('id', 'name', 'assistant_id'))
+
+        try:
+            user_agents = Assistant.objects.filter(organization__users__in=[request.user])
+            media_managers = DataSourceMediaStorageConnection.objects.filter(assistant__in=user_agents)
+            orgs = Organization.objects.filter(users__in=[request.user])
+            context['organizations'] = list(orgs.values('id', 'name'))
+            context['assistants'] = list(user_agents.values('id', 'name', 'organization_id'))
+            context['media_storages'] = list(media_managers.values('id', 'name', 'assistant_id'))
+        except Exception as e:
+            logger.error(f"User: {request.user} - Media Item - Create Error: {e}")
+            messages.error(request, 'An error occurred while creating media item.')
+            return self.render_to_response(context)
+
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
@@ -80,4 +85,5 @@ class MediaView_ItemCreate(LoginRequiredMixin, TemplateView):
         else:
             logger.error('Please select a media storage and upload files.')
             messages.error(request, 'Please select a media storage and upload files.')
+
         return redirect('datasource_media_storages:create_item')

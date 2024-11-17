@@ -26,7 +26,6 @@ from apps.leanmod.models import ExpertNetwork
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -50,7 +49,14 @@ class ExpertNetworkView_Delete(LoginRequiredMixin, TemplateView):
 
         nw_id = kwargs.get('pk')
         nw = get_object_or_404(ExpertNetwork, id=nw_id)
-        nw.delete()
+
+        try:
+            nw.delete()
+        except Exception as e:
+            logger.error(f"An error occurred while deleting Expert Network {nw.name}. Error: {str(e)}")
+            messages.error(request, f"An error occurred while deleting Expert Network {nw.name}. Error: {str(e)}")
+            return redirect('leanmod:list_expert_networks')
+
         logger.info(f"Expert Network {nw.name} was deleted by User: {self.request.user.id}.")
         messages.success(request, f'The expert network "{nw.name}" has been deleted successfully.')
         return redirect('leanmod:list_expert_networks')

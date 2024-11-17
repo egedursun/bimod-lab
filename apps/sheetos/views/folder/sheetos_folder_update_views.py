@@ -51,13 +51,19 @@ class SheetosView_FolderUpdate(LoginRequiredMixin, TemplateView):
         ##############################
 
         folder_id = self.kwargs['folder_id']
-        folder = get_object_or_404(SheetosFolder, id=folder_id)
-        folder.name = request.POST.get('name')
-        folder.description = request.POST.get('description', '')
-        folder.meta_context_instructions = request.POST.get('meta_context_instructions', '')
-        organization_id = request.POST.get('organization')
-        if organization_id:
-            folder.organization_id = organization_id
-        folder.save()
+
+        try:
+            folder = get_object_or_404(SheetosFolder, id=folder_id)
+            folder.name = request.POST.get('name')
+            folder.description = request.POST.get('description', '')
+            folder.meta_context_instructions = request.POST.get('meta_context_instructions', '')
+            organization_id = request.POST.get('organization')
+            if organization_id:
+                folder.organization_id = organization_id
+            folder.save()
+        except Exception as e:
+            messages.error(request, f"An error occurred while updating the Sheetos Folder: {str(e)}")
+            return redirect('sheetos:folders_list')
+
         logger.info(f"Sheetos Folder was updated by User: {request.user.id}.")
         return redirect('sheetos:folders_list')

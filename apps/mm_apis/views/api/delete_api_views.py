@@ -26,7 +26,6 @@ from apps.mm_apis.models import CustomAPI
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,7 +50,13 @@ class CustomAPIView_Delete(LoginRequiredMixin, TemplateView):
 
         custom_api_id = self.kwargs.get('pk')
         custom_api = CustomAPI.objects.get(id=custom_api_id)
-        custom_api.delete()
+
+        try:
+            custom_api.delete()
+        except Exception as e:
+            messages.error(request, "An error occurred while deleting the custom API: " + str(e))
+            return redirect("mm_apis:list")
+
         logger.info(f"Custom API was deleted by User: {self.request.user.id}.")
         messages.success(request, "Custom API deleted successfully.")
         return redirect('mm_apis:list')

@@ -20,9 +20,7 @@ import logging
 from django.db import models
 
 from apps.assistants.utils import AGENT_SPEECH_LANGUAGES
-from apps.voidforger.models import VoidForgerActionMemoryLog, VoidForgerToggleAutoExecutionLog
-from apps.voidforger.utils import VOIDFORGER_RUNTIME_STATUSES, VoidForgerRuntimeStatusesNames, \
-    VoidForgerToggleAutoExecutionActionTypesNames
+from apps.voidforger.utils import VOIDFORGER_RUNTIME_STATUSES, VoidForgerRuntimeStatusesNames
 
 logger = logging.getLogger(__name__)
 

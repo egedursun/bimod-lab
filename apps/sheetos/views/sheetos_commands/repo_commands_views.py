@@ -49,8 +49,14 @@ class SheetosView_GenerateViaRepoCommand(LoginRequiredMixin, View):
                             folder_id=document.document_folder.id, document_id=document_id)
         ##############################
 
-        command = request.POST.get('command')
-        xc = SheetosExecutionManager(sheetos_document=document)
-        response_json = xc.execute_repo_command(command=command)
+        try:
+            command = request.POST.get('command')
+            xc = SheetosExecutionManager(sheetos_document=document)
+            response_json = xc.execute_repo_command(command=command)
+        except Exception as e:
+            messages.error(request, f"An error occurred while executing the Repo Command: {str(e)}")
+            return redirect('sheetos:documents_detail',
+                            folder_id=document.document_folder.id, document_id=document_id)
+
         logger.info(f"Repo Command was executed for Sheetos Document: {document.id}.")
         return JsonResponse(response_json)

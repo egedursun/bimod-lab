@@ -51,56 +51,61 @@ class BinexusView_ProcessCreate(LoginRequiredMixin, TemplateView):
             return redirect('binexus:process_list')
         ##############################
 
-        organization = request.POST.get('organization')
-        llm_model = request.POST.get('llm_model')
-        process_name = request.POST.get('process_name')
-        process_description = request.POST.get('process_description')
-        process_objective = request.POST.get('process_objective')
-        process_success_criteria = request.POST.get('process_success_criteria')
-        fitness_manager_selectiveness = request.POST.get('fitness_manager_selectiveness')
+        try:
+            organization = request.POST.get('organization')
+            llm_model = request.POST.get('llm_model')
+            process_name = request.POST.get('process_name')
+            process_description = request.POST.get('process_description')
+            process_objective = request.POST.get('process_objective')
+            process_success_criteria = request.POST.get('process_success_criteria')
+            fitness_manager_selectiveness = request.POST.get('fitness_manager_selectiveness')
 
-        gene_names = request.POST.getlist('additional_genes_keys[]')
-        gene_values = request.POST.getlist('additional_genes_values[]')
+            gene_names = request.POST.getlist('additional_genes_keys[]')
+            gene_values = request.POST.getlist('additional_genes_values[]')
 
-        genes_data = {}
-        for i in range(len(gene_names)):
-            try:
-                gene_name = gene_names[i].strip()
-                raw_values = gene_values[i].strip()
-                values_list = [v.strip() for v in raw_values.split(',') if v.strip()]
-                if gene_name and values_list:
-                    genes_data[gene_name] = values_list
-            except Exception as e:
-                logger.error(f"Error parsing gene data: {e}")
-                continue
+            genes_data = {}
+            for i in range(len(gene_names)):
+                try:
+                    gene_name = gene_names[i].strip()
+                    raw_values = gene_values[i].strip()
+                    values_list = [v.strip() for v in raw_values.split(',') if v.strip()]
+                    if gene_name and values_list:
+                        genes_data[gene_name] = values_list
+                except Exception as e:
+                    logger.error(f"Error parsing gene data: {e}")
+                    continue
 
-        optimization_generations = request.POST.get('optimization_generations')
-        optimization_population_size = request.POST.get('optimization_population_size')
-        optimization_breeding_pool_rate = request.POST.get('optimization_breeding_pool_rate')
-        optimization_mutation_rate_per_individual = request.POST.get('optimization_mutation_rate_per_individual')
-        optimization_mutation_rate_per_gene = request.POST.get('optimization_mutation_rate_per_gene')
-        optimization_crossover_rate = request.POST.get('optimization_crossover_rate')
-        self_breeding_possible = request.POST.get('self_breeding_possible') == 'on'
+            optimization_generations = request.POST.get('optimization_generations')
+            optimization_population_size = request.POST.get('optimization_population_size')
+            optimization_breeding_pool_rate = request.POST.get('optimization_breeding_pool_rate')
+            optimization_mutation_rate_per_individual = request.POST.get('optimization_mutation_rate_per_individual')
+            optimization_mutation_rate_per_gene = request.POST.get('optimization_mutation_rate_per_gene')
+            optimization_crossover_rate = request.POST.get('optimization_crossover_rate')
+            self_breeding_possible = request.POST.get('self_breeding_possible') == 'on'
 
-        binexus_process = BinexusProcess.objects.create(
-            organization_id=organization,
-            llm_model_id=llm_model,
-            process_name=process_name,
-            process_description=process_description,
-            process_objective=process_objective,
-            process_success_criteria=process_success_criteria,
-            fitness_manager_selectiveness=fitness_manager_selectiveness,
-            optimization_generations=optimization_generations,
-            optimization_population_size=optimization_population_size,
-            optimization_breeding_pool_rate=optimization_breeding_pool_rate,
-            optimization_mutation_rate_per_individual=optimization_mutation_rate_per_individual,
-            optimization_mutation_rate_per_gene=optimization_mutation_rate_per_gene,
-            optimization_crossover_rate=optimization_crossover_rate,
-            additional_genes=genes_data,
-            self_breeding_possible=self_breeding_possible,
-            created_by_user=request.user
-        )
-        binexus_process.save()
+            binexus_process = BinexusProcess.objects.create(
+                organization_id=organization,
+                llm_model_id=llm_model,
+                process_name=process_name,
+                process_description=process_description,
+                process_objective=process_objective,
+                process_success_criteria=process_success_criteria,
+                fitness_manager_selectiveness=fitness_manager_selectiveness,
+                optimization_generations=optimization_generations,
+                optimization_population_size=optimization_population_size,
+                optimization_breeding_pool_rate=optimization_breeding_pool_rate,
+                optimization_mutation_rate_per_individual=optimization_mutation_rate_per_individual,
+                optimization_mutation_rate_per_gene=optimization_mutation_rate_per_gene,
+                optimization_crossover_rate=optimization_crossover_rate,
+                additional_genes=genes_data,
+                self_breeding_possible=self_breeding_possible,
+                created_by_user=request.user
+            )
+            binexus_process.save()
+        except Exception as e:
+            logger.error(f"Error creating Binexus Process: {e}")
+            messages.error(request, "Error creating Binexus Process.")
+            return redirect('binexus:process_list')
 
         logger.info(f"Binexus Process created successfully.")
         return redirect('binexus:process_list')

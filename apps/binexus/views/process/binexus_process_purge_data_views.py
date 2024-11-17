@@ -64,7 +64,7 @@ class BinexusView_ProcessPurgeData(LoginRequiredMixin, View):
             logger.error(f"Error purging binexus process data: {e}")
             messages.error(request, f"Error purging binexus process data: {e}")
             return redirect('binexus:process_detail', pk=process_id)
+
         messages.success(request, "Binexus process data purged successfully.")
         logger.info(f"Binexus process data purged successfully.")
         return redirect('binexus:process_detail', pk=process_id)
-

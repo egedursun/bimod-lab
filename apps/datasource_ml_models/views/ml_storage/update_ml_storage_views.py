@@ -28,7 +28,6 @@ from apps.datasource_ml_models.models import DataSourceMLModelConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -36,12 +35,19 @@ class MLModelView_ManagerUpdate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        mgr = DataSourceMLModelConnection.objects.get(id=kwargs['pk'])
-        user_orgs = context_user.organizations.all()
-        agents = Assistant.objects.filter(organization__in=user_orgs)
-        context['form'] = DataSourceMLModelConnectionForm(instance=mgr)
-        context['assistants'] = agents
-        context['connection'] = mgr
+
+        try:
+            mgr = DataSourceMLModelConnection.objects.get(id=kwargs['pk'])
+            user_orgs = context_user.organizations.all()
+            agents = Assistant.objects.filter(organization__in=user_orgs)
+            context['form'] = DataSourceMLModelConnectionForm(instance=mgr)
+            context['assistants'] = agents
+            context['connection'] = mgr
+        except Exception as e:
+            logger.error(f"User: {context_user} - ML Model Connection - Update Error: {e}")
+            messages.error(self.request, 'An error occurred while updating ML Model Connection.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):

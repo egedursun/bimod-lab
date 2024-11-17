@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import re
 
@@ -32,7 +33,6 @@ from apps.datasource_media_storages.utils import MediaManagerItemFormatTypesName
     AI_GENERATED_DESCRIPTION_SPECIFIER
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -89,16 +89,22 @@ class MediaView_ItemAIDescription(LoginRequiredMixin, TemplateView):
             return redirect('datasource_media_storages:list_items')
         ##############################
 
-        item_id = kwargs.get('pk')
-        media_item = DataSourceMediaStorageItem.objects.get(id=item_id)
-        xc_type = self.decode_media_item_type(media_item.media_file_type)
-        txts, _, _ = run_query_media_manager(chat_id=None, c_id=media_item.storage_base.id,
-                                             manager_file_type=xc_type, f_uris=[media_item.full_file_path],
-                                             manager_query=(FILE_GENERATION_INSTRUCTION_QUERY + f"""
-                                                    File Format Information:
-                                                    - Extension/Type: {media_item.media_file_type}
-                                               """),
-                                             no_chat=True)
+        try:
+            item_id = kwargs.get('pk')
+            media_item = DataSourceMediaStorageItem.objects.get(id=item_id)
+            xc_type = self.decode_media_item_type(media_item.media_file_type)
+            txts, _, _ = run_query_media_manager(chat_id=None, c_id=media_item.storage_base.id,
+                                                 manager_file_type=xc_type, f_uris=[media_item.full_file_path],
+                                                 manager_query=(FILE_GENERATION_INSTRUCTION_QUERY + f"""
+                                                        File Format Information:
+                                                        - Extension/Type: {media_item.media_file_type}
+                                                   """),
+                                                 no_chat=True)
+        except Exception as e:
+            logger.error(f"User: {request.user} - Media Item - Update Error: {e}")
+            messages.error(request, 'An error occurred while updating the media item.')
+            return redirect('datasource_media_storages:list_items')
+
         kwargs['pk'] = item_id
         if xc_type == AnalysisToolCallExecutionTypesNames.IMAGE_INTERPRETATION:
             gen_desc = txts

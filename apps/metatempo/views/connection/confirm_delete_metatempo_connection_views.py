@@ -45,6 +45,12 @@ class MetaTempoView_ConnectionConfirmDelete(LoginRequiredMixin, TemplateView):
 
         connection_id = kwargs['connection_id']
         connection = get_object_or_404(MetaTempoConnection, id=connection_id)
-        connection.delete()
+
+        try:
+            connection.delete()
+        except Exception as e:
+            messages.error(request, "An error occurred while deleting the connection: " + str(e))
+            return redirect("metatempo:connection_list")
+
         messages.success(request, "MetaTempo Connection deleted successfully.")
         return redirect("metatempo:connection_list")

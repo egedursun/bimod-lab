@@ -37,7 +37,14 @@ class SmartContractView_ContractSoftDelete(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         contract_id = self.kwargs.get('pk')
         contract = get_object_or_404(BlockchainSmartContract, id=contract_id)
-        contract.delete()
+
+        try:
+            contract.delete()
+        except Exception as e:
+            logger.error(f"An error occurred while soft-deleting the smart contract: {str(e)}")
+            messages.error(request, f"An error occurred while soft-deleting the smart contract: {str(e)}")
+            return redirect('smart_contracts:contract_detail', pk=contract_id)
+        
         logger.info(f"Smart contract {contract_id} soft-deleted.")
         messages.success(request, f'Smart contract "{contract}" has been successfully deleted.')
         return redirect('smart_contracts:contract_list')

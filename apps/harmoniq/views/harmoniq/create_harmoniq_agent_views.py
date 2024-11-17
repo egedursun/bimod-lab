@@ -30,7 +30,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -61,20 +60,26 @@ class HarmoniqView_Create(LoginRequiredMixin, TemplateView):
         harmoniq_deity = request.POST.get('harmoniq_deity')
         optional_instructions = request.POST.get('optional_instructions')
         nw_ids = request.POST.getlist('expert_networks')
-        if org and llm_model and name and desc and harmoniq_deity:
-            harmoniq_agent = Harmoniq.objects.create(
-                organization_id=org, llm_model_id=llm_model, name=name, description=desc,
-                harmoniq_deity=harmoniq_deity, optional_instructions=optional_instructions,
-                created_by_user=request.user)
-            if nw_ids:
-                for nw_id in nw_ids:
-                    nw = ExpertNetwork.objects.get(id=nw_id)
-                    harmoniq_agent.consultant_expert_networks.add(nw)
-            harmoniq_agent.save()
-            logger.info(f"Harmoniq Agent was created by User: {request.user.id}.")
-            messages.success(request, "Harmoniq Agent created successfully.")
-            return redirect('harmoniq:list')
-        else:
-            logger.error(f"Harmoniq Agent was not created by User: {request.user.id}.")
-            messages.error(request, "All required fields must be filled.")
+
+        try:
+            if org and llm_model and name and desc and harmoniq_deity:
+                harmoniq_agent = Harmoniq.objects.create(
+                    organization_id=org, llm_model_id=llm_model, name=name, description=desc,
+                    harmoniq_deity=harmoniq_deity, optional_instructions=optional_instructions,
+                    created_by_user=request.user)
+                if nw_ids:
+                    for nw_id in nw_ids:
+                        nw = ExpertNetwork.objects.get(id=nw_id)
+                        harmoniq_agent.consultant_expert_networks.add(nw)
+                harmoniq_agent.save()
+                logger.info(f"Harmoniq Agent was created by User: {request.user.id}.")
+                messages.success(request, "Harmoniq Agent created successfully.")
+                return redirect('harmoniq:list')
+            else:
+                logger.error(f"Harmoniq Agent was not created by User: {request.user.id}.")
+                messages.error(request, "All required fields must be filled.")
+                return self.get(request, *args, **kwargs)
+        except Exception as e:
+            logger.error(f"Error creating Harmoniq Agent: {e}")
+            messages.error(request, f"Error creating Harmoniq Agent: {e}")
             return self.get(request, *args, **kwargs)

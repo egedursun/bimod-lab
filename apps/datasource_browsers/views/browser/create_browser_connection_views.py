@@ -31,7 +31,6 @@ from apps.datasource_browsers.utils import BROWSER_TYPES
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -39,10 +38,17 @@ class BrowserView_BrowserCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        orgs = context_user.organizations.filter(users__in=[context_user])
-        context['assistants'] = Assistant.objects.filter(organization__in=orgs)
-        context['browser_types'] = BROWSER_TYPES
-        context['user'] = context_user
+
+        try:
+            orgs = context_user.organizations.filter(users__in=[context_user])
+            context['assistants'] = Assistant.objects.filter(organization__in=orgs)
+            context['browser_types'] = BROWSER_TYPES
+            context['user'] = context_user
+        except Exception as e:
+            logger.error(f"User: {context_user} - Data Source Browser Connection - Create Error: {e}")
+            messages.error(self.request, 'An error occurred while creating Data Source Browser Connection.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):

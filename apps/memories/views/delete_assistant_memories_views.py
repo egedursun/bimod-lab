@@ -26,7 +26,6 @@ from apps.memories.models import AssistantMemory
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,7 +50,13 @@ class AssistantMemoryView_Delete(LoginRequiredMixin, DeleteView):
         ##############################
 
         memory = get_object_or_404(AssistantMemory, id=self.kwargs['pk'])
-        memory.delete()
+
+        try:
+            memory.delete()
+        except Exception as e:
+            logger.error(f"Error deleting Assistant Memory: {e}")
+            return redirect(self.success_url)
+
         success_message = "Memory deleted successfully!"
         messages.success(request, success_message)
         logger.info(f"Assistant Memory was deleted by User: {self.request.user.id}.")

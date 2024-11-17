@@ -28,7 +28,6 @@ from apps.user_permissions.models import UserPermission
 from apps.user_permissions.utils import PERMISSION_TYPES, PermissionNames, get_permissions_grouped
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 

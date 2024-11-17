@@ -29,7 +29,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -37,10 +36,17 @@ class MediaView_ManagerCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        user_orgs = Organization.objects.filter(users__in=[context_user])
-        context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
-        context['media_categories'] = MEDIA_MANAGER_ITEM_TYPES
-        context['user'] = context_user
+
+        try:
+            user_orgs = Organization.objects.filter(users__in=[context_user])
+            context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+            context['media_categories'] = MEDIA_MANAGER_ITEM_TYPES
+            context['user'] = context_user
+        except Exception as e:
+            logger.error(f"User: {context_user} - Media Storage - Create Error: {e}")
+            messages.error(self.request, 'An error occurred while creating media storage.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):

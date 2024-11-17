@@ -25,7 +25,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_sql.models import CustomSQLQuery
 from apps.user_permissions.utils import PermissionNames
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -45,8 +44,14 @@ class SQLDatabaseView_QueryDelete(LoginRequiredMixin, DeleteView):
             return redirect('datasource_sql:list_queries')
         ##############################
 
-        self.object = self.get_object()
-        self.object.delete()
+        try:
+            self.object = self.get_object()
+            self.object.delete()
+        except Exception as e:
+            logger.error(f"Error deleting SQL Query: {e}")
+            messages.error(self.request, 'An error occurred while deleting SQL Query.')
+            return redirect(self.success_url)
+
         logger.info(f"SQL Query {self.object.name} was deleted.")
         messages.success(request, f'SQL Query {self.object.name} was deleted successfully.')
         return redirect(self.success_url)

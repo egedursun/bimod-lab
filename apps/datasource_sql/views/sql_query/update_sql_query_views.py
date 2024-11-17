@@ -25,9 +25,9 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.assistants.models import Assistant
 from apps.datasource_sql.forms import CustomSQLQueryForm
 from apps.datasource_sql.models import CustomSQLQuery, SQLDatabaseConnection
+from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -36,12 +36,20 @@ class SQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        query = get_object_or_404(CustomSQLQuery, id=kwargs['pk'])
-        user_orgs = context_user.organizations.all()
-        db_c = SQLDatabaseConnection.objects.filter(assistant__in=Assistant.objects.filter(organization__in=user_orgs))
-        context['database_connections'] = db_c
-        context['form'] = CustomSQLQueryForm(instance=query)
-        context['query'] = query
+
+        try:
+            query = get_object_or_404(CustomSQLQuery, id=kwargs['pk'])
+            user_orgs = Organization.objects.filter(users__in=[context_user])
+            db_c = SQLDatabaseConnection.objects.filter(
+                assistant__in=Assistant.objects.filter(organization__in=user_orgs))
+            context['database_connections'] = db_c
+            context['form'] = CustomSQLQueryForm(instance=query)
+            context['query'] = query
+        except Exception as e:
+            logger.error(f"User: {context_user} - SQL Query - Update Error: {e}")
+            messages.error(self.request, 'An error occurred while updating SQL Query.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):

@@ -14,21 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#  Project: Bimod.io™
-#  File: google_apps_connection_list_views.py
-#  Last Modified: 2024-11-02 12:48:10
-#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-11-02 12:48:10
-#
-#  This software is proprietary and confidential. Unauthorized copying,
-#  distribution, modification, or use of this software, whether for
-#  commercial, academic, or any other purpose, is strictly prohibited
-#  without the prior express written permission of BMD™ Autonomous
-#  Holdings.
-#
-#   For permission inquiries, please contact: admin@Bimod.io.
-#
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
@@ -53,7 +39,12 @@ class FormicaView_GoogleAppsConnectionList(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        context['connections'] = FormicaGoogleAppsConnection.objects.filter(owner_user=self.request.user)
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+        try:
+            context['connections'] = FormicaGoogleAppsConnection.objects.filter(owner_user=self.request.user)
+            user_orgs = Organization.objects.filter(users__in=[self.request.user])
+            context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+        except Exception as e:
+            messages.error(self.request, "Error listing Formica Google Apps Connections.")
+            return context
+
         return context

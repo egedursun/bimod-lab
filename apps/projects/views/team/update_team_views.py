@@ -57,15 +57,19 @@ class ProjectsView_TeamUpdate(LoginRequiredMixin, TemplateView):
             messages.error(request, "Team name, project, and team lead are required fields.")
             return redirect("projects:team_update", pk=team_id)
 
-        project = ProjectItem.objects.get(id=project_id)
-        team_lead = User.objects.get(id=team_lead_id)
-        team.team_name = team_name
-        team.project = project
-        team.team_description = description
-        team.team_lead = team_lead
-        team.save()
+        try:
+            project = ProjectItem.objects.get(id=project_id)
+            team_lead = User.objects.get(id=team_lead_id)
+            team.team_name = team_name
+            team.project = project
+            team.team_description = description
+            team.team_lead = team_lead
+            team.save()
+            team.team_members.set(User.objects.filter(id__in=members))
+        except Exception as e:
+            messages.error(request, f"An error occurred while updating the Team: {str(e)}")
+            return redirect("projects:team_list")
 
-        team.team_members.set(User.objects.filter(id__in=members))
         messages.success(request, f"Team '{team_name}' has been updated successfully.")
         logger.info(f"Team updated: {team.id}")
         return redirect("projects:team_list")

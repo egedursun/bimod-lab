@@ -28,7 +28,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -44,18 +43,24 @@ class MediaView_ManagerList(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        orgs = Organization.objects.filter(users__in=[self.request.user])
-        data = []
-        for org in orgs:
-            agents = Assistant.objects.filter(organization=org)
-            agent_data_list = []
-            for agent in agents:
-                media_managers = DataSourceMediaStorageConnection.objects.filter(assistant=agent)
-                manager_data_list = []
-                for media_manager in media_managers:
-                    manager_data_list.append({'storage': media_manager})
-                agent_data_list.append({'assistant': agent, 'media_storages': manager_data_list})
-            data.append({'organization': org, 'assistants': agent_data_list})
+        try:
+            orgs = Organization.objects.filter(users__in=[self.request.user])
+            data = []
+            for org in orgs:
+                agents = Assistant.objects.filter(organization=org)
+                agent_data_list = []
+                for agent in agents:
+                    media_managers = DataSourceMediaStorageConnection.objects.filter(assistant=agent)
+                    manager_data_list = []
+                    for media_manager in media_managers:
+                        manager_data_list.append({'storage': media_manager})
+                    agent_data_list.append({'assistant': agent, 'media_storages': manager_data_list})
+                data.append({'organization': org, 'assistants': agent_data_list})
+        except Exception as e:
+            logger.error(f"User: {self.request.user} - Media Storage - List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing media storages.')
+            return context
+
         context['data'] = data
         logger.info(f"Media Storages were listed.")
         return context
@@ -71,8 +76,15 @@ class MediaView_ManagerList(LoginRequiredMixin, TemplateView):
         ##############################
 
         mm_ids = request.POST.getlist('selected_storages')
-        if mm_ids:
-            DataSourceMediaStorageConnection.objects.filter(id__in=mm_ids).delete()
-            logger.info(f"Media Storages were deleted.")
-            messages.success(request, 'Selected storage connections deleted successfully.')
+
+        try:
+            if mm_ids:
+                DataSourceMediaStorageConnection.objects.filter(id__in=mm_ids).delete()
+                logger.info(f"Media Storages were deleted.")
+        except Exception as e:
+            logger.error(f"Error while deleting media storages: {e}")
+            messages.error(request, 'An error occurred while deleting media storages.')
+            return redirect('datasource_media_storages:list')
+
+        messages.success(request, 'Selected storage connections deleted successfully.')
         return redirect('datasource_media_storages:list')

@@ -26,7 +26,6 @@ from apps.mm_scripts.models import CustomScript
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -50,7 +49,13 @@ class CustomScriptView_Delete(LoginRequiredMixin, TemplateView):
 
         custom_script_id = self.kwargs.get('pk')
         custom_script = CustomScript.objects.get(id=custom_script_id)
-        custom_script.delete()
+
+        try:
+            custom_script.delete()
+        except Exception as e:
+            messages.error(request, "An error occurred while deleting the custom script: " + str(e))
+            return redirect("mm_scripts:list")
+
         logger.info(f"Custom Script was deleted by User: {self.request.user.id}.")
         messages.success(request, "Custom Script deleted successfully.")
         return redirect('mm_scripts:list')

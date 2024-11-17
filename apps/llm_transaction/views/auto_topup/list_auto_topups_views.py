@@ -23,7 +23,6 @@ from django.views.generic import TemplateView
 from apps.organization.models import Organization
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -36,9 +35,15 @@ class Transactions_AutoTopUpList(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         organization_id = request.POST.get('organization_id')
         organization = Organization.objects.get(id=organization_id)
-        if 'delete' in request.POST:
-            organization.auto_balance_topup.delete()
-            organization.auto_balance_topup = None
-            organization.save()
+
+        try:
+            if 'delete' in request.POST:
+                organization.auto_balance_topup.delete()
+                organization.auto_balance_topup = None
+                organization.save()
+        except Exception as e:
+            logger.error(f"Error deleting Auto Top Up: {e}")
+            return redirect('llm_transaction:auto_top_up_list')
+
         logger.info(f"Auto Top Up was deleted by User: {self.request.user.id}.")
         return redirect('llm_transaction:auto_top_up_list')

@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+
 import logging
 
 from django.contrib import messages
@@ -28,7 +26,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.data_security.models import NERIntegration
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +47,13 @@ class NERView_IntegrationDelete(LoginRequiredMixin, TemplateView):
         ##############################
 
         ner_integration = get_object_or_404(NERIntegration, id=self.kwargs['pk'])
-        ner_integration.delete()
+        try:
+            ner_integration.delete()
+        except Exception as e:
+            logger.error(f"User: {request.user} - NER Integration: {ner_integration.name} - Delete Error: {e}")
+            messages.error(request, 'An error occurred while deleting the NER Policy.')
+            return redirect('data_security:list_ner_integrations')
+
         logger.info(f"User: {request.user} - NER Integration: {ner_integration.name} - Deleted.")
         messages.success(request, 'NER Policy has been deleted successfully.')
         return redirect('data_security:list_ner_integrations')

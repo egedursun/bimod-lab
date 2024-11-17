@@ -26,7 +26,6 @@ from apps.orchestrations.models import Maestro
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -48,7 +47,13 @@ class OrchestrationView_Delete(LoginRequiredMixin, TemplateView):
 
         orchestration = get_object_or_404(Maestro, pk=kwargs['pk'])
         orchestration_name = orchestration.name
-        orchestration.delete()
+
+        try:
+            orchestration.delete()
+        except Exception as e:
+            messages.error(request, f"An error occurred while deleting the Orchestration: {str(e)}")
+            return redirect("orchestrations:list")
+
         logger.info(f"Orchestration was deleted by User: {self.request.user.id}.")
         messages.success(request, f'Orchestration "{orchestration_name}" has been successfully deleted.')
         return redirect('orchestrations:list')

@@ -27,7 +27,6 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageItem
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -58,7 +57,14 @@ class MediaView_ItemDeleteAll(LoginRequiredMixin, TemplateView):
                 except Exception as e:
                     logger.error(f"Error while deleting media file: {e}")
                     pass
-        DataSourceMediaStorageItem.objects.filter(storage_base_id=mm_id).delete()
+
+        try:
+            DataSourceMediaStorageItem.objects.filter(storage_base_id=mm_id).delete()
+        except Exception as e:
+            logger.error(f"User: {request.user} - Media Item - Delete All Error: {e}")
+            messages.error(request, 'An error occurred while deleting all media files.')
+            return redirect('datasource_media_storages:list_items')
+
         logger.info(f"[views.delete_all_media_items] All media files deleted successfully.")
         messages.success(request, 'All media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')

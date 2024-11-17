@@ -30,7 +30,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -64,25 +63,31 @@ class HarmoniqView_Update(LoginRequiredMixin, TemplateView):
         harmoniq_deity = request.POST.get('harmoniq_deity')
         optional_instructions = request.POST.get('optional_instructions')
         nw_ids = request.POST.getlist('expert_networks')
-        if org and llm_model and name and desc and harmoniq_deity:
-            harmoniq_agent.organization_id = org
-            harmoniq_agent.llm_model_id = llm_model
-            harmoniq_agent.name = name
-            harmoniq_agent.description = desc
-            harmoniq_agent.harmoniq_deity = harmoniq_deity
-            harmoniq_agent.optional_instructions = optional_instructions
 
-            harmoniq_agent.consultant_expert_networks.clear()
-            if nw_ids:
-                for expert_network_id in nw_ids:
-                    expert_network = ExpertNetwork.objects.get(id=expert_network_id)
-                    harmoniq_agent.consultant_expert_networks.add(expert_network)
+        try:
+            if org and llm_model and name and desc and harmoniq_deity:
+                harmoniq_agent.organization_id = org
+                harmoniq_agent.llm_model_id = llm_model
+                harmoniq_agent.name = name
+                harmoniq_agent.description = desc
+                harmoniq_agent.harmoniq_deity = harmoniq_deity
+                harmoniq_agent.optional_instructions = optional_instructions
 
-            harmoniq_agent.save()
-            logger.info(f"Harmoniq Agent was updated by User: {request.user.id}.")
-            messages.success(request, "Harmoniq Agent updated successfully.")
+                harmoniq_agent.consultant_expert_networks.clear()
+                if nw_ids:
+                    for expert_network_id in nw_ids:
+                        expert_network = ExpertNetwork.objects.get(id=expert_network_id)
+                        harmoniq_agent.consultant_expert_networks.add(expert_network)
+
+                harmoniq_agent.save()
+                logger.info(f"Harmoniq Agent was updated by User: {request.user.id}.")
+                messages.success(request, "Harmoniq Agent updated successfully.")
+                return redirect('harmoniq:list')
+            else:
+                logger.error(f"Harmoniq Agent was not updated by User: {request.user.id}.")
+                messages.error(request, "All required fields must be filled.")
+                return self.get(request, *args, **kwargs)
+        except Exception as e:
+            logger.error(f"Error updating Harmoniq Agent: {e}")
+            messages.error(request, f"Error updating Harmoniq Agent: {e}")
             return redirect('harmoniq:list')
-        else:
-            logger.error(f"Harmoniq Agent was not updated by User: {request.user.id}.")
-            messages.error(request, "All required fields must be filled.")
-            return self.get(request, *args, **kwargs)

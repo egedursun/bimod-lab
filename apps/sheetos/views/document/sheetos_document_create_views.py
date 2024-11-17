@@ -42,17 +42,22 @@ class SheetosView_DocumentCreate(LoginRequiredMixin, View):
 
         folder_id = self.kwargs['folder_id']
         folder = get_object_or_404(SheetosFolder, id=folder_id)
-        document = SheetosDocument.objects.create(
-            organization=folder.organization,
-            document_folder=folder,
-            document_title=request.POST.get('document_title'),
-            copilot_assistant_id=request.POST.get('copilot_assistant'),
-            context_instructions=request.POST.get('context_instructions', ''),
-            target_audience=request.POST.get('target_audience', ''),
-            tone=request.POST.get('tone', ''),
-            created_by_user=request.user,
-            last_updated_by_user=request.user
-        )
+
+        try:
+            document = SheetosDocument.objects.create(
+                organization=folder.organization,
+                document_folder=folder,
+                document_title=request.POST.get('document_title'),
+                copilot_assistant_id=request.POST.get('copilot_assistant'),
+                context_instructions=request.POST.get('context_instructions', ''),
+                target_audience=request.POST.get('target_audience', ''),
+                tone=request.POST.get('tone', ''),
+                created_by_user=request.user,
+                last_updated_by_user=request.user
+            )
+        except Exception as e:
+            messages.error(request, f"An error occurred while creating the Sheetos Document: {str(e)}")
+            return redirect('sheetos:documents_list', folder_id=folder.id)
+
         logger.info(f"Sheetos Document {document.document_title} was created.")
         return redirect('sheetos:documents_detail', folder_id=folder.id, document_id=document.id)
-

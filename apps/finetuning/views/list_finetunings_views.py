@@ -29,7 +29,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -45,18 +44,24 @@ class FineTuningView_List(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        orgs = Organization.objects.filter(users__in=[self.request.user])
-        data = []
-        for organization in orgs:
-            cs = FineTunedModelConnection.objects.filter(organization=organization, created_by_user=self.request.user)
-            data.append({'organization': organization, 'connections': cs})
+        try:
+            orgs = Organization.objects.filter(users__in=[self.request.user])
+            data = []
+            for organization in orgs:
+                cs = FineTunedModelConnection.objects.filter(organization=organization,
+                                                             created_by_user=self.request.user)
+                data.append({'organization': organization, 'connections': cs})
+        except Exception as e:
+            logger.error(f"Error listing FineTunedModelConnection: {e}")
+            messages.error(self.request, "Error listing FineTunedModelConnection.")
+            return context
 
         context['data'] = data
         context['form'] = FineTunedModelConnectionForm()
         context['organizations'] = orgs
         context['providers'] = FineTuningModelProvidersNames.as_list()
         context['model_types'] = FineTunedModelTypesNames.as_list()
-        logger.info(f"Finetuning Models were listed by User: {self.request.user.id}.")
+        logger.info(f"Fine-tuning Models were listed by User: {self.request.user.id}.")
         return context
 
     def post(self, request, *args, **kwargs):

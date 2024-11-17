@@ -26,7 +26,6 @@ from apps.user_permissions.utils import PermissionNames
 from apps.video_generations.models import VideoGeneratorConnection
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -50,7 +49,15 @@ class VideoGeneratorView_ConfirmDelete(LoginRequiredMixin, TemplateView):
 
         pk = self.kwargs.get('pk')
         video_generator_connection = get_object_or_404(VideoGeneratorConnection, pk=pk)
-        video_generator_connection.delete()
+
+        try:
+            video_generator_connection.delete()
+        except Exception as e:
+            logger.error(f"Video Generator Connection deletion failed. Error: {e}")
+            messages.error(request,
+                           f'The Video Generator Connection "{video_generator_connection.name}" could not be deleted.')
+            return redirect('video_generations:list')
+
         logger.info(f"Video Generator Connection was deleted by User: {self.request.user.id}.")
         messages.success(request, 'Video Generator Connection deleted successfully.')
         return redirect('video_generations:list')

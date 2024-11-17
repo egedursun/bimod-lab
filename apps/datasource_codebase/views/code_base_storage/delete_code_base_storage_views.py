@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -48,6 +49,7 @@ class CodeBaseView_StorageDelete(LoginRequiredMixin, DeleteView):
             messages.error(self.request, "You do not have permission to update code base storages.")
             return redirect('datasource_codebase:list')
         ##############################
+
         logger.info(f"[CodeBaseView_StorageDelete] Deleting Code Repository Storage: {self.object}")
         return super().post(request, *args, **kwargs)
 

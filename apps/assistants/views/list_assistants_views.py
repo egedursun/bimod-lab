@@ -25,7 +25,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -41,7 +40,12 @@ class AssistantView_List(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        organizations = Organization.objects.filter(users__in=[user])
-        org_assistants = {org: org.assistants.all() for org in organizations}
-        context['org_assistants'] = org_assistants
+        try:
+            organizations = Organization.objects.filter(users__in=[user])
+            org_assistants = {org: org.assistants.all() for org in organizations}
+            context['org_assistants'] = org_assistants
+        except Exception as e:
+            logger.error(f"[AssistantView_List] Error listing the assistants: {e}")
+            messages.error(self.request, "Error listing the agents.")
+
         return context

@@ -49,8 +49,12 @@ class SheetosView_FolderDelete(LoginRequiredMixin, TemplateView):
 
         folder_id = self.kwargs['folder_id']
         folder = get_object_or_404(SheetosFolder, id=folder_id)
-        folder.delete()
+
+        try:
+            folder.delete()
+        except Exception as e:
+            messages.error(request, f"An error occurred while deleting the Sheetos Folder: {str(e)}")
+            return redirect('sheetos:folders_list')
+
         logger.info(f"Sheetos Folder was deleted by User: {request.user.id}.")
         return redirect('sheetos:folders_list')
-
-

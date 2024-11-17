@@ -38,7 +38,12 @@ class ProjectsView_ProjectDelete(LoginRequiredMixin, TemplateView):
         project_id = self.kwargs.get("pk")
         project = get_object_or_404(ProjectItem, pk=project_id)
 
-        project.delete()
+        try:
+            project.delete()
+        except Exception as e:
+            messages.error(request, f"An error occurred while deleting the Project: {str(e)}")
+            return redirect("projects:project_list")
+
         messages.success(request, f"Project '{project.project_name}' has been deleted successfully.")
         logger.info(f"Project deleted: {project_id}")
         return redirect('projects:project_list')

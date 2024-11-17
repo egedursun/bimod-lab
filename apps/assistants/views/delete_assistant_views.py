@@ -28,7 +28,6 @@ from apps.assistants.models import Assistant
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,9 +50,15 @@ class AssistantView_Delete(LoginRequiredMixin, DeleteView):
             return redirect('assistants:list')
         ##############################
 
-        agent = self.get_object()
-        agent.delete()
-        logger.info(f"Assistant has been deleted. ")
+        try:
+            agent = self.get_object()
+            agent.delete()
+            logger.info(f"Assistant has been deleted. ")
+            messages.success(self.request, "Assistant has been deleted.")
+        except Exception as e:
+            logger.error(f"[AssistantView_Delete] Error deleting the assistant: {e}")
+            messages.error(self.request, "Error deleting the assistant.")
+
         return redirect('assistants:list')
 
     def get_queryset(self):

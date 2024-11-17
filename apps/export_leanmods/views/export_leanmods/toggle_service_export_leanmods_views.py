@@ -30,7 +30,6 @@ from apps.user_permissions.utils import PermissionNames
 from config import settings
 from config.settings import EXPORT_LEANMOD_API_BASE_URL
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -45,14 +44,20 @@ class ExportLeanModView_ToggleService(LoginRequiredMixin, View):
             return redirect('export_leanmods:list')
         ##############################
 
-        exp_agent = get_object_or_404(ExportLeanmodAssistantAPI, pk=self.kwargs['pk'])
-        endpoint = EXPORT_LEANMOD_API_BASE_URL + exp_agent.endpoint.split(EXPORT_LEANMOD_API_BASE_URL)[1]
-        api_urls = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
-        exp_agent.is_online = not exp_agent.is_online
-        exp_agent.save()
-        if exp_agent.is_online:
-            if not any(endpoint in str(url) for url in api_urls):
-                start_endpoint_for_leanmod(exp_agent)
+        try:
+            exp_agent = get_object_or_404(ExportLeanmodAssistantAPI, pk=self.kwargs['pk'])
+            endpoint = EXPORT_LEANMOD_API_BASE_URL + exp_agent.endpoint.split(EXPORT_LEANMOD_API_BASE_URL)[1]
+            api_urls = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
+            exp_agent.is_online = not exp_agent.is_online
+            exp_agent.save()
+            if exp_agent.is_online:
+                if not any(endpoint in str(url) for url in api_urls):
+                    start_endpoint_for_leanmod(exp_agent)
+        except Exception as e:
+            logger.error(f"Error toggling Export LeanMod Assistant: {e}")
+            messages.error(request, "Error toggling Export LeanMod Assistant.")
+            return redirect('export_leanmods:list')
+
         logger.info(f"Export LeanMod Assistant was toggled by User: {request.user.id}.")
         return redirect('export_leanmods:list')
 

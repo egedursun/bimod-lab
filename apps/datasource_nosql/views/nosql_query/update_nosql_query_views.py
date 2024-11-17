@@ -25,9 +25,9 @@ from apps.assistants.models import Assistant
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_nosql.forms import CustomNoSQLQueryForm
 from apps.datasource_nosql.models import CustomNoSQLQuery, NoSQLDatabaseConnection
+from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -36,13 +36,20 @@ class NoSQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        query = get_object_or_404(CustomNoSQLQuery, id=kwargs['pk'])
-        user_orgs = context_user.organizations.all()
-        db_c = NoSQLDatabaseConnection.objects.filter(
-            assistant__in=Assistant.objects.filter(organization__in=user_orgs))
-        context['database_connections'] = db_c
-        context['form'] = CustomNoSQLQueryForm(instance=query)
-        context['query'] = query
+
+        try:
+            query = get_object_or_404(CustomNoSQLQuery, id=kwargs['pk'])
+            user_orgs = Organization.objects.filter(users__in=[context_user])
+            db_c = NoSQLDatabaseConnection.objects.filter(
+                assistant__in=Assistant.objects.filter(organization__in=user_orgs))
+            context['database_connections'] = db_c
+            context['form'] = CustomNoSQLQueryForm(instance=query)
+            context['query'] = query
+        except Exception as e:
+            logger.error(f"User: {context_user} - NoSQL Query - Update Error: {e}")
+            messages.error(self.request, 'An error occurred while updating NoSQL Query.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -50,7 +57,9 @@ class NoSQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
         ##############################
         # PERMISSION CHECK FOR - UPDATE_CUSTOM_NOSQL_QUERIES
         if not UserPermissionManager.is_authorized(
-            user=self.request.user, operation=PermissionNames.UPDATE_CUSTOM_NOSQL_QUERIES):
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_CUSTOM_NOSQL_QUERIES
+        ):
             messages.error(self.request, "You do not have permission to update custom NoSQL queries.")
             return redirect('datasource_nosql:list_queries')
         ##############################
@@ -68,7 +77,3 @@ class NoSQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
             context = self.get_context_data(**kwargs)
             context['form'] = form
             return self.render_to_response(context)
-
-
-
-

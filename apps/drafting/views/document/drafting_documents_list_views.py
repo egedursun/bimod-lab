@@ -45,6 +45,7 @@ class DraftingView_DocumentList(LoginRequiredMixin, TemplateView):
 
         folder_id = self.kwargs['folder_id']
         folder = get_object_or_404(DraftingFolder, id=folder_id)
+
         documents = DraftingDocument.objects.filter(document_folder=folder)
         assistants = Assistant.objects.filter(organization=folder.organization)
         paginator = Paginator(documents, 10)

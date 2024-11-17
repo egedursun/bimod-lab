@@ -25,9 +25,9 @@ from apps.assistants.models import Assistant
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_nosql.forms import CustomNoSQLQueryForm
 from apps.datasource_nosql.models import NoSQLDatabaseConnection
+from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -36,10 +36,18 @@ class NoSQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
-        user_orgs = context_user.organizations.all()
-        db_c = NoSQLDatabaseConnection.objects.filter(assistant__in=Assistant.objects.filter(organization__in=user_orgs))
-        context['database_connections'] = db_c
-        context['form'] = CustomNoSQLQueryForm()
+
+        try:
+            user_orgs = Organization.objects.filter(users__in=[context_user])
+            db_c = NoSQLDatabaseConnection.objects.filter(
+                assistant__in=Assistant.objects.filter(organization__in=user_orgs))
+            context['database_connections'] = db_c
+            context['form'] = CustomNoSQLQueryForm()
+        except Exception as e:
+            logger.error(f"User: {context_user} - NoSQL Query - Create Error: {e}")
+            messages.error(self.request, 'An error occurred while creating NoSQL Query.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):

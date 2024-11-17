@@ -27,7 +27,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -49,11 +48,18 @@ class UserManagementView_UserDelete(LoginRequiredMixin, TemplateView):
         ##############################
 
         user = get_object_or_404(User, id=kwargs['pk'])
-        orgs = Organization.objects.filter(users__in=[user])
-        for org in orgs:
-            org.users.remove(user)
-            org.save()
-        user.delete()
+
+        try:
+            orgs = Organization.objects.filter(users__in=[user])
+            for org in orgs:
+                org.users.remove(user)
+                org.save()
+            user.delete()
+        except Exception as e:
+            logger.error(f"User deletion failed. Error: {e}")
+            messages.error(request, 'User deletion failed.')
+            return redirect('user_management:list')
+
         logger.info(f"User was deleted by User: {self.request.user.id}.")
         messages.success(request, 'User deleted successfully.')
         return redirect('user_management:list')

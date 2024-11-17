@@ -19,8 +19,7 @@ import logging
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
-from django.views import View
-from django.views.generic import TemplateView, DeleteView
+from django.views.generic import DeleteView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
@@ -55,6 +54,13 @@ class VoidForgerView_DeleteVoidForgerChat(LoginRequiredMixin, DeleteView):
         ##############################
 
         chat = get_object_or_404(MultimodalVoidForgerChat, id=self.kwargs['pk'], user=self.request.user)
-        chat.delete()
+
+        try:
+            chat.delete()
+        except Exception as e:
+            logger.error(f"VoidForger chat deletion failed. Error: {e}")
+            messages.error(request, f'The VoidForger chat could not be deleted.')
+            return redirect('multimodal_chat:main_workspace')
+
         logger.info(f"VoidForger chat was deleted by User: {self.request.user.id}.")
         return redirect('multimodal_chat:main_workspace')

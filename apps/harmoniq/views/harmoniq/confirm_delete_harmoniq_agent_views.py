@@ -26,7 +26,6 @@ from apps.harmoniq.models import Harmoniq
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -48,7 +47,14 @@ class HarmoniqView_ConfirmDelete(LoginRequiredMixin, TemplateView):
         ##############################
 
         harmoniq_agent = get_object_or_404(Harmoniq, id=self.kwargs['pk'])
-        harmoniq_agent.delete()
+
+        try:
+            harmoniq_agent.delete()
+        except Exception as e:
+            logger.error(f"Error deleting Harmoniq agent: {e}")
+            messages.error(request, f"Error deleting Harmoniq agent: {e}")
+            return redirect('harmoniq:detail', pk=self.kwargs['pk'])
+
         logger.info(f"The Harmoniq agent was deleted by User: {request.user.id}.")
         messages.success(request, f'The Harmoniq agent "{harmoniq_agent.name}" has been successfully deleted.')
         return redirect('harmoniq:list')

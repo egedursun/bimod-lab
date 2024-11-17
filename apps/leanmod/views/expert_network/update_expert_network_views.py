@@ -27,7 +27,6 @@ from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -47,7 +46,7 @@ class ExpertNetworkView_Update(LoginRequiredMixin, TemplateView):
                 'id': ref['assistant_id'],
                 'name': ref['assistant__name'],
                 'context_instructions': ref['context_instructions']
-            } for ref in agent_refs ]
+            } for ref in agent_refs]
         return context
 
     def post(self, request, *args, **kwargs):
@@ -68,18 +67,25 @@ class ExpertNetworkView_Update(LoginRequiredMixin, TemplateView):
         nw.save()
         nw.assistant_references.clear()
         selected_agent_ids = request.POST.getlist("assistants")
-        for agent_id in selected_agent_ids:
-            agent = Assistant.objects.get(id=agent_id)
-            nw_instructions = request.POST.get(f"context_instructions_{agent_id}")
-            reff, created = ExpertNetworkAssistantReference.objects.get_or_create(
-                network=nw, assistant=agent, defaults={
-                    'context_instructions': nw_instructions, 'created_by_user': request.user,
-                    'last_updated_by_user': request.user})
-            if not created:
-                reff.context_instructions = nw_instructions
-                reff.last_updated_by_user = request.user
-                reff.save()
-            nw.assistant_references.add(reff)
+
+        try:
+            for agent_id in selected_agent_ids:
+                agent = Assistant.objects.get(id=agent_id)
+                nw_instructions = request.POST.get(f"context_instructions_{agent_id}")
+                reff, created = ExpertNetworkAssistantReference.objects.get_or_create(
+                    network=nw, assistant=agent, defaults={
+                        'context_instructions': nw_instructions, 'created_by_user': request.user,
+                        'last_updated_by_user': request.user})
+                if not created:
+                    reff.context_instructions = nw_instructions
+                    reff.last_updated_by_user = request.user
+                    reff.save()
+                nw.assistant_references.add(reff)
+        except Exception as e:
+            logger.error(f"Error updating Expert Network: {e}")
+            messages.error(request, f"Error updating Expert Network: {e}")
+            return redirect('leanmod:update_expert_network', pk=nw_id)
+
         logger.info(f"Expert Network {nw.name} was updated by User: {user.id}.")
         messages.success(request, "Expert Network updated successfully.")
         return redirect('leanmod:update_expert_network', pk=nw_id)

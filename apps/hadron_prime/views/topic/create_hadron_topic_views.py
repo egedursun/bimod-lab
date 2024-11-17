@@ -66,10 +66,15 @@ class HadronPrimeView_CreateHadronTopic(LoginRequiredMixin, TemplateView):
             messages.error(request, 'Please fill out all required fields.')
             return redirect('hadron_prime:create_hadron_topic')
 
-        system = HadronSystem.objects.get(id=system_id)
-        HadronTopic.objects.create(
-            system=system, topic_name=topic_name, topic_description=topic_description,
-            topic_purpose=topic_purpose, topic_category=topic_category, created_by_user=request.user)
+        try:
+            system = HadronSystem.objects.get(id=system_id)
+            HadronTopic.objects.create(
+                system=system, topic_name=topic_name, topic_description=topic_description,
+                topic_purpose=topic_purpose, topic_category=topic_category, created_by_user=request.user)
+        except Exception as e:
+            logger.error(f"Error creating Hadron Topic: {e}")
+            messages.error(request, f"Error creating Hadron Topic: {e}")
+            return redirect('hadron_prime:create_hadron_topic')
 
         logger.info(f'Hadron Topic "{topic_name}" created.')
         messages.success(request, f'Hadron Topic "{topic_name}" created successfully.')

@@ -18,7 +18,7 @@
 
 from django.db import models
 
-from apps.ellma.utils import ELLMA_TRANSCRIPTION_LANGUAGES, EllmaTranscriptionLanguagesNames
+from apps.ellma.utils import ELLMA_TRANSCRIPTION_LANGUAGES
 
 
 class EllmaScript(models.Model):

@@ -26,7 +26,6 @@ from apps.datasource_file_systems.models import DataSourceFileSystem
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -42,18 +41,25 @@ class FileSystemView_List(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        context_user = self.request.user
-        conns_by_orgs = {}
-        agents = Assistant.objects.filter(organization__in=context_user.organizations.filter(users__in=[context_user]))
-        for agent in agents:
-            org = agent.organization
-            if org not in conns_by_orgs:
-                conns_by_orgs[org] = {}
-            if agent not in conns_by_orgs[org]:
-                conns_by_orgs[org][agent] = []
-            conns = DataSourceFileSystem.objects.filter(assistant=agent)
-            conns_by_orgs[org][agent].extend(conns)
-        context['connections_by_organization'] = conns_by_orgs
-        context['user'] = context_user
+        try:
+            context_user = self.request.user
+            conns_by_orgs = {}
+            agents = Assistant.objects.filter(
+                organization__in=context_user.organizations.filter(users__in=[context_user]))
+            for agent in agents:
+                org = agent.organization
+                if org not in conns_by_orgs:
+                    conns_by_orgs[org] = {}
+                if agent not in conns_by_orgs[org]:
+                    conns_by_orgs[org][agent] = []
+                conns = DataSourceFileSystem.objects.filter(assistant=agent)
+                conns_by_orgs[org][agent].extend(conns)
+            context['connections_by_organization'] = conns_by_orgs
+            context['user'] = context_user
+        except Exception as e:
+            logger.error(f"User: {self.request.user} - File System - List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing file system connections.')
+            return context
+
         logger.info(f"File System Connections were listed.")
         return context

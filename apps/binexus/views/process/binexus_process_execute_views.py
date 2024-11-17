@@ -52,10 +52,15 @@ class BinexusView_ProcessExecute(LoginRequiredMixin, View):
             messages.error(request, f"Error occurred while executing the process: {e}")
             return redirect('binexus:process_detail', pk=kwargs.get('pk'))
 
-        success, error = xc.execute_binexus()
-        if error is not None:
-            logger.error(f"Error occurred while executing the process: {error}")
-            messages.error(request, f"Error occurred while executing the process: {error}")
+        try:
+            success, error = xc.execute_binexus()
+            if error is not None:
+                logger.error(f"Error occurred while executing the process: {error}")
+                messages.error(request, f"Error occurred while executing the process: {error}")
+                return redirect('binexus:process_detail', pk=kwargs.get('pk'))
+        except Exception as e:
+            logger.error(f"Error occurred while executing the process: {e}")
+            messages.error(request, f"Error occurred while executing the process: {e}")
             return redirect('binexus:process_detail', pk=kwargs.get('pk'))
 
         logger.info(f"Process executed successfully.")

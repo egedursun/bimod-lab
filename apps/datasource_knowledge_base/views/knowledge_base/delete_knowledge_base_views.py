@@ -26,7 +26,6 @@ from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnectio
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -49,7 +48,13 @@ class VectorStoreView_Delete(LoginRequiredMixin, TemplateView):
             return redirect('datasource_knowledge_base:list')
         ##############################
 
-        vector_store.delete()
+        try:
+            vector_store.delete()
+        except Exception as e:
+            logger.error(f"User: {context_user} - Knowledge Base - Delete Error: {e}")
+            messages.error(request, 'An error occurred while deleting the knowledge base.')
+            return redirect('datasource_knowledge_base:list')
+
         logger.info(f"[views.delete_knowledge_base] Knowledge Base deleted successfully.")
         messages.success(request, "Knowledge Base deleted successfully.")
         return redirect('datasource_knowledge_base:list')

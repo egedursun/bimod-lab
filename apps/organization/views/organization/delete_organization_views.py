@@ -28,7 +28,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -57,15 +56,22 @@ class OrganizationView_OrganizationDelete(DeleteView, LoginRequiredMixin):
         org = self.get_object()
         transfer_org_id = request.POST.get('transfer_organization_id')
 
-        transfer_org = get_object_or_404(Organization, id=transfer_org_id, users__in=[context_user])
-        src_org_balance = org.balance
-        transfer_org.balance += org.balance
-        transfer_org.save()
+        try:
+            transfer_org = get_object_or_404(Organization, id=transfer_org_id, users__in=[context_user])
+            src_org_balance = org.balance
+            transfer_org.balance += org.balance
+            transfer_org.save()
 
-        TransactionInvoice.objects.create(
-            organization=org, responsible_user=context_user, transaction_type=InvoiceTypesNames.TRANSFERRED_CREDITS,
-            amount_added=src_org_balance, payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER)
-        org.delete()
+            TransactionInvoice.objects.create(
+                organization=org, responsible_user=context_user,
+                transaction_type=InvoiceTypesNames.TRANSFERRED_CREDITS,
+                amount_added=src_org_balance, payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER)
+            org.delete()
+        except Exception as e:
+            logger.error(f"Failed to delete organization: {org.id} by User: {context_user.id}. Error: {str(e)}")
+            messages.error(request, "Failed to delete organization.")
+            return redirect('organization:list')
+
         logger.info(f"Organization: {org.id} was deleted by User: {context_user.id}.")
         messages.success(request,
                          f'Organization "{org.name}" has been deleted and the balance has been transferred to "{transfer_org.name}".')

@@ -25,10 +25,8 @@ from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.core.metatempo.metatempo_execution_handler import MetaTempoExecutionManager
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-from apps.metakanban.models import MetaKanbanBoard
 from apps.metatempo.models import MetaTempoConnection, MetaTempoProjectOverallLog
 from apps.metatempo.utils import MetaTempoOverallLogIntervalsNames
-from apps.projects.models import ProjectItem, ProjectTeamItem
 
 logger = logging.getLogger(__name__)
 

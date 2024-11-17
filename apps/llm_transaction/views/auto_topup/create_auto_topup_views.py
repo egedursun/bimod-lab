@@ -25,7 +25,6 @@ from apps.llm_transaction.models import AutoBalanceTopUpModel
 from apps.organization.models import Organization
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -70,18 +69,25 @@ class Transactions_AutoTopUpCreate(LoginRequiredMixin, TemplateView):
         if org.auto_balance_topup:
             org.auto_balance_topup.delete()
 
-        top_up_model = AutoBalanceTopUpModel.objects.create(
-            organization=org, on_balance_threshold_trigger=on_balance_threshold_trigger,
-            on_interval_by_days_trigger=on_interval_by_days_trigger,
-            balance_lower_trigger_threshold_value=balance_lower_trigger_threshold_value,
-            addition_on_balance_threshold_trigger=round(float(addition_on_balance_threshold_trigger), 2) if addition_on_balance_threshold_trigger else None,
-            regular_by_days_interval=regular_by_days_interval,
-            addition_on_interval_by_days_trigger=round(float(addition_on_interval_by_days_trigger), 2) if addition_on_interval_by_days_trigger else None,
-            date_of_last_auto_top_up=date_of_last_auto_top_up, calendar_month_total_auto_addition_value=0,
-            monthly_hard_limit_auto_addition_amount=monthly_hard_limit_auto_addition_amount
-        )
-        top_up_model.save()
-        org.auto_balance_topup = top_up_model
-        org.save()
+        try:
+            top_up_model = AutoBalanceTopUpModel.objects.create(
+                organization=org, on_balance_threshold_trigger=on_balance_threshold_trigger,
+                on_interval_by_days_trigger=on_interval_by_days_trigger,
+                balance_lower_trigger_threshold_value=balance_lower_trigger_threshold_value,
+                addition_on_balance_threshold_trigger=round(float(addition_on_balance_threshold_trigger),
+                                                            2) if addition_on_balance_threshold_trigger else None,
+                regular_by_days_interval=regular_by_days_interval,
+                addition_on_interval_by_days_trigger=round(float(addition_on_interval_by_days_trigger),
+                                                           2) if addition_on_interval_by_days_trigger else None,
+                date_of_last_auto_top_up=date_of_last_auto_top_up, calendar_month_total_auto_addition_value=0,
+                monthly_hard_limit_auto_addition_amount=monthly_hard_limit_auto_addition_amount
+            )
+            top_up_model.save()
+            org.auto_balance_topup = top_up_model
+            org.save()
+        except Exception as e:
+            logger.error(f"Error creating Auto Top Up Plan: {e}")
+            return redirect('llm_transaction:auto_top_up_list')
+
         logger.info(f"Auto Top Up Plan created for organization: {org.id}")
         return redirect('llm_transaction:auto_top_up_list')

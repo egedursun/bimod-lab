@@ -48,8 +48,15 @@ class DraftingView_GenerateViaSSHCommand(LoginRequiredMixin, View):
                             folder_id=document.document_folder.id, document_id=document_id)
         ##############################
 
-        command = request.POST.get('command')
-        xc = DraftingExecutionManager(drafting_document=document)
-        response_json = xc.execute_ssh_command(command=command)
+        try:
+            command = request.POST.get('command')
+            xc = DraftingExecutionManager(drafting_document=document)
+            response_json = xc.execute_ssh_command(command=command)
+        except Exception as e:
+            logger.error(f"Error executing SSH Command for Drafting Document: {e}")
+            messages.error(self.request, 'An error occurred while executing SSH Command.')
+            return redirect('drafting:documents_detail',
+                            folder_id=document.document_folder.id, document_id=document_id)
+
         logger.info(f"SSH Command was executed for Drafting Document: {document.id}.")
         return JsonResponse(response_json)

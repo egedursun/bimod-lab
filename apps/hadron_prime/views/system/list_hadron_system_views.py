@@ -14,6 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
@@ -23,6 +25,8 @@ from apps.hadron_prime.models import HadronSystem
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+logger = logging.getLogger(__name__)
 
 
 class HadronPrimeView_ListHadronSystem(LoginRequiredMixin, TemplateView):
@@ -38,7 +42,13 @@ class HadronPrimeView_ListHadronSystem(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        systems_by_org = {org: HadronSystem.objects.filter(organization=org) for org in user_orgs}
-        context['systems_by_org'] = systems_by_org
+        try:
+            user_orgs = Organization.objects.filter(users__in=[self.request.user])
+            systems_by_org = {org: HadronSystem.objects.filter(organization=org) for org in user_orgs}
+            context['systems_by_org'] = systems_by_org
+        except Exception as e:
+            messages.error(self.request, f"Error listing Hadron Systems: {e}")
+            logger.error(f"Error listing Hadron Systems: {e}")
+            return context
+
         return context

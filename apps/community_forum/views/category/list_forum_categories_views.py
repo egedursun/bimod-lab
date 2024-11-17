@@ -23,24 +23,30 @@ from django.views.generic import TemplateView
 from apps.community_forum.models import ForumCategory
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
 class ForumView_CategoryList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        search_query = self.request.GET.get('search', '')
-        if search_query:
-            categories = ForumCategory.objects.filter(threads__title__icontains=search_query).order_by("created_at")
-        else:
-            categories = ForumCategory.objects.all().order_by("created_at")
 
-        paginator = Paginator(categories, 20)
-        page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context['categories'] = page_obj
-        context['page_obj'] = page_obj
-        context['search_query'] = search_query
+        try:
+            search_query = self.request.GET.get('search', '')
+            if search_query:
+                categories = ForumCategory.objects.filter(threads__title__icontains=search_query).order_by(
+                    "created_at")
+            else:
+                categories = ForumCategory.objects.all().order_by("created_at")
+
+            paginator = Paginator(categories, 20)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['categories'] = page_obj
+            context['page_obj'] = page_obj
+            context['search_query'] = search_query
+        except Exception as e:
+            logger.error(f"[ForumView_CategoryList] Error listing the Forum Categories: {e}")
+            return context
+
         logger.info(f"Forum Categories were listed.")
         return context

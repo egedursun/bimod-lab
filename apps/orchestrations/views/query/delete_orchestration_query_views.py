@@ -26,7 +26,6 @@ from apps.orchestrations.models.query import OrchestrationQuery
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -50,6 +49,12 @@ class OrchestrationView_QueryDelete(LoginRequiredMixin, TemplateView):
         query_id = self.kwargs['query_id']
         query = get_object_or_404(OrchestrationQuery, pk=query_id)
         maestro_id = query.maestro.id
-        query.delete()
+
+        try:
+            query.delete()
+        except Exception as e:
+            messages.error(request, f"An error occurred while deleting the Orchestration Query: {str(e)}")
+            return redirect("orchestrations:query_list", pk=maestro_id)
+
         logger.info(f"Orchestration query was deleted by User: {self.request.user.id}.")
         return redirect('orchestrations:query_list', pk=maestro_id)

@@ -27,7 +27,6 @@ from apps.export_assistants.models import ExportAssistantAPI
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,17 +50,23 @@ class ExportAssistantView_Update(TemplateView, LoginRequiredMixin):
         ##############################
 
         exp_agent = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
-        exp_agent.assistant_id = request.POST.get('assistant')
-        exp_agent.request_limit_per_hour = request.POST.get('request_limit_per_hour')
-        exp_agent.is_public = request.POST.get('is_public') == 'on'
-        if exp_agent.assistant_id and exp_agent.request_limit_per_hour:
-            exp_agent.save()
-            logger.info(f"Export Assistant was updated by User: {request.user.id}.")
-            messages.success(request, "Export Assistant updated successfully.")
+
+        try:
+            exp_agent.assistant_id = request.POST.get('assistant')
+            exp_agent.request_limit_per_hour = request.POST.get('request_limit_per_hour')
+            exp_agent.is_public = request.POST.get('is_public') == 'on'
+            if exp_agent.assistant_id and exp_agent.request_limit_per_hour:
+                exp_agent.save()
+                logger.info(f"Export Assistant was updated by User: {request.user.id}.")
+                messages.success(request, "Export Assistant updated successfully.")
+                return redirect('export_assistants:list')
+            else:
+                logger.error(f"Error updating Export Assistant by User: {request.user.id}.")
+                messages.error(request, "There was an error updating the Export Assistant.")
+        except Exception as e:
+            logger.error(f"Error updating Export Assistant: {e}")
+            messages.error(request, "Error updating Export Assistant.")
             return redirect('export_assistants:list')
-        else:
-            logger.error(f"Error updating Export Assistant by User: {request.user.id}.")
-            messages.error(request, "There was an error updating the Export Assistant.")
 
         context = self.get_context_data()
         context.update({'export_assistant': exp_agent,

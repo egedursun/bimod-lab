@@ -26,7 +26,6 @@ from apps.user_permissions.models import UserRole
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,7 +50,14 @@ class PermissionView_UserRoleDelete(LoginRequiredMixin, TemplateView):
 
         role_id = kwargs.get("pk")
         role = get_object_or_404(UserRole, pk=role_id, created_by_user=request.user)
-        role.delete()
+
+        try:
+            role.delete()
+        except Exception as e:
+            logger.error(f"User role deletion failed. Error: {e}")
+            messages.error(request, f'The role "{role.role_name}" could not be deleted.')
+            return redirect('user_permissions:list_user_roles')
+
         logger.info(f"User role was deleted by User: {self.request.user.id}.")
         messages.success(request, f'The role "{role.role_name}" has been deleted successfully.')
         return redirect('user_permissions:list_user_roles')

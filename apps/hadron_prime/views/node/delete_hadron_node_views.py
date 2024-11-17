@@ -49,7 +49,13 @@ class HadronPrimeView_DeleteHadronNode(LoginRequiredMixin, TemplateView):
             return redirect('hadron_prime:detail_hadron_node', pk=node.id)
         ##############################
 
-        node.delete()
-        logger.info(f'Hadron Node "{node.node_name}" deleted by user "{request.user}".')
-        messages.success(request, f'The Hadron Node "{node.node_name}" was successfully deleted.')
+        try:
+            node.delete()
+        except Exception as e:
+            logger.error(f"Error deleting Hadron Node: {e}")
+            messages.error(request, f"Error deleting Hadron Node: {e}")
+            return redirect('hadron_prime:detail_hadron_node', pk=node.id)
+
+            logger.info(f'Hadron Node "{node.node_name}" deleted by user "{request.user}".')
+            messages.success(request, f'The Hadron Node "{node.node_name}" was successfully deleted.')
         return redirect('hadron_prime:detail_hadron_system', pk=node.system.id)

@@ -26,7 +26,6 @@ from apps.mm_functions.models import CustomFunction
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,7 +50,13 @@ class CustomFunctionView_Delete(LoginRequiredMixin, TemplateView):
         ##############################
 
         custom_function = CustomFunction.objects.get(id=custom_function_id)
-        custom_function.delete()
+
+        try:
+            custom_function.delete()
+        except Exception as e:
+            messages.error(request, "An error occurred while deleting the custom function: " + str(e))
+            return redirect("mm_functions:list")
+
         logger.info(f"Custom Function was deleted by User: {self.request.user.id}.")
         messages.success(request, "Custom Function deleted successfully.")
         return redirect('mm_functions:list')

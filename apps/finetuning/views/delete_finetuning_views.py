@@ -26,7 +26,6 @@ from apps.finetuning.models import FineTunedModelConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -49,6 +48,13 @@ class FineTuningView_Delete(LoginRequiredMixin, TemplateView):
         ##############################
 
         c = get_object_or_404(FineTunedModelConnection, id=kwargs['pk'], created_by_user=request.user)
-        c.delete()
+
+        try:
+            c.delete()
+        except Exception as e:
+            logger.error(f"Error deleting FineTunedModelConnection: {e}")
+            messages.error(request, "Error deleting FineTunedModelConnection.")
+            return redirect('finetuning:list')
+
         logger.info(f"FineTuning Model was deleted by User: {context_user.id}.")
         return redirect('finetuning:list')

@@ -59,14 +59,21 @@ class SmartContractView_ContractCreate(LoginRequiredMixin, TemplateView):
             messages.error(request, 'All fields are required.')
             return redirect('smart_contracts:contract_create')
 
-        wallet = BlockchainWalletConnection.objects.get(id=wallet_id)
-        created_by_user = request.user
-        smart_contract = BlockchainSmartContract.objects.create(
-            wallet=wallet, category=category, contract_template=contract_template,
-            nickname=nickname, description=description, refinement_iterations_before_evaluation=refinement_iterations,
-            created_by_user=created_by_user, deployment_status=DeploymentStatusesNames.NOT_GENERATED, deployed_at=None,
-            maximum_gas_limit=maximum_gas_limit, gas_price_gwei=gas_price_gwei,
-            offchain_contract_seed=offchain_contract_seed)
+        try:
+            wallet = BlockchainWalletConnection.objects.get(id=wallet_id)
+            created_by_user = request.user
+            smart_contract = BlockchainSmartContract.objects.create(
+                wallet=wallet, category=category, contract_template=contract_template,
+                nickname=nickname, description=description,
+                refinement_iterations_before_evaluation=refinement_iterations,
+                created_by_user=created_by_user, deployment_status=DeploymentStatusesNames.NOT_GENERATED,
+                deployed_at=None,
+                maximum_gas_limit=maximum_gas_limit, gas_price_gwei=gas_price_gwei,
+                offchain_contract_seed=offchain_contract_seed)
+        except Exception as e:
+            logger.error(f'An error occurred while creating the smart contract: {str(e)}')
+            messages.error(request, f'An error occurred while creating the smart contract: {str(e)}')
+            return redirect('smart_contracts:contract_create')
 
         logger.info(f'Smart contract created successfully. Smart Contract ID: {smart_contract.id}')
         messages.success(request, 'Smart contract created successfully.')

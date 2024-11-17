@@ -38,7 +38,12 @@ class DraftingView_GoogleAppsConnectionList(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        context['connections'] = DraftingGoogleAppsConnection.objects.filter(owner_user=self.request.user)
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+        try:
+            context['connections'] = DraftingGoogleAppsConnection.objects.filter(owner_user=self.request.user)
+            user_orgs = Organization.objects.filter(users__in=[self.request.user])
+            context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+        except Exception as e:
+            messages.error(self.request, 'An error occurred while getting assistants.')
+            return context
+
         return context

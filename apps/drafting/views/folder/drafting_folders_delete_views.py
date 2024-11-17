@@ -26,7 +26,6 @@ from apps.drafting.models import DraftingFolder
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -50,6 +49,13 @@ class DraftingView_FolderDelete(LoginRequiredMixin, TemplateView):
 
         folder_id = self.kwargs['folder_id']
         folder = get_object_or_404(DraftingFolder, id=folder_id)
-        folder.delete()
+
+        try:
+            folder.delete()
+        except Exception as e:
+            logger.error(f"Error deleting Drafting Folder: {e}")
+            messages.error(self.request, 'An error occurred while deleting Drafting Folder.')
+            return redirect('drafting:folders_list')
+
         logger.info(f"Drafting Folder was deleted by User: {request.user.id}.")
         return redirect('drafting:folders_list')

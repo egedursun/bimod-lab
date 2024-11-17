@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -25,7 +26,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_media_storages.tasks import download_file_from_url
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -58,8 +58,15 @@ class MediaView_ItemHTTPRetrieval(LoginRequiredMixin, TemplateView):
             logger.error('Invalid download URL.')
             messages.error(request, 'Invalid download URL.')
             return redirect('datasource_media_storages:create_item')
-        mm_id_int = int(mm_id)
-        download_file_from_url.delay(storage_id=mm_id_int, url=retrieval_uri)
-        logger.info('File download from URL initiated.')
+
+        try:
+            mm_id_int = int(mm_id)
+            download_file_from_url.delay(storage_id=mm_id_int, url=retrieval_uri)
+            logger.info('File download from URL initiated.')
+        except Exception as e:
+            logger.error(f'Error while initiating file download from URL: {e}')
+            messages.error(request, 'Error while initiating file download from URL.')
+            return redirect('datasource_media_storages:create_item')
+
         messages.success(request, 'File download from URL initiated.')
         return redirect('datasource_media_storages:list_items')

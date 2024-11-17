@@ -50,7 +50,13 @@ class MessageTemplateView_Delete(DeleteView, LoginRequiredMixin):
         ##############################
 
         msg_tmpl = get_object_or_404(MessageTemplate, id=self.kwargs['pk'])
-        msg_tmpl.delete()
+
+        try:
+            msg_tmpl.delete()
+        except Exception as e:
+            logger.error(f"Error deleting Message Template: {e}")
+            return redirect(self.success_url)
+
         success_message = "Message template deleted successfully."
         logger.info(f"Message Template was deleted by User: {self.request.user.id}.")
         messages.success(request, success_message)

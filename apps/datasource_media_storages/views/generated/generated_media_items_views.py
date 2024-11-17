@@ -35,7 +35,6 @@ from apps.video_generations.models import GeneratedVideo
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,45 +50,51 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        orgs = Organization.objects.filter(users__in=[self.request.user])
-        data = []
-        for org in orgs:
-            agents = Assistant.objects.filter(organization=org)
-            agent_data_list = []
-            for agent in agents:
-                chats_of_agents = MultimodalChat.objects.filter(assistant=agent)
-                msgs_with_imgs = []
-                msgs_with_fs = []
-                for chat in chats_of_agents:
-                    f_or_img_msgs = chat.chat_messages.filter(Q(message_image_contents__isnull=False) |
-                                                              Q(message_file_contents__isnull=False))
-                    for m in f_or_img_msgs:
-                        if m.message_image_contents:
-                            for img in m.message_image_contents:
-                                message_data = {'message': m, 'image': img}
-                                msgs_with_imgs.append(message_data)
-                        if m.message_file_contents:
-                            for file in m.message_file_contents:
-                                message_data = {'message': m, 'file': file}
-                                msgs_with_fs.append(message_data)
+        try:
+            orgs = Organization.objects.filter(users__in=[self.request.user])
+            data = []
+            for org in orgs:
+                agents = Assistant.objects.filter(organization=org)
+                agent_data_list = []
+                for agent in agents:
+                    chats_of_agents = MultimodalChat.objects.filter(assistant=agent)
+                    msgs_with_imgs = []
+                    msgs_with_fs = []
+                    for chat in chats_of_agents:
+                        f_or_img_msgs = chat.chat_messages.filter(Q(message_image_contents__isnull=False) |
+                                                                  Q(message_file_contents__isnull=False))
+                        for m in f_or_img_msgs:
+                            if m.message_image_contents:
+                                for img in m.message_image_contents:
+                                    message_data = {'message': m, 'image': img}
+                                    msgs_with_imgs.append(message_data)
+                            if m.message_file_contents:
+                                for file in m.message_file_contents:
+                                    message_data = {'message': m, 'file': file}
+                                    msgs_with_fs.append(message_data)
 
-                pg_imgs = Paginator(msgs_with_imgs, 5)  # 5 items per page
-                pg_no_imgs = self.request.GET.get('page_images')
-                pg_obj_imgs = pg_imgs.get_page(pg_no_imgs)
-                pg_fs = Paginator(msgs_with_fs, 5)
-                pg_no_fs = self.request.GET.get('page_files')
-                pg_obj_fs = pg_fs.get_page(pg_no_fs)
-                gen_videos = GeneratedVideo.objects.filter(assistant=agent)
-                pg_videos = Paginator(gen_videos, 5)
-                pg_no_videos = self.request.GET.get('page_videos')
-                pg_obj_videos = pg_videos.get_page(pg_no_videos)
+                    pg_imgs = Paginator(msgs_with_imgs, 5)  # 5 items per page
+                    pg_no_imgs = self.request.GET.get('page_images')
+                    pg_obj_imgs = pg_imgs.get_page(pg_no_imgs)
+                    pg_fs = Paginator(msgs_with_fs, 5)
+                    pg_no_fs = self.request.GET.get('page_files')
+                    pg_obj_fs = pg_fs.get_page(pg_no_fs)
+                    gen_videos = GeneratedVideo.objects.filter(assistant=agent)
+                    pg_videos = Paginator(gen_videos, 5)
+                    pg_no_videos = self.request.GET.get('page_videos')
+                    pg_obj_videos = pg_videos.get_page(pg_no_videos)
 
-                agent_data = {
-                    'assistant': agent, 'messages_with_images': pg_obj_imgs, 'messages_with_files': pg_obj_fs,
-                    'generated_videos': pg_obj_videos,
-                }
-                agent_data_list.append(agent_data)
-            data.append({'organization': org, 'assistants': agent_data_list, })
+                    agent_data = {
+                        'assistant': agent, 'messages_with_images': pg_obj_imgs, 'messages_with_files': pg_obj_fs,
+                        'generated_videos': pg_obj_videos,
+                    }
+                    agent_data_list.append(agent_data)
+                data.append({'organization': org, 'assistants': agent_data_list, })
+        except Exception as e:
+            logger.error(f"User: {self.request.user} - Generated Media - List Error: {e}")
+            messages.error(self.request, 'An error occurred while listing generated media files.')
+            return context
+
         context['data'] = data
         context['base_url'] = MEDIA_URL
         return context
@@ -116,5 +121,6 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
                         pass
             logger.info(f"[views.generated_media_items] Deleting selected generated media files.")
             DataSourceMediaStorageItem.objects.filter(id__in=item_ids).delete()
-            messages.success(request, 'Selected generated media files deleted successfully.')
+
+        messages.success(request, 'Selected generated media files deleted successfully.')
         return redirect('datasource_media_storages:list_items')

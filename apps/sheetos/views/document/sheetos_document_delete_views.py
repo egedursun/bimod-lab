@@ -45,6 +45,12 @@ class SheetosView_DocumentDelete(LoginRequiredMixin, View):
         folder_id = self.kwargs['folder_id']
         document_id = self.kwargs['document_id']
         document = get_object_or_404(SheetosDocument, id=document_id)
-        document.delete()
+
+        try:
+            document.delete()
+        except Exception as e:
+            messages.error(request, f"An error occurred while deleting the Sheetos Document: {str(e)}")
+            return redirect('sheetos:documents_list', folder_id=folder_id)
+
         logger.info(f"Sheetos Document {document.document_title} was deleted.")
         return redirect('sheetos:documents_list', folder_id=folder_id)

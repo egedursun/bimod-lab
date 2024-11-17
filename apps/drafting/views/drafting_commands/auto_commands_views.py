@@ -48,7 +48,14 @@ class DraftingView_GenerateViaAutoCommand(LoginRequiredMixin, View):
                             folder_id=document.document_folder.id, document_id=document_id)
         ##############################
 
-        xc = DraftingExecutionManager(drafting_document=document)
-        response_json = xc.execute_auto_command()
+        try:
+            xc = DraftingExecutionManager(drafting_document=document)
+            response_json = xc.execute_auto_command()
+        except Exception as e:
+            logger.error(f"Error executing Auto Command for Drafting Document: {e}")
+            messages.error(self.request, 'An error occurred while executing Auto Command.')
+            return redirect('drafting:documents_detail',
+                            folder_id=document.document_folder.id, document_id=document_id)
+
         logger.info(f"Auto Command was executed for Drafting Document: {document.id}.")
         return JsonResponse(response_json)

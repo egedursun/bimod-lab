@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -28,7 +29,6 @@ from apps.datasource_codebase.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -37,12 +37,19 @@ class CodeBaseView_StorageCreate(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
         context['user'] = context_user
-        context['knowledge_base_systems'] = KNOWLEDGE_BASE_SYSTEMS
-        context['vectorizers'] = VECTORIZERS
-        user_orgs = context_user.organizations.all()
-        agents_of_orgs = Assistant.objects.filter(organization__in=user_orgs)
-        context['assistants'] = agents_of_orgs
-        context['form'] = CodeRepositoryStorageForm()
+
+        try:
+            context['knowledge_base_systems'] = KNOWLEDGE_BASE_SYSTEMS
+            context['vectorizers'] = VECTORIZERS
+            user_orgs = context_user.organizations.all()
+            agents_of_orgs = Assistant.objects.filter(organization__in=user_orgs)
+            context['assistants'] = agents_of_orgs
+            context['form'] = CodeRepositoryStorageForm()
+        except Exception as e:
+            logger.error(f"User: {context_user} - Code Base Storage - Create Error: {e}")
+            messages.error(self.request, 'An error occurred while creating Code Base Storage.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):

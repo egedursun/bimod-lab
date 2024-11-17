@@ -100,34 +100,40 @@ class HadronPrimeView_CreateHadronNode(LoginRequiredMixin, TemplateView):
         publishing_history_lookback_memory_size = request.POST.get('publishing_history_lookback_memory_size')
         topic_messages_history_lookback_memory_size = request.POST.get('topic_messages_history_lookback_memory_size')
 
-        # Create the HadronNode object
-        node = HadronNode.objects.create(
-            system_id=system_id, llm_model_id=llm_model_id, node_name=node_name, node_description=node_description,
-            optional_instructions=optional_instructions, current_state_curl=current_state_curl,
-            current_state_input_params_description=current_state_input_desc,
-            current_state_output_params_description=current_state_output_desc, goal_state_curl=goal_state_curl,
-            goal_state_input_params_description=goal_state_input_desc,
-            goal_state_output_params_description=goal_state_output_desc,
-            error_calculation_curl=error_calculation_curl,
-            error_calculation_input_params_description=error_calculation_input_desc,
-            error_calculation_output_params_description=error_calculation_output_desc,
-            measurements_curl=measurements_curl,
-            measurements_input_params_description=measurements_input_desc,
-            measurements_output_params_description=measurements_output_desc, action_set_curl=action_set_curl,
-            action_set_input_params_description=action_set_input_desc,
-            action_set_output_params_description=action_set_output_desc,
-            analytic_calculation_curl=analytic_calculation_curl,
-            analytic_calculation_input_params_description=analytic_calculation_input_desc,
-            analytic_calculation_output_params_description=analytic_calculation_output_desc,
-            actuation_curl=actuation_curl, actuation_input_params_description=actuation_input_desc,
-            actuation_output_params_description=actuation_output_desc, created_by_user=request.user,
-            publishing_history_lookback_memory_size=publishing_history_lookback_memory_size,
-            state_action_state_lookback_memory_size=state_action_state_lookback_memory_size,
-            topic_messages_history_lookback_memory_size=topic_messages_history_lookback_memory_size)
+        try:
+            # Create the HadronNode object
+            node = HadronNode.objects.create(
+                system_id=system_id, llm_model_id=llm_model_id, node_name=node_name, node_description=node_description,
+                optional_instructions=optional_instructions, current_state_curl=current_state_curl,
+                current_state_input_params_description=current_state_input_desc,
+                current_state_output_params_description=current_state_output_desc, goal_state_curl=goal_state_curl,
+                goal_state_input_params_description=goal_state_input_desc,
+                goal_state_output_params_description=goal_state_output_desc,
+                error_calculation_curl=error_calculation_curl,
+                error_calculation_input_params_description=error_calculation_input_desc,
+                error_calculation_output_params_description=error_calculation_output_desc,
+                measurements_curl=measurements_curl,
+                measurements_input_params_description=measurements_input_desc,
+                measurements_output_params_description=measurements_output_desc, action_set_curl=action_set_curl,
+                action_set_input_params_description=action_set_input_desc,
+                action_set_output_params_description=action_set_output_desc,
+                analytic_calculation_curl=analytic_calculation_curl,
+                analytic_calculation_input_params_description=analytic_calculation_input_desc,
+                analytic_calculation_output_params_description=analytic_calculation_output_desc,
+                actuation_curl=actuation_curl, actuation_input_params_description=actuation_input_desc,
+                actuation_output_params_description=actuation_output_desc, created_by_user=request.user,
+                publishing_history_lookback_memory_size=publishing_history_lookback_memory_size,
+                state_action_state_lookback_memory_size=state_action_state_lookback_memory_size,
+                topic_messages_history_lookback_memory_size=topic_messages_history_lookback_memory_size)
 
-        # Save relations (ManyToMany fields)
-        node.subscribed_topics.set(subscribed_topics)
-        node.expert_networks.set(expert_networks)
+            # Save relations (ManyToMany fields)
+            node.subscribed_topics.set(subscribed_topics)
+            node.expert_networks.set(expert_networks)
+        except Exception as e:
+            logger.error(f'Error creating node: {e}')
+            messages.error(request, f'Error creating node: {e}')
+            return redirect('hadron_prime:detail_hadron_system', pk=system_id)
+
         logger.info(f'Node created: {node}')
         messages.success(request, 'Node created successfully.')
         return redirect('hadron_prime:detail_hadron_system', pk=system_id)

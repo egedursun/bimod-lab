@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -29,7 +30,6 @@ from apps.datasource_codebase.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -39,14 +39,20 @@ class CodeBaseView_StorageUpdate(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
         vector_store = get_object_or_404(CodeRepositoryStorageConnection, pk=kwargs['pk'])
-        context['user'] = context_user
-        context['knowledge_base_systems'] = KNOWLEDGE_BASE_SYSTEMS
-        context['vectorizers'] = VECTORIZERS
-        user_orgs = context_user.organizations.all()
-        agents_of_orgs = Assistant.objects.filter(organization__in=user_orgs)
-        context['assistants'] = agents_of_orgs
-        context['connection'] = vector_store
-        context['form'] = CodeRepositoryStorageForm(instance=vector_store)
+
+        try:
+            context['user'] = context_user
+            context['knowledge_base_systems'] = KNOWLEDGE_BASE_SYSTEMS
+            context['vectorizers'] = VECTORIZERS
+            user_orgs = context_user.organizations.all()
+            agents_of_orgs = Assistant.objects.filter(organization__in=user_orgs)
+            context['assistants'] = agents_of_orgs
+            context['connection'] = vector_store
+            context['form'] = CodeRepositoryStorageForm(instance=vector_store)
+        except Exception as e:
+            logger.error(f"User: {context_user} - Code Base Storage - Update Error: {e}")
+            messages.error(self.request, 'An error occurred while updating Code Base Storage.')
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -67,7 +73,8 @@ class CodeBaseView_StorageUpdate(LoginRequiredMixin, TemplateView):
             messages.success(request, "Code Base Storage updated successfully.")
             return redirect('datasource_codebase:list')
         else:
-            logger.error(f"[CodeBaseView_StorageUpdate] Error updating Code Base Storage. Please check the form for errors.")
+            logger.error(
+                f"[CodeBaseView_StorageUpdate] Error updating Code Base Storage. Please check the form for errors.")
             messages.error(request, "Error updating Code Base Storage. Please check the form for errors.")
             context = self.get_context_data(**kwargs)
             context['form'] = form

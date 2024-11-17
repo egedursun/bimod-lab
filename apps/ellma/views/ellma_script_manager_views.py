@@ -38,12 +38,17 @@ class EllmaScriptView_ManageScripts(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        org_scripts = {}
-        for org in user_orgs:
-            scripts = EllmaScript.objects.filter(organization=org)
-            org_scripts[org] = scripts
-        context['org_scripts'] = org_scripts
-        context["organizations"] = user_orgs
-        context['llm_models'] = LLMCore.objects.filter(organization__in=user_orgs)
+        try:
+            user_orgs = Organization.objects.filter(users__in=[self.request.user])
+            org_scripts = {}
+            for org in user_orgs:
+                scripts = EllmaScript.objects.filter(organization=org)
+                org_scripts[org] = scripts
+            context['org_scripts'] = org_scripts
+            context["organizations"] = user_orgs
+            context['llm_models'] = LLMCore.objects.filter(organization__in=user_orgs)
+        except Exception as e:
+            messages.error(self.request, f"An error occurred: {str(e)}")
+            return context
+
         return context

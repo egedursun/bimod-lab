@@ -52,32 +52,40 @@ class OrchestrationView_QueryRerun(LoginRequiredMixin, TemplateView):
         query_text = query.query_text
         attached_images = request.FILES.getlist('attached_images[]', [])
         attached_files = request.FILES.getlist('attached_files[]', [])
-        query.logs.all().delete()
-        query_log = OrchestrationQueryLog.objects.create(
-            orchestration_query=query, log_type=OrchestrationQueryLogTypesNames.USER,
-            log_text_content=query_text + f"""
-                        -----
 
-                        **IMAGE URLS:**
-                        '''
-                        {attached_images}
-                        '''
+        try:
+            query.logs.all().delete()
+            query_log = OrchestrationQueryLog.objects.create(
+                orchestration_query=query, log_type=OrchestrationQueryLogTypesNames.USER,
+                log_text_content=query_text + f"""
+                            -----
 
-                        -----
+                            **IMAGE URLS:**
+                            '''
+                            {attached_images}
+                            '''
 
-                        **FILE URLS:**
-                        '''
-                        {attached_files}
-                        '''
+                            -----
 
-                        -----
-                    """, log_file_contents=attached_files, log_image_contents=attached_images)
-        query.logs.add(query_log)
-        query.save()
-        orch_xc = OrchestrationExecutor(
-            maestro=query.maestro,
-            query_chat=query
-        )
-        final_response = orch_xc.execute_for_query()
+                            **FILE URLS:**
+                            '''
+                            {attached_files}
+                            '''
+
+                            -----
+                        """, log_file_contents=attached_files, log_image_contents=attached_images)
+            query.logs.add(query_log)
+            query.save()
+
+            orch_xc = OrchestrationExecutor(
+                maestro=query.maestro,
+                query_chat=query
+            )
+            final_response = orch_xc.execute_for_query()
+
+        except Exception as e:
+            messages.error(request, f"An error occurred while rerunning the Orchestration Query: {str(e)}")
+            return redirect("orchestrations:query_detail", pk=query.maestro.id, query_id=query.id)
+
         logger.info(f"Orchestration query was rerun by User: {self.request.user.id}.")
         return redirect('orchestrations:query_detail', pk=query.maestro.id, query_id=query.id)

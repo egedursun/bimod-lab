@@ -30,7 +30,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -76,5 +75,6 @@ class NERView_IntegrationCreate(LoginRequiredMixin, TemplateView):
             form.save()
             logger.info(f"User: {context_user} - NER Integration: {form.cleaned_data['name']} - Created.")
             return redirect('data_security:list_ner_integrations')
+
         logger.error(f"User: {context_user} - Form: {form.errors}")
         return render(request, self.template_name, {'form': form})

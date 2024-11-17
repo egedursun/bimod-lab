@@ -30,7 +30,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -65,18 +64,24 @@ class LLMView_Create(TemplateView, LoginRequiredMixin):
         user = request.user
         form.instance.created_by_user = user
         form.instance.last_updated_by_user = user
-        if form.is_valid():
-            form.save()
-            org = Organization.objects.get(id=request.POST['organization'])
-            llm_core = LLMCore.objects.filter(created_by_user=user).latest('created_at')
-            org.llm_cores.add(llm_core)
-            org.save()
-            logger.info(f"LLM Core created: {llm_core.id}")
-            return redirect('llm_core:list')
-        else:
-            error_msgs = form.errors
-            context = self.get_context_data(**kwargs)
-            context['form'] = form
-            context['error_messages'] = error_msgs
-            logger.error(f"Error creating LLM Core: {error_msgs}")
-            return self.render_to_response(context)
+
+        try:
+            if form.is_valid():
+                form.save()
+                org = Organization.objects.get(id=request.POST['organization'])
+                llm_core = LLMCore.objects.filter(created_by_user=user).latest('created_at')
+                org.llm_cores.add(llm_core)
+                org.save()
+                logger.info(f"LLM Core created: {llm_core.id}")
+                return redirect('llm_core:list')
+            else:
+                error_msgs = form.errors
+                context = self.get_context_data(**kwargs)
+                context['form'] = form
+                context['error_messages'] = error_msgs
+                logger.error(f"Error creating LLM Core: {error_msgs}")
+                return self.render_to_response(context)
+        except Exception as e:
+            logger.error(f"Error creating LLM Core: {e}")
+            messages.error(request, f"Error creating LLM Core: {e}")
+            return redirect('llm_core:create')

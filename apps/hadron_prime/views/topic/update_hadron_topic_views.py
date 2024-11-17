@@ -68,12 +68,17 @@ class HadronPrimeView_UpdateHadronTopic(LoginRequiredMixin, TemplateView):
             messages.error(request, 'Please fill out all required fields.')
             return redirect('hadron_prime:update_hadron_topic', pk=topic_id)
 
-        system = HadronSystem.objects.get(id=system_id)
-        hadron_topic.system = system
-        hadron_topic.topic_name = topic_name
-        hadron_topic.topic_description = topic_description
-        hadron_topic.topic_purpose = topic_purpose
-        hadron_topic.save()
+        try:
+            system = HadronSystem.objects.get(id=system_id)
+            hadron_topic.system = system
+            hadron_topic.topic_name = topic_name
+            hadron_topic.topic_description = topic_description
+            hadron_topic.topic_purpose = topic_purpose
+            hadron_topic.save()
+        except Exception as e:
+            logger.error(f"Error updating Hadron Topic: {e}")
+            messages.error(request, f"Error updating Hadron Topic: {e}")
+            return redirect('hadron_prime:update_hadron_topic', pk=topic_id)
 
         logger.info(f'Hadron Topic "{hadron_topic.topic_name}" updated.')
         messages.success(request, f'Hadron Topic "{hadron_topic.topic_name}" updated successfully.')

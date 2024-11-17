@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 
@@ -30,7 +31,6 @@ from apps.datasource_media_storages.utils import decode_stream__docx, decode_str
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -87,10 +87,16 @@ class MediaView_ItemUpdate(LoginRequiredMixin, TemplateView):
             return redirect('datasource_media_storages:list_items')
         ##############################
 
-        media_item = DataSourceMediaStorageItem.objects.get(id=kwargs['pk'])
-        description = request.POST.get('description')
-        media_item.description = description
-        media_item.save()
+        try:
+            media_item = DataSourceMediaStorageItem.objects.get(id=kwargs['pk'])
+            description = request.POST.get('description')
+            media_item.description = description
+            media_item.save()
+        except Exception as e:
+            logger.error(f"User: {request.user} - Media Item - Update Error: {e}")
+            messages.error(request, 'An error occurred while updating the media item.')
+            return redirect('datasource_media_storages:list_items')
+
         logger.info(f"[views.update_media_item] Media item updated successfully.")
         messages.success(request, 'Media item updated successfully.')
         return redirect('datasource_media_storages:list_items')

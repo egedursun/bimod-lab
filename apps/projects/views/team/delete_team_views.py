@@ -39,7 +39,12 @@ class ProjectsView_TeamDelete(LoginRequiredMixin, TemplateView):
         team_id = self.kwargs.get('pk')
         team = get_object_or_404(ProjectTeamItem, pk=team_id)
         team_name = team.team_name
-        team.delete()
+
+        try:
+            team.delete()
+        except Exception as e:
+            messages.error(request, f'An error occurred while deleting the Team: {str(e)}')
+            return redirect('projects:team_list')
 
         messages.success(request, f'Team "{team_name}" has been successfully deleted.')
         logger.info(f'Team deleted: {team_name}')

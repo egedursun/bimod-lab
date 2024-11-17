@@ -19,7 +19,6 @@
 from django.contrib import admin
 
 from apps.core.vector_operations.intra_context_memory.memory_executor import IntraContextMemoryExecutor
-from apps.assistants.utils import ContextManagementStrategyNames
 from apps.multimodal_chat.models import MultimodalChat
 
 from django.contrib.admin.actions import delete_selected as django_delete_selected

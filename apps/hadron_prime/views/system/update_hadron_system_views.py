@@ -61,11 +61,16 @@ class HadronPrimeView_UpdateHadronSystem(LoginRequiredMixin, TemplateView):
             messages.error(request, 'Please fill out all required fields.')
             return redirect('hadron_prime:update_hadron_system', pk=system_id)
 
-        organization = Organization.objects.get(id=organization_id)
-        hadron_system.organization = organization
-        hadron_system.system_name = system_name
-        hadron_system.system_description = system_description
-        hadron_system.save()
+        try:
+            organization = Organization.objects.get(id=organization_id)
+            hadron_system.organization = organization
+            hadron_system.system_name = system_name
+            hadron_system.system_description = system_description
+            hadron_system.save()
+        except Exception as e:
+            logger.error(f"Error updating Hadron System: {e}")
+            messages.error(request, f"Error updating Hadron System: {e}")
+            return redirect('hadron_prime:update_hadron_system', pk=system_id)
 
         logger.info(f'Hadron System "{hadron_system.system_name}" updated.')
         messages.success(request, f'Hadron System "{hadron_system.system_name}" updated successfully.')

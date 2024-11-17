@@ -14,6 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -26,6 +28,8 @@ from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
+
+logger = logging.getLogger(__name__)
 
 
 class MetaKanbanView_BoardUpdate(LoginRequiredMixin, TemplateView):
@@ -60,10 +64,17 @@ class MetaKanbanView_BoardUpdate(LoginRequiredMixin, TemplateView):
             messages.error(request, "Please fill out all required fields.")
             return self.render_to_response(self.get_context_data())
 
-        board.project_id = project_id
-        board.llm_model_id = llm_model_id
-        board.title = title
-        board.description = description
-        board.save()
+        try:
+            board.project_id = project_id
+            board.llm_model_id = llm_model_id
+            board.title = title
+            board.description = description
+            board.save()
+        except Exception as e:
+            messages.error(request, f"Error updating kanban board: {e}")
+            logger.error(f"Error updating kanban board: {e}")
+            return redirect('metakanban:board_list')
+
+        logger.info(f"Kanban board updated by User: {self.request.user.id}.")
         messages.success(request, "Kanban board updated successfully.")
         return redirect("metakanban:board_list")

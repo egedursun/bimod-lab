@@ -14,10 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.views.generic import TemplateView
 
 from apps.bmd_academy.models import AcademyCourse
 from web_project import TemplateLayout, TemplateHelper
+
+logger = logging.getLogger(__name__)
 
 
 class AcademyView_CourseList(TemplateView):
@@ -29,12 +33,17 @@ class AcademyView_CourseList(TemplateView):
         })
         context['courses'] = AcademyCourse.objects.order_by("created_at").all()
 
-        amount_videos_by_course = {}
-        for course in context['courses']:
-            sections = course.sections.all()
-            amount_videos = 0
-            for section in sections:
-                amount_videos += section.videos.count()
-            amount_videos_by_course[course.id] = amount_videos
-        context['amount_videos_by_course'] = amount_videos_by_course
+        try:
+            amount_videos_by_course = {}
+            for course in context['courses']:
+                sections = course.sections.all()
+                amount_videos = 0
+                for section in sections:
+                    amount_videos += section.videos.count()
+                amount_videos_by_course[course.id] = amount_videos
+            context['amount_videos_by_course'] = amount_videos_by_course
+        except Exception as e:
+            logger.error(f"[AcademyView_CourseList] Error fetching the Academy Courses: {e}")
+            return context
+
         return context

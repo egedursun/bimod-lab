@@ -27,7 +27,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,8 +50,15 @@ class UserManagementView_UserRemoveFromOrganization(TemplateView, LoginRequiredM
 
         user = get_object_or_404(User, id=kwargs['pk'])
         org = get_object_or_404(Organization, id=kwargs['org_id'])
-        org.users.remove(user)
-        org.save()
+
+        try:
+            org.users.remove(user)
+            org.save()
+        except Exception as e:
+            logger.error(f"User removal from Organization failed. Error: {e}")
+            messages.error(request, 'User removal from Organization failed.')
+            return redirect('user_management:list')
+
         logger.info(f"User was removed from Organization: {org.id} by User: {self.request.user.id}.")
         messages.success(request, f'User removed from {org.name} successfully.')
         return redirect('user_management:list')

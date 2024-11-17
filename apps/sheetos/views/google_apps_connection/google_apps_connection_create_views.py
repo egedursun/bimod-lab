@@ -14,6 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
@@ -24,6 +26,8 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.sheetos.models import SheetosGoogleAppsConnection
 from apps.sheetos.utils import generate_google_apps_connection_api_key
 from apps.user_permissions.utils import PermissionNames
+
+logger = logging.getLogger(__name__)
 
 
 class SheetosView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
@@ -47,14 +51,20 @@ class SheetosView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
 
         assistant = get_object_or_404(Assistant, id=assistant_id)
 
-        connection, created = SheetosGoogleAppsConnection.objects.get_or_create(
-            owner_user=request.user, sheetos_assistant=assistant,
-            defaults={'connection_api_key': generate_google_apps_connection_api_key()}
-        )
+        try:
+            connection, created = SheetosGoogleAppsConnection.objects.get_or_create(
+                owner_user=request.user, sheetos_assistant=assistant,
+                defaults={'connection_api_key': generate_google_apps_connection_api_key()}
+            )
 
-        if not created:
-            messages.warning(request, "A connection for this model already exists. Please renew if necessary.")
-        else:
-            messages.success(request, "Connection successfully created.")
+            if not created:
+                messages.warning(request, "A connection for this model already exists. Please renew if necessary.")
+            else:
+                messages.success(request, "Connection successfully created.")
+        except Exception as e:
+            logger.error(f"An error occurred while creating the Sheetos Google Apps Connection: {str(e)}")
+            messages.error(request, f"An error occurred while creating the Sheetos Google Apps Connection: {str(e)}")
+            return redirect('sheetos:google_apps_connections_list')
 
+        logger.info(f"Sheetos Google Apps Connection was created by User: {request.user.id}.")
         return redirect('sheetos:google_apps_connections_list')

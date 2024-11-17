@@ -29,7 +29,6 @@ from apps.community_forum.utils import CONST_HOURS
 from auth.utils import ForumRewardActionsNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -38,22 +37,27 @@ class ForumView_PostCreate(LoginRequiredMixin, TemplateView):
         thread_id = self.kwargs.get("thread_id")
         thread = get_object_or_404(ForumThread, id=thread_id)
 
-        if request.user.profile.user_last_forum_post_at:
-            if (timezone.now() - request.user.profile.user_last_forum_post_at).seconds < (1 * CONST_HOURS):
-                messages.error(request, "You can only post once per hour.")
-                logger.error(f"User tried to post more than once per hour. User ID: {request.user.id}")
-                return redirect('community_forum:thread_detail', thread_id=thread.id)
+        try:
+            if request.user.profile.user_last_forum_post_at:
+                if (timezone.now() - request.user.profile.user_last_forum_post_at).seconds < (1 * CONST_HOURS):
+                    messages.error(request, "You can only post once per hour.")
+                    logger.error(f"User tried to post more than once per hour. User ID: {request.user.id}")
+                    return redirect('community_forum:thread_detail', thread_id=thread.id)
 
-        request.user.profile.user_last_forum_post_at = timezone.now()
-        request.user.profile.save()
-        form = ForumPostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.thread = thread
-            post.created_by = request.user
-            post.save()
-            request.user.profile.add_points(ForumRewardActionsNames.ASK_QUESTION)
-            logger.info(f"Forum post created. Post ID: {post.id}")
+            request.user.profile.user_last_forum_post_at = timezone.now()
+            request.user.profile.save()
+            form = ForumPostForm(request.POST)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.thread = thread
+                post.created_by = request.user
+                post.save()
+                request.user.profile.add_points(ForumRewardActionsNames.ASK_QUESTION)
+                logger.info(f"Forum post created. Post ID: {post.id}")
+                return redirect('community_forum:thread_detail', thread_id=thread.id)
+        except Exception as e:
+            logger.error(f"Error creating forum post: {e}")
+            messages.error(request, "An error occurred while creating the post.")
             return redirect('community_forum:thread_detail', thread_id=thread.id)
 
         context = self.get_context_data(**kwargs)
@@ -64,11 +68,17 @@ class ForumView_PostCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         thread_id = self.kwargs.get("thread_id")
-        thread = get_object_or_404(ForumThread, id=thread_id)
-        categories = ForumCategory.objects.prefetch_related(
-            Prefetch('threads', queryset=ForumThread.objects.order_by('-created_at'))
-        )
-        context['categories'] = categories
-        context['thread'] = thread
-        context['form'] = ForumPostForm()
+
+        try:
+            thread = get_object_or_404(ForumThread, id=thread_id)
+            categories = ForumCategory.objects.prefetch_related(
+                Prefetch('threads', queryset=ForumThread.objects.order_by('-created_at'))
+            )
+            context['categories'] = categories
+            context['thread'] = thread
+            context['form'] = ForumPostForm()
+        except Exception as e:
+            logger.error(f"Error getting context data for forum post creation: {e}")
+            return context
+
         return context

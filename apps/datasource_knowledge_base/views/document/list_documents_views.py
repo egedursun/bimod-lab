@@ -42,34 +42,39 @@ class DocumentView_List(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        orgs = Organization.objects.filter(users__in=[request.user])
-        data = []
-        for org in orgs:
-            agents = Assistant.objects.filter(organization=org)
-            agent_data_list = []
-            for agent in agents:
-                vector_stores = DocumentKnowledgeBaseConnection.objects.filter(assistant=agent)
-                kb_data_list = []
-                for kb in vector_stores:
-                    docs = KnowledgeBaseDocument.objects.filter(knowledge_base=kb).order_by('-created_at')
-                    paginator = Paginator(docs, 5)  # 5 documents per page
-                    page_number = request.GET.get('page')
-                    page_obj = paginator.get_page(page_number)
-                    doc_data_list = []
-                    for doc in page_obj:
-                        log_entries = DocumentProcessingLog.objects.filter(document_full_uri=doc.document_uri)
-                        proc_statuses = [log.log_message for log in log_entries]
-                        doc_data_list.append({'document': doc, 'current_statuses': proc_statuses})
-                    kb_data_list.append({
-                        'knowledge_base': kb, 'documents': page_obj, 'document_data': doc_data_list,
-                    })
-                agent_data_list.append({'assistant': agent, 'knowledge_bases': kb_data_list})
-            data.append({'organization': org, 'assistants': agent_data_list})
+        try:
+            orgs = Organization.objects.filter(users__in=[request.user])
+            data = []
+            for org in orgs:
+                agents = Assistant.objects.filter(organization=org)
+                agent_data_list = []
+                for agent in agents:
+                    vector_stores = DocumentKnowledgeBaseConnection.objects.filter(assistant=agent)
+                    kb_data_list = []
+                    for kb in vector_stores:
+                        docs = KnowledgeBaseDocument.objects.filter(knowledge_base=kb).order_by('-created_at')
+                        paginator = Paginator(docs, 5)  # 5 documents per page
+                        page_number = request.GET.get('page')
+                        page_obj = paginator.get_page(page_number)
+                        doc_data_list = []
+                        for doc in page_obj:
+                            log_entries = DocumentProcessingLog.objects.filter(document_full_uri=doc.document_uri)
+                            proc_statuses = [log.log_message for log in log_entries]
+                            doc_data_list.append({'document': doc, 'current_statuses': proc_statuses})
+                        kb_data_list.append({
+                            'knowledge_base': kb, 'documents': page_obj, 'document_data': doc_data_list,
+                        })
+                    agent_data_list.append({'assistant': agent, 'knowledge_bases': kb_data_list})
+                data.append({'organization': org, 'assistants': agent_data_list})
 
-        context['data'] = data
-        context['document_statuses'] = ['staged', 'uploaded', 'loaded', 'chunked', 'embedded_document',
-                                        'saved_document', 'processed_document', 'embedded_chunks', 'saved_chunks',
-                                        'processed_chunks', 'completed']
+            context['data'] = data
+            context['document_statuses'] = ['staged', 'uploaded', 'loaded', 'chunked', 'embedded_document',
+                                            'saved_document', 'processed_document', 'embedded_chunks', 'saved_chunks',
+                                            'processed_chunks', 'completed']
+        except Exception as e:
+            messages.error(request, 'An error occurred while listing Knowledge Base documents.')
+            return self.render_to_response(context)
+
         context['failed_statuses'] = ['failed']
         context['partially_failed_statuses'] = ['partially_failed']
         return self.render_to_response(context)
@@ -84,8 +89,13 @@ class DocumentView_List(LoginRequiredMixin, TemplateView):
             return redirect('datasource_knowledge_base:list_documents')
         ##############################
 
-        doc_ids = request.POST.getlist('selected_documents')
-        if doc_ids:
-            KnowledgeBaseDocument.objects.filter(id__in=doc_ids).delete()
-            messages.success(request, 'Selected documents deleted successfully.')
+        try:
+            doc_ids = request.POST.getlist('selected_documents')
+            if doc_ids:
+                KnowledgeBaseDocument.objects.filter(id__in=doc_ids).delete()
+        except Exception as e:
+            messages.error(request, 'An error occurred while deleting selected documents.')
+            return redirect('datasource_knowledge_base:list_documents')
+
+        messages.success(request, 'Selected documents deleted successfully.')
         return redirect('datasource_knowledge_base:list_documents')

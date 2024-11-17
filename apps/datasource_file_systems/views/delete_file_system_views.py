@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -48,6 +49,13 @@ class FileSystemView_Delete(LoginRequiredMixin, TemplateView):
         ##############################
 
         conn = get_object_or_404(DataSourceFileSystem, pk=kwargs['pk'])
-        conn.delete()
+
+        try:
+            conn.delete()
+        except Exception as e:
+            logger.error(f"User: {request.user} - File System - Delete Error: {e}")
+            messages.error(request, 'An error occurred while deleting the file system connection.')
+            return redirect('datasource_file_systems:list')
+
         logger.info(f"[FileSystemView_Delete] File System Connection Deleted: {conn}")
         return redirect('datasource_file_systems:list')

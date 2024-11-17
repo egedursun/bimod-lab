@@ -26,7 +26,6 @@ from apps.mm_scheduled_jobs.models import ScheduledJob
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -49,7 +48,13 @@ class ScheduledJobView_Delete(LoginRequiredMixin, TemplateView):
 
         scheduled_job_id = self.kwargs.get('pk')
         scheduled_job = get_object_or_404(ScheduledJob, id=scheduled_job_id)
-        scheduled_job.delete()
+
+        try:
+            scheduled_job.delete()
+        except Exception as e:
+            messages.error(request, "An error occurred while deleting the Scheduled Job: " + str(e))
+            return redirect("mm_scheduled_jobs:list")
+
         logger.info(f"Scheduled Job was deleted by User: {self.request.user.id}.")
         messages.success(request, "Scheduled Job deleted successfully.")
         return redirect('mm_scheduled_jobs:list')

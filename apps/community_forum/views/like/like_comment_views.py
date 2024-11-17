@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+
 import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,7 +25,6 @@ from django.views import View
 from apps.community_forum.models import ForumComment, ForumLike
 from auth.utils import ForumRewardActionsNames
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -35,17 +32,23 @@ class ForumView_CommentLike(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         comment_id = self.kwargs.get("comment_id")
         comment = get_object_or_404(ForumComment, id=comment_id)
-        like, created = ForumLike.objects.get_or_create(user=request.user, comment=comment)
-        if not created:
-            like.delete()
-            comment.like_count -= 1
-            comment.save()
-            comment_owner = comment.created_by
-            comment_owner.profile.remove_points(ForumRewardActionsNames.GET_LIKE)
-        else:
-            comment.like_count += 1
-            comment.save()
-            comment_owner = comment.created_by
-            comment_owner.profile.add_points(ForumRewardActionsNames.GET_LIKE)
+
+        try:
+            like, created = ForumLike.objects.get_or_create(user=request.user, comment=comment)
+            if not created:
+                like.delete()
+                comment.like_count -= 1
+                comment.save()
+                comment_owner = comment.created_by
+                comment_owner.profile.remove_points(ForumRewardActionsNames.GET_LIKE)
+            else:
+                comment.like_count += 1
+                comment.save()
+                comment_owner = comment.created_by
+                comment_owner.profile.add_points(ForumRewardActionsNames.GET_LIKE)
+        except Exception as e:
+            logger.error(f"[ForumView_CommentLike] Error liking the Comment: {e}")
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
         logger.info(f"Comment liked. Comment ID: {comment.id}")
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

@@ -80,7 +80,6 @@ class VoidForgerActionTypesNames:
     def as_list():
         return [VoidForgerActionTypesNames.NATURAL_LANGUAGE_RESPONSE,
                 VoidForgerActionTypesNames.INTERMEDIARY_AGENT_COMMAND,
-                VoidForgerActionTypesNames.INTERMEDIARY_AGENT_RESPONSE,
                 VoidForgerActionTypesNames.ACTION_LOG_SEARCH_ATTEMPT,
                 VoidForgerActionTypesNames.AUTO_EXECUTION_LOG_SEARCH_ATTEMPT,
                 VoidForgerActionTypesNames.OLD_CHAT_MESSAGES_SEARCH_ATTEMPT,

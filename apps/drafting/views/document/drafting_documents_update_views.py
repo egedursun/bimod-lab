@@ -27,7 +27,6 @@ from apps.drafting.models import DraftingFolder, DraftingDocument
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -36,14 +35,21 @@ class DraftingView_DocumentUpdate(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         folder_id = self.kwargs['folder_id']
         document_id = self.kwargs['document_id']
-        folder = get_object_or_404(DraftingFolder, id=folder_id)
-        document = get_object_or_404(DraftingDocument, id=document_id, document_folder=folder)
-        available_folders = DraftingFolder.objects.filter(organization=folder.organization)
-        assistants = Assistant.objects.filter(organization=folder.organization)
-        context['folder'] = folder
-        context['document'] = document
-        context['available_folders'] = available_folders
-        context['assistants'] = assistants
+
+        try:
+            folder = get_object_or_404(DraftingFolder, id=folder_id)
+            document = get_object_or_404(DraftingDocument, id=document_id, document_folder=folder)
+            available_folders = DraftingFolder.objects.filter(organization=folder.organization)
+            assistants = Assistant.objects.filter(organization=folder.organization)
+            context['folder'] = folder
+            context['document'] = document
+            context['available_folders'] = available_folders
+            context['assistants'] = assistants
+        except Exception as e:
+            logger.error(f"Error getting Drafting Document: {e}")
+            messages.error(self.request, 'An error occurred while getting Drafting Document.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -58,15 +64,22 @@ class DraftingView_DocumentUpdate(LoginRequiredMixin, TemplateView):
 
         folder_id = self.kwargs['folder_id']
         document_id = self.kwargs['document_id']
-        folder = get_object_or_404(DraftingFolder, id=folder_id)
-        document = get_object_or_404(DraftingDocument, id=document_id, document_folder=folder)
-        document.document_title = request.POST.get('document_title')
-        document.copilot_assistant_id = request.POST.get('copilot_assistant')
-        document.document_folder_id = request.POST.get('document_folder')
-        document.context_instructions = request.POST.get('context_instructions', '')
-        document.target_audience = request.POST.get('target_audience', '')
-        document.tone = request.POST.get('tone', '')
-        document.last_updated_by_user = request.user
-        document.save()
+
+        try:
+            folder = get_object_or_404(DraftingFolder, id=folder_id)
+            document = get_object_or_404(DraftingDocument, id=document_id, document_folder=folder)
+            document.document_title = request.POST.get('document_title')
+            document.copilot_assistant_id = request.POST.get('copilot_assistant')
+            document.document_folder_id = request.POST.get('document_folder')
+            document.context_instructions = request.POST.get('context_instructions', '')
+            document.target_audience = request.POST.get('target_audience', '')
+            document.tone = request.POST.get('tone', '')
+            document.last_updated_by_user = request.user
+            document.save()
+        except Exception as e:
+            logger.error(f"Error updating Drafting Document: {e}")
+            messages.error(self.request, 'An error occurred while updating Drafting Document.')
+            return redirect('drafting:documents_list', folder_id=folder_id)
+
         logger.info(f"Drafting Document {document.document_title} was updated.")
         return redirect('drafting:documents_list', folder_id=folder_id)

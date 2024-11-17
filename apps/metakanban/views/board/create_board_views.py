@@ -62,10 +62,16 @@ class MetaKanbanView_BoardCreate(LoginRequiredMixin, TemplateView):
 
         connection_api_key = secrets.token_urlsafe(META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH)
 
-        board = MetaKanbanBoard.objects.create(
-            project_id=project_id, llm_model_id=llm_model_id, title=title,
-            description=description, created_by_user=request.user,
-            connection_api_key=connection_api_key
-        )
+        try:
+            board = MetaKanbanBoard.objects.create(
+                project_id=project_id, llm_model_id=llm_model_id, title=title,
+                description=description, created_by_user=request.user,
+                connection_api_key=connection_api_key
+            )
+        except Exception as e:
+            logger.error(f"Error creating kanban board: {e}")
+            messages.error(request, "Error creating kanban board.")
+            return self.render_to_response(self.get_context_data())
+
         messages.success(request, "Kanban board created successfully.")
         return redirect("metakanban:board_list")

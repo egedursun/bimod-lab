@@ -48,7 +48,13 @@ class TriggeredJobView_OrchestrationDelete(LoginRequiredMixin, TemplateView):
 
         triggered_job_id = self.kwargs.get('pk')
         triggered_job = get_object_or_404(OrchestrationTriggeredJob, id=triggered_job_id)
-        triggered_job.delete()
+
+        try:
+            triggered_job.delete()
+        except Exception as e:
+            messages.error(request, "An error occurred while deleting the Orchestration Triggered Job: " + str(e))
+            return redirect("mm_triggered_jobs:orchestration_list")
+
         logger.info(f"Orchestration Triggered Job was deleted by User: {self.request.user.id}.")
         messages.success(request, "Orchestration Triggered Job deleted successfully.")
         return redirect('mm_triggered_jobs:orchestration_list')

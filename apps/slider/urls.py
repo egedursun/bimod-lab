@@ -17,10 +17,6 @@
 
 from django.urls import path
 
-from apps.slider.views.document import SliderView_DocumentDetail, SliderView_DocumentList, SliderView_DocumentDelete, \
-    SliderView_DocumentCreate, SliderView_DocumentUpdate, SliderView_SaveContent
-from apps.slider.views.folder import SliderView_FolderList, SliderView_FolderDelete, SliderView_FolderUpdate, \
-    SliderView_FolderCreate
 from apps.slider.views.google_apps_connection import SliderView_GoogleAppsConnectionList, \
     SliderView_GoogleAppsConnectionCreate, SliderView_GoogleAppsConnectionDelete, SliderView_GoogleAppsConnectionUpdate
 from apps.slider.views.public import SliderView_PublicGenerateViaAICommand, SliderView_PublicGenerateViaNoSQLCommand, \
@@ -28,16 +24,12 @@ from apps.slider.views.public import SliderView_PublicGenerateViaAICommand, Slid
     SliderView_PublicGenerateViaSelectCommand, SliderView_PublicGenerateViaVectCommand, \
     SliderView_PublicGenerateViaAutoCommand, SliderView_PublicGenerateViaImgCommand, \
     SliderView_PublicGenerateViaWebCommand, SliderView_PublicGenerateViaRepoCommand
-from apps.slider.views.slider_commands import SliderView_GenerateViaAICommand, SliderView_GenerateViaNoSQLCommand, \
-    SliderView_GenerateViaSQLCommand, SliderView_GenerateViaSSHCommand, SliderView_GenerateViaSelectCommand, \
-    SliderView_GenerateViaVectCommand, SliderView_GenerateViaAutoCommand, SliderView_GenerateViaImgCommand, \
-    SliderView_GenerateViaWebCommand
-from apps.slider.views.slider_commands.repo_commands_views import SliderView_GenerateViaRepoCommand
 
 app_name = 'slider'
 
 urlpatterns = [
-    # path("folders/list/", SliderView_FolderList.as_view(
+    # path("folders/list/", SliderView_FolderList
+    # .as_view(
     #    template_name="slider/folder/slider_folders_list.html"), name="folders_list"),
     # path("folders/delete/<int:folder_id>/", SliderView_FolderDelete.as_view(
     #    template_name="slider/folder/slider_folders_delete.html"), name="folders_delete"),

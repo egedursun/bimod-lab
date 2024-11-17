@@ -25,7 +25,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingDocument
 from apps.user_permissions.utils import PermissionNames
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -46,9 +45,16 @@ class DraftingView_SaveContent(LoginRequiredMixin, View):
         folder_id = self.kwargs['folder_id']
         document_id = self.kwargs['document_id']
         document = get_object_or_404(DraftingDocument, id=document_id)
-        document_content = request.POST.get('draft_text')
-        if document_content:
-            document.document_content_json_quill = document_content
-            document.save()
+
+        try:
+            document_content = request.POST.get('draft_text')
+            if document_content:
+                document.document_content_json_quill = document_content
+                document.save()
+        except Exception as e:
+            logger.error(f"Error updating Drafting Document: {e}")
+            messages.error(self.request, 'An error occurred while updating Drafting Document.')
+            return redirect('drafting:documents_detail', folder_id=folder_id, document_id=document_id)
+
         logger.info(f"Drafting Document {document.document_title} was updated.")
         return redirect('drafting:documents_detail', folder_id=folder_id, document_id=document_id)

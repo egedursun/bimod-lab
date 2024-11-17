@@ -27,7 +27,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.drafting.models import DraftingDocument
 from apps.user_permissions.utils import PermissionNames
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -49,8 +48,15 @@ class DraftingView_GenerateViaRepoCommand(LoginRequiredMixin, View):
                             folder_id=document.document_folder.id, document_id=document_id)
         ##############################
 
-        command = request.POST.get('command')
-        xc = DraftingExecutionManager(drafting_document=document)
-        response_json = xc.execute_repo_command(command=command)
+        try:
+            command = request.POST.get('command')
+            xc = DraftingExecutionManager(drafting_document=document)
+            response_json = xc.execute_repo_command(command=command)
+        except Exception as e:
+            logger.error(f"Error executing Repo Command for Drafting Document: {e}")
+            messages.error(self.request, 'An error occurred while executing Repo Command.')
+            return redirect('drafting:documents_detail',
+                            folder_id=document.document_folder.id, document_id=document_id)
+
         logger.info(f"Repo Command was executed for Drafting Document: {document.id}.")
         return JsonResponse(response_json)

@@ -25,7 +25,6 @@ from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -56,15 +55,21 @@ class ProjectsView_ProjectCreate(LoginRequiredMixin, TemplateView):
             return redirect('projects:project_create')
 
         org = Organization.objects.get(id=org_id)
-        project_item = ProjectItem.objects.create(
-            organization=org, project_name=project_name, project_department=project_department,
-            project_description=project_description, project_status=project_status,
-            project_priority=project_priority, project_risk_level=project_risk_level,
-            project_goals=project_goals, project_constraints=project_constraints,
-            project_stakeholders=project_stakeholders, project_start_date=project_start_date,
-            project_end_date=project_end_date, project_budget=project_budget,
-            created_by_user=context_user
-        )
+
+        try:
+            project_item = ProjectItem.objects.create(
+                organization=org, project_name=project_name, project_department=project_department,
+                project_description=project_description, project_status=project_status,
+                project_priority=project_priority, project_risk_level=project_risk_level,
+                project_goals=project_goals, project_constraints=project_constraints,
+                project_stakeholders=project_stakeholders, project_start_date=project_start_date,
+                project_end_date=project_end_date, project_budget=project_budget,
+                created_by_user=context_user
+            )
+        except Exception as e:
+            messages.error(request, "Project creation failed.")
+            logger.error(f"Project creation failed: {e}")
+            return redirect('projects:project_create')
 
         messages.success(request, "Project created successfully.")
         logger.info(f"Project created successfully: {project_item.id}")

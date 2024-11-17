@@ -14,12 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from django.contrib.auth.mixins import LoginRequiredMixin
+import logging
+
 from django.db.models import Prefetch
 from django.views.generic import TemplateView
 
 from apps.bmd_academy.models import AcademyCourse, AcademyCourseSection, AcademyCourseVideo
 from web_project import TemplateLayout, TemplateHelper
+
+logger = logging.getLogger(__name__)
 
 
 class AcademyView_CourseDetail(TemplateView):
@@ -28,15 +31,21 @@ class AcademyView_CourseDetail(TemplateView):
         context.update({
             "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
         })
-        course = AcademyCourse.objects.prefetch_related(
-            Prefetch(
-                'sections',
-                queryset=AcademyCourseSection.objects.order_by('created_at').prefetch_related(
-                    Prefetch(
-                        'videos',
-                        queryset=AcademyCourseVideo.objects.order_by('created_at'))
+
+        try:
+            course = AcademyCourse.objects.prefetch_related(
+                Prefetch(
+                    'sections',
+                    queryset=AcademyCourseSection.objects.order_by('created_at').prefetch_related(
+                        Prefetch(
+                            'videos',
+                            queryset=AcademyCourseVideo.objects.order_by('created_at'))
+                    )
                 )
-            )
-        ).get(course_slug=self.kwargs['slug'])
-        context['course'] = course
+            ).get(course_slug=self.kwargs['slug'])
+            context['course'] = course
+        except Exception as e:
+            logger.error(f"[AcademyView_CourseDetail] Error fetching the Academy Course: {e}")
+            return context
+
         return context

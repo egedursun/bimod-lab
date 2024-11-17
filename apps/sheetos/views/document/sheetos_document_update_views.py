@@ -57,14 +57,20 @@ class SheetosView_DocumentUpdate(LoginRequiredMixin, TemplateView):
         folder_id = self.kwargs['folder_id']
         document_id = self.kwargs['document_id']
         folder = get_object_or_404(SheetosFolder, id=folder_id)
-        document = get_object_or_404(SheetosDocument, id=document_id, document_folder=folder)
-        document.document_title = request.POST.get('document_title')
-        document.copilot_assistant_id = request.POST.get('copilot_assistant')
-        document.document_folder_id = request.POST.get('document_folder')
-        document.context_instructions = request.POST.get('context_instructions', '')
-        document.target_audience = request.POST.get('target_audience', '')
-        document.tone = request.POST.get('tone', '')
-        document.last_updated_by_user = request.user
-        document.save()
+
+        try:
+            document = get_object_or_404(SheetosDocument, id=document_id, document_folder=folder)
+            document.document_title = request.POST.get('document_title')
+            document.copilot_assistant_id = request.POST.get('copilot_assistant')
+            document.document_folder_id = request.POST.get('document_folder')
+            document.context_instructions = request.POST.get('context_instructions', '')
+            document.target_audience = request.POST.get('target_audience', '')
+            document.tone = request.POST.get('tone', '')
+            document.last_updated_by_user = request.user
+            document.save()
+        except Exception as e:
+            messages.error(request, f"An error occurred while updating the Sheetos Document: {str(e)}")
+            return redirect('sheetos:documents_list', folder_id=folder_id)
+
         logger.info(f"Sheetos Document {document.document_title} was updated.")
         return redirect('sheetos:documents_list', folder_id=folder_id)

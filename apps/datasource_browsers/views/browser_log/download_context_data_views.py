@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 import json
 import logging
@@ -27,7 +24,6 @@ from django.shortcuts import get_object_or_404
 from django.views import View
 
 from apps.datasource_browsers.models import DataSourceBrowserBrowsingLog
-
 
 logger = logging.getLogger(__name__)
 

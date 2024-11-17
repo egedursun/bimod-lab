@@ -29,7 +29,6 @@ from apps.user_permissions.utils import PermissionNames
 from apps.video_generations.models import VideoGeneratorConnection
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -106,10 +105,16 @@ class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
             logger.error(f"Error creating the Video Generator Connection. Errors: {errors}")
             return render(request, self.template_name, context)
 
-        video_generator_connection = VideoGeneratorConnection(
-            organization=orgg, assistant=agent, created_by_user=request.user, name=name, description=description,
-            provider=provider, provider_api_key=provider_api_key)
-        video_generator_connection.save()
+        try:
+            video_generator_connection = VideoGeneratorConnection(
+                organization=orgg, assistant=agent, created_by_user=request.user, name=name, description=description,
+                provider=provider, provider_api_key=provider_api_key)
+            video_generator_connection.save()
+        except Exception as e:
+            logger.error(f"Error creating the Video Generator Connection. Error: {e}")
+            messages.error(request, 'Error creating the Video Generator Connection.')
+            return redirect('video_generations:create')
+
         logger.info(f"Video Generator Connection created by User: {self.request.user.id}.")
         messages.success(request, 'Video Generator Connection created successfully.')
         return redirect('video_generations:list')

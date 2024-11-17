@@ -26,7 +26,6 @@ from apps.datasource_ml_models.models import DataSourceMLModelConnection
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -49,7 +48,14 @@ class MLModelView_ManagerDelete(LoginRequiredMixin, DeleteView):
         ##############################
 
         conn = get_object_or_404(DataSourceMLModelConnection, id=kwargs['pk'])
-        conn.delete()
+
+        try:
+            conn.delete()
+        except Exception as e:
+            logger.error(f"Error deleting ML Model Connection: {e}")
+            messages.error(self.request, 'An error occurred while deleting ML Model Connection.')
+            return redirect(self.success_url)
+
         logger.info(f"ML Model Connection deleted: {conn}")
         return redirect(self.success_url)
 

@@ -26,7 +26,6 @@ from apps.drafting.models import DraftingFolder
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -46,11 +45,17 @@ class DraftingView_FolderCreate(LoginRequiredMixin, View):
         description = request.POST.get('description', '')
         meta_context_instructions = request.POST.get('meta_context_instructions', '')
 
-        if organization_id and folder_name:
-            organization = Organization.objects.get(id=organization_id)
-            DraftingFolder.objects.create(
-                organization=organization, name=folder_name, description=description,
-                meta_context_instructions=meta_context_instructions, created_by_user=request.user
-            )
+        try:
+            if organization_id and folder_name:
+                organization = Organization.objects.get(id=organization_id)
+                DraftingFolder.objects.create(
+                    organization=organization, name=folder_name, description=description,
+                    meta_context_instructions=meta_context_instructions, created_by_user=request.user
+                )
+        except Exception as e:
+            logger.error(f"Error creating Drafting Folder: {e}")
+            messages.error(self.request, 'An error occurred while creating Drafting Folder.')
+            return redirect('drafting:folders_list')
+
         logger.info(f"Drafting Folder was created by User: {request.user.id}.")
         return redirect('drafting:folders_list')

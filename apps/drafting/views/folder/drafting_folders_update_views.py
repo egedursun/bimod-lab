@@ -27,7 +27,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -35,10 +34,17 @@ class DraftingView_FolderUpdate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         folder_id = self.kwargs['folder_id']
-        folder = get_object_or_404(DraftingFolder, id=folder_id)
-        organizations = Organization.objects.filter(users__in=[self.request.user])
-        context['folder'] = folder
-        context['organizations'] = organizations
+
+        try:
+            folder = get_object_or_404(DraftingFolder, id=folder_id)
+            organizations = Organization.objects.filter(users__in=[self.request.user])
+            context['folder'] = folder
+            context['organizations'] = organizations
+        except Exception as e:
+            logger.error(f"Error getting Drafting Folder: {e}")
+            messages.error(self.request, 'An error occurred while getting Drafting Folder.')
+            return context
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -53,12 +59,19 @@ class DraftingView_FolderUpdate(LoginRequiredMixin, TemplateView):
 
         folder_id = self.kwargs['folder_id']
         folder = get_object_or_404(DraftingFolder, id=folder_id)
-        folder.name = request.POST.get('name')
-        folder.description = request.POST.get('description', '')
-        folder.meta_context_instructions = request.POST.get('meta_context_instructions', '')
-        organization_id = request.POST.get('organization')
-        if organization_id:
-            folder.organization_id = organization_id
-        folder.save()
+
+        try:
+            folder.name = request.POST.get('name')
+            folder.description = request.POST.get('description', '')
+            folder.meta_context_instructions = request.POST.get('meta_context_instructions', '')
+            organization_id = request.POST.get('organization')
+            if organization_id:
+                folder.organization_id = organization_id
+            folder.save()
+        except Exception as e:
+            logger.error(f"Error updating Drafting Folder: {e}")
+            messages.error(self.request, 'An error occurred while updating Drafting Folder.')
+            return redirect('drafting:folders_list')
+
         logger.info(f"Drafting Folder was updated by User: {request.user.id}.")
         return redirect('drafting:folders_list')
