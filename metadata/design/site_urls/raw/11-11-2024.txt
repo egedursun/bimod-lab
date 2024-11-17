@@ -8,7 +8,6 @@ https://www.bimod.io/electron_copilot_releases/
 https://www.bimod.io/app/
 https://www.bimod.io/app/login/
 https://www.bimod.io/app/logout/
-*
 https://www.bimod.io/app/register/
 https://www.bimod.io/app/verify_email/
 https://www.bimod.io/app/verify/email/<str:token>/
@@ -18,7 +17,6 @@ https://www.bimod.io/app/reset_password/<str:token>/
 https://www.bimod.io/bmd_academy/courses/
 https://www.bimod.io/bmd_academy/courses/<slug:slug>/
 https://www.bimod.io/app/user_profile_management/profile/
-*
 https://www.bimod.io/app/user_profile_management/reset_password/<int:pk>
 https://www.bimod.io/app/user_profile_management/billing/update/
 https://www.bimod.io/app/user_profile_management/remove_card/<int:card_id>/
@@ -74,7 +72,6 @@ https://www.bimod.io/app/user_settings/delete/all/binexus_elite_agents/
 https://www.bimod.io/app/user_settings/delete/all/binexus_processes/
 https://www.bimod.io/app/user_settings/delete/all/metatempo_connections/
 https://www.bimod.io/app/user_settings/delete/all/projects/
-*
 https://www.bimod.io/app/user_settings/delete/all/teams/
 https://www.bimod.io/app/user_settings/delete/all/metakanban_boards/
 https://www.bimod.io/app/user_settings/delete/all/ellma_scripts/
@@ -91,7 +88,6 @@ https://www.bimod.io/app/organization/balance_transfer/
 https://www.bimod.io/app/organization/add_gift_credits/
 https://www.bimod.io/app/llm_core/create/
 https://www.bimod.io/app/llm_core/list/
-*
 https://www.bimod.io/app/llm_core/update/<int:pk>/
 https://www.bimod.io/app/llm_core/delete/<int:pk>/
 https://www.bimod.io/app/llm_transaction/list/
@@ -103,7 +99,6 @@ https://www.bimod.io/app/llm_transaction/top_up/create/
 https://www.bimod.io/app/llm_transaction/top_up/transfer/
 https://www.bimod.io/app/user_management/add/
 https://www.bimod.io/app/user_management/list/
-*
 https://www.bimod.io/app/user_management/remove/<int:pk>/
 https://www.bimod.io/app/user_management/update_user_status/
 https://www.bimod.io/app/user_management/add_user_to_organization/
