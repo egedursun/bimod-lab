@@ -14,9 +14,10 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
+import os
+
+from config.settings import BASE_DIR
 
 AGENT_SPEECH_LANGUAGES = [
     ("auto", "Auto (Detect)"),
@@ -37,35 +38,22 @@ AGENT_SPEECH_LANGUAGES = [AGENT_SPEECH_LANGUAGES[0]] + sorted(AGENT_SPEECH_LANGU
 CONTEXT_MANAGEMENT_STRATEGY = [
     ("stop", "Stop Conversation"),
     ("forget", "Forget Oldest Messages"),
-    # ("vectorize", "Vectorize Oldest Messages"),  # Will be turned on at a later time, after optimization
+    ("vectorize", "Vectorize Oldest Messages"),
 ]
 
 
 class ContextManagementStrategyNames:
     STOP = "stop"
     FORGET = "forget"
-    # VECTORIZE = "vectorize"  # Will be turned on at a later time, after optimization
+    VECTORIZE = "vectorize"
 
     @staticmethod
     def as_dict():
         return {
             "stop": "Stop Conversation",
             "forget": "Forget Oldest Messages",
-            # "vectorize": "Vectorize Oldest Messages",  # Will be turned on at a later time, after optimization
+            "vectorize": "Vectorize Oldest Messages",
         }
-
-
-EMBEDDING_MANAGERS = [
-    ("text2vec-openai", "Text2Vec (OpenAI)"),
-]
-
-
-class EmbeddingManagersNames:
-    TEXT2VEC_OPENAI = "text2vec-openai"
-
-    @staticmethod
-    def as_dict():
-        return {"text2vec-openai": "Text2Vec (OpenAI)"}
 
 
 MULTI_STEP_REASONING_CAPABILITY_CHOICE = [
@@ -149,6 +137,11 @@ AGENT_ADMIN_SEARCH_FIELDS = (
     "updated_at"
 )
 
-
 RANDOM_SUFFIX_MINIMUM_VALUE = 1_000_000_000
 RANDOM_SUFFIX_MAXIMUM_VALUE = 9_999_999_999
+
+VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES = os.path.join(BASE_DIR, 'assistant_vectors', 'context_memories')
+
+ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST = ['id', 'assistant_chat_message', 'created_at', 'updated_at']
+ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER = ['assistant_chat_message', 'created_at', 'updated_at']
+ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH = ['assistant_chat_message__id']

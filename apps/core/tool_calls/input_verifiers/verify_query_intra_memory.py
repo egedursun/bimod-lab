@@ -29,10 +29,4 @@ def verify_intra_memory_query_content(content: dict):
             using the Context History Query Execution tool. Please make sure you are defining the 'query' field in the
             parameters field of the tool_usage_json.
         """
-    if "alpha" not in ps:
-        return """
-            The 'alpha' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
-            using the Context History Query Execution tool. Please make sure you are defining the 'alpha' field in the
-            parameters field of the tool_usage_json.
-        """
     return None

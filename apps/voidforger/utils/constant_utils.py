@@ -101,26 +101,33 @@ VECTOR_INDEX_PATH_CHAT_MESSAGES = os.path.join(BASE_DIR, 'voidforger_vectors', '
 VOIDFORGER_CHAT_ADMIN_LIST = ['id', 'voidforger', 'user', 'created_by_user', 'chat_name', 'created_at', 'updated_at']
 VOIDFORGER_CHAT_ADMIN_FILTER = ['voidforger', 'user', 'created_by_user', 'created_at', 'updated_at']
 VOIDFORGER_CHAT_ADMIN_SEARCH = ['chat_name']
+
 VOIDFORGER_CHAT_MESSAGE_ADMIN_LIST = ['multimodal_voidforger_chat', 'sender_type', 'sent_at']
 VOIDFORGER_CHAT_MESSAGE_ADMIN_FILTER = ['sender_type', 'sent_at']
 VOIDFORGER_CHAT_MESSAGE_ADMIN_SEARCH = ['multimodal_voidforger_chat', 'sender_type', 'sent_at']
+
 VOIDFORGER_ADMIN_LIST = (
     'user', 'llm_model', 'runtime_status', 'tone', 'response_language', 'created_at', 'updated_at'
 )
 VOIDFORGER_ADMIN_FILTER = ('runtime_status', 'tone', 'response_language')
 VOIDFORGER_ADMIN_SEARCH = ('user__username',)
+
 VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_LIST = ['voidforger', 'action_type', 'timestamp']
 VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_FILTER = ['voidforger', 'action_type', 'timestamp']
 VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_SEARCH = ['voidforger', 'action_type', 'timestamp']
+
 VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_LIST = ['voidforger', 'action_type', 'responsible_user', 'timestamp']
 VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_FILTER = ['voidforger', 'action_type', 'responsible_user']
 VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_SEARCH = ['voidforger__id', 'action_type', 'responsible_user__username']
+
 VOIDFORGER_ACTION_MEMORY_VECTOR_DATA_ADMIN_LIST = ('voidforger_action_memory', 'created_at', 'updated_at')
 VOIDFORGER_ACTION_MEMORY_VECTOR_DATA_ADMIN_FILTER = ('voidforger_action_memory', 'created_at', 'updated_at')
 VOIDFORGER_ACTION_MEMORY_VECTOR_DATA_ADMIN_SEARCH = ('voidforger_action_memory', 'created_at', 'updated_at')
+
 VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST = ['id', 'voidforger_chat_message', 'created_at', 'updated_at']
 VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER = ['voidforger_chat_message', 'created_at', 'updated_at']
 VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH = ['voidforger_chat_message__id']
+
 VOIDFORGER_AUTO_EXECUTION_MEMORY_VECTOR_DATA_ADMIN_LIST = (
     'voidforger_auto_execution_memory',
     'created_at',

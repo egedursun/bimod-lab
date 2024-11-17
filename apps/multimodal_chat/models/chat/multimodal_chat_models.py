@@ -18,8 +18,6 @@
 
 from django.db import models
 
-from apps.core.vector_operations.intra_context_memory.memory_executor import IntraContextMemoryExecutor
-from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.multimodal_chat.utils import SOURCES_FOR_MULTIMODAL_CHATS
 
 
@@ -33,8 +31,7 @@ class MultimodalChat(models.Model):
                                         related_name='multimodal_chats_created_by_user')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    context_memory_connection = models.OneToOneField(ContextHistoryKnowledgeBaseConnection, on_delete=models.CASCADE,
-                                                     related_name='multimodal_chat', null=True, blank=True)
+
     transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_chats',
                                           blank=True)
     is_archived = models.BooleanField(default=False)
@@ -308,26 +305,3 @@ class MultimodalChat(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        # TODO: optimize the vectorization strategy, then will be uncommented
-        """
-        if (self.assistant.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE
-            and self.context_memory_connection is None):
-            if self.assistant.vectorizer_name is None:
-                return
-            if self.assistant.vectorizer_api_key is None:
-                return
-            intra_memory = ContextHistoryKnowledgeBaseConnection.objects.create(
-                assistant=self.assistant, chat=self, vectorizer=self.assistant.vectorizer_name,
-                vectorizer_api_key=self.assistant.vectorizer_api_key
-            )
-            conn = ContextHistoryKnowledgeBaseConnection.objects.get(id=intra_memory.id)
-            self.context_memory_connection = conn
-            self.save()
-        """
-
-    def delete(self, using=None, keep_parents=False):
-        if self.context_memory_connection:
-            xc = IntraContextMemoryExecutor(connection=self.context_memory_connection)
-            xc.delete_chat_history_classes(class_name=self.context_memory_connection.class_name)
-            self.context_memory_connection.delete()
-        super().delete(using, keep_parents)

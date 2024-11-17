@@ -18,3 +18,4 @@
 #
 
 from .assistant_admin import *
+from .assistant_context_history_vector_admin import *

@@ -325,22 +325,6 @@
                   {% endfor %}
                 </select>
               </div>
-              <div id="memory-vectorizer-selection-bar" class="mb-6 col-6 d-none">
-                <label class="form-label" for="vectorizer_name">Chat Memory Vectorizer</label>
-                <select class="form-select" id="vectorizer_name" name="vectorizer_name">
-                  <option value="" disabled selected>Select Vectorizer</option>
-                  {% for vectorizer in vectorizers %}
-                    <option value="{{ vectorizer.0 }}"
-                            {% if vectorizer.0 == assistant.vectorizer_name %}selected{% endif %}>{{ vectorizer.1 }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div id="memory-vectorizer-api-key-bar" class="mb-6 col-6 d-none">
-                <label class="form-label" for="vectorizer_api_key">Vectorizer API Key</label>
-                <input type="text" class="form-control" id="vectorizer_api_key" name="vectorizer_api_key"
-                       placeholder="Enter the API key for your OpenAI account"
-                       value="{{ assistant.vectorizer_api_key }}"/>
-              </div>
               <div class="mb-6 col-12">
                 <label class="form-label" for="glossary">Glossary</label>
                 <table id="keyValueTable" class="table table-bordered">
@@ -408,47 +392,6 @@
           imageGenerationCapabilityField.value = 'on';
         } else {
           imageGenerationCapabilityField.value = 'off';
-        }
-      });
-    });
-  </script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const contextOverflowStrategySelect = document.getElementById('context_overflow_strategy');
-      const maxContextMessagesInput = document.getElementById('max_context_messages');
-      const memoryVectorizerSelectionBar = document.getElementById('memory-vectorizer-selection-bar');
-      const memoryVectorizerApiKeyBar = document.getElementById('memory-vectorizer-api-key-bar');
-      const memoryVectorizerAlertBar = document.getElementById('memory-vectorizer-alert-bar');
-
-      if (contextOverflowStrategySelect.value === 'vectorize') {
-        memoryVectorizerSelectionBar.classList.remove('d-none');
-        memoryVectorizerApiKeyBar.classList.remove('d-none');
-        memoryVectorizerAlertBar.classList.remove('d-none');
-      }
-
-      contextOverflowStrategySelect.addEventListener('change', function () {
-        const selectedStrategy = this.value;
-
-        if (selectedStrategy === 'vectorize') {
-          console.log("entering inside for removal...");
-          memoryVectorizerSelectionBar.classList.remove('d-none');
-          memoryVectorizerApiKeyBar.classList.remove('d-none');
-          memoryVectorizerAlertBar.classList.remove('d-none');
-        } else {
-          memoryVectorizerSelectionBar.classList.add('d-none');
-          memoryVectorizerApiKeyBar.classList.add('d-none');
-          memoryVectorizerAlertBar.classList.add('d-none');
-        }
-      });
-
-      maxContextMessagesInput.addEventListener('input', function () {
-        const selectedStrategy = contextOverflowStrategySelect.value;
-
-        if (selectedStrategy === 'vectorize') {
-          memoryVectorizerSelectionBar.classList.remove('d-none');
-          memoryVectorizerApiKeyBar.classList.remove('d-none');
-          memoryVectorizerAlertBar.classList.remove('d-none');
         }
       });
     });

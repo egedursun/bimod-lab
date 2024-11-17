@@ -14,8 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -31,17 +30,4 @@ def delete_weaviate_class_handler(executor, class_name):
     except Exception as e:
         output["status"] = False
         output["error"] = f"Error removing classes: {e}"
-    return output
-
-
-def delete_intra_context_history_class_helper(executor, class_name):
-    logger.info(f"Deleting chat history classes: {class_name}")
-    c = executor.connect_c()
-    output = {"status": True, "error": ""}
-    try:
-        _ = c.collections.delete(class_name)
-        _ = c.collections.delete(f"{class_name}Chunks")
-    except Exception as e:
-        output["status"] = False
-        output["error"] = f"Error deleting chat history classes: {e}"
     return output

@@ -14,8 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+
 import logging
 
 from django.contrib import messages

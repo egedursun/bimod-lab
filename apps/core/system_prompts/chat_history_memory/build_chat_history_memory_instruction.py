@@ -23,9 +23,9 @@ def build_chat_history_memory_handling_prompt():
 
         - This conversation might have MORE messages than you are able to see. Some of the messages might have been
         deleted from the history, as the context window limit is reached. If you don't remember something, you can either
-        ask the user to repeat, or if you are a VoidForger assistant and have tools to search through older chat messages,
-        you can use those tools to find the information you need. However, don't assume you forgot something before you
-        are sure about it. You don't need to let the user know that you forget something unless it is necessary.
+        ask the user to repeat, or if you can use tools to search through older chat messages to find the information
+        you need. However, don't assume you forgot something before you are sure about it. You don't need to let the
+        user know that you forget something unless it is necessary.
         ---
     """
     return context_memory_instructions

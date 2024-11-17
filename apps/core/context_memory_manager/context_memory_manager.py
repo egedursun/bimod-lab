@@ -15,17 +15,20 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 import logging
+import os
+from typing import List, Dict
+
+import faiss
+import numpy as np
 
 from apps.core.context_memory_manager.utils import (get_error_on_context_memory_handling_log,
-                                                    get_structured_memory_contents)
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.vector_operations.intra_context_memory.memory_executor import IntraContextMemoryExecutor
+                                                    ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES)
+from apps.core.semantor.utils import OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS, OpenAIEmbeddingModels
 from apps.core.system_prompts.chat_history_memory.build_chat_history_memory_instruction import \
     build_chat_history_memory_handling_prompt, build_chat_history_memory_stop_communication_handler_prompt
-from apps.assistants.models import Assistant
-from apps.assistants.utils import ContextManagementStrategyNames
-from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+from apps.assistants.models import Assistant, AssistantOldChatMessagesVectorData
+from apps.assistants.utils import ContextManagementStrategyNames, VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES
+from apps.multimodal_chat.models import MultimodalChat
 from apps.voidforger.models import VoidForger
 
 logger = logging.getLogger(__name__)
@@ -44,7 +47,7 @@ class ContextMemoryManager:
         msg = {"role": ChatRoles.SYSTEM, "content": system_prompt}
         len_msg_history = len(message_history)
         if len_msg_history > maximum_allowed_messages:
-            trimmed_msg_history = [msg] + message_history[-maximum_allowed_messages:]
+            trimmed_msg_history = message_history[-maximum_allowed_messages:] + [msg]
             return trimmed_msg_history
         else:
             return message_history
@@ -61,86 +64,47 @@ class ContextMemoryManager:
         len_msg_history = len(message_history)
         if len_msg_history > maximum_allowed_messages:
             msg = {"role": ChatRoles.SYSTEM, "content": system_prompt}
-            trimmed_msg_history = [msg] + message_history[-maximum_allowed_messages:]
+            trimmed_msg_history = message_history[-maximum_allowed_messages:] + [msg]
             return trimmed_msg_history
         else:
             return message_history
 
     @staticmethod
-    def store_context_memory_as_embedding(context_agent, message_history, maximum_allowed_messages,
-                                          communication_object):
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
-        from apps.core.generative_ai.utils import ChatRoles
-        from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
-        try:
-            c = ContextHistoryKnowledgeBaseConnection.objects.filter(
-                assistant=context_agent, chat=communication_object).first()
-            x = IntraContextMemoryExecutor(connection=c)
-        except Exception as e:
-            logger.error(f"[ChatContextManager.store_context_memory_as_embedding] Error getting the connection: {e}")
-            return message_history
+    def store_context_memory_as_embedding(message_history, maximum_allowed_messages):
+
+        ############################################################################################################
+        ############################################################################################################
+        # The Django ORM data model automatically handles the Vectorization operations.
+        #   - The embeddings and indexes are created and stored in the database, so no additional operation here.
+        ############################################################################################################
+        ############################################################################################################
 
         chat_history_length = len(message_history)
         if chat_history_length > maximum_allowed_messages:
-            comb_msgs_history = ContextMemoryManager._generate_combined_context_history(message_history,
-                                                                                        maximum_allowed_messages)
-            try:
-                x.index_memory(connection_id=c.id, message_text=comb_msgs_history)
-                logger.info(f"[ChatContextManager.store_context_memory_as_embedding] Indexed the memory")
-            except Exception as e:
-                logger.error(f"[ChatContextManager.store_context_memory_as_embedding] Error indexing the memory: {e}")
-                return message_history[-maximum_allowed_messages:]
-
-            try:
-                tx = LLMTransaction(
-                    organization=communication_object.assistant.organization,
-                    model=communication_object.assistant.llm_model, responsible_user=communication_object.user,
-                    responsible_assistant=communication_object.assistant, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                    llm_cost=InternalServiceCosts.ContextMemory.COST, transaction_type=ChatRoles.SYSTEM,
-                    transaction_source=LLMTransactionSourcesTypesNames.STORE_MEMORY, is_tool_cost=True)
-                tx.save()
-                logger.info(f"[ChatContextManager.store_context_memory_as_embedding] Created the transaction")
-            except Exception as e:
-                logger.error(
-                    f"[ChatContextManager.store_context_memory_as_embedding] Error creating the transaction: {e}")
-                trimmed_msgs_history = message_history[-maximum_allowed_messages:]
-                return trimmed_msgs_history
-            logger.info(f"[ChatContextManager.store_context_memory_as_embedding] Stored the memory")
             trimmed_msgs_history = message_history[-maximum_allowed_messages:]
-            return trimmed_msgs_history
-        return message_history
+        else:
+            trimmed_msgs_history = message_history
+
+        return trimmed_msgs_history
 
     @staticmethod
-    def _generate_combined_context_history(chat_history, max_messages):
-        comb_msgs_history = ""
-        for message in chat_history[-max_messages:]:
-            comb_msgs_history += get_structured_memory_contents(message=message)
-        logger.info(f"[ChatContextManager._generate_combined_context_history] Combined messages.")
-        return comb_msgs_history
-
-    @staticmethod
-    def handle_context(chat_history, assistant: Assistant, chat_object):
+    def handle_context(chat_history, assistant: Assistant):
         mgm_strategy = assistant.context_overflow_strategy
         max_context_msgs = assistant.max_context_messages
         if mgm_strategy == ContextManagementStrategyNames.FORGET:
             ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
         elif mgm_strategy == ContextManagementStrategyNames.STOP:
             ctx_msgs = ContextMemoryManager._handle_strategy_stop_conversation(chat_history, max_context_msgs)
+        elif mgm_strategy == ContextManagementStrategyNames.VECTORIZE:
+            ctx_msgs = ContextMemoryManager._handle_strategy_vectorize_history(chat_history, max_context_msgs)
         else:
             ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
-
-        # TODO: optimize the vectorization strategy, then will be uncommented
-        """
-        elif mgm_strategy == ContextManagementStrategyNames.VECTORIZE:
-            ctx_msgs = ContextMemoryManager._handle_strategy_vectorize_history(assistant, chat_history,
-                                                                                       chat_object, max_context_msgs)
-        """
 
         logger.info(f"[ChatContextManager.handle_context] Handled the context.")
         return ctx_msgs
 
     @staticmethod
-    def handle_context_voidforger(chat_history, voidforger: VoidForger, voidforger_chat_object):
+    def handle_context_voidforger(chat_history, voidforger: VoidForger):
         ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(
             chat_history, voidforger.short_term_memory_max_messages
         )
@@ -148,15 +112,16 @@ class ContextMemoryManager:
         return ctx_msgs
 
     @staticmethod
-    def _handle_strategy_vectorize_history(assistant, chat_history, chat_object, max_messages):
+    def _handle_strategy_vectorize_history(chat_history, max_messages):
         try:
             ctx_msgs = ContextMemoryManager.store_context_memory_as_embedding(
-                context_agent=assistant, message_history=chat_history,
-                communication_object=chat_object, maximum_allowed_messages=max_messages
+                message_history=chat_history, maximum_allowed_messages=max_messages
             )
-            logger.info(f"[ChatContextManager._handle_strategy_vectorize_history] Vectorized the history.")
+            logger.info(
+                f"[ChatContextManager._handle_strategy_vectorize_history] Vectorized the history, returning trimmed messages.")
         except Exception as e:
-            logger.error(f"[ChatContextManager._handle_strategy_vectorize_history] Error vectorizing the history: {e}")
+            logger.error(
+                f"[ChatContextManager._handle_strategy_vectorize_history] Error in vectorization of the message history: {e}")
             ctx_msgs = chat_history
         return ctx_msgs
 
@@ -181,3 +146,54 @@ class ContextMemoryManager:
             logger.error(
                 f"[ChatContextManager._handle_strategy_forget_oldest] Error forgetting the oldest messages: {e}")
         return ctx_msgs
+
+    @staticmethod
+    def _generate_query_embedding(assistant: Assistant, query: str) -> List[float]:
+        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+        c = OpenAIGPTClientManager.get_naked_client(llm_model=assistant.llm_model)
+        response = c.embeddings.create(input=query, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE)
+        return response.data[0].embedding
+
+    @staticmethod
+    def search_old_chat_messages(assistant_chat_id: int, query: str,
+                                 n_results: int = ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES) -> List[Dict]:
+        old_chat_messages_index_path = os.path.join(VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES,
+                                                    f'assistant_chat_index_{assistant_chat_id}.index')
+        if os.path.exists(old_chat_messages_index_path):
+            old_chat_messages_index = faiss.read_index(old_chat_messages_index_path)
+        else:
+            old_chat_messages_index = faiss.IndexIDMap(faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
+            faiss.write_index(old_chat_messages_index, old_chat_messages_index_path)
+
+        try:
+            chat_object = MultimodalChat.objects.get(id=assistant_chat_id)
+            assistant_object = chat_object.assistant
+        except Exception as e:
+            print(f"Error getting the chat object: {e}")
+            logger.error(f"Error getting the chat object: {e}")
+            return []
+
+        query_vector = np.array([ContextMemoryManager._generate_query_embedding(assistant=assistant_object, query=query)],
+                                dtype=np.float32)
+        if old_chat_messages_index is None:
+            raise ValueError("[search_old_chat_messages] FAISS index not initialized or loaded properly.")
+
+        distances, ids = old_chat_messages_index.search(query_vector, n_results)
+        results = []
+        for item_id, distance in zip(ids[0], distances[0]):
+            if item_id == -1:
+                continue
+            try:
+                instance = AssistantOldChatMessagesVectorData.objects.get(id=item_id)
+                results.append({
+                    "id": instance.id,
+                    "data": instance.raw_data,
+                    "distance": distance,
+                })
+            except AssistantOldChatMessagesVectorData.DoesNotExist:
+                print(
+                    f"Warning: AssistantOldChatMessagesVectorData Instance with ID {item_id} not found in the vector database.")
+                logger.error(
+                    f"AssistantOldChatMessagesVectorData Instance with ID {item_id} not found in the vector database.")
+
+        return results

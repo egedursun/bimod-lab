@@ -22,9 +22,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.assistants.models import Assistant, AGENT_SPEECH_LANGUAGES, CONTEXT_MANAGEMENT_STRATEGY, EMBEDDING_MANAGERS
-from apps.assistants.utils import ContextManagementStrategyNames, MULTI_STEP_REASONING_CAPABILITY_CHOICE, \
-    EmbeddingManagersNames
+from apps.assistants.models import Assistant, AGENT_SPEECH_LANGUAGES, CONTEXT_MANAGEMENT_STRATEGY
+from apps.assistants.utils import ContextManagementStrategyNames, MULTI_STEP_REASONING_CAPABILITY_CHOICE
 from apps.data_security.models import NERIntegration
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
@@ -46,11 +45,8 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
         context['response_languages'] = AGENT_SPEECH_LANGUAGES
         context['context_overflow_strategies'] = CONTEXT_MANAGEMENT_STRATEGY
         context['reasoning_capability_choices'] = MULTI_STEP_REASONING_CAPABILITY_CHOICE
-        context['vectorizers'] = EMBEDDING_MANAGERS
         context["assistant_current_strategy"] = ContextManagementStrategyNames.as_dict()[
             agent.context_overflow_strategy]
-        context["assistant_current_vectorizer"] = EmbeddingManagersNames.as_dict()[
-            agent.vectorizer_name] if agent.vectorizer_name else None
         context["ner_integrations"] = NERIntegration.objects.filter(organization__in=context['organizations'])
         context["projects"] = ProjectItem.objects.filter(organization__in=context['organizations'])
         return context
@@ -96,21 +92,13 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
             agent.glossary = updated_technical_dict
             agent.context_overflow_strategy = request.POST.get('context_overflow_strategy')
             agent.max_context_messages = request.POST.get('max_context_messages')
-            vectorizer_name = None
-            vectorizer_api_key = None
             if agent.context_overflow_strategy == ContextManagementStrategyNames.FORGET:
                 pass
             elif agent.context_overflow_strategy == ContextManagementStrategyNames.STOP:
                 pass
-            # TODO: optimize the vectorization strategy, then will be uncommented
-            """
             elif agent.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE:
-                vectorizer_name = request.POST.get('vectorizer_name')
-                vectorizer_api_key = request.POST.get('vectorizer_api_key')
-            """
+                pass
 
-            agent.vectorizer_name = vectorizer_name
-            agent.vectorizer_api_key = vectorizer_api_key
             agent.tone = request.POST.get('tone')
             agent.llm_model_id = request.POST.get('llm_model')
             agent.response_template = request.POST.get('response_template')

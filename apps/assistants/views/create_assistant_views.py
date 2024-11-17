@@ -14,8 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+
 import logging
 
 from django.contrib import messages
@@ -24,7 +23,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.assistants.models import AGENT_SPEECH_LANGUAGES, CONTEXT_MANAGEMENT_STRATEGY, EMBEDDING_MANAGERS, Assistant
+from apps.assistants.models import AGENT_SPEECH_LANGUAGES, CONTEXT_MANAGEMENT_STRATEGY, Assistant
 from apps.assistants.utils import ContextManagementStrategyNames
 from apps.data_security.models import NERIntegration
 from apps.llm_core.models import LLMCore
@@ -46,7 +45,6 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
         context['response_languages'] = AGENT_SPEECH_LANGUAGES
         context['context_overflow_strategies'] = CONTEXT_MANAGEMENT_STRATEGY
         context['reasoning_capability_choices'] = MULTI_STEP_REASONING_CAPABILITY_CHOICE
-        context['vectorizers'] = EMBEDDING_MANAGERS
         context["ner_integrations"] = NERIntegration.objects.filter(organization__in=context['organizations'])
         context["projects"] = ProjectItem.objects.filter(organization__in=context['organizations'])
         return context
@@ -89,19 +87,14 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             technical_dict = {term: definition for term, definition in zip(terms, definitions)}
             intra_memory_strategy = request.POST.get('context_overflow_strategy')
             max_msgs_context = request.POST.get('max_context_messages')
-            embedding_vectorizer_name = None
-            embedding_vectorizer_api_key = None
             logger.info(f"Agent information is received.")
+
             if intra_memory_strategy == ContextManagementStrategyNames.FORGET:
                 pass
             elif intra_memory_strategy == ContextManagementStrategyNames.STOP:
                 pass
-            # TODO: optimize the vectorization strategy, then will be uncommented
-            """
             elif intra_memory_strategy == ContextManagementStrategyNames.VECTORIZE:
-                embedding_vectorizer_name = request.POST.get('vectorizer_name')
-                embedding_vectorizer_api_key = request.POST.get('vectorizer_api_key')
-            """
+                pass
 
             tone = request.POST.get('tone')
             communication_lang = request.POST.get('response_language')
@@ -131,7 +124,6 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
                 tool_max_attempts_per_instance=tool_call_chain_same_tool_max,
                 tool_max_chains=tool_call_chain_maximum_attempts, tone=tone, assistant_image=agent_img,
                 context_overflow_strategy=intra_memory_strategy,max_context_messages=max_msgs_context,
-                vectorizer_name=embedding_vectorizer_name, vectorizer_api_key=embedding_vectorizer_api_key,
                 created_by_user=context_user, last_updated_by_user=context_user, response_template=templated_response,
                 response_language=communication_lang, time_awareness=spatial_capab_time,
                 place_awareness=spatial_capab_place, image_generation_capability=visualization_capab,

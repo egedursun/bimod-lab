@@ -33,8 +33,7 @@ def build_tool_prompt__intra_context_memory():
             {{
                 "tool": "{ToolCallDescriptorNames.EXECUTE_INTRA_MEMORY_QUERY}",
                 "parameters": {{
-                    "query": "...",
-                    "alpha": 0.0 <= value_of_alpha <= 1.0,
+                    "query": "..."
                     }}
                 }}
         '''
@@ -44,26 +43,15 @@ def build_tool_prompt__intra_context_memory():
         #### **DO NOT WRITE: ** 'json' anywhere in your dictionary or next to "'''" elements.
 
         #### **INSTRUCTIONS:** The "query" will be the string you need to search in your chat history with user.
-        The "alpha" parameter is a float value between 0.0 and 1.0 determining the weight of semantic versus
-        keyword-based search in search algorithm:
-
-            - An alpha of 1.0 means your search will be purely vector-based (semantic) search.
-            - An alpha of 0.0 means your search will be purely keyword-based.
-            - Thus, the value of alpha can be adjusted between float values of 0.0 and 1.0 to adjust balance
-            between semantic and keyword-based search, according to question of user and your judgment.
 
         To use this, you need to provide following fields 'VERY CAREFULLY':
 
         - [1] The "query" field must be a string you need to search in the memory documents.
         This string can be a question or a keyword that you would like to search within the memory.
 
-        - [2] The "alpha" field must be a float value between 0.0 and 1.0 determining the weight of semantic
-        versus keyword-based search in the search algorithm.
-
         #### **NOTE**: The system will provide you the results of search in the next 'assistant' message.
-        This message will have a list of memories most relevant to the query you provided. The fields will include:
-        "chunk_number", which is number of the chunk within the document (ordered) that contains the retrieved
-        info; and "chunk_content", which is the text of the chunk that contains the retrieved memory in textual format.
+        This message will have a list of memories most relevant to the query you provided. The fields will include
+        information about the most related old chat messages depending on the query you provided.
 
             - You are expected to take in this response, and use it to provide answer to user's question.
 

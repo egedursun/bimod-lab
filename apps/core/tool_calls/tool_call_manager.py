@@ -78,7 +78,7 @@ from apps.core.tool_calls.input_verifiers.verify_ssh_system_command import verif
 from apps.core.tool_calls.input_verifiers.verify_vector_store_query import verify_vector_store_query_content
 from apps.core.tool_calls.leanmod.input_verifiers.verify_expert_network_query import \
     verify_expert_network_query_content
-from apps.core.tool_calls.utils import ToolCallDescriptorNames, get_no_connection_vector_store_error_message, \
+from apps.core.tool_calls.utils import ToolCallDescriptorNames, \
     get_no_tool_found_error_log, IMAGE_GENERATION_AFFIRMATION_PROMPT
 from apps.core.tool_calls.core_services.core_service_process_audio import \
     run_process_audio
@@ -108,7 +108,6 @@ from apps.core.tool_calls.voidforger.input_verifiers import verify_voidforger_ol
     verify_voidforger_action_history_log_search_query_content, \
     verify_voidforger_auto_execution_log_search_query_content, verify_voidforger_leanmod_oracle_search_query_content, \
     verify_voidforger_leanmod_oracle_command_order_content
-from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
 from apps.multimodal_chat.models import MultimodalChat
 from apps.video_generations.models import GeneratedVideo, VideoGeneratorConnection
 from apps.voidforger.models import VoidForgerActionMemoryLog
@@ -185,13 +184,7 @@ class ToolCallManager:
             if error:
                 logger.error(f"Error occurred while verifying the intra memory query content: {error}")
                 return error, None, None, None
-            connection = ContextHistoryKnowledgeBaseConnection.objects.filter(chat=self.chat,
-                                                                              assistant=self.assistant).first()
-            if not connection:
-                logger.error("No connection found for the intra memory query.")
-                return get_no_connection_vector_store_error_message(assistant_name=self.assistant.name,
-                                                                    chat_name=self.chat.chat_name), None, None, None
-            output_tool_call = self._handle_tool_intra_memory_query(connection, output_tool_call)
+            output_tool_call = self._handle_tool_intra_memory_query(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SSH_SYSTEM_QUERY:
             error = verify_ssh_system_command_content(content=self.tool_usage_dict)
@@ -593,11 +586,10 @@ class ToolCallManager:
         logger.info(f"SSH system command response retrieved.")
         return output_tool_call
 
-    def _handle_tool_intra_memory_query(self, connection, output_tool_call):
+    def _handle_tool_intra_memory_query(self, output_tool_call):
         logger.info("Executing the intra memory query process.")
         query = self.tool_usage_dict.get("parameters").get("query")
-        alpha = self.tool_usage_dict.get("parameters").get("alpha")
-        output = run_query_intra_memory(c_id=connection.id, intra_memory_query=query, semantic_alpha=alpha)
+        output = run_query_intra_memory(assistant_chat_id=self.chat.id, intra_memory_query=query)
         output_str = json.dumps(output, sort_keys=True, default=str)
         output_tool_call += output_str
         logger.info(f"Intra memory query response retrieved.")

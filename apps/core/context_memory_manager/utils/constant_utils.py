@@ -15,4 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES = 5
+
 

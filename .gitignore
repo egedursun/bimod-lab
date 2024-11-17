@@ -209,6 +209,7 @@ media/generated/images/*
 # */*/*/migrations/*.pyc
 
 # Ignore everything in the assistants and integrations directories
+/assistant_vectors/context_memories/*
 /semantor_vectors/assistants/*
 /semantor_vectors/leanmod_assistants/*
 /semantor_vectors/integrations/*
@@ -217,6 +218,7 @@ media/generated/images/*
 /voidforger_vectors/chat_messages/*
 
 # Allow __init__.py files in all subdirectories of assistants and integrations
+!/assistant_vectors/context_memories/**/__init__.py
 !/semantor_vectors/assistants/**/__init__.py
 !/semantor_vectors/leanmod_assistants/**/__init__.py
 !/semantor_vectors/integrations/**/__init__.py

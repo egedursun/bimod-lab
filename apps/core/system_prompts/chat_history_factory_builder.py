@@ -99,7 +99,7 @@ class HistoryBuilder:
             chat.save()
             msg.save()
 
-        history = ContextMemoryManager.handle_context(chat_history=history, assistant=chat.assistant, chat_object=chat)
+        history = ContextMemoryManager.handle_context(chat_history=history, assistant=chat.assistant)
         return history, temporary_uuid
 
     @staticmethod
@@ -212,7 +212,6 @@ class HistoryBuilder:
 
         history = ContextMemoryManager.handle_context_voidforger(
             chat_history=history,
-            voidforger=voidforger_chat.voidforger,
-            voidforger_chat_object=voidforger_chat
+            voidforger=voidforger_chat.voidforger
         )
         return history, temporary_uuid

@@ -18,3 +18,4 @@
 #
 
 from .assistant_models import *
+from .assistant_context_history_vector_models import *

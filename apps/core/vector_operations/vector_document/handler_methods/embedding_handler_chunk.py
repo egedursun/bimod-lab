@@ -23,7 +23,6 @@ import logging
 
 from apps.datasource_knowledge_base.utils import VectorStoreDocProcessingStatusNames
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -58,27 +57,6 @@ def factory_chunk_orm_build(chunk: dict,
     return _id, error
 
 
-def factory_intra_context_memory_chunk_orm_build(chunk: str, knowledge_base, memory_id: int, memory_uuid: str,
-                                                 chunk_index: int):
-    from apps.datasource_knowledge_base.models import ContextHistoryMemoryChunk
-    from apps.datasource_knowledge_base.models import ContextHistoryMemory
-    _id, error = None, None
-    try:
-        vector_store = knowledge_base
-        memory_instance = ContextHistoryMemory.objects.filter(id=memory_id).first()
-        intra_context_memory_uuid = memory_uuid
-        chunk_orm_object = ContextHistoryMemoryChunk.objects.create(
-            memory=memory_instance, chunk_number=chunk_index, chunk_content=chunk,
-            knowledge_base_memory_uuid=intra_context_memory_uuid, context_history_base=vector_store,
-        )
-        _id = chunk_orm_object.id
-        logger.info(f"Memory chunk ORM object created with id: {_id}")
-    except Exception as e:
-        logger.error(f"Error creating memory chunk ORM object: {e}")
-        pass
-    return _id, error
-
-
 def factory_chunk_weaviate_build(chunk: dict, path: str,
                                  chunk_index: int,
                                  document_uuid: str):
@@ -101,23 +79,6 @@ def factory_chunk_weaviate_build(chunk: dict, path: str,
         logger.error(f"Error creating chunk Weaviate object instance: {e}")
         pass
     return weaviate_object_instance_chunk, error
-
-
-def factory_intra_context_memory_chunk_weaviate_build(memory, chunk: str, chunk_index: int, memory_uuid: str):
-    weaviate_memory_instance_chunk, error = None, None
-    try:
-        weaviate_chunk_no = chunk_index
-        weaviate_chunk_igredient = chunk
-        weaviate_chunk_created_at = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-        weaviate_memory_instance_chunk = {
-            "memory_uuid": memory_uuid, "memory_name": memory.memory_name, "chunk_number": weaviate_chunk_no,
-            "chunk_content": weaviate_chunk_igredient, "created_at": weaviate_chunk_created_at
-        }
-        logger.info(f"Memory chunk Weaviate object instance created.")
-    except Exception as e:
-        logger.error(f"Error creating memory chunk Weaviate object instance: {e}")
-        pass
-    return weaviate_memory_instance_chunk, error
 
 
 def factory_embed_document_chunk_synchronized(executor_params, chunk_id, chunk_weaviate_object: dict):
@@ -155,41 +116,6 @@ def factory_embed_document_chunk_synchronized(executor_params, chunk_id, chunk_w
     return error
 
 
-def factory_embed_memory_chunk_synchronized(executor_params, chunk_id, chunk_weaviate_object: dict):
-    from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection, ContextHistoryMemoryChunk
-    from apps.core.vector_operations.intra_context_memory.memory_executor import IntraContextMemoryExecutor
-    c_id = executor_params["connection_id"]
-    c_orm = ContextHistoryKnowledgeBaseConnection.objects.get(id=c_id)
-    x = IntraContextMemoryExecutor(connection=c_orm)
-    c = x.connect_c()
-    if not c:
-        logger.error(f"Error connecting to the Weaviate cluster.")
-        pass
-    pass
-    logger.info(f"Connected to the Weaviate cluster.")
-
-    error = None
-    try:
-        class_name = f"{x.connection_object.class_name}Chunks"
-        collection = c.collections.get(class_name)
-        uuid = collection.data.insert(properties=chunk_weaviate_object)
-        if not uuid:
-            error = "Error inserting the memory chunk."
-            logger.error(f"Error inserting the memory chunk.")
-            pass
-        chunk_orm = ContextHistoryMemoryChunk.objects.filter(id=chunk_id).first()
-        chunk_orm.chunk_uuid = str(uuid)
-        chunk_orm.save()
-        memory_object = chunk_orm.memory
-        memory_object.memory_chunks.add(chunk_orm)
-        memory_object.save()
-        logger.info(f"Memory chunk embedded successfully.")
-    except Exception as e:
-        logger.error(f"Error embedding the memory chunk: {e}")
-        pass
-    return error
-
-
 def factory_embed_document_chunks_handler(executor_params, chunks: list, path: str, document_id: int,
                                           document_uuid: str):
     from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
@@ -221,48 +147,12 @@ def factory_embed_document_chunks_handler(executor_params, chunks: list, path: s
                 logger.error(f"Error embedding the chunk.")
                 errors.append(error)
                 continue
-        add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.EMBEDDED_CHUNKS)
-        add_vector_store_doc_loaded_log(document_full_uri=path, log_name=VectorStoreDocProcessingStatusNames.SAVED_CHUNKS)
+        add_vector_store_doc_loaded_log(document_full_uri=path,
+                                        log_name=VectorStoreDocProcessingStatusNames.EMBEDDED_CHUNKS)
+        add_vector_store_doc_loaded_log(document_full_uri=path,
+                                        log_name=VectorStoreDocProcessingStatusNames.SAVED_CHUNKS)
         logger.info(f"Document chunks embedded successfully.")
     except Exception as e:
         logger.error(f"Error embedding the chunks: {e}")
         pass
-    return errors
-
-
-def factory_embed_memory_chunks_handler(executor_params, chunks: list, memory_id: int, memory_uuid: str):
-    from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
-    from apps.datasource_knowledge_base.models import ContextHistoryMemory
-    errors = []
-    c_id = executor_params["connection_id"]
-    c_orm = ContextHistoryKnowledgeBaseConnection.objects.get(id=c_id)
-    memory = ContextHistoryMemory.objects.filter(id=memory_id).first()
-    try:
-        for i, ch in enumerate(chunks):
-            ch_id, error = factory_intra_context_memory_chunk_orm_build(
-                knowledge_base=c_orm, chunk=ch,  chunk_index=i, memory_id=memory_id, memory_uuid=memory_uuid
-            )
-            if error:
-                logger.error(f"Error creating the memory chunk ORM object.")
-                errors.append(error)
-                continue
-
-            chunk_weaviate_object, error = factory_intra_context_memory_chunk_weaviate_build(
-                memory=memory, chunk=ch, chunk_index=i, memory_uuid=memory_uuid
-            )
-            if error:
-                logger.error(f"Error creating the memory chunk Weaviate object instance.")
-                errors.append(error)
-                continue
-            error = factory_embed_memory_chunk_synchronized(
-                executor_params=executor_params, chunk_id=ch_id, chunk_weaviate_object=chunk_weaviate_object
-            )
-            if error:
-                logger.error(f"Error embedding the memory chunk.")
-                errors.append(error)
-                continue
-        logger.info(f"Memory chunks embedded successfully.")
-    except Exception as e:
-        logger.error(f"Error embedding the chunks: {e}")
-        errors.append(f"Error embedding the chunks: {e}")
     return errors

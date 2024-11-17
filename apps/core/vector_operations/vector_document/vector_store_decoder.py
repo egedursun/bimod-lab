@@ -16,7 +16,7 @@
 #
 import logging
 
-from apps.core.vector_operations.intra_context_memory.utils import KNOWLEDGE_BASE_PROVIDERS
+from apps.core.codebase.utils import KNOWLEDGE_BASE_PROVIDERS
 from apps.core.vector_operations.vector_document.vector_store_executor import WeaviateExecutor
 
 

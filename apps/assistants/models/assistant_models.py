@@ -19,7 +19,7 @@ import logging
 import boto3
 from django.db import models
 
-from apps.assistants.utils import (AGENT_SPEECH_LANGUAGES, CONTEXT_MANAGEMENT_STRATEGY, EMBEDDING_MANAGERS,
+from apps.assistants.utils import (AGENT_SPEECH_LANGUAGES, CONTEXT_MANAGEMENT_STRATEGY,
                                    MULTI_STEP_REASONING_CAPABILITY_CHOICE, generate_random_name_suffix)
 from config import settings
 
@@ -48,9 +48,6 @@ class Assistant(models.Model):
     memories = models.ManyToManyField("memories.AssistantMemory", related_name='assistants', blank=True)
     context_overflow_strategy = models.CharField(max_length=100, choices=CONTEXT_MANAGEMENT_STRATEGY, default="forget")
     max_context_messages = models.IntegerField(default=25)
-    vectorizer_name = models.CharField(max_length=100, choices=EMBEDDING_MANAGERS, default="text2vec-openai",
-                                       null=True, blank=True)
-    vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
     document_base_directory = models.CharField(max_length=1000, null=True, blank=True)
     storages_base_directory = models.CharField(max_length=1000, null=True, blank=True)
     ml_models_base_directory = models.CharField(max_length=1000, null=True, blank=True)
@@ -145,7 +142,6 @@ class Assistant(models.Model):
             models.Index(fields=["created_at"]),
             models.Index(fields=["updated_at"]),
             models.Index(fields=["context_overflow_strategy"]),
-            models.Index(fields=["vectorizer_name"]),
             models.Index(fields=["organization", "llm_model"]),
             models.Index(fields=["organization", "name"]),
             models.Index(fields=["organization", "created_by_user"]),
@@ -193,13 +189,8 @@ class Assistant(models.Model):
             models.Index(fields=["llm_model", "created_by_user", "created_at", "updated_at"]),
             models.Index(fields=["llm_model", "last_updated_by_user", "created_at", "updated_at"]),
             models.Index(fields=["organization", "context_overflow_strategy"]),
-            models.Index(fields=["organization", "vectorizer_name"]),
             models.Index(fields=["llm_model", "context_overflow_strategy"]),
-            models.Index(fields=["llm_model", "vectorizer_name"]),
             models.Index(fields=["organization", "llm_model", "context_overflow_strategy"]),
-            models.Index(fields=["organization", "llm_model", "vectorizer_name"]),
             models.Index(fields=["created_by_user", "context_overflow_strategy"]),
-            models.Index(fields=["created_by_user", "vectorizer_name"]),
             models.Index(fields=["last_updated_by_user", "context_overflow_strategy"]),
-            models.Index(fields=["last_updated_by_user", "vectorizer_name"]),
         ]

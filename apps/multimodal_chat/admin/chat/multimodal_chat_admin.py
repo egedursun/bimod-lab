@@ -18,10 +18,7 @@
 
 from django.contrib import admin
 
-from apps.core.vector_operations.intra_context_memory.memory_executor import IntraContextMemoryExecutor
 from apps.multimodal_chat.models import MultimodalChat
-
-from django.contrib.admin.actions import delete_selected as django_delete_selected
 
 from apps.multimodal_chat.utils import MULTIMODAL_CHAT_ADMIN_LIST, MULTIMODAL_CHAT_ADMIN_FILTER, \
     MULTIMODAL_CHAT_ADMIN_SEARCH
@@ -41,20 +38,4 @@ class MultimodalChatAdmin(admin.ModelAdmin):
     list_display_links_details = False
 
     def save_model(self, request, obj, form, change):
-        # TODO: optimize the vectorization strategy, then will be uncommented
-        """
-        if obj.assistant.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE:
-            if obj.assistant.vectorizer_name is None:
-                return
-            if obj.assistant.vectorizer_api_key is None:
-                return
-        """
         super().save_model(request, obj, form, change)
-
-    def delete_selected(self, request, queryset):
-        for obj in queryset:
-            if obj.context_memory_connection:
-                xc = IntraContextMemoryExecutor(connection=obj.context_memory_connection)
-                xc.delete_chat_history_classes(class_name=obj.context_memory_connection.class_name)
-                obj.context_memory_connection.delete()
-        return django_delete_selected(self, request, queryset)

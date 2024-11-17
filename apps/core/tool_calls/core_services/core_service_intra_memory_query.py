@@ -16,20 +16,17 @@
 #
 import logging
 
-from apps.core.vector_operations.intra_context_memory.memory_executor import IntraContextMemoryExecutor
-from apps.datasource_knowledge_base.models import ContextHistoryKnowledgeBaseConnection
+from apps.core.context_memory_manager.context_memory_manager import ContextMemoryManager
 
 
 logger = logging.getLogger(__name__)
 
 
-def run_query_intra_memory(c_id: int, intra_memory_query: str, semantic_alpha: float):
-    conn = ContextHistoryKnowledgeBaseConnection.objects.get(id=c_id)
+def run_query_intra_memory(assistant_chat_id: int, intra_memory_query: str):
     try:
-        c = IntraContextMemoryExecutor(connection=conn)
-        output = c.search_hybrid(query=intra_memory_query, alpha=semantic_alpha)
+        output = conn = ContextMemoryManager.search_old_chat_messages(assistant_chat_id=assistant_chat_id, query=intra_memory_query)
     except Exception as e:
-        logger.error(f"Error occurred while executing the memory query: {e}")
-        error_msg = f"Error occurred while executing the memory query: {str(e)}"
+        logger.error(f"Error occurred while executing the Assistant message memory query: {e}")
+        error_msg = f"Error occurred while executing the Assistant message memory query: {str(e)}"
         return error_msg
     return output

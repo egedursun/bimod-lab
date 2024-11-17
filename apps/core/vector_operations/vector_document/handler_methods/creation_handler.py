@@ -18,10 +18,9 @@ import logging
 
 import weaviate.classes as wvc
 
-from apps.core.vector_operations.intra_context_memory.utils import DEFAULT_GENERATIVE_SEARCH_MODEL
+from apps.core.codebase.utils import DEFAULT_GENERATIVE_SEARCH_MODEL
 from apps.core.vector_operations.vector_document.utils import (
-    VECTOR_STORE_DOCUMENT_WEAVIATE_FIELDS_CONFIG, VECTOR_STORE_DOCUMENT_CHUNK_WEAVIATE_FIELDS_CONFIG,
-    CONTEXT_MEMORY_OBJECT_WEAVIATE_FIELDS_CONFIG, CONTEXT_MEMORY_CHUNKS_WEAVIATE_FIELDS_CONFIG)
+    VECTOR_STORE_DOCUMENT_WEAVIATE_FIELDS_CONFIG, VECTOR_STORE_DOCUMENT_CHUNK_WEAVIATE_FIELDS_CONFIG)
 
 
 logger = logging.getLogger(__name__)
@@ -60,41 +59,5 @@ def create_weaviate_classes_handler(executor):
         output["status"] = False
         output["error"] = str(e)
         logger.error(f"Error occurred while creating Weaviate class: {e}")
-        return output
-    return output
-
-
-def create_intra_context_history_classes_helper(executor):
-    output = {"status": True, "error": ""}
-    connection = executor.connection_object
-    c = executor.connect_c()
-    try:
-        _ = c.collections.create(
-            name=connection.class_name,
-            vectorizer_config=executor.decode_vectorizer(connection.vectorizer),
-            generative_config=wvc.config.Configure.Generative.openai(
-                model=DEFAULT_GENERATIVE_SEARCH_MODEL, temperature=connection.assistant.llm_model.temperature,
-                max_tokens=connection.assistant.llm_model.maximum_tokens),
-            properties=CONTEXT_MEMORY_OBJECT_WEAVIATE_FIELDS_CONFIG)
-        logger.info(f"Created Weaviate class: {connection.class_name}")
-    except Exception as e:
-        logger.error(f"Error occurred while creating Weaviate class: {e}")
-        output["status"] = False
-        output["error"] = str(e)
-        return output
-
-    try:
-        _ = c.collections.create(
-            name=f"{connection.class_name}Chunks",
-            vectorizer_config=executor.decode_vectorizer(connection.vectorizer),
-            generative_config=wvc.config.Configure.Generative.openai(
-                model=DEFAULT_GENERATIVE_SEARCH_MODEL, temperature=connection.assistant.llm_model.temperature,
-                max_tokens=connection.assistant.llm_model.maximum_tokens),
-            properties=CONTEXT_MEMORY_CHUNKS_WEAVIATE_FIELDS_CONFIG)
-        logger.info(f"Created Weaviate class: {connection.class_name}Chunks")
-    except Exception as e:
-        logger.error(f"Error occurred while creating Weaviate class: {e}")
-        output["status"] = False
-        output["error"] = str(e)
         return output
     return output
