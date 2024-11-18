@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import os
 
 EXPERT_NETWORK_ADMIN_LIST = (
     "organization", "name", "meta_description", "created_by_user", "last_updated_by_user", "created_at", "updated_at"
@@ -43,6 +44,12 @@ LEAN_ASSISTANT_ADMIN_SEARCH = (
     "organization", "llm_model", "name",
     "created_by_user", "last_updated_by_user", "created_at", "updated_at")
 
-
 RANDOM_NAME_SUFFIX_MIN_VALUE = 1_000_000_000
 RANDOM_NAME_SUFFIX_MAX_VALUE = 9_999_999_999
+
+VECTOR_INDEX_PATH_LEANMOD_CHAT_MESSAGES = os.path.join("assistant_vectors", "leanmod_context_memories")
+
+LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST = ['id', 'leanmod_chat_message', 'created_at', 'updated_at']
+LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER = ['leanmod_chat_message', 'created_at', 'updated_at']
+LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH = ['leanmod_chat_message__id']
+

@@ -140,6 +140,23 @@
                 <textarea class="form-control" id="instructions" name="instructions" rows="2"
                           required>{{ lean_assistant.instructions }}</textarea>
               </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="max_context_messages">Max Message Memory</label>
+                <!-- slider bar here -->
+                <input type="range" class="form-range" id="max_context_messages" name="max_context_messages" min="10"
+                       max="100" step=1" value="{{ lean_assistant.max_context_messages }}"
+                       oninput="this.nextElementSibling.value = this.value">
+                <output>{{ lean_assistant.max_context_messages }}</output>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="context_overflow_strategy">Context Overflow Management Strategy</label>
+                <select class="form-select" id="context_overflow_strategy" name="context_overflow_strategy">
+                  {% for strategy in context_overflow_strategies %}
+                    <option value="{{ strategy.0 }}"
+                            {% if strategy.0 == lean_assistant.context_overflow_strategy %}selected{% endif %}>{{ strategy.1 }}</option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
             <hr>
             <button type="submit" class="btn btn-primary mt-8 d-grid w-25"><strong>

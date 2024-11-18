@@ -20,6 +20,8 @@
 
 from django.db import models
 
+from apps.assistants.utils import CONTEXT_MANAGEMENT_STRATEGY
+
 
 class LeanAssistant(models.Model):
     organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE,
@@ -34,6 +36,8 @@ class LeanAssistant(models.Model):
                                         related_name='lean_assistants_created_by_user')
     last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
                                              related_name='lean_assistants_updated_by_user')
+    max_context_messages = models.IntegerField(default=25)
+    context_overflow_strategy = models.CharField(max_length=100, choices=CONTEXT_MANAGEMENT_STRATEGY, default="forget")
     expert_networks = models.ManyToManyField("ExpertNetwork", related_name='lean_assistants', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -21,3 +21,9 @@ from django.apps import AppConfig
 class LeanmodConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.leanmod'
+
+    def ready(self):
+        from apps.leanmod.signals.delete_old_leanmod_chat_messages_vector_embedding_signals import \
+            remove_vector_from_index_on_leanmod_chat_message_delete
+        from apps.leanmod.signals.update_old_leanmod_chat_messages_vector_embedding_signals import \
+            update_leanmod_old_chat_messages_vector_embedding_after_save

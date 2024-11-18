@@ -51,7 +51,10 @@ from apps.core.tool_calls.input_verifiers.verify_triggered_job_logs_query import
     verify_triggered_job_logs_query_content
 from apps.core.tool_calls.leanmod.core_services.core_service_consultation_semantor import \
     execute_semantor_consultation_query
+from apps.core.tool_calls.leanmod.core_services.core_service_leanmod_memory_query import run_query_leanmod_memory
 from apps.core.tool_calls.leanmod.core_services.core_service_query_semantor import execute_semantor_search_query
+from apps.core.tool_calls.leanmod.input_verifiers.verify_query_leanmod_memory import \
+    verify_leanmod_memory_query_content
 from apps.core.tool_calls.leanmod.input_verifiers.verify_semantor_consultation_query import \
     verify_semantor_consultation_query_content
 from apps.core.tool_calls.leanmod.input_verifiers.verify_semantor_query import verify_semantor_search_query_content
@@ -789,6 +792,15 @@ class ToolCallManager:
             semantor_consult_response_raw_str = json.dumps(semantor_response, sort_keys=True, default=str)
             output_tool_call += semantor_consult_response_raw_str
             logger.info(f"Semantor consultation response retrieved.")
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_INTRA_MEMORY_QUERY:
+            error_msg = verify_leanmod_memory_query_content(content=self.tool_usage_dict)
+            if error_msg: return error_msg, None, None, None
+            query = self.tool_usage_dict.get("parameters").get("query")
+            leanmod_memory_query_output = run_query_leanmod_memory(leanmod_chat_id=self.chat.id, leanmod_memory_query=query)
+            leanmod_memory_query_output_raw_str = json.dumps(leanmod_memory_query_output, sort_keys=True, default=str)
+            output_tool_call += leanmod_memory_query_output_raw_str
+            logger.info(f"LeanMod Intra memory query response retrieved.")
 
         ##################################################
         # NO TOOL FOUND

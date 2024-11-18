@@ -210,6 +210,7 @@ media/generated/images/*
 
 # Ignore everything in the assistants and integrations directories
 /assistant_vectors/context_memories/*
+/assistant_vectors/leanmod_context_memories/*
 /semantor_vectors/assistants/*
 /semantor_vectors/leanmod_assistants/*
 /semantor_vectors/integrations/*
@@ -219,6 +220,7 @@ media/generated/images/*
 
 # Allow __init__.py files in all subdirectories of assistants and integrations
 !/assistant_vectors/context_memories/**/__init__.py
+!/assistant_vectors/leanmod_context_memories/**/__init__.py
 !/semantor_vectors/assistants/**/__init__.py
 !/semantor_vectors/leanmod_assistants/**/__init__.py
 !/semantor_vectors/integrations/**/__init__.py

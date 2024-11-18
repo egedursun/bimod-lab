@@ -21,6 +21,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
+from apps.assistants.utils import CONTEXT_MANAGEMENT_STRATEGY, ContextManagementStrategyNames
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.leanmod.models import LeanAssistant, ExpertNetwork
 from apps.llm_core.models import LLMCore
@@ -41,6 +42,7 @@ class LeanModAssistantView_Update(LoginRequiredMixin, TemplateView):
         context['llm_models'] = LLMCore.objects.filter(organization__users__in=[self.request.user])
         context['expert_networks'] = ExpertNetwork.objects.filter(organization__in=context['organizations'])
         context['selected_expert_networks'] = context['lean_assistant'].expert_networks.all().values_list('id',flat=True)
+        context['context_overflow_strategies'] = CONTEXT_MANAGEMENT_STRATEGY
         return context
 
     def post(self, request, *args, **kwargs):
@@ -61,6 +63,8 @@ class LeanModAssistantView_Update(LoginRequiredMixin, TemplateView):
         instructions = request.POST.get('instructions')
         nw_ids = request.POST.getlist('expert_networks')
         agent_img = request.FILES.get('lean_assistant_image', None)
+        max_context_messages = request.POST.get('max_context_messages') or 25
+        context_overflow_strategy = request.POST.get('context_overflow_strategy') or ContextManagementStrategyNames.FORGET
         if not org_id or not llm_id or not name or not instructions:
             logger.error("Please fill in all required fields.")
             messages.error(request, "Please fill in all required fields.")
@@ -71,6 +75,8 @@ class LeanModAssistantView_Update(LoginRequiredMixin, TemplateView):
             leanmod_agent.llm_model = LLMCore.objects.get(id=llm_id)
             leanmod_agent.name = name
             leanmod_agent.instructions = instructions
+            leanmod_agent.max_context_messages = max_context_messages
+            leanmod_agent.context_overflow_strategy = context_overflow_strategy
             if agent_img:
                 leanmod_agent.lean_assistant_image = agent_img
 

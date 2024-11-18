@@ -76,6 +76,8 @@ from apps.core.system_prompts.leanmod.leanmod_user_information_prompt import \
     build_structured_user_information_prompt_leanmod
 from apps.core.system_prompts.leanmod.multimodality.leanmod_multimodality_expert_network_prompt import \
     build_expert_networks_multi_modality_prompt_leanmod
+from apps.core.system_prompts.leanmod.tools.execute_query_leanmod_context_memory_tool_prompt import \
+    build_tool_prompt__leanmod_context_memory
 from apps.core.system_prompts.leanmod.tools.leanmod_semantor_execution_prompt import \
     build_structured_tool_prompt__semantor_consultation_execution_leanmod
 from apps.core.system_prompts.leanmod.tools.leanmod_semantor_query_search_prompt import \
@@ -575,6 +577,8 @@ class SystemPromptFactoryBuilder:
         do_expert_network = build_structured_tool_prompt__expert_network_query_execution_leanmod()
         search_semantor = build_structured_tool_prompt__semantor_search_execution_leanmod()
         do_semantor = build_structured_tool_prompt__semantor_consultation_execution_leanmod()
+        do_intra_memory_search = build_tool_prompt__leanmod_context_memory()
+
         combined_system_instructions = generic
         combined_system_instructions += agent_nickname
         combined_system_instructions += instructions
@@ -585,6 +589,7 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += do_expert_network
         combined_system_instructions += search_semantor
         combined_system_instructions += do_semantor
+        combined_system_instructions += do_intra_memory_search
         return combined_system_instructions
 
     @staticmethod

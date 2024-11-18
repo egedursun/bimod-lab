@@ -2,9 +2,9 @@
 #
 #  Project: Bimod.io™
 #  File: __init__.py
-#  Last Modified: 2024-10-05 01:39:48
+#  Last Modified: 2024-11-17 20:49:31
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:33
+#  Created: 2024-11-17 20:49:32
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
-from .lean_assistant_models import *
-from .leanmod_context_history_vector_models import *
+from .delete_old_leanmod_chat_messages_vector_embedding_signals import *
+from .update_old_leanmod_chat_messages_vector_embedding_signals import *

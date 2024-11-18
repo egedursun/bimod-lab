@@ -22,13 +22,16 @@ import faiss
 import numpy as np
 
 from apps.core.context_memory_manager.utils import (get_error_on_context_memory_handling_log,
-                                                    ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES)
+                                                    ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES,
+                                                    LEANMOD_ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES)
 from apps.core.semantor.utils import OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS, OpenAIEmbeddingModels
 from apps.core.system_prompts.chat_history_memory.build_chat_history_memory_instruction import \
     build_chat_history_memory_handling_prompt, build_chat_history_memory_stop_communication_handler_prompt
 from apps.assistants.models import Assistant, AssistantOldChatMessagesVectorData
 from apps.assistants.utils import ContextManagementStrategyNames, VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES
-from apps.multimodal_chat.models import MultimodalChat
+from apps.leanmod.models import LeanAssistant, LeanModOldChatMessagesVectorData
+from apps.leanmod.utils import VECTOR_INDEX_PATH_LEANMOD_CHAT_MESSAGES
+from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
 from apps.voidforger.models import VoidForger
 
 logger = logging.getLogger(__name__)
@@ -100,7 +103,23 @@ class ContextMemoryManager:
         else:
             ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
 
-        logger.info(f"[ChatContextManager.handle_context] Handled the context.")
+        logger.info(f"[ChatContextManager.handle_context] Handled the context for Assistant.")
+        return ctx_msgs
+
+    @staticmethod
+    def handle_context_leanmod(chat_history, lean_assistant: LeanAssistant):
+        mgm_strategy = lean_assistant.context_overflow_strategy
+        max_context_msgs = lean_assistant.max_context_messages
+        if mgm_strategy == ContextManagementStrategyNames.FORGET:
+            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
+        elif mgm_strategy == ContextManagementStrategyNames.STOP:
+            ctx_msgs = ContextMemoryManager._handle_strategy_stop_conversation(chat_history, max_context_msgs)
+        elif mgm_strategy == ContextManagementStrategyNames.VECTORIZE:
+            ctx_msgs = ContextMemoryManager._handle_strategy_vectorize_history(chat_history, max_context_msgs)
+        else:
+            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
+
+        logger.info(f"[ChatContextManager.handle_context_leanmod] Handled the context for LeanMod.")
         return ctx_msgs
 
     @staticmethod
@@ -108,7 +127,7 @@ class ContextMemoryManager:
         ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(
             chat_history, voidforger.short_term_memory_max_messages
         )
-        logger.info(f"[ChatContextManager.handle_context_voidforger] Handled the context.")
+        logger.info(f"[ChatContextManager.handle_context_voidforger] Handled the context for VoidForger.")
         return ctx_msgs
 
     @staticmethod
@@ -155,6 +174,13 @@ class ContextMemoryManager:
         return response.data[0].embedding
 
     @staticmethod
+    def _generate_query_embedding_leanmod(leanmod_assistant: LeanAssistant, query: str) -> List[float]:
+        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+        c = OpenAIGPTClientManager.get_naked_client(llm_model=leanmod_assistant.llm_model)
+        response = c.embeddings.create(input=query, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE)
+        return response.data[0].embedding
+
+    @staticmethod
     def search_old_chat_messages(assistant_chat_id: int, query: str,
                                  n_results: int = ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES) -> List[Dict]:
         old_chat_messages_index_path = os.path.join(VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES,
@@ -173,8 +199,9 @@ class ContextMemoryManager:
             logger.error(f"Error getting the chat object: {e}")
             return []
 
-        query_vector = np.array([ContextMemoryManager._generate_query_embedding(assistant=assistant_object, query=query)],
-                                dtype=np.float32)
+        query_vector = np.array(
+            [ContextMemoryManager._generate_query_embedding(assistant=assistant_object, query=query)],
+            dtype=np.float32)
         if old_chat_messages_index is None:
             raise ValueError("[search_old_chat_messages] FAISS index not initialized or loaded properly.")
 
@@ -195,5 +222,51 @@ class ContextMemoryManager:
                     f"Warning: AssistantOldChatMessagesVectorData Instance with ID {item_id} not found in the vector database.")
                 logger.error(
                     f"AssistantOldChatMessagesVectorData Instance with ID {item_id} not found in the vector database.")
+
+        return results
+
+    @staticmethod
+    def search_old_leanmod_chat_messages(leanmod_chat_id: int, query: str,
+                                         n_results: int = LEANMOD_ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES) -> \
+    List[Dict]:
+        old_chat_messages_index_path = os.path.join(VECTOR_INDEX_PATH_LEANMOD_CHAT_MESSAGES,
+                                                    f'leanmod_chat_index_{leanmod_chat_id}.index')
+        if os.path.exists(old_chat_messages_index_path):
+            old_chat_messages_index = faiss.read_index(old_chat_messages_index_path)
+        else:
+            old_chat_messages_index = faiss.IndexIDMap(faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
+            faiss.write_index(old_chat_messages_index, old_chat_messages_index_path)
+
+        try:
+            chat_object: MultimodalLeanChat = MultimodalLeanChat.objects.get(id=leanmod_chat_id)
+            assistant_object = chat_object.lean_assistant
+        except Exception as e:
+            print(f"Error getting the LeanMod chat object: {e}")
+            logger.error(f"Error getting the LeanMod chat object: {e}")
+            return []
+
+        query_vector = np.array(
+            [ContextMemoryManager._generate_query_embedding_leanmod(leanmod_assistant=assistant_object, query=query)],
+            dtype=np.float32)
+        if old_chat_messages_index is None:
+            raise ValueError("[search_old_chat_messages] FAISS index not initialized or loaded properly.")
+
+        distances, ids = old_chat_messages_index.search(query_vector, n_results)
+        results = []
+        for item_id, distance in zip(ids[0], distances[0]):
+            if item_id == -1:
+                continue
+            try:
+                instance = LeanModOldChatMessagesVectorData.objects.get(id=item_id)
+                results.append({
+                    "id": instance.id,
+                    "data": instance.raw_data,
+                    "distance": distance,
+                })
+            except LeanModOldChatMessagesVectorData.DoesNotExist:
+                print(
+                    f"Warning: LeanModOldChatMessagesVectorData Instance with ID {item_id} not found in the vector database.")
+                logger.error(
+                    f"LeanModOldChatMessagesVectorData Instance with ID {item_id} not found in the vector database.")
 
         return results

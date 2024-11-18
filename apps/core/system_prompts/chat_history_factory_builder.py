@@ -154,6 +154,9 @@ class HistoryBuilder:
             lean_chat.save()
             logger.info(f"Lean Chat Transaction: {tx}")
             msg.save()
+
+        history = ContextMemoryManager.handle_context_leanmod(chat_history=history,
+                                                              lean_assistant=lean_chat.lean_assistant)
         return history, temporary_uuid
 
     @staticmethod

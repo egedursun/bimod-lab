@@ -19,3 +19,4 @@
 #
 
 from .lean_assistant_admin import *
+from .leanmod_context_history_vector_admin import *
