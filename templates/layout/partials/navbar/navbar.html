@@ -60,7 +60,13 @@
 
     <!-- /Search -->
   {% endif %}
+
   <ul class="navbar-nav flex-row align-items-center ms-auto">
+    <a href="{% url 'quick_setup_helper:wrapper' %}">
+      <button class="btn btn-instagram rounded me-4" style="background-color: #2D4092; background-image: linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%);">
+        <i class="fa fa-magic-wand-sparkles me-4"></i><strong>Quick Setup</strong>
+      </button>
+    </a>
     <a href="{% url 'multimodal_chat:main_workspace' %}">
       <button class="btn btn-instagram rounded me-4">
         <i class="fa fa-brain me-4"></i><strong>Workspace Hub</strong>

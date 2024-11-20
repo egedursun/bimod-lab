@@ -107,8 +107,7 @@ class SemantorVectorSearchExecutionManager:
 
         return results
 
-    def search_integrations(self, query: str, n_results: int = SEMANTOR_DEFAULT_SEARCH_RESULTS_INTEGRATIONS) -> List[
-        Dict]:
+    def search_integrations(self, query: str, n_results: int = SEMANTOR_DEFAULT_SEARCH_RESULTS_INTEGRATIONS) -> List[Dict]:
         query_vector = np.array([self._generate_query_embedding(query)], dtype=np.float32)
         if self.integrations_index is None:
             raise ValueError("[search_integrations] FAISS index not initialized or loaded properly.")

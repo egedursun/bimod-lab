@@ -137,6 +137,39 @@
      */
   </script>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const stepper = new Stepper(document.querySelector("#quickSetupWizard"));
+
+      // Handle navigation and validation
+      document.querySelectorAll(".btn-next").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const currentStep = btn.closest(".content");
+          const inputField = currentStep.querySelector("input, textarea, select");
+
+          if (inputField) {
+            const inputValue = inputField.value.trim();
+
+            // Validate input before moving to the next step
+            if (!inputValue) {
+              alert("Please fill out this field to proceed.");
+              inputField.focus();
+              return;
+            }
+
+            // Move to the next step
+            stepper.next();
+
+            // Show "Finish Setup" button if on the last step
+            if (stepper._currentIndex === stepper._steps.length - 1) {
+              document.querySelector("#finishSetup").style.display = "block";
+            }
+          }
+        });
+      });
+    });
+  </script>
+
   <!-- Start of OpenWidget (www.openwidget.com) code -->
   <script>
     window.__ow = window.__ow || {};

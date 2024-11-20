@@ -106,6 +106,7 @@ class RegisterView(AuthView):
             messages.error(request, "Email settings are not configured. Unable to send verification email.")
         request.session['email'] = email
 
+        """
         welcome_notification = NotificationItem.objects.create(
             user=created_user,
             notification_sender_type=NotificationSenderTypeNames.WELCOME,
@@ -115,4 +116,6 @@ class RegisterView(AuthView):
                                  " to verify your email address for your own security and privacy. If you need help,"
                                  " please contact us via the support page.")
         welcome_notification.save()
+        """
+
         return redirect("verify-email-page")

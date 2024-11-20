@@ -24,7 +24,8 @@ from django.views.generic import TemplateView
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.organization.models import Organization
 from apps.user_permissions.models import UserRole
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import PermissionNames, PredefinedRolePackages__Functional, \
+    PredefinedRolePackages__Contextual
 from web_project import TemplateLayout
 
 
@@ -51,4 +52,9 @@ class PermissionView_UserRoleList(LoginRequiredMixin, TemplateView):
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         logger.info(f"User roles were listed by User: {self.request.user.id}.")
+
+        # Pass the custom roles
+        context['functional_roles'] = PredefinedRolePackages__Functional.get_dict()
+        context['contextual_roles'] = PredefinedRolePackages__Contextual.get_dict()
+
         return context

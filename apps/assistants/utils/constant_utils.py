@@ -19,6 +19,15 @@ import os
 
 from config.settings import BASE_DIR
 
+
+class EmbeddingManagersNames:
+    TEXT2VEC_OPENAI = "text2vec-openai"
+
+    @staticmethod
+    def as_list():
+        return [EmbeddingManagersNames.TEXT2VEC_OPENAI]
+
+
 AGENT_SPEECH_LANGUAGES = [
     ("auto", "Auto (Detect)"),
     ("en", "English"), ("es", "Spanish"), ("fr", "French"), ("de", "German"), ("it", "Italian"),

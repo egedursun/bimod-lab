@@ -114,7 +114,7 @@
                       <td><strong>{{ board.title }}</strong></td>
                       <td>{{ board.description|linebreaksbr }}</td>
                       <td>{{ board.created_at|date:"Y-m-d H:i" }}</td>
-                      <td>
+                      <td style="min-width: 500px; max-width: 500px;">
                         <a href="{% url 'metakanban:board_detail' board.id %}" class="btn btn-sm btn-info me-4">
                           <i class="fa fa-info-circle me-2"></i><strong>Detail</strong>
                         </a>

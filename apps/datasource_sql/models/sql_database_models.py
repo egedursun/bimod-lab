@@ -80,7 +80,7 @@ class SQLDatabaseConnection(models.Model):
         schema = {}
         try:
             c = psycopg2.connect(dbname=self.database_name, user=self.username, password=self.password,
-                                 host=self.host, port=self.port)
+                                 host=self.host, port=self.port, connect_timeout=10)
             crs = c.cursor()
             crs.execute(POSTGRESQL_SCHEMA_RETRIEVAL_QUERY)
             tables = crs.fetchall()
@@ -101,7 +101,7 @@ class SQLDatabaseConnection(models.Model):
         schema = {}
         try:
             c = mysql.connector.connect(user=self.username, password=self.password, host=self.host,
-                                        database=self.database_name, port=self.port)
+                                        database=self.database_name, port=self.port, connection_timeout=10)
             crs = c.cursor()
             crs.execute(MYSQL_SCHEMA_RETRIEVAL_QUERY)
             tables = crs.fetchall()

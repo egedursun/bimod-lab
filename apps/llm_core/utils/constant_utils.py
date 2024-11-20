@@ -20,6 +20,15 @@ LARGE_LANGUAGE_MODEL_PROVIDERS = [
     ("OA", "OpenAI-GPT"),
 ]
 
+
+class LargeLanguageModelProvidersNames:
+    OPENAI_GPT = "OpenAI-GPT"
+
+    @staticmethod
+    def as_list():
+        return [LargeLanguageModelProvidersNames.OPENAI_GPT]
+
+
 GPT_MODEL_NAMES = [
     ("gpt-4o", "gpt-4o"),
     ("gpt-4-turbo", "gpt-4-turbo"),

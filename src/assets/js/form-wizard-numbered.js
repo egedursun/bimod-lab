@@ -53,7 +53,7 @@ $(function () {
     }
     if (wizardNumberedBtnSubmit) {
       wizardNumberedBtnSubmit.addEventListener('click', event => {
-        alert('Submitted..!!');
+        // alert('Submitted..!!');
       });
     }
   }

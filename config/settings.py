@@ -156,6 +156,7 @@ INSTALLED_APPS = [
     "apps.knowledge_base_store",
     "apps.semantor",
     "apps.voidforger",
+    "apps.quick_setup_helper",
 
     ########################################
     # SUPPORT

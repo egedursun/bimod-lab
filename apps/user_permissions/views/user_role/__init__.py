@@ -24,3 +24,4 @@ from .create_user_role_views import *
 from .manage_user_roles_views import *
 from .delete_user_role_views import *
 from .update_user_role_views import *
+from .integrate_boilerplate_role_views import *

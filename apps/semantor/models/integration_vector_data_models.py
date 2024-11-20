@@ -23,9 +23,13 @@ import faiss
 import numpy as np
 from django.db import models
 
+from apps.integrations.models import AssistantIntegration
+from apps.meta_integrations.models import MetaIntegrationCategory
 from apps.semantor.utils.constant_utils import OpenAIEmbeddingModels, VECTOR_INDEX_PATH_INTEGRATIONS, \
     OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
 from config import settings
+from data.loader import BoilerplateDataLoader
+from data.path_consts import DataPaths
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +57,7 @@ class IntegrationVectorData(models.Model):
             "assistant_name": self.integration_assistant.integration_name,
             "assistant_description": self.integration_assistant.integration_description,
             "assistant_instructions": self.integration_assistant.integration_instructions,
+            "included_in_meta_integration_teams": [],
             "tools": {
                 "image_generation_capability": False,
                 "time_awareness": False,
@@ -61,6 +66,15 @@ class IntegrationVectorData(models.Model):
             },
             "data_sources": {},
         }
+
+        # Add included teams
+        #   - Load the JSON data for teams
+        teams_meta_integrations_data_path = DataPaths.CategoriesAndTeamsMetaIntegrations.TEAMS_META_INTEGRATIONS
+        with open(teams_meta_integrations_data_path, "r") as teams_integrations_file:
+            teams_integrations_data_json = json.load(teams_integrations_file)
+            for team_data in teams_integrations_data_json:
+                if self.integration_assistant.integration_name in team_data["integration_assistants"]:
+                    raw_data["included_in_meta_integration_teams"].append(team_data["meta_integration_name"])
 
         # Add tools
         raw_data['tools'][
@@ -83,10 +97,10 @@ class IntegrationVectorData(models.Model):
 
         self.raw_data = raw_data
         if self.has_raw_data_changed() or self.vector_data is None or self.vector_data == []:
-            print("Vector data has changed, generating new embedding...")
+            # print("Vector data has changed, generating new embedding...")
             self._generate_embedding(raw_data)
         else:
-            print("Vector data has not changed, using existing embedding...")
+            # print("Vector data has not changed, using existing embedding...")
             pass
 
         super().save(*args, **kwargs)

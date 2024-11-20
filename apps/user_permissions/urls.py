@@ -23,7 +23,7 @@ from django.urls import path
 from apps.user_permissions.views import PermissionView_PermissionCreate, PermissionView_PermissionList, \
     PermissionView_UserRoleManage, \
     PermissionView_UserRoleList, PermissionView_UserRoleCreate, PermissionView_UserRoleUpdate, \
-    PermissionView_UserRoleDelete
+    PermissionView_UserRoleDelete, PermissionView_IntegrateBoilerplateRole
 
 app_name = "user_permissions"
 
@@ -42,4 +42,9 @@ urlpatterns = [
         template_name="user_permissions/roles/confirm_delete_user_role.html"), name="delete_user_role"),
     path('roles/update/<int:pk>/', PermissionView_UserRoleUpdate.as_view(
         template_name="user_permissions/roles/update_user_role.html"), name="update_user_role"),
+
+    #####
+
+    path('roles/integrate/boilerplate/', PermissionView_IntegrateBoilerplateRole.as_view(),
+         name="integrate_boilerplate"),
 ]

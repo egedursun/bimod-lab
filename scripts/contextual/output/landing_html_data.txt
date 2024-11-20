@@ -163,7 +163,17 @@ Contents of ../../apps/landing/templates/landing/index.html:
           <div class="hero-text-box text-center position-relative" style="min-width: 50vw;">
             <h1 class="text-primary hero-title display-1 fw-extrabold" style="font-size: 7.5vw;">
               <strong>{% get_theme_variables 'template_name' %}</strong></h1>
-            <h1 class="text-primary hero-title display-6 fw-extrabold" style="font-size: 2.5vw;">
+            <hr>
+             <h1 class="text-primary hero-title display-1 fw-extrabold mt-12 mb-12" style="font-size: 2.5vw;">
+                <u><strong>
+                  "A Single Chat, to Rule Them All"
+                </strong></u>
+             </h1>
+            <h2 class="hero-sub-title h6 mb-6 mt-12" style="text-align: justify-all; font-size: 1vw;">
+             With a single chat, manage an entire army of AI assistants <br> and automate your workflows at every scale.
+            </h2>
+            <hr>
+            <h1 class="text-primary hero-title display-6 fw-extrabold" style="font-size: 3.0vw;">
               Build your AI workforce <br> with the most flexible <br> multimodal assistant platform.
             </h1>
             <h2 class="hero-sub-title h6 mb-6 mt-12" style="text-align: justify-all; font-size: 1vw;">

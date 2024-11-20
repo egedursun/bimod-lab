@@ -83,13 +83,14 @@ urlpatterns = [
     path("app/meta_integrations/", include("apps.meta_integrations.urls", namespace="meta_integrations")),
     path("app/semantor/", include("apps.semantor.urls", namespace="semantor")),
     path("app/voidforger/", include("apps.voidforger.urls", namespace="voidforger")),
+    path("app/quick_setup_helper/", include("apps.quick_setup_helper.urls", namespace="quick_setup_helper")),
 
     ############################################################
     # WORK IN PROGRESS
     ############################################################
     # path("app/harmoniq/", include("apps.harmoniq.urls", namespace="harmoniq")),
     # path("app/ml_model_store/", include("apps.ml_model_store.urls", namespace="ml_model_store")),
-    # path("app/knowledge_base_storee/", include("apps.knowledge_base_store.urls", namespace="knowledge_base_store")),
+    # path("app/knowledge_base_store/", include("apps.knowledge_base_store.urls", namespace="knowledge_base_store")),
     ############################################################
 
     path('app/docs/', docs_redirect_view, name='technical_docs'),

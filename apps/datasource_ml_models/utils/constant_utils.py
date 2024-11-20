@@ -19,6 +19,13 @@ ML_MODEL_ITEM_CATEGORIES = (
     ('pth', 'PyTorch Model'),
 )
 
+class MLModelItemCategoriesNames:
+    PYTORCH = "pth"
+
+    @staticmethod
+    def as_list():
+        return [MLModelItemCategoriesNames.PYTORCH]
+
 ML_MODEL_ITEM_ADMIN_LIST = ('id', 'ml_model_base', 'ml_model_name', 'description', 'ml_model_size', 'full_file_path',
                             'created_at', 'updated_at')
 ML_MODEL_ITEM_ADMIN_FILTER = ('ml_model_base',)

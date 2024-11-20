@@ -17,6 +17,7 @@
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
@@ -39,7 +40,23 @@ class SliderView_GoogleAppsConnectionList(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        context['connections'] = SliderGoogleAppsConnection.objects.filter(owner_user=self.request.user)
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+        try:
+            connections = SliderGoogleAppsConnection.objects.filter(owner_user=self.request.user)
+            user_orgs = Organization.objects.filter(users__in=[self.request.user])
+            context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+
+            paginator = Paginator(connections, 10)
+            page = self.request.GET.get('page')
+
+            try:
+                paginated_connections = paginator.page(page)
+            except PageNotAnInteger:
+                paginated_connections = paginator.page(1)
+            except EmptyPage:
+                paginated_connections = paginator.page(paginator.num_pages)
+
+            context['connections'] = paginated_connections
+        except Exception as e:
+            messages.error(self.request, "An error occurred while retrieving connections.")
+            context['connections'] = []
         return context

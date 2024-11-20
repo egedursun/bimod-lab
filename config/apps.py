@@ -14,7 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+from asgiref.sync import sync_to_async
 from django.apps import AppConfig
 from django.apps import apps
 from django.db.models.signals import pre_save, post_save, post_delete
@@ -29,7 +29,7 @@ class MainAppConfig(AppConfig):
         from data.loader import BoilerplateDataLoader
 
         if ATTEMPT_FIXTURE_DEPLOYMENT:
-            BoilerplateDataLoader.load()
+            sync_to_async(BoilerplateDataLoader.load())
         else:
             print("[MainAppConfig.ready]: The fixture deployment is disabled, skipping upsertion...")
 

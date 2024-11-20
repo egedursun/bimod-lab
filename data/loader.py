@@ -25,7 +25,6 @@ from apps.community_forum.models import ForumCategory, ForumThread
 from apps.bmd_academy.models import AcademyCourse, AcademyCourseVideo, AcademyCourseSection, AcademyCourseInstructor
 from apps.integrations.models import AssistantIntegrationCategory, AssistantIntegration
 from apps.meta_integrations.models import MetaIntegrationTeam, MetaIntegrationCategory
-from apps.semantor.models import IntegrationVectorData
 from config.settings import SKIP_FIXTURE_EMBEDDINGS
 from .path_consts import DataPaths
 
@@ -428,6 +427,7 @@ class BoilerplateDataLoader:
 
                     # Get or create the vector data
                     if SKIP_FIXTURE_EMBEDDINGS is False:
+                        from apps.semantor.models import IntegrationVectorData
                         vector_data, created = IntegrationVectorData.objects.get_or_create(integration_assistant=item[0])
                         if created:
                             logger.info(

@@ -128,57 +128,112 @@
       </h4>
     </div>
     <div class="card-body p-8 overflow-auto">
-      {% if connections %}
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Assistant</th>
-              <th>Owner</th>
-              <th>Authentication Key</th>
-              <th>Created At</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for connection in connections %}
-              <tr>
-                <td style="min-width: 200px; max-width: 200px;">
-                  <form method="post" action="{% url 'drafting:google_apps_connections_update' connection.id %}">
-                    {% csrf_token %}
-                    <select name="assistant" class="form-control form-select-sm">
-                      {% for assistant in assistants %}
-                        <option value="{{ assistant.id }}" {% if model.id == connection.drafting_assistant.id %}selected{% endif %}>
-                          {{ assistant.name }}
-                        </option>
-                      {% endfor %}
-                    </select>
-                </td>
-                <td style="min-width: 150px; max-width: 150px;">{{ connection.owner_user.username }}</td>
-                <td style="min-width: 400px; max-width: 400px;">
-                  <textarea name="connection_api_key" class="form-control form-control-sm" rows="3"
-                            placeholder="Enter API Key">{{ connection.connection_api_key|default:'' }}</textarea>
-                </td>
-                <td style="min-width: 100px; max-width: 100px;">{{ connection.created_at|date:"Y-m-d H:i" }}</td>
-                <td style="min-width: 350px; max-width: 350px;">
-                    <button type="submit" class="btn btn-sm btn-warning me-4">
-                      <i class="fa fa-sync-alt me-2"></i> <strong>Update</strong>
-                    </button>
-                    </form>
-                    <a href="{% url 'drafting:google_apps_connections_delete' connection.id %}" class="btn btn-sm btn-danger connection-delete-btn me-4" data-connection-id="{{ connection.id }}">
-                      <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
-                    </a>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% else %}
-        <div class="alert alert-warning">
-          <i class="fa fa-exclamation-triangle me-2"></i>
-          <strong>No connections available.</strong>
-        </div>
-      {% endif %}
+  {% if connections %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Assistant</th>
+          <th>Owner</th>
+          <th>Authentication Key</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for connection in connections %}
+          <tr>
+            <td style="min-width: 400px; max-width: 400px;">
+              <form method="post" action="{% url 'drafting:google_apps_connections_update' connection.id %}">
+                {% csrf_token %}
+                <select name="assistant" class="form-control form-select-sm">
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}" {% if assistant.id == connection.drafting_assistant.id %}selected{% endif %}>
+                      {{ assistant.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+            </td>
+            <td style="min-width: 150px; max-width: 150px;">{{ connection.owner_user.username }}</td>
+            <td style="min-width: 400px; max-width: 400px;">
+              <textarea name="connection_api_key" class="form-control form-control-sm" rows="3"
+                        placeholder="Enter API Key">{{ connection.connection_api_key|default:'' }}</textarea>
+            </td>
+            <td style="min-width: 100px; max-width: 100px;">{{ connection.created_at|date:"Y-m-d H:i" }}</td>
+            <td style="min-width: 350px; max-width: 350px;">
+                <button type="submit" class="btn btn-sm btn-warning me-4">
+                  <i class="fa fa-sync-alt me-2"></i> <strong>Update</strong>
+                </button>
+                </form>
+                <a href="{% url 'drafting:google_apps_connections_delete' connection.id %}" class="btn btn-sm btn-danger connection-delete-btn me-4" data-connection-id="{{ connection.id }}">
+                  <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
+                </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+      <hr>
+
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination mt-8">
+        {% if connections.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="First">
+              <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ connections.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">&laquo;&laquo;</span>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link">&laquo;</span>
+          </li>
+        {% endif %}
+
+        {% for num in connections.paginator.page_range %}
+          {% if connections.number == num %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+          {% elif num > connections.number|add:'-3' and num < connections.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if connections.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ connections.next_page_number }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ connections.paginator.num_pages }}" aria-label="Last">
+              <span aria-hidden="true">&raquo;&raquo;</span>
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">&raquo;</span>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link">&raquo;&raquo;</span>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% else %}
+    <div class="alert alert-warning">
+      <i class="fa fa-exclamation-triangle me-2"></i>
+      <strong>No connections available.</strong>
     </div>
+  {% endif %}
+</div>
   </div>
 
 </div>
