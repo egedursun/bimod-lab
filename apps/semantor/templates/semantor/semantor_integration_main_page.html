@@ -75,7 +75,7 @@
 
                     <!-- Row for Network Activation Switches -->
                     <div class="row mb-4">
-                        <div class="col-6 mb-4">
+                        <div class="col-4 mb-4">
                           <div class="">
                             <img src="{% static 'img/semantor/semantor-1.png' %}" width="100%" style="border-radius:50px;"
                                  class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
@@ -102,7 +102,7 @@
                               </span>
                           </label>
                         </div>
-                        <div class="col-6 mb-4">
+                        <div class="col-4 mb-4">
                           <div class="">
                             <img src="{% static 'img/semantor/semantor-2.png' %}" width="100%" style="border-radius:50px;"
                                  class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
@@ -123,6 +123,33 @@
                             <br>
                             <label class="switch switch-square switch-lg mt-2">
                                 <input type="checkbox" class="switch-input" id="is_global_network_active" name="is_global_network_active" {% if config.is_global_network_active %}checked{% endif %}>
+                                <span class="switch-toggle-slider">
+                                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="col-4 mb-4">
+                          <div class="">
+                            <img src="{% static 'img/semantor/semantor-3.png' %}" width="100%" style="border-radius:50px;"
+                                 class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
+                          </div>
+                          <div class="alert alert-warning p-4 rounded">
+                              <strong>
+                                <i class="fa fa-exclamation-triangle me-2"></i>
+                                Temporary data source access allows for the Semantor consultants to temporarily gain
+                                access to your data sources and tools to gather more context and information to provide
+                                viable solutions to your problems. We highly recommend you to keep this switch enabled
+                                to enhance the skills of Semantor network.
+                              </strong>
+                            </div>
+                            <hr>
+                            <label class="form-label" for="is_global_network_active">
+                              <strong>Temporary Data Source &amp; Tool Access</strong>
+                            </label>
+                            <br>
+                            <label class="switch switch-square switch-lg mt-2">
+                                <input type="checkbox" class="switch-input" id="temporary_data_source_and_tool_access" name="temporary_data_source_and_tool_access" {% if config.temporary_data_source_and_tool_access %}checked{% endif %}>
                                 <span class="switch-toggle-slider">
                                     <span class="switch-on"><i class="ti ti-check"></i></span>
                                     <span class="switch-off"><i class="ti ti-x"></i></span>

@@ -31,8 +31,10 @@ def build_structured_tool_prompt__semantor_search_execution_leanmod():
                 internal and specific to the organization
 
                 - Global assistants are public assistants that are not specific to the organization, but they might
-                have a broader set of different specialties and professions, and can be very helpful in some cases,
-                although they might not have access to internal data sources of the organization.
+                have a broader set of different specialties and professions, and can be very helpful in some cases.
+                Although they don't have data sources or tools themselves, they might have temporary access to them
+                via other assistants with data sources acting as a reference, and this process is automatically handled
+                by the system.
 
                 - After you learn about the assistants that can help you, you can consult to them using the Semantor
                 Consultation Query Execution Tool, which is another tool that you can use to consult to local and global

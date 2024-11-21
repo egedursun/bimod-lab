@@ -31,7 +31,40 @@ def build_hadron_prime_node_to_assistant_data_source_prompt(assistant: Assistant
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [Hadron Node Name: {conn.hadron_prime_node.node_name}]
-                    [Hadron Node Description: {conn.hadron_prime_node.node_description}]
+                    [Hadron Node Description: {conn.hadron_prime_node.node_description or "N/A"}]
+                ---
+                """
+
+    response_prompt += """
+            '''
+
+            ---
+
+            #### **NOTE**: These are the Hadron Prime Node <> Assistant Connections you have access. Keep these in mind
+            while responding to the user's messages. If this part is EMPTY, it means that the user has
+            not provided any Hadron Prime Node <> Assistant Connections (yet), so neglect this part.
+
+            ---
+            """
+
+    return response_prompt
+
+
+def build_semantor_hadron_prime_node_to_assistant_data_source_prompt(temporary_sources: dict):
+    node_to_assistant_data_sources = temporary_sources.get("data_sources").get("hadron_node_connections")
+
+    response_prompt = """
+            ### **HADRON PRIME NODE CONNECTIONS:**
+
+            '''
+            """
+
+    for i, node_info_feed in enumerate(node_to_assistant_data_sources):
+        conn: HadronNodeAssistantConnection = node_info_feed
+        response_prompt += f"""
+                [Connection ID: {conn.id}]
+                    [Hadron Node Name: {conn.hadron_prime_node.node_name}]
+                    [Hadron Node Description: {conn.hadron_prime_node.node_description or "N/A"}]
                 ---
                 """
 

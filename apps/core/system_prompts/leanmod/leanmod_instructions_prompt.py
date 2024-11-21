@@ -40,12 +40,12 @@ def build_structured_instructions_prompt_leanmod(assistant: LeanAssistant):
             '''
             #### *ORGANIZATION:*
             Your organization: {assistant.organization}
-                Address: {assistant.organization.address}
-                City: {assistant.organization.city}
-                Country: {assistant.organization.country}
-                Postal code: {assistant.organization.postal_code}
-                Phone number: {assistant.organization.phone}
-                Industry: {assistant.organization.industry}
+                Address: {assistant.organization.address or "N/A"}
+                City: {assistant.organization.city or "N/A"}
+                Country: {assistant.organization.country or "N/A"}
+                Postal code: {assistant.organization.postal_code or "N/A"}
+                Phone number: {assistant.organization.phone or "N/A"}
+                Industry: {assistant.organization.industry or "N/A"}
 
             ---
 

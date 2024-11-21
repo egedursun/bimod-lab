@@ -32,10 +32,12 @@ class SemantorView_Configure(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         try:
-            config = SemantorConfiguration.objects.filter(user=request.user).first()
+            config: SemantorConfiguration = SemantorConfiguration.objects.filter(user=request.user).first()
             if config:
                 config.is_local_network_active = request.POST.get('is_local_network_active') == 'on'
                 config.is_global_network_active = request.POST.get('is_global_network_active') == 'on'
+                config.temporary_data_source_and_tool_access = request.POST.get(
+                    'temporary_data_source_and_tool_access') == 'on'
                 config.maximum_assistant_search_items = int(
                     request.POST.get('maximum_assistant_search_items', config.maximum_assistant_search_items))
                 config.maximum_integration_search_items = int(
@@ -47,5 +49,3 @@ class SemantorView_Configure(LoginRequiredMixin, TemplateView):
             return redirect("semantor:configuration")
 
         return redirect("semantor:configuration")
-
-####################################################################################################

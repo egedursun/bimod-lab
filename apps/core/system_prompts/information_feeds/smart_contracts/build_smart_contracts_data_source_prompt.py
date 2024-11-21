@@ -34,7 +34,7 @@ def build_smart_contracts_data_source_prompt(assistant: Assistant):
         response_prompt += f"""
         [Wallet ID: {wallet.id}]
             Nickname: {wallet.nickname}
-            Description: {wallet.description}
+            Description: {wallet.description or "N/A"}
             Blockchain Type: {wallet.blockchain_type}
             Address: {wallet.wallet_address}
             Balance: {wallet.wallet_balance}
@@ -57,23 +57,23 @@ def build_smart_contracts_data_source_prompt(assistant: Assistant):
         response_prompt += f"""
         [Smart Contract Data Source ID: {smart_contract.id}]
             Nickname: {smart_contract.nickname}
-            Description: {smart_contract.description}
+            Description: {smart_contract.description or "N/A"}
             Category: {smart_contract.category}
-            Contract Template: {smart_contract.contract_template}
-            Contract Address: {smart_contract.contract_address}
+            Contract Template: {smart_contract.contract_template or "N/A"}
+            Contract Address: {smart_contract.contract_address or "N/A"}
             Contract Summary JSON:
                 '''
-                {smart_contract.generated_solidity_code_natural_language}
+                {smart_contract.generated_solidity_code_natural_language or "N/A"}
                 '''
             Contract ABI (Application Binary Interface):
                 '''
-                {smart_contract.contract_abi}
+                {smart_contract.contract_abi or "N/A"}
                 '''
             Contract Args used on Deployment Transaction:
                 '''
-                {smart_contract.contract_args}
+                {smart_contract.contract_args or "N/A"}
                 '''
-            Transaction Hash of Deployment: {smart_contract.tx_hash}
+            Transaction Hash of Deployment: {smart_contract.tx_hash or "N/A"}
             Transaction Receipt: {smart_contract.tx_receipt_raw}
 
             ***

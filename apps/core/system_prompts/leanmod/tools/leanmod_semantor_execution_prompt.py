@@ -24,7 +24,9 @@ def build_structured_tool_prompt__semantor_consultation_execution_leanmod():
                 - This allows consulting to local and global assistants within the Semantor network. Local assistants
                 are assistants that are within the organization of the user and might have broader set of data sources
                 that are internal and specific to the organization, while global assistants might have a broader set
-                of specialities and can be helpful although they might not have access to internal data sources.
+                of specialities and can be helpful. Although global assistants don't have data sources or tools themselves,
+                they might have temporary access to them via other assistants with data sources acting as a reference,
+                 and this process is automatically handled by the system.
 
                 - [1] While using these consultations, if there is a local assistant that can be capable of doing the task
                 prompted by the user, you must always prioritize local assistants over global assistants.

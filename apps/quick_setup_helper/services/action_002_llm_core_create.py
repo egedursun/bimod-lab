@@ -17,6 +17,7 @@
 import logging
 
 from apps.llm_core.models import LLMCore
+from apps.llm_core.utils import GPTModelNamesNames
 from apps.quick_setup_helper.utils import generate_random_object_id_string
 
 logger = logging.getLogger(__name__)
@@ -36,6 +37,7 @@ def action__002_llm_core_create(
             provider="OA",
             api_key=response__llm_core_openai_api_key,
             temperature=response__openai_temperature,
+            model_name=GPTModelNamesNames.GPT_4O,
             nickname="General Core Model" + " " + generate_random_object_id_string(),
             description="The primary LLM core model generated for organization " + metadata__organization.name + ".",
         )

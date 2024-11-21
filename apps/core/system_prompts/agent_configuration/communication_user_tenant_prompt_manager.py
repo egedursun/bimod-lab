@@ -25,11 +25,11 @@ def build_user_tenant_prompt(user: User):
         ### **USER INFORMATION:**
 
         '''
-        User's Full Name: {user.profile.first_name} {user.profile.last_name}
+        User's Full Name: {user.profile.first_name or "N/A"} {user.profile.last_name or "N/A"}
                Email: {user.email}
-               City: {user.profile.city}
-               Country: {user.profile.country}
-               Birthday: {user.profile.birthdate}
+               City: {user.profile.city or "N/A"}
+               Country: {user.profile.country or "N/A"}
+               Birthday: {user.profile.birthdate or "N/A"}
         '''
 
         **NOTE**: This is the information about the user you are currently chatting. Make sure to keep

@@ -28,10 +28,10 @@ def build_spatial_awareness_prompt(user: User):
         '''
         """
     user_location = f"""
-        - Registered Address: {user.profile.address}
-        - City: {user.profile.city}
-        - Country: {user.profile.country}
-        - Postal Code: {user.profile.postal_code}
+        - Registered Address: {user.profile.address or "N/A"}
+        - City: {user.profile.city or "N/A"}
+        - Country: {user.profile.country or "N/A"}
+        - Postal Code: {user.profile.postal_code or "N/A"}
         - Coordinates: [Infer approximate coordinates from address, city, and country.]
     """
     current_time = f"""

@@ -18,7 +18,7 @@
 from django.db import models
 
 from apps.finetuning.models import FineTunedModelConnection
-from apps.llm_core.utils import LARGE_LANGUAGE_MODEL_PROVIDERS, GPT_MODEL_NAMES
+from apps.llm_core.utils import LARGE_LANGUAGE_MODEL_PROVIDERS, GPT_MODEL_NAMES, GPTModelNamesNames
 
 
 class LLMCore(models.Model):
@@ -26,7 +26,7 @@ class LLMCore(models.Model):
     description = models.TextField(default="", blank=True)
     provider = models.CharField(max_length=2, choices=LARGE_LANGUAGE_MODEL_PROVIDERS)
     api_key = models.CharField(max_length=8192)
-    model_name = models.CharField(max_length=1000)
+    model_name = models.CharField(max_length=1000, default=GPTModelNamesNames.GPT_4O, null=False, blank=False)
     temperature = models.DecimalField(max_digits=5, decimal_places=2, default=0.50)
     maximum_tokens = models.IntegerField(default=4094)
     stop_sequences = models.TextField(default="", blank=True)

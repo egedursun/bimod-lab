@@ -26,6 +26,8 @@ class SemantorConfiguration(models.Model):
     maximum_assistant_search_items = models.IntegerField(default=5)
     maximum_integration_search_items = models.IntegerField(default=5)
 
+    temporary_data_source_and_tool_access = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

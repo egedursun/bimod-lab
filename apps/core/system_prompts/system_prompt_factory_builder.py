@@ -14,6 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import json
+import logging
 
 from django.contrib.auth.models import User
 
@@ -41,32 +43,42 @@ from apps.core.system_prompts.agent_configuration.agent_personality_prompt_manag
 from apps.core.system_prompts.agent_configuration.communication_user_tenant_prompt_manager import \
     build_user_tenant_prompt
 from apps.core.system_prompts.information_feeds.browser.build_browser_data_source_prompt import \
-    build_browsing_data_source_prompt, build_lean_browsing_data_source_prompt
+    build_browsing_data_source_prompt, build_lean_browsing_data_source_prompt, \
+    build_semantor_browsing_data_source_prompt
 from apps.core.system_prompts.information_feeds.code_base.build_code_base_data_source_prompt import \
-    build_code_base_data_source_prompt, build_lean_code_base_data_source_prompt
+    build_code_base_data_source_prompt, build_lean_code_base_data_source_prompt, \
+    build_semantor_code_base_data_source_prompt
 from apps.core.system_prompts.information_feeds.hadron_prime_node_to_assistant.build_hadron_prime_node_to_assistant_data_source_prompt import \
     build_hadron_prime_node_to_assistant_data_source_prompt, \
-    build_lean_hadron_prime_node_to_assistant_data_source_prompt
+    build_lean_hadron_prime_node_to_assistant_data_source_prompt, \
+    build_semantor_hadron_prime_node_to_assistant_data_source_prompt
 from apps.core.system_prompts.information_feeds.media_manager.build_media_manager_data_source_prompt import \
-    build_media_manager_data_source_prompt, build_lean_media_manager_data_source_prompt
+    build_media_manager_data_source_prompt, build_lean_media_manager_data_source_prompt, \
+    build_semantor_media_manager_data_source_prompt
 from apps.core.system_prompts.information_feeds.metakanban_to_assistant.build_metakanban_to_assistant_data_source_prompt import \
-    build_metakanban_to_assistant_data_source_prompt, build_lean_metakanban_to_assistant_data_source_prompt
+    build_metakanban_to_assistant_data_source_prompt, build_lean_metakanban_to_assistant_data_source_prompt, \
+    build_semantor_metakanban_to_assistant_data_source_prompt
 from apps.core.system_prompts.information_feeds.metatempo_to_asisstant.build_metatempo_to_assistant_data_source_prompt import \
-    build_metatempo_to_assistant_data_source_prompt, build_lean_metatempo_to_assistant_data_source_prompt
+    build_metatempo_to_assistant_data_source_prompt, build_lean_metatempo_to_assistant_data_source_prompt, \
+    build_semantor_metatempo_to_assistant_data_source_prompt
 from apps.core.system_prompts.information_feeds.ml_manager.build_ml_models_data_source_prompt import \
-    build_ml_models_data_source_prompt, build_lean_ml_models_data_source_prompt
+    build_ml_models_data_source_prompt, build_lean_ml_models_data_source_prompt, \
+    build_semantor_ml_models_data_source_prompt
 from apps.core.system_prompts.information_feeds.nosql.build_nosql_data_source_prompt import \
-    build_nosql_data_source_prompt, build_lean_nosql_data_source_prompt
+    build_nosql_data_source_prompt, build_lean_nosql_data_source_prompt, build_semantor_nosql_data_source_prompt
 from apps.core.system_prompts.information_feeds.orchestration_to_assistant.build_orchestration_to_assistant_data_source_prompt import \
-    build_orchestration_to_assistant_data_source_prompt, build_lean_orchestration_to_assistant_data_source_prompt
+    build_orchestration_to_assistant_data_source_prompt, build_lean_orchestration_to_assistant_data_source_prompt, \
+    build_semantor_orchestration_to_assistant_data_source_prompt
 from apps.core.system_prompts.information_feeds.smart_contracts.build_smart_contracts_data_source_prompt import \
     build_lean_smart_contracts_data_source_prompt, build_smart_contracts_data_source_prompt
 from apps.core.system_prompts.information_feeds.sql.build_sql_data_source_prompt import build_sql_data_source_prompt, \
-    build_lean_sql_data_source_prompt
+    build_lean_sql_data_source_prompt, build_semantor_sql_data_source_prompt
 from apps.core.system_prompts.information_feeds.ssh_file_system.build_file_system_data_source_prompt import \
-    build_file_system_data_source_prompt, build_lean_file_system_data_source_prompt
+    build_file_system_data_source_prompt, build_lean_file_system_data_source_prompt, \
+    build_semantor_file_system_data_source_prompt
 from apps.core.system_prompts.information_feeds.vector_store.build_vector_store_data_source_prompt import \
-    build_vector_store_data_source_prompt, build_lean_vector_store_data_source_prompt
+    build_vector_store_data_source_prompt, build_lean_vector_store_data_source_prompt, \
+    build_semantor_vector_store_data_source_prompt
 from apps.core.system_prompts.leanmod.leanmod_guidelines_prompt import build_structured_primary_guidelines_leanmod
 from apps.core.system_prompts.leanmod.leanmod_instructions_prompt import build_structured_instructions_prompt_leanmod
 from apps.core.system_prompts.leanmod.leanmod_name_prompt import build_structured_name_prompt_leanmod
@@ -88,12 +100,13 @@ from apps.core.system_prompts.leanmod.tools.leanmod_tools_instructions_prompt im
     build_structured_tool_usage_instructions_prompt_leanmod
 from apps.core.system_prompts.flexible_modalities.restful_api_modality_instructions import \
     build_apis_multi_modality_prompt, \
-    build_lean_apis_multi_modality_prompt
+    build_lean_apis_multi_modality_prompt, build_semantor_apis_multi_modality_prompt
 from apps.core.system_prompts.flexible_modalities.py_function_modality_instructions import \
-    build_functions_multi_modality_prompt, build_lean_functions_multi_modality_prompt
+    build_functions_multi_modality_prompt, build_lean_functions_multi_modality_prompt, \
+    build_semantor_functions_multi_modality_prompt
 from apps.core.system_prompts.flexible_modalities.bash_script_modality_instructions import \
     build_scripts_multi_modality_prompt, \
-    build_lean_scripts_multi_modality_prompt
+    build_lean_scripts_multi_modality_prompt, build_semantor_scripts_multi_modality_prompt
 from apps.core.system_prompts.tool_call_prompts.generic_instructions_tool_call import \
     build_generic_instructions_tool_call_prompt, build_lean_structured_tool_usage_instructions_prompt
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_audio_tool_prompt import \
@@ -183,6 +196,8 @@ from apps.leanmod.models import LeanAssistant
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
 from apps.voidforger.models import VoidForger
+
+logger = logging.getLogger(__name__)
 
 
 class SystemPromptFactoryBuilder:
@@ -546,26 +561,191 @@ class SystemPromptFactoryBuilder:
         return prompt
 
     @staticmethod
+    def build_semantor(
+        assistant_name: str,
+        instructions: str,
+        temporary_sources: dict,
+        audience: str = "standard",
+        tone: str = "formal",
+        language: str = "en",
+        chat_name: str = "Default",
+    ):
+        ##############################################################################################################
+        # SEMANTOR ASSISTANT
+        ##############################################################################################################
+        agent_nickname = assistant_name
+        comm_language = language
+        generic = build_internal_principles_prompt()
+        agent_nickname_prompt = build_agent_nickname_prompt(name=agent_nickname, chat_name=chat_name)
+        main_instructions = instructions
+        audience_prompt = build_target_audience_prompt(audience=audience)
+        tone_prompt = build_agent_personality_prompt(tone=tone)
+        output_language = build_communication_language_prompt(response_language=comm_language)
+
+        sql_feed = build_semantor_sql_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        nosql_feed = build_semantor_nosql_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        vector_store_feed = build_semantor_vector_store_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        codebase_feed = build_semantor_code_base_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        ssh_feed = build_semantor_file_system_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        media_manager_feed = build_semantor_media_manager_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        ml_feed = build_semantor_ml_models_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        browsing_feed = build_semantor_browsing_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        hadron_prime_node_feed = build_semantor_hadron_prime_node_to_assistant_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        metakanban_feed = build_semantor_metakanban_to_assistant_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        metatempo_feed = build_semantor_metatempo_to_assistant_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+        orchestration_trigger_feed = build_semantor_orchestration_to_assistant_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
+
+        ##############################
+
+        function_modality = build_semantor_functions_multi_modality_prompt(
+            temporary_sources=temporary_sources
+        )
+        api_modality = build_semantor_apis_multi_modality_prompt(
+            temporary_sources=temporary_sources
+        )
+        script_modality = build_semantor_scripts_multi_modality_prompt(
+            temporary_sources=temporary_sources
+        )
+
+        do_instructions = (build_lean_structured_tool_usage_instructions_prompt())
+        do_sql_query = (build_tool_prompt__execute_sql_query())
+        do_vector_store = build_tool_prompt__query_vector_store()
+        do_codebase = build_tool_prompt__execute_codebase_query()
+        do_intra_memory = build_tool_prompt__intra_context_memory()
+        do_ssh_system = build_tool_prompt__execute_ssh_file_system_command()
+        do_media_manager = build_tool_prompt__media_manager_query()
+        do_http_retrieval = build_tool_prompt__retrieval_via_http_client()
+        do_ml = build_tool_prompt__infer_with_machine_learning()
+        do_browsing = build_tool_prompt__browsing()
+        do_analyze_code = build_tool_prompt__analyze_code()
+        do_function = build_tool_prompt__execute_code()
+        do_api = build_tool_prompt__execute_restful_api()
+        do_script = build_tool_prompt__execute_bash_script()
+        do_generate_image = build_tool_prompt__generate_image()
+        do_edit_image = build_tool_prompt__edit_image()
+        do_dream_image = build_tool_prompt__dream_image()
+        do_audio = build_tool_prompt__execute_audio()
+        do_generate_video = build_lean_tool_prompt__generate_video()
+        do_smart_contract = build_tool_prompt__smart_contract_function_call()
+        do_dashboard_statistics = build_tool_prompt__execute_dashboard_statistics_query()
+        do_hadron_node_query = build_tool_prompt__execute_hadron_prime_node_query()
+        do_metakanban_query = build_tool_prompt__execute_metakanban_query()
+        do_metatempo_query = build_tool_prompt__execute_metatempo_query()
+        do_orchestration_trigger = build_tool_prompt__execute_orchestration_trigger()
+        do_scheduled_job_logs = build_tool_prompt__execute_scheduled_job_logs_query()
+        do_triggered_job_logs = build_tool_prompt__execute_triggered_job_logs_query()
+        do_smart_contract_gen = build_tool_prompt__execute_smart_contract_generation_query()
+
+        # Core Instructions
+        merged_prompt = generic
+        merged_prompt += agent_nickname_prompt
+        merged_prompt += main_instructions
+        merged_prompt += audience_prompt
+        merged_prompt += tone_prompt
+        merged_prompt += output_language
+        # Data Feeds
+        merged_prompt += sql_feed
+        merged_prompt += nosql_feed
+        merged_prompt += vector_store_feed
+        merged_prompt += codebase_feed
+        merged_prompt += ssh_feed
+        merged_prompt += media_manager_feed
+        merged_prompt += ml_feed
+        merged_prompt += browsing_feed
+        merged_prompt += hadron_prime_node_feed
+        merged_prompt += metakanban_feed
+        merged_prompt += metatempo_feed
+        merged_prompt += orchestration_trigger_feed
+        # Executors
+        merged_prompt += function_modality
+        merged_prompt += api_modality
+        merged_prompt += script_modality
+        merged_prompt += do_instructions
+        merged_prompt += do_sql_query
+        merged_prompt += do_vector_store
+        merged_prompt += do_codebase
+        merged_prompt += do_intra_memory
+        merged_prompt += do_ssh_system
+        merged_prompt += do_media_manager
+        merged_prompt += do_http_retrieval
+        merged_prompt += do_ml
+        merged_prompt += do_browsing
+        merged_prompt += do_analyze_code
+        merged_prompt += do_function
+        merged_prompt += do_api
+        merged_prompt += do_script
+        merged_prompt += do_generate_image
+        merged_prompt += do_edit_image
+        merged_prompt += do_dream_image
+        merged_prompt += do_audio
+        merged_prompt += do_generate_video
+        merged_prompt += do_smart_contract
+        merged_prompt += do_dashboard_statistics
+        merged_prompt += do_hadron_node_query
+        merged_prompt += do_metakanban_query
+        merged_prompt += do_metatempo_query
+        merged_prompt += do_orchestration_trigger
+        merged_prompt += do_scheduled_job_logs
+        merged_prompt += do_triggered_job_logs
+        merged_prompt += do_smart_contract_gen
+        prompt = {"role": "system", "content": merged_prompt}
+        return prompt
+
+    @staticmethod
     def build_leanmod_system_prompts(chat: MultimodalLeanChat, lean_assistant: LeanAssistant, user: User, role: str):
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
 
-        combined_system_instructions = SystemPromptFactoryBuilder._prepare_leanmod_system_prompts(
-            chat, lean_assistant, user)
+        try:
+            combined_system_instructions = SystemPromptFactoryBuilder.prepare_leanmod_system_prompts(
+                chat, lean_assistant, user)
 
-        prompt = {"role": role, "content": combined_system_instructions}
-        tx = LLMTransaction.objects.create(
-            organization=lean_assistant.organization, model=lean_assistant.llm_model,
-            responsible_user=user, responsible_assistant=None, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            transaction_context_content=combined_system_instructions, llm_cost=0, internal_service_cost=0,
-            tax_cost=0, total_cost=0, total_billable_cost=0, transaction_type=ChatRoles.SYSTEM,
-            transaction_source=chat.chat_source)
-        chat.transactions.add(tx)
-        chat.save()
+            prompt = {"role": role, "content": combined_system_instructions}
+
+            try:
+                tx = LLMTransaction.objects.create(
+                    organization=lean_assistant.organization, model=lean_assistant.llm_model,
+                    responsible_user=user, responsible_assistant=None, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    transaction_context_content=json.dumps(combined_system_instructions), llm_cost=0, internal_service_cost=0,
+                    tax_cost=0, total_cost=0, total_billable_cost=0, transaction_type=ChatRoles.SYSTEM,
+                    transaction_source=chat.chat_source)
+                chat.transactions.add(tx)
+                chat.save()
+            except Exception as e:
+                print("Error saving Leanmod system prompts transaction: %s" % e)
+
+        except Exception as e:
+            print("Error building Leanmod system prompts: %s" % e)
+            return {"role": role, "content": "Unexpected error building Leanmod system prompts: %s" % e}
+
         return prompt
 
     @staticmethod
-    def _prepare_leanmod_system_prompts(chat, lean_assistant, user):
+    def prepare_leanmod_system_prompts(chat, lean_assistant, user):
         agent_nickname = lean_assistant.name
         generic = build_structured_primary_guidelines_leanmod()
         agent_nickname = build_structured_name_prompt_leanmod(assistant_name=agent_nickname, chat_name=chat.chat_name)
@@ -590,10 +770,12 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += search_semantor
         combined_system_instructions += do_semantor
         combined_system_instructions += do_intra_memory_search
+
         return combined_system_instructions
 
     @staticmethod
-    def build_voidforger_system_prompts(chat: MultimodalLeanChat, voidforger: VoidForger, user: User, role: str, current_mode: str):
+    def build_voidforger_system_prompts(chat: MultimodalLeanChat, voidforger: VoidForger, user: User, role: str,
+                                        current_mode: str):
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
 

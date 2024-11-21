@@ -29,10 +29,10 @@ def build_structured_place_and_time_prompt_leanmod(user: User):
             '''
             """
     user_location = f"""
-            User Address: {user.profile.address}
-                City: {user.profile.city}
-                Country: {user.profile.country}
-                Postal Code: {user.profile.postal_code}
+            User Address: {user.profile.address or "N/A"}
+                City: {user.profile.city or "N/A"}
+                Country: {user.profile.country or "N/A"}
+                Postal Code: {user.profile.postal_code or "N/A"}
                 Coordinates: [Infer on Address]
         """
 

@@ -31,7 +31,42 @@ def build_metatempo_to_assistant_data_source_prompt(assistant: Assistant):
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [MetaTempo Board Name: {conn.metatempo_instance.board.title}]
-                    [MetaTempo Board Description: {conn.metatempo_instance.board.description}]
+                    [MetaTempo Board Description: {conn.metatempo_instance.board.description or "N/A"}]
+                    [Associated Project ID: {conn.metatempo_instance.board.project.id}]
+                        [Associated Project Name: {conn.metatempo_instance.board.project.project_name}]
+                ---
+                """
+
+    response_prompt += """
+            '''
+
+            ---
+
+            #### **NOTE**: These are the MetaTempo Tracker <> Assistant Connections you have access. Keep these in mind
+            while responding to the user's messages. If this part is EMPTY, it means that the user has
+            not provided any MetaTempo Tracker <> Assistant Connections (yet), so neglect this part.
+
+            ---
+            """
+
+    return response_prompt
+
+
+def build_semantor_metatempo_to_assistant_data_source_prompt(temporary_sources: dict):
+    metatempo_to_assistant_data_sources = temporary_sources.get("data_sources").get("metatempo_tracker_connections")
+
+    response_prompt = """
+            ### **METATEMPO TRACKER CONNECTIONS:**
+
+            '''
+            """
+
+    for i, info_feed in enumerate(metatempo_to_assistant_data_sources):
+        conn: MetaTempoAssistantConnection = info_feed
+        response_prompt += f"""
+                [Connection ID: {conn.id}]
+                    [MetaTempo Board Name: {conn.metatempo_instance.board.title}]
+                    [MetaTempo Board Description: {conn.metatempo_instance.board.description or "N/A"}]
                     [Associated Project ID: {conn.metatempo_instance.board.project.id}]
                         [Associated Project Name: {conn.metatempo_instance.board.project.project_name}]
                 ---

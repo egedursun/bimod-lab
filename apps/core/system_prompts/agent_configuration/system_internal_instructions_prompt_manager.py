@@ -36,15 +36,15 @@ def build_system_internal_instructions_prompt(assistant: Assistant):
         '''
         #### *ORGANIZATION:*
         - The organization you serve: {assistant.organization.name}
-        - Description of it: {assistant.organization.description}
-        - Mission of it: {assistant.organization.mission}
-        - Vision of it: {assistant.organization.vision}
-        - Address of it: {assistant.organization.address}
-        - City of it: {assistant.organization.city}
-        - Country of it: {assistant.organization.country}
-        - Postal code: {assistant.organization.postal_code}
-        - Phone number of it: {assistant.organization.phone}
-        - Industry of it: {assistant.organization.industry}
+        - Description of it: {assistant.organization.description or "N/A"}
+        - Mission of it: {assistant.organization.mission or "N/A"}
+        - Vision of it: {assistant.organization.vision or "N/A"}
+        - Address of it: {assistant.organization.address or "N/A"}
+        - City of it: {assistant.organization.city or "N/A"}
+        - Country of it: {assistant.organization.country or "N/A"}
+        - Postal code: {assistant.organization.postal_code or "N/A"}
+        - Phone number of it: {assistant.organization.phone or "N/A"}
+        - Industry of it: {assistant.organization.industry or "N/A"}
         ---
 
         #### *LARGE LANGUAGE MODEL:*

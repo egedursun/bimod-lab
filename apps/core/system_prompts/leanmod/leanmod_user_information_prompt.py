@@ -24,11 +24,11 @@ def build_structured_user_information_prompt_leanmod(user: User):
             ### **USER:**
 
             '''
-            Name: {user.profile.first_name} {user.profile.last_name}
-                Mail: {user.email}
-                City: {user.profile.city}
-                Country: {user.profile.country}
-                B.Day: {user.profile.birthdate}
+            Name: {user.profile.first_name or "N/A"} {user.profile.last_name or "N/A"}
+                Mail: {user.email or "N/A"}
+                City: {user.profile.city or "N/A"}
+                Country: {user.profile.country or "N/A"}
+                B.Day: {user.profile.birthdate or "N/A"}
             '''
 
             *NOTE:*

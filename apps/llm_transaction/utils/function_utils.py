@@ -29,40 +29,60 @@ logger = logging.getLogger(__name__)
 
 
 def process_and_calculate_number_of_billable_tokens(encoding_engine, text):
-    encoding = tiktoken.get_encoding(encoding_engine)
-    tokens = encoding.encode(str(text))
+    try:
+        encoding = tiktoken.get_encoding(encoding_engine)
+        tokens = encoding.encode(str(text))
+    except Exception as e:
+        raise ValueError(f"Error occurred while tokenizing the text: {str(e)}")
     return len(tokens)
 
 
 def calculate_total_llm_model_costs(model, number_of_tokens):
-    from apps.llm_transaction.utils import LLMCostsPerMillionTokens
-    costs = LLMCostsPerMillionTokens.OPENAI_GPT_COSTS[model]
-    tokens_divided_by_million = number_of_tokens / 1_000_000
-    apx_input_cost = (tokens_divided_by_million / 2) * costs["input"]
-    apx_output_cost = (tokens_divided_by_million / 2) * costs["output"]
-    llm_cost = (apx_input_cost + apx_output_cost)
+    try:
+        from apps.llm_transaction.utils import LLMCostsPerMillionTokens
+        costs = LLMCostsPerMillionTokens.OPENAI_GPT_COSTS[model]
+        tokens_divided_by_million = number_of_tokens / 1_000_000
+        apx_input_cost = (tokens_divided_by_million / 2) * costs["input"]
+        apx_output_cost = (tokens_divided_by_million / 2) * costs["output"]
+        llm_cost = (apx_input_cost + apx_output_cost)
+    except Exception as e:
+        raise ValueError(f"Error occurred while calculating the LLM model costs: {str(e)}")
     return llm_cost
 
 
 def calculate_service_costs_of_platform(llm_cost, tool_service_fee_absolute_rate=0.000000):
-    from apps.llm_transaction.utils import INTERNAL_PROFIT_MARGIN_FOR_LLM
-    bare_amount = llm_cost * INTERNAL_PROFIT_MARGIN_FOR_LLM
-    bare_amount += tool_service_fee_absolute_rate
+    try:
+        from apps.llm_transaction.utils import INTERNAL_PROFIT_MARGIN_FOR_LLM
+        bare_amount = llm_cost * INTERNAL_PROFIT_MARGIN_FOR_LLM
+        bare_amount += tool_service_fee_absolute_rate
+    except Exception as e:
+        raise ValueError(f"Error occurred while calculating the service costs of the platform: {str(e)}")
     return bare_amount
 
 
 def calculate_value_added_tax(internal_service_cost):
-    from apps.llm_transaction.utils import VALUE_ADDED_TAX_PERCENTAGE
-    tax_cost = internal_service_cost * VALUE_ADDED_TAX_PERCENTAGE
+    try:
+        from apps.llm_transaction.utils import VALUE_ADDED_TAX_PERCENTAGE
+        tax_cost = internal_service_cost * VALUE_ADDED_TAX_PERCENTAGE
+    except Exception as e:
+        raise ValueError(f"Error occurred while calculating the value added tax: {str(e)}")
     return tax_cost
 
 
 def calculate_final_billable_cost(internal_service_cost, tax_cost):
-    return internal_service_cost + tax_cost
+    try:
+        result = internal_service_cost + tax_cost
+    except Exception as e:
+        raise ValueError(f"Error occurred while calculating the final billable cost: {str(e)}")
+    return result
 
 
 def calculate_final_cost_total(llm_cost, billable_cost):
-    return llm_cost + billable_cost
+    try:
+        result = llm_cost + billable_cost
+    except Exception as e:
+        raise ValueError(f"Error occurred while calculating the final total cost: {str(e)}")
+    return result
 
 
 def sum_costs(transactions):

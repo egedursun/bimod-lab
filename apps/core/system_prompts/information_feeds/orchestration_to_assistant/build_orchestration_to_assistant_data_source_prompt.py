@@ -32,7 +32,40 @@ def build_orchestration_to_assistant_data_source_prompt(assistant: Assistant):
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [Orchestration Maestro Name: {conn.orchestration_maestro.name}]
-                    [Orchestration Maestro Description: {conn.orchestration_maestro.description}]
+                    [Orchestration Maestro Description: {conn.orchestration_maestro.description or "N/A"}]
+                ---
+                """
+
+    response_prompt += """
+            '''
+
+            ---
+
+            #### **NOTE**: These are the Orchestration Manager/Maestro <> Assistant Connections you have access. Keep
+            these in mind while responding to the user's messages. If this part is EMPTY, it means that the user has
+            not provided any Orchestration Manager/Maestro Tracker <> Assistant Connections (yet), so neglect this part.
+
+            ---
+            """
+
+    return response_prompt
+
+
+def build_semantor_orchestration_to_assistant_data_source_prompt(temporary_sources: dict):
+    orchestration_to_assistant_data_sources = temporary_sources.get("data_sources").get("orchestration_trigger_connections")
+
+    response_prompt = """
+            ### **ORCHESTRATION MANAGER/MAESTRO CONNECTIONS:**
+
+            '''
+            """
+
+    for i, info_feed in enumerate(orchestration_to_assistant_data_sources):
+        conn: OrchestrationReactantAssistantConnection = info_feed
+        response_prompt += f"""
+                [Connection ID: {conn.id}]
+                    [Orchestration Maestro Name: {conn.orchestration_maestro.name}]
+                    [Orchestration Maestro Description: {conn.orchestration_maestro.description or "N/A"}]
                 ---
                 """
 
