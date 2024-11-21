@@ -21,21 +21,28 @@ from json import JSONDecoder
 logger = logging.getLogger(__name__)
 
 
-def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
-    logger.info(f"Searching for tool call in response.")
+def find_tool_call_from_json(
+    response: str,
+    decoder=JSONDecoder()
+):
 
+    logger.info(f"Searching for tool call in response.")
     response = f"""{response}"""
     response = response.replace("\n", "").replace("'", '"').replace('```json', '').replace('```', '').replace('`', '')
     json_objects = []
     pos = 0
+
     while True:
         match = response.find('{', pos)
         if match == -1:
             break
+
         try:
             result, index = decoder.raw_decode(response[match:])
             json_objects.append(result)
             pos = match + index
+
         except ValueError:
             pos = match + 1
+
     return json_objects

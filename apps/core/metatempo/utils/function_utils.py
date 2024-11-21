@@ -29,26 +29,43 @@ logger = logging.getLogger(__name__)
 
 
 def save_image_and_provide_full_uri(image_bytes):
+
     from apps.core.metatempo.utils import METATEMPO_IMAGES_ROOT_MEDIA_PATH
+
     guess_file_type = filetype.guess(image_bytes)
     if guess_file_type is None:
         guess_file_type = BIN_FILE_FORMAT
+
     extension = guess_file_type.extension
-    save_name = generate_save_name(extension=extension)
+    save_name = generate_save_name(
+        extension=extension
+    )
+
     s3_path = f"{METATEMPO_IMAGES_ROOT_MEDIA_PATH}{save_name}"
     full_uri = f"{MEDIA_URL}{s3_path}"
+
     try:
         s3c = boto3.client('s3')
         bucket = settings.AWS_STORAGE_BUCKET_NAME
-        s3c.put_object(Bucket=bucket, Key=s3_path, Body=image_bytes)
+
+        s3c.put_object(
+            Bucket=bucket,
+            Key=s3_path,
+            Body=image_bytes
+        )
         logger.info(f"[save_image_and_provide_full_uri] Image saved to S3 with URI: {full_uri}")
+
     except Exception as e:
         logger.error(f"[save_image_and_provide_full_uri] Error occurred while saving the image to S3: {e}")
         return None
+
     return full_uri
 
 
-def find_tool_call_from_json_single(response: str, decoder=JSONDecoder()):
+def find_tool_call_from_json_single(
+    response: str,
+    decoder=JSONDecoder()
+):
     logger.info(f"Searching for tool call in response.")
     response = response.replace("\n", "").replace("'", '').replace("`", "").replace('json', '')
     pos = 0
@@ -57,9 +74,11 @@ def find_tool_call_from_json_single(response: str, decoder=JSONDecoder()):
         match = response.find('{', pos)
         if match == -1:
             break
+
         try:
             result, index = decoder.raw_decode(response[match:])
             return result
+
         except ValueError:
             pos = match + 1
 

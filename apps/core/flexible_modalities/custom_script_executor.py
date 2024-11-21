@@ -26,25 +26,39 @@ logger = logging.getLogger(__name__)
 
 class CustomScriptsContentRetriever:
 
-    def __init__(self, context_organization, context_assistant, script):
+    def __init__(
+        self,
+        context_organization,
+        context_assistant,
+        script
+    ):
         self.script = script
         self.context_organization = context_organization
         self.context_assistant = context_assistant
 
     def retrieve_custom_script_content(self):
+
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
+
         script = self.script
         script_content = script.script_content
+
         tx = LLMTransaction(
-            organization=self.context_organization, model=self.context_assistant.llm_model, responsible_user=None,
-            responsible_assistant=None, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            organization=self.context_organization,
+            model=self.context_assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=None,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=InternalServiceCosts.ExternalCustomScriptExecutor.COST
             if self.script.is_public else InternalServiceCosts.InternalCustomScriptExecutor.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.EXTERNAL_SCRIPT_RETRIEVAL
-            if self.script.is_public else LLMTransactionSourcesTypesNames.INTERNAL_SCRIPT_RETRIEVAL, is_tool_cost=True)
+            if self.script.is_public else LLMTransactionSourcesTypesNames.INTERNAL_SCRIPT_RETRIEVAL,
+            is_tool_cost=True
+        )
         tx.save()
+
         response = script_content if script_content else "[The script content is empty.]"
         logger.info(f"Retrieved custom script content: {script.name}")
         return response

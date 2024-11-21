@@ -27,27 +27,52 @@ logger = logging.getLogger(__name__)
 
 class CustomAPIExecutor:
 
-    def __init__(self, context_organization, context_assistant, api):
+    def __init__(
+        self,
+        context_organization,
+        context_assistant,
+        api
+    ):
         self.api = api
         self.context_organization = context_organization
         self.context_assistant = context_assistant
 
-    def execute_custom_api(self, endpoint_name: str, path_values=None, query_values=None, body_values=None):
+    def execute_custom_api(
+        self,
+        endpoint_name: str,
+        path_values=None,
+        query_values=None,
+        body_values=None
+    ):
+
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
+
         api_id = self.api.id
+
         promise = mm_api_execution_task.delay(
-            custom_api_id=api_id, endpoint_name=endpoint_name, path_values=path_values, query_values=query_values,
-            body_values=body_values)
+            custom_api_id=api_id,
+            endpoint_name=endpoint_name,
+            path_values=path_values,
+            query_values=query_values,
+            body_values=body_values
+        )
         response = promise.get()
+
         tx = LLMTransaction(
-            organization=self.context_organization, model=self.context_assistant.llm_model,
-            responsible_user=None, responsible_assistant=None, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            organization=self.context_organization,
+            model=self.context_assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=None,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             llm_cost=InternalServiceCosts.ExternalCustomAPIExecutor.COST
             if self.api.is_public else InternalServiceCosts.InternalCustomAPIExecutor.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.EXTERNAL_API_EXECUTION
-            if self.api.is_public else LLMTransactionSourcesTypesNames.INTERNAL_API_EXECUTION, is_tool_cost=True)
+            if self.api.is_public else LLMTransactionSourcesTypesNames.INTERNAL_API_EXECUTION,
+            is_tool_cost=True
+        )
         tx.save()
         logger.info(f"Executed custom API: {self.api.name} with response: {response}")
+
         return response

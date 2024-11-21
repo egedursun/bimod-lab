@@ -17,6 +17,7 @@
 
 
 def build_leanmod_to_expert_assistant_instructions_prompt(query_text: str) -> str:
+
     return f"""
         **WARNING: This is an automated message.**
 
