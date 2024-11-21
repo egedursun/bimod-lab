@@ -34,7 +34,13 @@ logger = logging.getLogger(__name__)
 
 
 class Individual:
-    def __init__(self, process: BinexusProcess, llm_model: LLMCore, chromosome: Chromosome):
+    def __init__(
+        self,
+        process: BinexusProcess,
+        llm_model: LLMCore,
+        chromosome: Chromosome
+    ):
+
         self.process: BinexusProcess = process
         self.llm_model: LLMCore = llm_model
         self.c = OpenAIGPTClientManager.get_naked_client(llm_model=self.llm_model)
@@ -48,14 +54,21 @@ class Individual:
             new_elite_individual: BinexusEliteAgent = BinexusEliteAgent(
                 binexus_process=self.process,
                 agent_nickname=generate_random_elite_agent_name(),
-                agent_prompt=binexus_individual_assignment_prompt_redacted(process=self.process, individual=self),
-                agent_temperature=self.chromosome.get(Chromosome.GeneNames.TEMPERATURE, 0.5),
+                agent_prompt=binexus_individual_assignment_prompt_redacted(
+                    process=self.process,
+                    individual=self
+                ),
+                agent_temperature=self.chromosome.get(
+                    Chromosome.GeneNames.TEMPERATURE, 0.5
+                ),
                 binexus_fitness_score=self.fitness,
                 agent_chromosome_parameters=self.get_chromosome()
             )
             new_elite_individual.save()
+
             logger.info(f"New Elite Agent Ascended: {new_elite_individual.agent_nickname}")
             return True
+
         except Exception as e:
             logger.error(f"Error while ascending to elite: {e}")
             return False
@@ -67,18 +80,25 @@ class Individual:
         return self.assignment_content
 
     def _create_assignment(self):
-        print("Creating Assignment for assistant with ID: " + self.uuid_string)
-        print("--------process: individual assignment creation start------------")
         try:
-            system_prompt = build_binexus_individual_assignment_prompt(process=self.process, individual=self)
+            system_prompt = build_binexus_individual_assignment_prompt(
+                process=self.process,
+                individual=self
+            )
             structured_messages = [{"role": "system", "content": system_prompt}]
 
             tx = LLMTransaction.objects.create(
-                organization=self.process.organization, model=self.llm_model,
-                responsible_user=self.process.created_by_user, responsible_assistant=None,
+                organization=self.process.organization,
+                model=self.llm_model,
+                responsible_user=self.process.created_by_user,
+                responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(system_prompt),
-                llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
+                llm_cost=0,
+                internal_service_cost=0,
+                tax_cost=0,
+                total_cost=0,
+                total_billable_cost=0,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.BINEXUS
             )
@@ -87,7 +107,8 @@ class Individual:
 
             agent_temperature_value = self.chromosome.get(Chromosome.GeneNames.TEMPERATURE, 0.5)
             llm_response = self.c.chat.completions.create(
-                model=self.llm_model.model_name, messages=structured_messages,
+                model=self.llm_model.model_name,
+                messages=structured_messages,
                 temperature=agent_temperature_value,
                 frequency_penalty=float(self.llm_model.frequency_penalty),
                 presence_penalty=float(self.llm_model.presence_penalty),
@@ -101,11 +122,17 @@ class Individual:
             final_response = choice_message_content
 
             tx = LLMTransaction.objects.create(
-                organization=self.process.organization, model=self.llm_model,
-                responsible_user=self.process.created_by_user, responsible_assistant=None,
+                organization=self.process.organization,
+                model=self.llm_model,
+                responsible_user=self.process.created_by_user,
+                responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(final_response),
-                llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
+                llm_cost=0,
+                internal_service_cost=0,
+                tax_cost=0,
+                total_cost=0,
+                total_billable_cost=0,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.BINEXUS
             )
@@ -124,7 +151,10 @@ class Individual:
         print("--------process: individual assignment creation: end------------")
         return final_response
 
-    def set_new_fitness_score(self, score):
+    def set_new_fitness_score(
+        self,
+        score
+    ):
         self.fitness = score
 
     def get_chromosome(self):

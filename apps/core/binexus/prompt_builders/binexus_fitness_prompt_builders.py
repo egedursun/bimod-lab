@@ -19,10 +19,21 @@ from apps.core.binexus.prompts import binexus_generic_instructions_prompt, binex
     binexus_output_format_prompt, binexus_evaluation_individual_prompt
 
 
-def build_binexus_fitness_evaluation_prompt(process: BinexusProcess, individual):
+def build_binexus_fitness_evaluation_prompt(
+    process: BinexusProcess,
+    individual
+):
     merged_prompt = ""
-    merged_prompt += binexus_generic_instructions_prompt(process=process)
-    merged_prompt += binexus_process_metadata_prompt(process=process)
-    merged_prompt += binexus_output_format_prompt(process=process)
-    merged_prompt += binexus_evaluation_individual_prompt(individual=individual)
+    merged_prompt += binexus_generic_instructions_prompt(
+        process=process
+    )
+    merged_prompt += binexus_process_metadata_prompt(
+        process=process
+    )
+    merged_prompt += binexus_output_format_prompt(
+        process=process
+    )
+    merged_prompt += binexus_evaluation_individual_prompt(
+        individual=individual
+    )
     return merged_prompt

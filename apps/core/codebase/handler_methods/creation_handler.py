@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 def create_classes_helper(executor):
+
     output = {"status": True, "error": ""}
     conn = executor.connection_object
     c = executor.connect_c()
@@ -35,9 +36,13 @@ def create_classes_helper(executor):
             name=conn.class_name,
             vectorizer_config=executor.decode_vectorizer(conn.vectorizer),
             generative_config=wvc.config.Configure.Generative.openai(
-                model=DEFAULT_GENERATIVE_SEARCH_MODEL, temperature=conn.assistant.llm_model.temperature,
-                max_tokens=conn.assistant.llm_model.maximum_tokens), properties=REPOSITORY_WEAVIATE_FIELDS_CONFIG)
+                model=DEFAULT_GENERATIVE_SEARCH_MODEL,
+                temperature=conn.assistant.llm_model.temperature,
+                max_tokens=conn.assistant.llm_model.maximum_tokens),
+            properties=REPOSITORY_WEAVIATE_FIELDS_CONFIG
+        )
         logger.info(f"Created class: {conn.class_name}")
+
     except Exception as e:
         output["status"] = False
         output["error"] = str(e)
@@ -49,14 +54,18 @@ def create_classes_helper(executor):
             name=f"{conn.class_name}Chunks",
             vectorizer_config=executor.decode_vectorizer(conn.vectorizer),
             generative_config=wvc.config.Configure.Generative.openai(
-                model=DEFAULT_GENERATIVE_SEARCH_MODEL, temperature=conn.assistant.llm_model.temperature,
+                model=DEFAULT_GENERATIVE_SEARCH_MODEL,
+                temperature=conn.assistant.llm_model.temperature,
                 max_tokens=conn.assistant.llm_model.maximum_tokens
             ),
-            properties=REPOSITORY_CHUNK_WEAVIATE_FIELDS_CONFIG)
+            properties=REPOSITORY_CHUNK_WEAVIATE_FIELDS_CONFIG
+        )
         logger.info(f"Created class: {conn.class_name}Chunks")
+
     except Exception as e:
         output["status"] = False
         output["error"] = str(e)
         logger.error(f"Error while creating class: {str(e)}")
         return output
+
     return output

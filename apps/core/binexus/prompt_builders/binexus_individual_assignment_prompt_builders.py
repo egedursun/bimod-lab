@@ -19,13 +19,25 @@ from apps.core.binexus.prompts.binexus_individual_assignment_prompt import binex
     binexus_individual_assignment_prompt_redacted
 
 
-def build_binexus_individual_assignment_prompt(process: BinexusProcess, individual):
+def build_binexus_individual_assignment_prompt(
+    process: BinexusProcess,
+    individual
+):
     merged_prompt = ""
-    merged_prompt += binexus_individual_assignment_prompt(process=process, individual=individual)
+    merged_prompt += binexus_individual_assignment_prompt(
+        process=process,
+        individual=individual
+    )
     return merged_prompt
 
 
-def build_binexus_individual_assignment_prompt_redacted(process: BinexusProcess, individual):
+def build_binexus_individual_assignment_prompt_redacted(
+    process: BinexusProcess,
+    individual
+):
     merged_prompt = ""
-    merged_prompt += binexus_individual_assignment_prompt_redacted(process=process, individual=individual)
+    merged_prompt += binexus_individual_assignment_prompt_redacted(
+        process=process,
+        individual=individual
+    )
     return merged_prompt

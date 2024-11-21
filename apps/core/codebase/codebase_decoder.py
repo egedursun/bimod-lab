@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 class CodeBaseDecoder:
     @staticmethod
     def get(connection):
+
         if connection.provider == KNOWLEDGE_BASE_PROVIDERS["WEAVIATE"]["code"]:
             logger.info(f"Creating WeaviateExecutor for connection: {connection}")
             return WeaviateExecutor(connection)

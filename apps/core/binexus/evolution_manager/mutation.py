@@ -21,11 +21,20 @@ from apps.core.binexus.evolution_manager.population import PopulationManager
 
 
 class MutationManager:
-    def __init__(self, mutation_chance_per_individual: float, conditional_mutation_chance_per_gene: float):
+    def __init__(
+        self,
+        mutation_chance_per_individual: float,
+        conditional_mutation_chance_per_gene: float
+    ):
+
         self.mutation_chance_per_individual = mutation_chance_per_individual
         self.mutation_chance_per_gene = conditional_mutation_chance_per_gene
 
-    def _mutate_individual(self, individual: Individual) -> Individual:
+    def _mutate_individual(
+        self,
+        individual: Individual
+    ) -> Individual:
+
         mutated_chromosome = {}
         for gene_name, gene_value in individual.get_chromosome().items():
             if random.random() < self.mutation_chance_per_gene:
@@ -34,11 +43,14 @@ class MutationManager:
             else:
                 mutated_chromosome[gene_name] = gene_value
         individual.chromosome = mutated_chromosome
+
         return individual
 
-    def mutate_population(self, population: PopulationManager) -> list:
-        print("Mutating population")
-        print("----------process: mutating population: start--------------")
+    def mutate_population(
+        self,
+        population: PopulationManager
+    ) -> list:
+
         mutated_population = []
         for i, individual in enumerate(population):
             if random.random() < self.mutation_chance_per_individual:
@@ -46,6 +58,5 @@ class MutationManager:
                 mutated_population.append(mutated_individual)
             else:
                 mutated_population.append(individual)
-            print(" - Mutated the individual: ", i)
-        print("-----------process: mutating population: end-------------")
+
         return mutated_population

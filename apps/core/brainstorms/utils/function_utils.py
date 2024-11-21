@@ -23,10 +23,14 @@ from apps.brainstorms.models import BrainstormingSession, BrainstormingIdea
 logger = logging.getLogger(__name__)
 
 
-def build_from_scratch_brainstorms_system_prompt(session: BrainstormingSession):
+def build_from_scratch_brainstorms_system_prompt(
+    session: BrainstormingSession
+):
     logger.info(f"Building from scratch prompt for session: {session.id}")
+
     topic_definition = session.topic_definition
     constraints = session.constraints
+
     prompt = f"""
         Your task is to act like a BRAINSTORMING ASSISTANT and help the user generate ideas for the following topic:
         '''
@@ -120,9 +124,12 @@ def build_from_scratch_brainstorms_system_prompt(session: BrainstormingSession):
     return prompt
 
 
-def build_from_previous_level_brainstorms_system_prompt(session: BrainstormingSession,
-                                                        previous_level_bookmarked_ideas: list):
+def build_from_previous_level_brainstorms_system_prompt(
+    session: BrainstormingSession,
+    previous_level_bookmarked_ideas: list
+):
     logger.info(f"Building from previous level prompt for session: {session.id}")
+
     topic_definition = session.topic_definition
     constraints = session.constraints
     ideas_textual = ""
@@ -252,7 +259,11 @@ def build_from_previous_level_brainstorms_system_prompt(session: BrainstormingSe
     return prompt
 
 
-def build_synthesis_from_level_system_prompt(session: BrainstormingSession, bookmarked_ideas: list):
+def build_synthesis_from_level_system_prompt(
+    session: BrainstormingSession,
+    bookmarked_ideas: list
+):
+
     logger.info(f"Building synthesis prompt for session: {session.id}")
     topic_definition = session.topic_definition
     constraints = session.constraints
@@ -378,7 +389,11 @@ def build_synthesis_from_level_system_prompt(session: BrainstormingSession, book
     return prompt
 
 
-def build_synthesis_from_all_levels_system_prompt(session: BrainstormingSession, bookmarked_ideas: list):
+def build_synthesis_from_all_levels_system_prompt(
+    session: BrainstormingSession,
+    bookmarked_ideas: list
+):
+
     logger.info(f"Building synthesis prompt for session: {session.id}")
     topic_definition = session.topic_definition
     constraints = session.constraints
@@ -504,7 +519,10 @@ def build_synthesis_from_all_levels_system_prompt(session: BrainstormingSession,
     return prompt
 
 
-def build_deepen_thought_over_idea_system_prompt(idea: BrainstormingIdea):
+def build_deepen_thought_over_idea_system_prompt(
+    idea: BrainstormingIdea
+):
+
     logger.info(f"Building deepen thought over idea prompt for idea: {idea.id}")
     topic_definition = idea.brainstorming_session.topic_definition
     constraints = idea.brainstorming_session.constraints
@@ -630,10 +648,16 @@ def build_deepen_thought_over_idea_system_prompt(idea: BrainstormingIdea):
     return prompt
 
 
-def find_json_presence(response: str, decoder=JSONDecoder()):
+def find_json_presence(
+    response: str,
+    decoder=JSONDecoder()
+):
+
     logger.info(f"Finding JSON presence in response: {response}")
+
     response = f"""{response}"""
     response = response.replace("\n", "").replace("'", '')
+
     json_objects = []
     pos = 0
     while True:
@@ -646,4 +670,5 @@ def find_json_presence(response: str, decoder=JSONDecoder()):
             pos = match + index
         except ValueError:
             pos = match + 1
+
     return json_objects

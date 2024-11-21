@@ -27,12 +27,16 @@ logger = logging.getLogger(__name__)
 
 class BinexusExecutionManager:
 
-    def __init__(self, binexus_process: BinexusProcess):
+    def __init__(
+        self,
+        binexus_process: BinexusProcess
+    ):
         self.binexus_process = binexus_process
 
     def execute_binexus(self):
         mx = Matrix(
-            binexus_process=self.binexus_process, population_size=self.binexus_process.optimization_population_size,
+            binexus_process=self.binexus_process,
+            population_size=self.binexus_process.optimization_population_size,
             mutation_rate_per_individual=self.binexus_process.optimization_mutation_rate_per_individual,
             mutation_rate_per_gene=self.binexus_process.optimization_mutation_rate_per_gene,
             cross_over_rate=self.binexus_process.optimization_crossover_rate,
@@ -40,7 +44,10 @@ class BinexusExecutionManager:
             self_mating_possible=self.binexus_process.self_breeding_possible,
             maximum_epochs=self.binexus_process.optimization_generations
         )
-        success, error = mx.execute_evolution(is_test=False)
+
+        success, error = mx.execute_evolution(
+            is_test=False
+        )
         if error is not None:
             logger.error(f"Error occurred during execution: {error}")
             return False, error
@@ -51,10 +58,16 @@ class BinexusExecutionManager:
         self.binexus_process.post_processing_history_average_of_average_fitnesses = mx.average_of_average_fitnesses
         self.binexus_process.post_processing_history_average_of_best_fitnesses = mx.average_of_best_fitnesses
         self.binexus_process.post_processing_history_average_of_worst_fitnesses = mx.average_of_worst_fitnesses
+
         if mx.process_history_chart:
             chart_name = f"binexus_process_chart_{generate_random_chart_file_name()}.png"
             chart_content = ContentFile(mx.process_history_chart)
-            self.binexus_process.post_processing_history_visual_chart.save(chart_name, chart_content, save=False)
+            self.binexus_process.post_processing_history_visual_chart.save(
+                chart_name,
+                chart_content,
+                save=False
+            )
+
         self.binexus_process.save()
         logger.info("Binexus process execution completed successfully.")
 

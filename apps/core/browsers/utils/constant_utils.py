@@ -42,8 +42,16 @@ class FindByTypes:
 
     @staticmethod
     def as_list():
-        return [FindByTypes.ID, FindByTypes.NAME, FindByTypes.CSS_SELECTOR, FindByTypes.XPATH, FindByTypes.LINK_TEXT,
-                FindByTypes.PARTIAL_LINK_TEXT, FindByTypes.TAG_NAME, FindByTypes.CLASS_NAME]
+        return [
+            FindByTypes.ID,
+            FindByTypes.NAME,
+            FindByTypes.CSS_SELECTOR,
+            FindByTypes.XPATH,
+            FindByTypes.LINK_TEXT,
+            FindByTypes.PARTIAL_LINK_TEXT,
+            FindByTypes.TAG_NAME,
+            FindByTypes.CLASS_NAME
+        ]
 
 
 class BrowserActionsNames:
@@ -52,7 +60,10 @@ class BrowserActionsNames:
 
     @staticmethod
     def as_list():
-        return [BrowserActionsNames.BROWSER_SEARCH, BrowserActionsNames.CLICK_URL_IN_SEARCH]
+        return [
+            BrowserActionsNames.BROWSER_SEARCH,
+            BrowserActionsNames.CLICK_URL_IN_SEARCH
+        ]
 
 
 class BrowsingModes:

@@ -20,9 +20,11 @@ logger = logging.getLogger(__name__)
 
 
 def get_error_on_context_memory_handling_log(error_log: str):
+
     logger.error(
         f"[ChatContextManager.forget_oldest_chat_messages] An error occurred while creating the system prompt "
         f"for the operation: {str(error_log)}")
     structured_log = f"[ChatContextManager.forget_oldest_chat_messages] An error occurred while creating the "
     f"system prompt for the operation: {str(error_log)}"
+
     return structured_log

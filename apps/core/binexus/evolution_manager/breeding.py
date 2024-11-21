@@ -23,8 +23,15 @@ from apps.llm_core.models import LLMCore
 
 
 class BreedingManager:
-    def __init__(self, process: BinexusProcess, llm_model: LLMCore, population_size: int, crossover_rate: float,
-                 elitism_selection_ratio: float, self_mating_possible: bool = False):
+    def __init__(
+        self,
+        process: BinexusProcess,
+        llm_model: LLMCore,
+        population_size: int,
+        crossover_rate: float,
+        elitism_selection_ratio: float,
+        self_mating_possible: bool = False
+    ):
         self.process = process
         self.llm_model = llm_model
         self.population_size = population_size
@@ -32,17 +39,25 @@ class BreedingManager:
         self.elitism_selection_ratio = elitism_selection_ratio
         self.self_mating_possible = self_mating_possible
 
-    def _determine_elites(self, population):
+    def _determine_elites(
+        self,
+        population
+    ):
         elites = []
         selection_amount = int(self.population_size * self.elitism_selection_ratio)
-        PopulationManager.order_population_by_fitness_descending(population=population)
+        PopulationManager.order_population_by_fitness_descending(
+            population=population
+        )
+
         for i in range(selection_amount):
             elites.append(population[i])
         return elites
 
-    def _apply_crossing_over(self, population, elites):
-        print("Applying Crossing Over")
-        print("---------process: crossing over: start---------------")
+    def _apply_crossing_over(
+        self,
+        population,
+        elites
+    ):
         new_population = []
         for i in range(self.population_size):
             if random.random() < self.crossover_rate:
@@ -74,17 +89,12 @@ class BreedingManager:
                 new_population.append(new_individual)
             else:
                 new_population.append(population[i])
-            print(" - Applied crossing-over for individual: ", i)
-        print("- Crossing Over Applied successfully.")
-        print("-----------process: crossing over: end-------------")
         return new_population
 
-    def produce_new_generation(self, population):
-        print("Producing New Generation")
-        print("----------process: new generation creation: start--------------")
+    def produce_new_generation(
+        self,
+        population
+    ):
         elites = self._determine_elites(population)
-        print(" - Elites are determined successfully.")
         new_population = self._apply_crossing_over(population, elites)
-        print("- New Generation Produced successfully.")
-        print("---------process: new generation creation: end---------------")
         return new_population

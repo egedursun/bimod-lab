@@ -31,15 +31,32 @@ logger = logging.getLogger(__name__)
 
 
 class AssistantOldChatMessagesVectorData(models.Model):
-    assistant_chat_message = models.ForeignKey('multimodal_chat.MultimodalChatMessage', on_delete=models.CASCADE,
-                                               related_name='assistant_chat_message_vector_data')
+    assistant_chat_message = models.ForeignKey(
+        'multimodal_chat.MultimodalChatMessage',
+        on_delete=models.CASCADE,
+        related_name='assistant_chat_message_vector_data'
+    )
 
-    raw_data = models.JSONField(blank=True, null=True)
-    raw_data_hash = models.CharField(max_length=255, blank=True, null=True)
-    vector_data = models.JSONField(blank=True, null=True)
+    raw_data = models.JSONField(
+        blank=True,
+        null=True
+    )
+    raw_data_hash = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True
+    )
+    vector_data = models.JSONField(
+        blank=True,
+        null=True
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
 
     def __str__(self):
         return str(self.assistant_chat_message.multimodal_chat.assistant.id) + " - " + str(
@@ -58,8 +75,10 @@ class AssistantOldChatMessagesVectorData(models.Model):
 
     def _get_index_path(self):
         assistant_chat_id = self.assistant_chat_message.multimodal_chat.id
-        return os.path.join(VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES,
-                            f'assistant_chat_index_{assistant_chat_id}.index')
+        return os.path.join(
+            VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES,
+            f'assistant_chat_index_{assistant_chat_id}.index'
+        )
 
     def save(self, *args, **kwargs):
 
@@ -106,10 +125,14 @@ class AssistantOldChatMessagesVectorData(models.Model):
     def _generate_embedding(self, raw_data):
         from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
         c = OpenAIGPTClientManager.get_naked_client(
-            llm_model=self.assistant_chat_message.multimodal_chat.assistant.llm_model)
+            llm_model=self.assistant_chat_message.multimodal_chat.assistant.llm_model
+        )
         raw_data_text = json.dumps(raw_data, indent=2)
         try:
-            response = c.embeddings.create(input=raw_data_text, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE)
+            response = c.embeddings.create(
+                input=raw_data_text,
+                model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE
+            )
             embedding_vector = response.data[0].embedding
             self.vector_data = embedding_vector
         except Exception as e:
@@ -118,7 +141,10 @@ class AssistantOldChatMessagesVectorData(models.Model):
 
     def _save_embedding(self):
         if self.vector_data:
-            x = np.array([self.vector_data], dtype=np.float32).reshape(1, OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS)
+            x = np.array([self.vector_data], dtype=np.float32).reshape(
+                1,
+                OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+            )
             xids = np.array([self.id], dtype=np.int64)
             index_path = self._get_index_path()
             if not os.path.exists(index_path):

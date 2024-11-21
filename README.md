@@ -212,14 +212,14 @@
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Last Measurement Date: 2024-10-31
-- Total Days: 124
+- Last Measurement Date: 2024-11-21
+- Total Days: 145
   - Number of Files: 59,100
-  - Code Lines: 13,600,000
-  - Comment Lines: 4,100,000
-  - Blank Lines: 2,600,000
-  - TOTAL: 20,300,000
-  - TOTAL RAW CALCULATION: 600,000,000
+  - Logical Lines: 14,200,000
+  - Comment Lines: 4,200,000
+  - Blank Lines: 2,700,000
+  - TOTAL: 21,100,000 (2.9% CoData Rate)
+  - TOTAL RAW CALCULATION: 740,000,000
 
 ---
 
@@ -227,7 +227,7 @@
 
 ```bash
 brew install cloc (or sudo apt-get install cloc for Linux)
-cloc .
+cloc . --skip-uniqueness
 ```
 
 *To count the number of lines of code (RAW CALCULATION):*

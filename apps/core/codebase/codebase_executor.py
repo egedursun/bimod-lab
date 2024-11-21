@@ -33,7 +33,6 @@ from apps.datasource_codebase.tasks import embed_repository_chunks, embed_reposi
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -47,25 +46,39 @@ class WeaviateExecutor:
         try:
             c = weaviate.connect_to_weaviate_cloud(
                 cluster_url=self.connection_object.host_url,
-                auth_credentials=weaviate.auth.AuthApiKey(api_key=self.connection_object.provider_api_key),
-                headers={"X-OpenAI-Api-Key": self.connection_object.vectorizer_api_key},
+                auth_credentials=weaviate.auth.AuthApiKey(
+                    api_key=self.connection_object.provider_api_key
+                ),
+                headers={
+                    "X-OpenAI-Api-Key": self.connection_object.vectorizer_api_key
+                },
                 additional_config=AdditionalConfig(
-                    timeout=Timeout(init=WEAVIATE_INITIALIZATION_TIMEOUT, query=WEAVIATE_QUERY_TIMEOUT,
-                                    insert=WEAVIATE_INSERT_TIMEOUT)))
-            logger.info(f"[WeaviateExecutor.connect_c] Connected to Weaviate cluster: {self.connection_object.host_url}")
+                    timeout=Timeout(
+                        init=WEAVIATE_INITIALIZATION_TIMEOUT,
+                        query=WEAVIATE_QUERY_TIMEOUT,
+                        insert=WEAVIATE_INSERT_TIMEOUT
+                    )
+                )
+            )
+            logger.info(
+                f"[WeaviateExecutor.connect_c] Connected to Weaviate cluster: {self.connection_object.host_url}")
             self.client = c
+
         except Exception as e:
             logger.error(f"[WeaviateExecutor.connect_c] Error connecting to Weaviate cluster: {e}")
             return self.client
+
         return self.client
 
     def close_c(self):
         try:
             logger.info(f"[WeaviateExecutor.close_c] Closing Weaviate connection")
             self.client.close()
+
         except Exception as e:
             logger.error(f"[WeaviateExecutor.close_c] Error closing Weaviate connection: {e}")
             pass
+
         return
 
     def retrieve_schema(self):
@@ -74,17 +87,21 @@ class WeaviateExecutor:
             schema = c.collections.list_all()
             logger.info(f"[WeaviateExecutor.retrieve_schema] Retrieved Weaviate schema")
             self.close_c()
+
         except Exception as e:
             logger.error(f"[WeaviateExecutor.retrieve_schema] Error retrieving Weaviate schema: {e}")
             return None
+
         return schema
 
     @staticmethod
     def decode_vectorizer(vectorizer_name):
         from apps.assistants.utils import EmbeddingManagersNames
+
         if vectorizer_name == EmbeddingManagersNames.TEXT2VEC_OPENAI:
             logger.info(f"[WeaviateExecutor.decode_vectorizer] Decoding vectorizer: {vectorizer_name}")
             return wvc.config.Configure.Vectorizer.text2vec_openai()
+
         else:
             logger.info(f"[WeaviateExecutor.decode_vectorizer] Decoding vectorizer: {vectorizer_name}")
             return wvc.config.Configure.Vectorizer.text2vec_openai()
@@ -95,9 +112,11 @@ class WeaviateExecutor:
             output = create_classes_helper(executor=self)
             logger.info(f"[WeaviateExecutor.create_weaviate_classes] Created Weaviate classes")
             self.close_c()
+
         except Exception as e:
             logger.error(f"[WeaviateExecutor.create_weaviate_classes] Error creating Weaviate classes: {e}")
             return None
+
         return output
 
     def delete_weaviate_classes(self, class_name: str):
@@ -106,57 +125,85 @@ class WeaviateExecutor:
             logger.info(f"[WeaviateExecutor.delete_weaviate_classes] Deleting Weaviate class: {class_name}")
             output = delete_weaviate_class_helper(executor=self, class_name=class_name)
             self.close_c()
+
         except Exception as e:
             logger.error(f"[WeaviateExecutor.delete_weaviate_classes] Error deleting Weaviate class: {e}")
             return None
+
         return output
 
-    def delete_weaviate_repository(self, class_name: str, document_uuid: str):
+    def delete_weaviate_repository(
+        self,
+        class_name: str,
+        document_uuid: str
+    ):
         try:
             _ = self.connect_c()
             logger.info(f"[WeaviateExecutor.delete_weaviate_repository] Deleting Weaviate repository: {document_uuid}")
-            output = delete_repository_helper(executor=self, class_name=class_name, document_uuid=document_uuid)
+            output = delete_repository_helper(
+                executor=self,
+                class_name=class_name,
+                document_uuid=document_uuid
+            )
             self.close_c()
+
         except Exception as e:
             logger.error(f"[WeaviateExecutor.delete_weaviate_repository] Error deleting Weaviate repository: {e}")
             return None
+
         return output
 
     def index_repositories(self, document_paths: list | str):
         try:
             _ = self.connect_c()
             logger.info(f"[WeaviateExecutor.index_repositories] Indexing repositories: {document_paths}")
-            index_repository_helper.delay(connection_id=self.connection_object.id, document_paths=document_paths)
+            index_repository_helper.delay(
+                connection_id=self.connection_object.id,
+                document_paths=document_paths
+            )
             self.close_c()
+
         except Exception as e:
             logger.error(f"[WeaviateExecutor.index_repositories] Error indexing repositories: {e}")
             return None
+
         return
 
     def repository_loader(self, file_path) -> dict | None:
+
         result = {"page_content": "", "metadata": {}}
         formatted_content = ""
-        cloned_repository_path = self._clone_repository(repository_url=file_path)
+        cloned_repository_path = self._clone_repository(
+            repository_url=file_path
+        )
+
         if not cloned_repository_path:
             logger.error(f"[WeaviateExecutor.repository_loader] Error cloning repository: {file_path}")
             return None
+
         try:
             for root, dirs, files in os.walk(cloned_repository_path):
                 for file in files:
                     file_path = os.path.join(root, file)
+
                     if not self.is_supported_file(file_path):
                         logger.info(f"[WeaviateExecutor.repository_loader] Skipping unsupported file: {file_path}")
                         continue
+
                     content_lines = self.extract_file_content_and_metadata(file_path)
                     if not content_lines:
-                        logger.error(f"[WeaviateExecutor.repository_loader] Error extracting file content: {file_path}")
+                        logger.error(
+                            f"[WeaviateExecutor.repository_loader] Error extracting file content: {file_path}")
                         continue
+
                     formatted_content += self.assign_line_numbers_and_filename_to_line(str(file_path), content_lines)
                     formatted_content += "\n"
                     logger.info(f"[WeaviateExecutor.repository_loader] Loaded file: {file_path}")
+
         except Exception as e:
             logger.error(f"[WeaviateExecutor.repository_loader] Error loading repository: {file_path}")
             return None
+
         result["page_content"] = formatted_content
         logger.info(f"[WeaviateExecutor.repository_loader] Loaded repository: {file_path}")
         return result
@@ -191,7 +238,8 @@ class WeaviateExecutor:
             with open(file_path, "r") as f:
                 content = f.readlines()
         except Exception as e:
-            logger.error(f"[WeaviateExecutor.extract_file_content_and_metadata] Error extracting file content: {file_path}")
+            logger.error(
+                f"[WeaviateExecutor.extract_file_content_and_metadata] Error extracting file content: {file_path}")
             pass
         return content
 

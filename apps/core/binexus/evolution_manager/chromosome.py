@@ -23,9 +23,6 @@ import numpy
 logger = logging.getLogger(__name__)
 
 
-# Expanded dictionary with gene names and contents
-
-
 class Chromosome:
     class Tone:
         VERY_SERIOUS = "Very Serious"
@@ -51,12 +48,24 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.Tone.VERY_SERIOUS, Chromosome.Tone.SERIOUS, Chromosome.Tone.NEUTRAL,
-                Chromosome.Tone.CASUAL, Chromosome.Tone.FRIENDLY, Chromosome.Tone.HUMOROUS,
-                Chromosome.Tone.SARCASTIC, Chromosome.Tone.AUTHORITATIVE, Chromosome.Tone.EMPATHETIC,
-                Chromosome.Tone.CYNICAL, Chromosome.Tone.EXCITED, Chromosome.Tone.OPTIMISTIC,
-                Chromosome.Tone.PESSIMISTIC, Chromosome.Tone.PERSUASIVE, Chromosome.Tone.INSPIRING,
-                Chromosome.Tone.AGGRESSIVE, Chromosome.Tone.PLAYFUL, Chromosome.Tone.THOUGHTFUL,
+                Chromosome.Tone.VERY_SERIOUS,
+                Chromosome.Tone.SERIOUS,
+                Chromosome.Tone.NEUTRAL,
+                Chromosome.Tone.CASUAL,
+                Chromosome.Tone.FRIENDLY,
+                Chromosome.Tone.HUMOROUS,
+                Chromosome.Tone.SARCASTIC,
+                Chromosome.Tone.AUTHORITATIVE,
+                Chromosome.Tone.EMPATHETIC,
+                Chromosome.Tone.CYNICAL,
+                Chromosome.Tone.EXCITED,
+                Chromosome.Tone.OPTIMISTIC,
+                Chromosome.Tone.PESSIMISTIC,
+                Chromosome.Tone.PERSUASIVE,
+                Chromosome.Tone.INSPIRING,
+                Chromosome.Tone.AGGRESSIVE,
+                Chromosome.Tone.PLAYFUL,
+                Chromosome.Tone.THOUGHTFUL,
                 Chromosome.Tone.MELANCHOLIC
             ]
 
@@ -79,9 +88,15 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.Clarity.CRYSTAL_CLEAR, Chromosome.Clarity.VERY_HIGH, Chromosome.Clarity.HIGH,
-                Chromosome.Clarity.MEDIUM, Chromosome.Clarity.LOW, Chromosome.Clarity.AMBIGUOUS,
-                Chromosome.Clarity.SUBTLE, Chromosome.Clarity.IMPLICIT, Chromosome.Clarity.BLUNT,
+                Chromosome.Clarity.CRYSTAL_CLEAR,
+                Chromosome.Clarity.VERY_HIGH,
+                Chromosome.Clarity.HIGH,
+                Chromosome.Clarity.MEDIUM,
+                Chromosome.Clarity.LOW,
+                Chromosome.Clarity.AMBIGUOUS,
+                Chromosome.Clarity.SUBTLE,
+                Chromosome.Clarity.IMPLICIT,
+                Chromosome.Clarity.BLUNT,
                 Chromosome.Clarity.OBSCURE
             ]
 
@@ -109,11 +124,21 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.Format.LIST, Chromosome.Format.PARAGRAPH, Chromosome.Format.STEP_BY_STEP,
-                Chromosome.Format.BULLET_POINTS, Chromosome.Format.TABLE, Chromosome.Format.Q_AND_A,
-                Chromosome.Format.DIALOGUE, Chromosome.Format.ESSAY_FORMAT, Chromosome.Format.CODE_BLOCK,
-                Chromosome.Format.OUTLINE, Chromosome.Format.FLOW_CHART, Chromosome.Format.INFOGRAPHIC_DESCRIPTION,
-                Chromosome.Format.DIAGRAM, Chromosome.Format.MIND_MAP, Chromosome.Format.STORYTELLING
+                Chromosome.Format.LIST,
+                Chromosome.Format.PARAGRAPH,
+                Chromosome.Format.STEP_BY_STEP,
+                Chromosome.Format.BULLET_POINTS,
+                Chromosome.Format.TABLE,
+                Chromosome.Format.Q_AND_A,
+                Chromosome.Format.DIALOGUE,
+                Chromosome.Format.ESSAY_FORMAT,
+                Chromosome.Format.CODE_BLOCK,
+                Chromosome.Format.OUTLINE,
+                Chromosome.Format.FLOW_CHART,
+                Chromosome.Format.INFOGRAPHIC_DESCRIPTION,
+                Chromosome.Format.DIAGRAM,
+                Chromosome.Format.MIND_MAP,
+                Chromosome.Format.STORYTELLING
             ]
 
         @staticmethod
@@ -135,9 +160,14 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.LengthControl.ONE_SENTENCE, Chromosome.LengthControl.SHORT, Chromosome.LengthControl.MEDIUM,
-                Chromosome.LengthControl.DETAILED, Chromosome.LengthControl.EXTENDED, Chromosome.LengthControl.VERBOSE,
-                Chromosome.LengthControl.BREVITY_PREFERRED, Chromosome.LengthControl.CONCISE,
+                Chromosome.LengthControl.ONE_SENTENCE,
+                Chromosome.LengthControl.SHORT,
+                Chromosome.LengthControl.MEDIUM,
+                Chromosome.LengthControl.DETAILED,
+                Chromosome.LengthControl.EXTENDED,
+                Chromosome.LengthControl.VERBOSE,
+                Chromosome.LengthControl.BREVITY_PREFERRED,
+                Chromosome.LengthControl.CONCISE,
                 Chromosome.LengthControl.EXPANSIVE,
                 Chromosome.LengthControl.IN_DEPTH
             ]
@@ -156,7 +186,8 @@ class Chromosome:
             return [x for x in numpy.arange(
                 Chromosome.Temperature.LOWER_THRESHOLD,
                 Chromosome.Temperature.UPPER_THRESHOLD,
-                Chromosome.Temperature.INTERVAL_SIZE)]
+                Chromosome.Temperature.INTERVAL_SIZE
+            )]
 
         @staticmethod
         def get_random_value():
@@ -177,11 +208,16 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.Specificity.ULTRA_SPECIFIC, Chromosome.Specificity.DETAILED,
-                Chromosome.Specificity.MODERATELY_SPECIFIC, Chromosome.Specificity.BROAD,
-                Chromosome.Specificity.GENERALIZED, Chromosome.Specificity.FOCUSED,
-                Chromosome.Specificity.SPECIALIZED, Chromosome.Specificity.TECHNICAL,
-                Chromosome.Specificity.HOLISTIC, Chromosome.Specificity.COMPREHENSIVE
+                Chromosome.Specificity.ULTRA_SPECIFIC,
+                Chromosome.Specificity.DETAILED,
+                Chromosome.Specificity.MODERATELY_SPECIFIC,
+                Chromosome.Specificity.BROAD,
+                Chromosome.Specificity.GENERALIZED,
+                Chromosome.Specificity.FOCUSED,
+                Chromosome.Specificity.SPECIALIZED,
+                Chromosome.Specificity.TECHNICAL,
+                Chromosome.Specificity.HOLISTIC,
+                Chromosome.Specificity.COMPREHENSIVE
             ]
 
         @staticmethod
@@ -202,10 +238,14 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.PromptDepth.SHALLOW, Chromosome.PromptDepth.MODERATE_DEPTH,
-                Chromosome.PromptDepth.DEEP_ANALYSIS, Chromosome.PromptDepth.HIGH_LEVEL_OVERVIEW,
-                Chromosome.PromptDepth.COMPREHENSIVE, Chromosome.PromptDepth.CRITICAL_REVIEW,
-                Chromosome.PromptDepth.SURFACE_LEVEL_SUMMARY, Chromosome.PromptDepth.CONCEPTUAL_EXPLORATION,
+                Chromosome.PromptDepth.SHALLOW,
+                Chromosome.PromptDepth.MODERATE_DEPTH,
+                Chromosome.PromptDepth.DEEP_ANALYSIS,
+                Chromosome.PromptDepth.HIGH_LEVEL_OVERVIEW,
+                Chromosome.PromptDepth.COMPREHENSIVE,
+                Chromosome.PromptDepth.CRITICAL_REVIEW,
+                Chromosome.PromptDepth.SURFACE_LEVEL_SUMMARY,
+                Chromosome.PromptDepth.CONCEPTUAL_EXPLORATION,
                 Chromosome.PromptDepth.TECHNICAL_ANALYSIS
             ]
 
@@ -228,11 +268,16 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.Perspective.FIRST_PERSON, Chromosome.Perspective.THIRD_PERSON,
-                Chromosome.Perspective.SECOND_PERSON, Chromosome.Perspective.OBJECTIVE,
-                Chromosome.Perspective.SUBJECTIVE, Chromosome.Perspective.THIRD_PERSON_OMNISCIENT,
-                Chromosome.Perspective.LIMITED_FIRST_PERSON, Chromosome.Perspective.NARRATOR_VOICE,
-                Chromosome.Perspective.AUDIENCE_PERSPECTIVE, Chromosome.Perspective.DIALOGUE_BETWEEN_TWO_CHARACTERS
+                Chromosome.Perspective.FIRST_PERSON,
+                Chromosome.Perspective.THIRD_PERSON,
+                Chromosome.Perspective.SECOND_PERSON,
+                Chromosome.Perspective.OBJECTIVE,
+                Chromosome.Perspective.SUBJECTIVE,
+                Chromosome.Perspective.THIRD_PERSON_OMNISCIENT,
+                Chromosome.Perspective.LIMITED_FIRST_PERSON,
+                Chromosome.Perspective.NARRATOR_VOICE,
+                Chromosome.Perspective.AUDIENCE_PERSPECTIVE,
+                Chromosome.Perspective.DIALOGUE_BETWEEN_TWO_CHARACTERS
             ]
 
         @staticmethod
@@ -255,10 +300,16 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.Formality.HIGHLY_FORMAL, Chromosome.Formality.FORMAL, Chromosome.Formality.SEMI_FORMAL,
-                Chromosome.Formality.CASUAL, Chromosome.Formality.COLLOQUIAL, Chromosome.Formality.SLANG,
-                Chromosome.Formality.PROFESSIONAL, Chromosome.Formality.CONVERSATIONAL,
-                Chromosome.Formality.PLAYFUL_FORMALITY, Chromosome.Formality.ACADEMIC,
+                Chromosome.Formality.HIGHLY_FORMAL,
+                Chromosome.Formality.FORMAL,
+                Chromosome.Formality.SEMI_FORMAL,
+                Chromosome.Formality.CASUAL,
+                Chromosome.Formality.COLLOQUIAL,
+                Chromosome.Formality.SLANG,
+                Chromosome.Formality.PROFESSIONAL,
+                Chromosome.Formality.CONVERSATIONAL,
+                Chromosome.Formality.PLAYFUL_FORMALITY,
+                Chromosome.Formality.ACADEMIC,
                 Chromosome.Formality.BUSINESS_TONE
             ]
 
@@ -286,13 +337,20 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.InstructionStyle.DIRECT, Chromosome.InstructionStyle.POLITE,
-                Chromosome.InstructionStyle.ASSERTIVE, Chromosome.InstructionStyle.GUIDING,
-                Chromosome.InstructionStyle.INQUISITIVE, Chromosome.InstructionStyle.SUGGESTIVE,
-                Chromosome.InstructionStyle.AUTHORITATIVE, Chromosome.InstructionStyle.COACHING,
-                Chromosome.InstructionStyle.SUPPORTIVE, Chromosome.InstructionStyle.ENCOURAGING,
-                Chromosome.InstructionStyle.DESCRIPTIVE, Chromosome.InstructionStyle.INTERACTIVE,
-                Chromosome.InstructionStyle.NEUTRAL, Chromosome.InstructionStyle.OPEN_ENDED,
+                Chromosome.InstructionStyle.DIRECT,
+                Chromosome.InstructionStyle.POLITE,
+                Chromosome.InstructionStyle.ASSERTIVE,
+                Chromosome.InstructionStyle.GUIDING,
+                Chromosome.InstructionStyle.INQUISITIVE,
+                Chromosome.InstructionStyle.SUGGESTIVE,
+                Chromosome.InstructionStyle.AUTHORITATIVE,
+                Chromosome.InstructionStyle.COACHING,
+                Chromosome.InstructionStyle.SUPPORTIVE,
+                Chromosome.InstructionStyle.ENCOURAGING,
+                Chromosome.InstructionStyle.DESCRIPTIVE,
+                Chromosome.InstructionStyle.INTERACTIVE,
+                Chromosome.InstructionStyle.NEUTRAL,
+                Chromosome.InstructionStyle.OPEN_ENDED,
                 Chromosome.InstructionStyle.FACILITATIVE
             ]
 
@@ -316,11 +374,16 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.PolitenessLevel.VERY_POLITE, Chromosome.PolitenessLevel.POLITE,
-                Chromosome.PolitenessLevel.NEUTRAL, Chromosome.PolitenessLevel.BLUNT,
-                Chromosome.PolitenessLevel.RUDE, Chromosome.PolitenessLevel.RESPECTFUL,
-                Chromosome.PolitenessLevel.DIPLOMATIC, Chromosome.PolitenessLevel.CORDIAL,
-                Chromosome.PolitenessLevel.DIRECT, Chromosome.PolitenessLevel.SARCASTIC_POLITENESS
+                Chromosome.PolitenessLevel.VERY_POLITE,
+                Chromosome.PolitenessLevel.POLITE,
+                Chromosome.PolitenessLevel.NEUTRAL,
+                Chromosome.PolitenessLevel.BLUNT,
+                Chromosome.PolitenessLevel.RUDE,
+                Chromosome.PolitenessLevel.RESPECTFUL,
+                Chromosome.PolitenessLevel.DIPLOMATIC,
+                Chromosome.PolitenessLevel.CORDIAL,
+                Chromosome.PolitenessLevel.DIRECT,
+                Chromosome.PolitenessLevel.SARCASTIC_POLITENESS
             ]
 
         @staticmethod
@@ -345,12 +408,18 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.SentenceComplexity.SIMPLE, Chromosome.SentenceComplexity.COMPOUND,
-                Chromosome.SentenceComplexity.COMPLEX, Chromosome.SentenceComplexity.VERY_COMPLEX,
-                Chromosome.SentenceComplexity.FLOWERY, Chromosome.SentenceComplexity.MINIMALIST,
-                Chromosome.SentenceComplexity.ELEGANT, Chromosome.SentenceComplexity.VERBOSE,
-                Chromosome.SentenceComplexity.RUN_ON_SENTENCES, Chromosome.SentenceComplexity.CHOPPY,
-                Chromosome.SentenceComplexity.STRUCTURED, Chromosome.SentenceComplexity.RHYTHMIC
+                Chromosome.SentenceComplexity.SIMPLE,
+                Chromosome.SentenceComplexity.COMPOUND,
+                Chromosome.SentenceComplexity.COMPLEX,
+                Chromosome.SentenceComplexity.VERY_COMPLEX,
+                Chromosome.SentenceComplexity.FLOWERY,
+                Chromosome.SentenceComplexity.MINIMALIST,
+                Chromosome.SentenceComplexity.ELEGANT,
+                Chromosome.SentenceComplexity.VERBOSE,
+                Chromosome.SentenceComplexity.RUN_ON_SENTENCES,
+                Chromosome.SentenceComplexity.CHOPPY,
+                Chromosome.SentenceComplexity.STRUCTURED,
+                Chromosome.SentenceComplexity.RHYTHMIC
             ]
 
         @staticmethod
@@ -373,11 +442,16 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.DetailLevel.MINIMAL, Chromosome.DetailLevel.MODERATE,
-                Chromosome.DetailLevel.DETAILED, Chromosome.DetailLevel.EXHAUSTIVE,
-                Chromosome.DetailLevel.METICULOUS, Chromosome.DetailLevel.BRIEF_OVERVIEW,
-                Chromosome.DetailLevel.FACTUAL_AND_CONCISE, Chromosome.DetailLevel.ELABORATE,
-                Chromosome.DetailLevel.COMPREHENSIVE_BREAKDOWN, Chromosome.DetailLevel.FINE_GRAINED_DETAIL
+                Chromosome.DetailLevel.MINIMAL,
+                Chromosome.DetailLevel.MODERATE,
+                Chromosome.DetailLevel.DETAILED,
+                Chromosome.DetailLevel.EXHAUSTIVE,
+                Chromosome.DetailLevel.METICULOUS,
+                Chromosome.DetailLevel.BRIEF_OVERVIEW,
+                Chromosome.DetailLevel.FACTUAL_AND_CONCISE,
+                Chromosome.DetailLevel.ELABORATE,
+                Chromosome.DetailLevel.COMPREHENSIVE_BREAKDOWN,
+                Chromosome.DetailLevel.FINE_GRAINED_DETAIL
             ]
 
         @staticmethod
@@ -399,10 +473,14 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.CriticalThinkingLevel.NONE, Chromosome.CriticalThinkingLevel.BASIC,
-                Chromosome.CriticalThinkingLevel.MODERATE, Chromosome.CriticalThinkingLevel.HIGH,
-                Chromosome.CriticalThinkingLevel.EXTREME, Chromosome.CriticalThinkingLevel.ANALYTICAL,
-                Chromosome.CriticalThinkingLevel.SKEPTICAL, Chromosome.CriticalThinkingLevel.OPEN_MINDED,
+                Chromosome.CriticalThinkingLevel.NONE,
+                Chromosome.CriticalThinkingLevel.BASIC,
+                Chromosome.CriticalThinkingLevel.MODERATE,
+                Chromosome.CriticalThinkingLevel.HIGH,
+                Chromosome.CriticalThinkingLevel.EXTREME,
+                Chromosome.CriticalThinkingLevel.ANALYTICAL,
+                Chromosome.CriticalThinkingLevel.SKEPTICAL,
+                Chromosome.CriticalThinkingLevel.OPEN_MINDED,
                 Chromosome.CriticalThinkingLevel.CREATIVE_THINKING,
                 Chromosome.CriticalThinkingLevel.RIGOROUS_LOGICAL_REASONING
             ]
@@ -425,11 +503,14 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.LevelOfAssumptions.NO_ASSUMPTIONS, Chromosome.LevelOfAssumptions.SOME_ASSUMPTIONS,
-                Chromosome.LevelOfAssumptions.MANY_ASSUMPTIONS, Chromosome.LevelOfAssumptions.SPECULATIVE,
+                Chromosome.LevelOfAssumptions.NO_ASSUMPTIONS,
+                Chromosome.LevelOfAssumptions.SOME_ASSUMPTIONS,
+                Chromosome.LevelOfAssumptions.MANY_ASSUMPTIONS,
+                Chromosome.LevelOfAssumptions.SPECULATIVE,
                 Chromosome.LevelOfAssumptions.CONSERVATIVE_ASSUMPTIONS,
                 Chromosome.LevelOfAssumptions.RISK_TAKING_ASSUMPTIONS,
-                Chromosome.LevelOfAssumptions.MINIMALISTIC, Chromosome.LevelOfAssumptions.CAUTIOUS
+                Chromosome.LevelOfAssumptions.MINIMALISTIC,
+                Chromosome.LevelOfAssumptions.CAUTIOUS
             ]
 
         @staticmethod
@@ -451,9 +532,12 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.CulturalSensitivity.HIGHLY_SENSITIVE, Chromosome.CulturalSensitivity.MODERATELY_SENSITIVE,
-                Chromosome.CulturalSensitivity.NEUTRAL, Chromosome.CulturalSensitivity.INSENSITIVE,
-                Chromosome.CulturalSensitivity.HYPER_AWARE, Chromosome.CulturalSensitivity.GLOBALLY_INCLUSIVE,
+                Chromosome.CulturalSensitivity.HIGHLY_SENSITIVE,
+                Chromosome.CulturalSensitivity.MODERATELY_SENSITIVE,
+                Chromosome.CulturalSensitivity.NEUTRAL,
+                Chromosome.CulturalSensitivity.INSENSITIVE,
+                Chromosome.CulturalSensitivity.HYPER_AWARE,
+                Chromosome.CulturalSensitivity.GLOBALLY_INCLUSIVE,
                 Chromosome.CulturalSensitivity.CONTEXTUALLY_SENSITIVE,
                 Chromosome.CulturalSensitivity.REGIONALLY_FOCUSED,
                 Chromosome.CulturalSensitivity.MULTICULTURAL_AWARENESS
@@ -485,14 +569,22 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.TargetAudience.EXPERTS, Chromosome.TargetAudience.NOVICES,
-                Chromosome.TargetAudience.CHILDREN, Chromosome.TargetAudience.ADULTS,
-                Chromosome.TargetAudience.ACADEMICS, Chromosome.TargetAudience.EXECUTIVES,
-                Chromosome.TargetAudience.GENERAL_PUBLIC, Chromosome.TargetAudience.TECHNICAL,
-                Chromosome.TargetAudience.LAYMAN, Chromosome.TargetAudience.ENTREPRENEURS,
-                Chromosome.TargetAudience.HEALTHCARE_PROFESSIONALS, Chromosome.TargetAudience.RESEARCHERS,
-                Chromosome.TargetAudience.DEVELOPERS, Chromosome.TargetAudience.DESIGNERS,
-                Chromosome.TargetAudience.MARKETERS, Chromosome.TargetAudience.LEGAL_PROFESSIONALS
+                Chromosome.TargetAudience.EXPERTS,
+                Chromosome.TargetAudience.NOVICES,
+                Chromosome.TargetAudience.CHILDREN,
+                Chromosome.TargetAudience.ADULTS,
+                Chromosome.TargetAudience.ACADEMICS,
+                Chromosome.TargetAudience.EXECUTIVES,
+                Chromosome.TargetAudience.GENERAL_PUBLIC,
+                Chromosome.TargetAudience.TECHNICAL,
+                Chromosome.TargetAudience.LAYMAN,
+                Chromosome.TargetAudience.ENTREPRENEURS,
+                Chromosome.TargetAudience.HEALTHCARE_PROFESSIONALS,
+                Chromosome.TargetAudience.RESEARCHERS,
+                Chromosome.TargetAudience.DEVELOPERS,
+                Chromosome.TargetAudience.DESIGNERS,
+                Chromosome.TargetAudience.MARKETERS,
+                Chromosome.TargetAudience.LEGAL_PROFESSIONALS
             ]
 
         @staticmethod
@@ -511,9 +603,12 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.JargonLevel.NO_JARGON, Chromosome.JargonLevel.BASIC_JARGON,
-                Chromosome.JargonLevel.MODERATE_TECHNICAL_JARGON, Chromosome.JargonLevel.HIGHLY_TECHNICAL,
-                Chromosome.JargonLevel.INDUSTRY_SPECIFIC, Chromosome.JargonLevel.ACCESSIBLE,
+                Chromosome.JargonLevel.NO_JARGON,
+                Chromosome.JargonLevel.BASIC_JARGON,
+                Chromosome.JargonLevel.MODERATE_TECHNICAL_JARGON,
+                Chromosome.JargonLevel.HIGHLY_TECHNICAL,
+                Chromosome.JargonLevel.INDUSTRY_SPECIFIC,
+                Chromosome.JargonLevel.ACCESSIBLE,
                 Chromosome.JargonLevel.SPECIALIZED_TERMINOLOGY
             ]
 
@@ -536,11 +631,16 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.TimeSensitivity.IMMEDIATE, Chromosome.TimeSensitivity.SHORT_TERM,
-                Chromosome.TimeSensitivity.LONG_TERM, Chromosome.TimeSensitivity.TIMELESS,
-                Chromosome.TimeSensitivity.HISTORICAL_CONTEXT, Chromosome.TimeSensitivity.FUTURE_ORIENTED,
-                Chromosome.TimeSensitivity.PRESENT_FOCUSED, Chromosome.TimeSensitivity.RETROSPECTIVE,
-                Chromosome.TimeSensitivity.PREDICTIVE, Chromosome.TimeSensitivity.URGENT
+                Chromosome.TimeSensitivity.IMMEDIATE,
+                Chromosome.TimeSensitivity.SHORT_TERM,
+                Chromosome.TimeSensitivity.LONG_TERM,
+                Chromosome.TimeSensitivity.TIMELESS,
+                Chromosome.TimeSensitivity.HISTORICAL_CONTEXT,
+                Chromosome.TimeSensitivity.FUTURE_ORIENTED,
+                Chromosome.TimeSensitivity.PRESENT_FOCUSED,
+                Chromosome.TimeSensitivity.RETROSPECTIVE,
+                Chromosome.TimeSensitivity.PREDICTIVE,
+                Chromosome.TimeSensitivity.URGENT
             ]
 
         @staticmethod
@@ -562,10 +662,14 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.BiasOrObjectivity.HIGHLY_OBJECTIVE, Chromosome.BiasOrObjectivity.MODERATELY_OBJECTIVE,
-                Chromosome.BiasOrObjectivity.BALANCED, Chromosome.BiasOrObjectivity.MILDLY_BIASED,
-                Chromosome.BiasOrObjectivity.HIGHLY_BIASED, Chromosome.BiasOrObjectivity.PERSUASIVE_BIAS,
-                Chromosome.BiasOrObjectivity.CRITICAL_OBJECTIVITY, Chromosome.BiasOrObjectivity.OPINIONATED,
+                Chromosome.BiasOrObjectivity.HIGHLY_OBJECTIVE,
+                Chromosome.BiasOrObjectivity.MODERATELY_OBJECTIVE,
+                Chromosome.BiasOrObjectivity.BALANCED,
+                Chromosome.BiasOrObjectivity.MILDLY_BIASED,
+                Chromosome.BiasOrObjectivity.HIGHLY_BIASED,
+                Chromosome.BiasOrObjectivity.PERSUASIVE_BIAS,
+                Chromosome.BiasOrObjectivity.CRITICAL_OBJECTIVITY,
+                Chromosome.BiasOrObjectivity.OPINIONATED,
                 Chromosome.BiasOrObjectivity.FAIRLY_BALANCED
             ]
 
@@ -586,9 +690,12 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.FactualAccuracy.STRICTLY_FACTUAL, Chromosome.FactualAccuracy.MODERATELY_ACCURATE,
-                Chromosome.FactualAccuracy.CREATIVE_FLEXIBILITY, Chromosome.FactualAccuracy.SPECULATIVE,
-                Chromosome.FactualAccuracy.VERIFIED_FACTS, Chromosome.FactualAccuracy.LOOSE_FACTS_WITH_CREATIVITY,
+                Chromosome.FactualAccuracy.STRICTLY_FACTUAL,
+                Chromosome.FactualAccuracy.MODERATELY_ACCURATE,
+                Chromosome.FactualAccuracy.CREATIVE_FLEXIBILITY,
+                Chromosome.FactualAccuracy.SPECULATIVE,
+                Chromosome.FactualAccuracy.VERIFIED_FACTS,
+                Chromosome.FactualAccuracy.LOOSE_FACTS_WITH_CREATIVITY,
                 Chromosome.FactualAccuracy.EVIDENCE_BASED
             ]
 
@@ -611,10 +718,14 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.EmotionalIntensity.HIGH_EMOTION, Chromosome.EmotionalIntensity.MODERATE_EMOTION,
-                Chromosome.EmotionalIntensity.NEUTRAL_EMOTION, Chromosome.EmotionalIntensity.DISPASSIONATE,
-                Chromosome.EmotionalIntensity.EMPATHIC, Chromosome.EmotionalIntensity.COLD_AND_DETACHED,
-                Chromosome.EmotionalIntensity.SENTIMENTAL, Chromosome.EmotionalIntensity.EMOTIONALLY_NEUTRAL,
+                Chromosome.EmotionalIntensity.HIGH_EMOTION,
+                Chromosome.EmotionalIntensity.MODERATE_EMOTION,
+                Chromosome.EmotionalIntensity.NEUTRAL_EMOTION,
+                Chromosome.EmotionalIntensity.DISPASSIONATE,
+                Chromosome.EmotionalIntensity.EMPATHIC,
+                Chromosome.EmotionalIntensity.COLD_AND_DETACHED,
+                Chromosome.EmotionalIntensity.SENTIMENTAL,
+                Chromosome.EmotionalIntensity.EMOTIONALLY_NEUTRAL,
                 Chromosome.EmotionalIntensity.HIGH_EMPATHY
             ]
 
@@ -638,11 +749,16 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.RhetoricalStyle.PERSUASIVE, Chromosome.RhetoricalStyle.DESCRIPTIVE,
-                Chromosome.RhetoricalStyle.NARRATIVE, Chromosome.RhetoricalStyle.EXPOSITORY,
-                Chromosome.RhetoricalStyle.ARGUMENTATIVE, Chromosome.RhetoricalStyle.DIDACTIC,
-                Chromosome.RhetoricalStyle.POETIC, Chromosome.RhetoricalStyle.REFLECTIVE,
-                Chromosome.RhetoricalStyle.RHETORICAL_QUESTIONING, Chromosome.RhetoricalStyle.PHILOSOPHICAL
+                Chromosome.RhetoricalStyle.PERSUASIVE,
+                Chromosome.RhetoricalStyle.DESCRIPTIVE,
+                Chromosome.RhetoricalStyle.NARRATIVE,
+                Chromosome.RhetoricalStyle.EXPOSITORY,
+                Chromosome.RhetoricalStyle.ARGUMENTATIVE,
+                Chromosome.RhetoricalStyle.DIDACTIC,
+                Chromosome.RhetoricalStyle.POETIC,
+                Chromosome.RhetoricalStyle.REFLECTIVE,
+                Chromosome.RhetoricalStyle.RHETORICAL_QUESTIONING,
+                Chromosome.RhetoricalStyle.PHILOSOPHICAL
             ]
 
         @staticmethod
@@ -662,7 +778,8 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.TaskIterationAndFeedback.ONE_OFF_TASK, Chromosome.TaskIterationAndFeedback.REPETITIVE_TASK,
+                Chromosome.TaskIterationAndFeedback.ONE_OFF_TASK,
+                Chromosome.TaskIterationAndFeedback.REPETITIVE_TASK,
                 Chromosome.TaskIterationAndFeedback.ITERATIVE_TASK,
                 Chromosome.TaskIterationAndFeedback.TASK_WITH_FEEDBACK_LOOPS,
                 Chromosome.TaskIterationAndFeedback.COLLABORATIVE_TASK,
@@ -710,9 +827,12 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.CreativeFreedom.NO_FREEDOM, Chromosome.CreativeFreedom.MODERATE,
-                Chromosome.CreativeFreedom.HIGH, Chromosome.CreativeFreedom.FULL_CREATIVITY,
-                Chromosome.CreativeFreedom.CONSTRAINED_CREATIVITY, Chromosome.CreativeFreedom.GUIDED_INNOVATION
+                Chromosome.CreativeFreedom.NO_FREEDOM,
+                Chromosome.CreativeFreedom.MODERATE,
+                Chromosome.CreativeFreedom.HIGH,
+                Chromosome.CreativeFreedom.FULL_CREATIVITY,
+                Chromosome.CreativeFreedom.CONSTRAINED_CREATIVITY,
+                Chromosome.CreativeFreedom.GUIDED_INNOVATION
             ]
 
         @staticmethod
@@ -730,7 +850,8 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.InstructionRedundancy.NO_REDUNDANCY, Chromosome.InstructionRedundancy.SOME_REDUNDANCY,
+                Chromosome.InstructionRedundancy.NO_REDUNDANCY,
+                Chromosome.InstructionRedundancy.SOME_REDUNDANCY,
                 Chromosome.InstructionRedundancy.HIGH_REDUNDANCY,
                 Chromosome.InstructionRedundancy.REPETITIVE_INSTRUCTION,
                 Chromosome.InstructionRedundancy.REINFORCED_INSTRUCTION
@@ -754,11 +875,14 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.EvidenceAndCitation.NO_EVIDENCE_NEEDED, Chromosome.EvidenceAndCitation.SOME_EVIDENCE,
-                Chromosome.EvidenceAndCitation.HIGHLY_CITED, Chromosome.EvidenceAndCitation.ONLY_AUTHORITATIVE_SOURCES,
+                Chromosome.EvidenceAndCitation.NO_EVIDENCE_NEEDED,
+                Chromosome.EvidenceAndCitation.SOME_EVIDENCE,
+                Chromosome.EvidenceAndCitation.HIGHLY_CITED,
+                Chromosome.EvidenceAndCitation.ONLY_AUTHORITATIVE_SOURCES,
                 Chromosome.EvidenceAndCitation.PERSONAL_ANECDOTES,
                 Chromosome.EvidenceAndCitation.PEER_REVIEWED_SOURCES,
-                Chromosome.EvidenceAndCitation.HISTORICAL_EVIDENCE, Chromosome.EvidenceAndCitation.DATA_DRIVEN
+                Chromosome.EvidenceAndCitation.HISTORICAL_EVIDENCE,
+                Chromosome.EvidenceAndCitation.DATA_DRIVEN
             ]
 
         @staticmethod
@@ -780,10 +904,14 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.HumorAndPlayfulness.NO_HUMOR, Chromosome.HumorAndPlayfulness.SUBTLE,
-                Chromosome.HumorAndPlayfulness.MODERATE, Chromosome.HumorAndPlayfulness.HUMOROUS,
-                Chromosome.HumorAndPlayfulness.PLAYFUL, Chromosome.HumorAndPlayfulness.WITTY,
-                Chromosome.HumorAndPlayfulness.DRY_HUMOR, Chromosome.HumorAndPlayfulness.SARCASTIC_HUMOR,
+                Chromosome.HumorAndPlayfulness.NO_HUMOR,
+                Chromosome.HumorAndPlayfulness.SUBTLE,
+                Chromosome.HumorAndPlayfulness.MODERATE,
+                Chromosome.HumorAndPlayfulness.HUMOROUS,
+                Chromosome.HumorAndPlayfulness.PLAYFUL,
+                Chromosome.HumorAndPlayfulness.WITTY,
+                Chromosome.HumorAndPlayfulness.DRY_HUMOR,
+                Chromosome.HumorAndPlayfulness.SARCASTIC_HUMOR,
                 Chromosome.HumorAndPlayfulness.CLEVER_PLAYFULNESS
             ]
 
@@ -805,10 +933,14 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.AudienceEngagement.PASSIVE, Chromosome.AudienceEngagement.NEUTRAL,
-                Chromosome.AudienceEngagement.ACTIVE_ENGAGEMENT, Chromosome.AudienceEngagement.HIGHLY_INTERACTIVE,
-                Chromosome.AudienceEngagement.PARTICIPATORY, Chromosome.AudienceEngagement.INQUISITIVE,
-                Chromosome.AudienceEngagement.RESPONSIVE, Chromosome.AudienceEngagement.CALL_TO_ACTION
+                Chromosome.AudienceEngagement.PASSIVE,
+                Chromosome.AudienceEngagement.NEUTRAL,
+                Chromosome.AudienceEngagement.ACTIVE_ENGAGEMENT,
+                Chromosome.AudienceEngagement.HIGHLY_INTERACTIVE,
+                Chromosome.AudienceEngagement.PARTICIPATORY,
+                Chromosome.AudienceEngagement.INQUISITIVE,
+                Chromosome.AudienceEngagement.RESPONSIVE,
+                Chromosome.AudienceEngagement.CALL_TO_ACTION
             ]
 
         @staticmethod
@@ -851,23 +983,35 @@ class Chromosome:
         @staticmethod
         def as_list():
             return [
-                Chromosome.GeneNames.TONE, Chromosome.GeneNames.CLARITY, Chromosome.GeneNames.FORMAT,
-                Chromosome.GeneNames.LENGTH_CONTROL, Chromosome.GeneNames.TEMPERATURE,
+                Chromosome.GeneNames.TONE,
+                Chromosome.GeneNames.CLARITY,
+                Chromosome.GeneNames.FORMAT,
+                Chromosome.GeneNames.LENGTH_CONTROL,
+                Chromosome.GeneNames.TEMPERATURE,
                 Chromosome.GeneNames.SPECIFICITY,
-                Chromosome.GeneNames.PROMPT_DEPTH, Chromosome.GeneNames.PERSPECTIVE, Chromosome.GeneNames.FORMALITY,
-                Chromosome.GeneNames.INSTRUCTION_STYLE, Chromosome.GeneNames.POLITENESS_LEVEL,
+                Chromosome.GeneNames.PROMPT_DEPTH,
+                Chromosome.GeneNames.PERSPECTIVE,
+                Chromosome.GeneNames.FORMALITY,
+                Chromosome.GeneNames.INSTRUCTION_STYLE,
+                Chromosome.GeneNames.POLITENESS_LEVEL,
                 Chromosome.GeneNames.SENTENCE_COMPLEXITY,
-                Chromosome.GeneNames.DETAIL_LEVEL, Chromosome.GeneNames.CRITICAL_THINKING_LEVEL,
+                Chromosome.GeneNames.DETAIL_LEVEL,
+                Chromosome.GeneNames.CRITICAL_THINKING_LEVEL,
                 Chromosome.GeneNames.LEVEL_OF_ASSUMPTIONS,
-                Chromosome.GeneNames.CULTURAL_SENSITIVITY, Chromosome.GeneNames.TARGET_AUDIENCE,
+                Chromosome.GeneNames.CULTURAL_SENSITIVITY,
+                Chromosome.GeneNames.TARGET_AUDIENCE,
                 Chromosome.GeneNames.JARGON_LEVEL,
-                Chromosome.GeneNames.TIME_SENSITIVITY, Chromosome.GeneNames.BIAS_OR_OBJECTIVITY,
+                Chromosome.GeneNames.TIME_SENSITIVITY,
+                Chromosome.GeneNames.BIAS_OR_OBJECTIVITY,
                 Chromosome.GeneNames.FACTUAL_ACCURACY,
-                Chromosome.GeneNames.EMOTIONAL_INTENSITY, Chromosome.GeneNames.RHETORICAL_STYLE,
+                Chromosome.GeneNames.EMOTIONAL_INTENSITY,
+                Chromosome.GeneNames.RHETORICAL_STYLE,
                 Chromosome.GeneNames.TASK_ITERATION_AND_FEEDBACK,
-                Chromosome.GeneNames.BIAS_FOR_SIMPLICITY_VS_COMPLEXITY, Chromosome.GeneNames.CREATIVE_FREEDOM,
+                Chromosome.GeneNames.BIAS_FOR_SIMPLICITY_VS_COMPLEXITY,
+                Chromosome.GeneNames.CREATIVE_FREEDOM,
                 Chromosome.GeneNames.INSTRUCTION_REDUNDANCY,
-                Chromosome.GeneNames.EVIDENCE_AND_CITATION, Chromosome.GeneNames.HUMOR_AND_PLAYFULNESS,
+                Chromosome.GeneNames.EVIDENCE_AND_CITATION,
+                Chromosome.GeneNames.HUMOR_AND_PLAYFULNESS,
                 Chromosome.GeneNames.AUDIENCE_ENGAGEMENT
             ]
 
@@ -996,30 +1140,49 @@ class Chromosome:
             return None
 
     @staticmethod
-    def get_index_of_gene(gene_name: str, custom_genes=None):
-        custom_genes_names = Chromosome.CustomGene.as_list(custom_genes=custom_genes)
+    def get_index_of_gene(
+        gene_name: str,
+        custom_genes=None
+    ):
+        custom_genes_names = Chromosome.CustomGene.as_list(
+            custom_genes=custom_genes
+        )
         combined_list = Chromosome.GeneNames.as_list() + custom_genes_names
         return combined_list.index(gene_name)
 
     @staticmethod
-    def get_class_name_of_gene(gene_name: str, custom_genes = None):
-        custom_genes_names = Chromosome.CustomGene.as_list(custom_genes=custom_genes)
+    def get_class_name_of_gene(
+        gene_name: str,
+        custom_genes = None
+    ):
+        custom_genes_names = Chromosome.CustomGene.as_list(
+            custom_genes=custom_genes
+        )
         combined_list = Chromosome.GeneNames.as_list() + custom_genes_names
         class_name = combined_list[Chromosome.get_index_of_gene(gene_name)]
         return class_name
 
     @staticmethod
-    def get_index_of_gene_value(gene_name: str, gene_value: str, custom_genes = None):
+    def get_index_of_gene_value(
+        gene_name: str,
+        gene_value: str,
+        custom_genes = None
+    ):
         class_name = Chromosome.get_class_name_of_gene(gene_name)
         chromosome_class_name_list = Chromosome.__dict__[class_name].as_list()
+
         if gene_name not in chromosome_class_name_list:
-            custom_gene_names = Chromosome.CustomGene.as_list(custom_genes=custom_genes)
+            custom_gene_names = Chromosome.CustomGene.as_list(
+                custom_genes=custom_genes
+            )
+
             if gene_name in custom_gene_names:
                 custom_gene_value_index = custom_genes[gene_name].index(gene_value)
                 return custom_gene_value_index
             else:
                 logger.error(f"Gene value {gene_value} not found in gene {gene_name}")
                 return None
+
         else:
             gene_value_index = chromosome_class_name_list.index(gene_value)
             return gene_value_index
