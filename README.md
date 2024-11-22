@@ -3,7 +3,7 @@
 **DAILY:**
 - [ ] Integrate Slides to google apps. (MERT)
 
-- [ ] Fill in the instructions and tags for the assistants (respectively).
+- [ ] Fill in the instructions and tags for the assistants (respectively)
 - [ ] Complete the course videos for documentation.
 
 **BUGS:**
