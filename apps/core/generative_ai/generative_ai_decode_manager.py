@@ -33,29 +33,62 @@ logger = logging.getLogger(__name__)
 
 class GenerativeAIDecodeController:
     @staticmethod
-    def get(assistant: Assistant, multimodal_chat: MultimodalChat):
+    def get(
+        assistant: Assistant,
+        multimodal_chat: MultimodalChat
+    ):
+
         if assistant.llm_model.provider == LLM_CORE_PROVIDERS["OPENAI"]["code"]:
             logger.info("OpenAI provider is selected.")
-            return OpenAIGPTClientManager(assistant=assistant, chat_object=multimodal_chat)
+
+            return OpenAIGPTClientManager(
+                assistant=assistant,
+                chat_object=multimodal_chat
+            )
 
     @staticmethod
-    def get_lean(user: User, assistant: Assistant, multimodal_chat: MultimodalChat):
+    def get_lean(
+        user: User,
+        assistant: Assistant,
+        multimodal_chat: MultimodalChat
+    ):
+
         if assistant.llm_model.provider == LLM_CORE_PROVIDERS["OPENAI"]["code"]:
             logger.info("OpenAI provider is selected.")
+
             return OpenAIGPTLeanClientManager(
-                user=user, assistant=assistant, multimodal_chat=multimodal_chat)
+                user=user,
+                assistant=assistant,
+                multimodal_chat=multimodal_chat
+            )
 
     @staticmethod
-    def get_voidforger(user: User, assistant: VoidForger, multimodal_chat: MultimodalVoidForgerChat):
+    def get_voidforger(
+        user: User,
+        assistant: VoidForger,
+        multimodal_chat: MultimodalVoidForgerChat
+    ):
+
         if assistant.llm_model.provider == LLM_CORE_PROVIDERS["OPENAI"]["code"]:
             logger.info("OpenAI provider is selected.")
+
             return OpenAIGPTVoidForgerClientManager(
-                user=user, voidforger=assistant, multimodal_chat=multimodal_chat)
+                user=user,
+                voidforger=assistant,
+                multimodal_chat=multimodal_chat
+            )
 
     @staticmethod
-    def provide_analysis(llm_model, statistics):
+    def provide_analysis(
+        llm_model,
+        statistics
+    ):
         if llm_model.provider == LLM_CORE_PROVIDERS["OPENAI"]["code"]:
             logger.info("OpenAI provider is selected.")
-            return provide_analysis(llm_model=llm_model, statistics=statistics)
+            return provide_analysis(
+                llm_model=llm_model,
+                statistics=statistics
+            )
+
         logger.error(f"Provider {llm_model.provider} is not supported by our system to do analysis at the current moment.")
         return f"Provider {llm_model.provider} is not supported by our system to do analysis at the current moment."

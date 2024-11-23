@@ -32,19 +32,30 @@ from apps.core.generative_ai.utils import CONCRETE_LIMIT_SINGLE_FILE_INTERPRETAT
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
-
 logger = logging.getLogger(__name__)
 
 
 class AuxiliaryLLMVisionClient:
 
-    def __init__(self, assistant, chat_object):
+    def __init__(
+        self,
+        assistant,
+        chat_object
+    ):
         self.assistant = assistant
         self.chat = chat_object
-        self.connection = OpenAI(api_key=assistant.llm_model.api_key)
+        self.connection = OpenAI(
+            api_key=assistant.llm_model.api_key
+        )
 
-    def interpret_image_content(self, full_image_paths: list, query_string: str, interpretation_temperature: float,
-                                interpretation_maximum_tokens: int):
+    def interpret_image_content(
+        self,
+        full_image_paths: list,
+        query_string: str,
+        interpretation_temperature: float,
+        interpretation_maximum_tokens: int
+    ):
+
         c = self.connection
         if len(full_image_paths) > CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION:
             logger.error(f"Number of files too high for image interpretation: {len(full_image_paths)}")
@@ -52,16 +63,20 @@ class AuxiliaryLLMVisionClient:
 
         img_data = []
         for pth in full_image_paths:
+
             if not pth:
                 logger.error("Empty object path for image interpretation.")
                 return EMPTY_OBJECT_PATH_LOG
+
             try:
                 file = requests.get(pth)
                 img_data.append({"binary": file.content, "extension": pth.split(".")[-1]})
                 logger.info(f"Retrieved image content from: {pth}")
+
             except FileNotFoundError:
                 logger.error(f"File not found at: {pth}")
                 continue
+
             except Exception as e:
                 logger.error(f"Failed to retrieve image content from: {pth}")
                 continue
@@ -74,20 +89,45 @@ class AuxiliaryLLMVisionClient:
             img_objs.append({"base64": image_base64, "extension": extension})
 
         msgs = [
-            {"role": ChatRoles.SYSTEM,
-             "content": [{"type": "text", "text": HELPER_SYSTEM_INSTRUCTIONS["image_interpreter"]["description"]}]},
-            {"role": ChatRoles.USER,
-             "content": [{"type": "text", "text": (query_string + GENERIC_AFFIRMATION_PROMPT)}]}
+            {
+                "role": ChatRoles.SYSTEM,
+                "content": [
+                    {
+                        "type": "text",
+                        "text": HELPER_SYSTEM_INSTRUCTIONS["image_interpreter"]["description"]
+                    }
+                ]
+            },
+            {
+                "role": ChatRoles.USER,
+                "content": [
+                    {
+                        "type": "text",
+                        "text": (query_string + GENERIC_AFFIRMATION_PROMPT)
+                    }
+                ]
+            }
         ]
         for image_object in img_objs:
             formatted_uri = f"data:image/{image_object['extension']};base64,{image_object['base64']}"
-            msgs[-1]["content"].append({"type": "image_url", "image_url": {"url": formatted_uri}})
+            msgs[-1]["content"].append(
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": formatted_uri
+                    }
+                }
+            )
 
         try:
             llm_output = c.chat.completions.create(
-                model=HELPER_SYSTEM_INSTRUCTIONS["image_interpreter"]["model"], messages=msgs,
-                temperature=interpretation_temperature, max_tokens=interpretation_maximum_tokens)
+                model=HELPER_SYSTEM_INSTRUCTIONS["image_interpreter"]["model"],
+                messages=msgs,
+                temperature=interpretation_temperature,
+                max_tokens=interpretation_maximum_tokens
+            )
             logger.info(f"Retrieved image interpretation content.")
+
         except Exception as e:
             logger.error(f"Failed to retrieve image interpretation content.")
             return IMAGE_ANALYST_RESPONSE_RETRIEVAL_ERROR_LOG
@@ -99,15 +139,26 @@ class AuxiliaryLLMVisionClient:
             choice_message_content = choice_message.content
             final_response = choice_message_content
             logger.info(f"Processed image interpretation content.")
+
         except Exception as e:
             logger.error(f"Failed to process image interpretation content.")
             return IMAGE_ANALYST_RESPONSE_PROCESSING_ERROR_LOG
 
         LLMTransaction.objects.create(
-            organization=self.assistant.organization, model=self.assistant.llm_model, responsible_user=None,
-            responsible_assistant=self.assistant, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            transaction_context_content=final_response, llm_cost=0, internal_service_cost=0,
-            tax_cost=0, total_cost=0, total_billable_cost=0, transaction_type=ChatRoles.ASSISTANT,
-            transaction_source=LLMTransactionSourcesTypesNames.GENERATION)
+            organization=self.assistant.organization,
+            model=self.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=final_response,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.ASSISTANT,
+            transaction_source=LLMTransactionSourcesTypesNames.GENERATION
+        )
+
         logger.info(f"Created new LLM transaction for image interpretation.")
         return final_response

@@ -39,29 +39,47 @@ logger = logging.getLogger(__name__)
 
 class AuxiliaryLLMCodeAnalysisManager:
 
-    def __init__(self, assistant, chat_object):
+    def __init__(
+        self,
+        assistant,
+        chat_object
+    ):
+
         self.assistant = assistant
         self.chat = chat_object
-        self.connection = OpenAI(api_key=assistant.llm_model.api_key)
+        self.connection = OpenAI(
+            api_key=assistant.llm_model.api_key
+        )
 
-    def analyze_code_script(self, full_file_paths: list, query_string: str, interpretation_temperature: float):
+    def analyze_code_script(
+        self,
+        full_file_paths: list,
+        query_string: str,
+        interpretation_temperature: float
+    ):
+
         c = self.connection
         if len(full_file_paths) > CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION:
             return get_number_of_codes_too_high_log(max=CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION), [], []
 
         f_data = []
         for pth in full_file_paths:
+
             if not pth:
                 return EMPTY_OBJECT_PATH_LOG, [], []
+
             if not pth.startswith("http"):
                 pth = f"{MEDIA_URL}{pth}"
+
             try:
                 f = requests.get(pth)
                 f_data.append(f.content)
                 logger.info(f"Retrieved file content from: {pth}")
+
             except FileNotFoundError:
                 logger.error(f"File not found at: {pth}")
                 continue
+
             except Exception as e:
                 logger.error(f"Failed to retrieve file content from: {pth}")
                 continue
@@ -69,9 +87,13 @@ class AuxiliaryLLMCodeAnalysisManager:
         f_objs = []
         for con in f_data:
             try:
-                f = c.files.create(purpose="assistants", file=con)
+                f = c.files.create(
+                    purpose="assistants",
+                    file=con
+                )
                 f_objs.append(f)
                 logger.info(f"Created file object for file content.")
+
             except Exception as e:
                 logger.error(f"Failed to create file object for file content.")
                 continue
@@ -80,25 +102,49 @@ class AuxiliaryLLMCodeAnalysisManager:
             agent = c.beta.assistants.create(
                 name=HELPER_SYSTEM_INSTRUCTIONS["code_interpreter"]["name"],
                 description=HELPER_SYSTEM_INSTRUCTIONS["code_interpreter"]["description"],
-                model="gpt-4o", tools=[{"type": "code_interpreter"}],
-                tool_resources={"code_interpreter": {"file_ids": [x.id for x in f_objs]}},
-                temperature=float(interpretation_temperature))
+                model="gpt-4o",
+                tools=[
+                    {
+                        "type": "code_interpreter"
+                    }
+                ],
+                tool_resources={
+                    "code_interpreter": {
+                        "file_ids": [
+                            x.id for x in f_objs
+                        ]
+                    }
+                },
+                temperature=float(interpretation_temperature)
+            )
             logger.info(f"Created new assistant for code interpretation.")
+
         except Exception as e:
             logger.error(f"Failed to create new assistant for code interpretation.")
             return CODE_ANALYST_AGENT_PREPARATION_ERROR_LOG, [], []
 
         try:
             thread = c.beta.threads.create(
-                messages=[{"role": ChatRoles.USER, "content": (query_string + GENERIC_AFFIRMATION_PROMPT)}])
+                messages=[
+                    {
+                        "role": ChatRoles.USER,
+                        "content": (query_string + GENERIC_AFFIRMATION_PROMPT)
+                    }
+                ]
+            )
             logger.info(f"Created new thread for code interpretation.")
+
         except Exception as e:
             logger.error(f"Failed to create new thread for code interpretation.")
             return CODE_ANALYST_THREAD_CREATION_ERROR_LOG, [], []
 
         try:
-            run = c.beta.threads.runs.create_and_poll(thread_id=thread.id, assistant_id=agent.id)
+            run = c.beta.threads.runs.create_and_poll(
+                thread_id=thread.id,
+                assistant_id=agent.id
+            )
             logger.info(f"Created new run for code interpretation.")
+
         except Exception as e:
             logger.error(f"Failed to create new run for code interpretation.")
             return CODE_ANALYST_RESPONSE_RETRIEVAL_ERROR_LOG, [], []
@@ -106,33 +152,54 @@ class AuxiliaryLLMCodeAnalysisManager:
         txts, img_http_ids, f_http_ids = [], [], []
         if run.status == AgentRunConditions.COMPLETED:
             msgs = c.beta.threads.messages.list(thread_id=thread.id)
+
             for msg in msgs.data:
+
                 if msg.role == ChatRoles.ASSISTANT:
                     root_content = msg.content
+
                     for con in root_content:
+
                         if isinstance(con, TextContentBlock):
                             txt_con = con.text
                             txts.append(txt_con.value)
+
                             if txt_con.annotations:
                                 for annotation in txt_con.annotations:
                                     f_id = annotation.file_path.file_id
                                     f_http_ids.append((f_id, annotation.text))
+
                         elif isinstance(con, ImageFileContentBlock):
                             img_con = con.image_file.file_id
                             img_http_ids.append(img_con)
+
+                        else:
+                            pass
+
+                    pass
+
+                else:
+                    pass
+
+            pass
+
         else:
             if run.status == AgentRunConditions.FAILED:
                 msgs = get_code_interpreter_status_log(status="failed")
                 logger.error(f"Code interpretation failed.")
+
             elif run.status == AgentRunConditions.INCOMPLETE:
                 msgs = get_code_interpreter_status_log(status="incomplete")
                 logger.error(f"Code interpretation incomplete.")
+
             elif run.status == AgentRunConditions.EXPIRED:
                 msgs = get_code_interpreter_status_log(status="expired")
                 logger.error(f"Code interpretation expired.")
+
             elif run.status == AgentRunConditions.CANCELLED:
                 msgs = get_code_interpreter_status_log(status="cancelled")
                 logger.error(f"Code interpretation cancelled.")
+
             else:
                 msgs = get_code_interpreter_status_log(status="unknown")
                 logger.error(f"Code interpretation status unknown.")
@@ -143,6 +210,7 @@ class AuxiliaryLLMCodeAnalysisManager:
                 data_bytes = c.files.content(f_id).read()
                 fs_http.append((data_bytes, remote))
                 logger.info(f"Retrieved file content from: {remote}")
+
             except Exception as e:
                 logger.error(f"Failed to retrieve file content from: {remote}")
                 continue
@@ -153,6 +221,7 @@ class AuxiliaryLLMCodeAnalysisManager:
                 data_bytes = c.files.content(image_id).read()
                 imgs_http.append(data_bytes)
                 logger.info(f"Retrieved image content.")
+
             except Exception as e:
                 logger.error(f"Failed to retrieve image content.")
                 continue
@@ -162,21 +231,32 @@ class AuxiliaryLLMCodeAnalysisManager:
                 try:
                     c.files.delete(f.id)
                     logger.info(f"Deleted file object.")
+
                 except Exception as e:
                     logger.error(f"Failed to delete file object.")
                     continue
+
             c.beta.threads.delete(thread.id)
             c.beta.assistants.delete(agent.id)
+
         except Exception as e:
             logger.error(f"Failed to clean up the code interpretation process.")
             return CODE_ANALYST_CLEANUP_ERROR_LOG, [], []
 
         LLMTransaction.objects.create(
-            organization=self.assistant.organization, model=self.assistant.llm_model, responsible_user=None,
-            responsible_assistant=self.assistant, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            transaction_context_content=txts, llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0,
-            total_billable_cost=0, transaction_type=ChatRoles.ASSISTANT,
+            organization=self.assistant.organization,
+            model=self.assistant.llm_model, responsible_user=None,
+            responsible_assistant=self.assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=txts,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.ASSISTANT,
             transaction_source=LLMTransactionSourcesTypesNames.GENERATION
         )
+
         logger.info(f"Created new LLM transaction for code interpretation.")
         return txts, fs_http, imgs_http

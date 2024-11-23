@@ -776,14 +776,16 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             response__internal_data_sources__sql_password = request.POST.get(
                 'response__internal_data_sources__sql_password')
 
-            if (
-                response__internal_data_sources__sql_dbms_type and response__internal_data_sources__sql_dbms_type.strip() != "" and
-                response__internal_data_sources__sql_host and response__internal_data_sources__sql_host.strip() != "" and
-                response__internal_data_sources__sql_port and response__internal_data_sources__sql_port.strip() != "" and
-                response__internal_data_sources__sql_database_name and response__internal_data_sources__sql_database_name.strip() != "" and
-                response__internal_data_sources__sql_username and response__internal_data_sources__sql_username.strip() != "" and
-                response__internal_data_sources__sql_password and response__internal_data_sources__sql_password.strip() != ""
-            ):
+            required_fields__data_sources__sql = [
+                response__internal_data_sources__sql_dbms_type,
+                response__internal_data_sources__sql_host,
+                response__internal_data_sources__sql_port,
+                response__internal_data_sources__sql_database_name,
+                response__internal_data_sources__sql_username,
+                response__internal_data_sources__sql_password,
+            ]
+
+            if all(field and field.strip() != "" for field in required_fields__data_sources__sql):
                 # Action-024: Create a new SQL connection
                 success_024 = action__024_sql_connection_create(
                     metadata__user=context_user,
@@ -819,13 +821,15 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             response__internal_data_sources__nosql_password = request.POST.get(
                 'response__internal_data_sources__nosql_password')
 
-            if (
-                response__internal_data_sources__nosql_db_type and response__internal_data_sources__nosql_db_type.strip() != "" and
-                response__internal_data_sources__nosql_host and response__internal_data_sources__nosql_host.strip() != "" and
-                response__internal_data_sources__nosql_bucket_name and response__internal_data_sources__nosql_bucket_name.strip() != "" and
-                response__internal_data_sources__nosql_username and response__internal_data_sources__nosql_username.strip() != "" and
-                response__internal_data_sources__nosql_password and response__internal_data_sources__nosql_password.strip() != ""
-            ):
+            required_fields__data_sources__nosql = [
+                response__internal_data_sources__nosql_db_type,
+                response__internal_data_sources__nosql_host,
+                response__internal_data_sources__nosql_bucket_name,
+                response__internal_data_sources__nosql_username,
+                response__internal_data_sources__nosql_password,
+            ]
+
+            if all(field and field.strip() != "" for field in required_fields__data_sources__nosql):
 
                 # Action-025: Create a new NoSQL connection
                 success_025 = action__025_nosql_connection_create(
@@ -857,11 +861,13 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             response__internal_data_sources__knowledge_base_provider_api_key = request.POST.get(
                 'response__internal_data_sources__knowledge_base_provider_api_key')
 
-            if (
-                response__internal_data_sources__knowledge_base_provider and response__internal_data_sources__knowledge_base_provider.strip() != "" and
-                response__internal_data_sources__knowledge_base_host_url and response__internal_data_sources__knowledge_base_host_url.strip() != "" and
-                response__internal_data_sources__knowledge_base_provider_api_key and response__internal_data_sources__knowledge_base_provider_api_key.strip() != ""
-            ):
+            required_fields__data_sources__knowledge_base = [
+                response__internal_data_sources__knowledge_base_provider,
+                response__internal_data_sources__knowledge_base_host_url,
+                response__internal_data_sources__knowledge_base_provider_api_key,
+            ]
+
+            if all(field and field.strip() != "" for field in required_fields__data_sources__knowledge_base):
 
                 # Action-026: Create a new Knowledge Base connection
                 success_026 = action__026_knowledge_base_connection_create(
@@ -890,11 +896,13 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             response__internal_data_sources__code_base_provider_api_key = request.POST.get(
                 'response__internal_data_sources__code_base_provider_api_key')
 
-            if (
-                response__internal_data_sources__code_base_provider and response__internal_data_sources__code_base_provider.strip() != "" and
-                response__internal_data_sources__code_base_host_url and response__internal_data_sources__code_base_host_url.strip() != "" and
-                response__internal_data_sources__code_base_provider_api_key and response__internal_data_sources__code_base_provider_api_key.strip() != ""
-            ):
+            required_fields__data_sources__code_base = [
+                response__internal_data_sources__code_base_provider,
+                response__internal_data_sources__code_base_host_url,
+                response__internal_data_sources__code_base_provider_api_key,
+            ]
+
+            if all(field and field.strip() != "" for field in required_fields__data_sources__code_base):
 
                 # Action-027: Create a new Code Base connection
                 success_027 = action__027_code_base_connection_create(
@@ -927,13 +935,15 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             response__internal_data_sources__file_base_password = request.POST.get(
                 'response__internal_data_sources__file_base_password')
 
-            if (
-                response__internal_data_sources__file_base_os_type and response__internal_data_sources__file_base_os_type.strip() != "" and
-                response__internal_data_sources__file_base_host_url and response__internal_data_sources__file_base_host_url.strip() != "" and
-                response__internal_data_sources__file_base_port and response__internal_data_sources__file_base_port.strip() != "" and
-                response__internal_data_sources__file_base_username and response__internal_data_sources__file_base_username.strip() != "" and
-                response__internal_data_sources__file_base_password and response__internal_data_sources__file_base_password.strip() != ""
-            ):
+            required_fields__data_sources__file_base = [
+                response__internal_data_sources__file_base_os_type,
+                response__internal_data_sources__file_base_host_url,
+                response__internal_data_sources__file_base_port,
+                response__internal_data_sources__file_base_username,
+                response__internal_data_sources__file_base_password,
+            ]
+
+            if all(field and field.strip() != "" for field in required_fields__data_sources__file_base):
 
                 # Action-028: Create a new File Base connection
                 success_028 = action__028_file_base_connection_create(
@@ -953,6 +963,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                         f"Failed to create a new File Base connection.")
                     messages.error(request, f"Failed to create a new File Base connection.")
                     pass
+
             else:
                 print("User opt out for adding a new File Base connection.")
                 pass

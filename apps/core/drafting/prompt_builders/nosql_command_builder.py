@@ -31,28 +31,51 @@ from apps.core.drafting.prompts.drafting.whole_text_supplier_prompt import build
 logger = logging.getLogger(__name__)
 
 
-def build_nosql_command_system_prompt(xc: DraftingExecutionManager, user_query: str):
+def build_nosql_command_system_prompt(
+    xc: DraftingExecutionManager,
+    user_query: str
+):
     logger.info(f"Building NOSQL command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
-    generic_instruction_prompt += build_drafting_agent_nickname_prompt(xc.copilot.name)
+    generic_instruction_prompt += build_drafting_agent_nickname_prompt(
+        xc.copilot.name
+    )
     generic_instruction_prompt += build_drafting_internal_principles_prompt()
-    generic_instruction_prompt += build_drafting_agent_personality_prompt(tone=xc.copilot.tone)
-    generic_instruction_prompt += build_drafting_target_audience_prompt(audience=xc.copilot.audience)
-    generic_instruction_prompt += build_drafting_user_tenant_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_drafting_spatial_awareness_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_drafting_technical_dictionary_prompt(glossary=xc.copilot.glossary)
+    generic_instruction_prompt += build_drafting_agent_personality_prompt(
+        tone=xc.copilot.tone
+    )
+    generic_instruction_prompt += build_drafting_target_audience_prompt(
+        audience=xc.copilot.audience
+    )
+    generic_instruction_prompt += build_drafting_user_tenant_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_drafting_spatial_awareness_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_drafting_technical_dictionary_prompt(
+        glossary=xc.copilot.glossary
+    )
 
     folder_and_doc_info_prompt = build_drafting_folder_and_document_data_prompt(
-        folder=xc.drafting_document.document_folder, doc=xc.drafting_document)
-    folder_and_doc_info_prompt += build_whole_text_supply_prompt(xc=xc)
+        folder=xc.drafting_document.document_folder,
+        doc=xc.drafting_document
+    )
+    folder_and_doc_info_prompt += build_whole_text_supply_prompt(
+        xc=xc
+    )
 
     drafting_ops_instruction_prompt = build_drafting_ops_instruction_prompt()
-    action_instructions_prompt = build_drafting_action__nosql_prompt(user_query=user_query)
+    action_instructions_prompt = build_drafting_action__nosql_prompt(
+        user_query=user_query
+    )
 
-    data_source_prompts = build_drafting_nosql_data_source_prompt(assistant=xc.copilot)
+    data_source_prompts = build_drafting_nosql_data_source_prompt(
+        assistant=xc.copilot
+    )
     tool_execution_prompts = build_drafting_tool_prompt__execute_nosql_query()
 
     combined_system_prompt += generic_instruction_prompt
@@ -66,26 +89,48 @@ def build_nosql_command_system_prompt(xc: DraftingExecutionManager, user_query: 
     return combined_system_prompt
 
 
-def build_nosql_command_system_prompt_public(xc: DraftingExecutionManager_Public, user_query: str, content: str):
+def build_nosql_command_system_prompt_public(
+    xc: DraftingExecutionManager_Public,
+    user_query: str,
+    content: str
+):
     logger.info(f"Building NOSQL command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
-    generic_instruction_prompt += build_drafting_agent_nickname_prompt(xc.copilot.name)
+    generic_instruction_prompt += build_drafting_agent_nickname_prompt(
+        xc.copilot.name
+    )
     generic_instruction_prompt += build_drafting_internal_principles_prompt()
-    generic_instruction_prompt += build_drafting_agent_personality_prompt(tone=xc.copilot.tone)
-    generic_instruction_prompt += build_drafting_target_audience_prompt(audience=xc.copilot.audience)
-    generic_instruction_prompt += build_drafting_user_tenant_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_drafting_spatial_awareness_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_drafting_technical_dictionary_prompt(glossary=xc.copilot.glossary)
+    generic_instruction_prompt += build_drafting_agent_personality_prompt(
+        tone=xc.copilot.tone
+    )
+    generic_instruction_prompt += build_drafting_target_audience_prompt(
+        audience=xc.copilot.audience
+    )
+    generic_instruction_prompt += build_drafting_user_tenant_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_drafting_spatial_awareness_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_drafting_technical_dictionary_prompt(
+        glossary=xc.copilot.glossary
+    )
 
-    folder_and_doc_info_prompt = build_whole_text_supply_prompt_public(content=content)
+    folder_and_doc_info_prompt = build_whole_text_supply_prompt_public(
+        content=content
+    )
 
     drafting_ops_instruction_prompt = build_drafting_ops_instruction_prompt()
-    action_instructions_prompt = build_drafting_action__nosql_prompt(user_query=user_query)
+    action_instructions_prompt = build_drafting_action__nosql_prompt(
+        user_query=user_query
+    )
 
-    data_source_prompts = build_drafting_nosql_data_source_prompt(assistant=xc.copilot)
+    data_source_prompts = build_drafting_nosql_data_source_prompt(
+        assistant=xc.copilot
+    )
     tool_execution_prompts = build_drafting_tool_prompt__execute_nosql_query()
 
     combined_system_prompt += generic_instruction_prompt
