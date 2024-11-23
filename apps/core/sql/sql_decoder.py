@@ -26,10 +26,18 @@ logger = logging.getLogger(__name__)
 
 class InternalSQLClient:
     @staticmethod
-    def get(connection: SQLDatabaseConnection):
+    def get(
+        connection: SQLDatabaseConnection
+    ):
+
         if connection.dbms_type == SQL_DBMS_PROVIDERS["POSTGRESQL"]["code"]:
             logger.info(f"Creating PostgresSQLExecutor for connection: {connection.name}")
-            return PostgresSQLExecutor(connection)
+            return PostgresSQLExecutor(
+                connection
+            )
+
         elif connection.dbms_type == SQL_DBMS_PROVIDERS["MYSQL"]["code"]:
             logger.info(f"Creating MySQLExecutor for connection: {connection.name}")
-            return MySQLExecutor(connection)
+            return MySQLExecutor(
+                connection
+            )

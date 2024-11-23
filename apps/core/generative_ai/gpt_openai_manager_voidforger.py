@@ -41,7 +41,12 @@ logger = logging.getLogger(__name__)
 
 
 class OpenAIGPTVoidForgerClientManager:
-    def __init__(self, user, voidforger, multimodal_chat):
+    def __init__(
+        self,
+        user,
+        voidforger,
+        multimodal_chat
+    ):
         self.connection = OpenAI(api_key=voidforger.llm_model.api_key)
         self.user: User = user
         self.voidforger: VoidForger = voidforger
@@ -49,215 +54,347 @@ class OpenAIGPTVoidForgerClientManager:
 
     @staticmethod
     def get_no_scope_connection(llm_model):
-        return OpenAI(api_key=llm_model.api_key)
+        return OpenAI(
+            api_key=llm_model.api_key
+        )
 
-    def respond_stream(self, latest_message, current_mode=VoidForgerModesNames.AUTOMATED, prev_tool_name=None,
-                       with_media=False, file_uris=None, image_uris=None):
+    def respond_stream(
+        self,
+        latest_message,
+        current_mode=VoidForgerModesNames.AUTOMATED,
+        prev_tool_name=None,
+        with_media=False,
+        file_uris=None,
+        image_uris=None
+    ):
         from apps.voidforger.models import MultimodalVoidForgerChatMessage
         from apps.llm_transaction.models import LLMTransaction
 
-        transmit_websocket_log(f"""
-            🤖 VoidForger started processing the query...
-        """, chat_id=self.chat.id)
+        transmit_websocket_log(
+            f""" 🤖 VoidForger started processing the query... """,
+            chat_id=self.chat.id
+        )
 
         c = self.connection
         user = self.chat.user
+
         transmit_websocket_log(
-            f"""
-             🛜 Connection information and metadata extraction completed.
-        """, chat_id=self.chat.id)
+            f""" 🛜 Connection information and metadata extraction completed.""",
+            chat_id=self.chat.id
+        )
+
         try:
-            transmit_websocket_log(f"""
-            🗃️ System prompt is being prepared...
-                            """, chat_id=self.chat.id)
+            transmit_websocket_log(
+                f"""🗃️ System prompt is being prepared...""",
+                chat_id=self.chat.id
+            )
+
             try:
                 system_prompt_msgs = [
                     SystemPromptFactoryBuilder.build_voidforger_system_prompts(
-                        chat=self.chat, voidforger=self.voidforger, user=user, role=ChatRoles.SYSTEM,
+                        chat=self.chat,
+                        voidforger=self.voidforger,
+                        user=user,
+                        role=ChatRoles.SYSTEM,
                         current_mode=current_mode
                     )
                 ]
-                transmit_websocket_log(f"""
-            ⚡ System prompt preparation is completed.
-                                """, chat_id=self.chat.id)
-                transmit_websocket_log(f"""
-            📜 Chat history is being prepared...
-                          """, chat_id=self.chat.id)
-                ext_history, encrypt_uuid = HistoryBuilder.build_voidforger(voidforger_chat=self.chat)
+
+                transmit_websocket_log(
+                    f"""⚡ System prompt preparation is completed.""",
+                    chat_id=self.chat.id
+                )
+
+                transmit_websocket_log(
+                    f"""📜 Chat history is being prepared... """,
+                    chat_id=self.chat.id
+                )
+
+                ext_history, encrypt_uuid = HistoryBuilder.build_voidforger(
+                    voidforger_chat=self.chat
+                )
                 system_prompt_msgs.extend(ext_history)
 
-                transmit_websocket_log(f"""
-            💥 Chat history preparation is completed.
-                                """, chat_id=self.chat.id)
+                transmit_websocket_log(
+                    f"""💥 Chat history preparation is completed.""",
+                    chat_id=self.chat.id
+                )
 
             except Exception as e:
                 logger.error(f"Error occurred while preparing the prompts for the process: {str(e)}")
-                transmit_websocket_log(f"""
-            🚨 A critical error occurred while preparing the prompts for the process.
-                """, chat_id=self.chat.id, stop_tag=BIMOD_PROCESS_END)
+
+                transmit_websocket_log(
+                    f"""🚨 A critical error occurred while preparing the prompts for the process.""",
+                    chat_id=self.chat.id,
+                    stop_tag=BIMOD_PROCESS_END
+                )
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
-                transmit_websocket_log(f"""
-            📈 Transaction parameters are being inspected...
-                                """, chat_id=self.chat.id)
+                transmit_websocket_log(
+                    f""" 📈 Transaction parameters are being inspected...""",
+                    chat_id=self.chat.id
+                )
+
                 last_msg_cost = calculate_billable_cost_from_raw(
-                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, model=self.chat.voidforger.llm_model.model_name,
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    model=self.chat.voidforger.llm_model.model_name,
                     text=latest_message
                 )
+
             except Exception as e:
                 logger.error(f"Error occurred while inspecting the transaction parameters: {str(e)}")
-                transmit_websocket_log(f"""
-            🚨 A critical error occurred while inspecting the transaction parameters.
-                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
+
+                transmit_websocket_log(
+                    f"""🚨 A critical error occurred while inspecting the transaction parameters.""",
+                    stop_tag=BIMOD_PROCESS_END,
+                    chat_id=self.chat.id
+                )
+
                 return DEFAULT_ERROR_MESSAGE
 
             if last_msg_cost > self.voidforger.llm_model.organization.balance:
-                transmit_websocket_log(f"""
-            🚨 Organization has insufficient balance to proceed with the transaction. Cancelling the process.
-                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
+                transmit_websocket_log(
+                    f""" 🚨 Organization has insufficient balance to proceed with the transaction. Cancelling the process.""",
+                    stop_tag=BIMOD_PROCESS_END,
+                    chat_id=self.chat.id
+                )
 
                 resp = BALANCE_OVERFLOW_LOG
+
                 failure_tx = LLMTransaction.objects.create(
-                    organization=self.voidforger.llm_model.organization, model=self.chat.voidforger.llm_model,
-                    responsible_user=self.chat.user, responsible_assistant=None,
-                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=resp,
-                    llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-                    transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source)
+                    organization=self.voidforger.llm_model.organization,
+                    model=self.chat.voidforger.llm_model,
+                    responsible_user=self.chat.user,
+                    responsible_assistant=None,
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    transaction_context_content=resp,
+                    llm_cost=0,
+                    internal_service_cost=0,
+                    tax_cost=0, total_cost=0,
+                    total_billable_cost=0,
+                    transaction_type=ChatRoles.ASSISTANT,
+                    transaction_source=self.chat.chat_source
+                )
+
                 self.chat.transactions.add(failure_tx)
                 self.chat.save()
                 final_resp = resp
                 return final_resp
 
-            transmit_websocket_log(f"""
-            ♟️ Transaction parameters inspection is completed.
-                                """, chat_id=self.chat.id)
-            transmit_websocket_log(f"""
-            📡 Generating response in cooperation with the language model...
-                                """, chat_id=self.chat.id)
+            transmit_websocket_log(
+                f"""♟️ Transaction parameters inspection is completed.""",
+                chat_id=self.chat.id
+            )
+
+            transmit_websocket_log(
+                f""" 📡 Generating response in cooperation with the language model... """,
+                chat_id=self.chat.id
+            )
+
             try:
                 chunks = c.chat.completions.create(
-                    model=self.voidforger.llm_model.model_name, messages=system_prompt_msgs,
+                    model=self.voidforger.llm_model.model_name,
+                    messages=system_prompt_msgs,
                     temperature=float(self.voidforger.llm_model.temperature),
                     frequency_penalty=float(self.voidforger.llm_model.frequency_penalty),
                     presence_penalty=float(self.voidforger.llm_model.presence_penalty),
                     max_tokens=int(self.voidforger.llm_model.maximum_tokens),
-                    top_p=float(self.voidforger.llm_model.top_p), stream=True
+                    top_p=float(self.voidforger.llm_model.top_p),
+                    stream=True
                 )
+
             except Exception as e:
                 logger.error(f"Error occurred while retrieving the response from the language model: {str(e)}")
-                transmit_websocket_log(f"""
-            🚨 A critical error occurred while retrieving the response from the language model.
-                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
+
+                transmit_websocket_log(
+                    f"""🚨 A critical error occurred while retrieving the response from the language model.""",
+                    stop_tag=BIMOD_PROCESS_END,
+                    chat_id=self.chat.id
+                )
+
                 return DEFAULT_ERROR_MESSAGE
 
-            transmit_websocket_log(f"""
-            🧨 Response streamer is ready to process the response.
-                                """, chat_id=self.chat.id)
+            transmit_websocket_log(
+                f"""🧨 Response streamer is ready to process the response. """,
+                chat_id=self.chat.id
+            )
 
             try:
-                transmit_websocket_log(f"""
-            ⚓ Response generation is in progress...
-                                """, chat_id=self.chat.id)
+                transmit_websocket_log(
+                    f"""⚓ Response generation is in progress...""",
+                    chat_id=self.chat.id
+                )
+
                 acc_chunks = ""
+
                 for elem in chunks:
                     choices = elem.choices
                     first_choice = choices[0]
                     delta = first_choice.delta
                     content = delta.content
+
                     if content is not None:
                         acc_chunks += content
-                        transmit_websocket_log(f"""{content}""", stop_tag=BIMOD_NO_TAG_PLACEHOLDER,
-                                               chat_id=self.chat.id)
-                transmit_websocket_log(f"""""", stop_tag=BIMOD_STREAMING_END_TAG, chat_id=self.chat.id)
-                transmit_websocket_log(f"""
-            🔌 Generation iterations has been successfully accomplished.
-                                """, chat_id=self.chat.id)
-                transmit_websocket_log(f"""
-            📦 Preparing the response...
-                                """, chat_id=self.chat.id)
+
+                        transmit_websocket_log(
+                            f"""{content}""",
+                            stop_tag=BIMOD_NO_TAG_PLACEHOLDER,
+                            chat_id=self.chat.id
+                        )
+
+                transmit_websocket_log(
+                    f"""""",
+                    stop_tag=BIMOD_STREAMING_END_TAG,
+                    chat_id=self.chat.id
+                )
+
+                transmit_websocket_log(
+                    f"""🔌 Generation iterations has been successfully accomplished. """,
+                    chat_id=self.chat.id
+                )
+
+                transmit_websocket_log(
+                    f""" 📦 Preparing the response...""",
+                    chat_id=self.chat.id
+                )
+
             except Exception as e:
                 logger.error(f"Error occurred while processing the response from the language model: {str(e)}")
-                transmit_websocket_log(f"""
-            🚨 A critical error occurred while processing the response from the language model.
-                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
+                transmit_websocket_log(
+
+                    f"""🚨 A critical error occurred while processing the response from the language model.""",
+                    stop_tag=BIMOD_PROCESS_END,
+                    chat_id=self.chat.id
+                )
+
                 return DEFAULT_ERROR_MESSAGE
 
-            transmit_websocket_log(f"""
-            🕹️ Raw response stream has been successfully delivered.
-            """, chat_id=self.chat.id)
+            transmit_websocket_log(
+                f"""🕹️ Raw response stream has been successfully delivered. """,
+                chat_id=self.chat.id
+            )
 
-            transmit_websocket_log(f"""
-            🚀 Processing the transactional information...
-            """, chat_id=self.chat.id)
+            transmit_websocket_log(
+                f""" 🚀 Processing the transactional information...""",
+                chat_id=self.chat.id
+            )
 
             try:
                 LLMTransaction.objects.create(
-                    organization=self.voidforger.llm_model.organization, model=self.chat.voidforger.llm_model,
-                    responsible_user=self.chat.user, responsible_assistant=None,
-                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=acc_chunks,
-                    llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-                    transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source
+                    organization=self.voidforger.llm_model.organization,
+                    model=self.chat.voidforger.llm_model,
+                    responsible_user=self.chat.user,
+                    responsible_assistant=None,
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    transaction_context_content=acc_chunks,
+                    llm_cost=0,
+                    internal_service_cost=0,
+                    tax_cost=0,
+                    total_cost=0,
+                    total_billable_cost=0,
+                    transaction_type=ChatRoles.ASSISTANT,
+                    transaction_source=self.chat.chat_source
                 )
+
             except Exception as e:
                 logger.error(f"Error occurred while saving the transaction: {str(e)}")
-                transmit_websocket_log(f"""
-            🚨 A critical error occurred while saving the transaction. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
+
+                transmit_websocket_log(
+                    f""" 🚨 A critical error occurred while saving the transaction. Cancelling the process.""",
+                    stop_tag=BIMOD_PROCESS_END,
+                    chat_id=self.chat.id
+                )
+
                 return DEFAULT_ERROR_MESSAGE
 
-            transmit_websocket_log(f"""
-            🧲 Transactional information has been successfully processed.
-            """, chat_id=self.chat.id)
+            transmit_websocket_log(
+                f"""🧲 Transactional information has been successfully processed.""",
+                chat_id=self.chat.id
+            )
+
             final_resp = acc_chunks
+
         except Exception as e:
             logger.error(f"Error occurred while processing the response: {str(e)}")
+
             final_resp = step_back_retry_mechanism(
-                client=self, latest_message=latest_message, caller=RetryCallersNames.RESPOND_STREAM)
-            transmit_websocket_log(f"""
-            🚨 Error occurred while processing the response. The VoidForger will attempt to retry...
-                """, chat_id=self.chat.id)
+                client=self,
+                latest_message=latest_message,
+                caller=RetryCallersNames.RESPOND_STREAM
+            )
+
+            transmit_websocket_log(
+                f"""🚨 Error occurred while processing the response. The VoidForger will attempt to retry...""",
+                chat_id=self.chat.id
+            )
 
             if final_resp == DEFAULT_ERROR_MESSAGE:
-                final_resp += get_technical_error_log(error_logs=str(e))
+                final_resp += get_technical_error_log(
+                    error_logs=str(e)
+                )
                 global ACTIVE_RETRY_COUNT
                 ACTIVE_RETRY_COUNT = 0
 
         tool_resp_list, json_content_of_resp = [], []
+
         if find_tool_call_from_json(final_resp):
-            transmit_websocket_log(f"""
-            🛠️ Tool usage call detected in the response. Processing with the tool execution steps...
-            """, chat_id=self.chat.id)
-            transmit_websocket_log(f"""
-            🧰 Identifying the valid tool usage calls...
-            """, chat_id=self.chat.id)
+
+            transmit_websocket_log(
+                f"""🛠️ Tool usage call detected in the response. Processing with the tool execution steps... """,
+                chat_id=self.chat.id
+            )
+
+            transmit_websocket_log(
+                f""" 🧰 Identifying the valid tool usage calls... """,
+                chat_id=self.chat.id
+            )
+
             json_content_of_resp = find_tool_call_from_json(final_resp)
-            transmit_websocket_log(f"""
-            💡️ Tool usage calls have been identified.
-            """, chat_id=self.chat.id)
-            transmit_websocket_log(f"""
-            🧭 Number of tool usage calls that is delivered: {len(json_content_of_resp)}
-            """, chat_id=self.chat.id)
+
+            transmit_websocket_log(
+                f"""💡️ Tool usage calls have been identified.""",
+                chat_id=self.chat.id
+            )
+
+            transmit_websocket_log(
+                f"""🧭 Number of tool usage calls that is delivered: {len(json_content_of_resp)}""",
+                chat_id=self.chat.id
+            )
 
             tool_name = None
+
             for i, json_part in enumerate(json_content_of_resp):
-                transmit_websocket_log(f"""
-                🧮 Executing the tool usage call index: {i + 1} out of {len(json_content_of_resp)} ...
-                                    """, chat_id=self.chat.id)
+
+                transmit_websocket_log(
+                    f"""🧮 Executing the tool usage call index: {i + 1} out of {len(json_content_of_resp)} ...""",
+                    chat_id=self.chat.id
+                )
+
                 try:
                     tool_xc = ToolCallManager(
-                        user=self.user, assistant=self.voidforger, chat=self.chat, tool_usage_json_str=json_part
+                        user=self.user,
+                        assistant=self.voidforger,
+                        chat=self.chat,
+                        tool_usage_json_str=json_part
                     )
+
                     tool_resp, tool_name, file_uris, image_uris = tool_xc.call_internal_tool_service_voidforger()
-                    transmit_websocket_log(f"""
-                    🧰 Tool usage call for: '{tool_name}' has been successfully executed. Proceeding with the next actions...
-                    """, chat_id=self.chat.id)
+
+                    transmit_websocket_log(
+                        f"""🧰 Tool usage call for: '{tool_name}' has been successfully executed. Proceeding with the next actions...""",
+                        chat_id=self.chat.id
+                    )
 
                     if tool_name is not None:
                         prev_tool_name = tool_name
-                    transmit_websocket_log(f"""
-                    📦 Tool response from '{tool_name}' is being delivered to the VoidForger for further actions...
-                    """, chat_id=self.chat.id)
+
+                    transmit_websocket_log(
+                        f""" 📦 Tool response from '{tool_name}' is being delivered to the VoidForger for further actions...""",
+                        chat_id=self.chat.id
+                    )
+
                     tool_resp_list.append(f"""
                                     [{i}] "tool_name": {tool_name},
                                         [{i}a.] "tool_response": {tool_resp},
@@ -265,16 +402,21 @@ class OpenAIGPTVoidForgerClientManager:
                                         [{i}c.] "image_uris": {image_uris}
                     """)
 
-                    transmit_websocket_log(f"""
-                    🎯 Tool response from '{tool_name}' has been successfully delivered to the VoidForger.
-                                        """, chat_id=self.chat.id)
+                    transmit_websocket_log(
+                        f"""🎯 Tool response from '{tool_name}' has been successfully delivered to the VoidForger.""",
+                        chat_id=self.chat.id
+                    )
+
                 except Exception as e:
                     logger.error(f"Error occurred while executing the tool: {str(e)}")
-                    transmit_websocket_log(f"""
-                    🚨 Error occurred while executing the tool. Attempting to recover...
-                                        """, chat_id=self.chat.id)
+
+                    transmit_websocket_log(
+                        f"""🚨 Error occurred while executing the tool. Attempting to recover...""",
+                        chat_id=self.chat.id
+                    )
 
                     if tool_name is not None:
+
                         tool_resp = get_json_decode_error_log(error_logs=str(e))
                         tool_resp_list.append(f"""
                                     [{i}] [FAILED] "tool_name": {tool_name},
@@ -283,7 +425,9 @@ class OpenAIGPTVoidForgerClientManager:
                                         [{i}c.] "image_uris": []
                                         [{i}d.] "error_logs": {str(e)}
                                 """)
+
                     else:
+
                         tool_resp = get_json_decode_error_log(error_logs=str(e))
                         tool_resp_list.append(f"""
                                     [{i}] [FAILED / NO TOOL NAME] "tool_name": {tool_name},
@@ -292,115 +436,195 @@ class OpenAIGPTVoidForgerClientManager:
                                         [{i}c.] "image_uris": []
                                         [{i}d.] "error_logs": {str(e)}
                                 """)
-                    transmit_websocket_log(f"""
-                    🚨 Error logs have been delivered to the VoidForger. Proceeding with the next actions...
-                                        """, chat_id=self.chat.id)
-        transmit_websocket_log(f"""
-            🧠 The VoidForger is inspecting the responses of the tools...
-                                """, chat_id=self.chat.id)
+
+                    transmit_websocket_log(
+                        f"""🚨 Error logs have been delivered to the VoidForger. Proceeding with the next actions...""",
+                        chat_id=self.chat.id
+                    )
+
+        transmit_websocket_log(
+            f"""🧠 The VoidForger is inspecting the responses of the tools...""",
+            chat_id=self.chat.id
+        )
 
         if tool_resp_list:
-            transmit_websocket_log(f"""
-            📦 Communication records for the tool requests are being prepared...
-                                """, chat_id=self.chat.id)
+            transmit_websocket_log(
+                f""" 📦 Communication records for the tool requests are being prepared... """,
+                chat_id=self.chat.id
+            )
+
             try:
                 tool_req = MultimodalVoidForgerChatMessage.objects.create(
-                    multimodal_voidforger_chat=self.chat, sender_type=ChatRoles.ASSISTANT.upper(),
-                    message_text_content=embed_tool_call_in_prompt(json_parts_of_response=json_content_of_resp),
-                    message_file_contents=[], message_image_contents=[])
+                    multimodal_voidforger_chat=self.chat,
+                    sender_type=ChatRoles.ASSISTANT.upper(),
+                    message_text_content=embed_tool_call_in_prompt(
+                        json_parts_of_response=json_content_of_resp
+                    ),
+                    message_file_contents=[],
+                    message_image_contents=[]
+                )
+
                 self.chat.voidforger_chat_messages.add(tool_req)
                 self.chat.save()
-                transmit_websocket_log(f"""
-                    ⚙️ Tool request records have been prepared. Proceeding with the next actions...
-                """, chat_id=self.chat.id)
+
+                transmit_websocket_log(
+                    f"""⚙️ Tool request records have been prepared. Proceeding with the next actions...""",
+                    chat_id=self.chat.id
+                )
+
             except Exception as e:
                 logger.error(f"Error occurred while recording the tool request: {str(e)}")
-                transmit_websocket_log(f"""
-            🚨 A critical error occurred while recording the tool request. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
+
+                transmit_websocket_log(
+                    f"""🚨 A critical error occurred while recording the tool request. Cancelling the process. """,
+                    stop_tag=BIMOD_PROCESS_END,
+                    chat_id=self.chat.id
+                )
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
-                transmit_websocket_log(f"""
-            📦 Communication records for the tool responses are being prepared...
-                                """, chat_id=self.chat.id)
+
+                transmit_websocket_log(
+                    f"""📦 Communication records for the tool responses are being prepared... """,
+                    chat_id=self.chat.id
+                )
+
                 tool_msg = MultimodalVoidForgerChatMessage.objects.create(
-                    multimodal_voidforger_chat=self.chat, sender_type=HistoryBuilder.ChatRoles.TOOL.upper(),
-                    message_text_content=str(tool_resp_list), message_file_contents=file_uris,
-                    message_image_contents=image_uris)
+                    multimodal_voidforger_chat=self.chat,
+                    sender_type=HistoryBuilder.ChatRoles.TOOL.upper(),
+                    message_text_content=str(tool_resp_list),
+                    message_file_contents=file_uris,
+                    message_image_contents=image_uris
+                )
+
                 self.chat.voidforger_chat_messages.add(tool_msg)
                 self.chat.save()
-                transmit_websocket_log(f"""
-                    ⚙️ Tool response records have been prepared. Proceeding with the next actions...
-                """, chat_id=self.chat.id)
+
+                transmit_websocket_log(
+                    f"""⚙️ Tool response records have been prepared. Proceeding with the next actions... """,
+                    chat_id=self.chat.id
+                )
+
             except Exception as e:
                 logger.error(f"Error occurred while recording the tool response: {str(e)}")
-                transmit_websocket_log(f"""
-            🚨 A critical error occurred while recording the tool response. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
+                transmit_websocket_log(
+                    f""" 🚨 A critical error occurred while recording the tool response. Cancelling the process.""",
+                    stop_tag=BIMOD_PROCESS_END,
+                    chat_id=self.chat.id
+                )
+
                 return DEFAULT_ERROR_MESSAGE
 
-            transmit_websocket_log(f"""
-            ✨ Communication records for the tool requests and responses have been successfully prepared.
-                """, chat_id=self.chat.id)
-            transmit_websocket_log(f"""
-            📦 Transactions are being prepared for the current level of operations...
-                                """, chat_id=self.chat.id)
+            transmit_websocket_log(
+                f""" ✨ Communication records for the tool requests and responses have been successfully prepared.""",
+                chat_id=self.chat.id
+            )
+
+            transmit_websocket_log(
+                f""" 📦 Transactions are being prepared for the current level of operations...""",
+                chat_id=self.chat.id
+            )
 
             try:
                 LLMTransaction.objects.create(
-                    organization=self.voidforger.llm_model.organization, model=self.chat.voidforger.llm_model,
-                    responsible_user=self.chat.user, responsible_assistant=None,
-                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=str(tool_resp_list),
-                    llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-                    transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source
+                    organization=self.voidforger.llm_model.organization,
+                    model=self.chat.voidforger.llm_model,
+                    responsible_user=self.chat.user,
+                    responsible_assistant=None,
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    transaction_context_content=str(tool_resp_list),
+                    llm_cost=0,
+                    internal_service_cost=0,
+                    tax_cost=0,
+                    total_cost=0,
+                    total_billable_cost=0,
+                    transaction_type=ChatRoles.ASSISTANT,
+                    transaction_source=self.chat.chat_source
                 )
+
             except Exception as e:
                 logger.error(f"Error occurred while recording the transaction: {str(e)}")
-                transmit_websocket_log(f"""
-            🚨 A critical error occurred while recording the transaction. Cancelling the process.
-                                """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
+
+                transmit_websocket_log(
+                    f""" 🚨 A critical error occurred while recording the transaction. Cancelling the process.""",
+                    stop_tag=BIMOD_PROCESS_END,
+                    chat_id=self.chat.id
+                )
+
                 return DEFAULT_ERROR_MESSAGE
 
-            transmit_websocket_log(f"""
-            ❇️ Transactions have been successfully prepared for the current level of operations.
-                """, chat_id=self.chat.id)
-            transmit_websocket_log(f"""
-            🚀 The VoidForger is getting prepared for the next level of operations...
-                                """, chat_id=self.chat.id)
-            return self.respond_stream(latest_message=tool_msg, prev_tool_name=prev_tool_name,
-                                       with_media=with_media, file_uris=file_uris, image_uris=image_uris)
+            transmit_websocket_log(
+                f""" ❇️ Transactions have been successfully prepared for the current level of operations.""",
+                chat_id=self.chat.id
+            )
+
+            transmit_websocket_log(
+                f"""🚀 The VoidForger is getting prepared for the next level of operations...""",
+                chat_id=self.chat.id
+            )
+
+            return self.respond_stream(
+                latest_message=tool_msg,
+                prev_tool_name=prev_tool_name,
+                with_media=with_media,
+                file_uris=file_uris,
+                image_uris=image_uris
+            )
 
         if with_media:
             return final_resp, file_uris, image_uris
-        transmit_websocket_log(f"""
-            ✅ The assistant has successfully processed the query. The response is being delivered to the user...
-        """, stop_tag=BIMOD_PROCESS_END, chat_id=self.chat.id)
+
+        transmit_websocket_log(
+            f""" ✅ The assistant has successfully processed the query. The response is being delivered to the user...""",
+            stop_tag=BIMOD_PROCESS_END,
+            chat_id=self.chat.id
+        )
+
         return final_resp
 
-    def respond(self, latest_message, current_mode=VoidForgerModesNames.AUTOMATED, prev_tool_name=None,
-                with_media=False, file_uris=None,
-                image_uris=None):
+    def respond(
+        self,
+        latest_message,
+        current_mode=VoidForgerModesNames.AUTOMATED,
+        prev_tool_name=None,
+        with_media=False,
+        file_uris=None,
+        image_uris=None
+    ):
+
         from apps.voidforger.models import MultimodalVoidForgerChatMessage
         from apps.llm_transaction.models import LLMTransaction
         c = self.connection
         user = self.chat.user
+
         try:
             try:
                 prompt_msgs = [
                     SystemPromptFactoryBuilder.build_voidforger_system_prompts(
-                        chat=self.chat, voidforger=self.voidforger, user=user, role=ChatRoles.SYSTEM,
-                        current_mode=current_mode)
+                        chat=self.chat,
+                        voidforger=self.voidforger,
+                        user=user,
+                        role=ChatRoles.SYSTEM,
+                        current_mode=current_mode
+                    )
                 ]
-                ext_msgs, encrypt_uuid = HistoryBuilder.build_voidforger(voidforger_chat=self.chat)
+                ext_msgs, encrypt_uuid = HistoryBuilder.build_voidforger(
+                    voidforger_chat=self.chat
+                )
                 prompt_msgs.extend(ext_msgs)
+
             except Exception as e:
                 logger.error(f"Error occurred while preparing the prompts for the process: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
+
             try:
                 last_msg_cost = calculate_billable_cost_from_raw(
-                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, model=self.chat.voidforger.llm_model.model_name,
-                    text=latest_message)
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    model=self.chat.voidforger.llm_model.model_name,
+                    text=latest_message
+                )
+
             except Exception as e:
                 logger.error(f"Error occurred while inspecting the transaction parameters: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
@@ -408,12 +632,21 @@ class OpenAIGPTVoidForgerClientManager:
             if last_msg_cost > self.voidforger.llm_model.organization.balance:
                 final_output = BALANCE_OVERFLOW_LOG
                 failure_tx = LLMTransaction.objects.create(
-                    organization=self.voidforger.llm_model.organization, model=self.chat.voidforger.llm_model,
-                    responsible_user=self.chat.user, responsible_assistant=None,
-                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=final_output,
-                    llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-                    transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source
+                    organization=self.voidforger.llm_model.organization,
+                    model=self.chat.voidforger.llm_model,
+                    responsible_user=self.chat.user,
+                    responsible_assistant=None,
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    transaction_context_content=final_output,
+                    llm_cost=0,
+                    internal_service_cost=0,
+                    tax_cost=0,
+                    total_cost=0,
+                    total_billable_cost=0,
+                    transaction_type=ChatRoles.ASSISTANT,
+                    transaction_source=self.chat.chat_source
                 )
+
                 self.chat.transactions.add(failure_tx)
                 self.chat.save()
                 final_resp = final_output
@@ -421,44 +654,66 @@ class OpenAIGPTVoidForgerClientManager:
 
             try:
                 final_output = c.chat.completions.create(
-                    model=self.voidforger.llm_model.model_name, messages=prompt_msgs,
+                    model=self.voidforger.llm_model.model_name,
+                    messages=prompt_msgs,
                     temperature=float(self.voidforger.llm_model.temperature),
                     frequency_penalty=float(self.voidforger.llm_model.frequency_penalty),
                     presence_penalty=float(self.voidforger.llm_model.presence_penalty),
                     max_tokens=int(self.voidforger.llm_model.maximum_tokens),
-                    top_p=float(self.voidforger.llm_model.top_p))
+                    top_p=float(self.voidforger.llm_model.top_p)
+                )
+
             except Exception as e:
                 logger.error(f"Error occurred while retrieving the response from the language model: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
+
             try:
                 choices = final_output.choices
                 first_choice = choices[0]
                 choice_message = first_choice.message
                 choice_message_content = choice_message.content
+
             except Exception as e:
                 logger.error(f"Error occurred while processing the response from the language model: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
+
             try:
                 LLMTransaction.objects.create(
-                    organization=self.voidforger.llm_model.organization, model=self.chat.voidforger.llm_model,
-                    responsible_user=self.chat.user, responsible_assistant=None,
-                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=choice_message_content,
-                    llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-                    transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source
+                    organization=self.voidforger.llm_model.organization,
+                    model=self.chat.voidforger.llm_model,
+                    responsible_user=self.chat.user,
+                    responsible_assistant=None,
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    transaction_context_content=choice_message_content,
+                    llm_cost=0,
+                    internal_service_cost=0,
+                    tax_cost=0,
+                    total_cost=0,
+                    total_billable_cost=0,
+                    transaction_type=ChatRoles.ASSISTANT,
+                    transaction_source=self.chat.chat_source
                 )
+
             except Exception as e:
                 logger.error(f"Error occurred while saving the transaction: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
 
             final_resp = choice_message_content
+
         except Exception as e:
             logger.error(f"Error occurred while processing the response: {str(e)}")
-            final_resp = step_back_retry_mechanism(client=self, latest_message=latest_message,
-                                                   caller=RetryCallersNames.RESPOND)
+
+            final_resp = step_back_retry_mechanism(
+                client=self,
+                latest_message=latest_message,
+                caller=RetryCallersNames.RESPOND
+            )
+
             if final_resp == DEFAULT_ERROR_MESSAGE:
                 final_resp += get_technical_error_log(error_logs=str(e))
 
         tool_resp_list, json_content_of_resp = [], []
+
         if find_tool_call_from_json(final_resp):
             json_content_of_resp = find_tool_call_from_json(final_resp)
 
@@ -466,8 +721,12 @@ class OpenAIGPTVoidForgerClientManager:
             for i, json_part in enumerate(json_content_of_resp):
                 try:
                     tool_xc = ToolCallManager(
-                        user=self.user, assistant=self.voidforger, chat=self.chat, tool_usage_json_str=json_part
+                        user=self.user,
+                        assistant=self.voidforger,
+                        chat=self.chat,
+                        tool_usage_json_str=json_part
                     )
+
                     tool_resp, tool_name, file_uris, image_uris = tool_xc.call_internal_tool_service_voidforger()
                     if tool_name is not None:
                         prev_tool_name = tool_name
@@ -478,10 +737,16 @@ class OpenAIGPTVoidForgerClientManager:
                                 [{i}b.] "file_uris": {file_uris},
                                 [{i}c.] "image_uris": {image_uris}
                         """)
+
                 except Exception as e:
+
                     logger.error(f"Error occurred while executing the tool: {str(e)}")
+
                     if tool_name is not None:
-                        tool_resp = get_json_decode_error_log(error_logs=str(e))
+                        tool_resp = get_json_decode_error_log(
+                            error_logs=str(e)
+                        )
+
                         tool_resp_list.append(f"""
                             [{i}] [FAILED] "tool_name": {tool_name},
                                 [{i}a.] "tool_response": {tool_resp},
@@ -489,8 +754,12 @@ class OpenAIGPTVoidForgerClientManager:
                                 [{i}c.] "image_uris": []
                                 [{i}d.] "error_logs": {str(e)}
                         """)
+
                     else:
-                        tool_resp = get_json_decode_error_log(error_logs=str(e))
+                        tool_resp = get_json_decode_error_log(
+                            error_logs=str(e)
+                        )
+
                         tool_resp_list.append(f"""
                             [{i}] [FAILED / NO TOOL NAME] "tool_name": {tool_name},
                                 [{i}a.] "tool_response": {tool_resp},
@@ -504,39 +773,65 @@ class OpenAIGPTVoidForgerClientManager:
                 tool_req = MultimodalVoidForgerChatMessage.objects.create(
                     multimodal_voidforger_chat=self.chat,
                     sender_type=ChatRoles.ASSISTANT.upper(),
-                    message_text_content=embed_tool_call_in_prompt(json_parts_of_response=json_content_of_resp),
-                    message_file_contents=[], message_image_contents=[]
+                    message_text_content=embed_tool_call_in_prompt(
+                        json_parts_of_response=json_content_of_resp
+                    ),
+                    message_file_contents=[],
+                    message_image_contents=[]
                 )
+
                 self.chat.voidforger_chat_messages.add(tool_req)
                 self.chat.save()
+
             except Exception as e:
                 logger.error(f"Error occurred while recording the tool request: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
 
             try:
                 tool_msg = MultimodalVoidForgerChatMessage.objects.create(
-                    multimodal_voidforger_chat=self.chat, sender_type=HistoryBuilder.ChatRoles.TOOL.upper(),
-                    message_text_content=str(tool_resp_list), message_file_contents=file_uris,
-                    message_image_contents=image_uris)
+                    multimodal_voidforger_chat=self.chat,
+                    sender_type=HistoryBuilder.ChatRoles.TOOL.upper(),
+                    message_text_content=str(tool_resp_list),
+                    message_file_contents=file_uris,
+                    message_image_contents=image_uris
+                )
                 self.chat.voidforger_chat_messages.add(tool_msg)
                 self.chat.save()
+
             except Exception as e:
                 logger.error(f"Error occurred while recording the tool response: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
 
             try:
                 LLMTransaction.objects.create(
-                    organization=self.voidforger.llm_model.organization, model=self.chat.voidforger.llm_model,
-                    responsible_user=self.chat.user, responsible_assistant=None,
-                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=str(tool_resp_list),
-                    llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-                    transaction_type=ChatRoles.ASSISTANT, transaction_source=self.chat.chat_source)
+                    organization=self.voidforger.llm_model.organization,
+                    model=self.chat.voidforger.llm_model,
+                    responsible_user=self.chat.user,
+                    responsible_assistant=None,
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    transaction_context_content=str(tool_resp_list),
+                    llm_cost=0,
+                    internal_service_cost=0,
+                    tax_cost=0,
+                    total_cost=0,
+                    total_billable_cost=0,
+                    transaction_type=ChatRoles.ASSISTANT,
+                    transaction_source=self.chat.chat_source
+                )
+
             except Exception as e:
                 logger.error(f"Error occurred while recording the transaction: {str(e)}")
                 return DEFAULT_ERROR_MESSAGE
-            return self.respond(latest_message=str(tool_resp_list), prev_tool_name=prev_tool_name,
-                                with_media=with_media,
-                                file_uris=file_uris, image_uris=image_uris)
+
+            return self.respond(
+                latest_message=str(tool_resp_list),
+                prev_tool_name=prev_tool_name,
+                with_media=with_media,
+                file_uris=file_uris,
+                image_uris=image_uris
+            )
+
         if with_media:
             return final_resp, file_uris, image_uris
+
         return final_resp

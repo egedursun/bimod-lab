@@ -42,35 +42,82 @@ logger = logging.getLogger(__name__)
 
 class VoidForgerExecutionManager:
 
-    def __init__(self, user: User, voidforger_id: int, vector_dim: int = OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS):
+    def __init__(
+        self,
+        user: User,
+        voidforger_id: int,
+        vector_dim: int = OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+    ):
         self.voidforger_id = voidforger_id
         self.voidforger = VoidForger.objects.get(id=voidforger_id)
         self.llm_model = self.voidforger.llm_model
         self.vector_dim = vector_dim
 
-        self.action_memory_logs_index_path = os.path.join(VECTOR_INDEX_PATH_ACTION_MEMORIES,
-                                                          f'voidforger_index_{self.voidforger_id}.index')
-        self.auto_execution_logs_index_path = os.path.join(VECTOR_INDEX_PATH_AUTO_EXECUTION_MEMORIES,
-                                                           f'voidforger_index_{self.voidforger_id}.index')
+        self.action_memory_logs_index_path = os.path.join(
+            VECTOR_INDEX_PATH_ACTION_MEMORIES,
+            f'voidforger_index_{self.voidforger_id}.index'
+        )
 
-        if os.path.exists(self.action_memory_logs_index_path):
-            self.action_memory_logs_index = faiss.read_index(self.action_memory_logs_index_path)
-        else:
-            self.action_memory_logs_index = faiss.IndexIDMap(faiss.IndexFlatL2(self.vector_dim))
-            faiss.write_index(self.action_memory_logs_index, self.action_memory_logs_index_path)
+        self.auto_execution_logs_index_path = os.path.join(
+            VECTOR_INDEX_PATH_AUTO_EXECUTION_MEMORIES,
+            f'voidforger_index_{self.voidforger_id}.index'
+        )
 
-        if os.path.exists(self.auto_execution_logs_index_path):
-            self.auto_execution_logs_index = faiss.read_index(self.auto_execution_logs_index_path)
+        if os.path.exists(
+            self.action_memory_logs_index_path
+        ):
+
+            self.action_memory_logs_index = faiss.read_index(
+                self.action_memory_logs_index_path
+            )
+
         else:
-            self.auto_execution_logs_index = faiss.IndexIDMap(faiss.IndexFlatL2(self.vector_dim))
-            faiss.write_index(self.auto_execution_logs_index, self.auto_execution_logs_index_path)
+
+            self.action_memory_logs_index = faiss.IndexIDMap(
+                faiss.IndexFlatL2(
+                    self.vector_dim
+                )
+            )
+            faiss.write_index(
+                self.action_memory_logs_index,
+                self.action_memory_logs_index_path
+            )
+
+        if os.path.exists(
+            self.auto_execution_logs_index_path
+        ):
+
+            self.auto_execution_logs_index = faiss.read_index(
+                self.auto_execution_logs_index_path
+            )
+
+        else:
+
+            self.auto_execution_logs_index = faiss.IndexIDMap(
+                faiss.IndexFlatL2(
+                    self.vector_dim
+                )
+            )
+            faiss.write_index(
+                self.auto_execution_logs_index,
+                self.auto_execution_logs_index_path
+            )
 
     def _generate_query_embedding(self, query: str) -> List[float]:
-        c = OpenAIGPTClientManager.get_naked_client(llm_model=self.llm_model)
-        response = c.embeddings.create(input=query, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE)
+
+        c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.llm_model
+        )
+
+        response = c.embeddings.create(
+            input=query,
+            model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE
+        )
+
         return response.data[0].embedding
 
     def run_cycle(self, trigger):
+
         # If paused, do not run.
         if self.voidforger.runtime_status == VoidForgerRuntimeStatusesNames.PAUSED:
             error = "VoidForger is paused, cannot run."
@@ -123,16 +170,21 @@ class VoidForgerExecutionManager:
                     )
 
                     internal_llm_client_voidforger = GenerativeAIDecodeController.get_voidforger(
-                        user=self.voidforger.user, assistant=chat.voidforger, multimodal_chat=chat
+                        user=self.voidforger.user,
+                        assistant=chat.voidforger,
+                        multimodal_chat=chat
                     )
 
                     response = internal_llm_client_voidforger.respond(
-                        latest_message=user_message, current_mode=VoidForgerModesNames.CHAT,
+                        latest_message=user_message,
+                        current_mode=VoidForgerModesNames.CHAT,
                         image_uris=[], file_uris=[]
                     )
 
                     assistant_message = MultimodalVoidForgerChatMessage.objects.create(
-                        multimodal_voidforger_chat=chat, sender_type='ASSISTANT', message_text_content=response
+                        multimodal_voidforger_chat=chat,
+                        sender_type='ASSISTANT',
+                        message_text_content=response
                     )
 
                     VoidForgerActionMemoryLog.objects.create(
@@ -140,10 +192,12 @@ class VoidForgerExecutionManager:
                         action_type=VoidForgerActionTypesNames.NATURAL_LANGUAGE_RESPONSE,
                         action_order_raw_text=response
                     )
+
                 except Exception as e:
                     error = f"Error while processing execution cycle: " + str(e)
                     logger.error(error)
                     continue
+
         except Exception as e:
             error = f"Error while processing execution cycle(s): " + str(e)
             logger.error(error)
@@ -178,22 +232,51 @@ class VoidForgerExecutionManager:
 
         return None
 
-    def search_old_chat_messages(self, voidforger_chat_id: int, query: str,
-                                 n_results: int = VOIDFORGER_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES) -> List[Dict]:
-        old_chat_messages_index_path = os.path.join(VECTOR_INDEX_PATH_CHAT_MESSAGES,
-                                                    f'voidforger_chat_index_{voidforger_chat_id}.index')
-        if os.path.exists(old_chat_messages_index_path):
-            old_chat_messages_index = faiss.read_index(old_chat_messages_index_path)
-        else:
-            old_chat_messages_index = faiss.IndexIDMap(faiss.IndexFlatL2(self.vector_dim))
-            faiss.write_index(old_chat_messages_index, old_chat_messages_index_path)
+    def search_old_chat_messages(
+        self,
+        voidforger_chat_id: int,
+        query: str,
+        n_results: int = VOIDFORGER_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES
+    ) -> List[Dict]:
+        old_chat_messages_index_path = os.path.join(
+            VECTOR_INDEX_PATH_CHAT_MESSAGES,
+            f'voidforger_chat_index_{voidforger_chat_id}.index'
+        )
 
-        query_vector = np.array([self._generate_query_embedding(query)], dtype=np.float32)
+        if os.path.exists(old_chat_messages_index_path):
+            old_chat_messages_index = faiss.read_index(
+                old_chat_messages_index_path
+            )
+
+        else:
+            old_chat_messages_index = faiss.IndexIDMap(
+                faiss.IndexFlatL2(
+                    self.vector_dim
+                )
+            )
+
+            faiss.write_index(
+                old_chat_messages_index,
+                old_chat_messages_index_path
+            )
+
+        query_vector = np.array(
+            [
+                self._generate_query_embedding(query)
+            ],
+            dtype=np.float32
+        )
+
         if old_chat_messages_index is None:
             raise ValueError("[search_old_chat_messages] FAISS index not initialized or loaded properly.")
 
-        distances, ids = old_chat_messages_index.search(query_vector, n_results)
+        distances, ids = old_chat_messages_index.search(
+            query_vector,
+            n_results
+        )
+
         results = []
+
         for item_id, distance in zip(ids[0], distances[0]):
             if item_id == -1:
                 continue
@@ -204,6 +287,7 @@ class VoidForgerExecutionManager:
                     "data": instance.raw_data,
                     "distance": distance,
                 })
+
             except VoidForgerOldChatMessagesVectorData.DoesNotExist:
                 print(
                     f"Warning: VoidForgerOldChatMessagesVectorData Instance with ID {item_id} not found in the vector database.")
@@ -212,18 +296,30 @@ class VoidForgerExecutionManager:
 
         return results
 
-    def search_action_history_logs(self, query: str,
-                                   n_results: int = VOIDFORGER_DEFAULT_SEARCH_RESULTS_ACTION_HISTORY_LOGS) -> List[
-        Dict]:
-        query_vector = np.array([self._generate_query_embedding(query)], dtype=np.float32)
+    def search_action_history_logs(
+        self,
+        query: str,
+        n_results: int = VOIDFORGER_DEFAULT_SEARCH_RESULTS_ACTION_HISTORY_LOGS
+    ) -> List[Dict]:
+
+        query_vector = np.array(
+            [
+                self._generate_query_embedding(query)
+            ],
+            dtype=np.float32
+        )
+
         if self.action_memory_logs_index is None:
             raise ValueError("[search_action_history_logs] FAISS index not initialized or loaded properly.")
 
         distances, ids = self.action_memory_logs_index.search(query_vector, n_results)
         results = []
+
         for item_id, distance in zip(ids[0], distances[0]):
+
             if item_id == -1:
                 continue
+
             try:
                 instance = VoidForgerActionMemoryVectorData.objects.get(id=item_id)
                 results.append({
@@ -231,6 +327,7 @@ class VoidForgerExecutionManager:
                     "data": instance.raw_data,
                     "distance": distance,
                 })
+
             except VoidForgerActionMemoryVectorData.DoesNotExist:
                 print(
                     f"Warning: VoidForgerActionMemoryVectorData Instance with ID {item_id} not found in the vector database.")
@@ -239,18 +336,29 @@ class VoidForgerExecutionManager:
 
         return results
 
-    def search_auto_execution_logs(self, query: str,
-                                   n_results: int = VOIDFORGER_DEFAULT_SEARCH_RESULTS_AUTO_EXECUTION_LOGS) -> List[
-        Dict]:
-        query_vector = np.array([self._generate_query_embedding(query)], dtype=np.float32)
+    def search_auto_execution_logs(
+        self,
+        query: str,
+        n_results: int = VOIDFORGER_DEFAULT_SEARCH_RESULTS_AUTO_EXECUTION_LOGS
+    ) -> List[Dict]:
+
+        query_vector = np.array(
+            [
+                self._generate_query_embedding(query)
+            ],
+            dtype=np.float32
+        )
+
         if self.auto_execution_logs_index is None:
             raise ValueError("[search_auto_execution_logs] FAISS index not initialized or loaded properly.")
 
         distances, ids = self.auto_execution_logs_index.search(query_vector, n_results)
         results = []
+
         for item_id, distance in zip(ids[0], distances[0]):
             if item_id == -1:
                 continue
+
             try:
                 instance = VoidForgerAutoExecutionMemoryVectorData.objects.get(id=item_id)
                 results.append({
@@ -258,6 +366,7 @@ class VoidForgerExecutionManager:
                     "data": instance.raw_data,
                     "distance": distance,
                 })
+
             except VoidForgerAutoExecutionMemoryVectorData.DoesNotExist:
                 print(
                     f"Warning: VoidForgerAutoExecutionMemoryVectorData Instance with ID {item_id} not found in the vector database.")

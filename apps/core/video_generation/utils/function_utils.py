@@ -20,9 +20,12 @@ from uuid import uuid4
 
 
 def generate_save_name(extension):
+
     try:
         generated_uuid = str(uuid4())
         additional_uuid = str(uuid4())
+
     except Exception as e:
         return None
+
     return f"{generated_uuid}_{additional_uuid}.{extension}"

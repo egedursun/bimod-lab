@@ -32,24 +32,50 @@ logger = logging.getLogger(__name__)
 
 
 class MySQLExecutor:
-    def __init__(self, connection: SQLDatabaseConnection):
+    def __init__(
+        self,
+        connection: SQLDatabaseConnection
+    ):
         before_execute_sql_query(connection)
         self.conn_params = {
-            'user': connection.username, 'password': connection.password, 'host': connection.host,
-            'database': connection.database_name, 'port': connection.port
+            'user': connection.username,
+            'password': connection.password,
+            'host': connection.host,
+            'database': connection.database_name,
+            'port': connection.port
         }
         self.connection_object = connection
 
-    def execute_read(self, query, parameters=None):
+    def execute_read(
+        self,
+        query,
+        parameters=None
+    ):
+
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
-        output = {"status": True, "error": ""}
+
+        output = {
+            "status": True,
+            "error": ""
+        }
+
         try:
             with mysql.connector.connect(**self.conn_params) as conn:
-                with conn.cursor(cursor_class=cursor_cext.CMySQLCursorDict, buffered=True) as cursor:
-                    cursor.execute(query, parameters)
+                with conn.cursor(
+                    cursor_class=cursor_cext.CMySQLCursorDict,
+                    buffered=True
+                ) as cursor:
+
+                    cursor.execute(
+                        query,
+                        parameters
+                    )
+
                     output = cursor.fetchall()
+
             logger.info(f"Query executed successfully.")
+
         except Exception as e:
             output["status"] = False
             output["error"] = str(e)
@@ -57,27 +83,53 @@ class MySQLExecutor:
 
         new_tx = LLMTransaction(
             organization=self.connection_object.assistant.organization,
-            model=self.connection_object.assistant.llm_model, responsible_user=None,
-            responsible_assistant=self.connection_object.assistant, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.SQLReadExecutor.COST, transaction_type=ChatRoles.SYSTEM,
-            transaction_source=LLMTransactionSourcesTypesNames.SQL_READ, is_tool_cost=True)
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.SQLReadExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.SQL_READ,
+            is_tool_cost=True
+        )
         new_tx.save()
+
         logger.info(f"Transaction saved successfully.")
         return output
 
-    def execute_write(self, query, parameters=None):
+    def execute_write(
+        self,
+        query,
+        parameters=None
+    ):
+
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
-        if not can_write_to_database(self.connection_object):
-            return {"status": False, "error": "No write permission within this database connection."}
 
-        output = {"status": True, "error": ""}
+        if not can_write_to_database(self.connection_object):
+
+            return {
+                "status": False,
+                "error": "No write permission within this database connection."
+            }
+
+        output = {
+            "status": True,
+            "error": ""
+        }
+
         try:
             with mysql.connector.connect(**self.conn_params) as conn:
+
                 with conn.cursor(buffered=True) as cursor:
-                    cursor.execute(query, parameters)
+                    cursor.execute(
+                        query,
+                        parameters
+                    )
                     conn.commit()
+
             logger.info(f"Query executed successfully.")
+
         except Exception as e:
             output["status"] = False
             output["error"] = str(e)
@@ -85,10 +137,16 @@ class MySQLExecutor:
 
         new_tx = LLMTransaction(
             organization=self.connection_object.assistant.organization,
-            model=self.connection_object.assistant.llm_model, responsible_user=None,
-            responsible_assistant=self.connection_object.assistant, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.SQLWriteExecutor.COST, transaction_type=ChatRoles.SYSTEM,
-            transaction_source=LLMTransactionSourcesTypesNames.SQL_WRITE, is_tool_cost=True)
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.SQLWriteExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.SQL_WRITE,
+            is_tool_cost=True
+        )
         new_tx.save()
+
         logger.info(f"Transaction saved successfully.")
         return output

@@ -17,8 +17,14 @@
 
 
 SQL_DBMS_PROVIDERS = {
-    "POSTGRESQL": {"code": "postgresql", "name": "PostgreSQL"},
-    "MYSQL": {"code": "mysql", "name": "MySQL"},
+    "POSTGRESQL": {
+        "code": "postgresql",
+        "name": "PostgreSQL"
+    },
+    "MYSQL": {
+        "code": "mysql",
+        "name": "MySQL"
+    },
 }
 
 
