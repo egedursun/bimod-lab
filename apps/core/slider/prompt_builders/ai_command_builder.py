@@ -31,26 +31,48 @@ from apps.core.slider.slider_executor_public import SliderExecutionManager_Publi
 logger = logging.getLogger(__name__)
 
 
-def build_ai_command_system_prompt(xc: SliderExecutionManager, user_query: str):
+def build_ai_command_system_prompt(
+    xc: SliderExecutionManager,
+    user_query: str
+):
+
     logger.info(f"Building AI command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
-    generic_instruction_prompt += build_slider_agent_nickname_prompt(xc.copilot.name)
+    generic_instruction_prompt += build_slider_agent_nickname_prompt(
+        xc.copilot.name
+    )
     generic_instruction_prompt += build_slider_internal_principles_prompt()
-    generic_instruction_prompt += build_slider_agent_personality_prompt(tone=xc.copilot.tone)
-    generic_instruction_prompt += build_slider_target_audience_prompt(audience=xc.copilot.audience)
-    generic_instruction_prompt += build_slider_user_tenant_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_slider_spatial_awareness_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_slider_technical_dictionary_prompt(glossary=xc.copilot.glossary)
+    generic_instruction_prompt += build_slider_agent_personality_prompt(
+        tone=xc.copilot.tone
+    )
+    generic_instruction_prompt += build_slider_target_audience_prompt(
+        audience=xc.copilot.audience
+    )
+    generic_instruction_prompt += build_slider_user_tenant_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_slider_spatial_awareness_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_slider_technical_dictionary_prompt(
+        glossary=xc.copilot.glossary
+    )
 
     folder_and_doc_info_prompt = build_slider_folder_and_document_data_prompt(
-        folder=xc.slider_document.document_folder, doc=xc.slider_document)
-    folder_and_doc_info_prompt += build_whole_text_supply_prompt(xc=xc)
+        folder=xc.slider_document.document_folder,
+        doc=xc.slider_document
+    )
+    folder_and_doc_info_prompt += build_whole_text_supply_prompt(
+        xc=xc
+    )
 
     slider_ops_instruction_prompt = build_slider_ops_instruction_prompt()
-    action_instructions_prompt = build_slider_action__ai_prompt(user_query=user_query)
+    action_instructions_prompt = build_slider_action__ai_prompt(
+        user_query=user_query
+    )
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt
@@ -59,24 +81,44 @@ def build_ai_command_system_prompt(xc: SliderExecutionManager, user_query: str):
     return combined_system_prompt
 
 
-def build_ai_command_system_prompt_public(xc: SliderExecutionManager_Public, user_query: str, content: str):
+def build_ai_command_system_prompt_public(
+    xc: SliderExecutionManager_Public,
+    user_query: str,
+    content: str
+):
     logger.info(f"Building AI command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
-    generic_instruction_prompt += build_slider_agent_nickname_prompt(xc.copilot.name)
+    generic_instruction_prompt += build_slider_agent_nickname_prompt(
+        xc.copilot.name
+    )
     generic_instruction_prompt += build_slider_internal_principles_prompt()
-    generic_instruction_prompt += build_slider_agent_personality_prompt(tone=xc.copilot.tone)
-    generic_instruction_prompt += build_slider_target_audience_prompt(audience=xc.copilot.audience)
-    generic_instruction_prompt += build_slider_user_tenant_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_slider_spatial_awareness_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_slider_technical_dictionary_prompt(glossary=xc.copilot.glossary)
+    generic_instruction_prompt += build_slider_agent_personality_prompt(
+        tone=xc.copilot.tone
+    )
+    generic_instruction_prompt += build_slider_target_audience_prompt(
+        audience=xc.copilot.audience
+    )
+    generic_instruction_prompt += build_slider_user_tenant_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_slider_spatial_awareness_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_slider_technical_dictionary_prompt(
+        glossary=xc.copilot.glossary
+    )
 
-    folder_and_doc_info_prompt = build_whole_text_supply_prompt_public(content=content)
+    folder_and_doc_info_prompt = build_whole_text_supply_prompt_public(
+        content=content
+    )
 
     slider_ops_instruction_prompt = build_slider_ops_instruction_prompt()
-    action_instructions_prompt = build_slider_action__ai_prompt(user_query=user_query)
+    action_instructions_prompt = build_slider_action__ai_prompt(
+        user_query=user_query
+    )
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt
