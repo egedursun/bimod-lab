@@ -32,9 +32,11 @@ logger = logging.getLogger(__name__)
 
 
 class VoidForgerAutoExecutionMemoryVectorData(models.Model):
-    voidforger_auto_execution_memory = models.ForeignKey('voidforger.VoidForgerToggleAutoExecutionLog',
-                                                         on_delete=models.CASCADE,
-                                                         related_name='voidforger_auto_execution_memory_vector_data')
+    voidforger_auto_execution_memory = models.ForeignKey(
+        'voidforger.VoidForgerToggleAutoExecutionLog',
+        on_delete=models.CASCADE,
+        related_name='voidforger_auto_execution_memory_vector_data'
+    )
 
     raw_data = models.JSONField(blank=True, null=True)
     raw_data_hash = models.CharField(max_length=255, blank=True, null=True)
@@ -52,9 +54,15 @@ class VoidForgerAutoExecutionMemoryVectorData(models.Model):
         verbose_name = "VoidForger Auto Execution Memory Vector Data"
         verbose_name_plural = "VoidForger Auto Execution Memory Vector Data"
         indexes = [
-            models.Index(fields=['voidforger_auto_execution_memory']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
+            models.Index(fields=[
+                'voidforger_auto_execution_memory'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'updated_at'
+            ]),
         ]
 
     def _get_index_path(self):
@@ -69,6 +77,7 @@ class VoidForgerAutoExecutionMemoryVectorData(models.Model):
             "metadata": self.voidforger_auto_execution_memory.metadata,
             "timestamp": self.voidforger_auto_execution_memory.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
         }
+
         self.raw_data = raw_data
 
         ##############################
@@ -84,6 +93,7 @@ class VoidForgerAutoExecutionMemoryVectorData(models.Model):
         if self.has_raw_data_changed() or self.vector_data is None or self.vector_data == []:
             print("Vector data has changed, generating new embedding...")
             self._generate_embedding(raw_data)
+
         else:
             print("Vector data has not changed, using existing embedding...")
             pass
@@ -94,24 +104,38 @@ class VoidForgerAutoExecutionMemoryVectorData(models.Model):
 
     def _generate_embedding(self, raw_data):
         from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+
         c = OpenAIGPTClientManager.get_naked_client(
-            llm_model=self.voidforger_auto_execution_memory.voidforger.llm_model)
+            llm_model=self.voidforger_auto_execution_memory.voidforger.llm_model
+        )
+
         raw_data_text = json.dumps(raw_data, indent=2)
         try:
-            response = c.embeddings.create(input=raw_data_text, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE)
+            response = c.embeddings.create(
+                input=raw_data_text,
+                model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE
+            )
+
             embedding_vector = response.data[0].embedding
             self.vector_data = embedding_vector
+
         except Exception as e:
             logger.error(f"Error in generating embedding: {e}")
             self.vector_data = []
 
     def _save_embedding(self):
         if self.vector_data:
-            x = np.array([self.vector_data], dtype=np.float32).reshape(1, OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS)
+            x = np.array(
+                [self.vector_data],
+                dtype=np.float32
+            ).reshape(1, OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS)
+
             xids = np.array([self.id], dtype=np.int64)
             index_path = self._get_index_path()
+
             if not os.path.exists(index_path):
                 index = faiss.IndexIDMap(faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
+
             else:
                 index = faiss.read_index(index_path)
                 if not isinstance(index, faiss.IndexIDMap):
@@ -124,7 +148,9 @@ class VoidForgerAutoExecutionMemoryVectorData(models.Model):
     def has_raw_data_changed(self):
         raw_data_str = json.dumps(self.raw_data, sort_keys=True)
         new_raw_data_hash = hashlib.sha256(raw_data_str.encode('utf-8')).hexdigest()
+
         if self.raw_data_hash == new_raw_data_hash:
             return False
+
         self.raw_data_hash = new_raw_data_hash
         return True

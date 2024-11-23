@@ -34,8 +34,10 @@ class VoidForgerView_ListActionMemoryLogs(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_VOIDFORGER_ACTION_MEMORY_LOGS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_VOIDFORGER_ACTION_MEMORY_LOGS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_VOIDFORGER_ACTION_MEMORY_LOGS
+        ):
             messages.error(self.request, "You do not have permission to list VoidForger Action Memory Logs.")
             return context
         ##############################
@@ -46,10 +48,13 @@ class VoidForgerView_ListActionMemoryLogs(LoginRequiredMixin, TemplateView):
         # Paginate logs
         paginator = Paginator(action_memory_logs, 10)
         page = self.request.GET.get('page', 1)
+
         try:
             logs = paginator.page(page)
+
         except PageNotAnInteger:
             logs = paginator.page(1)
+
         except EmptyPage:
             logs = paginator.page(paginator.num_pages)
 

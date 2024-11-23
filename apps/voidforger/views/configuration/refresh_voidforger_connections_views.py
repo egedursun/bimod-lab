@@ -34,8 +34,10 @@ class VoidForgerView_RefreshVoidForgerConnections(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - REFRESH_VOIDFORGER_CONNECTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.REFRESH_VOIDFORGER_CONNECTIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.REFRESH_VOIDFORGER_CONNECTIONS
+        ):
             messages.error(self.request, "You do not have permission to refresh VoidForger connections.")
             return redirect('voidforger:configuration')
         ##############################
@@ -45,6 +47,7 @@ class VoidForgerView_RefreshVoidForgerConnections(LoginRequiredMixin, View):
             voidforger = VoidForger.objects.get(id=voidforger_id)
             user_orgs = Organization.objects.filter(users=self.request.user)
             voidforger.organizations.set(user_orgs)
+
         except Exception as e:
             messages.error(self.request, "VoidForger not found.")
             return redirect('voidforger:configuration')

@@ -25,11 +25,22 @@ logger = logging.getLogger(__name__)
 
 
 class VoidForgerToggleAutoExecutionLog(models.Model):
-    voidforger = models.ForeignKey('voidforger.VoidForger', on_delete=models.CASCADE)
-    action_type = models.CharField(max_length=20, choices=VOIDFORGER_TOGGLE_AUTO_EXECUTION_ACTION_TYPES)
+    voidforger = models.ForeignKey(
+        'voidforger.VoidForger',
+        on_delete=models.CASCADE
+    )
+    action_type = models.CharField(
+        max_length=20,
+        choices=VOIDFORGER_TOGGLE_AUTO_EXECUTION_ACTION_TYPES
+    )
     metadata = models.JSONField(default=dict, blank=True, null=True)
 
-    responsible_user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True)
+    responsible_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -40,8 +51,12 @@ class VoidForgerToggleAutoExecutionLog(models.Model):
 
         # create the vector object on creation of the log object
         from apps.voidforger.models import VoidForgerAutoExecutionMemoryVectorData
+
         try:
-            _, _ = VoidForgerAutoExecutionMemoryVectorData.objects.get_or_create(voidforger_auto_execution_memory=self)
+            _, _ = VoidForgerAutoExecutionMemoryVectorData.objects.get_or_create(
+                voidforger_auto_execution_memory=self
+            )
+
         except Exception as e:
             logger.error(
                 f"Error creating vector data for auto execution memory log, continuing without vectorization: {e}")
@@ -52,7 +67,17 @@ class VoidForgerToggleAutoExecutionLog(models.Model):
         verbose_name = 'VoidForger Toggle Auto Execution Log'
         verbose_name_plural = 'VoidForger Toggle Auto Execution Logs'
         indexes = [
-            models.Index(fields=['voidforger', 'action_type']),
-            models.Index(fields=['voidforger', 'timestamp']),
-            models.Index(fields=['voidforger', 'action_type', 'timestamp']),
+            models.Index(fields=[
+                'voidforger',
+                'action_type'
+            ]),
+            models.Index(fields=[
+                'voidforger',
+                'timestamp'
+            ]),
+            models.Index(fields=[
+                'voidforger',
+                'action_type',
+                'timestamp'
+            ]),
         ]

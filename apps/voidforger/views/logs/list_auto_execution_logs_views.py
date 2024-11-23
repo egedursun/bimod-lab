@@ -34,8 +34,10 @@ class VoidForgerView_ListVoidForgerAutoExecutionLogs(LoginRequiredMixin, Templat
 
         ##############################
         # PERMISSION CHECK FOR - LIST_VOIDFORGER_AUTO_EXECUTION_MEMORY_LOGS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_VOIDFORGER_AUTO_EXECUTION_MEMORY_LOGS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_VOIDFORGER_AUTO_EXECUTION_MEMORY_LOGS
+        ):
             messages.error(self.request, "You do not have permission to list VoidForger Auto Execution Memory Logs.")
             return context
         ##############################
@@ -46,10 +48,13 @@ class VoidForgerView_ListVoidForgerAutoExecutionLogs(LoginRequiredMixin, Templat
         # Paginate logs
         paginator = Paginator(auto_execution_logs, 10)
         page = self.request.GET.get('page', 1)
+
         try:
             logs = paginator.page(page)
+
         except PageNotAnInteger:
             logs = paginator.page(1)
+
         except EmptyPage:
             logs = paginator.page(paginator.num_pages)
 

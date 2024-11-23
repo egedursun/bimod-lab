@@ -33,22 +33,30 @@ def remove_vector_from_index_on_voidforger_chat_message_delete(sender, instance,
         vector_data_instances = VoidForgerOldChatMessagesVectorData.objects.filter(
             voidforger_chat_message=instance
         ).all()
+
         if not vector_data_instances:
             print(f"No vector data found for MultimodalVoidForgerChatMessage with ID {instance.id}.")
             return
+
         index_path = vector_data_instances[0]._get_index_path()
+
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
-            xids = np.array([vector_data_instance.id for vector_data_instance in vector_data_instances])
+            xids = np.array(
+                [vector_data_instance.id for vector_data_instance in vector_data_instances]
+            )
+
             index.remove_ids(xids)
             faiss.write_index(index, index_path)
             logger.info(f"Removed vector data for MultimodalVoidForgerChatMessage with ID {instance.id} from index.")
             print(f"Removed vector data for MultimodalVoidForgerChatMessage with ID {instance.id} from index.")
+
         else:
             print(f"Index path {index_path} does not exist.")
 
         for vector_data_instance in vector_data_instances:
             vector_data_instance.delete()
+
     except VoidForgerOldChatMessagesVectorData.DoesNotExist:
         print(
             f"No VoidForgerOldChatMessagesVectorData found for MultimodalVoidForgerChatMessage with ID {instance.id}.")

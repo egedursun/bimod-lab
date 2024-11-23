@@ -30,18 +30,28 @@ logger = logging.getLogger(__name__)
 @receiver(pre_delete, sender=VoidForgerActionMemoryLog)
 def remove_vector_from_index_on_voidforger_action_memory_delete(sender, instance, **kwargs):
     try:
-        vector_data_instance = VoidForgerActionMemoryVectorData.objects.get(voidforger_action_memory=instance)
+        vector_data_instance = VoidForgerActionMemoryVectorData.objects.get(
+            voidforger_action_memory=instance
+        )
+
         index_path = vector_data_instance._get_index_path()
+
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
-            xids = np.array([vector_data_instance.id], dtype=np.int64)
+            xids = np.array(
+                [vector_data_instance.id],
+                dtype=np.int64
+            )
+
             index.remove_ids(xids)
             faiss.write_index(index, index_path)
             logger.info(f"Removed vector data for VoidForgerActionMemoryLog with ID {instance.id} from index.")
             print(f"Removed vector data for VoidForgerActionMemoryLog with ID {instance.id} from index.")
+
         else:
             print(f"Index path {index_path} does not exist.")
 
         vector_data_instance.delete()
+
     except VoidForgerActionMemoryVectorData.DoesNotExist:
         print(f"No VoidForgerActionMemoryVectorData found for VoidForgerActionMemoryLog with ID {instance.id}.")

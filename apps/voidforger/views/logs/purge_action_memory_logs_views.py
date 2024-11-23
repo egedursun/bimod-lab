@@ -33,8 +33,10 @@ class VoidForgerView_PurgeActionMemoryLogs(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - DELETE_VOIDFORGER_ACTION_MEMORY_LOGS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_VOIDFORGER_ACTION_MEMORY_LOGS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_VOIDFORGER_ACTION_MEMORY_LOGS
+        ):
             messages.error(self.request, "You do not have permission to delete VoidForger Action Memory Logs.")
             return redirect('voidforger:list_action_memory_logs')
         ##############################
@@ -43,8 +45,10 @@ class VoidForgerView_PurgeActionMemoryLogs(LoginRequiredMixin, View):
             voidforger_id = kwargs.get('voidforger_id')
             voidforger = VoidForger.objects.get(id=voidforger_id)
             action_memory_logs = voidforger.voidforgeractionmemorylog_set.all()
+
             for action_memory_log in action_memory_logs:
                 action_memory_log.delete()
+
         except Exception as e:
             messages.error(request, f"Error purging action memory logs: {e}")
             return redirect('voidforger:list_action_memory_logs')

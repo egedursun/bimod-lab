@@ -60,13 +60,16 @@ class VoidForgerView_Configuration(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_VOIDFORGER_CONFIGURATIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_VOIDFORGER_CONFIGURATIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_VOIDFORGER_CONFIGURATIONS
+        ):
             messages.error(self.request, "You do not have permission to update VoidForger configurations.")
             return redirect('voidforger:configuration')
         ##############################
 
         config: VoidForger = VoidForger.objects.filter(user=request.user).first()
+
         if config:
             try:
                 llm_model_id = request.POST.getlist('llm_model_id')
@@ -96,7 +99,9 @@ class VoidForgerView_Configuration(LoginRequiredMixin, TemplateView):
                 config.auto_run_max_lifetime_cycles = auto_run_max_lifetime_cycles
                 config.auto_run_trigger_interval_minutes = auto_run_trigger_interval_minutes
                 config.short_term_memory_max_messages = short_term_memory_max_messages
+
                 config.save()
+
             except Exception as e:
                 logger.error(f"Error while updating VoidForger configuration: {e}")
                 messages.error(request, "Error while updating VoidForger configuration.")

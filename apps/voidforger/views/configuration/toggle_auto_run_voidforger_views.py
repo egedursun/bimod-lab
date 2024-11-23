@@ -34,8 +34,10 @@ class VoidForgerView_AutoRunVoidForger(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - TOGGLE_ACTIVATE_AND_DEACTIVATE_VOIDFORGER
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.TOGGLE_ACTIVATE_AND_DEACTIVATE_VOIDFORGER):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.TOGGLE_ACTIVATE_AND_DEACTIVATE_VOIDFORGER
+        ):
             messages.error(self.request, "You do not have permission to toggle the activation status of VoidForger.")
             return redirect('voidforger:configuration')
         ##############################
@@ -43,21 +45,27 @@ class VoidForgerView_AutoRunVoidForger(LoginRequiredMixin, View):
         try:
             voidforger_id = kwargs.get('voidforger_id')
             voidforger = VoidForger.objects.get(id=voidforger_id)
+
             if voidforger.runtime_status == VoidForgerRuntimeStatusesNames.PAUSED:
                 voidforger.runtime_status = VoidForgerRuntimeStatusesNames.ACTIVE
+
             elif voidforger.runtime_status == VoidForgerRuntimeStatusesNames.ACTIVE:
                 voidforger.runtime_status = VoidForgerRuntimeStatusesNames.PAUSED
                 voidforger.last_auto_execution_started_at = None
                 voidforger.last_auto_execution_ended_at = None
+
                 # Reset the current cycle if the VoidForger is paused.
                 voidforger.auto_run_current_cycle = 0
+
             elif voidforger.runtime_status == VoidForgerRuntimeStatusesNames.WORKING:
                 messages.error(self.request,
                                "VoidForger is currently working on a task. Please wait for it to finish before toggling.")
                 return redirect('voidforger:configuration')
+
             else:
                 messages.error(self.request, "VoidForger status is invalid.")
                 return redirect('voidforger:configuration')
+
             voidforger.save()
             new_status = voidforger.runtime_status
 
@@ -66,17 +74,24 @@ class VoidForgerView_AutoRunVoidForger(LoginRequiredMixin, View):
                 metadata = {
                     "message": "VoidForger activation has been triggered by manual user interference. Activated VoidForger auto-execution pipeline."
                 }
+
             elif new_status == VoidForgerRuntimeStatusesNames.PAUSED:
                 action_type = VoidForgerToggleAutoExecutionActionTypesNames.PAUSED
                 metadata = {
                     "message": "VoidForger de-activation has been triggered by manual user interference. Paused VoidForger auto-execution pipeline."
                 }
+
             else:
                 messages.error(self.request, "VoidForger action type is invalid.")
                 return redirect('voidforger:configuration')
 
-            VoidForgerToggleAutoExecutionLog.objects.create(voidforger=voidforger, action_type=action_type, metadata=metadata,
-                                                            responsible_user=self.request.user)
+            VoidForgerToggleAutoExecutionLog.objects.create(
+                voidforger=voidforger,
+                action_type=action_type,
+                metadata=metadata,
+                responsible_user=self.request.user
+            )
+
         except Exception as e:
             messages.error(self.request, "VoidForger not found.")
             return redirect('voidforger:configuration')

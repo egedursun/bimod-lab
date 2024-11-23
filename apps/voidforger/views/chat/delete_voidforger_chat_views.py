@@ -41,22 +41,31 @@ class VoidForgerView_DeleteVoidForgerChat(LoginRequiredMixin, DeleteView):
         return context
 
     def get_queryset(self):
-        return MultimodalVoidForgerChat.objects.filter(user=self.request.user,
-                                                       chat_source=SourcesForMultimodalChatsNames.APP)
+        return MultimodalVoidForgerChat.objects.filter(
+            user=self.request.user,
+            chat_source=SourcesForMultimodalChatsNames.APP
+        )
 
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - REMOVE_VOIDFORGER_CHATS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.REMOVE_VOIDFORGER_CHATS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.REMOVE_VOIDFORGER_CHATS
+        ):
             messages.error(self.request, "You do not have permission to remove VoidForger Chats.")
             return redirect('multimodal_chat:main_workspace')
         ##############################
 
-        chat = get_object_or_404(MultimodalVoidForgerChat, id=self.kwargs['pk'], user=self.request.user)
+        chat = get_object_or_404(
+            MultimodalVoidForgerChat,
+            id=self.kwargs['pk'],
+            user=self.request.user
+        )
 
         try:
             chat.delete()
+
         except Exception as e:
             logger.error(f"VoidForger chat deletion failed. Error: {e}")
             messages.error(request, f'The VoidForger chat could not be deleted.')

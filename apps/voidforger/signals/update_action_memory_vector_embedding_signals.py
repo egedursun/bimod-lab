@@ -27,11 +27,16 @@ logger = logging.getLogger(__name__)
 @receiver(post_save, sender=VoidForgerActionMemoryLog)
 def update_voidforger_action_memory_vector_embedding_after_save(sender, instance, created, **kwargs):
     try:
-        item, success = VoidForgerActionMemoryVectorData.objects.get_or_create(voidforger_action_memory=instance)
+        item, success = VoidForgerActionMemoryVectorData.objects.get_or_create(
+            voidforger_action_memory=instance
+        )
+
         if success:
             logger.info("VoidForgerActionMemoryVectorData created for VoidForgerActionMemoryLog.")
+
         else:
             logger.info("VoidForgerActionMemoryVectorData already exists; updating.")
             item.save()
+
     except Exception as e:
         logger.error(f"Error in post-save embedding update: {e}")

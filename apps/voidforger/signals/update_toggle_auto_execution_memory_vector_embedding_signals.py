@@ -28,11 +28,15 @@ logger = logging.getLogger(__name__)
 def update_voidforger_toggle_auto_execution_memory_vector_embedding_after_save(sender, instance, created, **kwargs):
     try:
         item, success = VoidForgerAutoExecutionMemoryVectorData.objects.get_or_create(
-            voidforger_auto_execution_memory=instance)
+            voidforger_auto_execution_memory=instance
+        )
+
         if success:
             logger.info("VoidForgerAutoExecutionMemoryVectorData created for VoidForgerToggleAutoExecutionLog.")
+
         else:
             logger.info("VoidForgerAutoExecutionMemoryVectorData already exists; updating.")
             item.save()
+
     except Exception as e:
         logger.error(f"Error in post-save embedding update: {e}")

@@ -25,15 +25,39 @@ logger = logging.getLogger(__name__)
 
 
 class MultimodalVoidForgerChatMessage(models.Model):
-    multimodal_voidforger_chat = models.ForeignKey('voidforger.MultimodalVoidForgerChat', on_delete=models.CASCADE,
-                                                   related_name='voidforger_chat_messages')
-    sender_type = models.CharField(max_length=100, choices=CHAT_MESSAGE_ROLE_SENDER_TYPES)
+    multimodal_voidforger_chat = models.ForeignKey(
+        'voidforger.MultimodalVoidForgerChat',
+        on_delete=models.CASCADE,
+        related_name='voidforger_chat_messages'
+    )
+    sender_type = models.CharField(
+        max_length=100,
+        choices=CHAT_MESSAGE_ROLE_SENDER_TYPES
+    )
     message_text_content = models.TextField()
-    message_json_content = models.JSONField(default=dict, blank=True, null=True)  # Not used for now
-    message_image_contents = models.JSONField(default=list, blank=True, null=True)
-    message_file_contents = models.JSONField(default=list, blank=True, null=True)
-    message_audio = models.URLField(max_length=10000, blank=True, null=True)
-    sent_at = models.DateTimeField(auto_now_add=True)
+    message_json_content = models.JSONField(
+        default=dict,
+        blank=True,
+        null=True
+    )  # Not used for now
+    message_image_contents = models.JSONField(
+        default=list,
+        blank=True,
+        null=True
+    )
+    message_file_contents = models.JSONField(
+        default=list,
+        blank=True,
+        null=True
+    )
+    message_audio = models.URLField(
+        max_length=10000,
+        blank=True,
+        null=True
+    )
+    sent_at = models.DateTimeField(
+        auto_now_add=True
+    )
 
     def __str__(self):
         return f"{self.multimodal_voidforger_chat.chat_name} - {self.sender_type} - {self.sent_at}"
@@ -43,13 +67,32 @@ class MultimodalVoidForgerChatMessage(models.Model):
         verbose_name_plural = "Multimodal VoidForger Chat Messages"
         ordering = ["-sent_at"]
         indexes = [
-            models.Index(fields=['multimodal_voidforger_chat']),
-            models.Index(fields=['sender_type']),
-            models.Index(fields=['sent_at']),
-            models.Index(fields=['multimodal_voidforger_chat', 'sender_type']),
-            models.Index(fields=['multimodal_voidforger_chat', 'sent_at']),
-            models.Index(fields=['sender_type', 'sent_at']),
-            models.Index(fields=['multimodal_voidforger_chat', 'sender_type', 'sent_at']),
+            models.Index(fields=[
+                'multimodal_voidforger_chat'
+            ]),
+            models.Index(fields=[
+                'sender_type'
+            ]),
+            models.Index(fields=[
+                'sent_at'
+            ]),
+            models.Index(fields=[
+                'multimodal_voidforger_chat',
+                'sender_type'
+            ]),
+            models.Index(fields=[
+                'multimodal_voidforger_chat',
+                'sent_at'
+            ]),
+            models.Index(fields=[
+                'sender_type',
+                'sent_at'
+            ]),
+            models.Index(fields=[
+                'multimodal_voidforger_chat',
+                'sender_type',
+                'sent_at'
+            ]),
         ]
 
     def token_cost_surpasses_the_balance(self, total_billable_cost):
@@ -58,12 +101,19 @@ class MultimodalVoidForgerChatMessage(models.Model):
     def save(self, *args, **kwargs):
         from apps.voidforger.models import MultimodalVoidForgerChat
         super().save(*args, **kwargs)
-        MultimodalVoidForgerChat.objects.get(id=self.multimodal_voidforger_chat.id).voidforger_chat_messages.add(self)
+
+        MultimodalVoidForgerChat.objects.get(
+            id=self.multimodal_voidforger_chat.id
+        ).voidforger_chat_messages.add(self)
 
         # create the vector object on creation of the message object
         from apps.voidforger.models import VoidForgerOldChatMessagesVectorData
+
         try:
-            _, _ = VoidForgerOldChatMessagesVectorData.objects.get_or_create(voidforger_chat_message=self)
+            _, _ = VoidForgerOldChatMessagesVectorData.objects.get_or_create(
+                voidforger_chat_message=self
+            )
+
         except Exception as e:
             logger.error(f"Error creating vector data for chat message, continuing without vectorization: {e}")
             pass

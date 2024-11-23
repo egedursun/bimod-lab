@@ -27,25 +27,66 @@ app_name = 'voidforger'
 
 urlpatterns = [
     # Configuration-related
-    path("configuration/", VoidForgerView_Configuration.as_view(
-        template_name="voidforger/configuration/voidforger_configuration.html"), name="configuration"),
-    path("connections/refresh/<int:voidforger_id>/", VoidForgerView_RefreshVoidForgerConnections.as_view(),
-         name="refresh_connections"),
-    path("auto/run/<int:voidforger_id>/", VoidForgerView_AutoRunVoidForger.as_view(), name="auto_run"),
-    path("manual/run/<int:voidforger_id>/", VoidForgerView_ManualTriggerVoidForgerRun.as_view(), name="manual_run"),
+    path(
+        "configuration/",
+        VoidForgerView_Configuration.as_view(
+            template_name="voidforger/configuration/voidforger_configuration.html"
+        ),
+        name="configuration"
+    ),
+    path(
+        "connections/refresh/<int:voidforger_id>/",
+        VoidForgerView_RefreshVoidForgerConnections.as_view(
+        ),
+        name="refresh_connections"
+    ),
+    path(
+        "auto/run/<int:voidforger_id>/",
+        VoidForgerView_AutoRunVoidForger.as_view(
+        ),
+        name="auto_run"
+    ),
+    path(
+        "manual/run/<int:voidforger_id>/",
+        VoidForgerView_ManualTriggerVoidForgerRun.as_view(
+        ),
+        name="manual_run"
+    ),
 
     # Logs-related
-    path("auto_execution/logs/", VoidForgerView_ListVoidForgerAutoExecutionLogs.as_view(
-        template_name="voidforger/logs/list_auto_execution_logs.html"), name="list_auto_execution_logs"),
-    path("action_memory/logs/", VoidForgerView_ListActionMemoryLogs.as_view(
-        template_name="voidforger/logs/list_action_memory_logs.html"), name="list_action_memory_logs"),
-    path("auto_execution/logs/purge/<int:voidforger_id>/", VoidForgerView_PurgeAutoExecutionLogs.as_view(),
-         name="purge_auto_execution_logs"),
-    path("action_memory/logs/purge/<int:voidforger_id>/", VoidForgerView_PurgeActionMemoryLogs.as_view(),
-         name="purge_action_memory_logs"),
+    path(
+        "auto_execution/logs/",
+        VoidForgerView_ListVoidForgerAutoExecutionLogs.as_view(
+            template_name="voidforger/logs/list_auto_execution_logs.html"
+        ),
+        name="list_auto_execution_logs"
+    ),
+    path(
+        "action_memory/logs/",
+        VoidForgerView_ListActionMemoryLogs.as_view(
+            template_name="voidforger/logs/list_action_memory_logs.html"
+        ),
+        name="list_action_memory_logs"
+    ),
+    path(
+        "auto_execution/logs/purge/<int:voidforger_id>/",
+        VoidForgerView_PurgeAutoExecutionLogs.as_view(
+        ),
+        name="purge_auto_execution_logs"
+    ),
+    path(
+        "action_memory/logs/purge/<int:voidforger_id>/",
+        VoidForgerView_PurgeActionMemoryLogs.as_view(
+        ),
+        name="purge_action_memory_logs"
+    ),
 
     # Chat-related
-    path("chat/delete/<int:pk>/", VoidForgerView_DeleteVoidForgerChat.as_view(
-        template_name="voidforger/chats/voidforger_confirm_delete_chat.html"
-    ), name="delete_chat"),
+    path(
+        "chat/delete/<int:pk>/",
+        VoidForgerView_DeleteVoidForgerChat.as_view(
+            template_name="voidforger/chats/voidforger_confirm_delete_chat.html"
+        ),
+        name="delete_chat"
+    ),
 ]

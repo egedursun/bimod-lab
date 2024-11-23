@@ -27,14 +27,33 @@ logger = logging.getLogger(__name__)
 
 class VoidForger(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE, null=True, blank=True)
+
+    llm_model = models.ForeignKey(
+        'llm_core.LLMCore',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
     organizations = models.ManyToManyField('organization.Organization', blank=True)
     additional_instructions = models.TextField(null=True, blank=True)
-    tone = models.CharField(max_length=100, default="Professional and Assertive")
-    response_language = models.CharField(max_length=100, choices=AGENT_SPEECH_LANGUAGES, default="auto")
 
-    runtime_status = models.CharField(max_length=100, choices=VOIDFORGER_RUNTIME_STATUSES,
-                                      default=VoidForgerRuntimeStatusesNames.PAUSED)
+    tone = models.CharField(
+        max_length=100,
+        default="Professional and Assertive"
+    )
+
+    response_language = models.CharField(
+        max_length=100,
+        choices=AGENT_SPEECH_LANGUAGES,
+        default="auto"
+    )
+
+    runtime_status = models.CharField(
+        max_length=100,
+        choices=VOIDFORGER_RUNTIME_STATUSES,
+        default=VoidForgerRuntimeStatusesNames.PAUSED
+    )
+
     maximum_actions_per_cycle = models.IntegerField(default=5)
     auto_run_current_cycle = models.IntegerField(default=0)
     auto_run_max_lifetime_cycles = models.IntegerField(default=1_000)
@@ -51,24 +70,36 @@ class VoidForger(models.Model):
         return f"{self.user.username}'s VoidForger"
 
     def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
     ):
         from apps.organization.models import Organization
         from apps.llm_core.models import LLMCore
 
         organizations = Organization.objects.filter(users__in=[self.user])
+
         if not self.pk:
             available_llms = LLMCore.objects.filter(organization__in=organizations)
+
             if len(available_llms) > 0:
                 self.llm_model = available_llms[0]
             else:
                 logger.error(f"No LLM model available for VoidForger, defaulting to no LLM mode")
                 self.llm_model = None
 
-        super(VoidForger, self).save(force_insert, force_update, using, update_fields)
+        super(VoidForger, self).save(
+            force_insert,
+            force_update,
+            using,
+            update_fields
+        )
 
         try:
             self.organizations.set(organizations)
+
         except Exception as e:
             logger.error(f"Error while setting organizations for VoidForger, defaulting to no organization mode: {e}")
             self.organizations.set([])
@@ -77,10 +108,34 @@ class VoidForger(models.Model):
         verbose_name = "VoidForger"
         verbose_name_plural = "VoidForgers"
         indexes = [
-            models.Index(fields=['user']),
-            models.Index(fields=['user', 'runtime_status']),
-            models.Index(fields=['user', 'runtime_status', 'created_at']),
-            models.Index(fields=['user', 'runtime_status', 'updated_at']),
-            models.Index(fields=['user', 'runtime_status', 'created_at', 'updated_at']),
-            models.Index(fields=['user', 'runtime_status', 'created_at', 'updated_at', 'llm_model']),
+            models.Index(fields=[
+                'user'
+            ]),
+            models.Index(fields=[
+                'user',
+                'runtime_status'
+            ]),
+            models.Index(fields=[
+                'user',
+                'runtime_status',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'user',
+                'runtime_status',
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'user',
+                'runtime_status',
+                'created_at',
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'user',
+                'runtime_status',
+                'created_at',
+                'updated_at',
+                'llm_model'
+            ]),
         ]

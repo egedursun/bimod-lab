@@ -31,19 +31,28 @@ logger = logging.getLogger(__name__)
 def remove_vector_from_index_on_auto_execution_memory_delete(sender, instance, **kwargs):
     try:
         vector_data_instance = VoidForgerAutoExecutionMemoryVectorData.objects.get(
-            voidforger_auto_execution_memory=instance)
+            voidforger_auto_execution_memory=instance
+        )
+
         index_path = vector_data_instance._get_index_path()
+
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
-            xids = np.array([vector_data_instance.id], dtype=np.int64)
+            xids = np.array(
+                [vector_data_instance.id],
+                dtype=np.int64
+            )
+
             index.remove_ids(xids)
             faiss.write_index(index, index_path)
             logger.info(f"Removed vector data for VoidForgerToggleAutoExecutionLog with ID {instance.id} from index.")
             print(f"Removed vector data for VoidForgerToggleAutoExecutionLog with ID {instance.id} from index.")
+
         else:
             print(f"Index path {index_path} does not exist.")
 
         vector_data_instance.delete()
+
     except VoidForgerAutoExecutionMemoryVectorData.DoesNotExist:
         print(
             f"No VoidForgerAutoExecutionMemoryVectorData found for VoidForgerToggleAutoExecutionLog with ID {instance.id}.")

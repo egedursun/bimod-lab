@@ -34,19 +34,27 @@ class VoidForgerView_ManualTriggerVoidForgerRun(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - MANUALLY_TRIGGER_VOIDFORGER
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.MANUALLY_TRIGGER_VOIDFORGER):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.MANUALLY_TRIGGER_VOIDFORGER
+        ):
             messages.error(self.request, "You do not have permission to manually trigger VoidForger runs.")
             return redirect('voidforger:configuration')
         ##############################
 
         try:
             voidforger_id = kwargs.get('voidforger_id')
-            xc = VoidForgerExecutionManager(user=self.request.user, voidforger_id=voidforger_id)
+            xc = VoidForgerExecutionManager(
+                user=self.request.user,
+                voidforger_id=voidforger_id
+            )
+
             error = xc.run_cycle(trigger=VoidForgerModesNames.MANUAL)
+
             if error:
                 messages.error(self.request, "VoidForger execution has failed: " + str(error))
                 return redirect('voidforger:configuration')
+
         except Exception as e:
             messages.error(self.request, "VoidForger execution has failed: " + str(e))
             return redirect('voidforger:configuration')

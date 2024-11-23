@@ -27,11 +27,16 @@ logger = logging.getLogger(__name__)
 @receiver(post_save, sender=MultimodalVoidForgerChatMessage)
 def update_voidforger_old_chat_messages_vector_embedding_after_save(sender, instance, created, **kwargs):
     try:
-        item, success = VoidForgerOldChatMessagesVectorData.objects.get_or_create(voidforger_chat_message=instance)
+        item, success = VoidForgerOldChatMessagesVectorData.objects.get_or_create(
+            voidforger_chat_message=instance
+        )
+
         if success:
             logger.info("VoidForgerOldChatMessagesVectorData created for MultimodalVoidForgerChatMessage.")
+
         else:
             logger.info("VoidForgerOldChatMessagesVectorData already exists; updating.")
             item.save()
+
     except Exception as e:
         logger.error(f"Error in post-save embedding update: {e}")

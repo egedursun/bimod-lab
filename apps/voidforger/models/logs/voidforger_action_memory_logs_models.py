@@ -24,8 +24,14 @@ logger = logging.getLogger(__name__)
 
 
 class VoidForgerActionMemoryLog(models.Model):
-    voidforger = models.ForeignKey('voidforger.VoidForger', on_delete=models.CASCADE)
-    action_type = models.CharField(max_length=255, choices=VOIDFORGER_ACTION_TYPES)
+    voidforger = models.ForeignKey(
+        'voidforger.VoidForger',
+        on_delete=models.CASCADE
+    )
+    action_type = models.CharField(
+        max_length=255,
+        choices=VOIDFORGER_ACTION_TYPES
+    )
     action_order_raw_text = models.TextField(null=True, blank=True)
 
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -38,9 +44,19 @@ class VoidForgerActionMemoryLog(models.Model):
         verbose_name = 'VoidForger Action Memory Log'
         verbose_name_plural = 'VoidForger Action Memory Logs'
         indexes = [
-            models.Index(fields=['voidforger', 'action_type']),
-            models.Index(fields=['voidforger', 'timestamp']),
-            models.Index(fields=['voidforger', 'action_type', 'timestamp']),
+            models.Index(fields=[
+                'voidforger',
+                'action_type'
+            ]),
+            models.Index(fields=[
+                'voidforger',
+                'timestamp'
+            ]),
+            models.Index(fields=[
+                'voidforger',
+                'action_type',
+                'timestamp'
+            ]),
         ]
 
     def save(self, *args, **kwargs):
@@ -48,8 +64,12 @@ class VoidForgerActionMemoryLog(models.Model):
 
         # create the vector object on creation of the log object
         from apps.voidforger.models import VoidForgerActionMemoryVectorData
+
         try:
-            _, _ = VoidForgerActionMemoryVectorData.objects.get_or_create(voidforger_action_memory=self)
+            _, _ = VoidForgerActionMemoryVectorData.objects.get_or_create(
+                voidforger_action_memory=self
+            )
+
         except Exception as e:
             logger.error(f"Error creating vector data for action memory log, continuing without vectorization: {e}")
             pass

@@ -33,8 +33,10 @@ class VoidForgerView_PurgeAutoExecutionLogs(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - DELETE_VOIDFORGER_AUTO_EXECUTION_MEMORY_LOGS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_VOIDFORGER_AUTO_EXECUTION_MEMORY_LOGS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_VOIDFORGER_AUTO_EXECUTION_MEMORY_LOGS
+        ):
             messages.error(self.request, "You do not have permission to delete VoidForger Auto Execution Memory Logs.")
             return redirect('voidforger:list_auto_execution_logs')
         ##############################
@@ -43,8 +45,10 @@ class VoidForgerView_PurgeAutoExecutionLogs(LoginRequiredMixin, View):
             voidforger_id = kwargs.get('voidforger_id')
             voidforger = VoidForger.objects.get(id=voidforger_id)
             auto_execution_memory_logs = voidforger.voidforgertoggleautoexecutionlog_set.all()
+
             for auto_execution_memory_log in auto_execution_memory_logs:
                 auto_execution_memory_log.delete()
+
         except Exception as e:
             messages.error(request, f"Error purging auto execution memory logs: {e}")
             return redirect('voidforger:list_auto_execution_logs')
