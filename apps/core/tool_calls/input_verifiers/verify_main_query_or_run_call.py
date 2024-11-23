@@ -17,14 +17,17 @@
 
 
 def verify_main_call_or_query_content(content: dict):
+
     if not content:
         return """
                     The JSON is empty. Please make sure you are passing the correct JSON object to the
                     ToolDecoder class.
                 """
+
     if not content.get("tool"):
         return """
                     The 'tool' field is missing from the tool_usage_json. Please make sure you are defining the tool
                     name in the tool_usage_json.
                 """
+
     return None

@@ -19,14 +19,31 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def execute_voidforger_old_message_search_query(user, voidforger_id, voidforger_chat_id, query):
+def execute_voidforger_old_message_search_query(
+    user,
+    voidforger_id,
+    voidforger_chat_id,
+    query
+):
+
     from apps.core.voidforger.voidforger_executor import VoidForgerExecutionManager
+
     try:
-        xc = VoidForgerExecutionManager(user=user, voidforger_id=voidforger_id)
-        search_output = xc.search_old_chat_messages(query=query, voidforger_chat_id=voidforger_chat_id)
+        xc = VoidForgerExecutionManager(
+            user=user,
+            voidforger_id=voidforger_id
+        )
+
+        search_output = xc.search_old_chat_messages(
+            query=query,
+            voidforger_chat_id=voidforger_chat_id
+        )
+
         logger.info(f"VoidForger old message search query output: {search_output}")
+
     except Exception as e:
         logger.error(f"Error occurred while executing the function: {e}")
         error = f"Error occurred while executing the function: {str(e)}"
         return error
+
     return search_output

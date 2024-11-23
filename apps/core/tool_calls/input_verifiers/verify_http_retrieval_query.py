@@ -17,22 +17,27 @@
 
 
 def verify_http_retrieval_query_content(content: dict):
+
     if "parameters" not in content:
         return """
             The 'parameters' field is missing from the tool_usage_json. This field is mandatory for using the URL File
             Downloader tool. Please make sure you are defining the 'parameters' field in the tool_usage_json.
         """
+
     ps = content.get("parameters")
+
     if "media_storage_connection_id" not in ps:
         return """
             The 'media_storage_connection_id' field is missing from the 'parameters' field in the tool_usage_json. This
             field is mandatory for using the URL File Downloader tool. Please make sure you are defining the
             'media_storage_connection_id' field in the parameters field of the tool_usage_json.
         """
+
     if "url" not in ps:
         return """
             The 'download_url' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory
             for using the URL File Downloader tool. Please make sure you are defining the 'download_url' field in the
             parameters field of the tool_usage_json.
         """
+
     return None

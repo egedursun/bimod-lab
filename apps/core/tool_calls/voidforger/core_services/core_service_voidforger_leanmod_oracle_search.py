@@ -19,14 +19,29 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def execute_voidforger_leanmod_oracle_search_query(user, llm_model, query):
+def execute_voidforger_leanmod_oracle_search_query(
+    user,
+    llm_model,
+    query
+):
+
     from apps.core.semantor.semantor_executor import SemantorVectorSearchExecutionManager
+
     try:
-        xc = SemantorVectorSearchExecutionManager(user=user, llm_model=llm_model)
-        search_output = xc.search_leanmod_assistants(query=query)
+        xc = SemantorVectorSearchExecutionManager(
+            user=user,
+            llm_model=llm_model
+        )
+
+        search_output = xc.search_leanmod_assistants(
+            query=query
+        )
+
         logger.info(f"VoidForger LeanMod Oracle assistant search query output: {search_output}")
+
     except Exception as e:
         logger.error(f"Error occurred while executing the function: {e}")
         error = f"Error occurred while executing the function: {str(e)}"
         return error
+
     return search_output

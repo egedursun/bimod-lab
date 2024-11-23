@@ -20,11 +20,13 @@ from apps.core.audio_processing.utils import RunAudioProcessingActionTypesNames
 
 
 def verify_audio_processing_query(content: dict):
+
     if "parameters" not in content:
         return """
             The 'parameters' field is missing from the tool_usage_json. This field is mandatory for using the Audio
             Processing Execution tool. Please make sure you are defining the 'parameters' field in the tool_usage_json.
         """
+
     ps = content.get("parameters")
 
     if "action" not in ps:
@@ -43,23 +45,28 @@ def verify_audio_processing_query(content: dict):
         """
 
     if ps.get("action") == RunAudioProcessingActionTypesNames.TTS:
+
         if "text_content" not in ps:
             return """
                 The 'text_content' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory
                 for using the Audio Processing Execution tool with the action 'tts'. Please make sure you are defining the 'text_content' field in
                 the parameters field of the tool_usage_json.
             """
+
         if "voice_selection" not in ps:
             return """
                 The 'voice_selection' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory
                 for using the Audio Processing Execution tool with the action 'tts'. Please make sure you are
                 defining the 'voice_selection' field in the parameters field of the tool_usage_json.
             """
+
     elif ps.get("action") == RunAudioProcessingActionTypesNames.STT:
+
         if "audio_file_path" not in ps:
             return """
                 The 'audio_file_path' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory
                 for using the Audio Processing Execution tool with the action 'stt'. Please make sure you are defining the 'audio_file_path' field in
                 the parameters field of the tool_usage_json.
             """
+
     return None

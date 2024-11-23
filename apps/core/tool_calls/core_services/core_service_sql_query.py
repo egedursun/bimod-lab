@@ -23,22 +23,40 @@ from apps.datasource_sql.utils import SQLOperationTypesNames
 logger = logging.getLogger(__name__)
 
 
-def run_sql_query(c_id: int, sql_query_type: str, query_content: str):
+def run_sql_query(
+    c_id: int,
+    sql_query_type: str,
+    query_content: str
+):
+
     sql_response = None
-    sql_connection = SQLDatabaseConnection.objects.get(id=c_id)
+    sql_connection = SQLDatabaseConnection.objects.get(
+        id=c_id
+    )
+
     try:
         client = InternalSQLClient().get(
             connection=sql_connection
         )
+
         if sql_query_type == SQLOperationTypesNames.WRITE:
+
             logger.info(f"Executing SQL write query: {query_content}")
-            sql_response = client.execute_write(query=query_content)
+            sql_response = client.execute_write(
+                query=query_content
+            )
+
         elif sql_query_type == SQLOperationTypesNames.READ:
+
             logger.info(f"Executing SQL read query: {query_content}")
-            sql_response = client.execute_read(query=query_content)
+            sql_response = client.execute_read(
+                query=query_content
+            )
+
     except Exception as e:
         logger.error(f"Error occurred while executing the SQL query: {e}")
         error_msg = f"Error occurred while executing the SQL query: {str(e)}"
         return error_msg
+
     logger.info(f"SQL query execution output: {sql_response}")
     return sql_response

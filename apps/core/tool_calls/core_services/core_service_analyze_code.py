@@ -24,16 +24,38 @@ from apps.multimodal_chat.models import MultimodalChat
 logger = logging.getLogger(__name__)
 
 
-def run_analyze_code(agent_id, chat_id, f_uris, query_content_str):
-    agent = Assistant.objects.get(id=agent_id)
-    chat = MultimodalChat.objects.get(id=chat_id)
-    xc = CodeAnalystExecutionManager(assistant=agent, chat=chat)
+def run_analyze_code(
+    agent_id,
+    chat_id,
+    f_uris,
+    query_content_str
+):
+
+    agent = Assistant.objects.get(
+        id=agent_id
+    )
+
+    chat = MultimodalChat.objects.get(
+        id=chat_id
+    )
+
+    xc = CodeAnalystExecutionManager(
+        assistant=agent,
+        chat=chat
+    )
+
     try:
-        output = xc.analyze_code_script(full_file_paths=f_uris, query_string=query_content_str)
+
+        output = xc.analyze_code_script(
+            full_file_paths=f_uris,
+            query_string=query_content_str
+        )
         logger.info(f"Code analysis output: {output}")
+
     except Exception as e:
         logger.error(f"Error occurred while analyzing code: {e}")
         return None, None, None
+
     f_uris = output.get("file_uris")
     img_uris = output.get("image_uris")
     return output, f_uris, img_uris

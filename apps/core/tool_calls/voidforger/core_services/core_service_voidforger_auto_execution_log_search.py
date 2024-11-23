@@ -19,14 +19,29 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def execute_voidforger_auto_execution_log_search_query(user, voidforger_id, query):
+def execute_voidforger_auto_execution_log_search_query(
+    user,
+    voidforger_id,
+    query
+):
+
     from apps.core.voidforger.voidforger_executor import VoidForgerExecutionManager
+
     try:
-        xc = VoidForgerExecutionManager(user=user, voidforger_id=voidforger_id)
-        search_output = xc.search_auto_execution_logs(query=query)
+        xc = VoidForgerExecutionManager(
+            user=user,
+            voidforger_id=voidforger_id
+        )
+
+        search_output = xc.search_auto_execution_logs(
+            query=query
+        )
+
         logger.info(f"VoidForger auto-execution logs search query output: {search_output}")
+
     except Exception as e:
         logger.error(f"Error occurred while executing the function: {e}")
         error = f"Error occurred while executing the function: {str(e)}"
         return error
+
     return search_output

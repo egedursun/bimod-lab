@@ -23,14 +23,29 @@ from apps.datasource_file_systems.models import DataSourceFileSystem
 logger = logging.getLogger(__name__)
 
 
-def run_execute_ssh_system_commands(c_id: int, bash_commands: list[str]):
-    conn = DataSourceFileSystem.objects.get(id=c_id)
+def run_execute_ssh_system_commands(
+    c_id: int,
+    bash_commands: list[str]
+):
+
+    conn = DataSourceFileSystem.objects.get(
+        id=c_id
+    )
+
     try:
-        cli = FileSystemsExecutor(connection=conn)
-        output = cli.execute_file_system_command_set(commands=bash_commands)
+        cli = FileSystemsExecutor(
+            connection=conn
+        )
+
+        output = cli.execute_file_system_command_set(
+            commands=bash_commands
+        )
+
         logger.info(f"File system command execution output: {output}")
+
     except Exception as e:
         logger.error(f"Error occurred while executing the file system commands: {e}")
         error_msg = f"Error occurred while executing the file system commands: {str(e)}"
         return error_msg
+
     return output

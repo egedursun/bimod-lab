@@ -26,18 +26,33 @@ from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 logger = logging.getLogger(__name__)
 
 
-def run_query_trigger_orchestration(user: User, c_id: int, user_query: str):
+def run_query_trigger_orchestration(
+    user: User,
+    c_id: int,
+    user_query: str
+):
+
     try:
+
         attached_images = []
         attached_files = []
-        connection = OrchestrationReactantAssistantConnection.objects.get(id=c_id)
+
+        connection = OrchestrationReactantAssistantConnection.objects.get(
+            id=c_id
+        )
+
         query = OrchestrationQuery.objects.create(
-            maestro=connection.orchestration_maestro, query_text=user_query, created_by_user=user,
+            maestro=connection.orchestration_maestro,
+            query_text=user_query,
+            created_by_user=user,
             last_updated_by_user=user
         )
+
         query_text = query.query_text
+
         query_log = OrchestrationQueryLog.objects.create(
-            orchestration_query=query, log_type=OrchestrationQueryLogTypesNames.USER,
+            orchestration_query=query,
+            log_type=OrchestrationQueryLogTypesNames.USER,
             log_text_content=query_text + f"""
                                 -----
                                 **IMAGE URLS:**
@@ -50,13 +65,24 @@ def run_query_trigger_orchestration(user: User, c_id: int, user_query: str):
                                 {attached_files}
                                 '''
                                 -----
-                            """, log_file_contents=attached_files, log_image_contents=attached_images)
+                            """,
+            log_file_contents=attached_files,
+            log_image_contents=attached_images
+        )
+
         query.logs.add(query_log)
         query.save()
-        xc = OrchestrationExecutor(maestro=connection.orchestration_maestro, query_chat=query)
+
+        xc = OrchestrationExecutor(
+            maestro=connection.orchestration_maestro,
+            query_chat=query
+        )
+
         output = xc.execute_for_query()
+
     except Exception as e:
         logger.error(f"Error occurred while running the Orchestration triggering execution tool: {e}")
         error = f"There has been an unexpected error on running the Orchestration triggering execution tool: {e}"
         return error
+
     return output

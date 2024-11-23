@@ -20,25 +20,31 @@ from apps.core.video_generation.utils import VideoGenerationActionTypes
 
 
 def verify_generate_video_content(content: dict):
+
     if "parameters" not in content:
         return """
             The 'parameters' field is missing from the tool_usage_json. This field is mandatory for using the Video
             Generation tool. Please make sure you are defining the 'parameters' field in the tool_usage_json.
         """
+
     ps = content.get("parameters")
+
     if "connection_id" not in ps:
         return """
             The 'connection_id' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
             using the Video Generation tool. Please make sure you are defining the 'connection_id' field in the parameters field
             of the tool_usage_json.
         """
+
     if "action_type" not in ps:
         return """
             The 'action_type' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
             using the Video Generation tool. Please make sure you are defining the 'action_type' field in the parameters field
             of the tool_usage_json.
         """
+
     video_generator_action_type = ps.get("action_type")
+
     if video_generator_action_type not in VideoGenerationActionTypes.as_list():
         return """
             The 'action_type' field in the 'parameters' field of the tool_usage_json is invalid. Please make sure you are defining
@@ -53,7 +59,9 @@ def verify_generate_video_content(content: dict):
         """
 
     if video_generator_action_type == VideoGenerationActionTypes.TEXT_TO_VIDEO_WITH_LOOP_AND_ASPECT_RATIO:
+
         if "aspect_ratio" not in ps:
+
             return """
                 The 'aspect_ratio' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
                 using the Video Generation tool with the 'TEXT_TO_VIDEO_WITH_LOOP_AND_ASPECT_RATIO' action type. Please make sure
@@ -61,7 +69,9 @@ def verify_generate_video_content(content: dict):
             """
 
     if video_generator_action_type == VideoGenerationActionTypes.TEXT_TO_VIDEO_WITH_ASPECT_RATIO:
+
         if "aspect_ratio" not in ps:
+
             return """
                 The 'aspect_ratio' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
                 using the Video Generation tool with the 'TEXT_TO_VIDEO_WITH_ASPECT_RATIO' action type. Please make sure
@@ -75,7 +85,9 @@ def verify_generate_video_content(content: dict):
         pass
 
     if video_generator_action_type == VideoGenerationActionTypes.TEXT_AND_IMAGE_TO_VIDEO_WITH_LOOP_AND_WITH_START_FRAME:
+
         if "start_frame_url" not in ps:
+
             return """
                 The 'start_frame_url' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
                 using the Video Generation tool with the 'TEXT_AND_IMAGE_TO_VIDEO_WITH_LOOP_AND_WITH_START_FRAME' action type. Please make
@@ -83,7 +95,9 @@ def verify_generate_video_content(content: dict):
             """
 
     if video_generator_action_type == VideoGenerationActionTypes.TEXT_AND_IMAGE_TO_VIDEO_WITH_START_FRAME:
+
         if "start_frame_url" not in ps:
+
             return """
                 The 'start_frame_url' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
                 using the Video Generation tool with the 'TEXT_AND_IMAGE_TO_VIDEO_WITH_START_FRAME' action type. Please make sure
@@ -91,7 +105,9 @@ def verify_generate_video_content(content: dict):
             """
 
     if video_generator_action_type == VideoGenerationActionTypes.TEXT_AND_IMAGE_TO_VIDEO_WITH_END_FRAME:
+
         if "end_frame_url" not in ps:
+
             return """
                 The 'end_frame_url' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
                 using the Video Generation tool with the 'TEXT_AND_IMAGE_TO_VIDEO_WITH_END_FRAME' action type. Please make sure
@@ -99,7 +115,9 @@ def verify_generate_video_content(content: dict):
             """
 
     if video_generator_action_type == VideoGenerationActionTypes.TEXT_AND_IMAGE_TO_VIDEO_WITH_START_AND_END_FRAME:
+
         if "start_frame_url" not in ps:
+
             return """
                 The 'start_frame_url' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
                 using the Video Generation tool with the 'TEXT_AND_IMAGE_TO_VIDEO_WITH_START_AND_END_FRAME' action type. Please make
@@ -107,9 +125,11 @@ def verify_generate_video_content(content: dict):
             """
 
         if "end_frame_url" not in ps:
+
             return """
                 The 'end_frame_url' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
                 using the Video Generation tool with the 'TEXT_AND_IMAGE_TO_VIDEO_WITH_START_AND_END_FRAME' action type. Please make
                 sure you are defining the 'end_frame_url' field in the parameters field of the tool_usage_json.
             """
+
     return None

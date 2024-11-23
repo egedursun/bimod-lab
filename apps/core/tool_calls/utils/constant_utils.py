@@ -87,4 +87,8 @@ class VoidForgerModesNames:
 
     @staticmethod
     def as_list():
-        return [VoidForgerModesNames.AUTOMATED, VoidForgerModesNames.MANUAL, VoidForgerModesNames.CHAT]
+        return [
+            VoidForgerModesNames.AUTOMATED,
+            VoidForgerModesNames.MANUAL,
+            VoidForgerModesNames.CHAT
+        ]

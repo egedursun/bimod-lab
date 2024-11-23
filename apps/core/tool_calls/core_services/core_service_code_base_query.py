@@ -23,14 +23,29 @@ from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 logger = logging.getLogger(__name__)
 
 
-def run_query_code_base(c_id: int, query_content_str: str, semantic_alpha: float):
+def run_query_code_base(
+    c_id: int,
+    query_content_str: str,
+    semantic_alpha: float
+):
+
     conn = CodeRepositoryStorageConnection.objects.get(id=c_id)
+
     try:
-        cli = CodeBaseDecoder().get(connection=conn)
-        output = cli.search_hybrid(query=query_content_str, alpha=semantic_alpha)
+        cli = CodeBaseDecoder().get(
+            connection=conn
+        )
+
+        output = cli.search_hybrid(
+            query=query_content_str,
+            alpha=semantic_alpha
+        )
+
         logger.info(f"Code base query output: {output}")
+
     except Exception as e:
         logger.error(f"Error occurred while running the codebase query: {e}")
         error = f"There has been an unexpected error on running the codebase query: {e}"
         return error
+
     return output

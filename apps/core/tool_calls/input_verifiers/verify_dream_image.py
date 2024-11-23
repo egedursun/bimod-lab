@@ -17,11 +17,13 @@
 
 
 def verify_dream_image_content(content: dict):
+
     if "parameters" not in content:
         return """
             The 'parameters' field is missing from the tool_usage_json. This field is mandatory for using the Image
             Variation tool. Please make sure you are defining the 'parameters' field in the tool_usage_json.
         """
+
     parameters = content.get("parameters")
 
     if "image_uri" not in parameters:
@@ -37,4 +39,5 @@ def verify_dream_image_content(content: dict):
             for using the Image Variation tool. Please make sure you are defining the 'image_size' field in the parameters
             field of the tool_usage_json.
         """
+
     return None

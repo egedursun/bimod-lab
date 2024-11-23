@@ -19,24 +19,39 @@ import logging
 from apps.core.flexible_modalities.custom_api_executor import CustomAPIExecutor
 from apps.mm_apis.models import CustomAPIReference
 
-
 logger = logging.getLogger(__name__)
 
 
-def run_execute_custom_api(ref_id, api_endpoint_str: str, header_path_vals=None, header_query_vals=None,
-                           header_body_vals=None):
-    ref = CustomAPIReference.objects.filter(id=ref_id).first()
-    xc = CustomAPIExecutor(api=ref.custom_api,
-                           context_organization=ref.assistant.organization,
-                           context_assistant=ref.assistant)
+def run_execute_custom_api(
+    ref_id,
+    api_endpoint_str: str,
+    header_path_vals=None,
+    header_query_vals=None,
+    header_body_vals=None
+):
+    ref = CustomAPIReference.objects.filter(
+        id=ref_id
+    ).first()
+
+    xc = CustomAPIExecutor(
+        api=ref.custom_api,
+        context_organization=ref.assistant.organization,
+        context_assistant=ref.assistant
+    )
+
     try:
-        output = xc.execute_custom_api(endpoint_name=api_endpoint_str,
-                                       path_values=header_path_vals,
-                                       query_values=header_query_vals,
-                                       body_values=header_body_vals)
+
+        output = xc.execute_custom_api(
+            endpoint_name=api_endpoint_str,
+            path_values=header_path_vals,
+            query_values=header_query_vals,
+            body_values=header_body_vals
+        )
         logger.info(f"Custom API execution output: {output}")
+
     except Exception as e:
         logger.error(f"Error occurred while executing the API: {e}")
         error_msg = f"Error occurred while executing the API: {str(e)}"
         return error_msg
+
     return output

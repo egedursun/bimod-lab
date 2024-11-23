@@ -22,16 +22,32 @@ from apps.metakanban.models import MetaKanbanAssistantConnection
 logger = logging.getLogger(__name__)
 
 
-def run_query_execute_metakanban(c_id: int, query: str):
+def run_query_execute_metakanban(
+    c_id: int,
+    query: str
+):
+
     try:
-        connection = MetaKanbanAssistantConnection.objects.get(id=c_id)
-        xc = MetaKanbanExecutionManager(board_id=connection.metakanban_board.id)
-        success, output = xc.consult_ai(user_query=query)
+
+        connection = MetaKanbanAssistantConnection.objects.get(
+            id=c_id
+        )
+
+        xc = MetaKanbanExecutionManager(
+            board_id=connection.metakanban_board.id
+        )
+
+        success, output = xc.consult_ai(
+            user_query=query
+        )
+
         if success is False:
             error = f"There has been an unexpected error on running the MetaKanban board manager AI query: {output}"
             return error
+
     except Exception as e:
         logger.error(f"Error occurred while running the MetaKanban board manager AI query: {e}")
         error = f"There has been an unexpected error on running the MetaKanban board manager AI query: {e}"
         return error
+
     return output

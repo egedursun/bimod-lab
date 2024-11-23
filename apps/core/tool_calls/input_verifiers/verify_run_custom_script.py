@@ -22,11 +22,14 @@ def verify_run_custom_script_content(content: dict):
             The 'parameters' field is missing from the tool_usage_json. This field is mandatory for using the
             Custom Script Content Retriever tool. Please make sure you are defining the 'parameters' field in the tool_usage_json.
         """
+
     ps = content.get("parameters")
+
     if "custom_script_reference_id" not in ps:
         return """
             The 'custom_script_reference_id' field is missing from the 'parameters' field in the tool_usage_json. This field is
             mandatory for using the Custom Script Content Retriever tool. Please make sure you are defining the 'custom_script_reference_id'
             field in the parameters field of the tool_usage_json.
         """
+
     return None

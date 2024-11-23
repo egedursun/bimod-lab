@@ -19,19 +19,27 @@ import logging
 from apps.core.flexible_modalities.custom_script_executor import CustomScriptsContentRetriever
 from apps.mm_scripts.models import CustomScriptReference
 
-
 logger = logging.getLogger(__name__)
 
 
 def run_execute_custom_script(ref_id):
-    ref = CustomScriptReference.objects.filter(id=ref_id).first()
+    ref = CustomScriptReference.objects.filter(
+        id=ref_id
+    ).first()
+
     try:
-        xc = CustomScriptsContentRetriever(script=ref.custom_script, context_organization=ref.assistant.organization,
-                                           context_assistant=ref.assistant)
+        xc = CustomScriptsContentRetriever(
+            script=ref.custom_script,
+            context_organization=ref.assistant.organization,
+            context_assistant=ref.assistant
+        )
+
         output = xc.retrieve_custom_script_content()
         logger.info(f"Custom script execution output: {output}")
+
     except Exception as e:
         logger.error(f"Error occurred while retrieving the script content: {e}")
         error_msg = f"Error occurred while retrieving the script content: {str(e)}"
         return error_msg
+
     return output

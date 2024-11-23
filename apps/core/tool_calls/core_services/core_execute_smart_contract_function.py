@@ -20,17 +20,36 @@ from apps.assistants.models import Assistant
 from apps.core.smart_contracts.smart_contracts_executor import SmartContractsExecutionManager
 from apps.smart_contracts.models import BlockchainSmartContract
 
-
 logger = logging.getLogger(__name__)
 
 
-def execute_smart_contract_function_call(assistant_id:int, smart_contract_id: int, function_name: str, function_kwargs: dict):
-    agent: Assistant = Assistant.objects.get(id=assistant_id)
-    smart_contract:BlockchainSmartContract = BlockchainSmartContract.objects.get(id=smart_contract_id)
-    xc = SmartContractsExecutionManager(smart_contract_object=smart_contract, llm_model=agent.llm_model)
+def execute_smart_contract_function_call(
+    assistant_id: int,
+    smart_contract_id: int,
+    function_name: str,
+    function_kwargs: dict
+):
+    agent: Assistant = Assistant.objects.get(
+        id=assistant_id
+    )
+
+    smart_contract: BlockchainSmartContract = BlockchainSmartContract.objects.get(
+        id=smart_contract_id
+    )
+
+    xc = SmartContractsExecutionManager(
+        smart_contract_object=smart_contract,
+        llm_model=agent.llm_model
+    )
+
     try:
-        output = xc.call_smart_contract_function(function_name=function_name, function_kwargs=function_kwargs)
+        output = xc.call_smart_contract_function(
+            function_name=function_name,
+            function_kwargs=function_kwargs
+        )
+
         logger.info(f"Smart contract function call output: {output}")
+
     except Exception as e:
         error = f"Error occurred while executing smart contract function call: {e}"
         logger.error(f"Error occurred while executing smart contract function call: {e}")

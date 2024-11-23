@@ -23,14 +23,32 @@ from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnectio
 logger = logging.getLogger(__name__)
 
 
-def run_query_vector_store(c_id: int, vector_store_query: str, semantic_alpha: float):
-    conn = DocumentKnowledgeBaseConnection.objects.get(id=c_id)
+def run_query_vector_store(
+    c_id: int,
+    vector_store_query: str,
+    semantic_alpha: float
+):
+
+    conn = DocumentKnowledgeBaseConnection.objects.get(
+        id=c_id
+    )
+
     try:
-        client = KnowledgeBaseSystemDecoder().get(connection=conn)
-        output = client.search_hybrid(query=vector_store_query, alpha=semantic_alpha)
+
+        client = KnowledgeBaseSystemDecoder().get(
+            connection=conn
+        )
+
+        output = client.search_hybrid(
+            query=vector_store_query,
+            alpha=semantic_alpha
+        )
+
         logger.info(f"Knowledge base query output: {output}")
+
     except Exception as e:
         error_msg = f"Error occurred while executing the knowledge base query: {str(e)}"
         logger.error(error_msg)
         return error_msg
+
     return output

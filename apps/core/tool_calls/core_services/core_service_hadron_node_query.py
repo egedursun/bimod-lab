@@ -22,16 +22,33 @@ from apps.hadron_prime.models import HadronNodeAssistantConnection
 logger = logging.getLogger(__name__)
 
 
-def run_query_execute_hadron_node(c_id: int, query: str):
+def run_query_execute_hadron_node(
+    c_id: int,
+    query: str
+):
+
     try:
-        connection = HadronNodeAssistantConnection.objects.get(id=c_id)
-        xc = HadronPrimeExecutor(node=connection.hadron_prime_node, execution_log_object=None)
-        output, success, error = xc.generate_node_speech(user_query_text=query)
+
+        connection = HadronNodeAssistantConnection.objects.get(
+            id=c_id
+        )
+
+        xc = HadronPrimeExecutor(
+            node=connection.hadron_prime_node,
+            execution_log_object=None
+        )
+
+        output, success, error = xc.generate_node_speech(
+            user_query_text=query
+        )
+
         if error:
             logger.error(f"Error occurred while running the Hadron Node Query execution tool: {error}")
             return error
+
     except Exception as e:
         logger.error(f"Error occurred while running the Hadron Node Query execution tool: {e}")
         error = f"There has been an unexpected error on running the Hadron Node Query execution tool: {e}"
         return error
+
     return output
