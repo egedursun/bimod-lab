@@ -1,5 +1,3 @@
-
-
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
@@ -31,49 +29,84 @@ from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 logger = logging.getLogger(__name__)
 
 
-def handle_repo_command_public(xc, command: str, content: str):
+def handle_repo_command_public(
+    xc,
+    command: str,
+    content: str
+):
     from apps.core.sheetos.prompt_builders import build_repo_command_system_prompt_public
     from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
     xc: SheetosExecutionManager_Public
 
     try:
         tx = LLMTransaction.objects.create(
-            organization=xc.copilot.organization, model=xc.copilot_llm,
-            responsible_user=xc.document_connection.owner_user, responsible_assistant=xc.copilot,
-            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=command,
-            llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-            transaction_type=ChatRoles.USER, transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
+            organization=xc.copilot.organization,
+            model=xc.copilot_llm,
+            responsible_user=xc.document_connection.owner_user,
+            responsible_assistant=xc.copilot,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=command,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.USER,
+            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
         )
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
+
     except Exception as e:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for user command: {command}. Error: {e}")
         pass
 
     output, error = None, None
-    system_prompt = build_repo_command_system_prompt_public(xc=xc, user_query=command, content=content)
+    system_prompt = build_repo_command_system_prompt_public(
+        xc=xc,
+        user_query=command,
+        content=content
+    )
+
     client = xc.naked_c
 
     try:
         tx = LLMTransaction.objects.create(
-            organization=xc.copilot.organization, model=xc.copilot_llm,
-            responsible_user=xc.document_connection.owner_user, responsible_assistant=xc.copilot,
-            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=system_prompt,
-            llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-            transaction_type=ChatRoles.SYSTEM, transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
+            organization=xc.copilot.organization,
+            model=xc.copilot_llm,
+            responsible_user=xc.document_connection.owner_user,
+            responsible_assistant=xc.copilot,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=system_prompt,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
         )
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
+
     except Exception as e:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for system prompt. Error: {e}")
         pass
 
     try:
-        structured_system_prompt = {"content": system_prompt, "role": "system"}
+        structured_system_prompt = {
+            "content": system_prompt,
+            "role": "system"
+        }
+
         llm_response = client.chat.completions.create(
-            model=xc.copilot_llm.model_name, messages=[structured_system_prompt],
+            model=xc.copilot_llm.model_name,
+            messages=[structured_system_prompt],
             temperature=float(xc.copilot_llm.temperature),
             frequency_penalty=float(xc.copilot_llm.frequency_penalty),
-            presence_penalty=float(xc.copilot_llm.presence_penalty), max_tokens=int(xc.copilot_llm.maximum_tokens),
-            top_p=float(xc.copilot_llm.top_p))
+            presence_penalty=float(xc.copilot_llm.presence_penalty),
+            max_tokens=int(xc.copilot_llm.maximum_tokens),
+            top_p=float(xc.copilot_llm.top_p)
+        )
+
         choices = llm_response.choices
         first_choice = choices[0]
         choice_message = first_choice.message
@@ -82,16 +115,26 @@ def handle_repo_command_public(xc, command: str, content: str):
 
         try:
             tx = LLMTransaction.objects.create(
-                organization=xc.copilot.organization, model=xc.copilot_llm,
-                responsible_user=xc.document_connection.owner_user, responsible_assistant=xc.copilot,
-                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=choice_message_content,
-                llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-                transaction_type=ChatRoles.ASSISTANT, transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
+                organization=xc.copilot.organization,
+                model=xc.copilot_llm,
+                responsible_user=xc.document_connection.owner_user,
+                responsible_assistant=xc.copilot,
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                transaction_context_content=choice_message_content,
+                llm_cost=0,
+                internal_service_cost=0,
+                tax_cost=0,
+                total_cost=0,
+                total_billable_cost=0,
+                transaction_type=ChatRoles.ASSISTANT,
+                transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
             )
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
+
         except Exception as e:
             logger.error(f"[handle_ai_command] Error creating LLMTransaction for AI response. Error: {e}")
             pass
+
     except Exception as e:
         error = f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}"
         logger.error(error)
@@ -100,12 +143,17 @@ def handle_repo_command_public(xc, command: str, content: str):
     # TOOL USAGE IDENTIFICATION
     tool_counter = 0
     context_messages = [structured_system_prompt]
-    while (len(find_tool_call_from_json(choice_message_content)) > 0 and
-           (tool_counter < SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS)):
+
+    while (
+        len(find_tool_call_from_json(choice_message_content)) > 0 and
+        tool_counter < SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
+    ):
         tool_counter += 1
         tool_requests_dicts = find_tool_call_from_json(choice_message_content)
+
         if len(tool_requests_dicts) > 0:
             for tool_req_dict in tool_requests_dicts:
+
                 defined_tool_descriptor = tool_req_dict.get("tool", "")
                 output_tool_call = f"""
                         Tool Response: {defined_tool_descriptor}
@@ -116,19 +164,31 @@ def handle_repo_command_public(xc, command: str, content: str):
                 if error:
                     logger.error(error)
                     return error, None, None, None
-                output_tool_call = _handle_tool_code_base_query(tool_usage_dict=tool_req_dict,
-                                                                output_tool_call=output_tool_call)
+                output_tool_call = _handle_tool_code_base_query(
+                    tool_usage_dict=tool_req_dict,
+                    output_tool_call=output_tool_call
+                )
+
                 output_tool_call += """
                         '''
                     """
-                context_messages.append({"content": output_tool_call, "role": "system"})
+
+                context_messages.append({
+                    "content": output_tool_call,
+                    "role": "system"
+                })
+
         try:
             llm_response = client.chat.completions.create(
-                model=xc.copilot_llm.model_name, messages=context_messages,
+                model=xc.copilot_llm.model_name,
+                messages=context_messages,
                 temperature=float(xc.copilot_llm.temperature),
                 frequency_penalty=float(xc.copilot_llm.frequency_penalty),
-                presence_penalty=float(xc.copilot_llm.presence_penalty), max_tokens=int(xc.copilot_llm.maximum_tokens),
-                top_p=float(xc.copilot_llm.top_p))
+                presence_penalty=float(xc.copilot_llm.presence_penalty),
+                max_tokens=int(xc.copilot_llm.maximum_tokens),
+                top_p=float(xc.copilot_llm.top_p)
+            )
+
             choices = llm_response.choices
             first_choice = choices[0]
             choice_message = first_choice.message
@@ -137,15 +197,25 @@ def handle_repo_command_public(xc, command: str, content: str):
 
             try:
                 tx = LLMTransaction.objects.create(
-                    organization=xc.copilot.organization, model=xc.copilot_llm,
-                    responsible_user=xc.document_connection.owner_user, responsible_assistant=xc.copilot,
-                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=choice_message_content,
-                    llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-                    transaction_type=ChatRoles.ASSISTANT, transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
+                    organization=xc.copilot.organization,
+                    model=xc.copilot_llm,
+                    responsible_user=xc.document_connection.owner_user,
+                    responsible_assistant=xc.copilot,
+                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                    transaction_context_content=choice_message_content,
+                    llm_cost=0,
+                    internal_service_cost=0,
+                    tax_cost=0,
+                    total_cost=0,
+                    total_billable_cost=0,
+                    transaction_type=ChatRoles.ASSISTANT,
+                    transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
                 )
+
             except Exception as e:
                 logger.error(f"[handle_ai_command] Error creating LLMTransaction for AI response. Error: {e}")
                 pass
+
         except Exception as e:
             logger.error(f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}")
             error = f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}"
@@ -159,14 +229,19 @@ def handle_repo_command_public(xc, command: str, content: str):
 
     try:
         tx = LLMTransaction(
-            organization=xc.copilot.organization, model=xc.copilot_llm,
-            responsible_user=xc.document_connection.owner_user, responsible_assistant=xc.copilot,
-            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, llm_cost=InternalServiceCosts.Sheetos.COST,
+            organization=xc.copilot.organization,
+            model=xc.copilot_llm,
+            responsible_user=xc.document_connection.owner_user,
+            responsible_assistant=xc.copilot,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.Sheetos.COST,
             transaction_type=ChatRoles.SYSTEM,
-            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS, is_tool_cost=True
+            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS,
+            is_tool_cost=True
         )
         tx.save()
         logger.info(f"[handle_ai_command] Created LLMTransaction for Sheetos.")
+
     except Exception as e:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for Sheetos. Error: {e}")
         pass
@@ -180,8 +255,15 @@ def _handle_tool_code_base_query(tool_usage_dict, output_tool_call):
     c_id = tool_usage_dict.get("parameters").get("code_base_storage_connection_id")
     query = tool_usage_dict.get("parameters").get("query")
     alpha = tool_usage_dict.get("parameters").get("alpha")
-    output = run_query_code_base(c_id=c_id, query_content_str=query, semantic_alpha=alpha)
+
+    output = run_query_code_base(
+        c_id=c_id,
+        query_content_str=query,
+        semantic_alpha=alpha
+    )
+
     output_str = json.dumps(output, sort_keys=True, default=str)
+
     output_tool_call += output_str
     logger.info(f"[handle_ai_command] Tool Response: {output_tool_call}")
     return output_tool_call

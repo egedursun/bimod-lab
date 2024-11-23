@@ -36,20 +36,38 @@ def build_auto_command_system_prompt(xc: SheetosExecutionManager):
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
-    generic_instruction_prompt += build_sheetos_agent_nickname_prompt(xc.copilot.name)
+    generic_instruction_prompt += build_sheetos_agent_nickname_prompt(
+        xc.copilot.name
+    )
     generic_instruction_prompt += build_sheetos_internal_principles_prompt()
-    generic_instruction_prompt += build_sheetos_agent_personality_prompt(tone=xc.copilot.tone)
-    generic_instruction_prompt += build_sheetos_target_audience_prompt(audience=xc.copilot.audience)
-    generic_instruction_prompt += build_sheetos_user_tenant_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_sheetos_spatial_awareness_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_sheetos_technical_dictionary_prompt(glossary=xc.copilot.glossary)
+    generic_instruction_prompt += build_sheetos_agent_personality_prompt(
+        tone=xc.copilot.tone
+    )
+    generic_instruction_prompt += build_sheetos_target_audience_prompt(
+        audience=xc.copilot.audience
+    )
+    generic_instruction_prompt += build_sheetos_user_tenant_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_sheetos_spatial_awareness_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_sheetos_technical_dictionary_prompt(
+        glossary=xc.copilot.glossary
+    )
 
     folder_and_doc_info_prompt = build_sheetos_folder_and_document_data_prompt(
-        folder=xc.sheetos_document.document_folder, doc=xc.sheetos_document)
-    folder_and_doc_info_prompt += build_whole_text_supply_prompt(xc=xc)
+        folder=xc.sheetos_document.document_folder,
+        doc=xc.sheetos_document
+    )
+    folder_and_doc_info_prompt += build_whole_text_supply_prompt(
+        xc=xc
+    )
 
     sheetos_ops_instruction_prompt = build_sheetos_ops_instruction_prompt()
-    action_instructions_prompt = build_sheetos_action__auto_prompt(xc=xc)
+    action_instructions_prompt = build_sheetos_action__auto_prompt(
+        xc=xc
+    )
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt
@@ -59,24 +77,43 @@ def build_auto_command_system_prompt(xc: SheetosExecutionManager):
     return combined_system_prompt
 
 
-def build_auto_command_system_prompt_public(xc: SheetosExecutionManager_Public, content: str):
+def build_auto_command_system_prompt_public(
+    xc: SheetosExecutionManager_Public,
+    content: str
+):
     logger.info(f"Building AUTO command system prompt.")
 
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
-    generic_instruction_prompt += build_sheetos_agent_nickname_prompt(xc.copilot.name)
+    generic_instruction_prompt += build_sheetos_agent_nickname_prompt(
+        xc.copilot.name
+    )
     generic_instruction_prompt += build_sheetos_internal_principles_prompt()
-    generic_instruction_prompt += build_sheetos_agent_personality_prompt(tone=xc.copilot.tone)
-    generic_instruction_prompt += build_sheetos_target_audience_prompt(audience=xc.copilot.audience)
-    generic_instruction_prompt += build_sheetos_user_tenant_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_sheetos_spatial_awareness_prompt(user=xc.copilot.created_by_user)
-    generic_instruction_prompt += build_sheetos_technical_dictionary_prompt(glossary=xc.copilot.glossary)
+    generic_instruction_prompt += build_sheetos_agent_personality_prompt(
+        tone=xc.copilot.tone
+    )
+    generic_instruction_prompt += build_sheetos_target_audience_prompt(
+        audience=xc.copilot.audience
+    )
+    generic_instruction_prompt += build_sheetos_user_tenant_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_sheetos_spatial_awareness_prompt(
+        user=xc.copilot.created_by_user
+    )
+    generic_instruction_prompt += build_sheetos_technical_dictionary_prompt(
+        glossary=xc.copilot.glossary
+    )
 
-    folder_and_doc_info_prompt = build_whole_text_supply_prompt_public(content=content)
+    folder_and_doc_info_prompt = build_whole_text_supply_prompt_public(
+        content=content
+    )
 
     sheetos_ops_instruction_prompt = build_sheetos_ops_instruction_prompt()
-    action_instructions_prompt = build_sheetos_action__auto_prompt_public(content=content)
+    action_instructions_prompt = build_sheetos_action__auto_prompt_public(
+        content=content
+    )
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt

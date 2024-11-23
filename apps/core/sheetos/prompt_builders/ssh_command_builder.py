@@ -46,7 +46,9 @@ def build_ssh_command_system_prompt(xc: SheetosExecutionManager, user_query: str
     generic_instruction_prompt += build_sheetos_technical_dictionary_prompt(glossary=xc.copilot.glossary)
 
     folder_and_doc_info_prompt = build_sheetos_folder_and_document_data_prompt(
-        folder=xc.sheetos_document.document_folder, doc=xc.sheetos_document)
+        folder=xc.sheetos_document.document_folder,
+        doc=xc.sheetos_document
+    )
     folder_and_doc_info_prompt += build_whole_text_supply_prompt(xc=xc)
 
     sheetos_ops_instruction_prompt = build_sheetos_ops_instruction_prompt()

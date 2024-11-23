@@ -33,123 +33,183 @@ class SheetosExecutionManager:
         self.sheetos_document = sheetos_document
         self.copilot = sheetos_document.copilot_assistant
         self.copilot_llm = sheetos_document.copilot_assistant.llm_model
-        self.naked_c = OpenAIGPTClientManager.get_naked_client(llm_model=self.copilot_llm)
+        self.naked_c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.copilot_llm
+        )
 
     #####
 
     def execute_ai_command(self, command: str):
         output, error = None, None
-        response = {'output': output, 'error': output}
+        response = {
+            'output': output,
+            'error': output
+        }
+
         try:
             output, error = handle_ai_command(xc=self, command=command)
             logger.info(f"[SheetosExecutionManager.execute_ai_command] AI command executed successfully: {command}")
+
         except Exception as e:
             logger.error(f"[SheetosExecutionManager.execute_ai_command] Error executing AI command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_ai_command] Error executing AI command: {command}. Error: {e}"
+
         response['output'] = output
         response['error'] = error
         return response
 
     def execute_auto_command(self):
         output, error = None, None
-        response = {'output': output, 'error': output}
+        response = {
+            'output': output,
+            'error': output
+        }
+
         try:
             output, error = handle_auto_command(xc=self)
             logger.info(f"[SheetosExecutionManager.execute_auto_command] AUTO command executed successfully.")
+
         except Exception as e:
             logger.error(f"[SheetosExecutionManager.execute_auto_command] Error executing AUTO command. Error: {e}")
             error = f"[SheetosExecutionManager.execute_auto_command] Error executing AUTO command. Error: {e}"
+
         response['output'] = output
         response['error'] = error
         return response
 
     def execute_nosql_command(self, command: str):
         output, error = None, None
-        response = {'output': output, 'error': output}
+        response = {
+            'output': output,
+            'error': output
+        }
+
         try:
             output, error = handle_nosql_command(xc=self, command=command)
             logger.info(f"[SheetosExecutionManager.execute_nosql_command] NOSQL command executed successfully: {command}")
+
         except Exception as e:
             logger.error(f"[SheetosExecutionManager.execute_nosql_command] Error executing NOSQL command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_nosql_command] Error executing NOSQL command: {command}. Error: {e}"
+
         response['output'] = output
         response['error'] = error
         return response
 
     def execute_select_command(self, selected_data: str, command: str):
         output, error = None, None
-        response = {'output': output, 'error': output}
+        response = {
+            'output': output,
+            'error': output
+        }
+
         try:
-            output, error = handle_select_command(xc=self, selected_data=selected_data, command=command)
+            output, error = handle_select_command(
+                xc=self,
+                selected_data=selected_data,
+                command=command
+            )
             logger.info(f"[SheetosExecutionManager.execute_select_command] SELECT command executed successfully: {command}")
+
         except Exception as e:
             logger.error(f"[SheetosExecutionManager.execute_select_command] Error executing SELECT command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_select_command] Error executing SELECT command: {command}. Error: {e}"
+
         response['output'] = output
         response['error'] = error
         return response
 
     def execute_sql_command(self, command: str):
         output, error = None, None
-        response = {'output': output, 'error': output}
+        response = {
+            'output': output,
+            'error': output
+        }
+
         try:
             output, error = handle_sql_command(xc=self, command=command)
             logger.info(f"[SheetosExecutionManager.execute_sql_command] SQL command executed successfully: {command}")
+
         except Exception as e:
             logger.error(f"[SheetosExecutionManager.execute_sql_command] Error executing SQL command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_sql_command] Error executing SQL command: {command}. Error: {e}"
+
         response['output'] = output
         response['error'] = error
         return response
 
     def execute_ssh_command(self, command: str):
         output, error = None, None
-        response = {'output': output, 'error': output}
+        response = {
+            'output': output,
+            'error': output
+        }
+
         try:
             output, error = handle_ssh_command(xc=self, command=command)
             logger.info(f"[SheetosExecutionManager.execute_ssh_command] SSH command executed successfully: {command}")
+
         except Exception as e:
             logger.error(f"[SheetosExecutionManager.execute_ssh_command] Error executing SSH command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_ssh_command] Error executing SSH command: {command}. Error: {e}"
+
         response['output'] = output
         response['error'] = error
         return response
 
     def execute_vect_command(self, command: str):
         output, error = None, None
-        response = {'output': output, 'error': output}
+        response = {
+            'output': output,
+            'error': output
+        }
+
         try:
             output, error = handle_vect_command(xc=self, command=command)
             logger.info(f"[SheetosExecutionManager.execute_vect_command] VECT command executed successfully: {command}")
+
         except Exception as e:
             logger.error(f"[SheetosExecutionManager.execute_vect_command] Error executing VECT command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_vect_command] Error executing VECT command: {command}. Error: {e}"
+
         response['output'] = output
         response['error'] = error
         return response
 
     def execute_web_command(self, command: str):
         output, error = None, None
-        response = {'output': output, 'error': output}
+        response = {
+            'output': output,
+            'error': output
+        }
+
         try:
             output, error = handle_web_command(xc=self, command=command)
             logger.info(f"[SheetosExecutionManager.execute_web_command] WEB command executed successfully: {command}")
+
         except Exception as e:
             logger.error(f"[SheetosExecutionManager.execute_web_command] Error executing WEB command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_web_command] Error executing WEB command: {command}. Error: {e}"
+
         response['output'] = output
         response['error'] = error
         return response
 
     def execute_repo_command(self, command: str):
         output, error = None, None
-        response = {'output': output, 'error': output}
+        response = {
+            'output': output,
+            'error': output
+        }
+
         try:
             output, error = handle_repo_command(xc=self, command=command)
             logger.info(f"[SheetosExecutionManager.execute_repo_command] REPO command executed successfully: {command}")
+
         except Exception as e:
             logger.error(f"[SheetosExecutionManager.execute_repo_command] Error executing REPO command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_repo_command] Error executing REPO command: {command}. Error: {e}"
+
         response['output'] = output
         response['error'] = error
         return response

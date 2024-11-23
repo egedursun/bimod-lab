@@ -36,30 +36,48 @@ def handle_auto_command(xc) -> str:
 
     try:
         tx = LLMTransaction.objects.create(
-            organization=xc.sheetos_document.organization, model=xc.copilot_llm,
-            responsible_user=xc.sheetos_document.created_by_user, responsible_assistant=xc.copilot,
-            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=system_prompt,
-            llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-            transaction_type=ChatRoles.SYSTEM, transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
+            organization=xc.sheetos_document.organization,
+            model=xc.copilot_llm,
+            responsible_user=xc.sheetos_document.created_by_user,
+            responsible_assistant=xc.copilot,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=system_prompt,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
         )
         logger.info(f"[handle_auto_command] Created LLMTransaction for system prompt.")
+
     except Exception as e:
         logger.error(f"[handle_auto_command] Error creating LLMTransaction for system prompt. Error: {e}")
         pass
 
     try:
-        structured_system_prompt = {"content": system_prompt, "role": "system"}
+        structured_system_prompt = {
+            "content": system_prompt,
+            "role": "system"
+        }
+
         llm_response = client.chat.completions.create(
-            model=xc.copilot_llm.model_name, messages=[structured_system_prompt],
+            model=xc.copilot_llm.model_name,
+            messages=[structured_system_prompt],
             temperature=float(xc.copilot_llm.temperature),
             frequency_penalty=float(xc.copilot_llm.frequency_penalty),
-            presence_penalty=float(xc.copilot_llm.presence_penalty), max_tokens=int(xc.copilot_llm.maximum_tokens),
-            top_p=float(xc.copilot_llm.top_p))
+            presence_penalty=float(xc.copilot_llm.presence_penalty),
+            max_tokens=int(xc.copilot_llm.maximum_tokens),
+            top_p=float(xc.copilot_llm.top_p)
+        )
+
         choices = llm_response.choices
         first_choice = choices[0]
         choice_message = first_choice.message
         choice_message_content = choice_message.content
         logger.info(f"[handle_auto_command] AUTO command response.")
+
     except Exception as e:
         logger.error(f"[handle_auto_command] Error executing AUTO command. Error: {e}")
         error = f"[handle_ai_command] Error executing AUTO command. Error: {e}"
@@ -67,27 +85,41 @@ def handle_auto_command(xc) -> str:
 
     try:
         tx = LLMTransaction.objects.create(
-            organization=xc.sheetos_document.organization, model=xc.copilot_llm,
-            responsible_user=xc.sheetos_document.created_by_user, responsible_assistant=xc.copilot,
-            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, transaction_context_content=choice_message_content,
-            llm_cost=0, internal_service_cost=0, tax_cost=0, total_cost=0, total_billable_cost=0,
-            transaction_type=ChatRoles.ASSISTANT, transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
+            organization=xc.sheetos_document.organization,
+            model=xc.copilot_llm,
+            responsible_user=xc.sheetos_document.created_by_user,
+            responsible_assistant=xc.copilot,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=choice_message_content,
+            llm_cost=0,
+            internal_service_cost=0,
+            tax_cost=0,
+            total_cost=0,
+            total_billable_cost=0,
+            transaction_type=ChatRoles.ASSISTANT,
+            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
         )
         logger.info(f"[handle_auto_command] Created LLMTransaction for AUTO command response.")
+
     except Exception as e:
         logger.error(f"[handle_auto_command] Error creating LLMTransaction for AUTO command response. Error: {e}")
         pass
 
     try:
         tx = LLMTransaction(
-            organization=xc.copilot.organization, model=xc.copilot_llm,
-            responsible_user=xc.sheetos_document.created_by_user, responsible_assistant=xc.copilot,
-            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE, llm_cost=InternalServiceCosts.Sheetos.COST,
+            organization=xc.copilot.organization,
+            model=xc.copilot_llm,
+            responsible_user=xc.sheetos_document.created_by_user,
+            responsible_assistant=xc.copilot,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.Sheetos.COST,
             transaction_type=ChatRoles.SYSTEM,
-            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS, is_tool_cost=True
+            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS,
+            is_tool_cost=True
         )
         logger.info(f"[handle_auto_command] AUTO command cost.")
         tx.save()
+
     except Exception as e:
         logger.error(f"[handle_auto_command] Error calculating AUTO command cost. Error: {e}")
         pass

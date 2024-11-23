@@ -30,7 +30,11 @@ from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Pu
 logger = logging.getLogger(__name__)
 
 
-def build_select_command_system_prompt(xc: SheetosExecutionManager, user_query: str, selected_data: str):
+def build_select_command_system_prompt(
+    xc: SheetosExecutionManager,
+    user_query: str,
+    selected_data: str
+):
     logger.info(f"Building SELECT command system prompt for user query: {user_query}")
     combined_system_prompt = ""
 
@@ -48,8 +52,10 @@ def build_select_command_system_prompt(xc: SheetosExecutionManager, user_query: 
     folder_and_doc_info_prompt += build_whole_text_supply_prompt(xc=xc)
 
     sheetos_ops_instruction_prompt = build_sheetos_ops_instruction_prompt()
-    action_instructions_prompt = build_sheetos_action__select_prompt(user_query=user_query,
-                                                                     selected_data=selected_data)
+    action_instructions_prompt = build_sheetos_action__select_prompt(
+        user_query=user_query,
+        selected_data=selected_data
+    )
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt
@@ -59,8 +65,12 @@ def build_select_command_system_prompt(xc: SheetosExecutionManager, user_query: 
     return combined_system_prompt
 
 
-def build_select_command_system_prompt_public(xc: SheetosExecutionManager_Public, user_query: str, selected_data: str,
-                                              content: str):
+def build_select_command_system_prompt_public(
+    xc: SheetosExecutionManager_Public,
+    user_query: str,
+    selected_data: str,
+    content: str
+):
     logger.info(f"Building SELECT command system prompt for user query: {user_query}")
     combined_system_prompt = ""
 
@@ -76,8 +86,10 @@ def build_select_command_system_prompt_public(xc: SheetosExecutionManager_Public
     folder_and_doc_info_prompt = build_whole_text_supply_prompt_public(content=content)
 
     sheetos_ops_instruction_prompt = build_sheetos_ops_instruction_prompt()
-    action_instructions_prompt = build_sheetos_action__select_prompt(user_query=user_query,
-                                                                     selected_data=selected_data)
+    action_instructions_prompt = build_sheetos_action__select_prompt(
+        user_query=user_query,
+        selected_data=selected_data
+    )
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt
