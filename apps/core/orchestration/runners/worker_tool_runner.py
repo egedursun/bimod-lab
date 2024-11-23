@@ -24,7 +24,15 @@ from apps.orchestrations.models import OrchestrationQuery, Maestro
 logger = logging.getLogger(__name__)
 
 
-def run_worker_tool(maestro_id, query_id, worker_assistant_id, query_text, file_urls, image_urls):
+def run_worker_tool(
+    maestro_id,
+    query_id,
+    worker_assistant_id,
+    query_text,
+    file_urls,
+    image_urls
+):
+
     from apps.core.orchestration.orchestration_executor import OrchestrationExecutor
     from apps.core.orchestration.utils import DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
 
@@ -37,6 +45,7 @@ def run_worker_tool(maestro_id, query_id, worker_assistant_id, query_text, file_
             query_chat=query_chat,
         )
         logger.info('[worker_tool_runner.run_worker_tool] The executor is created successfully.')
+
     except Exception as e:
         logger.error('[worker_tool_runner.run_worker_tool] An error occurred while creating the executor:', e)
         return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
@@ -49,6 +58,7 @@ def run_worker_tool(maestro_id, query_id, worker_assistant_id, query_text, file_
             image_urls=image_urls,
         )
         logger.info('[worker_tool_runner.run_worker_tool] The worker assistant is asked successfully.')
+
     except Exception as e:
         logger.error('[worker_tool_runner.run_worker_tool] An error occurred while asking the worker assistant:', e)
         return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE

@@ -522,14 +522,17 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 'response__payment_method_credit_card_expiration_year')
             response__payment_method_credit_card_cvc = request.POST.get('response__payment_method_credit_card_cvc')
 
+            required_fields__credit_card = [
+                response__payment_method_credit_card_name,
+                response__payment_method_credit_card_number,
+                response__payment_method_credit_card_expiration_month,
+                response__payment_method_credit_card_expiration_year,
+                response__payment_method_credit_card_cvc
+            ]
+
             # Action-018: Create a new credit card
-            if (
-                response__payment_method_credit_card_name and response__payment_method_credit_card_name.strip() != "" and
-                response__payment_method_credit_card_number and response__payment_method_credit_card_number.strip() != "" and
-                response__payment_method_credit_card_expiration_month and response__payment_method_credit_card_expiration_month.strip() != "" and
-                response__payment_method_credit_card_expiration_year and response__payment_method_credit_card_expiration_year.strip() != "" and
-                response__payment_method_credit_card_cvc and response__payment_method_credit_card_cvc.strip() != ""
-            ):
+            if all(field and field.strip() != "" for field in required_fields__credit_card):
+
                 success_018, new_payment_method = action__018_credit_card_create(
                     metadata__user=context_user,
                     response__payment_method_credit_card_name=response__payment_method_credit_card_name,

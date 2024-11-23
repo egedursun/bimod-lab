@@ -64,7 +64,12 @@ logger = logging.getLogger(__name__)
 
 
 class SemantorVectorSearchExecutionManager:
-    def __init__(self, user: User, llm_model: LLMCore, vector_dim: int = OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS):
+    def __init__(
+        self,
+        user: User,
+        llm_model: LLMCore,
+        vector_dim: int = OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+    ):
         self.user: User = user
         self.llm_model: LLMCore = llm_model
         self.vector_dim = vector_dim

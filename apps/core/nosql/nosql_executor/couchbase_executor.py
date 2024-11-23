@@ -29,7 +29,6 @@ from couchbase.exceptions import CouchbaseException
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
 from apps.core.generative_ai.utils import ChatRoles
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -45,17 +44,29 @@ class CouchbaseNoSQLExecutor:
         self.connection_object = connection
 
     def execute_read(self, query, parameters=None):
-        output = {"status": True, "error": ""}
+        output = {
+            "status": True,
+            "error": ""
+        }
+
         try:
             cluster = Cluster(f"couchbase://{self.conn_params['host']}", ClusterOptions(
                 PasswordAuthenticator(self.conn_params['user'], self.conn_params['password'])))
             logger.info(f"Executing query: {query}")
+
             if parameters:
-                result = cluster.query(query, QueryOptions(named_parameters=parameters))
+                result = cluster.query(
+                    query,
+                    QueryOptions(
+                        named_parameters=parameters
+                    )
+                )
+
             else:
                 result = cluster.query(query)
             output['result'] = [row for row in result]
             logger.info(f"Query executed successfully.")
+
         except CouchbaseException as e:
             logger.error(f"Error occurred while executing query: {e}")
             output["status"] = False
@@ -63,33 +74,69 @@ class CouchbaseNoSQLExecutor:
 
         new_tx = LLMTransaction(
             organization=self.connection_object.assistant.organization,
-            model=self.connection_object.assistant.llm_model, responsible_user=None,
-            responsible_assistant=self.connection_object.assistant, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.NoSQLReadExecutor.COST, transaction_type=ChatRoles.SYSTEM,
-            transaction_source=LLMTransactionSourcesTypesNames.NOSQL_READ, is_tool_cost=True)
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.NoSQLReadExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.NOSQL_READ,
+            is_tool_cost=True
+        )
+
         new_tx.save()
         logger.info(f"Transaction saved successfully.")
         return output
 
-    def execute_write(self, query, parameters=None) -> dict:
-        if not can_write_to_database(self.connection_object):
-            return {"status": False, "error": "No write permission within this database connection."}
+    def execute_write(
+        self,
+        query,
+        parameters=None
+    ) -> dict:
 
-        output = {"status": True, "error": ""}
+        if not can_write_to_database(self.connection_object):
+            return {
+                "status": False,
+                "error": "No write permission within this database connection."
+            }
+
+        output = {
+            "status": True,
+            "error": ""
+        }
+
         try:
-            cluster = Cluster(f"couchbase://{self.conn_params['host']}", ClusterOptions(
-                PasswordAuthenticator(self.conn_params['user'], self.conn_params['password'])))
+            cluster = Cluster(
+                f"couchbase://{self.conn_params['host']}",
+                ClusterOptions(
+                    PasswordAuthenticator(
+                        self.conn_params['user'],
+                        self.conn_params['password']
+                    )
+                )
+            )
             logger.info(f"Executing query: {query}")
+
             if parameters:
-                result = cluster.query(query, QueryOptions(named_parameters=parameters))
+                result = cluster.query(
+                    query,
+                    QueryOptions(
+                        named_parameters=parameters
+                    )
+                )
+
             else:
-                result = cluster.query(query)
+                result = cluster.query(
+                    query
+                )
 
             rows = [row for row in result]
+
             if len(rows) != 0:
                 output['status'] = False
                 output['error'] = str(rows)
             logger.info(f"Query executed successfully.")
+
         except CouchbaseException as e:
             logger.error(f"Error occurred while executing query: {e}")
             output["status"] = False
@@ -97,10 +144,16 @@ class CouchbaseNoSQLExecutor:
 
         new_tx = LLMTransaction(
             organization=self.connection_object.assistant.organization,
-            model=self.connection_object.assistant.llm_model, responsible_user=None,
-            responsible_assistant=self.connection_object.assistant, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.NoSQLWriteExecutor.COST, transaction_type=ChatRoles.SYSTEM,
-            transaction_source=LLMTransactionSourcesTypesNames.NOSQL_WRITE, is_tool_cost=True)
+            model=self.connection_object.assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=self.connection_object.assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.NoSQLWriteExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.NOSQL_WRITE,
+            is_tool_cost=True
+        )
+
         new_tx.save()
         logger.info(f"Transaction saved successfully.")
         return output
