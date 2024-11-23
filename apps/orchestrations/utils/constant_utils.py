@@ -35,25 +35,69 @@ class OrchestrationQueryLogTypesNames:
 
     @staticmethod
     def as_list():
-        return [OrchestrationQueryLogTypesNames.INFO, OrchestrationQueryLogTypesNames.ERROR,
-                OrchestrationQueryLogTypesNames.WORKER_REQUEST, OrchestrationQueryLogTypesNames.WORKER_RESPONSE,
-                OrchestrationQueryLogTypesNames.MAESTRO_ANSWER]
+        return [
+            OrchestrationQueryLogTypesNames.INFO,
+            OrchestrationQueryLogTypesNames.ERROR,
+            OrchestrationQueryLogTypesNames.WORKER_REQUEST,
+            OrchestrationQueryLogTypesNames.WORKER_RESPONSE,
+            OrchestrationQueryLogTypesNames.MAESTRO_ANSWER
+        ]
 
 
 ORCHESTRATION_RESPONSE_LANGUAGES = [
     ("auto", "Auto (Detect)"),
-    ("en", "English"), ("es", "Spanish"), ("fr", "French"), ("de", "German"), ("it", "Italian"),
-    ("pt", "Portuguese"), ("nl", "Dutch"), ("ru", "Russian"), ("ja", "Japanese"), ("ko", "Korean"),
-    ("zh", "Chinese"), ("ar", "Arabic"), ("tr", "Turkish"), ("pl", "Polish"), ("sv", "Swedish"),
-    ("da", "Danish"), ("fi", "Finnish"), ("no", "Norwegian"), ("he", "Hebrew"), ("id", "Indonesian"),
-    ("ms", "Malay"), ("th", "Thai"), ("hi", "Hindi"), ("hu", "Hungarian"), ("cs", "Czech"),
-    ("sk", "Slovak"), ("uk", "Ukrainian"), ("ro", "Romanian"), ("bg", "Bulgarian"), ("el", "Greek"),
-    ("fi", "Finnish"), ("et", "Estonian"), ("lv", "Latvian"), ("lt", "Lithuanian"), ("hr", "Croatian"),
-    ("sr", "Serbian"), ("sl", "Slovenian"), ("mk", "Macedonian"), ("sq", "Albanian"), ("bs", "Bosnian"),
-    ("is", "Icelandic"), ("cy", "Welsh"), ("ga", "Irish"),
+    ("en", "English"),
+    ("es", "Spanish"),
+    ("fr", "French"),
+    ("de", "German"),
+    ("it", "Italian"),
+    ("pt", "Portuguese"),
+    ("nl", "Dutch"),
+    ("ru", "Russian"),
+    ("ja", "Japanese"),
+    ("ko", "Korean"),
+    ("zh", "Chinese"),
+    ("ar", "Arabic"),
+    ("tr", "Turkish"),
+    ("pl", "Polish"),
+    ("sv", "Swedish"),
+    ("da", "Danish"),
+    ("fi", "Finnish"),
+    ("no", "Norwegian"),
+    ("he", "Hebrew"),
+    ("id", "Indonesian"),
+    ("ms", "Malay"),
+    ("th", "Thai"),
+    ("hi", "Hindi"),
+    ("hu", "Hungarian"),
+    ("cs", "Czech"),
+    ("sk", "Slovak"),
+    ("uk", "Ukrainian"),
+    ("ro", "Romanian"),
+    ("bg", "Bulgarian"),
+    ("el", "Greek"),
+    ("fi", "Finnish"),
+    ("et", "Estonian"),
+    ("lv", "Latvian"),
+    ("lt", "Lithuanian"),
+    ("hr", "Croatian"),
+    ("sr", "Serbian"),
+    ("sl", "Slovenian"),
+    ("mk", "Macedonian"),
+    ("sq", "Albanian"),
+    ("bs", "Bosnian"),
+    ("is", "Icelandic"),
+    ("cy", "Welsh"),
+    ("ga", "Irish"),
 ]
-ORCHESTRATION_RESPONSE_LANGUAGES = [ORCHESTRATION_RESPONSE_LANGUAGES[0]] + sorted(ORCHESTRATION_RESPONSE_LANGUAGES[1:],
-                                                                                  key=lambda x: x[1])
+
+ORCHESTRATION_RESPONSE_LANGUAGES = [
+                                       ORCHESTRATION_RESPONSE_LANGUAGES[0]
+                                   ] + sorted(
+    ORCHESTRATION_RESPONSE_LANGUAGES[1:],
+    key=lambda x: x[1]
+)
+
 MAESTRO_ADMIN_LIST = [
     "name",
     "organization",
@@ -79,14 +123,61 @@ MAESTRO_ADMIN_FILTER = [
     "updated_at",
 ]
 
-MAESTRO_QUERY_ADMIN_LIST = ['maestro', 'query_text', 'created_by_user', 'last_updated_by_user', 'created_at',
-                            'updated_at']
-MAESTRO_QUERY_ADMIN_SEARCH = ['maestro', 'query_text', 'created_by_user', 'last_updated_by_user']
-MAESTRO_QUERY_ADMIN_FILTER = ['maestro', 'created_by_user', 'last_updated_by_user', 'created_at', 'updated_at']
+MAESTRO_QUERY_ADMIN_LIST = [
+    'maestro',
+    'query_text',
+    'created_by_user',
+    'last_updated_by_user',
+    'created_at',
+    'updated_at'
+]
 
-MAESTRO_QUERY_LOG_ADMIN_LIST = ['orchestration_query', 'log_text_content', 'created_at']
-MAESTRO_QUERY_LOG_ADMIN_SEARCH = ['orchestration_query', 'log_text_content']
-MAESTRO_QUERY_LOG_ADMIN_FILTER = ['orchestration_query', 'created_at']
-ORCHESTRATION_REACTANT_ASSISTANT_ADMIN_LIST = ["orchestration_maestro", "assistant", "created_by_user", "created_at", "updated_at"]
-ORCHESTRATION_REACTANT_ASSISTANT_ADMIN_FILTER = ["orchestration_maestro", "assistant", "created_by_user", "created_at", "updated_at"]
-ORCHESTRATION_REACTANT_ASSISTANT_ADMIN_SEARCH = ["orchestration_maestro", "assistant", "created_by_user", "created_at", "updated_at"]
+MAESTRO_QUERY_ADMIN_SEARCH = [
+    'maestro',
+    'query_text',
+    'created_by_user',
+    'last_updated_by_user'
+]
+MAESTRO_QUERY_ADMIN_FILTER = [
+    'maestro',
+    'created_by_user',
+    'last_updated_by_user',
+    'created_at',
+    'updated_at'
+]
+
+MAESTRO_QUERY_LOG_ADMIN_LIST = [
+    'orchestration_query',
+    'log_text_content',
+    'created_at'
+]
+MAESTRO_QUERY_LOG_ADMIN_SEARCH = [
+    'orchestration_query',
+    'log_text_content'
+]
+MAESTRO_QUERY_LOG_ADMIN_FILTER = [
+    'orchestration_query',
+    'created_at'
+]
+
+ORCHESTRATION_REACTANT_ASSISTANT_ADMIN_LIST = [
+    "orchestration_maestro",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]
+ORCHESTRATION_REACTANT_ASSISTANT_ADMIN_FILTER = [
+    "orchestration_maestro",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]
+ORCHESTRATION_REACTANT_ASSISTANT_ADMIN_SEARCH = [
+    "orchestration_maestro",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]
