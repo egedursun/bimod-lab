@@ -398,6 +398,7 @@ EXPORT_API_HEALTH_BASE_URL = "health/export_assistants/api/v1/export"
 EXPORT_LEANMOD_API_BASE_URL = "app/export_leanmods/api/v1/export"
 EXPORT_LEANMOD_API_HEALTH_BASE_URL = "health/export_leanmods/api/v1/export"
 EXPORT_ORCHESTRATION_API_BASE_URL = "app/export_orchestrations/api/v1/export"
+EXPORT_VOIDFORGER_API_BASE_URL = "app/export_voidforger/api/v1/export"
 EXPORT_ORCHESTRATION_API_HEALTH_BASE_URL = "health/export_orchestrations/api/v1/export"
 
 LEAN_BASE_URL = BASE_URL.split("://")[-1].split(":")[0]
