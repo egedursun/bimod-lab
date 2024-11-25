@@ -64,7 +64,8 @@ class ExportAssistantAPIHealthCheckView(View):
             logger.error(f"Invalid Assistant endpoint: {endpoint}")
             return JsonResponse(
                 {
-                    "message": "Invalid Assistant endpoint", "data": {},
+                    "message": "Invalid Assistant endpoint",
+                    "data": {},
                     "status": ExportAPIStatusCodes.NOT_FOUND
                 },
                 status=ExportAPIStatusCodes.NOT_FOUND
