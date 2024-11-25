@@ -2041,6 +2041,76 @@
                   </td>
                 </form>
               </tr>
+              <!-- delete all orchestration scheduled jobs -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-clock me-4"></i>
+                  <strong>Orchestration Scheduled Jobs</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_scheduled_jobs_orchestration' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL ORCHESTRATION SCHEDULED JOBS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-orchestration-scheduled-jobs-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-orchestration-scheduled-jobs-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Orchestration Jobs</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
+              <!-- delete all orchestration triggered jobs -->
+              <tr>
+                <td class="text-nowrap text-heading">
+                  <i class="fa fa-clock me-4"></i>
+                  <strong>Orchestration Triggered Jobs</strong>
+                </td>
+                <form method="post" action="{% url 'user_settings:delete_all_triggered_jobs_orchestration' %}">
+                  {% csrf_token %}
+                  <td>
+                    <label for="confirmation" class="form-label">
+                      <i class="fa fa-delete-left me-2"></i>
+                      <small class="text-muted text-danger">
+                        <strong>Type in 'CONFIRM DELETING ALL ORCHESTRATION TRIGGERED JOBS' to confirm the deletion process.</strong>
+                      </small>
+                      <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
+                    </label>
+                  </td>
+                  <td style="max-width: 100px;">
+                    <label class="switch switch-square switch-lg mt-2 center">
+                      <input type="checkbox" class="switch-input"
+                             onclick="document.getElementById('delete-orchestration-triggered-jobs-button').disabled = !this.checked;" />
+                      <span class="switch-toggle-slider">
+                        <span class="switch-on bg-label-danger"><i class="ti ti-lock-open"></i></span>
+                        <span class="switch-off bg-label-secondary"><i class="ti ti-lock"></i></span>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <button id="delete-orchestration-triggered-jobs-button" type="submit" class="btn btn-danger w-100" disabled>
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete ALL Orchestration Jobs</strong>
+                    </button>
+                  </td>
+                </form>
+              </tr>
               <!-- delete all data backups -->
               <tr>
                 <td class="text-nowrap text-heading">
