@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-import importlib
 import logging
 
 from django.contrib import messages
@@ -24,37 +23,28 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.export_orchestrations.management.commands.start_exported_orchestrations import \
-    start_endpoint_for_orchestration
 from apps.export_orchestrations.models import ExportOrchestrationAPI
 from apps.user_permissions.utils import PermissionNames
-from config import settings
-from config.settings import EXPORT_ORCHESTRATION_API_BASE_URL
-
 
 logger = logging.getLogger(__name__)
 
 
 class ExportOrchestrationView_ToggleService(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-
         ##############################
         # PERMISSION CHECK FOR - UPDATE_EXPORT_ORCHESTRATION
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_EXPORT_ORCHESTRATION):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_EXPORT_ORCHESTRATION
+        ):
             messages.error(self.request, "You do not have permission to update Export Orchestration APIs.")
             return redirect('export_orchestrations:list')
         ##############################
 
         exp_agent = get_object_or_404(ExportOrchestrationAPI, pk=self.kwargs['pk'])
-        endpoint = EXPORT_ORCHESTRATION_API_BASE_URL + \
-                   exp_agent.endpoint.split(EXPORT_ORCHESTRATION_API_BASE_URL)[1]
-        api_urls = getattr(importlib.import_module(settings.ROOT_URLCONF), 'urlpatterns')
         exp_agent.is_online = not exp_agent.is_online
         exp_agent.save()
-        if exp_agent.is_online:
-            if not any(endpoint in str(url) for url in api_urls):
-                start_endpoint_for_orchestration(exp_agent)
+
         logger.info(f"Export Orchestration was toggled by User: {request.user.id}.")
         return redirect('export_orchestrations:list')
 

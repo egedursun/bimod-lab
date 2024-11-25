@@ -22,8 +22,7 @@ from django.db import models
 
 
 class ExpertNetworkAssistantReference(models.Model):
-    network = models.ForeignKey("ExpertNetwork", on_delete=models.CASCADE, related_name='assistant_references',
-                                null=True, blank=True)
+    network = models.ForeignKey("ExpertNetwork", on_delete=models.CASCADE, related_name='assistant_references')
     assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
     context_instructions = models.TextField(default="", blank=True)
     created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,

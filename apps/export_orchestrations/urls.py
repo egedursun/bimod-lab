@@ -20,9 +20,15 @@
 
 from django.urls import path
 
-from .views import (ExportOrchestrationView_List, ExportOrchestrationView_Create, ExportOrchestrationView_Update,
-                    ExportOrchestrationView_Delete, ExportOrchestrationAPIView, ExportOrchestrationView_ToggleService,
-                    ExportOrchestrationAPIHealthCheckView)
+from .views import (
+    ExportOrchestrationView_List,
+    ExportOrchestrationView_Create,
+    ExportOrchestrationView_Update,
+    ExportOrchestrationView_Delete,
+    ExportOrchestrationAPIView,
+    ExportOrchestrationView_ToggleService,
+    ExportOrchestrationAPIHealthCheckView
+)
 
 app_name = 'export_orchestrations'
 
@@ -34,7 +40,10 @@ urlpatterns = [
     path('update/<int:pk>/', ExportOrchestrationView_Update.as_view(
         template_name="export_orchestrations/update_export_orchestrations.html"), name='update'),
     path('delete/<int:pk>/', ExportOrchestrationView_Delete.as_view(), name='delete'),
-    path('exported/<str:endpoint>/', ExportOrchestrationAPIView.as_view(), name='api'),
-    path('ping/<str:endpoint>/', ExportOrchestrationAPIHealthCheckView.as_view(), name='health_check'),
+
+    path('exported/orchestrator_assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/', ExportOrchestrationAPIView.as_view(), name='api'),
+
+    path('health/orchestrator_assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/', ExportOrchestrationAPIHealthCheckView.as_view(), name='health_check'),
+
     path('toggle_service/<int:pk>/', ExportOrchestrationView_ToggleService.as_view(), name='toggle_service'),
 ]

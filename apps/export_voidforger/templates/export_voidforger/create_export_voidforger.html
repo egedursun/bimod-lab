@@ -1,0 +1,138 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: create_export_voidforger.html
+  ~ Last Modified: 2024-10-24 21:55:46
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-24 22:13:13
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Export VoidForger{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'export_voidforger:list' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong> Manage your Services</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <strong>Export VoidForger</strong>
+          </h5> <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-77.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8" alt="Illustration for tips">
+            <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                In this page, you can create a new Export VoidForger. Select an orchestrator from the dropdown,
+                set the request limit per hour, and choose if it should be public or not.
+                Once you have filled out all the fields, click on the "Create" button to create the Export VoidForger.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <hr>
+
+          <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="mb-6 col-5">
+                <label class="form-label" for="assistant">VoidForger</label>
+                <select class="form-select" id="assistant" name="assistant">
+                  <option value="" disabled selected>Select VoidForger</option>
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}">VoidForger - {{ assistant.llm_model.organization.name }} - {{ assistant.llm_model.nickname }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-5">
+                <label class="form-label" for="request_limit_per_hour">Request Limit Per Hour</label>
+                <input type="number" class="form-control" id="request_limit_per_hour" name="request_limit_per_hour"
+                       placeholder="Enter request limit per hour"/>
+              </div>
+              <div class="mb-6 col-2">
+                <label class="form-label" for="is_public">Public</label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="is_public" name="is_public">
+                  <span class="switch-toggle-slider">
+                <span class="switch-on"><i class="ti ti-check"></i></span>
+                <span class="switch-off"><i class="ti ti-x"></i></span>
+              </span>
+                </label>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid mt-4 w-25">
+              <strong>
+                <i class="fa fa-plus me-4"></i>
+                Export VoidForger</strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

@@ -36,8 +36,10 @@ class ExportLeanModView_List(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_EXPORT_LEANMOD
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_EXPORT_LEANMOD):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_EXPORT_LEANMOD
+        ):
             messages.error(self.request, "You do not have permission to list Export LeanMod Assistant APIs.")
             return context
         ##############################
@@ -48,19 +50,30 @@ class ExportLeanModView_List(TemplateView, LoginRequiredMixin):
         try:
             org_data = []
             orgs = Organization.objects.filter(users=user_context)
+
             for org in orgs:
                 exp_leanmods_count = org.exported_leanmods.count()
                 agents_pct = round((exp_leanmods_count / max_exp_leanmods) * 100, 2)
                 exp_agents = org.exported_leanmods.all()
+
                 for agent in exp_agents:
                     agent.usage_percentage = 100
-                org_data.append({
-                    'organization': org, 'export_assistants_count': exp_leanmods_count,
-                    'assistants_percentage': agents_pct, 'export_assistants': exp_agents, 'limit': max_exp_leanmods})
+
+                org_data.append(
+                    {
+                        'organization': org,
+                        'export_assistants_count': exp_leanmods_count,
+                        'assistants_percentage': agents_pct,
+                        'export_assistants': exp_agents,
+                        'limit': max_exp_leanmods
+                    }
+                )
+
             exp_agents = ExportLeanmodAssistantAPI.objects.filter(created_by_user=user_context)
             context["user"] = user_context
             context["organization_data"] = org_data
             context["export_assistants"] = exp_agents
+
         except Exception as e:
             messages.error(self.request, f"An error occurred: {str(e)}")
             return context

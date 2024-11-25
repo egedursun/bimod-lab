@@ -17,6 +17,7 @@
 
 import json
 import logging
+import re
 
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -30,82 +31,151 @@ from apps.multimodal_chat.models import MultimodalLeanChat, MultimodalLeanChatMe
 from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
 from config.settings import BASE_URL
 
-
 logger = logging.getLogger(__name__)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ExportLeanmodAssistantAPIHealthCheckView(View):
     def post(self, request, *args, **kwargs):
-        endpoint = (BASE_URL + request.path).replace("health", "app")
-        api_key = request.headers.get('Authorization')
+
+        endpoint = request.path
+        pattern = r'^/app/export_leanmods/health/leanmod_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
+        match = re.match(pattern, endpoint)
+
+        if match:
+            organization_id = int(match.group('organization_id'))
+            assistant_id = int(match.group('assistant_id'))
+            export_id = int(match.group('export_id'))
+
+        else:
+
+            return JsonResponse(
+                {
+                    "message": "Invalid path parameters.",
+                    "data": {},
+                    "status": LeanModAssistantStatusCodes.NOT_FOUND
+                },
+                status=LeanModAssistantStatusCodes.NOT_FOUND
+            )
+
         try:
-            export_assistant = ExportLeanmodAssistantAPI.objects.get(endpoint=endpoint)
+            export_assistant = ExportLeanmodAssistantAPI.objects.get(id=export_id)
+
         except ExportLeanmodAssistantAPI.DoesNotExist:
+
             logger.error(f"Invalid LeanMod endpoint: {endpoint}")
-            return JsonResponse({
-                "message": "Invalid LeanMod endpoint", "data": {}, "status": LeanModAssistantStatusCodes.NOT_FOUND
-            }, status=LeanModAssistantStatusCodes.NOT_FOUND)
+
+            return JsonResponse(
+                {
+                    "message": "Invalid LeanMod endpoint",
+                    "data": {},
+                    "status": LeanModAssistantStatusCodes.NOT_FOUND
+                },
+                status=LeanModAssistantStatusCodes.NOT_FOUND
+            )
 
         if not export_assistant.is_online:
             logger.error(f"The LeanMod  is currently offline: {endpoint}")
-            return JsonResponse({
-                "message": "The LeanMod endpoint is currently offline. Please try again later.", "data": {},
-                "status": LeanModAssistantStatusCodes.SERVICE_OFFLINE
-            }, status=LeanModAssistantStatusCodes.SERVICE_OFFLINE)
+            return JsonResponse(
+                {
+                    "message": "The LeanMod endpoint is currently offline. Please try again later.",
+                    "data": {},
+                    "status": LeanModAssistantStatusCodes.SERVICE_OFFLINE
+                },
+                status=LeanModAssistantStatusCodes.SERVICE_OFFLINE
+            )
 
-        if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
-            logger.error(f"Invalid LeanMod API key provided for endpoint: {endpoint}")
-            return JsonResponse({
-                "message": "The LeanMod API key provided is invalid, please provide a valid API key.", "data": {},
-                "status": LeanModAssistantStatusCodes.UNAUTHORIZED
-            }, status=LeanModAssistantStatusCodes.UNAUTHORIZED)
-
-        return JsonResponse({
-                "message": "The LeanMod endpoint is online and healthy.", "data": {},
+        return JsonResponse(
+            {
+                "message": "The LeanMod endpoint is online and healthy.",
+                "data": {},
                 "status": LeanModAssistantStatusCodes.OK
-            }, status=LeanModAssistantStatusCodes.OK
+            },
+            status=LeanModAssistantStatusCodes.OK
         )
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ExportLeanmodAssistantAPIView(View):
     def post(self, request, *args, **kwargs):
-        endpoint = BASE_URL + request.path
+        endpoint = request.path
+        pattern = r'^/app/export_leanmods/exported/leanmod_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
+        match = re.match(pattern, endpoint)
+
+        if match:
+            organization_id = int(match.group('organization_id'))
+            assistant_id = int(match.group('assistant_id'))
+            export_id = int(match.group('export_id'))
+
+        else:
+
+            return JsonResponse(
+                {
+                    "message": "Invalid path parameters.",
+                    "data": {},
+                    "status": LeanModAssistantStatusCodes.NOT_FOUND
+                },
+                status=LeanModAssistantStatusCodes.NOT_FOUND
+            )
+
         api_key = request.headers.get('Authorization')
+
         try:
-            exp_agent = ExportLeanmodAssistantAPI.objects.get(endpoint=endpoint)
+            exp_agent = ExportLeanmodAssistantAPI.objects.get(
+                id=export_id
+            )
+
         except ExportLeanmodAssistantAPI.DoesNotExist:
+
             logger.error(f"Invalid LeanMod endpoint: {endpoint}")
-            return JsonResponse({
-                "message": "Invalid LeanMod endpoint", "data": {}, "status": LeanModAssistantStatusCodes.NOT_FOUND
-            }, status=LeanModAssistantStatusCodes.NOT_FOUND)
+            return JsonResponse(
+                {
+                    "message": "Invalid LeanMod endpoint",
+                    "data": {},
+                    "status": LeanModAssistantStatusCodes.NOT_FOUND
+                },
+                status=LeanModAssistantStatusCodes.NOT_FOUND
+            )
 
         if not exp_agent.is_online:
             logger.error(f"The LeanMod endpoint is currently offline: {endpoint}")
-            return JsonResponse({
-                "message": "The LeanMod endpoint is currently offline. Please try again later.", "data": {},
-                "status": LeanModAssistantStatusCodes.SERVICE_OFFLINE
-            }, status=LeanModAssistantStatusCodes.SERVICE_OFFLINE)
+            return JsonResponse(
+                {
+                    "message": "The LeanMod endpoint is currently offline. Please try again later.",
+                    "data": {},
+                    "status": LeanModAssistantStatusCodes.SERVICE_OFFLINE
+                },
+                status=LeanModAssistantStatusCodes.SERVICE_OFFLINE
+            )
 
         if (not exp_agent.is_public) and exp_agent.custom_api_key != api_key:
             logger.error(f"Invalid LeanMod API key provided for endpoint: {endpoint}")
-            return JsonResponse({
-                "message": "The LeanMod API key provided is invalid, please provide a valid API key.", "data": {},
-                "status": LeanModAssistantStatusCodes.UNAUTHORIZED
-            }, status=LeanModAssistantStatusCodes.UNAUTHORIZED)
+
+            return JsonResponse(
+                {
+                    "message": "The LeanMod API key provided is invalid, please provide a valid API key.",
+                    "data": {},
+                    "status": LeanModAssistantStatusCodes.UNAUTHORIZED
+                },
+                status=LeanModAssistantStatusCodes.UNAUTHORIZED
+            )
 
         LeanmodRequestLog.objects.create(export_lean_assistant=exp_agent)
         if exp_agent.requests_in_last_hour() > exp_agent.request_limit_per_hour:
             logger.error(f"The API request limit has been reached for endpoint: {endpoint}")
-            return JsonResponse({
-                "error": "The API request limit has been reached. Please try again later.",
-                "data": {
-                    "request_limit_per_hour": exp_agent.request_limit_per_hour,
-                    "requests_in_last_hour": exp_agent.requests_in_last_hour()
-                }, }, status=LeanModAssistantStatusCodes.TOO_MANY_REQUESTS)
+            return JsonResponse(
+                {
+                    "error": "The API request limit has been reached. Please try again later.",
+                    "data": {
+                        "request_limit_per_hour": exp_agent.request_limit_per_hour,
+                        "requests_in_last_hour": exp_agent.requests_in_last_hour()
+                    },
+                },
+                status=LeanModAssistantStatusCodes.TOO_MANY_REQUESTS
+            )
 
         body = json.loads(request.body)
+
         try:
             chat_history = body.get('chat_history')
             if len(chat_history) == 0:
@@ -127,8 +197,10 @@ class ExportLeanmodAssistantAPIView(View):
                 content = message["content"]
                 file_uris = []
                 image_uris = []
+
                 if "file_uris" in message and message["file_uris"] != "":
                     file_uris = message.get("file_uris", "").split(",") if message.get("file_uris") else []
+
                 if "image_uris" in message and message["image_uris"] != "":
                     image_uris = message.get("image_uris", "").split(",") if message.get("image_uris") else []
 
@@ -136,52 +208,86 @@ class ExportLeanmodAssistantAPIView(View):
                 image_uris = [uri.strip() for uri in image_uris if uri.strip()]
 
                 api_chat.lean_chat_messages.create(
-                    multimodal_lean_chat=api_chat, sender_type=role.upper(),
-                    message_text_content=content, message_file_contents=file_uris,
+                    multimodal_lean_chat=api_chat,
+                    sender_type=role.upper(),
+                    message_text_content=content,
+                    message_file_contents=file_uris,
                     message_image_contents=image_uris
                 )
-                user_message = api_chat.lean_chat_messages.filter(sender_type=role.upper()).last()
+
+                user_message = api_chat.lean_chat_messages.filter(
+                    sender_type=role.upper()
+                ).last()
 
         except Exception as e:
             logger.error(f"Invalid chat history provided: {str(e)}")
-            return JsonResponse({
-                "message": "Internal server error: " + str(e),
-                "data": {}, "status": LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR
-            }, status=LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR)
+
+            return JsonResponse(
+                {
+                    "message": "Internal server error: " + str(e),
+                    "data": {},
+                    "status": LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR
+                },
+                status=LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR
+            )
 
         try:
             llm_client = GenerativeAIDecodeController.get_lean(
                 assistant=exp_agent.lean_assistant,
-                multimodal_chat=api_chat
+                multimodal_chat=api_chat,
+                user=exp_agent.created_by_user
             )
+
             llm_response_text, file_uris, image_uris = llm_client.respond(
-                latest_message=user_message, with_media=True
+                latest_message=user_message,
+                with_media=True
             )
+
             MultimodalLeanChatMessage.objects.create(
-                multimodal_lean_chat=api_chat, sender_type='ASSISTANT', message_text_content=llm_response_text
+                multimodal_lean_chat=api_chat,
+                sender_type='ASSISTANT',
+                message_text_content=llm_response_text
             )
+
         except Exception as e:
             logger.error(f"Error generating response for endpoint: {endpoint}")
-            return JsonResponse({
-                "message": "Internal server error: " + str(e), "data": {},
-                "status": LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR
-            }, status=LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR)
+            return JsonResponse(
+                {
+                    "message": "Internal server error: " + str(e),
+                    "data": {},
+                    "status": LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR
+                },
+                status=LeanModAssistantStatusCodes.INTERNAL_SERVER_ERROR
+            )
 
         response_data = {
-            "message": "Success", "data": {
+            "message": "Success",
+            "data": {
                 "metadata": {
-                    "organization": {"organization_name": exp_agent.lean_assistant.organization.name},
-                    "assistant": {"assistant_name": exp_agent.lean_assistant.name},
-                    "chat": {"chat_name": api_chat.chat_name}
+                    "organization": {
+                        "organization_name": exp_agent.lean_assistant.organization.name
+                    },
+                    "assistant": {
+                        "assistant_name": exp_agent.lean_assistant.name
+                    },
+                    "chat": {
+                        "chat_name": api_chat.chat_name
+                    }
                 },
                 "message": {
                     "assistant_name": exp_agent.lean_assistant.name,
                     "content": llm_response_text,
                     "role": "assistant",
-                    "media": {"files": file_uris, "images": image_uris}
+                    "media": {
+                        "files": file_uris,
+                        "images": image_uris
+                    }
                 }
             }
         }
-        logger.info(f"Leanmod Assistant API response generated for endpoint: {endpoint}")
-        return JsonResponse(response_data, status=LeanModAssistantStatusCodes.OK)
 
+        logger.info(f"Leanmod Assistant API response generated for endpoint: {endpoint}")
+        return JsonResponse(
+            response_data,
+            status=LeanModAssistantStatusCodes.OK
+        )

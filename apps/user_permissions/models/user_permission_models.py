@@ -57,7 +57,11 @@ class UserPermission(models.Model):
         ]
 
     def get_permission_type_name(self):
-        return dict(PERMISSION_TYPES)[self.permission_type]
+        try:
+            permission_type_name = dict(PERMISSION_TYPES)[self.permission_type]
+        except KeyError:
+            permission_type_name = "Corrupted Permission Type"
+        return permission_type_name
 
     def get_permission_type_code(self):
         return self.permission_type

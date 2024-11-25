@@ -26,7 +26,6 @@ from apps.export_assistants.models import ExportAssistantAPI
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -44,8 +43,10 @@ class ExportAssistantView_Delete(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - UPDATE_EXPORT_ASSISTANT
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_EXPORT_ASSISTANT):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_EXPORT_ASSISTANT
+        ):
             messages.error(self.request, "You do not have permission to delete Export Assistant APIs.")
             return redirect('export_assistants:list')
         ##############################
@@ -53,9 +54,11 @@ class ExportAssistantView_Delete(LoginRequiredMixin, DeleteView):
         exp_agent = get_object_or_404(ExportAssistantAPI, id=self.kwargs['pk'])
         exp_agent.delete()
         success_message = "Export Assistant deleted successfully."
+
         org = exp_agent.assistant.organization
         org.exported_assistants.remove(exp_agent)
         org.save()
+
         logger.info(f"Export Assistant was deleted by User: {request.user.id}.")
         messages.success(request, success_message)
         return redirect(self.success_url)

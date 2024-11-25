@@ -36,8 +36,8 @@ urlpatterns = [
         template_name="export_assistants/update_export_assistants.html"), name='update'),
     path('delete/<int:pk>/', ExportAssistantView_Delete.as_view(), name='delete'),
 
-    path('exported/<str:endpoint>/', ExportAssistantAPIView.as_view(), name='api'),
+    path('exported/assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/', ExportAssistantAPIView.as_view(), name='api'),
 
-    path('health/<str:endpoint>/', ExportAssistantAPIHealthCheckView.as_view(), name='health_check'),
+    path('health/assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/', ExportAssistantAPIHealthCheckView.as_view(), name='health_check'),
     path('toggle_service/<int:pk>/', ExportAssistantView_ToggleService.as_view(), name='toggle_service'),
 ]

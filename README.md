@@ -1,17 +1,24 @@
 ## TODO LIST
 
-**DAILY:**
-- [ ] Integrate Slides to google apps. (MERT)
+**NOW:**
 
+- [ ] Integrate VoidForger endpoint exportation feature for the main endpoint.
+- [ ] Integrate the VoidForger endpoint feature to the Electron Copilot Desktop Client.
+
+**DAILY:**
+
+- [ ] Integrate Slides to google apps. (MERT)
 - [ ] Fill in the instructions and tags for the assistants (respectively)
 - [ ] Complete the course videos for documentation.
 
 **BUGS:**
+
 - [ ] SELECT2: Bug regarding the Select2 fields must be resolved.
 - [ ] REGISTER/FAIL: Website sometimes fails on registration (login field ?, 504 hatası ?)
 - [ ] FORM-REFRESH-NULL: Page refreshes must not remove all the entered fields.
 - [ ] BROWSING-BUG: Browsing functionality doesn't work on Hüseyin but works on local (?)
-- [ ] HARMONIQ-STREAMING: Harmoniq gives bullshit answers, sometimes mixes words up (must do audio streaming with web sockets)
+- [ ] HARMONIQ-STREAMING: Harmoniq gives bullshit answers, sometimes mixes words up (must do audio streaming with web
+  sockets)
 
 ---
 
@@ -39,11 +46,11 @@
 - *ASTROLITH X1*: Two important plans to be developed: A physical server + a locally runnable instance of the
   Bimod & BimodLab web application, with minimal interventions from our ends.
   **(Probably with Licence Key and Encryption)**
-    - One option will be hardware+standalone software.
-    - The other option will be a software-only solution.
-      - The balance will be one-time with burnout of the software after a certain period of time and balance depletion.
-      - In hardware included model, new firmware will then be installed. Otherwise, new software image is provided.
-    - *Details:* TBD
+  - One option will be hardware+standalone software.
+  - The other option will be a software-only solution.
+    - The balance will be one-time with burnout of the software after a certain period of time and balance depletion.
+    - In hardware included model, new firmware will then be installed. Otherwise, new software image is provided.
+  - *Details:* TBD
 
 ---
 

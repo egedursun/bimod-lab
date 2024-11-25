@@ -22,14 +22,11 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.export_orchestrations.management.commands.start_exported_orchestrations import \
-    start_endpoint_for_orchestration
 from apps.export_orchestrations.models import ExportOrchestrationAPI
 from apps.orchestrations.models import Maestro
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -37,8 +34,12 @@ logger = logging.getLogger(__name__)
 class ExportOrchestrationView_Create(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         user_context = self.request.user
-        agents = Maestro.objects.filter(organization__users=user_context)
+        agents = Maestro.objects.filter(
+            organization__users__in=[user_context]
+        )
+
         context["user"] = user_context
         context["assistants"] = agents
         return context
@@ -47,8 +48,10 @@ class ExportOrchestrationView_Create(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_EXPORT_ORCHESTRATION
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_EXPORT_ORCHESTRATION):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_EXPORT_ORCHESTRATION
+        ):
             messages.error(self.request, "You do not have permission to add Export Orchestration APIs.")
             return redirect('export_orchestrations:list')
         ##############################
@@ -59,10 +62,13 @@ class ExportOrchestrationView_Create(TemplateView, LoginRequiredMixin):
         req_limit_hourly = request.POST.get('request_limit_per_hour')
 
         if ExportOrchestrationAPI.objects.filter(
-            created_by_user=request.user).count() > MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION:
-            logger.error(f"User: {request.user.id} tried to create more than {MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION} "
-                         f"Export Orchestration APIs.")
+            created_by_user=request.user
+        ).count() > MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION:
+            logger.error(
+                f"User: {request.user.id} tried to create more than {MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION} "
+                f"Export Orchestration APIs.")
             messages.error(request, f"Maximum number of Export Orchestration APIs reached for the organization.")
+
             return self.render_to_response(self.get_context_data())
 
         if not agent_id or not req_limit_hourly:
@@ -72,19 +78,28 @@ class ExportOrchestrationView_Create(TemplateView, LoginRequiredMixin):
 
         try:
             new_export_assistant = ExportOrchestrationAPI.objects.create(
-                orchestrator_id=agent_id, is_public=is_public, request_limit_per_hour=req_limit_hourly,
-                created_by_user=request.user)
+                orchestrator_id=agent_id,
+                is_public=is_public,
+                request_limit_per_hour=req_limit_hourly,
+                created_by_user=request.user
+            )
 
             org = agent.organization
+
             if not org.exported_orchestrations:
-                org.exported_orchestrations.set([new_export_assistant])
+                org.exported_orchestrations.set([
+                    new_export_assistant
+                ])
+
             else:
                 org.exported_orchestrations.add(new_export_assistant)
+
             org.save()
-            start_endpoint_for_orchestration(assistant=new_export_assistant)
+
             logger.info(f"Export Orchestration API was created by User: {request.user.id}.")
             messages.success(request, "Export Orchestration API created successfully!")
             return redirect("export_orchestrations:list")
+
         except Exception as e:
             logger.error(f"Error creating Export Orchestration API by User: {request.user.id}.")
             messages.error(request, f"Error creating Export Orchestration API: {str(e)}")

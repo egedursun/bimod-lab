@@ -45,6 +45,7 @@ urlpatterns = [
     path("app/export_assistants/", include("apps.export_assistants.urls", namespace="export_assistants")),
     path("app/export_leanmods/", include("apps.export_leanmods.urls", namespace="export_leanmods")),
     path("app/export_orchestrations/", include("apps.export_orchestrations.urls", namespace="export_orchestrations")),
+    path("app/export_voidforger/", include("apps.export_voidforger.urls", namespace="export_voidforger")),
     path("app/datasource_sql/", include("apps.datasource_sql.urls", namespace="datasource_sql")),
     path("app/datasource_nosql/", include("apps.datasource_nosql.urls", namespace="datasource_nosql")),
     path("app/datasource_knowledge_base/", include("apps.datasource_knowledge_base.urls")),

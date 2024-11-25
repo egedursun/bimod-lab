@@ -120,6 +120,11 @@ class PermissionNames:
     UPDATE_VOIDFORGER_CHAT_NAME = 'update_voidforger_chat_name'
     REMOVE_VOIDFORGER_CHATS = 'remove_voidforger_chats'
 
+    ADD_EXPORT_VOIDFORGER = 'add_export_voidforger'
+    UPDATE_EXPORT_VOIDFORGER = 'update_export_voidforger'
+    LIST_EXPORT_VOIDFORGER = 'list_export_voidforger'
+    DELETE_EXPORT_VOIDFORGER = 'delete_export_voidforger'
+
     ADD_ASSISTANT_MEMORIES = 'add_assistant_memories'
     UPDATE_ASSISTANT_MEMORIES = 'update_assistant_memories'
     LIST_ASSISTANT_MEMORIES = 'list_assistant_memories'
@@ -545,6 +550,11 @@ PERMISSION_TYPES = [
     ('create_and_use_voidforger_chats', 'Create and Use VoidForger Chats'),
     ('update_voidforger_chat_name', 'Update VoidForger Chat Name'),
     ('remove_voidforger_chats', 'Remove VoidForger Chats'),
+
+    ('add_export_voidforger', 'Add Export VoidForger'),
+    ('update_export_voidforger', 'Update Export VoidForger'),
+    ('list_export_voidforger', 'List Export VoidForger'),
+    ('delete_export_voidforger', 'Delete Export VoidForger'),
 
     ('add_assistant_memories', 'Add Assistant Memories'),
     ('update_assistant_memories', 'Update Assistant Memories'),

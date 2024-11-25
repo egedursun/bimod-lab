@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: toggle_service_export_assistants_views.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: toggle_service_export_voidforger_views.py
+#  Last Modified: 2024-11-24 21:36:17
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:44
+#  Created: 2024-11-24 22:07:54
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -19,43 +19,34 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.export_assistants.models import ExportAssistantAPI
+from apps.export_voidforger.models import ExportVoidForgerAPI
 from apps.user_permissions.utils import PermissionNames
 
 logger = logging.getLogger(__name__)
 
 
-class ExportAssistantView_ToggleService(LoginRequiredMixin, View):
+class ExportVoidForgerView_ToggleService(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-
-        exp_agent = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
-        context_user = request.user
-
         ##############################
-        # PERMISSION CHECK FOR - UPDATE_EXPORT_ASSISTANT
+        # PERMISSION CHECK FOR - UPDATE_EXPORT_VOIDFORGER
         if not UserPermissionManager.is_authorized(
             user=self.request.user,
-            operation=PermissionNames.UPDATE_EXPORT_ASSIST
+            operation=PermissionNames.UPDATE_EXPORT_VOIDFORGER
         ):
-            messages.error(self.request, "You do not have permission to update Export Assistant APIs.")
-            return redirect('export_assistants:list')
+            messages.error(self.request, "You do not have permission to update Export VoidForger APIs.")
+            return redirect('export_voidforger:list')
         ##############################
 
-        try:
-            exp_agent.is_online = not exp_agent.is_online
-            exp_agent.save()
+        exp_agent = get_object_or_404(ExportVoidForgerAPI, pk=self.kwargs['pk'])
+        exp_agent.is_online = not exp_agent.is_online
+        exp_agent.save()
 
-        except Exception as e:
-            logger.error(f"Error toggling Export Assistant: {e}")
-            messages.error(request, "Error toggling Export Assistant.")
-            return redirect('export_assistants:list')
-
-        logger.info(f"Export Assistant was toggled by User: {context_user.id}.")
-        return redirect('export_assistants:list')
+        logger.info(f"Export VoidForger was toggled by User: {request.user.id}.")
+        return redirect('export_voidforger:list')
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)

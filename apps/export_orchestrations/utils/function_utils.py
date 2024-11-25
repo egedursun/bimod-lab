@@ -23,26 +23,16 @@ import string
 from apps.orchestrations.models import Maestro
 from config import settings
 
-
 logger = logging.getLogger(__name__)
 
 
-def generate_orchestration_endpoint(assistant: Maestro):
-    logger.info(f"Generating orchestration endpoint for assistant {assistant.id}")
+def generate_orchestration_endpoint(assistant: Maestro, export_id: int):
+    org_id = assistant.organization.id
     assistant_id = assistant.id
-    organization_id = assistant.organization.id
-    organization_name = assistant.organization.name
-    assistant_name = assistant.name
-    llm_model_name = assistant.llm_model.model_name
-    creation_date = assistant.created_at
-    creation_year = creation_date.year
-    creation_month = creation_date.month
-    creation_day = creation_date.day
-    randomness_constraint = "".join([str(random.choice(string.digits)) for _ in range(16)])
-    return (f"{organization_id}/{''.join(ch for ch in organization_name if ch.isalnum())}/"
-            f"{assistant_id}/{''.join(ch for ch in assistant_name if ch.isalnum())}/"
-            f"{''.join(ch for ch in llm_model_name if ch.isalnum())}/{creation_year}/{creation_month}/{creation_day}"
-            f"/{randomness_constraint}")
+    export_id = export_id
+
+    endpoint_str = f"{str(org_id)}/{str(assistant_id)}/{str(export_id)}/"
+    return endpoint_str
 
 
 def generate_orchestration_custom_api_key(assistant: Maestro):

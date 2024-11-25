@@ -114,6 +114,7 @@ INSTALLED_APPS = [
     "apps.export_assistants",
     "apps.export_leanmods",
     "apps.export_orchestrations",
+    "apps.export_voidforger",
     "apps.datasource_sql",
     "apps.datasource_nosql",
     "apps.datasource_codebase",
@@ -283,6 +284,7 @@ ENCRYPTION_SALT = os.environ.get("ENCRYPTION_SALT", default="")
 MAX_ASSISTANT_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ASSISTANT_EXPORTS_ORGANIZATION", default="5"))
 MAX_LEANMODS_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_LEANMODS_EXPORTS_ORGANIZATION", default="5"))
 MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION", default="5"))
+MAX_VOIDFORGER_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_VOIDFORGER_EXPORTS_ORGANIZATION", default="5"))
 
 WEAVIATE_CLUSTER_URL = os.environ.get("WEAVIATE_CLUSTER_URL", default="")
 WEAVIATE_API_KEY = os.environ.get("WEAVIATE_API_KEY", default="")
@@ -372,12 +374,14 @@ EXCLUDED_PAGES = [
     "/not_accredited/*",
     "/bimod_endeavours/*",
     "/integration_to_organizations/*",
-    "/app/export_assistants/api/v1/export/*",
-    "/health/export_assistants/api/v1/*",
-    "/app/export_leanmods/api/v1/export/*",
-    "/health/export_leanmods/api/v1/*",
-    "/app/export_orchestrations/api/v1/export/*",
-    "/health/export_orchestrations/api/v1/*",
+    "/app/export_assistants/exported/*",
+    "/app/export_assistants/health/*",
+    "/app/export_leanmods/exported/*",
+    "/app/export_leanmods/health/*",
+    "/app/export_orchestrations/exported/*",
+    "/app/export_orchestrations/health/*",
+    "/app/export_voidforger/exported/*",
+    "/app/export_voidforger/health/*",
     "/app/hadron_prime/hadron_node/activate/*",
     "/app/hadron_prime/hadron_node/speak/*",
     "/app/metakanban/meeting/recording/delivery/*",
@@ -393,13 +397,14 @@ EXCLUDED_PAGES = [
 
 DESIGN_DOCS_ROUTE = 'dev/design/'
 
-EXPORT_API_BASE_URL = "app/export_assistants/api/v1/export"
-EXPORT_API_HEALTH_BASE_URL = "health/export_assistants/api/v1/export"
-EXPORT_LEANMOD_API_BASE_URL = "app/export_leanmods/api/v1/export"
-EXPORT_LEANMOD_API_HEALTH_BASE_URL = "health/export_leanmods/api/v1/export"
-EXPORT_ORCHESTRATION_API_BASE_URL = "app/export_orchestrations/api/v1/export"
-EXPORT_VOIDFORGER_API_BASE_URL = "app/export_voidforger/api/v1/export"
-EXPORT_ORCHESTRATION_API_HEALTH_BASE_URL = "health/export_orchestrations/api/v1/export"
+EXPORT_API_BASE_URL = "app/export_assistants/exported/assistants"
+EXPORT_API_HEALTH_BASE_URL = "app/export_assistants/health/assistants"
+EXPORT_LEANMOD_API_BASE_URL = "app/export_leanmods/exported/leanmod_assistants"
+EXPORT_LEANMOD_API_HEALTH_BASE_URL = "app/export_leanmods/health/leanmod_assistants"
+EXPORT_ORCHESTRATION_API_BASE_URL = "app/export_orchestrations/exported/orchestrator_assistants"
+EXPORT_ORCHESTRATION_API_HEALTH_BASE_URL = "app/export_orchestrations/health/orchestrator_assistants"
+EXPORT_VOIDFORGER_API_BASE_URL = "app/export_voidforger/exported/voidforger_assistants"
+EXPORT_VOIDFORGER_API_HEALTH_BASE_URL = "app/export_voidforger/health/voidforger_assistants"
 
 LEAN_BASE_URL = BASE_URL.split("://")[-1].split(":")[0]
 CELERY_BROKER_URL = 'redis://localhost:6379/0'

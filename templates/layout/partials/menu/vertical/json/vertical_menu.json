@@ -654,6 +654,23 @@
       ]
     },
     {
+      "name": "Export VoidForger",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "export-voidforger",
+      "submenu": [
+        {
+          "name": "Export VoidForger",
+          "slug": "export-voidforger",
+          "url": "export_voidforger:create"
+        },
+        {
+          "name": "Exported VoidForgers",
+          "slug": "export-voidforger",
+          "url": "export_voidforger:list"
+        }
+      ]
+    },
+    {
       "menu_header": "Custom LLM Models"
     },
     {

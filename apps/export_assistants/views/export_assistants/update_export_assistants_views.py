@@ -33,18 +33,29 @@ logger = logging.getLogger(__name__)
 class ExportAssistantView_Update(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        exp_agent = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
+
+        exp_agent = get_object_or_404(
+            ExportAssistantAPI,
+            pk=self.kwargs['pk']
+        )
+
         context['export_assistant'] = exp_agent
         context['assistants'] = Assistant.objects.filter(
-            organization__users__in=[self.request.user]).all()
+            organization__users__in=[
+                self.request.user
+            ]
+        ).all()
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_EXPORT_ASSISTANT
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_EXPORT_ASSIST):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_EXPORT_ASSIST
+        ):
             messages.error(self.request, "You do not have permission to update Export Assistant APIs.")
             return redirect('export_assistants:list')
         ##############################
@@ -55,20 +66,31 @@ class ExportAssistantView_Update(TemplateView, LoginRequiredMixin):
             exp_agent.assistant_id = request.POST.get('assistant')
             exp_agent.request_limit_per_hour = request.POST.get('request_limit_per_hour')
             exp_agent.is_public = request.POST.get('is_public') == 'on'
+
             if exp_agent.assistant_id and exp_agent.request_limit_per_hour:
                 exp_agent.save()
                 logger.info(f"Export Assistant was updated by User: {request.user.id}.")
                 messages.success(request, "Export Assistant updated successfully.")
                 return redirect('export_assistants:list')
+
             else:
                 logger.error(f"Error updating Export Assistant by User: {request.user.id}.")
                 messages.error(request, "There was an error updating the Export Assistant.")
+
         except Exception as e:
             logger.error(f"Error updating Export Assistant: {e}")
             messages.error(request, "Error updating Export Assistant.")
+
             return redirect('export_assistants:list')
 
         context = self.get_context_data()
-        context.update({'export_assistant': exp_agent,
-                        'assistants': Assistant.objects.filter(organization__users__in=[self.request.user]).all()})
+        context.update({
+            'export_assistant': exp_agent,
+            'assistants': Assistant.objects.filter(
+                organization__users__in=[
+                    self.request.user
+                ]
+            ).all()
+        })
+
         return render(request, self.template_name, context)

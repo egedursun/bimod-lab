@@ -26,16 +26,3 @@ from config import settings
 class ExportLeanmodsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.export_leanmods'
-
-    def ready(self):
-        if settings.TESTING:
-            return
-
-        from threading import Thread
-        from django.core.management import call_command
-
-        def run_initialization_command():
-            call_command('start_exported_leanmods')
-
-        thread = Thread(target=run_initialization_command)
-        thread.start()

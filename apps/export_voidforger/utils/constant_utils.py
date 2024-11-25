@@ -26,15 +26,39 @@ class ExportVoidForgerRequestStatusCodes:
 
 
 EXPORT_VOIDFORGER_ADMIN_LIST = (
-    "voidforger", "is_public", "request_limit_per_hour", "created_by_user", "is_online", "created_at"
+    "voidforger",
+    "is_public",
+    "request_limit_per_hour",
+    "created_by_user",
+    "is_online",
+    "created_at"
 )
 EXPORT_VOIDFORGER_ADMIN_FILTER = (
-    "voidforger", "is_public", "request_limit_per_hour", "created_by_user", "is_online", "created_at",
+    "voidforger",
+    "is_public",
+    "request_limit_per_hour",
+    "created_by_user",
+    "is_online",
+    "created_at",
 )
 EXPORT_VOIDFORGER_ADMIN_SEARCH = (
-    "voidforger", "is_public", "request_limit_per_hour", "created_by_user", "is_online", "created_at"
+    "voidforger",
+    "is_public",
+    "request_limit_per_hour",
+    "created_by_user",
+    "is_online",
+    "created_at"
 )
 
-EXPORT_VOIDFORGER_LOG_ADMIN_LIST = ("export_voidforger", "timestamp")
-EXPORT_VOIDFORGER_LOG_ADMIN_FILTER = ("export_voidforger", "timestamp")
-EXPORT_VOIDFORGER_LOG_ADMIN_SEARCH = ("export_voidforger", "timestamp")
+EXPORT_VOIDFORGER_LOG_ADMIN_LIST = (
+    "export_voidforger",
+    "timestamp"
+)
+EXPORT_VOIDFORGER_LOG_ADMIN_FILTER = (
+    "export_voidforger",
+    "timestamp"
+)
+EXPORT_VOIDFORGER_LOG_ADMIN_SEARCH = (
+    "export_voidforger",
+    "timestamp"
+)

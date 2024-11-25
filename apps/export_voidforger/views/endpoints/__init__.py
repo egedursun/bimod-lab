@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: apps.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: __init__.py
+#  Last Modified: 2024-10-17 16:15:05
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:44
+#  Created: 2024-11-24 21:53:00
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,15 +14,5 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
-from django.apps import AppConfig
-
-from config import settings
-
-
-class ExportAssistantsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.export_assistants'
+from .endpoint_export_voidforger_views import *

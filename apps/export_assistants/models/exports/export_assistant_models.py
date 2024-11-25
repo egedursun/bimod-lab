@@ -27,37 +27,80 @@ from config.settings import BASE_URL, EXPORT_API_BASE_URL
 
 
 class ExportAssistantAPI(models.Model):
-    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE,
-                                     related_name='exported_assistants',
-                                     default=2, null=True, blank=True)
-    assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, related_name='exported_assistants')
+    organization = models.ForeignKey(
+        "organization.Organization",
+        on_delete=models.CASCADE,
+        related_name='exported_assistants',
+        default=2,
+        null=True,
+        blank=True
+    )
+    assistant = models.ForeignKey(
+        'assistants.Assistant',
+        on_delete=models.CASCADE,
+        related_name='exported_assistants'
+    )
     is_public = models.BooleanField(default=False)
     request_limit_per_hour = models.IntegerField(default=1000)
     is_online = models.BooleanField(default=True)
-    custom_api_key = models.CharField(max_length=1000, blank=True, null=True, unique=True)
-    endpoint = models.CharField(max_length=1000, blank=True, null=True)
+    custom_api_key = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        unique=True
+    )
+    endpoint = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                        related_name='export_assistants_created_by_user')
+    created_by_user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE,
+        related_name='export_assistants_created_by_user'
+    )
 
     def __str__(self):
         return self.assistant.name
 
     def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
     ):
-        if not self.endpoint:
-            self.endpoint = BASE_URL + "/" + EXPORT_API_BASE_URL + "/" + generate_endpoint(self.assistant)
+        super().save(
+            force_insert,
+            force_update,
+            using,
+            update_fields
+        )
+
+        if not self.endpoint or self.endpoint == "":
+            self.endpoint = BASE_URL + "/" + EXPORT_API_BASE_URL + "/" + generate_endpoint(
+                self.assistant,
+                self.id
+            )
+            self.save()
+
         if not self.custom_api_key and (not self.is_public):
             self.custom_api_key = generate_assistant_custom_api_key(self.assistant)
-        super().save(force_insert, force_update, using, update_fields)
+            self.save()
 
     def requests_in_last_hour(self):
+
         one_hour_ago = timezone.now() - timezone.timedelta(hours=1)
-        return RequestLog.objects.filter(export_assistant=self, timestamp__gte=one_hour_ago).count()
+
+        return RequestLog.objects.filter(
+            export_assistant=self,
+            timestamp__gte=one_hour_ago
+        ).count()
 
     def requests_limit_reached(self):
+
         return self.requests_in_last_hour() >= self.request_limit_per_hour
 
     class Meta:
@@ -65,11 +108,28 @@ class ExportAssistantAPI(models.Model):
         verbose_name_plural = "Export Assistant APIs"
         ordering = ['-created_at']
         indexes = [
-            models.Index(fields=['assistant']),
-            models.Index(fields=['created_by_user']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
-            models.Index(fields=['assistant', 'created_at']),
-            models.Index(fields=['assistant', 'updated_at']),
-            models.Index(fields=['assistant', 'created_by_user']),
+            models.Index(fields=[
+                'assistant'
+            ]),
+            models.Index(fields=[
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'created_by_user'
+            ]),
         ]

@@ -27,23 +27,14 @@ from config import settings
 logger = logging.getLogger(__name__)
 
 
-def generate_leanmod_assistant_endpoint(assistant: LeanAssistant):
+def generate_leanmod_assistant_endpoint(assistant: LeanAssistant, export_id: int):
     logger.info(f"Generating LeanMod Assistant Endpoint for Assistant: {assistant}")
-    agent_id = assistant.id
     org_id = assistant.organization.id
-    org_name = assistant.organization.name
-    agent_name = assistant.name
-    llm_name = assistant.llm_model.model_name
-    creation_date = assistant.created_at
-    creation_year = creation_date.year
-    creation_month = creation_date.month
-    creation_day = creation_date.day
-    randomness_constraint = "".join([str(random.choice(string.digits)) for _ in range(16)])
-    return (f"{org_id}/{''.join(ch for ch in org_name if ch.isalnum())}/"
-            f"{agent_id}/{''.join(ch for ch in agent_name if ch.isalnum())}/"
-            f"{''.join(ch for ch in llm_name if ch.isalnum())}/{creation_year}/{creation_month}/{creation_day}"
-            f"/{randomness_constraint}")
+    assistant_id = assistant.id
+    export_id = export_id
 
+    endpoint_str = f"{str(org_id)}/{str(assistant_id)}/{str(export_id)}/"
+    return endpoint_str
 
 def generate_leanmod_assistant_custom_api_key(assistant: LeanAssistant):
     logger.info(f"Generating LeanMod Assistant Custom API Key for Assistant: {assistant}")

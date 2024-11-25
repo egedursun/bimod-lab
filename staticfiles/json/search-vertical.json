@@ -481,6 +481,18 @@
       "url": "/app/export_orchestrations/list"
     },
     {
+      "name": "Export New VoidForger",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "exported-voidforger",
+      "url": "/app/export_voidforger/create"
+    },
+    {
+      "name": "Exported VoidForgers",
+      "icon": "menu-icon tf-icons ti ti-cloud-up",
+      "slug": "exported-voidforger",
+      "url": "/app/export_voidforger/list"
+    },
+    {
       "name": "Connect File System",
       "icon": "menu-icon tf-icons ti ti-server",
       "slug": "file-systems",

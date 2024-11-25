@@ -34,7 +34,10 @@ urlpatterns = [
     path('update/<int:pk>/', ExportLeanModView_Update.as_view(
         template_name="export_leanmods/update_export_leanmods.html"), name='update'),
     path('delete/<int:pk>/', ExportLeanModView_Delete.as_view(), name='delete'),
-    path('exported/<str:endpoint>/', ExportLeanmodAssistantAPIView.as_view(), name='api'),
-    path('ping/<str:endpoint>/', ExportLeanmodAssistantAPIHealthCheckView.as_view(), name='health_check'),
+
+    path('exported/leanmod_assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/', ExportLeanmodAssistantAPIView.as_view(), name='api'),
+
+    path('health/leanmod_assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/', ExportLeanmodAssistantAPIHealthCheckView.as_view(), name='health_check'),
+
     path('toggle_service/<int:pk>/', ExportLeanModView_ToggleService.as_view(), name='toggle_service'),
 ]

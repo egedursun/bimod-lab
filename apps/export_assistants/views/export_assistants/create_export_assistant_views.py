@@ -27,7 +27,6 @@ from apps.user_permissions.utils import PermissionNames
 from config.settings import MAX_ASSISTANT_EXPORTS_ORGANIZATION
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -35,19 +34,24 @@ class ExportAssistantView_Create(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user_context = self.request.user
-        agents = Assistant.objects.filter(organization__users=user_context)
+        agents = Assistant.objects.filter(
+            organization__users__in=[
+                user_context
+            ]
+        )
         context["user"] = user_context
         context["assistants"] = agents
         return context
 
     def post(self, request, *args, **kwargs):
         from apps.export_assistants.models import ExportAssistantAPI
-        from apps.export_assistants.management.commands.start_exported_assistants import start_endpoint_for_assistant
 
         ##############################
         # PERMISSION CHECK FOR - ADD_EXPORT_ASSISTANT
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_EXPORT_ASSISTANT):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_EXPORT_ASSISTANT
+        ):
             messages.error(self.request, "You do not have permission to add Export Assistant APIs.")
             return redirect('export_assistants:list')
         ##############################
@@ -58,7 +62,8 @@ class ExportAssistantView_Create(TemplateView, LoginRequiredMixin):
         limit_req_per_hour = request.POST.get('request_limit_per_hour')
 
         if ExportAssistantAPI.objects.filter(
-            created_by_user=request.user).count() > MAX_ASSISTANT_EXPORTS_ORGANIZATION:
+            created_by_user=request.user
+        ).count() > MAX_ASSISTANT_EXPORTS_ORGANIZATION:
             messages.error(request, f"Maximum number of Export Assistant APIs reached for the organization.")
             return self.render_to_response(self.get_context_data())
 
@@ -68,18 +73,22 @@ class ExportAssistantView_Create(TemplateView, LoginRequiredMixin):
 
         try:
             new_export_assistant = ExportAssistantAPI.objects.create(
-                assistant_id=agent_id, is_public=is_public, request_limit_per_hour=limit_req_per_hour,
+                assistant_id=agent_id,
+                is_public=is_public,
+                request_limit_per_hour=limit_req_per_hour,
                 created_by_user=request.user
             )
 
             org = agent.organization
             org.exported_assistants.add(new_export_assistant)
             org.save()
-            start_endpoint_for_assistant(assistant=new_export_assistant)
+
             logger.info(f"Export Assistant API was created by User: {request.user.id}.")
             messages.success(request, "Export Assistant API created successfully!")
             return redirect("export_assistants:list")
+
         except Exception as e:
+
             logger.error(f"Error creating Export Assistant API: {str(e)}")
             messages.error(request, f"Error creating Export Assistant API: {str(e)}")
             return self.render_to_response(self.get_context_data())

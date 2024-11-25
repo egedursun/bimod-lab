@@ -36,22 +36,14 @@ from config.settings import MEDIA_URL
 logger = logging.getLogger(__name__)
 
 
-def generate_endpoint(assistant: Assistant):
+def generate_endpoint(assistant: Assistant, export_id: int):
     logger.info(f"Generating endpoint for assistant {assistant.id}")
-    agent_id = assistant.id
     org_id = assistant.organization.id
-    org_name = assistant.organization.name
-    agent_name = assistant.name
-    llm_name = assistant.llm_model.model_name
-    date_created = assistant.created_at
-    year_created = date_created.year
-    month_created = date_created.month
-    day_created = date_created.day
-    randomness_constraint = "".join([str(random.choice(string.digits)) for _ in range(16)])
-    return (f"{org_id}/{''.join(ch for ch in org_name if ch.isalnum())}/"
-            f"{agent_id}/{''.join(ch for ch in agent_name if ch.isalnum())}/"
-            f"{''.join(ch for ch in llm_name if ch.isalnum())}/{year_created}/{month_created}/{day_created}"
-            f"/{randomness_constraint}")
+    assistant_id = assistant.id
+    export_id = export_id
+
+    endpoint_str = f"{str(org_id)}/{str(assistant_id)}/{str(export_id)}/"
+    return endpoint_str
 
 
 def generate_assistant_custom_api_key(assistant: Assistant):

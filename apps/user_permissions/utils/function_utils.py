@@ -203,6 +203,12 @@ def get_permissions_grouped():
             ('update_voidforger_chat_name', 'Update VoidForger Chat Name'),
             ('remove_voidforger_chats', 'Remove VoidForger Chats'),
         ],
+        "Export VoidForger Permissions": [
+            ('add_export_voidforger', 'Add Export VoidForger'),
+            ('update_export_voidforger', 'Update Export VoidForger'),
+            ('list_export_voidforger', 'List Export VoidForger'),
+            ('delete_export_voidforger', 'Delete Export VoidForger'),
+        ],
         "Starred Messages Permissions": [
             ('add_starred_messages', 'Add Starred Messages'),
             ('list_starred_messages', 'List Starred Messages'),

@@ -25,26 +25,19 @@ from config import settings
 logger = logging.getLogger(__name__)
 
 
-def generate_voidforger_endpoint(voidforger: VoidForger):
-    logger.info(f"Generating VoidForger endpoint for assistant {voidforger.id}")
-    organization_id = voidforger.llm_model.organization.id
-    organization_name = voidforger.llm_model.organization.name
-    llm_model_name = voidforger.llm_model.model_name
-    creation_date = voidforger.created_at
-    creation_year = creation_date.year
-    creation_month = creation_date.month
-    creation_day = creation_date.day
-    randomness_constraint = "".join([str(random.choice(string.digits)) for _ in range(16)])
-    return (f"{organization_id}/{''.join(ch for ch in organization_name if ch.isalnum())}/"
-            f"{''.join(ch for ch in llm_model_name if ch.isalnum())}/{creation_year}/{creation_month}/{creation_day}"
-            f"/{randomness_constraint}")
+def generate_voidforger_endpoint(voidforger: VoidForger, export_id: int):
+    org_id = voidforger.llm_model.organization.id
+    assistant_id = voidforger.id
+    export_id = export_id
+
+    endpoint_str = f"{str(org_id)}/{str(assistant_id)}/{str(export_id)}/"
+    return endpoint_str
 
 
 def generate_voidforger_custom_api_key(voidforger: VoidForger):
     logger.info(f"Generating custom API key for VoidForger {voidforger.id}")
     organization_id = voidforger.llm_model.organization.id
     organization_name = voidforger.llm_model.organization.name
-    instructions = voidforger.llm_model.instructions
     llm_model_name = voidforger.llm_model.model_name
     llm_model_temperature = voidforger.llm_model.temperature
     llm_model_max_tokens = voidforger.llm_model.maximum_tokens
@@ -54,7 +47,7 @@ def generate_voidforger_custom_api_key(voidforger: VoidForger):
                              for _ in range(64)]
 
     # merge the strings
-    merged_string = (f"{instructions}{llm_model_name}"
+    merged_string = (f"{llm_model_name}"
                      f"{llm_model_temperature}{llm_model_max_tokens}{llm_temperature}{salt}{randomness_constraint}")
     # encrypt the merged string with SHA-256
     encrypted_string = ("Bearer bimod/" +
