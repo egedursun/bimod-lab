@@ -1641,12 +1641,62 @@
   },
   {
     "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "course_section": "VoidForger Chats & Workspace",
+    "video_title": "VoidForger Workspace",
+    "video_description": "This video demonstrates how to use the Bimod VoidForger workspace on Bimod.",
+    "video_content_url": "https://www.google.com",
+    "__course": 11,
+    "__section": 3,
+    "__video": 1
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "course_section": "VoidForger Chats & Workspace",
+    "video_title": "Creating A VoidForger Chat",
+    "video_description": "This video demonstrates how to create a VoidForger chat on Bimod.",
+    "video_content_url": "https://www.google.com",
+    "__course": 11,
+    "__section": 3,
+    "__video": 2
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "course_section": "VoidForger Chats & Workspace",
+    "video_title": "Deleting VoidForger Chats",
+    "video_description": "This video demonstrates how to delete VoidForger chats on Bimod.",
+    "video_content_url": "https://www.google.com",
+    "__course": 11,
+    "__section": 3,
+    "__video": 3
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "course_section": "VoidForger Chats & Workspace",
+    "video_title": "Sending Messages",
+    "video_description": "This video demonstrates how to send messages within VoidForger workspace on Bimod.",
+    "video_content_url": "https://www.google.com",
+    "__course": 11,
+    "__section": 3,
+    "__video": 4
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "course_section": "VoidForger Chats & Workspace",
+    "video_title": "Changing the VoidForger Chat Name",
+    "video_description": "The video demonstrates how to change the VoidForger chat name on Bimod.",
+    "video_content_url": "https://www.google.com",
+    "__course": 11,
+    "__section": 3,
+    "__video": 5
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
     "course_section": "Starred Messages",
     "video_title": "Managing Starred Messages",
     "video_description": "This video demonstrates how to manage starred messages on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 3,
+    "__section": 4,
     "__video": 1
   },
   {
@@ -1656,7 +1706,7 @@
     "video_description": "The video demonstrates how to delete starred messages on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 3,
+    "__section": 4,
     "__video": 2
   },
   {
@@ -1666,7 +1716,7 @@
     "video_description": "The video demonstrates how to create message templates on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 4,
+    "__section": 5,
     "__video": 1
   },
   {
@@ -1676,7 +1726,7 @@
     "video_description": "The video demonstrates how to manage message templates on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 4,
+    "__section": 5,
     "__video": 2
   },
   {
@@ -1686,7 +1736,7 @@
     "video_description": "The video demonstrates how to update message templates on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 4,
+    "__section": 5,
     "__video": 3
   },
   {
@@ -1696,7 +1746,7 @@
     "video_description": "The video demonstrates how to delete message templates on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 4,
+    "__section": 5,
     "__video": 4
   },
   {
@@ -1706,7 +1756,7 @@
     "video_description": "The video demonstrates how to create memory statements on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 5,
+    "__section": 6,
     "__video": 1
   },
   {
@@ -1716,7 +1766,7 @@
     "video_description": "The video demonstrates how to manage memory statements on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 5,
+    "__section": 6,
     "__video": 2
   },
   {
@@ -1726,7 +1776,7 @@
     "video_description": "The video demonstrates how to delete memory statements on BimodLab.",
     "video_content_url": "https://www.google.com",
     "__course": 11,
-    "__section": 5,
+    "__section": 6,
     "__video": 3
   },
   {
@@ -5278,5 +5328,95 @@
     "__course": 31,
     "__section": 6,
     "__video": 7
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "course_section": "Configuring VoidForger for Automated Life Cycles",
+    "video_title": "Starting and Pausing VoidForger Automated Life Cycles",
+    "video_description": "This video demonstrates how to start and pause VoidForger automated life cycles.",
+    "video_content_url": "https://www.google.com",
+    "__course": 32,
+    "__section": 1,
+    "__video": 1
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "course_section": "Configuring VoidForger for Automated Life Cycles",
+    "video_title": "Manually Triggering VoidForger Cycles",
+    "video_description": "This video demonstrates how to start and pause VoidForger automated life cycles.",
+    "video_content_url": "https://www.google.com",
+    "__course": 32,
+    "__section": 1,
+    "__video": 2
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "course_section": "Configuring VoidForger for Automated Life Cycles",
+    "video_title": "Refreshing the Organizational Connections of VoidForger",
+    "video_description": "This video demonstrates how to refresh the organizational connections of VoidForger.",
+    "video_content_url": "https://www.google.com",
+    "__course": 32,
+    "__section": 1,
+    "__video": 3
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "course_section": "Configuring VoidForger for Automated Life Cycles",
+    "video_title": "Updating the Runtime Configurations of VoidForger",
+    "video_description": "This video demonstrates how to update the runtime configurations of VoidForger.",
+    "video_content_url": "https://www.google.com",
+    "__course": 32,
+    "__section": 1,
+    "__video": 4
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "course_section": "Configuring VoidForger for Automated Life Cycles",
+    "video_title": "Interpreting Life Cycle Metrics",
+    "video_description": "This video demonstrates how to interpret life cycle metrics on VoidForger Configuration.",
+    "video_content_url": "https://www.google.com",
+    "__course": 32,
+    "__section": 1,
+    "__video": 5
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "course_section": "Configuring VoidForger for Automated Life Cycles",
+    "video_title": "VoidForger Auto-Execution Logs",
+    "video_description": "This video demonstrates how to interpret and manage VoidForger auto-execution logs.",
+    "video_content_url": "https://www.google.com",
+    "__course": 32,
+    "__section": 1,
+    "__video": 6
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "course_section": "Configuring VoidForger for Automated Life Cycles",
+    "video_title": "VoidForger Action Memory Logs",
+    "video_description": "This video demonstrates how to interpret and manage VoidForger action memory logs.",
+    "video_content_url": "https://www.google.com",
+    "__course": 32,
+    "__section": 1,
+    "__video": 7
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "course_section": "Using Workspace to Communicate with VoidForger",
+    "video_title": "Using Workspace Hub to Chat",
+    "video_description": "This video demonstrates how to use Workspace Hub to chat with VoidForger.",
+    "video_content_url": "https://www.google.com",
+    "__course": 32,
+    "__section": 2,
+    "__video": 1
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "course_section": "Using Workspace to Communicate with VoidForger",
+    "video_title": "Example: Chatting with VoidForger",
+    "video_description": "This video demonstrates how to chat with VoidForger using Workspace Hub.",
+    "video_content_url": "https://www.google.com",
+    "__course": 32,
+    "__section": 2,
+    "__video": 2
   }
 ]

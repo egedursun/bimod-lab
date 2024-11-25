@@ -288,24 +288,31 @@
   },
   {
     "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
+    "section_name": "VoidForger Chats & Workspace",
+    "section_description": "This section covers the VoidForger Chats & Workspace and their features.",
+    "__course": 11,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
     "section_name": "Starred Messages",
     "section_description": "This section covers the starred messages and their features.",
     "__course": 11,
-    "__section": 3
+    "__section": 4
   },
   {
     "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
     "section_name": "Message Templates",
     "section_description": "This section covers the message templates and their features.",
     "__course": 11,
-    "__section": 4
+    "__section": 5
   },
   {
     "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
     "section_name": "Memory Statements",
     "section_description": "This section covers the memory statements and their features.",
     "__course": 11,
-    "__section": 5
+    "__section": 6
   },
   {
     "course": "BimodLab - eLLMa Scripting & Code Generation",
@@ -663,5 +670,19 @@
     "section_description": "This section covers the MetaTempo connections & time tracking.",
     "__course": 31,
     "__section": 6
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "section_name": "Configuring VoidForger for Automated Life Cycles",
+    "section_description": "This section covers the configuring VoidForger for automated life cycles.",
+    "__course": 32,
+    "__section": 1
+  },
+  {
+    "course": "VoidForger - Your Twin as a Manager: How to Maximize Automation",
+    "section_name": "Using Workspace to Communicate with VoidForger",
+    "section_description": "This section covers the using workspace to communicate with VoidForger.",
+    "__course": 32,
+    "__section": 2
   }
 ]

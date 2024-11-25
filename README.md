@@ -2,8 +2,8 @@
 
 **NOW:**
 
-- [ ] Integrate VoidForger endpoint exportation feature for the main endpoint.
 - [ ] Integrate the VoidForger endpoint feature to the Electron Copilot Desktop Client.
+- [ ] .env files for the "dev" and "prod" servers must be updated with the new fields.
 
 **DAILY:**
 
