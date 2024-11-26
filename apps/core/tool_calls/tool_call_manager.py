@@ -112,6 +112,7 @@ from apps.core.tool_calls.voidforger.input_verifiers import verify_voidforger_ol
     verify_voidforger_auto_execution_log_search_query_content, verify_voidforger_leanmod_oracle_search_query_content, \
     verify_voidforger_leanmod_oracle_command_order_content
 from apps.multimodal_chat.models import MultimodalChat
+from apps.multimodal_chat.utils import transmit_websocket_log
 from apps.video_generations.models import GeneratedVideo, VideoGeneratorConnection
 from apps.voidforger.models import VoidForgerActionMemoryLog
 from apps.voidforger.utils import VoidForgerActionTypesNames
@@ -389,12 +390,10 @@ class ToolCallManager:
             c_id, video_generation_response = self._handle_execute_video()
 
             if video_generation_response.get("error") is not None:
-
                 logger.error(f"Error occurred while generating the video: {video_generation_response.get('error')}")
                 return video_generation_response.get("error"), None, None, None
 
             if video_generation_response.get("video_url") is None:
-
                 logger.error("Video URL is NULL. A problem might have happened within the generation process.")
                 return ("Video URL is NULL. A problem might have happened within the "
                         "generation process."), None, None, None
@@ -1449,11 +1448,26 @@ class ToolCallManager:
 
         if defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VOIDFORGER_OLD_MESSAGE_SEARCH_QUERY:
 
+            transmit_websocket_log(
+                f"""🧮 VoidForger is searching previous chat messages in his long term memory.""",
+                chat_id=self.chat.id
+            )
+
             error_msg = verify_voidforger_old_message_search_query_content(
                 content=self.tool_usage_dict
             )
             if error_msg:
+                transmit_websocket_log(
+                    f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
+                    chat_id=self.chat.id
+                )
+
                 return error_msg, None, None, None
+
+            transmit_websocket_log(
+                f"""✅ VoidForger's request for long term memory search has been approved by the system.""",
+                chat_id=self.chat.id
+            )
 
             query = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1464,6 +1478,11 @@ class ToolCallManager:
                 query=query
             )
 
+            transmit_websocket_log(
+                f"""🧮 System provided VoidForger with the old messages based on the query attempt.""",
+                chat_id=self.chat.id
+            )
+
             voidforger_old_message_query_response_raw_str = json.dumps(
                 voidforger_old_message_query_response,
                 sort_keys=True,
@@ -1471,6 +1490,11 @@ class ToolCallManager:
             )
 
             output_tool_call += voidforger_old_message_query_response_raw_str
+
+            transmit_websocket_log(
+                f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
+                chat_id=self.chat.id
+            )
 
             VoidForgerActionMemoryLog.objects.create(
                 voidforger=self.assistant,
@@ -1490,11 +1514,26 @@ class ToolCallManager:
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VOIDFORGER_ACTION_HISTORY_LOG_SEARCH_QUERY:
 
+            transmit_websocket_log(
+                f"""🧮 VoidForger is checking his previous actions to find relevant information.""",
+                chat_id=self.chat.id
+            )
+
             error_msg = verify_voidforger_action_history_log_search_query_content(
                 content=self.tool_usage_dict
             )
             if error_msg:
+                transmit_websocket_log(
+                    f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
+                    chat_id=self.chat.id
+                )
+
                 return error_msg, None, None, None
+
+            transmit_websocket_log(
+                f"""✅ VoidForger's request for action history search has been approved by the system.""",
+                chat_id=self.chat.id
+            )
 
             query = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1504,6 +1543,11 @@ class ToolCallManager:
                 query=query
             )
 
+            transmit_websocket_log(
+                f"""🧮 System provided VoidForger with the action history logs based on the query attempt.""",
+                chat_id=self.chat.id
+            )
+
             voidforger_action_history_log_search_query_response_raw_str = json.dumps(
                 voidforger_action_history_log_search_query_response,
                 sort_keys=True,
@@ -1511,6 +1555,11 @@ class ToolCallManager:
             )
 
             output_tool_call += voidforger_action_history_log_search_query_response_raw_str
+
+            transmit_websocket_log(
+                f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
+                chat_id=self.chat.id
+            )
 
             VoidForgerActionMemoryLog.objects.create(
                 voidforger=self.assistant,
@@ -1530,11 +1579,26 @@ class ToolCallManager:
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VOIDFORGER_AUTO_EXECUTION_LOG_SEARCH_QUERY:
 
+            transmit_websocket_log(
+                f"""🧮 VoidForger is searching his auto-execution logs to find relevant information.""",
+                chat_id=self.chat.id
+            )
+
             error_msg = verify_voidforger_auto_execution_log_search_query_content(
                 content=self.tool_usage_dict
             )
             if error_msg:
+                transmit_websocket_log(
+                    f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
+                    chat_id=self.chat.id
+                )
+
                 return error_msg, None, None, None
+
+            transmit_websocket_log(
+                f"""✅ VoidForger's request for auto-execution memory search has been approved by the system.""",
+                chat_id=self.chat.id
+            )
 
             query = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1544,10 +1608,20 @@ class ToolCallManager:
                 query=query
             )
 
+            transmit_websocket_log(
+                f"""🧮 System provided VoidForger with the auto-execution memory logs based on the query attempt.""",
+                chat_id=self.chat.id
+            )
+
             voidforger_auto_execution_log_search_query_response_raw_str = json.dumps(
                 voidforger_auto_execution_log_search_query_response,
                 sort_keys=True,
                 default=str
+            )
+
+            transmit_websocket_log(
+                f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
+                chat_id=self.chat.id
             )
 
             output_tool_call += voidforger_auto_execution_log_search_query_response_raw_str
@@ -1570,11 +1644,26 @@ class ToolCallManager:
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VOIDFORGER_LEANMOD_ORACLE_SEARCH_QUERY:
 
+            transmit_websocket_log(
+                f"""🧮 VoidForger is using Semantor network to find worker Oracle assistants.""",
+                chat_id=self.chat.id
+            )
+
             error_msg = verify_voidforger_leanmod_oracle_search_query_content(
                 content=self.tool_usage_dict
             )
             if error_msg:
+                transmit_websocket_log(
+                    f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
+                    chat_id=self.chat.id
+                )
+
                 return error_msg, None, None, None
+
+            transmit_websocket_log(
+                f"""✅ VoidForger's request for Semantor Oracle assistant search has been approved by the system.""",
+                chat_id=self.chat.id
+            )
 
             query = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1584,12 +1673,23 @@ class ToolCallManager:
                 query=query
             )
 
+            transmit_websocket_log(
+                f"""🧮 System provided VoidForger with the Semantor network nodes based on the related Oracle search.""",
+                chat_id=self.chat.id
+            )
+
             voidforger_leanmod_oracle_search_query_response_raw_str = json.dumps(
                 voidforger_leanmod_oracle_search_query_response,
                 sort_keys=True,
                 default=str
             )
+
             output_tool_call += voidforger_leanmod_oracle_search_query_response_raw_str
+
+            transmit_websocket_log(
+                f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
+                chat_id=self.chat.id
+            )
 
             VoidForgerActionMemoryLog.objects.create(
                 voidforger=self.assistant,
@@ -1609,11 +1709,26 @@ class ToolCallManager:
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VOIDFORGER_LEANMOD_ORACLE_COMMAND_ORDER:
 
+            transmit_websocket_log(
+                f"""🧮 VoidForger is ordering an Oracle assistant to perform a task.""",
+                chat_id=self.chat.id
+            )
+
             error_msg = verify_voidforger_leanmod_oracle_command_order_content(
                 content=self.tool_usage_dict
             )
             if error_msg:
+                transmit_websocket_log(
+                    f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
+                    chat_id=self.chat.id
+                )
+
                 return error_msg, None, None, None
+
+            transmit_websocket_log(
+                f"""✅ VoidForger's request for ordering invocation of an Oracle assistant has been approved by the system.""",
+                chat_id=self.chat.id
+            )
 
             object_id = self.tool_usage_dict.get("parameters").get("object_id")
             query = self.tool_usage_dict.get("parameters").get("query")
@@ -1629,6 +1744,11 @@ class ToolCallManager:
                 f_uris=file_urls
             )
 
+            transmit_websocket_log(
+                f"""🧮 System delivered the order of VoidForger to Oracle assistant successfully through Semantor network.""",
+                chat_id=self.chat.id
+            )
+
             voidforger_leanmod_oracle_command_order_response_raw_str = json.dumps(
                 voidforger_leanmod_oracle_command_order_response,
                 sort_keys=True,
@@ -1636,6 +1756,11 @@ class ToolCallManager:
             )
 
             output_tool_call += voidforger_leanmod_oracle_command_order_response_raw_str
+
+            transmit_websocket_log(
+                f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
+                chat_id=self.chat.id
+            )
 
             VoidForgerActionMemoryLog.objects.create(
                 voidforger=self.assistant,
@@ -1657,6 +1782,11 @@ class ToolCallManager:
 
         # NO TOOL FOUND
         else:
+
+            transmit_websocket_log(
+                f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
+                chat_id=self.chat.id
+            )
 
             logger.error(f"No tool found with the descriptor: {defined_tool_descriptor}")
             return (

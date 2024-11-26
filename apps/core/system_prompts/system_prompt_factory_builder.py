@@ -195,6 +195,7 @@ from apps.core.system_prompts.voidforger.voidforger_user_information_prompt impo
 from apps.leanmod.models import LeanAssistant
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
+from apps.multimodal_chat.utils import transmit_websocket_log
 from apps.voidforger.models import VoidForger
 
 logger = logging.getLogger(__name__)
@@ -1028,7 +1029,10 @@ class SystemPromptFactoryBuilder:
             combined_system_instructions = SystemPromptFactoryBuilder.prepare_leanmod_system_prompts(
                 chat, lean_assistant, user)
 
-            prompt = {"role": role, "content": combined_system_instructions}
+            prompt = {
+                "role": role,
+                "content": combined_system_instructions
+            }
 
             try:
 
@@ -1068,6 +1072,12 @@ class SystemPromptFactoryBuilder:
 
         agent_nickname = lean_assistant.name
         generic = build_structured_primary_guidelines_leanmod()
+
+        transmit_websocket_log(
+            f"""📜 Gathered primary instructions for operations.""",
+            chat_id=chat.id
+        )
+
         agent_nickname = build_structured_name_prompt_leanmod(
             assistant_name=agent_nickname,
             chat_name=chat.chat_name
@@ -1078,17 +1088,40 @@ class SystemPromptFactoryBuilder:
         user_info = build_structured_user_information_prompt_leanmod(
             user=user
         )
+
+        transmit_websocket_log(
+            f"""👤 Analyzed user requirements and expectations.""",
+            chat_id=chat.id
+        )
+
         spatial_awareness = build_structured_place_and_time_prompt_leanmod(
             user=user
         )
+
+        transmit_websocket_log(
+            f"""🌌 Understanding the current spatial configuration and time.""",
+            chat_id=chat.id
+        )
+
         expert_network = build_expert_networks_multi_modality_prompt_leanmod(
             lean_assistant=lean_assistant
         )
+
+        transmit_websocket_log(
+            f"""🌐 Analyzing Semantor network to find information about other assistants.""",
+            chat_id=chat.id
+        )
+
         tool_instructions = build_structured_tool_usage_instructions_prompt_leanmod()
         do_expert_network = build_structured_tool_prompt__expert_network_query_execution_leanmod()
         search_semantor = build_structured_tool_prompt__semantor_search_execution_leanmod()
         do_semantor = build_structured_tool_prompt__semantor_consultation_execution_leanmod()
         do_intra_memory_search = build_tool_prompt__leanmod_context_memory()
+
+        transmit_websocket_log(
+            f"""⚒️ Thinking for communication strategies for the available tools.""",
+            chat_id=chat.id
+        )
 
         combined_system_instructions = generic
         combined_system_instructions += agent_nickname
@@ -1101,6 +1134,11 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += search_semantor
         combined_system_instructions += do_semantor
         combined_system_instructions += do_intra_memory_search
+
+        transmit_websocket_log(
+            f"""🔀 Merging and organizing knowledge and capabilities.""",
+            chat_id=chat.id
+        )
 
         return combined_system_instructions
 
@@ -1157,6 +1195,11 @@ class SystemPromptFactoryBuilder:
             current_mode=current_mode
         )
 
+        transmit_websocket_log(
+            f"""📜 Gathered primary instructions for operations.""",
+            chat_id=chat.id
+        )
+
         instructions = build_structured_instructions_prompt_voidforger(
             voidforger=voidforger
         )
@@ -1164,22 +1207,57 @@ class SystemPromptFactoryBuilder:
         user_info = build_structured_user_information_prompt_voidforger(
             user=user
         )
+
+        transmit_websocket_log(
+            f"""👤 Analyzed user requirements and expectations.""",
+            chat_id=chat.id
+        )
+
         spatial_awareness = build_structured_place_and_time_prompt_voidforger(
             user=user
         )
+
+        transmit_websocket_log(
+            f"""🌌 Understanding the current spatial configuration and time.""",
+            chat_id=chat.id
+        )
+
         tone_prompt = build_agent_personality_prompt_voidforger(
             tone=voidforger.tone
         )
+
+        transmit_websocket_log(
+            f"""🫱🏿‍🫲🏻 Meditating about his own character and personality.""",
+            chat_id=chat.id
+        )
+
         output_language = build_communication_language_prompt_voidforger(
             response_language=voidforger.response_language
         )
 
+        transmit_websocket_log(
+            f"""🌐 Adjusting the language and communication parameters.""",
+            chat_id=chat.id
+        )
+
         tool_instructions = build_structured_tool_usage_instructions_prompt_voidforger()
+
+        transmit_websocket_log(
+            f"""⚒️ Checking available tools and multi-modal capabilities.""",
+            chat_id=chat.id
+        )
+
         do_old_message_search = build_structured_tool_prompt__old_message_search_execution_voidforger()
+
         do_action_history_log_search = build_structured_tool_prompt__action_history_log_search_voidforger()
         do_auto_execution_log_search = build_structured_tool_prompt__auto_execution_log_search_voidforger()
         do_leanmod_oracle_search = build_structured_tool_prompt__leanmod_oracle_search_voidforger()
         do_leanmod_oracle_command_order = build_structured_tool_prompt__leanmod_oracle_command_order_voidforger()
+
+        transmit_websocket_log(
+            f"""⚒️ Thinking for communication strategies for the available tools.""",
+            chat_id=chat.id
+        )
 
         combined_system_instructions = generic
         combined_system_instructions += instructions
@@ -1194,5 +1272,10 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += do_auto_execution_log_search
         combined_system_instructions += do_leanmod_oracle_search
         combined_system_instructions += do_leanmod_oracle_command_order
+
+        transmit_websocket_log(
+            f"""🔀 Merging and organizing knowledge and capabilities.""",
+            chat_id=chat.id
+        )
 
         return combined_system_instructions
