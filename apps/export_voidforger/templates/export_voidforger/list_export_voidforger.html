@@ -264,6 +264,30 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
 
+      document.querySelectorAll('.btn-danger').forEach(function (button) {
+         button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const form = button.closest('a').getAttribute('href');
+
+            Swal.fire({
+               title: 'Are you sure?',
+               text: "You won't be able to revert this action.",
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonText: 'Yes, delete it!',
+               customClass: {
+                  confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+                  cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+               },
+               buttonsStyling: false
+            }).then((result) => {
+               if (result.isConfirmed) {
+                  window.location.href = form;
+               }
+            });
+         });
+      });
+
       document.querySelectorAll('.toggle-api-key').forEach(function (btn) {
         btn.addEventListener('click', function () {
           const apiKey = this.getAttribute('data-key');

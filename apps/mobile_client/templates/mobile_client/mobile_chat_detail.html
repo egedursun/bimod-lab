@@ -1,0 +1,240 @@
+{% extends layout_path %}
+
+{% load static %}
+{% block title %}Chat - Mobile{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+{% endblock vendor_css %}
+
+{% block page_css %}
+<style>
+  html {
+    zoom: 143%;
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+{% endblock page_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+<script src="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="app-chat card overflow-hidden d-flex flex-column vh-100" style="height: 100vh;">
+  <div class="chat-header d-flex justify-content-between align-items-center bg-label-primary text-white px-3 py-3 rounded border border-primary-subtle border-2 rounded" style="min-height: 60px; background-color: #2D4092; background-image: linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%);">
+    <button onclick="goBackToChatList()" class="btn">
+      <i class="fa fa-home fa-md text-white"></i>
+    </button>
+    <div class="p-3" style="min-width: 70%;">
+      <h6 id="chat-header-subtitle" class="mb-2 fw-bold text-white bg-body p-2 rounded border border-primary-subtle rounded" style="font-size: 10px;"></h6>
+      <h6 id="chat-header-title" class="mb-2 fw-bold text-white bg-body p-2 rounded border border-primary-subtle rounded" style="font-size: 10px;"></h6>
+      <div class="bg-body pb-2 ps-2 pe-1 pt-1 rounded border border-primary-subtle rounded"><i class="fa fa-robot me-2" style="font-size: 10px;"></i> <small id="chat-connection-type" class="fw-bold text-white" style="font-size: 10px;"></small></div>
+    </div>
+    <button id="delete-chat-menu" class="btn">
+      <i class="fa fa-trash text-white fa-md p-2"></i>
+    </button>
+  </div>
+
+  <hr>
+
+  <div class="px-4">
+    <img src="{% static 'img/mobile_client/banner-2.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
+  </div>
+
+  <hr>
+
+  <div id="chat-messages" class="chat-messages p-3 flex-grow-1 overflow-auto">
+    <!-- Chat messages dynamically injected here -->
+  </div>
+
+  <div class="chat-input p-2 border-top bg-body p-2 rounded border border-primary-subtle border-1 d-flex align-items-center" style="min-height: 100px;">
+    <textarea id="message-input" class="form-control me-2" rows="1" placeholder="Type your message here..."></textarea>
+    <button id="send-message-button" class="btn btn-primary p-3" style="background-color: #2D4092; background-image: linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%);">
+      <i class="fa fa-paper-plane" style="font-size: 12px;"></i>
+    </button>
+  </div>
+</div>
+{% endblock content %}
+
+{% block page_js %}
+<script>
+  function goBackToChatList() {
+    window.location.href = "/app/mobile_client/chat/list/";
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const storageKey = "bimod_connections";
+    const urlParams = new URLSearchParams(window.location.search);
+    const connectionUuid = urlParams.get("connectionUuid");
+    const chatUuid = urlParams.get("chatUuid");
+
+    const chatHeaderTitle = document.getElementById("chat-header-title");
+    const chatHeaderSubtitle = document.getElementById("chat-header-subtitle");
+    const chatConnectionType = document.getElementById("chat-connection-type");
+    const chatMessagesContainer = document.getElementById("chat-messages");
+    const sendMessageButton = document.getElementById("send-message-button");
+    const deleteChatMenu = document.getElementById("delete-chat-menu");
+    const messageInput = document.getElementById("message-input");
+
+    const connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+    const connectionCategory = Object.keys(connections).find((category) =>
+      connections[category].some((conn) => conn.uuid === connectionUuid)
+    );
+
+    const connection = connections[connectionCategory]?.find(
+      (conn) => conn.uuid === connectionUuid
+    );
+
+    const chat = connection?.chats.find((chat) => chat.uuid === chatUuid);
+
+    if (!connection || !chat) {
+      window.location.href = "/app/mobile_client/chat/list/";
+      return;
+    }
+
+    chatHeaderTitle.textContent = `CID-${chatUuid.slice(0, 20)}-TRC`;
+    chatHeaderSubtitle.textContent = `AID-${connection.uuid.slice(0, 20)}-TRC`;
+    chatConnectionType.textContent = `${connection.type}`;
+
+    function loadMessages() {
+      chatMessagesContainer.innerHTML = "";
+      if (chat.messages.length === 0) {
+        chatMessagesContainer.innerHTML = `
+          <div class="alert alert-warning text-center border border-warning border-1 rounded mt-1 p-6 ms-3 me-3">
+            <strong><small>
+            <i class="fa fa-info-circle me-2 "></i>
+            No messages yet. You can start the chat by sending a message to your agent.
+            </small></strong>
+          </div>`;
+        return;
+      }
+
+      chat.messages.forEach((msg) => {
+        const isUser = msg.role === "user";
+        const msgDiv = document.createElement("div");
+        msgDiv.className = `chat-message d-flex ${
+          isUser ? "justify-content-end" : "justify-content-start"
+        } mb-2`;
+        msgDiv.innerHTML = `
+          <div class="d-flex align-items-start">
+            <!-- Agent Avatar -->
+            <div class="${isUser ? "d-none" : "me-4"}">
+              <img src="{% static 'img/mobile_client/agent-avatar-1.jpg' %}" alt="Avatar" class="rounded border border-primary border-2 rounded" style="width: 70px; height: 70px;">
+            </div>
+            <!-- Message Content -->
+            <div class="message-content p-2 rounded ${
+              isUser ? "bg-primary text-white" : "bg-light text-dark"
+            }">
+              ${msg.content}
+              <hr>
+              <div class="text-white small mt-2 d-flex align-items-center">
+                <i class="fa fa-clock me-2"></i>
+                ${new Date(msg.sentAt).toLocaleString()}
+              </div>
+            </div>
+            <!-- User Avatar -->
+            <div class="${isUser ? "ms-4" : "d-none"}">
+              <img src="{% static 'img/mobile_client/user-avatar-1.jpg' %}" alt="Avatar" class="rounded border border-dark border-2 rounded" style="width: 70px; height: 70px;">
+            </div>
+          </div>
+        `;
+        chatMessagesContainer.appendChild(msgDiv);
+      });
+
+      chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    }
+
+    sendMessageButton.addEventListener("click", async () => {
+      const userMessage = messageInput.value.trim();
+      if (!userMessage) {
+        Swal.fire("Warning", "Please enter a message.", "warning");
+        return;
+      }
+
+      const newUserMessage = {
+        role: "user",
+        content: userMessage,
+        sentAt: new Date().toISOString(),
+      };
+
+      chat.messages.push(newUserMessage);
+      localStorage.setItem(storageKey, JSON.stringify(connections));
+      loadMessages();
+      messageInput.value = "";
+
+      try {
+        const response = await fetch(connection.endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(connection.apiKey && { Authorization: `Bearer ${connection.apiKey}` }),
+          },
+          body: JSON.stringify({
+            chat_history: chat.messages.map((m) => ({
+              role: m.role,
+              content: m.content,
+            })),
+          }),
+        });
+
+        if (!response.ok) throw new Error("Error fetching response.");
+
+        const data = await response.json();
+        const assistantMessage = {
+          role: "assistant",
+          content: data.data.message.content,
+          sentAt: new Date().toISOString(),
+        };
+
+        chat.messages.push(assistantMessage);
+        localStorage.setItem(storageKey, JSON.stringify(connections));
+        loadMessages();
+      } catch (error) {
+        Swal.fire("Error", "Failed to send message.", "error");
+      }
+    });
+
+    deleteChatMenu.addEventListener("click", () => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "This will delete the chat permanently.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+        customClass: {
+          confirmButton: "btn btn-danger",
+          cancelButton: "btn btn-secondary",
+        },
+        buttonsStyling: false,
+      }).then((result) => {
+        if (!result.isConfirmed) return;
+
+        connection.chats = connection.chats.filter((c) => c.uuid !== chatUuid);
+        localStorage.setItem(storageKey, JSON.stringify(connections));
+        Swal.fire({
+          title: "Deleted!",
+          text: "Chat has been deleted successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton: "btn btn-primary",
+          },
+          buttonsStyling: false,
+        }).then(() => {
+          window.location.href = "/app/mobile_client/chat/list/";
+        });
+      });
+    });
+
+    loadMessages();
+  });
+</script>
+{% endblock page_js %}

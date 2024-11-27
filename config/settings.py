@@ -158,6 +158,7 @@ INSTALLED_APPS = [
     "apps.semantor",
     "apps.voidforger",
     "apps.quick_setup_helper",
+    "apps.mobile_client",
 
     ########################################
     # SUPPORT
@@ -393,6 +394,7 @@ EXCLUDED_PAGES = [
     "/app/slider/public/*",
     "/app/mm_triggered_jobs/api/v1/webhook/*",
     "/app/mm_triggered_jobs/orchestration/api/v1/webhook/*",
+    "/app/mobile_client/*"
 ]
 
 DESIGN_DOCS_ROUTE = 'dev/design/'

@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: landing_page_views.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: mobile_chats_views.py
+#  Last Modified: 2024-11-26 17:39:49
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:33
+#  Created: 2024-11-26 17:40:03
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,13 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
 from django.views.generic import TemplateView
 
 from web_project import TemplateLayout, TemplateHelper
 
 
-class LandingView_Index(TemplateView):
+class MobileChatView_ChatList(TemplateView):
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
@@ -28,9 +28,6 @@ class LandingView_Index(TemplateView):
             {
                 "layout": "blank",
                 "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
-                "display_customizer": False
             }
         )
-
-        TemplateHelper.map_context(context)
         return context

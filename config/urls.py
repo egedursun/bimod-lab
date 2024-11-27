@@ -85,6 +85,7 @@ urlpatterns = [
     path("app/semantor/", include("apps.semantor.urls", namespace="semantor")),
     path("app/voidforger/", include("apps.voidforger.urls", namespace="voidforger")),
     path("app/quick_setup_helper/", include("apps.quick_setup_helper.urls", namespace="quick_setup_helper")),
+    path("app/mobile_client/", include("apps.mobile_client.urls", namespace="mobile_client")),
 
     ############################################################
     # WORK IN PROGRESS

@@ -1,0 +1,424 @@
+{% extends layout_path %}
+
+{% load static %}
+{% block title %}Configuration - Mobile{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+<style>
+  .mobile-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .form-label {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .btn {
+    font-size: 1.5rem;
+    padding: 0.75rem;
+    width: 100%;
+  }
+
+  .list-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+
+  .icon-action {
+    font-size: 1.0rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+  }
+
+  .icon-action:hover {
+    opacity: 0.8;
+  }
+
+  .action-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  html {
+    zoom: 143%;
+    display: flex;
+    flex-direction: column;
+  }
+
+</style>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+
+{% block content %}
+<nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar" style="min-height: 80px;">
+
+  <div class="container-fluid pt-2">
+    <!-- Brand -->
+    <div class="navbar-brand app-brand demo d-flex align-items-center py-0">
+      <a href="#" class="app-brand-link">
+        <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 30px;" class="me-2">
+        <span class="app-brand-text demo fw-bold" style="font-size: 1rem;">Bimod Fermion Copilot</span>
+      </a>
+    </div>
+
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+      <ul class="navbar-nav flex-row align-items-center ms-auto">
+        <!-- Home Icon -->
+        <li class="nav-item p-2">
+          <a href="{% url 'mobile_client:chat_list' %}" class="nav-link">
+            <i class="fa fa-md fa-home p-1"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-container" style="padding-top: 25%;">
+  <!-- Configuration Form -->
+  <div class="mb-4">
+    <h6 class="bg-primary p-4 w-100 rounded">
+      <strong class="text-white">
+        <i class="fa fa-plus-circle me-2"></i>
+        Connect Agent
+      </strong>
+    </h6>
+
+    <img src="{% static 'img/mobile_client/banner-3.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
+
+    <hr>
+
+    <form id="connection-form">
+      <!-- Connection Type -->
+      <div class="mb-3">
+        <label for="connection-type" class="form-label">Connection Type</label>
+        <select class="form-select" id="connection-type" style="min-height: 60px; max-height: 60px;">
+          <option value="VoidForger" selected>VoidForger</option>
+          <option value="Assistant">Assistant</option>
+          <option value="LeanMod">LeanMod</option>
+          <option value="Orchestrator">Orchestrator</option>
+        </select>
+      </div>
+
+      <!-- Connection Endpoint -->
+      <div class="mb-3">
+        <label for="connection-endpoint" class="form-label">Connection Endpoint</label>
+        <input type="text" class="form-control" id="connection-endpoint" placeholder="Enter endpoint URL" style="min-height: 60px; max-height: 60px;">
+      </div>
+
+      <hr>
+
+      <!-- Public/Private Toggle -->
+      <div class="bg-label-primary p-4 rounded border border-primary border-1 rounded">
+        <label class="form-label" for="connection-public">Is the connection public?</label>
+        <div class="mb-3 mt-3 form-check">
+          <input type="checkbox" class="form-check-input" id="connection-public" style="width: 25px; height: 25px;">
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- API Key Field -->
+      <div class="mb-3 mt-4" id="api-key-wrapper">
+        <label for="connection-api-key" class="form-label">API Key</label>
+        <input type="text" class="form-control" id="connection-api-key" placeholder="Enter API Key" style="min-height: 60px; max-height: 60px;">
+      </div>
+
+      <hr>
+
+      <!-- Submit Button -->
+      <button type="button" class="btn btn-primary mt-4 mb-4" id="btn-add-connection" style="background-color: #2D4092; background-image: linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%); min-height: 60px; max-height: 60px;">
+        <strong>
+          <i class="fa fa-magic-wand-sparkles me-2"></i>
+          Connect Agent
+        </strong>
+      </button>
+
+      <hr>
+
+    </form>
+  </div>
+
+  <!-- Existing Connections -->
+  <div>
+    <h6 class="bg-primary p-4 w-100 rounded mt-8">
+      <strong class="text-white">
+        <i class="fa fa-list me-2"></i>
+        Existing Connections
+      </strong>
+    </h6>
+
+    <img src="{% static 'img/mobile_client/banner-4.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
+
+    <hr>
+
+    <div class="mb-3">
+      <label for="group-selector" class="form-label">Filter Agent Connections by Type</label>
+      <select class="form-select" id="group-selector" style="min-height: 60px; max-height: 60px;">
+        <option value="VoidForger">VoidForger</option>
+        <option value="Assistant">Assistant</option>
+        <option value="LeanMod">LeanMod</option>
+        <option value="Orchestrator">Orchestrator</option>
+      </select>
+    </div>
+
+    <hr>
+
+    <!-- Alert Box for No Connections -->
+    <div id="no-connections-alert" class="alert alert-warning text-center d-none p-8 border border-warning border-1 rounded" role="alert">
+      <strong>
+        <i class="fa fa-exclamation-triangle me-2"></i>
+        No connections found in this category yet. Please create one using the form above.
+      </strong>
+    </div>
+
+    <!-- Connections List -->
+    <ul class="list-group" id="connections-list">
+      <!-- Connections dynamically injected here -->
+    </ul>
+  </div>
+</div>
+
+{% endblock content %}
+
+
+{% block page_js %}
+<script>
+
+  document.addEventListener("DOMContentLoaded", function () {
+  const connectionForm = document.getElementById("connection-form");
+  const connectionType = document.getElementById("connection-type");
+  const connectionEndpoint = document.getElementById("connection-endpoint");
+  const connectionPublic = document.getElementById("connection-public");
+  const apiKeyWrapper = document.getElementById("api-key-wrapper");
+  const connectionApiKey = document.getElementById("connection-api-key");
+  const btnAddConnection = document.getElementById("btn-add-connection");
+  const groupSelector = document.getElementById("group-selector");
+  const connectionsList = document.getElementById("connections-list");
+  const noConnectionsAlert = document.getElementById("no-connections-alert");
+
+  const storageKey = "bimod_connections";
+
+  // Ensure API Key visibility on load
+  function updateApiKeyVisibility() {
+    apiKeyWrapper.style.display = connectionPublic.checked ? "none" : "block";
+  }
+  updateApiKeyVisibility();
+
+  // Validate Form and Toggle Button State
+  function validateForm() {
+    const isEndpointValid = connectionEndpoint.value.trim() !== "";
+    const isApiKeyValid = connectionPublic.checked || connectionApiKey.value.trim() !== "";
+
+    // Enable or disable the button based on validation
+    btnAddConnection.disabled = !(isEndpointValid && isApiKeyValid);
+  }
+
+  // Attach Validation to Input Events
+  connectionEndpoint.addEventListener("input", validateForm);
+  connectionApiKey.addEventListener("input", validateForm);
+  connectionPublic.addEventListener("change", () => {
+    updateApiKeyVisibility();
+    validateForm();
+  });
+
+  function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = (Math.random() * 16) | 0;
+      const v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  }
+
+  // Create a New Connection Object
+  function createNewConnection(type, endpoint, isPublic, apiKey) {
+    return {
+      uuid: generateUUID(),
+      type: type,
+      endpoint: endpoint.trim(),
+      isPublic: isPublic,
+      apiKey: isPublic ? null : apiKey.trim(),
+      chats: [], // Nested array for chats
+      active: false,
+      createdAt: new Date().toISOString(),
+    };
+  }
+
+  // Add Connection
+  btnAddConnection.addEventListener("click", () => {
+    const newConnection = createNewConnection(
+      connectionType.value,
+      connectionEndpoint.value,
+      connectionPublic.checked,
+      connectionApiKey.value
+    );
+
+    let connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+    if (!connections[newConnection.type]) connections[newConnection.type] = [];
+    connections[newConnection.type].push(newConnection);
+
+    localStorage.setItem(storageKey, JSON.stringify(connections));
+    connectionForm.reset();
+    updateApiKeyVisibility();
+    validateForm();
+    loadConnections(groupSelector.value);
+  });
+
+  // Load Connections
+  function loadConnections(group) {
+    const connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+    const currentGroup = connections[group] || [];
+    connectionsList.innerHTML = "";
+
+    if (currentGroup.length === 0) {
+      noConnectionsAlert.classList.remove("d-none");
+    } else {
+      noConnectionsAlert.classList.add("d-none");
+    }
+
+    currentGroup.forEach((conn, index) => {
+      const listItem = document.createElement("li");
+      listItem.className = `list-group-item border border-2 p-4 border-primary-subtle ${conn.active ? "bg-label-success border border-1 border-success rounded" : ""}`;
+      listItem.innerHTML = `
+        <div class="d-flex flex-column">
+          ${conn.active ? '<div class="btn btn-success rounded px-1 py-2 border border-success-subtle rounded mb-4"><strong><i class="fa fa-check me-2"></i>Active Connection</strong></div>' : ""}
+          <div>
+            <div class="label d-block text-break">
+              <i class="fa fa-id-badge me-2"></i> ${conn.endpoint}
+            </div>
+          </div>
+          <br>
+          <strong><i class="fa fa-dot-circle ${conn.isPublic ? "text-success" : "text-warning"} me-2"></i> Scope: &nbsp; <small> ${conn.isPublic ? "Public" : "Private"}</small></strong>
+          <strong><i class="fa fa-dot-circle text-info me-2"></i> Connected At: &nbsp;<small> ${new Date(conn.createdAt).toLocaleString()}</small></strong>
+        </div>
+        <div class="action-icons mt-4 mb-2">
+          <button class="btn btn-sm btn-primary p-2 ${conn.active ? "disabled" : ""}" onclick="activateConnection('${group}', ${index})">
+            <strong><i class="fa fa-check me-2"></i> Activate</strong>
+          </button>
+          <button class="btn btn-sm btn-danger p-2" onclick="deleteConnection('${group}', ${index})">
+            <strong><i class="fa fa-trash me-2"></i>Delete</strong>
+          </button>
+        </div>
+      `;
+      connectionsList.appendChild(listItem);
+    });
+  }
+
+  window.deleteConnection = (group, index) => {
+      Swal.fire({
+          title: 'Are you sure?',
+          text: "This action cannot be undone.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, keep it',
+          customClass: {
+              confirmButton: 'btn btn-danger w-100 btn-lg fw-bolder m-2',
+              cancelButton: 'btn btn-secondary w-100 btn-lg fw-bolder m-2'
+          },
+          buttonsStyling: false
+      }).then((result) => {
+          if (result.isConfirmed) {
+              let connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+              connections[group].splice(index, 1);
+
+              if (!connections[group].length) delete connections[group];
+              localStorage.setItem(storageKey, JSON.stringify(connections));
+              loadConnections(group);
+
+              Swal.fire({
+                  title: 'Deleted!',
+                  text: 'The connection has been removed.',
+                  icon: 'success',
+                  confirmButtonText: 'OK',
+                  customClass: {
+                      confirmButton: 'btn btn-primary w-100 btn-lg fw-bolder m-2'
+                  },
+                  buttonsStyling: false
+              });
+          }
+      });
+  };
+
+  // Activate Connection
+  window.activateConnection = (group, index) => {
+    let connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+
+    // Deactivate all connections
+    Object.keys(connections).forEach((type) => {
+      connections[type] = connections[type].map((conn) => ({
+        ...conn,
+        active: false,
+      }));
+    });
+
+    // Activate selected connection
+    connections[group][index].active = true;
+    localStorage.setItem(storageKey, JSON.stringify(connections));
+    loadConnections(group);
+  };
+
+  // Add a Chat to a Connection
+  window.addChatToConnection = (group, index, chatUuid) => {
+    let connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+    const targetConnection = connections[group][index];
+
+    const newChat = {
+      uuid: chatUuid,
+      createdAt: new Date().toISOString(),
+      messages: [], // Nested array for messages
+    };
+
+    targetConnection.chats.push(newChat);
+    localStorage.setItem(storageKey, JSON.stringify(connections));
+  };
+
+  // Add a Message to a Chat
+  window.addMessageToChat = (group, connectionIndex, chatIndex, message) => {
+    let connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+    const targetChat = connections[group][connectionIndex].chats[chatIndex];
+
+    const newMessage = {
+      role: message.role,
+      text: message.text,
+      files: message.files || [],
+      images: message.images || [],
+      sentAt: new Date().toISOString(),
+    };
+
+    targetChat.messages.push(newMessage);
+    localStorage.setItem(storageKey, JSON.stringify(connections));
+  };
+
+  // Load Initial Group
+  loadConnections("VoidForger");
+
+  // Handle Group Selection
+  groupSelector.addEventListener("change", () => {
+    loadConnections(groupSelector.value);
+  });
+
+  // Initial Form Validation
+  validateForm();
+});
+
+
+</script>
+{% endblock page_js %}

@@ -1,0 +1,310 @@
+{% extends layout_path %}
+
+{% load static %}
+{% block title %}Chat List - Mobile{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+<style>
+  .mobile-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .btn-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.75rem;
+  }
+
+  .chat-list-item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.25rem;
+    border-radius: 8px;
+    margin-bottom: 1.0rem;
+  }
+
+  html {
+    zoom: 143%;
+    display: flex;
+    flex-direction: column;
+  }
+
+</style>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+
+{% endblock vendor_js %}
+
+{% block content %}
+<nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar" style="min-height: 80px;">
+  <div class="container-fluid pt-2">
+    <!-- Brand -->
+    <div class="navbar-brand app-brand demo d-flex align-items-center py-0">
+      <a href="#" class="app-brand-link">
+        <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 30px;" class="me-2">
+        <span class="app-brand-text demo fw-bold" style="font-size: 1rem;">Bimod Fermion Copilot</span>
+      </a>
+    </div>
+
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+      <ul class="navbar-nav flex-row align-items-center ms-auto">
+        <!-- Configuration Icon -->
+        <li class="nav-item p-1">
+          <a href="{% url 'mobile_client:chat_configuration' %}" class="nav-link">
+            <i class="fa fa-md fa-cog btn-icon"></i>
+          </a>
+        </li>
+        <!-- New Chat Icon -->
+        <li class="nav-item p-1">
+          <button id="start-new-chat" class="btn btn-icon text-success">
+            <i class="fa fa-md fa-plus-circle btn-icon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-container" style="padding-top: 25%;">
+  <h6 class="bg-primary p-4 w-100 rounded">
+    <strong class="text-white">
+      <i class="fa fa-message me-2"></i>
+      Agent Chats
+    </strong>
+  </h6>
+  <p class="p-1">
+    <small>
+      <i class="fa fa-info-circle me-2"></i>
+      <strong>Click on a chat to view your messaging history.</strong>
+    </small>
+  </p>
+
+  <hr>
+
+  <img src="{% static 'img/mobile_client/banner-1.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
+
+  <hr>
+
+  <!-- No Chats Alert -->
+  <div id="no-chats-alert" class="alert alert-warning text-center d-none p-4 border border-warning border-1 rounded" role="alert">
+    <strong>
+      <i class="fa fa-exclamation-triangle me-2"></i>
+      No chats found. Start a new chat using the button above.
+    </strong>
+  </div>
+
+  <!-- Chat List -->
+  <ul id="chat-list" class="list-group">
+    <!-- Chats dynamically injected here -->
+  </ul>
+</div>
+{% endblock content %}
+
+{% block page_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const storageKey = "bimod_connections";
+  const noChatsAlert = document.getElementById("no-chats-alert");
+  const chatList = document.getElementById("chat-list");
+  const startNewChatButton = document.getElementById("start-new-chat");
+
+  // Load Chats for Active Connection
+  function loadChats() {
+    const connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+    const activeConnection = Object.values(connections)
+      .flat()
+      .find((conn) => conn.active);
+
+    chatList.innerHTML = "";
+
+    if (!activeConnection || !activeConnection.chats.length) {
+      noChatsAlert.classList.remove("d-none");
+      return;
+    }
+
+    noChatsAlert.classList.add("d-none");
+
+    activeConnection.chats.forEach((chat, index) => {
+      const chatItem = document.createElement("li");
+      chatItem.className = "chat-list-item border border-primary-subtle p-4 border border-2 rounded bg-card";
+      chatItem.style.backgroundColor = "#2D4092";
+      chatItem.style.backgroundImage = "linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%)";
+      chatItem.innerHTML = `
+        <a onclick="redirectToChatDetail('${activeConnection.uuid}', '${chat.uuid}')">
+          <div class="chat-info">
+            <strong class="mb-0"><p class="text-white" style="font-size: 11px;"><i class="fa fa-id-badge me-2"></i> ${chat.uuid}</p></strong>
+            <strong class="mb-0"><p class="text-white" style="font-size: 11px;"><i class="fa fa-envelope me-2"></i> ${chat.messages.length} Messages</p></strong>
+            <strong class="mt-0"><small class="text-white" style="font-size: 9px;"><i class="fa fa-clock me-0"></i><i class="fa fa-plus me-1"></i> ${new Date(chat.createdAt).toLocaleString()}</small></strong>
+          </div>
+        </a>
+        <div class="chat-actions">
+          <button class="btn btn-white btn-md p-2" onclick="deleteChat('${activeConnection.uuid}', '${chat.uuid}')">
+            <i class="fa fa-trash text-danger"></i>
+          </button>
+        </div>
+      `;
+      chatList.appendChild(chatItem);
+    });
+  }
+
+  // Redirect to Chat Detail Page
+  window.redirectToChatDetail = (connectionUuid, chatUuid) => {
+    const queryParams = new URLSearchParams({
+      connectionUuid: connectionUuid,
+      chatUuid: chatUuid,
+    });
+    window.location.href = `/app/mobile_client/chat/main?${queryParams.toString()}`;
+  };
+
+  // delete chat
+window.deleteChat = (connectionUuid, chatUuid) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This action cannot be undone. The chat will be permanently deleted.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "No, keep it",
+    customClass: {
+      confirmButton: "btn btn-danger w-100 btn-lg fw-bolder m-2",
+      cancelButton: "btn btn-secondary w-100 btn-lg fw-bolder m-2",
+    },
+    buttonsStyling: false,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const connections = JSON.parse(localStorage.getItem("bimod_connections")) || {};
+      console.log("Connections Before Deletion:", connections);
+
+      const connectionCategory = Object.keys(connections).find((key) =>
+        connections[key].some((conn) => conn.uuid === connectionUuid)
+      );
+      console.log("Found Connection Category:", connectionCategory);
+
+      if (!connectionCategory) {
+        console.error("Error: Connection category not found for uuid:", connectionUuid);
+        Swal.fire({
+          title: "Error",
+          text: "Unable to locate the connection. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton: "btn btn-primary",
+          },
+        });
+        return;
+      }
+
+      const connection = connections[connectionCategory].find(
+        (conn) => conn.uuid === connectionUuid
+      );
+      console.log("Found Connection:", connection);
+
+      if (!connection) {
+        console.error("Error: Connection not found with uuid:", connectionUuid);
+        Swal.fire({
+          title: "Error",
+          text: "Connection not found. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton: "btn btn-primary",
+          },
+        });
+        return;
+      }
+
+      console.log("Deleting Chat UUID:", chatUuid);
+      console.log("Chats in Connection:", connection.chats.map((chat) => chat.uuid));
+      console.log("Type of Chat UUID:", typeof chatUuid);
+      console.log("Type of Stored UUIDs:", connection.chats.map((chat) => typeof chat.uuid));
+
+      const chatIndex = connection.chats.findIndex(
+        (chat) => String(chat.uuid) === String(chatUuid)
+      );
+      console.log("Chat Index:", chatIndex);
+
+      if (chatIndex === -1) {
+        console.error("Error: Chat not found with UUID:", chatUuid);
+        Swal.fire({
+          title: "Error",
+          text: "Chat not found. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton: "btn btn-primary",
+          },
+        });
+        return;
+      }
+
+      connection.chats.splice(chatIndex, 1);
+      console.log("Chat deleted:", chatUuid);
+
+      localStorage.setItem("bimod_connections", JSON.stringify(connections));
+      console.log("Connections After Deletion:", connections);
+
+      loadChats();
+
+      Swal.fire({
+        title: "Deleted!",
+        text: "The chat has been removed successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+        customClass: {
+          confirmButton: "btn btn-primary w-100 btn-lg fw-bolder m-2",
+        },
+        buttonsStyling: false,
+      });
+    }
+  });
+};
+
+
+
+
+  // Start a New Chat
+  startNewChatButton.addEventListener("click", () => {
+    const connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+    const activeConnection = Object.values(connections)
+      .flat()
+      .find((conn) => conn.active);
+
+    if (!activeConnection) {
+      Swal.fire({
+        title: "No Active Connection",
+        text: "Please activate a connection before starting a new chat.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        customClass: {
+          confirmButton: "btn btn-primary",
+        },
+      });
+      return;
+    }
+
+    const newChat = {
+      uuid: crypto.randomUUID(), // Generate a unique chat ID
+      createdAt: new Date().toISOString(),
+      messages: [],
+    };
+
+    activeConnection.chats.push(newChat);
+    localStorage.setItem(storageKey, JSON.stringify(connections));
+
+    // Redirect to Chat Detail Page after creating a new chat
+    redirectToChatDetail(activeConnection.uuid, newChat.uuid);
+  });
+
+  // Initial Load
+  loadChats();
+});
+</script>
+{% endblock page_js %}

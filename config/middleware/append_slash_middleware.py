@@ -24,7 +24,8 @@ class AppendSlashMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if (not request.path.endswith('/')
+        if (
+            not request.path.endswith('/')
             and not request.path.startswith('/api/')
             and not request.path.startswith('/app/export_assistants/exported/')
             and not request.path.startswith('/app/export_assistants/health/')
@@ -41,6 +42,8 @@ class AppendSlashMiddleware:
             and not request.path.startswith('/app/sheetos/public')
             and not request.path.startswith('/app/formica/public')
             and not request.path.startswith('/app/slider/public')
-            and not request.path.startswith('/app/blog_app')):
+            and not request.path.startswith('/app/blog_app')
+            and not request.path.startswith('/app/mobile_client')
+        ):
             return HttpResponsePermanentRedirect(request.path + '/')
         return self.get_response(request)
