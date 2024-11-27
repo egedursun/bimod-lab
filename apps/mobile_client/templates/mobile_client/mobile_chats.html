@@ -1,7 +1,7 @@
 {% extends layout_path %}
 
 {% load static %}
-{% block title %}Chat List - Mobile{% endblock %}
+{% block title %}Fermion Copilot - Dashboard{% endblock %}
 
 {% block vendor_css %}
 {{ block.super }}
@@ -56,16 +56,18 @@
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
       <ul class="navbar-nav flex-row align-items-center ms-auto">
+
         <!-- Configuration Icon -->
         <li class="nav-item p-1">
           <a href="{% url 'mobile_client:chat_configuration' %}" class="nav-link">
-            <i class="fa fa-md fa-cog btn-icon"></i>
+            <i class="fa fa-md fa-cog"></i>
           </a>
         </li>
+
         <!-- New Chat Icon -->
         <li class="nav-item p-1">
           <button id="start-new-chat" class="btn btn-icon text-success">
-            <i class="fa fa-md fa-plus-circle btn-icon"></i>
+            <i class="fa fa-md fa-plus-circle"></i>
           </button>
         </li>
       </ul>

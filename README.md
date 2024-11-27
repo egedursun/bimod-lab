@@ -196,6 +196,11 @@
 - **Host:** Weaviate Cloud
   - **Username:** edogandursun@gmail.com
 
+- Mobile Native Conversion No-Code Service
+  - **Service Provider:** Median Co.
+  - **Service Provider URL:** https://median.co/
+  - **Login Email:** edogandursun@gmail.com
+
 ---
 
 - Sentry Logging

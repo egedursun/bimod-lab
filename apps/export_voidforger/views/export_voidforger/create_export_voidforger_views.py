@@ -41,6 +41,35 @@ class ExportVoidForgerView_Create(TemplateView, LoginRequiredMixin):
             llm_model__organization__users__in=[user_context]
         )
 
+        if not agents:
+            try:
+                from apps.llm_core.models import LLMCore
+
+                llm_cores = LLMCore.objects.filter(
+                    organization__users__in=[user_context]
+                )
+
+                if not llm_cores:
+                    messages.error(self.request, "No LLM Cores found for the organization, you need to add one for your VoidForger instance to be created.")
+                    return redirect('export_voidforger:list')
+
+            except Exception as e:
+                logger.error(f"Error getting LLM Cores for User: {user_context.id}.")
+                messages.error(self.request, f"Error getting LLM Cores: {str(e)}")
+                return redirect('export_voidforger:list')
+
+            VoidForger.objects.create(
+                user=user_context,
+                llm_model=llm_cores[0]
+            )
+
+            agents = VoidForger.objects.filter(
+                llm_model__organization__users__in=[user_context]
+            )
+
+        else:
+            pass
+
         context["user"] = user_context
         context["assistants"] = agents
         return context
