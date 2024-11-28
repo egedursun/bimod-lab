@@ -47,6 +47,23 @@
 {% block page_js %}
   {{ block.super }}
   <script src="{% static 'js/front-page-landing.js' %}"></script>
+  <script>
+    document.getElementById('install-btn').addEventListener('click', async () => {
+        if (!deferredPrompt) {
+            console.error('No deferredPrompt available. Install prompt cannot be shown.');
+            return;
+        }
+        console.log('Install button clicked. Showing install prompt...');
+        deferredPrompt.prompt();
+
+        // Wait for user's response
+        const choiceResult = await deferredPrompt.userChoice;
+        console.log('User choice:', choiceResult.outcome);
+
+        // Clear the saved prompt
+        deferredPrompt = null;
+    });
+  </script>
 {% endblock page_js %}
 
 {% block content %}
@@ -110,6 +127,13 @@
                 </strong>
             </a>
             <hr class="mt-4">
+            <button id="install-btn" class="btn btn-secondary mt-8 mx-2"
+               style="min-width: 13vw;">
+              <strong>
+                <i class="fa fa-mobile-phone me-2"></i>
+                Download Mobile Applet
+              </strong>
+            </button>
             <a href="{% url 'bmd_academy:course_list' %}" target="_blank" class="btn btn-instagram mt-8 mx-2"
                style="min-width: 13vw;">
               <strong>

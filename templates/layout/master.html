@@ -41,6 +41,35 @@
     gtag('config', 'G-0G6DQRLJ11');
   </script>
 
+  <link rel="manifest" href="{% static 'pwa/manifest.json' %}">
+  <script>
+    if ('serviceWorker' in navigator) {
+          navigator.serviceWorker
+              .register('/app/mobile_client/service-worker.js', { scope: '/app/mobile_client/' })
+              .then((registration) => {
+                  console.log('Service Worker registered with scope:', registration.scope);
+              })
+              .catch((error) => {
+                  console.error('Service Worker registration failed:', error);
+              });
+      } else {
+        console.log('Service Workers are not supported in this browser.');
+      }
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('beforeinstallprompt event fired'); // Debug log
+        e.preventDefault(); // Prevent the mini-infobar
+        deferredPrompt = e; // Save the event for later
+        const installButton = document.getElementById('install-btn');
+        if (installButton) {
+            installButton.style.display = 'block'; // Show the install button
+        } else {
+            console.error('Install button not found.');
+        }
+    });
+  </script>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       document.body.style.zoom = "{% default_application_zoom %}";

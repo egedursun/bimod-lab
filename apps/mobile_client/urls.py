@@ -19,8 +19,10 @@ from django.urls import path
 from apps.mobile_client.views import (
     MobileChatView_ChatConfiguration,
     MobileChatView_ChatList,
-    MobileChatView_ChatDetail
+    MobileChatView_ChatDetail,
 )
+
+from apps.mobile_client.views.pwa_service_views import service_worker
 
 app_name = 'mobile_client'
 
@@ -47,5 +49,11 @@ urlpatterns = [
             template_name='mobile_client/mobile_chat_configuration.html'
         ),
         name='chat_configuration'
+    ),
+
+    path(
+        'service-worker.js',
+        service_worker,
+        name='service-worker'
     ),
 ]

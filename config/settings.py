@@ -46,7 +46,13 @@ DEBUG = os.environ.get("DEBUG", 'True').lower() in ['true', 'yes', '1']
 ENVIRONMENT = os.environ.get("DJANGO_ENVIRONMENT", default="local")
 
 ALLOWED_HOSTS = [
-    "localhost", "0.0.0.0", "127.0.0.1", "www.bimod.io", "bimod.io", "dev.bimod.io",
+    "localhost",
+    "0.0.0.0",
+    "127.0.0.1",
+    "10.0.2.2",
+    "www.bimod.io",
+    "bimod.io",
+    "dev.bimod.io",
     ".ngrok-free.app",
 ]
 
@@ -341,13 +347,23 @@ SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5050",
-    "http://localhost:8000", "http://0.0.0.0:8000", "http://127.0.0.1:8000",
-    "https://bimod.io", "https://dev.bimod.io", "https://www.bimod.io",
+    "http://localhost:8000",
+    "http://0.0.0.0:8000",
+    "http://127.0.0.1:8000",
+    "http://10.0.2.2:8000",
+    "https://bimod.io",
+    "https://dev.bimod.io",
+    "https://www.bimod.io",
 ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5050",
-    "http://localhost:8000", "http://0.0.0.0:8000", "http://127.0.0.1:8000",
-    "https://bimod.io", "https://dev.bimod.io", "https://www.bimod.io",
+    "http://localhost:8000",
+    "http://0.0.0.0:8000",
+    "http://127.0.0.1:8000",
+    "http://10.0.2.2:8000",
+    "https://bimod.io"
+    , "https://dev.bimod.io",
+    "https://www.bimod.io",
 ]
 CORS_ALLOW_CREDENTIALS = True
 

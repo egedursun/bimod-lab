@@ -18,3 +18,4 @@
 from .mobile_chats_views import *
 from .mobile_chat_detail_views import *
 from .mobile_chat_configuration_views import *
+from .pwa_service_views import *
