@@ -21,46 +21,146 @@ import wonderwords
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
-from apps.llm_transaction.utils import LLMCostsPerMillionTokens, INTERNAL_PROFIT_MARGIN_FOR_LLM, VALUE_ADDED_TAX_PERCENTAGE
+from apps.llm_transaction.utils import LLMCostsPerMillionTokens, INTERNAL_PROFIT_MARGIN_FOR_LLM, \
+    VALUE_ADDED_TAX_PERCENTAGE
 from apps.multimodal_chat.utils import BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, BIMOD_NO_TAG_PLACEHOLDER
 
 import warnings
 
+from config.consumers import FermionLogConsumer
+
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
-
 
 logger = logging.getLogger(__name__)
 
 
-def transmit_websocket_log(log_message, chat_id, stop_tag=BIMOD_STREAMING_END_TAG):
+def transmit_websocket_log(
+    log_message,
+    chat_id,
+    stop_tag=BIMOD_STREAMING_END_TAG,
+    fermion__is_fermion_supervised=False,
+    fermion__export_type=None,
+    fermion__endpoint=None
+):
     channel_layer = get_channel_layer()
     group_name = f'logs_{chat_id}'
-    async_to_sync(channel_layer.group_send)(group_name, {'type': 'send_log', 'message': log_message})
+
+    async_to_sync(channel_layer.group_send)(
+        group_name,
+        {
+            'type': 'send_log',
+            'message': log_message
+        }
+    )
+
     if stop_tag == BIMOD_STREAMING_END_TAG:
-        async_to_sync(channel_layer.group_send)(group_name, {'type': 'send_log', 'message': BIMOD_STREAMING_END_TAG})
+        async_to_sync(channel_layer.group_send)(
+            group_name,
+            {
+                'type': 'send_log',
+                'message': BIMOD_STREAMING_END_TAG
+            }
+        )
+
     elif stop_tag == BIMOD_PROCESS_END:
-        async_to_sync(channel_layer.group_send)(group_name, {'type': 'send_log', 'message': BIMOD_PROCESS_END})
+        async_to_sync(channel_layer.group_send)(
+            group_name,
+            {
+                'type': 'send_log',
+                'message': BIMOD_PROCESS_END
+            }
+        )
+
     else:
+
         if stop_tag is None or stop_tag == "" or stop_tag == BIMOD_NO_TAG_PLACEHOLDER:
             logger.info("No stop tag provided.")
             pass
+
         else:
             logger.info("Sending stop tag.")
-            async_to_sync(channel_layer.group_send)(group_name, {'type': 'send_log', 'message': stop_tag})
+            async_to_sync(channel_layer.group_send)(
+                group_name,
+                {
+                    'type': 'send_log',
+                    'message': stop_tag
+                }
+            )
+
+    #############################################
+    # FERMION MOBILE COPILOT: Check if interaction is Fermion supervised
+    #############################################
+
+    if fermion__is_fermion_supervised is True:
+
+        fermion_group_name = f'logs_{fermion__export_type}'
+
+        async_to_sync(channel_layer.group_send)(
+            fermion_group_name,
+            {
+                'type': 'send_log',
+                'message': log_message
+            }
+        )
+
+        if stop_tag == BIMOD_STREAMING_END_TAG:
+            async_to_sync(channel_layer.group_send)(
+                fermion_group_name,
+                {
+                    'type': 'send_log',
+                    'message': BIMOD_STREAMING_END_TAG
+                }
+            )
+
+        elif stop_tag == BIMOD_PROCESS_END:
+            async_to_sync(channel_layer.group_send)(
+                fermion_group_name,
+                {
+                    'type': 'send_log',
+                    'message': BIMOD_PROCESS_END
+                }
+            )
+
+        else:
+
+            if stop_tag is None or stop_tag == "" or stop_tag == BIMOD_NO_TAG_PLACEHOLDER:
+                logger.info("No stop tag provided.")
+                pass
+
+            else:
+                logger.info("Sending stop tag.")
+                async_to_sync(channel_layer.group_send)(
+                    fermion_group_name, {
+                        'type': 'send_log',
+                        'message': stop_tag
+                    }
+                )
+
+    else:
+        logger.info("Interaction is not Fermion supervised, standard web socket communication rules are attempted.")
+        pass
 
 
-def calculate_number_of_tokens(encoding_engine, text):
+def calculate_number_of_tokens(
+    encoding_engine,
+    text
+):
     encoding = tiktoken.get_encoding(encoding_engine)
     tokens = encoding.encode(str(text))
     return len(tokens)
 
 
-def calculate_llm_cost(model, number_of_tokens):
+def calculate_llm_cost(
+    model,
+    number_of_tokens
+):
     costs = LLMCostsPerMillionTokens.OPENAI_GPT_COSTS[model]
     tokens_divided_by_million = number_of_tokens / 1_000_000
+
     apx_input_cost = (tokens_divided_by_million / 2) * costs["input"]
     apx_output_cost = (tokens_divided_by_million / 2) * costs["output"]
+
     llm_cost = (apx_input_cost + apx_output_cost)
     return llm_cost
 

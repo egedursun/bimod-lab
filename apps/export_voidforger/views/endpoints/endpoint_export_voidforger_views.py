@@ -29,6 +29,7 @@ from apps.export_voidforger.models import ExportVoidForgerAPI, VoidForgerRequest
 from apps.export_voidforger.utils import ExportVoidForgerRequestStatusCodes
 from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
 from apps.voidforger.models import MultimodalVoidForgerChat, MultimodalVoidForgerChatMessage
+from config.consumers import APIExportTypesNames
 
 logger = logging.getLogger(__name__)
 
@@ -196,7 +197,21 @@ class ExportVoidForgerAPIView(View):
         body = json.loads(request.body)
 
         try:
-            chat_history = body.get('chat_history')
+            chat_history = body.get('chat_history', [])
+
+            options = body.get('options', {})
+
+            process_log_streaming_enabled = False
+            if "streaming_options" in options:
+                streaming_options = options.get("streaming_options", {})
+
+                if "process_log_streaming" in streaming_options:
+                    process_log_streaming_enabled = streaming_options.get("process_log_streaming", False)
+                else:
+                    pass
+            else:
+                pass
+
             if len(chat_history) == 0:
                 logger.error("Chat history is empty.")
                 raise ValueError("Chat history is empty.")
@@ -256,9 +271,12 @@ class ExportVoidForgerAPIView(View):
                 user=export_assistant.created_by_user
             )
 
-            llm_response_text, file_uris, image_uris = llm_client.respond(
+            llm_response_text, file_uris, image_uris = llm_client.respond_stream(
                 latest_message=user_message,
-                with_media=True
+                with_media=True,
+                fermion__is_fermion_supervised=process_log_streaming_enabled,
+                fermion__export_type=APIExportTypesNames.VOIDFORGER,
+                fermion__endpoint=endpoint
             )
 
             MultimodalVoidForgerChatMessage.objects.create(

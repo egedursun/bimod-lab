@@ -22,4 +22,7 @@ from apps.audit_logs.models import AuditLog
 HTTP_STATUS_QUERY_TAG = 'http_status'
 HTTP_STATUS_ERROR_TAG_VALUE = 'error'
 
-EXCLUDE_MODELS_FROM_AUDIT_LOGS = [AuditLog, LogEntry]
+EXCLUDE_MODELS_FROM_AUDIT_LOGS = [
+    AuditLog,
+    LogEntry
+]

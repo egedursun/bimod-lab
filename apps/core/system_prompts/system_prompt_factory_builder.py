@@ -207,7 +207,8 @@ class SystemPromptFactoryBuilder:
     def build_system_prompts(
         chat: MultimodalChat,
         assistant: Assistant,
-        user: User, role: str
+        user: User,
+        role: str
     ):
 
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
@@ -1019,7 +1020,10 @@ class SystemPromptFactoryBuilder:
         chat: MultimodalLeanChat,
         lean_assistant: LeanAssistant,
         user: User,
-        role: str
+        role: str,
+        fermion__is_fermion_supervised=False,
+        fermion__export_type=None,
+        fermion__endpoint=None
     ):
 
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
@@ -1027,7 +1031,13 @@ class SystemPromptFactoryBuilder:
 
         try:
             combined_system_instructions = SystemPromptFactoryBuilder.prepare_leanmod_system_prompts(
-                chat, lean_assistant, user)
+                chat,
+                lean_assistant,
+                user,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
+            )
 
             prompt = {
                 "role": role,
@@ -1067,7 +1077,10 @@ class SystemPromptFactoryBuilder:
     def prepare_leanmod_system_prompts(
         chat,
         lean_assistant,
-        user
+        user,
+        fermion__is_fermion_supervised=False,
+        fermion__export_type=None,
+        fermion__endpoint=None
     ):
 
         agent_nickname = lean_assistant.name
@@ -1075,7 +1088,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""📜 Gathered primary instructions for operations.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         agent_nickname = build_structured_name_prompt_leanmod(
@@ -1091,7 +1107,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""👤 Analyzed user requirements and expectations.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         spatial_awareness = build_structured_place_and_time_prompt_leanmod(
@@ -1100,7 +1119,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""🌌 Understanding the current spatial configuration and time.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         expert_network = build_expert_networks_multi_modality_prompt_leanmod(
@@ -1109,7 +1131,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""🌐 Analyzing Semantor network to find information about other assistants.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         tool_instructions = build_structured_tool_usage_instructions_prompt_leanmod()
@@ -1120,7 +1145,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""⚒️ Thinking for communication strategies for the available tools.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         combined_system_instructions = generic
@@ -1137,7 +1165,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""🔀 Merging and organizing knowledge and capabilities.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         return combined_system_instructions
@@ -1148,14 +1179,24 @@ class SystemPromptFactoryBuilder:
         voidforger: VoidForger,
         user: User,
         role: str,
-        current_mode: str
+        current_mode: str,
+        fermion__is_fermion_supervised=False,
+        fermion__export_type=None,
+        fermion__endpoint=None
     ):
 
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
 
         combined_system_instructions = SystemPromptFactoryBuilder._prepare_voidforger_system_prompts(
-            chat, voidforger, user, current_mode)
+            chat,
+            voidforger,
+            user,
+            current_mode,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
+        )
 
         prompt = {
             "role": role,
@@ -1187,7 +1228,10 @@ class SystemPromptFactoryBuilder:
         chat,
         voidforger,
         user,
-        current_mode
+        current_mode,
+        fermion__is_fermion_supervised=False,
+        fermion__export_type=None,
+        fermion__endpoint=None
     ):
 
         generic = build_structured_primary_guidelines_voidforger(
@@ -1197,7 +1241,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""📜 Gathered primary instructions for operations.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         instructions = build_structured_instructions_prompt_voidforger(
@@ -1210,7 +1257,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""👤 Analyzed user requirements and expectations.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         spatial_awareness = build_structured_place_and_time_prompt_voidforger(
@@ -1219,7 +1269,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""🌌 Understanding the current spatial configuration and time.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         tone_prompt = build_agent_personality_prompt_voidforger(
@@ -1228,7 +1281,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""🫱🏿‍🫲🏻 Meditating about his own character and personality.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         output_language = build_communication_language_prompt_voidforger(
@@ -1237,14 +1293,20 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""🌐 Adjusting the language and communication parameters.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         tool_instructions = build_structured_tool_usage_instructions_prompt_voidforger()
 
         transmit_websocket_log(
             f"""⚒️ Checking available tools and multi-modal capabilities.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         do_old_message_search = build_structured_tool_prompt__old_message_search_execution_voidforger()
@@ -1256,7 +1318,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""⚒️ Thinking for communication strategies for the available tools.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         combined_system_instructions = generic
@@ -1275,7 +1340,10 @@ class SystemPromptFactoryBuilder:
 
         transmit_websocket_log(
             f"""🔀 Merging and organizing knowledge and capabilities.""",
-            chat_id=chat.id
+            chat_id=chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         return combined_system_instructions

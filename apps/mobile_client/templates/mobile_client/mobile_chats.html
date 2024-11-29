@@ -134,25 +134,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
     noChatsAlert.classList.add("d-none");
 
+    // order by the date of last message, if no message, creation date of the chat (reverse order)
+    activeConnection.chats.sort((a, b) => {
+      const lastMessageA = a.messages[a.messages.length - 1];
+      const lastMessageB = b.messages[b.messages.length - 1];
+      const dateA = lastMessageA ? new Date(lastMessageA.createdAt) : new Date(a.createdAt);
+      const dateB = lastMessageB ? new Date(lastMessageB.createdAt) : new Date(b.createdAt);
+      return dateB - dateA;
+    });
+    activeConnection.chats.reverse();
+
     activeConnection.chats.forEach((chat, index) => {
       const chatItem = document.createElement("li");
-      chatItem.className = "chat-list-item border border-primary-subtle p-4 border border-2 rounded bg-card";
+      chatItem.className = "chat-list-item border border-primary p-4 border border-2 rounded bg-card";
       chatItem.style.backgroundColor = "#2D4092";
       chatItem.style.backgroundImage = "linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%)";
       chatItem.innerHTML = `
         <a onclick="redirectToChatDetail('${activeConnection.uuid}', '${chat.uuid}')">
           <div class="chat-info">
-            <strong class="mb-0"><p class="text-white" style="font-size: 11px;"><i class="fa fa-id-badge me-2"></i> ${chat.uuid}</p></strong>
-            <strong class="mb-0"><p class="text-white" style="font-size: 11px;"><i class="fa fa-envelope me-2"></i> ${chat.messages.length} Messages</p></strong>
-            <strong class="mt-0"><small class="text-white" style="font-size: 9px;"><i class="fa fa-clock me-0"></i><i class="fa fa-plus me-1"></i> ${new Date(chat.createdAt).toLocaleString()}</small></strong>
+            <strong class="mb-0">
+            <p class="text-white border bg-card border border-primary border-2 rounded p-2" style="font-size: 11px;">
+              <img src="{% static 'img/mobile_client/agent-avatar-1.jpg' %}" alt="Avatar" class="rounded border border-primary border-2 rounded me-2" style="width: 50px; height: 50px;">
+              VoidForger
+            </p>
+            </strong>
+            <strong class="mb-0"><p class="text-white border bg-card border border-primary border-2 rounded p-2" style="font-size: 11px;"><i class="fa fa-id-badge me-1"></i> ${chat.uuid}</p></strong>
+            <strong class="mb-0"><p class="text-white border bg-card border border-primary border-2 rounded p-2" style="font-size: 11px;"><i class="fa fa-envelope me-1"></i> ${chat.messages.length} Messages</p></strong>
+            <strong class="mb-0"><p><small class="text-white" style="font-size: 9px;"><i class="fa fa-clock me-1"></i><i class="fa fa-plus me-1"></i> ${new Date(chat.createdAt).toLocaleString()}</small></p></strong>
+            <strong class="mt-0"><p><small class="text-white" style="font-size: 9px;"><i class="fa fa-clock me-1"></i><i class="fa fa-message me-1"></i> ${chat.messages && chat.messages.length ? new Date(chat.messages[chat.messages.length - 1].sentAt).toLocaleString() : "No messages yet."}</small></p></strong>
           </div>
         </a>
         <div class="chat-actions">
-          <button class="btn btn-white btn-md p-2" onclick="deleteChat('${activeConnection.uuid}', '${chat.uuid}')">
+          <button class="btn bg-body border border-danger border-2 rounded btn-md p-2" onclick="deleteChat('${activeConnection.uuid}', '${chat.uuid}')">
             <i class="fa fa-trash text-danger"></i>
           </button>
         </div>
       `;
+
       chatList.appendChild(chatItem);
     });
   }
@@ -163,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
       connectionUuid: connectionUuid,
       chatUuid: chatUuid,
     });
-    window.location.href = `/app/mobile_client/chat/main?${queryParams.toString()}`;
+    window.location.href = `/app/mobile_client/chat/main/?${queryParams.toString()}`;
   };
 
   // delete chat

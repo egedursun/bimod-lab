@@ -109,7 +109,7 @@
       <!-- Connection Type -->
       <div class="mb-3">
         <label for="connection-type" class="form-label">Connection Type</label>
-        <select class="form-select" id="connection-type" style="min-height: 60px; max-height: 60px;">
+        <select class="form-select border border-2 border-primary rounded" id="connection-type" style="min-height: 60px; max-height: 60px;">
           <option value="VoidForger" selected>VoidForger</option>
           <option value="Assistant">Assistant</option>
           <option value="LeanMod">LeanMod</option>
@@ -165,13 +165,20 @@
       </strong>
     </h6>
 
+    <div class="alert alert-dark text-center border border-secondary border-1 rounded mt-1 p-4 ">
+      <strong><small>
+      <i class="fa fa-info-circle me-2 "></i>
+      Please active one of your connections to communicate with your agents.
+      </small></strong>
+    </div>
+
     <img src="{% static 'img/mobile_client/banner-4.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
 
     <hr>
 
     <div class="mb-3">
       <label for="group-selector" class="form-label">Filter Agent Connections by Type</label>
-      <select class="form-select" id="group-selector" style="min-height: 60px; max-height: 60px;">
+      <select class="form-select border border-2 border-primary rounded" id="group-selector" style="min-height: 60px; max-height: 60px;">
         <option value="VoidForger">VoidForger</option>
         <option value="Assistant">Assistant</option>
         <option value="LeanMod">LeanMod</option>

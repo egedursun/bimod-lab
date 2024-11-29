@@ -29,6 +29,7 @@ from apps.export_leanmods.models import ExportLeanmodAssistantAPI, LeanmodReques
 from apps.export_leanmods.utils import LeanModAssistantStatusCodes
 from apps.multimodal_chat.models import MultimodalLeanChat, MultimodalLeanChatMessage
 from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
+from config.consumers import APIExportTypesNames
 from config.settings import BASE_URL
 
 logger = logging.getLogger(__name__)
@@ -177,7 +178,21 @@ class ExportLeanmodAssistantAPIView(View):
         body = json.loads(request.body)
 
         try:
-            chat_history = body.get('chat_history')
+            chat_history = body.get('chat_history', [])
+
+            options = body.get('options', {})
+
+            process_log_streaming_enabled = False
+            if "streaming_options" in options:
+                streaming_options = options.get("streaming_options", {})
+
+                if "process_log_streaming" in streaming_options:
+                    process_log_streaming_enabled = streaming_options.get("process_log_streaming", False)
+                else:
+                    pass
+            else:
+                pass
+
             if len(chat_history) == 0:
                 logger.error("Chat history is empty.")
                 raise ValueError("Chat history is empty.")
@@ -238,9 +253,12 @@ class ExportLeanmodAssistantAPIView(View):
                 user=exp_agent.created_by_user
             )
 
-            llm_response_text, file_uris, image_uris = llm_client.respond(
+            llm_response_text, file_uris, image_uris = llm_client.respond_stream(
                 latest_message=user_message,
-                with_media=True
+                with_media=True,
+                fermion__is_fermion_supervised=process_log_streaming_enabled,
+                fermion__export_type=APIExportTypesNames.LEANMOD,
+                fermion__endpoint=endpoint
             )
 
             MultimodalLeanChatMessage.objects.create(

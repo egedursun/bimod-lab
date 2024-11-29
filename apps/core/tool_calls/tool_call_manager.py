@@ -1411,7 +1411,12 @@ class ToolCallManager:
 
     #####
 
-    def call_internal_tool_service_voidforger(self):
+    def call_internal_tool_service_voidforger(
+        self,
+        fermion__is_fermion_supervised=False,
+        fermion__export_type=None,
+        fermion__endpoint=None
+    ):
 
         logger.info("Calling the internal tool service.")
 
@@ -1450,7 +1455,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""🧮 VoidForger is searching previous chat messages in his long term memory.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             error_msg = verify_voidforger_old_message_search_query_content(
@@ -1459,14 +1467,20 @@ class ToolCallManager:
             if error_msg:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return error_msg, None, None, None
 
             transmit_websocket_log(
                 f"""✅ VoidForger's request for long term memory search has been approved by the system.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             query = self.tool_usage_dict.get("parameters").get("query")
@@ -1480,7 +1494,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""🧮 System provided VoidForger with the old messages based on the query attempt.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             voidforger_old_message_query_response_raw_str = json.dumps(
@@ -1493,7 +1510,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             VoidForgerActionMemoryLog.objects.create(
@@ -1516,7 +1536,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""🧮 VoidForger is checking his previous actions to find relevant information.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             error_msg = verify_voidforger_action_history_log_search_query_content(
@@ -1525,14 +1548,20 @@ class ToolCallManager:
             if error_msg:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return error_msg, None, None, None
 
             transmit_websocket_log(
                 f"""✅ VoidForger's request for action history search has been approved by the system.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             query = self.tool_usage_dict.get("parameters").get("query")
@@ -1545,7 +1574,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""🧮 System provided VoidForger with the action history logs based on the query attempt.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             voidforger_action_history_log_search_query_response_raw_str = json.dumps(
@@ -1558,7 +1590,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             VoidForgerActionMemoryLog.objects.create(
@@ -1581,7 +1616,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""🧮 VoidForger is searching his auto-execution logs to find relevant information.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             error_msg = verify_voidforger_auto_execution_log_search_query_content(
@@ -1590,14 +1628,20 @@ class ToolCallManager:
             if error_msg:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return error_msg, None, None, None
 
             transmit_websocket_log(
                 f"""✅ VoidForger's request for auto-execution memory search has been approved by the system.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             query = self.tool_usage_dict.get("parameters").get("query")
@@ -1610,7 +1654,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""🧮 System provided VoidForger with the auto-execution memory logs based on the query attempt.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             voidforger_auto_execution_log_search_query_response_raw_str = json.dumps(
@@ -1621,7 +1668,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             output_tool_call += voidforger_auto_execution_log_search_query_response_raw_str
@@ -1646,7 +1696,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""🧮 VoidForger is using Semantor network to find worker Oracle assistants.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             error_msg = verify_voidforger_leanmod_oracle_search_query_content(
@@ -1655,14 +1708,20 @@ class ToolCallManager:
             if error_msg:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return error_msg, None, None, None
 
             transmit_websocket_log(
                 f"""✅ VoidForger's request for Semantor Oracle assistant search has been approved by the system.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             query = self.tool_usage_dict.get("parameters").get("query")
@@ -1675,7 +1734,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""🧮 System provided VoidForger with the Semantor network nodes based on the related Oracle search.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             voidforger_leanmod_oracle_search_query_response_raw_str = json.dumps(
@@ -1688,7 +1750,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             VoidForgerActionMemoryLog.objects.create(
@@ -1711,7 +1776,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""🧮 VoidForger is ordering an Oracle assistant to perform a task.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             error_msg = verify_voidforger_leanmod_oracle_command_order_content(
@@ -1720,14 +1788,20 @@ class ToolCallManager:
             if error_msg:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return error_msg, None, None, None
 
             transmit_websocket_log(
                 f"""✅ VoidForger's request for ordering invocation of an Oracle assistant has been approved by the system.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             object_id = self.tool_usage_dict.get("parameters").get("object_id")
@@ -1746,7 +1820,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""🧮 System delivered the order of VoidForger to Oracle assistant successfully through Semantor network.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             voidforger_leanmod_oracle_command_order_response_raw_str = json.dumps(
@@ -1759,7 +1836,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             VoidForgerActionMemoryLog.objects.create(
@@ -1785,7 +1865,10 @@ class ToolCallManager:
 
             transmit_websocket_log(
                 f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             logger.error(f"No tool found with the descriptor: {defined_tool_descriptor}")

@@ -15,11 +15,18 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from django.urls import re_path, path
-from config.consumers import LogConsumer, OrchestrationLogConsumer, OrchestrationGenericLogConsumer, \
-    LeanModLogConsumer, WorkspaceLogConsumer
+from django.urls import re_path
+from config.consumers import (
+    LogConsumer,
+    OrchestrationLogConsumer,
+    OrchestrationGenericLogConsumer,
+    LeanModLogConsumer,
+    WorkspaceLogConsumer,
+    FermionLogConsumer
+)
 
 websocket_urlpatterns = [
+    re_path(r'ws/fermion_logs/(?P<connection_type>\w+)/$', FermionLogConsumer.as_asgi()),
     re_path(r'ws/logs/(?P<chat_id>\w+)/$', LogConsumer.as_asgi()),
     re_path(r'ws/lean_logs/(?P<lean_chat_id>\w+)/$', LeanModLogConsumer.as_asgi()),
     re_path(r'ws/workspace_logs/(?P<voidforger_chat_id>\w+)/$', WorkspaceLogConsumer.as_asgi()),

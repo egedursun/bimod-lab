@@ -91,10 +91,10 @@ class LeanModOldChatMessagesVectorData(models.Model):
             ##############################
 
             if self.has_raw_data_changed() or self.vector_data is None or self.vector_data == []:
-                print("Vector data has changed, generating new embedding...")
+                # print("Vector data has changed, generating new embedding...")
                 self._generate_embedding(raw_data)
             else:
-                print("Vector data has not changed, using existing embedding...")
+                # print("Vector data has not changed, using existing embedding...")
                 pass
 
             super().save(*args, **kwargs)

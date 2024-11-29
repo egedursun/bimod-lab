@@ -46,7 +46,9 @@ class OpenAIGPTVoidForgerClientManager:
         voidforger,
         multimodal_chat
     ):
-        self.connection = OpenAI(api_key=voidforger.llm_model.api_key)
+        self.connection = OpenAI(
+            api_key=voidforger.llm_model.api_key
+        )
         self.user: User = user
         self.voidforger: VoidForger = voidforger
         self.chat: MultimodalVoidForgerChat = multimodal_chat
@@ -64,14 +66,20 @@ class OpenAIGPTVoidForgerClientManager:
         prev_tool_name=None,
         with_media=False,
         file_uris=None,
-        image_uris=None
+        image_uris=None,
+        fermion__is_fermion_supervised=False,
+        fermion__export_type=None,
+        fermion__endpoint=None
     ):
         from apps.voidforger.models import MultimodalVoidForgerChatMessage
         from apps.llm_transaction.models import LLMTransaction
 
         transmit_websocket_log(
             f""" 🤖 VoidForger started processing the query... """,
-            chat_id=self.chat.id
+            chat_id=self.chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         c = self.connection
@@ -79,13 +87,19 @@ class OpenAIGPTVoidForgerClientManager:
 
         transmit_websocket_log(
             f""" 🛜 Connection information and metadata extraction completed.""",
-            chat_id=self.chat.id
+            chat_id=self.chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         try:
             transmit_websocket_log(
                 f"""🗃️ System prompt is being prepared...""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             try:
@@ -95,18 +109,27 @@ class OpenAIGPTVoidForgerClientManager:
                         voidforger=self.voidforger,
                         user=user,
                         role=ChatRoles.SYSTEM,
-                        current_mode=current_mode
+                        current_mode=current_mode,
+                        fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                        fermion__export_type=fermion__export_type,
+                        fermion__endpoint=fermion__endpoint
                     )
                 ]
 
                 transmit_websocket_log(
                     f"""⚡ System prompt preparation is completed.""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 transmit_websocket_log(
                     f"""📜 Chat history is being prepared... """,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 ext_history, encrypt_uuid = HistoryBuilder.build_voidforger(
@@ -116,7 +139,10 @@ class OpenAIGPTVoidForgerClientManager:
 
                 transmit_websocket_log(
                     f"""💥 Chat history preparation is completed.""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
             except Exception as e:
@@ -125,7 +151,10 @@ class OpenAIGPTVoidForgerClientManager:
                 transmit_websocket_log(
                     f"""🚨 A critical error occurred while preparing the prompts for the process.""",
                     chat_id=self.chat.id,
-                    stop_tag=BIMOD_PROCESS_END
+                    stop_tag=BIMOD_PROCESS_END,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return DEFAULT_ERROR_MESSAGE
@@ -133,7 +162,10 @@ class OpenAIGPTVoidForgerClientManager:
             try:
                 transmit_websocket_log(
                     f""" 📈 Transaction parameters are being inspected...""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 last_msg_cost = calculate_billable_cost_from_raw(
@@ -148,7 +180,10 @@ class OpenAIGPTVoidForgerClientManager:
                 transmit_websocket_log(
                     f"""🚨 A critical error occurred while inspecting the transaction parameters.""",
                     stop_tag=BIMOD_PROCESS_END,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return DEFAULT_ERROR_MESSAGE
@@ -157,7 +192,10 @@ class OpenAIGPTVoidForgerClientManager:
                 transmit_websocket_log(
                     f""" 🚨 Organization has insufficient balance to proceed with the transaction. Cancelling the process.""",
                     stop_tag=BIMOD_PROCESS_END,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 resp = BALANCE_OVERFLOW_LOG
@@ -184,12 +222,18 @@ class OpenAIGPTVoidForgerClientManager:
 
             transmit_websocket_log(
                 f"""♟️ Transaction parameters inspection is completed.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             transmit_websocket_log(
                 f""" 📡 Generating response in cooperation with the language model... """,
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             try:
@@ -210,20 +254,29 @@ class OpenAIGPTVoidForgerClientManager:
                 transmit_websocket_log(
                     f"""🚨 A critical error occurred while retrieving the response from the language model.""",
                     stop_tag=BIMOD_PROCESS_END,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return DEFAULT_ERROR_MESSAGE
 
             transmit_websocket_log(
                 f"""🧨 Response streamer is ready to process the response. """,
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             try:
                 transmit_websocket_log(
                     f"""⚓ Response generation is in progress...""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 acc_chunks = ""
@@ -240,23 +293,35 @@ class OpenAIGPTVoidForgerClientManager:
                         transmit_websocket_log(
                             f"""{content}""",
                             stop_tag=BIMOD_NO_TAG_PLACEHOLDER,
-                            chat_id=self.chat.id
+                            chat_id=self.chat.id,
+                            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                            fermion__export_type=fermion__export_type,
+                            fermion__endpoint=fermion__endpoint
                         )
 
                 transmit_websocket_log(
                     f"""""",
                     stop_tag=BIMOD_STREAMING_END_TAG,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 transmit_websocket_log(
                     f"""🔌 Generation iterations has been successfully accomplished. """,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 transmit_websocket_log(
                     f""" 📦 Preparing the response...""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
             except Exception as e:
@@ -265,19 +330,28 @@ class OpenAIGPTVoidForgerClientManager:
 
                     f"""🚨 A critical error occurred while processing the response from the language model.""",
                     stop_tag=BIMOD_PROCESS_END,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return DEFAULT_ERROR_MESSAGE
 
             transmit_websocket_log(
                 f"""🕹️ Raw response stream has been successfully delivered. """,
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             transmit_websocket_log(
                 f""" 🚀 Processing the transactional information...""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             try:
@@ -303,14 +377,20 @@ class OpenAIGPTVoidForgerClientManager:
                 transmit_websocket_log(
                     f""" 🚨 A critical error occurred while saving the transaction. Cancelling the process.""",
                     stop_tag=BIMOD_PROCESS_END,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return DEFAULT_ERROR_MESSAGE
 
             transmit_websocket_log(
                 f"""🧲 Transactional information has been successfully processed.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             final_resp = acc_chunks
@@ -326,7 +406,10 @@ class OpenAIGPTVoidForgerClientManager:
 
             transmit_websocket_log(
                 f"""🚨 Error occurred while processing the response. The VoidForger will attempt to retry...""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             if final_resp == DEFAULT_ERROR_MESSAGE:
@@ -342,24 +425,36 @@ class OpenAIGPTVoidForgerClientManager:
 
             transmit_websocket_log(
                 f"""🛠️ Tool usage call detected in the response. Processing with the tool execution steps... """,
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             transmit_websocket_log(
                 f""" 🧰 Identifying the valid tool usage calls... """,
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             json_content_of_resp = find_tool_call_from_json(final_resp)
 
             transmit_websocket_log(
                 f"""💡️ Tool usage calls have been identified.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             transmit_websocket_log(
                 f"""🧭 Number of tool usage calls that is delivered: {len(json_content_of_resp)}""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             tool_name = None
@@ -368,7 +463,10 @@ class OpenAIGPTVoidForgerClientManager:
 
                 transmit_websocket_log(
                     f"""🧮 Executing the tool usage call index: {i + 1} out of {len(json_content_of_resp)} ...""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 try:
@@ -379,11 +477,18 @@ class OpenAIGPTVoidForgerClientManager:
                         tool_usage_json_str=json_part
                     )
 
-                    tool_resp, tool_name, file_uris, image_uris = tool_xc.call_internal_tool_service_voidforger()
+                    tool_resp, tool_name, file_uris, image_uris = tool_xc.call_internal_tool_service_voidforger(
+                        fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                        fermion__export_type=fermion__export_type,
+                        fermion__endpoint=fermion__endpoint
+                    )
 
                     transmit_websocket_log(
                         f"""🧰 Tool usage call for: '{tool_name}' has been successfully executed. Proceeding with the next actions...""",
-                        chat_id=self.chat.id
+                        chat_id=self.chat.id,
+                        fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                        fermion__export_type=fermion__export_type,
+                        fermion__endpoint=fermion__endpoint
                     )
 
                     if tool_name is not None:
@@ -391,7 +496,10 @@ class OpenAIGPTVoidForgerClientManager:
 
                     transmit_websocket_log(
                         f""" 📦 Tool response from '{tool_name}' is being delivered to the VoidForger for further actions...""",
-                        chat_id=self.chat.id
+                        chat_id=self.chat.id,
+                        fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                        fermion__export_type=fermion__export_type,
+                        fermion__endpoint=fermion__endpoint
                     )
 
                     tool_resp_list.append(f"""
@@ -403,7 +511,10 @@ class OpenAIGPTVoidForgerClientManager:
 
                     transmit_websocket_log(
                         f"""🎯 Tool response from '{tool_name}' has been successfully delivered to the VoidForger.""",
-                        chat_id=self.chat.id
+                        chat_id=self.chat.id,
+                        fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                        fermion__export_type=fermion__export_type,
+                        fermion__endpoint=fermion__endpoint
                     )
 
                 except Exception as e:
@@ -411,7 +522,10 @@ class OpenAIGPTVoidForgerClientManager:
 
                     transmit_websocket_log(
                         f"""🚨 Error occurred while executing the tool. Attempting to recover...""",
-                        chat_id=self.chat.id
+                        chat_id=self.chat.id,
+                        fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                        fermion__export_type=fermion__export_type,
+                        fermion__endpoint=fermion__endpoint
                     )
 
                     if tool_name is not None:
@@ -438,18 +552,27 @@ class OpenAIGPTVoidForgerClientManager:
 
                     transmit_websocket_log(
                         f"""🚨 Error logs have been delivered to the VoidForger. Proceeding with the next actions...""",
-                        chat_id=self.chat.id
+                        chat_id=self.chat.id,
+                        fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                        fermion__export_type=fermion__export_type,
+                        fermion__endpoint=fermion__endpoint
                     )
 
         transmit_websocket_log(
             f"""🧠 The VoidForger is inspecting the responses of the tools...""",
-            chat_id=self.chat.id
+            chat_id=self.chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
 
         if tool_resp_list:
             transmit_websocket_log(
                 f""" 📦 Communication records for the tool requests are being prepared... """,
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             try:
@@ -468,7 +591,10 @@ class OpenAIGPTVoidForgerClientManager:
 
                 transmit_websocket_log(
                     f"""⚙️ Tool request records have been prepared. Proceeding with the next actions...""",
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
             except Exception as e:
@@ -477,7 +603,10 @@ class OpenAIGPTVoidForgerClientManager:
                 transmit_websocket_log(
                     f"""🚨 A critical error occurred while recording the tool request. Cancelling the process. """,
                     stop_tag=BIMOD_PROCESS_END,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return DEFAULT_ERROR_MESSAGE
@@ -486,7 +615,10 @@ class OpenAIGPTVoidForgerClientManager:
 
                 transmit_websocket_log(
                     f"""📦 Communication records for the tool responses are being prepared... """,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 tool_msg = MultimodalVoidForgerChatMessage.objects.create(
@@ -502,7 +634,10 @@ class OpenAIGPTVoidForgerClientManager:
 
                 transmit_websocket_log(
                     f"""⚙️ Tool response records have been prepared. Proceeding with the next actions... """,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
             except Exception as e:
@@ -510,19 +645,28 @@ class OpenAIGPTVoidForgerClientManager:
                 transmit_websocket_log(
                     f""" 🚨 A critical error occurred while recording the tool response. Cancelling the process.""",
                     stop_tag=BIMOD_PROCESS_END,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return DEFAULT_ERROR_MESSAGE
 
             transmit_websocket_log(
                 f""" ✨ Communication records for the tool requests and responses have been successfully prepared.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             transmit_websocket_log(
                 f""" 📦 Transactions are being prepared for the current level of operations...""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             try:
@@ -548,19 +692,28 @@ class OpenAIGPTVoidForgerClientManager:
                 transmit_websocket_log(
                     f""" 🚨 A critical error occurred while recording the transaction. Cancelling the process.""",
                     stop_tag=BIMOD_PROCESS_END,
-                    chat_id=self.chat.id
+                    chat_id=self.chat.id,
+                    fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                    fermion__export_type=fermion__export_type,
+                    fermion__endpoint=fermion__endpoint
                 )
 
                 return DEFAULT_ERROR_MESSAGE
 
             transmit_websocket_log(
                 f""" ❇️ Transactions have been successfully prepared for the current level of operations.""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             transmit_websocket_log(
                 f"""🚀 The VoidForger is getting prepared for the next level of operations...""",
-                chat_id=self.chat.id
+                chat_id=self.chat.id,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
 
             return self.respond_stream(
@@ -568,17 +721,23 @@ class OpenAIGPTVoidForgerClientManager:
                 prev_tool_name=prev_tool_name,
                 with_media=with_media,
                 file_uris=file_uris,
-                image_uris=image_uris
+                image_uris=image_uris,
+                fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                fermion__export_type=fermion__export_type,
+                fermion__endpoint=fermion__endpoint
             )
-
-        if with_media:
-            return final_resp, file_uris, image_uris
 
         transmit_websocket_log(
             f""" ✅ The assistant has successfully processed the query. The response is being delivered to the user...""",
             stop_tag=BIMOD_PROCESS_END,
-            chat_id=self.chat.id
+            chat_id=self.chat.id,
+            fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+            fermion__export_type=fermion__export_type,
+            fermion__endpoint=fermion__endpoint
         )
+
+        if with_media:
+            return final_resp, file_uris, image_uris
 
         return final_resp
 
@@ -589,7 +748,7 @@ class OpenAIGPTVoidForgerClientManager:
         prev_tool_name=None,
         with_media=False,
         file_uris=None,
-        image_uris=None
+        image_uris=None,
     ):
 
         from apps.voidforger.models import MultimodalVoidForgerChatMessage

@@ -29,6 +29,7 @@ from apps.export_assistants.utils import ExportAPIStatusCodes
 from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
 from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
 from apps.organization.models import Organization
+from config.consumers import APIExportTypesNames
 
 logger = logging.getLogger(__name__)
 
@@ -208,7 +209,20 @@ class ExportAssistantAPIView(View):
         body = json.loads(request.body)
 
         try:
-            chat_history = body.get('chat_history')
+            chat_history = body.get('chat_history', [])
+
+            options = body.get('options', {})
+
+            process_log_streaming_enabled = False
+            if "streaming_options" in options:
+                streaming_options = options.get("streaming_options", {})
+
+                if "process_log_streaming" in streaming_options:
+                    process_log_streaming_enabled = streaming_options.get("process_log_streaming", False)
+                else:
+                    pass
+            else:
+                pass
 
             if len(chat_history) == 0:
                 logger.error(f"Invalid chat history provided for endpoint, no chat history error: {endpoint}")
@@ -301,9 +315,12 @@ class ExportAssistantAPIView(View):
                 multimodal_chat=api_chat
             )
 
-            llm_response_text, f_uris, img_uris = llm_client.respond(
+            llm_response_text, f_uris, img_uris = llm_client.respond_stream(
                 latest_message=user_msg,
-                with_media=True
+                with_media=True,
+                fermion__is_fermion_supervised=process_log_streaming_enabled,
+                fermion__export_type=APIExportTypesNames.ASSISTANT,
+                fermion__endpoint=endpoint
             )
 
             MultimodalChatMessage.objects.create(

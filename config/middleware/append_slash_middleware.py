@@ -43,6 +43,7 @@ class AppendSlashMiddleware:
             and not request.path.startswith('/app/formica/public')
             and not request.path.startswith('/app/slider/public')
             and not request.path.startswith('/app/blog_app')
+            and not request.path.startswith('/app/mobile_client')
         ):
             return HttpResponsePermanentRedirect(request.path + '/')
         return self.get_response(request)
