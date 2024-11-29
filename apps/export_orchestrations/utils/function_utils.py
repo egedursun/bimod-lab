@@ -54,7 +54,7 @@ def generate_orchestration_custom_api_key(assistant: Maestro):
     merged_string = (f"{assistant_id}{assistant_name}{instructions}{llm_model_name}"
                      f"{llm_model_temperature}{llm_model_max_tokens}{llm_temperature}{salt}{randomness_constraint}")
     # encrypt the merged string with SHA-256
-    encrypted_string = ("Bearer bimod/" +
+    encrypted_string = ("bimod/" +
                         f"{str(organization_id)}/" +
                         f"{''.join(ch for ch in organization_name if ch.isalnum())}/" +
                         f"{str(assistant_id)}/" +

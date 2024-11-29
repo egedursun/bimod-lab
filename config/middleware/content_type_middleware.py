@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: __init__.py
-#  Last Modified: 2024-10-09 19:27:25
+#  File: content_type_middleware.py
+#  Last Modified: 2024-11-29 17:47:08
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-09 19:27:26
+#  Created: 2024-11-29 17:47:09
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -16,7 +16,11 @@
 #
 
 
-from .loading_bar_middleware import *
-from .append_slash_middleware import *
-from .session_timeout_middleware import *
-from .content_type_middleware import *
+from django.utils.deprecation import MiddlewareMixin
+
+
+class ContentTypeMiddleware(MiddlewareMixin):
+    def process_response(self, request, response):
+        if request.path.endswith("manifest.json"):
+            response["Content-Type"] = "application/json"
+        return response

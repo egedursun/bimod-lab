@@ -19,6 +19,7 @@
 class ExportVoidForgerRequestStatusCodes:
     OK = 200
     NOT_FOUND = 404
+    BAD_REQUEST = 400
     UNAUTHORIZED = 401
     TOO_MANY_REQUESTS = 429
     SERVICE_OFFLINE = 503

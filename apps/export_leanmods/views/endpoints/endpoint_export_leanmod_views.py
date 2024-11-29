@@ -30,7 +30,6 @@ from apps.export_leanmods.utils import LeanModAssistantStatusCodes
 from apps.multimodal_chat.models import MultimodalLeanChat, MultimodalLeanChatMessage
 from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
 from config.consumers import APIExportTypesNames
-from config.settings import BASE_URL
 
 logger = logging.getLogger(__name__)
 
@@ -119,7 +118,9 @@ class ExportLeanmodAssistantAPIView(View):
                 status=LeanModAssistantStatusCodes.NOT_FOUND
             )
 
-        api_key = request.headers.get('Authorization')
+        api_key = request.headers.get('Authorization', None)
+        if api_key and "Bearer" in api_key:
+            api_key = api_key.replace("Bearer ", "").strip()
 
         try:
             exp_agent = ExportLeanmodAssistantAPI.objects.get(

@@ -189,6 +189,7 @@ MIDDLEWARE = [
     "config.middleware.SessionTimeoutMiddleware",
     "config.middleware.AppendSlashMiddleware",
     "config.middleware.LoadingBarMiddleware",
+    "config.middleware.ContentTypeMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -399,6 +400,8 @@ EXCLUDED_PAGES = [
     "/app/export_orchestrations/health/*",
     "/app/export_voidforger/exported/*",
     "/app/export_voidforger/health/*",
+    "/app/export_voidforger/status/*",
+    "/app/export_voidforger/manual_trigger/*",
     "/app/hadron_prime/hadron_node/activate/*",
     "/app/hadron_prime/hadron_node/speak/*",
     "/app/metakanban/meeting/recording/delivery/*",

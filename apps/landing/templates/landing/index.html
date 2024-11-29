@@ -34,36 +34,61 @@
   {{ block.super }}
   <script src="{% static 'vendor/libs/nouislider/nouislider.js' %}"></script>
   <script src="{% static 'vendor/libs/swiper/swiper.js' %}"></script>
+  <script>
+    window.addEventListener("beforeinstallprompt", (event) => {
+        console.log("beforeinstallprompt event captured!");
+        deferredPrompt = event;
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const installButton = document.getElementById("install-btn");
+
+        // Initialize loading state
+        const loadingIcon = document.createElement("i");
+        loadingIcon.className = "fa fa-spinner fa-spin";
+        loadingIcon.style.marginRight = "8px";
+        installButton.innerHTML = "";
+        installButton.appendChild(loadingIcon);
+        installButton.appendChild(document.createTextNode(" Loading Mobile App..."));
+        installButton.disabled = true
+
+        const checkDeferredPrompt = () => {
+            if (deferredPrompt) {
+                console.log("Deferred prompt is ready.");
+                installButton.disabled = false;
+                installButton.innerHTML = '<i class="fa fa-mobile-phone"></i> Download Mobile Applet'; // Update text
+                clearInterval(checkInterval);
+            } else {
+                console.log("Deferred prompt not ready yet.");
+            }
+        };
+
+        const checkInterval = setInterval(checkDeferredPrompt, 500);
+        installButton.addEventListener("click", async () => {
+            if (!deferredPrompt) {
+                console.error("No deferredPrompt available. Install prompt cannot be shown.");
+                return;
+            }
+
+            console.log("Install button clicked. Showing install prompt...");
+            deferredPrompt.prompt();
+
+            const choiceResult = await deferredPrompt.userChoice;
+            console.log("User choice:", choiceResult.outcome);
+            deferredPrompt = null;
+        });
+    });
+  </script>
 {% endblock vendor_js %}
 
 {% block page_css %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static  'vendor/css/pages/front-page-landing.css' %}">
-  <style>
-
-  </style>
 {% endblock page_css %}
 
 {% block page_js %}
   {{ block.super }}
   <script src="{% static 'js/front-page-landing.js' %}"></script>
-  <script>
-    document.getElementById('install-btn').addEventListener('click', async () => {
-        if (!deferredPrompt) {
-            console.error('No deferredPrompt available. Install prompt cannot be shown.');
-            return;
-        }
-        console.log('Install button clicked. Showing install prompt...');
-        deferredPrompt.prompt();
-
-        // Wait for user's response
-        const choiceResult = await deferredPrompt.userChoice;
-        console.log('User choice:', choiceResult.outcome);
-
-        // Clear the saved prompt
-        deferredPrompt = null;
-    });
-  </script>
 {% endblock page_js %}
 
 {% block content %}

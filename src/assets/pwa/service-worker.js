@@ -23,17 +23,13 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-    console.log('Service Worker: Activate event triggered.');
-    console.log('Service Worker: Now ready to handle fetch events.');
     event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', (event) => {
-    console.log('Service Worker: Fetch event triggered for URL:', event.request.url);
     event.respondWith(
         fetch(event.request)
             .then((response) => {
-                console.log('Service Worker: Successfully fetched:', event.request.url);
                 return response;
             })
             .catch((error) => {

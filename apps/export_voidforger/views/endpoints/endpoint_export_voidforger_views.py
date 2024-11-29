@@ -35,6 +35,495 @@ logger = logging.getLogger(__name__)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
+class ExportVoidForgerAPIStatusView(View):
+    def get(self, request, *args, **kwargs):
+        endpoint = request.path
+        pattern = r'^/app/export_voidforger/status/voidforger_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
+        match = re.match(pattern, endpoint)
+
+        if match:
+            organization_id = int(match.group('organization_id'))
+            assistant_id = int(match.group('assistant_id'))
+            export_id = int(match.group('export_id'))
+
+        else:
+
+            return JsonResponse(
+                {
+                    "message": "Invalid path parameters.",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
+                },
+                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
+            )
+
+        try:
+            export_assistant = ExportVoidForgerAPI.objects.get(
+                id=export_id
+            )
+
+        except ExportVoidForgerAPI.DoesNotExist:
+            return JsonResponse(
+                {
+                    "message": "Invalid VoidForger endpoint",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
+                },
+                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
+            )
+
+        api_key = request.headers.get('Authorization', None)
+        if api_key and "Bearer" in api_key:
+            api_key = api_key.replace("Bearer ", "").strip()
+
+        try:
+            export_assistant: ExportVoidForgerAPI = ExportVoidForgerAPI.objects.get(
+                id=export_id
+            )
+
+        except ExportVoidForgerAPI.DoesNotExist:
+            logger.error(f"Invalid VoidForger endpoint: {endpoint}")
+
+            return JsonResponse(
+                {
+                    "message": "Invalid VoidForger endpoint",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
+                },
+                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
+            )
+
+        if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
+            logger.error(f"Invalid VoidForger API key provided for endpoint: {endpoint}")
+
+        return JsonResponse(
+            {
+                "message": "The VoidForger API key provided is invalid, please provide a valid API key.",
+                "data": {},
+                "status": ExportVoidForgerRequestStatusCodes.UNAUTHORIZED
+            },
+            status=ExportVoidForgerRequestStatusCodes.UNAUTHORIZED
+        )
+
+        if not export_assistant.is_online:
+            logger.error(f"The VoidForger endpoint is currently offline: {endpoint}")
+            return JsonResponse(
+                {
+                    "message": "The VoidForger endpoint is currently offline. Please try again later.",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.SERVICE_OFFLINE
+                },
+                status=ExportVoidForgerRequestStatusCodes.SERVICE_OFFLINE
+            )
+
+        VoidForgerRequestLog.objects.create(
+            export_voidforger=export_assistant
+        )
+
+        if export_assistant.requests_in_last_hour() > export_assistant.request_limit_per_hour:
+            logger.error(f"The VoidForger API request limit has been reached for endpoint: {endpoint}")
+
+            return JsonResponse(
+                {
+                    "error": "The VoidForger API request limit has been reached. Please try again later.",
+                    "data": {
+                        "request_limit_per_hour": export_assistant.request_limit_per_hour,
+                        "requests_in_last_hour": export_assistant.requests_in_last_hour()
+                    },
+                },
+                status=ExportVoidForgerRequestStatusCodes.TOO_MANY_REQUESTS
+            )
+
+        status_data = export_assistant.voidforger.runtime_status
+        instructions = export_assistant.voidforger.additional_instructions
+        max_actions_per_cycle = export_assistant.voidforger.maximum_actions_per_cycle
+        current_cycle = export_assistant.voidforger.auto_run_current_cycle
+        max_lifetime_cycles = export_assistant.voidforger.auto_run_max_lifetime_cycles
+        auto_run_trigger_interval_minutes = export_assistant.voidforger.auto_run_trigger_interval_minutes
+
+        return JsonResponse(
+            {
+                "message": "The VoidForger status information has been retrieved successfully.",
+                "data": {
+                    "status": status_data,
+                    "instructions": instructions,
+                    "maximum_actions_per_cycle": max_actions_per_cycle,
+                    "current_cycle": current_cycle,
+                    "max_lifetime_cycles": max_lifetime_cycles,
+                    "auto_run_trigger_interval_minutes": auto_run_trigger_interval_minutes
+                },
+                "status": ExportVoidForgerRequestStatusCodes.OK
+            },
+            status=ExportVoidForgerRequestStatusCodes.OK
+        )
+
+    def post(self, request, *args, **kwargs):
+        endpoint = request.path
+        pattern = r'^/app/export_voidforger/status/voidforger_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
+        match = re.match(pattern, endpoint)
+
+        if match:
+            organization_id = int(match.group('organization_id'))
+            assistant_id = int(match.group('assistant_id'))
+            export_id = int(match.group('export_id'))
+
+        else:
+
+            return JsonResponse(
+                {
+                    "message": "Invalid path parameters.",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
+                },
+                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
+            )
+
+        try:
+            export_assistant = ExportVoidForgerAPI.objects.get(
+                id=export_id
+            )
+
+        except ExportVoidForgerAPI.DoesNotExist:
+            return JsonResponse(
+                {
+                    "message": "Invalid VoidForger endpoint",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
+                },
+                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
+            )
+
+        api_key = request.headers.get('Authorization', None)
+        if api_key and "Bearer" in api_key:
+            api_key = api_key.replace("Bearer ", "").strip()
+
+        try:
+            export_assistant: ExportVoidForgerAPI = ExportVoidForgerAPI.objects.get(
+                id=export_id
+            )
+
+        except ExportVoidForgerAPI.DoesNotExist:
+            logger.error(f"Invalid VoidForger endpoint: {endpoint}")
+
+            return JsonResponse(
+                {
+                    "message": "Invalid VoidForger endpoint",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
+                },
+                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
+            )
+
+        if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
+            logger.error(f"Invalid VoidForger API key provided for endpoint: {endpoint}")
+
+        return JsonResponse(
+            {
+                "message": "The VoidForger API key provided is invalid, please provide a valid API key.",
+                "data": {},
+                "status": ExportVoidForgerRequestStatusCodes.UNAUTHORIZED
+            },
+            status=ExportVoidForgerRequestStatusCodes.UNAUTHORIZED
+        )
+
+        if not export_assistant.is_online:
+            logger.error(f"The VoidForger endpoint is currently offline: {endpoint}")
+            return JsonResponse(
+                {
+                    "message": "The VoidForger endpoint is currently offline. Please try again later.",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.SERVICE_OFFLINE
+                },
+                status=ExportVoidForgerRequestStatusCodes.SERVICE_OFFLINE
+            )
+
+        VoidForgerRequestLog.objects.create(
+            export_voidforger=export_assistant
+        )
+
+        if export_assistant.requests_in_last_hour() > export_assistant.request_limit_per_hour:
+            logger.error(f"The VoidForger API request limit has been reached for endpoint: {endpoint}")
+
+            return JsonResponse(
+                {
+                    "error": "The VoidForger API request limit has been reached. Please try again later.",
+                    "data": {
+                        "request_limit_per_hour": export_assistant.request_limit_per_hour,
+                        "requests_in_last_hour": export_assistant.requests_in_last_hour()
+                    },
+                },
+                status=ExportVoidForgerRequestStatusCodes.TOO_MANY_REQUESTS
+            )
+
+        try:
+            body = json.loads(request.body)
+        except Exception as e:
+            logger.error(f"Invalid request body provided: {str(e)}")
+
+            return JsonResponse(
+                {
+                    "message": "Invalid request body provided: " + str(e),
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.BAD_REQUEST
+                },
+                status=ExportVoidForgerRequestStatusCodes.BAD_REQUEST
+            )
+
+        old_status_data = export_assistant.voidforger.runtime_status
+        old_instructions = export_assistant.voidforger.additional_instructions
+        old_max_actions_per_cycle = export_assistant.voidforger.maximum_actions_per_cycle
+        old_max_lifetime_cycles = export_assistant.voidforger.auto_run_max_lifetime_cycles
+        old_auto_run_trigger_interval = export_assistant.voidforger.auto_run_trigger_interval_minutes
+
+        new_status_data = body.get('status', None)
+        new_instructions = body.get('instructions', None)
+        new_max_actions_per_cycle = body.get('maximum_actions_per_cycle', None)
+        new_max_lifetime_cycles = body.get('max_lifetime_cycles', None)
+        new_auto_run_trigger_interval = body.get('auto_run_trigger_interval_minutes', None)
+
+        try:
+            if new_status_data is not None:
+                export_assistant.voidforger.runtime_status = new_status_data
+
+                if new_status_data == VoidForgerRuntimeStatusesNames.ACTIVE:
+                    action_type = VoidForgerToggleAutoExecutionActionTypesNames.ACTIVATED
+                    metadata = {
+                        "message": "VoidForger activation has been triggered by manual user interference. Activated VoidForger auto-execution pipeline."
+                    }
+
+                elif new_status_data == VoidForgerRuntimeStatusesNames.PAUSED:
+                    action_type = VoidForgerToggleAutoExecutionActionTypesNames.PAUSED
+                    metadata = {
+                        "message": "VoidForger de-activation has been triggered by manual user interference. Paused VoidForger auto-execution pipeline."
+                    }
+
+                else:
+                    logger.error(f"Invalid VoidForger status provided: {new_status_data}")
+                    return JsonResponse(
+                        {
+                            "message": "Invalid VoidForger status provided.",
+                            "data": {},
+                            "status": ExportVoidForgerRequestStatusCodes.BAD_REQUEST
+                        },
+                        status=ExportVoidForgerRequestStatusCodes.BAD_REQUEST
+                    )
+
+                try:
+                    VoidForgerToggleAutoExecutionLog.objects.create(
+                        voidforger=voidforger,
+                        action_type=action_type,
+                        metadata=metadata,
+                        responsible_user=self.request.user
+                    )
+                except Exception as e:
+                    logger.error(f"Error creating VoidForger toggle auto execution log: {str(e)}")
+                    return JsonResponse(
+                        {
+                            "message": "Internal server error: " + str(e),
+                            "data": {},
+                            "status": ExportVoidForgerRequestStatusCodes.INTERNAL_SERVER_ERROR
+                        },
+                        status=ExportVoidForgerRequestStatusCodes.INTERNAL_SERVER_ERROR
+                    )
+
+                export_assistant.voidforger.save()
+
+            if new_instructions is not None:
+                export_assistant.voidforger.additional_instructions = new_instructions
+
+            if new_max_actions_per_cycle is not None:
+                export_assistant.voidforger.maximum_actions_per_cycle = new_max_actions_per_cycle
+
+            if new_max_lifetime_cycles is not None:
+                export_assistant.voidforger.auto_run_max_lifetime_cycles = new_max_lifetime_cycles
+
+            if new_auto_run_trigger_interval is not None:
+                export_assistant.voidforger.auto_run_trigger_interval_minutes = new_auto_run_trigger_interval
+
+            logger.info(f"Updating status for endpoint: {endpoint}")
+            export_assistant.voidforger.save()
+
+        except Exception as e:
+            logger.error(f"Error updating status for endpoint: {endpoint}")
+            return JsonResponse(
+                {
+                    "message": "Internal server error: " + str(e),
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.INTERNAL_SERVER_ERROR
+                },
+                status=ExportVoidForgerRequestStatusCodes.INTERNAL_SERVER_ERROR
+            )
+
+        logger.info(f"Status updated successfully for endpoint: {endpoint}")
+        return JsonResponse(
+            {
+                "message": "The VoidForger status information has been updated successfully.",
+                "data": {
+                    "previous": {
+                        "status": old_status_data,
+                        "instructions": old_instructions,
+                        "maximum_actions_per_cycle": old_max_actions_per_cycle,
+                        "max_lifetime_cycles": old_max_lifetime_cycles,
+                        "auto_run_trigger_interval_minutes": old_auto_run_trigger_interval
+                    },
+                    "current": {
+                        "status": new_status_data,
+                        "instructions": new_instructions,
+                        "maximum_actions_per_cycle": new_max_actions_per_cycle,
+                        "max_lifetime_cycles": new_max_lifetime_cycles,
+                        "auto_run_trigger_interval_minutes": new_auto_run_trigger_interval
+                    },
+                },
+                "status": ExportVoidForgerRequestStatusCodes.OK
+            },
+            status=ExportVoidForgerRequestStatusCodes.OK
+        )
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ExportVoidForgerAPIManualTriggerView(View):
+    def post(self, request, *args, **kwargs):
+        endpoint = request.path
+        pattern = r'^/app/export_voidforger/manual_trigger/voidforger_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
+        match = re.match(pattern, endpoint)
+
+        if match:
+            organization_id = int(match.group('organization_id'))
+            assistant_id = int(match.group('assistant_id'))
+            export_id = int(match.group('export_id'))
+
+        else:
+
+            return JsonResponse(
+                {
+                    "message": "Invalid path parameters.",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
+                },
+                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
+            )
+
+        try:
+            export_assistant = ExportVoidForgerAPI.objects.get(
+                id=export_id
+            )
+
+        except ExportVoidForgerAPI.DoesNotExist:
+            return JsonResponse(
+                {
+                    "message": "Invalid VoidForger endpoint",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
+                },
+                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
+            )
+
+        api_key = request.headers.get('Authorization', None)
+        if api_key and "Bearer" in api_key:
+            api_key = api_key.replace("Bearer ", "").strip()
+
+        try:
+            export_assistant: ExportVoidForgerAPI = ExportVoidForgerAPI.objects.get(
+                id=export_id
+            )
+
+        except ExportVoidForgerAPI.DoesNotExist:
+            logger.error(f"Invalid VoidForger endpoint: {endpoint}")
+
+            return JsonResponse(
+                {
+                    "message": "Invalid VoidForger endpoint",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
+                },
+                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
+            )
+
+        if (not export_assistant.is_public) and export_assistant.custom_api_key != api_key:
+            logger.error(f"Invalid VoidForger API key provided for endpoint: {endpoint}")
+
+        return JsonResponse(
+            {
+                "message": "The VoidForger API key provided is invalid, please provide a valid API key.",
+                "data": {},
+                "status": ExportVoidForgerRequestStatusCodes.UNAUTHORIZED
+            },
+            status=ExportVoidForgerRequestStatusCodes.UNAUTHORIZED
+        )
+
+        if not export_assistant.is_online:
+            logger.error(f"The VoidForger endpoint is currently offline: {endpoint}")
+            return JsonResponse(
+                {
+                    "message": "The VoidForger endpoint is currently offline. Please try again later.",
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.SERVICE_OFFLINE
+                },
+                status=ExportVoidForgerRequestStatusCodes.SERVICE_OFFLINE
+            )
+
+        VoidForgerRequestLog.objects.create(
+            export_voidforger=export_assistant
+        )
+
+        if export_assistant.requests_in_last_hour() > export_assistant.request_limit_per_hour:
+            logger.error(f"The VoidForger API request limit has been reached for endpoint: {endpoint}")
+
+            return JsonResponse(
+                {
+                    "error": "The VoidForger API request limit has been reached. Please try again later.",
+                    "data": {
+                        "request_limit_per_hour": export_assistant.request_limit_per_hour,
+                        "requests_in_last_hour": export_assistant.requests_in_last_hour()
+                    },
+                },
+                status=ExportVoidForgerRequestStatusCodes.TOO_MANY_REQUESTS
+            )
+
+        try:
+            voidforger_id = export_assistant.voidforger.id
+
+            xc = VoidForgerExecutionManager(
+                user=self.request.user,
+                voidforger_id=voidforger_id
+            )
+
+            error = xc.run_cycle(trigger=VoidForgerModesNames.MANUAL)
+            if error:
+                return JsonResponse(
+                    {
+                        "message": "There has been an error triggering the VoidForger manual run and/or during the execution.",
+                        "data": {
+                            "voidforger_id": voidforger_id,
+                            "error": str(error),
+                        },
+                        "status": ExportVoidForgerRequestStatusCodes.INTERNAL_SERVER_ERROR
+                    },
+                )
+
+        except Exception as e:
+
+            logger.error(f"Error triggering manual run for endpoint: {endpoint}")
+            return JsonResponse(
+                {
+                    "message": "Internal server error: " + str(e),
+                    "data": {},
+                    "status": ExportVoidForgerRequestStatusCodes.INTERNAL_SERVER_ERROR
+                },
+                status=ExportVoidForgerRequestStatusCodes.INTERNAL_SERVER_ERROR
+            )
+
+        return JsonResponse(
+            {
+                "message": "The VoidForger manual trigger order has been delivered successfully.",
+                "data": {},
+                "status": ExportVoidForgerRequestStatusCodes.OK
+            },
+            status=ExportVoidForgerRequestStatusCodes.OK
+        )
+
+
+@method_decorator(csrf_exempt, name='dispatch')
 class ExportVoidForgerAPIHealthCheckView(View):
     def post(self, request, *args, **kwargs):
         endpoint = request.path
@@ -134,7 +623,9 @@ class ExportVoidForgerAPIView(View):
                 status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
             )
 
-        api_key = request.headers.get('Authorization')
+        api_key = request.headers.get('Authorization', None)
+        if api_key and "Bearer" in api_key:
+            api_key = api_key.replace("Bearer ", "").strip()
 
         try:
             export_assistant: ExportVoidForgerAPI = ExportVoidForgerAPI.objects.get(

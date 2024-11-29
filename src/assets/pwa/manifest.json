@@ -15,7 +15,7 @@
   ],
   "start_url": "/app/mobile_client/chat/list/",
   "display": "standalone",
-  "scope": "/app/mobile_client/",
+  "scope": "/",
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }

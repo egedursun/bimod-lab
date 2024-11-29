@@ -1,3 +1,22 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: mobile_chat_configuration.html
+  ~ Last Modified: 2024-11-29 02:48:23
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-29 03:16:43
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
 {% extends layout_path %}
 
 {% load static %}
@@ -5,6 +24,7 @@
 
 {% block vendor_css %}
 {{ block.super }}
+
 <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}">
 <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
 <style>
@@ -29,9 +49,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
     margin-bottom: 0.5rem;
   }
 
@@ -70,9 +87,10 @@
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar" style="min-height: 80px;">
 
   <div class="container-fluid pt-2">
+
     <!-- Brand -->
     <div class="navbar-brand app-brand demo d-flex align-items-center py-0">
-      <a href="#" class="app-brand-link">
+      <a href="{% url 'mobile_client:chat_list' %}" class="app-brand-link">
         <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 30px;" class="me-2">
         <span class="app-brand-text demo fw-bold" style="font-size: 1rem;">Bimod Fermion Copilot</span>
       </a>
@@ -81,11 +99,19 @@
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
       <ul class="navbar-nav flex-row align-items-center ms-auto">
         <!-- Home Icon -->
-        <li class="nav-item p-2">
+        <li class="nav-item p-1">
           <a href="{% url 'mobile_client:chat_list' %}" class="nav-link">
             <i class="fa fa-md fa-home p-1"></i>
           </a>
         </li>
+        <!-- Cockpit Icon -->
+        <!--
+        <li class="nav-item p-1">
+          <a href="{ % url 'mobile_client:chat_cockpit' % }" class="nav-link">
+            <i class="fa fa-md fa-brain bg-label-success border border-success border-1 rounded text-info p-1"></i>
+          </a>
+        </li>
+        -->
       </ul>
     </div>
   </div>
@@ -109,7 +135,7 @@
       <!-- Connection Type -->
       <div class="mb-3">
         <label for="connection-type" class="form-label">Connection Type</label>
-        <select class="form-select border border-2 border-primary rounded" id="connection-type" style="min-height: 60px; max-height: 60px;">
+        <select class="form-select border border-2 border-primary rounded" id="connection-type" style="min-height: 60px; max-height: 60px; font-weight: bolder;">
           <option value="VoidForger" selected>VoidForger</option>
           <option value="Assistant">Assistant</option>
           <option value="LeanMod">LeanMod</option>
@@ -126,7 +152,7 @@
       <hr>
 
       <!-- Public/Private Toggle -->
-      <div class="bg-label-primary p-4 rounded border border-primary border-1 rounded">
+      <div class="bg-label-primary p-4 rounded border border-success border-1 rounded">
         <label class="form-label" for="connection-public">Is the connection public?</label>
         <div class="mb-3 mt-3 form-check">
           <input type="checkbox" class="form-check-input" id="connection-public" style="width: 25px; height: 25px;">
@@ -166,10 +192,12 @@
     </h6>
 
     <div class="alert alert-dark text-center border border-secondary border-1 rounded mt-1 p-4 ">
-      <strong><small>
-      <i class="fa fa-info-circle me-2 "></i>
-      Please active one of your connections to communicate with your agents.
-      </small></strong>
+      <strong>
+        <small>
+          <i class="fa fa-info-circle me-2 "></i>
+          Please active one of your connections to communicate with your agents.
+        </small>
+      </strong>
     </div>
 
     <img src="{% static 'img/mobile_client/banner-4.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
@@ -178,7 +206,7 @@
 
     <div class="mb-3">
       <label for="group-selector" class="form-label">Filter Agent Connections by Type</label>
-      <select class="form-select border border-2 border-primary rounded" id="group-selector" style="min-height: 60px; max-height: 60px;">
+      <select class="form-select border border-2 border-primary rounded" id="group-selector" style="min-height: 60px; max-height: 60px; font-weight: bolder;">
         <option value="VoidForger">VoidForger</option>
         <option value="Assistant">Assistant</option>
         <option value="LeanMod">LeanMod</option>
@@ -199,6 +227,9 @@
     <!-- Connections List -->
     <ul class="list-group" id="connections-list">
       <!-- Connections dynamically injected here -->
+      <!-- ... -->
+      <!-- ... -->
+      <!-- ... -->
     </ul>
   </div>
 </div>
@@ -302,13 +333,19 @@
 
     currentGroup.forEach((conn, index) => {
       const listItem = document.createElement("li");
-      listItem.className = `list-group-item border border-2 p-4 border-primary-subtle ${conn.active ? "bg-label-success border border-1 border-success rounded" : ""}`;
+      const connectionTypeLower = conn.type.toLowerCase();
+      const avatarPath = `{% static 'img/mobile_client/' %}${connectionTypeLower}-avatar.png`;
+      listItem.className = `list-group-item p-4 border border-secondary border-2 bg-card rounded ${conn.active ? "bg-label-success" : ""}`;
       listItem.innerHTML = `
         <div class="d-flex flex-column">
           ${conn.active ? '<div class="btn btn-success rounded px-1 py-2 border border-success-subtle rounded mb-4"><strong><i class="fa fa-check me-2"></i>Active Connection</strong></div>' : ""}
-          <div>
-            <div class="label d-block text-break">
-              <i class="fa fa-id-badge me-2"></i> ${conn.endpoint}
+          <div class="d-flex align-items-center bg-body p-2 border border-primary border-2 rounded">
+            <img src="${avatarPath}" alt="${conn.type} Avatar" class="rounded border border-primary border-2" style="width: 60px; height: 60px; margin-right: 10px;">
+            <div style="display: flex; align-items: center; font-size: 11px;">
+              <span style="display: inline-block; flex-shrink: 0; margin-right: 4px;">🟢</span>
+              <span class="fw-bolder" style="display: inline-block; word-wrap: break-word; word-break: break-word; max-width: calc(100% - 4px);">
+                ${conn.endpoint}
+              </span>
             </div>
           </div>
           <br>
@@ -316,8 +353,8 @@
           <strong><i class="fa fa-dot-circle text-info me-2"></i> Connected At: &nbsp;<small> ${new Date(conn.createdAt).toLocaleString()}</small></strong>
         </div>
         <div class="action-icons mt-4 mb-2">
-          <button class="btn btn-sm btn-primary p-2 ${conn.active ? "disabled" : ""}" onclick="activateConnection('${group}', ${index})">
-            <strong><i class="fa fa-check me-2"></i> Activate</strong>
+          <button class="btn btn-sm p-2 ${conn.active ? "btn-success disabled" : "btn-primary"}" onclick="activateConnection('${group}', ${index})">
+            <strong><i class="fa me-2 ${conn.active ? 'fa-check' : 'fa-hand'}"></i>${conn.active ? 'Active' : 'Activate'}</strong>
           </button>
           <button class="btn btn-sm btn-danger p-2" onclick="deleteConnection('${group}', ${index})">
             <strong><i class="fa fa-trash me-2"></i>Delete</strong>

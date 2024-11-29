@@ -52,7 +52,7 @@ def generate_leanmod_assistant_custom_api_key(assistant: LeanAssistant):
                              for _ in range(64)]
     merged_string = (f"{agent_id}{agent_name}{instructions}{llm_model_name}"
                      f"{llm_model_temperature}{llm_model_max_tokens}{llm_temperature}{salt}{randomness_constraint}")
-    encrypted_string = ("Bearer bimod/" +
+    encrypted_string = ("bimod/" +
                         f"{str(org_id)}/" +
                         f"{''.join(ch for ch in org_name if ch.isalnum())}/" +
                         f"{str(agent_id)}/" +

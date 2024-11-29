@@ -62,7 +62,7 @@ def generate_assistant_custom_api_key(assistant: Assistant):
                              for _ in range(64)]
     merged_string = (f"{agent_id}{agent_name}{desc}{instructions}{llm_name}"
                      f"{llm_temperature}{llm_max_tokens}{llm_temperature}{salt}{randomness_constraint}")
-    encrypted_string = ("Bearer bimod/" +
+    encrypted_string = ("bimod/" +
                         f"{str(org_id)}/" +
                         f"{''.join(ch for ch in org_name if ch.isalnum())}/" +
                         f"{str(agent_id)}/" +

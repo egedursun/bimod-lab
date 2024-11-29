@@ -1,3 +1,22 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: mobile_chats.html
+  ~ Last Modified: 2024-11-29 02:39:59
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-29 03:17:06
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
 {% extends layout_path %}
 
 {% load static %}
@@ -48,7 +67,7 @@
   <div class="container-fluid pt-2">
     <!-- Brand -->
     <div class="navbar-brand app-brand demo d-flex align-items-center py-0">
-      <a href="#" class="app-brand-link">
+      <a href="{% url 'mobile_client:chat_list' %}" class="app-brand-link">
         <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 30px;" class="me-2">
         <span class="app-brand-text demo fw-bold" style="font-size: 1rem;">Bimod Fermion Copilot</span>
       </a>
@@ -70,6 +89,7 @@
             <i class="fa fa-md fa-plus-circle"></i>
           </button>
         </li>
+
       </ul>
     </div>
   </div>
@@ -134,34 +154,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
     noChatsAlert.classList.add("d-none");
 
-    // order by the date of last message, if no message, creation date of the chat (reverse order)
+    // Sort chats by last message date or creation date
     activeConnection.chats.sort((a, b) => {
       const lastMessageA = a.messages[a.messages.length - 1];
       const lastMessageB = b.messages[b.messages.length - 1];
-      const dateA = lastMessageA ? new Date(lastMessageA.createdAt) : new Date(a.createdAt);
-      const dateB = lastMessageB ? new Date(lastMessageB.createdAt) : new Date(b.createdAt);
+      const dateA = lastMessageA ? new Date(lastMessageA.sentAt) : new Date(a.createdAt);
+      const dateB = lastMessageB ? new Date(lastMessageB.sentAt) : new Date(b.createdAt);
       return dateB - dateA;
     });
-    activeConnection.chats.reverse();
 
-    activeConnection.chats.forEach((chat, index) => {
+    activeConnection.chats.forEach((chat) => {
+      const connectionTypeLower = activeConnection.type.toLowerCase(); // Get lowercase connection type
+      const avatarPath = `{% static 'img/mobile_client/' %}${connectionTypeLower}-avatar.png`; // Build the avatar path dynamically
+
       const chatItem = document.createElement("li");
       chatItem.className = "chat-list-item border border-primary p-4 border border-2 rounded bg-card";
       chatItem.style.backgroundColor = "#2D4092";
-      chatItem.style.backgroundImage = "linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%)";
+      chatItem.style.backgroundImage =
+        "linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%)";
+
       chatItem.innerHTML = `
         <a onclick="redirectToChatDetail('${activeConnection.uuid}', '${chat.uuid}')">
           <div class="chat-info">
             <strong class="mb-0">
             <p class="text-white border bg-card border border-primary border-2 rounded p-2" style="font-size: 11px;">
-              <img src="{% static 'img/mobile_client/agent-avatar-1.jpg' %}" alt="Avatar" class="rounded border border-primary border-2 rounded me-2" style="width: 50px; height: 50px;">
-              VoidForger
+              <img src="${avatarPath}" alt="Avatar" class="rounded border border-primary border-2 rounded me-2" style="width: 50px; height: 50px;">
+              ${activeConnection.type}
             </p>
             </strong>
-            <strong class="mb-0"><p class="text-white border bg-card border border-primary border-2 rounded p-2" style="font-size: 11px;"><i class="fa fa-id-badge me-1"></i> ${chat.uuid}</p></strong>
-            <strong class="mb-0"><p class="text-white border bg-card border border-primary border-2 rounded p-2" style="font-size: 11px;"><i class="fa fa-envelope me-1"></i> ${chat.messages.length} Messages</p></strong>
-            <strong class="mb-0"><p><small class="text-white" style="font-size: 9px;"><i class="fa fa-clock me-1"></i><i class="fa fa-plus me-1"></i> ${new Date(chat.createdAt).toLocaleString()}</small></p></strong>
-            <strong class="mt-0"><p><small class="text-white" style="font-size: 9px;"><i class="fa fa-clock me-1"></i><i class="fa fa-message me-1"></i> ${chat.messages && chat.messages.length ? new Date(chat.messages[chat.messages.length - 1].sentAt).toLocaleString() : "No messages yet."}</small></p></strong>
+            <strong class="mb-0">
+              <p class="text-white border bg-card border border-primary border-2 rounded p-2" style="font-size: 11px;">
+                <i class="fa fa-id-badge me-1"></i> ${chat.uuid}
+              </p>
+            </strong>
+            <strong class="mb-0">
+              <p class="text-white border bg-card border border-primary border-2 rounded p-2" style="font-size: 11px;">
+                <i class="fa fa-envelope me-1"></i> ${chat.messages.length} Messages
+              </p>
+            </strong>
+            <strong class="mb-0">
+              <p>
+                <small class="text-white" style="font-size: 9px;">
+                  <i class="fa fa-clock me-1"></i>
+                  <i class="fa fa-plus me-1"></i>
+                  ${new Date(chat.createdAt).toLocaleString()}
+                </small>
+              </p>
+            </strong>
+            <strong class="mt-0">
+              <p>
+                <small class="text-white" style="font-size: 9px;">
+                  <i class="fa fa-clock me-1"></i>
+                  <i class="fa fa-message me-1"></i>
+                  ${
+                    chat.messages && chat.messages.length
+                      ? new Date(chat.messages[chat.messages.length - 1].sentAt).toLocaleString()
+                      : "No messages yet."
+                  }
+                </small>
+              </p>
+            </strong>
           </div>
         </a>
         <div class="chat-actions">
@@ -185,110 +237,107 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // delete chat
-window.deleteChat = (connectionUuid, chatUuid) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "This action cannot be undone. The chat will be permanently deleted.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Yes, delete it!",
-    cancelButtonText: "No, keep it",
-    customClass: {
-      confirmButton: "btn btn-danger w-100 btn-lg fw-bolder m-2",
-      cancelButton: "btn btn-secondary w-100 btn-lg fw-bolder m-2",
-    },
-    buttonsStyling: false,
-  }).then((result) => {
-    if (result.isConfirmed) {
-      const connections = JSON.parse(localStorage.getItem("bimod_connections")) || {};
-      console.log("Connections Before Deletion:", connections);
+  window.deleteChat = (connectionUuid, chatUuid) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone. The chat will be permanently deleted.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, keep it",
+      customClass: {
+        confirmButton: "btn btn-danger w-100 btn-lg fw-bolder m-2",
+        cancelButton: "btn btn-secondary w-100 btn-lg fw-bolder m-2",
+      },
+      buttonsStyling: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const connections = JSON.parse(localStorage.getItem("bimod_connections")) || {};
+        console.log("Connections Before Deletion:", connections);
 
-      const connectionCategory = Object.keys(connections).find((key) =>
-        connections[key].some((conn) => conn.uuid === connectionUuid)
-      );
-      console.log("Found Connection Category:", connectionCategory);
+        const connectionCategory = Object.keys(connections).find((key) =>
+          connections[key].some((conn) => conn.uuid === connectionUuid)
+        );
+        console.log("Found Connection Category:", connectionCategory);
 
-      if (!connectionCategory) {
-        console.error("Error: Connection category not found for uuid:", connectionUuid);
+        if (!connectionCategory) {
+          console.error("Error: Connection category not found for uuid:", connectionUuid);
+          Swal.fire({
+            title: "Error",
+            text: "Unable to locate the connection. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+            customClass: {
+              confirmButton: "btn btn-primary w-100 btn-lg fw-bolder m-2",
+            },
+          });
+          return;
+        }
+
+        const connection = connections[connectionCategory].find(
+          (conn) => conn.uuid === connectionUuid
+        );
+        console.log("Found Connection:", connection);
+
+        if (!connection) {
+          console.error("Error: Connection not found with uuid:", connectionUuid);
+          Swal.fire({
+            title: "Error",
+            text: "Connection not found. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+            customClass: {
+              confirmButton: "btn btn-primary w-100 btn-lg fw-bolder m-2",
+            },
+          });
+          return;
+        }
+
+        console.log("Deleting Chat UUID:", chatUuid);
+        console.log("Chats in Connection:", connection.chats.map((chat) => chat.uuid));
+        console.log("Type of Chat UUID:", typeof chatUuid);
+        console.log("Type of Stored UUIDs:", connection.chats.map((chat) => typeof chat.uuid));
+
+        const chatIndex = connection.chats.findIndex(
+          (chat) => String(chat.uuid) === String(chatUuid)
+        );
+        console.log("Chat Index:", chatIndex);
+
+        if (chatIndex === -1) {
+          console.error("Error: Chat not found with UUID:", chatUuid);
+          Swal.fire({
+            title: "Error",
+            text: "Chat not found. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+            customClass: {
+              confirmButton: "btn btn-primary w-100 btn-lg fw-bolder m-2",
+            },
+          });
+          return;
+        }
+
+        connection.chats.splice(chatIndex, 1);
+        console.log("Chat deleted:", chatUuid);
+
+        localStorage.setItem("bimod_connections", JSON.stringify(connections));
+        console.log("Connections After Deletion:", connections);
+
+        loadChats();
+
         Swal.fire({
-          title: "Error",
-          text: "Unable to locate the connection. Please try again.",
-          icon: "error",
+          title: "Deleted!",
+          text: "The chat has been removed successfully.",
+          icon: "success",
           confirmButtonText: "OK",
           customClass: {
-            confirmButton: "btn btn-primary",
+            confirmButton: "btn btn-primary w-100 btn-lg fw-bolder m-2",
           },
+          buttonsStyling: false,
         });
-        return;
       }
-
-      const connection = connections[connectionCategory].find(
-        (conn) => conn.uuid === connectionUuid
-      );
-      console.log("Found Connection:", connection);
-
-      if (!connection) {
-        console.error("Error: Connection not found with uuid:", connectionUuid);
-        Swal.fire({
-          title: "Error",
-          text: "Connection not found. Please try again.",
-          icon: "error",
-          confirmButtonText: "OK",
-          customClass: {
-            confirmButton: "btn btn-primary",
-          },
-        });
-        return;
-      }
-
-      console.log("Deleting Chat UUID:", chatUuid);
-      console.log("Chats in Connection:", connection.chats.map((chat) => chat.uuid));
-      console.log("Type of Chat UUID:", typeof chatUuid);
-      console.log("Type of Stored UUIDs:", connection.chats.map((chat) => typeof chat.uuid));
-
-      const chatIndex = connection.chats.findIndex(
-        (chat) => String(chat.uuid) === String(chatUuid)
-      );
-      console.log("Chat Index:", chatIndex);
-
-      if (chatIndex === -1) {
-        console.error("Error: Chat not found with UUID:", chatUuid);
-        Swal.fire({
-          title: "Error",
-          text: "Chat not found. Please try again.",
-          icon: "error",
-          confirmButtonText: "OK",
-          customClass: {
-            confirmButton: "btn btn-primary",
-          },
-        });
-        return;
-      }
-
-      connection.chats.splice(chatIndex, 1);
-      console.log("Chat deleted:", chatUuid);
-
-      localStorage.setItem("bimod_connections", JSON.stringify(connections));
-      console.log("Connections After Deletion:", connections);
-
-      loadChats();
-
-      Swal.fire({
-        title: "Deleted!",
-        text: "The chat has been removed successfully.",
-        icon: "success",
-        confirmButtonText: "OK",
-        customClass: {
-          confirmButton: "btn btn-primary w-100 btn-lg fw-bolder m-2",
-        },
-        buttonsStyling: false,
-      });
-    }
-  });
-};
-
-
-
+    });
+  };
 
   // Start a New Chat
   startNewChatButton.addEventListener("click", () => {
@@ -304,7 +353,7 @@ window.deleteChat = (connectionUuid, chatUuid) => {
         icon: "warning",
         confirmButtonText: "OK",
         customClass: {
-          confirmButton: "btn btn-primary",
+          confirmButton: "btn btn-primary w-100 btn-lg fw-bolder m-2",
         },
       });
       return;

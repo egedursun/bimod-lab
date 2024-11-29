@@ -1642,12 +1642,14 @@
             'pdf': 'pdf.png',
             'txt': 'txt.png',
           };
+
           const icon = iconMap[fileExtension] || 'file.png';
           let filename_root = file.name.split(".")[0];
           let filename_extension = file.name.split(".")[1];
           if (filename_root.length > 64) {
             filename_root = filename_root.substring(0, 64) + '...';
           }
+
           const fileElement = document.createElement('div');
           fileElement.classList.add('col-lg-12');
           fileElement.innerHTML = `
@@ -1657,7 +1659,9 @@
                         <button type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
                     </div>
                 `;
+
           fileDisplayArea.appendChild(fileElement);
+
         });
 
         document.querySelectorAll('.btn-close').forEach(button => {

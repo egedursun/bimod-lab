@@ -135,7 +135,9 @@ class ExportOrchestrationAPIView(View):
                 status=ExportOrchestrationRequestStatusCodes.NOT_FOUND
             )
 
-        api_key = request.headers.get('Authorization')
+        api_key = request.headers.get('Authorization', None)
+        if api_key and "Bearer" in api_key:
+            api_key = api_key.replace("Bearer ", "").strip()
 
         try:
             export_assistant: ExportOrchestrationAPI = ExportOrchestrationAPI.objects.get(

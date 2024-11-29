@@ -50,7 +50,7 @@ def generate_voidforger_custom_api_key(voidforger: VoidForger):
     merged_string = (f"{llm_model_name}"
                      f"{llm_model_temperature}{llm_model_max_tokens}{llm_temperature}{salt}{randomness_constraint}")
     # encrypt the merged string with SHA-256
-    encrypted_string = ("Bearer bimod/" +
+    encrypted_string = ("bimod/" +
                         f"{str(organization_id)}/" +
                         f"{''.join(ch for ch in organization_name if ch.isalnum())}/" +
                         f"{''.join(ch for ch in llm_model_name if ch.isalnum())}/" +

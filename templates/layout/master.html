@@ -20,6 +20,7 @@
   <meta property="og:type" content="website"/>
   <meta name="keywords" content="{% get_theme_variables 'template_keyword' %}"/>
   <link rel="canonical" href="{% get_theme_variables 'product_page' %}">
+  <link rel="manifest" href="{% static 'pwa/manifest.json' %}">
   <!-- Favicon -->
   <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon/favicon.ico' %}"/>
 
@@ -41,38 +42,30 @@
     gtag('config', 'G-0G6DQRLJ11');
   </script>
 
-  <link rel="manifest" href="{% static 'pwa/manifest.json' %}">
   <script>
-    if ('serviceWorker' in navigator) {
-          navigator.serviceWorker
-              .register('/app/mobile_client/service-worker.js', { scope: '/app/mobile_client/' })
-              .then((registration) => {
-                  console.log('Service Worker registered with scope:', registration.scope);
-              })
-              .catch((error) => {
-                  console.error('Service Worker registration failed:', error);
-              });
-      } else {
-        console.log('Service Workers are not supported in this browser.');
-      }
-
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        console.log('beforeinstallprompt event fired'); // Debug log
-        e.preventDefault(); // Prevent the mini-infobar
-        deferredPrompt = e; // Save the event for later
-        const installButton = document.getElementById('install-btn');
-        if (installButton) {
-            installButton.style.display = 'block'; // Show the install button
-        } else {
-            console.error('Install button not found.');
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.style.zoom = "{% default_application_zoom %}";
     });
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.body.style.zoom = "{% default_application_zoom %}";
+    let deferredPrompt = null;
+    window.addEventListener("beforeinstallprompt", (event) => {
+        console.log("beforeinstallprompt event captured!");
+        deferredPrompt = event; // Prompt'u sakla
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if ('serviceWorker' in navigator) {
+            console.log("Service worker detected.");
+            navigator.serviceWorker.ready.then(() => {
+                console.log("Service worker is ready.");
+            }).catch(() => {
+                console.error("Service worker is not ready!");
+            });
+        } else {
+            console.error("Service worker not supported in this browser.");
+        }
     });
   </script>
 
@@ -82,7 +75,6 @@
       const tipsSections = document.querySelectorAll('.tips-section');
       const tipsSwitch = document.querySelector('.switch-input');
       if (!tipsSections.length || !tipsSwitch) {
-        console.error('Tips sections or switch not found');
         return;
       }
       const tipsState = localStorage.getItem('show_tips');

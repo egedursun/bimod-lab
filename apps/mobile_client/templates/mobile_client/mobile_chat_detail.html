@@ -1,3 +1,22 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: mobile_chat_detail.html
+  ~ Last Modified: 2024-11-29 02:39:59
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-29 03:16:54
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
 {% extends layout_path %}
 
 {% load static %}
@@ -31,7 +50,7 @@
   <div class="container-fluid pt-2">
     <!-- Brand -->
     <div class="navbar-brand app-brand demo d-flex align-items-center py-0">
-      <a href="#" class="app-brand-link">
+      <a href="{% url 'mobile_client:chat_list' %}" class="app-brand-link">
         <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 30px;" class="me-2">
         <span class="app-brand-text demo fw-bold" style="font-size: 1rem;">Bimod Fermion Copilot</span>
       </a>
@@ -58,20 +77,19 @@
   </div>
 </nav>
 
-<div class="app-chat card overflow-hidden d-flex flex-column vh-100" style="height: 100vh;">
+<div class="app-chat card overflow-hidden d-flex flex-column vh-100" style="height: 100vh; padding-top: 20%;">
 
   <div
     class="chat-header d-flex justify-content-between align-items-center bg-label-primary text-white px-3 py-3 rounded border border-primary-subtle border-2 rounded"
     style="min-height: 160px; max-height: 160px; background-color: #2D4092; background-image: linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%);">
     <div class="p-3" style="min-width: 70%;">
       <h6 id="chat-header-subtitle"
-          class="mb-2 fw-bold text-white bg-body p-2 rounded border border-primary-subtle rounded"
+          class="mb-2 fw-bold text-white bg-body p-2 rounded border border-primary rounded"
           style="font-size: 10px;"></h6>
       <h6 id="chat-header-title"
-          class="mb-2 fw-bold text-white bg-body p-2 rounded border border-primary-subtle rounded"
+          class="mb-2 fw-bold text-white bg-body p-2 rounded border border-primary rounded"
           style="font-size: 10px;"></h6>
-      <div class="bg-body pb-2 ps-2 pe-1 pt-1 rounded border border-primary-subtle rounded"><i class="fa fa-robot me-2"
-                                                                                               style="font-size: 10px;"></i>
+      <div class="bg-body pb-2 ps-2 pe-1 pt-1 rounded border border-primary rounded"><i class="fa fa-robot me-2" style="font-size: 10px;"></i>
         <small id="chat-connection-type" class="fw-bold text-white" style="font-size: 10px;"></small></div>
     </div>
   </div>
@@ -80,10 +98,13 @@
 
   <div id="chat-messages" class="chat-messages p-3 flex-grow-1 overflow-auto">
     <!-- Chat messages dynamically injected here -->
+    <!-- ... -->
+    <!-- ... -->
+    <!-- ... -->
   </div>
 
   <div
-    class="card card-border-shadow-primary bg-label-primary ms-2 me-2 p-1 mt-4 mb-2 border border-1 border-primary rounded" style="max-height: 120px;">
+    class="card card-border-shadow-primary bg-label-primary ms-2 me-2 p-1 mt-4 mb-2 border border-1 border-primary rounded" style="max-height: 400px;">
     <button class="btn d-flex ms-auto p-1 mb-0" style="float: right;"
             onclick="if(this.parentElement.style.maxHeight === '120px') {this.parentElement.style.maxHeight = '33px'; this.parentElement.classList.add('overflow-hidden'); this.parentElement.classList.remove('overflow-auto');} else {this.parentElement.style.maxHeight = '120px'; this.parentElement.classList.add('overflow-auto'); this.parentElement.classList.remove('overflow-hidden');}">
       <i class="fa fa-dot-circle fa-md text-white"></i>
@@ -163,22 +184,33 @@
         return;
       }
 
+      const connectionTypeLower = connection.type.toLowerCase();
+
       chat.messages.forEach((msg) => {
         const isUser = msg.role === 'user';
         const msgDiv = document.createElement('div');
         msgDiv.className = `chat-message d-flex ${
           isUser ? 'justify-content-end' : 'justify-content-start'
         } mb-2`;
+
+        // Dynamically set the agent avatar based on connection type
+        const agentAvatar = isUser
+          ? ''
+          : `<img src="{% static 'img/mobile_client/' %}${connectionTypeLower}-avatar.png"
+                 alt="Agent Avatar"
+                 class="rounded border border-primary border-2 rounded"
+                 style="width: 70px; height: 70px;">`;
+
         msgDiv.innerHTML = `
           <div class="d-flex align-items-start">
             <!-- Agent Avatar -->
             <div class="${isUser ? 'd-none' : 'me-4'}">
-              <img src="{% static 'img/mobile_client/agent-avatar-1.jpg' %}" alt="Avatar" class="rounded border border-primary border-2 rounded" style="width: 70px; height: 70px;">
+              ${agentAvatar}
             </div>
             <!-- Message Content -->
             <div class="message-content p-2 rounded ${
-          isUser ? 'bg-primary text-white' : 'bg-light text-dark'
-        }">
+              isUser ? 'bg-primary text-white' : 'bg-light text-dark'
+            }">
               ${msg.content}
               <hr>
               <div class="text-white small mt-2 d-flex align-items-center">
@@ -188,7 +220,10 @@
             </div>
             <!-- User Avatar -->
             <div class="${isUser ? 'ms-4' : 'd-none'}">
-              <img src="{% static 'img/mobile_client/user-avatar-1.jpg' %}" alt="Avatar" class="rounded border border-dark border-2 rounded" style="width: 70px; height: 70px;">
+              <img src="{% static 'img/mobile_client/user-avatar-1.png' %}"
+                   alt="User Avatar"
+                   class="rounded border border-dark border-2 rounded"
+                   style="width: 70px; height: 70px;">
             </div>
           </div>
         `;
@@ -197,6 +232,7 @@
 
       chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
     }
+
 
     sendMessageButton.addEventListener('click', async () => {
       const userMessage = messageInput.value.trim();
@@ -208,7 +244,7 @@
           showCancelButton: false,
           confirmButtonText: 'OK',
           customClass: {
-            confirmButton: 'btn btn-primary'
+            confirmButton: 'btn btn-primary w-100 btn-lg fw-bolder m-2'
           },
           buttonsStyling: false
         });
@@ -258,15 +294,16 @@
         chat.messages.push(assistantMessage);
         localStorage.setItem(storageKey, JSON.stringify(connections));
         loadMessages();
+
       } catch (error) {
         Swal.fire({
           title: 'Error',
-          text: 'Failed to send message.',
+          text: 'Failed to send the message.',
           icon: 'error',
           showCancelButton: false,
           confirmButtonText: 'OK',
           customClass: {
-            confirmButton: 'btn btn-primary'
+            confirmButton: 'btn btn-primary w-100 btn-lg fw-bolder m-2'
           },
           buttonsStyling: false
         });
@@ -282,8 +319,8 @@
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'Cancel',
         customClass: {
-          confirmButton: 'btn btn-danger',
-          cancelButton: 'btn btn-secondary'
+          confirmButton: 'btn btn-danger w-100 btn-lg fw-bolder m-2',
+          cancelButton: 'btn btn-secondary w-100 btn-lg fw-bolder m-2'
         },
         buttonsStyling: false
       }).then((result) => {
@@ -297,7 +334,7 @@
           icon: 'success',
           confirmButtonText: 'OK',
           customClass: {
-            confirmButton: 'btn btn-primary'
+            confirmButton: 'btn btn-primary w-100 btn-lg fw-bolder m-2'
           },
           buttonsStyling: false
         }).then(() => {
@@ -318,19 +355,22 @@
     const maxRetries = 1000;
     let retryCount = 0;
 
+    const storageKey = 'bimod_connections';
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const connectionUuid = urlParams.get('connectionUuid');
+    const chatUuid = urlParams.get('chatUuid');
+
+    const connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+
+    const connectionTypeRaw = Object.keys(connections).find((category) =>
+      connections[category].some(
+        (conn) => conn.uuid === connectionUuid
+      )
+    );
+
     function connectWebSocket() {
       let protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-
-      const storageKey = 'bimod_connections';
-      const urlParams = new URLSearchParams(window.location.search);
-      const connectionUuid = urlParams.get('connectionUuid');
-      const chatUuid = urlParams.get('chatUuid');
-
-      const connections = JSON.parse(localStorage.getItem(storageKey)) || {};
-
-      const connectionTypeRaw = Object.keys(connections).find((category) =>
-        connections[category].some((conn) => conn.uuid === connectionUuid)
-      );
 
       const connection = connections[connectionTypeRaw]?.find(
         (conn) => conn.uuid === connectionUuid
@@ -346,19 +386,24 @@
       if (connectionType === 'VoidForger') {
         connectionType = 'voidforger';
         endpointClean = endpointClean.replace('/export_voidforger/exported/voidforger_assistants', '');
-      } else if (connectionType === 'Assistant') {
+      }
+      else if (connectionType === 'Assistant') {
         connectionType = 'assistant';
         endpointClean = endpointClean.replace('/export_assistants/exported/voidforger_assistants', '');
-      } else if (connectionType === 'LeanMod') {
+      }
+      else if (connectionType === 'LeanMod') {
         connectionType = 'leanmod';
         endpointClean = endpointClean.replace('/export_leanmods/exported/voidforger_assistants', '');
-      } else if (connectionType === 'Orchestrator') {
+      }
+      else if (connectionType === 'Orchestrator') {
         connectionType = 'orchestration';
         endpointClean = endpointClean.replace('/export_orchestrations/exported/voidforger_assistants', '');
-      } else {
+      }
+      else {
         console.error('Invalid connection type.');
         return;
       }
+
       if (endpointClean.startsWith('/')) {
         endpointClean = endpointClean.substring(1);
       }
