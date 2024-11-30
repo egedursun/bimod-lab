@@ -22,3 +22,4 @@ from .contact_form_submit_views import *
 from .not_accredited_admin_views import *
 from .integration_to_organizations_views import *
 from .electron_copilot_releases_views import *
+from .fermion_copilot_releases_views import *

@@ -34,51 +34,6 @@
   {{ block.super }}
   <script src="{% static 'vendor/libs/nouislider/nouislider.js' %}"></script>
   <script src="{% static 'vendor/libs/swiper/swiper.js' %}"></script>
-  <script>
-    window.addEventListener("beforeinstallprompt", (event) => {
-        console.log("beforeinstallprompt event captured!");
-        deferredPrompt = event;
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const installButton = document.getElementById("install-btn");
-
-        // Initialize loading state
-        const loadingIcon = document.createElement("i");
-        loadingIcon.className = "fa fa-spinner fa-spin";
-        loadingIcon.style.marginRight = "8px";
-        installButton.innerHTML = "";
-        installButton.appendChild(loadingIcon);
-        installButton.appendChild(document.createTextNode(" Loading Mobile App..."));
-        installButton.disabled = true
-
-        const checkDeferredPrompt = () => {
-            if (deferredPrompt) {
-                console.log("Deferred prompt is ready.");
-                installButton.disabled = false;
-                installButton.innerHTML = '<i class="fa fa-mobile-phone"></i> Download Mobile Applet'; // Update text
-                clearInterval(checkInterval);
-            } else {
-                console.log("Deferred prompt not ready yet.");
-            }
-        };
-
-        const checkInterval = setInterval(checkDeferredPrompt, 500);
-        installButton.addEventListener("click", async () => {
-            if (!deferredPrompt) {
-                console.error("No deferredPrompt available. Install prompt cannot be shown.");
-                return;
-            }
-
-            console.log("Install button clicked. Showing install prompt...");
-            deferredPrompt.prompt();
-
-            const choiceResult = await deferredPrompt.userChoice;
-            console.log("User choice:", choiceResult.outcome);
-            deferredPrompt = null;
-        });
-    });
-  </script>
 {% endblock vendor_js %}
 
 {% block page_css %}
@@ -152,13 +107,6 @@
                 </strong>
             </a>
             <hr class="mt-4">
-            <button id="install-btn" class="btn btn-secondary mt-8 mx-2"
-               style="min-width: 13vw;">
-              <strong>
-                <i class="fa fa-mobile-phone me-2"></i>
-                Download Mobile Applet
-              </strong>
-            </button>
             <a href="{% url 'bmd_academy:course_list' %}" target="_blank" class="btn btn-instagram mt-8 mx-2"
                style="min-width: 13vw;">
               <strong>
@@ -1054,6 +1002,79 @@
         </div>
       </section>
     <!-- Desktop Application: End -->
+
+    <!-- Mobile Application: Start -->
+    <section id="landingMobileApp" class="section-py lading-mobile-app bg-body">
+        <div class="container">
+          <div class="text-center mb-4">
+            <span class="badge bg-label-primary"><strong>Mobile Client</strong></span>
+          </div>
+          <h4 class="text-center mb-1">
+            <span class="position-relative fw-extrabold z-1">BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Fermion Copilot:
+              <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
+                   class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
+            </span>
+            Your Loyal Mobile Cockpit
+          </h4>
+          <p class="text-center pb-2 mb-12">
+            Manage your AI tasks, communicate with your agents, deliver your orders to VoidForger to automate your
+            enterprise, all in the palm of your hand with our mobile client.
+          </p>
+
+          <div class="d-flex justify-content-center align-items-center">
+            <div style="overflow: hidden; border-radius: 15px; max-width: 80%;" class="border border-4 border-primary mb-12 mt-12">
+              <img src="{% static 'img/fermion-copilot/b-1.png' %}"
+                   style="margin-top: -3px; width: 100%; opacity: 0.9; display: block; filter: contrast(120%);"/>
+            </div>
+          </div>
+
+          <div class="row g-6 pt-lg-5 text-center">
+            <div class="col-lg-4 col-sm-6">
+              <div class="text-center mb-4">
+                <img src="{% static 'img/fermion-copilot/fmc-1.png' %}" class="border border-2 border-primary"
+                     style="width: 150px; border-radius: 25px;" alt="Control Your Agents"/>
+              </div>
+              <h5 class="mb-2"><strong>Control Your Agents</strong></h5>
+              <p>
+                Manage your AI agents, orchestrate your tasks, and communicate with your orchestrators and meta-orchestrator
+                in real-time. Our mobile client provides you with the tools to stay in control, no matter where you are.
+              </p>
+            </div>
+
+            <div class="col-lg-4 col-sm-6">
+              <div class="text-center mb-4">
+                <img src="{% static 'img/fermion-copilot/fmc-2.png' %}" class="border border-2 border-primary"
+                     style="width: 150px; border-radius: 25px;" alt="Simple and Efficient"/>
+              </div>
+              <h5 class="mb-2"><strong>Simple &amp; Efficient</strong></h5>
+              <p>
+                Simply connect your endpoints, and start chatting with your agents, deliver your orders to VoidForger,
+                and manage your tasks with ease and efficiency in a familiar environment.
+              </p>
+            </div>
+
+            <div class="col-lg-4 col-sm-6">
+              <div class="text-center mb-4">
+                <img src="{% static 'img/fermion-copilot/fmc-3.png' %}" class="border border-2 border-primary"
+                     style="width: 150px; border-radius: 25px;" alt="Everything in One Place"/>
+              </div>
+              <h5 class="mb-2"><strong>Everything in One Place</strong></h5>
+              <p>
+                Your BimodLab assistants, LeanMod oracles, orchestration Maestros, and your VoidForger meta-orchestrator,
+                all in one place, and 24/7 ready for having a chat with you, and to take your orders.
+              </p>
+            </div>
+          </div>
+
+          <div class="text-center mt-12">
+            <a href="{% url 'landing:fermion_copilot_releases' %}" class="btn btn-lg btn-primary"><strong>
+              <i class="ti ti-download me-2"></i>
+              Download BimodLab™ Fermion Copilot
+            </strong></a>
+          </div>
+        </div>
+      </section>
+    <!-- Mobile Application: End -->
 
     <!-- Astrolith X1: Start -->
 

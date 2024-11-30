@@ -18,16 +18,6 @@
 
 ---
 
-**CURRENT PROJECT: FERMION COPILOT (Ege)**
-
-- *FERMION COPILOT*: Mobile App Client for Bimod & BimodLab, with features allowing for transactions between the
-  mobile data and the web application. **(Probably Flutter-Based)**
-  - *Details:* TBD
-    - Large Project (~1 month to implement)
-    - Flutter looks like a good framework to use for this.
-    - **RESEARCH:** Can there be an easier technology to use, and how? Take a research on this.
-
----
 
 **NEXT PROJECT-0: PAYMENT GATEWAY INTEGRATION (Ege)**
 
@@ -50,32 +40,7 @@
 
 ---
 
-**NEXT PROJECT-2: MENTARA (Ege)**
-
-- *MENTARA*: A helper assistant that helps the clients configure their enterprise environments in the web application,
-  and uses our documentation to guide them through their questions and help them navigate their journey
-  in our products.
-  - *Details:* TBD
-
----
-
-**NEXT PROJECT-3: INTEGRATIONS FRAMEWORK (Ege)**
-
-- *INTEGRATIONS*: A page/store that will include ready-made assistants that the clients can easily integrate to
-  themselves.
-  - *Details:* TBD
-
----
-
-**NEXT PROJECT-4: META-INTEGRATIONS FRAMEWORK (Ege)**
-
-- *META-INTEGRATIONS*: A page/store that will include ready-made "team of assistants" that the clients can easily
-  integrate to themselves.
-  - *Details:* TBD
-
----
-
-**NEXT PROJECT-5: AUTOMATED MEDIA SYNCHRONIZATION (Mert)**
+**NEXT PROJECT-2: AUTOMATED MEDIA SYNCHRONIZATION (Mert)**
 
 - *AUTOMATED MEDIA SYNC*: Connecting S3 Buckets, Google Drive, and other cloud storages to the web application, and
   allowing for
@@ -85,17 +50,7 @@
 
 ---
 
-**NEXT PROJECT-6: VOIDFORGER (Ege)**
-
-- *VOIDFORGER*: A hyper-assistant over orchestrators and all internal processes of an enterprise, controlling the
-  assistants, leanmods, orchestrations, data sources such as sql, nosql, ssh servers, code bases,
-  vector stores, multimedia files, smart contracts, drafting documents, and also the multi-modalities
-  such as functions, APIs, scripts, and other things to manage the organization completely autonomously.
-  - *Details:* TBD
-
----
-
-**NEXT PROJECT-7: DEVELOPER ECOSYSTEM (Ege)**
+**NEXT PROJECT-3: DEVELOPER ECOSYSTEM (Ege)**
 
 - *DEV ECOSYSTEM*: Make the function, API, and Script Stores accessible to the developers for them to contribute, and
   incentivize them by rewarding Bimod & BimodLab credits, as well as a commission percentage from
@@ -199,7 +154,7 @@
 - Mobile Native Conversion No-Code Service
   - **Service Provider:** Median Co.
   - **Service Provider URL:** https://median.co/
-  - **Login Email:** edogandursun@gmail.com
+  - **Login Email:** admin@bimod.io
 
 ---
 

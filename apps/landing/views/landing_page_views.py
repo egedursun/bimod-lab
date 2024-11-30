@@ -27,7 +27,10 @@ class LandingView_Index(TemplateView):
         context.update(
             {
                 "layout": "blank",
-                "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
+                "layout_path": TemplateHelper.set_layout(
+                    "layout_blank.html",
+                    context
+                ),
                 "display_customizer": False
             }
         )

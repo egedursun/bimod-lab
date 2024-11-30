@@ -77,17 +77,24 @@
       <ul class="navbar-nav flex-row align-items-center ms-auto">
 
         <!-- Configuration Icon -->
-        <li class="nav-item p-1">
-          <a href="{% url 'mobile_client:chat_configuration' %}" class="nav-link">
+        <li class="nav-item p-1 me-2">
+          <a href="{% url 'mobile_client:chat_configuration' %}" class="nav-link text-warning">
             <i class="fa fa-md fa-cog"></i>
           </a>
         </li>
 
+        <!-- Refresh Icon -->
+        <li class="nav-item p-1 me-2">
+          <a class="nav-link text-info" onclick="window.location.reload();">
+            <i class="fa fa-md fa-refresh p-1"></i>
+          </a>
+        </li>
+
         <!-- New Chat Icon -->
-        <li class="nav-item p-1">
-          <button id="start-new-chat" class="btn btn-icon text-success">
+        <li class="nav-item p-1 me-4">
+          <a id="start-new-chat" class="nav-link btn text-success">
             <i class="fa fa-md fa-plus-circle"></i>
-          </button>
+          </a>
         </li>
 
       </ul>

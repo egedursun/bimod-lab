@@ -24,16 +24,23 @@ from django.core.mail import send_mail
 from config import settings
 from web_project import TemplateLayout, TemplateHelper
 
-
 logger = logging.getLogger(__name__)
 
 
 class LandingView_ContactFormSubmit(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context.update({
-            "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
-            "display_customizer": False,})
+        context.update(
+            {
+                "layout": "blank",
+                "layout_path": TemplateHelper.set_layout(
+                    "layout_blank.html",
+                    context
+                ),
+                "display_customizer": False
+            }
+        )
+
         TemplateHelper.map_context(context)
         return context
 
@@ -55,9 +62,13 @@ class LandingView_ContactFormSubmit(TemplateView):
         """
 
         if username and username in usernames:
-            client = User.objects.get(username=username)
+            client = User.objects.get(
+                username=username
+            )
+
             if client.email == email:
                 subject = f"[IMPORTANT] VERIFIED CLIENT QUERY: Message from {username} ({full_name})"
+
             else:
                 subject = f"[IMPORTANT] UNVERIFIED CLIENT QUERY: Message from {username} ({full_name}) - Email Mismatch"
                 email_msg += f"""
@@ -84,6 +95,7 @@ class LandingView_ContactFormSubmit(TemplateView):
                 """
         else:
             subject = f"VISITOR QUERY: Message from {full_name}"
+
         send_mail(
             subject, email_msg, settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL, email],
             fail_silently=False,

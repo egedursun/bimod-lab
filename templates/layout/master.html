@@ -49,27 +49,6 @@
   </script>
 
   <script>
-    let deferredPrompt = null;
-    window.addEventListener("beforeinstallprompt", (event) => {
-        console.log("beforeinstallprompt event captured!");
-        deferredPrompt = event; // Prompt'u sakla
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
-        if ('serviceWorker' in navigator) {
-            console.log("Service worker detected.");
-            navigator.serviceWorker.ready.then(() => {
-                console.log("Service worker is ready.");
-            }).catch(() => {
-                console.error("Service worker is not ready!");
-            });
-        } else {
-            console.error("Service worker not supported in this browser.");
-        }
-    });
-  </script>
-
-  <script>
     window.onload = function () {
       document.getElementById("template-customizer").style.display = "none";
       const tipsSections = document.querySelectorAll('.tips-section');

@@ -99,9 +99,15 @@
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
       <ul class="navbar-nav flex-row align-items-center ms-auto">
         <!-- Home Icon -->
-        <li class="nav-item p-1">
+        <li class="nav-item p-1 me-2">
           <a href="{% url 'mobile_client:chat_list' %}" class="nav-link">
             <i class="fa fa-md fa-home p-1"></i>
+          </a>
+        </li>
+        <!-- Refresh Icon -->
+        <li class="nav-item p-1 me-4">
+          <a class="nav-link text-info" onclick="window.location.reload();">
+            <i class="fa fa-md fa-refresh p-1"></i>
           </a>
         </li>
         <!-- Cockpit Icon -->
