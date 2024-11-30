@@ -385,6 +385,7 @@ EXCLUDED_PAGES = [
     "/app/multimodal_chat/tts/chat/message/*"
     "/contact-form-submit/*",
     "/electron_copilot_releases/*",
+    "/fermion_copilot_releases/*",
     "/docs/*",
     "/faq/*",
     "/bmd_academy/*",
