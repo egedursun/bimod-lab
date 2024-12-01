@@ -15,12 +15,15 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.contrib import admin
 
 from apps.bmd_academy.models import AcademyCourseInstructor
-from apps.bmd_academy.utils import ACADEMY_COURSE_INSTRUCTOR_ADMIN_LIST, ACADEMY_COURSE_INSTRUCTOR_ADMIN_SEARCH, \
+
+from apps.bmd_academy.utils import (
+    ACADEMY_COURSE_INSTRUCTOR_ADMIN_LIST,
+    ACADEMY_COURSE_INSTRUCTOR_ADMIN_SEARCH,
     ACADEMY_COURSE_INSTRUCTOR_ADMIN_FILTER
+)
 
 
 @admin.register(AcademyCourseInstructor)

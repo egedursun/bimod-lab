@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -39,6 +36,9 @@ class ExpertNetworkAssistantReference(models.Model):
         verbose_name = "Expert Network Assistant Reference"
         verbose_name_plural = "Expert Network Assistant References"
         ordering = ["-created_at"]
+        unique_together = [
+            ["network", "assistant"],
+        ]
         indexes = [
             models.Index(fields=["network"]),
             models.Index(fields=["assistant"]),

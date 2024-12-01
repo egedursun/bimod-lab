@@ -21,8 +21,18 @@ from apps.data_backups.utils import BACKUP_TYPES
 
 
 class DataBackup(models.Model):
-    responsible_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, null=True, blank=True)
+    responsible_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
     backup_name = models.CharField(max_length=255)
     backup_type = models.CharField(max_length=255, choices=BACKUP_TYPES, null=True, blank=True)
     backup_uuid = models.CharField(max_length=255, null=True, blank=True)
@@ -37,6 +47,9 @@ class DataBackup(models.Model):
         verbose_name = 'Data Backup'
         verbose_name_plural = 'Data Backups'
         ordering = ['-created_at']
+        unique_together = [
+            ['organization', 'backup_name', 'backup_type','created_at'],
+        ]
         indexes = [
             models.Index(fields=['organization']),
             models.Index(fields=['responsible_user']),

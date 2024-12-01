@@ -40,6 +40,9 @@ class Harmoniq(models.Model):
         verbose_name = 'Harmoniq Agent'
         verbose_name_plural = 'Harmoniq Agents'
         ordering = ['-created_at']
+        unique_together = [
+            ["organization", "name"],
+        ]
         indexes = [
             models.Index(fields=['organization']),
             models.Index(fields=['organization', 'llm_model']),

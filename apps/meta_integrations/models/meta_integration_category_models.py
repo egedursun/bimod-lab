@@ -21,7 +21,7 @@ from slugify import slugify
 
 
 class MetaIntegrationCategory(models.Model):
-    category_name = models.CharField(max_length=1000, null=False, blank=False)
+    category_name = models.CharField(max_length=1000, null=False, blank=False, unique=True)
     category_description = models.TextField(null=True, blank=True)
     category_image_url = models.URLField(null=True, blank=True)
     tags = models.JSONField(null=True, blank=True)
@@ -36,7 +36,6 @@ class MetaIntegrationCategory(models.Model):
     class Meta:
         verbose_name = 'Meta Integration Category'
         verbose_name_plural = 'Meta Integration Categories'
-        unique_together = ['category_name']
         indexes = [
             models.Index(fields=['category_name']),
         ]

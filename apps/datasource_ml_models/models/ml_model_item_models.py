@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 import random
 
@@ -46,6 +43,9 @@ class DataSourceMLModelItem(models.Model):
     class Meta:
         verbose_name = 'Data Source ML Model Item'
         verbose_name_plural = 'Data Source ML Model Items'
+        unique_together = [
+            ['ml_model_base', 'ml_model_name'],
+        ]
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['ml_model_base', 'ml_model_name']),

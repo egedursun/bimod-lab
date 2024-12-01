@@ -39,6 +39,9 @@ class HadronTopic(models.Model):
         verbose_name = 'Hadron Topic'
         verbose_name_plural = 'Hadron Topics'
         ordering = ['-created_at']
+        unique_together = [
+            ["system", "topic_name"],
+        ]
         indexes = [
             models.Index(fields=['system', 'topic_name']),
             models.Index(fields=['system', 'created_by_user']),

@@ -15,12 +15,15 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.contrib import admin
 
 from apps.brainstorms.models import BrainstormingLevelSynthesis
-from apps.brainstorms.utils import BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_LIST, \
-    BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_FILTER, BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_SEARCH
+
+from apps.brainstorms.utils import (
+    BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_LIST,
+    BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_FILTER,
+    BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_SEARCH
+)
 
 
 @admin.register(BrainstormingLevelSynthesis)

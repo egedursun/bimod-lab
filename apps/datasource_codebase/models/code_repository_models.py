@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+
 import logging
 import os
 
@@ -49,6 +47,9 @@ class CodeBaseRepository(models.Model):
     class Meta:
         verbose_name = "Code Base Repository"
         verbose_name_plural = "Code Base Repositories"
+        unique_together = [
+            ["knowledge_base", "repository_uri"],
+        ]
         ordering = ["-created_at"]
         indexes = [
             models.Index(fields=["knowledge_base", "repository_name"]),

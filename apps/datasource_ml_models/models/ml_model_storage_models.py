@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 import boto3
 from django.db import models
@@ -45,6 +42,9 @@ class DataSourceMLModelConnection(models.Model):
     class Meta:
         verbose_name = 'Data Source ML Model Connection'
         verbose_name_plural = 'Data Source ML Model Connections'
+        unique_together = [
+            ['assistant', 'name'],
+        ]
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['assistant', 'name']),

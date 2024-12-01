@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.db import models
@@ -53,6 +54,9 @@ class SQLDatabaseConnection(models.Model):
         ordering = ['-created_at']
         verbose_name_plural = 'SQL Database Connections'
         verbose_name = 'SQL Database Connection'
+        unique_together = [
+            ["assistant", "host", "port", "database_name"],
+        ]
         indexes = [
             models.Index(fields=['assistant', 'dbms_type', 'name']),
             models.Index(fields=['assistant', 'dbms_type', 'created_at']),

@@ -14,11 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
-#
 from django.db import models
 
 from config.settings import BASE_URL
@@ -47,6 +43,9 @@ class TriggeredJob(models.Model):
         ordering = ['-created_at']
         verbose_name = 'Triggered Job'
         verbose_name_plural = 'Triggered Jobs'
+        unique_together = [
+            ["trigger_assistant", "name"],
+        ]
         indexes = [
             models.Index(fields=['name', 'trigger_assistant', 'created_by_user', 'created_at']),
             models.Index(fields=['created_at']),

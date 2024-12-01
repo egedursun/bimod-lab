@@ -35,6 +35,9 @@ class MetaKanbanBoard(models.Model):
     class Meta:
         verbose_name = 'Meta Kanban Board'
         verbose_name_plural = 'Meta Kanban Boards'
+        unique_together = [
+            ["project", "title"],
+        ]
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['created_at']),

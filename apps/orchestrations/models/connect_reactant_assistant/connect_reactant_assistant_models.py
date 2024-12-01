@@ -31,7 +31,9 @@ class OrchestrationReactantAssistantConnection(models.Model):
         return f"{self.assistant} - {self.orchestration_maestro}"
 
     class Meta:
-        unique_together = ("orchestration_maestro", "assistant")
+        unique_together = [
+            ["orchestration_maestro", "assistant"],
+        ]
         verbose_name = "Orchestration Reactant Assistant Connection"
         verbose_name_plural = "Orchestration Reactant Assistant Connections"
         ordering = ["-created_at"]

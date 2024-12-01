@@ -35,17 +35,20 @@ class ForumView_CommentLike(LoginRequiredMixin, View):
 
         try:
             like, created = ForumLike.objects.get_or_create(user=request.user, comment=comment)
+
             if not created:
                 like.delete()
                 comment.like_count -= 1
                 comment.save()
                 comment_owner = comment.created_by
                 comment_owner.profile.remove_points(ForumRewardActionsNames.GET_LIKE)
+
             else:
                 comment.like_count += 1
                 comment.save()
                 comment_owner = comment.created_by
                 comment_owner.profile.add_points(ForumRewardActionsNames.GET_LIKE)
+
         except Exception as e:
             logger.error(f"[ForumView_CommentLike] Error liking the Comment: {e}")
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

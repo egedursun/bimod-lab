@@ -34,7 +34,9 @@ class VideoGeneratorConnection(models.Model):
     class Meta:
         verbose_name = 'Video Generator Connection'
         verbose_name_plural = 'Video Generator Connections'
-
+        unique_together = [
+            ["assistant", "name"],
+        ]
         indexes = [
             models.Index(fields=['organization']),
             models.Index(fields=['organization', 'assistant']),

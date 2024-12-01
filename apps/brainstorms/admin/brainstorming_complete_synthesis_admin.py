@@ -19,7 +19,12 @@
 from django.contrib import admin
 
 from apps.brainstorms.models import BrainstormingCompleteSynthesis
-from apps.brainstorms.utils import BRAINSTORMING_ADMIN_LIST, BRAINSTORMING_ADMIN_FILTER, BRAINSTORMING_ADMIN_SEARCH
+
+from apps.brainstorms.utils import (
+    BRAINSTORMING_ADMIN_LIST,
+    BRAINSTORMING_ADMIN_FILTER,
+    BRAINSTORMING_ADMIN_SEARCH
+)
 
 
 @admin.register(BrainstormingCompleteSynthesis)

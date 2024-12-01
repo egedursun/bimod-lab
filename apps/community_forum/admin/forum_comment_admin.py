@@ -14,14 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.community_forum.models import ForumComment
-from apps.community_forum.utils import FORUM_COMMENT_ADMIN_LIST, FORUM_COMMENT_ADMIN_SEARCH, FORUM_COMMENT_ADMIN_FILTER
+
+from apps.community_forum.utils import (
+    FORUM_COMMENT_ADMIN_LIST,
+    FORUM_COMMENT_ADMIN_SEARCH,
+    FORUM_COMMENT_ADMIN_FILTER
+)
 
 
 @admin.register(ForumComment)

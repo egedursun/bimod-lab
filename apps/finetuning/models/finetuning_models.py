@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -41,6 +38,9 @@ class FineTunedModelConnection(models.Model):
         verbose_name = 'Fine-Tuned Model Connection'
         verbose_name_plural = 'Fine-Tuned Model Connections'
         ordering = ['-created_at']
+        unique_together = [
+            ['organization', 'nickname'],
+        ]
         indexes = [
             models.Index(fields=['organization']),
             models.Index(fields=['nickname']),

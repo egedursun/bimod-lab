@@ -40,6 +40,9 @@ class SheetosDocument(models.Model):
     class Meta:
         verbose_name = 'Sheetos Document'
         verbose_name_plural = 'Sheetos Documents'
+        unique_together = [
+            ["organization", "document_folder", "document_title"],
+        ]
         indexes = [
             models.Index(fields=['organization']),
             models.Index(fields=['organization', 'document_folder']),

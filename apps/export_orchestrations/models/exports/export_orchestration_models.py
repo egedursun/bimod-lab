@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 from django.utils import timezone
@@ -93,6 +90,9 @@ class ExportOrchestrationAPI(models.Model):
         verbose_name = "Export Orchestration API"
         verbose_name_plural = "Export Orchestration APIs"
         ordering = ['-created_at']
+        unique_together = [
+            ['organization', 'orchestrator', 'is_public'],
+        ]
         indexes = [
             models.Index(fields=[
                 'orchestrator'

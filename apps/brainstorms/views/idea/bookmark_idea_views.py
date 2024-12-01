@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -21,10 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
+from apps.brainstorms.utils import BrainstormingBookmarkStatusesNames
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingIdea
 from apps.user_permissions.utils import PermissionNames
-
 
 logger = logging.getLogger(__name__)
 
@@ -36,15 +37,18 @@ class BrainstormingView_IdeaBookmark(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - BOOKMARK_BRAINSTORMING_IDEAS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.BOOKMARK_BRAINSTORMING_IDEAS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.BOOKMARK_BRAINSTORMING_IDEAS
+        ):
             messages.error(self.request, "You do not have permission to bookmark ideas.")
             return redirect('brainstorms:detail_session', session_id=idea.brainstorming_session.id)
         ##############################
 
         idea.is_bookmarked = not idea.is_bookmarked
         idea.save()
-        status = "bookmarked" if idea.is_bookmarked else "unbookmarked"
+        status = BrainstormingBookmarkStatusesNames.BOOKMARKED if idea.is_bookmarked else BrainstormingBookmarkStatusesNames.UNBOOKMARKED
+
         messages.success(request, f'Idea "{idea.idea_title}" has been {status}.')
         logger.info(f'Idea "{idea.idea_title}" has been {status}. Idea ID: {idea.id}')
         return redirect('brainstorms:detail_session', session_id=idea.brainstorming_session.id)

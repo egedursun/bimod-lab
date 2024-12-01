@@ -49,6 +49,9 @@ class LLMCore(models.Model):
         verbose_name = "LLM Core"
         verbose_name_plural = "LLM Cores"
         ordering = ["-created_at"]
+        unique_together = [
+            ["organization", "nickname"],
+        ]
         indexes = [
             models.Index(fields=["nickname"]),
             models.Index(fields=["provider"]),

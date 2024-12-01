@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -48,6 +45,9 @@ class DataSourceFileSystem(models.Model):
         ordering = ['-created_at']
         verbose_name_plural = 'Data Source File Systems'
         verbose_name = 'Data Source File System'
+        unique_together = [
+            ['assistant', 'name'],
+        ]
         indexes = [
             models.Index(fields=['assistant', 'os_type', 'name']),
             models.Index(fields=['assistant', 'os_type', 'created_at']),

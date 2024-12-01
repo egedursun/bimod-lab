@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 import os
 
@@ -34,8 +31,8 @@ class KnowledgeBaseDocument(models.Model):
                                        related_name='knowledge_base_documents')
     document_type = models.CharField(max_length=100, choices=UPLOAD_FILES_SUPPORTED_FORMATS)
     document_file_name = models.CharField(max_length=1000)
-    document_description = models.TextField()  # null for now
-    document_metadata = models.JSONField()  # auto
+    document_description = models.TextField()
+    document_metadata = models.JSONField()
     document_uri = models.CharField(max_length=1000, null=True, blank=True)
     knowledge_base_uuid = models.CharField(max_length=1000, null=True, blank=True)
     document_content_temporary = models.TextField(blank=True, null=True)

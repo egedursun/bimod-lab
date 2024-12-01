@@ -16,24 +16,77 @@
 #
 
 
-BRAINSTORMING_ADMIN_LIST = ('brainstorming_session', 'created_by_user', 'created_at')
-BRAINSTORMING_ADMIN_FILTER = ('brainstorming_session', 'created_by_user', 'created_at')
-BRAINSTORMING_ADMIN_SEARCH = ('brainstorming_session', 'created_by_user', 'created_at')
+BRAINSTORMING_ADMIN_LIST = (
+    'brainstorming_session',
+    'created_by_user',
+    'created_at'
+)
+BRAINSTORMING_ADMIN_FILTER = (
+    'brainstorming_session',
+    'created_by_user',
+    'created_at'
+)
+BRAINSTORMING_ADMIN_SEARCH = (
+    'brainstorming_session',
+    'created_by_user',
+    'created_at'
+)
 
-BRAINSTORMING_IDEA_ADMIN_LIST = ('idea_title', 'brainstorming_session', 'created_by_user', 'depth_level',
-                                 'is_bookmarked', 'created_at')
-BRAINSTORMING_IDEA_ADMIN_FILTER = ('brainstorming_session', 'created_by_user', 'depth_level', 'is_bookmarked',
-                                   'created_at')
-BRAINSTORMING_IDEA_ADMIN_SEARCH = ('idea_title', 'idea_description')
+BRAINSTORMING_IDEA_ADMIN_LIST = (
+    'idea_title',
+    'brainstorming_session',
+    'created_by_user',
+    'depth_level',
+    'is_bookmarked',
+    'created_at'
+)
+BRAINSTORMING_IDEA_ADMIN_FILTER = (
+    'brainstorming_session',
+    'created_by_user',
+    'depth_level',
+    'is_bookmarked',
+    'created_at'
+)
+BRAINSTORMING_IDEA_ADMIN_SEARCH = (
+    'idea_title',
+    'idea_description'
+)
 
-BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_LIST = ('brainstorming_session', 'depth_level', 'created_at')
-BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_FILTER = ('brainstorming_session', 'depth_level', 'created_at')
-BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_SEARCH = ('brainstorming_session', 'depth_level', 'created_at')
+BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_LIST = (
+    'brainstorming_session',
+    'depth_level',
+    'created_at'
+)
+BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_FILTER = (
+    'brainstorming_session',
+    'depth_level',
+    'created_at'
+)
+BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_SEARCH = (
+    'brainstorming_session',
+    'depth_level',
+    'created_at'
+)
 
-BRAINSTORMING_SESSION_ADMIN_LIST = ['session_name', 'organization', 'llm_model', 'created_by_user', 'created_at']
-BRAINSTORMING_SESSION_ADMIN_FILTER = ['organization', 'llm_model', 'created_by_user', 'created_at']
-BRAINSTORMING_SESSION_ADMIN_SEARCH = ['session_name', 'organization__name', 'llm_model__nickname',
-                                      'created_by_user__username']
+BRAINSTORMING_SESSION_ADMIN_LIST = [
+    'session_name',
+    'organization',
+    'llm_model',
+    'created_by_user',
+    'created_at'
+]
+BRAINSTORMING_SESSION_ADMIN_FILTER = [
+    'organization',
+    'llm_model',
+    'created_by_user',
+    'created_at'
+]
+BRAINSTORMING_SESSION_ADMIN_SEARCH = [
+    'session_name',
+    'organization__name',
+    'llm_model__nickname',
+    'created_by_user__username'
+]
 
 
 class BrainstormingActionTypeNames:
@@ -41,3 +94,15 @@ class BrainstormingActionTypeNames:
     CREATE_DEEPER_LAYER = 'create_deeper_layer'
     GENERATE_LEVEL_SYNTHESIS = 'generate_level_synthesis'
     GENERATE_COMPLETE_SYNTHESIS = 'generate_complete_synthesis'
+
+
+class BrainstormingBookmarkStatusesNames:
+    BOOKMARKED = 'bookmarked'
+    UNBOOKMARKED = 'unbookmarked'
+
+    @staticmethod
+    def as_list():
+        return [
+            BrainstormingBookmarkStatusesNames.BOOKMARKED,
+            BrainstormingBookmarkStatusesNames.UNBOOKMARKED,
+        ]

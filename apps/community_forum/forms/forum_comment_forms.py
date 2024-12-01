@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django import forms
 
@@ -28,5 +25,9 @@ class ForumCommentForm(forms.ModelForm):
         model = ForumComment
         fields = ['content']
         widgets = {
-            'content': forms.Textarea(attrs={'placeholder': 'Enter your comment here...'}),
+            'content': forms.Textarea(
+                attrs={
+                    'placeholder': 'Enter your comment here...'
+                }
+            ),
         }

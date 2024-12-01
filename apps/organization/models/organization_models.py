@@ -19,7 +19,7 @@ from django.db import models
 
 
 class Organization(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=10000, unique=True)
     description = models.TextField(null=True, blank=True)
     mission = models.TextField(null=True, blank=True)
     vision = models.TextField(null=True, blank=True)

@@ -41,6 +41,9 @@ class CustomNoSQLQuery(models.Model):
         ordering = ['-created_at']
         verbose_name_plural = 'Custom NoSQL Queries'
         verbose_name = 'Custom NoSQL Query'
+        unique_together = [
+            ['database_connection', 'name'],
+        ]
         indexes = [
             models.Index(fields=['database_connection', 'name']),
             models.Index(fields=['database_connection', 'created_at']),

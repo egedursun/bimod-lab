@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -37,6 +34,18 @@ class ForumCategory(models.Model):
         verbose_name_plural = "Forum Categories"
         ordering = ["-created_at"]
         indexes = [
-            models.Index(fields=['name', 'slug', 'created_at']),
-            models.Index(fields=['name', 'slug', 'created_at', 'updated_at']),
+            models.Index(
+                fields=[
+                    'name',
+                    'slug',
+                    'created_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'name',
+                    'slug',
+                    'created_at', 'updated_at'
+                ]
+            ),
         ]

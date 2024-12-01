@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -41,5 +38,36 @@ class DataSourceBrowserConnection(models.Model):
         return self.name + " - " + self.browser_type + " - " + self.created_at.strftime("%Y%m%d%H%M%S")
 
     class Meta:
+        unique_together = [
+            ["assistant", "name"],
+        ]
         verbose_name = "Data Source Browser Connection"
         verbose_name_plural = "Data Source Browser Connections"
+        indexes = [
+            models.Index(
+                fields=[
+                    "assistant",
+                    "name",
+                    "browser_type",
+                    "created_at",
+                ]
+            ),
+            models.Index(
+                fields=[
+                    "assistant",
+                    "name",
+                    "browser_type",
+                    "created_at",
+                    "updated_at",
+                ]
+            ),
+            models.Index(
+                fields=[
+                    "assistant",
+                    "name",
+                    "browser_type",
+                    "created_at",
+                    "created_by_user",
+                ]
+            ),
+        ]

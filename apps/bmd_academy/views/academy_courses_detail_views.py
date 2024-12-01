@@ -19,7 +19,12 @@ import logging
 from django.db.models import Prefetch
 from django.views.generic import TemplateView
 
-from apps.bmd_academy.models import AcademyCourse, AcademyCourseSection, AcademyCourseVideo
+from apps.bmd_academy.models import (
+    AcademyCourse,
+    AcademyCourseSection,
+    AcademyCourseVideo
+)
+
 from web_project import TemplateLayout, TemplateHelper
 
 logger = logging.getLogger(__name__)
@@ -28,9 +33,15 @@ logger = logging.getLogger(__name__)
 class AcademyView_CourseDetail(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context.update({
-            "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
-        })
+        context.update(
+            {
+                "layout": "blank",
+                "layout_path": TemplateHelper.set_layout(
+                    "layout_blank.html",
+                    context
+                ),
+            }
+        )
 
         try:
             course = AcademyCourse.objects.prefetch_related(
@@ -44,6 +55,7 @@ class AcademyView_CourseDetail(TemplateView):
                 )
             ).get(course_slug=self.kwargs['slug'])
             context['course'] = course
+
         except Exception as e:
             logger.error(f"[AcademyView_CourseDetail] Error fetching the Academy Course: {e}")
             return context

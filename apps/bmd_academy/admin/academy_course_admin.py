@@ -18,7 +18,12 @@
 from django.contrib import admin
 
 from apps.bmd_academy.models import AcademyCourse
-from apps.bmd_academy.utils import ACADEMY_COURSE_ADMIN_LIST, ACADEMY_COURSE_ADMIN_SEARCH, ACADEMY_COURSE_ADMIN_FILTER
+
+from apps.bmd_academy.utils import (
+    ACADEMY_COURSE_ADMIN_LIST,
+    ACADEMY_COURSE_ADMIN_SEARCH,
+    ACADEMY_COURSE_ADMIN_FILTER
+)
 
 
 @admin.register(AcademyCourse)

@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -49,7 +46,9 @@ class CodeRepositoryStorageConnection(models.Model):
         verbose_name = "Code Repository Storage Connection"
         verbose_name_plural = "Code Repository Storage Connections"
         ordering = ["-created_at"]
-        unique_together = ['host_url', 'assistant']
+        unique_together = [
+            ['host_url', 'assistant'],
+        ]
         indexes = [
             models.Index(fields=["provider", "assistant", "name"]),
             models.Index(fields=["provider", "assistant", "created_at"]),

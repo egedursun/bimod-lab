@@ -229,6 +229,9 @@ class Assistant(models.Model):
         verbose_name = "Assistant"
         verbose_name_plural = "Assistants"
         ordering = ["-created_at"]
+        unique_together = [
+            ["organization", "name"],
+        ]
         indexes = [
             models.Index(fields=["organization"]),
             models.Index(fields=["llm_model"]),

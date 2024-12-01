@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -25,25 +26,31 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingIdea
 from apps.user_permissions.utils import PermissionNames
 
-
 logger = logging.getLogger(__name__)
 
 
 class BrainstormingView_IdeaDelete(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         idea_id = self.kwargs.get('idea_id')
-        idea = get_object_or_404(BrainstormingIdea, id=idea_id, created_by_user=request.user)
+        idea = get_object_or_404(
+            BrainstormingIdea,
+            id=idea_id,
+            created_by_user=request.user
+        )
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_BRAINSTORMING_IDEAS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_BRAINSTORMING_IDEAS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_BRAINSTORMING_IDEAS
+        ):
             messages.error(self.request, "You do not have permission to delete ideas.")
             return redirect('brainstorms:detail_session', session_id=idea.brainstorming_session.id)
         ##############################
 
         ss_id = idea.brainstorming_session.id
         idea.delete()
+
         messages.success(request, f'Idea "{idea.idea_title}" has been deleted successfully.')
         logger.info(f'Idea "{idea.idea_title}" has been deleted successfully. Idea ID: {idea.id}')
         return redirect('brainstorms:detail_session', session_id=ss_id)

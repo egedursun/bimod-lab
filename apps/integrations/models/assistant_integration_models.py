@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import os
 import random
 import uuid
@@ -77,6 +78,9 @@ class AssistantIntegration(models.Model):
         verbose_name = 'Assistant Integration'
         verbose_name_plural = 'Assistant Integrations'
         ordering = ['-integration_name']
+        unique_together = [
+            ["integration_category", "integration_name"],
+        ]
         indexes = [
             models.Index(fields=['integration_name']),
             models.Index(fields=['integration_name', 'integration_category']),

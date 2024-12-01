@@ -15,15 +15,26 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.db import models
 import slugify
 
 
 class AcademyCourseVideo(models.Model):
-    course_section = models.ForeignKey('bmd_academy.AcademyCourseSection', on_delete=models.CASCADE, related_name='videos')
+    course_section = models.ForeignKey(
+        'bmd_academy.AcademyCourseSection',
+        on_delete=models.CASCADE,
+        related_name='videos'
+    )
+
     video_title = models.CharField(max_length=1_000)
-    video_slug = models.SlugField(max_length=1_000, unique=True, null=True, blank=True)
+
+    video_slug = models.SlugField(
+        max_length=1_000,
+        unique=True,
+        null=True,
+        blank=True
+    )
+
     video_description = models.TextField(null=True, blank=True)
     video_content_url = models.URLField(null=True, blank=True)
 
@@ -38,11 +49,19 @@ class AcademyCourseVideo(models.Model):
         verbose_name_plural = 'Academy Course Videos'
         ordering = ['-created_at']
         indexes = [
-            models.Index(fields=['video_title', 'created_at']),
+            models.Index(
+                fields=[
+                    'video_title',
+                    'created_at'
+                ]
+            ),
         ]
-        unique_together = ['course_section', 'video_title']
+        unique_together = [
+            ['course_section', 'video_title'],
+        ]
 
     def save(self, *args, **kwargs):
         if not self.video_slug:
             self.video_slug = self.course_section.section_slug + '-' + slugify.slugify(self.video_title)
+
         super(AcademyCourseVideo, self).save(*args, **kwargs)

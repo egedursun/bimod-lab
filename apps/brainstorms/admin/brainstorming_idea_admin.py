@@ -15,12 +15,15 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.contrib import admin
 
 from apps.brainstorms.models import BrainstormingIdea
-from apps.brainstorms.utils import BRAINSTORMING_IDEA_ADMIN_LIST, BRAINSTORMING_IDEA_ADMIN_FILTER, \
+
+from apps.brainstorms.utils import (
+    BRAINSTORMING_IDEA_ADMIN_LIST,
+    BRAINSTORMING_IDEA_ADMIN_FILTER,
     BRAINSTORMING_IDEA_ADMIN_SEARCH
+)
 
 
 @admin.register(BrainstormingIdea)

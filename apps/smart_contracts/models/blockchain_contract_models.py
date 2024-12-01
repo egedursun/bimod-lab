@@ -16,8 +16,15 @@
 #
 import os
 from django.db import models
-from apps.smart_contracts.utils import (SMART_CONTRACT_CATEGORIES, SMART_CONTRACT_TEMPLATE_CHOICES,
-                                        SmartContractTemplateNames, DEPLOYMENT_STATUSES, DeploymentStatusesNames)
+
+from apps.smart_contracts.utils import (
+    SMART_CONTRACT_CATEGORIES,
+    SMART_CONTRACT_TEMPLATE_CHOICES,
+    SmartContractTemplateNames,
+    DEPLOYMENT_STATUSES,
+    DeploymentStatusesNames
+)
+
 from config.settings import BASE_DIR
 import logging
 
@@ -72,12 +79,15 @@ class BlockchainSmartContract(models.Model):
 
     def __str__(self):
         return (
-                self.wallet.organization.name + " - " + self.wallet.nickname + " - " + self.category + ' - '
-                + self.contract_template)
+            self.wallet.organization.name + " - " + self.wallet.nickname + " - " + self.category + ' - '
+            + self.contract_template)
 
     class Meta:
         verbose_name = 'Blockchain Smart Contract'
         verbose_name_plural = 'Blockchain Smart Contracts'
+        unique_together = [
+            ["wallet", "nickname"],
+        ]
         indexes = [
             models.Index(fields=['wallet', 'category', 'contract_template']),
             models.Index(fields=['contract_address']),

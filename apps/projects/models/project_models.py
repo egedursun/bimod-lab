@@ -48,7 +48,9 @@ class ProjectItem(models.Model):
         verbose_name = 'Project Item'
         verbose_name_plural = 'Project Items'
         ordering = ['-created_at']
-        unique_together = ('organization', 'project_name', 'project_department')
+        unique_together = [
+            ['organization', 'project_name', 'project_department'],
+        ]
         indexes = [
             models.Index(fields=['organization', 'project_name', 'project_department']),
             models.Index(fields=['organization', 'project_name']),

@@ -35,13 +35,17 @@ class ForumView_CommentVerify(LoginRequiredMixin, View):
 
         try:
             comment = get_object_or_404(ForumComment, id=comment_id)
+
             if post.is_verified:
                 comment_owner = post.verified_comment.created_by
                 comment_owner.profile.remove_points(ForumRewardActionsNames.GET_MERIT)
+
             if post.created_by == request.user:
                 post.verify_comment(comment)
+
             comment_owner = comment.created_by
             comment_owner.profile.add_points(ForumRewardActionsNames.GET_MERIT)
+
         except Exception as e:
             logger.error(f"[ForumView_CommentVerify] Error verifying the Comment: {e}")
             return redirect('community_forum:thread_detail', thread_id=post.thread.id)

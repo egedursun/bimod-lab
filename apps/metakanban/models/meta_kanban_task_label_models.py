@@ -23,7 +23,7 @@ from apps.metakanban.utils import META_KANBAN_TASK_LABEL_COLOR_CHOICES, MetaKanb
 
 class MetaKanbanTaskLabel(models.Model):
     board = models.ForeignKey('MetaKanbanBoard', on_delete=models.CASCADE)
-    label_name = models.CharField(max_length=10000)
+    label_name = models.CharField(max_length=10000, unique=True)
     label_color = models.CharField(max_length=100, choices=META_KANBAN_TASK_LABEL_COLOR_CHOICES,
                                    default=MetaKanbanTaskLabelColorChoiceNames.NAVY)
 

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -39,6 +40,7 @@ class ForumView_PostCreate(LoginRequiredMixin, TemplateView):
 
         try:
             if request.user.profile.user_last_forum_post_at:
+
                 if (timezone.now() - request.user.profile.user_last_forum_post_at).seconds < (1 * CONST_HOURS):
                     messages.error(request, "You can only post once per hour.")
                     logger.error(f"User tried to post more than once per hour. User ID: {request.user.id}")
@@ -46,15 +48,18 @@ class ForumView_PostCreate(LoginRequiredMixin, TemplateView):
 
             request.user.profile.user_last_forum_post_at = timezone.now()
             request.user.profile.save()
+
             form = ForumPostForm(request.POST)
             if form.is_valid():
                 post = form.save(commit=False)
                 post.thread = thread
                 post.created_by = request.user
                 post.save()
+
                 request.user.profile.add_points(ForumRewardActionsNames.ASK_QUESTION)
                 logger.info(f"Forum post created. Post ID: {post.id}")
                 return redirect('community_forum:thread_detail', thread_id=thread.id)
+
         except Exception as e:
             logger.error(f"Error creating forum post: {e}")
             messages.error(request, "An error occurred while creating the post.")
@@ -77,6 +82,7 @@ class ForumView_PostCreate(LoginRequiredMixin, TemplateView):
             context['categories'] = categories
             context['thread'] = thread
             context['form'] = ForumPostForm()
+
         except Exception as e:
             logger.error(f"Error getting context data for forum post creation: {e}")
             return context

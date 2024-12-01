@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -51,6 +48,9 @@ class Maestro(models.Model):
     class Meta:
         verbose_name = "Maestro"
         verbose_name_plural = "Maestros"
+        unique_together = [
+            ["organization", "name"],
+        ]
         indexes = [
             models.Index(fields=["organization"]),
             models.Index(fields=["llm_model"]),
@@ -107,4 +107,3 @@ class Maestro(models.Model):
             models.Index(fields=["llm_model", "created_by_user", "created_at", "updated_at"]),
             models.Index(fields=["llm_model", "last_updated_by_user", "created_at", "updated_at"]),
         ]
-        unique_together = [["organization", "llm_model", "name"]]

@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -45,6 +42,9 @@ class ScheduledJob(models.Model):
         ordering = ['-created_at']
         verbose_name = 'Scheduled Job'
         verbose_name_plural = 'Scheduled Jobs'
+        unique_together = [
+            ["assistant", "name"],
+        ]
         indexes = [
             models.Index(fields=['name', 'assistant', 'created_by_user', 'created_at']),
             models.Index(fields=['created_at']),

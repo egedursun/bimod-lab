@@ -15,13 +15,19 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.db import models
 
 
 class BrainstormingLevelSynthesis(models.Model):
-    brainstorming_session = models.ForeignKey('BrainstormingSession', on_delete=models.CASCADE)
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    brainstorming_session = models.ForeignKey(
+        'BrainstormingSession',
+        on_delete=models.CASCADE
+    )
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
+
     depth_level = models.IntegerField()
     ideas = models.ManyToManyField('BrainstormingIdea')
     synthesis_content = models.TextField()
@@ -35,18 +41,68 @@ class BrainstormingLevelSynthesis(models.Model):
         verbose_name = 'Brainstorming Level Synthesis'
         verbose_name_plural = 'Brainstorming Level Syntheses'
         ordering = ['-created_at']
-        unique_together = ['brainstorming_session', 'depth_level']
+        unique_together = [
+            ['brainstorming_session', 'depth_level'],
+        ]
         indexes = [
-            models.Index(fields=['brainstorming_session']),
-            models.Index(fields=['created_by_user']),
-            models.Index(fields=['depth_level']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
-            models.Index(fields=['brainstorming_session', 'depth_level']),
-            models.Index(fields=['brainstorming_session', 'created_by_user']),
-            models.Index(fields=['brainstorming_session', 'created_at']),
-            models.Index(fields=['brainstorming_session', 'updated_at']),
-            models.Index(fields=['brainstorming_session', 'depth_level', 'created_by_user']),
-            models.Index(fields=['brainstorming_session', 'depth_level', 'created_at']),
-            models.Index(fields=['brainstorming_session', 'depth_level', 'updated_at']),
+            models.Index(
+                fields=['brainstorming_session']
+            ),
+            models.Index(
+                fields=['created_by_user']
+            ),
+            models.Index(
+                fields=['depth_level']
+            ),
+            models.Index(
+                fields=['created_at']
+            ),
+            models.Index(
+                fields=['updated_at']
+            ),
+            models.Index(
+                fields=[
+                    'brainstorming_session',
+                    'depth_level'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'brainstorming_session',
+                    'created_by_user'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'brainstorming_session',
+                    'created_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'brainstorming_session',
+                    'updated_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'brainstorming_session',
+                    'depth_level',
+                    'created_by_user'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'brainstorming_session',
+                    'depth_level',
+                    'created_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'brainstorming_session',
+                    'depth_level',
+                    'updated_at'
+                ]
+            ),
         ]

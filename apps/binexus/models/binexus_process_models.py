@@ -98,6 +98,9 @@ class BinexusProcess(models.Model):
         verbose_name = 'Binexus Process'
         verbose_name_plural = 'Binexus Processes'
         ordering = ['-created_at']
+        unique_together = [
+            ["organization", "process_name"],
+        ]
         indexes = [
             models.Index(fields=['organization']),
             models.Index(

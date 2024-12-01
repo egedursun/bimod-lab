@@ -31,7 +31,9 @@ class HadronNodeAssistantConnection(models.Model):
         return f"{self.assistant} - {self.hadron_prime_node}"
 
     class Meta:
-        unique_together = ("hadron_prime_node", "assistant")
+        unique_together = [
+            ["hadron_prime_node", "assistant"],
+        ]
         verbose_name = "Hadron Node Assistant Connection"
         verbose_name_plural = "Hadron Node Assistant Connections"
         ordering = ["-created_at"]

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import secrets
 import uuid
 
@@ -91,6 +92,9 @@ class HadronNode(models.Model):
         verbose_name = 'Hadron Node'
         verbose_name_plural = 'Hadron Nodes'
         ordering = ['-created_at']
+        unique_together = [
+            ['system', 'node_name'],
+        ]
         indexes = [
             models.Index(fields=['system', 'node_name']),
             models.Index(fields=['system', 'created_by_user']),
@@ -104,5 +108,6 @@ class HadronNode(models.Model):
             self.activation_trigger_hashed_param = uuid.uuid4().hex + uuid.uuid4().hex
             self.save()
         if self.activation_trigger_authentication_key is None:
-            self.activation_trigger_authentication_key = str(secrets.token_urlsafe(HADRON_NODE_AUTHENTICATION_KEY_TOKEN_SIZE))
+            self.activation_trigger_authentication_key = str(
+                secrets.token_urlsafe(HADRON_NODE_AUTHENTICATION_KEY_TOKEN_SIZE))
             self.save()

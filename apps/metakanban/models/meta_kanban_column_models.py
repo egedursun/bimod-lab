@@ -21,7 +21,7 @@ from django.db import models
 
 class MetaKanbanStatusColumn(models.Model):
     board = models.ForeignKey('MetaKanbanBoard', on_delete=models.CASCADE)
-    column_name = models.CharField(max_length=10000)
+    column_name = models.CharField(max_length=10000, unique=True)
     position_id = models.IntegerField(default=0)
 
     created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)

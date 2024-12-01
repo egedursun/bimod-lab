@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -39,7 +36,9 @@ class CustomFunctionReference(models.Model):
     class Meta:
         verbose_name = "Custom Function Reference"
         verbose_name_plural = "Custom Function References"
-        unique_together = [["custom_function", "assistant"]]
+        unique_together = [
+            ["custom_function", "assistant"],
+        ]
         indexes = [
             models.Index(fields=["custom_function", "assistant"]),
             models.Index(fields=["assistant", "custom_function", "created_by_user"]),

@@ -32,13 +32,16 @@ class ProjectTeamItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.project.project_name + ' - ' + self.team_name + ' - ' + self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        return self.project.project_name + ' - ' + self.team_name + ' - ' + self.created_at.strftime(
+            '%Y-%m-%d %H:%M:%S')
 
     class Meta:
         verbose_name = 'Project Team Item'
         verbose_name_plural = 'Project Team Items'
         ordering = ['-created_at']
-        unique_together = ('project', 'team_name')
+        unique_together = [
+            ['project', 'team_name'],
+        ]
         indexes = [
             models.Index(fields=['project', 'team_name']),
             models.Index(fields=['project']),

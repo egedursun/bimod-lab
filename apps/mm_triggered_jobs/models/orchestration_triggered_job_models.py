@@ -45,6 +45,9 @@ class OrchestrationTriggeredJob(models.Model):
         ordering = ['-created_at']
         verbose_name = 'Orchestration Triggered Job'
         verbose_name_plural = 'Orchestration Triggered Jobs'
+        unique_together = [
+            ["trigger_maestro", "name"],
+        ]
         indexes = [
             models.Index(fields=['name', 'trigger_maestro', 'created_by_user', 'created_at']),
             models.Index(fields=['created_at']),

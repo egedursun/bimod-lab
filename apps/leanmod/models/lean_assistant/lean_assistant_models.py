@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -49,6 +46,9 @@ class LeanAssistant(models.Model):
         verbose_name = "Lean Assistant"
         verbose_name_plural = "Lean Assistants"
         ordering = ["-created_at"]
+        unique_together = [
+            ["organization", "name"],
+        ]
         indexes = [
             models.Index(fields=["organization"]),
             models.Index(fields=["llm_model"]),

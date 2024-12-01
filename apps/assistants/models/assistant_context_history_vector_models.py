@@ -73,6 +73,9 @@ class AssistantOldChatMessagesVectorData(models.Model):
     class Meta:
         verbose_name = "Assistant Old Chat Messages Vector Data"
         verbose_name_plural = "Assistant Old Chat Messages Vector Datas"
+        unique_together = [
+            ['assistant_chat_message']
+        ]
         indexes = [
             models.Index(fields=['assistant_chat_message']),
             models.Index(fields=['created_at']),

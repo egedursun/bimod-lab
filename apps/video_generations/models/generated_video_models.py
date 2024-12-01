@@ -34,6 +34,9 @@ class GeneratedVideo(models.Model):
     class Meta:
         verbose_name = 'Generated Video'
         verbose_name_plural = 'Generated Videos'
+        unique_together = [
+            ["organization", "assistant", "multimodal_chat", "video_url"],
+        ]
         indexes = [
             models.Index(fields=['organization']),
             models.Index(fields=['organization', 'assistant']),

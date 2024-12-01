@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -26,7 +27,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -37,13 +37,20 @@ class BrainstormingView_SessionList(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_BRAINSTORMING_SESSIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_BRAINSTORMING_SESSIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_BRAINSTORMING_SESSIONS
+        ):
             messages.error(self.request, "You do not have permission to list brainstorming sessions.")
             return context
         ##############################
 
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        context['sessions'] = BrainstormingSession.objects.filter(organization__in=user_orgs)
+        user_orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+        context['sessions'] = BrainstormingSession.objects.filter(
+            organization__in=user_orgs
+        )
+
         logger.info(f"Brainstorming Sessions were listed.")
         return context

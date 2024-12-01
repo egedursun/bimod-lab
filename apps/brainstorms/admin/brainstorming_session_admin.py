@@ -18,8 +18,12 @@
 from django.contrib import admin
 
 from apps.brainstorms.models import BrainstormingSession
-from apps.brainstorms.utils import BRAINSTORMING_SESSION_ADMIN_LIST, BRAINSTORMING_SESSION_ADMIN_FILTER, \
+
+from apps.brainstorms.utils import (
+    BRAINSTORMING_SESSION_ADMIN_LIST,
+    BRAINSTORMING_SESSION_ADMIN_FILTER,
     BRAINSTORMING_SESSION_ADMIN_SEARCH
+)
 
 
 @admin.register(BrainstormingSession)

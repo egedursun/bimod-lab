@@ -49,6 +49,9 @@ class BlockchainWalletConnection(models.Model):
     class Meta:
         verbose_name = 'Blockchain Wallet Connection'
         verbose_name_plural = 'Blockchain Wallet Connections'
+        unique_together = [
+            ["organization", "wallet_address"],
+        ]
         indexes = [
             models.Index(fields=['organization', 'blockchain_type', 'nickname']),
             models.Index(fields=['wallet_address']),

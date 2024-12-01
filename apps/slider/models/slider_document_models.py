@@ -41,6 +41,9 @@ class SliderDocument(models.Model):
     class Meta:
         verbose_name = 'Slider Document'
         verbose_name_plural = 'Slider Documents'
+        unique_together = [
+            ["organization", "document_folder", "document_title"],
+        ]
         indexes = [
             models.Index(fields=['organization']),
             models.Index(fields=['organization', 'document_folder']),

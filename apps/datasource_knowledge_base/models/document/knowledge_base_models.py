@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+
 import logging
 
 from django.db import models
@@ -54,7 +52,9 @@ class DocumentKnowledgeBaseConnection(models.Model):
         verbose_name = "Document Knowledge Base Connection"
         verbose_name_plural = "Document Knowledge Base Connections"
         ordering = ["-created_at"]
-        unique_together = ['host_url', 'assistant']
+        unique_together = [
+            ['host_url', 'assistant'],
+        ]
         indexes = [
             models.Index(fields=["provider", "assistant", "name"]),
             models.Index(fields=["provider", "assistant", "created_at"]),

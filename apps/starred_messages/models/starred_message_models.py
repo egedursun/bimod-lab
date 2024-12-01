@@ -38,6 +38,9 @@ class StarredMessage(models.Model):
         verbose_name = "Starred Message"
         verbose_name_plural = "Starred Messages"
         ordering = ["-starred_at"]
+        unique_together = [
+            ["user", "chat_message"],
+        ]
         indexes = [
             models.Index(fields=["user", "organization", "assistant", "chat", "chat_message"]),
             models.Index(fields=["user", "organization", "assistant", "chat", "starred_at"]),

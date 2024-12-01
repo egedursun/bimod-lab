@@ -14,14 +14,26 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import slugify
 from django.db import models
 
 
 class AcademyCourseSection(models.Model):
-    course = models.ForeignKey('bmd_academy.AcademyCourse', on_delete=models.CASCADE, related_name='sections')
+    course = models.ForeignKey(
+        'bmd_academy.AcademyCourse',
+        on_delete=models.CASCADE,
+        related_name='sections'
+    )
+
     section_name = models.CharField(max_length=1_000)
-    section_slug = models.SlugField(max_length=1_000, null=True, blank=True)
+
+    section_slug = models.SlugField(
+        max_length=1_000,
+        null=True,
+        blank=True
+    )
+
     section_description = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -35,11 +47,19 @@ class AcademyCourseSection(models.Model):
         verbose_name_plural = 'Academy Course Sections'
         ordering = ['-created_at']
         indexes = [
-            models.Index(fields=['section_name', 'created_at']),
+            models.Index(
+                fields=[
+                    'section_name',
+                    'created_at'
+                ]
+            ),
         ]
-        unique_together = ['course', 'section_name']
+        unique_together = [
+            ['course', 'section_name'],
+        ]
 
     def save(self, *args, **kwargs):
         if not self.section_slug:
             self.section_slug = slugify.slugify(self.course.course_slug + '-' + self.section_name)
+
         super(AcademyCourseSection, self).save(*args, **kwargs)

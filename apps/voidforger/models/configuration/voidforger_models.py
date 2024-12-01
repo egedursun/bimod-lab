@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 class VoidForger(models.Model):
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
 
     llm_model = models.ForeignKey(
         'llm_core.LLMCore',

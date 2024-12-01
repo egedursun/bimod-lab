@@ -34,6 +34,9 @@ class HadronSystem(models.Model):
         verbose_name = 'Hadron System'
         verbose_name_plural = 'Hadron Systems'
         ordering = ['-created_at']
+        unique_together = [
+            ['organization', 'system_name'],
+        ]
         indexes = [
             models.Index(fields=['organization', 'system_name']),
             models.Index(fields=['organization', 'created_by_user']),

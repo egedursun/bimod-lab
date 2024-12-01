@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -26,7 +27,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingSession
 from apps.user_permissions.utils import PermissionNames
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -36,16 +36,24 @@ class BrainstormingView_IdeasGenerate(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_BRAINSTORMING_IDEAS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CREATE_BRAINSTORMING_IDEAS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CREATE_BRAINSTORMING_IDEAS
+        ):
             messages.error(self.request, "You do not have permission to create brainstorming ideas.")
             return redirect('brainstorms:detail_session', session_id=ss_id)
         ##############################
 
         depth_level = request.POST.get('depth_level', 1)
-        session = get_object_or_404(BrainstormingSession, id=ss_id, created_by_user=request.user)
+
+        session = get_object_or_404(
+            BrainstormingSession,
+            id=ss_id,
+            created_by_user=request.user
+        )
         xc = BrainstormsExecutor(session=session)
         xc.produce_ideas(depth_level=int(depth_level))
+
         messages.success(request, f'Ideas for level {depth_level} generated successfully.')
         logger.info(f'Ideas for level {depth_level} generated successfully. Session ID: {session.id}')
         return redirect('brainstorms:detail_session', session_id=session.id)

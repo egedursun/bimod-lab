@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import os
 import random
 import uuid
@@ -53,6 +54,9 @@ class MetaIntegrationTeam(models.Model):
     class Meta:
         verbose_name = 'Meta Integration Team'
         verbose_name_plural = 'Meta Integration Teams'
+        unique_together = [
+            ["meta_integration_category", "meta_integration_name"],
+        ]
         indexes = [
             models.Index(fields=['meta_integration_name']),
             models.Index(fields=['meta_integration_category']),

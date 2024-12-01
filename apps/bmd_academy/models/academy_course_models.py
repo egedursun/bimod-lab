@@ -21,10 +21,22 @@ from django.db import models
 
 class AcademyCourse(models.Model):
     course_title = models.CharField(max_length=1_000, unique=True)
-    course_slug = models.SlugField(max_length=1_000, unique=True, null=True, blank=True)
+
+    course_slug = models.SlugField(
+        max_length=1_000,
+        unique=True,
+        null=True,
+        blank=True
+    )
+
     course_description = models.TextField()
     course_language = models.CharField(max_length=1_000)
-    course_instructor = models.ForeignKey('bmd_academy.AcademyCourseInstructor', on_delete=models.CASCADE)
+
+    course_instructor = models.ForeignKey(
+        'bmd_academy.AcademyCourseInstructor',
+        on_delete=models.CASCADE
+    )
+
     course_thumbnail_image_url = models.URLField(null=True, blank=True)
     course_under_construction = models.BooleanField(default=True)
 
@@ -41,10 +53,17 @@ class AcademyCourse(models.Model):
         verbose_name_plural = 'Academy Courses'
         ordering = ['-created_at']
         indexes = [
-            models.Index(fields=['course_title', 'course_language', 'created_at']),
+            models.Index(
+                fields=[
+                    'course_title',
+                    'course_language',
+                    'created_at'
+                ]
+            ),
         ]
 
     def save(self, *args, **kwargs):
         if not self.course_slug:
             self.course_slug = slugify.slugify(self.course_title)
+
         super(AcademyCourse, self).save(*args, **kwargs)

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -32,18 +33,25 @@ logger = logging.getLogger(__name__)
 class BrainstormingView_PerformCompleteSynthesis(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         ss_id = self.kwargs.get('session_id')
-        session = get_object_or_404(BrainstormingSession, id=ss_id, created_by_user=request.user)
+        session = get_object_or_404(
+            BrainstormingSession,
+            id=ss_id,
+            created_by_user=request.user
+        )
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_BRAINSTORMING_SYNTHESES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CREATE_BRAINSTORMING_SYNTHESES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CREATE_BRAINSTORMING_SYNTHESES
+        ):
             messages.error(self.request, "You do not have permission to create brainstorming syntheses.")
             return redirect('brainstorms:detail_session', session_id=session.id)
         ##############################
 
         xc = BrainstormsExecutor(session=session)
         xc.generate_complete_synthesis()
+
         messages.success(request, 'Complete synthesis for the entire session generated successfully.')
         logger.info(f'Complete synthesis for the entire session generated successfully. Session ID: {session.id}')
         return redirect('brainstorms:detail_session', session_id=session.id)

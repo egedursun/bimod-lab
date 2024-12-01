@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 from django.utils import timezone
@@ -107,6 +104,9 @@ class ExportAssistantAPI(models.Model):
         verbose_name = "Export Assistant API"
         verbose_name_plural = "Export Assistant APIs"
         ordering = ['-created_at']
+        unique_together = [
+            ["organization", "assistant", "is_public"],
+        ]
         indexes = [
             models.Index(fields=[
                 'assistant'

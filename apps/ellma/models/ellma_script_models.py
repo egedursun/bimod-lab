@@ -43,6 +43,9 @@ class EllmaScript(models.Model):
         ordering = ['-created_at']
         verbose_name = 'eLLMa Script'
         verbose_name_plural = 'eLLMa Scripts'
+        unique_together = [
+            ['organization', 'created_by_user', 'script_name'],
+        ]
         indexes = [
             models.Index(fields=['organization', 'llm_model', 'created_by_user']),
             models.Index(fields=['organization', 'llm_model']),

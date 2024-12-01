@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -26,7 +27,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.brainstorms.models import BrainstormingSession
 from apps.user_permissions.utils import PermissionNames
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -34,18 +34,27 @@ class BrainstormingView_LevelSynthesis(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         ss_id = self.kwargs.get('session_id')
         depth_level = request.POST.get('depth_level', 1)
-        session = get_object_or_404(BrainstormingSession, id=ss_id, created_by_user=request.user)
+        session = get_object_or_404(
+            BrainstormingSession,
+            id=ss_id,
+            created_by_user=request.user
+        )
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_BRAINSTORMING_SYNTHESES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CREATE_BRAINSTORMING_SYNTHESES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CREATE_BRAINSTORMING_SYNTHESES
+        ):
             messages.error(self.request, "You do not have permission to create brainstorming syntheses.")
             return redirect('brainstorms:detail_session', session_id=session.id)
         ##############################
 
         xc = BrainstormsExecutor(session=session)
-        xc.generate_level_synthesis(depth_level=int(depth_level))
+        xc.generate_level_synthesis(
+            depth_level=int(depth_level)
+        )
+
         messages.success(request, f'Level synthesis for level {depth_level} generated successfully.')
         logger.info(f'Level synthesis for level {depth_level} generated successfully. Session ID: {session.id}')
         return redirect('brainstorms:detail_session', session_id=session.id)

@@ -33,7 +33,9 @@ class CustomAPIReference(models.Model):
     class Meta:
         verbose_name = "Custom API Reference"
         verbose_name_plural = "Custom API References"
-        unique_together = [["custom_api", "assistant"]]
+        unique_together = [
+            ["custom_api", "assistant"],
+        ]
         indexes = [
             models.Index(fields=["custom_api", "assistant"]),
             models.Index(fields=["assistant", "custom_api", "created_by_user"]),

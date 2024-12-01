@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -39,3 +36,39 @@ class DataSourceBrowserBrowsingLog(models.Model):
     class Meta:
         verbose_name = "Data Source Browser Browsing Log"
         verbose_name_plural = "Data Source Browser Browsing Logs"
+        indexes = [
+            models.Index(
+                fields=[
+                    "connection",
+                    "action",
+                    "created_at",
+                ]
+            ),
+            models.Index(
+                fields=[
+                    "connection",
+                    "action",
+                    "created_at",
+                    "context_url",
+                ]
+            ),
+            models.Index(
+                fields=[
+                    "connection",
+                    "action",
+                    "created_at",
+                    "context_url",
+                    "html_content",
+                ]
+            ),
+            models.Index(
+                fields=[
+                    "connection",
+                    "action",
+                    "created_at",
+                    "context_url",
+                    "html_content",
+                    "context_content",
+                ]
+            ),
+        ]

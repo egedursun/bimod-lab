@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 from datetime import timedelta
 
@@ -59,6 +60,9 @@ class NoSQLDatabaseConnection(models.Model):
         ordering = ['-created_at']
         verbose_name_plural = 'NoSQL Database Connections'
         verbose_name = 'NoSQL Database Connection'
+        unique_together = [
+            ['assistant', 'host', 'bucket_name'],
+        ]
         indexes = [
             models.Index(fields=['assistant', 'nosql_db_type', 'name']),
             models.Index(fields=['assistant', 'nosql_db_type', 'created_at']),

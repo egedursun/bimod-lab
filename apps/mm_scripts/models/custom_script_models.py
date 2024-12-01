@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -24,7 +21,7 @@ from django.db import models
 class CustomScript(models.Model):
     is_public = models.BooleanField(default=False)
     categories = models.JSONField(default=list, blank=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=10000, unique=True)
     description = models.TextField(blank=True)
     script_content = models.TextField(blank=True)
     script_step_guide = models.JSONField(default=list, blank=True)

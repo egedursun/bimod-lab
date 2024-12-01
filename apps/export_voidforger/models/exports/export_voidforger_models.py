@@ -100,6 +100,9 @@ class ExportVoidForgerAPI(models.Model):
         verbose_name = "Export VoidForger API"
         verbose_name_plural = "Export VoidForger APIs"
         ordering = ['-created_at']
+        unique_together = [
+            ['organization', 'voidforger', 'is_public'],
+        ]
         indexes = [
             models.Index(fields=[
                 'voidforger'

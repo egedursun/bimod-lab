@@ -46,6 +46,9 @@ class MetaKanbanTask(models.Model):
     class Meta:
         verbose_name = 'Meta Kanban Task'
         verbose_name_plural = 'Meta Kanban Tasks'
+        unique_together = [
+            ["board", "title"],
+        ]
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['created_at']),

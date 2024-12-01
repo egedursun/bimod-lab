@@ -35,5 +35,10 @@ class AcademyCourseInstructor(models.Model):
         verbose_name_plural = 'Academy Course Instructors'
         ordering = ['-created_at']
         indexes = [
-            models.Index(fields=['full_name', 'created_at']),
+            models.Index(
+                fields=[
+                    'full_name',
+                    'created_at'
+                ]
+            ),
         ]

@@ -15,8 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
-# custom_filters.py
 from django import template
 
 register = template.Library()

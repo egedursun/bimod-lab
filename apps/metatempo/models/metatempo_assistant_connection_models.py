@@ -30,7 +30,9 @@ class MetaTempoAssistantConnection(models.Model):
         return f"{self.assistant} - {self.metatempo_instance}"
 
     class Meta:
-        unique_together = ("metatempo_instance", "assistant")
+        unique_together = [
+            ["metatempo_instance", "assistant"],
+        ]
         verbose_name = "Meta Tempo Assistant Connection"
         verbose_name_plural = "Meta Tempo Assistant Connections"
         ordering = ["-created_at"]

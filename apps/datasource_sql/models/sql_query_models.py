@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -44,6 +41,9 @@ class CustomSQLQuery(models.Model):
         ordering = ['-created_at']
         verbose_name_plural = 'Custom SQL Queries'
         verbose_name = 'Custom SQL Query'
+        unique_together = [
+            ['database_connection', 'name'],
+        ]
         indexes = [
             models.Index(fields=['database_connection', 'name']),
             models.Index(fields=['database_connection', 'created_at']),

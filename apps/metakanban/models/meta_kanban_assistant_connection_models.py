@@ -31,7 +31,9 @@ class MetaKanbanAssistantConnection(models.Model):
         return f"{self.assistant} - {self.metakanban_board}"
 
     class Meta:
-        unique_together = ("metakanban_board", "assistant")
+        unique_together = [
+            ["metakanban_board", "assistant"],
+        ]
         verbose_name = "Meta Kanban Assistant Connection"
         verbose_name_plural = "Meta Kanban Assistant Connections"
         ordering = ["-created_at"]

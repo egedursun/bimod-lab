@@ -14,17 +14,21 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
 
 class ForumLike(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
-    comment = models.ForeignKey("ForumComment", related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE
+    )
+    comment = models.ForeignKey(
+        "ForumComment",
+        related_name='likes',
+        on_delete=models.CASCADE
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -34,6 +38,15 @@ class ForumLike(models.Model):
         verbose_name = "Like"
         verbose_name_plural = "Likes"
         ordering = ["-created_at"]
+        unique_together = [
+            ['user', 'comment'],
+        ]
         indexes = [
-            models.Index(fields=['user', 'comment', 'created_at']),
+            models.Index(
+                fields=[
+                    'user',
+                    'comment',
+                    'created_at'
+                ]
+            ),
         ]

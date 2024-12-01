@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -26,7 +27,6 @@ from apps.brainstorms.models import BrainstormingSession
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -34,29 +34,42 @@ class BrainstormingView_SessionConfirmDelete(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         ss_id = self.kwargs.get('session_id')
-        session = get_object_or_404(BrainstormingSession, id=ss_id, created_by_user=self.request.user)
+        session = get_object_or_404(
+            BrainstormingSession,
+            id=ss_id,
+            created_by_user=self.request.user
+        )
+
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['session'] = session
         return context
 
     def post(self, request, *args, **kwargs):
         ss_id = self.kwargs.get('session_id')
-        session = get_object_or_404(BrainstormingSession, id=ss_id, created_by_user=request.user)
+        session = get_object_or_404(
+            BrainstormingSession,
+            id=ss_id,
+            created_by_user=request.user
+        )
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_BRAINSTORMING_SESSIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_BRAINSTORMING_SESSIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_BRAINSTORMING_SESSIONS
+        ):
             messages.error(self.request, "You do not have permission to delete brainstorming sessions.")
             return redirect('brainstorms:list_sessions')
         ##############################
 
         try:
             session_name = session.session_name
-            session.delete()  # Delete the brainstorming session from the system
+            session.delete()
             messages.success(request, f'The session "{session_name}" was deleted successfully.')
+
         except Exception as e:
             messages.error(request, f"Error deleting session: {str(e)}")
             return self.get(request, *args, **kwargs)
+
         logger.info(f'The session "{session_name}" was deleted successfully. Session ID: {session.id}')
         return redirect('brainstorms:list_sessions')

@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -24,11 +21,18 @@ from django.db import models
 class ForumComment(models.Model):
     id = models.AutoField(primary_key=True)
     content = models.TextField()
-    created_by = models.ForeignKey("auth.User", on_delete=models.CASCADE)
-    post = models.ForeignKey("ForumPost", related_name='comments', on_delete=models.CASCADE)
+    created_by = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE
+    )
+    post = models.ForeignKey(
+        "ForumPost",
+        related_name='comments',
+        on_delete=models.CASCADE
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    like_count = models.PositiveIntegerField(default=0)  # Storing the number of unique likes
+    like_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"Comment by {self.created_by} on Post ID {self.post.id}"
@@ -38,6 +42,17 @@ class ForumComment(models.Model):
         verbose_name_plural = "Comments"
         ordering = ["-created_at"]
         indexes = [
-            models.Index(fields=['content', 'created_at']),
-            models.Index(fields=['content', 'created_at', 'updated_at']),
+            models.Index(
+                fields=[
+                    'content',
+                    'created_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'content',
+                    'created_at',
+                    'updated_at'
+                ]
+            ),
         ]

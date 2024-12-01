@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -28,7 +29,6 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -36,20 +36,24 @@ class BrainstormingView_SessionCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
+
         context['organizations'] = Organization.objects.filter(
             users__in=[user]
         )
         context['llm_models'] = LLMCore.objects.filter(
             organization__in=context['organizations']
         )
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_BRAINSTORMING_SESSIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CREATE_BRAINSTORMING_SESSIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CREATE_BRAINSTORMING_SESSIONS
+        ):
             messages.error(self.request, "You do not have permission to create brainstorming sessions.")
             return redirect('brainstorms:list_sessions')
         ##############################
@@ -59,20 +63,29 @@ class BrainstormingView_SessionCreate(LoginRequiredMixin, TemplateView):
         session_name = request.POST.get('session_name')
         topic_definition = request.POST.get('topic_definition')
         constraints = request.POST.get('constraints')
+
         if org_id and llm_core_id and session_name and topic_definition:
             try:
                 organization = Organization.objects.get(id=org_id)
                 llm_model = LLMCore.objects.get(id=llm_core_id)
                 session = BrainstormingSession.objects.create(
-                    organization=organization, llm_model=llm_model, created_by_user=request.user,
-                    session_name=session_name, topic_definition=topic_definition, constraints=constraints
+                    organization=organization,
+                    llm_model=llm_model,
+                    created_by_user=request.user,
+                    session_name=session_name,
+                    topic_definition=topic_definition,
+                    constraints=constraints
                 )
+
                 messages.success(request, "Brainstorming session created successfully!")
                 logger.info(f"Brainstorming session created successfully. Session ID: {session.id}")
                 return redirect('brainstorms:list_sessions')
+
             except Exception as e:
                 logger.error(f"Error creating brainstorming session: {str(e)}")
                 messages.error(request, f"Error creating brainstorming session: {str(e)}")
+
         else:
             messages.error(request, "All fields are required.")
+
         return self.get(request, *args, **kwargs)

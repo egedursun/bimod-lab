@@ -14,14 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from apps.community_forum.models import ForumLike
 from django.contrib import admin
 
-from apps.community_forum.utils import FORUM_LIKE_ADMIN_LIST, FORUM_LIKE_ADMIN_SEARCH, FORUM_LIKE_ADMIN_FILTER
+from apps.community_forum.utils import (
+    FORUM_LIKE_ADMIN_LIST,
+    FORUM_LIKE_ADMIN_SEARCH,
+    FORUM_LIKE_ADMIN_FILTER
+)
 
 
 @admin.register(ForumLike)

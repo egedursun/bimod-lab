@@ -18,7 +18,12 @@
 from django.contrib import admin
 
 from apps.bmd_academy.models import AcademyCourseVideo
-from apps.bmd_academy.utils import ACADEMY_COURSE_VIDEO_LIST, ACADEMY_COURSE_VIDEO_SEARCH, ACADEMY_COURSE_VIDEO_FILTER
+
+from apps.bmd_academy.utils import (
+    ACADEMY_COURSE_VIDEO_LIST,
+    ACADEMY_COURSE_VIDEO_SEARCH,
+    ACADEMY_COURSE_VIDEO_FILTER
+)
 
 
 @admin.register(AcademyCourseVideo)

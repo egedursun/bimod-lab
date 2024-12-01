@@ -14,24 +14,35 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
 
 class ForumPost(models.Model):
     id = models.AutoField(primary_key=True)
-    thread = models.ForeignKey("ForumThread", related_name='posts', on_delete=models.CASCADE)
+    thread = models.ForeignKey(
+        "ForumThread",
+        related_name='posts',
+        on_delete=models.CASCADE
+    )
 
     content = models.TextField()
-    created_by = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    created_by = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_verified = models.BooleanField(default=False)  # Verification status for an answer
-    verified_comment = models.OneToOneField("ForumComment", related_name='verified_post', on_delete=models.CASCADE,
-                                            null=True, blank=True)
+    is_verified = models.BooleanField(default=False)
+
+    verified_comment = models.OneToOneField(
+        "ForumComment",
+        related_name='verified_post',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
 
     def verify_comment(self, comment):
         if self.created_by == comment.created_by:
@@ -47,6 +58,17 @@ class ForumPost(models.Model):
         verbose_name_plural = "Forum Posts"
         ordering = ["-created_at"]
         indexes = [
-            models.Index(fields=['content', 'created_at']),
-            models.Index(fields=['content', 'created_at', 'updated_at']),
+            models.Index(
+                fields=[
+                    'content',
+                    'created_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'content',
+                    'created_at',
+                    'updated_at'
+                ]
+            ),
         ]

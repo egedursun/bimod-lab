@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+
 import logging
 import os
 
@@ -50,6 +48,9 @@ class DataSourceMediaStorageConnection(models.Model):
     class Meta:
         verbose_name = 'Data Source Media Storage Connection'
         verbose_name_plural = 'Data Source Media Storage Connections'
+        unique_together = [
+            ['assistant', 'name'],
+        ]
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['assistant', 'name']),

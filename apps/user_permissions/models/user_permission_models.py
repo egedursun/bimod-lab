@@ -38,7 +38,13 @@ class UserPermission(models.Model):
         verbose_name_plural = "User Permissions"
         ordering = ["-created_at"]
         constraints = [
-            models.UniqueConstraint(fields=['user', 'permission_type'], name='unique_user_permission')
+            models.UniqueConstraint(
+                fields=[
+                    'user',
+                    'permission_type'
+                ],
+                name='unique_user_permission'
+            )
         ]
         indexes = [
             models.Index(fields=['user', 'permission_type']),

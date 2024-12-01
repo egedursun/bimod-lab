@@ -14,13 +14,19 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib.auth.models import User
 from django.db import models
 
-from apps.notifications.utils import (NOTIFICATION_FA_ICON_CHOICES, NOTIFICATION_TITLE_CATEGORY_CHOICES,
-                                      NOTIFICATION_SENDER_TYPES, NotificationSenderTypeNames)
+from apps.notifications.utils import (
+    NOTIFICATION_FA_ICON_CHOICES,
+    NOTIFICATION_TITLE_CATEGORY_CHOICES,
+    NOTIFICATION_SENDER_TYPES,
+    NotificationSenderTypeNames
+)
+
 from apps.organization.models import Organization
 
 logger = logging.getLogger(__name__)
@@ -32,7 +38,8 @@ class OrderedNotificationManager(models.Manager):
 
 
 class NotificationItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='associated_notifications', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='associated_notifications', null=True,
+                             blank=True)
     organization = models.ForeignKey('organization.Organization', null=True, blank=True, on_delete=models.CASCADE)
     notification_sender_type = models.CharField(max_length=1000, choices=NOTIFICATION_SENDER_TYPES,
                                                 default=NotificationSenderTypeNames.BIMOD_TEAM)

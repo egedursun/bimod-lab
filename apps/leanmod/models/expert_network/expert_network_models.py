@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -40,6 +37,9 @@ class ExpertNetwork(models.Model):
         verbose_name = "Expert Network"
         verbose_name_plural = "Expert Networks"
         ordering = ["-created_at"]
+        unique_together = [
+            ["organization", "name"],
+        ]
         indexes = [
             models.Index(fields=["name"]),
             models.Index(fields=["created_by_user"]),

@@ -23,7 +23,7 @@ from apps.mm_apis.utils import CUSTOM_API_AUTHENTICATION_TYPES
 class CustomAPI(models.Model):
     is_public = models.BooleanField(default=False)
     categories = models.JSONField(default=list, blank=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=10000, unique=True)
     description = models.TextField()
     authentication_type = models.CharField(max_length=5000, default="None", choices=CUSTOM_API_AUTHENTICATION_TYPES)
     authentication_token = models.CharField(max_length=5000, default="", blank=True)

@@ -34,6 +34,9 @@ class UserRole(models.Model):
         verbose_name = 'User Role'
         verbose_name_plural = 'User Roles'
         ordering = ['-created_at']
+        unique_together = [
+            ["organization", "role_name"],
+        ]
         indexes = [
             models.Index(fields=['organization']),
             models.Index(fields=['role_name']),

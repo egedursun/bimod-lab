@@ -17,6 +17,7 @@
 
 from django.db import models
 
+
 class OrchestrationScheduledJob(models.Model):
     maestro = models.ForeignKey('orchestrations.Maestro', on_delete=models.CASCADE, related_name='scheduled_jobs')
     name = models.CharField(max_length=255)
@@ -41,6 +42,9 @@ class OrchestrationScheduledJob(models.Model):
         ordering = ['-created_at']
         verbose_name = 'Orchestration Scheduled Job'
         verbose_name_plural = 'Orchestration Scheduled Jobs'
+        unique_together = [
+            ["maestro", "name"],
+        ]
         indexes = [
             models.Index(fields=['name', 'maestro', 'created_by_user', 'created_at']),
             models.Index(fields=['created_at']),

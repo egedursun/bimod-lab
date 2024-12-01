@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
@@ -57,6 +54,9 @@ class NERIntegration(models.Model):
     class Meta:
         verbose_name = 'NER Integration'
         verbose_name_plural = 'NER Integrations'
+        unique_together = [
+            ['organization', 'name'],
+        ]
         indexes = [
             models.Index(fields=['organization']),
             models.Index(fields=['language']),
